@@ -18,6 +18,7 @@
 #include <oxs_constants.h>
 #include <oxs_error.h>
 #include <oxs_token_binary_security_token.h>
+#include <oxs_utility.h>
 #include <axiom_attribute.h>
 #include <axiom_element.h>
 
@@ -27,8 +28,8 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
         axiom_node_t *parent,
         axis2_char_t* id,
         axis2_char_t* encoding_type,
-        axis2_char_t* value_type
-                                             )
+        axis2_char_t* value_type,
+        axis2_char_t* data)
 {
     axiom_node_t *binary_security_token_node = NULL;
     axiom_element_t *binary_security_token_ele = NULL;
@@ -49,6 +50,12 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
         return NULL;
     }
 
+    if (!id)
+    {
+        id = oxs_util_generate_id(env,(axis2_char_t*)OXS_CERT_ID);
+    }
+
+    
     id_attr = axiom_attribute_create(env, OXS_ATTR_ID, id, NULL);
     encoding_type_att =  axiom_attribute_create(env, OXS_ATTR_ENCODING_TYPE, encoding_type, NULL);
     value_type_att =  axiom_attribute_create(env, OXS_ATTR_VALUE_TYPE, value_type, NULL);
@@ -57,7 +64,12 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
     ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(binary_security_token_ele, env, encoding_type_att, binary_security_token_node);
     ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(binary_security_token_ele, env, value_type_att, binary_security_token_node);
 
+    if(data){
+         ret  = AXIOM_ELEMENT_SET_TEXT(binary_security_token_ele, env, data, binary_security_token_node);
+    }
+
     return binary_security_token_node;
 
 }
+
 

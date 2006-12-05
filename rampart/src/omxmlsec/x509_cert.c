@@ -25,6 +25,7 @@ struct oxs_x509_cert_t
     int serial_number;
     axis2_char_t *subject;
     axis2_char_t *issuer;
+    axis2_char_t *key_identifier;
     axis2_char_t *fingerprint;
     axis2_char_t *date;
     axis2_char_t *hash;
@@ -51,6 +52,7 @@ oxs_x509_cert_create(const axis2_env_t *env)
     x509_cert->serial_number = 0;
     x509_cert->subject =NULL;
     x509_cert->issuer =NULL;
+    x509_cert->key_identifier =NULL;
     x509_cert->fingerprint =NULL;
     x509_cert->date =NULL;
     x509_cert->hash =NULL;
@@ -71,6 +73,10 @@ oxs_x509_cert_free(oxs_x509_cert_t *x509_cert,
     if(x509_cert->issuer ){
         AXIS2_FREE(env->allocator, x509_cert->issuer );
         x509_cert->issuer =NULL;
+    }
+    if(x509_cert->key_identifier ){
+        AXIS2_FREE(env->allocator, x509_cert->key_identifier );
+        x509_cert->key_identifier =NULL;
     }
     if(x509_cert->fingerprint ){
         AXIS2_FREE(env->allocator, x509_cert->fingerprint );
@@ -109,6 +115,12 @@ oxs_x509_cert_get_issuer(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env)
 {
     return x509_cert->issuer;
+}
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_x509_cert_get_key_identifier(oxs_x509_cert_t *x509_cert,
+    const axis2_env_t *env)
+{
+    return x509_cert->key_identifier;
 }
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_x509_cert_get_fingerprint(oxs_x509_cert_t *x509_cert,
@@ -176,6 +188,19 @@ oxs_x509_cert_set_issuer(oxs_x509_cert_t *x509_cert,
         x509_cert->issuer = NULL;
     }
     x509_cert->issuer = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    return AXIS2_SUCCESS;
+}
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_x509_cert_set_key_identifier(oxs_x509_cert_t *x509_cert,
+    const axis2_env_t *env,
+    axis2_char_t *value)
+{
+    if(x509_cert->key_identifier)
+    {
+        AXIS2_FREE(env->allocator, x509_cert->key_identifier);
+        x509_cert->key_identifier = NULL;
+    }
+    x509_cert->key_identifier = (axis2_char_t *)AXIS2_STRDUP(value, env);
     return AXIS2_SUCCESS;
 }
 

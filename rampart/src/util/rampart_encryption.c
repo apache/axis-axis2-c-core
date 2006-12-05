@@ -43,12 +43,45 @@
  * If body is specified in the encryption parts encrypt the immediate child of <body>
  **/
 
-static axis2_status_t 
+/*Private function implementations*/
+
+static axis2_status_t  
 rampart_enc_get_nodes_to_encrypt(const axis2_env_t *env,
     rampart_actions_t *actions,
     axiom_soap_envelope_t *soap_envelope,
-    axis2_array_list_t *nodes_to_encrypt
-);
+    axis2_array_list_t *nodes_to_encrypt)
+{
+    axis2_array_list_t *str_list =  NULL;
+    axis2_char_t *encryption_parts = NULL;
+    int size, i = 0;
+
+    /*Get encryption parts*/
+    encryption_parts =  AXIS2_STRDUP(RAMPART_ACTIONS_GET_ENCRYPTION_PARTS(actions, env), env);
+    /*If no encryption parts are specified use body as default... 
+     * Well...hmmm.. the child of the body infact*/
+    if((!encryption_parts) || (0 == AXIS2_STRCMP(encryption_parts, " "))){
+        axiom_soap_body_t *body = NULL;
+        axiom_node_t *body_node = NULL;
+        axiom_node_t *body_child_node = NULL;
+
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] No encryption parts specified. Using the body as default");
+        body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
+        body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+        AXIS2_ARRAY_LIST_ADD(nodes_to_encrypt, env, body_child_node);
+        return AXIS2_SUCCESS;
+    }
+
+    /*Tokenize*/
+    str_list = axis2_tokenize(env, encryption_parts, ' ');
+    size = AXIS2_ARRAY_LIST_SIZE(str_list, env);
+    /*Find the node and add to the list*/
+    for(i=0 ; i < size ; i++ ){
+        /*TODO*/
+    }
+    return AXIS2_SUCCESS;
+}
+
 
 
 
@@ -65,6 +98,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *enc_sym_algo = NULL;
     axis2_char_t *enc_asym_algo = NULL;
+    axis2_char_t *eki = NULL;
     axis2_char_t *certificate_file = NULL;
     axis2_char_t *password = NULL;
     oxs_key_t *session_key = NULL;
@@ -77,10 +111,17 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
 
     /*Get the symmetric encryption algorithm*/
     enc_sym_algo = RAMPART_ACTIONS_GET_ENC_SYM_ALGO(actions, env); 
-
+    /*If not specified set the default*/
+    if(!enc_sym_algo ||  (0 == AXIS2_STRCMP(enc_sym_algo, ""))){
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] No symmetric algorithm is specified for encryption. Using the default");
+        enc_sym_algo = OXS_DEFAULT_SYM_ALGO;    
+    }
     /*Generate the  session key*/
     session_key = oxs_key_create(env);
     status = OXS_KEY_FOR_ALGO(session_key, env, enc_sym_algo); 
+    if(AXIS2_FAILURE == status){
+        return AXIS2_FAILURE;
+    }
 
     /*Create a list to store EncDataIds. This will be used in building the ReferenceList*/
     id_list = axis2_array_list_create(env, 5);
@@ -118,16 +159,22 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     certificate_file = RAMPART_ACTIONS_GET_ENC_KEY_FILE(actions, env);
     /*Get the password to retrieve the key from key store*/
     password = RAMPART_ACTIONS_GET_ENC_USER(actions, env);
+    /*Get encryption key identifier*/
+    eki = RAMPART_ACTIONS_GET_ENC_KEY_IDENTIFIER(actions, env);
     /*Create asymmetric encryption context*/
     asym_ctx = oxs_asym_ctx_create(env);
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
     oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
     oxs_asym_ctx_set_password(asym_ctx, env, password);
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT);
+    oxs_asym_ctx_set_st_ref_pattern(asym_ctx, env, eki);
     /*TODO This should be taken from the configurations*/
     oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PEM);
     /*Encrypt the session key*/
-    oxs_xml_enc_encrypt_key(env, asym_ctx, sec_node,session_key, id_list);    
+    status = oxs_xml_enc_encrypt_key(env, asym_ctx, sec_node,session_key, id_list);    
+    if(AXIS2_FAILURE == status){
+        return AXIS2_FAILURE;
+    }
 
      
     return AXIS2_SUCCESS;
@@ -145,41 +192,4 @@ rampart_enc_decrypt_message(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-/*Private function implementations*/
-static axis2_status_t  
-rampart_enc_get_nodes_to_encrypt(const axis2_env_t *env,
-    rampart_actions_t *actions,
-    axiom_soap_envelope_t *soap_envelope,
-    axis2_array_list_t *nodes_to_encrypt)
-{
-    axis2_array_list_t *str_list =  NULL;
-    axis2_char_t *encryption_parts = NULL;
-    int size, i = 0;
-
-    /*Get encryption parts*/
-    encryption_parts =  AXIS2_STRDUP(RAMPART_ACTIONS_GET_ENCRYPTION_PARTS(actions, env), env);
-    /*If no encryption parts are specified use body as default... 
-     * Well...hmmm.. the child of the body infact*/
-    if((!encryption_parts) || (0 == AXIS2_STRCMP(encryption_parts, " "))){
-        axiom_soap_body_t *body = NULL;
-        axiom_node_t *body_node = NULL;
-        axiom_node_t *body_child_node = NULL;
-
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] No encryption parts specified. Using the body as default");
-        body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-        body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-        body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
-        AXIS2_ARRAY_LIST_ADD(nodes_to_encrypt, env, body_child_node);
-        return AXIS2_SUCCESS;
-    }
-
-    /*Tokenize*/
-    str_list = axis2_tokenize(env, encryption_parts, ' ');
-    size = AXIS2_ARRAY_LIST_SIZE(str_list, env);
-    /*Find the node and add to the list*/
-    for(i=0 ; i < size ; i++ ){
-        /*TODO*/
-    }
-    return AXIS2_SUCCESS;
-}
 

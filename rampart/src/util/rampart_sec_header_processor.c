@@ -15,7 +15,6 @@
  */
 
 #include <stdio.h>
-#include <axis2_utils.h>
 #include <rampart_encryption.h>
 #include <rampart_action.h>
 #include <rampart_constants.h>
@@ -35,6 +34,7 @@
 #include <oxs_token_key_name.h>
 #include <oxs_key.h>
 #include <oxs_token_reference_list.h>
+#include <axis2_utils.h>
 #include <axis2_array_list.h>
 #include <oxs_axiom.h>
 #include <oxs_asym_ctx.h>
@@ -109,6 +109,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
     axiom_soap_envelope_t *soap_envelope,
+    axiom_node_t *sec_node,
     axiom_node_t *encrypted_key_node,
     axis2_array_list_t *sub_codes)
 {
@@ -151,8 +152,11 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     decrypted_sym_key = oxs_key_create(env);
 
     /*Call decrypt for the EncryptedKey*/
-    status = oxs_xml_enc_decrypt_key(env, asym_ctx, encrypted_key_node,  decrypted_sym_key); 
-    
+    status = oxs_xml_enc_decrypt_key(env, asym_ctx, sec_node, encrypted_key_node,  decrypted_sym_key); 
+    if(AXIS2_FAILURE == status){
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][shp] Cannot decrypt the EncryptedKey");     
+        return AXIS2_FAILURE;
+    }
     /*Alright now we have the key used to encrypt the elements in the reference_list*/
     /*Go thru each and every node in the list and decrypt them*/
     for(i=0 ; i < AXIS2_ARRAY_LIST_SIZE(reference_list, env); i++ ){
@@ -182,6 +186,9 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         OXS_CTX_SET_KEY(ctx, env, decrypted_sym_key);
     
         status = oxs_xml_enc_decrypt_node(env, ctx, enc_data_node, &decrypted_node);
+        if(AXIS2_FAILURE == status){
+            return AXIS2_FAILURE;
+        }
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Node ID=%s decrypted successfuly", id);
     }
 
@@ -299,11 +306,15 @@ rampart_shp_process_message(const axis2_env_t *env,
         }else if(0 == AXIS2_STRCMP(cur_node_name ,OXS_NODE_ENCRYPTED_KEY)){
             /*Process EncryptedKey*/
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process EncryptedKey");
-            status = rampart_shp_process_encrypted_key(env,msg_ctx, actions, soap_envelope, cur_node, sub_codes);
+            status = rampart_shp_process_encrypted_key(env,msg_ctx, actions, soap_envelope, sec_node,  cur_node, sub_codes);
         }else if(0 == AXIS2_STRCMP(cur_node_name ,OXS_NODE_ENCRYPTED_DATA)){
             /*Process Encrypteddata*/
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process EncryptedData");
             /*TODO We need to support this scenario as well*/
+
+        }else if(0 == AXIS2_STRCMP(cur_node_name , OXS_NODE_BINARY_SECURITY_TOKEN)){
+             /*Process BinarySecurityToken*/
+             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process BinarySecurityToken");
 
         }else if(0 == AXIS2_STRCMP(cur_node_name ,OXS_NODE_REFERENCE_LIST)){
             /*List is placed Out side of the EncryptedKey*/

@@ -85,6 +85,10 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_asym_ctx_get_algorithm(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_asym_ctx_get_st_ref_pattern(const oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env);
+
 AXIS2_EXTERN oxs_asym_ctx_operation_t AXIS2_CALL
 oxs_asym_ctx_get_operation(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
@@ -116,6 +120,11 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_algorithm(oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env,
                     axis2_char_t *algorithm);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_st_ref_pattern(oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *st_ref_pattern);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_operation(oxs_asym_ctx_t *ctx,

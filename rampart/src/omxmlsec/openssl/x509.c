@@ -65,8 +65,8 @@ openssl_x509_load_from_buffer(const axis2_env_t *env,
 #endif
     if ((mem = BIO_new_mem_buf(buff, ilen)) == NULL)
     {
-        /*oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
-                "BIO memeory allocation failure");*/
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "BIO memeory allocation failure");
         return AXIS2_FAILURE;
     }
 
@@ -88,29 +88,31 @@ openssl_x509_load_from_pem(const axis2_env_t *env,
     axis2_char_t *filename,
     X509 **cert)
 {
-    axis2_status_t status = AXIS2_SUCCESS;
     BIO *in;
 
     if ((in=BIO_new_file(filename,"r")) == NULL)
     {
-        printf("Error reading the file\n");
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "Error reading the file");
         return AXIS2_FAILURE;
     }
     /*Read certificate*/
     PEM_read_bio_X509(in, cert,NULL,NULL);
     if(!*cert)
     {
-        printf("Error creating the certificate\n");
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "Error creating the certificate");
         return AXIS2_FAILURE;
     }
     
-    if (BIO_reset(in) != 1)
-        status = AXIS2_FAILURE;
-    
-    if (BIO_free(in) != 1)
-        status = AXIS2_FAILURE;
-    
-    return status;
+    if (-1 == BIO_reset(in) ){
+       return AXIS2_FAILURE;
+    }
+
+    if (-1 == BIO_free(in)  ){
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
 }
 
 
@@ -234,7 +236,6 @@ openssl_x509_get_pubkey(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-#if 0
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 openssl_x509_get_subject_key_identifier(const axis2_env_t *env,
     X509 *cert)
@@ -246,23 +247,27 @@ openssl_x509_get_subject_key_identifier(const axis2_env_t *env,
     int len, ret;
     char buf[1000];
     char output[100];
+    axis2_char_t *ski = NULL;
 
     /*Get ext by ID*/
     index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
     if (index < 0) {
-       printf("index is less than zero\n");
+       oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "The extenension index of NID_subject_key_identifier is not valid");
        return NULL;
     }
-    /*Get the extension*/
+/*Get the extension*/
     ext = X509_get_ext(cert, index);
     if (ext == NULL) {
-        printf("Extension is Null\n");
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "The extension for NID_subject_key_identifier is NULL");
         return NULL;
     }
     /*Subject Key Identifier*/
-    keyId = X509V3_EXT_d2i(ext);
+    keyId = (ASN1_OCTET_STRING *)X509V3_EXT_d2i(ext);
     if (keyId == NULL) {
-        printf("KeyId is NULL\n");
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "The SubjectKeyIdentifier is NULL");
         return NULL;
     }
     memcpy(buf, keyId->data, keyId->length);
@@ -273,9 +278,9 @@ openssl_x509_get_subject_key_identifier(const axis2_env_t *env,
     EVP_EncodeFinal(&ctx, (unsigned char*)(output+len), &ret);
 
     ret += len;
-    return output; 
+    ski = AXIS2_STRDUP(output, env); 
+    return ski; 
 }
-#endif
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 openssl_x509_get_info(const axis2_env_t *env,

@@ -145,9 +145,8 @@ openssl_rsa_pub_encrypt(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
 
-    /*encrypted = malloc(RSA_size(pubkey->key->pkey.rsa));*/
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
-    encrypted = malloc(RSA_size(key->pkey.rsa));
+    encrypted = AXIS2_MALLOC(env->allocator, RSA_size(key->pkey.rsa));
     ret = RSA_public_encrypt(strlen((char*)in),
             in,
             encrypted,
@@ -155,7 +154,8 @@ openssl_rsa_pub_encrypt(
             RSA_PKCS1_PADDING);
     if (ret < 0)
     {
-        printf("Encryption failed \n");
+        oxs_error(ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
+                            "RSA encryption failed");
         return (-1);
     }
     *out = encrypted;
@@ -179,7 +179,7 @@ openssl_rsa_prv_decrypt(
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
 
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
-    decrypted = malloc(RSA_size(key->pkey.rsa));
+    decrypted =  AXIS2_MALLOC(env->allocator, RSA_size(key->pkey.rsa));
     ret = RSA_private_decrypt(RSA_size(key->pkey.rsa),
             in,
             decrypted,
@@ -187,7 +187,8 @@ openssl_rsa_prv_decrypt(
             RSA_PKCS1_PADDING);
     if (ret < 0)
     {
-        printf("Decryption failed \n");
+        oxs_error(ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
+                            "RSA decryption failed");
         return (-1);
     }
     *out = decrypted;

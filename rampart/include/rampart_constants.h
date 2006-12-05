@@ -25,6 +25,7 @@ extern "C"
 
 /*Default values*/
 #define RAMPART_DEFAULT_KT_ALGO OXS_DEFAULT_KT_ALGO_HREF
+#define RAMPART_STR_DEFAULT OXS_STR_DEFAULT
 
 /* rampart element names*/
 #define RAMPART_SECURITY "Security"
@@ -138,6 +139,11 @@ extern "C"
 
 #define RAMPART_YES "YES"
 #define RAMPART_NO "NO"
+
+#define RAMPART_STR_DIRECT_REFERENCE    OXS_STR_DIRECT_REFERENCE 
+#define RAMPART_STR_KEY_IDENTIFIER      OXS_STR_KEY_IDENTIFIER
+#define RAMPART_STR_EMBEDDED            OXS_STR_EMBEDDED
+#define RAMPART_STR_ISSUER_SERIAL       OXS_STR_ISSUER_SERIAL
 
 #ifdef __cplusplus
 }

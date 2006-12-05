@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef OXS_BINARY_SECURITY_TOKEN_H
-#define OXS_BINARY_SECURITY_TOKEN_H
+#ifndef OXS_TOKEN_EMBEDDED_H
+#define OXS_TOKEN_EMBEDDED_H
 
 
 /**
-  * @file oxs_token_binary_security_token.h
+  * @file oxs_token_embedded.h
   * @brief 
   */
 
@@ -33,22 +33,17 @@ extern "C"
 {
 #endif
 
-/**
-* BinarySecurityToken
-*/
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_binary_security_token_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t* id,
-                        axis2_char_t* encoding_type,
-                        axis2_char_t* value_type,
-                        axis2_char_t* data
-                    );
+oxs_token_build_embedded_element(const axis2_env_t *env,
+        axiom_node_t *parent,
+        axis2_char_t* id);
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_token_get_embedded_id(const axis2_env_t *env, axiom_node_t *embedded_node);
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* OXS_BINARY_SECURITY_TOKEN_H */
+#endif                          /* OXS_TOKEN_EMBEDDED_H */

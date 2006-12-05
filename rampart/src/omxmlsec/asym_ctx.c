@@ -25,6 +25,7 @@ struct oxs_asym_ctx_t
     axis2_char_t *file_name;
     axis2_char_t *password;
     axis2_char_t *algorithm;
+    axis2_char_t *st_ref_pattern;
     oxs_asym_ctx_operation_t operation;   
     oxs_asym_ctx_format_t format;   
     oxs_x509_cert_t *certificate;
@@ -63,6 +64,14 @@ oxs_asym_ctx_get_algorithm(
     const axis2_env_t *env)
 {
     return asym_ctx->algorithm;
+}
+
+axis2_char_t *AXIS2_CALL
+oxs_asym_ctx_get_st_ref_pattern(
+    const oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env)
+{
+    return asym_ctx->st_ref_pattern;
 }
 
 oxs_asym_ctx_operation_t AXIS2_CALL
@@ -151,6 +160,21 @@ oxs_asym_ctx_set_algorithm(
 }
 
 axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_st_ref_pattern(
+    oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env,
+    axis2_char_t *st_ref_pattern)
+{
+    if (asym_ctx->st_ref_pattern)
+    {
+        AXIS2_FREE(env->allocator, asym_ctx->st_ref_pattern);
+        asym_ctx->st_ref_pattern = NULL;
+    }
+    asym_ctx->st_ref_pattern = AXIS2_STRDUP(st_ref_pattern, env);
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_operation(
     oxs_asym_ctx_t *asym_ctx,
     const axis2_env_t *env,
@@ -213,6 +237,7 @@ oxs_asym_ctx_create(const axis2_env_t *env)
     asym_ctx->password= NULL;
     asym_ctx->format= -1;
     asym_ctx->algorithm = NULL;
+    asym_ctx->st_ref_pattern = NULL;
     asym_ctx->operation = -1;
     asym_ctx->certificate = NULL;
     
@@ -243,6 +268,12 @@ oxs_asym_ctx_free(oxs_asym_ctx_t *asym_ctx,
     {
         AXIS2_FREE(env->allocator, asym_ctx->algorithm);
         asym_ctx->algorithm = NULL;
+    }
+
+    if (asym_ctx->st_ref_pattern)
+    {
+        AXIS2_FREE(env->allocator, asym_ctx->st_ref_pattern);
+        asym_ctx->st_ref_pattern = NULL;
     }
 
     if (asym_ctx->certificate)

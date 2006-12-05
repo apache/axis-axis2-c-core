@@ -25,7 +25,9 @@ extern "C"
 
 /*Default values*/
 /*Key transfer algo*/
-#define OXS_DEFAULT_KT_ALGO_HREF OXS_HREF_RSA_PKCS1
+#define OXS_DEFAULT_KT_ALGO_HREF    OXS_HREF_RSA_PKCS1
+#define OXS_DEFAULT_SYM_ALGO        OXS_HREF_AES_256_CBC
+#define OXS_STR_DEFAULT             OXS_STR_EMBEDDED
 
 
 /****************************************************************
@@ -41,6 +43,7 @@ extern "C"
 #define OXS_ENCDATA_ID "EncDataID"
 #define OXS_ENCKEY_ID "EncKeyID"
 #define OXS_CERT_ID "CertID"
+#define OXS_EMBEDDED_ID "EmbeddedID"
 
 /****************************************************************
    Global namespaces 
@@ -94,6 +97,7 @@ extern "C"
 #define OXS_NODE_BINARY_SECURITY_TOKEN     "BinarySecurityToken"
 #define OXS_NODE_KEY_IDENTIFIER     "KeyIdentifier"
 #define OXS_NODE_SECURITY_TOKEN_REFRENCE    "SecurityTokenReference"
+#define OXS_NODE_EMBEDDED    "Embedded"
 
 
 /****************************************************************
@@ -306,7 +310,14 @@ extern "C"
 ****************************************************************/
 #define OXS_ENCODING_BASE64BINARY "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary"
 #define OXS_VALUE_X509V3 "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"
-
+#define OXS_X509_SUBJ_KI "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509SubjectKeyIdentifier"
+/****************************************************************
+    ST References
+****************************************************************/
+#define OXS_STR_DIRECT_REFERENCE "DirectReference"
+#define OXS_STR_KEY_IDENTIFIER "KeyIdentifier"
+#define OXS_STR_EMBEDDED "Embedded"
+#define OXS_STR_ISSUER_SERIAL "IssuerSerial"
 
 /*************************************************************************/
 

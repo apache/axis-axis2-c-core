@@ -46,7 +46,6 @@ oxs_token_build_issuer_name_element(const axis2_env_t *env,
         axiom_node_t *parent,
         axis2_char_t* value );
 
-/*TODO write free method*/
 /** @} */
 #ifdef __cplusplus
 }

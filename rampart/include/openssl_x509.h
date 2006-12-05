@@ -103,6 +103,10 @@ openssl_x509_get_pubkey(const axis2_env_t *env,
     EVP_PKEY **pubkey);
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+openssl_x509_get_subject_key_identifier(const axis2_env_t *env,
+    X509 *cert);
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 openssl_x509_get_info(const axis2_env_t *env,
     openssl_x509_info_type_t type,
         X509 *cert);

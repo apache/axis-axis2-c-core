@@ -60,27 +60,35 @@ oxs_x509_cert_free(oxs_x509_cert_t *x509_cert,
 AXIS2_EXTERN int AXIS2_CALL
 oxs_x509_cert_get_serial_number(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_x509_cert_get_subject(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_x509_cert_get_issuer(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-oxs_x509_cert_get_(oxs_x509_cert_t *x509_cert,
+oxs_x509_cert_get_key_identifier(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_x509_cert_get_fingerprint(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_x509_cert_get_date(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_x509_cert_get_hash(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_x509_cert_get_data(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+
 AXIS2_EXTERN openssl_pkey_t *AXIS2_CALL
 oxs_x509_cert_get_public_key(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
@@ -93,6 +101,11 @@ oxs_x509_cert_set_serial_number(oxs_x509_cert_t *x509_cert,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_x509_cert_set_issuer(oxs_x509_cert_t *x509_cert,
+    const axis2_env_t *env,
+    axis2_char_t *value);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_x509_cert_set_key_identifier(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env,
     axis2_char_t *value);
 

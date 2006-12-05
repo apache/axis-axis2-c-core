@@ -97,7 +97,7 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
                 &out_main_buf, OPENSSL_ENCRYPT);
         if(enclen < 0){
             oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
-                    "openssl_block_cipher_crypt");
+                    "openssl_block_cipher_crypt FAILED");
             return AXIS2_FAILURE;
         }
 
@@ -115,6 +115,8 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
         ret = OXS_BUFFER_POPULATE(result, env, (unsigned char*)AXIS2_STRDUP(encoded_str, env), encodedlen);
         
         /*Free*/
+        AXIS2_FREE(env->allocator, out_main_buf);
+        out_main_buf = NULL;
         AXIS2_FREE(env->allocator, encoded_str);
         encoded_str = NULL;
 
@@ -132,13 +134,21 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
                     "axis2_base64_decode_binary failed");
+            return AXIS2_FAILURE;
         }
         /*Then we decrypt*/
         enclen = openssl_block_cipher_crypt(env, oc_ctx,
                 decoded_data, decoded_len,  &out_main_buf, OPENSSL_DECRYPT);
-
+       
+        if(enclen < 0){
+            oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+                    "openssl_block_cipher_crypt FAILED");
+            return AXIS2_FAILURE;
+        }
         ret = OXS_BUFFER_POPULATE(result, env, AXIS2_STRMEMDUP(out_main_buf, enclen, env), enclen);
         /*Free*/
+        AXIS2_FREE(env->allocator, out_main_buf);
+        out_main_buf = NULL;
         AXIS2_FREE(env->allocator, decoded_data);
         decoded_data = NULL;
 
@@ -147,7 +157,11 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
                 "Invalid operation type %d", OXS_CTX_GET_OPERATION(enc_ctx, env));
         return AXIS2_FAILURE;
     }
-  
+ 
+    /*Free*/
+    AXIS2_FREE(env->allocator, iv);
+    iv = NULL;
+
     return AXIS2_SUCCESS;
 }
 
@@ -163,9 +177,13 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
     oxs_asym_ctx_operation_t operation = -1;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *password = NULL;
+    axis2_char_t *algorithm = NULL;
 
-    /*TODO We support RSA encryption only. If any other algorithm is specified, reject*/
-
+    algorithm = oxs_asym_ctx_get_algorithm(ctx, env);
+    /* We support RSA v1.5 encryption only. If any other algorithm is specified, replace it with the proper one*/
+    if(0 != (AXIS2_STRCMP(OXS_HREF_RSA_PKCS1, algorithm ))) {
+        oxs_asym_ctx_set_algorithm(ctx, env, OXS_HREF_RSA_PKCS1);
+    }
 
     /*Load the key using key manager*/
     password = oxs_asym_ctx_get_password(ctx, env);
@@ -174,15 +192,6 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
         
-#if 0
-    /*1. Try to get the pkey from the asy_ctx*/
-    axis2_char_t *file_name = NULL;
-    /*2. If not try to load the key from the dec_prop_file*/
-    file_name = oxs_asym_ctx_get_file_name(ctx, env);
-    pkey =  openssl_pkey_create(env);
-    status = OPENSSL_PKEY_LOAD(pkey, env, file_name, "");/*TODO password*/
-#endif
-
     /*Check for the operation and call appropriate method*/
     operation = oxs_asym_ctx_get_operation(ctx, env);
     rsa = openssl_rsa_create(env);
@@ -204,6 +213,12 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
         encoded_str = AXIS2_MALLOC(env->allocator, encodedlen);
         ret = axis2_base64_encode(encoded_str, (const char *)encrypted, enclen); 
         status = OXS_BUFFER_POPULATE(result, env, (unsigned char*)AXIS2_STRDUP(encoded_str, env), encodedlen);
+        
+        /*Free*/
+        AXIS2_FREE(env->allocator, encrypted);
+        encrypted = NULL; 
+        AXIS2_FREE(env->allocator, encoded_str);
+        encoded_str = NULL;
 
     }else if(OXS_ASYM_CTX_OPERATION_PRV_DECRYPT == operation ){
         unsigned char  *decoded_encrypted_str = NULL;
@@ -217,8 +232,14 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
         decoded_encrypted_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)OXS_BUFFER_GET_DATA(input, env)));
         ret = axis2_base64_decode((char*)decoded_encrypted_str, (char*)OXS_BUFFER_GET_DATA(input, env));
         declen = OPENSSL_RSA_PRV_DECRYPT(rsa, env, pkey, decoded_encrypted_str, &decrypted);
-        status = OXS_BUFFER_POPULATE(result, env, decrypted, declen);
-    
+        status = OXS_BUFFER_POPULATE(result, env, AXIS2_STRMEMDUP(decrypted, declen, env), declen);
+   
+        /*Free*/
+        AXIS2_FREE(env->allocator, decoded_encrypted_str);
+        decoded_encrypted_str = NULL;
+        AXIS2_FREE(env->allocator, decrypted);
+        decrypted = NULL;
+
     }else if(OXS_ASYM_CTX_OPERATION_PRV_ENCRYPT == operation ){
         /**/
     }else if(OXS_ASYM_CTX_OPERATION_PRV_ENCRYPT == operation ){

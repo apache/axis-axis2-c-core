@@ -351,6 +351,7 @@ oxs_key_for_algo(oxs_key_t *key,
     size = OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env);
 
     key_buf = oxs_buffer_create(env);
+    /*The actual key generation happens here*/
     ret = generate_random_data(env, key_buf, size);
     if (ret == AXIS2_FAILURE)
     {

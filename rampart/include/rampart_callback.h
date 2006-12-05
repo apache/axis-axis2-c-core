@@ -81,7 +81,6 @@ extern "C"
     };
 
 /*************************** Function macros **********************************/
-/*TODO write the implementation*/
 #define RAMPART_CALLBACK_FREE(callback, env) \
       ((callback)->ops->free (callback, env))
 

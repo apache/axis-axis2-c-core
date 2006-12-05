@@ -4,7 +4,8 @@ liboxstokens_la_SOURCES =  token_encrypted_data.c token_encryption_method.c toke
                         token_cipher_data.c token_key_name.c token_key_info.c token_binary_security_token.c \
                         token_reference_list.c token_data_reference.c token_encrypted_key.c \
                         token_key_identifier.c token_x509_data.c token_x509_issuer_serial.c\
-                        token_x509_issuer_name.c token_x509_serial_number.c token_security_token_reference.c
+                        token_x509_issuer_name.c token_x509_serial_number.c token_security_token_reference.c \
+						token_embedded.c token_reference.c
 
 liboxstokens_la_LIBADD  =../../../../util/src/libaxis2_util.la \
 			            ../../../../axiom/src/om/libaxis2_axiom.la 

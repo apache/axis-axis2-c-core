@@ -30,7 +30,6 @@ typedef struct openssl_cipher_ctx_impl
     openssl_cipher_ctx_t ctx;
 
     const EVP_CIPHER*   cipher;
-    /*axis2_char_t  *key;*/
     oxs_key_t *key;
     axis2_char_t  *iv;
     axis2_char_t  *pad;

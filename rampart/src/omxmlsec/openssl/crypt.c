@@ -49,7 +49,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
 
     i = 0;
     out_buf_index = 0;
-    
+
     /*Get the key*/
     key = OPENSSL_CIPHER_CTX_GET_KEY(oc_ctx, env);
     key_data = AXIS2_MALLOC(env->allocator, OXS_KEY_GET_SIZE(key, env));
@@ -57,8 +57,10 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
     /*Init ctx*/
     EVP_CIPHER_CTX_init(&ctx);
     ret = EVP_CipherInit_ex(&ctx, (EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env), NULL, NULL, NULL, do_encrypt);
+   
     ret  = EVP_CipherInit_ex(&ctx, NULL, NULL, key_data,
-            (unsigned char*)OPENSSL_CIPHER_CTX_GET_IV(oc_ctx, env),
+            /*(unsigned char*)OPENSSL_CIPHER_CTX_GET_IV(oc_ctx, env),*/
+            NULL,/*NULL instead of IV. Here we do not use IV*/
             do_encrypt);
     for (;;)
     {
@@ -90,17 +92,19 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
                     "Encryption failed");
 
             EVP_CIPHER_CTX_cleanup(&ctx);
-            return (-1);
+            return (-2);
         }
-        /*TODO: Write the encrypted block to the tempbuf*/
-        tempbuf2 = malloc(out_buf_index + outlen);
+        /*Write the encrypted block to the tempbuf2*/
+        tempbuf2 = AXIS2_MALLOC(env->allocator, out_buf_index + outlen);
+        
         if (i > 0)
         {/*Skip for the i=0 step*/
-            memcpy(tempbuf2, tempbuf, out_buf_index);
-            /*free tempbuf*/
-            free(tempbuf);
+            memmove(tempbuf2, tempbuf, out_buf_index);
+            /*Free*/
+            AXIS2_FREE(env->allocator, tempbuf);
+            tempbuf = NULL;
         }
-        memcpy(tempbuf2 + out_buf_index, outbuf, outlen);
+        memmove(tempbuf2 + out_buf_index, outbuf, outlen);
         tempbuf = tempbuf2; /*Assign new tempbuf2 to the old one*/
         out_buf_index = out_buf_index + outlen;/*Update the writing position of the tempbuf*/
 
@@ -111,23 +115,28 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
     if (!ret)
     {
         /* Error */
-        EVP_CIPHER_CTX_cleanup(&ctx);
-        AXIS2_LOG_INFO(env->log, "[oxs][crypt.c] EVP_CIPHER_CTX_cleanup ");
-        return (-1);
+        ret = EVP_CIPHER_CTX_cleanup(&ctx);
+        oxs_error(ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
+                    "Encryption Final_ex failed");
+        return (-3);
     }
     /*Alright now we need to write the last drop*/
-    tempbuf2 = malloc(out_buf_index + outlen);
-    memcpy(tempbuf2, tempbuf, out_buf_index);
-    /*free tempbuf*/
-    free(tempbuf);
-    memcpy(tempbuf2 + out_buf_index, outbuf, outlen);
+    tempbuf2 = AXIS2_MALLOC(env->allocator, out_buf_index + outlen);
+    memmove(tempbuf2, tempbuf, out_buf_index);
+    /*Free*/
+    AXIS2_FREE(env->allocator, tempbuf);
+    tempbuf = NULL;
+    
+    memmove(tempbuf2 + out_buf_index, outbuf, outlen);
     tempbuf = tempbuf2; /*Assign new tempbuf2 to the old one*/
     out_buf_index = out_buf_index + outlen;/*Update the writing position of the tempbuf*/
     EVP_CIPHER_CTX_cleanup(&ctx);
     /*Assign the temp buf to the out_main_buf*/
-    *out_main_buf = malloc(out_buf_index+outlen);
-    memcpy(*out_main_buf, tempbuf, out_buf_index+outlen);
-    free(tempbuf2);
+    *out_main_buf =  AXIS2_MALLOC(env->allocator, out_buf_index+outlen);
+    memmove(*out_main_buf, tempbuf, out_buf_index+outlen-1);
+    AXIS2_FREE(env->allocator, tempbuf2);
+    tempbuf2 = NULL;
+            
     return out_buf_index;
 
 }

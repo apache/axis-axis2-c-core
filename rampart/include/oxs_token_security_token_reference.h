@@ -37,7 +37,6 @@ oxs_token_build_security_token_reference_element(const axis2_env_t *env,
         axiom_node_t *parent);
 
 
-/*TODO write free method*/
 /** @} */
 #ifdef __cplusplus
 }

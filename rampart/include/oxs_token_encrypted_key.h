@@ -42,7 +42,6 @@ oxs_token_get_encrypted_key_node(const axis2_env_t *env,
                             axiom_node_t *parent);
 
 
-/*TODO write free method*/
 /** @} */
 #ifdef __cplusplus
 }

@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     axis2_char_t *id = NULL;
     FILE *outf;
 
-    env = test_init();
+    env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
     printf("--Testing started--------------------------------------------\n");
 
     if (argc > 1)

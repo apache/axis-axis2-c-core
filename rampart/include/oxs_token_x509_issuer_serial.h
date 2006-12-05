@@ -47,7 +47,6 @@ oxs_token_build_x509_issuer_serial_element(const axis2_env_t *env,
         axiom_node_t *parent);
 
 
-/*TODO write free method*/
 /** @} */
 #ifdef __cplusplus
 }

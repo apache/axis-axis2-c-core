@@ -45,7 +45,6 @@ oxs_token_build_data_reference_element(const axis2_env_t *env,
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_token_get_data_reference(const axis2_env_t *env, axiom_node_t *data_ref_node);
 
-/*TODO write free method*/
 /** @} */
 #ifdef __cplusplus
 }

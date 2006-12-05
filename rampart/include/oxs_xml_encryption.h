@@ -69,6 +69,7 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_key(const axis2_env_t *env,
                             oxs_asym_ctx_t * asym_ctx,
+                            axiom_node_t *parent,
                             axiom_node_t *encrypted_key_node,
                             oxs_key_t *key);                            
 /** @} */

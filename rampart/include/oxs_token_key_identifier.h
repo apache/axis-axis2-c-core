@@ -45,7 +45,6 @@ oxs_token_build_key_identifier_element(const axis2_env_t *env,
                     );
 
 
-/*TODO write free method*/
 /** @} */
 #ifdef __cplusplus
 }

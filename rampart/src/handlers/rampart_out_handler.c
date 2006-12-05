@@ -103,7 +103,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-
+    
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if (!soap_envelope)
     {
@@ -271,7 +271,13 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
                 {
 
                     AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encrypting we do not support yet");
-                    status = rampart_enc_encrypt_message(env, msg_ctx, actions, soap_envelope, sec_node);    
+                    status = rampart_enc_encrypt_message(env, msg_ctx, actions, soap_envelope, sec_node);   
+                    if (status == AXIS2_FAILURE)
+                    {
+                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Message encryption failed. ERROR");
+                        return AXIS2_FAILURE;
+                    }
+ 
                     /*Signature*/
                 }
                 else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE,
