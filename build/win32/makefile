@@ -5,10 +5,13 @@
 # nmake clean clean everything
 # nmake samples build samples
 # nmake install to install axis2 with server all modules and services
+# nmake dist    to create the distribution, builds all distributable components
+
+#It is possible to run individual targets to build those targets only, 
+# eg nmake axis2_apache_module , will build apache module
 
 
-
-# install directory will be (default)deploy or if the user a specified  directory
+# install directory will be (default)deploy or a user specified  directory
 # then the directory structure is following
 #      AXIS2_INSTALL_DIR
 #	|
@@ -22,7 +25,6 @@
 #       |- tests
 #            |- system_tests
 #            |- unit tests           
-
 
 AUTOCONF = configure.in
 !include $(AUTOCONF)
@@ -67,7 +69,7 @@ AXIS2_MOD_ADDR = axis2_mod_addr
 AXIS2_MOD_LOG = axis2_mod_log
 
 # include path
-APACHE_INCLUE_PATH = /I$(APACHE_INSTALL_DIR)\include
+APACHE_INCLUE_PATH = /I$(APACHE_BIN_DIR)\include
 AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\util\src\  \
 		/I$(AXIS2_SOURCE_DIR)\woden\include \
@@ -89,12 +91,12 @@ AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2 \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments \
 		/I$(AXIS2_SOURCE_DIR)\xml_schema\include \
-		/I$(LIBXML2_INSTALL_DIR)\include \
-		/I$(ICONV_INSTALL_DIR)\include \
-		/I$(ZLIB_INSTALL_DIR)\include
+		/I$(LIBXML2_BIN_DIR)\include \
+		/I$(ICONV_BIN_DIR)\include \
+		/I$(ZLIB_BIN_DIR)\include
 
 !if "$(ENABLE_SSL)" == "1"
-AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_INSTALL_DIR)\include
+AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR )\include
 !endif
 
 #source paths for core modules
@@ -146,11 +148,11 @@ CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT"  \
 
 # linker options
 LD = link.exe
-LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_INSTALL_DIR)\lib \
-		/LIBPATH:$(APACHE_INSTALL_DIR)\lib /LIBPATH:$(ZLIB_INSTALL_DIR)\lib
+LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXSLT_BIN_DIR)\lib /LIBPATH:$(LIBXML2_BIN_DIR)\lib  \
+		/LIBPATH:$(APACHE_BIN_DIR)\lib /LIBPATH:$(ZLIB_BIN_DIR)\lib
 LIBS =  Rpcrt4.lib Ws2_32.lib
 !if "$(ENABLE_SSL)" == "1"
-LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_INSTALL_DIR)\lib\vc 
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_BIN_DIR )\lib\vc 
 LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
 !endif
 
@@ -160,7 +162,6 @@ APACHE_LIBS = apr.lib xml.lib libhttpd.lib aprutil.lib libapr.lib
 APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib aprutil-1.lib libapr-1.lib
 !endif
 
-	
 
 #debug symbols
 !if "$(DEBUG)" == "1"
@@ -204,7 +205,7 @@ copy_include: deploy
 
 axis2_util: 
 	$(CC) $(CFLAGS) $(AXIS2_UTIL_SRC)  /c
-	$(LD) $(LDFLAGS) *.obj $(LIBS) $(ZLIB_INSTALL_DIR)\lib\zdll.lib \
+	$(LD) $(LDFLAGS) *.obj $(LIBS) $(ZLIB_BIN_DIR)\lib\zdll.lib \
 		/DLL  /OUT:$(AXIS2_UTIL).dll /IMPLIB:$(AXIS2_UTIL).lib
 	del *.obj
 	del *.exp
@@ -215,7 +216,7 @@ axis2_util:
 axis2_parser: 
 	$(CC) $(CFLAGS) $(AXIS2_PARSER_SRC) /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(LIBS) \
-	$(LIBXML2_INSTALL_DIR)\lib\libxml2.lib  /DLL \
+	$(LIBXML2_BIN_DIR)\lib\libxml2.lib  /DLL \
 	/OUT:$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_PARSER).lib
 	del *.obj
 	del *.exp
@@ -700,18 +701,263 @@ basic_modules: axis2_util axis2_parser axiom
 
 ################################# tools ##################################################
 
+# tcpmon
 
 tcpmon: 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" $(AXIS2_INCLUDE_PATH) \
 	/I $(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
 	$(AXIS2_SOURCE_DIR)\tools\tcpmon\src\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib \
-	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
-	$(AXIS2_TRANSPORT_RECEIVER).lib  /OUT:tcpmon.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /OUT:tcpmon.exe 
 	del *.obj
-	copy tcpmon.exe $(AXIS2_BINS)\
+	copy tcpmon.* $(AXIS2_BINS)\
 
 	del *.exe
+
+# codegen tool
+
+W2C_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\tools\codegen\include \
+		   /I$(LIBXSLT_BIN_DIR)\include
+
+
+W2C_CODEGEN_SOURCE_PATH  = $(AXIS2_SOURCE_DIR)\tools\codegen\src\util\*.c \
+		   $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\*.c \
+		   $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\compiler\*.c \
+
+W2C_WRITER_PATH = $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\writer
+
+		   
+w2c_codegen:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(W2C_CODEGEN_SOURCE_PATH) /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	xml_schema.lib woden.lib libxslt.lib libxml2.lib /DLL /OUT:w2c_codegen.dll /IMPLIB:w2c_codegen.lib
+ 
+	del *.obj
+	
+	if not exist $(AXIS2_INSTALL_DIR)\lib\codegen mkdir $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	copy w2c_codegen.* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_codegen*
+
+
+
+w2c_databinding_adb_ext:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\databinding_adb_ext.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_databinding_adb_ext.dll /IMPLIB:w2c_databinding_adb_ext.lib
+ 
+	del *.obj
+	
+	if not exist $(AXIS2_INSTALL_DIR)\lib\codegen mkdir $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	copy w2c_databinding_adb_ext* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_databinding_adb_ext*
+
+w2c_c_emitter:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\emitter\*.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_c_emitter.dll /IMPLIB:w2c_c_emitter.lib
+ 
+	del *.obj
+	
+	if not exist $(AXIS2_INSTALL_DIR)\lib\codegen mkdir $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	copy w2c_c_emitter* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_c_emitter*
+	
+w2c_schema_writer:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\writer\*.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_schema_writer.dll /IMPLIB:w2c_schema_writer.lib
+ 
+	del *.obj
+	
+	copy w2c_schema_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_schema_writer*
+	
+
+w2c_cservice_xml_writer:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(W2C_WRITER_PATH)\cservice_xml_writer.c $(W2C_WRITER_PATH)\writer.c  /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_cservice_xml_writer.dll /IMPLIB:w2c_cservice_xml_writer.lib
+ 
+	del *.obj
+	
+	copy w2c_cservice_xml_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_cservice_xml_writer*
+
+w2c_cskel_header_writer:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\cskel_header_writer.c  $(W2C_WRITER_PATH)\writer.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_cskel_header_writer.dll /IMPLIB:w2c_cskel_header_writer.lib
+ 
+	del *.obj
+	
+	copy w2c_cskel_header_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_cskel_header_writer*
+
+w2c_cskel_source_writer:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\cskel_source_writer.c  $(W2C_WRITER_PATH)\writer.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_cskel_source_writer.dll /IMPLIB:w2c_cskel_source_writer.lib
+ 
+	del *.obj
+	
+	copy w2c_cskel_source_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_cskel_source_writer*
+
+w2c_cstub_source_writer:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\cstub_source_writer.c  $(W2C_WRITER_PATH)\writer.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_cstub_source_writer.dll /IMPLIB:w2c_cstub_source_writer.lib
+ 
+	del *.obj
+	
+	copy w2c_cstub_source_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_cstub_source_writer*
+
+w2c_cstub_header_writer:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\cstub_header_writer.c  $(W2C_WRITER_PATH)\writer.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_cstub_header_writer.dll /IMPLIB:w2c_cstub_header_writer.lib
+ 
+	del *.obj
+	
+	copy w2c_cstub_header_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_cstub_header_writer*
+
+w2c_csvc_skeleton_writer:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\csvc_skeleton_writer.c  $(W2C_WRITER_PATH)\writer.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_csvc_skeleton_writer.dll /IMPLIB:w2c_csvc_skeleton_writer.lib
+ 
+	del *.obj
+	
+	copy w2c_csvc_skeleton_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_csvc_skeleton_writer*
+
+w2c_c_code_indenter_ext:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\c_code_indenter_ext.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_c_code_indenter_ext.dll /IMPLIB:w2c_c_code_indenter_ext.lib
+ 
+	del *.obj
+	
+	copy w2c_c_code_indenter_ext* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_c_code_indenter_ext*
+
+w2c_c_qname2name_ext:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\c_qname2name_ext.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_c_qname2name_ext.dll /IMPLIB:w2c_c_qname2name_ext.lib
+ 
+	del *.obj
+	
+	copy w2c_c_qname2name_ext* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_c_qname2name_ext*
+
+w2c_c_namemaker_ext:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\c_namemaker_ext.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_c_namemaker_ext.dll /IMPLIB:w2c_c_namemaker_ext.lib
+ 
+	del *.obj
+	
+	copy w2c_c_namemaker_ext* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_c_namemaker_ext*
+
+w2c_default_qname2name_ext:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\default_qname2name_ext.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_default_qname2name_ext.dll /IMPLIB:w2c_default_qname2name_ext.lib
+ 
+	del *.obj
+	
+	copy w2c_default_qname2name_ext* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_default_qname2name_ext*
+
+w2c_databinding_default_ext:
+	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\databinding_default_ext.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
+	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
+	/DLL /OUT:w2c_databinding_default_ext.dll /IMPLIB:w2c_databinding_default_ext.lib
+ 
+	del *.obj
+	
+	copy w2c_databinding_default_ext* $(AXIS2_INSTALL_DIR)\lib\codegen
+
+	del w2c_databinding_default_ext*
+	
+wsdl2code:
+	$(CC) /nologo $(CFLAGS) $(W2C_INCLUDE_PATH) \
+	$(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl2code.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib \
+	xml_schema.lib woden.lib w2c_codegen.lib $(LIBS) \
+	/LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen /OUT:wsdl2code.exe 
+
+	del *.obj
+	
+	copy wsdl2code* $(AXIS2_INSTALL_DIR)\bin
+
+	del wsdl2code*
+
+
+schema2code:
+	$(CC) /nologo $(CFLAGS) $(W2C_INCLUDE_PATH) \
+	$(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\xsd2code.c /c
+	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib \
+	xml_schema.lib woden.lib w2c_codegen.lib $(LIBS) \
+	/LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen /OUT:schema2code.exe 
+
+	del *.obj
+	
+	copy schema2code* $(AXIS2_INSTALL_DIR)\bin
+	
+	del schema2code*
+
+copy_config:
+	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\src\typemappers $(AXIS2_INSTALL_DIR)\conf\typemappers
+
+	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\src\templates $(AXIS2_INSTALL_DIR)\conf\templates
+
+	copy $(AXIS2_SOURCE_DIR)\tools\codegen\src\util\codegen-config.properties $(AXIS2_INSTALL_DIR)\conf
+
+	copy $(AXIS2_SOURCE_DIR)\tools\codegen\src\util\resource.properties $(AXIS2_INSTALL_DIR)\conf
+
+copy_resources:
+	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\test\resources\wsdl $(AXIS2_INSTALL_DIR)\bin\codegen_resources\wsdl
+
+	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\test\resources\xml $(AXIS2_INSTALL_DIR)\bin\codegen_resources\xml
+
+codegen_writers: w2c_c_emitter w2c_schema_writer w2c_cservice_xml_writer w2c_cskel_header_writer w2c_cskel_source_writer w2c_cstub_source_writer w2c_cstub_header_writer w2c_csvc_skeleton_writer
+codegen_ext: w2c_databinding_adb_ext w2c_c_code_indenter_ext w2c_c_namemaker_ext w2c_default_qname2name_ext w2c_c_qname2name_ext w2c_databinding_default_ext
+codegen_tool: w2c_codegen wsdl2code schema2code codegen_writers codegen_ext copy_config copy_resources
 
 ################################ other porjects #########################################
 
@@ -728,8 +974,8 @@ MOD_RAMPART_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\core\*.c \
 MOD_RAMPART_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\rampart\include
 
 !if "$(ENABLE_SSL)" == "0"
-MOD_RAMPART_INCLUDE_PATH = $(MOD_RAMPART_INCLUDE_PATH) /I$(OPENSSL_INSTALL_DIR)\include
-LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_INSTALL_DIR)\lib\vc
+MOD_RAMPART_INCLUDE_PATH = $(MOD_RAMPART_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_BIN_DIR)\lib\vc
 LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
 !endif
 
@@ -859,9 +1105,6 @@ WODEN_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\woden\include \
 		     /I$(AXIS2_SOURCE_DIR)\xml_schema\include \
 		     /I$(AXIS2_SOURCE_DIR)\woden\src\util 
 
-
-
-
 WODEN_SRC_DIR = $(AXIS2_SOURCE_DIR)\woden\src\builder\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\builder\wsdl10\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\schema\*.c \
@@ -910,6 +1153,6 @@ all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_ws
  
 install: all
 
-dist: all mod_rampart_all axis2_apache_module tcpmon copy_extra copy_samples mv_dist
+dist: all mod_rampart_all axis2_apache_module tcpmon codegen_tool copy_extra copy_samples mv_dist
 
 
