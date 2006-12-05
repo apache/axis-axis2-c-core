@@ -21,7 +21,7 @@
     <!--Rampart configurations START -->
     <parameter name="OutflowSecurity">
       <action>
-        <items>Timestamp</items>
+        <items>UsernameToken Timestamp Encrypt</items>
         <user>Gampola</user>
         <passwordType>passwordDigest</passwordType>
         <!--Following should change with your DLL or SO path-->
@@ -29,7 +29,7 @@
         <timeToLive>360</timeToLive>
         <encryptionKeyTransportAlgorithm>http://www.w3.org/2001/04/xmlenc#rsa-1_5</encryptionKeyTransportAlgorithm>
         <encryptionSymAlgorithm>http://www.w3.org/2001/04/xmlenc#aes256-cbc</encryptionSymAlgorithm>  
-        <encryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/yhome/x_cert.cert</encryptionPropFile>
+        <encryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/xhome/y_cert.cert</encryptionPropFile>
         <encryptionKeyIdentifier>IssuerSerial</encryptionKeyIdentifier>
       </action>
     </parameter>
@@ -37,10 +37,10 @@
 
     <parameter name="InflowSecurity">
       <action>
-        <items>UsernameToken Timestamp Encrypt</items>
+        <items>Encrypt</items>
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
-        <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/yhome/y_store.pfx</decryptionPropFile>
-        <encryptionUser>y12345</encryptionUser>
+        <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/xhome/x_store.pfx</decryptionPropFile>
+        <encryptionUser>x12345</encryptionUser>
       </action>
     </parameter>
     <!--Rampart configurations END -->
