@@ -47,47 +47,33 @@
 
 /*private functions*/
 
+/**
+*   <KeyInfo>
+*       <SecurityTokenReference>
+*           <KeyIdentifier>WEqswOIUsd</KeyIdentifier>
+*       </SecurityTokenReference>
+*   </KeyInfo>
+*   
+*/
 static axis2_status_t
-oxs_xml_enc_process_key_info(const axis2_env_t *env,
+oxs_xml_enc_populate_stref_with_key_identifier(const axis2_env_t *env,
     oxs_asym_ctx_t *asym_ctx,
-    axiom_node_t *key_info_node,
-    axiom_node_t *parent_node)
+    axiom_node_t *stref_node)
 {
-    axiom_node_t *st_ref_node = NULL;
-    axiom_node_t *cur_node = NULL;
-    axis2_char_t *node_name = NULL;
-
-    st_ref_node =  oxs_axiom_get_first_child_node_by_name(env, key_info_node, OXS_NODE_SECURITY_TOKEN_REFRENCE, NULL, NULL); 
-    if(!st_ref_node){
+    axiom_node_t *key_identifier_node = NULL;
+    axis2_char_t *key_identifier = NULL;
+    oxs_x509_cert_t *cert = NULL;
+    
+    cert = oxs_asym_ctx_get_certificate(asym_ctx, env);
+    key_identifier = oxs_x509_cert_get_key_identifier(cert, env);
+    if(!key_identifier){
         return AXIS2_FAILURE;
     }
-/*
-    WSS-Core specification suggests
-    1. Resolve any <wsse:Reference> elements (specified within
-       <wsse:SecurityTokenReference>).
-    2. Resolve any <wsse:KeyIdentifier> elements (specified within
-       <wsse:SecurityTokenReference>).
-    3. Resolve any <ds:KeyName> elements. NOT PERMITTED by WS-i
-    4. Resolve any other <ds:KeyInfo> elements. NOT PERMITTED by WS-i
-*/
-
-    /*
-     * Implementation of these are not important for Encryption.
-     * Might've to relocate to another file as this processing is essential in Signature
-     */
-    cur_node = AXIOM_NODE_GET_FIRST_CHILD(st_ref_node, env);
-    node_name = axiom_util_get_localname(cur_node, env);
-    if(0 == AXIS2_STRCMP(OXS_NODE_REFERENCE, node_name)){
-
-    }else if(0 == AXIS2_STRCMP(OXS_NODE_KEY_IDENTIFIER, node_name)){
     
-    }else if(0 == AXIS2_STRCMP(OXS_NODE_X509_DATA, node_name)){
-    
-    }else if(0 == AXIS2_STRCMP(OXS_NODE_EMBEDDED, node_name)){
-        
-    }else{
-        /*Unsupported*/
-    }
+    /*Build KeyIdentifier node*/
+    key_identifier_node = oxs_token_build_key_identifier_element(
+                                env, stref_node, OXS_ENCODING_BASE64BINARY, 
+                                OXS_X509_SUBJ_KI, key_identifier);
 
     return AXIS2_SUCCESS;
 }
@@ -129,36 +115,6 @@ oxs_xml_enc_populate_stref_with_bst(const axis2_env_t *env,
     ref_node = oxs_token_build_reference_element(env, stref_node, id, OXS_VALUE_X509V3); 
 
     return AXIS2_SUCCESS;    
-}
-/**
-*   <KeyInfo>
-*       <SecurityTokenReference>
-*           <KeyIdentifier>WEqswOIUsd</KeyIdentifier>
-*       </SecurityTokenReference>
-*   </KeyInfo>
-*   
-*/
-static axis2_status_t
-oxs_xml_enc_populate_stref_with_key_identifier(const axis2_env_t *env,
-    oxs_asym_ctx_t *asym_ctx,
-    axiom_node_t *stref_node)
-{
-    axiom_node_t *key_identifier_node = NULL;
-    axis2_char_t *key_identifier = NULL;
-    oxs_x509_cert_t *cert = NULL;
-    
-    cert = oxs_asym_ctx_get_certificate(asym_ctx, env);
-    key_identifier = oxs_x509_cert_get_key_identifier(cert, env);
-    if(!key_identifier){
-        return AXIS2_FAILURE;
-    }
-    
-    /*Build KeyIdentifier node*/
-    key_identifier_node = oxs_token_build_key_identifier_element(
-                                env, stref_node, OXS_ENCODING_BASE64BINARY, 
-                                OXS_X509_SUBJ_KI, key_identifier);
-
-    return AXIS2_SUCCESS;
 }
 /**
 *   <KeyInfo>
@@ -229,6 +185,51 @@ oxs_xml_enc_populate_stref_with_issuer_serial(const axis2_env_t *env,
     /*Build x509Data*/
     x509_data_node = oxs_token_build_x509_data_element(env, stref_node); 
     issuer_serial_node = oxs_token_build_x509_issuer_serial_with_data(env, x509_data_node, issuer_name, serial_number);
+    return AXIS2_SUCCESS;
+}
+
+static axis2_status_t
+oxs_xml_enc_process_key_info(const axis2_env_t *env,
+    oxs_asym_ctx_t *asym_ctx,
+    axiom_node_t *key_info_node,
+    axiom_node_t *parent_node)
+{
+    axiom_node_t *st_ref_node = NULL;
+    axiom_node_t *cur_node = NULL;
+    axis2_char_t *node_name = NULL;
+
+    st_ref_node =  oxs_axiom_get_first_child_node_by_name(env, key_info_node, OXS_NODE_SECURITY_TOKEN_REFRENCE, NULL, NULL); 
+    if(!st_ref_node){
+        return AXIS2_FAILURE;
+    }
+/*
+    WSS-Core specification suggests
+    1. Resolve any <wsse:Reference> elements (specified within
+       <wsse:SecurityTokenReference>).
+    2. Resolve any <wsse:KeyIdentifier> elements (specified within
+       <wsse:SecurityTokenReference>).
+    3. Resolve any <ds:KeyName> elements. NOT PERMITTED by WS-i
+    4. Resolve any other <ds:KeyInfo> elements. NOT PERMITTED by WS-i
+*/
+
+    /*
+     * Implementation of these are not important for Encryption.
+     * Might've to relocate to another file as this processing is essential in Signature
+     */
+    cur_node = AXIOM_NODE_GET_FIRST_CHILD(st_ref_node, env);
+    node_name = axiom_util_get_localname(cur_node, env);
+    if(0 == AXIS2_STRCMP(OXS_NODE_REFERENCE, node_name)){
+
+    }else if(0 == AXIS2_STRCMP(OXS_NODE_KEY_IDENTIFIER, node_name)){
+    
+    }else if(0 == AXIS2_STRCMP(OXS_NODE_X509_DATA, node_name)){
+    
+    }else if(0 == AXIS2_STRCMP(OXS_NODE_EMBEDDED, node_name)){
+        
+    }else{
+        /*Unsupported*/
+    }
+
     return AXIS2_SUCCESS;
 }
 

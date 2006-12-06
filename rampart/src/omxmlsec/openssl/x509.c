@@ -93,7 +93,7 @@ openssl_x509_load_from_pem(const axis2_env_t *env,
     if ((in=BIO_new_file(filename,"r")) == NULL)
     {
         oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
-                "Error reading the file");
+                "Error reading the file %s", filename);
         return AXIS2_FAILURE;
     }
     /*Read certificate*/
@@ -200,7 +200,7 @@ openssl_x509_get_cert_data(const axis2_env_t *env,
     core_tail = axis2_strstr(unformatted, "\n");
     res = axis2_strstr(core_tail,"-----END");
     res[0] = '\0';
-    core = (axis2_char_t*)axis2_strdup(core_tail,env); 
+    core = (axis2_char_t*)AXIS2_STRDUP(core_tail,env); 
     return core;
 }
 

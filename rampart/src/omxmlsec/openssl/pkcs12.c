@@ -43,7 +43,7 @@ openssl_pkcs12_load(const axis2_env_t *env,
     fclose (fp);
 
     if (!p12) {
-        fprintf(stderr, "Error reading PKCS#12 file\n");
+        fprintf(stderr, "Error reading PKCS#12 file %s\n", filename);
         ERR_print_errors_fp(stderr);
         return AXIS2_FAILURE;
     }

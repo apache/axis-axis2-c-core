@@ -21,6 +21,7 @@
 #include <rampart_sec_header_processor.h>
 #include <rampart_username_token.h>
 #include <rampart_timestamp_token.h>
+#include <rampart_handler_util.h>
 #include <oxs_ctx.h>
 #include <oxs_error.h>
 #include <oxs_utility.h>
@@ -40,7 +41,7 @@
 #include <oxs_asym_ctx.h>
 
 /*Private functions*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t 
 rampart_shp_process_timestamptoken(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
@@ -66,7 +67,7 @@ rampart_shp_process_timestamptoken(const axis2_env_t *env,
     }
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t 
 rampart_shp_process_usernametoken(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
@@ -95,7 +96,7 @@ rampart_shp_process_usernametoken(const axis2_env_t *env,
     }
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t 
 rampart_shp_process_encrypted_key(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
@@ -185,7 +186,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     return AXIS2_SUCCESS;    
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t 
 rampart_shp_enforce_security(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,

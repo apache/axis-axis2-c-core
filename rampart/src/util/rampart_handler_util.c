@@ -195,7 +195,7 @@ rampart_get_security_token(const axis2_env_t *env,
         if (!header_block_ht)
             return AXIS2_FAILURE;
 
-        /*TODO If there are multiple security header elements, get the one with @role=rampart*/
+        /*BETTER IF : If there are multiple security header elements, get the one with @role=rampart*/
         for (hash_index = axis2_hash_first(header_block_ht, env); hash_index;
                 hash_index = axis2_hash_next(env, hash_index))
         {

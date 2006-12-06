@@ -78,7 +78,7 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
         oxs_x509_cert_set_subject(oxs_cert, env, openssl_x509_get_info(env, OPENSSL_X509_INFO_SUBJECT ,cert));
         oxs_x509_cert_set_fingerprint(oxs_cert, env, openssl_x509_get_info(env, OPENSSL_X509_INFO_FINGER,cert));
         oxs_x509_cert_set_serial_number(oxs_cert, env, openssl_x509_get_serial(env, cert));
-        /*oxs_x509_cert_set_key_identifier(oxs_cert, env, openssl_x509_get_subject_key_identifier(env, cert));*/
+        oxs_x509_cert_set_key_identifier(oxs_cert, env, openssl_x509_get_subject_key_identifier(env, cert));
 
         /*Additionally we need to set the public key*/
         openssl_x509_get_pubkey(env, cert, &pubkey);
