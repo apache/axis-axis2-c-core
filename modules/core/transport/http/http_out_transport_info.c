@@ -146,14 +146,23 @@ axis2_http_out_transport_info_set_content_type(
 
     if (info_impl->encoding)
     {
-
-        tmp1 = AXIS2_STRACAT(content_type, ";charset=", env);
-        tmp2 = AXIS2_STRACAT(tmp1, info_impl->encoding, env);
-        AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(info_impl->response, env,
+        axis2_char_t *charset_pos = axis2_strcasestr(content_type, "charset");
+        if (!charset_pos)
+        {
+            tmp1 = AXIS2_STRACAT(content_type, ";charset=", env);
+            tmp2 = AXIS2_STRACAT(tmp1, info_impl->encoding, env);
+            AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(info_impl->response, env,
+                    axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
+                            tmp2));
+            AXIS2_FREE(env->allocator, tmp1);
+            AXIS2_FREE(env->allocator, tmp2);
+        }
+        else
+        {
+            AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(info_impl->response, env,
                 axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
-                        tmp2));
-        AXIS2_FREE(env->allocator, tmp1);
-        AXIS2_FREE(env->allocator, tmp2);
+                        content_type));
+        }
     }
     else
     {
