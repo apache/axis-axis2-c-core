@@ -42,7 +42,7 @@ extern "C"
  * @param data to be formatted
  */
 axis2_char_t* AXIS2_CALL
-tcpmon_util_format_as_xml (const axis2_env_t *env, axis2_char_t *data);
+tcpmon_util_format_as_xml (const axis2_env_t *env, axis2_char_t *data, int format);
 
 /** @} */
 

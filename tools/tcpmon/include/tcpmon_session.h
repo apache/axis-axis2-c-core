@@ -74,7 +74,14 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
 	 axis2_status_t (AXIS2_CALL *
 						  get_test_bit) (tcpmon_session_t *session,
 											  axis2_env_t *env);
-    
+    axis2_status_t (AXIS2_CALL *
+                          set_format_bit) (tcpmon_session_t *session,
+                                              const axis2_env_t *env,
+                                              int format_bit);
+
+    int (AXIS2_CALL *
+                    get_format_bit) (tcpmon_session_t *session,
+                                              const axis2_env_t *env);
    /**
     * configure the listening port.
     * @param session represet the type object.
@@ -204,6 +211,12 @@ tcpmon_session_create(const axis2_env_t *env );
 
 #define TCPMON_SESSION_GET_TEST_BIT(session, env) \
         ((session)->ops->get_test_bit(session, env))
+
+#define TCPMON_SESSION_SET_FORMAT_BIT(session, env, format_bit) \
+        ((session)->ops->set_format_bit(session, env, format_bit))
+
+#define TCPMON_SESSION_GET_FORMAT_BIT(session, env) \
+        ((session)->ops->get_format_bit(session, env))
 
 #define TCPMON_SESSION_SET_LISTEN_PORT(session, env, listen_port) \
         ((session)->ops->set_listen_port(session, env, listen_port))

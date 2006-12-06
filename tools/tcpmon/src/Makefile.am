@@ -33,5 +33,7 @@ tcpmon_LDADD =  \
 
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../../util/include \
+			-I ../../../axiom/include \
+		-I ../../../include \
                         $(NULL)
 

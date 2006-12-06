@@ -34,7 +34,8 @@ typedef struct tcpmon_session_impl
     tcpmon_session_t session;
     int listen_port;
     int target_port;
-	 int test_bit;
+	int test_bit;
+    int format_bit;
     axis2_char_t *target_host;
     TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry_funct;
     TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct;
@@ -114,6 +115,15 @@ tcpmon_session_set_test_bit (tcpmon_session_t *session,
 									  const axis2_env_t *env,
 									  int test_bit);
 
+int AXIS2_CALL
+tcpmon_session_get_format_bit (tcpmon_session_t *session,
+                                      const axis2_env_t *env);
+                                      
+int AXIS2_CALL 
+tcpmon_session_set_format_bit(tcpmon_session_t *session,
+                                      const axis2_env_t *env,
+                                      int format_bit);
+
 /** internal implementations */
 
 void * AXIS2_THREAD_FUNC
@@ -140,6 +150,7 @@ tcpmon_session_create(const axis2_env_t *env)
     session_impl -> listen_port = -1;
     session_impl -> target_port = -1;
 	 session_impl->test_bit = -1;
+     session_impl->format_bit = 0;
     session_impl -> target_host = NULL;
 
     session_impl -> on_new_entry_funct = NULL;
@@ -154,11 +165,13 @@ tcpmon_session_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
+    
     session_impl-> is_running = AXIS2_FALSE;
     session_impl->session.ops->free = tcpmon_session_free;
-	 session_impl->session.ops->set_test_bit = tcpmon_session_set_test_bit;
-	 session_impl->session.ops->get_test_bit = tcpmon_session_get_test_bit;
+    session_impl->session.ops->set_test_bit = tcpmon_session_set_test_bit;
+    session_impl->session.ops->get_test_bit = tcpmon_session_get_test_bit;
+    session_impl->session.ops->get_format_bit = tcpmon_session_get_format_bit;
+    session_impl->session.ops->set_format_bit = tcpmon_session_get_format_bit;
     session_impl->session.ops->set_listen_port = tcpmon_session_set_listen_port;
     session_impl->session.ops->get_listen_port = tcpmon_session_get_listen_port;
     session_impl->session.ops->set_target_port = tcpmon_session_set_target_port;
@@ -232,7 +245,7 @@ tcpmon_session_set_test_bit (tcpmon_session_t *session,
 }
 
 
-axis2_status_t AXIS2_CALL
+int AXIS2_CALL
 tcpmon_session_get_test_bit (tcpmon_session_t *session,
 									  const axis2_env_t *env)
 {
@@ -245,6 +258,34 @@ tcpmon_session_get_test_bit (tcpmon_session_t *session,
 	 return session_impl->test_bit;
 }
 
+axis2_status_t AXIS2_CALL
+tcpmon_session_set_format_bit (tcpmon_session_t *session,
+                                     const axis2_env_t *env,
+                                     int format_bit)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+
+    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
+
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    session_impl->format_bit = format_bit;
+
+    return AXIS2_SUCCESS;
+}
+
+int AXIS2_CALL
+tcpmon_session_get_format_bit (tcpmon_session_t *session,
+                                     const axis2_env_t *env)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+
+    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
+
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    return session_impl->format_bit;
+}
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_listen_port(tcpmon_session_t *session,

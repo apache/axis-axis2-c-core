@@ -28,6 +28,7 @@ int main(int argc, char** argv)
 		int listen_port = 0, target_port = 0;
 		char *target_host = NULL;
 		int test_bit = 0;
+        int format_bit = 0;
 		int ii = 1;
 
 		allocator = axis2_allocator_init(NULL);
@@ -81,6 +82,11 @@ int main(int argc, char** argv)
 						ii++;
 						test_bit = 1;
 				}
+                else if (!strcmp ("--format",argv [ii]))
+                {
+                    ii++;
+                    format_bit = 1;
+                }
 				else
 				  {
 						printf("INVALID value for tcpmon \n");
@@ -104,6 +110,7 @@ int main(int argc, char** argv)
 		TCPMON_SESSION_ON_TRANS_FAULT(session, env, on_error_func);
 		TCPMON_SESSION_ON_NEW_ENTRY(session, env, on_new_entry);
 		TCPMON_SESSION_SET_TEST_BIT (session, env, test_bit);
+        TCPMON_SESSION_SET_FORMAT_BIT(session, env, format_bit);
 		TCPMON_SESSION_START(session, env);
 
 		do
@@ -126,13 +133,14 @@ int on_new_entry(const axis2_env_t *env,
 {
 		char* plain_buffer = NULL;
 		char* formated_buffer = NULL;
+        int format = 1;
 		if (status == 0)
 		{
 				plain_buffer = TCPMON_ENTRY_SENT_DATA(entry, env);
 				if (plain_buffer) /* this can be possible as no xml present */
 				{
 						formated_buffer = tcpmon_util_format_as_xml
-								(env, plain_buffer);
+								(env, plain_buffer, format);
 				}
 				else
 				{
@@ -151,7 +159,7 @@ int on_new_entry(const axis2_env_t *env,
 				if (plain_buffer) /* this can be possible as no xml present */
 				{
 						formated_buffer = tcpmon_util_format_as_xml
-								(env, plain_buffer);
+								(env, plain_buffer, format);
 				}
 				else
 				{
