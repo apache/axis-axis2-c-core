@@ -158,6 +158,7 @@ AC_CONFIG_FILES([Makefile \
     client/mtom/resources/Makefile \
     client/notify/Makefile \
     client/google/Makefile \
+    client/yahoo/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     ])
