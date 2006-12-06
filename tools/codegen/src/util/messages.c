@@ -32,8 +32,9 @@ w2c_messages_get_message_properties(
     axis2_char_t *filepath= NULL;
     axis2_char_t *inter_path= NULL;
     int path_len = 0;
+    /*
     FILE *f = NULL;
-   
+   */
     axis2c_home = getenv( "AXIS2C_HOME");
     if ( axis2c_home == NULL )
     {

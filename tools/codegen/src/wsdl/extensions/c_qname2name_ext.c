@@ -33,7 +33,7 @@ typedef struct w2c_c_qname2name_ext_impl
         ((w2c_c_qname2name_ext_impl_t*) extension)
 
 #define W2C_QNAME2NAME_MAKER_INTF_TO_IMPL(qname2name_maker) \
-        ((w2c_c_qname2name_ext_impl_t*) ((qname2name_maker) - sizeof(w2c_extension_t)))
+        ((w2c_c_qname2name_ext_impl_t*) ((void*)(qname2name_maker) - sizeof(w2c_extension_t)))
 
 /**
 Above macro was as 

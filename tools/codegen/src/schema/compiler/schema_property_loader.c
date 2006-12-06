@@ -123,8 +123,9 @@ w2c_schema_property_loader_create (const axis2_env_t *env,
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
     axis2_char_t* axis2c_home;
     int path_len;
+    /*
     FILE *f = NULL;
-   
+   */
     AXIS2_ENV_CHECK(env, NULL);
 
     
@@ -309,8 +310,9 @@ w2c_schema_property_loader_reload (
     const axis2_env_t *env)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
+    /*
     FILE *f = NULL;
-    
+    */
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     schema_property_loader_impl = W2C_INTF_TO_IMPL(schema_property_loader);
