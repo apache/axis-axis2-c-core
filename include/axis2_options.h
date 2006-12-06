@@ -638,6 +638,31 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets SOAP action.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return SOAP Action string if set, else NULL
+         */
+        const axis2_char_t* (AXIS2_CALL *
+                get_soap_action)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
+
+        /**
+         * Sets SOAP action
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param action pointer to SOAP action string
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_soap_action)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *soap_action);
+
+
+        /**
          * Frees options struct.
          * @param options pointer to options struct
          * @param env pointer to environment struct
@@ -907,6 +932,17 @@ extern "C"
     @sa axis2_options_ops#get_enable_mtom */
 #define AXIS2_OPTIONS_GET_ENABLE_MTOM(options, env) \
       ((options)->ops->get_enable_mtom(options, env))
+
+/** Gets SOAP action.
+    @sa axis2_options_ops#get_soap_action */
+#define AXIS2_OPTIONS_GET_SOAP_ACTION(options, env) \
+      ((options)->ops->get_soap_action(options, env))
+
+/** Sets the SOAP action.
+    @sa axis2_options_ops#set_soap_action */
+#define AXIS2_OPTIONS_SET_SOAP_ACTION(options, env, action) \
+      ((options)->ops->set_soap_action(options, env, action))
+
 
 /** Frees the options struct.
     @sa axis2_options_ops#free*/

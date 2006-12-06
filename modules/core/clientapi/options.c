@@ -55,6 +55,7 @@ typedef struct axis2_options_impl
 
     axis2_bool_t manage_session;
     axis2_bool_t enable_mtom;
+    axis2_char_t *soap_action;
 }
 axis2_options_impl_t;
 
@@ -331,6 +332,17 @@ axis2_options_set_enable_mtom(
 
 axis2_bool_t AXIS2_CALL
 axis2_options_get_enable_mtom(
+    const axis2_options_t *options,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_options_set_soap_action(
+    axis2_options_t *options,
+    const axis2_env_t *env,
+    const axis2_char_t *soap_action);
+
+const axis2_char_t* AXIS2_CALL
+axis2_options_get_soap_action(
     const axis2_options_t *options,
     const axis2_env_t *env);
 
@@ -1196,6 +1208,12 @@ axis2_options_free(
         options_impl->msg_info_headers = NULL;
     }
 
+    if (options_impl->soap_action)
+    {
+        AXIS2_FREE(env->allocator, options_impl->soap_action);
+        options_impl->soap_action = NULL;
+    }
+
     AXIS2_FREE(env->allocator, options_impl);
     options_impl = NULL;
 
@@ -1221,6 +1239,7 @@ axis2_options_init_data(
     options_impl->manage_session = -1;
     options_impl->soap_version = AXIOM_SOAP12;
     options_impl->enable_mtom = AXIS2_FALSE;
+    options_impl->soap_action = NULL;
 }
 
 static void
@@ -1273,6 +1292,8 @@ axis2_options_init_ops(
     options->ops->get_soap_version = axis2_options_get_soap_version;
     options->ops->set_enable_mtom = axis2_options_set_enable_mtom;
     options->ops->get_enable_mtom = axis2_options_get_enable_mtom;
+    options->ops->set_soap_action = axis2_options_set_soap_action;
+    options->ops->get_soap_action = axis2_options_get_soap_action;
     options->ops->free = axis2_options_free;
 }
 
@@ -1342,3 +1363,42 @@ axis2_options_get_enable_mtom(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(options)->enable_mtom;
 }
+
+const axis2_char_t* AXIS2_CALL
+axis2_options_get_soap_action(
+    const axis2_options_t *options,
+    const axis2_env_t *env)
+{
+    axis2_options_impl_t *options_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+
+    options_impl = AXIS2_INTF_TO_IMPL(options);
+
+    return options_impl->soap_action;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_options_set_soap_action(
+    axis2_options_t *options,
+    const axis2_env_t *env,
+    const axis2_char_t *soap_action)
+{
+    axis2_options_impl_t *options_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    options_impl = AXIS2_INTF_TO_IMPL(options);
+
+    if (options_impl->soap_action)
+    {
+        AXIS2_FREE(env->allocator, options_impl->soap_action);
+        options_impl->soap_action = NULL;
+    }
+
+    if (soap_action)
+    {
+        options_impl->soap_action = axis2_strdup(soap_action, env);
+    }
+    return AXIS2_SUCCESS;
+}
+
+

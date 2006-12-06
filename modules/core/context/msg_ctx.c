@@ -2175,6 +2175,7 @@ axis2_msg_ctx_get_soap_action(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
+
     return AXIS2_INTF_TO_IMPL(msg_ctx)->soap_action;
 }
 
@@ -2475,6 +2476,7 @@ axis2_msg_ctx_set_options(
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     axis2_property_t *rest_val = NULL;
 	axis2_char_t *value;
+	const axis2_char_t *soap_action = NULL;;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, options, AXIS2_FAILURE);
@@ -2503,6 +2505,18 @@ axis2_msg_ctx_set_options(
 			if (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0)
 				AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, AXIS2_TRUE);
 		}
+    }
+
+    if (msg_ctx_impl->soap_action)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx_impl->soap_action);
+        msg_ctx_impl->soap_action = NULL;
+    }
+    
+    soap_action = AXIS2_OPTIONS_GET_SOAP_ACTION(options, env);
+    if (AXIS2_OPTIONS_GET_SOAP_ACTION(options, env))
+    {
+        msg_ctx_impl->soap_action = AXIS2_STRDUP(soap_action, env);
     }
 
     return AXIS2_SUCCESS;
