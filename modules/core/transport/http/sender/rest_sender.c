@@ -380,11 +380,11 @@ axis2_rest_sender_send(
 	/**
 	 *If user need to add http headers to request, Need to create
 	 *array list with http headers and set it as a propety with name
-	 *AXIS2_HTTP_HEADER_PROPERTY
+	 *AXIS2_TRANSPORT_HEADER_PROPERTY
 	 */
 	http_header_property = (axis2_property_t *)AXIS2_MSG_CTX_GET_PROPERTY(
 		msg_ctx, env,
-		AXIS2_HTTP_HEADER_PROPERTY,
+		AXIS2_TRANSPORT_HEADER_PROPERTY,
 		AXIS2_FALSE);
 	if (http_header_property)
 	{
