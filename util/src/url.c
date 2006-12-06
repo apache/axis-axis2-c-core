@@ -262,11 +262,11 @@ axis2_url_parse_string(const axis2_env_t *env, const axis2_char_t *str_url)
         path = strchr(port_str, '/');
         if (NULL == path)
         {
-            params = strchr(port_str, '?');
+            /*params = strchr(port_str, '?');
             if (params)
             {
                 *params = '\0';
-            }
+            }*/
             port = AXIS2_ATOI(port_str);
             /* here we have protocol + server + port + def path */
             ret = axis2_url_create(env, protocol, server, port, "/");
@@ -277,11 +277,11 @@ axis2_url_parse_string(const axis2_env_t *env, const axis2_char_t *str_url)
         {
             *path++ = '\0';
             port = AXIS2_ATOI(port_str);
-            params = strchr(path, '?');
+            /*params = strchr(path, '?');
             if (params)
             {
                 *params = '\0';
-            }
+            }*/
             if (AXIS2_STRLEN(path) > 0)
             {
                 /* here we have protocol + server + port + path */
