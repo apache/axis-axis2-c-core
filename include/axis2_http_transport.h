@@ -277,6 +277,12 @@ extern "C"
 #define AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP "application/soap+xml"
 
 /**
+ * HEADER_ACCEPT_X_WWW_FROM_URLENCODED
+ */
+#define AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FROM_URLENCODED "application/x-www-form-urlencoded"
+
+
+/**
  * HEADER XOP XML
  */
 #define AXIS2_HTTP_HEADER_XOP_XML "application/xop+xml"

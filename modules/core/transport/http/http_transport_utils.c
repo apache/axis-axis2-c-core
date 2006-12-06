@@ -177,6 +177,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_hash_t *binary_data_map = NULL;
     axis2_char_t *soap_body_str = NULL;
     axis2_stream_t *stream = NULL;
+    axis2_bool_t do_rest = AXIS2_FALSE;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FAILURE);
@@ -394,26 +395,37 @@ axis2_http_transport_utils_process_http_post_request(
         else
         {
             /* REST support */
-            axis2_param_t *rest_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env
-                    , AXIS2_ENABLE_REST);
-            if (rest_param && 0 == AXIS2_STRCMP(AXIS2_VALUE_TRUE,
-                    AXIS2_PARAM_GET_VALUE(rest_param, env)))
-            {
-                /* TODO we have to check for NULLs */
-                axiom_soap_body_t *def_body = NULL;
-                axiom_document_t *om_doc = NULL;
-                axiom_node_t *root_node = NULL;
-                soap_envelope = axiom_soap_envelope_create_default_soap_envelope
-                        (env, AXIOM_SOAP11);
-                def_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-                om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
-                root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
-                AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
-                AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, AXIS2_TRUE);
-            }
+            do_rest = AXIS2_TRUE;
         }
-
     }
+    else if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_X_WWW_FROM_URLENCODED))
+    {
+        /* REST support */
+        do_rest = AXIS2_TRUE;
+    }
+
+    if (do_rest)
+    {
+        /* REST support */
+        axis2_param_t *rest_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env
+                , AXIS2_ENABLE_REST);
+        if (rest_param && 0 == AXIS2_STRCMP(AXIS2_VALUE_TRUE,
+                AXIS2_PARAM_GET_VALUE(rest_param, env)))
+        {
+            /* TODO we have to check for NULLs */
+            axiom_soap_body_t *def_body = NULL;
+            axiom_document_t *om_doc = NULL;
+            axiom_node_t *root_node = NULL;
+            soap_envelope = axiom_soap_envelope_create_default_soap_envelope
+                    (env, AXIOM_SOAP11);
+            def_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+            om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+            root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+            AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
+            AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, AXIS2_TRUE);
+        }
+    }
+
 
     if (binary_data_map)
     {
