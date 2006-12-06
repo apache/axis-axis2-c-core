@@ -558,6 +558,8 @@ axiom_stax_builder_create_om_comment(axiom_stax_builder_t *builder,
 
         axiom_node_set_next_sibling(builder_impl->lastnode, env, comment_node);
         axiom_node_set_previous_sibling(comment_node , env, builder_impl->lastnode);
+		axiom_node_set_builder(comment_node, env, builder);
+		axiom_node_set_document(comment_node, env, builder_impl->document);
     }
     else
     {
@@ -566,6 +568,8 @@ axiom_stax_builder_create_om_comment(axiom_stax_builder_t *builder,
 
         axiom_node_set_first_child(builder_impl->lastnode , env, comment_node);
         axiom_node_set_parent(comment_node , env, builder_impl->lastnode);
+		axiom_node_set_builder(comment_node, env, builder);
+		axiom_node_set_document(comment_node, env, builder_impl->document);
     }
 
     builder_impl->element_level++;
