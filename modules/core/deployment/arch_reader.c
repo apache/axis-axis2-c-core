@@ -371,10 +371,19 @@ axis2_arch_reader_build_svc_grp(
     {
         return AXIS2_FAILURE;
     }
+    
     svcs = AXIS2_DESC_BUILDER_BUILD_OM(arch_reader_impl->desc_builder, env);
-    svcs_element = AXIOM_NODE_GET_DATA_ELEMENT(svcs, env);
-    root_element_name = AXIOM_ELEMENT_GET_LOCALNAME(svcs_element, env);
-    if (0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
+    
+    if (svcs)
+    {
+        svcs_element = AXIOM_NODE_GET_DATA_ELEMENT(svcs, env);
+        if (svcs_element)
+        {
+            root_element_name = AXIOM_ELEMENT_GET_LOCALNAME(svcs_element, env);
+        }
+    }
+    
+    if (root_element_name && 0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
     {
         axis2_svc_t *svc = NULL;
         axis2_svc_builder_t *svc_builder = NULL;
@@ -424,7 +433,7 @@ axis2_arch_reader_build_svc_grp(
         }
 
     }
-    else if (0 == AXIS2_STRCMP(AXIS2_SVC_GRP_ELEMENT, root_element_name))
+    else if (root_element_name && 0 == AXIS2_STRCMP(AXIS2_SVC_GRP_ELEMENT, root_element_name))
     {
         axis2_svc_grp_builder_t *grp_builder = NULL;
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env,
