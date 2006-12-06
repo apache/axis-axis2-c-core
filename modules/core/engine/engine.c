@@ -286,7 +286,10 @@ axis2_engine_send(
             if (conf)
             {
                 axis2_array_list_t *global_out_phase = AXIS2_CONF_GET_OUT_PHASES(conf, env);
-                axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);
+                if (global_out_phase)
+                {
+                    axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);
+                }
             }
         }
     }
@@ -306,7 +309,10 @@ axis2_engine_send(
             if (conf)
             {
                 axis2_array_list_t *global_out_phase = AXIS2_CONF_GET_OUT_PHASES(conf, env);
-                axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);
+                if (global_out_phase)
+                {
+                    axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);
+                }
             }
         }
     }
