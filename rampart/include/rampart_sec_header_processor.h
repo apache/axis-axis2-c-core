@@ -46,8 +46,7 @@ rampart_shp_process_message(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
     axiom_soap_envelope_t *soap_envelope,
-    axiom_node_t *sec_node,
-    axis2_array_list_t *sub_codes);
+    axiom_node_t *sec_node);
 
 
 /* @} */

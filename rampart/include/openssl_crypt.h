@@ -35,8 +35,6 @@ extern "C" {
  * @{
  */
 
-
-
 /**
 *   
 *@param bc_ctx block cipher context

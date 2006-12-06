@@ -25,8 +25,8 @@
 #include <oxs_buffer.h>
 
 /**
-  * @file 
-  * @brief 
+  * @file openssl_rsa.h 
+  * @brief For RSA encryption. 
   */
 #ifndef OPENSSL_RSA_H
 #define OPENSSL_RSA_H

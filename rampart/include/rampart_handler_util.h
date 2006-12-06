@@ -111,9 +111,9 @@ rampart_get_security_token(const axis2_env_t *env,
  
 AXIS2_EXTERN void AXIS2_CALL
 rampart_create_fault_envelope(const axis2_env_t *env,
-        const axis2_char_t *header_name,
-        const axis2_char_t *description,
-        axis2_array_list_t *sub_codes,
+        const axis2_char_t *sub_code,
+        const axis2_char_t *reason_text,
+        const axis2_char_t *detail_node_text,
         axis2_msg_ctx_t *msg_ctx);
  
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

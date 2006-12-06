@@ -84,8 +84,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axiom_soap_header_t *soap_header,
-        rampart_actions_t *actions,
-        axis2_array_list_t *sub_codes);
+        rampart_actions_t *actions);
 
 /************************* End of function headers ****************************/
 static void
@@ -399,8 +398,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axiom_soap_header_t *soap_header,
-        rampart_actions_t *actions,
-        axis2_array_list_t *sub_codes)
+        rampart_actions_t *actions)
 {
     axiom_element_t *sec_ele = NULL;
     axiom_element_t *ut_ele = NULL;
@@ -446,7 +444,6 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         if (!ut_ele)
         {
             AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Cannot find UsernameToken in Security header element...");
-            AXIS2_ARRAY_LIST_ADD(sub_codes, env, "No username token in the security header");
             return AXIS2_FAILURE;
         }
     }
@@ -454,21 +451,21 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one PASSWORD*/
     if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, NULL, NULL))
     {
-        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Username token must not have more than one password");
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Username token must not have more than one password");
         return AXIS2_FAILURE;
     }
 
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one CREATED*/
     if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, NULL, NULL))
     {
-        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Username token must not have more than one creted element");
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Username token must not have more than one creted element");
         return AXIS2_FAILURE;
     }
 
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one NONCE*/
     if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, NULL, NULL))
     {
-        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Username token must not have more than one nonce element");
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Username token must not have more than one nonce element");
         return AXIS2_FAILURE;
     }
 
@@ -502,7 +499,6 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
                 {
                     /*R4201 Any PASSWORD MUST specify a Type attribute */
                     AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password Type is not specified in the password element");
-                    AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Password Type is not specified in the password element");
                     return AXIS2_FAILURE;
                 }
 
@@ -549,7 +545,6 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
     if(!pw_callback_module){
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_usernametoken] Password callback module is not specified");
-        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Server configuration error. Callback module not specified");
         return AXIS2_FAILURE;
     }
     
@@ -583,7 +578,6 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     else
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password is not valid for user %s", username);
-        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Password is not valid");
         return AXIS2_FAILURE;
     }
 }

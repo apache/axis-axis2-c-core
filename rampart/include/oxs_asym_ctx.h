@@ -20,7 +20,7 @@
 
 /**
   * @file oxs_asym_ctx.h
-  * @brief 
+  * @brief Keeps information relavent for asymmetric encryption. 
   */
 
 #include <axis2_defines.h>

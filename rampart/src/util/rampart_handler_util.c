@@ -54,12 +54,11 @@ rampart_get_security_token(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axiom_soap_header_t *soap_header);
 
-
 AXIS2_EXTERN void AXIS2_CALL
 rampart_create_fault_envelope(const axis2_env_t *env,
-        const axis2_char_t *header_name,
-        const axis2_char_t *description,
-        axis2_array_list_t *sub_codes,
+        const axis2_char_t *sub_code,
+        const axis2_char_t *reason_text,
+        const axis2_char_t *detail_node_text,
         axis2_msg_ctx_t *msg_ctx);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -195,6 +194,7 @@ rampart_get_security_token(const axis2_env_t *env,
         if (!header_block_ht)
             return AXIS2_FAILURE;
 
+        /*TODO If there are multiple security header elements, get the one with @role=rampart*/
         for (hash_index = axis2_hash_first(header_block_ht, env); hash_index;
                 hash_index = axis2_hash_next(env, hash_index))
         {
@@ -224,9 +224,9 @@ rampart_get_security_token(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 rampart_create_fault_envelope(const axis2_env_t *env,
-        const axis2_char_t *header_name,
-        const axis2_char_t *description,
-        axis2_array_list_t *sub_codes,
+        const axis2_char_t *sub_code,
+        const axis2_char_t *reason_text,
+        const axis2_char_t *detail_node_text,
         axis2_msg_ctx_t *msg_ctx)
 {
     axiom_soap_envelope_t *envelope = NULL;
@@ -234,14 +234,18 @@ rampart_create_fault_envelope(const axis2_env_t *env,
     axiom_node_t* text_om_node = NULL;
     axiom_element_t * text_om_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
+    axis2_array_list_t *sub_codes = NULL;
+
+    sub_codes = axis2_array_list_create(env, 1);
+    AXIS2_ARRAY_LIST_ADD(sub_codes, env, sub_code);
 
     ns1 = axiom_namespace_create(env, RAMPART_WSSE_XMLNS, RAMPART_WSSE);
     text_om_ele = axiom_element_create(env, NULL, "ProblemSecurityHeader", ns1, &text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, header_name, text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, detail_node_text, text_om_node);
 
     envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env,
             "soapenv:Sender",
-            description,
+            reason_text,
             soap_version, sub_codes, text_om_node);
 
     AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);

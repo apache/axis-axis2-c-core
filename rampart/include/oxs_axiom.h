@@ -20,7 +20,7 @@
 
 /**
   * @file oxs_axiom.h
-  * @brief 
+  * @brief Utility functions related to AXIOM. A place for common code.
   */
 
 #include <axis2_defines.h>

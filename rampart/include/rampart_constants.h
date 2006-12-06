@@ -119,7 +119,9 @@ extern "C"
 #define RAMPART_FAULT_FAILED_CHECK                  "wsse:FailedCheck"
 #define RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE    "wsse:SecurityTokenUnavailable"
 
-
+/***********fault related strings*********/
+#define RAMPART_FAULT_IN_TIMESTAMP             "wsse:Timestamp"
+#define RAMPART_FAULT_IN_USERNAMETOKEN         "wsse:UsernameToken"
 
 /*Dynamically set values*/
 #define RAMPART_ACTION_PASSWORD "password"

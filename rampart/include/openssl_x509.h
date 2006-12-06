@@ -25,8 +25,8 @@
 #include <openssl/pkcs12.h>
 #include <oxs_error.h>
 /**
-  * @file 
-  * @brief 
+  * @file openssl_x509.h 
+  * @brief Extracts information from a X509 certificate.
   */
 #ifndef OPENSSL_X509_H
 #define OPENSSL_X509_H

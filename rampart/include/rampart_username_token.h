@@ -73,8 +73,8 @@ extern "C"
             const axis2_env_t *env,
             axis2_msg_ctx_t *msg_ctx,
             axiom_soap_header_t *soap_header,
-            rampart_actions_t *actions,
-            axis2_array_list_t *sub_codes);
+            rampart_actions_t *actions
+            );
     };
     
     /**
@@ -102,8 +102,8 @@ extern "C"
 #define RAMPART_USERNAME_TOKEN_BUILD(username_token, env, ctx, actions, sec_node, sec_ns_obj) \
         ((username_token)->ops->build(username_token, env, ctx, actions, sec_node, sec_ns_obj))    
 
-#define RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env, msg_ctx, soap_header, actions, sub_codes) \
-        ((username_token)->ops->validate(username_token, env, msg_ctx, soap_header, actions, sub_codes))    
+#define RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env, msg_ctx, soap_header, actions) \
+        ((username_token)->ops->validate(username_token, env, msg_ctx, soap_header, actions))    
 
 /** @} */
 #ifdef __cplusplus

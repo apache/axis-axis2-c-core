@@ -127,9 +127,6 @@ extern "C" {
 #define OPENSSL_CIPHER_CTX_SET_PAD(ctx, env, pad)\
         ((ctx)->ops->set_pad(ctx, env, pad)) 
 
-
-
-
 /* @} */
 #ifdef __cplusplus
 }

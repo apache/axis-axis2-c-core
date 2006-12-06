@@ -75,7 +75,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     axis2_param_t *param_action = NULL;
     axiom_node_t *sec_node = NULL;
     rampart_actions_t *actions = NULL;
-    axis2_array_list_t *sub_codes = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -134,7 +133,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
             sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
 
-            sub_codes = axis2_array_list_create(env, 0);
             /*Set the security processed results to the message ctx*/
             status = rampart_set_security_processed_results_property(env, msg_ctx);
             if(AXIS2_FAILURE == status){
@@ -147,20 +145,11 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             
             }
 
-            /*status = rampart_validate_security_token(env, msg_ctx, sec_node);
-            if (AXIS2_FAILURE == status)
-            {
-                AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_INVALID_SECURITY_TOKEN);
-                rampart_create_fault_envelope(env, "wsse:Security", "Security header element is not valid", sub_codes, msg_ctx);
-                return AXIS2_FAILURE;
-            }
-            */
-
             /*The main entry point for all security header validations*/    
-            status = rampart_shp_process_message(env, msg_ctx, actions, soap_envelope, sec_node, sub_codes);
+            status = rampart_shp_process_message(env, msg_ctx, actions, soap_envelope, sec_node);
             if (AXIS2_FAILURE == status)
             {
-                rampart_create_fault_envelope(env, "wsse:Security", "Security header processing failed", sub_codes, msg_ctx);
+                /*rampart_create_fault_envelope(env, "wsse:Security", "Security header processing failed", sub_codes, msg_ctx);*/
                 return AXIS2_FAILURE;
             }                
 
@@ -169,5 +158,4 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
         } /* End of sec_header */
 
     }/* End of soap_envelope */
-    return status;
-}
+    return status;}

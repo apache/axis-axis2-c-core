@@ -151,6 +151,7 @@ openssl_rsa_pub_encrypt(
             in,
             encrypted,
             key->pkey.rsa ,
+            /*RSA_PKCS1_OAEP_PADDING);*/
             RSA_PKCS1_PADDING);
     if (ret < 0)
     {
@@ -184,6 +185,7 @@ openssl_rsa_prv_decrypt(
             in,
             decrypted,
             key->pkey.rsa,
+            /*RSA_PKCS1_OAEP_PADDING);*/
             RSA_PKCS1_PADDING);
     if (ret < 0)
     {

@@ -70,8 +70,7 @@ extern "C"
         validate)(rampart_timestamp_token_t *timestamp_token,
             const axis2_env_t *env,
             axis2_msg_ctx_t *msg_ctx,
-            axiom_node_t *ts_node,
-            axis2_array_list_t *sub_codes);
+            axiom_node_t *ts_node);
     };
 
     /**
@@ -99,8 +98,8 @@ extern "C"
 #define RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env, ctx, sec_node, sec_ns_obj, ttl) \
         ((timestamp_token)->ops->build(timestamp_token, env, ctx,  sec_node, sec_ns_obj, ttl))
 
-#define RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, msg_ctx, ts_node, sub_codes) \
-        ((timestamp_token)->ops->validate(timestamp_token, env, msg_ctx, ts_node, sub_codes))
+#define RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, msg_ctx, ts_node) \
+        ((timestamp_token)->ops->validate(timestamp_token, env, msg_ctx, ts_node))
 
 /** @} */
 #ifdef __cplusplus

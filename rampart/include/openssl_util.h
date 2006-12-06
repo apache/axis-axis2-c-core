@@ -19,8 +19,8 @@
 #include<openssl_cipher_property.h>
 
 /**
-  * @file 
-  * @brief 
+  * @file openssl_util.h 
+  * @brief General utility routines for openssl related functions.
   */
 #ifndef OPENSSL_UTIL_H
 #define OPENSSL_UTIL_H
@@ -29,6 +29,7 @@
 extern "C" {
 #endif
 
+/*Generate a random sgtring.*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 generate_random_data(const axis2_env_t *env, oxs_buffer_t *buffer, int size);
 

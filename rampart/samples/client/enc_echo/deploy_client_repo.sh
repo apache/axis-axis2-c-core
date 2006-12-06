@@ -3,7 +3,8 @@
 CLIENT_REPO="$HOME/client_repo"
 echo "Start creating a client repository at $CLIENT_REPO"
 
-if [-d $CLIENT_REPO]; then
+if [ -d  $CLIENT_REPO ]; 
+then
     echo "$CLIENT_REPO exists. "
 else
     #Create client repo
@@ -14,9 +15,10 @@ fi
 
 #copy [client]axis2.xml to CLIENT_REPO
 echo "Copying axis2.xml to client_repo"
-cp data/client.enc.axis2.xml $CLIENT_REPO/
+cp data/client.enc.axis2.xml $CLIENT_REPO/axis2.xml
 
 #copy [server]axis2.xml to AXIS2C_HOME
+echo "Copying axis2.xml to AXIS2C_HOME"
 cp data/server.enc.axis2.xml $AXIS2C_HOME/axis2.xml
 
 #copy libs to client_repo
