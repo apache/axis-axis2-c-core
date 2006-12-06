@@ -955,9 +955,12 @@ copy_resources:
 
 	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\test\resources\xml $(AXIS2_INSTALL_DIR)\bin\codegen_resources\xml
 
+#w2c_default_qname2name_ext w2c_c_qname2name_ext
+
 codegen_writers: w2c_c_emitter w2c_schema_writer w2c_cservice_xml_writer w2c_cskel_header_writer w2c_cskel_source_writer w2c_cstub_source_writer w2c_cstub_header_writer w2c_csvc_skeleton_writer
-codegen_ext: w2c_databinding_adb_ext w2c_c_code_indenter_ext w2c_c_namemaker_ext w2c_default_qname2name_ext w2c_c_qname2name_ext w2c_databinding_default_ext
+codegen_ext: w2c_databinding_adb_ext w2c_c_code_indenter_ext w2c_c_namemaker_ext  w2c_databinding_default_ext
 codegen_tool: w2c_codegen wsdl2code schema2code codegen_writers codegen_ext copy_config copy_resources
+
 
 ################################ other porjects #########################################
 
