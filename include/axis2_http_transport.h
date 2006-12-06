@@ -423,7 +423,7 @@ extern "C"
  *Constant for HTTP headers that user specify, Those headers will
  *provided as property to the message context.
  */
-#define AXIS2_HTTP_HEADER_PROPERTY "HTTP_HEADER_PROPERTY"
+#define AXIS2_TRANSPORT_HEADER_PROPERTY "HTTP_HEADER_PROPERTY"
 
     /** @} */
 
