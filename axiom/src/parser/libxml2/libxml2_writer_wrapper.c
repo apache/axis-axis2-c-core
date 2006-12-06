@@ -612,6 +612,10 @@ axis2_libxml2_writer_wrapper_free(axiom_xml_writer_t *writer,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
 
+	if(writer_impl->xml_writer){
+		xmlFreeTextWriter(writer_impl->xml_writer);
+		writer_impl->xml_writer = NULL;
+	}
     if (writer_impl->buffer)
     {
         xmlBufferFree(writer_impl->buffer);
@@ -642,8 +646,6 @@ axis2_libxml2_writer_wrapper_free(axiom_xml_writer_t *writer,
         AXIS2_FREE(env->allocator, writer->ops);
         writer->ops = NULL;
     }
-
-
 
     AXIS2_FREE(env->allocator, writer_impl);
     writer_impl = NULL;
@@ -1487,15 +1489,18 @@ axis2_libxml2_writer_wrapper_get_xml(axiom_xml_writer_t *writer,
 {
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
-    if (writer_impl->xml_writer)
+    /*
+	if (writer_impl->xml_writer)
     {
-        xmlFreeTextWriter(writer_impl->xml_writer);
+		xmlFreeTextWriter(writer_impl->xml_writer); 
         writer_impl->xml_writer = NULL;
     }
+	*/
     if (writer_impl->writer_type == AXIS2_XML_PARSER_TYPE_BUFFER)
     {
         axis2_char_t *output = NULL;
-
+		int output_bytes = 0;
+		output_bytes = xmlTextWriterFlush(writer_impl->xml_writer);
         if (writer_impl->buffer)
         {
             output = AXIS2_MALLOC(env->allocator,

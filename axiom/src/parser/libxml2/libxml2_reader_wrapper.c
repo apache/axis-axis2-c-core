@@ -306,7 +306,7 @@ axiom_xml_reader_create_for_file(const axis2_env_t *env,
         return NULL;
     }
 
-    wrapper_impl->reader =  xmlNewTextReaderFilename(filename);
+	wrapper_impl->reader =  xmlReaderForFile(filename, encoding, XML_PARSE_RECOVER);
     if (!(wrapper_impl->reader))
     {
         AXIS2_FREE(env->allocator, wrapper_impl);
