@@ -1,4 +1,4 @@
 clientdir=$(prefix)/samples/client
-SUBDIRS = echo math google notify mtom dynamic_client
+SUBDIRS = echo math google notify mtom dynamic_client yahoo
 client_DATA = Makefile.am Makefile.in
 EXTRA_DIST= Makefile.am
