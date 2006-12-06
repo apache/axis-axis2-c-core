@@ -767,17 +767,11 @@ console.</p>
 <p></p>
 <p><b>Code Listing 10</b></p>
 </div>
-<pre>#include&nbsp;&lt;axiom_node.h&gt;
-#include&nbsp;&lt;axis2.h&gt;
+<pre>#include&nbsp;&lt;axiom.h&gt;
+#include&nbsp;&lt;axis2_util.h&gt;
 #include&nbsp;&lt;axis2_env.h&gt;
-#include&nbsp;&lt;axiom_element.h&gt;
-#include&nbsp;&lt;axiom_document.h&gt;
-#include&nbsp;&lt;axiom_stax_builder.h&gt;
-#include&nbsp;&lt;axiom_xml_reader.h&gt;
 #include&nbsp;&lt;axis2_log_default.h&gt;
 #include&nbsp;&lt;axis2_error_default.h&gt;
-#include&nbsp;&lt;axiom_xml_writer.h&gt;
-#include&nbsp;&lt;axiom_output.h&gt;
 #include&nbsp;&lt;stdio.h&gt;
 
 FILE&nbsp;*f&nbsp;=&nbsp;NULL;
@@ -804,7 +798,7 @@ axis2_env_t&nbsp;*&nbsp;create_environment()
 &nbsp;&nbsp;&nbsp;&nbsp;<b>return</b>&nbsp;env;
 }
 
-build_and_serialize_om(axis2_env_t&nbsp;**env)
+build_and_serialize_om(axis2_env_t&nbsp;*env)
 {
 &nbsp;&nbsp;&nbsp;&nbsp;axiom_node_t&nbsp;*root_node&nbsp;=&nbsp;NULL;
 
@@ -827,7 +821,7 @@ build_and_serialize_om(axis2_env_t&nbsp;**env)
 &nbsp;&nbsp;&nbsp;&nbsp;om_builder&nbsp;=&nbsp;axiom_stax_builder_create(env,&nbsp;xml_reader);
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b>(!om_builder)
 &nbsp;&nbsp;&nbsp;&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AXIS2_XML_READER_FREE(xml_reader,&nbsp;env);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AXIOM_XML_READER_FREE(xml_reader,&nbsp;env);
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>return</b>&nbsp;AXIS2_FAILURE;
 &nbsp;&nbsp;&nbsp;&nbsp;}
 &nbsp;&nbsp;&nbsp;&nbsp;document&nbsp;=&nbsp;AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
@@ -861,7 +855,7 @@ build_and_serialize_om(axis2_env_t&nbsp;**env)
 &nbsp;&nbsp;&nbsp;&nbsp;om_output&nbsp;=&nbsp;axiom_output_create(env,&nbsp;xml_writer);
 &nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;AXIOM_NODE_SERIALIZE(root_node,&nbsp;env,&nbsp;om_output);
-&nbsp;&nbsp;&nbsp;&nbsp;buffer&nbsp;=&nbsp;(axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer,&nbsp;env);
+&nbsp;&nbsp;&nbsp;&nbsp;buffer&nbsp;=&nbsp;(axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer,&nbsp;env);
 
 &nbsp;&nbsp;&nbsp;&nbsp;printf("The&nbsp;output&nbsp;XML&nbsp;is&nbsp;-&gt;&gt;&gt;&gt;\n&nbsp;%s&nbsp;",&nbsp;buffer);
 
