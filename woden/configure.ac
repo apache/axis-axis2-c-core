@@ -96,22 +96,22 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
   AC_MSG_RESULT(no)
 )
 
-AC_MSG_CHECKING(whether to build tests)
-AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
-[ case "${enableval}" in
-  yes)
-    AC_MSG_RESULT(yes)
-    TESTDIR="test"
-    ;;
-  *)
-    AC_MSG_RESULT(no)
-    TESTDIR=""
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-  TESTDIR=""
-)
+dnl AC_MSG_CHECKING(whether to build tests)
+dnl AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+dnl [ case "${enableval}" in
+dnl   yes)
+dnl     AC_MSG_RESULT(yes)
+dnl     TESTDIR="test"
+dnl     ;;
+dnl   *)
+dnl     AC_MSG_RESULT(no)
+dnl     TESTDIR=""
+dnl 
+dnl     ;;
+dnl   esac ],
+dnl   AC_MSG_RESULT(no)
+dnl   TESTDIR=""
+dnl )
 
 
 AC_MSG_CHECKING(To Use Xml Schema. This is a compulsory module to build Woden C)

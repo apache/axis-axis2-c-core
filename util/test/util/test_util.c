@@ -146,8 +146,8 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
   */
 int test_file_diff(const axis2_env_t *env)
 {
-    axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", env);
-    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", env);
+  /*  axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", env);
+    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", env);*/
     return 0;
 }
 
@@ -265,7 +265,7 @@ int main(void)
     run_test_log();
     test_axis2_dir_handler_list_service_or_module_dirs();
     axis2_allocator_t *allocator = env->allocator;
-    axis2_env_free(env);
+/*    axis2_env_free(env);*/
     axis2_allocator_free(allocator);
     run_test_string(env);
     return 0;

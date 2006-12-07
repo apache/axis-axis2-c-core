@@ -1,4 +1,4 @@
-TESTS = test_om
+TESTS = 
 bindir=$(prefix)/bin/system_test
 bin_PROGRAMS = test_om
 check_PROGRAMS = test_om
