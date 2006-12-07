@@ -1,9 +1,9 @@
 noinst_LTLIBRARIES = libwoden_schema.la
 
-libwoden_schema_la_SOURCES =schema.c \
-							imported_schema.c \
-							inlined_schema.c \
-							schema_constants.c
+libwoden_schema_la_SOURCES =woden_schema.c \
+							woden_imported_schema.c \
+							woden_inlined_schema.c \
+							woden_schema_constants.c
 
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../../util/include \

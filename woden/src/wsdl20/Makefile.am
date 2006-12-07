@@ -1,16 +1,16 @@
 SUBDIRS = xml extensions
 lib_LTLIBRARIES = libwoden.la
 
-libwoden_la_SOURCES =	interface_fault.c \
-						interface_fault_ref.c \
-						interface_msg_ref.c \
-						binding_fault.c \
-						binding_msg_ref.c \
-						binding_op.c \
-						endpoint.c \
-						svc.c \
-						desc.c \
-						component_model_builder.c
+libwoden_la_SOURCES =	woden_interface_fault.c \
+						woden_interface_fault_ref.c \
+						woden_interface_msg_ref.c \
+						woden_binding_fault.c \
+						woden_binding_msg_ref.c \
+						woden_binding_op.c \
+						woden_endpoint.c \
+						woden_svc.c \
+						woden_desc.c \
+						woden_component_model_builder.c
 
 libwoden_la_LIBADD =$(top_builddir)/src/xml/libwoden_xml.la \
                     $(top_builddir)/src/util/libwoden_util.la \
