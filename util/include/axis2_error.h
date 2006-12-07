@@ -192,7 +192,7 @@ extern "C"
         AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER,
         /** Invalid last handler for phase  */
         AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER,
-        /** Invalid engine config state */
+       /** Invalid engine config state */
         AXIS2_ERROR_INVALID_STATE_CONF,
         /** Message context processing a fault already */
         AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY,
@@ -282,6 +282,8 @@ extern "C"
         AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
         /** Response timed out */
         AXIS2_ERROR_RESPONSE_TIMED_OUT,
+        /** Response timed out */
+        AXIS2_ERROR_RESPONSE_SERVER_SHUTDOWN,
         /** SOAP envelope or SOAP body NULL */
         AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
         /* Error occured in SSL engine */
