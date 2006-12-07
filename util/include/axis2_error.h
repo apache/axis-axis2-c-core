@@ -282,7 +282,7 @@ extern "C"
         AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING,
         /** Response timed out */
         AXIS2_ERROR_RESPONSE_TIMED_OUT,
-        /** Response timed out */
+        /** Server shutdown*/
         AXIS2_ERROR_RESPONSE_SERVER_SHUTDOWN,
         /** SOAP envelope or SOAP body NULL */
         AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
