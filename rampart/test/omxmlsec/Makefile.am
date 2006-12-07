@@ -1,5 +1,5 @@
 TESTS = test_oxs
-bin_PROGRAMS = test_oxs
+noinst_PROGRAMS = test_oxs
 
 #AM_CFLAGS = -g -O2 -pthread
 
