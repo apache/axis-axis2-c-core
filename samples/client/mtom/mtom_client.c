@@ -39,7 +39,6 @@ int main(int argc, char** argv)
     axiom_node_t *ret_node = NULL;
     const axis2_char_t *image_name = "resources/axis2.jpg";
     const axis2_char_t *to_save_name = "test.jpg";
-    /*axis2_endpoint_ref_t* reply_to = NULL;*/
     axis2_bool_t optimized = AXIS2_TRUE;
 
 
@@ -71,14 +70,9 @@ int main(int argc, char** argv)
     /* Setup options */
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    /*AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env, AXIS2_TRUE);*/
-    /* Seperate listner needs addressing, hence addressing stuff in options */
     AXIS2_OPTIONS_SET_ACTION(options, env,
             "http://ws.apache.org/axis2/c/samples/mtomSample");
-    /*reply_to = axis2_endpoint_ref_create(env,
-            "http://localhost:6060/axis2/services/__ANONYMOUS_SERVICE__/__OPERATION_OUT_IN__");
 
-    AXIS2_OPTIONS_SET_REPLY_TO(options, env, reply_to);*/
     AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
     AXIS2_OPTIONS_SET_ENABLE_MTOM(options, env, AXIS2_TRUE);
 

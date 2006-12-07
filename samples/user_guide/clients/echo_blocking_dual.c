@@ -115,6 +115,7 @@ int main(int argc, char** argv)
 
     if (svc_client)
     {
+        AXIS2_SLEEP(1);
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
