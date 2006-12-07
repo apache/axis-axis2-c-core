@@ -511,7 +511,17 @@ oxs_buffer_set_max_size(
     /*If there are data already then use realloc instead of malloc*/
     if (buffer_impl->data)
     {
+#if 0        
         new_data = (unsigned char*)AXIS2_REALLOC(env->allocator, buffer_impl->data, new_size);
+#else
+
+        /*Assign extra amnt of memory*/
+        new_data = (unsigned char*)AXIS2_MALLOC(env->allocator, new_size + buffer_impl->max_size);
+        
+        /*Copy to newdata*/
+        new_data = memcpy(new_data, buffer_impl->data, buffer_impl->size);
+    
+#endif
     }
     else
     {

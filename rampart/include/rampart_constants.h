@@ -123,6 +123,8 @@ extern "C"
 /***********fault related strings*********/
 #define RAMPART_FAULT_IN_TIMESTAMP             "wsse:Timestamp"
 #define RAMPART_FAULT_IN_USERNAMETOKEN         "wsse:UsernameToken"
+#define RAMPART_FAULT_IN_ENCRYPTED_KEY         "xenc:EncryptedKey"
+#define RAMPART_FAULT_IN_ENCRYPTED_DATA        "xenc:EncryptedData"
 
 /*Dynamically set values*/
 #define RAMPART_ACTION_PASSWORD "password"

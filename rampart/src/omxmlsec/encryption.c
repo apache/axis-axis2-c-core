@@ -44,7 +44,11 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
     
     /*Get cipher property*/
     cprop =  oxs_get_cipher_property_for_url(env, OXS_CTX_GET_ENC_MTD_ALGORITHM(enc_ctx, env));
-    
+    if(!cprop){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                "Cipher property is NULL");
+        return AXIS2_FAILURE;
+    }
     /*Get the IV*/
     iv = AXIS2_STRNDUP((axis2_char_t*)oxs_iv_generate_for_algo(
                 env,

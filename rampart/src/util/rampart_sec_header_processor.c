@@ -146,6 +146,8 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     status = oxs_xml_enc_decrypt_key(env, asym_ctx, sec_node, encrypted_key_node,  decrypted_sym_key); 
     if(AXIS2_FAILURE == status){
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][shp] Cannot decrypt the EncryptedKey");     
+        rampart_create_fault_envelope(env, RAMPART_FAULT_FAILED_CHECK,
+                                "Key decryption failed", RAMPART_FAULT_IN_ENCRYPTED_KEY, msg_ctx);
         return AXIS2_FAILURE;
     }
     /*Alright now we have the key used to encrypt the elements in the reference_list*/
@@ -178,6 +180,8 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     
         status = oxs_xml_enc_decrypt_node(env, ctx, enc_data_node, &decrypted_node);
         if(AXIS2_FAILURE == status){
+            rampart_create_fault_envelope(env, RAMPART_FAULT_FAILED_CHECK,
+                                "Data decryption failed", RAMPART_FAULT_IN_ENCRYPTED_DATA, msg_ctx);
             return AXIS2_FAILURE;
         }
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Node ID=%s decrypted successfuly", id);

@@ -66,6 +66,10 @@ oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_no
     axis2_char_t *enc_mtd = NULL;
     axiom_element_t *enc_mtd_ele = NULL;
 
+    if(!enc_mtd_node){
+        return NULL;
+    }
+
     enc_mtd_ele = AXIOM_NODE_GET_DATA_ELEMENT(enc_mtd_node, env);
     if (!enc_mtd_ele)
     {
@@ -75,6 +79,9 @@ oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_no
     }
 
     enc_mtd = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(enc_mtd_ele, env, OXS_ATTR_ALGORITHM);
+    if((!enc_mtd) ||(0 == AXIS2_STRCMP("", enc_mtd))){
+        return NULL;
+    }
     return enc_mtd;
 
 }

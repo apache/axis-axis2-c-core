@@ -313,12 +313,18 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
     axiom_node_t *parent_of_enc_node = NULL;
     oxs_buffer_t *result_buf = NULL;
     axis2_char_t *decrypted_data = NULL;/*Can be either am XML-Element or XML-Content*/
+    axis2_status_t status = AXIS2_FAILURE;
 
     /*Create an empty buffer for results*/
     result_buf = oxs_buffer_create(env);
 
     /*Decrypt*/
-    oxs_xml_enc_decrypt_data(env, enc_ctx, enc_type_node, result_buf);
+    status = oxs_xml_enc_decrypt_data(env, enc_ctx, enc_type_node, result_buf);
+    if(AXIS2_FAILURE == status){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                  "Data encryption failed");
+        return AXIS2_FAILURE;
+    }
     decrypted_data = (axis2_char_t *)OXS_BUFFER_GET_DATA(result_buf, env);
     /*De-serialize the decrypted content to build the node*/
     deserialized_node = (axiom_node_t*)oxs_axiom_deserialize_node(env, decrypted_data);
@@ -355,7 +361,9 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     /*Get the symmetric encryption algorithm*/
     enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
     sym_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
-
+    if(!sym_algo){
+        return AXIS2_FAILURE;
+    }
     /*Get ID, Type, MimeType attributes from the EncryptedDataNode*/
     id = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_ATTR_ID);
     type = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_ATTR_TYPE);
@@ -470,11 +478,16 @@ oxs_xml_enc_decrypt_key(const axis2_env_t *env,
     /*Get encryption method algorithm*/
     enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
     enc_mtd_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
-
+    if(!enc_mtd_algo){
+        return AXIS2_FAILURE;
+    }
     /*Get cipher data*/
     cd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_CIPHER_DATA, NULL, NULL);
     cipher_val = oxs_token_get_cipher_value_from_cipher_data(env, cd_node);
-    
+    if(!cipher_val){
+        return AXIS2_FAILURE;
+    }
+     
     /*Get key used to encrypt*/
     key_info_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_KEY_INFO, NULL, NULL);
     status = oxs_xml_enc_process_key_info(env, asym_ctx, key_info_node, parent);
@@ -492,6 +505,9 @@ oxs_xml_enc_decrypt_key(const axis2_env_t *env,
 
     /*Call decryption*/
     status = oxs_encryption_asymmetric_crypt(env, asym_ctx, input_buf, result_buf);
+    if(AXIS2_FAILURE == status){
+        return AXIS2_FAILURE;
+    }
     
     /*Populate the key with the data in the result buffer*/
     OXS_KEY_POPULATE(key, env, 
