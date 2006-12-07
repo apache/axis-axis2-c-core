@@ -226,6 +226,9 @@ test_om_serialize()
     AXIOM_ELEMENT_DECLARE_NAMESPACE(ele1, environment, node1, ns2);
 
     ele2 = axiom_element_create(environment, node1, "title", ns1, &node2);
+    attr1 = axiom_attribute_create(environment, "title22", NULL, NULL);
+
+    AXIOM_ELEMENT_ADD_ATTRIBUTE(ele2, environment, attr1, node2);
 
     text1 = axiom_text_create(environment, node2, "Axis2/C OM HOWTO", &node3);
 
@@ -291,7 +294,6 @@ main(int argc, char *argv[])
     test_om_serialize();
 
     axis2_env_free(environment);
-    axis2_allocator_free(allocator);
     return 0;
 }
 
