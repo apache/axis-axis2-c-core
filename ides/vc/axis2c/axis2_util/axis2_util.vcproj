@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\util\src\date_time_util.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\util\src\dir_handler.c"
 				>
 			</File>
@@ -365,6 +369,10 @@
 						>
 					</File>
 					<File
+						RelativePath="..\..\..\..\util\src\platforms\windows\date_time_util_windows.c"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\..\util\src\platforms\windows\dir_windows.c"
 						>
 					</File>
@@ -392,6 +400,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\..\..\util\include\axis2_date_time_util.h"
+				>
+			</File>
 			<Filter
 				Name="platforms"
 				>
