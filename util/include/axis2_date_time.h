@@ -197,7 +197,10 @@ typedef struct axis2_date_time axis2_date_time_t;
     get_second)(axis2_date_time_t *date_time,
                         const axis2_env_t *env );
     
-    
+    int (AXIS2_CALL *
+    get_msec)(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+   
 } ;
 
  struct axis2_date_time 
@@ -270,6 +273,10 @@ axis2_date_time_create_with_offset (const axis2_env_t *env, int offset);
 
 #define AXIS2_DATE_TIME_GET_SECOND(date_time, env) \
         ((date_time)->ops->get_second(date_time, env ) )
+
+#define AXIS2_DATE_TIME_GET_MSEC(date_time, env) \
+        ((date_time)->ops->get_msec(date_time, env ) )
+
 
 
 /** @} */

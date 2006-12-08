@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <axis2_error.h>
 #include <axis2_utils.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <axis2_date_time_util.h>
 
 /**
  * @brief
@@ -36,7 +36,7 @@ typedef struct axis2_date_time_impl
     int hour;
     int min;
     int sec;
-
+    int msec;
 }
 axis2_date_time_impl_t;
 
@@ -106,6 +106,12 @@ int AXIS2_CALL
 axis2_date_time_get_second(axis2_date_time_t *date_time,
         const axis2_env_t *env);
 
+int AXIS2_CALL
+axis2_date_time_get_msec(axis2_date_time_t *date_time,
+        const axis2_env_t *env);
+
+
+
 /************************** End of function prototypes ************************/
 
 AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL
@@ -138,7 +144,7 @@ axis2_date_time_create_with_offset(const axis2_env_t *env, int offset)
     date_time_impl-> hour = utc_time-> tm_hour;
     date_time_impl-> min = utc_time-> tm_min;
     date_time_impl-> sec = utc_time-> tm_sec;
-
+    date_time_impl-> msec = axis2_get_milliseconds(env);
     date_time_impl->date_time.ops =
         AXIS2_MALLOC(env->allocator, sizeof(axis2_date_time_ops_t));
     if (NULL == date_time_impl->date_time.ops)
@@ -162,6 +168,7 @@ axis2_date_time_create_with_offset(const axis2_env_t *env, int offset)
     date_time_impl->date_time.ops->get_hour = axis2_date_time_get_hour;
     date_time_impl->date_time.ops->get_minute = axis2_date_time_get_minute;
     date_time_impl->date_time.ops->get_second = axis2_date_time_get_second;
+    date_time_impl->date_time.ops->get_msec = axis2_date_time_get_msec;
 
     return &(date_time_impl->date_time);
 }
@@ -212,7 +219,7 @@ axis2_date_time_deserialize_time(axis2_date_time_t *date_time,
 
     date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
 
-    sscanf(time_str, "%d:%d:%dZ" , &date_time_impl-> hour, &date_time_impl-> min,
+	sscanf(time_str, "%d:%d:%dZ" , &date_time_impl-> hour, &date_time_impl-> min,
             &date_time_impl-> sec);
     return AXIS2_SUCCESS;
 }
@@ -396,5 +403,17 @@ axis2_date_time_get_second(axis2_date_time_t *date_time,
     date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
 
     return (date_time_impl-> sec);
+}
+
+int AXIS2_CALL
+axis2_date_time_get_msec(axis2_date_time_t *date_time,
+        const axis2_env_t *env)
+{
+    axis2_date_time_impl_t *date_time_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
+
+    return (date_time_impl-> msec);
 }
 
