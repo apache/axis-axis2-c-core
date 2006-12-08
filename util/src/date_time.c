@@ -68,7 +68,7 @@ axis2_status_t AXIS2_CALL
 axis2_date_time_set_date_time(axis2_date_time_t* date_time,
         const axis2_env_t *env,
         int year, int month, int date,
-        int hour, int min, int second);
+        int hour, int min, int second,int milliseconds);
 
 char* AXIS2_CALL
 axis2_date_time_serialize_time(axis2_date_time_t *date_time,
@@ -219,8 +219,8 @@ axis2_date_time_deserialize_time(axis2_date_time_t *date_time,
 
     date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
 
-	sscanf(time_str, "%d:%d:%dZ" , &date_time_impl-> hour, &date_time_impl-> min,
-            &date_time_impl-> sec);
+    sscanf(time_str, "%d:%d:%d:%dZ" , &date_time_impl-> hour, &date_time_impl-> min,
+            &date_time_impl-> sec,&date_time_impl-> msec);
     return AXIS2_SUCCESS;
 }
 
@@ -252,9 +252,9 @@ axis2_date_time_deserialize_date_time(axis2_date_time_t *date_time,
 
     date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
 
-    sscanf(date_time_str, "%d-%d-%dT%d:%d:%dZ", &date_time_impl-> year, &date_time_impl-> mon,
+    sscanf(date_time_str, "%d-%d-%dT%d:%d:%d:%dZ", &date_time_impl-> year, &date_time_impl-> mon,
             &date_time_impl-> day, &date_time_impl-> hour, &date_time_impl-> min,
-            &date_time_impl-> sec);
+            &date_time_impl-> sec,&date_time_impl-> msec);
     date_time_impl-> year -= 1900;
     return AXIS2_SUCCESS;
 }
@@ -263,7 +263,7 @@ axis2_status_t AXIS2_CALL
 axis2_date_time_set_date_time(axis2_date_time_t* date_time,
         const axis2_env_t *env,
         int year, int month, int day,
-        int hour, int min, int second)
+        int hour, int min, int second,int milliseconds)
 {
     axis2_date_time_impl_t *date_time_impl = NULL;
 
@@ -277,6 +277,8 @@ axis2_date_time_set_date_time(axis2_date_time_t* date_time,
     if (hour > -1)date_time_impl-> hour = hour;
     if (min > -1)date_time_impl-> min = min;
     if (second > -1)date_time_impl-> sec = second;
+    if (second > -1)date_time_impl-> msec = milliseconds;
+
     return AXIS2_SUCCESS;
 }
 
@@ -293,7 +295,7 @@ axis2_date_time_serialize_time(axis2_date_time_t *date_time,
 
     time_str = (char*)AXIS2_MALLOC(env->allocator, sizeof(char) * 32);
 
-    sprintf(time_str, "%d:%d:%dZ" , date_time_impl-> hour, date_time_impl-> min, date_time_impl-> sec);
+    sprintf(time_str, "%d:%d:%d:%dZ" , date_time_impl-> hour, date_time_impl-> min, date_time_impl-> sec,date_time_impl-> msec);
     return time_str;
 }
 
@@ -327,9 +329,9 @@ axis2_date_time_serialize_date_time(axis2_date_time_t *date_time,
     date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
 
     date_time_str = AXIS2_MALLOC(env-> allocator, sizeof(char) * 32);
-    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02dZ" , date_time_impl-> year + 1900,
+    sprintf(date_time_str, "%d-%02d-%02dT%02d:%02d:%02d:%02dZ" , date_time_impl-> year + 1900,
             date_time_impl-> mon + 1, date_time_impl-> day, date_time_impl-> hour, date_time_impl-> min,
-            date_time_impl-> sec);
+            date_time_impl-> sec,date_time_impl-> msec);
     return date_time_str;
 }
 

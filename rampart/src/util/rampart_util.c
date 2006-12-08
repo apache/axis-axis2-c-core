@@ -130,8 +130,8 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     axis2_status_t status = AXIS2_FAILURE;
     axis2_date_time_t *dt1 = NULL;
     axis2_date_time_t *dt2 = NULL;
-    int yyyy1, mm1, dd1, hh1, mi1, ss1;
-    int yyyy2, mm2, dd2, hh2, mi2, ss2;
+    int yyyy1, mm1, dd1, hh1, mi1, ss1, ml1;
+    int yyyy2, mm2, dd2, hh2, mi2, ss2, ml2;
 
 
     dt1 = axis2_date_time_create(env);
@@ -149,6 +149,7 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     hh1 = AXIS2_DATE_TIME_GET_HOUR(dt1, env);
     mi1 = AXIS2_DATE_TIME_GET_MINUTE(dt1, env);
     ss1 = AXIS2_DATE_TIME_GET_SECOND(dt1, env);
+    ml1 = 000;
 
     status = AXIS2_DATE_TIME_DESERIALIZE_DATE_TIME(dt2, env, dt2_str);
     if (status == AXIS2_FAILURE)
@@ -162,7 +163,7 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     hh2 = AXIS2_DATE_TIME_GET_HOUR(dt2, env);
     mi2 = AXIS2_DATE_TIME_GET_MINUTE(dt2, env);
     ss2 = AXIS2_DATE_TIME_GET_SECOND(dt2, env);
-
+    ml2 = 000;
     /**
     Comparison. 
     We expect dt1_str < dt2_str/ Otherwise FAILURE
@@ -203,6 +204,7 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
         return AXIS2_FAILURE;
     }
 
+
     if (mi1 < mi2)
     {
         return AXIS2_SUCCESS;
@@ -221,6 +223,14 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
         return AXIS2_FAILURE;
     }
 
+    if (ml1 < ml2)
+    {
+        return AXIS2_SUCCESS;
+    }
+    else if (ml1 > ml2)
+    {
+        return AXIS2_FAILURE;
+    } 
 
     /*AXIS2_DATE_TIME_FREE(dt1, env);
     AXIS2_DATE_TIME_FREE(dt2, env);*/
