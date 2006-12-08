@@ -19,6 +19,8 @@
 #include <axis2_defines.h>
 #include <axis2_date_time.h>
 #include <axis2_env.h>
+#include <axis2_property.h>
+#include <axis2_msg_ctx.h>
 
 /**
   * @file rampart_util.h
@@ -36,7 +38,14 @@ extern "C" {
   * @ingroup Rampart_Util
   */
 
-                                                                            
+
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+rampart_callback_password(const axis2_env_t *env,
+        axis2_char_t *callback_module_name,
+        const axis2_char_t *username,
+        axis2_ctx_t *ctx); 
+
  /**
     * Generates the nonce. Nonce is a base64 encoded random string.
     * @return generated nonce

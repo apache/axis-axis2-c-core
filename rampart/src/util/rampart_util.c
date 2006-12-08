@@ -27,6 +27,7 @@
 #include <openssl_util.h>
 #include <axis2_msg_ctx.h>
 #include <rampart_constants.h>
+#include <rampart_callback.h>
 
 /*Calculate the hash of concatenated string of
  * nonce, created and the password.
@@ -38,6 +39,58 @@
 
 
 /*#define PRINTINFO 1 */
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+rampart_callback_password(const axis2_env_t *env,
+        axis2_char_t *callback_module_name,
+        const axis2_char_t *username,
+        axis2_ctx_t *ctx)
+{
+    rampart_callback_t* rcb = NULL;
+    axis2_char_t *password = NULL;
+    axis2_dll_desc_t *dll_desc = NULL;
+    void *ptr = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    axis2_property_t* property = NULL; 
+    void *cb_prop_val= NULL;
+
+    /*Get callback specific property if any from the ctx. This is specially done for PHP folks to send the hapassword file location.
+     */
+    property = AXIS2_CTX_GET_PROPERTY(ctx, env, RAMPART_CALLBACK_SPECIFIC_PROPERTY, AXIS2_FALSE);
+    if (property)
+    {
+        cb_prop_val = AXIS2_PROPERTY_GET_VALUE(property, env);
+        property = NULL;
+    }
+
+    dll_desc = axis2_dll_desc_create(env);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, callback_module_name);
+    impl_info_param = axis2_param_create(env, NULL, NULL);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_class_loader_init(env);
+    ptr = axis2_class_loader_create_dll(env, impl_info_param);
+
+    /*callback()*/
+    if (!ptr)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Unable to create the pw callback module %s. ERROR", callback_module_name);
+        return NULL;
+    }
+
+    rcb = (rampart_callback_t*)ptr;
+    if (!rcb)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Unable to load the pw callback module %s. ERROR", callback_module_name);
+        return NULL;
+    }
+
+    /*Get the password thru the callback*/
+    password = RAMPART_CALLBACK_CALLBACK_PASSWORD(rcb, env, username, cb_prop_val);
+
+    AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password taken from the callback module %s. SUCCESS", callback_module_name);
+    return password;
+    
+}
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *env)
 {

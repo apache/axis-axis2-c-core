@@ -92,16 +92,14 @@ openssl_x509_load_from_pem(const axis2_env_t *env,
 
     if ((in=BIO_new_file(filename,"r")) == NULL)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
-                "Error reading the file %s", filename);
+        /*oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "Error reading the file %s", filename);*/
         return AXIS2_FAILURE;
     }
     /*Read certificate*/
     PEM_read_bio_X509(in, cert,NULL,NULL);
     if(!*cert)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
-                "Error creating the certificate");
         return AXIS2_FAILURE;
     }
     

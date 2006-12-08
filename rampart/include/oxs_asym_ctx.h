@@ -41,7 +41,8 @@ extern "C"
  */
 
     typedef enum  {
-        OXS_ASYM_CTX_FORMAT_PEM=0,
+        OXS_ASYM_CTX_FORMAT_UNKNOWN=0,
+        OXS_ASYM_CTX_FORMAT_PEM,
         OXS_ASYM_CTX_FORMAT_PKCS12
     }oxs_asym_ctx_format_t;
 

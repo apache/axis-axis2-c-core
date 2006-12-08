@@ -54,17 +54,6 @@ static axis2_char_t*
 rampart_get_password(const axis2_env_t *env,
         axis2_ctx_t *ctx,
         rampart_actions_t *actions);
-/**
- *
- * @param env pointer to environment struct
- * @param ctx axis2 context
- * @return property value
- */
-static axis2_char_t*
-rampart_username_token_callback_pw(const axis2_env_t *env,
-        axis2_char_t *callback_module_name,
-        const axis2_char_t *username,
-        axis2_ctx_t *ctx);
 
 /** public functions*/
 axis2_status_t AXIS2_CALL
@@ -120,58 +109,8 @@ rampart_get_password(const axis2_env_t *env,
     if (pw_callback_module)
     {
         username = RAMPART_ACTIONS_GET_USER(actions, env);
-        password = rampart_username_token_callback_pw(env, pw_callback_module, username, ctx);
+        password = rampart_callback_password(env, pw_callback_module, username, ctx);
     }
-    return password;
-}
-
-
-static axis2_char_t*
-rampart_username_token_callback_pw(const axis2_env_t *env,
-        axis2_char_t *callback_module_name,
-        const axis2_char_t *username, 
-        axis2_ctx_t *ctx)
-{
-    rampart_callback_t* rcb = NULL;
-    axis2_char_t *password = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
-    void *ptr = NULL;
-    axis2_param_t *impl_info_param = NULL;
-    axis2_property_t* property = NULL;
-    void *cb_prop_val = NULL;
-
-    dll_desc = axis2_dll_desc_create(env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, callback_module_name);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-    axis2_class_loader_init(env);
-    ptr = axis2_class_loader_create_dll(env, impl_info_param);
-
-    /*callback()*/
-    if (!ptr)
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Unable to create the pw callback module %s. ERROR", callback_module_name);
-        return NULL;
-    }
-
-    rcb = (rampart_callback_t*)ptr;
-    if (!rcb)
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Unable to load the pw callback module %s. ERROR", callback_module_name);
-        return NULL;
-    }
-    /*Get callback specific property if any from the ctx*/
-    property = AXIS2_CTX_GET_PROPERTY(ctx, env, RAMPART_CALLBACK_SPECIFIC_PROPERTY, AXIS2_FALSE);
-    if (property)
-    {
-        cb_prop_val = AXIS2_PROPERTY_GET_VALUE(property, env);
-        property = NULL;
-    }
-
-    /*Get the password thru the callback*/
-    password = RAMPART_CALLBACK_CALLBACK_PASSWORD(rcb, env, username, cb_prop_val);
-
-    AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password taken from the callback module %s. SUCCESS", callback_module_name);
     return password;
 }
 
@@ -549,7 +488,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         return AXIS2_FAILURE;
     }
     
-    password_from_svr = rampart_username_token_callback_pw(env, pw_callback_module, username, ctx);
+    password_from_svr = rampart_callback_password(env, pw_callback_module, username, ctx);
 
     if (!password_from_svr)
     {

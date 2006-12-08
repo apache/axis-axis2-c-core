@@ -169,7 +169,8 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT);
     oxs_asym_ctx_set_st_ref_pattern(asym_ctx, env, eki);
     /*TODO This should be taken from the configurations*/
-    oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PEM);
+    /*oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PEM);*/
+    oxs_asym_ctx_set_format(asym_ctx, env, oxs_util_get_format_by_file_extension(env, certificate_file));
     /*Encrypt the session key*/
     status = oxs_xml_enc_encrypt_key(env, asym_ctx, sec_node,session_key, id_list);    
     if(AXIS2_FAILURE == status){

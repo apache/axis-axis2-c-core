@@ -18,6 +18,7 @@
 #include <axis2_util.h>
 #include <oxs_utility.h>
 #include <oxs_error.h>
+#include <oxs_asym_ctx.h>
 
 /* Generates an id for an element.
  * Specially used in xml encryption and signature references.
@@ -37,3 +38,26 @@ oxs_util_generate_id(const axis2_env_t *env,
     
 }
 
+AXIS2_EXTERN oxs_asym_ctx_format_t AXIS2_CALL
+oxs_util_get_format_by_file_extension(const axis2_env_t *env,
+        axis2_char_t *file_name)
+{
+    axis2_char_t *extension = NULL;
+    if(!file_name){
+        return OXS_ASYM_CTX_FORMAT_UNKNOWN;
+    }
+    extension = AXIS2_RINDEX(file_name, '.');
+    if(!extension){
+        /*No extension*/
+        /*Its safe to assume that PEM can be without extension*/
+        return OXS_ASYM_CTX_FORMAT_PEM;
+    }
+    printf("ext %s", extension);
+    if((strcmp(extension, ".pfx") == 0) ){
+        return OXS_ASYM_CTX_FORMAT_PKCS12;
+    }else{
+        /*Its safe to assume that PEM can be in any extensions. e.g. .cert, .cer, .pem*/
+        return OXS_ASYM_CTX_FORMAT_PEM;
+    }
+
+}

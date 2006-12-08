@@ -21,6 +21,7 @@
 #include <rampart_sec_header_processor.h>
 #include <rampart_username_token.h>
 #include <rampart_timestamp_token.h>
+#include <rampart_util.h>
 #include <rampart_handler_util.h>
 #include <oxs_ctx.h>
 #include <oxs_error.h>
@@ -96,6 +97,38 @@ rampart_shp_process_usernametoken(const axis2_env_t *env,
     }
 }
 
+
+static axis2_char_t*
+rampart_shp_callback_keystore_password(const axis2_env_t *env,
+            rampart_actions_t *actions,
+            axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_char_t *enc_user = NULL;
+    axis2_char_t *pw_callback_module = NULL;
+    axis2_char_t *password = NULL;
+    axis2_ctx_t *ctx = NULL;
+
+    enc_user = RAMPART_ACTIONS_GET_ENC_USER(actions, env);
+    pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
+    if(!pw_callback_module){
+        return NULL;
+    }
+    if(!enc_user){
+        /*If a special enc_user hasn't specified try to get the user. 
+         * But it is advisable to use enc_user instead of user.*/
+        enc_user = RAMPART_ACTIONS_GET_USER(actions, env);
+        if(!enc_user){
+            return NULL;
+        }
+    }
+    /*Get axis2_ctx_t. This is for designed specially for PHP*/
+    ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);    
+    
+    password = rampart_callback_password(env, pw_callback_module, enc_user, ctx);
+
+    return password;
+}
+
 static axis2_status_t 
 rampart_shp_process_encrypted_key(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
@@ -132,12 +165,14 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     enc_asym_algo = RAMPART_ACTIONS_GET_ENC_KT_ALGO(actions, env);
     certificate_file = RAMPART_ACTIONS_GET_DEC_KEY_FILE(actions, env);
     /*Get the password to retrieve the key from key store*/
-    password = RAMPART_ACTIONS_GET_ENC_USER(actions, env);
+    password = rampart_shp_callback_keystore_password(env, actions, msg_ctx);
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
     oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PRV_DECRYPT);
     oxs_asym_ctx_set_password(asym_ctx, env, password);
-    oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PKCS12);
+    
+    /*oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PKCS12);*/
+    oxs_asym_ctx_set_format(asym_ctx, env, oxs_util_get_format_by_file_extension(env, certificate_file));
 
     /*Create an empty key*/
     decrypted_sym_key = oxs_key_create(env);
@@ -251,6 +286,9 @@ rampart_shp_enforce_security(const axis2_env_t *env,
     } 
     return AXIS2_SUCCESS;
 }
+
+
+    
 
 /*Public functions*/
 

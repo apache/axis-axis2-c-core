@@ -15,6 +15,7 @@ get_sample_password(rampart_callback_t *rcb,
         const axis2_char_t *username,
         void *param)
 {
+    /*First set pf password are for sample usernames*/
     axis2_char_t * pw = NULL;
     if (0 == AXIS2_STRCMP(username, "Raigama"))
     {
@@ -28,8 +29,28 @@ get_sample_password(rampart_callback_t *rcb,
     {
         pw = "password";
     }
+    /*These are for sample keystores*/
+    else if (0 == AXIS2_STRCMP(username, "a"))
+    {
+        pw = "a12345";
+    }
+    else if (0 == AXIS2_STRCMP(username, "b"))
+    {
+        pw = "b12345";
+    }
+    else if (0 == AXIS2_STRCMP(username, "x"))
+    {
+        pw = "x12345";
+    }
+    else if (0 == AXIS2_STRCMP(username, "y"))
+    {
+        pw = "y12345";
+    }
     else
-    {}
+    {
+        /*Append 12345 for any name not specified above*/
+        /*sprintf(pw, "%s%s",  username, "12345");*/
+    }
     return pw;
 };
 

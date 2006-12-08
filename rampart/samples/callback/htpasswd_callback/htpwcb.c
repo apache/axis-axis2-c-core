@@ -17,7 +17,7 @@ get_ht_password(rampart_callback_t *rcb,
 {
     axis2_char_t * password = NULL;
     FILE *file = NULL;
-    /*The default location is the following. But this will be overridden by the property values set in the meg_ctx*/
+    /*The default location is the following. But this will be overridden by the property values set in the msg_ctx*/
     axis2_char_t *filename = "/usr/local/apache2/passwd/passwords";
 
     if(param){

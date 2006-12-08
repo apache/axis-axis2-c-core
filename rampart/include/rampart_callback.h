@@ -51,7 +51,7 @@ extern "C"
            /**
             * Retuens a password for the given username. 
             * By providing a function to this function pointer 
-            * user can write custom password callback midule
+            * user can write custom password callback module
             * @param callback rampart callback pointer
             * @param env environment must not be null
             * @param username The username of the password expected.
