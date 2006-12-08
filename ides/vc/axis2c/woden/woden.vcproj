@@ -184,18 +184,18 @@
 				Name="builder"
 				>
 				<File
-					RelativePath="..\..\..\..\woden\src\builder\reader.c"
+					RelativePath="..\..\..\..\woden\src\builder\woden_reader.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\builder\resolver.c"
+					RelativePath="..\..\..\..\woden\src\builder\woden_resolver.c"
 					>
 				</File>
 				<Filter
 					Name="wsdl10"
 					>
 					<File
-						RelativePath="..\..\..\..\woden\src\builder\wsdl10\wsdl10_reader.c"
+						RelativePath="..\..\..\..\woden\src\builder\wsdl10\woden_wsdl10_reader.c"
 						>
 					</File>
 				</Filter>
@@ -204,19 +204,19 @@
 				Name="schema"
 				>
 				<File
-					RelativePath="..\..\..\..\woden\src\schema\imported_schema.c"
+					RelativePath="..\..\..\..\woden\src\schema\woden_imported_schema.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\schema\inlined_schema.c"
+					RelativePath="..\..\..\..\woden\src\schema\woden_inlined_schema.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\schema\schema.c"
+					RelativePath="..\..\..\..\woden\src\schema\woden_schema.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\schema\schema_constants.c"
+					RelativePath="..\..\..\..\woden\src\schema\woden_schema_constants.c"
 					>
 				</File>
 			</Filter>
@@ -224,21 +224,17 @@
 				Name="types"
 				>
 				<File
-					RelativePath="..\..\..\..\woden\src\types\nc_name.c"
+					RelativePath="..\..\..\..\woden\src\types\woden_nc_name.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\types\xml_char.c"
+					RelativePath="..\..\..\..\woden\src\types\woden_xml_char.c"
 					>
 				</File>
 			</Filter>
 			<Filter
 				Name="util"
 				>
-				<File
-					RelativePath="..\..\..\..\woden\src\util\qname_util.c"
-					>
-				</File>
 				<File
 					RelativePath="..\..\..\..\woden\src\util\woden_om_util.c"
 					>
@@ -247,156 +243,156 @@
 					RelativePath="..\..\..\..\woden\src\util\woden_om_util.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\util\woden_qname_util.c"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="wsdl"
 				>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\attr_extensible.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_attr_extensible.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\binding.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_binding.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\binding_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_binding_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\binding_fault_ref.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_binding_fault_ref.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\binding_fault_ref_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_binding_fault_ref_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\component_exts.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_component_exts.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\configurable.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_configurable.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\configurable_component.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_configurable_component.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\configurable_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_configurable_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\direction.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_direction.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\documentable.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_documentable.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\documentable_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_documentable_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\documentation.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_documentation.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\documentation_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_documentation_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\element_decl.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_element_decl.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\element_extensible.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_element_extensible.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\ext_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_ext_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\feature.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_feature.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\feature_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_feature_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\import.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_import.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\import_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_import_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\include.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_include.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\include_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_include_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\interface.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_interface.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\interface_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_interface_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\interface_op.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_interface_op.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\interface_op_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_interface_op_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\msg_label.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_msg_label.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\nested_component.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_nested_component.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\nested_configurable.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_nested_configurable.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\nested_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_nested_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\property.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_property.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\property_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_property_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\soap_fault_code.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_soap_fault_code.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\soap_fault_subcodes.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_soap_fault_subcodes.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\type_def.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\types_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_type_def.c"
 					>
 				</File>
 				<File
@@ -404,19 +400,23 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\wsdl_component.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_types_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\wsdl_element.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_wsdl_component.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\wsdl_obj.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_wsdl_element.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl\wsdl_ref.c"
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_wsdl_obj.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl\woden_wsdl_ref.c"
 					>
 				</File>
 			</Filter>
@@ -424,11 +424,23 @@
 				Name="wsdl10"
 				>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\msg_ref.c"
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_msg_ref.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\part.c"
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_part.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_wsdl10_binding_msg_ref.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_wsdl10_binding_op.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_wsdl10_component_model_builder.c"
 					>
 				</File>
 				<File
@@ -440,74 +452,62 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\wsdl10_binding_msg_ref.c"
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_wsdl10_desc.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\wsdl10_binding_op.c"
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_wsdl10_endpoint.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\wsdl10_component_model_builder.c"
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_wsdl10_interface_fault_ref.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\wsdl10_desc.c"
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_wsdl10_interface_msg_ref.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\wsdl10_endpoint.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\wsdl10_interface_fault_ref.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\wsdl10_interface_msg_ref.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl10\wsdl10_svc.c"
+					RelativePath="..\..\..\..\woden\src\wsdl10\woden_wsdl10_svc.c"
 					>
 				</File>
 				<Filter
 					Name="xml"
 					>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\msg_ref_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_msg_ref_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\part_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_part_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\wsdl10_binding_msg_ref_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_wsdl10_binding_msg_ref_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\wsdl10_binding_op_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_wsdl10_binding_op_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\wsdl10_desc_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_wsdl10_desc_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\wsdl10_endpoint_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_wsdl10_endpoint_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\wsdl10_interface_fault_ref_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_wsdl10_interface_fault_ref_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\wsdl10_interface_msg_ref_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_wsdl10_interface_msg_ref_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\xml\wsdl10_svc_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\xml\woden_wsdl10_svc_element.c"
 						>
 					</File>
 				</Filter>
@@ -515,18 +515,38 @@
 					Name="extensions"
 					>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\extensions\wsdl10_ext_deserializer.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\extensions\woden_wsdl10_ext_deserializer.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl10\extensions\wsdl10_ext_registry.c"
+						RelativePath="..\..\..\..\woden\src\wsdl10\extensions\woden_wsdl10_ext_registry.c"
 						>
 					</File>
 					<Filter
 						Name="soap"
 						>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\soap_address_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_soap_address_exts.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_binding_exts.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_binding_fault_exts.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_binding_fault_ref_exts.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_binding_msg_ref_exts.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_binding_op_exts.c"
 							>
 						</File>
 						<File
@@ -534,47 +554,27 @@
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_binding_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_header_block.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_binding_fault_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_header_block_deserializer.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_binding_fault_ref_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_header_block_element.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_binding_msg_ref_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_module.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_binding_op_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_module_deserializer.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_header_block.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_header_block_deserializer.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_header_block_element.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_module.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_module_deserializer.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\wsdl10_soap_module_element.c"
+							RelativePath="..\..\..\..\woden\src\wsdl10\extensions\soap\woden_wsdl10_soap_module_element.c"
 							>
 						</File>
 					</Filter>
@@ -584,43 +584,19 @@
 				Name="wsdl20"
 				>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\binding_fault.c"
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_binding_fault.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\binding_msg_ref.c"
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_binding_msg_ref.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\binding_op.c"
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_binding_op.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\component_model_builder.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\desc.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\endpoint.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\interface_fault.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\interface_fault_ref.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\interface_msg_ref.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\woden\src\wsdl20\svc.c"
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_component_model_builder.c"
 					>
 				</File>
 				<File
@@ -631,47 +607,71 @@
 					RelativePath="..\..\..\..\woden\src\wsdl20\woden_constants.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_desc.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_endpoint.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_interface_fault.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_interface_fault_ref.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_interface_msg_ref.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\woden\src\wsdl20\woden_svc.c"
+					>
+				</File>
 				<Filter
 					Name="xml"
 					>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\binding_fault_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_binding_fault_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\binding_msg_ref_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_binding_msg_ref_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\binding_op_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_binding_op_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\desc_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_desc_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\endpoint_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_endpoint_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\fault_ref_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_fault_ref_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\interface_fault_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_interface_fault_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\interface_fault_ref_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_interface_fault_ref_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\interface_msg_ref_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_interface_msg_ref_element.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\xml\svc_element.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\xml\woden_svc_element.c"
 						>
 					</File>
 				</Filter>
@@ -679,62 +679,62 @@
 					Name="extensions"
 					>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\extensions\ext_deserializer.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\extensions\woden_ext_deserializer.c"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\woden\src\wsdl20\extensions\ext_registry.c"
+						RelativePath="..\..\..\..\woden\src\wsdl20\extensions\woden_ext_registry.c"
 						>
 					</File>
 					<Filter
 						Name="soap"
 						>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_binding_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_binding_exts.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_binding_fault_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_binding_fault_exts.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_binding_fault_ref_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_binding_fault_ref_exts.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_binding_msg_ref_exts.c"
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_binding_msg_ref_exts.c"
 							>
 						</File>
 						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_binding_op_exts.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_header_block.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_header_block_deserializer.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_header_block_element.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_module.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_module_deserializer.c"
-							>
-						</File>
-						<File
-							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\soap_module_element.c"
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_binding_op_exts.c"
 							>
 						</File>
 						<File
 							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_constants.h"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_header_block.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_header_block_deserializer.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_header_block_element.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_module.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_module_deserializer.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\woden\src\wsdl20\extensions\soap\woden_soap_module_element.c"
 							>
 						</File>
 					</Filter>
@@ -744,35 +744,35 @@
 				Name="xml"
 				>
 				<File
-					RelativePath="..\..\..\..\woden\src\xml\bool_attr.c"
+					RelativePath="..\..\..\..\woden\src\xml\woden_bool_attr.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\xml\qname_attr.c"
+					RelativePath="..\..\..\..\woden\src\xml\woden_qname_attr.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\xml\qname_list_attr.c"
+					RelativePath="..\..\..\..\woden\src\xml\woden_qname_list_attr.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\xml\qname_list_or_token_any_attr.c"
+					RelativePath="..\..\..\..\woden\src\xml\woden_qname_list_or_token_any_attr.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\xml\qname_or_token_any_attr.c"
+					RelativePath="..\..\..\..\woden\src\xml\woden_qname_or_token_any_attr.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\xml\string_attr.c"
+					RelativePath="..\..\..\..\woden\src\xml\woden_string_attr.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\xml\uri_attr.c"
+					RelativePath="..\..\..\..\woden\src\xml\woden_uri_attr.c"
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\woden\src\xml\xml_attr.c"
+					RelativePath="..\..\..\..\woden\src\xml\woden_xml_attr.c"
 					>
 				</File>
 			</Filter>
