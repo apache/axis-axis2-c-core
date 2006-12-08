@@ -44,8 +44,9 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     }
 
     if(OXS_ASYM_CTX_FORMAT_PEM == oxs_asym_ctx_get_format(ctx, env)){
-        format = OPENSSL_X509_FORMAT_PEM;
         oxs_asym_ctx_operation_t operation ;
+		format = OPENSSL_X509_FORMAT_PEM;
+        
 
         /*First let's check if this is a file containing a certificate*/
         status = openssl_x509_load_from_pem(env, filename,  &cert);

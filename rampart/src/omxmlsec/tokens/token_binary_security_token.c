@@ -14,7 +14,6 @@
  *   limitations under the License.
  */
 
-#include <stdio.h>
 #include <oxs_constants.h>
 #include <oxs_error.h>
 #include <oxs_token_binary_security_token.h>
@@ -67,7 +66,6 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
     if(data){
          ret  = AXIOM_ELEMENT_SET_TEXT(binary_security_token_ele, env, data, binary_security_token_node);
     }
-
     return binary_security_token_node;
 
 }
