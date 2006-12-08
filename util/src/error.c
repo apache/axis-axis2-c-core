@@ -302,6 +302,8 @@ axis2_error_init()
         "Failed in creating Transport Sender";
     axis2_error_messages[AXIS2_ERROR_UUID_GEN_FAILED] =
         "Generation of platform dependent uuid failed";
+    axis2_error_messages[AXIS2_ERROR_POSSIBLE_DEADLOCK]=
+       "Possible deadlock";
     /* wsdl */
     axis2_error_messages[AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING] =
         "Interface or Port Type not found for the binding";

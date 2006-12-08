@@ -353,6 +353,8 @@ extern "C"
         AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,
         /* Generation of platform dependent uuid failed */
         AXIS2_ERROR_UUID_GEN_FAILED,
+        /* Possible deadlock */
+        AXIS2_ERROR_POSSIBLE_DEADLOCK,
        /*
         * Group - wsdl
         */
