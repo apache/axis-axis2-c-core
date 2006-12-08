@@ -347,6 +347,7 @@ axiom_node_detach(axiom_node_t *om_node,
     AXIS2_INTF_TO_IMPL(om_node)->parent = NULL;
     AXIS2_INTF_TO_IMPL(om_node)->prev_sibling = NULL;
     AXIS2_INTF_TO_IMPL(om_node)->next_sibling = NULL;
+    AXIS2_INTF_TO_IMPL(om_node)->builder = NULL;
     return om_node;
 
 }

@@ -1385,6 +1385,12 @@ axis2_svc_client_free(
         svc_client_impl->callback_recv = NULL;
     }
 
+    if (svc_client_impl->op_client)
+    {
+        AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client, env);
+        svc_client_impl->op_client = NULL;
+    }
+
     if (svc_client_impl->options)
     {
         AXIS2_OPTIONS_FREE(svc_client_impl->options, env);
@@ -1398,11 +1404,6 @@ axis2_svc_client_free(
         svc_client_impl->listener_manager = NULL;
     }
 
-    if (svc_client_impl->op_client)
-    {
-        AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client, env);
-        svc_client_impl->op_client = NULL;
-    }
 
     if (svc_client_impl->conf_ctx)
     {
