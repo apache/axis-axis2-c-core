@@ -299,6 +299,13 @@ axis2_op_client_add_msg_ctx(
         axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, mc);
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_client_impl->op_ctx, env, AXIS2_TRUE);
     }
+
+    if (out_msg_ctx && !mc)
+    {
+        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+        out_msg_ctx = NULL;
+        axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+    }
     return AXIS2_SUCCESS;
 }
 
