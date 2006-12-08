@@ -30,7 +30,7 @@ static void add_axis2_char_t(const axis2_env_t* env,
 			     axis2_char_t c,
 			     int turns);
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_char_t* 
 tcpmon_util_format_as_xml(const axis2_env_t* env, axis2_char_t* data, int format)
 {
     if(format)
