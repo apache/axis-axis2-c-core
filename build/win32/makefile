@@ -1151,11 +1151,63 @@ woden_sample:
 woden_all: woden woden_sample woden_copy_include
  
 ##############################################################################################
+#axis2.dll
+
+SRC_DIR =       $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
+		$(AXIS2_SOURCE_DIR)\util\src\minizip\*.c \
+		$(AXIS2_SOURCE_DIR)\util\src\*.c \
+		$(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c \
+		$(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
+		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
+		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
+		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\builder\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\builder\wsdl10\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\schema\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\types\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\util\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\xml\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\extensions\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\extensions\soap\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\soap\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\xml\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\xml\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\addr\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\clientapi\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\context\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\deployment\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\description\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\engine\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\phaseresolver\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\receivers\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\util\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\wsdl\*.c \
+		$(AXIS2_SOURCE_DIR)\xml_schema\src\*.c
+
+axis2:
+	$(CC) $(CFLAGS) /Fo $(AXIS2_INCLUDE_PATH) $(SRC_DIR) /D "_WINDLL" /Gm /Zi /c
+	$(LD) $(LDFLAGS) *.obj Rpcrt4.lib Ws2_32.lib zdll.lib libxml2.lib \
+	/DLL /OUT:axis2.dll /IMPLIB:axis2.lib 
+	
+	copy axis2.lib $(AXIS2_INSTALL_DIR)\lib
+	copy axis2.dll $(AXIS2_INSTALL_DIR)\lib
+	del *.obj
+	del *.dll
+	del *.lib
+	del *.exp
+
+##############################################################################################
+
 
 all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_mod_log all_services all_clients axis2_server   copy_include clean_make_dir 
  
 install: all
 
-dist: all mod_rampart_all axis2_apache_module tcpmon codegen_tool copy_extra copy_samples mv_dist
+dist: all axis2 axis2_apache_module tcpmon codegen_tool copy_extra copy_samples mv_dist
 
 
