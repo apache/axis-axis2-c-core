@@ -71,9 +71,15 @@ AXIS2_EXTERN guththila_token_t *
 guththila_token_grow(axis2_env_t * environment,
         guththila_token_t * tok)
 {
+	guththila_token_t *dest;
     tok->size <<= 1;
-    tok = (guththila_token_t *) AXIS2_REALLOC(environment->allocator,
-            tok, sizeof(guththila_token_t) * tok->size);
+    dest = (guththila_token_t *) AXIS2_MALLOC(environment->allocator,
+											  sizeof(guththila_token_t) * tok->size);
+	if (dest)
+	{
+		memcpy (dest, tok, tok->size < 1);
+		tok = dest;
+	}
 
     return tok;
 }

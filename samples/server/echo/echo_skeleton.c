@@ -17,6 +17,8 @@
 #include <axis2_svc_skeleton.h>
 #include "echo.h"
 #include <axis2_array_list.h>
+#include <axis2_msg_ctx.h>
+#include <stdio.h>
 
 int AXIS2_CALL
 echo_free(axis2_svc_skeleton_t *svc_skeleton,
@@ -91,6 +93,12 @@ echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
      * To see how to deal with multiple impl methods, have a look at the
      * math sample.
      */
+	if (AXIS2_MSG_CTX_GET_IS_SOAP_11 (msg_ctx, env))
+	{
+		AXIS2_ERROR_SET_STATUS_CODE (env->error, AXIS2_FAILURE);
+		AXIS2_ERROR_SET_MESSAGE (env->error, "Not Handling SOAP11 request \n");
+		return NULL;
+	}
     return axis2_echo_echo(env, node);
 }
 
@@ -103,12 +111,11 @@ echo_on_fault(axis2_svc_skeleton_t *svc_skeli,
      * called 'EchoServiceError' 
      */
     axiom_node_t *error_node = NULL;
-    axiom_node_t* text_node = NULL;
+    axiom_node_t *text_node = NULL;
     axiom_element_t *error_ele = NULL;
-    error_ele = axiom_element_create(env, node, "EchoServiceError", NULL,
-            &error_node);
-    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ",
-            text_node);
+    
+	error_ele = axiom_element_create(env, NULL, "EchoServiceError", NULL,  &error_node);
+    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ", text_node);
     return error_node;
 }
 

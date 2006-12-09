@@ -89,10 +89,12 @@ guththila_buffer_grow(axis2_env_t * environment,
 
     guththila_char_t *x = NULL;
     name->size <<= 1;
-    x = (guththila_char_t *) AXIS2_REALLOC(environment->allocator,
-            name->buff, name->size);
+    x = (guththila_char_t *) AXIS2_MALLOC(environment->allocator, name->size);
     if (x)
+	{
+		memcpy (x, name->buff, strlen (name->buff));
         name->buff = x;
+	}
     else
         name->size >>= 1;
     return name;
