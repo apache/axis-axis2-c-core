@@ -25,11 +25,11 @@
 extern "C"
 {
 #endif
-  /** 
-    * \brief Axis2 status codes
-    *
-    * Possible status values for Axis2
-    */
+	/** 
+	 * \brief Axis2 status codes
+	 *
+	 * Possible status values for Axis2
+	 */
     enum axis2_status_codes
     {
         /** Critical Failure state */
@@ -39,11 +39,11 @@ extern "C"
         /** Success state */
         AXIS2_SUCCESS
     };
-  /** 
-    * \brief Axis2 error codes
-    *
-    * Set of error codes for Axis2
-    */
+	/** 
+	 * \brief Axis2 error codes
+	 *
+	 * Set of error codes for Axis2
+	 */
     enum axis2_error_codes
     {
         /** No error. 
@@ -54,7 +54,7 @@ extern "C"
             to an arbitrary value as it is assumed in the implementation when mapping 
             error codes to error messages that the error codes are contiguous and 
             the last error value is always AXIS2_ERROR_LAST.
-          */
+		*/
         /* 
          * Group - Common Errors
          */
@@ -107,9 +107,9 @@ extern "C"
         /** Service not yet found */
         AXIS2_ERROR_SERVICE_NOT_YET_FOUND,
 
-       /*
-        * Group - core:deployment
-        */ 
+		/*
+		 * Group - core:deployment
+		 */ 
         /* Invalid phase found in phase validation*/
         AXI2_ERROR_INVALID_PHASE,
         /* axis2.xml cannot be not found*/
@@ -156,9 +156,9 @@ extern "C"
         AXIS2_PATH_TO_CONFIG_CAN_NOT_BE_NULL,
         /* Invalid Service */
         AXIS2_ERROR_INVALID_SVC,
-       /*
-        * Group - core:description
-        */ 
+		/*
+		 * Group - core:description
+		 */ 
         /* Cannot correlate message*/
         AXIS2_ERROR_CANNOT_CORRELATE_MSG,
         /** Could not Map the MEP URI to a axis MEP constant value */
@@ -179,9 +179,9 @@ extern "C"
         AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
         /* schema list is empty or NULL in svc */
         AXIS2_ERROR_EMPTY_SCHEMA_LIST,
-       /*
-        * Group - core:engine
-        */ 
+		/*
+		 * Group - core:engine
+		 */ 
         /** Both before and after handlers cannot be the same */
         AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME,
         /** Invalid handler rules  */
@@ -192,7 +192,7 @@ extern "C"
         AXIS2_ERROR_INVALID_PHASE_FIRST_HANDLER,
         /** Invalid last handler for phase  */
         AXIS2_ERROR_INVALID_PHASE_LAST_HANDLER,
-       /** Invalid engine config state */
+		/** Invalid engine config state */
         AXIS2_ERROR_INVALID_STATE_CONF,
         /** Message context processing a fault already */
         AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY,
@@ -207,9 +207,9 @@ extern "C"
         /**Two service can not have same name, a service with same name alredy 
            exist in the system */
         AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME,
-       /*
-        * Group - core:phaseresolver
-        */ 
+		/*
+		 * Group - core:phaseresolver
+		 */ 
         /* Invalid Module Ref */
         AXIS2_ERROR_INVALID_MODULE_REF,
         /* Invalid Phase */
@@ -228,9 +228,9 @@ extern "C"
          */
         /**  Schema is NULL */
         AXIS2_ERROR_WSDL_SCHEMA_IS_NULL,
-       /*
-        * Group - core:receivers
-        */ 
+		/*
+		 * Group - core:receivers
+		 */ 
         /* Om Element has invalid state */
         AXIS2_ERROR_OM_ELEMENT_INVALID_STATE,
         /* Om Elements do not match */
@@ -241,13 +241,13 @@ extern "C"
         AXIS2_ERROR_UNKNOWN_STYLE,
         /* String does not represent a valid NCName */
         AXIS2_ERROR_STRING_DOES_NOT_REPRESENT_A_VALID_NC_NAME,
-       /*
-        * Group - core:transport
-        */ 
+		/*
+		 * Group - core:transport
+		 */ 
 
-       /*
-        * Group - core:transport:http
-        */ 
+		/*
+		 * Group - core:transport:http
+		 */ 
         /* Error occured in transport */
         AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
         /** A read attempt(HTTP) for the reply without sending the request */
@@ -298,25 +298,25 @@ extern "C"
         AXIS2_ERROR_UNSUPPORTED_SCHEMA_TYPE,
         /* Service or operation not found */
         AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
-       /*
-        * Group - mod_addr
-        */ 
+		/*
+		 * Group - mod_addr
+		 */ 
 
-       /*
-        * Group - platforms
-        */
+		/*
+		 * Group - platforms
+		 */
     
-       /*
-        * Group - utils
-        */
-      /** Could not open the axis2 file */
-      AXIS2_ERROR_COULD_NOT_OPEN_FILE,
+		/*
+		 * Group - utils
+		 */
+		/** Could not open the axis2 file */
+		AXIS2_ERROR_COULD_NOT_OPEN_FILE,
         /* Failed in creating DLL */
         AXIS2_ERROR_DLL_CREATE_FAILED,
         /* DLL loading failed */
         AXIS2_ERROR_DLL_LOADING_FAILED,
-      /** Environment passed is null */
-      AXIS2_ERROR_ENVIRONMENT_IS_NULL,
+		/** Environment passed is null */
+		AXIS2_ERROR_ENVIRONMENT_IS_NULL,
         /* Axis2 File does not have a file name */
         AXIS2_ERROR_FILE_NAME_NOT_SET,
         /* DLL Description Info Object has invalid state */
@@ -325,12 +325,12 @@ extern "C"
         AXIS2_ERROR_HANDLER_CREATION_FAILED,
         /** Array list index out of bounds */
         AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
-      /** Invalid IP or hostname */
-      AXIS2_ERROR_INVALID_ADDRESS,
-      /** Trying to do operation on invalid file descriptor */
-      AXIS2_ERROR_INVALID_FD,
-      /** Trying to do operation on closed/not opened socket */
-      AXIS2_ERROR_INVALID_SOCKET,
+		/** Invalid IP or hostname */
+		AXIS2_ERROR_INVALID_ADDRESS,
+		/** Trying to do operation on invalid file descriptor */
+		AXIS2_ERROR_INVALID_FD,
+		/** Trying to do operation on closed/not opened socket */
+		AXIS2_ERROR_INVALID_SOCKET,
         /** Parameter not set */
         AXIS2_ERROR_INVALID_STATE_PARAM,
         /* Module create failed */
@@ -339,10 +339,10 @@ extern "C"
         AXIS2_ERROR_MSG_RECV_CREATION_FAILED,
         /** No such element */
         AXIS2_ERROR_NO_SUCH_ELEMENT,
-      /** Socket bind failed. Another process may be already using this port*/
-      AXIS2_ERROR_SOCKET_BIND_FAILED,
-      /** Error creating a socket. Most probably error returned by OS */
-      AXIS2_ERROR_SOCKET_ERROR,
+		/** Socket bind failed. Another process may be already using this port*/
+		AXIS2_ERROR_SOCKET_BIND_FAILED,
+		/** Error creating a socket. Most probably error returned by OS */
+		AXIS2_ERROR_SOCKET_ERROR,
         /* Listen failed for the server socket */
         AXIS2_ERROR_SOCKET_LISTEN_FAILED,
         /* Failed in creating Service Skeleton */
@@ -355,13 +355,13 @@ extern "C"
         AXIS2_ERROR_UUID_GEN_FAILED,
         /* Possible deadlock */
         AXIS2_ERROR_POSSIBLE_DEADLOCK,
-       /*
-        * Group - wsdl
-        */
+		/*
+		 * Group - wsdl
+		 */
         /* Interface or Port Type not found for the binding */
         AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
-      /* Interfaces or Ports not found for the partially built WOM */
-      AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
+		/* Interfaces or Ports not found for the partially built WOM */
+		AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
         /** Wsdl op accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_WSDL_OP,
         /** Wsdl Service accessed has invalid state */
@@ -376,17 +376,17 @@ extern "C"
         AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
         /* Wsdl svc name cannot be null(Required) */
         AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED,
-       /*
-        * Group - xml
-        */
+		/*
+		 * Group - xml
+		 */
 
-       /*
-        * Group - xml:attachments
-        */
+		/*
+		 * Group - xml:attachments
+		 */
         
-       /*
-        * Group - xml:om
-        */
+		/*
+		 * Group - xml:om
+		 */
         /** Builder done with pulling. Cannot pull any more */
         AXIS2_ERROR_BUILDER_DONE_CANNOT_PULL,
         /** Discard faile because the builder state is invalid */
@@ -400,18 +400,18 @@ extern "C"
         /** error a namespace should have a valid uri */
         AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI,
         /** next method has not been called so cannot remove
-        an element before calling next valid for any om iterator */
+			an element before calling next valid for any om iterator */
         AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED,
         /** remove method has alread been called once so cann't remove till 
-         next method is called valid for any om children iterator*/
+			next method is called valid for any om children iterator*/
         AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED,
         /** axiom_xml_reader returned NULL element */
         AXIS2_ERROR_XML_READER_ELEMENT_NULL,
         /** axiom_xml_reader returned NULL value */
         AXIS2_ERROR_XML_READER_VALUE_NULL,
-       /*
-        * Group - xml:parser
-        */
+		/*
+		 * Group - xml:parser
+		 */
         /** error occured creating xml stream reader */
         AXIS2_ERROR_CREATING_XML_STREAM_READER,
         /** error occured creating xml stream writer */
@@ -450,12 +450,12 @@ extern "C"
         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
         /** error in writing cdata section */
         AXIS2_ERROR_WRITING_CDATA,
-      /** AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected */
-      AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
+		/** AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected */
+		AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
       
-       /*
-        * Group - xml:soap
-        */
+		/*
+		 * Group - xml:soap
+		 */
         /** invalid type passed */
         AXIS2_ERROR_INVALID_BASE_TYPE,
         /** invalid soap namespace uri found */
@@ -490,7 +490,7 @@ extern "C"
         /*soap11 fault actor element should not have child elements*/
         AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS,
         /** soap builder found a child element other than header or body in envelope 
-        element */
+			element */
         AXIS2_ERROR_SOAP_BUILDER_ENVELOPE_CAN_HAVE_ONLY_HEADER_AND_BODY,
         /** soap builder encounterd body element first and header next */
         AXIS2_ERROR_SOAP_BUILDER_HEADER_BODY_WRONG_ORDER,
@@ -522,9 +522,9 @@ extern "C"
         AXIS2_ERROR_UNSUPPORTED_ELEMENT_IN_SOAP_FAULT_ELEMENT,
         /*wrong element order encounterd*/
         AXIS2_ERROR_WRONG_ELEMENT_ORDER_ENCOUNTERED,
-       /*
-        * Group - services
-        */
+		/*
+		 * Group - services
+		 */
         /** Invalid XML format in request */
         AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST,
         /** Input OM node NULL, Probably error in SOAP request */
@@ -532,9 +532,9 @@ extern "C"
         /** Invalid parameters for service operation in SOAP request */
         AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST,
         
-       /*
-        * Group - repos
-        */
+		/*
+		 * Group - repos
+		 */
         /* not authenticated */
         AXIS2_ERROR_REPOS_NOT_AUTHENTICATED,
         /* unsupported mode */
@@ -552,14 +552,14 @@ extern "C"
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present
             for the purpose of sizing the error message array.
-          */
+		*/
         AXIS2_ERROR_LAST
     };
         
     struct axis2_error;
     struct axis2_error_ops;
-   typedef enum axis2_status_codes axis2_status_codes_t;
-   typedef enum axis2_error_codes axis2_error_codes_t;
+	typedef enum axis2_status_codes axis2_status_codes_t;
+	typedef enum axis2_error_codes axis2_error_codes_t;
 
 /**
  * @defgroup axis2_error error
@@ -567,55 +567,58 @@ extern "C"
  * @{
  */
 
-  /** 
-    * \brief Axis2 error ops struct
-    *
-    * Encapsulator struct for ops of axis2_error
-    */
+	/** 
+	 * \brief Axis2 error ops struct
+	 *
+	 * Encapsulator struct for ops of axis2_error
+	 */
     typedef struct axis2_error_ops
     {
 
-      /**
-        * deallocate memory of a error struct
-        * @return axis2_status_t status code
-        */
+		/**
+		 * deallocate memory of a error struct
+		 * @return axis2_status_t status code
+		 */
 
         axis2_status_t (AXIS2_CALL *free)(struct axis2_error *error);
         
-      /**
-        * get error message for the last error
-        * @return error message for the last error. NULL on error.
-        */
-    const axis2_char_t *(AXIS2_CALL *
-    get_message)(
-    const struct axis2_error *error);
+		/**
+		 * get error message for the last error
+		 * @return error message for the last error. NULL on error.
+		 */
+		const axis2_char_t *(AXIS2_CALL *
+							 get_message)(
+								 const struct axis2_error *error);
       
-    /**
-     * This fucntion is supposed to be overridden in an extended error structure.
-     * For example in Sandesha error structure this fucntion is overridden so that
-     * errors of axis2 range call the get_message function of error struct but
-     * errors of sandesha2 range get the messages from an array of that struct.
-     * @return error message for the extended struct.
-     */
-    const axis2_char_t *(AXIS2_CALL *
-    get_extended_message)(
-    const struct axis2_error *error);
+		/**
+		 * This fucntion is supposed to be overridden in an extended error structure.
+		 * For example in Sandesha error structure this fucntion is overridden so that
+		 * errors of axis2 range call the get_message function of error struct but
+		 * errors of sandesha2 range get the messages from an array of that struct.
+		 * @return error message for the extended struct.
+		 */
+		const axis2_char_t *(AXIS2_CALL *
+							 get_extended_message)(
+								 const struct axis2_error *error);
       
-       axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
-            ,  axis2_error_codes_t error_number);
+		axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
+														,  axis2_error_codes_t error_number);
+		
+		axis2_status_t  (AXIS2_CALL *set_status_code) (struct axis2_error *error
+													   , axis2_status_codes_t status_code);
       
-         axis2_status_t  (AXIS2_CALL *set_status_code) (struct axis2_error *error
-            , axis2_status_codes_t status_code);
-      
-         axis2_status_t  (AXIS2_CALL *get_status_code) (struct axis2_error *error);
+		axis2_status_t  (AXIS2_CALL *get_status_code) (struct axis2_error *error);
+
+		axis2_status_t (AXIS2_CALL *set_error_message) (struct axis2_error *error
+														, axis2_char_t *message);
           
     } axis2_error_ops_t;
 
-  /** 
-    * \brief Axis2 Error struct
-    *
-    * Error holds the last errorno
-    */
+	/** 
+	 * \brief Axis2 Error struct
+	 *
+	 * Error holds the last errorno
+	 */
     typedef struct axis2_error
     {
         /** error related ops */
@@ -623,17 +626,20 @@ extern "C"
         axis2_allocator_t *allocator;
         /** last error number */
         int error_number;
-
         int status_code;
+		axis2_char_t *message;
     } axis2_error_t;
 
-AXIS2_EXTERN 
-axis2_status_t AXIS2_CALL axis2_error_init();
+	AXIS2_EXTERN 
+	axis2_status_t AXIS2_CALL axis2_error_init();
 
 #define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
 
 #define AXIS2_ERROR_GET_MESSAGE(error) \
     ((error)->ops->get_message(error))
+
+#define AXIS2_ERROR_SET_MESSAGE(error, message) \
+    ((error)->ops->set_error_message(error, message))
 
 #define AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number) \
         ((error)->ops->set_error_number(error, error_number))

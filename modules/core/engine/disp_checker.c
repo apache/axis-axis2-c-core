@@ -25,6 +25,8 @@
 #include <axis2_op_ctx.h>
 #include <axis2_svc_ctx.h>
 #include <axis2_endpoint_ref.h>
+#include <axiom_soap.h>
+#include <axiom.h>
 
 typedef struct axis2_disp_checker_impl
 {
@@ -220,6 +222,10 @@ axis2_disp_checker_invoke(
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     const axis2_char_t *address = NULL;
+	axiom_soap_fault_t *soap_fault;
+	axiom_soap_envelope_t *soap_envelope;
+	axiom_soap_body_t *soap_body;
+	int soap_version = AXIOM_SOAP12;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -262,6 +268,14 @@ axis2_disp_checker_invoke(
     if (!svc)
     {
         AXIS2_LOG_INFO(env->log, "Service Not found. Endpoint reference is : %s", (address) ? address : "NULL");
+		if (AXIS2_MSG_CTX_GET_IS_SOAP_11 (msg_ctx, env))
+		{
+			soap_version = AXIOM_SOAP11;
+		}
+		soap_envelope = axiom_soap_envelope_create_default_soap_envelope (env, soap_version); 
+		soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, "Receiver", "Service Not Found", soap_version);
+		AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
     }
 

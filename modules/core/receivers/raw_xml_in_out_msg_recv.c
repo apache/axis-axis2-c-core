@@ -22,7 +22,7 @@
 #include <axiom_soap_header.h>
 #include <axiom_soap_body.h>
 #include <axiom_soap_fault.h>
-
+#include <axiom_soap.h>
 
 /************************* Function prototypes ********************************/
 
@@ -90,6 +90,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     const axis2_char_t *soap_ns = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     int soap_version = AXIOM_SOAP12;
     axiom_namespace_t *env_ns = NULL;
+	axiom_node_t *fault_node = NULL;
+	axiom_soap_fault_detail_t *fault_detail;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -196,7 +198,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                 }
             }
             else
-            {
+           { 
                 AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_RPC_NEED_MATCHING_CHILD, AXIS2_FAILURE);
                 status = AXIS2_FAILURE;
@@ -213,8 +215,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         {
             skel_invoked = AXIS2_TRUE;
             result_node = AXIS2_SVC_SKELETON_INVOKE(svc_obj, env, om_node, new_msg_ctx);
-            AXIS2_SVC_SKELETON_FREE(svc_obj, env);
+			if (result_node)
+				AXIS2_SVC_SKELETON_FREE(svc_obj, env);
         }
+
+
 
         if (result_node)
         {
@@ -240,11 +245,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             else
             {
                 body_content_node = result_node;
+				
             }
         }
         else
         {
             status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
+			fault_node =  AXIS2_SVC_SKELETON_ON_FAULT (svc_obj, env, om_node);
+			AXIS2_SVC_SKELETON_FREE(svc_obj, env);
         }
     }
 
@@ -316,6 +324,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 
         soap_fault = axiom_soap_fault_create_default_fault(env, out_body,
                 fault_value_str, fault_reason_str, soap_version);
+		if (fault_node)
+		{
+			fault_detail = axiom_soap_fault_detail_create_with_parent (env, soap_fault);
+			AXIOM_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY (fault_detail, env, fault_node);
+		}
     }
 
     if (body_content_node)
@@ -326,7 +339,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     else if (soap_fault)
     {
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
-        status = AXIS2_FAILURE; /* if there is a failure we have to return a failure code */
+		status = AXIS2_SUCCESS;
     }
     else
     {

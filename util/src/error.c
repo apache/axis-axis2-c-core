@@ -30,6 +30,9 @@ axis2_error_impl_set_status_code(axis2_error_t *error, axis2_status_codes_t stat
 axis2_status_t AXIS2_CALL
 axis2_error_impl_get_status_code(axis2_error_t *error);
 
+axis2_status_t AXIS2_CALL
+axis2_error_impl_set_error_message(axis2_error_t *error, axis2_char_t *message);
+
 /* array to hold error messages */
 const axis2_char_t* axis2_error_messages[AXIS2_ERROR_LAST];
 
@@ -519,6 +522,8 @@ axis2_error_create(axis2_allocator_t * allocator)
         (axis2_error_ops_t *) AXIS2_MALLOC(allocator,
                 sizeof(axis2_error_ops_t));
 
+	error->message = NULL;
+
     if (!error->ops)
     {
         AXIS2_FREE(allocator, error);
@@ -531,17 +536,30 @@ axis2_error_create(axis2_allocator_t * allocator)
     error->ops->set_status_code = axis2_error_impl_set_status_code;
     error->ops->get_status_code = axis2_error_impl_get_status_code;
     error->ops->free            = axis2_error_impl_free;
-
+    error->ops->set_error_message = axis2_error_impl_set_error_message;
     return error;
 }
 
 const axis2_char_t * AXIS2_CALL
 axis2_error_impl_get_message(const axis2_error_t *error)
 {
-    if (error && error->error_number >= AXIS2_ERROR_NONE && error->error_number < AXIS2_ERROR_LAST)
-        return axis2_error_messages[error->error_number];
+	const axis2_char_t *message = NULL;
+	if (error)
+	{
+		if (error->error_number > AXIS2_ERROR_NONE && error->error_number < AXIS2_ERROR_LAST)
+			message = axis2_error_messages[error->error_number];
+		else
+		{
+			if (error->message)
+				message = error->message;
+			else if (error->error_number == AXIS2_ERROR_NONE)
+				message = axis2_error_messages[AXIS2_ERROR_NONE];
+			else 
+				message = "Invalid Error Number";
+		}
+	}
 
-    return "Invalid Error Number";
+    return message;
 }
 
 axis2_status_t AXIS2_CALL
@@ -562,4 +580,12 @@ axis2_status_t AXIS2_CALL
 axis2_error_impl_get_status_code(axis2_error_t *error)
 {
     return error->status_code;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_error_impl_set_error_message(axis2_error_t *error, axis2_char_t *message)
+{
+	if (message)
+		error->message = message;
+    return AXIS2_SUCCESS;
 }
