@@ -283,6 +283,10 @@ axis2_disp_checker_invoke(
     if (!op)
     {
         AXIS2_LOG_INFO(env->log, "Operation Not found. Endpoint reference is : %s", (address) ? address : "NULL");
+		soap_envelope = axiom_soap_envelope_create_default_soap_envelope (env, soap_version); 
+		soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, "Receiver", "Operation Not Found", soap_version);
+		AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
