@@ -661,6 +661,29 @@ extern "C"
                     const axis2_env_t *env,
                     const axis2_char_t *soap_action);
 
+		/**
+		 * Sets xml parser reset
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param reset flag is a boolean value
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+		axis2_status_t (AXIS2_CALL *
+						set_xml_parser_reset)(
+							axis2_options_t *options,
+							const axis2_env_t *env,
+							const axis2_bool_t paser_reset_flag);
+
+        /**
+         * Gets xml parser reset value,
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return xml parser reset boolean value
+         */
+        axis2_bool_t (AXIS2_CALL *
+                get_xml_parser_reset)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Frees options struct.
@@ -785,6 +808,11 @@ extern "C"
     @sa axis2_options_ops#get_to */
 #define AXIS2_OPTIONS_GET_TO(options, env) \
       ((options)->ops->get_to(options, env))
+
+/** Get xml parser reset value
+    @sa axis2_options_opt#get_xml_parser_reset */
+#define AXIS2_OPTIONS_GET_XML_PARSER_RESET(options, env) \
+      ((options)->ops->get_xml_parser_reset(options, env))
 
 /** Whether to use a separate listener.
     @sa axis2_options_ops#get_use_separate_listener */
@@ -943,6 +971,9 @@ extern "C"
 #define AXIS2_OPTIONS_SET_SOAP_ACTION(options, env, action) \
       ((options)->ops->set_soap_action(options, env, action))
 
+/** Sets xml parser reset value  */
+#define AXIS2_OPTIONS_SET_XML_PARSER_RESET(options, env, flag) \
+      ((options)->ops->set_xml_parser_reset(options, env, flag))
 
 /** Frees the options struct.
     @sa axis2_options_ops#free*/

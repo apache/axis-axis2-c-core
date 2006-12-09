@@ -56,6 +56,7 @@ typedef struct axis2_options_impl
     axis2_bool_t manage_session;
     axis2_bool_t enable_mtom;
     axis2_char_t *soap_action;
+	axis2_bool_t xml_parser_reset;
 }
 axis2_options_impl_t;
 
@@ -343,6 +344,17 @@ axis2_options_set_soap_action(
 
 const axis2_char_t* AXIS2_CALL
 axis2_options_get_soap_action(
+    const axis2_options_t *options,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_options_set_xml_parser_reset(
+    axis2_options_t *options,
+    const axis2_env_t *env,
+    const axis2_bool_t xml_parser_reset);
+
+axis2_bool_t  AXIS2_CALL
+axis2_options_get_xml_parser_reset(
     const axis2_options_t *options,
     const axis2_env_t *env);
 
@@ -1240,6 +1252,7 @@ axis2_options_init_data(
     options_impl->soap_version = AXIOM_SOAP12;
     options_impl->enable_mtom = AXIS2_FALSE;
     options_impl->soap_action = NULL;
+    options_impl->xml_parser_reset = AXIS2_TRUE;
 }
 
 static void
@@ -1294,6 +1307,8 @@ axis2_options_init_ops(
     options->ops->get_enable_mtom = axis2_options_get_enable_mtom;
     options->ops->set_soap_action = axis2_options_set_soap_action;
     options->ops->get_soap_action = axis2_options_get_soap_action;
+    options->ops->set_xml_parser_reset = axis2_options_set_xml_parser_reset;
+    options->ops->get_xml_parser_reset = axis2_options_get_xml_parser_reset;
     options->ops->free = axis2_options_free;
 }
 
@@ -1400,5 +1415,33 @@ axis2_options_set_soap_action(
     }
     return AXIS2_SUCCESS;
 }
+
+
+axis2_bool_t AXIS2_CALL
+axis2_options_get_xml_parser_reset (
+	const axis2_options_t *options,
+	const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(options)->xml_parser_reset;
+}
+
+axis2_status_t AXIS2_CALL 
+axis2_options_set_xml_parser_reset (
+    axis2_options_t *options,
+    const axis2_env_t *env,
+    const axis2_bool_t xml_parser_reset)
+{
+    axis2_options_impl_t *options_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    options_impl = AXIS2_INTF_TO_IMPL(options);
+
+	options_impl->xml_parser_reset = xml_parser_reset;
+    return AXIS2_SUCCESS;
+}
+
+
+
 
 

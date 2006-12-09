@@ -700,9 +700,14 @@ axis2_op_client_free(
         op_client_impl->op_ctx = NULL;
     }
 
+	if (AXIS2_OPTIONS_GET_XML_PARSER_RESET(op_client_impl->options, env))
+	{
+		axiom_xml_reader_cleanup(); 
+	}
+
     AXIS2_FREE(env->allocator, op_client_impl);
     op_client_impl = NULL;
-    axiom_xml_reader_cleanup();
+
     return AXIS2_SUCCESS;
 }
 
