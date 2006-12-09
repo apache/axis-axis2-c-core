@@ -93,12 +93,7 @@ echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
      * To see how to deal with multiple impl methods, have a look at the
      * math sample.
      */
-	if (AXIS2_MSG_CTX_GET_IS_SOAP_11 (msg_ctx, env))
-	{
-		AXIS2_ERROR_SET_STATUS_CODE (env->error, AXIS2_FAILURE);
-		AXIS2_ERROR_SET_MESSAGE (env->error, "Not Handling SOAP11 request \n");
-		return NULL;
-	}
+
     return axis2_echo_echo(env, node);
 }
 
