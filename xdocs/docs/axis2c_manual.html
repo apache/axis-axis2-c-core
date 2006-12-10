@@ -25,6 +25,7 @@ href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>)</p>
 <li><a href="#wrt_mod">Writing a Module</a></li>
 <li><a href="#sim_ser">Simple Axis Server</a></li>
 <li><a href="#apa_mod">Apache2 Module</a></li>
+<li><a href="#ssl_client">Using SSL Client</a></li>
 <li><a href="#appA">Appendix A  - axis2.xml</a></li>
 <li><a href="#appB">Appendix B  - services.xml</a></li>
 <li><a href="#appC">Appendix C  - module.xml</a></li>
@@ -1637,6 +1638,66 @@ URL</p>
 
 <p><a
 href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
+<a name="ssl_client"/><h1>Using SSL Client</h1>
+<h3>Using SSL Client</h3>
+
+<p>It is assumed that you have already installed a SSL enabled web service. For instance, you can configure Axis2/C with Apache2 webserver, and have Apache enable SSL. For more information on how to deploy Axis2C on Apache2 with SSL, please refer to the Axis2/C <a href="http://ws.apache.org/axis2/c/docs/installationguide.html#installing-apache2">installation guide</a>, and <a href="http://httpd.apache.org/docs/2.0/ssl/#documentation">Apache2 SSL/TLS documentation</a>.</p>
+
+<ul>
+<li>Build Axis2/C with SSL support
+<p>In order to build the Axis2/C client with SSL support, the source should be built with <code>--enable-ssl=yes</code> option.</p>
+<p>
+<code>
+./configure --enable-ssl=yes &lt;other configuration options&gt;<br/>
+make<br/>
+make install<br/>
+</code>
+</p>
+</li>
+<li>Configure axis2.xml
+
+<p>Add the following lines in axis2.xml.</p>
+<p>
+<code>
+&lt;transportSender name="https" class="axis2_http_sender"&gt;<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&lt;parameter name="PROTOCOL" locked="false"&gt;HTTP/1.1&lt;/parameter&gt;<br/>
+&lt;/transportSender&gt;<br/>
+</code></p>
+</li>
+<li>Get the server certificate in PEM format
+
+<p>You can easily obtain the server certificate using <code>openssl</code> tool as follows:</p>
+<p>
+Run <code>
+openssl s_client -connect &lt;servername&gt;:&lt;port&gt;
+</code> and copy the portion of the output bounded by and including:
+</p><p><code>-----BEGIN CERTIFICATE-----</code><br/>
+and <br/>
+<code>-----END CERTIFICATE-----</code><br/>
+</p>
+<p> to a file &lt;filename&gt;.pem</p>
+
+<p><b>NOTE:</b> On linux you can simply run the following and the file cert.pem will contain the server certificate.</p>
+<p>
+<code>
+echo |\<br/>
+openssl s_client -connect &lt;servername&gt;:&lt;port&gt; 2&gt;&amp;1 |\<br/>
+sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' &gt; cert.pem</br>
+</code>
+</p>
+</li>
+<li>Set the environment variable <code>AXIS2_SSL_CA_FILE</code> to point to the server certificate file created.
+<p>Eg: <code>export AXIS2_SSL_CA_FILE=${AXIS2C_HOME}/cert.pem</code></p>
+<p><b>NOTE:</b> Make sure that the <code>AXIS2_SSL_CA_FILE</code> does not begin with '~' to refer to the home directory. Use absolute path or relative (to the client binary) path not containing '~', otherwise openssl may fail to load the certificate file.</p>
+</li>
+<li>Invoke the client using an end point reference starting with <b>https</b>. 
+<p>Eg:
+<code>
+echo https://localhost:9090/axis2/services/echo/echoString
+</code>
+</p>
+</li>
+</ul>
 
 <a name="appA"/><h1>Appendix A</h1>
 
