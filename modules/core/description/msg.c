@@ -28,8 +28,6 @@ typedef struct axis2_msg_impl
     axis2_array_list_t *flow;
     /** name of the message */
     axis2_char_t *name;
-    /** list of SOAP headers */
-    axis2_array_list_t *soap_headers;
     /** XML schema element qname */
     axis2_qname_t *element_qname;
     /** direction of message */
@@ -149,7 +147,6 @@ axis2_msg_create(
     msg_impl->parent = NULL;
     msg_impl->flow = NULL;
     msg_impl->name = NULL;
-    msg_impl->soap_headers = NULL;
     msg_impl->element_qname = NULL;
     msg_impl->direction = NULL;
     msg_impl->msg.ops = NULL;
@@ -162,12 +159,6 @@ axis2_msg_create(
         return NULL;
     }
 
-    msg_impl->soap_headers = axis2_array_list_create(env, 0);
-    if (NULL == msg_impl->soap_headers)
-    {
-        axis2_msg_free(&(msg_impl->msg), env);
-        return NULL;
-    }
 
     msg_impl->flow = axis2_array_list_create(env, 0);
     if (NULL == msg_impl->flow)
@@ -232,19 +223,6 @@ axis2_msg_free(
         }
         AXIS2_ARRAY_LIST_FREE(msg_impl->flow, env);
         msg_impl->flow = NULL;
-    }
-
-    if (msg_impl->soap_headers)
-    {
-        int i = 0;
-        int size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(msg_impl->soap_headers, env);
-        for (i = 0; i < size; i++)
-        {
-            /* TODO : free the content */
-        }
-        AXIS2_ARRAY_LIST_FREE(msg_impl->soap_headers, env);
-        msg_impl->soap_headers = NULL;
     }
 
     if (msg_impl->name)
