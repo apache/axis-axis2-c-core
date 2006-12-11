@@ -123,7 +123,15 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     axis2_bool_t (AXIS2_CALL *
     is_success) (tcpmon_entry_t *entry,
                         const axis2_env_t *env);
-    
+
+    int (AXIS2_CALL *
+    get_format_bit) (tcpmon_entry_t *entry,
+	                    axis2_env_t *env);
+
+    axis2_status_t (AXIS2_CALL *
+    set_format_bit) (tcpmon_entry_t *entry,
+                        const axis2_env_t *env,
+                        int format_bit);
 };
 
  struct tcpmon_entry 
@@ -167,6 +175,12 @@ tcpmon_entry_create(const axis2_env_t *env );
 
 #define TCPMON_ENTRY_IS_SUCCESS(entry, env) \
         ((entry)->ops->is_success(entry, env))
+
+#define TCPMON_ENTRY_SET_FORMAT_BIT(entry, env, format_bit) \
+        ((entry)->ops->set_format_bit(entry, env, format_bit))
+
+#define TCPMON_ENTRY_GET_FORMAT_BIT(entry, env) \
+        ((entry)->ops->get_format_bit(entry, env))
 
 /** @} */
 

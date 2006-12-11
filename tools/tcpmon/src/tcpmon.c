@@ -110,7 +110,7 @@ int main(int argc, char** argv)
 		TCPMON_SESSION_ON_TRANS_FAULT(session, env, on_error_func);
 		TCPMON_SESSION_ON_NEW_ENTRY(session, env, on_new_entry);
 		TCPMON_SESSION_SET_TEST_BIT (session, env, test_bit);
-        TCPMON_SESSION_SET_FORMAT_BIT(session, env, format_bit);
+		TCPMON_SESSION_SET_FORMAT_BIT(session, env, format_bit);
 		TCPMON_SESSION_START(session, env);
 
 		do
@@ -133,7 +133,10 @@ int on_new_entry(const axis2_env_t *env,
 {
 		char* plain_buffer = NULL;
 		char* formated_buffer = NULL;
-        int format = 1;
+        int format = 0;
+
+        format = TCPMON_ENTRY_GET_FORMAT_BIT(entry, env);
+
 		if (status == 0)
 		{
 				plain_buffer = TCPMON_ENTRY_SENT_DATA(entry, env);

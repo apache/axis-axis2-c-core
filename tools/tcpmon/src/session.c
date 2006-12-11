@@ -172,7 +172,7 @@ tcpmon_session_create(const axis2_env_t *env)
     session_impl->session.ops->set_test_bit = tcpmon_session_set_test_bit;
     session_impl->session.ops->get_test_bit = tcpmon_session_get_test_bit;
     session_impl->session.ops->get_format_bit = tcpmon_session_get_format_bit;
-    session_impl->session.ops->set_format_bit = tcpmon_session_get_format_bit;
+    session_impl->session.ops->set_format_bit = tcpmon_session_set_format_bit;
     session_impl->session.ops->set_listen_port = tcpmon_session_set_listen_port;
     session_impl->session.ops->get_listen_port = tcpmon_session_get_listen_port;
     session_impl->session.ops->set_target_port = tcpmon_session_set_target_port;

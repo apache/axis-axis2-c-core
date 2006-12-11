@@ -43,6 +43,7 @@ typedef struct tcpmon_entry_impl
 	 axis2_bool_t is_success;
 	 axis2_char_t* time_diff;
     axis2_char_t* test_file_name;
+    int format_bit;
 }
 tcpmon_entry_impl_t;
 
@@ -103,6 +104,14 @@ read_current_stream(axis2_stream_t *stream,
 int
 write_to_file (char *filename, 
 					char *buffer);
+
+int AXIS2_CALL
+tcpmon_entry_get_format_bit(tcpmon_entry_t *entry,
+                            const axis2_env_t *env);
+axis2_status_t AXIS2_CALL
+tcpmon_entry_set_format_bit(tcpmon_entry_t *entry,
+                            const axis2_env_t *env,
+                            int format_bit);
 /************************** End of function prototypes ************************/
 
 tcpmon_entry_t * AXIS2_CALL
@@ -129,6 +138,7 @@ tcpmon_entry_create(const axis2_env_t *env)
 	 entry_impl -> arrived_headers = NULL;
 	 entry_impl -> sent_headers = NULL;
 	 entry_impl -> is_success = AXIS2_FALSE;
+     entry_impl -> format_bit = 0;
 
 	 entry_impl->entry.ops =
 		  AXIS2_MALLOC(env->allocator, sizeof(tcpmon_entry_ops_t));
@@ -148,6 +158,8 @@ tcpmon_entry_create(const axis2_env_t *env)
 	 entry_impl->entry.ops->arrived_data = tcpmon_entry_arrived_data;
 	 entry_impl->entry.ops->arrived_headers = tcpmon_entry_arrived_headers;
 	 entry_impl->entry.ops->is_success = tcpmon_entry_is_success;
+     entry_impl->entry.ops->set_format_bit = tcpmon_entry_set_format_bit;
+     entry_impl->entry.ops->get_format_bit = tcpmon_entry_get_format_bit;
 
 	 return &(entry_impl->entry);
 }
@@ -320,6 +332,34 @@ tcpmon_entry_is_success(tcpmon_entry_t *entry,
 	 return entry_impl-> is_success;
 }
 
+int AXIS2_CALL
+tcpmon_entry_get_format_bit(tcpmon_entry_t *entry,
+                            const axis2_env_t *env)
+{
+    tcpmon_entry_impl_t *entry_impl = NULL;
+
+	 AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
+
+	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
+
+	 return entry_impl->format_bit;
+}
+
+axis2_status_t AXIS2_CALL
+tcpmon_entry_set_format_bit(tcpmon_entry_t *entry,
+                            const axis2_env_t *env,
+                            int format_bit)
+{
+    tcpmon_entry_impl_t *entry_impl = NULL;
+
+    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
+
+    entry_impl = AXIS2_INTF_TO_IMPL(entry);
+
+    entry_impl->format_bit = format_bit;
+
+    return AXIS2_SUCCESS;
+}
 /** implimentations for protected methods */
 
 /** executes as new entry arises */
@@ -347,6 +387,7 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 	 int target_port = 0;
 	 axis2_char_t* target_host = NULL;
 	 int test_bit = 0;
+     int format_bit = 0;
 	 tcpmon_entry_t* entry = NULL;
 	 tcpmon_entry_impl_t* entry_impl = NULL;
 
@@ -403,6 +444,10 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 		{
 			 write_to_file ("reqest", buffer);
 		}
+
+     format_bit = TCPMON_SESSION_GET_FORMAT_BIT(session, env);
+     TCPMON_ENTRY_SET_FORMAT_BIT(entry, env, format_bit);
+
 
 	 now = time(NULL);
 	 localTime = localtime(&now);
