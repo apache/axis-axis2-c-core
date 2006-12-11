@@ -80,7 +80,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    rampart_print_info(env, " Starting rampart in handler ");
     /*Get SOAP envelope*/
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
 

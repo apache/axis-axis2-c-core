@@ -111,7 +111,7 @@ rampart_get_actions(const axis2_env_t *env,
     int param_type;
     if (!param_x_flow_security)
     {
-        AXIS2_LOG_INFO(env->log, "param_in_flow_security is NULL");
+        AXIS2_LOG_INFO(env->log, "[rampart][rhu]param_in_flow_security is NULL");
         return action_list;
     }
 
@@ -121,7 +121,7 @@ rampart_get_actions(const axis2_env_t *env,
     action_list = AXIS2_PARAM_GET_VALUE_LIST(param_x_flow_security, env);
     if (!action_list)
     {
-        AXIS2_LOG_INFO(env->log, " action_list is NULL ... ERROR ");
+        AXIS2_LOG_INFO(env->log, "[rampart][rhu] action_list is NULL ... ERROR ");
     }
     return action_list;
 }
@@ -142,7 +142,7 @@ rampart_get_action_params(const axis2_env_t *env,
 
     if (!param_action)
     {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_handler_util] param_action is NULL");
+        AXIS2_LOG_INFO(env->log, "[rampart][rhu] param_action is NULL");
     }
 
     param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_action, env);
@@ -151,7 +151,7 @@ rampart_get_action_params(const axis2_env_t *env,
     param_list = AXIS2_PARAM_GET_VALUE_LIST(param_action, env);
     if (!param_list)
     {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_handler_util] param list is NULL");
+        AXIS2_LOG_INFO(env->log, "[rampart][rhu] param list is NULL");
     }
 
     size = AXIS2_ARRAY_LIST_SIZE(param_list, env);

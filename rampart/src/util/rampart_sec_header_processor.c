@@ -22,6 +22,7 @@
 #include <rampart_username_token.h>
 #include <rampart_timestamp_token.h>
 #include <rampart_util.h>
+#include <rampart_sec_processed_result.h>
 #include <rampart_handler_util.h>
 #include <oxs_ctx.h>
 #include <oxs_error.h>
