@@ -48,26 +48,52 @@ extern "C" {
 
     struct openssl_rsa_ops
     {
+    
+      /**
+        * Free function
+        * @rsa pointer to openssl_rsa struct
+        * @env pointer to environment struct
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        **/
+
         axis2_status_t (AXIS2_CALL *
         free)(
             openssl_rsa_t *rsa,
             const axis2_env_t *env);
 
+      /**
+        * Decrypts data using a private key specified in @pkey
+        * @rsa pointer to openssl_rsa struct
+        * @env pointer to environment struct
+        * @pkey private key for decryption
+        * @in input data
+        * @out output data
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        **/
         int (AXIS2_CALL *
         prv_decrypt)(
             openssl_rsa_t *rsa,
             const axis2_env_t *env,
             const openssl_pkey_t *pkey,
-            unsigned char *in,
-            unsigned char **out );
+            oxs_buffer_t *in,
+            oxs_buffer_t *out );
 
+      /**
+        * Encrypts data using a public key specified in @pkey
+        * @rsa pointer to openssl_rsa struct
+        * @env pointer to environment struct
+        * @pkey public key for encryption
+        * @in input data
+        * @out output data
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        **/
         int (AXIS2_CALL*
         pub_encrypt)(
             openssl_rsa_t *rsa,
             const axis2_env_t *env,
             const openssl_pkey_t *pkey,
-            unsigned char *in,
-            unsigned char **out );
+            oxs_buffer_t *in,
+            oxs_buffer_t *out );
     };
 
     struct openssl_rsa

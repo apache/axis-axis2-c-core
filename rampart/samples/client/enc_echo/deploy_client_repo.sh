@@ -23,7 +23,7 @@ cp data/server.enc.axis2.xml $AXIS2C_HOME/axis2.xml
 
 #copy libs to client_repo
 echo "Copying libraries to client_repo"
-cp -rr $AXIS2C_HOME/lib $CLIENT_REPO/
+cp -r $AXIS2C_HOME/lib $CLIENT_REPO/
 
 #INSTALL MODULES to make sure that both server and client have the same module.
 echo "Copying latest modules to client_repo"

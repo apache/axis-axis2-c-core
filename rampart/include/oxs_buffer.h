@@ -58,26 +58,51 @@ extern "C"
 
     struct oxs_buffer_ops
     {
+		/**
+		*Free function of the buffer
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/		
         axis2_status_t (AXIS2_CALL *
                 free)(
                     oxs_buffer_t *buffer,
                     const axis2_env_t *env
                 );
-
+		/**
+		*Removes the first (size) charcters from the buffer
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@size number of characters to be removed
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/	
         axis2_status_t (AXIS2_CALL *
                 remove_head)(
                     oxs_buffer_t *buffer,
                     const axis2_env_t *env,
                     int size
                 );
-
+		/**
+		*Removes the last (size) charcters from the buffer
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@size number of characters to be removed		
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/	
         axis2_status_t (AXIS2_CALL *
                 remove_tail)(
                     oxs_buffer_t *buffer,
                     const axis2_env_t *env,
                     int size
                 );
-        
+		/**
+		*populates the buffer using the @data set the @size as the useful length
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@data the data for the buffer
+		*@size the effective length of data
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/	        
         axis2_status_t (AXIS2_CALL *
                 populate)(
                     oxs_buffer_t *buffer,
@@ -85,7 +110,14 @@ extern "C"
                     unsigned char *data,
                     int size
                 );
-
+		/**
+		*Append data (to the end)
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@data the data for the buffer
+		*@size the effective length of data
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/	
         axis2_status_t (AXIS2_CALL *
                 append)(
                     oxs_buffer_t *buffer,
@@ -93,7 +125,14 @@ extern "C"
                     unsigned char *data,
                     int size
                 );
-
+		/**
+		*Prepends data (to the front of the buffer)
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@data the data for the buffer
+		*@size the effective length of data
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/	
         axis2_status_t (AXIS2_CALL *
                 prepend)(
                     oxs_buffer_t *buffer,
@@ -101,40 +140,73 @@ extern "C"
                     unsigned char *data,
                     int size
                 );
-
+		/**
+		*Reads a file specified by @filename
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@filename The name of the file
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/	
         axis2_status_t (AXIS2_CALL *
                 read_file)(
                     oxs_buffer_t *buffer,
                     const axis2_env_t *env,
                     const axis2_char_t *filename
                 );
-
+		/**
+		*Sets the size
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@size the value of the size
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/	
         axis2_status_t (AXIS2_CALL *
                 set_size)(
                     oxs_buffer_t *buffer,
                     const axis2_env_t *env,
                     int size
                 );
-
+		/**
+		*Sets the maximum size of the buffer. Usually this will be allocated dynamically
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@size the maximum size of the buffer
+		*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+		*/	
         axis2_status_t (AXIS2_CALL *
                 set_max_size)(
                     oxs_buffer_t *buffer,
                     const axis2_env_t *env,
                     int size
                 );
-        
+		/**
+		*Returns data
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@return data in the buffer
+		*/	        
         unsigned char* (AXIS2_CALL *
                 get_data)(
                     oxs_buffer_t *buffer,
                     const axis2_env_t *env
                 );
-
+		/**
+		*Returns the effective length of the buffer
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@return the effective length of the buffer as int
+		*/	
         int (AXIS2_CALL *
                 get_size)(
                     oxs_buffer_t *buffer,
                     const axis2_env_t *env
                 );
-
+		/**
+		*Returns the maximum size of the buffer
+		*@buffer pointer to the OMXMLSec buffer struct
+		*@env pointer to environment struct
+		*@return the maximum size of the buffer
+		*/	
         int (AXIS2_CALL *
                 get_max_size)(
                     oxs_buffer_t *buffer,

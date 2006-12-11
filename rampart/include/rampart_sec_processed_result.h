@@ -58,6 +58,8 @@ rampart_get_security_processed_result(const axis2_env_t *env,
 
 /**
 *   Set a security processed result property to the message context
+*   @env the environment 
+*   @msg_ctx the message context in which data are extracted
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_set_security_processed_results_property(const axis2_env_t *env,
@@ -65,6 +67,8 @@ rampart_set_security_processed_results_property(const axis2_env_t *env,
 
 /**
 *   Get the complete set of security processed results
+*   @env the environment 
+*   @msg_ctx the message context in which data are extracted
 */
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 rampart_get_all_security_processed_results(const axis2_env_t *env,
@@ -72,6 +76,8 @@ rampart_get_all_security_processed_results(const axis2_env_t *env,
 
 /**
  * Prints all ke/val pairs in the security processed results
+ *   @env the environment 
+ *   @msg_ctx the message context in which data are extracted
  *
  */
 AXIS2_EXTERN void AXIS2_CALL

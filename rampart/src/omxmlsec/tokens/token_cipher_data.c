@@ -58,7 +58,6 @@ oxs_token_get_cipher_value_from_cipher_data(const axis2_env_t *env,
         value = oxs_token_get_cipher_value(env, cv_node);
     }else{
         /*If not then check for <CipherReference URI?>*/
-        /*TODO*/
     }
 
     return value;

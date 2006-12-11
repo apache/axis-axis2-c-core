@@ -29,7 +29,7 @@
         <timeToLive>360</timeToLive>
         <encryptionKeyTransportAlgorithm>http://www.w3.org/2001/04/xmlenc#rsa-1_5</encryptionKeyTransportAlgorithm>
         <encryptionSymAlgorithm>http://www.w3.org/2001/04/xmlenc#aes256-cbc</encryptionSymAlgorithm>  
-        <encryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/yhome/x_cert.cert</encryptionPropFile>
+        <encryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/bhome/a_cert.cert</encryptionPropFile>
         <!--encryptionKeyIdentifier options : Embedded IssuerSerial DirectReference KeyIdentifier-->
         <encryptionKeyIdentifier>IssuerSerial</encryptionKeyIdentifier>
       </action>
@@ -41,8 +41,8 @@
         <items>UsernameToken Timestamp Encrypt</items>
         <!--Following should be changed with your DLL or SO path-->
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
-        <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/yhome/y_store.pfx</decryptionPropFile>
-        <encryptionUser>y</encryptionUser>
+        <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/bhome/b_store.pfx</decryptionPropFile>
+        <encryptionUser>b</encryptionUser>
       </action>
     </parameter>
     <!--Rampart configurations END -->

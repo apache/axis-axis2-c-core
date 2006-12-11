@@ -158,13 +158,6 @@ openssl_cipher_ctx_free(openssl_cipher_ctx_t *ctx,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    /*TODO Check how to free the EVP_CIPHER. Might be a problem if we try to free it here.*/
-    if (ctx_impl->key)
-    {
-        OXS_KEY_FREE(ctx_impl->key, env);
-        /*AXIS2_FREE(env->allocator, ctx_impl->key);*/
-        ctx_impl->key = NULL;
-    }
 
     if (ctx_impl->iv)
     {
@@ -266,10 +259,9 @@ openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
     if (ctx_impl->key)
     {
         OXS_KEY_FREE(ctx_impl->key, env);
-        /*AXIS2_FREE(env->allocator, ctx_impl->key);*/
         ctx_impl->key = NULL;
     }
-    ctx_impl->key = key ;/* AXIS2_STRDUP(key, env);*/
+    ctx_impl->key = key ;
 
     return AXIS2_SUCCESS;
 }

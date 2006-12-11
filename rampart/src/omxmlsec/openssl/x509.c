@@ -363,9 +363,6 @@ openssl_x509_get_info(const axis2_env_t *env,
     return result;
 }
 
-
-
-
 AXIS2_EXTERN void  AXIS2_CALL
 openssl_x509_print(const axis2_env_t *env,
     X509 *cert)
@@ -380,7 +377,6 @@ openssl_x509_print(const axis2_env_t *env,
         printf("OPENSSL_X509_INFO_VERSION : %s\n", openssl_x509_get_info(env,OPENSSL_X509_INFO_VERSION ,cert));
         printf("OPENSSL_X509_INFO_PUBKEY : %s\n", openssl_x509_get_info(env,OPENSSL_X509_INFO_PUBKEY ,cert));
         printf("OPENSSL_X509_INFO_PUBKEY_ALGO : %s\n", openssl_x509_get_info(env,OPENSSL_X509_INFO_PUBKEY_ALGO ,cert));
-        /*printf("SUBJ_NAME_HASH : %u\n", openssl_x509_get_subject_name_hash(env,cert));*/
         printf("SERIAL : %u\n", openssl_x509_get_serial(env,cert));
         printf("PUBKEY : %s\n", openssl_x509_get_cert_data(env,cert));
 

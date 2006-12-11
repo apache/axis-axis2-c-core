@@ -30,8 +30,6 @@ generate_random_data(const axis2_env_t *env, oxs_buffer_t *buffer, int size)
 {
     axis2_status_t status =  AXIS2_FAILURE;
     int ret;
-    int encodedlen;
-    axis2_char_t *encoded_str = NULL;
     unsigned char temp_buffer[1024];
 
     ret = RAND_bytes(temp_buffer, size);
@@ -42,13 +40,20 @@ generate_random_data(const axis2_env_t *env, oxs_buffer_t *buffer, int size)
         return AXIS2_FAILURE;
     }
     /*Encoding make it easier to handle random data*/
+#if 0    
+    int encodedlen;
+    axis2_char_t *encoded_str = NULL;
+    
     encodedlen = axis2_base64_encode_len(size);
     encoded_str = AXIS2_MALLOC(env->allocator, encodedlen);
     ret = axis2_base64_encode(encoded_str, (const char *)temp_buffer, size);
     status = OXS_BUFFER_POPULATE(buffer, env, (unsigned char*)encoded_str, size);
-
     AXIS2_FREE(env->allocator, encoded_str);
     encoded_str = NULL;
+#else
+    status = OXS_BUFFER_POPULATE(buffer, env, (unsigned char*)temp_buffer, size);
+
+#endif
     return AXIS2_SUCCESS;
 }
 

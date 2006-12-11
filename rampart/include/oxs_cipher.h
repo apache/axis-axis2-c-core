@@ -33,16 +33,29 @@ extern "C"
 {
 #endif
 
+/**Get the cipher property  for the given url
+* @env pointer to environment struct
+* @url 	 the url as a string
+* @return the property 
+*/ 
 AXIS2_EXTERN openssl_cipher_property_t *AXIS2_CALL
 oxs_get_cipher_property_for_url(const axis2_env_t *env,
                      axis2_char_t *url);
 
-/*Get the cipher name for the given url*/ 
+/**Get the cipher name for the given url
+* @env pointer to environment struct
+* @url 	 the url as a string
+* @return the name as a string	
+*/ 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_get_cipher_name_for_url(const axis2_env_t *env,
                      axis2_char_t *url);
 
-/*Get the cipher url for the given name*/
+/**Get the cipher url for the given name
+	*@env pointer to environment struct
+	*@name the name as a string
+	*@return the url as a string
+	*/
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_get_cipher_url_for_name(const axis2_env_t *env,
                      axis2_char_t *name);

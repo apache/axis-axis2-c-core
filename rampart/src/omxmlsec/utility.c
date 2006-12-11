@@ -52,7 +52,7 @@ oxs_util_get_format_by_file_extension(const axis2_env_t *env,
         /*Its safe to assume that PEM can be without extension*/
         return OXS_ASYM_CTX_FORMAT_PEM;
     }
-    printf("ext %s", extension);
+    
     if((strcmp(extension, ".pfx") == 0) ){
         return OXS_ASYM_CTX_FORMAT_PKCS12;
     }else{

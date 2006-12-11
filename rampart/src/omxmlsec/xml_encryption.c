@@ -258,6 +258,7 @@ oxs_xml_enc_encrypt_node(const axis2_env_t *env,
     }
     /*Free*/
     OXS_BUFFER_FREE(serialized_buf, env); 
+    serialized_buf = NULL;
 
     /*Return success*/
     return AXIS2_SUCCESS;
@@ -299,6 +300,7 @@ oxs_xml_enc_encrypt_data(const axis2_env_t *env,
 
     /*Free buffers*/
     OXS_BUFFER_FREE(result_buf, env); 
+    result_buf = NULL;
 
     return AXIS2_SUCCESS;
 }
@@ -340,6 +342,9 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
     AXIOM_NODE_ADD_CHILD(parent_of_enc_node, env, deserialized_node);
     AXIOM_NODE_DETACH(enc_type_node, env);    
 
+    OXS_BUFFER_FREE(result_buf, env);
+    result_buf = NULL;
+
     return AXIS2_SUCCESS;
 }
 
@@ -357,6 +362,7 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     axis2_char_t *type = NULL;
     axis2_char_t *id = NULL;
     oxs_buffer_t *input_buf = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     /*Get the symmetric encryption algorithm*/
     enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
@@ -384,7 +390,13 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
 
     /*Decrypt*/
     OXS_CTX_SET_OPERATION(enc_ctx, env, OXS_CTX_OPERATION_DECRYPT);
-    return oxs_encryption_symmetric_crypt(env, enc_ctx, input_buf, result_buf);
+    status =  oxs_encryption_symmetric_crypt(env, enc_ctx, input_buf, result_buf);
+    
+    /*Free*/
+    OXS_BUFFER_FREE(input_buf, env);
+    input_buf = NULL;
+
+    return status;
 }
 
 /*For SOAP this parent is the wsse:Security node*/
@@ -417,6 +429,10 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     
     /*Call encryption*/
     status = oxs_encryption_asymmetric_crypt(env, asym_ctx, input, result);
+    /*Free input*/
+    OXS_BUFFER_FREE(input, env);
+    input = NULL;
+
     if(AXIS2_FAILURE == status){
         oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
                   "Assymmetric key encryption failed");
@@ -452,6 +468,10 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     cd_node = oxs_token_build_cipher_data_element(env, encrypted_key_node);
     cv_node = oxs_token_build_cipher_value_element(env, cd_node,  encrypted_key_data);
     oxs_token_build_data_reference_list(env, encrypted_key_node, id_list); 
+
+    /*Free*/
+    OXS_BUFFER_FREE(result, env);
+    result = NULL;
 
     return AXIS2_SUCCESS; 
 }
@@ -505,6 +525,10 @@ oxs_xml_enc_decrypt_key(const axis2_env_t *env,
 
     /*Call decryption*/
     status = oxs_encryption_asymmetric_crypt(env, asym_ctx, input_buf, result_buf);
+    /*Free input*/
+    OXS_BUFFER_FREE(input_buf, env);
+    input_buf = NULL;
+    
     if(AXIS2_FAILURE == status){
         return AXIS2_FAILURE;
     }
@@ -515,6 +539,9 @@ oxs_xml_enc_decrypt_key(const axis2_env_t *env,
                             "decrypted_session_key", 
                             OXS_BUFFER_GET_SIZE(result_buf, env), 
                             OXS_KEY_USAGE_DECRYPT  );
+    /*Free*/
+    OXS_BUFFER_FREE(result_buf, env);
+    result_buf = NULL;
 
     return AXIS2_SUCCESS;
 }

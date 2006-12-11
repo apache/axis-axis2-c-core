@@ -588,7 +588,8 @@ rampart_actions_set_encryption_key_transport_algorithm(
         AXIS2_FREE(env->allocator, actions_impl->encryption_key_transport_algorithm);
         actions_impl->encryption_key_transport_algorithm = NULL;
     }
-    actions_impl->encryption_key_transport_algorithm = AXIS2_STRDUP(encryption_key_transport_algorithm, env);
+    actions_impl->encryption_key_transport_algorithm = 
+					AXIS2_STRDUP(encryption_key_transport_algorithm, env);
     if(!actions_impl->encryption_key_transport_algorithm  ){
         return AXIS2_FAILURE;
     }

@@ -35,11 +35,11 @@
 #include <oxs_token_key_info.h>
 #include <oxs_token_key_name.h>
 #include <oxs_key.h>
+#include <oxs_axiom.h>
+#include <oxs_asym_ctx.h>
 #include <oxs_token_reference_list.h>
 #include <axis2_utils.h>
 #include <axis2_array_list.h>
-#include <oxs_axiom.h>
-#include <oxs_asym_ctx.h>
 
 /*Private functions*/
 static axis2_status_t 
@@ -219,14 +219,28 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
                                 "Data decryption failed", RAMPART_FAULT_IN_ENCRYPTED_DATA, msg_ctx);
             return AXIS2_FAILURE;
         }
+        /*Free*/
+        OXS_CTX_FREE(ctx, env);
+        ctx = NULL;
+
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Node ID=%s decrypted successfuly", id);
     }
+    
+    
+    /*Set the security processed result*/
+    rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_ENC_CHECKED, RAMPART_YES);
+
+    /*Free*/
+    oxs_asym_ctx_free(asym_ctx, env);
+    asym_ctx = NULL;
+    OXS_KEY_FREE(decrypted_sym_key, env);
+    decrypted_sym_key = NULL;
 
     return AXIS2_SUCCESS;    
 }
 
 static axis2_status_t 
-rampart_shp_enforce_security(const axis2_env_t *env,
+rampart_shp_pre_security_check(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
     axiom_soap_envelope_t *soap_envelope,
@@ -277,17 +291,78 @@ rampart_shp_enforce_security(const axis2_env_t *env,
                 return AXIS2_FAILURE;
             }
 
-        }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL))){
-            /*Encryption is a MUST*/
-        }else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL))){
-            /*Signature is a MUST*/
         }
 
     } 
     return AXIS2_SUCCESS;
 }
 
+/*Compare security checked results with action items*/
+static axis2_status_t
+rampart_shp_post_security_check(const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    rampart_actions_t *actions)
+{
+    axis2_char_t *items = NULL;
+    axis2_array_list_t *items_list = NULL;
+    int i = 0, size = 0;
 
+    AXIS2_LOG_INFO(env->log, "[rampart][shp] Enforcing Security");
+    items = RAMPART_ACTIONS_GET_ITEMS(actions, env);
+    if (!items)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][shp] No items defined. So nothing to do.");
+        return AXIS2_SUCCESS;
+    }
+
+    /*Get action items seperated by spaces*/
+    items_list = axis2_tokenize(env, items, ' ');
+    size = AXIS2_ARRAY_LIST_SIZE(items_list, env);
+
+    /*Iterate thru items*/
+    for (i = 0; i < size; i++)
+    {
+        axis2_char_t *item = NULL;
+        axis2_char_t *result = NULL;
+        item = AXIS2_ARRAY_LIST_GET(items_list, env, i);
+
+        if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL))){
+            /*UT is a MUST. So identify if the UT is available*/
+            result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_CHECKED);   
+            if(!result || (0 != AXIS2_STRCMP(result, RAMPART_YES)) ){
+                AXIS2_LOG_INFO(env->log, "[rampart][shp] UsernameToken is required. But not available");
+                rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
+                        "UsernameToken is not available", RAMPART_FAULT_IN_USERNAMETOKEN, msg_ctx);
+                return AXIS2_FAILURE;
+            }
+            result = NULL;
+        }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL))){
+            /*TS is a MUST.*/
+            result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_TS_CHECKED);
+            if(!result || (0 != AXIS2_STRCMP(result, RAMPART_YES)) ){
+                AXIS2_LOG_INFO(env->log, "[rampart][shp] Timestamp is required. But not available");
+                rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
+                        "Timestamp is not available", RAMPART_FAULT_IN_TIMESTAMP, msg_ctx);
+                return AXIS2_FAILURE;
+            }
+            result = NULL;
+        }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL))){
+            /*Encryption is a MUST*/
+            result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_ENC_CHECKED);
+            if(!result || (0 != AXIS2_STRCMP(result, RAMPART_YES)) ){
+                AXIS2_LOG_INFO(env->log, "[rampart][shp] Encryption is required. But not available");
+                rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
+                        "Data are not encrypted", RAMPART_FAULT_IN_ENCRYPTED_KEY, msg_ctx);
+                return AXIS2_FAILURE;
+            }
+            result = NULL;
+        }else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL))){
+            /*Signature is a MUST*/
+        }
+
+    }
+    return AXIS2_SUCCESS;
+}
     
 
 /*Public functions*/
@@ -306,8 +381,8 @@ rampart_shp_process_message(const axis2_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
 
     /*If certian security elements are expected by the reciever, rampart should check for those */
-    /*This should be done along with the the message header processing. Need to be modified later for encryption*/
-    status =  rampart_shp_enforce_security(env, msg_ctx, actions,  soap_envelope, sec_node);
+    /*This should be removed once header encryption is introduced. But this pre-check avoids further processing of headers.*/
+    status =  rampart_shp_pre_security_check(env, msg_ctx, actions,  soap_envelope, sec_node);
     if(AXIS2_FAILURE == status){
         return AXIS2_FAILURE;
     }
@@ -362,7 +437,11 @@ rampart_shp_process_message(const axis2_env_t *env,
         cur_node = AXIOM_NODE_GET_NEXT_SIBLING(cur_node, env);
     }/*End of while*/
     
-    
+    status = rampart_shp_post_security_check(env, msg_ctx, actions); 
+    if(AXIS2_FAILURE == status){
+        AXIS2_LOG_INFO(env->log, "[rampart][shp] Security header doesn't confirms reciever's policy");
+        return AXIS2_FAILURE;
+    }
     AXIS2_LOG_INFO(env->log, "[rampart][shp] Security header element processing, DONE ");
     /*Do the action accordingly*/
     return AXIS2_SUCCESS;

@@ -38,7 +38,13 @@ extern "C" {
   * @ingroup Rampart_Util
   */
 
-
+ /**
+	*@env the environment
+	*@callback_module_name the file name of the callback module (.so or .DLL)
+	*@username the name of the user to get the password
+	*@ctx The axis2 context
+	*@return the password for the user or NULL if failed
+	*/
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_callback_password(const axis2_env_t *env,
@@ -48,6 +54,7 @@ rampart_callback_password(const axis2_env_t *env,
 
  /**
     * Generates the nonce. Nonce is a base64 encoded random string.
+	* @env the environment
     * @return generated nonce
     */    
 

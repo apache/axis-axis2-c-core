@@ -63,7 +63,8 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_crypto_sha1(const axis2_env_t *env
     }
     else
     {/*If all nonce, created and password are present*/
-        input = AXIS2_MALLOC(env->allocator, decoded_nonce_length + AXIS2_STRLEN(created) + AXIS2_STRLEN(password) + 1);
+        input = AXIS2_MALLOC(env->allocator, 
+						decoded_nonce_length + AXIS2_STRLEN(created) + AXIS2_STRLEN(password) + 1);
         sprintf(input, "%s%s%s", decoded_nonce, created, password);
     }
     
@@ -72,5 +73,3 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_crypto_sha1(const axis2_env_t *env
     AXIS2_FREE(env->allocator, decoded_nonce);
     return digest;
 }
-
-

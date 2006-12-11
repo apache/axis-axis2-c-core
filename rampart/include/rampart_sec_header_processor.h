@@ -34,6 +34,10 @@ extern "C" {
 #endif
 
 /**
+* Processes a message depending on it's security related claims.
+* This is th emain module in the infow of a message if rampart is enabled.
+* Processing is depending on the order of tokens apear in the @sec_node
+* Also the module will check for the InflowSecurity Settings	
 * @param env pointer to environment struct
 * @param msg_ctx message context
 * @param actions actions defined in the descriptor file

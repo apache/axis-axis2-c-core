@@ -114,7 +114,6 @@ rampart_print_security_processed_results_set(const axis2_env_t *env,
     for (hi = axis2_hash_first(sec_processed_results, env); hi; hi = axis2_hash_next(env, hi)) {
         axis2_hash_this(hi, &key, NULL, &val);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[rampart][spr] (key, val) %s = %s\n", (axis2_char_t*)key, (axis2_char_t*)val);
-        /*printf("%s = %s\n", (axis2_char_t*)key, (axis2_char_t*)val);*/
     }
 
 }

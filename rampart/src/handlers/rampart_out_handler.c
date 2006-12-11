@@ -128,17 +128,20 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
         axiom_soap_header_block_t *sec_header_block = NULL;
         axiom_namespace_t *sec_ns_obj = NULL;
         soap_header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
-        soap_header_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(soap_header_node, env);
+        soap_header_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+							soap_header_node, env);
 
         /*Create and populate rampart actions*/
         actions = rampart_actions_create(env);
 
         ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
-        param_out_flow_security = rampart_get_security_param(env, msg_ctx, RAMPART_OUTFLOW_SECURITY);
+        param_out_flow_security = rampart_get_security_param(env, msg_ctx, 
+									RAMPART_OUTFLOW_SECURITY);
 
         if (!param_out_flow_security)
         {
-            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No Outflow Security. So nothing to do");
+            AXIS2_LOG_INFO(env->log, 
+			"[rampart][rampart_out_handler] No Outflow Security. So nothing to do");
             /*return AXIS2_SUCCESS;*/
         }else{
             
@@ -147,26 +150,31 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
 
             if (!action_list)
             {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No actions defined in outflow security");
+                AXIS2_LOG_INFO(env->log, 
+				"[rampart][rampart_out_handler] No actions defined in outflow security");
                 return AXIS2_SUCCESS;
             }
 
             if (AXIS2_ARRAY_LIST_IS_EMPTY(action_list, env))
             {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No actions defined in outflow security");
+                AXIS2_LOG_INFO(env->log, 
+				"[rampart][rampart_out_handler] No actions defined in outflow security");
                 return AXIS2_SUCCESS;
             }
 
             /*Now we support only one action.*/
-            param_action = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(action_list, env, 0);
+            param_action = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(action_list, 
+							env, 0);
 
             if (!param_action)
             {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Cannot find first action element ERROR");
+                AXIS2_LOG_INFO(env->log, 
+					"[rampart][rampart_out_handler] Cannot find first action element ERROR");
                 return AXIS2_FAILURE;
             }
 
-            status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, param_action);
+            status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, 
+						param_action);
         }
         /*Then re-populate using the axis2_ctx. 
          *This is a hack to facilitate PHP extension to pass security parameters using options
@@ -178,7 +186,8 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
 
         if (!items)
         {
-            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No action items defined. Nothing to do");
+            AXIS2_LOG_INFO(env->log, 
+				"[rampart][rampart_out_handler] No action items defined. Nothing to do");
             return AXIS2_SUCCESS;
         }
 
@@ -189,7 +198,8 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
                 env, RAMPART_SECURITY, sec_ns_obj);
 
         /*Set mustUnderstand=1*/
-        AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_BOOL(sec_header_block, env, AXIS2_TRUE);
+        AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_BOOL(sec_header_block, 
+				env, AXIS2_TRUE);
 
         if (sec_header_block)
         {

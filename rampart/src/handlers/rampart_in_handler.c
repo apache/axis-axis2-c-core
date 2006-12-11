@@ -98,63 +98,72 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
             /*Check InFlowSecurity parameters*/
             ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
-            param_in_flow_security = rampart_get_security_param(env, msg_ctx, RAMPART_INFLOW_SECURITY);
+            param_in_flow_security = rampart_get_security_param(env, msg_ctx, 
+									RAMPART_INFLOW_SECURITY);
 
             if (param_in_flow_security)
             {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler]Inflow Security found");
+                AXIS2_LOG_INFO(env->log, 
+				"[rampart][rampart_in_handler]Inflow Security found");
 
                /*Get actions*/
-                action_list = rampart_get_actions(env, ctx, param_in_flow_security);
+                action_list = rampart_get_actions(env, ctx, 
+								param_in_flow_security);
     
                 if (action_list)
                 {
 
                     if (AXIS2_ARRAY_LIST_IS_EMPTY(action_list, env))
                     {
-                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No actions defined.");
+                        AXIS2_LOG_INFO(env->log, 
+						"[rampart][rampart_in_handler] No actions defined.");
                     }
                     /*Now we support only one action.i.e. Only the first action*/
-                    param_action = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(action_list, env, 0);
+                    param_action = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(action_list,
+						env, 0);
 
                     if (param_action)
                     {
-                        status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, param_action);
+                        status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, 
+									env, param_action);
                     }else{
-                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Cannot find first action element from the InflowSecurityParameter");
+                        AXIS2_LOG_INFO(env->log, 
+						"[rampart][rampart_in_handler] Cannot find first action element from the InflowSecurityParameter");
                     }
                 }
             }else{
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No Inflow Security in the paramter list.");
+                AXIS2_LOG_INFO(env->log, 
+				"[rampart][rampart_in_handler] No Inflow Security in the paramter list.");
                 return AXIS2_SUCCESS;
             }
             /*Then re-populate using the axis2_ctx*/
-            status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
-            
+            status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);            
 
             sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
 
             /*Set the security processed results to the message ctx*/
             status = rampart_set_security_processed_results_property(env, msg_ctx);
             if(AXIS2_FAILURE == status){
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_in_handler] Unable to set the security processed results");
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+					"[rampart][rampart_in_handler] Unable to set the security processed results");
             }
 
             if(!sec_node){
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No security header element.");
+                AXIS2_LOG_INFO(env->log, 
+					"[rampart][rampart_in_handler] No security header element.");
                 return AXIS2_SUCCESS;
             
             }
 
             /*The main entry point for all security header validations*/    
-            status = rampart_shp_process_message(env, msg_ctx, actions, soap_envelope, sec_node);
+            status = rampart_shp_process_message(env, msg_ctx, actions, 
+						soap_envelope, sec_node);
             if (AXIS2_FAILURE == status)
-            {
-                /*rampart_create_fault_envelope(env, "wsse:Security", "Security header processing failed", sub_codes, msg_ctx);*/
+            {                
                 return AXIS2_FAILURE;
             }                
 
-            /*rampart_print_security_processed_results_set(env, msg_ctx);*/
+           
 
         } /* End of sec_header */
 

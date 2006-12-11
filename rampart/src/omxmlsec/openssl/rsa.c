@@ -58,16 +58,16 @@ openssl_rsa_prv_decrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
-    unsigned char *in,
-    unsigned char **out);
+    oxs_buffer_t *in,
+    oxs_buffer_t *out);
 
 int AXIS2_CALL
 openssl_rsa_pub_encrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
-    unsigned char *in,
-    unsigned char **out);
+    oxs_buffer_t *in,
+    oxs_buffer_t *out);
 
 /*****************End of function headers ****************************/
 static void
@@ -134,8 +134,8 @@ openssl_rsa_pub_encrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
-    unsigned char *in,
-    unsigned char **out)
+    oxs_buffer_t *in,
+    oxs_buffer_t *out)
 {
     unsigned char *encrypted = NULL;
     openssl_rsa_impl_t *rsa_impl = NULL;
@@ -147,8 +147,8 @@ openssl_rsa_pub_encrypt(
 
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
     encrypted = AXIS2_MALLOC(env->allocator, RSA_size(key->pkey.rsa));
-    ret = RSA_public_encrypt(strlen((char*)in),
-            in,
+    ret = RSA_public_encrypt(OXS_BUFFER_GET_SIZE(in, env),
+            OXS_BUFFER_GET_DATA(in, env),
             encrypted,
             key->pkey.rsa ,
             /*RSA_PKCS1_OAEP_PADDING);*/
@@ -159,7 +159,7 @@ openssl_rsa_pub_encrypt(
                             "RSA encryption failed");
         return (-1);
     }
-    *out = encrypted;
+    OXS_BUFFER_POPULATE(out, env, encrypted, ret);
     return ret;
 }
 
@@ -168,8 +168,8 @@ openssl_rsa_prv_decrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
-    unsigned char *in,
-    unsigned char **out)
+    oxs_buffer_t *in,
+    oxs_buffer_t *out)
 {
     unsigned char *decrypted = NULL;
     openssl_rsa_impl_t *rsa_impl = NULL;
@@ -182,7 +182,7 @@ openssl_rsa_prv_decrypt(
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
     decrypted =  AXIS2_MALLOC(env->allocator, RSA_size(key->pkey.rsa));
     ret = RSA_private_decrypt(RSA_size(key->pkey.rsa),
-            in,
+            OXS_BUFFER_GET_DATA(in, env),
             decrypted,
             key->pkey.rsa,
             /*RSA_PKCS1_OAEP_PADDING);*/
@@ -193,7 +193,7 @@ openssl_rsa_prv_decrypt(
                             "RSA decryption failed");
         return (-1);
     }
-    *out = decrypted;
+    OXS_BUFFER_POPULATE(out, env, decrypted, ret);
     return ret;
 }
 

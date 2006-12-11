@@ -18,8 +18,8 @@
 #include <openssl/evp.h>
 #include <oxs_key.h>
 /**
-  * @file 
-  * @brief 
+  * @file openssl_cipher_ctx.h
+  * @brief The cipher context in which the data to be hidden
   */
 #ifndef OPENSSL_CIPHER_CTX_H
 #define OPENSSL_CIPHER_CTX_H
@@ -37,27 +37,52 @@ extern "C" {
 
     struct openssl_cipher_ctx_ops
     {
-
+        /**
+         * Free function
+         * @param ctx to the openssl cipher ctx struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */	
         axis2_status_t (AXIS2_CALL *
         free)(openssl_cipher_ctx_t *ctx,
             const axis2_env_t *env
             );
-        
+        /**
+         * Given the ctx return the CIPHER
+         * @param ctx to the openssl cipher ctx struct
+         * @param env pointer to environment struct
+         * @return RVP_CIPHER the cipher 
+         */	       
         const EVP_CIPHER* (AXIS2_CALL *
         get_cipher)(openssl_cipher_ctx_t *ctx,
             const axis2_env_t *env
             );
-        
+        /**
+         * Given the ctx return key
+         * @param ctx to the openssl cipher ctx struct
+         * @param env pointer to environment struct
+         * @return key 
+         */	 
         oxs_key_t *(AXIS2_CALL *
         get_key)(openssl_cipher_ctx_t *ctx,
             const axis2_env_t *env
             );
-        
+        /**
+         * Given the ctx return iv
+         * @param ctx to the openssl cipher ctx struct
+         * @param env pointer to environment struct
+         * @return iv 
+         */	        
         axis2_char_t *(AXIS2_CALL *
         get_iv)(openssl_cipher_ctx_t *ctx,
             const axis2_env_t *env
             );
-        
+        /**
+         * Given the ctx return the padding
+         * @param ctx to the openssl cipher ctx struct
+         * @param env pointer to environment struct
+         * @return padding
+         */	        
         axis2_char_t *(AXIS2_CALL *
         get_pad)(openssl_cipher_ctx_t *ctx,
             const axis2_env_t *env

@@ -109,7 +109,15 @@ rampart_get_security_token(const axis2_env_t *env,
                            axis2_msg_ctx_t *msg_ctx,
                                 axiom_soap_header_t *soap_header);
 
- 
+ /**
+ * Creates a SOAP envelope based on params described below
+ * @param env pointer to environment struct
+ * @param sub_code the text of the Subcode element of a SOAP fault message
+ * @param reason_text the text in soapenv:Reason element
+ * @param detail_node_text the text in the soapenv:Detail element
+ * @param msg_ctx the msg_ctx 
+ * @return soap_header security element node
+ */    
 AXIS2_EXTERN void AXIS2_CALL
 rampart_create_fault_envelope(const axis2_env_t *env,
         const axis2_char_t *sub_code,
@@ -117,6 +125,12 @@ rampart_create_fault_envelope(const axis2_env_t *env,
         const axis2_char_t *detail_node_text,
         axis2_msg_ctx_t *msg_ctx);
  
+ /**
+  *Validates a security header elements 
+  * @param env pointer to environment struct  
+  * @param msg_ctx the msg_ctx 
+  *@param  sec_node the reference to the security node
+  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_validate_security_token(const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
