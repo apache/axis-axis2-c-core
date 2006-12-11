@@ -27,6 +27,8 @@
 #include <axis2_msg_info_headers.h>
 #include <axis2_property.h>
 #include <rampart_constants.h>
+#include <rampart_action.h>
+#include <rampart_util.h>
 #include <axis2_conf_ctx.h>
 
 
@@ -39,6 +41,17 @@ extern "C"
 {
 #endif
 
+/**
+ * Get the encryption user password from the callback module
+ * @param env pointer to environment struct
+ * @param ctx axis2 context
+ * @param actions rampart actions to get parameters
+ * @return password or NULL on failure
+ */
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+rampart_callback_encuser_password(const axis2_env_t *env,
+            rampart_actions_t *actions,
+            axis2_msg_ctx_t *msg_ctx);
 
 /**
  * Get properties from the axis2 context

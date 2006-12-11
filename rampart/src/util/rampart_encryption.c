@@ -31,6 +31,7 @@
 #include <oxs_key.h>
 #include <rampart_action.h>
 #include <rampart_constants.h>
+#include <rampart_handler_util.h>
 #include <oxs_token_reference_list.h>
 #include <axis2_array_list.h>
 #include <oxs_axiom.h>
@@ -158,7 +159,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     /*Get the certificate file name*/
     certificate_file = RAMPART_ACTIONS_GET_ENC_KEY_FILE(actions, env);
     /*Get the password to retrieve the key from key store*/
-    password = RAMPART_ACTIONS_GET_ENC_USER(actions, env);
+    password = rampart_callback_encuser_password(env, actions, msg_ctx);
     /*Get encryption key identifier*/
     eki = RAMPART_ACTIONS_GET_ENC_KEY_IDENTIFIER(actions, env);
     /*Create asymmetric encryption context*/

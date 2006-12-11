@@ -30,7 +30,12 @@
 #include <axis2_conf_ctx.h>
 #include <oxs_axiom.h>
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+rampart_callback_encuser_password(const axis2_env_t *env,
+            rampart_actions_t *actions,
+            axis2_msg_ctx_t *msg_ctx);
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_property_from_ctx(const axis2_env_t *env,
         axis2_ctx_t *ctx,
         const axis2_char_t *key);
@@ -68,6 +73,38 @@ rampart_validate_security_token(const axis2_env_t *env,
         axiom_node_t *sec_node);
 
 /**********************end of header functions ****************************/
+
+axis2_char_t* AXIS2_CALL
+rampart_callback_encuser_password(const axis2_env_t *env,
+            rampart_actions_t *actions,
+            axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_char_t *enc_user = NULL;
+    axis2_char_t *pw_callback_module = NULL;
+    axis2_char_t *password = NULL;
+    axis2_ctx_t *ctx = NULL;
+
+    enc_user = RAMPART_ACTIONS_GET_ENC_USER(actions, env);
+    pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
+    if(!pw_callback_module){
+        return NULL;
+    }
+    if(!enc_user){
+        /*If a special enc_user hasn't specified try to get the user.
+         * But it is advisable to use enc_user instead of user.*/
+        enc_user = RAMPART_ACTIONS_GET_USER(actions, env);
+        if(!enc_user){
+            return NULL;
+        }
+    }
+    /*Get axis2_ctx_t. This is for designed specially for PHP*/
+    ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
+
+    password = rampart_callback_password(env, pw_callback_module, enc_user, ctx);
+
+    return password;
+}
+
 
 axis2_char_t* AXIS2_CALL
 rampart_get_property_from_ctx(const axis2_env_t *env,

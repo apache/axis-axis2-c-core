@@ -98,9 +98,9 @@ rampart_shp_process_usernametoken(const axis2_env_t *env,
     }
 }
 
-
+#if 0
 static axis2_char_t*
-rampart_shp_callback_keystore_password(const axis2_env_t *env,
+rampart_shp_callback_encuser_password(const axis2_env_t *env,
             rampart_actions_t *actions,
             axis2_msg_ctx_t *msg_ctx)
 {
@@ -129,6 +129,7 @@ rampart_shp_callback_keystore_password(const axis2_env_t *env,
 
     return password;
 }
+#endif
 
 static axis2_status_t 
 rampart_shp_process_encrypted_key(const axis2_env_t *env,
@@ -166,7 +167,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     enc_asym_algo = RAMPART_ACTIONS_GET_ENC_KT_ALGO(actions, env);
     certificate_file = RAMPART_ACTIONS_GET_DEC_KEY_FILE(actions, env);
     /*Get the password to retrieve the key from key store*/
-    password = rampart_shp_callback_keystore_password(env, actions, msg_ctx);
+    password = rampart_callback_encuser_password(env, actions, msg_ctx);
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
     oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PRV_DECRYPT);
