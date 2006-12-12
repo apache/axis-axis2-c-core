@@ -29,3 +29,4 @@ cp -r $AXIS2C_HOME/lib $CLIENT_REPO/
 echo "Copying latest modules to client_repo"
 cp -r $AXIS2C_HOME/modules $CLIENT_REPO/
 
+echo "WARNING: Make sure that you have correct configurations in server/client axis2.xml files"

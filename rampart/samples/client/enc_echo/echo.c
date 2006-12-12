@@ -66,8 +66,8 @@ int main(int argc, char** argv)
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
     AXIS2_OPTIONS_SET_ACTION(options, env,
             "http://ws.apache.org/axis2/c/samples/echoString");
-
-
+    /*Added*/
+    AXIS2_OPTIONS_SET_SOAP_ACTION(options, env, "urn:echo");
 
     /*
      * Set security params. If you need to enable dynamic settings uncomment

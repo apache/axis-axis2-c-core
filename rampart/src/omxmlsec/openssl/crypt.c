@@ -57,10 +57,12 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
     /*Init ctx*/
     EVP_CIPHER_CTX_init(&ctx);
     ret = EVP_CipherInit_ex(&ctx, (EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env), NULL, NULL, NULL, do_encrypt);
-   
+
+    /*EVP_CIPHER_CTX_set_padding(&ctx, 1);*/
+
     ret  = EVP_CipherInit_ex(&ctx, NULL, NULL, key_data,
             /*(unsigned char*)OPENSSL_CIPHER_CTX_GET_IV(oc_ctx, env),*/
-            NULL,/*NULL instead of IV. Here we do not use IV*/
+            NULL, /*>>NULL instead of IV. Here we do not use IV*/
             do_encrypt);
     for (;;)
     {

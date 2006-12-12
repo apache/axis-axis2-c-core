@@ -81,7 +81,6 @@ AC_CONFIG_FILES([Makefile \
         client/Makefile
         client/enc_echo/Makefile \
         client/enc_echo/data/Makefile \
-        client/enc_echo/keys/Makefile \
         client/echo/Makefile \
         client/echo/data/Makefile
 

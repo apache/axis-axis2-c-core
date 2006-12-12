@@ -432,6 +432,14 @@ axis2_conf_create(
         return NULL;
     }
 
+    config_impl->handlers = axis2_array_list_create(env, 0);
+    if (NULL == config_impl->handlers)
+    {
+        axis2_conf_free(&(config_impl->conf), env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
     config_impl->in_phases_upto_and_including_post_dispatch =
         axis2_array_list_create(env, 0);
     if (NULL == config_impl->in_phases_upto_and_including_post_dispatch)
@@ -442,12 +450,25 @@ axis2_conf_create(
     }
     else
     {
+        axis2_disp_t *uri_dispatch = NULL;
+
         phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORTIN);
         if (NULL == phase)
         {
             axis2_conf_free(&(config_impl->conf), env);
             return NULL;
         }
+        uri_dispatch = axis2_req_uri_disp_create(env);
+        if (uri_dispatch)
+        {
+                axis2_handler_t *handler = NULL;
+                handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
+                AXIS2_DISP_FREE(uri_dispatch, env);
+                AXIS2_PHASE_ADD_HANDLER_AT(phase, env, 0, handler);
+                AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+                handler = NULL;
+        }
+
         status = AXIS2_ARRAY_LIST_ADD(config_impl->
                 in_phases_upto_and_including_post_dispatch, env, phase);
         if (AXIS2_FAILURE == status)
@@ -473,13 +494,6 @@ axis2_conf_create(
         }
     }
 
-    config_impl->handlers = axis2_array_list_create(env, 0);
-    if (NULL == config_impl->handlers)
-    {
-        axis2_conf_free(&(config_impl->conf), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
 
     config_impl->all_svcs = axis2_hash_make(env);
     if (NULL == config_impl->all_svcs)
