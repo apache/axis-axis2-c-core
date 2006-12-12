@@ -99,8 +99,7 @@ AC_SUBST(TESTDIR)
 AC_SUBST(WRAPPER_DIR)
 
 AC_CONFIG_FILES([Makefile
-    src/Makefile \
-    test/Makefile
+    src/Makefile
     ])
     
 AC_OUTPUT
