@@ -166,9 +166,9 @@ APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib aprutil-1.lib libapr-1.lib
 #debug symbols
 !if "$(DEBUG)" == "1"
 CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
-LDFLAGS = $(LDFLAGS) /DEBUG /NODEFAULTLIB:LIBCMTD.lib
+LDFLAGS = $(LDFLAGS) /DEBUG /NODEFAULTLIB:LIBCMTD.lib /MTd
 !else
-CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 
+CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 /MT
 LDFLAGS = $(LDFLAGS)
 !endif
 
@@ -979,8 +979,17 @@ MOD_RAMPART_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\rampart\include
 !if "$(ENABLE_SSL)" == "0"
 MOD_RAMPART_INCLUDE_PATH = $(MOD_RAMPART_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
 LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_BIN_DIR)\lib\vc
+!endif
+
+
+#debug symbols
+!if "$(DEBUG)" == "1"
+LIBS = $(LIBS) libeay32MTd.lib ssleay32MTd.lib
+!else
 LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
 !endif
+
+APPLINK_FILE = $(OPENSSL_BIN_DIR)\include\openssl\applink.c
 
 omxmlsec:
 	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(OMXMLSEC_SRC) /c
@@ -1002,6 +1011,7 @@ omxmlsec:
 	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(AXIS2_INSTALL_DIR)\rampart\rampart
 
 mod_rampart:
+	$(CC) $(APPLINK_FILE) /c
 	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) $(OMXMLSEC_SRC) /c
 	$(LD) $(LDFLAGS) /LIBPATH:$(AXIS2_INSTALL_DIR)\rampart\rampart *.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib  $(LIBS) \
