@@ -361,11 +361,25 @@ axis2_soap_over_http_sender_send(
                 AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
         AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     }
-    /* TODO we need to set the content type with soap action header for soap12*/
+    
     if (doing_mtom)
     {
         content_type = (axis2_char_t *)AXIOM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output,
                 env);
+        if (AXIS2_TRUE != AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+        {
+            /* handle SOAP action for SOAP 1.2 case */
+            if (axis2_strcmp(soap_action, ""))
+            {
+                axis2_char_t *temp_content_type = NULL;
+                temp_content_type = AXIS2_STRACAT(content_type, ";action=", env);
+                AXIS2_FREE(env->allocator, content_type);
+                content_type = temp_content_type;
+                temp_content_type = AXIS2_STRACAT(content_type, soap_action, env);
+                AXIS2_FREE(env->allocator, content_type);
+                content_type = temp_content_type;
+            }
+        }
     }
     else if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
     {
