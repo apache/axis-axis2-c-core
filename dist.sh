@@ -6,7 +6,7 @@ cd xdocs/api
 doxygen doxygenconf
 cd ../..
 cp -r xdocs/api/html target/docs/api/
-cp -r target/docs axis2c-src-0.95
+cp -r target/docs axis2c-src-0.96
 
 for i in `find . -name "*.la"`
 do

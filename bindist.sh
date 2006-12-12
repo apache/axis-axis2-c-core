@@ -44,8 +44,8 @@ make
 make install
 
 make dist
-tar xf axis2c-sample-src-0.95.tar.gz
-mv axis2c-sample-src-0.95 samples
+tar xf axis2c-sample-src-0.96.tar.gz
+mv axis2c-sample-src-0.96 samples
 rm -rf ${AXIS2C_HOME}/samples
 mv samples ${AXIS2C_HOME}
 
