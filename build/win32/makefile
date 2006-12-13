@@ -707,7 +707,7 @@ tcpmon:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" $(AXIS2_INCLUDE_PATH) \
 	/I $(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
 	$(AXIS2_SOURCE_DIR)\tools\tcpmon\src\*.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /OUT:tcpmon.exe 
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib /OUT:tcpmon.exe 
 	del *.obj
 	copy tcpmon.* $(AXIS2_BINS)\
 
