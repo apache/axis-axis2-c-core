@@ -62,6 +62,46 @@ oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
 
     return counter;
 }
+
+/**
+ * Traverse thru the node and its children. Check if the localname is equal to the given name
+ * */
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_axiom_get_node_by_local_name(const axis2_env_t *env,
+    axiom_node_t *node,
+    axis2_char_t *local_name)
+{
+    axis2_char_t *temp_name = NULL;
+    
+    if(!node){return NULL;}
+    
+    if(AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT){return NULL;}
+
+    temp_name = axiom_util_get_localname(node, env);
+    AXIS2_LOG_INFO(env->log, "[rampart][axiom] Checking node %s for %s", temp_name, local_name );
+
+    if(0 == AXIS2_STRCMP(temp_name, local_name) ){
+        /*Gottcha.. return this node*/
+        return node;
+    }else{
+        /*Doesn't match? Get the first child*/    
+        axiom_node_t *temp_node = NULL;
+
+        temp_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
+        while (temp_node)
+        {
+            axiom_node_t *res_node = NULL;       
+            res_node = oxs_axiom_get_node_by_local_name(env, temp_node, local_name);
+            if(res_node){
+                return res_node;
+            }
+            temp_node = AXIOM_NODE_GET_NEXT_SIBLING(temp_node, env);
+        } 
+    
+    }
+    return NULL;
+}
+
 /**
  * Traverse thru the node and its children. Check if the id attribute is equal to the given value
  * */
@@ -103,6 +143,8 @@ oxs_axiom_get_node_by_id(const axis2_env_t *env,
     }
     return NULL;
 }
+
+
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_axiom_get_attribute_value_of_node_by_name(const axis2_env_t *env,
     axiom_node_t *node,

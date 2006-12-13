@@ -32,6 +32,7 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
         axis2_char_t* data)
 {
     axiom_node_t *binary_security_token_node = NULL;
+    axiom_node_t *first_child_of_parent = NULL;
     axiom_element_t *binary_security_token_ele = NULL;
     axiom_attribute_t *encoding_type_att = NULL;
     axiom_attribute_t *value_type_att = NULL;
@@ -50,6 +51,16 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
         return NULL;
     }
 
+    /*Binary security token must be added as the first child of the paretn*/
+    binary_security_token_node = AXIOM_NODE_DETACH(binary_security_token_node, env);
+    first_child_of_parent = AXIOM_NODE_GET_FIRST_CHILD(parent, env);
+    if(first_child_of_parent){
+        /*If there is a child add bst before it*/
+        AXIOM_NODE_INSERT_SIBLING_BEFORE(first_child_of_parent, env, binary_security_token_node);
+    }else{
+        /*If there are no children just add the bst*/
+        AXIOM_NODE_ADD_CHILD(parent, env, binary_security_token_node);
+    }
     if (!id)
     {
         id = oxs_util_generate_id(env,(axis2_char_t*)OXS_CERT_ID);
@@ -67,6 +78,7 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
     if(data){
          ret  = AXIOM_ELEMENT_SET_TEXT(binary_security_token_ele, env, data, binary_security_token_node);
     }
+
     return binary_security_token_node;
 
 }

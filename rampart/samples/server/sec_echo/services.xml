@@ -1,0 +1,43 @@
+<service name="echo">
+    <parameter name="ServiceClass" locked="xsd:false">echo</parameter>
+
+   <description>
+        This is a testing service , to test the system is working or not
+   </description>
+    <!--Rampart configurations START -->
+    <module ref="rampart"/>
+
+    <parameter name="OutflowSecurity">
+      <action>
+        <items>Timestamp</items>
+        <user>Gampola</user>
+        <passwordType>passwordDigest</passwordType>
+        <!--Following should be changed with your DLL or SO path-->
+        <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
+        <timeToLive>360</timeToLive>
+        <encryptionKeyTransportAlgorithm>http://www.w3.org/2001/04/xmlenc#rsa-1_5</encryptionKeyTransportAlgorithm>
+        <encryptionSymAlgorithm>http://www.w3.org/2001/04/xmlenc#aes256-cbc</encryptionSymAlgorithm>
+        <encryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/bhome/a_cert.cert</encryptionPropFile>
+        <!--encryptionKeyIdentifier options : Embedded IssuerSerial DirectReference KeyIdentifier-->
+        <encryptionKeyIdentifier>IssuerSerial</encryptionKeyIdentifier>
+      </action>
+    </parameter>
+
+
+    <!--passwordCallbackClass should be changed with your DLL or SO path-->
+    <parameter name="InflowSecurity">
+      <action>
+        <items>Encrypt</items>
+        <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
+        <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/bhome/b_store.pfx</decryptionPropFile>
+        <encryptionUser>b</encryptionUser>
+      </action>
+    </parameter>
+    <!--Rampart configurations END -->
+
+    <operation name="echoString">
+            <!--messageReceiver class="axis2_receivers" /-->
+        <parameter name="wsamapping" >http://ws.apache.org/axis2/c/samples/sec_echo</parameter>
+    </operation>
+
+</service>

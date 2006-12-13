@@ -45,6 +45,14 @@ oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
                                          axis2_char_t* ns_uri,
                                          axis2_char_t* prefix);
 
+/**
+ * Traverse thru the node and its children. Check if the localname is equal to the given name
+ * */
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_axiom_get_node_by_local_name(const axis2_env_t *env,
+    axiom_node_t *node,
+    axis2_char_t *local_name);
+
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_axiom_get_node_by_id(const axis2_env_t *env,
     axiom_node_t *node,

@@ -94,6 +94,12 @@ oxs_token_get_reference_list_data(const axis2_env_t *env, axiom_node_t *ref_list
     iter = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(ref_list_ele, env, qname, ref_list_node);
     AXIS2_QNAME_FREE(qname, env);
     qname = NULL;
+    
+    if(!iter){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                        "There are no children for %s", OXS_NODE_DATA_REFERENCE);
+        return NULL;
+    }
 
     list = axis2_array_list_create(env, 0);
 

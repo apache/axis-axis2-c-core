@@ -121,7 +121,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     ref_list_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_REFERENCE_LIST, NULL, NULL);
     reference_list = oxs_token_get_reference_list_data(env, ref_list_node);
     /*If there are no references. Nothing to do. Return success*/
-    if(0 == AXIS2_ARRAY_LIST_SIZE(reference_list, env)){
+    if((!reference_list) || (0 == AXIS2_ARRAY_LIST_SIZE(reference_list, env))){
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List is empty");
         return AXIS2_SUCCESS;
     }
@@ -177,7 +177,10 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         enc_data_node = oxs_axiom_get_node_by_id(env, envelope_node, OXS_ATTR_ID, id2);
         if(!enc_data_node){
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Node with ID=%s cannot be found", id);
-            continue;
+            /*continue;*/
+            rampart_create_fault_envelope(env, RAMPART_FAULT_FAILED_CHECK,
+                                "Cannot find EncryptedData element", RAMPART_FAULT_IN_ENCRYPTED_DATA, msg_ctx);
+            return AXIS2_FAILURE;
         }
         /*Create an enc_ctx*/    
         ctx = oxs_ctx_create(env);

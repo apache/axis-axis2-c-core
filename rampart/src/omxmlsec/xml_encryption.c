@@ -82,7 +82,7 @@ oxs_xml_enc_populate_stref_with_key_identifier(const axis2_env_t *env,
 
 /**
 *  
-*   <BinarySecurityToken ID="CertID">KJDSsdlDJjsd</BinarySecurityToken>
+*   <BinarySecurityToken ID="CertID">KJDSsdlDJjsd=</BinarySecurityToken>
 *   <KeyInfo>
 *       <SecurityTokenReference>
 *           <Reference URI="CertID"/>

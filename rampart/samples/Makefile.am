@@ -1,3 +1,3 @@
 TESTS =
-SUBDIRS = callback client
+SUBDIRS = callback client server
 

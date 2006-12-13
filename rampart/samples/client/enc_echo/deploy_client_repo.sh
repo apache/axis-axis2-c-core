@@ -14,8 +14,9 @@ fi
 
 
 #copy [client]axis2.xml to CLIENT_REPO
-echo "Copying axis2.xml to client_repo"
-cp data/client.enc.axis2.xml $CLIENT_REPO/axis2.xml
+#Removed: We are using our own service. So no need to replace the axis2.xml in the server 
+#echo "Copying axis2.xml to client_repo"
+#cp data/client.enc.axis2.xml $CLIENT_REPO/axis2.xml
 
 #copy [server]axis2.xml to AXIS2C_HOME
 echo "Copying axis2.xml to AXIS2C_HOME"
@@ -29,4 +30,4 @@ cp -r $AXIS2C_HOME/lib $CLIENT_REPO/
 echo "Copying latest modules to client_repo"
 cp -r $AXIS2C_HOME/modules $CLIENT_REPO/
 
-echo "WARNING: Make sure that you have correct configurations in server/client axis2.xml files"
+echo "WARNING: Make sure that you have correct configurations in sec_echo/services.xml file"

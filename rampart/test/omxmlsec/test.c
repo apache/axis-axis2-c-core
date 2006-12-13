@@ -69,7 +69,7 @@ oxs_key_t *create_key(axis2_env_t *env)
 {
     oxs_key_t *key = NULL;
     key = oxs_key_create(env);
-    OXS_KEY_POPULATE(key, env, (unsigned char*)"12345678123456781234567812345678", "session_key",  32, OXS_KEY_USAGE_DECRYPT);
+    OXS_KEY_POPULATE(key, env, (unsigned char*)"012345670123456701234567", "session_key",  32, OXS_KEY_USAGE_DECRYPT);
     return key;
 }
 
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
     OXS_CTX_SET_KEY(ctx, env, key);
 
     /*Set algorithm*/
-    OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HREF_AES_256_CBC);
+    OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HREF_DES3_CBC);
 
     /*Get the node to be encrypted*/
     enc_node = AXIOM_NODE_GET_FIRST_CHILD(tmpl, env);
