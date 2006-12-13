@@ -90,7 +90,31 @@ axis2_property_create(const axis2_env_t *env)
     property_impl->property.ops->get_value = axis2_property_get_value;
     return &(property_impl->property);
 }
+/*****************************************************************************/
+AXIS2_EXTERN axis2_property_t *AXIS2_CALL
+axis2_property_create_with_args(
+    const axis2_env_t *env,
+    axis2_scope_t scope,
+    AXIS2_FREE_VOID_ARG free_func,
+    void *value)
+{
+    axis2_property_impl_t *property_impl = NULL;
 
+    AXIS2_ENV_CHECK(env, NULL);
+
+    property_impl = (axis2_property_impl_t *) axis2_property_create(env);
+
+    if (NULL == property_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    property_impl->value = value;
+    property_impl->scope = scope;
+    property_impl->free_func = free_func;
+
+    return &(property_impl->property);
+}
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL

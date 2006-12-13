@@ -88,6 +88,13 @@ typedef struct axis2_property_ops axis2_property_ops_t;
 AXIS2_EXTERN axis2_property_t * AXIS2_CALL
 axis2_property_create(const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_property_t *AXIS2_CALL
+axis2_property_create_with_args(
+    const axis2_env_t *env,
+    axis2_scope_t scope,
+    AXIS2_FREE_VOID_ARG free_func,
+    void *value);
+
 /*************************** Function macros **********************************/
 
 #define AXIS2_PROPERTY_FREE(property, env) \
