@@ -2,7 +2,7 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(axis2c-sample-src, 0.95)
+AC_INIT(axis2c-sample-src, 0.96)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([tar-ustar])
@@ -45,7 +45,7 @@ fi
 dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 
-CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Werror"
+CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE "
 LDFLAGS="$LDFLAGS -lpthread"
 
 dnl Checks for header files.
