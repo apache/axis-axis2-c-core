@@ -95,7 +95,7 @@ init_thread_env(
     const axis2_env_t **system_env);
 
 void *AXIS2_THREAD_FUNC
-worker_func(
+axis2_svr_thread_worker_func(
     axis2_thread_t *thd,
     void *data);
 
@@ -222,7 +222,7 @@ axis2_http_svr_thread_run(
         arg_list->worker = svr_thread_impl->worker;
 #ifdef AXIS2_SVR_MULTI_THREADED
         worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
-                worker_func, (void *)arg_list);
+                axis2_svr_thread_worker_func, (void *)arg_list);
         if (NULL == worker_thread)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
@@ -231,7 +231,7 @@ axis2_http_svr_thread_run(
         }
         AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, worker_thread);
 #else
-        worker_func(NULL, (void *)arg_list);
+        axis2_svr_thread_worker_func(NULL, (void *)arg_list);
 #endif
     }
     return AXIS2_SUCCESS;
@@ -298,7 +298,7 @@ axis2_http_svr_thread_set_worker(
  * Thread worker function.
  */
 void *AXIS2_THREAD_FUNC
-worker_func(
+axis2_svr_thread_worker_func (
     axis2_thread_t *thd,
     void *data)
 {
