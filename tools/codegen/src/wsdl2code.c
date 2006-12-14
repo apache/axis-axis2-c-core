@@ -39,12 +39,10 @@ int main(int argc, char** argv)
 {
     w2c_cmdline_option_parser_t* cmd_opt_parser = NULL;
     axis2_env_t* env = NULL;
-    axis2_allocator_t* allocator = NULL;
     w2c_engine_t* engine = NULL;
     axis2_status_t status;
 
-    allocator = axis2_allocator_init(NULL);
-    env = axis2_env_create(allocator);
+	env = axis2_env_create_all("codegen.log", AXIS2_LOG_LEVEL_DEBUG);
 
     cmd_opt_parser = w2c_cmdline_option_parser_create
             (env, argc - 1, argv + 1);/* ommit first arg */

@@ -40,29 +40,30 @@ w2c_xslt_template_processor_parse(
 	xmlDocPtr doc = NULL;
 	xmlDocPtr res = NULL;
 	FILE *out = NULL;
+	char *buf = NULL;
+	int size = 0;
     /* printf("%s\n --------%s\n\n", xslt_filename, xml_stream); */
 
 	xmlSubstituteEntitiesDefault(1);
 	xmlLoadExtDtdDefaultValue = 1;
-
 	ssheet = xsltParseStylesheetFile((const xmlChar *)xslt_filename);
 	doc = (xmlDocPtr)xmlParseMemory(xml_stream,
                               (unsigned int)strlen (xml_stream));
 	res = xsltApplyStylesheet(ssheet, doc, NULL);
-      
+	
+	/*
+	printf("%d",xsltLibxmlVersion);
+
+	xmlDocDumpMemory(doc, &buf, &size);
+	printf("%s", buf);
+	*/
+	xsltSaveResultToString(&buf, &size, res, ssheet);
+	
 	out = fopen ( out_filename, "w+");
-	xsltSaveResultToFile(out, res, ssheet);
-
-
-    /*TODO: following freeing has some inpact to the external code*/
-	/*xmlFreeDoc(res);
-	xsltFreeStylesheet(ssheet);
-	xmlFreeDoc(doc);
-    xsltCleanupGlobals();*/
-    /*xmlCleanupParser();*/
-
-    /* adding new line at the end */
-    fprintf( out, "\n");
-    fclose( out);
+	if(out){
+		fprintf(out, "%s", buf);
+		fprintf( out, "\n");
+		fclose( out);
+	}
 }
 
