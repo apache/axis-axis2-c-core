@@ -116,6 +116,16 @@ axis2_rest_sender_get_param_string(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
+static axis2_char_t *AXIS2_CALL
+axis2_url_encode (
+	const axis2_env_t *env,
+	axis2_char_t *dest,
+	axis2_char_t *src,
+	int strlen);
+
+static int AXIS2_CALL
+is_safe_or_unreserve (char c);
+
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_rest_sender_t *AXIS2_CALL
@@ -697,13 +707,19 @@ axis2_rest_sender_get_param_string(
         axiom_element_t *element = NULL;
         axis2_char_t *name = NULL;
         axis2_char_t *value = NULL;
-
+		axis2_char_t *encoded_value = NULL;
+ 
         node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env);
         element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
         name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
         value = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+
+		encoded_value = (axis2_char_t *) AXIS2_MALLOC (env->allocator, strlen (value));
+		memset (encoded_value, 0, strlen (value));
+		encoded_value = axis2_url_encode (env, encoded_value, value, strlen (value));
+
         AXIS2_ARRAY_LIST_ADD(param_list, env, axis2_strcat(env, name, "=",
-                value, NULL));
+                encoded_value, NULL));
     }
     for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(param_list, env); i++)
     {
@@ -726,4 +742,72 @@ axis2_rest_sender_get_param_string(
     }
     AXIS2_ARRAY_LIST_FREE(param_list, env);
     return param_string;
+}
+
+static axis2_char_t *AXIS2_CALL
+axis2_url_encode (
+	const axis2_env_t *env, 
+	axis2_char_t *dest, 
+	axis2_char_t *buff, 
+	int len)
+{
+	axis2_char_t string[4];
+	axis2_char_t *expand_buffer;
+    int i;
+    for (i = 0; i < len  && buff[i]; i++)
+    {
+        if (isalnum (buff[i]) || is_safe_or_unreserve (buff[i]))
+        {
+            sprintf (string,"%c", buff[i]);
+        }
+        else
+        {
+            sprintf (string, "%%%x", buff[i]);
+        }
+
+		if ((strlen (dest) + 4) > len)
+		{
+			expand_buffer = (axis2_char_t *) AXIS2_MALLOC (env->allocator, len*2);
+			memset (expand_buffer, 0, len*2);
+			len *= 2;
+			dest = memmove (expand_buffer, dest, len);
+		}
+		strcat (dest, string);
+    }
+    return dest;
+}
+
+static int AXIS2_CALL
+is_safe_or_unreserve (
+	char c)
+{
+    char safe [] = {'$' , '-' , '_' , '.' , '+'};
+    char reserve [] = {';', '/', '?' ,':', '@',  '&', '='};
+
+/* reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
+   safe           = "$" | "-" | "_" | "." | "+" */
+
+    int flag = 0;
+    int i = 0;
+
+    int size = sizeof (safe)/sizeof (safe[0]);
+    for (i = 0; i < size; i++)
+    {
+        if (c == safe[i])
+        {
+            flag = 1;
+            return flag;
+        }
+    }
+
+    size = sizeof (reserve)/sizeof (reserve[0]);
+    for (i = 0; i < size; i++)
+    {
+        if (c == reserve[i])
+        {
+            flag = 0;
+            return flag;
+        }
+    }
+    return flag;
 }
