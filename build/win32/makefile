@@ -769,17 +769,17 @@ w2c_c_emitter:
 
 	del w2c_c_emitter*
 	
-w2c_schema_writer:
+w2c_schema_c_writer:
 	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\writer\*.c /c
 	$(LD) $(LDFLAGS) *.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
 	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_INSTALL_DIR)\lib\codegen \
-	/DLL /OUT:w2c_schema_writer.dll /IMPLIB:w2c_schema_writer.lib
+	/DLL /OUT:w2c_schema_c_writer.dll /IMPLIB:w2c_schema_c_writer.lib
  
 	del *.obj
 	
-	copy w2c_schema_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
+	copy w2c_schema_c_writer* $(AXIS2_INSTALL_DIR)\lib\codegen
 
-	del w2c_schema_writer*
+	del w2c_schema_c_writer*
 	
 
 w2c_cservice_xml_writer:
@@ -947,6 +947,8 @@ copy_config:
 	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\src\templates $(AXIS2_INSTALL_DIR)\conf\templates
 
 	copy $(AXIS2_SOURCE_DIR)\tools\codegen\src\util\codegen-config.properties $(AXIS2_INSTALL_DIR)\conf
+	
+	copy $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\compiler\schema-config.properties $(AXIS2_INSTALL_DIR)\conf
 
 	copy $(AXIS2_SOURCE_DIR)\tools\codegen\src\util\resource.properties $(AXIS2_INSTALL_DIR)\conf
 
@@ -955,10 +957,10 @@ copy_resources:
 
 	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\test\resources\xml $(AXIS2_INSTALL_DIR)\bin\codegen_resources\xml
 
-#w2c_default_qname2name_ext w2c_c_qname2name_ext
 
-codegen_writers: w2c_c_emitter w2c_schema_writer w2c_cservice_xml_writer w2c_cskel_header_writer w2c_cskel_source_writer w2c_cstub_source_writer w2c_cstub_header_writer w2c_csvc_skeleton_writer
-codegen_ext: w2c_databinding_adb_ext w2c_c_code_indenter_ext w2c_c_namemaker_ext  w2c_databinding_default_ext
+
+codegen_writers: w2c_c_emitter w2c_schema_c_writer w2c_cservice_xml_writer w2c_cskel_header_writer w2c_cskel_source_writer w2c_cstub_source_writer w2c_cstub_header_writer w2c_csvc_skeleton_writer
+codegen_ext: w2c_databinding_adb_ext w2c_c_code_indenter_ext w2c_c_namemaker_ext w2c_default_qname2name_ext w2c_c_qname2name_ext w2c_databinding_default_ext
 codegen_tool: w2c_codegen wsdl2code schema2code codegen_writers codegen_ext copy_config copy_resources
 
 
@@ -1236,6 +1238,6 @@ all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_ws
  
 install: all
 
-dist: all axis2 axis2_apache_module tcpmon codegen_tool copy_extra copy_samples mv_dist
+dist: all mod_rampart_all axis2_apache_module tcpmon codegen_tool copy_extra copy_samples mv_dist
 
 
