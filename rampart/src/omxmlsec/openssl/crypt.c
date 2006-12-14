@@ -38,15 +38,19 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
         int do_encrypt)
 {
     EVP_CIPHER_CTX ctx ;
-
-    unsigned char inbuf[BUFSIZE + 1 ], outbuf[BUFSIZE + EVP_MAX_BLOCK_LENGTH]; /*EVP_MAX_BLOCK_LENGTH = 32 in evp.h*/
+    oxs_key_t *key = NULL;
     unsigned char *tempbuf = NULL;
     unsigned char *tempbuf2 = NULL;
     unsigned char *key_data = NULL;
-    oxs_key_t *key = NULL;
+    unsigned char *inbuf = NULL;
+    unsigned char *outbuf = NULL;
+    int inlen, outlen, i,  out_buf_index, ret, bufsize;
 
-    int inlen, outlen, i,  out_buf_index;
-    int ret;
+    
+    bufsize =  EVP_CIPHER_block_size(OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env));
+    
+    inbuf = AXIS2_MALLOC(env->allocator, bufsize + 1 );
+    outbuf = AXIS2_MALLOC(env->allocator, bufsize + EVP_MAX_BLOCK_LENGTH);
 
     i = 0;
     out_buf_index = 0;
@@ -67,19 +71,19 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
             do_encrypt);
     for (;;)
     {
-        memset(inbuf, 0 , BUFSIZE);/*Reset memory for the inbuf*/
-        memcpy(inbuf, in_main_buf + (i * BUFSIZE) , BUFSIZE);/*Copy the first block to the inbuf*/
+        memset(inbuf, 0 , bufsize);/*Reset memory for the inbuf*/
+        memcpy(inbuf, in_main_buf + (i * bufsize) , bufsize);/*Copy the first block to the inbuf*/
 
-        if (in_main_len <= i*BUFSIZE) break; /*Finish!!! */
+        if (in_main_len <= i*bufsize) break; /*Finish!!! */
 
         /*If we are in the last block, set inlen according to the in_main_len */
-        if (in_main_len <= (i + 1)*BUFSIZE)
+        if (in_main_len <= (i + 1)*bufsize)
         {
-            inlen = in_main_len - (i * BUFSIZE);
+            inlen = in_main_len - (i * bufsize);
         }
         else
         {
-            inlen = BUFSIZE;
+            inlen = bufsize;
         }
 
         if (do_encrypt == 1)
@@ -87,7 +91,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
             AXIS2_LOG_INFO(env->log, "[oxs][crypt.c] Encrypting block[%d] %s", inlen, inbuf);
         }
 
-        memset(outbuf, 0 , BUFSIZE + EVP_MAX_BLOCK_LENGTH);/*Reset memory for the outbuf*/
+        memset(outbuf, 0 , bufsize + EVP_MAX_BLOCK_LENGTH);/*Reset memory for the outbuf*/
         if (!EVP_CipherUpdate(&ctx, outbuf, &outlen, inbuf, inlen))
         {
             /* Error */
@@ -111,6 +115,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
         tempbuf = tempbuf2; /*Assign new tempbuf2 to the old one*/
         out_buf_index = out_buf_index + outlen;/*Update the writing position of the tempbuf*/
 
+        
         i++;
     }/*End of for loop*/
 
@@ -137,9 +142,16 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
     /*Assign the temp buf to the out_main_buf*/
     *out_main_buf =  AXIS2_MALLOC(env->allocator, out_buf_index+outlen);
     memmove(*out_main_buf, tempbuf, out_buf_index+outlen-1);
+    
+    /*Free*/
     AXIS2_FREE(env->allocator, tempbuf2);
     tempbuf2 = NULL;
-            
+    AXIS2_FREE(env->allocator, inbuf);
+    inbuf = NULL;
+    AXIS2_FREE(env->allocator, outbuf);
+    outbuf = NULL;
+    AXIS2_FREE(env->allocator, key_data);
+    key_data = NULL;
     return out_buf_index;
 
 }
