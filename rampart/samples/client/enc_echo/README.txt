@@ -1,47 +1,41 @@
-This is a sample to help test encryption.
-This sample works with echo service.
+This sample works with sec_echo service.
 
-How to run
-----------
-1. Create the binary 
-    make
-    make install
+1. HOW TO CONFIGURE SERVER?
+-----------------------
+Go to rampart/samples/server/sec_echo and 
+Run  %make install
+This will deploy a sec_echo service and copy security enables services.xml
+file.
 
-2. Create client repository
-    e.g. ~/client_home [CLIENT_HOME]
-    NOTE: You may use the AXIS2C_HOME as the common repository for server and
-    client. If so skip steps 3-5.
- 
-3. Copy rampart/samples/client/enc_echo/data/axis2.xml to CLIENT_REPO
-
-4. Copy AXIS2C_HOME/lib to CLIENT_HOME
-
-5. Copy AXIS2C_HOME/modules to CLIENT_HOME
-  
-   
-6. Enable rampart in axis2.xml in the AXIS2C_HOME and add In/Outflow parameters as
-    in rampart/samples/client/enc_eco/data/server.axis2.xml. (Or copy the
-    server.axis2.xml file to AXIS2C_HOME/ directory and rename it as axis2.xml)
-
-
-    Before proceed check followings. 
-    (*) The rampart module should be in the module directory of both
-        client(CLIENT_HOME/modules) and the server side(AXIS2C_HOME/deploy/modules).
-    (*) AXIS2C_HOME/axis2.xml and CLIENT_HOME/axis2.xml files should be configred to enable rampart.
- 
-8. To view the message flow use TCPMonitor
-    Listen port: 9090 [specified as in the client argumanet]
-    Target port: 8080 [server port] 
-
-9. Start server in port 8080 
+2. HOW TO START SERVER
+---------------------
+Start server in port 8080 
      ./axis2_http_server -p8080
 
-10. Run the echo sample 
-     Syntax : ./echo [service_address] [client_home]
-     e.g.   : ./echo http://localhost:9090/axis2/services/echo ~/client_home   
+3. HOW TO CONFIGURE TCPMONITOR (To view messages)
+------------------------------
+    Listen port: 9090 [specified as in the client argument]
+    Target port: 8080 [server port]
+This step is OPTIONAL and can be avoided by starting the server without -p8080
+option.
 
-11. You should be able to see the security token is attached to the header of
+HOW TO RUN CLIENT?
+-----------------
+Using scripts
+-------------------------
+1. Run %deploy_client_repo.sh/bat 
+2. Run %update_n_run.sh/bat
+
+Using the actual binary
+--------------------------------------
+Run %echo <address> <client_repository>
+
+
+If everything is configured properly You should be able to see the security token(s) is/are  attached to the header of
     the SOAP message in the TCP Monitor.
 
-NOTE : Also you can use other samples available under AXIS2C.
+NOTE:
+You need to change the passwordCallbackClass and the en/decryptionPropFile
+in rampart/samples/client/enc_echo/data/client.axis2.xml and
+rampart/samples/server/sec_echo/services.xml to suit your environment.
 

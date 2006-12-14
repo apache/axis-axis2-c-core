@@ -128,6 +128,7 @@ extern "C"
 
 /*Dynamically set values*/
 #define RAMPART_ACTION_PASSWORD "password"
+#define RAMPART_ACTION_ENC_USER_PASSWORD "encUserPassword"
 #define RAMPART_CALLBACK_SPECIFIC_PROPERTY "callbackSpecificProperty"
 
 /*Security processed results*/

@@ -1,6 +1,6 @@
 #!/bin/bash
 #If your client repository is different, change the value.
-CLIENT_REPO="$HOME/client_repo"
+CLIENT_REPO="$AXIS2C_HOME/client_repo"
 
 #INSTALL MODULE to make sure that both server and client have the same module.
 echo "Copying latest module to client_repo"
