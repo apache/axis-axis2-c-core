@@ -1064,22 +1064,23 @@ mod_rampart_htpwcb:
 	copy htpwcb.dll $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd\htpwcb.dll
 	del htpwcb.*
 
-mod_rampart_samples_echo:
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
+#Removed echo sample
+#mod_rampart_samples_echo:
+#	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client
+#	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
 	
-	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
-	$(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c /c
-	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:echo.exe
-
-	del *.obj
-	copy echo.exe $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\README.txt $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
-	
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\data $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo\data
-	del echo.exe
+#	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
+#	$(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c /c
+#	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
+#	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:echo.exe
+#
+#	del *.obj
+#	copy echo.exe $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
+#	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\README.txt $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
+#	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
+#	
+#	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\data $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo\data
+#	del echo.exe
 
 mod_rampart_samples_enc_echo:
 	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client
