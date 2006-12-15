@@ -536,6 +536,18 @@ axis2_client_google_spell:
 	copy google_spell.exe $(AXIS2_BINS)\samples
 	del google_spell.exe
 
+axis2_client_yahoo:
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
+	$(AXIS2_SOURCE_DIR)\samples\client\yahoo\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(AXIS2_ENGINE).lib  /OUT:yahoo.exe 
+	del *.obj
+	
+	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
+
+	copy yahoo.exe $(AXIS2_BINS)\samples
+	del yahoo.exe
+
 axis2_client_notify:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
 	$(AXIS2_SOURCE_DIR)\samples\client\notify\*.c /c
@@ -695,7 +707,7 @@ mv_dist:
 
 all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_calculator 
 
-all_clients: axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide axis2_client_dynamic_client 
+all_clients: axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_userguide axis2_client_dynamic_client 
 
 basic_modules: axis2_util axis2_parser axiom
 
