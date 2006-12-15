@@ -754,6 +754,8 @@ axis2_dep_engine_load(
 {
     axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_array_list_t *out_fault_phases = NULL;
+    axis2_array_list_t *new_out_fault_phases = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
 
@@ -827,9 +829,10 @@ axis2_dep_engine_load(
 
     status = AXIS2_CONF_SET_PHASES_INFO(dep_engine_impl->conf, env,
             dep_engine_impl->phases_info);
-    AXIS2_CONF_SET_OUT_FAULT_PHASES(dep_engine_impl->conf, env,
-            AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(dep_engine_impl->phases_info,
-                    env));
+    out_fault_phases = AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(
+        dep_engine_impl->phases_info, env);
+    new_out_fault_phases = axis2_phases_info_copy_flow(env, out_fault_phases); 
+    AXIS2_CONF_SET_OUT_FAULT_PHASES(dep_engine_impl->conf, env, new_out_fault_phases);
     if (AXIS2_SUCCESS != status)
     {
         AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);

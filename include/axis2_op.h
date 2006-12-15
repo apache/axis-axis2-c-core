@@ -783,9 +783,33 @@ extern "C"
          * AXIS2_TRUE if the operation is from a module, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
-        is_from_module)(
-            const axis2_op_t *op,
-            const axis2_env_t *env);
+                is_from_module)(
+                    const axis2_op_t *op,
+                    const axis2_env_t *env);
+
+        /**
+         * Set the wsamapping list.
+         * @param op pointer to operation
+         * @param env pointer to environment struct
+         * @param mapping_list list of action mappings
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_wsamapping_list)(
+                    axis2_op_t *op,
+                    const axis2_env_t *env,
+                    axis2_array_list_t *mapping_list);
+
+        /**
+         * Get the wsamapping list.
+         * @param op pointer to operation
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_array_list_t *(AXIS2_CALL *
+                get_wsamapping_list)(
+                    axis2_op_t *op,
+                    const axis2_env_t *env);
     };
 
     /**
@@ -1110,6 +1134,16 @@ extern "C"
     @sa axis2_op_ops#is_from_module */
 #define AXIS2_OP_IS_FROM_MODULE(op, env) \
         ((op)->ops->is_from_module(op, env))
+
+/** Set wsa mapping list.
+    @sa axis2_op_ops#set_wsamapping_list */
+#define AXIS2_OP_SET_WSAMAPPING_LIST(op, env, mapping_list) \
+        ((op)->ops->set_wsamapping_list(op, env, mapping_list))
+
+/** Get wsa mapping list.
+    @sa axis2_op_ops#get_wsamapping_list */
+#define AXIS2_OP_GET_WSAMAPPING_LIST(op, env) \
+        ((op)->ops->get_wsamapping_list(op, env))
 
 /** @} */
 #ifdef __cplusplus

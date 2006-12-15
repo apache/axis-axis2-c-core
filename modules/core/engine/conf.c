@@ -836,7 +836,10 @@ axis2_conf_free(
 
     if (config_impl->out_fault_phases)
     {
-        int i = 0;
+        /* No need of the following commented lines. Phases are freed in 
+         * phase_info 
+         */
+        /*int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->out_fault_phases, env); i++)
         {
             axis2_phase_t *phase = NULL;
@@ -848,7 +851,7 @@ axis2_conf_free(
 
             phase = NULL;
 
-        }
+        }*/
         AXIS2_ARRAY_LIST_FREE(config_impl->out_fault_phases, env);
         config_impl->out_fault_phases = NULL;
     }

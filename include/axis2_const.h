@@ -170,7 +170,10 @@ extern "C"
 #define AXIS2_SERVICE_GROUP_MAP "serviceGroupmap"
 
 #define AXIS2_CONFIG_CONTEXT "config_context"
-
+#define AXIS2_ACTION_MAPPING "actionMapping"
+#define AXIS2_OUTPUT_ACTION_MAPPING "outputActionMapping"
+#define AXI2_FAULT_ACTION_MAPPING "faultActionMapping"
+    
 #define AXIS2_SERVICE "service"
 
 #define AXIS2_OPEARTION_MAP "opmap"

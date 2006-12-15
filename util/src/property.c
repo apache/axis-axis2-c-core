@@ -45,13 +45,19 @@ axis2_property_set_free_func(axis2_property_t *property,
         AXIS2_FREE_VOID_ARG free_func);
 
 axis2_status_t AXIS2_CALL
-axis2_property_set_value(axis2_property_t *property,
-        const axis2_env_t *env,
-        void *value);
+axis2_property_set_value(
+    axis2_property_t *property,
+    const axis2_env_t *env,
+    void *value);
 
 void *AXIS2_CALL
 axis2_property_get_value(axis2_property_t *property,
         const axis2_env_t *env);
+
+axis2_property_t* AXIS2_CALL
+axis2_property_clone(
+    axis2_property_t *property,
+    const axis2_env_t *env);
 
 /************************** End of function prototypes ************************/
 
@@ -88,15 +94,16 @@ axis2_property_create(const axis2_env_t *env)
     property_impl->property.ops->set_scope = axis2_property_set_scope;
     property_impl->property.ops->set_value = axis2_property_set_value;
     property_impl->property.ops->get_value = axis2_property_get_value;
+    property_impl->property.ops->clone = axis2_property_clone;
     return &(property_impl->property);
 }
 /*****************************************************************************/
-AXIS2_EXTERN axis2_property_t *AXIS2_CALL
+axis2_property_t *AXIS2_CALL
 axis2_property_create_with_args(
     const axis2_env_t *env,
     axis2_scope_t scope,
     AXIS2_FREE_VOID_ARG free_func,
-    void *value)
+    void *value) 
 {
     axis2_property_impl_t *property_impl = NULL;
 
@@ -115,6 +122,7 @@ axis2_property_create_with_args(
 
     return &(property_impl->property);
 }
+
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL
@@ -184,16 +192,17 @@ axis2_property_set_free_func(axis2_property_t *property,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_property_set_value(axis2_property_t *property,
-        const axis2_env_t *env,
-        void *value)
+axis2_property_set_value(
+    axis2_property_t *property,
+    const axis2_env_t *env,
+    void *value)
 {
     axis2_property_impl_t *property_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     property_impl = AXIS2_INTF_TO_IMPL(property);
 
-    if (property_impl->value)
+    /*if (property_impl->value)
     {
         if (property_impl->scope != AXIS2_SCOPE_APPLICATION)
         {
@@ -207,7 +216,7 @@ axis2_property_set_value(axis2_property_t *property,
             }
             property_impl->value = NULL;
         }
-    }
+    }*/
 
     property_impl->value = value;
     return AXIS2_SUCCESS;
@@ -224,3 +233,22 @@ axis2_property_get_value(axis2_property_t *property,
 
     return property_impl->value;
 }
+
+
+axis2_property_t* AXIS2_CALL
+axis2_property_clone(
+    axis2_property_t *property,
+    const axis2_env_t *env)
+{
+    axis2_property_impl_t *property_impl = NULL;
+    axis2_property_t *new_property = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    property_impl = AXIS2_INTF_TO_IMPL(property);
+    new_property = axis2_property_create(env);
+    axis2_property_set_free_func(new_property, env, property_impl->free_func);
+    axis2_property_set_scope(new_property, env, property_impl->scope);
+    axis2_property_set_value(new_property, env, property_impl->value);
+    return new_property; 
+}
+
+

@@ -538,7 +538,7 @@ axis2_http_transport_utils_process_http_get_request(
             request_uri));
 
     property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,

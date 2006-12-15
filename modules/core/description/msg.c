@@ -206,21 +206,6 @@ axis2_msg_free(
 
     if (msg_impl->flow)
     {
-        int i = 0;
-        int size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(msg_impl->flow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = (axis2_phase_t *)(AXIS2_ARRAY_LIST_GET(msg_impl->flow, env, 
-                i));
-            if (phase)
-            {
-                AXIS2_PHASE_FREE(phase, env);
-                phase = NULL;
-            }
-
-        }
         AXIS2_ARRAY_LIST_FREE(msg_impl->flow, env);
         msg_impl->flow = NULL;
     }

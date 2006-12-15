@@ -35,6 +35,7 @@ typedef struct axis2_op_impl
     /* to store deploy time module QNames */
     axis2_array_list_t *module_qnames;
     axis2_array_list_t *engaged_module_list;
+    axis2_array_list_t *wsamapping_list;
     axis2_bool_t from_module;
 }
 axis2_op_impl_t;
@@ -358,6 +359,17 @@ axis2_op_is_from_module(
     const axis2_op_t *op,
     const axis2_env_t *env);
  
+axis2_status_t AXIS2_CALL
+axis2_op_set_wsamapping_list(
+    axis2_op_t *op,
+    const axis2_env_t *env,
+    axis2_array_list_t *mapping_list);
+
+axis2_array_list_t *AXIS2_CALL
+axis2_op_get_wsamapping_list(
+    axis2_op_t *op,
+    const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
 axis2_op_create(
     const axis2_env_t *env)
@@ -390,6 +402,7 @@ axis2_op_create(
     op_impl->engaged_module_list = NULL;
     op_impl->op.ops = NULL;
     op_impl->from_module = AXIS2_FALSE;
+    op_impl->wsamapping_list = NULL;
 
     op_impl->op.param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
@@ -569,6 +582,8 @@ axis2_op_create(
     op_impl->op.ops->get_msg = axis2_op_get_msg;
     op_impl->op.ops->add_msg = axis2_op_add_msg;
     op_impl->op.ops->is_from_module = axis2_op_is_from_module;
+    op_impl->op.ops->set_wsamapping_list = axis2_op_set_wsamapping_list;
+    op_impl->op.ops->get_wsamapping_list = axis2_op_get_wsamapping_list;
 
     return &(op_impl->op);
 }
@@ -667,7 +682,6 @@ axis2_op_free(
         AXIS2_DESC_FREE(op_impl->base, env);
         op_impl->base = NULL;
     }
-
     if (op->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
@@ -681,7 +695,6 @@ axis2_op_free(
         AXIS2_MSG_RECV_FREE(op_impl->msg_recv, env);
         op_impl->msg_recv = NULL;
     }
-
     if (op_impl->module_qnames)
     {
         int i = 0;
@@ -699,26 +712,26 @@ axis2_op_free(
         AXIS2_ARRAY_LIST_FREE(op_impl->module_qnames, env);
         op_impl->module_qnames = NULL;
     }
-
     if (op_impl->engaged_module_list)
     {
         AXIS2_ARRAY_LIST_FREE(op_impl->engaged_module_list, env);
         op_impl->engaged_module_list = NULL;
     }
-
-
+    if (op_impl->wsamapping_list)
+    {
+        AXIS2_ARRAY_LIST_FREE(op_impl->wsamapping_list, env);
+        op_impl->wsamapping_list = NULL;
+    }
     if (op_impl->wsdl_op)
     {
         AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
         op_impl->wsdl_op = NULL;
     }
-
     if (op_impl->op.base.ops)
     {
         AXIS2_FREE(env->allocator, op_impl->op.base.ops);
         op_impl->op.base.ops = NULL;
     }
-
     if (op_impl->op.ops)
     {
         AXIS2_FREE(env->allocator, op_impl->op.ops);
@@ -1959,5 +1972,30 @@ axis2_op_is_from_module(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(op)->from_module;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_op_set_wsamapping_list(
+    axis2_op_t *op,
+    const axis2_env_t *env,
+    axis2_array_list_t *mapping_list)
+{
+    axis2_op_impl_t *op_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, mapping_list, AXIS2_FAILURE);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
+    
+    op_impl->wsamapping_list = mapping_list;
+    return AXIS2_SUCCESS;
+}
+
+axis2_array_list_t *AXIS2_CALL
+axis2_op_get_wsamapping_list(
+    axis2_op_t *op,
+    const axis2_env_t *env)
+{
+    axis2_op_impl_t *op_impl = NULL;
+    op_impl = AXIS2_INTF_TO_IMPL(op);
+    return op_impl->wsamapping_list;
 }
 

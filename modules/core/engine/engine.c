@@ -665,7 +665,7 @@ axis2_engine_create_fault_msg_ctx(
     if (property)
     {
         AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-                property , AXIS2_FALSE);
+            AXIS2_PROPERTY_CLONE(property, env) , AXIS2_FALSE);
         property = NULL;
     }
 
@@ -700,8 +700,10 @@ axis2_engine_create_fault_msg_ctx(
     }
 
     AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(fault_ctx, env, envelope);
+    property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
+        AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
     AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-            AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE), AXIS2_FALSE);
+        AXIS2_PROPERTY_CLONE(property, env), AXIS2_FALSE);
     return fault_ctx;
 }
 

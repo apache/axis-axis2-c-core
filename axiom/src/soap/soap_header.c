@@ -589,7 +589,6 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
     AXIS2_PARAM_CHECK(env->error, ns_uri, NULL);
 
     header_impl = AXIS2_INTF_TO_IMPL(header);
-
     if (!(header_impl->header_blocks))
         return NULL;
 

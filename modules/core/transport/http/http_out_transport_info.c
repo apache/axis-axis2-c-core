@@ -104,7 +104,11 @@ axis2_http_out_transport_info_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     info_impl = AXIS2_INTF_TO_IMPL(info);
 
-    info_impl->response = NULL; /* response doesn't belong to info */
+    if(info_impl->response)
+    {
+        AXIS2_HTTP_SIMPLE_RESPONSE_FREE(info_impl->response, env);
+        info_impl->response = NULL;
+    }
     if (info_impl->encoding)
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);
@@ -166,7 +170,8 @@ axis2_http_out_transport_info_set_content_type(
     }
     else
     {
-        AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(info_impl->response, env,
+        if(info_impl->response)
+            AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(info_impl->response, env,
                 axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
                         content_type));
     }

@@ -70,6 +70,11 @@ typedef struct axis2_property_ops axis2_property_ops_t;
     get_value) (axis2_property_t *property,
                             const axis2_env_t *env);
 
+    axis2_property_t* (AXIS2_CALL *
+            clone)(
+                axis2_property_t *property,
+                const axis2_env_t *env);
+
 };
     
      
@@ -86,9 +91,23 @@ typedef struct axis2_property_ops axis2_property_ops_t;
  * @return property newly created property
  */
 AXIS2_EXTERN axis2_property_t * AXIS2_CALL
-axis2_property_create(const axis2_env_t *env);
+axis2_property_create(
+    const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_property_t *AXIS2_CALL
+/**
+ * create new property
+ * @param env axis2 environment
+ * @param scope scope can be one of following
+ *              AXIS2_SCOPE_REQUEST
+ *              AXIS2_SCOPE_SESSION
+ *              AXIS2_SCOPE_APPLICATION
+ *              pass 0 to use default scope of AXIS2_SCOPE_REQUEST
+ * @param free_func free function for the value freeing. Pass 0 if
+ *              param value is a string
+ * @param value value of the property
+ * @return property newly created property
+ */
+AXIS2_EXTERN axis2_property_t * AXIS2_CALL
 axis2_property_create_with_args(
     const axis2_env_t *env,
     axis2_scope_t scope,
@@ -111,7 +130,10 @@ axis2_property_create_with_args(
 
 #define AXIS2_PROPERTY_GET_VALUE(property, env) \
         ((property)->ops->get_value(property, env))
-                                        
+
+#define AXIS2_PROPERTY_CLONE(property, env) \
+        ((property)->ops->clone(property, env))
+
 /*************************** End of function macros ***************************/
 
 

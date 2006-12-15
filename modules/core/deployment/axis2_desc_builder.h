@@ -202,6 +202,20 @@ extern "C"
                     const axis2_desc_builder_t *desc_builder,
                     const axis2_env_t *env,
                     axis2_char_t *in);
+        /**
+         * Populate the Axis2 Operation with details from the actionMapping,
+         * outputActionMapping and faultActionMapping elements from the operation
+         * element.
+         *
+         * @param operation
+         * @param op_desc
+         */
+        axis2_status_t (AXIS2_CALL *
+                process_action_mappings)(
+                    axis2_desc_builder_t *desc_builder,
+                    const axis2_env_t *env,
+                    axiom_node_t *op_node,
+                    axis2_op_t *op_desc);
 
     };
 
@@ -309,6 +323,11 @@ extern "C"
     @sa axis2_desc_builder_ops#get_svc */
 #define AXIS2_DESC_BUILDER_GET_VALUE(desc_builder, env, in) \
       ((desc_builder)->ops->get_value (desc_builder, env, in))
+
+/** Process Action Mappings.
+    @sa axis2_desc_builder_ops#process_action_mappings */
+#define AXIS2_DESC_BUILDER_PROCESS_ACTION_MAPPINGS(desc_builder, env, op_node, op_desc) \
+      ((desc_builder)->ops->process_action_mappings (desc_builder, env, op_node, op_desc))
 
 /*************************** End of function macros ***************************/
 

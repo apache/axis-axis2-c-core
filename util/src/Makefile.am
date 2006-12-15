@@ -32,6 +32,7 @@ libaxis2_util_la_SOURCES = hash.c \
                         date_time.c \
                         base64_binary.c \
                         properties.c \
+						rand.c \
 						date_time_util.c
                         
 libaxis2_util_la_LIBADD =	$(top_builddir)/src/platforms/unix/libaxis2_unix.la \

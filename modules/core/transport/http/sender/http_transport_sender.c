@@ -304,7 +304,7 @@ axis2_http_transport_sender_invoke(
             {
 
                 out_info = (axis2_http_out_transport_info_t *)
-                        AXIS2_PROPERTY_GET_VALUE(property, env);
+                    AXIS2_PROPERTY_GET_VALUE(property, env);
                 property = NULL;
             }
 

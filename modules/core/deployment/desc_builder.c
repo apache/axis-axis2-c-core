@@ -107,6 +107,21 @@ axis2_desc_builder_get_value(
     const axis2_env_t *env,
     axis2_char_t *in);
 
+/**
+ * Populate the Axis2 Operation with details from the actionMapping,
+ * outputActionMapping and faultActionMapping elements from the operation
+ * element.
+ *
+ * @param operation
+ * @param op_desc
+ */
+axis2_status_t AXIS2_CALL
+axis2_desc_builder_process_action_mappings(
+    axis2_desc_builder_t *desc_builder,
+    const axis2_env_t *env,
+    axiom_node_t *op_node,
+    axis2_op_t *op_desc);
+
 static axis2_status_t
 set_attrs_and_value(
     axis2_param_t *param,
@@ -166,6 +181,8 @@ axis2_desc_builder_create(
         axis2_desc_builder_get_file_name_without_prefix;
     desc_builder_impl->desc_builder.ops->get_value =
         axis2_desc_builder_get_value;
+    desc_builder_impl->desc_builder.ops->process_action_mappings =
+    axis2_desc_builder_process_action_mappings;
 
     return &(desc_builder_impl->desc_builder);
 }
@@ -707,6 +724,79 @@ set_attrs_and_value(
     }
     return AXIS2_SUCCESS;
 }
+
+/**
+ * Populate the Axis2 Operation with details from the actionMapping,
+ * outputActionMapping and faultActionMapping elements from the operation
+ * element.
+ *
+ * @param operation
+ * @param op_desc
+ */
+axis2_status_t AXIS2_CALL
+axis2_desc_builder_process_action_mappings(
+    axis2_desc_builder_t *desc_builder,
+    const axis2_env_t *env,
+    axiom_node_t *op_node,
+    axis2_op_t *op_desc)
+{
+    axiom_element_t *op_element = NULL;
+    axis2_qname_t *qname = NULL;
+    axiom_children_qname_iterator_t *action_mappings = NULL;
+    axis2_array_list_t *mapping_list = axis2_array_list_create(env, 0);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
+
+    op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
+    qname = axis2_qname_create(env, AXIS2_ACTION_MAPPING, NULL, NULL);
+    if(op_element)
+        action_mappings = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 
+            qname,op_node);
+    if(!action_mappings)
+        return AXIS2_SUCCESS;
+    while (AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(action_mappings, env))
+    {
+        axiom_element_t *mapping_element = NULL;
+        axiom_node_t *mapping_node = NULL;
+        axis2_char_t *input_action_string = NULL;
+        axis2_char_t *temp_str = NULL;
+
+        /* This is to check whether some one has locked the parmter at the top
+         * level
+         */
+        mapping_node = (axiom_node_t *)
+                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(action_mappings, env);
+        mapping_element = AXIOM_NODE_GET_DATA_ELEMENT(mapping_node, env);
+        temp_str = AXIOM_ELEMENT_GET_TEXT(mapping_element, env, 
+            mapping_node);
+        input_action_string = AXIS2_STRTRIM(env, temp_str, NULL);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Input action mapping found %s", 
+            input_action_string);
+        if(0 != AXIS2_STRCMP("", input_action_string))
+        {
+            AXIS2_ARRAY_LIST_ADD(mapping_list, env, input_action_string);
+        }
+        else
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Zero length " \
+                "input_action_string found. Not added to the mapping list");
+    }
+    AXIS2_OP_SET_WSAMAPPING_LIST(op_desc, env, mapping_list); 
+    /*qname = axis2_qname_create(env, AXIS2_OUTPUT_ACTION_MAPPING, NULL, NULL);
+    child_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(mapping_element, 
+        env, qname, mapping_node, &child_node);
+    temp_str = AXIOM_ELEMENT_GET_TEXT(child_element, env, child_node);
+    output_action_string = AXIS2_STRTRIM(env, temp_str, NULL);
+    if(child_element && output_action_string)
+    {
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Output action mapping found %s", 
+            output_action_string);
+    }
+    AXIS2_OP_SET_OUTPUT_ACTION(op_desc, env, mapping_list); */
+        
+    return AXIS2_SUCCESS;
+}
+
 
 axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_params(

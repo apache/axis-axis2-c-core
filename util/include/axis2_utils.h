@@ -120,12 +120,12 @@ typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
     */
     enum axis2_scopes
     {
-        /** Application scope */
-        AXIS2_SCOPE_APPLICATION = 0,
+        /** Request scope */
+        AXIS2_SCOPE_REQUEST = 0,
         /** Session scope */
         AXIS2_SCOPE_SESSION,
-        /** Request scope */
-        AXIS2_SCOPE_REQUEST
+        /** Application scope */
+        AXIS2_SCOPE_APPLICATION
     };
 
 

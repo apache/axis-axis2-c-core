@@ -1370,8 +1370,6 @@ axis2_svc_add_module_ops(
     axis2_hash_index_t *index = NULL;
     axis2_phase_resolver_t *pr = NULL;
     axis2_op_t *op_desc = NULL;
-    axis2_array_list_t *params = NULL;
-    axis2_param_t *param = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1389,14 +1387,15 @@ axis2_svc_add_module_ops(
     for (index = axis2_hash_first(map, env); index; index =
                 axis2_hash_next(env, index))
     {
+        axis2_array_list_t *mappings_list = NULL;
         int size = 0;
         int j = 0;
         void *v = NULL;
         axis2_hash_this(index, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
-        params = AXIS2_OP_GET_ALL_PARAMS(op_desc, env);
+        mappings_list = AXIS2_OP_GET_WSAMAPPING_LIST(op_desc, env);
         /* adding WSA mapping into service */
-        size = AXIS2_ARRAY_LIST_SIZE(params, env);
+        size = AXIS2_ARRAY_LIST_SIZE(mappings_list, env);
 
         if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
@@ -1409,26 +1408,19 @@ axis2_svc_add_module_ops(
         }
         for (j = 0; j < size; j++)
         {
-            axis2_char_t *key = NULL;
+            axis2_char_t *mapping = NULL;
 
-            param = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(params, env, j);
-            if (0 == AXIS2_STRCMP(AXIS2_PARAM_GET_NAME(param, env),
-                    AXIS2_WSA_MAPPING))
+            mapping = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(mappings_list, env, j);
+            status = axis2_svc_add_mapping(svc, env, mapping, op_desc);
+            if (AXIS2_SUCCESS != status)
             {
-                key = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(param, env);
-                status = axis2_svc_add_mapping(svc, env, key, op_desc);
-                if (AXIS2_SUCCESS != status)
+                if (pr)
                 {
-                    if (pr)
-                    {
-                        AXIS2_PHASE_RESOLVER_FREE(pr, env);
-                        pr = NULL;
-                    }
-                    return status;
+                    AXIS2_PHASE_RESOLVER_FREE(pr, env);
+                    pr = NULL;
                 }
-                break;
+                return status;
             }
-
         }
 
         status = AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(pr, env, op_desc);

@@ -612,8 +612,11 @@ axis2_svc_builder_process_ops(
         status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder,
                 env, params_itr, op_desc->param_container, builder_impl->svc->
                 param_container);
-        /* loading the message receivers */
+        /* To process wsamapping */
+        AXIS2_DESC_BUILDER_PROCESS_ACTION_MAPPINGS(svc_builder->desc_builder, 
+            env, op_node, op_desc);
 
+        /* loading the message receivers */
         qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
         recv_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(op_element,
                 env, qmsgrecv, op_node, &recv_node);

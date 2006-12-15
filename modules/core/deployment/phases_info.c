@@ -24,14 +24,14 @@
 typedef struct axis2_phases_info_impl
 {
     axis2_phases_info_t phases_info;
-
     axis2_array_list_t *in_phases;
-
     axis2_array_list_t *out_phases;
-
     axis2_array_list_t *in_faultphases;
-
     axis2_array_list_t *out_faultphases;
+    axis2_hash_t *op_in_phases;
+    axis2_hash_t *op_out_phases;
+    axis2_hash_t *op_in_faultphases;
+    axis2_hash_t *op_out_faultphases;
 
 }
 axis2_phases_info_impl_t;
@@ -138,6 +138,10 @@ axis2_phases_info_create(
     phases_info_impl->out_phases = NULL;
     phases_info_impl->in_faultphases = NULL;
     phases_info_impl->out_faultphases = NULL;
+    phases_info_impl->op_in_phases = axis2_hash_make(env);
+    phases_info_impl->op_out_phases = axis2_hash_make(env);
+    phases_info_impl->op_in_faultphases = axis2_hash_make(env);
+    phases_info_impl->op_out_faultphases = axis2_hash_make(env);
 
     phases_info_impl->phases_info.ops = (axis2_phases_info_ops_t *)
             AXIS2_MALLOC(env->allocator, sizeof(axis2_phases_info_ops_t));
@@ -228,7 +232,86 @@ axis2_phases_info_free(
         AXIS2_ARRAY_LIST_FREE(phases_info_impl->out_faultphases, env);
         phases_info_impl->out_faultphases = NULL;
     }
+    if (phases_info_impl->op_in_phases)
+    {
+        axis2_hash_index_t *i = NULL;
+        for (i = axis2_hash_first (phases_info_impl->op_in_phases, env); i; i =
+                axis2_hash_next (env, i))
+        {
+            void *v = NULL;
+            axis2_phase_t *phase = NULL;
 
+            axis2_hash_this (i, NULL, NULL, &v);
+            phase = (axis2_phase_t *) v;
+            if(phase)
+            {
+                AXIS2_PHASE_FREE(phase, env);
+                phase = NULL;
+            }
+        }
+        axis2_hash_free(phases_info_impl->op_in_phases, env);
+        phases_info_impl->op_in_phases = NULL;
+    }
+    if (phases_info_impl->op_out_phases)
+    {
+        axis2_hash_index_t *i = NULL;
+        for (i = axis2_hash_first (phases_info_impl->op_out_phases, env); i; i =
+                axis2_hash_next (env, i))
+        {
+            void *v = NULL;
+            axis2_phase_t *phase = NULL;
+
+            axis2_hash_this (i, NULL, NULL, &v);
+            phase = (axis2_phase_t *) v;
+            if(phase)
+            {
+                AXIS2_PHASE_FREE(phase, env);
+                phase = NULL;
+            }
+        }
+        axis2_hash_free(phases_info_impl->op_out_phases, env);
+        phases_info_impl->op_out_phases = NULL;
+    }
+    if (phases_info_impl->op_in_faultphases)
+    {
+        axis2_hash_index_t *i = NULL;
+        for (i = axis2_hash_first (phases_info_impl->op_in_faultphases, env); 
+            i; i = axis2_hash_next (env, i))
+        {
+            void *v = NULL;
+            axis2_phase_t *phase = NULL;
+
+            axis2_hash_this (i, NULL, NULL, &v);
+            phase = (axis2_phase_t *) v;
+            if(phase)
+            {
+                AXIS2_PHASE_FREE(phase, env);
+                phase = NULL;
+            }
+        }
+        axis2_hash_free(phases_info_impl->op_in_faultphases, env);
+        phases_info_impl->op_in_faultphases = NULL;
+    }
+    if (phases_info_impl->op_out_faultphases)
+    {
+        axis2_hash_index_t *i = NULL;
+        for (i = axis2_hash_first (phases_info_impl->op_out_faultphases, env); 
+            i; i = axis2_hash_next (env, i))
+        {
+            void *v = NULL;
+            axis2_phase_t *phase = NULL;
+
+            axis2_hash_this (i, NULL, NULL, &v);
+            phase = (axis2_phase_t *) v;
+            if(phase)
+            {
+                AXIS2_PHASE_FREE(phase, env);
+                phase = NULL;
+            }
+        }
+        axis2_hash_free(phases_info_impl->op_out_faultphases, env);
+        phases_info_impl->op_out_faultphases = NULL;
+    }
     if (phases_info->ops)
     {
         AXIS2_FREE(env->allocator, phases_info->ops);
@@ -391,7 +474,14 @@ axis2_phases_info_get_op_in_phases(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
+    phase = axis2_hash_get(phases_info_impl->op_in_phases, 
+        AXIS2_PHASE_POLICY_DETERMINATION, AXIS2_HASH_KEY_STRING);
+    if(!phase)
+    {
+        phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
+        axis2_hash_set(phases_info_impl->op_in_phases, 
+            AXIS2_PHASE_POLICY_DETERMINATION, AXIS2_HASH_KEY_STRING, phase);
+    }
 
     status = AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
     if (AXIS2_SUCCESS != status)
@@ -412,19 +502,23 @@ axis2_phases_info_get_op_in_phases(
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(
                     phases_info_impl->in_phases, env, i);
         if (0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name) ||
-                0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||
-                0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name) ||
-                0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name))
+            0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||
+            0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name) ||
+            0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name))
         {
             /* Do nothing */
         }
         else
         {
-            phase = axis2_phase_create(env, phase_name);
-            if (phase)
+            phase = axis2_hash_get(phases_info_impl->op_in_phases, phase_name, 
+                AXIS2_HASH_KEY_STRING);
+            if(!phase)
             {
-                status = AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
+                phase = axis2_phase_create(env, phase_name);
+                axis2_hash_set(phases_info_impl->op_in_phases, phase_name,
+                    AXIS2_HASH_KEY_STRING, phase);
             }
+            status = AXIS2_ARRAY_LIST_ADD(op_in_phases, env, phase);
             if (AXIS2_SUCCESS != status)
             {
                 int i = 0;
@@ -483,9 +577,15 @@ axis2_phases_info_get_op_out_phases(
         }
         else
         {
-            phase = axis2_phase_create(env, phase_name);
-            if (phase)
-                status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
+            phase = axis2_hash_get(phases_info_impl->op_out_phases, phase_name, 
+                AXIS2_HASH_KEY_STRING);
+            if(!phase)
+            {
+                phase = axis2_phase_create(env, phase_name);
+                axis2_hash_set(phases_info_impl->op_out_phases, phase_name,
+                    AXIS2_HASH_KEY_STRING, phase);
+            }
+            status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
             if (AXIS2_SUCCESS != status)
             {
                 int i = 0;
@@ -506,9 +606,15 @@ axis2_phases_info_get_op_out_phases(
             }
         }
     }
-    phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
-    if (phase)
-        status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
+    phase = axis2_hash_get(phases_info_impl->op_out_phases, 
+        AXIS2_PHASE_POLICY_DETERMINATION, AXIS2_HASH_KEY_STRING);
+    if(!phase)
+    {
+        phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
+        axis2_hash_set(phases_info_impl->op_out_phases, 
+            AXIS2_PHASE_POLICY_DETERMINATION, AXIS2_HASH_KEY_STRING, phase);
+    }
+    status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
     if (AXIS2_SUCCESS != status)
     {
         int i = 0;
@@ -527,9 +633,15 @@ axis2_phases_info_get_op_out_phases(
         op_out_phases = NULL;
         return NULL;
     }
-    phase = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_OUT);
-    if (phase)
-        status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
+    phase = axis2_hash_get(phases_info_impl->op_out_phases, 
+        AXIS2_PHASE_MESSAGE_OUT, AXIS2_HASH_KEY_STRING);
+    if(!phase)
+    {
+        phase = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_OUT);
+        axis2_hash_set(phases_info_impl->op_out_phases, 
+            AXIS2_PHASE_MESSAGE_OUT, AXIS2_HASH_KEY_STRING, phase);
+    }
+    status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
     if (AXIS2_SUCCESS != status)
     {
         int i = 0;
@@ -587,9 +699,15 @@ axis2_phases_info_get_op_in_faultphases(
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(phases_info_impl->
                 in_faultphases, env, i);
-        phase = axis2_phase_create(env, phase_name);
-        if (phase)
-            status = AXIS2_ARRAY_LIST_ADD(op_in_faultphases, env, phase);
+        phase = axis2_hash_get(phases_info_impl->op_in_faultphases, phase_name, 
+            AXIS2_HASH_KEY_STRING);
+        if(!phase)
+        {
+            phase = axis2_phase_create(env, phase_name);
+            axis2_hash_set(phases_info_impl->op_in_faultphases, 
+                phase_name, AXIS2_HASH_KEY_STRING, phase);
+        }
+        status = AXIS2_ARRAY_LIST_ADD(op_in_faultphases, env, phase);
         if (AXIS2_SUCCESS != status)
         {
             int i = 0;
@@ -647,9 +765,15 @@ axis2_phases_info_get_op_out_faultphases(
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(phases_info_impl->
                 out_faultphases, env, i);
-        phase = axis2_phase_create(env, phase_name);
-        if (phase)
-            status = AXIS2_ARRAY_LIST_ADD(op_out_faultphases, env, phase);
+        phase = axis2_hash_get(phases_info_impl->op_out_faultphases, phase_name, 
+            AXIS2_HASH_KEY_STRING);
+        if(!phase)
+        {
+            phase = axis2_phase_create(env, phase_name);
+            axis2_hash_set(phases_info_impl->op_out_faultphases, 
+                phase_name, AXIS2_HASH_KEY_STRING, phase);
+        }
+        status = AXIS2_ARRAY_LIST_ADD(op_out_faultphases, env, phase);
         if (AXIS2_SUCCESS != status)
         {
             int i = 0;
@@ -746,5 +870,32 @@ axis2_phases_info_set_op_phases(
 	*/
     return status;
 
+}
+
+axis2_array_list_t *AXIS2_CALL
+axis2_phases_info_copy_flow(
+    const axis2_env_t *env,
+    const axis2_array_list_t *flow_to_copy)
+{
+    int size = 0, i = 0;
+    axis2_array_list_t *new_flow = NULL;
+    if(flow_to_copy)
+        size = AXIS2_ARRAY_LIST_SIZE((axis2_array_list_t *) flow_to_copy, env);
+    if(size > 0)
+    {
+        new_flow = axis2_array_list_create(env, 0);
+        if(!new_flow)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
+    for(i = 0; i < size; i++)
+    {
+        void *item = AXIS2_ARRAY_LIST_GET((axis2_array_list_t *) flow_to_copy,
+            env, i);
+        AXIS2_ARRAY_LIST_ADD(new_flow, env, item);
+    }
+    return new_flow;
 }
 

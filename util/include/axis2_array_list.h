@@ -237,7 +237,7 @@ extern "C"
                     const axis2_env_t *env,
                     int index);
 
-        /**
+   /**
     * @param array_list pointer to array list
     * @param env pointer to environment struct
     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -269,7 +269,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL axis2_array_list_create(
         const axis2_env_t *env, 
-   int capacity);
+        int capacity);
 
     /**
      * Free array passed as void pointer.
@@ -280,7 +280,6 @@ extern "C"
     axis2_array_list_free_void_arg(
         void *array_list,
         const axis2_env_t *env);
-
 
 /** Frees the axis2 array list.
     @sa axis2_array_list_ops#free */

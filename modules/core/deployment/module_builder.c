@@ -490,6 +490,10 @@ axis2_module_builder_process_ops(
 
         AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
                 params, op_desc->param_container, builder_impl->module_desc->params);
+        /* To process wsamapping */
+        AXIS2_DESC_BUILDER_PROCESS_ACTION_MAPPINGS(module_builder->desc_builder, 
+            env, op_node, op_desc);
+
         /* setting the mep of the operation */
 
         /* loading the message receivers */

@@ -96,8 +96,8 @@ axis2_qname_create(const axis2_env_t *env,
     /* localpart can't be null */
     if (!localpart)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_INVALID_NULL_PARAM);
-        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
+            AXIS2_FAILURE);
         return NULL;
     }
 
