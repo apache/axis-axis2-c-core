@@ -82,9 +82,7 @@ AC_CONFIG_FILES([Makefile \
         server/sec_echo/Makefile \
         client/Makefile
         client/enc_echo/Makefile \
-        client/enc_echo/data/Makefile \
-        client/echo/Makefile \
-        client/echo/data/Makefile
+        client/enc_echo/data/Makefile 
 
     ])
     
