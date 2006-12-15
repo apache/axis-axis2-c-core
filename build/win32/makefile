@@ -166,7 +166,7 @@ APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib aprutil-1.lib libapr-1.lib
 #debug symbols
 !if "$(DEBUG)" == "1"
 CFLAGS = $(CFLAGS) /D "_DEBUG" /Od /Z7
-LDFLAGS = $(LDFLAGS) /DEBUG /NODEFAULTLIB:LIBCMTD.lib /MTd
+LDFLAGS = $(LDFLAGS) /DEBUG /NODEFAULTLIB:LIBCMTD.lib 
 !else
 CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 /MT
 LDFLAGS = $(LDFLAGS)
@@ -1005,86 +1005,73 @@ LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
 
 APPLINK_FILE = $(OPENSSL_BIN_DIR)\include\openssl\applink.c
 
-omxmlsec:
-	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(OMXMLSEC_SRC) /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:omxmlsec.dll  /IMPLIB:omxmlsec.lib
-	del *.obj
-	
-	if not exist $(AXIS2_INSTALL_DIR)\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart
+rampart_do_nothing:
 
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart\rampart
-
-	copy omxmlsec.dll $(AXIS2_INSTALL_DIR)\rampart\rampart
-	
-	copy omxmlsec.lib $(AXIS2_INSTALL_DIR)\rampart\rampart
-		
-	del *.dll
-	del *.lib
-	del *.exp
-	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(AXIS2_INSTALL_DIR)\rampart\rampart
+RAMPART_BIN_DIR = $(AXIS2_INSTALL_DIR)\bin
+RAMPART_SAMPLES_CLIENT_DIR = $(RAMPART_BIN_DIR)\samples\rampart\client
+RAMPART_SAMPLES_SERVER_DIR = $(RAMPART_BIN_DIR)\samples\rampart\server
+RAMPART_SAMPLES_KEYS_DIR = $(RAMPART_BIN_DIR)\samples\rampart\keys
+RAMPART_SAMPLES_SERVICE_DIR = $(AXIS2_INSTALL_DIR)\services
+RAMPART_MODULES_DIR = $(AXIS2_INSTALL_DIR)\modules\
 
 mod_rampart:
-	$(CC) $(APPLINK_FILE) /c
-	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) $(OMXMLSEC_SRC) /c
+	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) $(OMXMLSEC_SRC) $(APPLINK_FILE) /c
 	$(LD) $(LDFLAGS) /LIBPATH:$(AXIS2_INSTALL_DIR)\rampart\rampart *.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib  $(LIBS) \
 	$(AXIS2_ENGINE).lib /DLL /OUT:mod_rampart.dll  /IMPLIB:mod_rampart.lib
 	del *.obj
 	
-	if not exist $(AXIS2_INSTALL_DIR)\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart
+	if not exist $(RAMPART_MODULES_DIR)\rampart mkdir $(RAMPART_MODULES_DIR)\rampart
 
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart\rampart
-
-	copy mod_rampart.dll $(AXIS2_INSTALL_DIR)\rampart\rampart
+	copy mod_rampart.dll $(RAMPART_MODULES_DIR)\rampart
 	
 	del *.dll
 	del *.lib
 	del *.exp
-	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(AXIS2_INSTALL_DIR)\rampart\rampart
+	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(RAMPART_MODULES_DIR)\rampart
 	
 mod_rampart_pwcb: 
 	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:pwcb.dll /IMPLIB:pwcb.lib
 
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples mkdir $(AXIS2_INSTALL_DIR)\rampart\samples
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\callback mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\callback
+	if not exist $(RAMPART_SAMPLES_CLIENT_DIR)\callback mkdir $(RAMPART_SAMPLES_CLIENT_DIR)\callback
 	
-	copy pwcb.dll $(AXIS2_INSTALL_DIR)\rampart\samples\callback\pwcb.dll
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c $(AXIS2_INSTALL_DIR)\rampart\samples\callback
+	copy pwcb.dll $(RAMPART_SAMPLES_CLIENT_DIR)\callback\pwcb.dll
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c $(RAMPART_SAMPLES_CLIENT_DIR)\callback
 	del pwcb.*
 
 mod_rampart_htpwcb: 
 	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\htpasswd_callback\htpwcb.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:htpwcb.dll /IMPLIB:htpwcb.lib
 
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples mkdir $(AXIS2_INSTALL_DIR)\rampart\samples
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd
+	if not exist $(RAMPART_SAMPLES_CLIENT_DIR)\callback\htpasswd mkdir $(RAMPART_SAMPLES_CLIENT_DIR)\callback\htpasswd
 	
-	copy htpwcb.dll $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd\htpwcb.dll
+	copy htpwcb.dll $(RAMPART_SAMPLES_CLIENT_DIR)\callback\htpasswd\htpwcb.dll
 	del htpwcb.*
 
-#Removed echo sample
-#mod_rampart_samples_echo:
-#	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client
-#	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
+mod_rampart_services_sec_echo:
 	
-#	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
-#	$(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c /c
-#	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-#	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:echo.exe
-#
-#	del *.obj
-#	copy echo.exe $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
-#	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\README.txt $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
-#	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
-#	
-#	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\data $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo\data
-#	del echo.exe
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
+	$(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.c /c
+	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /DLL /OUT:sec_echo.dll 
+
+	del *.obj
+
+	if not exist $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo mkdir $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
+	copy sec_echo.dll $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.c $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.xml $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
+	
+	if not exist $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo mkdir $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo
+	copy sec_echo.dll $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.c $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.xml $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo
+
+	del sec_echo.dll
 
 mod_rampart_samples_enc_echo:
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client
-	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client\enc_echo mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client\enc_echo
+	if not exist $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo mkdir $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo
 	
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
 	$(AXIS2_SOURCE_DIR)\rampart\samples\client\enc_echo\echo.c /c
@@ -1092,17 +1079,21 @@ mod_rampart_samples_enc_echo:
 	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:enc_echo.exe
 
 	del *.obj
-	copy enc_echo.exe $(AXIS2_INSTALL_DIR)\rampart\samples\client\enc_echo
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\enc_echo\echo.c $(AXIS2_INSTALL_DIR)\rampart\samples\client\enc_echo
+	copy enc_echo.exe $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\enc_echo\echo.c $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo
 	
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\enc_echo\data $(AXIS2_INSTALL_DIR)\rampart\samples\client\enc_echo\data
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\enc_echo\data $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo\data
 	del enc_echo.exe
 
-mod_rampart_samples: mod_rampart_samples_echo mod_rampart_samples_enc_echo
+mod_rampart_samples: mod_rampart_samples_enc_echo mod_rampart_services_sec_echo
 
 mod_rampart_copy_include:
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\include $(AXIS2_INSTALL_DIR)\rampart\include
 	copy $(AXIS2_SOURCE_DIR)\rampart\README $(AXIS2_INSTALL_DIR)\rampart
+
+mod_rampart_copy_keys:
+	if not exist $(RAMPART_SAMPLES_KEYS_DIR) mkdir $(RAMPART_SAMPLES_KEYS_DIR)
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\keys\* $(RAMPART_SAMPLES_KEYS_DIR)
 
 mod_rampart_all: mod_rampart mod_rampart_pwcb mod_rampart_htpwcb mod_rampart_samples mod_rampart_copy_include
 

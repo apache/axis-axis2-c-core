@@ -1,7 +1,7 @@
 echo off
 
 rem if your client repository is different, change the value.
-set CLIENT_REPO=%HOMEDRIVE%%HOMEPATH%\clientrepo
+set CLIENT_REPO=%AXIS2C_HOME%\clientrepo
 
 echo Start creating a client repository at %CLIENT_REPO%
 
