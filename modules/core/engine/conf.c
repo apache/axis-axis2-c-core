@@ -458,6 +458,8 @@ axis2_conf_create(
             axis2_conf_free(&(config_impl->conf), env);
             return NULL;
         }
+        /*Incase of using security we need to find the service/operation parameters before the dispatch phase.
+         *This is required to give parameters to the security inflow.*/
         uri_dispatch = axis2_req_uri_disp_create(env);
         if (uri_dispatch)
         {

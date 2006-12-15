@@ -243,9 +243,9 @@ axis2_date_time_create_with_offset (const axis2_env_t *env, int offset);
         ((date_time)->ops->deserialize_date_time(date_time, env, date_time_str))
 
 #define AXIS2_DATE_TIME_SET_DATE_TIME(date_time, env, \
-                           year, month, date, hour, min, second ) \
+                           year, month, date, hour, min, second, milliseconds ) \
         ((date_time)->ops->set_date_time (date_time, env, \
-                           year, month, date, hour, min, second,milliseconds) )
+                           year, month, date, hour, min, second, milliseconds) )
  
 #define AXIS2_DATE_TIME_SERIALIZE_TIME(date_time, env) \
         ((date_time)->ops->serialize_time (date_time, env ) )
