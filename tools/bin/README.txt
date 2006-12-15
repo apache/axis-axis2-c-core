@@ -18,6 +18,6 @@ To generate a server skeleton in C:
 
 To generate a client stub in C: 
 
-	sh WSDL2C.sh -l c -uri interoptestdoclitparameters.wsdl -d adb -u 
+	sh WSDL2C.sh -uri interoptestdoclitparameters.wsdl -d adb -u 
 
 
