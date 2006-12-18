@@ -89,7 +89,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
         soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
         if (soap_header)
         {
-
             AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "SOAP header found");
             
             /*Create and populate rampart actions*/
@@ -164,7 +163,9 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
            
 
-        } /* End of sec_header */
-
+        }else{ /* End of sec_header */
+            /*It's OK to have SOAP envelopes without headers*/
+            return AXIS2_SUCCESS;
+        }
     }/* End of soap_envelope */
     return status;}
