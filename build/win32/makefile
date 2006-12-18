@@ -528,13 +528,13 @@ axis2_client_google_spell:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
 	$(AXIS2_SOURCE_DIR)\samples\client\google\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:google_spell.exe 
+	$(AXIS2_ENGINE).lib  /OUT:google.exe 
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
 
-	copy google_spell.exe $(AXIS2_BINS)\samples
-	del google_spell.exe
+	copy google.exe $(AXIS2_BINS)\samples
+	del google.exe
 
 axis2_client_yahoo:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
