@@ -753,8 +753,18 @@ axis2_desc_builder_process_action_mappings(
     if(op_element)
         action_mappings = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 
             qname,op_node);
+            
+    AXIS2_QNAME_FREE(qname, env);
+    qname = NULL;
     if(!action_mappings)
+    {
+        if (mapping_list)
+        {
+            AXIS2_ARRAY_LIST_FREE(mapping_list, env);
+            mapping_list = NULL;
+        }
         return AXIS2_SUCCESS;
+    }
     while (AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(action_mappings, env))
     {
         axiom_element_t *mapping_element = NULL;

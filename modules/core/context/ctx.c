@@ -175,7 +175,7 @@ axis2_ctx_set_property(
 				void *value_value = AXIS2_PROPERTY_GET_VALUE (value, env);
 				if (temp_value_value != value_value)
 				{
-					/*AXIS2_PROPERTY_FREE(temp_value, env);*/
+					AXIS2_PROPERTY_FREE(temp_value, env);
 				}
 			}
         }

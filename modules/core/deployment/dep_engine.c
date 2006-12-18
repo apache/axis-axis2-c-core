@@ -832,6 +832,7 @@ axis2_dep_engine_load(
     out_fault_phases = AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(
         dep_engine_impl->phases_info, env);
     new_out_fault_phases = axis2_phases_info_copy_flow(env, out_fault_phases); 
+    AXIS2_ARRAY_LIST_FREE(out_fault_phases, env);
     AXIS2_CONF_SET_OUT_FAULT_PHASES(dep_engine_impl->conf, env, new_out_fault_phases);
     if (AXIS2_SUCCESS != status)
     {

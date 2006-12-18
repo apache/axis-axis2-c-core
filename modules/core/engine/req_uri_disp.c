@@ -125,6 +125,7 @@ axis2_req_uri_disp_find_svc(
                                         "Service found using target endpoint address");
                         }
                     }
+                    AXIS2_FREE(env->allocator, url_tokens[0]);
                 }
                 AXIS2_FREE(env->allocator, url_tokens);
                 url_tokens = NULL;

@@ -1985,6 +1985,11 @@ axis2_op_set_wsamapping_list(
     AXIS2_PARAM_CHECK(env->error, mapping_list, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
+    if (op_impl->wsamapping_list)
+    {
+        AXIS2_ARRAY_LIST_FREE(op_impl->wsamapping_list, env);
+        op_impl->wsamapping_list = NULL;
+    }
     op_impl->wsamapping_list = mapping_list;
     return AXIS2_SUCCESS;
 }
