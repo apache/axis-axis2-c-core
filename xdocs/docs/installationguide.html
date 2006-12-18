@@ -506,11 +506,11 @@ privileges in your machine.</p>
   <li>Edit Apache2's configuration file (generally httpd.conf) and add
     the following directive : - 
     <pre>    LoadModule axis2_module &lt;apache2 modules directory&gt;/mod_axis2.so
+    Axis2RepoPath &lt;axis2 repository path&gt;
+    Axis2LogFile &lt;axis2 log file path&gt;
+    Axis2LogLevel LOG_LEVEL
     &lt;Location /axis2&gt;
         SetHandler axis2_module
-        RepoPath &lt;axis2 repository path&gt;
-        LogFile &lt;axis2 log file path&gt;
-        Axis2LogLevel LOG_LEVEL
     &lt;/Location&gt;    
     </pre>
     <p>LOG_LEVEL can be one of following</p>
