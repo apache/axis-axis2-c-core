@@ -264,7 +264,7 @@ axis2_http_worker_process_request(
 
 	url_external_form = AXIS2_URL_TO_EXTERNAL_FORM(request_url, env);
     property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, property,
@@ -287,7 +287,7 @@ axis2_http_worker_process_request(
     }
 
     property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env,
             axis2_http_out_transport_info_free_void_arg);
     http_out_transport_info = axis2_http_out_transport_info_create(env, response);

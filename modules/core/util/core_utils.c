@@ -135,7 +135,7 @@ axis2_core_utils_create_out_msg_ctx(
     if (property)
     {
         AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-            AXIS2_PROPERTY_CLONE(property, env), AXIS2_FALSE);
+            property, AXIS2_FALSE);
         property = NULL;
     }
 
