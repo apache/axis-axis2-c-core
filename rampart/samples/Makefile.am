@@ -1,3 +1,3 @@
 TESTS =
-SUBDIRS = callback client server
+SUBDIRS = callback client server keys
 
