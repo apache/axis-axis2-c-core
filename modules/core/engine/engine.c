@@ -571,6 +571,7 @@ axis2_engine_create_fault_msg_ctx(
     const axis2_char_t *msg_id = NULL;
     axis2_relates_to_t *relates_to = NULL;
     axis2_char_t *msg_uuid = NULL;
+    axis2_msg_info_headers_t *msg_info_headers = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, processing_context, AXIS2_FAILURE);
@@ -633,13 +634,17 @@ axis2_engine_create_fault_msg_ctx(
     }
     property = NULL;
 
-    /* set soap action */
-    wsa_action = AXIS2_MSG_CTX_GET_SOAP_ACTION(processing_context, env);
-    if (!wsa_action)
+    /* set WSA action */
+    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(processing_context, env);
+    if (msg_info_headers)
     {
-        wsa_action = "http://www.w3.org/2005/08/addressing/fault";
+        wsa_action = AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env);
+        if (wsa_action)
+        {
+            wsa_action = "http://www.w3.org/2005/08/addressing/fault";
+            AXIS2_MSG_CTX_SET_WSA_ACTION(fault_ctx, env, wsa_action);
+        }
     }
-    AXIS2_MSG_CTX_SET_WSA_ACTION(fault_ctx, env, wsa_action);
 
     /* set relates to */
     msg_id = AXIS2_MSG_CTX_GET_MSG_ID(processing_context, env);
