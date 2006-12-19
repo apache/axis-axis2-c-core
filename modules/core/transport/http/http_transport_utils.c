@@ -308,7 +308,7 @@ axis2_http_transport_utils_process_http_post_request(
         }
         AXIS2_FREE(env->allocator, mime_boundary);
     }
-    AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, soap_action_header);
+
     AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
     AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env,
             request_uri));
