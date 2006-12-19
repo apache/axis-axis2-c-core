@@ -171,11 +171,11 @@ Table of Contents
 ---------------------------
 
     Extract the binary distribution to a folder of your choice. 
-    (example: C:\axis2c-0.94)
+    (example: C:\axis2c-0.96)
 
-    The c:\axis2c-0.94 folder structure is as follows.
+    The c:\axis2c-0.96 folder structure is as follows.
 
-    axis2c-0.94
+    axis2c-0.96
       |
       +- bin         - server and other executables
       |   |
@@ -183,18 +183,28 @@ Table of Contents
       |         |
       |         +...
       |
-      +- lib         - library modules
       |
-      +- services    - deployed services 
+      +- conf        - codegen config files
       |
-      +- modules     - deployed modules 
+      +- docs        - documentation 
       |
       +- include     - all include files of axis2 
       |
+      +- lib         - library modules
+      |
       +- logs        - system and client logs are written to this folder
-
-
-    Copy the downloaded libxml2.dll, iconv.dll and zlib1.dll to C:\axis2c-0.94\lib
+      |
+      +- modules     - deployed modules 
+      |
+      +- rampart     - rampart include files
+      |
+      +- samples     - source files of the samples in bin
+      |
+      +- services    - deployed services 
+      
+    Copy the downloaded libxml2.dll, iconv.dll and zlib1.dll to C:\axis2c-0.96\lib
+    (Or you can have these dll's some other place and add the location to PATH 
+     environment variable)
 
 3.3 Running the binaries
 ------------------------
@@ -202,12 +212,12 @@ Table of Contents
     You need to set a couple of environment variables before you can run the
     server and samples.
 
-    Set the variable AXIS2C_HOME to the deploy folder (C:\axis2c-0.94)
+    Set the variable AXIS2C_HOME to the deploy folder (C:\axis2c-0.96)
     Add the path to lib directory to the PATH variable (%AXIS2C_HOME%\lib)
 
     Now everything is set to run the server!
 
-    C:\axis2c-0.94\bin>axis2_http_server.exe 
+    C:\axis2c-0.96\bin>axis2_http_server.exe 
 
     You should see the message:
         Started Simple Axis2 HTTP Server...
@@ -220,7 +230,7 @@ Table of Contents
 
     Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
     Example:
-    C:\axis2c-0.94\bin\samples>echo.exe
+    C:\axis2c-0.96\bin\samples>echo.exe
 
 
 4. Getting Axis2C working with the source release on Windows.
