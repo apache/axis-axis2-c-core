@@ -8,7 +8,7 @@ pkgconfig_DATA = axis2c.pc
 SUBDIRS = util $(GUTHTHILA_DIR) axiom xml_schema woden modules $(RAMPART_DIR) $(TESTDIR) include ides
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
-	INSTALL CREDITS COPYING NEWS config.guess missing install-sh depcomp config.sub ltmain.sh
+	INSTALL CREDITS COPYING NEWS NOTICE config.guess missing install-sh depcomp config.sub ltmain.sh
 
 logs_DATA=
 docs_DATA=docs/*
