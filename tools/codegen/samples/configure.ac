@@ -6,7 +6,7 @@ AC_INIT(wodenc-samples-src, 0.96)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([tar-ustar])
-AC_PREFIX_DEFAULT(/usr/local/axis2c/samples)
+AC_PREFIX_DEFAULT(/usr/local/codegen/samples)
 
 dnl Checks for programs.
 AC_PROG_CC
