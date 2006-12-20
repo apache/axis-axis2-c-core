@@ -176,7 +176,7 @@ axiom_text_create(const axis2_env_t *env,
     om_text->data_handler = NULL;
     om_text->mime_type = NULL;
 
-    om_text->ns = axiom_namespace_create(env, "http://www.w3.org/2004/08/xop/include", "xop");
+    om_text->ns = NULL;
 
     if (value)
         om_text->value = (axis2_char_t *) AXIS2_STRDUP(value, env);
@@ -490,6 +490,8 @@ axiom_text_serialize_start_part(axiom_text_t *om_text,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
     local_name = axiom_text_get_localname(om_text, env);
+
+    om_text_impl->ns = axiom_namespace_create(env, "http://www.w3.org/2004/08/xop/include", "xop");
 
     if (om_text_impl->ns)
     {
