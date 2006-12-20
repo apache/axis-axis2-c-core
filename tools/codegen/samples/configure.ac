@@ -2,11 +2,11 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(wodenc-samples-src, 0.95)
+AC_INIT(wodenc-samples-src, 0.96)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([tar-ustar])
-AC_PREFIX_DEFAULT(/usr/local/wodenc/samples)
+AC_PREFIX_DEFAULT(/usr/local/axis2c/samples)
 
 dnl Checks for programs.
 AC_PROG_CC
