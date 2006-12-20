@@ -35,6 +35,7 @@ struct axis2_stream_impl
      * instance depending on the type
      */
     axis2_char_t *buffer;
+    axis2_char_t *buffer_head;
     FILE *fp;
     int socket;
 };
@@ -107,6 +108,7 @@ axis2_stream_create_internal(const axis2_env_t *env)
         return NULL;
     }
     stream_impl->buffer = NULL;
+    stream_impl->buffer_head = NULL;
     stream_impl->fp = NULL;
     stream_impl->socket = -1;
     stream_impl->stream.ops = (axis2_stream_ops_t *) AXIS2_MALLOC(
@@ -137,10 +139,11 @@ axis2_stream_free(axis2_stream_t *stream, const axis2_env_t *env)
     {
         case AXIS2_STREAM_BASIC:
         {
-            if (stream_impl->buffer)
+            if (stream_impl->buffer_head)
             {
-                AXIS2_FREE(env->allocator, stream_impl->buffer);
+                AXIS2_FREE(env->allocator, stream_impl->buffer_head);
             }
+            stream_impl->buffer_head = NULL;
             stream_impl->buffer = NULL;
             stream_impl->len = -1;
             break;
@@ -210,6 +213,7 @@ axis2_stream_create_basic(const axis2_env_t *env)
     stream_impl->stream.ops->skip = axis2_stream_skip_basic;
     stream_impl->buffer = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
             AXIS2_STREAM_DEFAULT_BUF_SIZE * sizeof(axis2_char_t));
+    stream_impl->buffer_head = stream_impl->buffer;
     stream_impl->len = 0;
     stream_impl->max_len =    AXIS2_STREAM_DEFAULT_BUF_SIZE;
 
@@ -254,8 +258,7 @@ axis2_stream_read_basic(axis2_stream_t *stream, const axis2_env_t *env,
     * adjust the length of the stream.
     */
     AXIS2_INTF_TO_IMPL(stream)->len -= len;
-    memmove(buf, buf + len * sizeof(axis2_char_t),
-            AXIS2_INTF_TO_IMPL(stream)->len * sizeof(axis2_char_t));
+    AXIS2_INTF_TO_IMPL(stream)->buffer = buf + len;
     ((axis2_char_t *) buffer)[len] = '\0';
     return len;
 }
@@ -290,8 +293,9 @@ axis2_stream_write_basic(axis2_stream_t *stream, const axis2_env_t *env,
          */
         stream_impl->max_len = new_len + AXIS2_STREAM_DEFAULT_BUF_SIZE;
         memcpy(tmp, stream_impl->buffer, sizeof(axis2_char_t)*stream_impl->len);
-        AXIS2_FREE(env->allocator, stream_impl->buffer);
+        AXIS2_FREE(env->allocator, stream_impl->buffer_head);
         stream_impl->buffer = tmp;
+        stream_impl->buffer_head = tmp;
     }
     memcpy(stream_impl->buffer + (stream_impl->len * sizeof(axis2_char_t)),
             buffer, count);
@@ -326,9 +330,7 @@ axis2_stream_skip_basic(axis2_stream_t *stream, const axis2_env_t *env, int coun
             del_len = stream_impl->len;
         }
         stream_impl->len -= del_len;
-        memmove(stream_impl->buffer, stream_impl->buffer +
-                del_len * sizeof(axis2_char_t),
-                stream_impl->len * sizeof(axis2_char_t));
+        stream_impl->buffer += del_len;
         return del_len;
     }
     return -1;
