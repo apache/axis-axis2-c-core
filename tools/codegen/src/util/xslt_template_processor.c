@@ -40,7 +40,7 @@ w2c_xslt_template_processor_parse(
 	xmlDocPtr doc = NULL;
 	xmlDocPtr res = NULL;
 	FILE *out = NULL;
-	char *buf = NULL;
+	xmlChar *buf = NULL;
 	int size = 0;
     /* printf("%s\n --------%s\n\n", xslt_filename, xml_stream); */
 
