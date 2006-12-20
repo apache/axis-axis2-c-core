@@ -51,5 +51,5 @@
   Acknowledgments
   ----------------
 
-  Apache Axis2/C Rampart relies rampart heavily on the use of autoconf and libtool to provide
+  Apache Axis2/C Rampart relies heavily on the use of autoconf and libtool to provide
   a build environment. And also it uses openssl.
