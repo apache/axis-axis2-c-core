@@ -992,7 +992,7 @@ MOD_RAMPART_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\rampart\include
 
 !if "$(ENABLE_SSL)" == "0"
 MOD_RAMPART_INCLUDE_PATH = $(MOD_RAMPART_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
-LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_BIN_DIR)\lib\vc
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_BIN_DIR)\lib
 !endif
 
 
@@ -1050,26 +1050,25 @@ mod_rampart_htpwcb:
 	del htpwcb.*
 
 mod_rampart_services_sec_echo:
-	
-	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
+	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo \
 	$(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.c /c
-	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /DLL /OUT:sec_echo.dll 
-
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib \
+	$(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:sec_echo.dll  
 	del *.obj
-
-	if not exist $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo mkdir $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
-	copy sec_echo.dll $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.c $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.xml $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
 	
-	if not exist $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo mkdir $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo
-	copy sec_echo.dll $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.c $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.xml $(RAMPART_SAMPLES_SERVER_DIR)\sec_echo
+	if not exist $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo mkdir $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
 
-	del sec_echo.dll
+	copy sec_echo.dll $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
 
+	del *.dll
+	del *.exp
+	del *.lib
+	
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.c $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.h $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\services.xml $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
+	
 mod_rampart_samples_enc_echo:
 	if not exist $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo mkdir $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo
 	
