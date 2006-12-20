@@ -31,7 +31,7 @@ href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>)</p>
   <li><a href="#appD">Appendix D  - service client options</a></li>
 </ol>
 
-<h1><a name="quick_start">1. Quick Start Guide</a></h1>
+<a name="quick_start"/><h1>1. Quick Start Guide</h1>
 
 <p>This sections is aimed to help you to get a Web service up in quick time
 using Axis2/C and consume that service using an Axis2/C client.</p>
@@ -950,7 +950,6 @@ element, referring to the MIME part that contains the binary attachment. In
 case of binary non optimised format,where enable mtom is false the attachment
 content would be sent in the payload itself, as a base64 encoded string.</p>
 <a name="eng_mod"></a>
-
 <h1>7. Engaging a Module</h1>
 
 <p>A module is a set of handlers that helps to extend the message processing
@@ -1134,7 +1133,8 @@ name");</em></p>
 <p>Remember to replace "module-name" with the name of the module you want to
 engage.</p>
 
-<h1><a name="ws_add">8. WS-Addressing</a></h1>
+<a name="ws_add"/>
+<h1>8. WS-Addressing</h1>
 
 <p><a href="http://www.w3.org/2002/ws/addr/">WS-Addressing</a> provides
 mechanisms to address Web services and messages. With Axis2/C, you can use
@@ -1186,7 +1186,7 @@ wsa:From header.</p>
 be a message ID of a previously exchanged message.It helps to identify a
 previous message that relates to the current message.</p>
 
-<h1><a name="wrt_mod">9. Writing a Module</a></h1>
+<a name="wrt_mod"/><h1>9. Writing a Module</h1>
 
 <p>A module is an extension point in the Axis2/C engine. Modules are used to
 improve the quality of service in the Axis2/C engine.A SOAP message may
@@ -1374,7 +1374,7 @@ follows.</p>
 <p>The handlers defined in a module can be added to Axis2/C system global
 phases or the module specific phases.</p>
 
-<h1><a name="sim_ser">11. Simple Axis Server</a></h1>
+<a name="sim_ser"/><h1>10. Simple Axis Server</h1>
 
 <p>simple axis server is the inbuilt server of the Axis2/C.<br>
 </p>
@@ -1405,7 +1405,7 @@ as default values. One can use the following options with simple axis server.
 
 [-f LOG_FILE]set log file to LOG_FILE. Default is $AXIS2C_HOME/logs/axis2.log or current folder if AXIS2C_HOME not set.</pre>
 
-<h1><a name="apa_mod">12. Deploying in Apache2</a></h1>
+<a name="apa_mod"/><h1>11. Deploying in Apache2</h1>
 
 <p>To build Axis2/C with Apache module, One needs to give the following
 configuration options on Linux platform.</p>
@@ -1497,7 +1497,7 @@ URL</p>
 <p><a
 href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
 
-<h1><a name="ssl_client">Using SSL Client</a></h1>
+<a name="ssl_client"/><h1>12. Using SSL Client</h1>
 
 <h3>Using SSL Client</h3>
 
@@ -1561,7 +1561,7 @@ documentation</a>.</p>
   </li>
 </ul>
 
-<h1><a name="appA">Appendix A</a></h1>
+<a name="appA"/><h1>Appendix A</h1>
 
 <h2 style="margin-bottom: 0in">axis2.xml</h2>
 
@@ -2060,7 +2060,7 @@ system predefined phases cannot be changed.</p>
   </tbody>
 </table>
 
-<h1><a name="appB">Appendix B</a></h1>
+<a name="appB"/><h1>Appendix B</h1>
 
 <h2 style="margin-bottom: 0in">services.xml</h2>
 
@@ -2235,7 +2235,7 @@ optional.</p>
   </tbody>
 </table>
 
-<h1><a name="appC">Appendix C</a></h1>
+<a name="appC"/><h1>Appendix C</h1>
 
 <h2 style="margin-bottom: 0in">module.xml</h2>
 
@@ -2480,7 +2480,7 @@ used.</p>
 
 <p></p>
 
-<h1><a name="appD">Appendix D</a></h1>
+<a name="appD"/><h1>Appendix D</h1>
 
 <p>This document describes about various types of options in the
 axis2_options.h. These options are used by the service client before sending
