@@ -118,6 +118,18 @@
       <organization>Purdue University</organization>
     </developer>
     <developer>
+      <name>Dushshantha Chandradasa</name>
+      <id>dushshantha</id>
+      <email>dushshantha@wso2.com</email>
+      <organization>WSO2</organization>
+    </developer>
+    <developer>
+      <name>Chris Darroch</name>
+      <id>chrisd</id>
+      <email>chrisd@pearsoncmg.com</email>
+      <organization>Pearson Education Core Technology Group</organization>
+    </developer>
+    <developer>
       <name>Dimuthu Gamage</name>
       <id>dimuthucg</id>
       <email>dimuthuc AT gmail.com</email>
