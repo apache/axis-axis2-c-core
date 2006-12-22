@@ -1,15 +1,9 @@
 
                           Apache Axis2/C Rampart samples
 
-  What is it?
+  Rampart, What is it?
   -----------
-
-  This package consists the samples of Apache Axis2/C Rampart.
-  
-  As a project of the Apache Software Foundation, the
-  developers aim to collaboratively develop and maintain a robust,
-  commercial-grade, standards-based Web Services stack implementation with 
-  freely available source code.
+  Please read the rampart/README file.
 
   The Latest Version
   ------------------
@@ -22,6 +16,13 @@
   ------------
 
   Please see the file called INSTALL.
+
+  Try samples
+  -----------
+  Please install the sec_echo service and invoke that service using enc_echo client sample.
+  To get more information read 
+  rampart/samples/server/sec_echo/README
+  rampart/samples/client/enc_echo/README
 
   Licensing
   ---------

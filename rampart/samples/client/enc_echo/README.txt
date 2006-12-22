@@ -4,7 +4,7 @@ This sample works with sec_echo service.
 -----------------------
 Go to rampart/samples/server/sec_echo and 
 Run  %make install
-This will deploy a sec_echo service and copy security enables services.xml
+This will deploy a sec_echo service and copy security enabled services.xml
 file.
 
 2. HOW TO START SERVER
