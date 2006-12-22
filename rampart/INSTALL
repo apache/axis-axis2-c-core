@@ -31,7 +31,8 @@ Configuring:
 3. To engage rampart add to axis2.xml
     <module ref="rampart"/>
 
-4. To set inflow security parameters add followings to global configuration file or service configuration file
+4. Set inflow security parameters add followings to global configuration file or service configuration file
+    e.g.
     <parameter name="InflowSecurity">
       <action>
         <items>UsernameToken</items>
@@ -40,7 +41,8 @@ Configuring:
     </parameter>
 
 
-5. To set outflow security parameters add following to global configuration file or service configuration file
+5. Set outflow security parameters add following to global configuration file or service configuration file
+   e.g. 
    <parameter name="OutflowSecurity">
       <action>
         <items>UsernameToken</items>
@@ -53,7 +55,7 @@ Configuring:
 
 6. Configure the client similarly adding In/Outflow parameters to axis2.xml file. 
 
-NOTE: See the README file in samples/client/echo for more information.
+NOTE: See the README file in samples/client/enc_echo for more information.
 
 -----------------------------------
 Writing callback modules:
