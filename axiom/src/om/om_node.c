@@ -224,37 +224,32 @@ axiom_node_free_tree(axiom_node_t *om_node,
         }
     }
 
-    switch (node_impl->node_type)
+    if (node_impl->node_type == AXIOM_ELEMENT)
     {
-        case AXIOM_ELEMENT:
-            if (node_impl->data_element)
-                AXIOM_ELEMENT_FREE((axiom_element_t*)(node_impl->data_element), env);
-
-            break;
-
-        case AXIOM_COMMENT:
-            if (node_impl->data_element)
-                AXIOM_COMMENT_FREE((axiom_comment_t*)(node_impl->data_element), env);
-
-            break;
-        case AXIOM_DOCTYPE:
-            /*AXIOM_DOCTYPE_FREE((axiom_doctype_t*)(node_impl->data_element), env);*/
-            break;
-        case AXIOM_PROCESSING_INSTRUCTION:
-            if (node_impl->data_element)
-                AXIOM_PROCESSING_INSTRUCTION_FREE(
-                    (axiom_processing_instruction_t*)(node_impl->data_element), env);
-
-            break;
-        case AXIOM_TEXT:
-            if (node_impl->data_element)
-                AXIOM_TEXT_FREE((axiom_text_t*)(node_impl->data_element), env);
-
-            break;
-
-        default:
-            break;
+        if (node_impl->data_element)
+            AXIOM_ELEMENT_FREE((axiom_element_t*)(node_impl->data_element), env);
     }
+    else if (node_impl->node_type == AXIOM_COMMENT)
+    {
+        if (node_impl->data_element)
+            AXIOM_COMMENT_FREE((axiom_comment_t*)(node_impl->data_element), env);
+    }
+    else if (node_impl->node_type == AXIOM_DOCTYPE)
+    {
+        /*AXIOM_DOCTYPE_FREE((axiom_doctype_t*)(node_impl->data_element), env);*/
+    }
+    else if (node_impl->node_type == AXIOM_PROCESSING_INSTRUCTION)
+    {
+        if (node_impl->data_element)
+            AXIOM_PROCESSING_INSTRUCTION_FREE(
+                (axiom_processing_instruction_t*)(node_impl->data_element), env);
+    }
+    else if (node_impl->node_type == AXIOM_TEXT)
+    {
+        if (node_impl->data_element)
+            AXIOM_TEXT_FREE((axiom_text_t*)(node_impl->data_element), env);
+    }
+    
     if (om_node->ops)
     {
         AXIS2_FREE(env->allocator, om_node->ops);
@@ -480,72 +475,63 @@ axiom_node_serialize(axiom_node_t *om_node,
     node_impl = AXIS2_INTF_TO_IMPL(om_node);
 
 
-    switch (node_impl->node_type)
+    if (node_impl->node_type == AXIOM_ELEMENT)
     {
-        case AXIOM_ELEMENT:
-            if (node_impl->data_element)
-            {
-                status = AXIOM_ELEMENT_SERIALIZE_START_PART(
-                            (axiom_element_t *)(node_impl->data_element),
-                            env,
-                            om_output,
-                            om_node);
-            }
-            if (status != AXIS2_SUCCESS)
-                return status;
+        if (node_impl->data_element)
+        {
+            status = AXIOM_ELEMENT_SERIALIZE_START_PART(
+                        (axiom_element_t *)(node_impl->data_element),
+                        env,
+                        om_output,
+                        om_node);
+        }
+        if (status != AXIS2_SUCCESS)
+            return status;
+    }
+    else if (node_impl->node_type == AXIOM_TEXT)
+    {
+        if (node_impl->data_element)
+        {
+            status = AXIOM_TEXT_SERIALIZE(
+                        (axiom_text_t*)(node_impl->data_element),
+                        env, om_output);
+        }
+        if (status != AXIS2_SUCCESS)
+            return status;
+    }
+    else if (node_impl->node_type == AXIOM_COMMENT)
+    {
+        if (node_impl->data_element)
+        {
+            status = AXIOM_COMMENT_SERIALIZE(
+                        (axiom_comment_t*)(node_impl->data_element),
+                        env, om_output);
+        }
+        if (status != AXIS2_SUCCESS)
+            return status;
+    }
+    else if (node_impl->node_type == AXIOM_DOCTYPE)
+    {
+        if (node_impl->data_element)
+        {
+            status = AXIOM_DOCTYPE_SERIALIZE(
+                        (axiom_doctype_t*)(node_impl->data_element),
+                        env, om_output);
+        }
+        if (status != AXIS2_SUCCESS)
+            return status;
+    }
+    else if (node_impl->node_type == AXIOM_PROCESSING_INSTRUCTION)
+    {
+        if (node_impl->data_element)
+        {
+            status = AXIOM_PROCESSING_INSTRUCTION_SERIALIZE(
+                        (axiom_processing_instruction_t*)(node_impl->data_element),
+                        env, om_output);
+        }
 
-            break;
-
-        case AXIOM_TEXT:
-            if (node_impl->data_element)
-            {
-                status = AXIOM_TEXT_SERIALIZE(
-                            (axiom_text_t*)(node_impl->data_element),
-                            env, om_output);
-            }
-            if (status != AXIS2_SUCCESS)
-                return status;
-
-            break;
-
-        case AXIOM_COMMENT:
-            if (node_impl->data_element)
-            {
-                status = AXIOM_COMMENT_SERIALIZE(
-                            (axiom_comment_t*)(node_impl->data_element),
-                            env, om_output);
-            }
-            if (status != AXIS2_SUCCESS)
-                return status;
-
-            break;
-
-        case AXIOM_DOCTYPE:
-            if (node_impl->data_element)
-            {
-                status = AXIOM_DOCTYPE_SERIALIZE(
-                            (axiom_doctype_t*)(node_impl->data_element),
-                            env, om_output);
-            }
-            if (status != AXIS2_SUCCESS)
-                return status;
-
-            break;
-
-        case AXIOM_PROCESSING_INSTRUCTION:
-            if (node_impl->data_element)
-            {
-                status = AXIOM_PROCESSING_INSTRUCTION_SERIALIZE(
-                            (axiom_processing_instruction_t*)(node_impl->data_element),
-                            env, om_output);
-            }
-
-            if (status != AXIS2_SUCCESS)
-                return status;
-            break;
-
-        default:
-            break;
+        if (status != AXIS2_SUCCESS)
+            return status;
     }
 
 
@@ -557,22 +543,16 @@ axiom_node_serialize(axiom_node_t *om_node,
         temp_node = AXIOM_NODE_GET_NEXT_SIBLING(temp_node, env);
     }
 
-    switch (node_impl->node_type)
+    if (node_impl->node_type == AXIOM_ELEMENT)
     {
-        case AXIOM_ELEMENT:
-            if (node_impl->data_element)
-            {
-                status = AXIOM_ELEMENT_SERIALIZE_END_PART(
-                            (axiom_element_t *)(node_impl->data_element),
-                            env, om_output);
-            }
-            if (status != AXIS2_SUCCESS)
-                return status;
-
-            break;
-
-        default:
-            break;
+        if (node_impl->data_element)
+        {
+            status = AXIOM_ELEMENT_SERIALIZE_END_PART(
+                        (axiom_element_t *)(node_impl->data_element),
+                        env, om_output);
+        }
+        if (status != AXIS2_SUCCESS)
+            return status;
     }
 
     return status;
