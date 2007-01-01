@@ -20,6 +20,11 @@
 
 /************** function prototypes *************************************/
 
+static axis2_bool_t AXIS2_CALL
+axiom_children_qname_iterator_qname_matches(const axis2_env_t *env,
+        axis2_qname_t *element_qname,
+                axis2_qname_t *qname_to_match);
+
 /****************** impl struct ***********************************************/
 
 typedef struct axiom_children_qname_iterator_impl_t
@@ -219,7 +224,7 @@ axiom_children_qname_iterator_next(axiom_children_qname_iterator_t *iterator,
     return iterator_impl->last_child;
 }
 
-AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+static axis2_bool_t AXIS2_CALL
 axiom_children_qname_iterator_qname_matches(const axis2_env_t *env,
         axis2_qname_t *element_qname,
         axis2_qname_t *qname_to_match)
