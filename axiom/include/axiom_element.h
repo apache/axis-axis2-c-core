@@ -47,8 +47,9 @@ extern "C"
     * @brief element ops struct
     * Encapsulator struct for ops of axiom_element
     */
-   struct axiom_element_ops
+    struct axiom_element_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     };
 
     

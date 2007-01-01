@@ -45,10 +45,9 @@ extern "C"
     *   @brief comment ops struct
     *   Encapsulator struct for ops of axiom_comment_t
     */
-   typedef struct axiom_comment_ops
+    typedef struct axiom_comment_ops
     {
-                                                                                           
-                                              
+        int dummy; /* if this is missing, windows compiler goes crazy */
     } axiom_comment_ops_t;
 
   /** 

@@ -37,6 +37,7 @@ typedef struct axiom_attribute_impl
 axiom_attribute_impl_t;
 
 static const axiom_attribute_ops_t axiom_attribute_ops_var = {
+    0
 };
 
 /***************************************** macro *******************************/

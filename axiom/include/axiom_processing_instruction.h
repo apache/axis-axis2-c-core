@@ -48,6 +48,7 @@ extern "C"
     */
     typedef struct axiom_processing_instruction_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     } axiom_processing_instruction_ops_t;
 
   /** 

@@ -45,6 +45,7 @@ typedef struct axiom_navigator_impl
 axiom_navigator_impl_t;
 
 static const axiom_navigator_ops_t axiom_navigator_ops_var = {
+    0
 };
 
 /****************************** Macro  ***************************************/

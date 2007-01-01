@@ -49,6 +49,7 @@ extern "C"
  
     struct axiom_navigator_ops 
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     };
         
     /** axiom_navigator_t struct */

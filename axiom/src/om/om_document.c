@@ -43,6 +43,7 @@ typedef struct axiom_document_impl_t
 axiom_document_impl_t;
 
 static const axiom_document_ops_t axiom_document_ops_var = {
+    0
 };
 
 /************************************ Macro ************************************/

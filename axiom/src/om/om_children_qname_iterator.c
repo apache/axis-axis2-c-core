@@ -37,6 +37,7 @@ typedef struct axiom_children_qname_iterator_impl_t
 axiom_children_qname_iterator_impl_t;
 
 static const axiom_children_qname_iterator_ops_t axiom_children_qname_iterator_ops_var = {
+    0
 };
 
 /*************************** Macro *********************************************/

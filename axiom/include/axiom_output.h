@@ -50,6 +50,7 @@ extern "C"
     
     struct axiom_output_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     };  
         
 

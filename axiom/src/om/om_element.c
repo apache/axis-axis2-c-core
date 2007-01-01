@@ -53,6 +53,7 @@ typedef struct axiom_element_impl
 axiom_element_impl_t;
 
 static const axiom_element_ops_t axiom_element_ops_var = {
+    0
 };
 
 /************************************Macro *****************************/

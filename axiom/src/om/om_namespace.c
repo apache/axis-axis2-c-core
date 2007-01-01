@@ -37,6 +37,7 @@ typedef struct axiom_namespace_impl
 axiom_namespace_impl_t;
 
 static const axiom_namespace_ops_t axiom_namespace_ops_var = {
+    0
 };
 
 

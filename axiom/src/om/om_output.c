@@ -69,6 +69,7 @@ typedef struct axiom_output_impl_t
 axiom_output_impl_t;
 
 static const axiom_output_ops_t axiom_output_ops_var = {
+    0
 };
 
 /************************ Macro ***********************************************/

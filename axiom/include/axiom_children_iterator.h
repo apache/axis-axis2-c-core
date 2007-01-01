@@ -47,6 +47,7 @@ typedef struct axiom_children_iterator axiom_children_iterator_t;
     */
      struct axiom_children_iterator_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     };
     
     

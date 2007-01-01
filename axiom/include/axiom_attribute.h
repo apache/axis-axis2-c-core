@@ -47,6 +47,7 @@ extern "C"
  */
     typedef struct axiom_attribute_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     } axiom_attribute_ops_t;
 
   /**

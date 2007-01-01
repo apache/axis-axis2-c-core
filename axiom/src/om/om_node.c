@@ -58,6 +58,7 @@ typedef struct axiom_node_impl
 axiom_node_impl_t;
 
 static const axiom_node_ops_t axiom_node_ops_var = {
+    0
 };
 
 

@@ -84,8 +84,9 @@ extern "C"
     * @brief node ops struct
     * Encapsulator struct for ops of axiom_node
     */
-    typedef struct axiom_node_ops
+    typedef struct axiom_node_ops    
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     } axiom_node_ops_t;
 
 

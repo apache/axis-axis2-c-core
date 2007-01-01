@@ -31,6 +31,7 @@ typedef struct axiom_comment_impl_t
 axiom_comment_impl_t;
 
 static const axiom_comment_ops_t axiom_comment_ops_var = {
+    0
 };
 
 /***************************** Macro **********************************/

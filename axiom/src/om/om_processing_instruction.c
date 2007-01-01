@@ -32,6 +32,7 @@ typedef struct axiom_processing_instruction_impl
 axiom_processing_instruction_impl_t;
 
 static const axiom_processing_instruction_ops_t axiom_processing_instruction_ops_var = {
+    0
 };
 
 /******************************************************************************/

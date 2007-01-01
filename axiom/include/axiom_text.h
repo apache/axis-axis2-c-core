@@ -48,7 +48,7 @@ extern "C"
     */
     typedef struct axiom_text_ops
     {
-                                                                                                
+        int dummy; /* if this is missing, windows compiler goes crazy */
     } axiom_text_ops_t;
 
   /** 

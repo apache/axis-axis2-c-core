@@ -53,6 +53,7 @@ typedef struct axiom_stax_builder_impl_t
 axiom_stax_builder_impl_t;
 
 static const axiom_stax_builder_ops_t axiom_stax_builder_ops_var = {
+    0
 };
 
 /************************************** Macro *********************************/

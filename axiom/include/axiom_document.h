@@ -53,6 +53,7 @@ extern "C"
     */
     typedef struct axiom_document_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     } axiom_document_ops_t;
 
   /**

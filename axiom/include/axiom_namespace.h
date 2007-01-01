@@ -48,6 +48,7 @@ extern "C"
     */
     typedef struct axiom_namespace_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     } axiom_namespace_ops_t;
 
   /** 

@@ -49,6 +49,7 @@ extern "C"
     */
      typedef struct axiom_stax_builder_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     } axiom_stax_builder_ops_t;
 
   /** 

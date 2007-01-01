@@ -49,6 +49,7 @@ typedef struct axiom_text_impl_t
 axiom_text_impl_t;
 
 static const axiom_text_ops_t axiom_text_ops_var = {
+    0
 };
 
 /*********************** Macro ***********************************/

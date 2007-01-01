@@ -31,7 +31,8 @@ typedef struct axiom_doctype_impl_t
 }
 axiom_doctype_impl_t;
 
-static const axiom_doctype_ops_t axiom_doctype_ops_var = {
+static const axiom_doctype_ops_t axiom_doctype_ops_var = {  
+    0
 };
 
 /*************************** Macro ***********************************/

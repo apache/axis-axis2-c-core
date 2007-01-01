@@ -49,6 +49,7 @@ typedef struct axiom_children_qname_iterator axiom_children_qname_iterator_t;
 
      struct axiom_children_qname_iterator_ops
     {
+        int dummy; /* if this is missing, windows compiler goes crazy */
     };
 
     struct axiom_children_qname_iterator
