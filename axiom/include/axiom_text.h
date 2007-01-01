@@ -161,7 +161,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axiom_text_set_is_binary(struct axiom_text *om_text,
                    const axis2_env_t *env,
-                   axis2_bool_t is_binary);
+                   const axis2_bool_t is_binary);
     
     AXIS2_EXTERN axiom_data_handler_t* AXIS2_CALL 
     axiom_text_get_data_handler(struct axiom_text *om_text,

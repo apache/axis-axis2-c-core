@@ -25,9 +25,18 @@
 #include <axiom_namespace.h>
 #include <axis2_base64.h>
 
-axis2_char_t* AXIS2_CALL
+static axis2_char_t* AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
         const axis2_env_t *env);
+
+static axis2_bool_t AXIS2_CALL
+axiom_text_get_is_binary(axiom_text_t *om_text,
+        const axis2_env_t *env);
+
+static axis2_status_t AXIS2_CALL
+axiom_text_serialize_start_part(axiom_text_t *om_text,
+        const axis2_env_t *env,
+        axiom_output_t *om_output);
 
 /********************* axiom_text_impl_struct ***************/
 
@@ -325,7 +334,7 @@ axiom_text_set_optimize(axiom_text_t *om_text,
 }
 
 
-AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+static axis2_bool_t AXIS2_CALL
 axiom_text_get_is_binary(axiom_text_t *om_text,
         const axis2_env_t *env)
 {
@@ -373,7 +382,7 @@ axiom_text_set_content_id(axiom_text_t *om_text,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 axiom_text_serialize_start_part(axiom_text_t *om_text,
         const axis2_env_t *env,
         axiom_output_t *om_output)
@@ -500,7 +509,7 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+static axis2_char_t* AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
         const axis2_env_t *env)
 {
