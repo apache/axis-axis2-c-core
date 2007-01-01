@@ -19,23 +19,6 @@
 #include "axiom_node_internal.h"
 #include <axis2_string.h>
 
-axis2_status_t AXIS2_CALL
-axiom_comment_free(axiom_comment_t *om_comment,
-        const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axiom_comment_get_value(axiom_comment_t *om_comment,
-        const axis2_env_t *env);
-axis2_status_t AXIS2_CALL
-axiom_comment_set_value(axiom_comment_t *om_comment,
-        const axis2_env_t *env,
-        const axis2_char_t *value);
-
-axis2_status_t AXIS2_CALL
-axiom_comment_serialize(axiom_comment_t *om_comment,
-        const axis2_env_t *env,
-        axiom_output_t *om_output);
-
 /***************************** axiom_comment_struct ******************/
 
 typedef struct axiom_comment_impl_t
@@ -46,6 +29,10 @@ typedef struct axiom_comment_impl_t
 
 }
 axiom_comment_impl_t;
+
+static const axiom_comment_ops_t axiom_comment_ops_var = {
+};
+
 /***************************** Macro **********************************/
 
 #define AXIS2_INTF_TO_IMPL(om_comment) ((axiom_comment_impl_t*)om_comment)
@@ -103,27 +90,13 @@ axiom_comment_create(const axis2_env_t *env,
     }
 
     /* ops */
-    comment->om_comment.ops = NULL;
-    comment->om_comment.ops = (axiom_comment_ops_t *)AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_comment_ops_t));
-    if (!comment->om_comment.ops)
-    {
-        AXIS2_FREE(env->allocator, comment);
-        AXIS2_FREE(env->allocator, comment->value);
-        AXIS2_FREE(env->allocator, *node);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
+    comment->om_comment.ops = &axiom_comment_ops_var;
 
-    comment->om_comment.ops->free = axiom_comment_free;
-    comment->om_comment.ops->set_value = axiom_comment_set_value;
-    comment->om_comment.ops->get_value = axiom_comment_get_value;
-    comment->om_comment.ops->serialize = axiom_comment_serialize;
     return &(comment->om_comment);
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_comment_free(axiom_comment_t *om_comment,
         const axis2_env_t *env)
 {
@@ -136,13 +109,12 @@ axiom_comment_free(axiom_comment_t *om_comment,
         AXIS2_FREE(env->allocator, comment_impl->value);
         comment_impl->value = NULL;
     }
-    AXIS2_FREE(env->allocator, om_comment->ops);
     AXIS2_FREE(env->allocator, comment_impl);
     return AXIS2_SUCCESS;
 }
 
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_comment_get_value(axiom_comment_t *om_comment,
         const axis2_env_t *env)
 {
@@ -151,7 +123,7 @@ axiom_comment_get_value(axiom_comment_t *om_comment,
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_comment_set_value(axiom_comment_t *om_comment,
         const axis2_env_t *env,
         const axis2_char_t *value)
@@ -174,7 +146,7 @@ axiom_comment_set_value(axiom_comment_t *om_comment,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_comment_serialize(axiom_comment_t *om_comment,
         const axis2_env_t *env,
         axiom_output_t *om_output)
@@ -190,3 +162,4 @@ axiom_comment_serialize(axiom_comment_t *om_comment,
                 AXIOM_COMMENT , 1 , comment_impl->value);
     return AXIS2_FAILURE;
 }
+

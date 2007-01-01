@@ -291,14 +291,14 @@ axis2_svc_grp_builder_process_module_refs(
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
     grp_builder_impl = AXIS2_INTF_TO_IMPL(grp_builder);
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_ITERATOR_HAS_NEXT(module_refs, env))
+    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs, env))
     {
         axiom_node_t *module_ref_node = NULL;
         axiom_element_t *module_ref_element = NULL;
         axiom_attribute_t *module_ref_att = NULL;
         axis2_qname_t *qref = NULL;
 
-        module_ref_node = (axiom_node_t *) AXIOM_CHILDREN_ITERATOR_NEXT(
+        module_ref_node = (axiom_node_t *) AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(
                     module_refs, env);
         module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);

@@ -48,79 +48,6 @@ extern "C"
     */
     typedef struct axiom_namespace_ops
     {
-      /**
-        * Frees given AXIOM namespcae
-        * @param om_namespace namespace to be freed.
-        * @param env Environment. MUST NOT be NULL.
-        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
-        */
-        axis2_status_t (AXIS2_CALL *
-        free) (struct axiom_namespace *om_namespace,
-               const axis2_env_t *env);
-
-      /**
-        * Compares two namepsaces
-        * @param om_namespace first namespase to be compared
-        * @param env Environment. MUST NOT be NULL.
-        * @param om_namespace1 second namespace to be compared
-        * @return AXIS2_TRUE if the two namespaces are equal,AXIS2_FALSE otherwise
-        */
-        axis2_bool_t (AXIS2_CALL *
-        equals)(struct axiom_namespace *om_namespace,
-                const axis2_env_t *env,
-                struct axiom_namespace *om_namespace1);
-
-      /**
-        * Serializes given namespace 
-        * @param om_namespace namespace to be serialized.
-        * @param env Environment. MUST NOT be NULL.
-        * @param om_output AXIOM output handler to be used in serializing
-        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
-        */
-        axis2_status_t (AXIS2_CALL *
-        serialize)(struct axiom_namespace *om_namespace,
-                   const axis2_env_t *env,
-                   axiom_output_t * om_output);
-       /**   
-        *@param om_namespace pointer to om_namespace struct
-        *@param env environment , MUST NOT be NULL.
-        *@returns namespace uri , NULL on error
-        */
-        axis2_char_t* (AXIS2_CALL *
-        get_uri)(struct axiom_namespace *om_namespace,
-                 const axis2_env_t *env);
-       /**   
-        *@param om_namespace pointer to om namespace struct
-        *@param env  environment, MUST NOT be NULL
-        *@return prefix , NULL on error
-        */
-        axis2_char_t* (AXIS2_CALL *
-        get_prefix)(struct axiom_namespace *om_namespace,
-                    const axis2_env_t *env);
-
-
-        /**
-         * clones an om_namespace struct
-         * @param om_namespace pointer to namespace struct
-         * @param env environment
-         * @returns axiom_namespace on success , NULL on error
-         */
-        struct axiom_namespace* (AXIS2_CALL *
-        clone)(struct axiom_namespace *om_namespace,
-               const axis2_env_t *env);
-               
-        /**
-         * to string , returns the string by combining namespace_uri,
-         * and prefix seperated by a '|' character
-         * @param om_namespace 
-         * @param env environment
-         * @returns pointer to string , This is a property of namespace,
-         * should not be freed by user
-         */                                                                                     
-        axis2_char_t * (AXIS2_CALL *
-        to_string)(struct axiom_namespace *om_namespace,
-                   const axis2_env_t *env);
-
     } axiom_namespace_ops_t;
 
   /** 
@@ -130,7 +57,7 @@ extern "C"
     typedef struct axiom_namespace
     {
         /** AXIOM namespace related ops */
-        axiom_namespace_ops_t *ops;
+        const axiom_namespace_ops_t *ops;
         int ref;        
     } axiom_namespace_t;
 
@@ -144,30 +71,102 @@ extern "C"
     axiom_namespace_create (const axis2_env_t *env,
                                const axis2_char_t * uri,
                                const axis2_char_t *prefix);
+  /**
+    * Frees given AXIOM namespcae
+    * @param om_namespace namespace to be freed.
+    * @param env Environment. MUST NOT be NULL.
+    * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+    */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    axiom_namespace_free(struct axiom_namespace *om_namespace,
+           const axis2_env_t *env);
+
+  /**
+    * Compares two namepsaces
+    * @param om_namespace first namespase to be compared
+    * @param env Environment. MUST NOT be NULL.
+    * @param om_namespace1 second namespace to be compared
+    * @return AXIS2_TRUE if the two namespaces are equal,AXIS2_FALSE otherwise
+    */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
+    axiom_namespace_equals(struct axiom_namespace *om_namespace,
+            const axis2_env_t *env,
+            struct axiom_namespace *om_namespace1);
+
+  /**
+    * Serializes given namespace 
+    * @param om_namespace namespace to be serialized.
+    * @param env Environment. MUST NOT be NULL.
+    * @param om_output AXIOM output handler to be used in serializing
+    * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+    */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    axiom_namespace_serialize(struct axiom_namespace *om_namespace,
+               const axis2_env_t *env,
+               axiom_output_t * om_output);
+   /**   
+    *@param om_namespace pointer to om_namespace struct
+    *@param env environment , MUST NOT be NULL.
+    *@returns namespace uri , NULL on error
+    */
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+    axiom_namespace_get_uri(struct axiom_namespace *om_namespace,
+             const axis2_env_t *env);
+   /**   
+    *@param om_namespace pointer to om namespace struct
+    *@param env  environment, MUST NOT be NULL
+    *@return prefix , NULL on error
+    */
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+    axiom_namespace_get_prefix(struct axiom_namespace *om_namespace,
+                const axis2_env_t *env);
+
+
+    /**
+     * clones an om_namespace struct
+     * @param om_namespace pointer to namespace struct
+     * @param env environment
+     * @returns axiom_namespace on success , NULL on error
+     */
+    AXIS2_EXTERN struct axiom_namespace* AXIS2_CALL 
+    axiom_namespace_clone(struct axiom_namespace *om_namespace,
+           const axis2_env_t *env);
+           
+    /**
+     * to string , returns the string by combining namespace_uri,
+     * and prefix seperated by a '|' character
+     * @param om_namespace 
+     * @param env environment
+     * @returns pointer to string , This is a property of namespace,
+     * should not be freed by user
+     */                                                                                     
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL 
+    axiom_namespace_to_string(struct axiom_namespace *om_namespace,
+               const axis2_env_t *env);
 
 /** frees given namespace */
 #define AXIOM_NAMESPACE_FREE(om_namespace,env) \
-        ((om_namespace)->ops->free(om_namespace, env))
+        axiom_namespace_free(om_namespace, env)
         
 /** compares the given two namespaces for equality */
 #define AXIOM_NAMESPACE_EQUALS(om_namespace, env, om_namespace1) \
-        ((om_namespace)->ops->equals(om_namespace, env, om_namespace1))
+        axiom_namespace_equals(om_namespace, env, om_namespace1)
         
 /** serializes given namespace */
 #define AXIOM_NAMESPACE_SERIALIZE(om_namespace,env, om_output) \
-        ((om_namespace)->ops->serialize(om_namespace, env,om_output))
+        axiom_namespace_serialize(om_namespace, env,om_output)
 /** get prefix */        
 #define AXIOM_NAMESPACE_GET_PREFIX(om_namespace, env) \
-        ((om_namespace)->ops->get_prefix(om_namespace, env))
+        axiom_namespace_get_prefix(om_namespace, env)
 /** get namespace uri */
 #define AXIOM_NAMESPACE_GET_URI(om_namespace, env) \
-        ((om_namespace)->ops->get_uri(om_namespace, env))
+        axiom_namespace_get_uri(om_namespace, env)
 /** clones a namespace */
 #define AXIOM_NAMESPACE_CLONE(om_namespace, env) \
-        ((om_namespace)->ops->clone(om_namespace, env))
+        axiom_namespace_clone(om_namespace, env)
 /** returns a string from namespace */
 #define AXIOM_NAMESPACE_TO_STRING(om_namespace, env) \
-        ((om_namespace)->ops->to_string(om_namespace, env))
+        axiom_namespace_to_string(om_namespace, env)
 
 /** @} */
 

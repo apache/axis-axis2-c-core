@@ -53,76 +53,6 @@ extern "C"
     */
     typedef struct axiom_document_ops
     {
-
-      /** 
-        * Free document struct
-        * @param document pointer to axiom_document_t struct to be freed
-        * @param env Environment. MUST NOT be NULL    
-        * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
-        */
-        axis2_status_t (AXIS2_CALL *
-        free) (struct axiom_document *document,
-               const axis2_env_t *env);
-
-      /** Builds the next node if the builder is not finished with input xml stream
-        * @param document document whose next node is to be built. cannot be NULL
-        * @param env Environment. MUST NOT be NULL.        
-        * @return pointer to the next node. NULL on error.
-        */
-      
-      axiom_node_t* (AXIS2_CALL *
-      build_next) (struct axiom_document *document,
-                   const axis2_env_t *env);
-
-      /**
-        * Gets the root element of the document.
-        * @param document document to return the root of
-        * @param env Environment. MUST NOT be NULL.        
-        * @return returns a pointer to the root node. If no root present,
-        *            this method tries to build the root. Returns NULL on error. 
-        */
-        axiom_node_t* (AXIS2_CALL *
-        get_root_element)(struct axiom_document *document,
-                          const axis2_env_t *env);
-
-      /**
-        * set the root element of the document. IF a root node is already exist,it is freed 
-        * before setting to root element 
-        * @param document document struct to return the root of
-        * @param env Environment. MUST NOT be NULL.        
-        * @return returns status code AXIS2_SUCCESS on success ,AXIS2_FAILURE on error. 
-        */        
-                                                        
-        axis2_status_t (AXIS2_CALL *
-        set_root_element)(struct axiom_document *document,
-                          const axis2_env_t *env,
-                          axiom_node_t *om_node);
-       /**
-        * This method builds the rest of the xml input stream from current position till
-        * the root element is completed .
-        *@param document pointer to axiom_document_t struct to be built.
-        *@param env environment MUST NOT be NULL.
-        */
-        axiom_node_t* (AXIS2_CALL *
-        build_all)(struct axiom_document *document,
-                   const axis2_env_t *env); 
-        /**
-         * get builder
-         * @return builder , returns NULL if a builder is not associated with 
-         *                   document
-         */
-        struct axiom_stax_builder* (AXIS2_CALL *
-        get_builder)(struct axiom_document *document,
-                     const axis2_env_t *env);                                                         
-        /**
-         * @param om_document
-         * @return status code AXIS2_SUCCESS on success , otherwise AXIS2_FAILURE
-         */                                                  
-        axis2_status_t (AXIS2_CALL *
-        serialize)(struct axiom_document *document,
-                   const axis2_env_t *env,
-                   axiom_output_t *om_output);
-                                                           
     } axiom_document_ops_t;
 
   /**
@@ -132,8 +62,7 @@ extern "C"
     typedef struct axiom_document
     {
         /** ops of document struct */
-        axiom_document_ops_t *ops;
-      
+        const axiom_document_ops_t *ops;
     } axiom_document_t;
 
   /**
@@ -147,33 +76,101 @@ extern "C"
     axiom_document_create (const axis2_env_t *env,
                               axiom_node_t * root,
                               struct axiom_stax_builder *builder);
+  /** 
+    * Free document struct
+    * @param document pointer to axiom_document_t struct to be freed
+    * @param env Environment. MUST NOT be NULL    
+    * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+    */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    axiom_document_free (struct axiom_document *document,
+           const axis2_env_t *env);
+
+  /** Builds the next node if the builder is not finished with input xml stream
+    * @param document document whose next node is to be built. cannot be NULL
+    * @param env Environment. MUST NOT be NULL.        
+    * @return pointer to the next node. NULL on error.
+    */
+  
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL 
+    axiom_document_build_next (struct axiom_document *document,
+               const axis2_env_t *env);
+
+  /**
+    * Gets the root element of the document.
+    * @param document document to return the root of
+    * @param env Environment. MUST NOT be NULL.        
+    * @return returns a pointer to the root node. If no root present,
+    *            this method tries to build the root. Returns NULL on error. 
+    */
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL 
+    axiom_document_get_root_element(struct axiom_document *document,
+                      const axis2_env_t *env);
+
+  /**
+    * set the root element of the document. IF a root node is already exist,it is freed 
+    * before setting to root element 
+    * @param document document struct to return the root of
+    * @param env Environment. MUST NOT be NULL.        
+    * @return returns status code AXIS2_SUCCESS on success ,AXIS2_FAILURE on error. 
+    */        
+                                                    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    axiom_document_set_root_element(struct axiom_document *document,
+                      const axis2_env_t *env,
+                      axiom_node_t *om_node);
+   /**
+    * This method builds the rest of the xml input stream from current position till
+    * the root element is completed .
+    *@param document pointer to axiom_document_t struct to be built.
+    *@param env environment MUST NOT be NULL.
+    */
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL 
+    axiom_document_build_all(struct axiom_document *document,
+               const axis2_env_t *env); 
+    /**
+     * get builder
+     * @return builder , returns NULL if a builder is not associated with 
+     *                   document
+     */
+    AXIS2_EXTERN struct axiom_stax_builder* AXIS2_CALL 
+    axiom_document_get_builder(struct axiom_document *document,
+                 const axis2_env_t *env);                                                         
+    /**
+     * @param om_document
+     * @return status code AXIS2_SUCCESS on success , otherwise AXIS2_FAILURE
+     */                                                  
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    axiom_document_serialize(struct axiom_document *document,
+               const axis2_env_t *env,
+               axiom_output_t *om_output);
 
 /** frees given document */
 #define AXIOM_DOCUMENT_FREE(document,env) \
-        ((document)->ops->free(document,env))
+        axiom_document_free(document,env)
         
 /** builds next node of document */
 #define AXIOM_DOCUMENT_BUILD_NEXT(document,env) \
-        ((document)->ops->build_next(document,env))
+        axiom_document_build_next(document,env)
         
 /** gets the root eleemnt of given document */
 #define AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document,env) \
-        ((document)->ops->get_root_element(document,env))
+        axiom_document_get_root_element(document,env)
 /** sets the root node */
 #define AXIOM_DOCUMENT_SET_ROOT_ELEMENT(document,env,om_node) \
-        ((document)->ops->set_root_element(document,env,om_node))
+        axiom_document_set_root_element(document,env,om_node)
                
 /** build till the root node is complete */
 #define AXIOM_DOCUMENT_BUILD_ALL(document,env) \
-        ((document)->ops->build_all(document,env))
+        axiom_document_build_all(document,env)
         
 /** returns the builder */
 #define AXIOM_DOCUMENT_GET_BUILDER(document, env) \
-        ((document)->ops->get_builder(document, env))
+        axiom_document_get_builder(document, env)
         
 /** serialize opertation */
 #define AXIOM_DOCUMENT_SERIALIZE(document, env, om_output) \
-        ((document)->ops->serialize(document, env, om_output))                
+        axiom_document_serialize(document, env, om_output)
 
 /** @} */
 

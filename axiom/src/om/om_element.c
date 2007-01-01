@@ -24,195 +24,6 @@
 #include <string.h>
 #include <stdio.h>
 
-axiom_namespace_t *AXIS2_CALL
-axiom_element_find_namespace(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *node,
-        const axis2_char_t * uri,
-        const axis2_char_t * prefix);
-
-axis2_status_t AXIS2_CALL
-axiom_element_declare_namespace(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t * node,
-        axiom_namespace_t * ns);
-
-axiom_namespace_t *AXIS2_CALL
-axiom_element_find_namespace_with_qname(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t * node,
-        axis2_qname_t * qname);
-
-axiom_namespace_t *AXIS2_CALL
-axiom_element_find_declared_namespace(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        const axis2_char_t *uri,
-        const axis2_char_t *prefix);
-
-
-axis2_status_t AXIS2_CALL
-axiom_element_add_attribute(axiom_element_t *element,
-        const axis2_env_t *env,
-        axiom_attribute_t *attribute,
-        axiom_node_t *element_node);
-
-axiom_attribute_t *AXIS2_CALL
-axiom_element_get_attribute(axiom_element_t *element,
-        const axis2_env_t *env,
-        axis2_qname_t * qname);
-
-axis2_char_t* AXIS2_CALL
-axiom_element_get_attribute_value(axiom_element_t *element,
-        const axis2_env_t *env,
-        axis2_qname_t * qname);
-
-axis2_status_t AXIS2_CALL
-axiom_element_free(axiom_element_t *element,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axiom_element_serialize_start_part(axiom_element_t * element,
-        const axis2_env_t *env,
-        axiom_output_t *om_output,
-        axiom_node_t *element_node);
-
-axis2_status_t AXIS2_CALL
-axiom_element_serialize_end_part(axiom_element_t * element,
-        const axis2_env_t *env,
-        axiom_output_t * om_output);
-
-axis2_char_t* AXIS2_CALL
-axiom_element_get_localname(axiom_element_t *om_element,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axiom_element_set_localname(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        const axis2_char_t *localname);
-
-axiom_namespace_t *AXIS2_CALL
-axiom_element_get_namespace(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *ele_node);
-
-axis2_status_t AXIS2_CALL
-axiom_element_set_namespace(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_namespace_t *ns,
-        axiom_node_t *node);
-
-axis2_hash_t * AXIS2_CALL
-axiom_element_get_all_attributes(axiom_element_t *om_element,
-        const axis2_env_t *env);
-
-axis2_hash_t* AXIS2_CALL
-axiom_element_get_namespaces(axiom_element_t *om_element,
-        const axis2_env_t *env);
-
-
-axis2_qname_t* AXIS2_CALL
-axiom_element_get_qname(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *ele_node);
-
-axiom_children_iterator_t* AXIS2_CALL
-axiom_element_get_children(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *element_node);
-
-axiom_children_qname_iterator_t* AXIS2_CALL
-axiom_element_get_children_with_qname(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axis2_qname_t *element_qname,
-        axiom_node_t *element_node);
-
-axiom_element_t* AXIS2_CALL
-axiom_element_get_first_child_with_qname(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axis2_qname_t *element_qname,
-        axiom_node_t *element_node,
-        axiom_node_t **child_node);
-
-axis2_status_t AXIS2_CALL
-axiom_element_remove_attribute(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_attribute_t *om_attribute);
-
-axiom_element_t* AXIS2_CALL
-axiom_element_get_first_element(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *element_node,
-        axiom_node_t **first_ele_node);
-axis2_char_t* AXIS2_CALL
-axiom_element_get_text(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *element_node);
-
-axis2_status_t AXIS2_CALL
-axiom_element_set_text(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        const axis2_char_t *text,
-        axiom_node_t *element_node);
-
-axis2_char_t* AXIS2_CALL
-axiom_element_to_string(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *element_node);
-
-axiom_child_element_iterator_t * AXIS2_CALL
-axiom_element_get_child_elements(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *element_node);
-
-axis2_status_t AXIS2_CALL
-axiom_element_build(axiom_element_t *om_ele,
-        const axis2_env_t *env,
-        axiom_node_t *om_ele_node);
-
-
-axiom_namespace_t* AXIS2_CALL
-axiom_element_get_default_namespace(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *element_node);
-
-/**
-* declared a default namespace explicitly
-*/
-axiom_namespace_t* AXIS2_CALL
-axiom_element_declare_default_namespace(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axis2_char_t *uri);
-
-/**
-* checks for the namespace in the context of this element
-* with the given prefix
-*/
-
-axiom_namespace_t* AXIS2_CALL
-axiom_element_find_namespace_uri(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axis2_char_t *prefix,
-        axiom_node_t *element_node);
-
-axis2_status_t AXIS2_CALL
-axiom_element_set_namespace_with_no_find_in_current_scope(
-    axiom_element_t *om_element,
-    const axis2_env_t *env,
-    axiom_namespace_t  *om_ns);
-
-axis2_hash_t* AXIS2_CALL
-axiom_element_extract_attributes(axiom_element_t *om_element,
-        const axis2_env_t *env,
-        axiom_node_t *ele_node);
-
-axis2_char_t* AXIS2_CALL
-axiom_element_get_attribute_value_by_name(
-    axiom_element_t *om_element,
-    const axis2_env_t *env,
-    axis2_char_t *attr_name);
-
-
-
 /************************** end function prototypes **********************/
 typedef struct axiom_element_impl
 {
@@ -240,6 +51,9 @@ typedef struct axiom_element_impl
 
 }
 axiom_element_impl_t;
+
+static const axiom_element_ops_t axiom_element_ops_var = {
+};
 
 /************************************Macro *****************************/
 
@@ -328,109 +142,7 @@ axiom_element_create(const axis2_env_t *env,
         }
     }
 
-    element->om_element.ops = NULL;
-    element->om_element.ops = (axiom_element_ops_t *)AXIS2_MALLOC(
-                env->allocator,
-                sizeof(axiom_element_ops_t));
-
-    if (!element->om_element.ops)
-    {
-        AXIS2_FREE(env->allocator, element->localname);
-        AXIS2_FREE(env->allocator, element);
-        AXIS2_FREE(env->allocator, (*node));
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    /* set function pointers */
-    element->om_element.ops->find_namespace =
-        axiom_element_find_namespace;
-    element->om_element.ops->declare_namespace =
-        axiom_element_declare_namespace;
-    element->om_element.ops->find_namespace_with_qname =
-        axiom_element_find_namespace_with_qname;
-    element->om_element.ops->add_attribute =
-        axiom_element_add_attribute;
-    element->om_element.ops->get_attribute =
-        axiom_element_get_attribute;
-
-    element->om_element.ops->get_attribute_value =
-        axiom_element_get_attribute_value;
-
-    element->om_element.ops->free = axiom_element_free;
-
-    element->om_element.ops->serialize_start_part =
-        axiom_element_serialize_start_part;
-    element->om_element.ops->serialize_end_part =
-        axiom_element_serialize_end_part;
-
-    element->om_element.ops->set_localname =
-        axiom_element_set_localname;
-    element->om_element.ops->set_namespace =
-        axiom_element_set_namespace;
-
-    element->om_element.ops->get_localname =
-        axiom_element_get_localname;
-
-    element->om_element.ops->get_namespace =
-        axiom_element_get_namespace;
-
-    element->om_element.ops->find_declared_namespace =
-        axiom_element_find_declared_namespace;
-
-    element->om_element.ops->get_default_namespace =
-        axiom_element_get_default_namespace;
-
-    element->om_element.ops->declare_default_namespace =
-        axiom_element_declare_default_namespace;
-
-    element->om_element.ops->find_namespace_uri =
-        axiom_element_find_namespace_uri;
-
-    element->om_element.ops->get_all_attributes =
-        axiom_element_get_all_attributes;
-
-    element->om_element.ops->get_namespaces =
-        axiom_element_get_namespaces;
-
-    element->om_element.ops->get_qname =
-        axiom_element_get_qname;
-
-    element->om_element.ops->get_children =
-        axiom_element_get_children;
-
-    element->om_element.ops->get_children_with_qname =
-        axiom_element_get_children_with_qname;
-
-    element->om_element.ops->get_first_child_with_qname =
-        axiom_element_get_first_child_with_qname;
-
-    element->om_element.ops->remove_attribute =
-        axiom_element_remove_attribute;
-
-    element->om_element.ops->set_text =
-        axiom_element_set_text;
-    element->om_element.ops->get_text =
-        axiom_element_get_text;
-    element->om_element.ops->get_first_element =
-        axiom_element_get_first_element;
-
-    element->om_element.ops->to_string =
-        axiom_element_to_string;
-    element->om_element.ops->get_child_elements =
-        axiom_element_get_child_elements;
-
-    element->om_element.ops->build =
-        axiom_element_build;
-
-    element->om_element.ops->set_namespace_with_no_find_in_current_scope =
-        axiom_element_set_namespace_with_no_find_in_current_scope;
-
-    element->om_element.ops->extract_attributes =
-        axiom_element_extract_attributes;
-
-    element->om_element.ops->get_attribute_value_by_name =
-        axiom_element_get_attribute_value_by_name;
+    element->om_element.ops = &axiom_element_ops_var;
 
     return &(element->om_element);
 }
@@ -505,7 +217,7 @@ axiom_element_create_with_qname(const axis2_env_t *env,
     return element;
 }
 
-axiom_namespace_t * AXIS2_CALL
+AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL
 axiom_element_find_namespace(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t * element_node,
@@ -629,7 +341,7 @@ axiom_element_find_namespace(axiom_element_t *om_element,
     return NULL;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_declare_namespace(axiom_element_t *ele,
         const axis2_env_t *env,
         axiom_node_t *node,
@@ -691,7 +403,7 @@ axiom_element_declare_namespace(axiom_element_t *ele,
     return AXIS2_SUCCESS;
 }
 
-axiom_namespace_t * AXIS2_CALL
+AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL
 axiom_element_find_declared_namespace(axiom_element_t *om_element,
         const axis2_env_t *env,
         const axis2_char_t * uri,
@@ -754,7 +466,7 @@ axiom_element_find_declared_namespace(axiom_element_t *om_element,
 }
 
 
-axiom_namespace_t * AXIS2_CALL
+AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL
 axiom_element_find_namespace_with_qname(axiom_element_t *element,
         const axis2_env_t *env,
         axiom_node_t *node,
@@ -779,7 +491,7 @@ axiom_element_find_namespace_with_qname(axiom_element_t *element,
     }
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_add_attribute(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_attribute_t *attribute,
@@ -833,7 +545,7 @@ axiom_element_add_attribute(axiom_element_t *om_element,
     return ((qname) ? AXIS2_SUCCESS : AXIS2_FAILURE);
 }
 
-axiom_attribute_t * AXIS2_CALL
+AXIS2_EXTERN axiom_attribute_t * AXIS2_CALL
 axiom_element_get_attribute(axiom_element_t *om_element,
         const axis2_env_t *env,
         axis2_qname_t *qname)
@@ -854,7 +566,7 @@ axiom_element_get_attribute(axiom_element_t *om_element,
     return attr;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_free(axiom_element_t *om_element,
         const axis2_env_t *env)
 {
@@ -938,19 +650,12 @@ axiom_element_free(axiom_element_t *om_element,
         element_impl->text_value = NULL;
     }
 
-    if (om_element->ops)
-    {
-        AXIS2_FREE(env->allocator, om_element->ops);
-        om_element->ops = NULL;
-    }
-
-
     AXIS2_FREE(env->allocator, element_impl);
 
     return status;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_serialize_start_part(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_output_t *om_output,
@@ -1045,7 +750,7 @@ axiom_element_serialize_start_part(axiom_element_t *om_element,
     return status;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_serialize_end_part(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_output_t * om_output)
@@ -1057,7 +762,7 @@ axiom_element_serialize_end_part(axiom_element_t *om_element,
 }
 
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_element_get_localname(axiom_element_t *om_element,
         const axis2_env_t *env)
 {
@@ -1065,7 +770,7 @@ axiom_element_get_localname(axiom_element_t *om_element,
     return AXIS2_INTF_TO_IMPL(om_element)->localname;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_set_localname(axiom_element_t *om_element,
         const axis2_env_t *env,
         const axis2_char_t *localname)
@@ -1087,7 +792,7 @@ axiom_element_set_localname(axiom_element_t *om_element,
     return AXIS2_SUCCESS;
 }
 
-axiom_namespace_t *AXIS2_CALL
+AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
 axiom_element_get_namespace(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *ele_node)
@@ -1112,7 +817,7 @@ axiom_element_get_namespace(axiom_element_t *om_element,
     return ns;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_set_namespace(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_namespace_t *ns,
@@ -1140,7 +845,7 @@ axiom_element_set_namespace(axiom_element_t *om_element,
 }
 
 
-axis2_hash_t * AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
 axiom_element_get_all_attributes(axiom_element_t *om_element,
         const axis2_env_t *env)
 {
@@ -1149,7 +854,7 @@ axiom_element_get_all_attributes(axiom_element_t *om_element,
     return AXIS2_INTF_TO_IMPL(om_element)->attributes;
 }
 
-axis2_hash_t* AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axiom_element_get_namespaces
 (axiom_element_t *om_element,
         const axis2_env_t *env)
@@ -1158,7 +863,7 @@ axiom_element_get_namespaces
     return AXIS2_INTF_TO_IMPL(om_element)->namespaces;
 }
 
-axis2_qname_t* AXIS2_CALL
+AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
 axiom_element_get_qname(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *ele_node)
@@ -1204,7 +909,7 @@ axiom_element_get_qname(axiom_element_t *om_element,
     return om_element_impl->qname;
 }
 
-axiom_children_iterator_t* AXIS2_CALL
+AXIS2_EXTERN axiom_children_iterator_t* AXIS2_CALL
 axiom_element_get_children(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *element_node)
@@ -1226,7 +931,7 @@ axiom_element_get_children(axiom_element_t *om_element,
     return NULL;
 }
 
-axiom_children_qname_iterator_t* AXIS2_CALL
+AXIS2_EXTERN axiom_children_qname_iterator_t* AXIS2_CALL
 axiom_element_get_children_with_qname(axiom_element_t *om_element,
         const axis2_env_t *env,
         axis2_qname_t *element_qname,
@@ -1247,7 +952,7 @@ axiom_element_get_children_with_qname(axiom_element_t *om_element,
     return om_ele_impl->children_qname_iter;
 }
 
-axiom_element_t* AXIS2_CALL
+AXIS2_EXTERN axiom_element_t* AXIS2_CALL
 axiom_element_get_first_child_with_qname(axiom_element_t *om_element,
         const axis2_env_t *env,
         axis2_qname_t *element_qname,
@@ -1289,7 +994,7 @@ axiom_element_get_first_child_with_qname(axiom_element_t *om_element,
     return NULL;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_remove_attribute(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_attribute_t *om_attribute)
@@ -1316,7 +1021,7 @@ axiom_element_remove_attribute(axiom_element_t *om_element,
     return AXIS2_FAILURE;
 }
 
-axiom_element_t* AXIS2_CALL
+AXIS2_EXTERN axiom_element_t* AXIS2_CALL
 axiom_element_get_first_element(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *element_node,
@@ -1344,7 +1049,8 @@ axiom_element_get_first_element(axiom_element_t *om_element,
     }
     return NULL;
 }
-axis2_char_t* AXIS2_CALL
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_element_get_text(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *element_node)
@@ -1409,7 +1115,7 @@ axiom_element_get_text(axiom_element_t *om_element,
     return element_impl->text_value;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_set_text(axiom_element_t *om_element,
         const axis2_env_t *env,
         const axis2_char_t *text,
@@ -1439,7 +1145,7 @@ axiom_element_set_text(axiom_element_t *om_element,
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_element_to_string(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *element_node)
@@ -1469,7 +1175,7 @@ axiom_element_to_string(axiom_element_t *om_element,
     return xml;
 }
 
-axiom_child_element_iterator_t * AXIS2_CALL
+AXIS2_EXTERN axiom_child_element_iterator_t * AXIS2_CALL
 axiom_element_get_child_elements(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *element_node)
@@ -1493,7 +1199,7 @@ axiom_element_get_child_elements(axiom_element_t *om_element,
     return NULL;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_build(axiom_element_t *om_ele,
         const axis2_env_t *env,
         axiom_node_t *om_ele_node)
@@ -1522,7 +1228,7 @@ axiom_element_build(axiom_element_t *om_ele,
     return AXIS2_SUCCESS;
 }
 
-axiom_namespace_t* AXIS2_CALL
+AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
 axiom_element_get_default_namespace(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *element_node)
@@ -1563,7 +1269,7 @@ axiom_element_get_default_namespace(axiom_element_t *om_element,
 /**
 * declared a default namespace explicitly
 */
-axiom_namespace_t* AXIS2_CALL
+AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
 axiom_element_declare_default_namespace(axiom_element_t *om_element,
         const axis2_env_t *env,
         axis2_char_t *uri)
@@ -1602,7 +1308,7 @@ axiom_element_declare_default_namespace(axiom_element_t *om_element,
 * with the given prefix
 */
 
-axiom_namespace_t* AXIS2_CALL
+AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
 axiom_element_find_namespace_uri(axiom_element_t *om_element,
         const axis2_env_t *env,
         axis2_char_t *prefix,
@@ -1642,7 +1348,7 @@ axiom_element_find_namespace_uri(axiom_element_t *om_element,
     return NULL;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_element_get_attribute_value(axiom_element_t *om_element,
         const axis2_env_t *env,
         axis2_qname_t *qname)
@@ -1668,7 +1374,7 @@ axiom_element_get_attribute_value(axiom_element_t *om_element,
     return NULL;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_set_namespace_with_no_find_in_current_scope(
     axiom_element_t *om_element,
     const axis2_env_t *env,
@@ -1682,7 +1388,7 @@ axiom_element_set_namespace_with_no_find_in_current_scope(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axiom_element_extract_attributes(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *ele_node)
@@ -1742,7 +1448,7 @@ axiom_element_extract_attributes(axiom_element_t *om_element,
     return ht_cloned;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_element_get_attribute_value_by_name(
     axiom_element_t *om_element,
     const axis2_env_t *env,

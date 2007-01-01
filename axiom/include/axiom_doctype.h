@@ -46,50 +46,6 @@ extern "C"
     */
     typedef struct axiom_doctype_ops
     {
-      /**
-        * free doctype struct
-        * @param om_doctype pointer to axiom_doctype_t struct to be freed
-        * @param env Environment. MUST NOT be NULL,
-        * @return satus of the op. AXIS2_SUCCESS on success
-        *         AXIS2_FAILURE on error.
-        */
-        axis2_status_t (AXIS2_CALL *
-        free)(struct axiom_doctype *om_doctype,
-              const axis2_env_t *env);
-       /**
-        * @param om_doctype pointer to a axiom_doctype_t struct
-        * @param env environment must not be null       
-        * @return DTD text 
-        */
-        axis2_char_t* (AXIS2_CALL *
-        get_value)(struct axiom_doctype *om_doctype,
-                   const axis2_env_t *env);
-       /**
-        * @param om_doctype pointer to axiom doctype_t struct
-        * @param env environment , MUST NOT be NULL.
-        * @param value doctype text value
-        * @return status of the op,
-        *         AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
-        */
-
-        axis2_status_t (AXIS2_CALL *
-        set_value)(struct axiom_doctype *om_doctype,
-                   const axis2_env_t *env,
-                   const axis2_char_t *value);
-       /**
-        * serialize op 
-        * @param om_doctype pointer to axiom_doctype_t struct
-        * @param env environment , MUST NOT be NULL
-        * @param om_output pointer to axiom_output_t struct
-        * @returns status of the op,
-        *          AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
-        */                                   
-        
-        axis2_status_t (AXIS2_CALL *
-        serialize)(struct axiom_doctype *om_doctype,
-                   const axis2_env_t *env,
-                   axiom_output_t *om_output);
-                                                                                                                                      
     } axiom_doctype_ops_t;
 
   /**
@@ -99,8 +55,7 @@ extern "C"
     typedef struct axiom_doctype
     {
         /** Doctype related ops */
-        axiom_doctype_ops_t *ops;
-
+        const axiom_doctype_ops_t *ops;
     } axiom_doctype_t;
 
   /**
@@ -118,19 +73,62 @@ extern "C"
                              axiom_node_t * parent,
                              const axis2_char_t * value,
                              axiom_node_t ** node);
+  /**
+    * free doctype struct
+    * @param om_doctype pointer to axiom_doctype_t struct to be freed
+    * @param env Environment. MUST NOT be NULL,
+    * @return satus of the op. AXIS2_SUCCESS on success
+    *         AXIS2_FAILURE on error.
+    */
+    axis2_status_t AXIS2_CALL 
+    axiom_doctype_free(struct axiom_doctype *om_doctype,
+          const axis2_env_t *env);
+   /**
+    * @param om_doctype pointer to a axiom_doctype_t struct
+    * @param env environment must not be null       
+    * @return DTD text 
+    */
+    axis2_char_t* AXIS2_CALL 
+    axiom_doctype_get_value(struct axiom_doctype *om_doctype,
+               const axis2_env_t *env);
+   /**
+    * @param om_doctype pointer to axiom doctype_t struct
+    * @param env environment , MUST NOT be NULL.
+    * @param value doctype text value
+    * @return status of the op,
+    *         AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+    */
 
+    axis2_status_t AXIS2_CALL 
+    axiom_doctype_set_value(struct axiom_doctype *om_doctype,
+               const axis2_env_t *env,
+               const axis2_char_t *value);
+   /**
+    * serialize op 
+    * @param om_doctype pointer to axiom_doctype_t struct
+    * @param env environment , MUST NOT be NULL
+    * @param om_output pointer to axiom_output_t struct
+    * @returns status of the op,
+    *          AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+    */                                   
+    
+    axis2_status_t AXIS2_CALL 
+    axiom_doctype_serialize(struct axiom_doctype *om_doctype,
+               const axis2_env_t *env,
+               axiom_output_t *om_output);
+ 
 /** free given doctype */    
 #define AXIOM_DOCTYPE_FREE(doctype, env) \
-        ((doctype)->ops->free(doctype, env))
+        axiom_doctype_free(doctype, env)
 /** returns the value of doctype */
 #define AXIOM_DOCTYPE_GET_VALUE(doctype, env) \
-        ((doctype)->ops->get_value(doctype, env))
+        axiom_doctype_get_value(doctype, env)
 /** set the doctype value */
 #define AXIOM_DOCTYPE_SET_VALUE(doctype, env, value) \
-        ((doctype)->ops->set_value(doctype, env, value))
+        axiom_doctype_set_value(doctype, env, value)
 /** serialize op */       
 #define AXIOM_DOCTYPE_SERIALIZE(doctype, env, om_output) \
-        ((doctype)->ops->serialize(doctype, env, om_output))
+        axiom_doctype_serialize(doctype, env, om_output)
 
 /** @} */
     

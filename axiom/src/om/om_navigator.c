@@ -18,26 +18,6 @@
 #include <axiom_navigator.h>
 
 /*************************** function prototypes ******************************************/
-axis2_status_t AXIS2_CALL
-axiom_navigator_free(axiom_navigator_t *om__navigator,
-        const axis2_env_t *env);
-
-axis2_bool_t AXIS2_CALL
-axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
-
-axis2_bool_t AXIS2_CALL
-axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
-
-axis2_bool_t AXIS2_CALL
-axiom_navigator_visited(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
-
-axiom_node_t* AXIS2_CALL
-axiom_navigator_next(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
-
 static void
 axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
         const axis2_env_t *env);
@@ -64,6 +44,8 @@ typedef struct axiom_navigator_impl
 }
 axiom_navigator_impl_t;
 
+static const axiom_navigator_ops_t axiom_navigator_ops_var = {
+};
 
 /****************************** Macro  ***************************************/
 
@@ -98,54 +80,24 @@ axiom_navigator_create(const axis2_env_t *env,
     navigator_impl->next = om_node;
     navigator_impl->root = om_node;
 
-    navigator_impl->navigator.ops = (axiom_navigator_ops_t*)AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_navigator_ops_t));
-
-    if (!(navigator_impl->navigator.ops))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_FREE(env->allocator, navigator_impl);
-        navigator_impl = NULL;
-        return NULL;
-    };
-
-    navigator_impl->navigator.ops->free =
-        axiom_navigator_free;
-
-    navigator_impl->navigator.ops->is_navigable =
-        axiom_navigator_is_navigable;
-
-    navigator_impl->navigator.ops->is_completed =
-        axiom_navigator_is_completed;
-
-    navigator_impl->navigator.ops->visited =
-        axiom_navigator_visited;
-
-    navigator_impl->navigator.ops->next =
-        axiom_navigator_next;
+    navigator_impl->navigator.ops = &axiom_navigator_ops_var;
 
     return &(navigator_impl->navigator);
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_navigator_free(axiom_navigator_t *om_navigator,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env , AXIS2_FAILURE);
-
-    if (om_navigator->ops)
-    {
-        AXIS2_FREE(env->allocator, om_navigator->ops);
-        om_navigator->ops = NULL;
-    }
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(om_navigator));
     om_navigator = NULL;
     return AXIS2_SUCCESS;
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
         const axis2_env_t *env)
 {
@@ -164,7 +116,7 @@ axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
 }
 
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
         const axis2_env_t *env)
 {
@@ -173,7 +125,7 @@ axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
 }
 
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_visited(axiom_navigator_t *om_navigator,
         const axis2_env_t *env)
 {
@@ -182,7 +134,7 @@ axiom_navigator_visited(axiom_navigator_t *om_navigator,
 }
 
 
-axiom_node_t* AXIS2_CALL
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_navigator_next(axiom_navigator_t *om_navigator,
         const axis2_env_t *env)
 {
@@ -215,6 +167,8 @@ axiom_navigator_next(axiom_navigator_t *om_navigator,
     }
     return navigator_impl->node;
 }
+
+
 /** this method encapsulate searching logic */
 static void
 axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,

@@ -26,32 +26,6 @@
 #include "axiom_node_internal.h"
 #include "axiom_stax_builder_internal.h"
 /**************************** function prototypes *****************************/
-
-axiom_node_t * AXIS2_CALL
-axiom_stax_builder_next(axiom_stax_builder_t *builder,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axiom_stax_builder_discard_current_element(axiom_stax_builder_t *builder,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axiom_stax_builder_free(axiom_stax_builder_t *builder,
-        const axis2_env_t *env);
-
-
-axiom_document_t* AXIS2_CALL
-axiom_stax_builder_get_document(axiom_stax_builder_t *builder,
-        const axis2_env_t *env);
-
-axis2_bool_t  AXIS2_CALL
-axiom_stax_builder_is_complete(axiom_stax_builder_t *builder,
-        const axis2_env_t *env);
-
-int AXIS2_CALL
-axiom_stax_builder_next_with_token(axiom_stax_builder_t *builder,
-        const axis2_env_t *env);
-
 /********************************* axiom_stax_builder_impl_t struct ********/
 typedef struct axiom_stax_builder_impl_t
 {
@@ -77,6 +51,9 @@ typedef struct axiom_stax_builder_impl_t
 
 }
 axiom_stax_builder_impl_t;
+
+static const axiom_stax_builder_ops_t axiom_stax_builder_ops_var = {
+};
 
 /************************************** Macro *********************************/
 
@@ -120,36 +97,7 @@ axiom_stax_builder_create(const axis2_env_t *env,
     }
 
     /* ops */
-    builder->om_stax_builder.ops = NULL;
-    builder->om_stax_builder.ops = (axiom_stax_builder_ops_t *) AXIS2_MALLOC(
-                env->allocator,
-                sizeof(axiom_stax_builder_ops_t));
-
-    if (!builder->om_stax_builder.ops)
-    {
-        AXIOM_XML_READER_FREE(builder->parser, env);
-        AXIS2_FREE(env->allocator, builder);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    builder->om_stax_builder.ops->next =
-        axiom_stax_builder_next;
-    builder->om_stax_builder.ops->discard_current_element =
-        axiom_stax_builder_discard_current_element;
-
-    builder->om_stax_builder.ops->free =
-        axiom_stax_builder_free;
-
-    builder->om_stax_builder.ops->get_document =
-        axiom_stax_builder_get_document;
-
-    builder->om_stax_builder.ops->next_with_token =
-        axiom_stax_builder_next_with_token;
-
-    builder->om_stax_builder.ops->is_complete =
-        axiom_stax_builder_is_complete;
-
+    builder->om_stax_builder.ops = &axiom_stax_builder_ops_var;
 
     return &(builder->om_stax_builder);
 }
@@ -285,7 +233,7 @@ axiom_stax_builder_create_om_text(axiom_stax_builder_t * om_stax_builder,
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_stax_builder_discard_current_element(axiom_stax_builder_t *om_stax_builder,
         const axis2_env_t *env)
 {
@@ -670,7 +618,7 @@ axiom_stax_builder_create_om_processing_instruction(axiom_stax_builder_t *builde
     return pi_node;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_stax_builder_end_element(axiom_stax_builder_t *om_stax_builder,
         const axis2_env_t *env)
 {
@@ -709,7 +657,7 @@ axiom_stax_builder_end_element(axiom_stax_builder_t *om_stax_builder,
 }
 
 
-axiom_node_t * AXIS2_CALL
+AXIS2_EXTERN axiom_node_t * AXIS2_CALL
 axiom_stax_builder_next(axiom_stax_builder_t *om_stax_builder,
         const axis2_env_t *env)
 {
@@ -805,7 +753,7 @@ axiom_stax_builder_next(axiom_stax_builder_t *om_stax_builder,
 }
 
 
-axis2_status_t
+AXIS2_EXTERN axis2_status_t
 AXIS2_CALL axiom_stax_builder_free(axiom_stax_builder_t *builder,
         const axis2_env_t *env)
 {
@@ -834,17 +782,12 @@ AXIS2_CALL axiom_stax_builder_free(axiom_stax_builder_t *builder,
             builder_impl->root_node = NULL;
         }
     }
-    if (builder->ops)
-    {
-        AXIS2_FREE(env->allocator, builder->ops);
-        builder->ops = NULL;
-    }
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(builder));
     return AXIS2_SUCCESS;
 }
 
 
-axiom_document_t* AXIS2_CALL
+AXIS2_EXTERN axiom_document_t* AXIS2_CALL
 axiom_stax_builder_get_document(axiom_stax_builder_t *builder,
         const axis2_env_t *env)
 {
@@ -878,7 +821,7 @@ axiom_stax_builder_get_lastnode(axiom_stax_builder_t *builder,
 /**
 This is an internal function
 */
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_stax_builder_is_complete(axiom_stax_builder_t *builder,
         const axis2_env_t *env)
 {
@@ -1028,3 +971,5 @@ axiom_stax_builder_next_with_token(axiom_stax_builder_t *builder,
     }
     return token;
 }
+
+

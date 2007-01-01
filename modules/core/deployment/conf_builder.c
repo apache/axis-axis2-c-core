@@ -519,7 +519,7 @@ axis2_conf_builder_process_phase_orders(
 
     info = AXIS2_DEP_ENGINE_GET_PHASES_INFO(conf_builder->desc_builder->engine,
             env);
-    while (AXIS2_TRUE == AXIOM_CHILDREN_ITERATOR_HAS_NEXT(phase_orders, env))
+    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(phase_orders, env))
     {
         axiom_node_t *phase_orders_node = NULL;
         axiom_element_t *phase_orders_element = NULL;
@@ -528,7 +528,7 @@ axis2_conf_builder_process_phase_orders(
         axis2_char_t *flow_type = NULL;
         axis2_array_list_t *phase_list = NULL;
 
-        phase_orders_node = (axiom_node_t *) AXIOM_CHILDREN_ITERATOR_NEXT(
+        phase_orders_node = (axiom_node_t *) AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(
                     phase_orders, env);
         if (phase_orders_node)
         {
@@ -1119,7 +1119,7 @@ axis2_conf_builder_process_default_module_versions(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_versions, AXIS2_FAILURE);
 
-    while (AXIOM_CHILDREN_ITERATOR_HAS_NEXT(module_versions, env))
+    while (AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_versions, env))
     {
         axiom_element_t *om_element = NULL;
         axis2_char_t *name = NULL;
@@ -1127,7 +1127,7 @@ axis2_conf_builder_process_default_module_versions(
         axis2_qname_t *attribute_qname = NULL;
 
         om_element = (axiom_element_t *)
-                AXIOM_CHILDREN_ITERATOR_NEXT(module_versions, env);
+                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(module_versions, env);
         if (NULL == om_element)
         {
             continue;

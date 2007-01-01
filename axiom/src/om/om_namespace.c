@@ -20,36 +20,6 @@
 #include "axiom_namespace_internal.h"
 /**************************** Function Prototypes ******************************/
 
-axis2_status_t AXIS2_CALL
-axiom_namespace_free(axiom_namespace_t *om_namespace,
-        const axis2_env_t *env);
-
-axis2_bool_t AXIS2_CALL
-axiom_namespace_equals(axiom_namespace_t *om_namespace,
-        const axis2_env_t *env,
-        axiom_namespace_t *om_namespace1);
-
-axis2_status_t AXIS2_CALL
-axiom_namespace_serialize(axiom_namespace_t *om_namespace,
-        const axis2_env_t *env,
-        axiom_output_t *om_output);
-
-axis2_char_t* AXIS2_CALL
-axiom_namespace_get_uri(axiom_namespace_t *om_namespace,
-        const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axiom_namespace_get_prefix(axiom_namespace_t *om_namespace,
-        const axis2_env_t *env);
-
-axiom_namespace_t* AXIS2_CALL
-axiom_namespace_clone(axiom_namespace_t *om_namespace,
-        const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axiom_namespace_to_string(axiom_namespace_t *om_namespace,
-        const axis2_env_t *env);
-
 /****************************** axiom_namesapce_impl_struct **************************/
 
 typedef struct axiom_namespace_impl
@@ -65,6 +35,9 @@ typedef struct axiom_namespace_impl
 
 }
 axiom_namespace_impl_t;
+
+static const axiom_namespace_ops_t axiom_namespace_ops_var = {
+};
 
 
 /**************************************** Macro ****************************************/
@@ -107,7 +80,7 @@ axiom_namespace_create(const axis2_env_t *env,
     }
 
 
-    ns->om_namespace.ops = NULL;
+    ns->om_namespace.ops = &axiom_namespace_ops_var;
     ns->om_namespace.ref = 0;
     ns->prefix = NULL;
     ns->uri = NULL;
@@ -133,45 +106,12 @@ axiom_namespace_create(const axis2_env_t *env,
         }
     }
 
-    /* ops */
-    ns->om_namespace.ops = (axiom_namespace_ops_t *) AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_namespace_ops_t));
-
-    if (!ns->om_namespace.ops)
-    {
-        AXIS2_FREE(env->allocator, ns);
-        AXIS2_FREE(env->allocator, ns->uri);
-        AXIS2_FREE(env->allocator, ns->prefix);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    ns->om_namespace.ops->free =
-        axiom_namespace_free;
-
-    ns->om_namespace.ops->equals =
-        axiom_namespace_equals;
-
-    ns->om_namespace.ops->serialize =
-        axiom_namespace_serialize;
-
-    ns->om_namespace.ops->get_uri =
-        axiom_namespace_get_uri;
-
-    ns->om_namespace.ops->get_prefix =
-        axiom_namespace_get_prefix;
-
-    ns->om_namespace.ops->clone =
-        axiom_namespace_clone;
-
-    ns->om_namespace.ops->to_string =
-        axiom_namespace_to_string;
     return &(ns->om_namespace) ;
 }
 
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_namespace_free(axiom_namespace_t *om_namespace,
         const axis2_env_t *env)
 {
@@ -203,18 +143,12 @@ axiom_namespace_free(axiom_namespace_t *om_namespace,
         ns_impl->key = NULL;
     }
 
-    if (om_namespace->ops)
-    {
-        AXIS2_FREE(env->allocator, om_namespace->ops);
-        om_namespace->ops = NULL;
-    }
-
     AXIS2_FREE(env->allocator, ns_impl);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_namespace_equals(axiom_namespace_t *om_namespace,
         const axis2_env_t *env,
         axiom_namespace_t *om_namespace1)
@@ -249,7 +183,7 @@ axiom_namespace_equals(axiom_namespace_t *om_namespace,
     return (!uris_differ && !prefixes_differ);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_namespace_serialize(axiom_namespace_t *om_namespace,
         const axis2_env_t *env,
         axiom_output_t *om_output)
@@ -279,7 +213,7 @@ axiom_namespace_serialize(axiom_namespace_t *om_namespace,
     return status;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_namespace_get_uri(axiom_namespace_t *om_namespace,
         const axis2_env_t *env)
 {
@@ -288,7 +222,7 @@ axiom_namespace_get_uri(axiom_namespace_t *om_namespace,
 }
 
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_namespace_get_prefix(axiom_namespace_t *om_namespace,
         const axis2_env_t *env)
 {
@@ -296,7 +230,7 @@ axiom_namespace_get_prefix(axiom_namespace_t *om_namespace,
     return AXIS2_INTF_TO_IMPL(om_namespace)->prefix;
 }
 
-axiom_namespace_t* AXIS2_CALL
+AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
 axiom_namespace_clone(axiom_namespace_t *om_namespace,
         const axis2_env_t *env)
 {
@@ -315,7 +249,7 @@ axiom_namespace_clone(axiom_namespace_t *om_namespace,
     return NULL;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_namespace_to_string(axiom_namespace_t *om_namespace,
         const axis2_env_t *env)
 {
@@ -375,3 +309,5 @@ axiom_namespace_set_uri(axiom_namespace_t *ns,
     }
     return AXIS2_SUCCESS;
 }
+
+

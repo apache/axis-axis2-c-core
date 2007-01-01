@@ -19,24 +19,6 @@
 #include <axis2_string.h>
 #include "axiom_node_internal.h"
 
-axis2_status_t AXIS2_CALL
-axiom_doctype_free(axiom_doctype_t *om_doctype,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axiom_doctype_set_value(axiom_doctype_t *om_doctype,
-        const axis2_env_t *env,
-        const axis2_char_t *value);
-
-axis2_char_t* AXIS2_CALL
-axiom_doctype_get_value(axiom_doctype_t *om_doctype,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axiom_doctype_serialize(axiom_doctype_t *om_doctype,
-        const axis2_env_t *env,
-        axiom_output_t *om_output);
-
 /************************ axiom_doctype struct *********************/
 
 typedef struct axiom_doctype_impl_t
@@ -48,6 +30,9 @@ typedef struct axiom_doctype_impl_t
 
 }
 axiom_doctype_impl_t;
+
+static const axiom_doctype_ops_t axiom_doctype_ops_var = {
+};
 
 /*************************** Macro ***********************************/
 
@@ -105,26 +90,13 @@ axiom_doctype_create(const axis2_env_t *env,
     }
 
     /* ops */
-    doctype->om_doctype.ops = NULL;
-    doctype->om_doctype.ops = (axiom_doctype_ops_t *) AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_doctype_ops_t));
-
-    if (!doctype->om_doctype.ops)
-    {
-        AXIS2_FREE(env->allocator, doctype);
-        AXIS2_FREE(env->allocator, doctype->value);
-        AXIS2_FREE(env->allocator, *node);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    doctype->om_doctype.ops->free = axiom_doctype_free;
+    doctype->om_doctype.ops = &axiom_doctype_ops_var;
 
     return &(doctype->om_doctype);
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_doctype_free(axiom_doctype_t *om_doctype,
         const axis2_env_t *env)
 {
@@ -140,7 +112,7 @@ axiom_doctype_free(axiom_doctype_t *om_doctype,
     return AXIS2_FAILURE;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_doctype_set_value(axiom_doctype_t *om_doctype,
         const axis2_env_t *env,
         const axis2_char_t *value)
@@ -152,7 +124,7 @@ axiom_doctype_set_value(axiom_doctype_t *om_doctype,
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_doctype_get_value(axiom_doctype_t *om_doctype,
         const axis2_env_t *env)
 {
@@ -160,7 +132,7 @@ axiom_doctype_get_value(axiom_doctype_t *om_doctype,
     return AXIS2_INTF_TO_IMPL(om_doctype)->value;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_doctype_serialize(axiom_doctype_t *om_doctype,
         const axis2_env_t *env,
         axiom_output_t *om_output)
@@ -176,3 +148,4 @@ axiom_doctype_serialize(axiom_doctype_t *om_doctype,
 
     return AXIS2_FAILURE;
 }
+
