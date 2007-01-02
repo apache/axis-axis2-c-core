@@ -150,7 +150,7 @@ axiom_children_iterator_next(axiom_children_iterator_t *iterator,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_chidren_iterator_reset(axiom_children_iterator_t *iterator,
+axiom_children_iterator_reset(axiom_children_iterator_t *iterator,
         const axis2_env_t *env)
 {
     axiom_children_iterator_impl_t *iterator_impl = NULL;
