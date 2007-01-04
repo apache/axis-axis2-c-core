@@ -18,6 +18,7 @@
 #include "axiom_node_internal.h"
 #include <axiom_element.h>
 #include <axiom_text.h>
+#include <axiom_data_source.h>
 #include <axiom_comment.h>
 #include <axiom_processing_instruction.h>
 #include <axiom_doctype.h>
