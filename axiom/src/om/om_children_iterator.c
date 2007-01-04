@@ -69,6 +69,9 @@ axiom_children_iterator_create(const axis2_env_t *env,
     iterator_impl->next_called = AXIS2_FALSE;
     iterator_impl->remove_called = AXIS2_FALSE;
 
+    iterator_impl->first_child = current_child;
+    iterator_impl->current_child = current_child;
+
     iterator_impl->iterator.ops = &axiom_children_iterator_ops_var;
 
     return &(iterator_impl->iterator);
