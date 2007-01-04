@@ -32,7 +32,7 @@
 #include <http_protocol.h>
 
 
-#define READ_SIZE  32
+#define READ_SIZE  2048
 /**
  * @brief Apahche2 Worker struct impl
  *   Axis2 Apache2 Worker impl

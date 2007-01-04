@@ -25,7 +25,7 @@
  * @brief HTTP Simple Response struct impl
  *   Axis2 HTTP Simple Response impl
  */
-#define READ_SIZE 32
+#define READ_SIZE 2048
 
 
 typedef struct axis2_http_simple_response_impl
