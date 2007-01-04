@@ -46,8 +46,6 @@ extern "C"
   */
     typedef struct axis2_allocator
     {
-    
-
       /**
         * allocates memory
         * @param allocator pointer to allocator struct. In the default 
