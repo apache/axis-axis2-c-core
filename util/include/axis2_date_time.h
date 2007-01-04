@@ -23,7 +23,7 @@
  
 /**
  * @file axis2_date_time.h
- * @brief axis2-util base64 encoding holder
+ * @brief axis2-util 
  */
 
 #ifdef __cplusplus
@@ -32,7 +32,7 @@ extern "C"
 #endif
    
 /** 
- * @defgroup axis2_base64 Base64 encoding holder
+ * @defgroup axis2_base64 
  * @ingroup axis2_util
  * @{
  */    
