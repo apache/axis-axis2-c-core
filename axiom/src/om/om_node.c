@@ -393,7 +393,7 @@ axiom_node_serialize(axiom_node_t *om_node,
         if (node_impl->data_element)
         {
             status = axiom_data_source_serialize(
-                        (axiom_text_t*)(node_impl->data_element),
+                        (axiom_data_source_t*)(node_impl->data_element),
                         env, om_output);
         }
         if (status != AXIS2_SUCCESS)
