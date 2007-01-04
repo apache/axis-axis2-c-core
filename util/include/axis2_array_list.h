@@ -39,7 +39,6 @@ extern "C"
 #endif
 
     struct axis2_array_list;
-    struct axis2_array_list_ops;
 
     static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
 
