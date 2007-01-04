@@ -24,36 +24,6 @@
 
 /********************************** Function prototypes *****************/
 
-axis2_status_t AXIS2_CALL
-axis2_qname_free(axis2_qname_t * qname,
-        const axis2_env_t *env);
-
-
-axis2_bool_t AXIS2_CALL
-axis2_qname_equals(const axis2_qname_t * qname,
-        const axis2_env_t *env,
-        const axis2_qname_t * qname1);
-
-axis2_qname_t* AXIS2_CALL
-axis2_qname_clone(const axis2_qname_t *qname,
-        const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axis2_qname_get_uri(const axis2_qname_t *qname,
-        const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axis2_qname_get_prefix(const axis2_qname_t *qname,
-        const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axis2_qname_get_localpart(const axis2_qname_t *qname,
-        const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axis2_qname_to_string(const axis2_qname_t *qname,
-        const axis2_env_t *env);
-
 /*************************************** qname struct *********************/
 
 typedef struct axis2_qname_impl_t
@@ -160,35 +130,13 @@ axis2_qname_create(const axis2_env_t *env,
     }
 
 
-    qn->qname.ops = NULL;
-    qn->qname.ops = (axis2_qname_ops_t*)AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_qname_ops_t));
-
-    if (!qn->qname.ops)
-    {
-        AXIS2_FREE(env->allocator, qn->localpart);
-        if (qn->namespace_uri)
-            AXIS2_FREE(env->allocator, qn->namespace_uri);
-        AXIS2_FREE(env->allocator, qn->prefix);
-        AXIS2_FREE(env->allocator, qn);
-        AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    qn->qname.ops->free_fn = axis2_qname_free;
-    qn->qname.ops->equals = axis2_qname_equals;
-    qn->qname.ops->clone = axis2_qname_clone;
-    qn->qname.ops->get_localpart = axis2_qname_get_localpart;
-    qn->qname.ops->get_prefix = axis2_qname_get_prefix;
-    qn->qname.ops->get_uri = axis2_qname_get_uri;
-    qn->qname.ops->to_string = axis2_qname_to_string;
+    qn->qname.ref = 0;
 
     return &(qn->qname);
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_qname_free(axis2_qname_t * qname,
         const axis2_env_t *env)
 {
@@ -216,11 +164,6 @@ axis2_qname_free(axis2_qname_t * qname,
         AXIS2_FREE(env->allocator, qname_impl->qname_string);
         qname_impl->qname_string = NULL;
     }
-    if (qname->ops)
-    {
-        AXIS2_FREE(env->allocator, qname->ops);
-        qname->ops = NULL;
-    }
 
     AXIS2_FREE(env->allocator, qname_impl);
     return AXIS2_SUCCESS;
@@ -228,7 +171,7 @@ axis2_qname_free(axis2_qname_t * qname,
 }
 
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_qname_equals(const axis2_qname_t *qname,
         const axis2_env_t *env,
         const axis2_qname_t * qname1)
@@ -265,17 +208,6 @@ axis2_qname_equals(const axis2_qname_t *qname,
         uris_differ =
             axis2_strcmp(qn1->namespace_uri,
                     qn2->namespace_uri);
-/* 		  if (uris_differ) */
-/* 			 { */
-/* 				  if ((qn1->namespace_uri[strlen(qn1->namespace_uri) - 1] != '/')  */
-/* 						&& (qn2->namespace_uri[strlen(qn2->namespace_uri) - 1] == '/') ) */
-/* 						fprintf (stderr, "you may need to add / to your wsdl namespace %s \n", qn1->namespace_uri); */
-/* 				  else if ((qn1->namespace_uri[strlen(qn1->namespace_uri) - 1] == '/')  */
-/* 							  && (qn2->namespace_uri[strlen(qn2->namespace_uri) - 1] != '/') ) */
-/* 						fprintf (stderr, "you may need to add / to your wsdl namespace %s \n", qn2->namespace_uri); */
-				  
-/* 			 } */
-
     }
     else
     {
@@ -286,7 +218,7 @@ axis2_qname_equals(const axis2_qname_t *qname,
 }
 
 
-axis2_qname_t* AXIS2_CALL
+AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
 axis2_qname_clone(const axis2_qname_t *qname,
         const axis2_env_t *env)
 {
@@ -300,7 +232,7 @@ axis2_qname_clone(const axis2_qname_t *qname,
 
 
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_qname_get_uri(const axis2_qname_t *qname,
         const axis2_env_t *env)
 {
@@ -308,7 +240,7 @@ axis2_qname_get_uri(const axis2_qname_t *qname,
     return AXIS2_INTF_TO_IMPL(qname)->namespace_uri;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_qname_get_prefix(const axis2_qname_t *qname,
         const axis2_env_t *env)
 {
@@ -317,7 +249,7 @@ axis2_qname_get_prefix(const axis2_qname_t *qname,
 }
 
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_qname_get_localpart(const axis2_qname_t *qname,
         const axis2_env_t *env)
 {
@@ -325,7 +257,7 @@ axis2_qname_get_localpart(const axis2_qname_t *qname,
     return AXIS2_INTF_TO_IMPL(qname)->localpart;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_qname_to_string(const axis2_qname_t *qname,
         const axis2_env_t *env)
 {

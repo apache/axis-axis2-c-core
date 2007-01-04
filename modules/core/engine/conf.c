@@ -786,13 +786,13 @@ axis2_conf_free(
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules,
                 env); i++)
         {
-            axis2_module_desc_t *module_desc = NULL;
-            module_desc = (axis2_module_desc_t *)
+            axis2_qname_t *module_desc_qname = NULL;
+            module_desc_qname = (axis2_qname_t *)
                     AXIS2_ARRAY_LIST_GET(config_impl->engaged_modules, env, i);
-            if (module_desc)
-                AXIS2_MODULE_DESC_FREE(module_desc, env);
+            if (module_desc_qname)
+                AXIS2_QNAME_FREE(module_desc_qname, env);
 
-            module_desc = NULL;
+            module_desc_qname = NULL;
         }
         AXIS2_ARRAY_LIST_FREE(config_impl->engaged_modules, env);
         config_impl->engaged_modules = NULL;
