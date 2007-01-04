@@ -281,6 +281,12 @@ int AXIS2_CALL
 axis2_libxml2_writer_wrapper_get_type(
     axiom_xml_writer_t *writer,
     const axis2_env_t *env);
+    
+axis2_status_t AXIS2_CALL
+axis2_libxml2_writer_wrapper_write_raw(
+    axiom_xml_writer_t *writer,
+    const axis2_env_t *env,
+    axis2_char_t *content);
 
 /*********************** static functions ************************************/
 static axis2_status_t
@@ -608,6 +614,8 @@ axis2_libxml2_writer_wrapper_init_ops(axiom_xml_writer_t *writer)
         axis2_libxml2_writer_wrapper_get_xml;
     writer->ops->get_type =
         axis2_libxml2_writer_wrapper_get_type;
+    writer->ops->write_raw =
+        axis2_libxml2_writer_wrapper_write_raw;
 }
 
 
@@ -1831,4 +1839,26 @@ axis2_libxml2_writer_wrapper_find_prefix_in_context(
         }
     }
     return NULL;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_libxml2_writer_wrapper_write_raw(axiom_xml_writer_t *writer,
+        const axis2_env_t *env,
+        axis2_char_t *content)
+{
+    axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
+    int status = 0;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, content, AXIS2_FAILURE);
+
+    writer_impl = AXIS2_INTF_TO_IMPL(writer);
+    status = xmlTextWriterWriteRaw(writer_impl->xml_writer, BAD_CAST content);
+    if (status < 0)
+    {
+        AXIS2_ERROR_SET(env->error,
+                AXIS2_ERROR_WRITING_DATA_SOURCE, AXIS2_FAILURE);
+
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
 }

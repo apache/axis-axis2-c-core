@@ -425,18 +425,23 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          *               AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *
-      write_encoded)(axiom_xml_writer_t *writer,
+        write_encoded)(axiom_xml_writer_t *writer,
                        const axis2_env_t *env,
                        axis2_char_t *text,
                        int in_attr);
                                                  
         void* (AXIS2_CALL *
-      get_xml)(axiom_xml_writer_t *writer,
+        get_xml)(axiom_xml_writer_t *writer,
                  const axis2_env_t *env);                                                 
 
         int (AXIS2_CALL *
-      get_type)(axiom_xml_writer_t *writer,
-                 const axis2_env_t *env);                                                 
+        get_type)(axiom_xml_writer_t *writer,
+                 const axis2_env_t *env);   
+
+        axis2_status_t (AXIS2_CALL *
+        write_raw)(axiom_xml_writer_t *writer,
+                   const axis2_env_t *env,
+                   axis2_char_t *content);
     };
 
 /** 
@@ -577,6 +582,9 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
 
 #define AXIOM_XML_WRITER_GET_TYPE(writer, env) \
         ((writer)->ops->get_type(writer, env)) 
+
+#define AXIOM_XML_WRITER_WRITE_RAW(writer, env, content) \
+        ((writer)->ops->write_raw(writer, env, content)) 
 
 /** @} */
 

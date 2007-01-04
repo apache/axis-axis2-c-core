@@ -3,6 +3,7 @@ libaxis2_axiom_la_SOURCES = om_attribute.c \
                         om_document.c \
                         om_node.c \
                         om_text.c \
+                        om_data_source.c \
                         om_comment.c \
                         om_element.c \
                         om_output.c \

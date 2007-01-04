@@ -387,6 +387,17 @@ axiom_node_serialize(axiom_node_t *om_node,
         if (status != AXIS2_SUCCESS)
             return status;
     }
+    else if (node_impl->node_type == AXIOM_DATA_SOURCE)
+    {
+        if (node_impl->data_element)
+        {
+            status = axiom_data_source_serialize(
+                        (axiom_text_t*)(node_impl->data_element),
+                        env, om_output);
+        }
+        if (status != AXIS2_SUCCESS)
+            return status;
+    }
     else if (node_impl->node_type == AXIOM_TEXT)
     {
         if (node_impl->data_element)
@@ -740,5 +751,3 @@ axiom_node_to_string(axiom_node_t *om_node,
     AXIOM_OUTPUT_FREE(om_output, env);
     return xml;
 }
-
-

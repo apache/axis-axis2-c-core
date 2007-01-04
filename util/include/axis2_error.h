@@ -424,6 +424,8 @@ extern "C"
         AXIS2_ERROR_WRITING_ATTRIBUTE_WITH_NAMESPACE_PREFIX,
         /** error in writing comment */
         AXIS2_ERROR_WRITING_COMMENT,
+        /** error in writing data source*/
+        AXIS2_ERROR_WRITING_DATA_SOURCE,
         /** error in writing default namespace */
         AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE,
         /** error in writing dtd */

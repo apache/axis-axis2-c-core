@@ -77,7 +77,9 @@ extern "C"
         /** AXIOM processing instruction type */
         AXIOM_PROCESSING_INSTRUCTION,
         /** AXIOM text type */
-        AXIOM_TEXT
+        AXIOM_TEXT,
+        /** AXIOM data source, represent a serialized XML fragment with a stream */
+        AXIOM_DATA_SOURCE
     } axiom_types_t;
 
   /** 

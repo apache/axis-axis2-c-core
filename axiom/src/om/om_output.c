@@ -544,6 +544,12 @@ axiom_output_write(axiom_output_t * om_output,
                     args_list[2]);
         }
     }
+    else if (type == AXIOM_DATA_SOURCE)
+    {
+        status = AXIOM_XML_WRITER_WRITE_RAW(om_output_impl->xml_writer,
+                env,
+                args_list[0]); 
+    }
     else if (type == AXIOM_ATTRIBUTE)
     {
         if (no_of_args == 2)

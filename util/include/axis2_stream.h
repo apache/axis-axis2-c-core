@@ -30,7 +30,7 @@ extern "C"
 typedef struct axis2_stream axis2_stream_t;
 typedef struct axis2_stream_ops axis2_stream_ops_t;
 
-#define AXIS2_STREAM_DEFAULT_BUF_SIZE 512
+#define AXIS2_STREAM_DEFAULT_BUF_SIZE 2048
 /**
  * @defgroup axis2_stream stream
  * @ingroup axis2_util 
@@ -132,7 +132,8 @@ typedef enum axis2_stream_type axis2_stream_type_t;
 /** \brief Constructor for creating an in memory stream
   * @return axis2_stream (in memory)
   */
-AXIS2_EXTERN axis2_stream_t *AXIS2_CALL axis2_stream_create_basic (const axis2_env_t *env);
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL 
+axis2_stream_create_basic (const axis2_env_t *env);
 
 /** \brief Constructor for creating a file stream
   * @param valid file pointer (opened file)
@@ -156,6 +157,13 @@ axis2_stream_create_socket (const axis2_env_t *env, int socket);
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_stream_free_void_arg (void *stream,
                             const axis2_env_t *env);
+
+/**
+ * Gets the buffer
+ */
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+axis2_stream_get_buffer (const axis2_stream_t *stream, 
+                         const axis2_env_t *env);
 
 #define AXIS2_STREAM_FREE(stream, env) ((stream->ops)->free_fn(stream, env))
 

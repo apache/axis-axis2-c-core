@@ -365,6 +365,8 @@ axis2_error_init()
         "error in writing attribute with namespace prefix";
     axis2_error_messages[AXIS2_ERROR_WRITING_COMMENT] =
         "error in writing comment";
+    axis2_error_messages[AXIS2_ERROR_WRITING_DATA_SOURCE] =
+        "error in writing data source";
     axis2_error_messages[AXIS2_ERROR_WRITING_DEFAULT_NAMESPACE] =
         "error in writing default namespace";
     axis2_error_messages[AXIS2_ERROR_WRITING_DTD] =

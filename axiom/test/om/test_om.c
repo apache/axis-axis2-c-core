@@ -20,6 +20,7 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axiom_text.h>
+#include <axiom_data_source.h>
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
@@ -209,6 +210,8 @@ test_om_serialize()
                 NULL;
     axiom_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL, *node4 =
                 NULL, *node5 = NULL, *node6 = NULL;
+    axiom_data_source_t *data_source = NULL;
+    axis2_stream_t *stream = NULL;
     axiom_attribute_t *attr1 = NULL, *attr2 = NULL;
     axiom_namespace_t *ns1 = NULL, *ns2 = NULL;
     axiom_text_t *text1 = NULL;
@@ -247,6 +250,13 @@ test_om_serialize()
 
     AXIOM_ELEMENT_ADD_ATTRIBUTE(ele4, environment, attr2, node6);
 
+    data_source = axiom_data_source_create(environment, node1, &node6);
+    stream = axiom_data_source_get_stream(data_source, environment);
+    if (stream)
+    {
+        AXIS2_STREAM_WRITE(stream, environment, "<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>", 
+            axis2_strlen("<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>"));
+    }
 
     /* serializing stuff */
     writer = axiom_xml_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0,

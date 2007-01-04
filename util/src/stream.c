@@ -336,6 +336,14 @@ axis2_stream_skip_basic(axis2_stream_t *stream, const axis2_env_t *env, int coun
     return -1;
 }
 
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+axis2_stream_get_buffer (const axis2_stream_t *stream, 
+                         const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(stream)->buffer;
+
+}
 
 /********************* End of Basic Stream Operations *************************/
 

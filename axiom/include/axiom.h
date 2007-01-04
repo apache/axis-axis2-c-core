@@ -33,6 +33,7 @@
 #include <axiom_processing_instruction.h>
 #include <axiom_stax_builder.h>
 #include <axiom_text.h>
+#include <axiom_data_source.h>
 #include <axiom_xml_reader.h>
 #include <axiom_xml_writer.h>
 
