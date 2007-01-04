@@ -337,6 +337,7 @@ AC_CONFIG_FILES([Makefile \
     modules/core/phaseresolver/Makefile \
     modules/core/transport/http/Makefile \
     modules/core/transport/http/sender/Makefile \
+    modules/core/transport/http/sender/ssl/Makefile \
     modules/core/transport/http/receiver/Makefile \
     modules/core/transport/http/server/simple_axis2_server/Makefile \
     modules/core/transport/http/server/Makefile \
