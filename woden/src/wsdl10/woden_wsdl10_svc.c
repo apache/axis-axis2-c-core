@@ -153,7 +153,8 @@ woden_wsdl10_svc_to_svc_element(
       else
 	    svc_impl = (woden_wsdl10_svc_impl_t *) svc;
 
-      woden_wsdl10_svc_free_ops(svc, env);
+      if(svc)
+        woden_wsdl10_svc_free_ops(svc, env);
 
       svc_impl->svc.base.svc_element.ops =
 	    AXIS2_MALLOC(env->allocator,
@@ -307,6 +308,7 @@ woden_wsdl10_svc_to_documentable(
       const axis2_env_t *env)
 {
       woden_wsdl10_svc_impl_t *svc_impl = NULL;
+      woden_documentable_t *documentable = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       if (!svc)
@@ -323,8 +325,10 @@ woden_wsdl10_svc_to_documentable(
       svc_impl->svc.base.
 	    configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator,
 							      sizeof(woden_documentable_ops_t));
+      documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(svc_impl->configurable, 
+          env);
       woden_documentable_resolve_methods(&(svc_impl->svc.base.
-					   configurable.base.documentable), env, NULL,
+					   configurable.base.documentable), env, documentable,
 					 svc_impl->methods);
       return svc;
 }
@@ -488,6 +492,7 @@ AXIS2_EXTERN woden_wsdl10_svc_t * AXIS2_CALL
 woden_wsdl10_svc_create(const axis2_env_t *env)
 {
       woden_wsdl10_svc_impl_t *svc_impl = NULL;
+      woden_documentable_t *documentable = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       svc_impl = (woden_wsdl10_svc_impl_t *) create(env);
@@ -504,6 +509,9 @@ woden_wsdl10_svc_create(const axis2_env_t *env)
 		     &(svc_impl->svc));
       axis2_hash_set(svc_impl->super, "WODEN_NESTED_CONFIGURABLE", AXIS2_HASH_KEY_STRING,
 		     svc_impl->configurable);
+      documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(svc_impl->configurable, env);
+      axis2_hash_set(svc_impl->super, "WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING,
+		     documentable);
 
       return &(svc_impl->svc);
 }
@@ -952,5 +960,6 @@ woden_wsdl10_svc_set_interface_element(
       svc_impl->f_interface = interface;
       return AXIS2_SUCCESS;
 }
+
 
 
