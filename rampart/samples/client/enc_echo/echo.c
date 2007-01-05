@@ -65,12 +65,7 @@ int main(int argc, char** argv)
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
     AXIS2_OPTIONS_SET_ACTION(options, env,
-                    "http://ws.apache.org/axis2/c/samples/echoString");
-    
-    /*This is required to do interop with rampart/java*/
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
-    AXIS2_OPTIONS_SET_SOAP_ACTION(options, env,
-            "urn:echo");
+            "http://ws.apache.org/axis2/c/samples/echoString");
 
 
 
@@ -112,8 +107,6 @@ int main(int argc, char** argv)
     /* Set service client options */
     AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
 
-    /* Engage addressing module */
-    /*AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_payload_for_echo_svc(env);
@@ -162,10 +155,10 @@ build_om_payload_for_echo_svc(const axis2_env_t *env)
     axiom_namespace_t *ns1 = NULL;
     axis2_char_t *om_str = NULL;
 
-    ns1 = axiom_namespace_create(env, "http://sample05.samples.rampart.apache.org/xsd", "ns1");
-    echo_om_ele = axiom_element_create(env, NULL, "echo", ns1, &echo_om_node);
-    text_om_ele = axiom_element_create(env, echo_om_node, "param0", NULL, &text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, "echo55555", text_om_node);
+    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples", "ns1");
+    echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
 
     om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
     if (om_str)

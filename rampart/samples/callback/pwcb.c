@@ -46,6 +46,10 @@ get_sample_password(rampart_callback_t *rcb,
     {
         pw = "password";
     }
+    else if (0 == AXIS2_STRCMP(username, "bob"))
+    {
+        pw = "bobPW";
+    }
     /*These are for sample keystores*/
     else if (0 == AXIS2_STRCMP(username, "a"))
     {
