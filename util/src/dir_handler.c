@@ -83,8 +83,6 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            /*AXIS2_FREE(env->allocator, *files);
-            AXIS2_FREE(env->allocator, files);*/
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
@@ -109,8 +107,6 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            /*AXIS2_FREE(env->allocator, *files);
-            AXIS2_FREE(env->allocator, files);*/
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
@@ -135,8 +131,6 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            /*AXIS2_FREE(env->allocator, *files);
-            AXIS2_FREE(env->allocator, files);*/
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
@@ -163,8 +157,6 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            /*AXIS2_FREE(env->allocator, *files);
-            AXIS2_FREE(env->allocator, files);*/
             return NULL;
         }
         AXIS2_FREE(env->allocator, path);
@@ -174,8 +166,6 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
         arch_file = NULL;
         fname = NULL;
     }
-    /*AXIS2_FREE(env->allocator, *files);
-    AXIS2_FREE(env->allocator, files);*/
     return file_list;
 }
 
@@ -204,11 +194,6 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
 
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
-    /*if ((handle = opendir(pathname))  && (handle->finished == 1))
-    {
-       printf("Path Name does not exist:%s\n",pathname);
-       return NULL;
-    }*/
     file_list = axis2_array_list_create(env, 0);
     if (!getcwd(cwd, 500)) exit(1);
     chdir(pathname);
@@ -249,8 +234,6 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            /*AXIS2_FREE(env->allocator, *files);*/
-            /*AXIS2_FREE(env->allocator, files);*/
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
@@ -275,8 +258,6 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            /*AXIS2_FREE(env->allocator, *files);*/
-            /*AXIS2_FREE(env->allocator, files);*/
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
@@ -303,8 +284,6 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            /*AXIS2_FREE(env->allocator, *files);*/
-            /*AXIS2_FREE(env->allocator, files);*/
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
@@ -332,8 +311,6 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
             }
             AXIS2_ARRAY_LIST_FREE(file_list, env);
             file_list = NULL;
-            /*AXIS2_FREE(env->allocator, *files);*/
-            /*AXIS2_FREE(env->allocator, files);*/
             return NULL;
 
         }
@@ -359,7 +336,6 @@ int file_select(struct dirent *entry)
 
 {
     axis2_char_t *ptr;
-    /*axis2_char_t *rindex(const axis2_char_t *s, int c);*/
 
     if ((strcmp(entry->d_name, ".") == 0) ||
             (strcmp(entry->d_name, "..") == 0))
@@ -389,12 +365,6 @@ int dir_select(struct dirent *entry)
         return (AXIS2_FALSE);
     }
 
-    /* Check for filename extensions */
-    /*ptr = AXIS2_RINDEX(entry->d_name, '.');
-    if (ptr )
-     {
-       return (AXIS2_FALSE);
-     }*/
     return AXIS2_TRUE;
 }
 

@@ -31,11 +31,11 @@ extern "C"
 {
 #endif
 
-/**
- * @defgroup axis2_dir_handler dir handler
- * @ingroup axis2_util 
- * @{
- */
+    /**
+     * @defgroup axis2_dir_handler dir handler
+     * @ingroup axis2_util
+     * @{
+     */
     /**
      * List the dll files in the given service or module folder path
      * @param pathname path to your service or module directory
@@ -43,8 +43,8 @@ extern "C"
      */
     AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
     axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
-                                axis2_char_t *pathname); 
-    
+            axis2_char_t *pathname);
+
     /**
      * List services or modules directories in the services or modules folder
      * respectively
@@ -53,26 +53,26 @@ extern "C"
      */
     AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
     axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
-                                axis2_char_t *pathname);
+            axis2_char_t *pathname);
 
-/*
- *extentions for module and service archives
- */
+    /*
+     *extentions for module and service archives
+     */
 #define AXIS2_AAR_SUFFIX ".aar"
 #define AXIS2_MAR_SUFFIX ".mar"
 
-                                
-/***********************Function Macros****************************************/
+
+    /***********************Function Macros****************************************/
 
 #define AXIS2_DIR_HANDLER_LIST_SERVICES_OR_MODULES_IN_DIR(env, pathname) \
         (axis2_dir_handler_list_services_or_modules_in_dir(env, pathname))
-        
+
 #define AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env, pathname) \
-        (axis2_dir_handler_list_service_or_module_dirs(env, pathname))        
+        (axis2_dir_handler_list_service_or_module_dirs(env, pathname))
 
-/** @} */
+    /** @} */
 
-    
+
 
 #ifdef __cplusplus
 }
