@@ -26,133 +26,170 @@
 
 #define BUFSIZE 64
 
-/**
-* @param do_encrypt should be set to 1 for encryption, 0 for decryption and -1 to
-* leave the value unchanged
-*/
-AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
+AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
         openssl_cipher_ctx_t *oc_ctx,
-        unsigned char *in_main_buf,
-        int in_main_len,
-        unsigned char **out_main_buf,
-        int do_encrypt)
+        oxs_buffer_t *input_buf,
+        oxs_buffer_t *output_buf,
+        int encrypt)
 {
     EVP_CIPHER_CTX ctx ;
-    oxs_key_t *key = NULL;
-    unsigned char *tempbuf = NULL;
-    unsigned char *tempbuf2 = NULL;
-    unsigned char *key_data = NULL;
-    unsigned char *inbuf = NULL;
-    unsigned char *outbuf = NULL;
-    int inlen, outlen, i,  out_buf_index, ret, bufsize;
-
+    oxs_key_t *okey = NULL;
     
-    bufsize =  EVP_CIPHER_block_size(OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env));
-    
-    inbuf = AXIS2_MALLOC(env->allocator, bufsize + 1 );
-    outbuf = AXIS2_MALLOC(env->allocator, bufsize + EVP_MAX_BLOCK_LENGTH);
+    unsigned char iv[EVP_MAX_IV_LENGTH];
+    unsigned char key[EVP_MAX_KEY_LENGTH];
+    int ret =0, iv_length =0, block_length =0;
+    int last = 0;
+    axis2_status_t status = AXIS2_FAILURE;
 
-    i = 0;
-    out_buf_index = 0;
-
-    /*Get the key*/
-    key = OPENSSL_CIPHER_CTX_GET_KEY(oc_ctx, env);
-    key_data = AXIS2_MALLOC(env->allocator, OXS_KEY_GET_SIZE(key, env));
-    key_data = memcpy(key_data,  OXS_KEY_GET_DATA(key, env), OXS_KEY_GET_SIZE(key, env));
-    /*Init ctx*/
-    EVP_CIPHER_CTX_init(&ctx);
-    ret = EVP_CipherInit_ex(&ctx, (EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env), NULL, NULL, NULL, do_encrypt);
-
-    /*EVP_CIPHER_CTX_set_padding(&ctx, 0);*/
-
-    ret  = EVP_CipherInit_ex(&ctx, NULL, NULL, key_data,
-            /*(unsigned char*)OPENSSL_CIPHER_CTX_GET_IV(oc_ctx, env),*/
-            NULL, /*>>NULL instead of IV. Here we do not use IV*/
-            do_encrypt);
-    for (;;)
-    {
-        memset(inbuf, 0 , bufsize);/*Reset memory for the inbuf*/
-        memcpy(inbuf, in_main_buf + (i * bufsize) , bufsize);/*Copy the first block to the inbuf*/
-
-        if (in_main_len <= i*bufsize) break; /*Finish!!! */
-
-        /*If we are in the last block, set inlen according to the in_main_len */
-        if (in_main_len <= (i + 1)*bufsize)
-        {
-            inlen = in_main_len - (i * bufsize);
+    /**Init******************************************************************************/
+    iv_length = EVP_CIPHER_iv_length(OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env));
+    if(encrypt){
+        ret = RAND_bytes(iv, iv_length);
+        /*IV to the output*/
+        status = OXS_BUFFER_APPEND(output_buf, env, iv, iv_length);
+    }else{ /*Decrypt*/
+        /*If data is less than the IV its an error*/
+        if(OXS_BUFFER_GET_SIZE(input_buf, env) < iv_length){
+            return -1;
         }
-        else
-        {
-            inlen = bufsize;
-        }
+        /*Copy IV from the inbuf to our buffer*/
+        memcpy(iv, OXS_BUFFER_GET_DATA(input_buf, env), iv_length);
+        /*And remove from input*/
+        status = OXS_BUFFER_REMOVE_HEAD (input_buf, env, iv_length);
+    }
+    /*Get key*/
+    okey = OPENSSL_CIPHER_CTX_GET_KEY(oc_ctx, env);
+    memcpy(key,  OXS_KEY_GET_DATA(okey, env), OXS_KEY_GET_SIZE(okey, env));
 
-        if (do_encrypt == 1)
-        {
-            AXIS2_LOG_INFO(env->log, "[oxs][crypt.c] Encrypting block[%d] %s", inlen, inbuf);
-        }
+    /*Set iv */
+    ret = EVP_CipherInit(&ctx, (EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env), key, iv, encrypt);
+#ifndef OXS_OPENSSL_096
+    EVP_CIPHER_CTX_set_padding(&ctx, 0);
+#endif
 
-        memset(outbuf, 0 , bufsize + EVP_MAX_BLOCK_LENGTH);/*Reset memory for the outbuf*/
-        if (!EVP_CipherUpdate(&ctx, outbuf, &outlen, inbuf, inlen))
-        {
-            /* Error */
-            oxs_error(ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
-                    "Encryption failed");
+    block_length = EVP_CIPHER_block_size((EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env));
 
-            EVP_CIPHER_CTX_cleanup(&ctx);
-            return (-2);
+    /**Update****************************************************************************/
+    for(;;){/*Loop untill all the data are encrypted*/
+        unsigned char *out_buf = NULL;
+        int  in_size =0, out_size =0, fixed=0, out_length = 0;
+        oxs_buffer_t *temp_in = NULL;
+
+        if (0 == OXS_BUFFER_GET_SIZE(input_buf, env)) {
+            last = 1;            
+            break; /*Quit loop if NO DATA!!! */
         }
-        /*Write the encrypted block to the tempbuf2*/
-        tempbuf2 = AXIS2_MALLOC(env->allocator, out_buf_index + outlen);
+       
+        /*If the amnt of data available is greater than the buffer size, we limit it to buffer size */
+        if(OXS_BUFFER_GET_SIZE(input_buf, env) > BUFSIZE){
+            in_size = BUFSIZE;
+        }else{
+            in_size = OXS_BUFFER_GET_SIZE(input_buf, env);
+        }
+        /*Create a temp buffer and populate only data size of BUFSIZE*/
+        temp_in = oxs_buffer_create(env);
+        status = OXS_BUFFER_POPULATE(temp_in, env, OXS_BUFFER_GET_DATA(input_buf, env), in_size);        
+
+        out_size = OXS_BUFFER_GET_SIZE(output_buf, env);
         
-        if (i > 0)
-        {/*Skip for the i=0 step*/
-            memmove(tempbuf2, tempbuf, out_buf_index);
-            /*Free*/
-            AXIS2_FREE(env->allocator, tempbuf);
-            tempbuf = NULL;
-        }
-        memmove(tempbuf2 + out_buf_index, outbuf, outlen);
-        tempbuf = tempbuf2; /*Assign new tempbuf2 to the old one*/
-        out_buf_index = out_buf_index + outlen;/*Update the writing position of the tempbuf*/
+        /*Set the output buffer size*/
+        status = OXS_BUFFER_SET_MAX_SIZE(output_buf, env, out_size + in_size + block_length);
 
+        out_buf = OXS_BUFFER_GET_DATA(output_buf, env) + out_size;        /*position to write*/
         
-        i++;
+#ifndef OXS_OPENSSL_096
+        /*If decrypt, we copy the final data to the out_buf of size block_length*/
+        if(!ctx.encrypt) {
+            if(ctx.final_used) {
+                memcpy(out_buf, ctx.final, block_length);
+                out_buf += block_length;
+                fixed = 1;
+            }else {
+                fixed = 0;
+            }
+        }
+#endif
+        /* encrypt or decrypt */
+        ret = EVP_CipherUpdate(&ctx, out_buf, &out_length, OXS_BUFFER_GET_DATA(temp_in, env), in_size);
+
+#ifndef OXS_OPENSSL_096    
+        if(!ctx.encrypt) {
+            if (block_length > 1 && !ctx.buf_len) {
+                out_length -= block_length;
+                ctx.final_used = 1;
+                memcpy(ctx.final, &out_buf[out_length], block_length);
+            } else {
+                ctx.final_used = 0;
+            }
+            if (fixed) {
+                out_length += block_length;
+            }
+        }
+#endif
+        /* set correct output buffer size */
+        status = OXS_BUFFER_SET_SIZE(output_buf, env, out_size + out_length);    
+        if(AXIS2_FAILURE == status){
+            return -1;
+        }
+        /* remove the processed block from input */
+        status = OXS_BUFFER_REMOVE_HEAD(input_buf, env, in_size);
+        if(AXIS2_FAILURE == status){
+            return -1;
+        }
+        
+        /*Free temp buf*/
+        OXS_BUFFER_FREE(temp_in, env);
+        temp_in = NULL;
+ 
     }/*End of for loop*/
 
-    ret = EVP_CipherFinal_ex(&ctx, outbuf, &outlen);
-    if (!ret)
-    {
-        /* Error */
-        ret = EVP_CIPHER_CTX_cleanup(&ctx);
-        oxs_error(ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
-                    "Encryption Final_ex failed");
-        return (-3);
+    /**Final****************************************************************************/
+    /* by now there should be no input */
+    if(last == 1){
+        unsigned char pad[EVP_MAX_BLOCK_LENGTH];
+        unsigned char *out_buf = NULL;
+        int out_size = 0,  out_length = 0, out_length2 = 0;
+        
+        out_size = OXS_BUFFER_GET_SIZE(output_buf, env);
+        status = OXS_BUFFER_SET_MAX_SIZE(output_buf,  env, out_size + 2 * block_length);
+        out_buf = OXS_BUFFER_GET_DATA(output_buf, env)  + out_size;/*position to write*/
+#ifndef OXS_OPENSSL_096
+        if(encrypt){
+            int pad_length;
+            pad_length = block_length - ctx.buf_len;
+            /* generate random padding */
+            if(pad_length > 1) {
+                ret = RAND_bytes(pad, pad_length - 1);
+            }
+            pad[pad_length - 1] = pad_length;
+            /* write padding */
+            ret = EVP_CipherUpdate(&ctx, out_buf, &out_length, pad, pad_length);
+            out_buf += out_length;
+        }
+#endif        
+        /* finalize transform */
+        ret = EVP_CipherFinal(&ctx, out_buf, &out_length2);
+#ifndef OXS_OPENSSL_096
+        if(!encrypt){
+            if(block_length > 1) {
+                out_length2 = block_length - ctx.final[block_length - 1];
+                if(out_length2 > 0) {
+                    memcpy(out_buf, ctx.final, out_length2);
+                } else if(out_length2 < 0) {
+                    return(-1);
+                }
+            }
+        }
+#endif
+        /* set correct output buffer size */
+        status = OXS_BUFFER_SET_SIZE(output_buf, env, out_size + out_length + out_length2);
+        
+        EVP_CIPHER_CTX_cleanup(&ctx);
+        /*return the length of the outputbuf*/
+        return out_size + out_length + out_length2;
+    }else{
+        return -1;
     }
-    /*Alright now we need to write the last drop*/
-    tempbuf2 = AXIS2_MALLOC(env->allocator, out_buf_index + outlen);
-    memmove(tempbuf2, tempbuf, out_buf_index);
-    /*Free*/
-    AXIS2_FREE(env->allocator, tempbuf);
-    tempbuf = NULL;
     
-    memmove(tempbuf2 + out_buf_index, outbuf, outlen);
-    tempbuf = tempbuf2; /*Assign new tempbuf2 to the old one*/
-    out_buf_index = out_buf_index + outlen;/*Update the writing position of the tempbuf*/
-    EVP_CIPHER_CTX_cleanup(&ctx);
-    /*Assign the temp buf to the out_main_buf*/
-    *out_main_buf =  AXIS2_MALLOC(env->allocator, out_buf_index+outlen);
-    memmove(*out_main_buf, tempbuf, out_buf_index+outlen-1);
-    
-    /*Free*/
-    AXIS2_FREE(env->allocator, tempbuf2);
-    tempbuf2 = NULL;
-    AXIS2_FREE(env->allocator, inbuf);
-    inbuf = NULL;
-    AXIS2_FREE(env->allocator, outbuf);
-    outbuf = NULL;
-    AXIS2_FREE(env->allocator, key_data);
-    key_data = NULL;
-    return out_buf_index;
-
 }
 

@@ -239,10 +239,10 @@ oxs_buffer_remove_head(
     /*If the size to be removed is less than the buffer size*/
     if (size < buffer_impl->size)
     {
-        if (buffer_impl->data)
+        if (!buffer_impl->data)
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                    "oxs_buffer_remove_head failed");
+                    "oxs_buffer_remove_head failed. data is NULL");
             return  AXIS2_FAILURE;
         }
         buffer_impl->size -= size;
@@ -256,7 +256,7 @@ oxs_buffer_remove_head(
     /*If the buffer size is less than the max_size.*/
     if (buffer_impl->size < buffer_impl->max_size)
     {
-        if (buffer_impl->data)
+        if (!buffer_impl->data)
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                     "oxs_buffer_remove_head failed");

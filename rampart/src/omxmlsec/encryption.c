@@ -93,14 +93,14 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
     if (OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT)
     {
         axis2_char_t *encoded_str = NULL;
-        unsigned char *out_main_buf = NULL;
         int enclen = -1;
         int encodedlen = -1;
+        oxs_buffer_t *output = NULL;
 
-        enclen = openssl_block_cipher_crypt(env, oc_ctx,
-                OXS_BUFFER_GET_DATA(input, env),
-                OXS_BUFFER_GET_SIZE(input, env),
-                &out_main_buf, OPENSSL_ENCRYPT);
+        output = oxs_buffer_create(env);
+
+        /*Encrypt*/
+        enclen = openssl_bc_crypt(env, oc_ctx, input, output, OPENSSL_ENCRYPT);
         if(enclen < 0){
             oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
                     "openssl_block_cipher_crypt FAILED");
@@ -109,7 +109,7 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
 
         encodedlen = axis2_base64_encode_len(enclen);
         encoded_str = AXIS2_MALLOC(env->allocator, encodedlen);
-        ret = axis2_base64_encode_binary(encoded_str, out_main_buf, enclen);
+        ret = axis2_base64_encode_binary(encoded_str, OXS_BUFFER_GET_DATA(output, env), enclen);
         if (ret < 0)
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
@@ -121,17 +121,19 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
         ret = OXS_BUFFER_POPULATE(result, env, (unsigned char*)AXIS2_STRDUP(encoded_str, env), encodedlen);
         
         /*Free*/
-        AXIS2_FREE(env->allocator, out_main_buf);
-        out_main_buf = NULL;
+        OXS_BUFFER_FREE(output, env);
+        output = NULL;
         AXIS2_FREE(env->allocator, encoded_str);
         encoded_str = NULL;
 
     /*DECRYPTION*/
     }else if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT){
         unsigned char *decoded_data = NULL;/*Can be binary*/
-        unsigned char *out_main_buf = NULL;
         int decoded_len = -1;
         int enclen = -1;
+        oxs_buffer_t *decoded_buf = NULL;
+
+        decoded_buf = oxs_buffer_create(env);
 
         /*First we need to base64 decode*/
         decoded_data = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)OXS_BUFFER_GET_DATA(input, env)));
@@ -142,19 +144,19 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
                     "axis2_base64_decode_binary failed");
             return AXIS2_FAILURE;
         }
+        /*Populate decoded (input to the crypto function) buffer*/
+        ret = OXS_BUFFER_POPULATE(decoded_buf, env, decoded_data, decoded_len);
         /*Then we decrypt*/
-        enclen = openssl_block_cipher_crypt(env, oc_ctx,
-                decoded_data, decoded_len,  &out_main_buf, OPENSSL_DECRYPT);
+        enclen = openssl_bc_crypt(env, oc_ctx, decoded_buf, result, OPENSSL_DECRYPT);
        
         if(enclen < 0){
             oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
                     "openssl_block_cipher_crypt FAILED");
             return AXIS2_FAILURE;
         }
-        ret = OXS_BUFFER_POPULATE(result, env, AXIS2_STRMEMDUP(out_main_buf, enclen, env), enclen);
         /*Free*/
-        AXIS2_FREE(env->allocator, out_main_buf);
-        out_main_buf = NULL;
+        OXS_BUFFER_FREE(decoded_buf, env);
+        decoded_buf = NULL;
         AXIS2_FREE(env->allocator, decoded_data);
         decoded_data = NULL;
 

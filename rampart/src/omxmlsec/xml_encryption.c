@@ -329,7 +329,7 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
                   "Data encryption failed");
         return AXIS2_FAILURE;
     }
-    decrypted_data = (axis2_char_t *)OXS_BUFFER_GET_DATA(result_buf, env);
+    decrypted_data = AXIS2_STRMEMDUP(OXS_BUFFER_GET_DATA(result_buf, env), OXS_BUFFER_GET_SIZE(result_buf, env), env);
     /*De-serialize the decrypted content to build the node*/
     deserialized_node = (axiom_node_t*)oxs_axiom_deserialize_node(env, decrypted_data);
     if(!deserialized_node){

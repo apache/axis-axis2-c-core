@@ -16,7 +16,8 @@ Start server in port 8080
 ------------------------------
     Listen port: 9090 [specified as in the client argument]
     Target port: 8080 [server port]
-This step is OPTIONAL and can be avoided by starting the server without -p8080
+
+NOTE: This step is OPTIONAL and can be avoided by starting the server without -p8080
 option.
 
 HOW TO RUN CLIENT?

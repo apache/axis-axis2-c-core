@@ -34,7 +34,11 @@ extern "C" {
  * @ingroup
  * @{
  */
-
+AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
+        openssl_cipher_ctx_t *oc_ctx,
+        oxs_buffer_t *input_buf,
+        oxs_buffer_t *output_buf,
+        int encrypt);
 /**
 *   
 *@param bc_ctx block cipher context
@@ -43,13 +47,6 @@ extern "C" {
 *@param do_encrypt 1 to encrypt 0 to decrypt
 *@return -1 if failed
 */
-AXIS2_EXTERN int AXIS2_CALL  
-openssl_block_cipher_crypt(const axis2_env_t *env,
-    openssl_cipher_ctx_t *oc_ctx,
-    unsigned char *in_main_buf,
-    int in_main_len, 
-    unsigned char **out_main_buf,
-    int do_encrypt);
 
 
 

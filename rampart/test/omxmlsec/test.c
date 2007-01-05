@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 
     if (tmpl)
     {
-        printf("load_sample_xml SUCCESS");
+        printf("load_sample_xml SUCCESS\n");
     }
     else
     {
