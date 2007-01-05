@@ -299,7 +299,7 @@ axis2_wsdl_svc_get_endpoint(axis2_wsdl_svc_t *wsdl_svc,
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
     wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
 
-    name = AXIS2_QNAME_TO_STRING(qname, env);
+    name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
     return (axis2_wsdl_endpoint_t *) axis2_hash_get(wsdl_svc_impl->endpoints,
             name, AXIS2_HASH_KEY_STRING);
 }

@@ -508,7 +508,7 @@ axis2_arch_file_data_add_svc(
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
 
     svc_qname = AXIS2_SVC_GET_QNAME(svc_desc, env);
-    svc_name = AXIS2_QNAME_TO_STRING(svc_qname, env);
+    svc_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)svc_qname, env);
     if (!file_data_impl->svc_map)
     {
         file_data_impl->svc_map = axis2_hash_make(env);

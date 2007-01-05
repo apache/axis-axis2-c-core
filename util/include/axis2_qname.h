@@ -33,19 +33,13 @@ extern "C"
 {
 #endif
 
-    struct axis2_qname;
-
     /**
      * @defgroup axis2_qname qname
      * @ingroup axis2_util
      * @{
      */
 
-    typedef struct axis2_qname
-    {
-        int ref; 
-    }
-    axis2_qname_t;
+    typedef struct axis2_qname axis2_qname_t;
 
     /**
      *   creates a qname struct
@@ -62,9 +56,9 @@ extern "C"
 
     AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
     axis2_qname_create(const axis2_env_t *env,
-            const axis2_char_t * localpart,
-            const axis2_char_t * namespace_uri,
-            const axis2_char_t * prefix);
+        const axis2_char_t * localpart,
+        const axis2_char_t * namespace_uri,
+        const axis2_char_t * prefix);
 
 
     /**
@@ -75,15 +69,15 @@ extern "C"
 
     AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
     axis2_qname_create_from_string(const axis2_env_t *env,
-            const axis2_char_t *string);
+        const axis2_char_t *string);
 
     /**
      *  Free a qname struct
      *  @return Status code
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_qname_free(struct axis2_qname * qname,
-                    const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
      * Compare two qnames
@@ -92,10 +86,10 @@ extern "C"
      * @return true if qname1 equals qname2, false otherwise 
      */
 
-    AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_qname_equals(const struct axis2_qname * qname,
-                    const axis2_env_t *env,
-                    const struct axis2_qname * qname1);
+        const axis2_env_t *env,
+        const struct axis2_qname * qname1);
     /**
     * clones a given qname
     * @param qname , qname struct instance to be cloned
@@ -103,21 +97,21 @@ extern "C"
     * @returns the newly cloned qname struct instance
     */
 
-    AXIS2_EXTERN struct axis2_qname* AXIS2_CALL 
+    AXIS2_EXTERN struct axis2_qname* AXIS2_CALL
     axis2_qname_clone(const struct axis2_qname *qname,
-                                const axis2_env_t *env);
+        const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_qname_get_uri(const struct axis2_qname *qname,
-                    const axis2_env_t *env);
+        const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_qname_get_prefix(const struct axis2_qname *qname,
-                    const axis2_env_t *env);
+        const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_qname_get_localpart(const struct axis2_qname *qname,
-                    const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
      * returns a unique string created by concatanting namespace uri 
@@ -125,9 +119,9 @@ extern "C"
      * The string is of the form localpart|url
      * The returned char* is freed when qname free function is called.
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
-    axis2_qname_to_string(const struct axis2_qname *qname,
-                    const axis2_env_t *env);
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_qname_to_string(struct axis2_qname *qname,
+        const axis2_env_t *env);
 
 
 #define AXIS2_QNAME_FREE(qname, env) \

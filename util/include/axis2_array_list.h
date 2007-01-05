@@ -38,18 +38,12 @@ extern "C"
 {
 #endif
 
-    struct axis2_array_list;
-
     static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
 
     /**
      * Array List struct
      */
-    typedef struct axis2_array_list
-    {
-        int ref;
-    }
-    axis2_array_list_t;
+    typedef struct axis2_array_list axis2_array_list_t;
 
     /**
      * Constructs a new array list with the supplied initial capacity.
@@ -82,9 +76,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axis2_array_list_ensure_capacity(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env,
-                int min_capacity);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        int min_capacity);
 
     /**
      * Returns the number of elements in this list.
@@ -94,8 +88,8 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL 
     axis2_array_list_size(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env);
 
     /**
      * Checks if the list is empty.
@@ -105,8 +99,8 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axis2_array_list_is_empty(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env);
 
     /**
      * Returns true iff element is in this array_list.
@@ -117,9 +111,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axis2_array_list_contains(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env,
-                void *e);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        void *e);
 
     /**
      * Returns the lowest index at which element appears in this List, or
@@ -132,9 +126,9 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL 
     axis2_array_list_index_of(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env,
-                void *e);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        void *e);
 
     /**
      * Returns the highest index at which element appears in this List, or
@@ -147,9 +141,9 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL 
     axis2_array_list_last_index_of(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env,
-                void *e);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        void *e);
 
     /**
      * Returns a void* array containing all of the elements in this array_list.
@@ -160,8 +154,8 @@ extern "C"
      */
     AXIS2_EXTERN void** AXIS2_CALL 
     axis2_array_list_to_array(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env);
 
     /**
      * Retrieves the element at the user-supplied index.
@@ -172,8 +166,8 @@ extern "C"
      */
     AXIS2_EXTERN void* AXIS2_CALL 
     axis2_array_list_get(struct axis2_array_list *array_list,
-                        const axis2_env_t *env,
-                        int index);
+        const axis2_env_t *env,
+        int index);
 
     /**
      * Sets the element at the specified index.  The new element, e,
@@ -186,10 +180,10 @@ extern "C"
      */
     AXIS2_EXTERN void* AXIS2_CALL 
     axis2_array_list_set(
-                    struct axis2_array_list *array_list,
-                    const axis2_env_t *env,
-                    int index,
-                    void* e);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        int index,
+        void* e);
 
     /**
      * Appends the supplied element to the end of this list.
@@ -201,9 +195,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axis2_array_list_add(
-                    struct axis2_array_list *array_list,
-                    const axis2_env_t *env,
-                    const void* e);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        const void* e);
 
     /**
      * Adds the supplied element at the specified index, shifting all
@@ -217,10 +211,10 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axis2_array_list_add_at(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env,
-                const int index,
-                const void* e);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        const int index,
+        const void* e);
 
     /**
      * Removes the element at the user-supplied index.
@@ -231,8 +225,8 @@ extern "C"
      */
     AXIS2_EXTERN void* AXIS2_CALL 
     axis2_array_list_remove(struct axis2_array_list *array_list,
-                        const axis2_env_t *env,
-                        int index);
+        const axis2_env_t *env,
+        int index);
 
     /**
      * Checks that the index is in the range of possible elements (inclusive).
@@ -243,9 +237,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axis2_array_list_check_bound_inclusive(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env,
-                int index);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        int index);
 
     /**
      * Checks that the index is in the range of existing elements (exclusive).
@@ -256,9 +250,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axis2_array_list_check_bound_exclusive(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env,
-                int index);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env,
+        int index);
 
     /**
      * @param array_list pointer to array list
@@ -267,8 +261,8 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axis2_array_list_free(
-                struct axis2_array_list *array_list,
-                const axis2_env_t *env);
+        struct axis2_array_list *array_list,
+        const axis2_env_t *env);
 
 
     /** Frees the axis2 array list.

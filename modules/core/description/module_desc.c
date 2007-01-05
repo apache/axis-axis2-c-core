@@ -496,7 +496,7 @@ axis2_module_desc_add_op(
     {
         return AXIS2_FAILURE;
     }
-    op_name = AXIS2_QNAME_TO_STRING(op_qname, env);
+    op_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)op_qname, env);
     axis2_hash_set(module_desc_impl->ops, op_name, AXIS2_HASH_KEY_STRING, op);
 
     return AXIS2_SUCCESS;

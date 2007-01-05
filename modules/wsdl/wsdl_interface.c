@@ -475,7 +475,7 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
         return AXIS2_FAILURE;
     }
 
-    op_qname_str = AXIS2_QNAME_TO_STRING(wsdl_op_qname, env);
+    op_qname_str = AXIS2_QNAME_TO_STRING((axis2_qname_t *)wsdl_op_qname, env);
 
     axis2_hash_set(interface_impl->ops, op_qname_str, AXIS2_HASH_KEY_STRING, op);
 

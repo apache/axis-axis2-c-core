@@ -214,7 +214,7 @@ xml_schema_obj_table_get_item(xml_schema_obj_table_t *obj_table,
 
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
 
-    name = AXIS2_QNAME_TO_STRING(qname, env);
+    name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
     if (name)
     {
         return axis2_hash_get(obj_table_impl->collection, name,

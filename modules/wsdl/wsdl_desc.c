@@ -777,7 +777,7 @@ axis2_wsdl_desc_add_svc(axis2_wsdl_desc_t *wsdl_desc,
                 AXIS2_ERROR_WSDL_SVC_NAME_IS_REQUIRED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    svc_name = AXIS2_QNAME_TO_STRING(svc_qname, env);
+    svc_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)svc_qname, env);
     if (!wsdl_desc_impl->svcs)
     {
         wsdl_desc_impl->svcs = axis2_hash_make(env);

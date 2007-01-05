@@ -119,7 +119,7 @@ axis2_any_content_type_add_value(
     {
         axis2_char_t *name = NULL;
 
-        name = AXIS2_QNAME_TO_STRING(qname, env);
+        name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
         axis2_hash_set(any_content_type_impl->value_map, name,
                 AXIS2_HASH_KEY_STRING, value);
     }
@@ -142,7 +142,7 @@ axis2_any_content_type_get_value(
     {
         axis2_char_t *name = NULL;
 
-        name = AXIS2_QNAME_TO_STRING(qname, env);
+        name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
         return axis2_hash_get(any_content_type_impl->value_map, name,
                 AXIS2_HASH_KEY_STRING);
     }

@@ -367,7 +367,7 @@ axis2_svc_grp_add_svc(
             return AXIS2_FAILURE;
     }
     svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
-    svc_name = AXIS2_QNAME_TO_STRING(svc_qname, env);
+    svc_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)svc_qname, env);
     axis2_hash_set(svc_grp_impl->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
 
     handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env,
@@ -426,7 +426,7 @@ axis2_svc_grp_get_svc(
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
 
-    name = AXIS2_QNAME_TO_STRING(qname, env);
+    name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
     return (axis2_svc_t *) axis2_hash_get(svc_grp_impl->svcs, name,
             AXIS2_HASH_KEY_STRING);
 }
@@ -454,7 +454,7 @@ axis2_svc_grp_remove_svc(
 
     svc = axis2_svc_grp_get_svc(svc_grp, env, svc_qname);
 
-    svc_name = AXIS2_QNAME_TO_STRING(svc_qname, env);
+    svc_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)svc_qname, env);
     axis2_hash_set(AXIS2_INTF_TO_IMPL(svc_grp)->svcs, svc_name,
             AXIS2_HASH_KEY_STRING, NULL);
 

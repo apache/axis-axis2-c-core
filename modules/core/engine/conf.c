@@ -1246,7 +1246,7 @@ axis2_conf_get_transport_in(
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
     return (axis2_transport_in_desc_t *) axis2_hash_get(config_impl->
-            transports_in, AXIS2_QNAME_TO_STRING(qname, env), AXIS2_HASH_KEY_STRING);
+            transports_in, AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env), AXIS2_HASH_KEY_STRING);
 }
 
 axis2_status_t AXIS2_CALL
@@ -1274,7 +1274,7 @@ axis2_conf_add_transport_in(
         return AXIS2_FAILURE;
 
     axis2_hash_set(config_impl->transports_in,
-            AXIS2_QNAME_TO_STRING(qname, env), AXIS2_HASH_KEY_STRING,
+            AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env), AXIS2_HASH_KEY_STRING,
             transport);
 
     return AXIS2_SUCCESS;
@@ -1294,7 +1294,7 @@ axis2_conf_get_transport_out(
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
     return (axis2_transport_out_desc_t *) axis2_hash_get(config_impl->
-            transports_out, AXIS2_QNAME_TO_STRING(qname, env), AXIS2_HASH_KEY_STRING);
+            transports_out, AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env), AXIS2_HASH_KEY_STRING);
 }
 
 axis2_status_t AXIS2_CALL
@@ -1322,7 +1322,7 @@ axis2_conf_add_transport_out(
     if (!qname)
         return AXIS2_FAILURE;
     axis2_hash_set(config_impl->transports_out,
-            AXIS2_QNAME_TO_STRING(qname, env),
+            AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env),
             AXIS2_HASH_KEY_STRING, transport);
     return AXIS2_SUCCESS;
 
@@ -1354,7 +1354,7 @@ axis2_conf_get_module(
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
     conf_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    name = AXIS2_QNAME_TO_STRING(qname, env);
+    name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
     ret = (axis2_module_desc_t *) axis2_hash_get(conf_impl->all_modules,
             name, AXIS2_HASH_KEY_STRING);
     if (ret)
@@ -1720,7 +1720,7 @@ axis2_conf_add_module(
     {
         axis2_char_t *module_name = NULL;
 
-        module_name = AXIS2_QNAME_TO_STRING(module_qname, env);
+        module_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)module_qname, env);
         axis2_hash_set(config_impl->all_modules, module_name,
                 AXIS2_HASH_KEY_STRING, module);
     }
