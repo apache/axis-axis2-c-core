@@ -43,7 +43,7 @@ extern "C"
     /** Type name for struct axis2_base64_binary */
     typedef struct axis2_base64_binary axis2_base64_binary_t;
 
-     struct axis2_base64_binary_ops
+    struct axis2_base64_binary_ops
     {
         /**
          * free the axis2_base64_binary.
@@ -51,7 +51,7 @@ extern "C"
          * @param env pointer to environment struct. MUST NOT be NULL
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
+        axis2_status_t(AXIS2_CALL *
                 free)(
                     axis2_base64_binary_t *base64_binary,
                     const axis2_env_t *env);
@@ -64,7 +64,7 @@ extern "C"
          * @param plain_binary_len length of the plain_binary binary buffer
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
+        axis2_status_t(AXIS2_CALL *
                 set_plain_binary)(
                     axis2_base64_binary_t *base64_binary,
                     const axis2_env_t *env,
@@ -79,11 +79,11 @@ extern "C"
          * @return the plain binary
          */
 
-        unsigned char* (AXIS2_CALL *
+        unsigned char*(AXIS2_CALL *
                 get_plain_binary)(
                     axis2_base64_binary_t *base64_binary,
                     const axis2_env_t *env,
-                    int* plain_binary_len );
+                    int* plain_binary_len);
 
         /**
          * store the value from encoded binary.
@@ -92,11 +92,11 @@ extern "C"
          * @param encoded_binary encoded binary buffer to store
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
+        axis2_status_t(AXIS2_CALL *
                 set_encoded_binary)(
-                   axis2_base64_binary_t *base64_binary,
-                   const axis2_env_t *env,
-                   const char* encoded_binary );
+                    axis2_base64_binary_t *base64_binary,
+                    const axis2_env_t *env,
+                    const char* encoded_binary);
 
         /**
          * retrieve the value from encoded binary.
@@ -104,10 +104,10 @@ extern "C"
          * @param env pointer to environment struct. MUST NOT be NULL
          * @return the encoded binary
          */
-        char* (AXIS2_CALL *
+        char*(AXIS2_CALL *
                 get_encoded_binary)(
                     axis2_base64_binary_t *base64_binary,
-                    const axis2_env_t *env );
+                    const axis2_env_t *env);
 
         /**
          * retrieve the value from encoded binary length.
@@ -115,10 +115,10 @@ extern "C"
          * @param env pointer to environment struct. MUST NOT be NULL
          * @return the encoded binary length
          */
-        int (AXIS2_CALL *
+        int(AXIS2_CALL *
                 get_encoded_binary_len)(
                     axis2_base64_binary_t *base64_binary,
-                    const axis2_env_t *env );
+                    const axis2_env_t *env);
 
         /**
          * retrieve the value from decoded binary length.
@@ -126,15 +126,15 @@ extern "C"
          * @param env pointer to environment struct. MUST NOT be NULL
          * @return the decoded binary length
          */
-        int (AXIS2_CALL *
+        int(AXIS2_CALL *
                 get_decoded_binary_len)(
                     axis2_base64_binary_t *base64_binary,
-                    const axis2_env_t *env );
+                    const axis2_env_t *env);
 
 
     };
 
-     struct axis2_base64_binary
+    struct axis2_base64_binary
     {
         axis2_base64_binary_ops_t *ops;
     };
@@ -146,7 +146,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_base64_binary_t* AXIS2_CALL
     axis2_base64_binary_create(
-        const axis2_env_t *env );
+        const axis2_env_t *env);
 
     /**
      * Creates axis2_base64_binary struct
@@ -156,9 +156,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_base64_binary_t* AXIS2_CALL
     axis2_base64_binary_create_with_plain_binary(
-            const axis2_env_t *env,
-            const unsigned char *plain_binary,
-            int plain_binary_len);
+        const axis2_env_t *env,
+        const unsigned char *plain_binary,
+        int plain_binary_len);
 
     /**
      * Creates axis2_base64_binary struct.
@@ -168,47 +168,47 @@ extern "C"
      */
     AXIS2_EXTERN axis2_base64_binary_t* AXIS2_CALL
     axis2_base64_binary_create_with_encoded_binary(
-            const axis2_env_t *env,
-            const char *encoded_binary );
+        const axis2_env_t *env,
+        const char *encoded_binary);
 
-/*************************** Function macros **********************************/
+    /*************************** Function macros **********************************/
 
-/** Frees the base64 binary.
-    @sa axis2_base64_binary_ops#free */
+    /** Frees the base64 binary.
+        @sa axis2_base64_binary_ops#free */
 #define AXIS2_BASE64_BINARY_FREE(base64_binary, env) \
      ((base64_binary)->ops->free(base64_binary, env))
 
-/** Sets the plain binary.
-    @sa axis2_base64_binary_ops#set_plain_binary */
+    /** Sets the plain binary.
+        @sa axis2_base64_binary_ops#set_plain_binary */
 #define AXIS2_BASE64_BINARY_SET_PLAIN_BINARY(base64_binary, env, plain_binary) \
      ((base64_binary)->ops->set_plain_binary(base64_binary, env, plain_binary))
 
-/** Gets the plain binary.
-    @sa axis2_base64_binary_ops#get_plain_binary */
+    /** Gets the plain binary.
+        @sa axis2_base64_binary_ops#get_plain_binary */
 #define AXIS2_BASE64_BINARY_GET_PLAIN_BINARY(base64_binary, env ) \
      ((base64_binary)->ops->get_plain_binary(base64_binary, env))
 
-/** Sets the encoded binary.
-    @sa axis2_base64_binary_ops#set_encoded_binary */
+    /** Sets the encoded binary.
+        @sa axis2_base64_binary_ops#set_encoded_binary */
 #define AXIS2_BASE64_BINARY_SET_ENCODED_BINARY(base64_binary, env, encoded_binary) \
      ((base64_binary)->ops->set_encoded_binary(base64_binary, env, encoded_binary))
 
-/** Gets the encoded binary.
-    @sa axis2_base64_binary_ops#get_encoded_binary */
+    /** Gets the encoded binary.
+        @sa axis2_base64_binary_ops#get_encoded_binary */
 #define AXIS2_BASE64_BINARY_GET_ENCODED_BINARY(base64_binary, env ) \
      ((base64_binary)->ops->get_encoded_binary(base64_binary, env))
 
-/** Gets the encoded binary length.
-    @sa axis2_base64_binary_ops#get_encoded_binary_len */
+    /** Gets the encoded binary length.
+        @sa axis2_base64_binary_ops#get_encoded_binary_len */
 #define AXIS2_BASE64_BINARY_GET_ENCODED_BINARY_LEN(base64_binary, env ) \
      ((base64_binary)->ops->get_encoded_binary_len(base64_binary, env))
 
-/** Gets the decoded binary length.
-    @sa axis2_base64_binary_ops#get_decoded_binary_len */
+    /** Gets the decoded binary length.
+        @sa axis2_base64_binary_ops#get_decoded_binary_len */
 #define AXIS2_BASE64_BINARY_GET_DECODED_BINARY_LEN(base64_binary, env ) \
      ((base64_binary)->ops->get_decoded_binary_len(base64_binary, env))
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
