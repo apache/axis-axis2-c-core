@@ -302,9 +302,17 @@ axis2_op_client_add_msg_ctx(
 
     if (out_msg_ctx && !mc)
     {
-        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
-        out_msg_ctx = NULL;
-        axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+		axis2_property_t *dump_property;
+		axis2_char_t *dump_value;
+		dump_property = AXIS2_MSG_CTX_GET_PROPERTY(out_msg_ctx, env,
+												   AXIS2_DUMP_INPUT_MSG_TRUE, AXIS2_FALSE);
+		dump_value = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE (dump_property, env);
+		if(AXIS2_STRCMP(dump_value, AXIS2_VALUE_TRUE))
+        {
+			AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+			out_msg_ctx = NULL;
+			axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+        }
     }
     return AXIS2_SUCCESS;
 }
