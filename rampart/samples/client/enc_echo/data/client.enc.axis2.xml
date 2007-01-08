@@ -38,7 +38,7 @@
 
     <parameter name="InflowSecurity">
       <action>
-        <items>Encrypt</items>
+        <items>Timestamp</items>
         <!--Following should be changed with your DLL or SO path-->
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
         <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/ahome/a_store.pfx</decryptionPropFile>
