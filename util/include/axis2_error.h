@@ -582,15 +582,15 @@ extern "C"
 		 * @return axis2_status_t status code
 		 */
 
-        axis2_status_t (AXIS2_CALL *free)(struct axis2_error *error);
+        axis2_status_t (AXIS2_CALL *
+        free)(struct axis2_error *error);
         
 		/**
 		 * get error message for the last error
 		 * @return error message for the last error. NULL on error.
 		 */
 		const axis2_char_t *(AXIS2_CALL *
-							 get_message)(
-								 const struct axis2_error *error);
+        get_message)(const struct axis2_error *error);
       
 		/**
 		 * This fucntion is supposed to be overridden in an extended error structure.
@@ -600,19 +600,22 @@ extern "C"
 		 * @return error message for the extended struct.
 		 */
 		const axis2_char_t *(AXIS2_CALL *
-							 get_extended_message)(
-								 const struct axis2_error *error);
+        get_extended_message)(const struct axis2_error *error);
       
-		axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
-														,  axis2_error_codes_t error_number);
+		axis2_status_t (AXIS2_CALL *
+        set_error_number) (struct axis2_error *error,
+            axis2_error_codes_t error_number);
 		
-		axis2_status_t  (AXIS2_CALL *set_status_code) (struct axis2_error *error
-													   , axis2_status_codes_t status_code);
+		axis2_status_t (AXIS2_CALL *
+        set_status_code)(struct axis2_error *error, 
+            axis2_status_codes_t status_code);
       
-		axis2_status_t  (AXIS2_CALL *get_status_code) (struct axis2_error *error);
+		axis2_status_t (AXIS2_CALL *
+        get_status_code) (struct axis2_error *error);
 
-		axis2_status_t (AXIS2_CALL *set_error_message) (struct axis2_error *error
-														, axis2_char_t *message);
+		axis2_status_t (AXIS2_CALL *
+        set_error_message) (struct axis2_error *error,
+            axis2_char_t *message);
           
     } axis2_error_ops_t;
 
@@ -661,3 +664,4 @@ extern "C"
 
 
 #endif                          /* AXIS2_ERROR_H */
+

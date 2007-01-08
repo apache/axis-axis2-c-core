@@ -78,7 +78,7 @@ struct axis2_hash_t
  */
 
 static axis2_hash_entry_t **
-alloc_array(axis2_hash_t *ht, unsigned int max)
+axis2_hash_alloc_array(axis2_hash_t *ht, unsigned int max)
 {
     return memset(AXIS2_MALLOC(ht->env->allocator,
             sizeof(*ht->array) *(max + 1)), 0,
@@ -96,7 +96,7 @@ axis2_hash_make(const axis2_env_t *env)
     ht->free = NULL;
     ht->count = 0;
     ht->max = INITIAL_MAX;
-    ht->array = alloc_array(ht, ht->max);
+    ht->array = axis2_hash_alloc_array(ht, ht->max);
     ht->hash_func = axis2_hashfunc_default;
     return ht;
 }
@@ -170,7 +170,7 @@ axis2_hash_this(axis2_hash_index_t *hi,
  */
 
 static void
-expand_array(axis2_hash_t * ht)
+axis2_hash_expand_array(axis2_hash_t * ht)
 {
     axis2_hash_index_t *hi;
 
@@ -178,7 +178,7 @@ expand_array(axis2_hash_t * ht)
     unsigned int new_max;
 
     new_max = ht->max * 2 + 1;
-    new_array = alloc_array(ht, new_max);
+    new_array = axis2_hash_alloc_array(ht, new_max);
     for (hi = axis2_hash_first(ht, NULL); hi;
             hi = axis2_hash_next(NULL, hi))
     {
@@ -267,7 +267,7 @@ axis2_hashfunc_default(const char *char_key, axis2_ssize_t * klen)
  */
 
 static axis2_hash_entry_t **
-find_entry(axis2_hash_t * ht,
+axis2_hash_find_entry(axis2_hash_t * ht,
         const void *key, axis2_ssize_t klen, const void *val)
 {
     axis2_hash_entry_t **hep, *he;
@@ -347,7 +347,7 @@ AXIS2_EXTERN void* AXIS2_CALL
 axis2_hash_get(axis2_hash_t *ht, const void *key, axis2_ssize_t klen)
 {
     axis2_hash_entry_t *he;
-    he = *find_entry(ht, key, klen, NULL);
+    he = *axis2_hash_find_entry(ht, key, klen, NULL);
     if (he)
         return (void *) he->val;
     else
@@ -359,7 +359,7 @@ axis2_hash_set(axis2_hash_t *ht,
         const void *key, axis2_ssize_t klen, const void *val)
 {
     axis2_hash_entry_t **hep;
-    hep = find_entry(ht, key, klen, val);
+    hep = axis2_hash_find_entry(ht, key, klen, val);
     if (*hep)
     {
         if (!val)
@@ -378,7 +378,7 @@ axis2_hash_set(axis2_hash_t *ht,
             /* check that the collision rate isn't too high */
             if (ht->count > ht->max)
             {
-                expand_array(ht);
+                axis2_hash_expand_array(ht);
             }
         }
     }
@@ -441,7 +441,7 @@ axis2_hash_merge(const axis2_hash_t *overlay, const axis2_env_t *env
     {
         res->max = res->max * 2 + 1;
     }
-    res->array = alloc_array(res, res->max);
+    res->array = axis2_hash_alloc_array(res, res->max);
     if (base->count + overlay->count)
     {
         new_vals =
@@ -605,3 +605,4 @@ axis2_hash_free_void_arg(void *ht_void, const axis2_env_t* env)
     }
     return AXIS2_FAILURE;
 }
+

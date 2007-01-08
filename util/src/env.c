@@ -22,8 +22,9 @@
 #include <axis2_log_default.h>
 #include <axis2_string.h>
 
-AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all(const axis2_char_t *log_file,
-        const axis2_log_levels_t log_level)
+AXIS2_EXTERN axis2_env_t * AXIS2_CALL 
+axis2_env_create_all(const axis2_char_t *log_file,
+    const axis2_log_levels_t log_level)
 {
     axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
@@ -34,13 +35,13 @@ AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all(const axis2_char_t *l
     allocator = axis2_allocator_init(NULL);
     error = axis2_error_create(allocator);
 
-	 if (log_file)
-		  log = axis2_log_create(allocator, NULL, log_file);
-	 else
-		  log = axis2_log_create_default (allocator);
+    if (log_file)
+        log = axis2_log_create(allocator, NULL, log_file);
+    else
+        log = axis2_log_create_default(allocator);
 
-	 if (!log)
-	   log = axis2_log_create_default (allocator);
+    if (!log)
+        log = axis2_log_create_default(allocator);
 
     thread_pool = axis2_thread_pool_init(allocator);
     env = axis2_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
@@ -53,10 +54,11 @@ AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all(const axis2_char_t *l
     return env;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_free(axis2_env_t *env)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+axis2_env_free(axis2_env_t *env)
 {
     axis2_allocator_t *allocator = NULL;
-    
+
     if (env && env->allocator)
         allocator = env->allocator;
 
@@ -93,7 +95,7 @@ AXIS2_EXTERN axis2_env_t* AXIS2_CALL
 axis2_env_create(axis2_allocator_t *allocator)
 {
     axis2_env_t *environment;
-	 axis2_log_t *log = NULL;
+    axis2_log_t *log = NULL;
 
     if (NULL == allocator)
         return NULL;
@@ -104,7 +106,7 @@ axis2_env_create(axis2_allocator_t *allocator)
     if (NULL == environment)
         return NULL;
 
-	 log = axis2_log_create_default (allocator);
+    log = axis2_log_create_default(allocator);
 
     environment->allocator = allocator;
 
@@ -119,17 +121,16 @@ axis2_env_create(axis2_allocator_t *allocator)
 }
 
 AXIS2_EXTERN axis2_env_t* AXIS2_CALL
-axis2_env_create_with_error(axis2_allocator_t *allocator
-        , axis2_error_t *error)
+axis2_env_create_with_error(axis2_allocator_t *allocator, 
+    axis2_error_t *error)
 {
-    return axis2_env_create_with_error_log(allocator, error
-            , NULL);
+    return axis2_env_create_with_error_log(allocator, error, NULL);
 }
 
 AXIS2_EXTERN axis2_env_t * AXIS2_CALL
-axis2_env_create_with_error_log(axis2_allocator_t *allocator
-        , axis2_error_t *error
-        , axis2_log_t *log)
+axis2_env_create_with_error_log(axis2_allocator_t *allocator, 
+    axis2_error_t *error, 
+    axis2_log_t *log)
 {
     axis2_env_t *environment;
     if (NULL == allocator)
@@ -137,9 +138,7 @@ axis2_env_create_with_error_log(axis2_allocator_t *allocator
     if (NULL == error)
         return NULL;
 
-    environment =
-        (axis2_env_t *) AXIS2_MALLOC(allocator,
-                sizeof(axis2_env_t));
+    environment = (axis2_env_t *) AXIS2_MALLOC(allocator, sizeof(axis2_env_t));
 
     if (NULL == environment)
         return NULL;
@@ -164,10 +163,10 @@ axis2_env_create_with_error_log(axis2_allocator_t *allocator
 }
 
 AXIS2_EXTERN axis2_env_t * AXIS2_CALL
-axis2_env_create_with_error_log_thread_pool(axis2_allocator_t *allocator
-        , axis2_error_t *error
-        , axis2_log_t *log
-        , axis2_thread_pool_t *pool)
+axis2_env_create_with_error_log_thread_pool(axis2_allocator_t *allocator, 
+    axis2_error_t *error, 
+    axis2_log_t *log, 
+    axis2_thread_pool_t *pool)
 {
     axis2_env_t *environment;
     if (NULL == allocator)
@@ -203,7 +202,9 @@ axis2_env_check_status(const axis2_env_t *env)
     return AXIS2_ERROR_GET_STATUS_CODE(env->error);
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_env_enable_log(axis2_env_t *env, axis2_bool_t enable)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axis2_env_enable_log(axis2_env_t *env, 
+    axis2_bool_t enable)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
@@ -212,7 +213,10 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_env_enable_log(axis2_env_t *env, ax
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_write_log(const axis2_env_t *env, const char* message, axis2_log_levels_t level)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+axis2_env_write_log(const axis2_env_t *env, 
+    const char* message, 
+    axis2_log_levels_t level)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
@@ -226,7 +230,9 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_write_log(const axis2_env_t *e
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_free_masked(axis2_env_t *env, char mask)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+axis2_env_free_masked(axis2_env_t *env, 
+    char mask)
 {
     if (mask & 0x1)
     {
@@ -244,3 +250,4 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_free_masked(axis2_env_t *env, 
         AXIS2_FREE(env->allocator, env);
     return AXIS2_SUCCESS;
 }
+

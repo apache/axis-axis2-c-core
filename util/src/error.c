@@ -22,16 +22,19 @@ const axis2_char_t * AXIS2_CALL
 axis2_error_impl_get_message(const axis2_error_t *error);
 
 axis2_status_t AXIS2_CALL
-axis2_error_impl_set_error_number(axis2_error_t *error, axis2_error_codes_t error_number);
+axis2_error_impl_set_error_number(axis2_error_t *error, 
+    axis2_error_codes_t error_number);
 
 axis2_status_t AXIS2_CALL
-axis2_error_impl_set_status_code(axis2_error_t *error, axis2_status_codes_t status_code);
+axis2_error_impl_set_status_code(axis2_error_t *error, 
+    axis2_status_codes_t status_code);
 
 axis2_status_t AXIS2_CALL
 axis2_error_impl_get_status_code(axis2_error_t *error);
 
 axis2_status_t AXIS2_CALL
-axis2_error_impl_set_error_message(axis2_error_t *error, axis2_char_t *message);
+axis2_error_impl_set_error_message(axis2_error_t *error, 
+    axis2_char_t *message);
 
 /* array to hold error messages */
 const axis2_char_t* axis2_error_messages[AXIS2_ERROR_LAST];
@@ -565,14 +568,16 @@ axis2_error_impl_get_message(const axis2_error_t *error)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_error_impl_set_error_number(axis2_error_t *error, axis2_error_codes_t error_number)
+axis2_error_impl_set_error_number(axis2_error_t *error, 
+    axis2_error_codes_t error_number)
 {
     error->error_number = error_number;
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_error_impl_set_status_code(axis2_error_t *error, axis2_status_codes_t status_code)
+axis2_error_impl_set_status_code(axis2_error_t *error, 
+    axis2_status_codes_t status_code)
 {
     error->status_code = status_code;
     return AXIS2_SUCCESS;
@@ -585,9 +590,12 @@ axis2_error_impl_get_status_code(axis2_error_t *error)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_error_impl_set_error_message(axis2_error_t *error, axis2_char_t *message)
+axis2_error_impl_set_error_message(axis2_error_t *error, 
+    axis2_char_t *message)
 {
 	if (message)
 		error->message = message;
     return AXIS2_SUCCESS;
 }
+
+

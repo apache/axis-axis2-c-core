@@ -1064,7 +1064,7 @@ axis2_desc_builder_load_msg_recv(
         AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
         impl_info_param = axis2_param_create(env, class_name, NULL);
         AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-        impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
+        axis2_param_set_value_free(impl_info_param, env, axis2_dll_desc_free_void_arg);
         /* set the impl_info_param(which contain dll_desc as value) so that
          * loaded msg_recv loader lib can be re-used in future
          */

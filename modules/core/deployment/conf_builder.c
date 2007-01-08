@@ -464,7 +464,8 @@ axis2_conf_builder_process_disp_order(
             return AXIS2_FAILURE;
         }
         AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-        impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
+        axis2_param_set_value_free(impl_info_param, env, 
+            axis2_dll_desc_free_void_arg);
         axis2_class_loader_init(env);
         disp_dll = (axis2_disp_t *) axis2_class_loader_create_dll(env,
                 impl_info_param);
@@ -776,7 +777,8 @@ axis2_conf_builder_process_transport_senders(
             AXIS2_FREE(env->allocator, path_qualified_dll_name);
             AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
             AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-            impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
+            axis2_param_set_value_free(impl_info_param, env, 
+                axis2_dll_desc_free_void_arg);
             axis2_class_loader_init(env);
             transport_sender = axis2_class_loader_create_dll(env, impl_info_param);
             AXIS2_TRANSPORT_OUT_DESC_ADD_PARAM(transport_out, env,
@@ -1002,7 +1004,8 @@ axis2_conf_builder_process_transport_recvs(
                 AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
 
                 AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-                impl_info_param->ops->value_free = axis2_dll_desc_free_void_arg;
+                axis2_param_set_value_free(impl_info_param, env, 
+                    axis2_dll_desc_free_void_arg);
                 axis2_class_loader_init(env);
                 recv = (axis2_transport_receiver_t *)
                         axis2_class_loader_create_dll(env, impl_info_param);
