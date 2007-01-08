@@ -28,118 +28,93 @@
 extern "C"
 {
 #endif
-    
-typedef struct axis2_property axis2_property_t;
-typedef struct axis2_property_ops axis2_property_ops_t;
-    
-/**
- * @defgroup axis2_property property
- * @ingroup axis2_util 
- * @{
- */
 
-/** 
- * @brief Description Builder ops struct
- * Encapsulator struct for ops of axis2_desc_builder
- */
- struct axis2_property_ops
-{
+    /**
+     * @defgroup axis2_property property
+     * @ingroup axis2_util
+     * @{
+     */
 
-    axis2_status_t (AXIS2_CALL *
-    free) (axis2_property_t *property, 
-            const axis2_env_t *env);
+    typedef struct axis2_property axis2_property_t;
+
+    /**
+     * create new property
+     * @return property newly created property
+     */
+    AXIS2_EXTERN axis2_property_t * AXIS2_CALL
+    axis2_property_create(
+        const axis2_env_t *env);
+
+    /**
+     * create new property
+     * @param env axis2 environment
+     * @param scope scope can be one of following
+     *              AXIS2_SCOPE_REQUEST
+     *              AXIS2_SCOPE_SESSION
+     *              AXIS2_SCOPE_APPLICATION
+     *              pass 0 to use default scope of AXIS2_SCOPE_REQUEST
+     * @param free_func free function for the value freeing. Pass 0 if
+     *              param value is a string
+     * @param value value of the property
+     * @return property newly created property
+     */
+    AXIS2_EXTERN axis2_property_t * AXIS2_CALL
+    axis2_property_create_with_args(
+        const axis2_env_t *env,
+        axis2_scope_t scope,
+        AXIS2_FREE_VOID_ARG free_func,
+        void *value);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_property_free(axis2_property_t *property,
+        const axis2_env_t *env);
 
     /**
      * Default scope is AXIS2_SCOPE_REQUEST
      */
-    axis2_status_t (AXIS2_CALL *
-    set_scope) (axis2_property_t *property,
-                const axis2_env_t *env,
-                axis2_scope_t scope);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_property_set_scope(axis2_property_t *property,
+        const axis2_env_t *env,
+        axis2_scope_t scope);
 
-    axis2_status_t (AXIS2_CALL *
-    set_free_func) (axis2_property_t *property,
-                    const axis2_env_t *env,
-                    AXIS2_FREE_VOID_ARG free_func);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_property_set_free_func(axis2_property_t *property,
+        const axis2_env_t *env,
+        AXIS2_FREE_VOID_ARG free_func);
 
-    axis2_status_t (AXIS2_CALL *
-    set_value) (axis2_property_t *property,
-                const axis2_env_t *env,
-                void *value);
-    void *(AXIS2_CALL *
-    get_value) (axis2_property_t *property,
-                            const axis2_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_property_set_value(axis2_property_t *property,
+        const axis2_env_t *env,
+        void *value);
+        
+    AXIS2_EXTERN void * AXIS2_CALL
+    axis2_property_get_value(axis2_property_t *property,
+        const axis2_env_t *env);
 
-    axis2_property_t* (AXIS2_CALL *
-            clone)(
-                axis2_property_t *property,
-                const axis2_env_t *env);
-
-};
-    
-     
-/** 
-     * @brief
-     */ 
- struct axis2_property
-{
-   axis2_property_ops_t *ops;
-};
-
-/**
- * create new property
- * @return property newly created property
- */
-AXIS2_EXTERN axis2_property_t * AXIS2_CALL
-axis2_property_create(
-    const axis2_env_t *env);
-
-/**
- * create new property
- * @param env axis2 environment
- * @param scope scope can be one of following
- *              AXIS2_SCOPE_REQUEST
- *              AXIS2_SCOPE_SESSION
- *              AXIS2_SCOPE_APPLICATION
- *              pass 0 to use default scope of AXIS2_SCOPE_REQUEST
- * @param free_func free function for the value freeing. Pass 0 if
- *              param value is a string
- * @param value value of the property
- * @return property newly created property
- */
-AXIS2_EXTERN axis2_property_t * AXIS2_CALL
-axis2_property_create_with_args(
-    const axis2_env_t *env,
-    axis2_scope_t scope,
-    AXIS2_FREE_VOID_ARG free_func,
-    void *value);
-
-/*************************** Function macros **********************************/
+    AXIS2_EXTERN axis2_property_t* AXIS2_CALL
+    axis2_property_clone(axis2_property_t *property,
+        const axis2_env_t *env);
 
 #define AXIS2_PROPERTY_FREE(property, env) \
-      ((property)->ops->free (property, env))
+      axis2_property_free (property, env)
 
 #define AXIS2_PROPERTY_SET_FREE_FUNC(property, env, free_func) \
-      ((property)->ops->set_free_func (property, env, free_func))  
+      axis2_property_set_free_func (property, env, free_func)
 
 #define AXIS2_PROPERTY_SET_SCOPE(property, env, scope) \
-      ((property)->ops->set_scope (property, env, scope)) 
+      axis2_property_set_scope (property, env, scope)
 
 #define AXIS2_PROPERTY_SET_VALUE(property, env, value) \
-      ((property)->ops->set_value (property, env, value))
+      axis2_property_set_value (property, env, value)
 
 #define AXIS2_PROPERTY_GET_VALUE(property, env) \
-        ((property)->ops->get_value(property, env))
+        axis2_property_get_value(property, env)
 
 #define AXIS2_PROPERTY_CLONE(property, env) \
-        ((property)->ops->clone(property, env))
+        axis2_property_clone(property, env)
 
-/*************************** End of function macros ***************************/
+    /** @} */
 
-
-
-/** @} */
-    
 #ifdef __cplusplus
 }
 #endif

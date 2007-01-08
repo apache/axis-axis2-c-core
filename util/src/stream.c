@@ -588,4 +588,27 @@ axis2_stream_skip_socket(axis2_stream_t *stream, const axis2_env_t *env, int cou
     return len;
 }
 
+AXIS2_EXTERN int AXIS2_CALL
+axis2_stream_peek_socket(axis2_stream_t *stream, const axis2_env_t *env,
+        void *buffer, size_t count)
+{
+    int len = 0;
+
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
+
+    if (-1 == AXIS2_INTF_TO_IMPL(stream)->socket)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOCKET,
+                AXIS2_FAILURE);
+        return -1;
+    }
+    if (NULL == buffer)
+    {
+        return -1;
+    }
+
+    len = recv(AXIS2_INTF_TO_IMPL(stream)->socket, buffer, count, MSG_PEEK);
+
+    return len;
+}
 /********************** End of Socket Stream Operations ***********************/

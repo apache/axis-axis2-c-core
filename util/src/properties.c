@@ -19,44 +19,9 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 
-typedef struct axis2_properties_impl
-{
-    axis2_properties_t properties;
-    axis2_hash_t *prop_hash;
-}
-axis2_properties_impl_t;
-
-#define AXIS2_INTF_TO_IMPL(properties) \
-    ((axis2_properties_impl_t *) properties)
-
-axis2_status_t AXIS2_CALL
-axis2_properties_free(axis2_properties_t *properties,
-        const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axis2_properties_get_property(axis2_properties_t *properties,
-        const axis2_env_t *env,
-        axis2_char_t *key);
-
-axis2_hash_t* AXIS2_CALL
-axis2_properties_get_all(axis2_properties_t *properties,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_properties_set_property(axis2_properties_t *properties,
-        const axis2_env_t *env,
-        axis2_char_t *key,
-        axis2_char_t *value);
-
-axis2_status_t AXIS2_CALL
-axis2_properties_load(axis2_properties_t *properties,
-        const axis2_env_t *env,
-		axis2_char_t  *input_filename);
-
-axis2_status_t AXIS2_CALL
-axis2_properties_store(axis2_properties_t *properties,
-        const axis2_env_t *env,
-        FILE *output);
+axis2_char_t*
+axis2_properties_read(FILE* input,
+        const axis2_env_t* env);
 
 axis2_char_t*
 axis2_properties_read_next(axis2_char_t* cur);
@@ -65,64 +30,44 @@ axis2_char_t*
 axis2_properties_trunk_and_dup(axis2_char_t* start, axis2_char_t* end,
         const axis2_env_t* env);
 
-axis2_char_t*
-axis2_properties_read(FILE* input,
-        const axis2_env_t* env);
+struct axis2_properties
+{
+    axis2_hash_t *prop_hash;
+};
 
-/************************** End of function prototypes ************************/
-
-axis2_properties_t *AXIS2_CALL
+AXIS2_EXTERN axis2_properties_t *AXIS2_CALL
 axis2_properties_create(const axis2_env_t *env)
 {
-    axis2_properties_impl_t *properties_impl = NULL;
+    axis2_properties_t *properties = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    properties_impl = (axis2_properties_impl_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_properties_impl_t));
+    properties= (axis2_properties_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_properties_t));
 
-    if (NULL == properties_impl)
+    if (NULL == properties)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    properties_impl->prop_hash = axis2_hash_make(env);
+    properties->prop_hash = axis2_hash_make(env);
 
-    properties_impl->properties.ops =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_properties_ops_t));
-    if (NULL == properties_impl->properties.ops)
-    {
-        axis2_properties_free(&(properties_impl->properties), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    properties_impl->properties.ops->free =  axis2_properties_free;
-    properties_impl->properties.ops->get_property = axis2_properties_get_property;
-    properties_impl->properties.ops->set_property = axis2_properties_set_property;
-    properties_impl->properties.ops->load = axis2_properties_load;
-    properties_impl->properties.ops->store = axis2_properties_store;
-    properties_impl->properties.ops->get_all = axis2_properties_get_all;
-    return &(properties_impl->properties);
+    return properties;
 }
 
-/***************************Function implementation****************************/
-
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_properties_free(axis2_properties_t *properties,
         const axis2_env_t *env)
 {
-    axis2_properties_impl_t *properties_impl = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
     axis2_hash_index_t *hi = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    properties_impl = AXIS2_INTF_TO_IMPL(properties);
 
-    if (properties_impl->prop_hash)
+    if (properties->prop_hash)
     {
-        for (hi = axis2_hash_first(properties_impl->prop_hash, env);
+        for (hi = axis2_hash_first(properties->prop_hash, env);
                 hi; hi = axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
@@ -131,86 +76,67 @@ axis2_properties_free(axis2_properties_t *properties,
             if (value)
                 AXIS2_FREE(env-> allocator, value);
         }
-        axis2_hash_free(properties_impl->prop_hash, env);
+        axis2_hash_free(properties->prop_hash, env);
     }
 
-    if (properties_impl->properties.ops)
+    if (properties)
     {
-        AXIS2_FREE(env->allocator, properties_impl->properties.ops);
-        properties_impl->properties.ops = NULL;
-    }
-
-    if (properties_impl)
-    {
-        AXIS2_FREE(env->allocator, properties_impl);
-        properties_impl = NULL;
+        AXIS2_FREE(env->allocator, properties);
+        properties = NULL;
     }
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_properties_get_property(axis2_properties_t *properties,
         const axis2_env_t *env,
         axis2_char_t *key)
 {
-    axis2_properties_impl_t *properties_impl = NULL;
-
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env-> error, key, NULL);
 
-    properties_impl = AXIS2_INTF_TO_IMPL(properties);
-
-    return axis2_hash_get(properties_impl-> prop_hash,
+    return axis2_hash_get(properties-> prop_hash,
             key, AXIS2_HASH_KEY_STRING);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_properties_set_property(axis2_properties_t *properties,
         const axis2_env_t *env,
         axis2_char_t *key,
         axis2_char_t *value)
 {
-    axis2_properties_impl_t *properties_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env-> error, key, AXIS2_FAILURE);
 
-    properties_impl = AXIS2_INTF_TO_IMPL(properties);
-
-    axis2_hash_set(properties_impl-> prop_hash, key,
+    axis2_hash_set(properties-> prop_hash, key,
             AXIS2_HASH_KEY_STRING, value);
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_properties_get_all(axis2_properties_t *properties,
         const axis2_env_t *env)
 {
-    axis2_properties_impl_t *properties_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    properties_impl = AXIS2_INTF_TO_IMPL(properties);
 
-    return properties_impl-> prop_hash;
+    return properties-> prop_hash;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_properties_store(axis2_properties_t *properties,
         const axis2_env_t *env,
         FILE *output)
 {
-    axis2_properties_impl_t *properties_impl = NULL;
     axis2_hash_index_t *hi = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env-> error, output, AXIS2_FAILURE);
-    properties_impl = AXIS2_INTF_TO_IMPL(properties);
 
-
-    if (properties_impl->prop_hash)
+    if (properties->prop_hash)
     {
-        for (hi = axis2_hash_first(properties_impl->prop_hash, env);
+        for (hi = axis2_hash_first(properties->prop_hash, env);
                 hi; hi = axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
@@ -227,12 +153,11 @@ axis2_properties_store(axis2_properties_t *properties,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_properties_load(axis2_properties_t *properties,
         const axis2_env_t *env,
         axis2_char_t *input_filename)
 {
-    axis2_properties_impl_t *properties_impl = NULL;
 	FILE *input = NULL;
     axis2_char_t *cur = NULL;
     axis2_char_t *tag = NULL;
@@ -250,8 +175,7 @@ axis2_properties_load(axis2_properties_t *properties,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env-> error, input_filename, AXIS2_FAILURE);
 
-    properties_impl = AXIS2_INTF_TO_IMPL(properties);
-    prop_hash = properties_impl-> prop_hash;
+    prop_hash = properties-> prop_hash;
 
 	input = fopen(input_filename, "r+");
 		if(!input)
@@ -418,4 +342,3 @@ axis2_properties_read(FILE* input,
     out_stream[ncount] = '\0';
     return out_stream;
 }
-

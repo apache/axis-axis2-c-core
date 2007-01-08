@@ -165,6 +165,10 @@ AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_stream_get_buffer (const axis2_stream_t *stream, 
                          const axis2_env_t *env);
 
+AXIS2_EXTERN int AXIS2_CALL
+axis2_stream_peek_socket(axis2_stream_t *stream, const axis2_env_t *env,
+        void *buffer, size_t count);
+
 #define AXIS2_STREAM_FREE(stream, env) ((stream->ops)->free_fn(stream, env))
 
 #define AXIS2_STREAM_FREE_VOID_ARG(stream, env) \
