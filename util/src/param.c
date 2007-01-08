@@ -283,7 +283,10 @@ axis2_param_free(axis2_param_t *param,
 
             param = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(
                         param->value_list, env, i);
-            AXIS2_PARAM_FREE(param, env);
+            if (param)
+            {
+                AXIS2_PARAM_FREE(param, env);
+            }
         }
         AXIS2_ARRAY_LIST_FREE(param->value_list, env);
     }
