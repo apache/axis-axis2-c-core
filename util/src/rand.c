@@ -23,34 +23,31 @@
 #define AXIS2_RAND_MAX 32768
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_rand(
-    unsigned int *seedp)
+axis2_rand(unsigned int *seedp)
 {
     *seedp = *seedp * 1103515245 + 12345;
-    return((unsigned)(*seedp/(2 * AXIS2_RAND_MAX)) % AXIS2_RAND_MAX);
+    return((unsigned)(*seedp / (2 * AXIS2_RAND_MAX)) % AXIS2_RAND_MAX);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_rand_with_range(
-    unsigned int *seedp,
+axis2_rand_with_range(unsigned int *seedp,
     int start,
     int end)
 {
     int rand = -1;
     float range = 0.0;
-    if(start < 0 || end <= 0) return -1;
-    if(start >= AXIS2_RAND_MAX || end > AXIS2_RAND_MAX) return -1;
-    if(end <= start) return -1;
-  
+    if (start < 0 || end <= 0) return -1;
+    if (start >= AXIS2_RAND_MAX || end > AXIS2_RAND_MAX) return -1;
+    if (end <= start) return -1;
+
     range = end - start;
     rand = axis2_rand(seedp);
-    rand = 1+(int) (range * rand / (AXIS2_RAND_MAX + 1.0));
+    rand = 1 + (int)(range * rand / (AXIS2_RAND_MAX + 1.0));
     return rand;
 }
 
 AXIS2_EXTERN unsigned int AXIS2_CALL
-axis2_rand_get_seed_value_based_on_time(
-    const axis2_env_t *env)
+axis2_rand_get_seed_value_based_on_time(const axis2_env_t *env)
 {
     axis2_date_time_t *date = axis2_date_time_create(env);
     unsigned int rand_var = AXIS2_DATE_TIME_GET_YEAR(date, env);
