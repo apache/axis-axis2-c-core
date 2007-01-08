@@ -130,11 +130,11 @@ int main(int argc, char** argv)
         printf("echo client invoke FAILED!\n");
     }
 
-    if (svc_client)
+    /*if (svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
-    }
+    }*/
     /*    if (endpoint_ref)
         {
             AXIS2_ENDPOINT_REF_FREE(endpoint_ref, env);

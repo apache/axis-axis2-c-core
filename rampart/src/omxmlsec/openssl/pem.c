@@ -28,6 +28,52 @@
 #include <openssl_pkcs12.h>
 #include <openssl_pem.h>
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_pem_buf_read_pkey(const axis2_env_t *env,
+    axis2_char_t *b64_encoded_buf,
+    axis2_char_t *password,
+    openssl_pem_pkey_type_t type,
+    EVP_PKEY **pkey)
+{
+    unsigned char *buff = NULL;
+    BIO *bio = NULL;
+    int ilen = 0;
+
+    /*First we need to base64 decode*/
+    EVP_ENCODE_CTX ctx;
+    int len = 0;
+    int ret = 0;
+    int decode_len = 0;
+
+    decode_len = axis2_base64_decode_len(b64_encoded_buf);
+    buff = AXIS2_MALLOC(env->allocator, decode_len + 1000);
+
+    ilen = axis2_strlen(b64_encoded_buf);
+    EVP_DecodeInit(&ctx);
+    EVP_DecodeUpdate(&ctx, (unsigned char*)buff, &len,
+                   (unsigned char*)b64_encoded_buf, ilen);
+    EVP_DecodeFinal(&ctx, (unsigned char*)buff, &ret);
+    ret += len;
+    if ((bio = BIO_new_mem_buf(b64_encoded_buf, ilen)) == NULL)
+    {
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "BIO memeory allocation failure");
+        return AXIS2_FAILURE;
+    }
+    /*Load*/
+    *pkey = PEM_read_bio_PrivateKey(bio, NULL, 0 , password); 
+
+    /*Free*/
+    BIO_free(bio);
+    bio = NULL;
+    AXIS2_FREE(env->allocator, buff);
+    buff = NULL;
+
+    if(!*pkey){
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_pem_read_pkey(const axis2_env_t *env,

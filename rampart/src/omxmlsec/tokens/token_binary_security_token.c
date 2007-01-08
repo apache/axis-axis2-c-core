@@ -46,7 +46,7 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
     binary_security_token_ele = axiom_element_create(env, parent, OXS_NODE_BINARY_SECURITY_TOKEN, ns_obj, &binary_security_token_node);
     if (!binary_security_token_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating Binary Security Token element");
         return NULL;
     }

@@ -47,7 +47,7 @@ oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
     parent_ele = AXIOM_NODE_GET_DATA_ELEMENT(parent, env);
     if (!parent_ele)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "Cannot find %s element", local_name);
         return -1;
     }
@@ -176,7 +176,7 @@ oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env,
     parent_ele = AXIOM_NODE_GET_DATA_ELEMENT(parent, env);
     if (!parent_ele)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "Cannot find %s element", local_name);
         return NULL;
     }
@@ -189,7 +189,7 @@ oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env,
     parent_name = AXIOM_NODE_TO_STRING(parent, env);
     if (!node)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "Cannot find child %s of %s", local_name, parent_name);
         return NULL;
     }
@@ -223,7 +223,7 @@ oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
 
     if (!buffer)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "buffer is NULL");
         return NULL;
     }
@@ -232,7 +232,7 @@ oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
 
     if (!reader)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "axiom_xml_reader is NULL");
         return NULL;
     }
@@ -240,7 +240,7 @@ oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
     builder = axiom_stax_builder_create(env, reader);
     if (!builder)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "axiom_stax_builder is NULL");
         return NULL;
     }
@@ -248,14 +248,14 @@ oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
     doc = axiom_document_create(env, NULL, builder);
     if (!doc)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "axiom_document is NULL");
         return NULL;
     }
     node = AXIOM_DOCUMENT_BUILD_ALL(doc, env);
     if (!node)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "Building node failed");
         return NULL;
     }

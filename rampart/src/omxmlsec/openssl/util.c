@@ -36,7 +36,7 @@ generate_random_data(const axis2_env_t *env, oxs_buffer_t *buffer, int size)
     ret = RAND_bytes(temp_buffer, size);
     if (ret < 0)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_DEFAULT, "RAND_bytes failed %d", size);
         return AXIS2_FAILURE;
     }
@@ -69,7 +69,7 @@ openssl_populate_cipher_property(const axis2_env_t *env, openssl_cipher_property
 
     if (!cprop)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "openssl_cipher_property is NULL");
 
         return AXIS2_FAILURE;
@@ -79,7 +79,7 @@ openssl_populate_cipher_property(const axis2_env_t *env, openssl_cipher_property
     cipher_name = OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env);
     if (!cipher_name)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "openssl_cipher_property name is NULL");
 
         return AXIS2_FAILURE;
@@ -89,7 +89,7 @@ openssl_populate_cipher_property(const axis2_env_t *env, openssl_cipher_property
     cipher = (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, cipher_name);
     if (!cipher)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "openssl_get_evp_cipher_by_name failed");
 
         return AXIS2_FAILURE;

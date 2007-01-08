@@ -40,7 +40,7 @@ oxs_token_build_key_name_element(const axis2_env_t *env,
     key_name_ele = axiom_element_create(env, parent, OXS_NODE_KEY_NAME, ns_obj, &key_name_node);
     if (!key_name_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating KeyName element");
         return NULL;
     }

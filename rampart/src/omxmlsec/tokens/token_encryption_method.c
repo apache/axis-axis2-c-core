@@ -41,7 +41,7 @@ oxs_token_build_encryption_method_element(const axis2_env_t *env,
     encryption_method_ele = axiom_element_create(env, parent, OXS_NODE_ENCRYPTION_METHOD, ns_obj, &encryption_method_node);
     if (!encryption_method_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating encryption method element");
         return NULL;
     }
@@ -74,7 +74,7 @@ oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_no
     enc_mtd_ele = AXIOM_NODE_GET_DATA_ELEMENT(enc_mtd_node, env);
     if (!enc_mtd_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error retrieving encryption method element");
         return NULL;
     }

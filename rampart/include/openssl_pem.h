@@ -46,6 +46,12 @@ typedef enum {
     OPENSSL_PEM_PKEY_TYPE_UNKNOWN 
 } openssl_pem_pkey_type_t;
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_pem_buf_read_pkey(const axis2_env_t *env,
+    axis2_char_t *b64_encoded_buf,
+    axis2_char_t *password,
+    openssl_pem_pkey_type_t type,
+    EVP_PKEY **pkey);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_pem_read_pkey(const axis2_env_t *env,

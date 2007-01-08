@@ -51,7 +51,7 @@ oxs_token_build_issuer_name_element(const axis2_env_t *env,
     issuer_name_ele = axiom_element_create(env, parent, OXS_NODE_X509_ISSUER_NAME, ns_obj, &issuer_name_node);
     if (!issuer_name_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating  element");
         return NULL;
     }

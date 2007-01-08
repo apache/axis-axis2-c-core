@@ -156,7 +156,7 @@ openssl_rsa_pub_encrypt(
             RSA_PKCS1_PADDING);
     if (ret < 0)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
                             "RSA encryption failed");
         return (-1);
     }
@@ -190,7 +190,7 @@ openssl_rsa_prv_decrypt(
             RSA_PKCS1_PADDING);
     if (ret < 0)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
                             "RSA decryption failed");
         return (-1);
     }

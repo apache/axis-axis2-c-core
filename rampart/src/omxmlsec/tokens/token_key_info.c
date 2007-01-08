@@ -38,7 +38,7 @@ oxs_token_build_key_info_element(const axis2_env_t *env,
     key_info_ele = axiom_element_create(env, parent, OXS_NODE_KEY_INFO, ns_obj, &key_info_node);
     if (!key_info_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating KeyInfo element");
         return NULL;
     }

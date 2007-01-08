@@ -36,7 +36,7 @@ oxs_get_cipher_property_for_url(const axis2_env_t *env,
 
     cipher_name = oxs_get_cipher_name_for_url(env, url);
     if((!cipher_name) || (0 == AXIS2_STRCMP(cipher_name, ""))){
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                         OXS_ERROR_INVALID_DATA, "Cannot populate cipher property");
         return NULL;
     }
@@ -45,7 +45,7 @@ oxs_get_cipher_property_for_url(const axis2_env_t *env,
     ret = openssl_populate_cipher_property(env, cprop);
     if (ret == AXIS2_FAILURE)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_INVALID_DATA, "Cannot populate cipher property");
         return NULL;
 
@@ -82,7 +82,7 @@ oxs_get_cipher_name_for_url(const axis2_env_t *env,
     }
     else
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_UNSUPPORTED_ALGO, "Algorithm not supported");
         return NULL;
     }
@@ -119,7 +119,7 @@ oxs_get_cipher_url_for_name(const axis2_env_t *env,
     }
     else
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_INVALID_DATA, "Name not supported");
         return NULL;
     }

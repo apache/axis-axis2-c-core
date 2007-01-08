@@ -27,6 +27,7 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     axis2_char_t *password)
 {
     axis2_char_t *filename = NULL;
+    axis2_char_t *der_buf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     openssl_x509_format_t format;
     openssl_pkey_t *open_prvkey = NULL;
@@ -38,48 +39,69 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     EVP_PKEY *prvkey = NULL;
     EVP_PKEY *pubkey = NULL;
 
-    /*Get file to be loaded. Can be either in PEM or PKCS12 format*/
-    filename = oxs_asym_ctx_get_file_name(ctx, env);
-    if(!filename){
-        return AXIS2_FAILURE;
-    }
-
-    if(OXS_ASYM_CTX_FORMAT_PEM == oxs_asym_ctx_get_format(ctx, env)){
-        oxs_asym_ctx_operation_t operation ;
-		format = OPENSSL_X509_FORMAT_PEM;
-        
-
-        /*First let's check if this is a file containing a certificate*/
-        status = openssl_x509_load_from_pem(env, filename,  &cert);
-
-        if((status == AXIS2_FAILURE) || (!cert)){/*>>*/
-            /*If we cannot get the certificate then the file might contain aither a public key or a private key*/
-            /*The type depends on the operation*/
-            operation = oxs_asym_ctx_get_operation(ctx, env);
-
-            if((operation == OXS_ASYM_CTX_OPERATION_PRV_DECRYPT) || (operation == OXS_ASYM_CTX_OPERATION_PRV_ENCRYPT)){
-                status = openssl_pem_read_pkey(env, filename, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey);
-                if(status == AXIS2_FAILURE){
-                    prvkey = NULL;
-                }
-            } else if((operation == OXS_ASYM_CTX_OPERATION_PUB_DECRYPT) || (operation == OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT)){
-                status = openssl_pem_read_pkey(env, filename, password, OPENSSL_PEM_PKEY_TYPE_PUBLIC_KEY, &pubkey);
-                if(status == AXIS2_FAILURE){
-                    pubkey = NULL;
-                }
+    /*If user has specified the certificate/private key directly we will extract the information from it.
+     * Else we will look for a file name to load the certificate/private key*/
+    der_buf = oxs_asym_ctx_get_der_buf(ctx, env);
+    if(der_buf){
+        if( OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT == oxs_asym_ctx_get_operation(ctx, env) || 
+            OXS_ASYM_CTX_OPERATION_PUB_DECRYPT == oxs_asym_ctx_get_operation(ctx, env)){
+            /*load certificate from buf*/
+            status = openssl_x509_load_from_buffer(env, der_buf, &cert);
+        }else{
+            /*load private key from buf*/
+            status = openssl_pem_buf_read_pkey(env, der_buf, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey); 
+            if(status == AXIS2_FAILURE){
+                prvkey = NULL;
             }
-        }/*>>*/
-    }else if(OXS_ASYM_CTX_FORMAT_PKCS12 == oxs_asym_ctx_get_format(ctx, env)){
-        format = OPENSSL_X509_FORMAT_PKCS12;
-        /*Here we load both key and the certificate*/
-        status = openssl_x509_load_from_pkcs12(env, filename, password, &cert, &prvkey, &ca);
-        if(AXIS2_FAILURE == status){
-            oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
-                            "Error reading the certificate");
+        }
+    }else{
+
+        /*Get file to be loaded. Can be either in PEM or PKCS12 format*/
+        filename = oxs_asym_ctx_get_file_name(ctx, env);
+        if(!filename){
             return AXIS2_FAILURE;
         }
-    }
+
+        if(OXS_ASYM_CTX_FORMAT_PEM == oxs_asym_ctx_get_format(ctx, env)){
+            oxs_asym_ctx_operation_t operation ;
+		    format = OPENSSL_X509_FORMAT_PEM;
+        
+
+            /*First let's check if this is a file containing a certificate*/
+            status = openssl_x509_load_from_pem(env, filename,  &cert);
+
+            if((status == AXIS2_FAILURE) || (!cert)){/*>>*/
+                /*If we cannot get the certificate then the file might contain aither a public key or a private key*/
+                /*The type depends on the operation*/
+                operation = oxs_asym_ctx_get_operation(ctx, env);
+
+                if((operation == OXS_ASYM_CTX_OPERATION_PRV_DECRYPT) || (operation == OXS_ASYM_CTX_OPERATION_PRV_ENCRYPT)){
+                    status = openssl_pem_read_pkey(env, filename, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey);
+                    if(status == AXIS2_FAILURE){
+                        prvkey = NULL;
+                    }
+                } else if((operation == OXS_ASYM_CTX_OPERATION_PUB_DECRYPT) || (operation == OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT)){
+                    status = openssl_pem_read_pkey(env, filename, password, OPENSSL_PEM_PKEY_TYPE_PUBLIC_KEY, &pubkey);
+                    if(status == AXIS2_FAILURE){
+                        pubkey = NULL;
+                    }
+                }
+            }/*>>*/
+        }else if(OXS_ASYM_CTX_FORMAT_PKCS12 == oxs_asym_ctx_get_format(ctx, env)){
+            format = OPENSSL_X509_FORMAT_PKCS12;
+            /*Here we load both key and the certificate*/
+            status = openssl_x509_load_from_pkcs12(env, filename, password, &cert, &prvkey, &ca);
+            if(AXIS2_FAILURE == status){
+                oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                            "Error reading the certificate");
+                return AXIS2_FAILURE;
+            }
+        }
+        
+    }/*end of der_buf*/
     
+    /*Wht ever the way, right now we should have either the public key or the private key*/
+
     /*Alright if the prvkey is available, populate the openssl_pkey*/
     if(prvkey){
         open_prvkey = openssl_pkey_create(env);
@@ -120,8 +142,8 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     }
     /*If this fails to get anything return failure*/
     if((!cert) && (!pubkey) && (!prvkey)){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
-                "Error reading the file %s", filename);
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "Error reading the key");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

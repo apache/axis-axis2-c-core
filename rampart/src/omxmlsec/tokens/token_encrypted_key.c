@@ -38,7 +38,7 @@ oxs_token_build_encrypted_key_element(const axis2_env_t *env,
     encrypted_key_ele = axiom_element_create(env, parent, OXS_NODE_ENCRYPTED_KEY, ns_obj, &encrypted_key_node);
     if (!encrypted_key_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating encrypted key element");
         return NULL;
     }

@@ -39,43 +39,36 @@ openssl_x509_load_from_buffer(const axis2_env_t *env,
     int ilen = 0;
 
     /*First we need to base64 decode*/
-#if 0
-    int decoded_len = -1;
-
-    buff = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len(b64_encoded_buf));
-    ilen = axis2_strlen(b64_encoded_buf);
-    decoded_len = axis2_base64_decode_binary(buff, b64_encoded_buf );
-    if (decoded_len < 0)
-    {
-        /*oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
-                "axis2_base64_decode_binary failed");*/
-        return AXIS2_FAILURE;
-    }
-#else
     EVP_ENCODE_CTX ctx;
     int len = 0;
     int ret = 0;
+    int decode_len = 0;
 
-    buff = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len(b64_encoded_buf));
+    decode_len = axis2_base64_decode_len(b64_encoded_buf);
+    buff = AXIS2_MALLOC(env->allocator, decode_len + 1000);
+
     ilen = axis2_strlen(b64_encoded_buf);
     EVP_DecodeInit(&ctx);
     EVP_DecodeUpdate(&ctx, (unsigned char*)buff, &len,
                    (unsigned char*)b64_encoded_buf, ilen);
     EVP_DecodeFinal(&ctx, (unsigned char*)buff, &ret);
     ret += len;
-#endif
     if ((mem = BIO_new_mem_buf(buff, ilen)) == NULL)
     {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
                 "BIO memeory allocation failure");
         return AXIS2_FAILURE;
     }
 
     *cert = d2i_X509_bio(mem, NULL);
+    /*Free*/
     BIO_free(mem);
+    mem = NULL;
+    AXIS2_FREE(env->allocator, buff);
+    buff = NULL;
 
     if (*cert == NULL){
-        /*oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+        /*oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
                 "Certificate is NULL");*/
         return AXIS2_FAILURE;
     }
@@ -93,7 +86,7 @@ openssl_x509_load_from_pem(const axis2_env_t *env,
 
     if ((in=BIO_new_file(filename,"r")) == NULL)
     {
-        /*oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+        /*oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
                 "Error reading the file %s", filename);*/
         return AXIS2_FAILURE;
     }
@@ -251,21 +244,21 @@ openssl_x509_get_subject_key_identifier(const axis2_env_t *env,
     /*Get ext by ID*/
     index = X509_get_ext_by_NID(cert, NID_subject_key_identifier, -1);
     if (index < 0) {
-       oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+       oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
                 "The extenension index of NID_subject_key_identifier is not valid");
        return NULL;
     }
 /*Get the extension*/
     ext = X509_get_ext(cert, index);
     if (ext == NULL) {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
                 "The extension for NID_subject_key_identifier is NULL");
         return NULL;
     }
     /*Subject Key Identifier*/
     keyId = (ASN1_OCTET_STRING *)X509V3_EXT_d2i(ext);
     if (keyId == NULL) {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
                 "The SubjectKeyIdentifier is NULL");
         return NULL;
     }

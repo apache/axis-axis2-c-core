@@ -43,7 +43,7 @@ oxs_token_build_embedded_element(const axis2_env_t *env,
     embedded_ele = axiom_element_create(env, parent, OXS_NODE_EMBEDDED, ns_obj, &embedded_node);
     if (!embedded_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating embedded element");
         return NULL;
     }
@@ -71,7 +71,7 @@ oxs_token_get_embedded_id(const axis2_env_t *env, axiom_node_t *embedded_node)
     embedded_ele = AXIOM_NODE_GET_DATA_ELEMENT(embedded_node, env);
     if (!embedded_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error retrieving embedded element");
         return NULL;
     }

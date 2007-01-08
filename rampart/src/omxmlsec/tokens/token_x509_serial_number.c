@@ -51,7 +51,7 @@ oxs_token_build_serial_number_element(const axis2_env_t *env,
     serial_number_ele = axiom_element_create(env, parent, OXS_NODE_X509_SERIAL_NUMBER, ns_obj, &serial_number_node);
     if (!serial_number_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating  element");
         return NULL;
     }

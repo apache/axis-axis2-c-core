@@ -88,6 +88,14 @@ oxs_asym_ctx_get_file_name(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
 /**
+*@ctx pointer to the OMXMLSec asymmetric context struct
+*@env pointer to environment struct
+*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE	
+*/	
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_asym_ctx_get_der_buf(const oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env);
+/**
 *Returns the password. Usually the password for the keystore. But alternatively may kepe the
 *password for the private key in a PEM file.
 *@ctx pointer to the OMXMLSec asymmetric context struct

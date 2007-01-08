@@ -43,7 +43,7 @@ oxs_token_build_key_identifier_element(const axis2_env_t *env,
     ki_ele = axiom_element_create(env, parent, OXS_NODE_KEY_IDENTIFIER, ns_obj, &ki_node);
     if (!ki_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating KeyIdentifier element");
         return NULL;
     }

@@ -27,9 +27,7 @@
 #define OXS_ERRORS_MAX_NUMBER 64
 static oxs_error_description oxs_errors_table[OXS_ERRORS_MAX_NUMBER] =
     {
-        {
-            OXS_ERROR_DEFAULT, "oxs defualt error"
-        },
+        {OXS_ERROR_DEFAULT, "oxs defualt error"},
         {OXS_ERROR_ENCRYPT_FAILED , "encryption failed" },
         {OXS_ERROR_DECRYPT_FAILED , "decryption failed"},
         {OXS_ERROR_INVALID_DATA , "invalid data"},
@@ -77,7 +75,7 @@ oxs_errors_get_msg(unsigned int pos)
 }
 
 AXIS2_EXTERN void   AXIS2_CALL
-oxs_error(const char* file, int line, const char* func,
+oxs_error(const axis2_env_t *env, const char* file, int line, const char* func,
         int code, const char* msg, ...)
 {
     const char* error_msg = NULL;
@@ -90,7 +88,6 @@ oxs_error(const char* file, int line, const char* func,
     AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, msg, ap);
     va_end(ap);
 
-    /*Should pass env to this method rather than creating a own one*/
-   /* AXIS2_LOG_INFO(env->log, "ERROR [%s:%d in %s] %s , %s", file, line, func, error_msg, value);     */
-    printf("\nERROR [%s:%d in %s] %s , %s\n", file, line, func, error_msg, value);
+    AXIS2_LOG_INFO(env->log, "OXS ERROR [%s:%d in %s] %s , %s", file, line, func, error_msg, value);     
+    printf("\nOXS ERROR [%s:%d in %s] %s , %s\n", file, line, func, error_msg, value);
 }

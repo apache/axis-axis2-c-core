@@ -24,6 +24,7 @@
 struct oxs_asym_ctx_t
 {
     axis2_char_t *file_name;
+    axis2_char_t *der_buf;
     axis2_char_t *password;
     axis2_char_t *algorithm;
     axis2_char_t *st_ref_pattern;
@@ -31,6 +32,7 @@ struct oxs_asym_ctx_t
     oxs_asym_ctx_format_t format;   
     oxs_x509_cert_t *certificate;
     openssl_pkey_t *private_key;
+
 };
 
 
@@ -44,6 +46,13 @@ oxs_asym_ctx_get_file_name(
     return asym_ctx->file_name;
 }
 
+axis2_char_t *AXIS2_CALL
+oxs_asym_ctx_get_der_buf(
+    const oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env)
+{
+    return asym_ctx->der_buf;
+}
 axis2_char_t *AXIS2_CALL
 oxs_asym_ctx_get_password(
     const oxs_asym_ctx_t *asym_ctx,
@@ -114,6 +123,22 @@ oxs_asym_ctx_set_file_name(
         asym_ctx->file_name = NULL;
     }
     asym_ctx->file_name = AXIS2_STRDUP(file_name, env);
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_der_buf(
+    oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env,
+    axis2_char_t *der_buf)
+{
+
+    if (asym_ctx->der_buf)
+    {
+        AXIS2_FREE(env->allocator, asym_ctx->der_buf);
+        asym_ctx->der_buf = NULL;
+    }
+    asym_ctx->der_buf = AXIS2_STRDUP(der_buf, env);
     return AXIS2_SUCCESS;
 }
 
@@ -235,6 +260,7 @@ oxs_asym_ctx_create(const axis2_env_t *env)
     }
 
     asym_ctx->file_name= NULL;
+    asym_ctx->der_buf= NULL;
     asym_ctx->password= NULL;
     asym_ctx->format= -1;
     asym_ctx->algorithm = NULL;
@@ -257,6 +283,12 @@ oxs_asym_ctx_free(oxs_asym_ctx_t *asym_ctx,
     {
         AXIS2_FREE(env->allocator, asym_ctx->file_name);
         asym_ctx->file_name = NULL;
+    }
+
+    if (asym_ctx->der_buf)
+    {
+        AXIS2_FREE(env->allocator, asym_ctx->der_buf);
+        asym_ctx->der_buf = NULL;
     }
 
     if (asym_ctx->password)

@@ -39,7 +39,7 @@ oxs_token_build_cipher_data_element(const axis2_env_t *env,
     cipher_data_ele = axiom_element_create(env, parent, OXS_NODE_CIPHER_DATA, ns_obj, &cipher_data_node);
     if (!cipher_data_ele)
     {
-        oxs_error(ERROR_LOCATION,
+        oxs_error(env, ERROR_LOCATION,
                 OXS_ERROR_ELEMENT_FAILED, "Error creating cipher value element");
         return NULL;
     }
