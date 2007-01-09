@@ -32,4 +32,5 @@ axis2_uuid_gen(const axis2_env_t *env)
         return NULL;
     }
     return str;
-};
+}
+

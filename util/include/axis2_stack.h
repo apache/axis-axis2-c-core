@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- #ifndef AXIS2_STACK_H
- #define AXIS2_STACK_H
- 
- 
- /**
- * @file axis2_stack.h
- * @brief represents a stack
- */
+
+#ifndef AXIS2_STACK_H
+#define AXIS2_STACK_H
+
+
+/**
+* @file axis2_stack.h
+* @brief represents a stack
+*/
 
 #include <axis2_utils_defines.h>
 #include <axis2_env.h>
@@ -32,92 +32,70 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_stack_ops axis2_stack_ops_t;
-typedef struct axis2_stack axis2_stack_t;
+    /**
+     * @defgroup axis2_util_stack stack
+     * @ingroup axis2_util
+     * @{
+     */
 
-/**
- * @defgroup axis2_util_stack stack
- * @ingroup axis2_util
- * @{
- */
+    typedef struct axis2_stack axis2_stack_t;
 
-/**
- * \brief Axis2 stack ops struct
- * Encapsulator struct for ops of axis2_qname
- */
+    AXIS2_EXTERN axis2_stack_t * AXIS2_CALL
+    axis2_stack_create(const axis2_env_t *env);
 
- struct axis2_stack_ops
-{
     /**
      * Free function of the stack
      * @param stack pointer to stack
      * @param env environemnt
      */
-     
-    axis2_status_t (AXIS2_CALL*
-    free)(axis2_stack_t *stack,
-          const axis2_env_t *env);      
-       
-    void* (AXIS2_CALL*
-    pop)(axis2_stack_t *stack,
-         const axis2_env_t *env); 
-    
-    axis2_status_t (AXIS2_CALL *
-    push)(axis2_stack_t *stack,
-          const axis2_env_t *env,
-          void* value);
-          
-    int (AXIS2_CALL *
-    size)(axis2_stack_t *stack,
-          const axis2_env_t *env);
-    /** 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_stack_free(axis2_stack_t *stack,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN void* AXIS2_CALL
+    axis2_stack_pop(axis2_stack_t *stack,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_stack_push(axis2_stack_t *stack,
+        const axis2_env_t *env,
+        void* value);
+
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_stack_size(axis2_stack_t *stack,
+        const axis2_env_t *env);
+    /**
      * returns the last put value from the stack
      * without removing it from stack
-     */      
-          
-    void* (AXIS2_CALL *
-    get)(axis2_stack_t *stack,
-         const axis2_env_t *env);  
-         
-    void* (AXIS2_CALL *
-    get_at)(axis2_stack_t *stack,
-            const axis2_env_t *env,
-            int i);
-                                       
-          
-};
- 
-struct axis2_stack
-{
-    axis2_stack_ops_t *ops;
-};
+     */
+    AXIS2_EXTERN void* AXIS2_CALL
+    axis2_stack_get(axis2_stack_t *stack,
+        const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_stack_t * AXIS2_CALL
-axis2_stack_create(const axis2_env_t *env);
- 
- 
-/*************MACROS ********************************************************/
- 
+    AXIS2_EXTERN void* AXIS2_CALL
+    axis2_stack_get_at(axis2_stack_t *stack,
+        const axis2_env_t *env,
+        int i);
+
 #define AXIS2_STACK_FREE( stack, env) \
-        ((stack)->ops->free( stack, env))
-        
+        axis2_stack_free( stack, env)
+
 #define AXIS2_STACK_POP( stack, env) \
-        ((stack)->ops->pop( stack, env))
-        
+        axis2_stack_pop( stack, env)
+
 #define AXIS2_STACK_PUSH( stack, env, value) \
-        ((stack)->ops->push( stack, env, value))
-        
+        axis2_stack_push( stack, env, value)
+
 #define AXIS2_STACK_SIZE( stack, env) \
-        ((stack)->ops->size( stack, env)) 
-        
+        axis2_stack_size( stack, env)
+
 #define AXIS2_STACK_GET( stack, env) \
-        ((stack)->ops->get( stack, env))
-        
+        axis2_stack_get( stack, env)
+
 #define AXIS2_STACK_GET_AT( stack, env, i) \
-        ((stack)->ops->get_at( stack, env, i))        
- 
-/*************END MACROS ****************************************************/
- /** @} */
+        axis2_stack_get_at( stack, env, i)
+
+    /** @} */
 
 #ifdef __cplusplus
 }

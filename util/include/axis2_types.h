@@ -27,21 +27,22 @@ extern "C"
 {
 #endif
 
-/**
- * @defgroup axis2_types type convertors
- * @ingroup axis2_util 
- * @{
- */
+    /**
+     * @defgroup axis2_types type convertors
+     * @ingroup axis2_util
+     * @{
+     */
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_atoi (const char *s);
+    axis2_atoi(const char *s);
 
 #define AXIS2_ATOI(s) axis2_atoi(s)
 
-/** @} */
-    
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif                          /* AXIS2_TYPES_H */
+

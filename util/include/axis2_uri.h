@@ -30,14 +30,15 @@
 #include <axis2_env.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-/**
- * @defgroup axis2_uri URI
- * @ingroup axis2_util
- * @{
- */
+    /**
+     * @defgroup axis2_uri URI
+     * @ingroup axis2_util
+     * @{
+     */
 
 #define AXIS2_URI_FTP_DEFAULT_PORT         21 /**< default FTP port */
 #define AXIS2_URI_SSH_DEFAULT_PORT         22 /**< default SSH port */
@@ -58,44 +59,92 @@ extern "C" {
 #define AXIS2_URI_TIP_DEFAULT_PORT       3372 /**< default TIP port */
 #define AXIS2_URI_SIP_DEFAULT_PORT       5060 /**< default SIP port */
 
-/** Flags passed to unparse_uri_components(): */
-/** suppress "scheme://user\@site:port" */
+    /** Flags passed to unparse_uri_components(): */
+    /** suppress "scheme://user\@site:port" */
 #define AXIS2_URI_UNP_OMITSITEPART    (1U<<0)
-/** Just omit user */
+    /** Just omit user */
 #define AXIS2_URI_UNP_OMITUSER        (1U<<1)
-/** Just omit password */
+    /** Just omit password */
 #define AXIS2_URI_UNP_OMITPASSWORD    (1U<<2)
-/** omit "user:password\@" part */
+    /** omit "user:password\@" part */
 #define AXIS2_URI_UNP_OMITUSERINFO    (AXIS2_URI_UNP_OMITUSER | \
                                      AXIS2_URI_UNP_OMITPASSWORD)
-/** Show plain text password (default: show XXXXXXXX) */
+    /** Show plain text password (default: show XXXXXXXX) */
 #define AXIS2_URI_UNP_REVEALPASSWORD  (1U<<3)
-/** Show "scheme://user\@site:port" only */
+    /** Show "scheme://user\@site:port" only */
 #define AXIS2_URI_UNP_OMITPATHINFO    (1U<<4)
-/** Omit the "?queryarg" from the path */
+    /** Omit the "?queryarg" from the path */
 #define AXIS2_URI_UNP_OMITQUERY       (1U<<5)
 
-/** @see axis2_uri_t */
-typedef  unsigned short  axis2_port_t;
-/* axis2_uri.c */
+    /** @see axis2_uri_t */
+    typedef  unsigned short  axis2_port_t;
+    /* axis2_uri.c */
 
+    typedef struct axis2_uri axis2_uri_t;
 
-typedef struct axis2_uri_ops axis2_uri_ops_t;
-typedef struct axis2_uri axis2_uri_t;
+    /**
+     * Return the default port for a given scheme.  The schemes recognized are
+     * http, ftp, https, gopher, wais, nntp, snews, and prospero
+     * @param scheme_str The string that contains the current scheme
+     * @return The default port for this scheme
+     */
+    AXIS2_EXTERN axis2_port_t AXIS2_CALL
+    axis2_uri_port_of_scheme(
+        const axis2_char_t *scheme_str);
 
-    
-/** 
- * @brief URI ops struct
- * Encapsulator struct for ops of axis2_uri
- */  
- struct axis2_uri_ops
-{
+    /**
+     * Parse a given URI, fill in all supplied fields of a axis2_uri_t
+     * structure. This eliminates the necessity of extracting host, port,
+     * path, query info repeatedly in the modules.
+     * @param uri The uri to parse
+     * @param uptr The axis2_uri_t to fill out
+     * @return AXIS2_SUCCESS for success or error code
+     */
+    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
+    axis2_uri_parse_string(
+        const axis2_env_t *env,
+        const axis2_char_t *uri);
 
-    axis2_status_t (AXIS2_CALL *
-    free) (
-            axis2_uri_t *uri, 
+    /**
+     * Special case for CONNECT parsing: it comes with the hostinfo part only
+     * @param hostinfo The hostinfo string to parse
+     * @param uptr The axis2_uri_t to fill out
+     * @return AXIS2_SUCCESS for success or error code
+     */
+    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
+    axis2_uri_parse_hostinfo(
+        const axis2_env_t *env,
+        const axis2_char_t *hostinfo);
+
+    /** Resolve relative to a base.  This means host/etc, and (crucially) path */
+    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
+    axis2_uri_resolve_relative(
+        const axis2_env_t *env,
+        const axis2_uri_t* base,
+        axis2_uri_t* uptr);
+
+    /**
+     * Return a URI created from a context URI and a relative URI.
+     * If a valid URI cannot be created the only other possibility
+     * this method will consider is that an absolute file path has
+     * been passed in as the relative URI argument, and it will try
+     * to create a 'file' URI from it.
+     *
+     * @param context_uri the document base URI
+     * @param uri a file URI relative to the context_uri or an
+     * absolute file path
+     * @return the URIcreated from context_uri and uri
+     */
+    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
+    axis2_uri_parse_relative(
+        const axis2_env_t *env,
+        const axis2_uri_t* base,
+        const char* uri);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_uri_free(axis2_uri_t *uri,
             const axis2_env_t *env);
- 
+
     /**
      * Unparse a axis2_uri_t structure to an URI string.  Optionally 
      * suppress the password for security reasons.
@@ -112,132 +161,53 @@ typedef struct axis2_uri axis2_uri_t;
      * </PRE>
      * @return The uri as a string
      */
-    axis2_char_t* (AXIS2_CALL *
-    to_string) (
-            const axis2_uri_t *uri, 
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_uri_to_string(const axis2_uri_t *uri,
             const axis2_env_t *env,
             unsigned flags);
-   
-    axis2_char_t* (AXIS2_CALL *
-    get_protocol) (
-            axis2_uri_t *uri, 
-            const axis2_env_t *env);
-   
-    axis2_char_t* (AXIS2_CALL *
-    get_server)(
-            axis2_uri_t *uri, 
-            const axis2_env_t *env);
-            
-    axis2_port_t (AXIS2_CALL *
-    get_port) (
-            axis2_uri_t *uri, 
-            const axis2_env_t *env);
-            
-    axis2_char_t* (AXIS2_CALL *
-    get_path)(
-            axis2_uri_t *uri, 
+
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_uri_get_protocol(axis2_uri_t *uri,
             const axis2_env_t *env);
 
-    axis2_uri_t* (AXIS2_CALL *
-    clone) (
-            const axis2_uri_t *uri,
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_uri_get_server(axis2_uri_t *uri,
             const axis2_env_t *env);
-};
 
-/** 
- * @brief URI struct
- *    Axis2 URI
- */
- struct axis2_uri
-{
-    axis2_uri_ops_t *ops;    
-};
+    AXIS2_EXTERN axis2_port_t AXIS2_CALL
+    axis2_uri_get_port(axis2_uri_t *uri,
+            const axis2_env_t *env);
 
-/**
- * Return the default port for a given scheme.  The schemes recognized are
- * http, ftp, https, gopher, wais, nntp, snews, and prospero
- * @param scheme_str The string that contains the current scheme
- * @return The default port for this scheme
- */ 
-AXIS2_EXTERN axis2_port_t AXIS2_CALL
-axis2_uri_port_of_scheme(
-        const axis2_char_t *scheme_str);
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_uri_get_path(axis2_uri_t *uri,
+            const axis2_env_t *env);
 
-/**
- * Parse a given URI, fill in all supplied fields of a axis2_uri_t
- * structure. This eliminates the necessity of extracting host, port,
- * path, query info repeatedly in the modules.
- * @param uri The uri to parse
- * @param uptr The axis2_uri_t to fill out
- * @return AXIS2_SUCCESS for success or error code
- */
-AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-axis2_uri_parse_string(
-        const axis2_env_t *env, 
-        const axis2_char_t *uri);
+    AXIS2_EXTERN axis2_uri_t* AXIS2_CALL
+    axis2_uri_clone(const axis2_uri_t *uri,
+            const axis2_env_t *env);
 
-/**
- * Special case for CONNECT parsing: it comes with the hostinfo part only
- * @param hostinfo The hostinfo string to parse
- * @param uptr The axis2_uri_t to fill out
- * @return AXIS2_SUCCESS for success or error code
- */
-AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-axis2_uri_parse_hostinfo(
-        const axis2_env_t *env, 
-        const axis2_char_t *hostinfo);
-
-/** Resolve relative to a base.  This means host/etc, and (crucially) path */
-AXIS2_EXTERN axis2_uri_t *AXIS2_CALL 
-axis2_uri_resolve_relative(
-        const axis2_env_t *env,
-        const axis2_uri_t* base,
-        axis2_uri_t* uptr);
-
-/**
- * Return a URI created from a context URI and a relative URI.
- * If a valid URI cannot be created the only other possibility
- * this method will consider is that an absolute file path has
- * been passed in as the relative URI argument, and it will try
- * to create a 'file' URI from it.
- *
- * @param context_uri the document base URI
- * @param uri a file URI relative to the context_uri or an
- * absolute file path
- * @return the URIcreated from context_uri and uri
- */
-AXIS2_EXTERN axis2_uri_t *AXIS2_CALL 
-axis2_uri_parse_relative(
-        const axis2_env_t *env,
-        const axis2_uri_t* base,
-        const char* uri);
-
-/************************** Start of function macros **************************/
-      
 #define AXIS2_URI_FREE(uri, env) \
-      ((uri)->ops->free(uri, env))
+      axis2_uri_free(uri, env)
 
 #define AXIS2_URI_TO_STRING(uri, env, flags) \
-      (((axis2_uri_t *) uri)->ops->to_string(uri, env, flags))
+      axis2_uri_to_string(uri, env, flags)
 
 #define AXIS2_URI_GET_PROTOCOL(uri, env) \
-      ((uri)->ops->get_protocol(uri, env))
-      
+      axis2_uri_get_protocol(uri, env)
+
 #define AXIS2_URI_GET_SERVER(uri, env) \
-      ((uri)->ops->get_server(uri, env))
-      
+      axis2_uri_get_server(uri, env)
+
 #define AXIS2_URI_GET_PORT(uri, env) \
-      ((uri)->ops->get_port(uri, env))
-      
+      axis2_uri_get_port(uri, env)
+
 #define AXIS2_URI_GET_PATH(uri, env) \
-      ((uri)->ops->get_path(uri, env))
-      
+      axis2_uri_get_path(uri, env)
+
 #define AXIS2_URI_CLONE(uri, env) \
-      ((uri)->ops->clone(uri, env))
+      axis2_uri_clone(uri, env)
 
-/************************** End of function macros ****************************/    
-
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif

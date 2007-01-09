@@ -23,135 +23,62 @@
 
 #define AXIS2_STACK_DEFAULT_CAPACITY 10
 
-typedef struct axis2_stack_impl
+struct axis2_stack
 {
-    axis2_stack_t stack;
-
     void **data;
     /** current number of elements */
     int size;
     /** total capacity */
     int capacity;
-
     axis2_bool_t is_empty_stack;
-
-}
-axis2_stack_impl_t;
-
-#define AXIS2_INTF_TO_IMPL(stack) ((axis2_stack_impl_t *)stack)
-
-
-axis2_status_t AXIS2_CALL
-axis2_stack_free(axis2_stack_t *stack,
-        const axis2_env_t *env);
-
-void* AXIS2_CALL
-axis2_stack_pop(axis2_stack_t *stack,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_stack_push(axis2_stack_t *stack,
-        const axis2_env_t *env,
-        void* value);
-
-int AXIS2_CALL
-axis2_stack_size(axis2_stack_t *stack,
-        const axis2_env_t *env);
-
-void* AXIS2_CALL
-axis2_stack_get(axis2_stack_t *stack,
-        const axis2_env_t *env);
-
-void* AXIS2_CALL
-axis2_stack_get_at(axis2_stack_t *stack,
-        const axis2_env_t *env,
-        int i);
-
+};
 
 AXIS2_EXTERN axis2_stack_t * AXIS2_CALL
 axis2_stack_create(const axis2_env_t *env)
 {
-    axis2_stack_impl_t *stack_impl = NULL;
+    axis2_stack_t *stack = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    stack_impl = (axis2_stack_impl_t*)AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_stack_impl_t));
+    stack = (axis2_stack_t*)AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_stack_t));
 
-    if (!stack_impl)
+    if (!stack)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    stack_impl->data = NULL;
-    stack_impl->size = 0;
-    stack_impl->capacity = AXIS2_STACK_DEFAULT_CAPACITY;
-    stack_impl->is_empty_stack = AXIS2_TRUE;
-    stack_impl->stack.ops = NULL;
+    stack->data = NULL;
+    stack->size = 0;
+    stack->capacity = AXIS2_STACK_DEFAULT_CAPACITY;
+    stack->is_empty_stack = AXIS2_TRUE;
 
-    stack_impl->data = AXIS2_MALLOC(env->allocator, sizeof(void*) *
+    stack->data = AXIS2_MALLOC(env->allocator, sizeof(void*) *
             AXIS2_STACK_DEFAULT_CAPACITY);
-    if (NULL == stack_impl->data)
+    if (NULL == stack->data)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_stack_free(&(stack_impl->stack) , env);
+        axis2_stack_free(stack , env);
         return NULL;
     }
 
-    stack_impl->stack.ops = (axis2_stack_ops_t *)AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_stack_ops_t));
-
-    if (NULL ==  stack_impl->stack.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_stack_free(&(stack_impl->stack) , env);
-        return NULL;
-    }
-
-
-    stack_impl->stack.ops->free =
-        axis2_stack_free;
-
-    stack_impl->stack.ops->pop =
-        axis2_stack_pop;
-
-    stack_impl->stack.ops->push =
-        axis2_stack_push;
-
-    stack_impl->stack.ops->size =
-        axis2_stack_size;
-
-    stack_impl->stack.ops->get =
-        axis2_stack_get;
-
-    stack_impl->stack.ops->get_at =
-        axis2_stack_get_at;
-
-    return &(stack_impl->stack);
+    return stack;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_stack_free(axis2_stack_t *stack,
         const axis2_env_t *env)
 {
-    axis2_stack_impl_t *stack_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    stack_impl = AXIS2_INTF_TO_IMPL(stack);
-
-    if (stack_impl->data)
+    if (stack->data)
     {
-        AXIS2_FREE(env->allocator, stack_impl->data);
-        stack_impl->data = NULL;
+        AXIS2_FREE(env->allocator, stack->data);
+        stack->data = NULL;
     }
-    if (stack->ops)
-    {
-        AXIS2_FREE(env->allocator, stack->ops);
-        stack->ops = NULL;
-    }
-    AXIS2_FREE(env->allocator, stack_impl);
-    stack_impl = NULL;
+    AXIS2_FREE(env->allocator, stack);
+    stack = NULL;
     return AXIS2_SUCCESS;
 }
 
@@ -159,24 +86,22 @@ void* AXIS2_CALL
 axis2_stack_pop(axis2_stack_t *stack,
         const axis2_env_t *env)
 {
-    axis2_stack_impl_t *stack_impl = NULL;
     void *value = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    stack_impl = AXIS2_INTF_TO_IMPL(stack);
-    if (stack_impl->is_empty_stack == AXIS2_TRUE ||
-            stack_impl->size == 0)
+    if (stack->is_empty_stack == AXIS2_TRUE ||
+            stack->size == 0)
     {
         return NULL;
     }
-    if (stack_impl->size > 0)
+    if (stack->size > 0)
     {
-        value = stack_impl->data[stack_impl->size -1 ];
-        stack_impl->data[stack_impl->size-1] = NULL;
-        stack_impl->size--;
-        if (stack_impl->size == 0)
+        value = stack->data[stack->size -1 ];
+        stack->data[stack->size-1] = NULL;
+        stack->size--;
+        if (stack->size == 0)
         {
-            stack_impl->is_empty_stack = AXIS2_TRUE;
+            stack->is_empty_stack = AXIS2_TRUE;
         }
     }
     return value;
@@ -187,20 +112,18 @@ axis2_stack_push(axis2_stack_t *stack,
         const axis2_env_t *env,
         void* value)
 {
-    axis2_stack_impl_t *stack_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
-    stack_impl = AXIS2_INTF_TO_IMPL(stack);
-    if ((stack_impl->size  < stack_impl->capacity) && (stack_impl->capacity > 0))
+    if ((stack->size  < stack->capacity) && (stack->capacity > 0))
     {
-        stack_impl->data[stack_impl->size++] = value;
+        stack->data[stack->size++] = value;
     }
     else
     {
         void **new_data = NULL;
 
-        int new_capacity = stack_impl->capacity + AXIS2_STACK_DEFAULT_CAPACITY;
+        int new_capacity = stack->capacity + AXIS2_STACK_DEFAULT_CAPACITY;
 
         new_data = AXIS2_MALLOC(env->allocator, sizeof(void*) * new_capacity);
         if (!new_data)
@@ -209,16 +132,16 @@ axis2_stack_push(axis2_stack_t *stack,
             return AXIS2_FAILURE;
         }
         memset(new_data, 0, sizeof(void*)*new_capacity);
-        memcpy(new_data, stack_impl->data, sizeof(void*) *(stack_impl->capacity));
-        stack_impl->capacity = new_capacity;
+        memcpy(new_data, stack->data, sizeof(void*) *(stack->capacity));
+        stack->capacity = new_capacity;
 
-        AXIS2_FREE(env->allocator, stack_impl->data);
-        stack_impl->data = NULL;
-        stack_impl->data = new_data;
+        AXIS2_FREE(env->allocator, stack->data);
+        stack->data = NULL;
+        stack->data = new_data;
 
-        stack_impl->data[stack_impl->size++] = value;
+        stack->data[stack->size++] = value;
     }
-    stack_impl->is_empty_stack = AXIS2_FALSE;
+    stack->is_empty_stack = AXIS2_FALSE;
     return AXIS2_SUCCESS;
 }
 
@@ -227,19 +150,17 @@ axis2_stack_size(axis2_stack_t *stack,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIS2_INTF_TO_IMPL(stack)->size;
+    return stack->size;
 }
 
 void * AXIS2_CALL
 axis2_stack_get(axis2_stack_t *stack,
         const axis2_env_t *env)
 {
-    axis2_stack_impl_t *stack_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    stack_impl = AXIS2_INTF_TO_IMPL(stack);
-    if (stack_impl->size > 0)
+    if (stack->size > 0)
     {
-        return stack_impl->data[stack_impl->size-1];
+        return stack->data[stack->size-1];
     }
     return NULL;
 }
@@ -249,11 +170,9 @@ axis2_stack_get_at(axis2_stack_t *stack,
         const axis2_env_t *env,
         int i)
 {
-    axis2_stack_impl_t *stack_impl = NULL;
-    stack_impl = AXIS2_INTF_TO_IMPL(stack);
-    if ((stack_impl->size == 0) || (i < 0) || (i >= stack_impl->size))
+    if ((stack->size == 0) || (i < 0) || (i >= stack->size))
     {
         return NULL;
     }
-    return stack_impl->data[i];
+    return stack->data[i];
 }
