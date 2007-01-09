@@ -279,13 +279,13 @@ axis2_param_free(axis2_param_t *param,
         size = AXIS2_ARRAY_LIST_SIZE(param->value_list, env);
         for (i = 0; i < size; i++)
         {
-            axis2_param_t *param = NULL;
+            axis2_param_t *param_l = NULL;
 
-            param = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(
+            param_l = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(
                         param->value_list, env, i);
-            if (param)
+            if (param_l)
             {
-                AXIS2_PARAM_FREE(param, env);
+                AXIS2_PARAM_FREE(param_l, env);
             }
         }
         AXIS2_ARRAY_LIST_FREE(param->value_list, env);
