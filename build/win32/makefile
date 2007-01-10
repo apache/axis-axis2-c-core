@@ -481,6 +481,29 @@ axis2_apache_module:
 	del *.exp
 	del *.lib
 	
+###############################################################
+# mod IIS
+
+MOD_IIS_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\iis\*.c \
+	      $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\IIS\iis_iaspi_plugin_51\*.c 
+DEF_FILE = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\IIS\mod_axis2.def
+
+	
+axis2_IIS_module:
+	$(CC) $(CFLAGS) $(MOD_IIS_SRC) /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) Advapi32.lib $(AXIS2_ENGINE).lib /DEF:$(DEF_FILE) /DLL /OUT:mod_iis.dll  /IMPLIB:mod_iis.lib
+
+	del *.obj
+
+	copy mod_iis.dll $(AXIS2_LIBS)\
+
+	copy mod_iis.lib $(AXIS2_LIBS)\
+
+	del *.dll
+	del *.exp
+	del *.lib
+
 ###################### clients #################################
 
 axis2_client_math:
@@ -1241,6 +1264,6 @@ all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_ws
  
 install: all
 
-dist: all mod_rampart_all axis2_apache_module tcpmon codegen_tool copy_extra copy_samples mv_dist
+dist: all mod_rampart_all axis2_IIS_module axis2_apache_module tcpmon codegen_tool copy_extra copy_samples mv_dist
 
 
