@@ -1,0 +1,9 @@
+LIBRARY	"mod_iis"
+
+EXPORTS
+	HttpFilterProc
+	GetFilterVersion
+	GetExtensionVersion
+	HttpExtensionProc	
+	TerminateFilter
+	TerminateExtension
