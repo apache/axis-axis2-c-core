@@ -252,8 +252,8 @@ axis2_addr_disp_invoke(
         
     }
 
-    msg_ctx->ops->find_svc = axis2_addr_disp_find_svc;
-    msg_ctx->ops->find_op = axis2_addr_disp_find_op;
+    axis2_msg_ctx_set_find_svc(msg_ctx, env, axis2_addr_disp_find_svc);
+    axis2_msg_ctx_set_find_op(msg_ctx, env, axis2_addr_disp_find_op);
 
     return axis2_disp_invoke(handler, env, msg_ctx);
 }
