@@ -156,14 +156,18 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stream_free_void_arg(void *stream,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
      * Gets the buffer
      */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_stream_get_buffer(const axis2_stream_t *stream,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_stream_flush_buffer (const axis2_stream_t *stream,
+        const axis2_env_t *env);
 
     AXIS2_EXTERN int AXIS2_CALL
     axis2_stream_peek_socket(axis2_stream_t *stream, const axis2_env_t *env,

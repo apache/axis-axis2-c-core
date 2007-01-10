@@ -342,8 +342,17 @@ axis2_stream_get_buffer (const axis2_stream_t *stream,
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(stream)->buffer;
-
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_stream_flush_buffer (const axis2_stream_t *stream, 
+                         const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(stream)->len = 0;
+    return AXIS2_SUCCESS;
+}
+
 
 /********************* End of Basic Stream Operations *************************/
 

@@ -154,6 +154,7 @@ axis2_apache2_worker_process_request(
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *req_url = NULL;
     axis2_char_t *body_string = NULL;
+    unsigned int body_string_len = 0;
     int send_status = -1;
     axis2_char_t *content_type = NULL;
     axis2_property_t *property = NULL;
@@ -260,8 +261,6 @@ axis2_apache2_worker_process_request(
             body_string = axis2_http_transport_utils_get_services_html(env,
                     conf_ctx);
             request->content_type = "text/html";
-            /*axis2_apache2_worker_set_response_headers(apache2_worker, env, svr_conn,
-            simple_request, response, 0);*/
             send_status = OK;
         }
 
@@ -284,7 +283,11 @@ axis2_apache2_worker_process_request(
             }
             fault_ctx = AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx);
             AXIS2_ENGINE_SEND_FAULT(engine, env, fault_ctx);
-            body_string = axis2_apache2_worker_get_bytes(env, out_stream);
+            if (out_stream)
+            {
+                body_string = axis2_stream_get_buffer(out_stream, env);
+                body_string_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
+            }
             send_status =  HTTP_INTERNAL_SERVER_ERROR;
             AXIS2_MSG_CTX_FREE(fault_ctx, env);
         }
@@ -310,7 +313,11 @@ axis2_apache2_worker_process_request(
         if (ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
         {
             send_status = OK;
-            body_string = axis2_apache2_worker_get_bytes(env, out_stream);
+            if (out_stream)
+            {
+                body_string = axis2_stream_get_buffer(out_stream, env);
+                body_string_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
+            }
         }
         else
         {
@@ -319,8 +326,7 @@ axis2_apache2_worker_process_request(
     }
     if (body_string)
     {
-        ap_rwrite(body_string, AXIS2_STRLEN(body_string), request);
-        AXIS2_FREE(env->allocator, body_string);
+        ap_rwrite(body_string, body_string_len, request);
         body_string = NULL;
     }
     if (url)
