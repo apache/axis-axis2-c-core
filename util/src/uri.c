@@ -295,7 +295,7 @@ axis2_uri_parse_string(const axis2_env_t *env,
     int v6_offset1 = 0, v6_offset2 = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, uri, NULL);
+    AXIS2_PARAM_CHECK(env->error, uri_str, NULL);
 
     uri = (axis2_uri_t *) axis2_uri_create(env);
 
