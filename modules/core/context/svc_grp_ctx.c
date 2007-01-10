@@ -20,10 +20,8 @@
 #include <axis2_const.h>
 #include <axis2_hash.h>
 
-typedef struct axis2_svc_grp_ctx_impl
+struct axis2_svc_grp_ctx
 {
-    /** context base struct */
-    axis2_svc_grp_ctx_t svc_grp_ctx;
     /** base context struct */
     axis2_ctx_t *base;
     /** parent of service group context is a configuration context instance */
@@ -36,65 +34,7 @@ typedef struct axis2_svc_grp_ctx_impl
     axis2_svc_grp_t *svc_grp;
     /** name of the service group associated with this context */
     axis2_char_t *svc_grp_name;
-}
-axis2_svc_grp_ctx_impl_t;
-
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(svc_grp_ctx) ((axis2_svc_grp_ctx_impl_t *)svc_grp_ctx)
-
-
-axis2_ctx_t *AXIS2_CALL
-axis2_svc_grp_ctx_get_base(
-    const axis2_svc_grp_ctx_t *svc_grp_ctx,
-    const axis2_env_t *env);
-
-struct axis2_conf_ctx *AXIS2_CALL
-            axis2_svc_grp_ctx_get_parent(
-                const axis2_svc_grp_ctx_t *svc_grp_ctx,
-                const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_svc_grp_ctx_free(
-    struct axis2_svc_grp_ctx *svc_grp_ctx,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_svc_grp_ctx_init(
-    struct axis2_svc_grp_ctx *svc_grp_ctx,
-    const axis2_env_t *env,
-    axis2_conf_t *conf);
-
-const axis2_char_t *AXIS2_CALL
-axis2_svc_grp_ctx_get_id(
-    const axis2_svc_grp_ctx_t *svc_grp_ctx,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_svc_grp_ctx_set_id(
-    struct axis2_svc_grp_ctx *svc_grp_ctx,
-    const axis2_env_t *env,
-    const axis2_char_t *id);
-
-axis2_svc_ctx_t *AXIS2_CALL
-axis2_svc_grp_ctx_get_svc_ctx(
-    const axis2_svc_grp_ctx_t *svc_grp_ctx,
-    const axis2_env_t *env,
-    const axis2_char_t *svc_name);
-
-axis2_status_t AXIS2_CALL
-axis2_svc_grp_ctx_fill_svc_ctx_map(
-    struct axis2_svc_grp_ctx *svc_grp_ctx,
-    const axis2_env_t *env);
-
-axis2_svc_grp_t *AXIS2_CALL
-axis2_svc_grp_ctx_get_svc_grp(
-    const axis2_svc_grp_ctx_t *svc_grp_ctx,
-    const axis2_env_t *env);
-
-axis2_hash_t *AXIS2_CALL
-axis2_svc_grp_ctx_get_svc_ctx_map(
-    const axis2_svc_grp_ctx_t *svc_grp_ctx,
-    const axis2_env_t *env);
+};
 
 AXIS2_EXTERN axis2_svc_grp_ctx_t *AXIS2_CALL
 axis2_svc_grp_ctx_create(
@@ -102,139 +42,97 @@ axis2_svc_grp_ctx_create(
     axis2_svc_grp_t *svc_grp,
     struct axis2_conf_ctx *conf_ctx)
 {
-    axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
+    axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    svc_grp_ctx_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_grp_ctx_impl_t));
-    if (!svc_grp_ctx_impl)
+    svc_grp_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_grp_ctx_t));
+    if (!svc_grp_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    svc_grp_ctx_impl->svc_grp_ctx.ops = NULL;
-    svc_grp_ctx_impl->base = NULL;
-    svc_grp_ctx_impl->parent = NULL;
-    svc_grp_ctx_impl->id = NULL;
-    svc_grp_ctx_impl->svc_ctx_map = NULL;
-    svc_grp_ctx_impl->svc_grp = NULL;
-    svc_grp_ctx_impl->svc_grp_name = NULL;
+    svc_grp_ctx->base = NULL;
+    svc_grp_ctx->parent = NULL;
+    svc_grp_ctx->id = NULL;
+    svc_grp_ctx->svc_ctx_map = NULL;
+    svc_grp_ctx->svc_grp = NULL;
+    svc_grp_ctx->svc_grp_name = NULL;
 
 
-    svc_grp_ctx_impl->base = axis2_ctx_create(env);
-    if (!(svc_grp_ctx_impl->base))
+    svc_grp_ctx->base = axis2_ctx_create(env);
+    if (!(svc_grp_ctx->base))
     {
-        axis2_svc_grp_ctx_free(&(svc_grp_ctx_impl->svc_grp_ctx), env);
+        axis2_svc_grp_ctx_free(svc_grp_ctx, env);
         return NULL;
     }
 
     if (svc_grp)
     {
-        svc_grp_ctx_impl->svc_grp = svc_grp;
-        svc_grp_ctx_impl->svc_grp_name = (axis2_char_t *)AXIS2_SVC_GRP_GET_NAME(svc_grp_ctx_impl->svc_grp, env);
+        svc_grp_ctx->svc_grp = svc_grp;
+        svc_grp_ctx->svc_grp_name = (axis2_char_t *)AXIS2_SVC_GRP_GET_NAME(svc_grp_ctx->svc_grp, env);
     }
 
     if (conf_ctx)
     {
-        svc_grp_ctx_impl->parent = conf_ctx;
+        svc_grp_ctx->parent = conf_ctx;
     }
 
-    svc_grp_ctx_impl->svc_ctx_map = axis2_hash_make(env);
-    if (!(svc_grp_ctx_impl->svc_ctx_map))
+    svc_grp_ctx->svc_ctx_map = axis2_hash_make(env);
+    if (!(svc_grp_ctx->svc_ctx_map))
     {
-        axis2_svc_grp_ctx_free(&(svc_grp_ctx_impl->svc_grp_ctx), env);
+        axis2_svc_grp_ctx_free(svc_grp_ctx, env);
         return NULL;
     }
 
-    axis2_svc_grp_ctx_fill_svc_ctx_map((&(svc_grp_ctx_impl->svc_grp_ctx)), env);
+    axis2_svc_grp_ctx_fill_svc_ctx_map((svc_grp_ctx), env);
 
-    /* initialize ops */
-
-    svc_grp_ctx_impl->svc_grp_ctx.ops  = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_grp_ctx_ops_t));
-    if (!svc_grp_ctx_impl->svc_grp_ctx.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_svc_grp_ctx_free(&(svc_grp_ctx_impl->svc_grp_ctx), env);
-        return NULL;
-    }
-
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_base =
-        axis2_svc_grp_ctx_get_base;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_parent =
-        axis2_svc_grp_ctx_get_parent;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->free =
-        axis2_svc_grp_ctx_free;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->init =
-        axis2_svc_grp_ctx_init;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_id =
-        axis2_svc_grp_ctx_get_id;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->set_id =
-        axis2_svc_grp_ctx_set_id;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_ctx =
-        axis2_svc_grp_ctx_get_svc_ctx;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->fill_svc_ctx_map =
-        axis2_svc_grp_ctx_fill_svc_ctx_map;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_grp =
-        axis2_svc_grp_ctx_get_svc_grp;
-    svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_ctx_map =
-        axis2_svc_grp_ctx_get_svc_ctx_map;
-
-    return &(svc_grp_ctx_impl->svc_grp_ctx);
+    return svc_grp_ctx;
 }
 
-axis2_ctx_t *AXIS2_CALL
+AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
 axis2_svc_grp_ctx_get_base(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->base;
+    return svc_grp_ctx->base;
 }
 
-struct axis2_conf_ctx *AXIS2_CALL
+AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
             axis2_svc_grp_ctx_get_parent(
                 const axis2_svc_grp_ctx_t *svc_grp_ctx,
                 const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->parent;
+    return svc_grp_ctx->parent;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_grp_ctx_free(
     struct axis2_svc_grp_ctx *svc_grp_ctx,
     const axis2_env_t *env)
 {
-    axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    svc_grp_ctx_impl = AXIS2_INTF_TO_IMPL(svc_grp_ctx);
-
-    if (svc_grp_ctx_impl->svc_grp_ctx.ops)
+    if (svc_grp_ctx->id)
     {
-        AXIS2_FREE(env->allocator, svc_grp_ctx_impl->svc_grp_ctx.ops);
-        svc_grp_ctx_impl->svc_grp_ctx.ops = NULL;
+        AXIS2_FREE(env->allocator, svc_grp_ctx->id);
+        svc_grp_ctx->id = NULL;
     }
 
-    if (svc_grp_ctx_impl->id)
+    if (svc_grp_ctx->base)
     {
-        AXIS2_FREE(env->allocator, svc_grp_ctx_impl->id);
-        svc_grp_ctx_impl->id = NULL;
+        AXIS2_CTX_FREE(svc_grp_ctx->base, env);
+        svc_grp_ctx->base = NULL;
     }
 
-    if (svc_grp_ctx_impl->base)
-    {
-        AXIS2_CTX_FREE(svc_grp_ctx_impl->base, env);
-        svc_grp_ctx_impl->base = NULL;
-    }
-
-    if (svc_grp_ctx_impl->svc_ctx_map)
+    if (svc_grp_ctx->svc_ctx_map)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(svc_grp_ctx_impl->svc_ctx_map, env);
+        for (hi = axis2_hash_first(svc_grp_ctx->svc_ctx_map, env);
                 hi; hi = axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, NULL, NULL, &val);
@@ -246,103 +144,88 @@ axis2_svc_grp_ctx_free(
             }
         }
 
-        axis2_hash_free(svc_grp_ctx_impl->svc_ctx_map, env);
-        svc_grp_ctx_impl->base = NULL;
+        axis2_hash_free(svc_grp_ctx->svc_ctx_map, env);
+        svc_grp_ctx->base = NULL;
     }
 
-    AXIS2_FREE(env->allocator, svc_grp_ctx_impl);
-    svc_grp_ctx_impl = NULL;
+    AXIS2_FREE(env->allocator, svc_grp_ctx);
+    svc_grp_ctx = NULL;
 
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_grp_ctx_init(
     struct axis2_svc_grp_ctx *svc_grp_ctx,
     const axis2_env_t *env,
     axis2_conf_t *conf)
 {
-    axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    svc_grp_ctx_impl = AXIS2_INTF_TO_IMPL(svc_grp_ctx);
-
-    if (svc_grp_ctx_impl->svc_grp_name)
+    if (svc_grp_ctx->svc_grp_name)
     {
-        svc_grp_ctx_impl->svc_grp =
-            AXIS2_CONF_GET_SVC_GRP(conf, env, svc_grp_ctx_impl->svc_grp_name);
+        svc_grp_ctx->svc_grp =
+            AXIS2_CONF_GET_SVC_GRP(conf, env, svc_grp_ctx->svc_grp_name);
     }
 
     return AXIS2_SUCCESS;
 }
 
-const axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_svc_grp_ctx_get_id(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->id;
+    return svc_grp_ctx->id;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_grp_ctx_set_id(
     struct axis2_svc_grp_ctx *svc_grp_ctx,
     const axis2_env_t *env,
     const axis2_char_t *id)
 {
-    axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    svc_grp_ctx_impl = AXIS2_INTF_TO_IMPL(svc_grp_ctx);
-
-    if (svc_grp_ctx_impl->id)
+    if (svc_grp_ctx->id)
     {
-        AXIS2_FREE(env->allocator, svc_grp_ctx_impl->id);
-        svc_grp_ctx_impl->id = NULL;
+        AXIS2_FREE(env->allocator, svc_grp_ctx->id);
+        svc_grp_ctx->id = NULL;
     }
 
     if (id)
     {
-        svc_grp_ctx_impl->id = AXIS2_STRDUP(id, env);
+        svc_grp_ctx->id = AXIS2_STRDUP(id, env);
     }
 
     return AXIS2_SUCCESS;
 }
 
-axis2_svc_ctx_t *AXIS2_CALL
+AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
 axis2_svc_grp_ctx_get_svc_ctx(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env,
     const axis2_char_t *svc_name)
 {
-    axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
-
     AXIS2_ENV_CHECK(env, NULL);
 
-    svc_grp_ctx_impl = AXIS2_INTF_TO_IMPL(svc_grp_ctx);
-
-    return (axis2_svc_ctx_t *) axis2_hash_get(svc_grp_ctx_impl->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING);
+    return (axis2_svc_ctx_t *) axis2_hash_get(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_grp_ctx_fill_svc_ctx_map(
     struct axis2_svc_grp_ctx *svc_grp_ctx,
     const axis2_env_t *env)
 {
-    axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     axis2_hash_index_t *hi = NULL;
     void *next_svc = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_SUCCESS);
 
-    svc_grp_ctx_impl = AXIS2_INTF_TO_IMPL(svc_grp_ctx);
-
-    if (svc_grp_ctx_impl->svc_grp)
+    if (svc_grp_ctx->svc_grp)
     {
-        axis2_hash_t *service_map = AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp_ctx_impl->svc_grp, env);
+        axis2_hash_t *service_map = AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp_ctx->svc_grp, env);
         if (service_map)
         {
             for (hi = axis2_hash_first(service_map, env);
@@ -358,7 +241,7 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
                     svc_ctx = axis2_svc_ctx_create(env, svc, svc_grp_ctx);
                     svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(svc, env), env);
                     if (svc_name)
-                        axis2_hash_set(svc_grp_ctx_impl->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING, svc_ctx);
+                        axis2_hash_set(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING, svc_ctx);
                 }
             }
         }
@@ -366,20 +249,20 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
     return AXIS2_SUCCESS;
 }
 
-axis2_svc_grp_t *AXIS2_CALL
+AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
 axis2_svc_grp_ctx_get_svc_grp(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->svc_grp;
+    return svc_grp_ctx->svc_grp;
 }
 
-axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_svc_grp_ctx_get_svc_ctx_map(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->svc_ctx_map;
+    return svc_grp_ctx->svc_ctx_map;
 }
