@@ -184,6 +184,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath="..\..\..\..\axiom\src\om\om_data_source.c"
+				>
+			</File>
 			<Filter
 				Name="om"
 				>
