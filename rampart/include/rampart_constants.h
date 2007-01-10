@@ -109,6 +109,7 @@ extern "C"
 #define RAMPART_ACTION_ENCRYPTION_KEY_TRANSFORM_ALGORITHM "encryptionKeyTransportAlgorithm"
 #define RAMPART_ACTION_EMBEDDED_KEY_NAME            "EmbeddedKeyName"
 #define RAMPART_ACTION_TIME_TO_LIVE                 "timeToLive"
+#define RAMPART_ACTION_KEY_BUF                      "keyBuffer"
 
 
 /************fault codes***************/

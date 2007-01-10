@@ -41,38 +41,6 @@ extern "C"
  * @{
  */
 
-/* Inflow outflow security parameter    */
-/*
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
-    <xs:element name="action">
-        <xs:annotation>
-            <xs:documentation>Outflow security 'action' configuration</xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="items" type="xs:string"/>
-                <xs:element name="user" type="xs:string"/>
-                <xs:element name="passwordCallbackClass" type="xs:string" minOccurs="0"/>
-                <xs:element name="signaturePropFile" type="xs:string" minOccurs="0"/>
-                <xs:element name="encryptionPropFile" type="xs:string" minOccurs="0"/>
-                <xs:element name="encryptionPropFile" type="xs:string" minOccurs="0"/>
-                <xs:element name="signatureKeyIdentifier" type="xs:string" minOccurs="0"/>
-                <xs:element name="encryptionKeyIdentifier" type="xs:string" minOccurs="0"/>
-                <xs:element name="encryptionUser" type="xs:string" minOccurs="0"/>
-                <xs:element name="signatureParts" type="xs:string" minOccurs="0"/>
-                <xs:element name="encryptionParts" type="xs:string" minOccurs="0"/>
-                <xs:element name="optimizeParts" type="xs:string" minOccurs="0"/>
-                <xs:element name="encryptionSymAlgorithm" type="xs:string" minOccurs="0"/>
-                <xs:element name="EmbeddedKeyCallbackClass" type="xs:string" minOccurs="0"/>
-                <xs:element name="encryptionKeyTransportAlgorithm" type="xs:string" minOccurs="0"/>
-                <xs:element name="EmbeddedKeyName" type="xs:string" minOccurs="0"/>
-                <xs:element name="timeToLive" type="xs:string" minOccurs="0"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-</xs:schema>
-*/
 
     /** Type name for struct rampart_actions_ops */
     typedef struct rampart_actions_ops rampart_actions_ops_t;
@@ -260,6 +228,17 @@ extern "C"
         */
         axis2_char_t *(AXIS2_CALL *
         get_time_to_live)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+        /**
+        * Gets key_buf of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return key_buf
+        */
+        axis2_char_t *(AXIS2_CALL *
+        get_key_buf)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
@@ -472,6 +451,19 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_char_t *time_to_live
                     ); 
+        /**
+        * Sets key_buf of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param key_buf
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
+        axis2_status_t (AXIS2_CALL *
+        set_key_buf)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *key_buf
+                    ); 
 
 
         /**
@@ -627,6 +619,12 @@ extern "C"
 
 #define RAMPART_ACTIONS_SET_TIME_TO_LIVE(actions, env, time_to_live)\
         ((actions)->ops->set_time_to_live(actions, env, time_to_live))
+
+#define RAMPART_ACTIONS_GET_KEY_BUF(actions, env) \
+        ((actions)->ops->get_key_buf(actions, env) )
+
+#define RAMPART_ACTIONS_SET_KEY_BUF(actions, env, key_buf)\
+        ((actions)->ops->set_key_buf(actions, env, key_buf))
 
 #define RAMPART_ACTIONS_RESET(actions, env) \
         ((actions)->ops->reset(actions, env))

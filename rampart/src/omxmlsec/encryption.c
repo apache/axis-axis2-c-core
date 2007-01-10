@@ -187,11 +187,19 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *password = NULL;
     axis2_char_t *algorithm = NULL;
+    axis2_char_t *padding = NULL;
 
     algorithm = oxs_asym_ctx_get_algorithm(ctx, env);
-    /* We support RSA v1.5 encryption only. If any other algorithm is specified, replace it with the proper one*/
+    /* We support RSA v1.5 encryption only. If any other algorithm is specified, replace it with the proper one
     if(0 != (AXIS2_STRCMP(OXS_HREF_RSA_PKCS1, algorithm ))) {
         oxs_asym_ctx_set_algorithm(ctx, env, OXS_HREF_RSA_PKCS1);
+    }*/
+    
+    /*Set the proper padding for the algorithm*/
+    if(0 == (AXIS2_STRCMP(OXS_HREF_RSA_OAEP, algorithm))){
+        padding = OPENSSL_RSA_PKCS1_OAEP_PADDING;
+    }else if(0 == (AXIS2_STRCMP(OXS_HREF_RSA_PKCS1, algorithm))){
+        padding = OPENSSL_RSA_PKCS1_PADDING;
     }
 
     /*Load the key using key manager*/
@@ -218,7 +226,7 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
 
         /*Encrypt using the public key. Then base64 encode and populate the buffer */
         out_buf = oxs_buffer_create(env);
-        enclen = OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, input, out_buf);
+        enclen = OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, padding, input, out_buf);
         encodedlen = axis2_base64_encode_len(enclen);
         encoded_str = AXIS2_MALLOC(env->allocator, encodedlen);
         ret = axis2_base64_encode(encoded_str, (const char *)OXS_BUFFER_GET_DATA(out_buf, env), enclen); 
@@ -243,7 +251,7 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
         ret = axis2_base64_decode((char*)decoded_encrypted_str, (char*)OXS_BUFFER_GET_DATA(input, env));
         dec_enc_buf = oxs_buffer_create(env);
         OXS_BUFFER_POPULATE(dec_enc_buf, env, decoded_encrypted_str, ret);
-        declen = OPENSSL_RSA_PRV_DECRYPT(rsa, env, pkey, dec_enc_buf, result);
+        declen = OPENSSL_RSA_PRV_DECRYPT(rsa, env, pkey, padding,  dec_enc_buf, result);
    
         /*Free*/
         AXIS2_FREE(env->allocator, decoded_encrypted_str);

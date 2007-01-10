@@ -93,7 +93,7 @@ oxs_asym_ctx_get_file_name(const oxs_asym_ctx_t *ctx,
 *@return AXIS2_SUCCESS on success, else AXIS2_FAILURE	
 */	
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-oxs_asym_ctx_get_der_buf(const oxs_asym_ctx_t *ctx,
+oxs_asym_ctx_get_pem_buf(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 /**
 *Returns the password. Usually the password for the keystore. But alternatively may kepe the

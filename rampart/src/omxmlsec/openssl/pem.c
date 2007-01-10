@@ -61,8 +61,9 @@ openssl_pem_buf_read_pkey(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
     /*Load*/
-    *pkey = PEM_read_bio_PrivateKey(bio, NULL, 0 , password); 
+    PEM_read_bio_PrivateKey(bio, pkey, 0 , password); 
 
+    
     /*Free*/
     BIO_free(bio);
     bio = NULL;
@@ -70,6 +71,7 @@ openssl_pem_buf_read_pkey(const axis2_env_t *env,
     buff = NULL;
 
     if(!*pkey){
+        printf("\npkey is NULL");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

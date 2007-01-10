@@ -46,7 +46,7 @@ typedef struct rampart_actions_impl
     axis2_char_t *signature_parts  ;
     axis2_char_t *encryption_parts  ;
     axis2_char_t *time_to_live  ;
-
+    axis2_char_t *key_buf ;
 }
 rampart_actions_impl_t;
 
@@ -146,6 +146,12 @@ rampart_actions_get_encryption_parts(
 
 static axis2_char_t *AXIS2_CALL
 rampart_actions_get_time_to_live(
+    rampart_actions_t *actions,
+    const axis2_env_t *env
+);
+
+static axis2_char_t *AXIS2_CALL
+rampart_actions_get_key_buf(
     rampart_actions_t *actions,
     const axis2_env_t *env
 );
@@ -257,6 +263,13 @@ rampart_actions_set_time_to_live(
 );
 
 static axis2_status_t AXIS2_CALL
+rampart_actions_set_key_buf(
+    rampart_actions_t *actions,
+    const axis2_env_t *env,
+    axis2_char_t *key_buf
+);
+
+static axis2_status_t AXIS2_CALL
 rampart_actions_reset(
     rampart_actions_t *actions,
     const axis2_env_t *env
@@ -311,6 +324,7 @@ rampart_actions_create(const axis2_env_t *env)
     actions_impl->signature_parts = NULL;
     actions_impl->encryption_parts = NULL;
     actions_impl->time_to_live = NULL;
+    actions_impl->key_buf = NULL;
 
     actions_impl->actions.ops =  AXIS2_MALLOC(env->allocator, sizeof(rampart_actions_ops_t));
     if (!actions_impl->actions.ops)
@@ -519,6 +533,19 @@ rampart_actions_get_time_to_live(
     actions_impl = AXIS2_INTF_TO_IMPL(actions);
 
     return actions_impl->time_to_live ;
+}
+
+static axis2_char_t *AXIS2_CALL
+rampart_actions_get_key_buf(
+    rampart_actions_t *actions,
+    const axis2_env_t *env
+)
+{
+    rampart_actions_impl_t * actions_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+
+    return actions_impl->key_buf ;
 }
 
 
@@ -893,6 +920,31 @@ rampart_actions_set_time_to_live(
 }
 
 static axis2_status_t AXIS2_CALL
+rampart_actions_set_key_buf(
+    rampart_actions_t *actions,
+    const axis2_env_t *env,
+    axis2_char_t *key_buf
+)
+{
+    rampart_actions_impl_t * actions_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, key_buf, AXIS2_FAILURE);
+
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+    if (actions_impl->key_buf)
+    {
+        AXIS2_FREE(env->allocator, actions_impl->key_buf);
+        actions_impl->key_buf = NULL;
+    }
+    actions_impl->key_buf = AXIS2_STRDUP(key_buf, env) ;
+    if(!actions_impl->key_buf ){
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+static axis2_status_t AXIS2_CALL
 rampart_actions_reset(rampart_actions_t * actions, const axis2_env_t *env)
 {
     rampart_actions_impl_t * actions_impl = NULL;
@@ -1013,6 +1065,12 @@ rampart_actions_free(rampart_actions_t * actions, const axis2_env_t *env)
     {
         AXIS2_FREE(env->allocator, actions_impl->time_to_live);
         actions_impl->time_to_live = NULL;
+    }
+
+    if (actions_impl->key_buf)
+    {
+        AXIS2_FREE(env->allocator, actions_impl->key_buf);
+        actions_impl->key_buf = NULL;
     }
 
     AXIS2_FREE(env->allocator, actions_impl);
@@ -1145,6 +1203,13 @@ rampart_actions_populate_from_params(rampart_actions_t *actions,
         ret = RAMPART_ACTIONS_SET_TIME_TO_LIVE(actions, env,
                 (axis2_char_t *)rampart_get_action_params(
                     env, param_action, RAMPART_ACTION_TIME_TO_LIVE));
+    }
+
+    if (rampart_get_action_params(env, param_action, RAMPART_ACTION_KEY_BUF))
+    {
+        ret = RAMPART_ACTIONS_SET_KEY_BUF(actions, env,
+                (axis2_char_t *)rampart_get_action_params(
+                    env, param_action, RAMPART_ACTION_KEY_BUF));
     }
 
     return AXIS2_SUCCESS;
@@ -1312,6 +1377,8 @@ rampart_actions_init_ops(
     actions->ops->set_encryption_parts = rampart_actions_set_encryption_parts;
     actions->ops->get_time_to_live = rampart_actions_get_time_to_live;
     actions->ops->set_time_to_live = rampart_actions_set_time_to_live;
+    actions->ops->get_key_buf = rampart_actions_get_key_buf;
+    actions->ops->set_key_buf = rampart_actions_set_key_buf;
 
     actions->ops->reset = rampart_actions_reset;
     actions->ops->free = rampart_actions_free;

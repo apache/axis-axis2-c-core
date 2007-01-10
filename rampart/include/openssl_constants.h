@@ -39,6 +39,8 @@ extern "C" {
 #define OPENSSL_EVP_aes_256_cbc      "EVP_aes_256_cbc"
 
 #define OPENSSL_RSA_ENCRYPTION      "rsaEncryption"
+#define OPENSSL_RSA_PKCS1_PADDING    "RSA_PKCS1_PADDING"
+#define OPENSSL_RSA_PKCS1_OAEP_PADDING     "RSA_PKCS1_OAEP_PADDING"
 
 #define OPENSSL_DEFAULT_IV8          "01234567"
 #define OPENSSL_DEFAULT_IV16         "0123456701234567"

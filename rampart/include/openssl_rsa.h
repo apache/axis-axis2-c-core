@@ -75,6 +75,7 @@ extern "C" {
             openssl_rsa_t *rsa,
             const axis2_env_t *env,
             const openssl_pkey_t *pkey,
+            const axis2_char_t *padding,
             oxs_buffer_t *in,
             oxs_buffer_t *out );
 
@@ -92,6 +93,7 @@ extern "C" {
             openssl_rsa_t *rsa,
             const axis2_env_t *env,
             const openssl_pkey_t *pkey,
+            const axis2_char_t *padding,
             oxs_buffer_t *in,
             oxs_buffer_t *out );
     };
@@ -110,11 +112,11 @@ extern "C" {
 #define OPENSSL_RSA_FREE(rsa, env) \
         ((rsa)->ops->free(rsa, env) )
 
-#define OPENSSL_RSA_PRV_DECRYPT(rsa, env, pkey, in, out) \
-        ((rsa)->ops->prv_decrypt(rsa, env, pkey, in, out) )
+#define OPENSSL_RSA_PRV_DECRYPT(rsa, env, pkey, padding, in, out) \
+        ((rsa)->ops->prv_decrypt(rsa, env, pkey, padding, in, out) )
 
-#define OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, in, out) \
-        ((rsa)->ops->pub_encrypt(rsa, env, pkey, in, out) )
+#define OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, padding, in, out) \
+        ((rsa)->ops->pub_encrypt(rsa, env, pkey, padding, in, out) )
 
 
 /** @} */

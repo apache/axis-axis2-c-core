@@ -108,6 +108,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     axiom_node_t *encrypted_key_node)
 {
     axiom_node_t *ref_list_node = NULL;
+    axiom_node_t *enc_mtd_node = NULL;
     axis2_array_list_t *reference_list = NULL;
     axis2_char_t *enc_asym_algo = NULL;
     axis2_char_t *dec_key_file = NULL;
@@ -127,17 +128,20 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     }
     AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List has %d node reference(s)", AXIS2_ARRAY_LIST_SIZE(reference_list, env));
 
+    /*Get the algorithm to decrypt the sesison key*/
+    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
+    enc_asym_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
     /*If the reference list > 0 then We have nodes to decrypt. Next step is to get the encrypted key*/
     /*Obtain the session key which is encrypted*/
     /*Create an asym_ctx*/
     asym_ctx = oxs_asym_ctx_create(env);
-    /*Set default values. Might be useful if there are no data available to identify those*/
-    enc_asym_algo = RAMPART_ACTIONS_GET_ENC_KT_ALGO(actions, env);
     dec_key_file = RAMPART_ACTIONS_GET_DEC_KEY_FILE(actions, env);
     /*Get the password to retrieve the key from key store*/
     password = rampart_callback_encuser_password(env, actions, msg_ctx);
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
     oxs_asym_ctx_set_file_name(asym_ctx, env, dec_key_file);
+    
+    oxs_asym_ctx_set_pem_buf(asym_ctx, env, RAMPART_ACTIONS_GET_KEY_BUF(actions, env));
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PRV_DECRYPT);
     oxs_asym_ctx_set_password(asym_ctx, env, password);
     

@@ -59,6 +59,7 @@ openssl_rsa_prv_decrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
+    const axis2_char_t *padding,
     oxs_buffer_t *in,
     oxs_buffer_t *out);
 
@@ -67,6 +68,7 @@ openssl_rsa_pub_encrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
+    const axis2_char_t *padding,
     oxs_buffer_t *in,
     oxs_buffer_t *out);
 
@@ -135,6 +137,7 @@ openssl_rsa_pub_encrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
+    const axis2_char_t *padding,
     oxs_buffer_t *in,
     oxs_buffer_t *out)
 {
@@ -142,18 +145,25 @@ openssl_rsa_pub_encrypt(
     openssl_rsa_impl_t *rsa_impl = NULL;
     int ret;
     EVP_PKEY *key = NULL;
+    int pad = RSA_PKCS1_PADDING;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
 
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
+    if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
+        pad = RSA_PKCS1_OAEP_PADDING;
+    }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
+        pad = RSA_PKCS1_PADDING;
+    }
+
     encrypted = AXIS2_MALLOC(env->allocator, RSA_size(key->pkey.rsa));
     ret = RSA_public_encrypt(OXS_BUFFER_GET_SIZE(in, env),
             OXS_BUFFER_GET_DATA(in, env),
             encrypted,
             key->pkey.rsa ,
-            /*RSA_PKCS1_OAEP_PADDING);*/
-            RSA_PKCS1_PADDING);
+            pad);
+/*            RSA_PKCS1_PADDING);*/
     if (ret < 0)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
@@ -169,6 +179,7 @@ openssl_rsa_prv_decrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
+    const axis2_char_t *padding,
     oxs_buffer_t *in,
     oxs_buffer_t *out)
 {
@@ -176,18 +187,26 @@ openssl_rsa_prv_decrypt(
     openssl_rsa_impl_t *rsa_impl = NULL;
     int ret;
     EVP_PKEY *key = NULL;
+    int pad = RSA_PKCS1_PADDING;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
 
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
+
+    if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
+        pad = RSA_PKCS1_OAEP_PADDING;
+    }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
+        pad = RSA_PKCS1_PADDING;
+    }
+
     decrypted =  AXIS2_MALLOC(env->allocator, RSA_size(key->pkey.rsa));
     ret = RSA_private_decrypt(RSA_size(key->pkey.rsa),
             OXS_BUFFER_GET_DATA(in, env),
             decrypted,
             key->pkey.rsa,
-            /*RSA_PKCS1_OAEP_PADDING);*/
-            RSA_PKCS1_PADDING);
+            pad);
+    /*        RSA_PKCS1_PADDING);*/
     if (ret < 0)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,

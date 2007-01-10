@@ -183,6 +183,8 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     asym_ctx = oxs_asym_ctx_create(env);
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
     oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
+    
+    oxs_asym_ctx_set_pem_buf(asym_ctx, env, RAMPART_ACTIONS_GET_KEY_BUF(actions, env));
     oxs_asym_ctx_set_password(asym_ctx, env, password);
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT);
     oxs_asym_ctx_set_st_ref_pattern(asym_ctx, env, eki);

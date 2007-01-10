@@ -27,7 +27,7 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     axis2_char_t *password)
 {
     axis2_char_t *filename = NULL;
-    axis2_char_t *der_buf = NULL;
+    axis2_char_t *pem_buf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     openssl_x509_format_t format;
     openssl_pkey_t *open_prvkey = NULL;
@@ -41,15 +41,15 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
 
     /*If user has specified the certificate/private key directly we will extract the information from it.
      * Else we will look for a file name to load the certificate/private key*/
-    der_buf = oxs_asym_ctx_get_der_buf(ctx, env);
-    if(der_buf){
+    pem_buf = oxs_asym_ctx_get_pem_buf(ctx, env);
+    if(pem_buf){
         if( OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT == oxs_asym_ctx_get_operation(ctx, env) || 
             OXS_ASYM_CTX_OPERATION_PUB_DECRYPT == oxs_asym_ctx_get_operation(ctx, env)){
             /*load certificate from buf*/
-            status = openssl_x509_load_from_buffer(env, der_buf, &cert);
+            status = openssl_x509_load_from_buffer(env, pem_buf, &cert);
         }else{
             /*load private key from buf*/
-            status = openssl_pem_buf_read_pkey(env, der_buf, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey); 
+            status = openssl_pem_buf_read_pkey(env, pem_buf, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey); 
             if(status == AXIS2_FAILURE){
                 prvkey = NULL;
             }
@@ -98,7 +98,7 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
             }
         }
         
-    }/*end of der_buf*/
+    }/*end of pem_buf*/
     
     /*Wht ever the way, right now we should have either the public key or the private key*/
 
