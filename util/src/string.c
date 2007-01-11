@@ -27,24 +27,7 @@
 AXIS2_EXTERN void* AXIS2_CALL
 axis2_strdup(const void *ptr, const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    if (ptr)
-    {
-        int len = axis2_strlen(ptr);
-        axis2_char_t * str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                sizeof(axis2_char_t) * (len + 1));
-        if (!str)
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return NULL;
-        }
-        memcpy(str, ptr, len + 1);
-        return (void *) str;
-    }
-    else
-    {
-        return NULL;
-    }
+	return strdup(ptr)
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
@@ -242,10 +225,22 @@ axis2_strlen(const axis2_char_t * s)
 AXIS2_EXTERN int AXIS2_CALL
 axis2_strcasecmp(const axis2_char_t *s1, const axis2_char_t *s2)
 {
-    while (toupper(*s1) == toupper(*s2++))
-        if (*s1++ == '\0')
-            return(0);
-    return(toupper(*s1) - toupper(*--s2));
+	while (*s1 != '\0' && *s2 != '\0'){
+		if(*s1 >= 'A' && *s1 <= 'Z' && *s2 >= 'a' && *s2 <= 'z'){
+			if (*s2 - *s1 - (char)32 != 0){ return 1;} 
+		}
+		else if(*s1 >= 'a' && *s1 <= 'z' && *s2 >= 'A' && *s2 <= 'Z'){
+			if (*s1 - *s2 - 32 != 0) {return 1;}	
+		}
+		else if (*s1 - *s2 != 0)
+			return 1;
+
+		s1++; s2++;
+	}
+	if (*s1 != *s2)
+		return 1;
+
+	return 0;
 }
 
 
