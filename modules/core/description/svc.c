@@ -85,6 +85,8 @@ struct axis2_svc_impl
     axis2_char_t *target_ns_prefix;
     /* Used for schema name calculations */
     int sc_calc_count;
+
+    void *impl_class;
 };
 
 #define AXIS2_INTF_TO_IMPL(svc) ((axis2_svc_impl_t *)svc)
@@ -576,6 +578,7 @@ axis2_svc_create(
     svc_impl->target_ns = NULL;
     svc_impl->target_ns_prefix = NULL;
     svc_impl->sc_calc_count = 0;
+    svc_impl->impl_class = NULL;
 
     svc_impl->svc.param_container = axis2_param_container_create(env);
     if (NULL == svc_impl->svc.param_container)
@@ -2752,3 +2755,22 @@ axis2_svc_swap_mapping_table(
     return new_table;
 }
 
+AXIS2_EXTERN void *AXIS2_CALL
+axis2_svc_get_impl_class(
+    const axis2_svc_t *svc,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->impl_class;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_set_impl_class(
+    axis2_svc_t *svc,
+    const axis2_env_t *env,
+    void *impl_class)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(svc)->impl_class = impl_class;
+    return AXIS2_SUCCESS;
+}

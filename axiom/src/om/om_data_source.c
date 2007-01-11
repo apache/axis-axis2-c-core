@@ -122,6 +122,7 @@ axiom_data_source_serialize(axiom_data_source_t *om_data_source,
 {
     int status = AXIS2_SUCCESS;
     axis2_char_t *data = NULL;
+    unsigned int data_len = 0;
     axiom_data_source_impl_t *om_data_source_impl = NULL;
 
 
@@ -131,8 +132,10 @@ axiom_data_source_serialize(axiom_data_source_t *om_data_source,
 
     /*TODO: write null terminator char to stream */
     data = axis2_stream_get_buffer(om_data_source_impl->stream, env);
+    data_len = AXIS2_STREAM_BASIC_GET_LEN(om_data_source_impl->stream, env);
     if (data)
     {
+        data[data_len] = '\0';
         status = axiom_output_write(om_output, env,
                 AXIOM_DATA_SOURCE, 1, data);
     }

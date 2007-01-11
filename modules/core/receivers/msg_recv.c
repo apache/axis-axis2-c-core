@@ -210,6 +210,12 @@ axis2_msg_recv_make_new_svc_obj(
         return NULL;
     }
 
+    impl_class = axis2_svc_get_impl_class(svc, env);
+    if (impl_class)
+    {
+        return impl_class;
+    }
+
     impl_info_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SERVICE_CLASS);
     if (!impl_info_param)
     {
@@ -221,6 +227,7 @@ axis2_msg_recv_make_new_svc_obj(
     axis2_class_loader_init(env);
 
     impl_class = axis2_class_loader_create_dll(env, impl_info_param);
+    axis2_svc_set_impl_class(svc, env, impl_class);
 
     return impl_class;
 }

@@ -1098,6 +1098,16 @@ extern "C"
         const axis2_env_t *env,
         struct axis2_wsdl_svc *wsdl_svc);
 
+    AXIS2_EXTERN void *AXIS2_CALL
+    axis2_svc_get_impl_class(
+        const axis2_svc_t *svc,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_set_impl_class(
+        axis2_svc_t *svc,
+        const axis2_env_t *env,
+        void *impl_class);
 
 /** Frees service.
     @sa axis2_svc_ops#free */
