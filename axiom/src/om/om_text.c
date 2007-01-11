@@ -196,7 +196,6 @@ axiom_text_serialize(axiom_text_t *om_text,
     int status = AXIS2_SUCCESS;
     axiom_text_impl_t *om_text_impl = NULL;
     axis2_char_t *attribute_value = NULL;
-    axis2_char_t *temp_attribute_value = NULL;
     axis2_char_t *text = NULL;
     axiom_xml_writer_t *om_output_xml_writer = NULL;
 
@@ -222,10 +221,8 @@ axiom_text_serialize(axiom_text_t *om_text,
                 if (content_id)
                     om_text_impl->content_id = AXIS2_STRDUP(content_id, env);
             }
-            attribute_value = AXIS2_STRDUP("cid:", env);
-            temp_attribute_value = AXIS2_STRACAT(attribute_value, om_text_impl->content_id, env);
-            AXIS2_FREE(env->allocator, attribute_value);
-            attribute_value = temp_attribute_value;
+
+            attribute_value = AXIS2_STRACAT("cid:", om_text_impl->content_id, env);
 
             /*send binary as MTOM optimised*/
             if (om_text_impl->om_attribute)

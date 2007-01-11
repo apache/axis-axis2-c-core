@@ -74,28 +74,10 @@ axiom_document_create(const axis2_env_t *env,
     document->root_element = root;
     document->first_child = root;
     document->last_child = root;
-    document->xml_version = NULL;
-    document->char_set_encoding = NULL;
+    document->xml_version = XML_VERSION;
+    document->char_set_encoding = CHAR_SET_ENCODING;
     document->done = AXIS2_FALSE;
     document->om_document.ops = &axiom_document_ops_var;
-
-    document->char_set_encoding = (axis2_char_t *) AXIS2_STRDUP(CHAR_SET_ENCODING, env);
-    if (!document->char_set_encoding)
-    {
-        AXIS2_FREE(env->allocator, document);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    document->xml_version = (axis2_char_t *) AXIS2_STRDUP(XML_VERSION, env);
-    if (!document->xml_version)
-    {
-
-        AXIS2_FREE(env->allocator, document->char_set_encoding);
-        AXIS2_FREE(env->allocator, document);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
 
     return &(document->om_document);
 }
@@ -109,16 +91,6 @@ axiom_document_free(axiom_document_t *om_document,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     document = AXIS2_INTF_TO_IMPL(om_document);
 
-    if (document->char_set_encoding)
-    {
-        AXIS2_FREE(env->allocator, document->char_set_encoding);
-        document->char_set_encoding = NULL;
-    }
-    if (document->xml_version)
-    {
-        AXIS2_FREE(env->allocator, document->xml_version);
-        document->xml_version = NULL;
-    }
     if (document->root_element)
     {
 

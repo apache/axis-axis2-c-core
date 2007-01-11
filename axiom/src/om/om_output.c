@@ -104,23 +104,13 @@ axiom_output_create(const axis2_env_t *env,
     om_output_impl->next_content_id = NULL;
     om_output_impl->next_id = 0;
     om_output_impl->is_soap11 = AXIS2_TRUE;
-    om_output_impl->char_set_encoding = NULL;
+    om_output_impl->char_set_encoding = AXIS2_DEFAULT_CHAR_SET_ENCODING;
     om_output_impl->xml_version = NULL;
     om_output_impl->ignore_xml_declaration = AXIS2_TRUE;
     om_output_impl->binary_node_list = NULL;
     om_output_impl->mime_output = NULL;
     om_output_impl->mime_boundry = NULL;
     om_output_impl->om_output.ops = &axiom_output_ops_var;
-
-    om_output_impl->char_set_encoding = AXIS2_STRDUP(
-                AXIS2_DEFAULT_CHAR_SET_ENCODING, env);
-
-    if (!(om_output_impl->char_set_encoding))
-    {
-        AXIS2_FREE(env->allocator, om_output_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
 
     return &(om_output_impl->om_output);
 }
@@ -138,11 +128,6 @@ axiom_output_free(axiom_output_t *om_output,
     {
         AXIS2_FREE(env->allocator, om_output_impl->xml_version);
         om_output_impl->xml_version = NULL;
-    }
-    if (om_output_impl->char_set_encoding)
-    {
-        AXIS2_FREE(env->allocator, om_output_impl->char_set_encoding);
-        om_output_impl->char_set_encoding = NULL;
     }
     if (om_output_impl->mime_boundary)
     {
@@ -262,20 +247,10 @@ axiom_output_set_char_set_encoding
 {
     axiom_output_impl_t *output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, char_set_encoding, AXIS2_FAILURE);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
-    if (output_impl->char_set_encoding)
-    {
-        AXIS2_FREE(env->allocator, output_impl->char_set_encoding);
-        output_impl->char_set_encoding = NULL;
-    }
+    output_impl->char_set_encoding = char_set_encoding;
 
-    output_impl->char_set_encoding = AXIS2_STRDUP(char_set_encoding, env);
-    if (!output_impl->char_set_encoding)
-    {
-        return AXIS2_FAILURE;
-    }
     return AXIS2_SUCCESS;
 }
 
