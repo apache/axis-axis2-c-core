@@ -141,7 +141,7 @@ rampart_get_security_param(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axis2_char_t *parameter)
 {
-
+/*parameter can be either RAMPART_OUTFLOW_SECURITY or RAMPART_INFLOW_SECURITY*/
     axis2_param_t *param = NULL;
     param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, parameter);
     return param;
