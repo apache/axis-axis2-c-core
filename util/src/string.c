@@ -27,7 +27,24 @@
 AXIS2_EXTERN void* AXIS2_CALL
 axis2_strdup(const void *ptr, const axis2_env_t *env)
 {
-	return strdup(ptr)
+    AXIS2_ENV_CHECK(env, NULL);
+    if (ptr)
+    {
+        int len = axis2_strlen(ptr);
+        axis2_char_t * str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+                sizeof(axis2_char_t) * (len + 1));
+        if (!str)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return NULL;
+        }
+        memcpy(str, ptr, len + 1);
+        return (void *) str;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
