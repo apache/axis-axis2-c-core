@@ -307,11 +307,11 @@ axis2_msg_ctx_free(
         msg_ctx->svc_ctx_id = NULL;
     }
 
-    if (msg_ctx->paused_phase_name)
+    /*if (msg_ctx->paused_phase_name)
     {
         AXIS2_FREE(env->allocator, msg_ctx->paused_phase_name);
         msg_ctx->paused_phase_name = NULL;
-    }
+    }*/
 
     if (msg_ctx->soap_action)
     {
@@ -1373,7 +1373,7 @@ axis2_msg_ctx_set_paused_phase_name(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (msg_ctx->paused_phase_name)
+    /*if (msg_ctx->paused_phase_name)
     {
         AXIS2_FREE(env->allocator, msg_ctx->paused_phase_name);
         msg_ctx->paused_phase_name = NULL;
@@ -1387,7 +1387,9 @@ axis2_msg_ctx_set_paused_phase_name(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
-    }
+    }*/
+    /* a shallow copy is sufficient as phase lives beyond message */
+    msg_ctx->paused_phase_name = (axis2_char_t *)paused_phase_name; 
     return AXIS2_SUCCESS;
 }
 
