@@ -54,15 +54,14 @@ openssl_pem_buf_read_pkey(const axis2_env_t *env,
                    (unsigned char*)b64_encoded_buf, ilen);
     EVP_DecodeFinal(&ctx, (unsigned char*)buff, &ret);
     ret += len;
-    if ((bio = BIO_new_mem_buf(b64_encoded_buf, ilen)) == NULL)
+    if ((bio = BIO_new_mem_buf(buff, ilen)) == NULL)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
                 "BIO memeory allocation failure");
         return AXIS2_FAILURE;
     }
     /*Load*/
-    PEM_read_bio_PrivateKey(bio, pkey, 0 , password); 
-
+    *pkey = d2i_PrivateKey_bio(bio, NULL);
     
     /*Free*/
     BIO_free(bio);

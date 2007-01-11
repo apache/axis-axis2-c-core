@@ -85,7 +85,7 @@ rampart_callback_encuser_password(const axis2_env_t *env,
     axis2_ctx_t *ctx = NULL;
 
     /*Check if encUserPassword is in the context. This is designed specially for PHP
-    i.e.In any context in the cotext hierarchy starting from msg, op, svc, etc.*/
+    i.e.In any context in the context hierarchy starting from msg, op, svc, etc.*/
     ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
     password = rampart_get_property_from_ctx(env, ctx,  RAMPART_ACTION_ENC_USER_PASSWORD);
     if (password)

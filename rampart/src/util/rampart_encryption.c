@@ -155,6 +155,9 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
         
         /*Get the node to be encrypted*/
         node_to_enc = (axiom_node_t *)AXIS2_ARRAY_LIST_GET(nodes_to_encrypt, env, i);
+        if(!node_to_enc){
+            return AXIS2_FAILURE;
+        }
         /*Create the encryption context for OMXMLSEC*/
         enc_ctx = oxs_ctx_create(env);
         /*Set the key*/
@@ -200,15 +203,5 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_enc_decrypt_message(const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
-    rampart_actions_t *actions,
-    axiom_soap_envelope_t *soap_envelope,
-    axiom_node_t *sec_node)
-{
-
-    return AXIS2_SUCCESS;
-}
 
 

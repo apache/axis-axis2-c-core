@@ -167,7 +167,7 @@ AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
             out_buf += out_length;
         }
 #endif        
-        /* finalize transform */
+        /* finalize  */
         ret = EVP_CipherFinal(&ctx, out_buf, &out_length2);
 #ifndef OXS_OPENSSL_096
         if(!encrypt){

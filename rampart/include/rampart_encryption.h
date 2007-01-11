@@ -49,21 +49,6 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     axiom_node_t *sec_node);
 
 
-/**
-* @param env pointer to environment struct
-* @param msg_ctx message context
-* @param actions actions defined in the descriptor file
-* @param soap_envelope the SOAP envelope
-* @param sec_node The security element
-* @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_enc_decrypt_message(const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
-    rampart_actions_t *actions,
-    axiom_soap_envelope_t *soap_envelope,
-    axiom_node_t *sec_node);
-
 /* @} */
 #ifdef __cplusplus
 }

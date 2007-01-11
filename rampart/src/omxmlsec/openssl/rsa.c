@@ -163,7 +163,7 @@ openssl_rsa_pub_encrypt(
             encrypted,
             key->pkey.rsa ,
             pad);
-/*            RSA_PKCS1_PADDING);*/
+    
     if (ret < 0)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
@@ -194,6 +194,7 @@ openssl_rsa_prv_decrypt(
 
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
 
+    /*Set padding. This is the only diff btwn RSA-v1.5 and RSA-OAEP*/
     if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
         pad = RSA_PKCS1_OAEP_PADDING;
     }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
@@ -206,7 +207,7 @@ openssl_rsa_prv_decrypt(
             decrypted,
             key->pkey.rsa,
             pad);
-    /*        RSA_PKCS1_PADDING);*/
+    
     if (ret < 0)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,

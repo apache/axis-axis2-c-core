@@ -216,6 +216,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     return AXIS2_SUCCESS;    
 }
 
+#ifdef PRE_CHECK    
 static axis2_status_t 
 rampart_shp_pre_security_check(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
@@ -273,6 +274,7 @@ rampart_shp_pre_security_check(const axis2_env_t *env,
     } 
     return AXIS2_SUCCESS;
 }
+#endif
 
 /*Compare security checked results with action items*/
 static axis2_status_t
@@ -359,11 +361,12 @@ rampart_shp_process_message(const axis2_env_t *env,
 
     /*If certian security elements are expected by the reciever, rampart should check for those */
     /*This should be removed once header encryption is introduced. But this pre-check avoids further processing of headers.*/
+#ifdef PRE_CHECK    
     status =  rampart_shp_pre_security_check(env, msg_ctx, actions,  soap_envelope, sec_node);
     if(AXIS2_FAILURE == status){
         return AXIS2_FAILURE;
     }
-
+#endif
     AXIS2_LOG_INFO(env->log, "[rampart][shp] Process security header");
     /*Get the first token of the security header element*/
     cur_node = AXIOM_NODE_GET_FIRST_CHILD(sec_node, env);

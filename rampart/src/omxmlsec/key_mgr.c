@@ -55,7 +55,7 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
             }
         }
     }else{
-
+        /*pem_buf is NULL. So we have to fetch the key in a file*/
         /*Get file to be loaded. Can be either in PEM or PKCS12 format*/
         filename = oxs_asym_ctx_get_file_name(ctx, env);
         if(!filename){
