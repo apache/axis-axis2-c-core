@@ -289,8 +289,8 @@ axis2_simple_http_svr_conn_read_request(
     axis2_simple_http_svr_conn_t *svr_conn,
     const axis2_env_t *env)
 {
-    axis2_char_t str_line[1024];
-    axis2_char_t tmp_buf[3];
+    axis2_char_t str_line[2048];
+    axis2_char_t tmp_buf[2048];
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     int read = -1;
     axis2_bool_t end_of_line = AXIS2_FALSE;
@@ -301,8 +301,39 @@ axis2_simple_http_svr_conn_read_request(
     AXIS2_ENV_CHECK(env, NULL);
 
     svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
-    memset(str_line, 0, 1024);
-    while ((read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf,
+    memset(str_line, 0, 2048);
+    while ((read = axis2_stream_peek_socket(svr_conn_impl->stream, env, tmp_buf, 2048)) > 0)
+    {
+        axis2_char_t *start = tmp_buf;
+        axis2_char_t *end = NULL;
+        tmp_buf[read] = '\0';
+        end = strstr(tmp_buf, AXIS2_HTTP_CRLF);
+        if (end)
+        {
+            read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf, end - start + 2);
+            if (read > 0)
+            {
+                tmp_buf[read] = '\0';
+                strcat(str_line, tmp_buf);
+                break;
+            }
+            else
+            {
+                break;
+            }
+        }
+        else
+        {
+            read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf, 2048);
+            if (read > 0)
+            {
+                tmp_buf[read] = '\0';
+                strcat(str_line, tmp_buf);
+            }
+        }
+    }
+    
+    /*while ((read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf,
             1)) > 0)
     {
         tmp_buf[read] = '\0';
@@ -315,7 +346,8 @@ axis2_simple_http_svr_conn_read_request(
         {
             break;
         }
-    }
+    }*/
+    
     if (str_line)
     {
         if (0 != AXIS2_STRNCASECMP(str_line, "GET", 3) && 0 !=
@@ -342,11 +374,43 @@ axis2_simple_http_svr_conn_read_request(
     request = axis2_http_simple_request_create(env, request_line, NULL , 0,
             svr_conn_impl->stream);
     /* now read the headers */
-    memset(str_line, 0, 1024);
+    memset(str_line, 0, 2048);
     end_of_line = AXIS2_FALSE;
     while (AXIS2_FALSE == end_of_headers)
     {
-        while ((read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf,
+        while ((read = axis2_stream_peek_socket(svr_conn_impl->stream, env, tmp_buf, 2048)) > 0)
+        {
+            axis2_char_t *start = tmp_buf;
+            axis2_char_t *end = NULL;
+            tmp_buf[read] = '\0';
+            end = strstr(tmp_buf, AXIS2_HTTP_CRLF);
+            if (end)
+            {
+                read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf, end - start + 2);
+                if (read > 0)
+                {
+                    tmp_buf[read] = '\0';
+                    strcat(str_line, tmp_buf);
+                    end_of_line = AXIS2_TRUE;
+                    break;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            else
+            {
+                read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf, 2048);
+                if (read > 0)
+                {
+                    tmp_buf[read] = '\0';
+                    strcat(str_line, tmp_buf);
+                }
+            }
+        }
+    
+        /*while ((read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf,
                 1)) > 0)
         {
             tmp_buf[read] = '\0';
@@ -356,7 +420,7 @@ axis2_simple_http_svr_conn_read_request(
                 end_of_line = AXIS2_TRUE;
                 break;
             }
-        }
+        }*/
         if (AXIS2_TRUE == end_of_line)
         {
             if (0 == AXIS2_STRCMP(str_line, AXIS2_HTTP_CRLF))
@@ -367,7 +431,7 @@ axis2_simple_http_svr_conn_read_request(
             {
                 axis2_http_header_t *tmp_header =
                     axis2_http_header_create_by_str(env, str_line);
-                memset(str_line, 0, 1024);
+                memset(str_line, 0, 2048);
                 if (tmp_header)
                 {
                     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env,
