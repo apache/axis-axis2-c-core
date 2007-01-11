@@ -592,35 +592,10 @@ axis2_msg_ctx_set_soap_envelope(
 
     if (soap_envelope)
     {
-        axiom_namespace_t *ns = NULL;
-        axis2_char_t *soap_ns = NULL;
-
-        msg_ctx->soap_envelope  = soap_envelope ;
-        ns = AXIOM_SOAP_ENVELOPE_GET_NAMESPACE(soap_envelope, env);
-        if (ns)
-        {
-            soap_ns = AXIOM_NAMESPACE_GET_URI(ns, env);
-            if (soap_ns)
-            {
-                if (AXIS2_STRCASECMP(soap_ns,
-                        AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
-                    msg_ctx->is_soap_11 = AXIS2_FALSE;
-                else if (AXIS2_STRCASECMP(soap_ns,
-                        AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
-                    msg_ctx->is_soap_11 = AXIS2_TRUE;
-                else
-                {
-                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOAP_VERSION,
-                            AXIS2_FAILURE);
-                    return AXIS2_FAILURE;
-                }
-                return AXIS2_SUCCESS;
-            }
-        }
-
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOAP_ENVELOPE_STATE,
-                AXIS2_FAILURE);
-        return AXIS2_FAILURE;
+        int soap_v = AXIOM_SOAP12;
+        soap_v = AXIOM_SOAP_ENVELOPE_GET_SOAP_VERSION(soap_envelope, env);
+        msg_ctx->is_soap_11 = (soap_v == AXIOM_SOAP12) ? AXIS2_FALSE : AXIS2_TRUE;
+        msg_ctx->soap_envelope = soap_envelope;
     }
     else
     {
