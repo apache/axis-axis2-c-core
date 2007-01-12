@@ -19,7 +19,7 @@
 #define AXIOM_DOCTYPE_H
 
 /**
- *@file axiom_doctype.h   
+ *@file axiom_doctype.h
  *@brief defines struct representing xml DTD and its manipulation functions
  */
 
@@ -34,105 +34,88 @@ extern "C"
     struct axiom_doctype;
     struct axiom_doctype_ops;
 
-/**
- * @defgroup axiom_doctype doctype
- * @ingroup axiom_om
- * @{
- */
+    /**
+     * @defgroup axiom_doctype doctype
+     * @ingroup axiom_om
+     * @{
+     */
 
-  /**
-    * \brief doctype ops struct
-    * Encapsulator struct for ops of axiom_doctype
-    */
-    typedef struct axiom_doctype_ops
-    {
-        int dummy; /* if this is missing, windows compiler goes crazy */
-    } axiom_doctype_ops_t;
+    typedef struct axiom_doctype axiom_doctype_t;
 
-  /**
-    * \brief doctype struct
-    * Handles XML document type in AXIOM
-    */
-    typedef struct axiom_doctype
-    {
-        /** Doctype related ops */
-        const axiom_doctype_ops_t *ops;
-    } axiom_doctype_t;
-
-  /**
-    * Creates a axiom_doctype_t struct
-    * @param env Environment. MUST  NOT be NULL,
-    * @param parent parent of the new node. Optinal, can be NULL. 
-    * @param value doctype text
-    * @param node This is an out parameter.cannot be NULL.
-    *               Returns the node corresponding to the doctype created.
-    *               Node type will be set to AXIOM_DOCTYPE
-    * @return pointer to newly created doctype struct 
-    */
+    /**
+      * Creates a axiom_doctype_t struct
+      * @param env Environment. MUST  NOT be NULL,
+      * @param parent parent of the new node. Optinal, can be NULL. 
+      * @param value doctype text
+      * @param node This is an out parameter.cannot be NULL.
+      *               Returns the node corresponding to the doctype created.
+      *               Node type will be set to AXIOM_DOCTYPE
+      * @return pointer to newly created doctype struct 
+      */
     AXIS2_EXTERN axiom_doctype_t * AXIS2_CALL
-    axiom_doctype_create (const axis2_env_t *env,
-                             axiom_node_t * parent,
-                             const axis2_char_t * value,
-                             axiom_node_t ** node);
-  /**
-    * free doctype struct
-    * @param om_doctype pointer to axiom_doctype_t struct to be freed
-    * @param env Environment. MUST NOT be NULL,
-    * @return satus of the op. AXIS2_SUCCESS on success
-    *         AXIS2_FAILURE on error.
-    */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    axiom_doctype_create(const axis2_env_t *env,
+            axiom_node_t * parent,
+            const axis2_char_t * value,
+            axiom_node_t ** node);
+    /**
+      * free doctype struct
+      * @param om_doctype pointer to axiom_doctype_t struct to be freed
+      * @param env Environment. MUST NOT be NULL,
+      * @return satus of the op. AXIS2_SUCCESS on success
+      *         AXIS2_FAILURE on error.
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_doctype_free(struct axiom_doctype *om_doctype,
-          const axis2_env_t *env);
-   /**
-    * @param om_doctype pointer to a axiom_doctype_t struct
-    * @param env environment must not be null       
-    * @return DTD text 
-    */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+            const axis2_env_t *env);
+    /**
+     * @param om_doctype pointer to a axiom_doctype_t struct
+     * @param env environment must not be null   
+     * @return DTD text 
+     */
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_doctype_get_value(struct axiom_doctype *om_doctype,
-               const axis2_env_t *env);
-   /**
-    * @param om_doctype pointer to axiom doctype_t struct
-    * @param env environment , MUST NOT be NULL.
-    * @param value doctype text value
-    * @return status of the op,
-    *         AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
-    */
+            const axis2_env_t *env);
+    /**
+     * @param om_doctype pointer to axiom doctype_t struct
+     * @param env environment , MUST NOT be NULL.
+     * @param value doctype text value
+     * @return status of the op,
+     *         AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+     */
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_doctype_set_value(struct axiom_doctype *om_doctype,
-               const axis2_env_t *env,
-               const axis2_char_t *value);
-   /**
-    * serialize op 
-    * @param om_doctype pointer to axiom_doctype_t struct
-    * @param env environment , MUST NOT be NULL
-    * @param om_output pointer to axiom_output_t struct
-    * @returns status of the op,
-    *          AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
-    */                                   
-    
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+            const axis2_env_t *env,
+            const axis2_char_t *value);
+    /**
+     * serialize op 
+     * @param om_doctype pointer to axiom_doctype_t struct
+     * @param env environment , MUST NOT be NULL
+     * @param om_output pointer to axiom_output_t struct
+     * @returns status of the op,
+     *          AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
+     */
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_doctype_serialize(struct axiom_doctype *om_doctype,
-               const axis2_env_t *env,
-               axiom_output_t *om_output);
- 
-/** free given doctype */    
+            const axis2_env_t *env,
+            axiom_output_t *om_output);
+
+    /** free given doctype */
 #define AXIOM_DOCTYPE_FREE(doctype, env) \
         axiom_doctype_free(doctype, env)
-/** returns the value of doctype */
+    /** returns the value of doctype */
 #define AXIOM_DOCTYPE_GET_VALUE(doctype, env) \
         axiom_doctype_get_value(doctype, env)
-/** set the doctype value */
+    /** set the doctype value */
 #define AXIOM_DOCTYPE_SET_VALUE(doctype, env, value) \
         axiom_doctype_set_value(doctype, env, value)
-/** serialize op */       
+    /** serialize op */
 #define AXIOM_DOCTYPE_SERIALIZE(doctype, env, om_output) \
         axiom_doctype_serialize(doctype, env, om_output)
 
-/** @} */
-    
+    /** @} */
+
 #ifdef __cplusplus
 }
 #endif

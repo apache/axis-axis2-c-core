@@ -19,28 +19,14 @@
 #include <axis2_string.h>
 #include "axiom_node_internal.h"
 
-/*********************** axiom_processing_instruction_impl_t struct ********/
-typedef struct axiom_processing_instruction_impl
+struct axiom_processing_instruction
 {
-
-    axiom_processing_instruction_t om_pi;
     /** processing instruction  target */
     axis2_char_t *target;
     /** processing instruction  value */
     axis2_char_t *value;
-}
-axiom_processing_instruction_impl_t;
-
-static const axiom_processing_instruction_ops_t axiom_processing_instruction_ops_var = {
-    0
 };
 
-/******************************************************************************/
-
-#define AXIS2_INTF_TO_IMPL(om_processing_ins) ((axiom_processing_instruction_impl_t*)om_processing_ins)
-
-
-/******************************************************************************/
 AXIS2_EXTERN axiom_processing_instruction_t *AXIS2_CALL
 axiom_processing_instruction_create(const axis2_env_t *env,
         axiom_node_t * parent,
@@ -48,7 +34,7 @@ axiom_processing_instruction_create(const axis2_env_t *env,
         const axis2_char_t * value,
         axiom_node_t ** node)
 {
-    axiom_processing_instruction_impl_t *processing_instruction = NULL;
+    axiom_processing_instruction_t *processing_instruction = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     if (!node || !target || !value)
@@ -65,8 +51,8 @@ axiom_processing_instruction_create(const axis2_env_t *env,
         return NULL;
     }
 
-    processing_instruction = (axiom_processing_instruction_impl_t *) AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_processing_instruction_impl_t));
+    processing_instruction = (axiom_processing_instruction_t *) AXIS2_MALLOC(
+                env->allocator, sizeof(axiom_processing_instruction_t));
 
     if (!processing_instruction)
     {
@@ -109,34 +95,28 @@ axiom_processing_instruction_create(const axis2_env_t *env,
         AXIOM_NODE_ADD_CHILD(parent, env, (*node));
     }
 
-    /* ops */
-    processing_instruction->om_pi.ops = &axiom_processing_instruction_ops_var;
-
-    return &(processing_instruction->om_pi);
+    return processing_instruction;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
         const axis2_env_t *env)
 {
-    axiom_processing_instruction_impl_t *pi_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    pi_impl = AXIS2_INTF_TO_IMPL(om_pi);
-
-    if (pi_impl->value)
+    if (om_pi->value)
     {
-        AXIS2_FREE(env->allocator, pi_impl->value);
-        pi_impl->value = NULL;
+        AXIS2_FREE(env->allocator, om_pi->value);
+        om_pi->value = NULL;
     }
 
-    if (pi_impl->target)
+    if (om_pi->target)
     {
-        AXIS2_FREE(env->allocator, pi_impl->target);
-        pi_impl->target = NULL;
+        AXIS2_FREE(env->allocator, om_pi->target);
+        om_pi->target = NULL;
     }
 
-    AXIS2_FREE(env->allocator, pi_impl);
+    AXIS2_FREE(env->allocator, om_pi);
     return AXIS2_SUCCESS;
 }
 
@@ -147,7 +127,7 @@ axiom_processing_instruction_set_value(axiom_processing_instruction_t *om_pi,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_pi)->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
+    om_pi->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
     return AXIS2_SUCCESS;
 }
 
@@ -159,7 +139,7 @@ axiom_processing_instruction_set_target(axiom_processing_instruction_t *om_pi,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, target, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_pi)->target = (axis2_char_t*)AXIS2_STRDUP(target, env);
+    om_pi->target = (axis2_char_t*)AXIS2_STRDUP(target, env);
     return AXIS2_SUCCESS;
 
 }
@@ -169,14 +149,14 @@ axiom_processing_instruction_get_value(axiom_processing_instruction_t *om_pi,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(om_pi)->value;
+    return om_pi->value;
 }
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_processing_instruction_get_target(axiom_processing_instruction_t *om_pi,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(om_pi)->target;
+    return om_pi->target;
 }
 
 
@@ -186,21 +166,18 @@ axiom_processing_instruction_serialize
         const axis2_env_t *env,
         axiom_output_t *om_output)
 {
-    axiom_processing_instruction_impl_t *om_pi_impl;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
-    om_pi_impl = AXIS2_INTF_TO_IMPL(om_pi);
-
-    if (om_pi_impl->target && om_pi_impl->value)
+    if (om_pi->target && om_pi->value)
         return axiom_output_write(om_output, env,
                 AXIOM_PROCESSING_INSTRUCTION,
-                2, om_pi_impl->target, om_pi_impl->value);
+                2, om_pi->target, om_pi->value);
 
-    else if (om_pi_impl->target)
+    else if (om_pi->target)
         return axiom_output_write(om_output, env,
                 AXIOM_PROCESSING_INSTRUCTION,
-                2, om_pi_impl->target, om_pi_impl->value);
+                2, om_pi->target, om_pi->value);
     return AXIS2_FAILURE;
 }
 

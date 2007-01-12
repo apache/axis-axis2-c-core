@@ -31,81 +31,62 @@ extern "C"
 {
 #endif
 
-    struct axiom_comment;
-    struct axiom_comment_ops;
 
-/**
- * @defgroup axiom_comment comment
- * @ingroup axiom_om
- * @{
- */
+    /**
+     * @defgroup axiom_comment comment
+     * @ingroup axiom_om
+     * @{
+     */
 
 
-  /** 
-    *   @brief comment ops struct
-    *   Encapsulator struct for ops of axiom_comment_t
-    */
-    typedef struct axiom_comment_ops
-    {
-        int dummy; /* if this is missing, windows compiler goes crazy */
-    } axiom_comment_ops_t;
+    typedef struct axiom_comment axiom_comment_t;
 
-  /** 
-    * \brief comment struct
-    * Handles the XML comment in AXIOM
-    */
-    typedef struct axiom_comment
-    {
-        /** ops struct */
-        const axiom_comment_ops_t *ops;
-    } axiom_comment_t;
+    /**
+      * Creates a comment struct
+      * @param env Environment. MUST NOT be NULL,
+      * @param parent This is the parent node of the comment is any, can be NULL.
+      * @param value comment text
+      * @param node This is an out parameter.cannot be NULL.
+      *        Returns the node corresponding to the comment created.
+      *        Node type will be set to AXIOM_COMMENT
+      * @return a pointer to the newly created comment struct
+      */
+    AXIS2_EXTERN axiom_comment_t * AXIS2_CALL
+    axiom_comment_create(const axis2_env_t *env,
+            axiom_node_t *parent,
+            const axis2_char_t *value,
+            axiom_node_t **node);
 
-  /**
-    * Creates a comment struct
-    * @param env Environment. MUST NOT be NULL,
-    * @param parent This is the parent node of the comment is any, can be NULL.
-    * @param value comment text
-    * @param node This is an out parameter.cannot be NULL.
-    *        Returns the node corresponding to the comment created.
-    *        Node type will be set to AXIOM_COMMENT
-    * @return a pointer to the newly created comment struct
-    */
-    AXIS2_EXTERN axiom_comment_t * AXIS2_CALL 
-    axiom_comment_create (const axis2_env_t *env,
-                             axiom_node_t *parent,
-                             const axis2_char_t *value,
-                             axiom_node_t **node);
+    /**
+      * Free a axis2_comment_t struct
+      * @param om_comment pointer to axis2_commnet_t struct to be freed
+      * @param env Environment. MUST NOT be NULL.
+      * @return satus of the op. 
+      *                AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_comment_free(struct axiom_comment *om_comment,
+            const axis2_env_t *env);
+    /** get the comments data
+     * @param om_comment a pointer to axiom_comment_t struct
+     * @param env environment, MUST NOT be NULL 
+     * @returns comment text
+     */
 
-  /**
-    * Free a axis2_comment_t struct
-    * @param om_comment pointer to axis2_commnet_t struct to be freed
-    * @param env Environment. MUST NOT be NULL.
-    * @return satus of the op. 
-    *                AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
-    */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axiom_comment_free (struct axiom_comment *om_comment,
-           const axis2_env_t *env);
-   /** get the comments data
-    * @param om_comment a pointer to axiom_comment_t struct
-    * @param env environment, MUST NOT be NULL 
-    * @returns comment text
-    */
-           
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_comment_get_value(struct axiom_comment *om_comment,
-               const axis2_env_t *env);
-   /**
-    * set comment data
-    * @param om_comment pointer to axiom_comment_t struct
-    * @param env environment, MUST NOT be NULL.
-    * @param value comment text
-    * @returns AXIS2_SUCCESS on success , AXIS2_FAILURE on error
-    */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+            const axis2_env_t *env);
+    /**
+     * set comment data
+     * @param om_comment pointer to axiom_comment_t struct
+     * @param env environment, MUST NOT be NULL.
+     * @param value comment text
+     * @returns AXIS2_SUCCESS on success , AXIS2_FAILURE on error
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_comment_set_value(struct axiom_comment *om_comment,
-              const axis2_env_t *env,
-              const axis2_char_t* value);
+            const axis2_env_t *env,
+            const axis2_char_t* value);
     /**
      *  serialize function 
      *  @param om_comment pointer to axiom_comment_t struct
@@ -113,25 +94,25 @@ extern "C"
      *  @param om_output pointer to om_output_t struct
      *  @return AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_comment_serialize(struct axiom_comment *om_comment,
-               const axis2_env_t *env,
-               axiom_output_t *om_output);
- 
-/** free given comment */
+            const axis2_env_t *env,
+            axiom_output_t *om_output);
+
+    /** free given comment */
 #define AXIOM_COMMENT_FREE(om_comment, env) \
         axiom_comment_free(om_comment, env)
-/** get comment text */
+    /** get comment text */
 #define AXIOM_COMMENT_GET_VALUE(om_comment, env) \
         axiom_comment_get_value(om_comment, env)
-/** set comment text */        
+    /** set comment text */
 #define AXIOM_COMMENT_SET_VALUE(om_comment, env, value) \
         axiom_comment_set_value(om_comment, env, value)
-/** serialize */
+    /** serialize */
 #define AXIOM_COMMENT_SERIALIZE(om_comment, env, om_output) \
         axiom_comment_serialize(om_comment, env, om_output)
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }

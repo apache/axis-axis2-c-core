@@ -14,37 +14,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- #ifndef AXIOM_SOAP_CONST_H
- #define AXIOM_SOAP_CONST_H
- 
- /**
- * @file axiom_soap.h
- * @brief defines SOAP constants
- */
+
+#ifndef AXIOM_SOAP_CONST_H
+#define AXIOM_SOAP_CONST_H
+
+/**
+* @file axiom_soap.h
+* @brief defines SOAP constants
+*/
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/**
- * @defgroup axiom_soap SOAP
- * @ingroup axiom
- * @{
- * @}
- */
-typedef enum soap_version
-{
-    AXIOM_SOAP_VERSION_NOT_SET = 0,
-    
-    AXIOM_SOAP11,
-    
-    AXIOM_SOAP12    
-}axiom_soap_version;
+    /**
+     * @defgroup axiom_soap SOAP
+     * @ingroup axiom
+     * @{
+     * @}
+     */
+    typedef enum soap_version
+    {
+        AXIOM_SOAP_VERSION_NOT_SET = 0,
+
+        AXIOM_SOAP11,
+
+        AXIOM_SOAP12
+    }axiom_soap_version;
 
 
 
-/** soap 11 constants */
+    /** soap 11 constants */
 
 #define AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI "http://schemas.xmlsoap.org/soap/envelope/"
 
@@ -67,7 +67,7 @@ typedef enum soap_version
 #define AXIOM_SOAP11_SOAP_ACTOR_NEXT "http://schemas.xmlsoap.org/soap/actor/next"
 
 
-/** soap12 constants */
+    /** soap12 constants */
 
 #define AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI "http://www.w3.org/2003/05/soap-envelope"
 
@@ -91,7 +91,7 @@ typedef enum soap_version
 
 #define AXIOM_SOAP12_SOAP_FAULT_VALUE_RECEIVER "Receiver"
 
-/** SOAP Fault */
+    /** SOAP Fault */
 
 #define AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME "Reason"
 
@@ -133,7 +133,7 @@ typedef enum soap_version
 
 #define AXIOM_SOAP_BODY_FAULT_LOCAL_NAME "Fault"
 
-/** attribute must understand */
+    /** attribute must understand */
 
 #define AXIOM_SOAP_ATTR_MUST_UNDERSTAND "mustUnderstand"
 
@@ -163,15 +163,15 @@ typedef enum soap_version
 
 #define AXIOM_SOAP_FAULT_CODE_RECEIVER ""
 
-/* MTOM related  */
+    /* MTOM related  */
 
 #define AXIS2_XOP_NAMESPACE_URI "http://www.w3.org/2004/08/xop/include"
 
 #define AXIS2_XOP_INCLUDE "Include"
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif /* AXIOM_SOAP_CONSTANTS_H */

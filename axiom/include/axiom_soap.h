@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef AXIOM_SOAP_H
 #define AXIOM_SOAP_H
 
@@ -35,19 +35,19 @@
 #include <axiom_soap_header.h>
 #include <axiom_soap_message.h>
 
- /**
- * @file axiom_soap.h
- * @brief includes all SOAP related headers
- */
+/**
+* @file axiom_soap.h
+* @brief includes all SOAP related headers
+*/
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif /* AXIOM_SOAP_H */

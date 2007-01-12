@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef AXIOM_H
 #define AXIOM_H
 #include <axiom_node.h>
@@ -46,7 +46,7 @@ extern "C"
 {
 #endif
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }

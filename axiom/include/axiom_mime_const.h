@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #ifndef AXIOM_MIME_CONST_H
 #define AXIOM_MIME_CONST_H
 
@@ -30,7 +30,7 @@ extern "C"
 #define AXIOM_MIME_BOUNDARY_BYTE 45
 #define AXIOM_MIME_CRLF_BYTE 13
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }

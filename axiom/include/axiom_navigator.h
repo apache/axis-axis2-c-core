@@ -14,10 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- #ifndef AXIOM_NAVIGATOR_H
- #define AXIOM_NAVIGATOR_H
- 
+
+#ifndef AXIOM_NAVIGATOR_H
+#define AXIOM_NAVIGATOR_H
+
 /**
  * @file axiom_navigator.h
  * @brief defines axiom_navigator struct and its ops
@@ -32,34 +32,15 @@ extern "C"
 {
 #endif
 
-/**
- * @defgroup axiom_navigator  navigator 
- * @ingroup axiom_om
- * @{
- */
- 
- typedef struct axiom_navigator axiom_navigator_t;
+    /**
+     * @defgroup axiom_navigator  navigator
+     * @ingroup axiom_om
+     * @{
+     */
 
- typedef struct axiom_navigator_ops axiom_navigator_ops_t;
- 
-/**
- * @brief node ops struct
- * Encapsulator struct for ops of axiom_node
- */
- 
-    struct axiom_navigator_ops 
-    {
-        int dummy; /* if this is missing, windows compiler goes crazy */
-    };
-        
-    /** axiom_navigator_t struct */
+    typedef struct axiom_navigator axiom_navigator_t;
 
-    struct axiom_navigator
-    {
-        const axiom_navigator_ops_t *ops;
-    };
-
-    /** create an axiom_navigator 
+    /** create an axiom_navigator
      * @param env environment MUST not be NULL
      * @param node a pointer to axiom_node_t struct 
      * which is to be navigated
@@ -69,19 +50,19 @@ extern "C"
 
     AXIS2_EXTERN axiom_navigator_t * AXIS2_CALL
     axiom_navigator_create(const axis2_env_t *env,
-                              axiom_node_t *node);
-    
+            axiom_node_t *node);
+
     /**
      * free function , free the axiom_navigator struct
      * @param om_navigator axiom_navigator_struct
      * @param env environment MUST not be NULL
      * @returns AXIS2_SUCCESS 
      */
-     
-     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-     axiom_navigator_free(axiom_navigator_t *om_navigator,
-           const axis2_env_t *env); 
- 
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_navigator_free(axiom_navigator_t *om_navigator,
+            const axis2_env_t *env);
+
     /**
      *  returns the navigable status 
      * @param  om_navigator axiom_navigator_struct
@@ -90,9 +71,9 @@ extern "C"
      * otherwise returns AXIS2_FALSE
      */
 
-     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-     axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
-                   const axis2_env_t *env);
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
+            const axis2_env_t *env);
 
     /**
      * returns the build status of this node 
@@ -103,10 +84,10 @@ extern "C"
      * @return AXIS2_TRUE if this node is completly built
      * otherwise return AXIS2_FALSE
      */
-     
-     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-     axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
-                        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
+            const axis2_env_t *env);
 
     /**
      * gets the next node 
@@ -118,9 +99,9 @@ extern "C"
      * pointer in the next , returns NULL on error or if there is no more nodes
      */
 
-     AXIS2_EXTERN axiom_node_t* AXIS2_CALL 
-     axiom_navigator_next(axiom_navigator_t *om_navigator, 
-           const axis2_env_t *env);
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+    axiom_navigator_next(axiom_navigator_t *om_navigator,
+            const axis2_env_t *env);
 
     /**
      * method visited 
@@ -129,12 +110,12 @@ extern "C"
      * @returns AXIS2_TRUE if this node is alrady visited
      * otherwise AXIS2_FALSE
      */
-     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
-     axiom_navigator_visited(axiom_navigator_t *om_navigator,
-              const axis2_env_t *env);
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axiom_navigator_visited(axiom_navigator_t *om_navigator,
+            const axis2_env_t *env);
 
-                
-/** Macros ********************************************************************/
+
+    /** Macros ********************************************************************/
 
 #define AXIOM_NAVIGATOR_FREE(navigator, env) \
         axiom_navigator_free(navigator, env)
@@ -151,7 +132,7 @@ extern "C"
 #define AXIOM_NAVIGATOR_NEXT(navigator, env) \
         axiom_navigator_next(navigator, env)
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }

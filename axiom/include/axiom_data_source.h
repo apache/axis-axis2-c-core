@@ -33,79 +33,73 @@ extern "C"
 {
 #endif
 
-    struct axiom_data_source;
-
-/**
- * @defgroup axiom_data_source data_source
- * @ingroup axiom_om
- * @{
- */
+    /**
+     * @defgroup axiom_data_source data_source
+     * @ingroup axiom_om
+     * @{
+     */
 
 
-  /** 
-    * \brief data_source struct
-    * Handles the XML data_source in OM
-    */
-    typedef struct axiom_data_source
-    {
-        /** Reference count */
-        unsigned int ref;
-    } axiom_data_source_t;
+    /**
+      * \brief data_source struct
+      * Handles the XML data_source in OM
+      */
+    typedef struct axiom_data_source axiom_data_source_t;
 
 
-  /**
-    * Creates a new data_source struct
-    * @param env Environment. MUST  NOT be NULL, .
-    * @param parent parent of the new node. Optinal, can be NULL. 
-    *          The parent element must be of type AXIOM_ELEMENT
-    * @param value Text value. Optinal, can be NULL.
-    * @param comment_node This is an out parameter.  cannot be NULL.
-    *                       Returns the node corresponding to the data_source struct created.
-    *                       Node type will be set to AXIOM_DATA_SOURCE    
-    * @return pointer to newly created data_source struct 
-    */
-    AXIS2_EXTERN axiom_data_source_t * AXIS2_CALL 
-    axiom_data_source_create (const axis2_env_t *env,
-                          axiom_node_t *parent,
-                          axiom_node_t ** node);
-                          
-  /**
-    * Free an axiom_data_source struct
-    * @param env environment.  MUST NOT be NULL.
-    * @param om_data_source pointer to om data_source struct to be freed.
-    * @return satus of the op. AXIS2_SUCCESS on success
-    *         AXIS2_FAILURE on error.
-    */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axiom_data_source_free (struct axiom_data_source *om_data_source,
-           const axis2_env_t *env);
+    /**
+      * Creates a new data_source struct
+      * @param env Environment. MUST  NOT be NULL, .
+      * @param parent parent of the new node. Optinal, can be NULL. 
+      *          The parent element must be of type AXIOM_ELEMENT
+      * @param value Text value. Optinal, can be NULL.
+      * @param comment_node This is an out parameter.  cannot be NULL.
+      *                       Returns the node corresponding to the data_source struct created.
+      *                       Node type will be set to AXIOM_DATA_SOURCE  
+      * @return pointer to newly created data_source struct 
+      */
+    AXIS2_EXTERN axiom_data_source_t * AXIS2_CALL
+    axiom_data_source_create(const axis2_env_t *env,
+            axiom_node_t *parent,
+            axiom_node_t ** node);
 
-  /**
-    * Serialize op
-    * @param env environment.  MUST NOT be NULL.
-    * @param om_data_source pointer to om data_source struct to be serialized.
-    * @param om_output AXIOM output handler to be used in serializing.
-    * @return satus of the op. AXIS2_SUCCESS on success,
-    *            AXIS2_FAILURE on error
-    */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axiom_data_source_serialize (struct axiom_data_source *om_data_source,
-                const axis2_env_t *env,
-                axiom_output_t *om_output);
-   /**
-    *  set the data_source value
-    * @param om_data_source om_data_source struct
-    * @param env environment , MUST NOT be NULL.
-    * @param value data_source 
-    * @return status of the op. AXIS2_SUCCESS on success,
-    *           AXIS2_FAILURE on error.                                                
-    */                                                
-    AXIS2_EXTERN axis2_stream_t * AXIS2_CALL 
+    /**
+      * Free an axiom_data_source struct
+      * @param env environment.  MUST NOT be NULL.
+      * @param om_data_source pointer to om data_source struct to be freed.
+      * @return satus of the op. AXIS2_SUCCESS on success
+      *         AXIS2_FAILURE on error.
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_source_free(struct axiom_data_source *om_data_source,
+            const axis2_env_t *env);
+
+    /**
+      * Serialize op
+      * @param env environment.  MUST NOT be NULL.
+      * @param om_data_source pointer to om data_source struct to be serialized.
+      * @param om_output AXIOM output handler to be used in serializing.
+      * @return satus of the op. AXIS2_SUCCESS on success,
+      *            AXIS2_FAILURE on error
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_source_serialize(struct axiom_data_source *om_data_source,
+            const axis2_env_t *env,
+            axiom_output_t *om_output);
+    /**
+     *  set the data_source value
+     * @param om_data_source om_data_source struct
+     * @param env environment , MUST NOT be NULL.
+     * @param value data_source 
+     * @return status of the op. AXIS2_SUCCESS on success,
+     *           AXIS2_FAILURE on error.   
+     */
+    AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
     axiom_data_source_get_stream(struct axiom_data_source *om_data_source,
-               const axis2_env_t *env);
-    
-        
-/** @} */
+            const axis2_env_t *env);
+
+
+    /** @} */
 
 #ifdef __cplusplus
 }

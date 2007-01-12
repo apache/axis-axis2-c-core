@@ -26,23 +26,13 @@
 #include <axis2_base64.h>
 
 
-/********************* axiom_data_source_impl_struct ***************/
+/********************* axiom_data_source_struct ***************/
 
-typedef struct axiom_data_source_impl_t
+struct axiom_data_source
 {
-    axiom_data_source_t om_data_source;
     /** stream holding serialized XML string */
     axis2_stream_t *stream;
-}
-axiom_data_source_impl_t;
-
-
-/*********************** Macro ***********************************/
-
-#define AXIS2_INTF_TO_IMPL(data_source) ((axiom_data_source_impl_t*)data_source)
-
-/*****************************************************************/
-
+};
 
 AXIS2_EXTERN axiom_data_source_t* AXIS2_CALL
 axiom_data_source_create(const axis2_env_t *env,
@@ -50,7 +40,7 @@ axiom_data_source_create(const axis2_env_t *env,
         axiom_node_t **node)
 {
 
-    axiom_data_source_impl_t *om_data_source = NULL;
+    axiom_data_source_t *data_source = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, node, NULL);
 
@@ -61,27 +51,27 @@ axiom_data_source_create(const axis2_env_t *env,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    om_data_source = (axiom_data_source_impl_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_data_source_impl_t));
-    if (!om_data_source)
+    data_source = (axiom_data_source_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axiom_data_source_t));
+    if (!data_source)
     {
         AXIS2_FREE(env->allocator, *node);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-    axiom_node_set_data_element((*node), env, om_data_source);
+    axiom_node_set_data_element((*node), env, data_source);
     axiom_node_set_node_type((*node), env, AXIOM_DATA_SOURCE);
     axiom_node_set_complete((*node), env, AXIS2_FALSE);
 
 
-    om_data_source->stream = NULL;
+    data_source->stream = NULL;
     
-    om_data_source->stream = axis2_stream_create_basic(env);
-    if (!(om_data_source->stream))
+    data_source->stream = axis2_stream_create_basic(env);
+    if (!(data_source->stream))
     {
         AXIS2_FREE(env->allocator, *node);
-        AXIS2_FREE(env->allocator, om_data_source);
+        AXIS2_FREE(env->allocator, data_source);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -91,48 +81,41 @@ axiom_data_source_create(const axis2_env_t *env,
         AXIOM_NODE_ADD_CHILD(parent, env, (*node));
     }
 
-    om_data_source->om_data_source.ref = 0;
-
-    return &(om_data_source->om_data_source);
+    return data_source;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_data_source_free(axiom_data_source_t * om_data_source,
+axiom_data_source_free(axiom_data_source_t * data_source,
         const axis2_env_t *env)
 {
-    axiom_data_source_impl_t *data_source_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    data_source_impl = AXIS2_INTF_TO_IMPL(om_data_source);
-    if (data_source_impl->stream)
+    if (data_source->stream)
     {
-        AXIS2_STREAM_FREE(data_source_impl->stream, env);
-        data_source_impl->stream = NULL;
+        AXIS2_STREAM_FREE(data_source->stream, env);
+        data_source->stream = NULL;
     }
 
-    AXIS2_FREE(env->allocator, data_source_impl);
+    AXIS2_FREE(env->allocator, data_source);
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_data_source_serialize(axiom_data_source_t *om_data_source,
+axiom_data_source_serialize(axiom_data_source_t *data_source,
         const axis2_env_t *env,
         axiom_output_t *om_output)
 {
     int status = AXIS2_SUCCESS;
     axis2_char_t *data = NULL;
     unsigned int data_len = 0;
-    axiom_data_source_impl_t *om_data_source_impl = NULL;
 
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
-    om_data_source_impl = AXIS2_INTF_TO_IMPL(om_data_source);
 
-    /*TODO: write null terminator char to stream */
-    data = axis2_stream_get_buffer(om_data_source_impl->stream, env);
-    data_len = AXIS2_STREAM_BASIC_GET_LEN(om_data_source_impl->stream, env);
+    data = axis2_stream_get_buffer(data_source->stream, env);
+    data_len = AXIS2_STREAM_BASIC_GET_LEN(data_source->stream, env);
     if (data)
     {
         data[data_len] = '\0';
@@ -143,9 +126,9 @@ axiom_data_source_serialize(axiom_data_source_t *om_data_source,
 }
 
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-axiom_data_source_get_stream(axiom_data_source_t *om_data_source,
+axiom_data_source_get_stream(axiom_data_source_t *data_source,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(om_data_source)->stream;
+    return data_source->stream;
 }

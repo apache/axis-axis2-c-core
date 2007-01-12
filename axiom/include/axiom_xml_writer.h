@@ -14,76 +14,76 @@
  *   limitations under the License.
  *
  */
- 
+
 #ifndef AXIOM_XML_WRITER_H
 #define AXIOM_XML_WRITER_H
 
 /**
- *@file axiom_xml_writer.h   
- *@brief this is the parser abstraction layer for axis2 
+ *@file axiom_xml_writer.h
+ *@brief this is the parser abstraction layer for axis2
  */
- 
- #include <axis2_env.h>
- 
- #ifdef __cplusplus
+
+#include <axis2_env.h>
+
+#ifdef __cplusplus
 extern "C"
 {
 #endif
-    
-typedef struct axiom_xml_writer_ops axiom_xml_writer_ops_t;    
-typedef struct axiom_xml_writer axiom_xml_writer_t;
 
-/**
- * @defgroup axiom_xml_writer XML writer
- * @ingroup axiom_parser
- * @{
- */
+    typedef struct axiom_xml_writer_ops axiom_xml_writer_ops_t;
+    typedef struct axiom_xml_writer axiom_xml_writer_t;
+
+    /**
+     * @defgroup axiom_xml_writer XML writer
+     * @ingroup axiom_parser
+     * @{
+     */
 
 
 
-  /**
-    * \brief axiom_xml_writer ops
-    * Encapsulator struct for ops of axiom_xml_writer
-    */
+    /**
+      * \brief axiom_xml_writer ops
+      * Encapsulator struct for ops of axiom_xml_writer
+      */
 
-     struct axiom_xml_writer_ops 
+    struct axiom_xml_writer_ops
     {
-       /**
-        * Free xml writer
-        * @param writer pointer to xml_writer struct to be freed
-        * @param env environment, MUST NOT be NULL.
-        * @returns status of the op. 
-        *       AXIS2_SUCCESS on success and AXIS2_FAILURE on error
-        */
-        
-        axis2_status_t (AXIS2_CALL *
-      free)(axiom_xml_writer_t *writer,
-              const axis2_env_t *env);
-       /**
-        *  Write a start tag to output stream with localname.
-        *  Internally the writer keeps track of the opened tags 
-        *  @param writer pointer to xml writer struct
-        *  @param env environment. MUST NOT be NULL.
-        *  @param localname localname of the tag, May not be NULL.
-        *  @return the status of the op, AXIS2_SUCCESS on success
-                    AXIS2_FAILURE on error.
-        */
-        axis2_status_t (AXIS2_CALL *
-      write_start_element)(axiom_xml_writer_t *writer,
-                             const axis2_env_t *env, 
-                      axis2_char_t *localname);
-       /**
-        *  write an end tag to the output relying on the internal
-        *  state of writer to determine the prefix and localname of
-        *  the element
-        *  @param writer xml_writer struct
-        *  @param env environment, MUST NOT be NULL.
-        *  @return status of the op. AXIS2_SUCCESS on success.
-        *           AXIS2_FAILURE on error.
-        */
-        axis2_status_t (AXIS2_CALL *
-      end_start_element)(axiom_xml_writer_t *writer,
-                           const axis2_env_t *env);
+        /**
+         * Free xml writer
+         * @param writer pointer to xml_writer struct to be freed
+         * @param env environment, MUST NOT be NULL.
+         * @returns status of the op. 
+         *       AXIS2_SUCCESS on success and AXIS2_FAILURE on error
+         */
+
+        axis2_status_t(AXIS2_CALL *
+                free)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env);
+        /**
+         *  Write a start tag to output stream with localname.
+         *  Internally the writer keeps track of the opened tags 
+         *  @param writer pointer to xml writer struct
+         *  @param env environment. MUST NOT be NULL.
+         *  @param localname localname of the tag, May not be NULL.
+         *  @return the status of the op, AXIS2_SUCCESS on success
+                     AXIS2_FAILURE on error.
+         */
+        axis2_status_t(AXIS2_CALL *
+                write_start_element)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname);
+        /**
+         *  write an end tag to the output relying on the internal
+         *  state of writer to determine the prefix and localname of
+         *  the element
+         *  @param writer xml_writer struct
+         *  @param env environment, MUST NOT be NULL.
+         *  @return status of the op. AXIS2_SUCCESS on success.
+         *           AXIS2_FAILURE on error.
+         */
+        axis2_status_t(AXIS2_CALL *
+                end_start_element)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env);
         /**
          * Write an element tag with localname and namespace uri 
          * @param writer pointer to xml writer struct
@@ -94,12 +94,12 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @returns status of the op, AXIS2_SUCCESS on success.
          *          AXIS2_FAILURE on error
          */
-        axis2_status_t (AXIS2_CALL *
-      write_start_element_with_namespace)(axiom_xml_writer_t *writer,
-                                 const axis2_env_t *env,
-                                 axis2_char_t *localname,
-                                 axis2_char_t *namespace_uri);
-       
+        axis2_status_t(AXIS2_CALL *
+                write_start_element_with_namespace)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname,
+                        axis2_char_t *namespace_uri);
+
         /**
          * write a start tag to output
          * @param writer pointer to xml_writer struct
@@ -110,12 +110,12 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of the op 
                    AXIS2_SUCCESS on success. AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_start_element_with_namespace_prefix)(axiom_xml_writer_t *writer,
-                                       const axis2_env_t *env,
-                                       axis2_char_t *localname,
-                                       axis2_char_t *namespace_uri,
-                                       axis2_char_t *prefix);       
+        axis2_status_t(AXIS2_CALL *
+                write_start_element_with_namespace_prefix)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname,
+                        axis2_char_t *namespace_uri,
+                        axis2_char_t *prefix);
         /**
          * write an element tag with localname 
          * @param writer xml_writer
@@ -123,11 +123,11 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @param localname localname 
          * @return status of the op AXIS2_SUCCESS on success,
          *                AXIS2_FAILURE on error.
-         */         
-        axis2_status_t (AXIS2_CALL *
-      write_empty_element)(axiom_xml_writer_t *writer,
-                           const axis2_env_t *env,
-                      axis2_char_t *localname);
+         */
+        axis2_status_t(AXIS2_CALL *
+                write_empty_element)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname);
         /**
          * write empty_element with localname and namespace uri.
          * @param writer xml writer
@@ -137,12 +137,12 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of the op, AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        
-        axis2_status_t (AXIS2_CALL *
-      write_empty_element_with_namespace)(axiom_xml_writer_t *writer,
-                                 const axis2_env_t *env,
-                                 axis2_char_t *localname,
-                                 axis2_char_t *namespace_uri);
+
+        axis2_status_t(AXIS2_CALL *
+                write_empty_element_with_namespace)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname,
+                        axis2_char_t *namespace_uri);
         /**
          * write empty element with namespace uri and prefix 
          * @param writer xml_writer
@@ -153,12 +153,12 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of the op, AXIS2_SUCCESS on success,
          *                    AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_empty_element_with_namespace_prefix)(axiom_xml_writer_t *writer,
-                                       const axis2_env_t *env,
-                                       axis2_char_t *localname,
-                                       axis2_char_t *namespace_uri,
-                                       axis2_char_t *prefix);
+        axis2_status_t(AXIS2_CALL *
+                write_empty_element_with_namespace_prefix)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname,
+                        axis2_char_t *namespace_uri,
+                        axis2_char_t *prefix);
         /**
          * write end tag with correct localname prefix resolved internally 
          * @param writer xml writer
@@ -166,9 +166,9 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of the op, AXIS2_SUCCESS on success,
          *            AXIS2_FAILURE on failure 
          */
-        axis2_status_t (AXIS2_CALL *
-      write_end_element)(axiom_xml_writer_t *writer,
-                           const axis2_env_t *env);
+        axis2_status_t(AXIS2_CALL *
+                write_end_element)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env);
         /**
          * write end document
          * @param writer xml writer
@@ -176,9 +176,9 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of the op AXIS2_SUCCESS on success,
          *              AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_end_document)(axiom_xml_writer_t *writer,
-                            const axis2_env_t *env);
+        axis2_status_t(AXIS2_CALL *
+                write_end_document)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env);
         /**
          * write attribute with localname and value
          * @param writer writer
@@ -188,11 +188,11 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of the op AXIS2_SUCCESS on success,
          *                 AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_attribute)(axiom_xml_writer_t *writer,
-                   const axis2_env_t *env,
-                   axis2_char_t *localname,
-                   axis2_char_t *value);
+        axis2_status_t(AXIS2_CALL *
+                write_attribute)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname,
+                        axis2_char_t *value);
         /**
          *  @param writer
          *  @param env environment
@@ -202,12 +202,12 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          *  @return status code of the op AXIS2_SUCCESS on success,
          *                    AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_attribute_with_namespace)(axiom_xml_writer_t *writer,
-                                const axis2_env_t *env,
-                                axis2_char_t *localname,
-                                axis2_char_t *value,
-                                axis2_char_t *namespace_uri);
+        axis2_status_t(AXIS2_CALL *
+                write_attribute_with_namespace)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname,
+                        axis2_char_t *value,
+                        axis2_char_t *namespace_uri);
         /**
          * @param writer xml_writer
          * @param env environment
@@ -215,14 +215,14 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @param value text value of attribute
          * @param namespace uri namespaceuri
          * @param prefix prefix 
-         */         
-        axis2_status_t (AXIS2_CALL *
-      write_attribute_with_namespace_prefix)(axiom_xml_writer_t *writer,
-                                                  const axis2_env_t *env,
-                                                  axis2_char_t *localname,
-                                                  axis2_char_t *value,
-                                                  axis2_char_t *namespace_uri,
-                                                  axis2_char_t *prefix);
+         */
+        axis2_status_t(AXIS2_CALL *
+                write_attribute_with_namespace_prefix)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *localname,
+                        axis2_char_t *value,
+                        axis2_char_t *namespace_uri,
+                        axis2_char_t *prefix);
         /**
          * @param writer xml_writer
          * @param env environment
@@ -231,12 +231,12 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        
-        axis2_status_t (AXIS2_CALL *
-      write_namespace)(axiom_xml_writer_t *writer,
-                   const axis2_env_t *env,
-                   axis2_char_t *prefix,
-                   axis2_char_t *namespace_uri);   
+
+        axis2_status_t(AXIS2_CALL *
+                write_namespace)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *prefix,
+                        axis2_char_t *namespace_uri);
         /**
          * @param writer xml_writer
          * @param env environment
@@ -245,10 +245,10 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          *               AXIS2_FAILURE on error.
          */
 
-        axis2_status_t (AXIS2_CALL *
-      write_default_namespace)(axiom_xml_writer_t *writer,
-                         const axis2_env_t *env,
-                         axis2_char_t *namespace_uri);  
+        axis2_status_t(AXIS2_CALL *
+                write_default_namespace)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *namespace_uri);
         /**
          * @param writer xml_writer
          * @param env environment
@@ -256,12 +256,12 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-                                                    
 
-        axis2_status_t (AXIS2_CALL *
-      write_comment)(axiom_xml_writer_t *writer,
-                  const axis2_env_t *env,
-                  axis2_char_t *value);
+
+        axis2_status_t(AXIS2_CALL *
+                write_comment)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *value);
         /**
          * @param writer xml_writer
          * @param env environment
@@ -271,11 +271,11 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          */
 
 
-        axis2_status_t (AXIS2_CALL *
-      write_processing_instruction)(axiom_xml_writer_t *writer,
-                              const axis2_env_t *env,
-                              axis2_char_t *target);
-                                   
+        axis2_status_t(AXIS2_CALL *
+                write_processing_instruction)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *target);
+
         /**
          * @param writer xml_writer
          * @param env environment
@@ -284,26 +284,26 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-                                   
-        axis2_status_t (AXIS2_CALL *
-      write_processing_instruction_data)(axiom_xml_writer_t *writer,
-                                 const axis2_env_t *env,
-                                 axis2_char_t *target,
-                                 axis2_char_t *data);
-         
+
+        axis2_status_t(AXIS2_CALL *
+                write_processing_instruction_data)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *target,
+                        axis2_char_t *data);
+
         /**
          * @param writer xml_writer
          * @param env environment
          * @param data  cdata
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
-         */                                           
-        axis2_status_t (AXIS2_CALL *
-      write_cdata)(axiom_xml_writer_t *writer,
-                const axis2_env_t *env,
-                axis2_char_t *data);
-        
-         
+         */
+        axis2_status_t(AXIS2_CALL *
+                write_cdata)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *data);
+
+
         /**
          * @param writer xml_writer
          * @param env environment
@@ -311,12 +311,12 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_dtd)(axiom_xml_writer_t *writer,
-               const axis2_env_t *env,
-               axis2_char_t *dtd); 
-        
-         
+        axis2_status_t(AXIS2_CALL *
+                write_dtd)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *dtd);
+
+
         /**
          * @param writer xml_writer
          * @param env environment
@@ -324,22 +324,22 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_entity_ref)(axiom_xml_writer_t *writer,
-                          const axis2_env_t *env,
-                          axis2_char_t *name); 
-         
+        axis2_status_t(AXIS2_CALL *
+                write_entity_ref)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *name);
+
         /**
          * @param writer xml_writer
          * @param env environment
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_start_document)(axiom_xml_writer_t *writer,
-                              const axis2_env_t *env);  
-        
-         
+        axis2_status_t(AXIS2_CALL *
+                write_start_document)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env);
+
+
         /**
          * @param writer xml_writer
          * @param env environment
@@ -347,11 +347,11 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_start_document_with_version)(axiom_xml_writer_t *writer,
-                                           const axis2_env_t *env,
-                                           axis2_char_t *version);   
-         
+        axis2_status_t(AXIS2_CALL *
+                write_start_document_with_version)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *version);
+
         /**
          * @param writer xml_writer
          * @param env environment
@@ -360,24 +360,24 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-      write_start_document_with_version_encoding)(axiom_xml_writer_t *writer,
-                                                    const axis2_env_t *env,
-                                                    axis2_char_t *version,
-                                                    axis2_char_t *encoding);
-         
+        axis2_status_t(AXIS2_CALL *
+                write_start_document_with_version_encoding)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *version,
+                        axis2_char_t *encoding);
+
         /**
          * @param writer xml_writer
          * @param env environment
          * @param text text 
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
-         */                                         
-        axis2_status_t (AXIS2_CALL *
-      write_characters)(axiom_xml_writer_t *writer,
-                          const axis2_env_t *env,
-                          axis2_char_t *text);   
-         
+         */
+        axis2_status_t(AXIS2_CALL *
+                write_characters)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *text);
+
         /**
          * @param writer xml_writer
          * @param env environment
@@ -385,11 +385,11 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-       axis2_char_t* (AXIS2_CALL *
-      get_prefix)(axiom_xml_writer_t *writer,
-                   const axis2_env_t *env,
-                   axis2_char_t *uri);
-         
+        axis2_char_t*(AXIS2_CALL *
+                get_prefix)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *uri);
+
         /**
          * @param writer xml_writer
          * @param env environment
@@ -398,24 +398,24 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-       axis2_status_t (AXIS2_CALL *
-      set_prefix)(axiom_xml_writer_t *writer,
-                   const axis2_env_t *env,
-                   axis2_char_t *prefix,
-                   axis2_char_t *uri);
-         
+        axis2_status_t(AXIS2_CALL *
+                set_prefix)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *prefix,
+                        axis2_char_t *uri);
+
         /**
          * @param writer xml_writer
          * @param env environment
          * @param uri uri
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
-         */                                                 
-       axis2_status_t (AXIS2_CALL *
-      set_default_prefix)(axiom_xml_writer_t *writer,
-                           const axis2_env_t *env,
-                           axis2_char_t *uri);                                                 
-         
+         */
+        axis2_status_t(AXIS2_CALL *
+                set_default_prefix)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *uri);
+
         /**
          * @param writer xml_writer
          * @param env environment
@@ -424,55 +424,55 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
          * @return status of op AXIS2_SUCCESS on success,
          *               AXIS2_FAILURE on error.
          */
-        axis2_status_t (AXIS2_CALL *
-        write_encoded)(axiom_xml_writer_t *writer,
-                       const axis2_env_t *env,
-                       axis2_char_t *text,
-                       int in_attr);
-                                                 
-        void* (AXIS2_CALL *
-        get_xml)(axiom_xml_writer_t *writer,
-                 const axis2_env_t *env);                                                 
+        axis2_status_t(AXIS2_CALL *
+                write_encoded)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *text,
+                        int in_attr);
 
-        int (AXIS2_CALL *
-        get_type)(axiom_xml_writer_t *writer,
-                 const axis2_env_t *env);   
+        void*(AXIS2_CALL *
+                get_xml)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env);
 
-        axis2_status_t (AXIS2_CALL *
-        write_raw)(axiom_xml_writer_t *writer,
-                   const axis2_env_t *env,
-                   axis2_char_t *content);
+        int(AXIS2_CALL *
+                get_type)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env);
+
+        axis2_status_t(AXIS2_CALL *
+                write_raw)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env,
+                        axis2_char_t *content);
     };
 
-/** 
- * @brief axis2_pull_parser struct
-  *   Axis2 OM pull_parser
- */
+    /**
+     * @brief axis2_pull_parser struct
+      *   Axis2 OM pull_parser
+     */
 
-struct axiom_xml_writer
-{
-    axiom_xml_writer_ops_t *ops;    
-};    
+    struct axiom_xml_writer
+    {
+        axiom_xml_writer_ops_t *ops;
+    };
 
-/**
- *  create function for axiom_xml_writer
- *
- */
-AXIS2_EXTERN axiom_xml_writer_t * AXIS2_CALL
-axiom_xml_writer_create(const axis2_env_t *env,
-                        axis2_char_t *filename,
-                        axis2_char_t *encoding,
-                        int is_prefix_default,
-                        int compression);
+    /**
+     *  create function for axiom_xml_writer
+     *
+     */
+    AXIS2_EXTERN axiom_xml_writer_t * AXIS2_CALL
+    axiom_xml_writer_create(const axis2_env_t *env,
+            axis2_char_t *filename,
+            axis2_char_t *encoding,
+            int is_prefix_default,
+            int compression);
 
-AXIS2_EXTERN axiom_xml_writer_t * AXIS2_CALL
-axiom_xml_writer_create_for_memory(const axis2_env_t *env,
-                                   axis2_char_t *encoding,
-                                   int is_prefix_default,
-                                   int compression,
-                           int type);
+    AXIS2_EXTERN axiom_xml_writer_t * AXIS2_CALL
+    axiom_xml_writer_create_for_memory(const axis2_env_t *env,
+            axis2_char_t *encoding,
+            int is_prefix_default,
+            int compression,
+            int type);
 
-/********************** start macros *******************************************/
+    /********************** start macros *******************************************/
 
 #define AXIOM_XML_WRITER_FREE(writer, env) \
         ((writer)->ops->free(writer,env))
@@ -493,14 +493,14 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
         writer, env, localname, namespace_uri, prefix) \
         ((writer)->ops->write_start_element_with_namespace_prefix(\
         writer,env,localname,namespace_uri,prefix))
-        
-        
+
+
 #define AXIOM_XML_WRITER_WRITE_EMPTY_ELEMENT(writer,env,localname) \
         ((writer)->ops->write_empty_element(writer,env,localname))
-        
+
 #define AXIOM_XML_WRITER_WRITE_EMPTY_ELEMENT_WITH_NAMESPACE(\
         writer, env,localname,namespace_uri) \
-        ((writer)->ops->write_empty_element_with_namespace(writer,env,localname,namespace_uri))       
+        ((writer)->ops->write_empty_element_with_namespace(writer,env,localname,namespace_uri))
 
 #define AXIOM_XML_WRITER_WRITE_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX(\
         writer, env, localname, namespace_uri, prefix) \
@@ -541,21 +541,21 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
 
 #define AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION_DATA(writer, env, target, data) \
         ((writer)->ops->write_processing_instruction_data(writer, env, target, data))
-        
+
 #define AXIOM_XML_WRITER_WRITE_CDATA(writer, env, data) \
-        ((writer)->ops->write_cdata(writer, env, data))        
+        ((writer)->ops->write_cdata(writer, env, data))
 
 #define AXIOM_XML_WRITER_WRITE_DTD(writer, env, dtd) \
-        ((writer)->ops->write_cdata(writer, env, dtd)) 
+        ((writer)->ops->write_cdata(writer, env, dtd))
 
 #define AXIOM_XML_WRITER_WRITE_ENTITY_REF(writer, env, entity_ref) \
-        ((writer)->ops->write_entity_ref(writer, env, entity_ref)) 
-        
+        ((writer)->ops->write_entity_ref(writer, env, entity_ref))
+
 #define AXIOM_XML_WRITER_WRITE_START_DOCUMENT(writer, env) \
-        ((writer)->ops->write_start_document(writer,env))        
+        ((writer)->ops->write_start_document(writer,env))
 
 #define AXIOM_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION(writer, env, version) \
-        ((writer)->ops->write_start_document_with_version(writer, env, version)) 
+        ((writer)->ops->write_start_document_with_version(writer, env, version))
 
 #define AXIOM_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(\
         writer, env,  version, encoding) \
@@ -563,7 +563,7 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
         writer, env, version, encoding))
 
 #define AXIOM_XML_WRITER_WRITE_CHARACTERS(writer, env, text) \
-        ((writer)->ops->write_characters(writer, env, text)) 
+        ((writer)->ops->write_characters(writer, env, text))
 
 #define AXIOM_XML_WRITER_GET_PREFIX(writer, env, uri) \
         ((writer)->ops->get_prefix(writer, env, uri))
@@ -576,17 +576,17 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
 
 #define AXIOM_XML_WRITER_WRITE_ENCODED(writer, env, text, in_attr) \
         ((writer)->ops->write_encoded(writer, env, text, in_attr))
-        
+
 #define AXIOM_XML_WRITER_GET_XML(writer, env) \
-        ((writer)->ops->get_xml(writer, env))        
+        ((writer)->ops->get_xml(writer, env))
 
 #define AXIOM_XML_WRITER_GET_TYPE(writer, env) \
-        ((writer)->ops->get_type(writer, env)) 
+        ((writer)->ops->get_type(writer, env))
 
 #define AXIOM_XML_WRITER_WRITE_RAW(writer, env, content) \
-        ((writer)->ops->write_raw(writer, env, content)) 
+        ((writer)->ops->write_raw(writer, env, content))
 
-/** @} */
+    /** @} */
 
 
 #ifdef __cplusplus

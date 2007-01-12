@@ -31,12 +31,9 @@
 /** max args for om_output_write function */
 #define MAX_ARGS  4
 
-/****************************** impl struct ***********************************/
 
-typedef struct axiom_output_impl_t
+struct axiom_output
 {
-    axiom_output_t om_output;
-
     /** axiom_xml_writer. any xml writer which
         implemet axiom_xml_writer.h interface  */
     axiom_xml_writer_t *xml_writer;
@@ -65,106 +62,90 @@ typedef struct axiom_output_impl_t
 
     axis2_char_t *mime_boundry;
 
-}
-axiom_output_impl_t;
-
-static const axiom_output_ops_t axiom_output_ops_var = {
-    0
 };
-
-/************************ Macro ***********************************************/
-#define AXIS2_INTF_TO_IMPL(output) ((axiom_output_impl_t*)output)
-
-/************************ function prototypes *********************************/
-
-/*********************** end function prototypes ******************************/
 
 AXIS2_EXTERN axiom_output_t * AXIS2_CALL
 axiom_output_create(const axis2_env_t *env,
         axiom_xml_writer_t *xml_writer)
 {
-    axiom_output_impl_t *om_output_impl = NULL;
+    axiom_output_t *om_output = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    om_output_impl = (axiom_output_impl_t *) AXIS2_MALLOC(
+    om_output = (axiom_output_t *) AXIS2_MALLOC(
                 env->allocator,
-                sizeof(axiom_output_impl_t));
+                sizeof(axiom_output_t));
 
-    if (!om_output_impl)
+    if (!om_output)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    om_output_impl->xml_writer = NULL;
-    om_output_impl->xml_writer = xml_writer;
-    om_output_impl->do_optimize = AXIS2_FALSE;
-    om_output_impl->mime_boundary = NULL;
-    om_output_impl->root_content_id = NULL;
-    om_output_impl->next_content_id = NULL;
-    om_output_impl->next_id = 0;
-    om_output_impl->is_soap11 = AXIS2_TRUE;
-    om_output_impl->char_set_encoding = AXIS2_DEFAULT_CHAR_SET_ENCODING;
-    om_output_impl->xml_version = NULL;
-    om_output_impl->ignore_xml_declaration = AXIS2_TRUE;
-    om_output_impl->binary_node_list = NULL;
-    om_output_impl->mime_output = NULL;
-    om_output_impl->mime_boundry = NULL;
-    om_output_impl->om_output.ops = &axiom_output_ops_var;
+    om_output->xml_writer = NULL;
+    om_output->xml_writer = xml_writer;
+    om_output->do_optimize = AXIS2_FALSE;
+    om_output->mime_boundary = NULL;
+    om_output->root_content_id = NULL;
+    om_output->next_content_id = NULL;
+    om_output->next_id = 0;
+    om_output->is_soap11 = AXIS2_TRUE;
+    om_output->char_set_encoding = AXIS2_DEFAULT_CHAR_SET_ENCODING;
+    om_output->xml_version = NULL;
+    om_output->ignore_xml_declaration = AXIS2_TRUE;
+    om_output->binary_node_list = NULL;
+    om_output->mime_output = NULL;
+    om_output->mime_boundry = NULL;
 
-    return &(om_output_impl->om_output);
+    return om_output;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_output_free(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
-    axiom_output_impl_t *om_output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
-
-    if (om_output_impl->xml_version)
+    if (om_output->xml_version)
     {
-        AXIS2_FREE(env->allocator, om_output_impl->xml_version);
-        om_output_impl->xml_version = NULL;
+        AXIS2_FREE(env->allocator, om_output->xml_version);
+        om_output->xml_version = NULL;
     }
-    if (om_output_impl->mime_boundary)
+    if (om_output->mime_boundary)
     {
-        AXIS2_FREE(env->allocator, om_output_impl->mime_boundary);
-        om_output_impl->mime_boundary = NULL;
+        AXIS2_FREE(env->allocator, om_output->mime_boundary);
+        om_output->mime_boundary = NULL;
     }
-    if (om_output_impl->next_content_id)
+    if (om_output->next_content_id)
     {
-        AXIS2_FREE(env->allocator, om_output_impl->next_content_id);
-        om_output_impl->next_content_id = NULL;
+        AXIS2_FREE(env->allocator, om_output->next_content_id);
+        om_output->next_content_id = NULL;
     }
-    if (om_output_impl->root_content_id)
+    if (om_output->root_content_id)
     {
-        AXIS2_FREE(env->allocator, om_output_impl->root_content_id);
-        om_output_impl->root_content_id = NULL;
+        AXIS2_FREE(env->allocator, om_output->root_content_id);
+        om_output->root_content_id = NULL;
     }
 
-    if (om_output_impl->xml_writer)
+    if (om_output->xml_writer)
     {
-        AXIOM_XML_WRITER_FREE(om_output_impl->xml_writer, env);
-        om_output_impl->xml_writer = NULL;
+        AXIOM_XML_WRITER_FREE(om_output->xml_writer, env);
+        om_output->xml_writer = NULL;
     }
 
-    if (om_output_impl->binary_node_list)
+    if (om_output->binary_node_list)
     {
-        AXIS2_ARRAY_LIST_FREE(om_output_impl->binary_node_list, env);
-        om_output_impl->binary_node_list = NULL;
+        AXIS2_ARRAY_LIST_FREE(om_output->binary_node_list, env);
+        om_output->binary_node_list = NULL;
     }
 
-    if (om_output_impl->mime_output)
+    if (om_output->mime_output)
     {
-        AXIOM_MIME_OUTPUT_FREE(om_output_impl->mime_output, env);
-        om_output_impl->mime_output = NULL;
+        AXIOM_MIME_OUTPUT_FREE(om_output->mime_output, env);
+        om_output->mime_output = NULL;
     }
 
-    AXIS2_FREE(env->allocator, om_output_impl);
-    om_output_impl = NULL;
+    AXIS2_FREE(env->allocator, om_output);
+    om_output = NULL;
     return AXIS2_SUCCESS;
 }
 
@@ -173,7 +154,7 @@ axiom_output_is_soap11(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIS2_INTF_TO_IMPL(om_output)->is_soap11;
+    return om_output->is_soap11;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -182,7 +163,7 @@ axiom_output_is_ignore_xml_declaration
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIS2_INTF_TO_IMPL(om_output)->ignore_xml_declaration;
+    return om_output->ignore_xml_declaration;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -192,7 +173,7 @@ axiom_output_set_ignore_xml_declaration
         axis2_bool_t ignore_xml_dec)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_output)->ignore_xml_declaration = ignore_xml_dec;
+    om_output->ignore_xml_declaration = ignore_xml_dec;
     return AXIS2_SUCCESS;
 }
 
@@ -202,7 +183,7 @@ axiom_output_set_soap11(axiom_output_t *om_output,
         axis2_bool_t soap11)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_output)->is_soap11 = soap11;
+    om_output->is_soap11 = soap11;
     return AXIS2_SUCCESS;
 }
 
@@ -211,20 +192,18 @@ axiom_output_set_xml_version(axiom_output_t *om_output,
         const axis2_env_t *env,
         axis2_char_t *xml_version)
 {
-    axiom_output_impl_t *output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     AXIS2_PARAM_CHECK(env->error, xml_version, AXIS2_FAILURE);
-    output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
-    if (output_impl->xml_version)
+    if (om_output->xml_version)
     {
-        AXIS2_FREE(env->allocator,  output_impl->xml_version);
-        output_impl->xml_version = NULL;
+        AXIS2_FREE(env->allocator,  om_output->xml_version);
+        om_output->xml_version = NULL;
     }
 
-    output_impl->xml_version = AXIS2_STRDUP(xml_version, env);
-    if (!output_impl->xml_version)
+    om_output->xml_version = AXIS2_STRDUP(xml_version, env);
+    if (!om_output->xml_version)
     {
         return AXIS2_FAILURE;
     }
@@ -236,7 +215,7 @@ axiom_output_get_xml_version(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(om_output)->xml_version;
+    return om_output->xml_version;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -245,11 +224,9 @@ axiom_output_set_char_set_encoding
         const axis2_env_t *env,
         axis2_char_t *char_set_encoding)
 {
-    axiom_output_impl_t *output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
-    output_impl->char_set_encoding = char_set_encoding;
+    om_output->char_set_encoding = char_set_encoding;
 
     return AXIS2_SUCCESS;
 }
@@ -260,7 +237,7 @@ axiom_output_get_char_set_encoding
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(om_output)->char_set_encoding;
+    return om_output->char_set_encoding;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -270,7 +247,7 @@ axiom_output_set_do_optimize
         axis2_bool_t optimize)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(om_output)->do_optimize = optimize;
+    om_output->do_optimize = optimize;
     return AXIS2_SUCCESS;
 }
 
@@ -280,27 +257,25 @@ axiom_output_get_xml_writer
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(om_output)->xml_writer;
+    return om_output->xml_writer;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_output_is_optimized(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
-    return AXIS2_INTF_TO_IMPL(om_output)->do_optimize;
+    return om_output->do_optimize;
 }
 
 AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
 axiom_output_get_content_type(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
-    axiom_output_impl_t *output_impl = NULL;
     const axis2_char_t *soap_content_type = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    output_impl = AXIS2_INTF_TO_IMPL(om_output);
-    if (AXIS2_TRUE == output_impl->do_optimize)
+    if (AXIS2_TRUE == om_output->do_optimize)
     {
-        if (AXIS2_TRUE == output_impl->is_soap11)
+        if (AXIS2_TRUE == om_output->is_soap11)
         {
             soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
         }
@@ -310,14 +285,14 @@ axiom_output_get_content_type(axiom_output_t *om_output,
         }
 
         return AXIOM_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(
-                    output_impl->mime_output,
-                    env, output_impl->mime_boundry,
-                    output_impl->root_content_id, output_impl->char_set_encoding,
+                    om_output->mime_output,
+                    env, om_output->mime_boundry,
+                    om_output->root_content_id, om_output->char_set_encoding,
                     soap_content_type);
     }
     else
     {
-        if (AXIS2_TRUE == output_impl->is_soap11)
+        if (AXIS2_TRUE == om_output->is_soap11)
         {
             return AXIOM_SOAP11_CONTENT_TYPE;
         }
@@ -334,19 +309,17 @@ axiom_output_write_optimized(axiom_output_t *om_output,
         const axis2_env_t *env,
         axiom_text_t *om_text)
 {
-    axiom_output_impl_t *om_output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
-    if (om_output_impl->binary_node_list)
+    if (om_output->binary_node_list)
     {
-        AXIS2_ARRAY_LIST_ADD(om_output_impl->binary_node_list, env, om_text);
+        AXIS2_ARRAY_LIST_ADD(om_output->binary_node_list, env, om_text);
     }
     else
     {
-        om_output_impl->binary_node_list = axis2_array_list_create(env, 5);
-        if (!(om_output_impl->binary_node_list))
+        om_output->binary_node_list = axis2_array_list_create(env, 5);
+        if (!(om_output->binary_node_list))
             return AXIS2_FAILURE;
-        AXIS2_ARRAY_LIST_ADD(om_output_impl->binary_node_list, env, om_text);
+        AXIS2_ARRAY_LIST_ADD(om_output->binary_node_list, env, om_text);
     }
     return AXIS2_SUCCESS;
 }
@@ -356,33 +329,30 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_output_get_next_content_id(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
-    axiom_output_impl_t *om_output_impl = NULL;
     axis2_char_t *uuid = NULL;
     axis2_char_t *temp_str = NULL;
     axis2_char_t *temp_str1 = NULL;
     axis2_char_t id[256];
     AXIS2_ENV_CHECK(env, NULL);
 
-    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
-
-    om_output_impl->next_id++;
+    om_output->next_id++;
 
     /** free existing id */
-    if (om_output_impl->next_content_id)
+    if (om_output->next_content_id)
     {
-        AXIS2_FREE(env->allocator, om_output_impl->next_content_id);
-        om_output_impl->next_content_id = NULL;
+        AXIS2_FREE(env->allocator, om_output->next_content_id);
+        om_output->next_content_id = NULL;
     }
 
     uuid = axis2_uuid_gen(env);
     if (!uuid)
         return NULL;
 
-    sprintf(id, "%d", om_output_impl->next_id);
+    sprintf(id, "%d", om_output->next_id);
 
     temp_str = AXIS2_STRACAT(id, ".", env);
     temp_str1 = AXIS2_STRACAT(temp_str, uuid, env);
-    om_output_impl->next_content_id = AXIS2_STRACAT(temp_str1, "@apache.org", env);
+    om_output->next_content_id = AXIS2_STRACAT(temp_str1, "@apache.org", env);
     if (temp_str)
     {
         AXIS2_FREE(env->allocator, temp_str);
@@ -398,7 +368,7 @@ axiom_output_get_next_content_id(axiom_output_t *om_output,
         AXIS2_FREE(env->allocator, uuid);
         uuid = NULL;
     }
-    return om_output_impl->next_content_id;
+    return om_output->next_content_id;
 }
 
 
@@ -406,19 +376,17 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_output_get_root_content_id(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
-    axiom_output_impl_t *om_output_impl = NULL;
     axis2_char_t *temp_str = NULL;
     axis2_char_t *uuid = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
-    if (NULL == om_output_impl->root_content_id)
+    if (NULL == om_output->root_content_id)
     {
         uuid = axis2_uuid_gen(env);
 
         temp_str = AXIS2_STRACAT("0.", uuid, env);
 
-        om_output_impl->root_content_id =
+        om_output->root_content_id =
             AXIS2_STRACAT(temp_str, "@apache.org", env);
 
         if (temp_str)
@@ -433,32 +401,29 @@ axiom_output_get_root_content_id(axiom_output_t *om_output,
         }
     }
 
-    return om_output_impl->root_content_id;
+    return om_output->root_content_id;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_output_get_mime_boundry(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
-    axiom_output_impl_t *om_output_impl = NULL;
     axis2_char_t *uuid = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
-
-    if (NULL == om_output_impl->mime_boundary)
+    if (NULL == om_output->mime_boundary)
     {
         uuid = axis2_uuid_gen(env);
 
-        om_output_impl->mime_boundary = AXIS2_STRACAT("MIMEBoundary", uuid, env);
+        om_output->mime_boundary = AXIS2_STRACAT("MIMEBoundary", uuid, env);
         if (uuid)
         {
             AXIS2_FREE(env->allocator, uuid);
             uuid = NULL;
         }
     }
-    return om_output_impl->mime_boundary;
+    return om_output->mime_boundary;
 }
 
 /******************************************************************************/
@@ -471,12 +436,10 @@ axiom_output_write(axiom_output_t * om_output,
 {
     int status = AXIS2_SUCCESS;
     axis2_char_t *args_list[MAX_ARGS];
-    axiom_output_impl_t *om_output_impl = NULL;
     int i = 0;
     va_list ap;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
     va_start(ap, no_of_args);
     for (i = 0; i < no_of_args; i++)
@@ -491,19 +454,19 @@ axiom_output_write(axiom_output_t * om_output,
         if (no_of_args == 0)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_END_ELEMENT(om_output_impl->xml_writer,
+                AXIOM_XML_WRITER_WRITE_END_ELEMENT(om_output->xml_writer,
                         env);
         }
         else if (no_of_args == 1)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_START_ELEMENT(om_output_impl->xml_writer,
+                AXIOM_XML_WRITER_WRITE_START_ELEMENT(om_output->xml_writer,
                         env, args_list[0]);
         }
         else if (no_of_args == 2)
         {
             status = AXIOM_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE(
-                        om_output_impl->xml_writer,
+                        om_output->xml_writer,
                         env,
                         args_list[0],
                         args_list[1]);
@@ -512,7 +475,7 @@ axiom_output_write(axiom_output_t * om_output,
         {
             status =
                 AXIOM_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE_PREFIX(
-                    om_output_impl->xml_writer,
+                    om_output->xml_writer,
                     env,
                     args_list[0],
                     args_list[1],
@@ -521,7 +484,7 @@ axiom_output_write(axiom_output_t * om_output,
     }
     else if (type == AXIOM_DATA_SOURCE)
     {
-        status = AXIOM_XML_WRITER_WRITE_RAW(om_output_impl->xml_writer,
+        status = AXIOM_XML_WRITER_WRITE_RAW(om_output->xml_writer,
                 env,
                 args_list[0]); 
     }
@@ -530,7 +493,7 @@ axiom_output_write(axiom_output_t * om_output,
         if (no_of_args == 2)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_ATTRIBUTE(om_output_impl->xml_writer,
+                AXIOM_XML_WRITER_WRITE_ATTRIBUTE(om_output->xml_writer,
                         env,
                         args_list[0],
                         args_list[1]);
@@ -538,7 +501,7 @@ axiom_output_write(axiom_output_t * om_output,
         else if (no_of_args == 3)
         {
             status = AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(
-                        om_output_impl->xml_writer, env,
+                        om_output->xml_writer, env,
                         args_list[0],
                         args_list[1],
                         args_list[2]);
@@ -547,7 +510,7 @@ axiom_output_write(axiom_output_t * om_output,
         {
             status =
                 AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE_PREFIX(
-                    om_output_impl->xml_writer, env,
+                    om_output->xml_writer, env,
                     args_list[0],
                     args_list[1],
                     args_list[2],
@@ -556,20 +519,20 @@ axiom_output_write(axiom_output_t * om_output,
     }
     else if (type == AXIOM_NAMESPACE)
     {
-        status = AXIOM_XML_WRITER_WRITE_NAMESPACE(om_output_impl->xml_writer,
+        status = AXIOM_XML_WRITER_WRITE_NAMESPACE(om_output->xml_writer,
                 env,
                 args_list[0],
                 args_list[1]);
     }
     else if (type == AXIOM_TEXT)
     {
-        status = AXIOM_XML_WRITER_WRITE_CHARACTERS(om_output_impl->xml_writer,
+        status = AXIOM_XML_WRITER_WRITE_CHARACTERS(om_output->xml_writer,
                 env,
                 args_list[0]);
     }
     else if (type == AXIOM_COMMENT)
     {
-        status = AXIOM_XML_WRITER_WRITE_COMMENT(om_output_impl->xml_writer,
+        status = AXIOM_XML_WRITER_WRITE_COMMENT(om_output->xml_writer,
                 env,
                 args_list[0]);
     }
@@ -579,13 +542,13 @@ axiom_output_write(axiom_output_t * om_output,
         {
             status =
                 AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION(
-                    om_output_impl->xml_writer,
+                    om_output->xml_writer,
                     env, args_list[0]);
         }
         else if (no_of_args == 2)
         {
             status = AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION_DATA(
-                        om_output_impl->xml_writer,
+                        om_output->xml_writer,
                         env,
                         args_list[0],
                         args_list[1]);
@@ -593,7 +556,7 @@ axiom_output_write(axiom_output_t * om_output,
     }
     else if (type == AXIOM_DOCTYPE)
     {
-        status = AXIOM_XML_WRITER_WRITE_DTD(om_output_impl->xml_writer,
+        status = AXIOM_XML_WRITER_WRITE_DTD(om_output->xml_writer,
                 env,
                 args_list[0]);
     }
@@ -610,14 +573,12 @@ axis2_status_t AXIS2_CALL
 axiom_output_write_xml_version_encoding(axiom_output_t *om_output,
         const axis2_env_t *env)
 {
-    axiom_output_impl_t *output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    output_impl = AXIS2_INTF_TO_IMPL(om_output);
     return AXIOM_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(
-                output_impl->xml_writer,
+                om_output->xml_writer,
                 env,
-                output_impl->xml_version,
-                output_impl->char_set_encoding);
+                om_output->xml_version,
+                om_output->char_set_encoding);
 
 }
 
@@ -627,19 +588,17 @@ axiom_output_flush(axiom_output_t *om_output,
         axis2_byte_t **output_stream,
         int *output_stream_size)
 {
-    axiom_output_impl_t *output_impl = NULL;
     const axis2_char_t *soap_content_type = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
-    if (output_impl->do_optimize)
+    if (om_output->do_optimize)
     {
         axis2_byte_t* byte_stream = NULL;
         axis2_char_t *root_content_id = NULL;
-        axis2_char_t *buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(output_impl->xml_writer, env);
+        axis2_char_t *buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(om_output->xml_writer, env);
         int stream_size = 0;
-        if (output_impl->is_soap11)
+        if (om_output->is_soap11)
         {
             soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
         }
@@ -647,12 +606,12 @@ axiom_output_flush(axiom_output_t *om_output,
         {
             soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }
-        output_impl->mime_output = axiom_mime_output_create(env);
-        output_impl->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
+        om_output->mime_output = axiom_mime_output_create(env);
+        om_output->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
         root_content_id = axiom_output_get_root_content_id(om_output, env);
-        AXIOM_MIME_OUTPUT_COMPLETE(output_impl->mime_output, env, &byte_stream, &stream_size,
-                buffer, output_impl->binary_node_list, output_impl->mime_boundry,
-                output_impl->root_content_id, output_impl->char_set_encoding,
+        AXIOM_MIME_OUTPUT_COMPLETE(om_output->mime_output, env, &byte_stream, &stream_size,
+                buffer, om_output->binary_node_list, om_output->mime_boundry,
+                om_output->root_content_id, om_output->char_set_encoding,
                 soap_content_type);
 
         *output_stream = byte_stream;

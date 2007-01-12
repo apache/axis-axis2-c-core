@@ -20,11 +20,8 @@
 #include <axiom_stax_builder.h>
 #include <axis2_string.h>
 
-/********************************* end of function pointers ******************/
-
-typedef struct axiom_document_impl_t
+struct axiom_document
 {
-    axiom_document_t om_document;
     /** root element */
     axiom_node_t *root_element;
     /** last child */
@@ -39,30 +36,19 @@ typedef struct axiom_document_impl_t
     axis2_char_t *char_set_encoding;
     /** XML version */
     axis2_char_t *xml_version;
-}
-axiom_document_impl_t;
-
-static const axiom_document_ops_t axiom_document_ops_var = {
-    0
 };
-
-/************************************ Macro ************************************/
-
-#define AXIS2_INTF_TO_IMPL(document) ((axiom_document_impl_t*)document)
-
-/*******************************************************************************/
 
 AXIS2_EXTERN axiom_document_t * AXIS2_CALL
 axiom_document_create(const axis2_env_t *env,
         axiom_node_t *root,
         axiom_stax_builder_t *builder)
 {
-    axiom_document_impl_t *document = NULL;
+    axiom_document_t *document = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    document = (axiom_document_impl_t *) AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_document_impl_t));
+    document = (axiom_document_t *) AXIS2_MALLOC(
+                env->allocator, sizeof(axiom_document_t));
 
     if (!document)
     {
@@ -77,41 +63,34 @@ axiom_document_create(const axis2_env_t *env,
     document->xml_version = XML_VERSION;
     document->char_set_encoding = CHAR_SET_ENCODING;
     document->done = AXIS2_FALSE;
-    document->om_document.ops = &axiom_document_ops_var;
 
-    return &(document->om_document);
+    return document;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_document_free(axiom_document_t *om_document,
+axiom_document_free(axiom_document_t *document,
         const axis2_env_t *env)
 {
-    axiom_document_impl_t *document = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    document = AXIS2_INTF_TO_IMPL(om_document);
 
     if (document->root_element)
     {
-
         AXIOM_NODE_FREE_TREE(document->root_element, env);
         document->root_element = NULL;
     }
-    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(document));
+    AXIS2_FREE(env->allocator, document);
     return AXIS2_SUCCESS;
 }
 
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-axiom_document_build_next(axiom_document_t *om_document,
+axiom_document_build_next(axiom_document_t *document,
         const axis2_env_t *env)
 {
-    axiom_document_impl_t *document = NULL;
     axiom_node_t  *last_child = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    document = AXIS2_INTF_TO_IMPL(om_document);
     if (!document->builder)
         return NULL;
 
@@ -141,22 +120,20 @@ axiom_document_get_root_element(axiom_document_t * document,
         const axis2_env_t *env)
 {
     axiom_node_t *node = NULL;
-    axiom_document_impl_t *doc_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    doc_impl = AXIS2_INTF_TO_IMPL(document);
 
-    if (doc_impl->root_element)
+    if (document->root_element)
     {
-        return doc_impl->root_element;
+        return document->root_element;
     }
     else
     {
         node = axiom_document_build_next(document, env);
 
-        if (doc_impl->root_element)
+        if (document->root_element)
         {
 
-            return doc_impl->root_element;
+            return document->root_element;
         }
         else
         {
@@ -174,26 +151,23 @@ axiom_document_set_root_element(axiom_document_t *document,
         axiom_node_t *node)
 {
     int status = AXIS2_SUCCESS;
-    axiom_document_impl_t *document_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    document_impl = AXIS2_INTF_TO_IMPL(document);
-
-    if (document_impl->root_element)
+    if (document->root_element)
     {
-        status = AXIOM_NODE_FREE_TREE(document_impl->root_element, env);
+        status = AXIOM_NODE_FREE_TREE(document->root_element, env);
         if (status == AXIS2_SUCCESS)
         {
-            document_impl->root_element = node;
+            document->root_element = node;
             return AXIS2_SUCCESS;
         }
         return AXIS2_FAILURE;
     }
     else
     {
-        document_impl->root_element = node;
+        document->root_element = node;
     }
     return AXIS2_SUCCESS;
 }
@@ -202,16 +176,14 @@ AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_document_build_all(struct axiom_document *document,
         const axis2_env_t *env)
 {
-    axiom_document_impl_t *doc_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     if (!document)
         return NULL;
-    doc_impl = AXIS2_INTF_TO_IMPL(document);
-    if (!doc_impl->root_element)
+    if (!document->root_element)
     {
         axiom_document_get_root_element(document, env);
     }
-    if (doc_impl->root_element)
+    if (document->root_element)
     {
         do
         {
@@ -219,11 +191,11 @@ axiom_document_build_all(struct axiom_document *document,
             ret_val = AXIOM_DOCUMENT_BUILD_NEXT(document, env);
             if (!ret_val)
             {
-                if (AXIOM_NODE_IS_COMPLETE(doc_impl->root_element, env)
+                if (AXIOM_NODE_IS_COMPLETE(document->root_element, env)
                         == AXIS2_TRUE)
                 {
                     /** document is completly build */
-                    return doc_impl->root_element;
+                    return document->root_element;
                 }
                 else
                 {
@@ -232,8 +204,8 @@ axiom_document_build_all(struct axiom_document *document,
                 }
             }
         }
-        while (!AXIOM_NODE_IS_COMPLETE(doc_impl->root_element, env));
-        return doc_impl->root_element;
+        while (!AXIOM_NODE_IS_COMPLETE(document->root_element, env));
+        return document->root_element;
     }
     else
         return NULL;
@@ -244,7 +216,7 @@ axiom_document_get_builder(axiom_document_t *document,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(document)->builder;
+    return document->builder;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -252,19 +224,17 @@ axiom_document_serialize(axiom_document_t *document,
         const axis2_env_t *env,
         axiom_output_t *om_output)
 {
-    axiom_document_impl_t *document_impl = NULL;
     if (!document)
         return AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    document_impl = AXIS2_INTF_TO_IMPL(document);
-    if (!(document_impl->root_element))
+    if (!(document->root_element))
     {
         axiom_document_get_root_element(document, env);
     }
-    if (document_impl->root_element)
+    if (document->root_element)
     {
-        return AXIOM_NODE_SERIALIZE(document_impl->root_element,
+        return AXIOM_NODE_SERIALIZE(document->root_element,
                 env, om_output);
     }
     else
