@@ -492,13 +492,13 @@ DEF_FILE = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\IIS\mod_axis2.
 axis2_IIS_module:
 	$(CC) $(CFLAGS) $(MOD_IIS_SRC) /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) Advapi32.lib $(AXIS2_ENGINE).lib /DEF:$(DEF_FILE) /DLL /OUT:mod_iis.dll  /IMPLIB:mod_iis.lib
+	$(LIBS) Advapi32.lib $(AXIS2_ENGINE).lib /DEF:$(DEF_FILE) /DLL /OUT:mod_axis2_IIS.dll  /IMPLIB:mod_axis2_IIS.lib
 
 	del *.obj
 
-	copy mod_iis.dll $(AXIS2_LIBS)\
+	copy mod_axis2_IIS.dll $(AXIS2_LIBS)\
 
-	copy mod_iis.lib $(AXIS2_LIBS)\
+	copy mod_axis2_IIS.lib $(AXIS2_LIBS)\
 
 	del *.dll
 	del *.exp
