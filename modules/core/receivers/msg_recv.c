@@ -224,10 +224,14 @@ axis2_msg_recv_make_new_svc_obj(
         return NULL;
     }
 
+    axis2_allocator_switch_to_global_pool(env->allocator);
+    
     axis2_class_loader_init(env);
 
     impl_class = axis2_class_loader_create_dll(env, impl_info_param);
     axis2_svc_set_impl_class(svc, env, impl_class);
+
+    axis2_allocator_switch_to_local_pool(env->allocator);
 
     return impl_class;
 }
