@@ -59,7 +59,7 @@ axis2_ssl_stream_get_char(axis2_stream_t *stream, const axis2_env_t *env);
 
 
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-axis2_stream_create_ssl(const axis2_env_t *env, axis2_socket_t socket)
+axis2_stream_create_ssl(const axis2_env_t *env, axis2_socket_t socket, axis2_char_t *server_cert)
 {
     ssl_stream_impl_t *stream_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -77,7 +77,7 @@ axis2_stream_create_ssl(const axis2_env_t *env, axis2_socket_t socket)
     stream_impl->ctx = NULL;
     stream_impl->ssl = NULL;
 
-    stream_impl->ctx = axis2_ssl_utils_initialize_ctx(env);
+    stream_impl->ctx = axis2_ssl_utils_initialize_ctx(env, server_cert);
     if (NULL == stream_impl->ctx)
     {
         axis2_ssl_stream_free((axis2_stream_t*)stream_impl, env);

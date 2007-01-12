@@ -104,6 +104,12 @@ axis2_soap_over_http_sender_configure_proxy(
     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL
+axis2_soap_over_http_sender_configure_server_cert(
+    axis2_soap_over_http_sender_t *sender,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
+axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_free(
     axis2_soap_over_http_sender_t *sender,
     const axis2_env_t *env);
@@ -451,6 +457,8 @@ axis2_soap_over_http_sender_send(
     {
         AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
     }
+
+	axis2_soap_over_http_sender_configure_server_cert(sender, env, msg_ctx);
 
     axis2_soap_over_http_sender_get_timeout_values(sender, env, msg_ctx);
     AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender_impl->client, env,
@@ -851,4 +859,30 @@ axis2_soap_over_http_sender_configure_proxy(
         }
     }
     return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_soap_over_http_sender_configure_server_cert(
+    axis2_soap_over_http_sender_t *sender,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx)
+{
+	axis2_property_t *server_cert_property;
+	axis2_char_t *server_cert = NULL;
+	axis2_status_t status = 0;
+    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+
+    sender_impl = AXIS2_INTF_TO_IMPL(sender);
+
+    server_cert_property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+													  AXIS2_SSL_SERVER_CERT, AXIS2_FALSE);
+    if(server_cert_property)
+    {
+		server_cert = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE(server_cert_property, env);
+		status = AXIS2_HTTP_CLIENT_SET_SERVER_CERT(sender_impl->client, env, server_cert);
+    }
+	return status;
 }

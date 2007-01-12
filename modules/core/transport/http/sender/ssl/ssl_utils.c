@@ -18,7 +18,7 @@
 BIO *bio_err = 0;
 
 AXIS2_EXTERN SSL_CTX* AXIS2_CALL
-axis2_ssl_utils_initialize_ctx(const axis2_env_t *env)
+axis2_ssl_utils_initialize_ctx(const axis2_env_t *env, axis2_char_t *server_cert)
 {
     SSL_METHOD *meth = NULL;
     axis2_char_t *ca_file = NULL;
@@ -27,7 +27,11 @@ axis2_ssl_utils_initialize_ctx(const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
 
     /*TODO getenv */
-    ca_file = AXIS2_GETENV("AXIS2_SSL_CA_FILE");
+	if (server_cert)
+		ca_file = server_cert;
+	else
+		ca_file = AXIS2_GETENV("AXIS2_SSL_CA_FILE");
+
     if (NULL == ca_file)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_NO_CA_FILE,

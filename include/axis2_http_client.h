@@ -158,6 +158,28 @@ extern "C"
         /**
          * @param client pointer to client
          * @param env pointer to environment struct
+         * @param server_cert server certificate
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_server_cert)(
+                    axis2_http_client_t *client,
+                    const axis2_env_t *env,
+                    axis2_char_t *server_cert);
+
+        /**
+         * @param client pointer to client
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
+                get_server_cert)(
+                    const axis2_http_client_t *client,
+                    const axis2_env_t *env);
+
+
+        /**
+         * @param client pointer to client
+         * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -249,6 +271,19 @@ extern "C"
     @sa axis2_http_client_ops#set_dump_input_msg */
 #define AXIS2_HTTP_CLIENT_SET_DUMP_INPUT_MSG(client, env, dump_input_msg) \
         ((client)->ops->set_dump_input_msg(client, env, dump_input_msg))
+
+/** Sets the proxy.
+    @sa axis2_http_client_ops#set_server_cert */
+#define AXIS2_HTTP_CLIENT_SET_SERVER_CERT(client, env, server_cert) \
+                                ((client)->ops->set_server_cert(client, env,\
+                        server_cert))
+
+/** Gets the proxy.
+    @sa axis2_http_client_ops#get_server_cert */
+#define AXIS2_HTTP_CLIENT_GET_SERVER_CERT(client, env) \
+                                ((client)->ops->get_server_cert(client, env))
+
+
 
 /** Frees the http client.
     @sa axis2_http_client_ops#free */

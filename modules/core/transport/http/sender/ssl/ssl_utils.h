@@ -31,7 +31,7 @@ extern "C"
 
 
 AXIS2_EXTERN SSL_CTX* AXIS2_CALL
-axis2_ssl_utils_initialize_ctx(const axis2_env_t *env);
+axis2_ssl_utils_initialize_ctx(const axis2_env_t *env, axis2_char_t *server_cert);
 
 AXIS2_EXTERN SSL* AXIS2_CALL
 axis2_ssl_utils_initialize_ssl(const axis2_env_t *env, SSL_CTX *ctx, 

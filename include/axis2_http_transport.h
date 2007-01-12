@@ -420,6 +420,12 @@ extern "C"
 #define AXIS2_HTTP_METHOD "HTTP_METHOD"
 
 /**
+ *Constant for SSL Server Certificate
+ */
+#define AXIS2_SSL_SERVER_CERT "SERVER_CERT"
+
+
+/**
  *Constant for HTTP headers that user specify, Those headers will
  *provided as property to the message context.
  */
