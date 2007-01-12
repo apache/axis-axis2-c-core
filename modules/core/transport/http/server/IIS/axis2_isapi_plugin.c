@@ -58,7 +58,7 @@ static const axis2_env_t*	axis2_env = NULL;
 static axis2_char_t			repo_path[MAX_FILE_PATH] = "c:\\axis2c";
 static axis2_char_t			log_file[MAX_FILE_PATH] = "axis2.log";
 static axis2_log_levels_t	log_level = AXIS2_LOG_LEVEL_CRITICAL;
-static axis2_char_t			redirect_word[INTERNET_MAX_URL_LENGTH] = "/axis2/mod_iis.dll\?";
+static axis2_char_t			redirect_word[INTERNET_MAX_URL_LENGTH] = "/axis2/mod_axis2_IIS.dll\?";
 
 /*
 This is a utility functipn for reading configuration data from the registery.

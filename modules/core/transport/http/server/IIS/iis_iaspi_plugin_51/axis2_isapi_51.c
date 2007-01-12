@@ -112,7 +112,7 @@ DWORD WINAPI HttpFilterProc(
 This is the exit point of the filter. Here we shut down 
 the axis2 engine.
 */
-BOOL WINAPI TerminateFilter()
+BOOL WINAPI TerminateFilter(DWORD dwfalgs)
 {
 	return axis2_terminate();	
 }

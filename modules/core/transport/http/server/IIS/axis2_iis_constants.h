@@ -27,9 +27,9 @@
 #define URI_MATCHED						1
 #define URI_UN_MATCHED					2
 
-#define EXTENSION_URL					"/axis2/mod_iis.dll\? "
+#define EXTENSION_URL					"/axis2/mod_axis2_IIS.dll\? "
 #define EXTENSION_URL_AXIS2				"/axis2/"
-#define EXTENSION_URL_MODIIS			"mode_iis.dll\? "
+#define EXTENSION_URL_MODIIS			"mod_axis2_IIS.dll\? "
 
 
 #define MAX_SERVERNAME					128

@@ -1,4 +1,4 @@
-LIBRARY	"mod_iis"
+LIBRARY	"mod_axis2_IIS"
 
 EXPORTS
 	HttpFilterProc
