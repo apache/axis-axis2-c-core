@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="mod_iis"
+	Name="mod_axis2_IIS"
 	ProjectGUID="{1D949369-9C4B-4C59-9F2A-278FD8CE0D41}"
 	RootNamespace="mod_iis"
 	Keyword="Win32Proj"
