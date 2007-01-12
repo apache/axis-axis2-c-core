@@ -260,6 +260,10 @@ axis2_apache2_worker_process_request(
         {
             body_string = axis2_http_transport_utils_get_services_html(env,
                     conf_ctx);
+            if (body_string)
+            {
+                body_string_len = axis2_strlen(body_string);
+            }
             request->content_type = "text/html";
             send_status = OK;
         }
