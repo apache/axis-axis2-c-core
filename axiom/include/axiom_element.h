@@ -107,6 +107,12 @@ extern "C"
             const axis2_env_t *env,
             axiom_node_t *node,
             axiom_namespace_t * ns);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_element_declare_namespace_shallow(axiom_element_t *om_element,
+            const axis2_env_t *env,
+            axiom_namespace_t *ns);
+            
     /**
      * Finds a namespace using qname
      * Start to find from the given node and go up the hierarchy.
@@ -260,6 +266,11 @@ extern "C"
             const axis2_env_t *env,
             axiom_namespace_t *ns,
             axiom_node_t *node);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_element_set_namespace_shallow(axiom_element_t *om_element,
+            const axis2_env_t *env,
+            axiom_namespace_t *ns);
     /**
      * get  the attribute list of the element 
      * @param om_element om element

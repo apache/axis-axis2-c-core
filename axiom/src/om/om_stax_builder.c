@@ -46,6 +46,7 @@ struct axiom_stax_builder
     int current_event;
 
     int element_level;
+    axis2_hash_t *declared_namespaces;
 };
 
 AXIS2_EXTERN axiom_stax_builder_t * AXIS2_CALL
@@ -74,6 +75,8 @@ axiom_stax_builder_create(const axis2_env_t *env,
     om_builder->current_event = -1;
     om_builder->root_node = NULL;
     om_builder->element_level = 0;
+
+    om_builder->declared_namespaces = axis2_hash_make(env);
 
     om_builder->document = axiom_document_create(env, NULL, om_builder);
     if (!om_builder->document)
@@ -268,7 +271,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
     axis2_status_t status = AXIS2_SUCCESS;
     int namespace_count = 0;
     axiom_namespace_t *om_ns = NULL;
-    axiom_namespace_t *temp_ns = NULL;
+    /*axiom_namespace_t *temp_ns = NULL;*/
     /* temp values */
     axis2_char_t *temp_prefix = NULL;
     axis2_char_t *temp_ns_prefix = NULL;
@@ -300,14 +303,9 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
 
             status = AXIOM_ELEMENT_DECLARE_NAMESPACE(om_ele, env, node, om_ns);
 
-            temp_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, env, temp_ns_uri, NULL);
-            /*
-            if(temp_ns)
-            {
-               AXIOM_ELEMENT_SET_NAMESPACE (om_ele, env, om_ns, node); 
-            } 
-            */
-            if (!temp_ns)
+            /*temp_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, env, temp_ns_uri, NULL);*/
+            
+            if (!status)
             {
                 AXIOM_NAMESPACE_FREE(om_ns, env);
                 om_ns = NULL;
@@ -316,17 +314,22 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
         else
         {
             axiom_element_t *om_ele = NULL;
+            axis2_char_t *prefix = NULL;
             om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
 
             om_ns = axiom_namespace_create(env, temp_ns_uri, temp_ns_prefix);
             if (!om_ns || !om_ele)
                 return AXIS2_FAILURE;
 
-            status = AXIOM_ELEMENT_DECLARE_NAMESPACE(om_ele, env, node, om_ns);
+            /*status = AXIOM_ELEMENT_DECLARE_NAMESPACE(om_ele, env, node, om_ns);*/
+
+            status = axiom_element_declare_namespace_shallow(om_ele, env, om_ns);
             /*
              temp_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, 
                              env, temp_ns_uri,temp_ns_prefix);
             */
+            prefix = AXIOM_NAMESPACE_GET_PREFIX(om_ns, env);
+            axis2_hash_set(om_builder->declared_namespaces, prefix, AXIS2_HASH_KEY_STRING, om_ns);
         }
         AXIOM_XML_READER_XML_FREE(om_builder->parser, env, temp_ns_prefix);
         AXIOM_XML_READER_XML_FREE(om_builder->parser, env, temp_ns_uri);
@@ -340,16 +343,19 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
     temp_prefix = AXIOM_XML_READER_GET_PREFIX(om_builder->parser, env);
     if (temp_prefix)
     {
-        om_ns = AXIOM_ELEMENT_FIND_NAMESPACE(
+        /*om_ns = AXIOM_ELEMENT_FIND_NAMESPACE(
                     (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env),
-                    env, node, NULL, temp_prefix);
+                    env, node, NULL, temp_prefix);*/
+        om_ns = axis2_hash_get(om_builder->declared_namespaces, temp_prefix, AXIS2_HASH_KEY_STRING);
 
         if (om_ns)
         {
             axiom_element_t *om_ele = NULL;
             om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+            /*if (om_ele)
+                AXIOM_ELEMENT_SET_NAMESPACE(om_ele, env, om_ns, node);*/
             if (om_ele)
-                AXIOM_ELEMENT_SET_NAMESPACE(om_ele, env, om_ns, node);
+                axiom_element_set_namespace_shallow(om_ele, env, om_ns);
         }
         else
         {
@@ -725,6 +731,13 @@ AXIS2_CALL axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
         AXIOM_XML_READER_FREE(om_builder->parser, env);
         om_builder->parser = NULL;
     }
+
+    if (om_builder->declared_namespaces)
+    {
+        axis2_hash_free(om_builder->declared_namespaces, env);
+        om_builder->declared_namespaces = NULL;
+    }
+    
     if (om_builder->document)
     {
         AXIOM_DOCUMENT_FREE(om_builder->document, env);

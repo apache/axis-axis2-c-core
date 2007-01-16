@@ -320,6 +320,53 @@ axiom_element_find_namespace(axiom_element_t *om_element,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_element_declare_namespace_shallow(axiom_element_t *om_element,
+        const axis2_env_t *env,
+        axiom_namespace_t *ns)
+{
+    axis2_char_t *prefix = NULL;
+    axis2_char_t *uri    = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if (!ns || !om_element)
+    {
+        AXIS2_ERROR_SET(env->error,
+                AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+
+        return AXIS2_FAILURE;
+    }
+
+    uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+    prefix = AXIOM_NAMESPACE_GET_PREFIX(ns, env);
+
+    if (!(om_element->namespaces))
+    {
+        om_element->namespaces = axis2_hash_make(env);
+        if (!(om_element->namespaces))
+            return AXIS2_FAILURE;
+    }
+    if (prefix)
+    {
+        axis2_hash_set(om_element->namespaces,
+                prefix, AXIS2_HASH_KEY_STRING, ns);
+    }
+    else
+    {
+        axis2_char_t *key = NULL;
+        key = AXIS2_MALLOC(env->allocator, sizeof(char) * 10);
+        memset(key, 0, sizeof(char)*10);
+        om_element->next_ns_prefix_number++;
+        sprintf(key, "axis2ns%d", om_element->next_ns_prefix_number);
+        axis2_hash_set(om_element->namespaces, key,
+                AXIS2_HASH_KEY_STRING,  ns);
+    }
+    axiom_namespace_increment_ref(ns, env);
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_element_declare_namespace(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_node_t *node,
@@ -800,6 +847,15 @@ axiom_element_set_namespace(axiom_element_t *om_element,
     {
         om_element->ns = om_ns;
     }
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_element_set_namespace_shallow(axiom_element_t *om_element,
+        const axis2_env_t *env,
+        axiom_namespace_t *ns)
+{
+    om_element->ns = ns;
     return AXIS2_SUCCESS;
 }
 
