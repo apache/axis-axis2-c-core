@@ -347,5 +347,5 @@ axis2_op_ctx_get_msg_ctx_map(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return op_ctx->msg_ctx_array;
+    return (axis2_msg_ctx_t **)(op_ctx->msg_ctx_array);
 }
