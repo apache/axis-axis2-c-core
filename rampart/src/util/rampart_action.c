@@ -38,6 +38,7 @@ typedef struct rampart_actions_impl
     axis2_char_t *user  ;
     axis2_char_t *password_type  ;
     axis2_char_t *password_callback_class  ;
+    axis2_char_t *authn_module_name  ;
     axis2_char_t *encryption_key_file;
     axis2_char_t *decryption_key_file;
     axis2_char_t *signature_prop_file ;
@@ -98,6 +99,12 @@ rampart_actions_get_user(
 
 static axis2_char_t *AXIS2_CALL
 rampart_actions_get_password_callback_class(
+    rampart_actions_t *actions,
+    const axis2_env_t *env
+);
+
+static axis2_char_t *AXIS2_CALL
+rampart_actions_get_authn_module_name(
     rampart_actions_t *actions,
     const axis2_env_t *env
 );
@@ -204,6 +211,13 @@ rampart_actions_set_password_callback_class(
     rampart_actions_t *actions,
     const axis2_env_t *env,
     axis2_char_t *password_callback_class
+);
+
+static axis2_status_t AXIS2_CALL
+rampart_actions_set_authn_module_name(
+    rampart_actions_t *actions,
+    const axis2_env_t *env,
+    axis2_char_t *authn_module_name
 );
 
 static axis2_status_t AXIS2_CALL
@@ -316,6 +330,7 @@ rampart_actions_create(const axis2_env_t *env)
     actions_impl->password_type = NULL;
     actions_impl->user = NULL;
     actions_impl->password_callback_class = NULL;
+    actions_impl->authn_module_name = NULL;
     actions_impl->encryption_key_file = NULL;
     actions_impl->decryption_key_file = NULL;
     actions_impl->signature_prop_file = NULL;
@@ -429,6 +444,19 @@ rampart_actions_get_password_callback_class(
     actions_impl = AXIS2_INTF_TO_IMPL(actions);
 
     return actions_impl->password_callback_class ;
+}
+
+static axis2_char_t *AXIS2_CALL
+rampart_actions_get_authn_module_name(
+    rampart_actions_t *actions,
+    const axis2_env_t *env
+)
+{
+    rampart_actions_impl_t * actions_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+
+    return actions_impl->authn_module_name ;
 }
 
 static axis2_char_t *AXIS2_CALL
@@ -699,6 +727,7 @@ rampart_actions_set_user(
 
     return AXIS2_SUCCESS;
 }
+
 static axis2_status_t AXIS2_CALL
 rampart_actions_set_password_callback_class(
     rampart_actions_t *actions,
@@ -723,6 +752,32 @@ rampart_actions_set_password_callback_class(
 
     return AXIS2_SUCCESS;
 }
+
+static axis2_status_t AXIS2_CALL
+rampart_actions_set_authn_module_name(
+    rampart_actions_t *actions,
+    const axis2_env_t *env,
+    axis2_char_t *authn_module_name
+)
+{
+    rampart_actions_impl_t * actions_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, authn_module_name, AXIS2_FAILURE);
+
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+    if (actions_impl->authn_module_name)
+    {
+        AXIS2_FREE(env->allocator, actions_impl->authn_module_name);
+        actions_impl->authn_module_name = NULL;
+    }
+    actions_impl->authn_module_name = AXIS2_STRDUP(authn_module_name, env) ;
+    if(!actions_impl->authn_module_name  ){
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
 static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_key_file(
     rampart_actions_t *actions,
@@ -958,6 +1013,7 @@ rampart_actions_reset(rampart_actions_t * actions, const axis2_env_t *env)
     actions_impl->password_type = NULL;
     actions_impl->user = NULL;
     actions_impl->password_callback_class = NULL;
+    actions_impl->authn_module_name = NULL;
     actions_impl->encryption_key_file = NULL;
     actions_impl->decryption_key_file = NULL;
     actions_impl->signature_prop_file = NULL;
@@ -1017,6 +1073,12 @@ rampart_actions_free(rampart_actions_t * actions, const axis2_env_t *env)
     {
         AXIS2_FREE(env->allocator, actions_impl->password_callback_class);
         actions_impl->password_callback_class = NULL;
+    }
+
+    if (actions_impl->authn_module_name)
+    {
+        AXIS2_FREE(env->allocator, actions_impl->authn_module_name);
+        actions_impl->authn_module_name = NULL;
     }
 
     if (actions_impl->encryption_key_file)
@@ -1139,6 +1201,14 @@ rampart_actions_populate_from_params(rampart_actions_t *actions,
         ret = RAMPART_ACTIONS_SET_PW_CB_CLASS(actions, env,
                 (axis2_char_t *)rampart_get_action_params(
                     env, param_action, RAMPART_ACTION_PW_CALLBACK_CLASS));
+
+    }
+
+    if (rampart_get_action_params(env, param_action, RAMPART_ACTION_AUTHN_MODULE_NAME))
+    {
+        ret = RAMPART_ACTIONS_SET_AUTHN_MODULE_NAME(actions, env,
+                (axis2_char_t *)rampart_get_action_params(
+                    env, param_action, RAMPART_ACTION_AUTHN_MODULE_NAME));
 
     }
 
@@ -1276,6 +1346,14 @@ rampart_actions_populate_from_ctx(rampart_actions_t *actions,
 
     }
 
+    if (rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_AUTHN_MODULE_NAME))
+    {
+        ret = RAMPART_ACTIONS_SET_AUTHN_MODULE_NAME(actions, env,
+                (axis2_char_t *)rampart_get_property_from_ctx(
+                    env, ctx, RAMPART_ACTION_AUTHN_MODULE_NAME));
+
+    }
+
     if (rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ENCRYPTION_PROP_FILE))
     {
         ret = RAMPART_ACTIONS_SET_ENC_KEY_FILE(actions, env,
@@ -1361,6 +1439,8 @@ rampart_actions_init_ops(
     actions->ops->set_user = rampart_actions_set_user;
     actions->ops->get_password_callback_class = rampart_actions_get_password_callback_class;
     actions->ops->set_password_callback_class = rampart_actions_set_password_callback_class;
+    actions->ops->get_authn_module_name = rampart_actions_get_authn_module_name;
+    actions->ops->set_authn_module_name = rampart_actions_set_authn_module_name;
     actions->ops->get_encryption_key_file = rampart_actions_get_encryption_key_file;
     actions->ops->set_encryption_key_file = rampart_actions_set_encryption_key_file;
     actions->ops->get_decryption_key_file = rampart_actions_get_decryption_key_file;

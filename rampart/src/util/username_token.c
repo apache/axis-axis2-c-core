@@ -28,8 +28,9 @@
 #include <rampart_util.h>
 #include <rampart_callback.h>
 #include <rampart_handler_util.h>
-#include <oxs_axiom.h>
 #include <rampart_sec_processed_result.h>
+#include <rampart_authn_provider.h>
+#include <oxs_axiom.h>
 typedef struct rampart_username_token_impl
 {
     rampart_username_token_t username_token;
@@ -352,11 +353,13 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     axis2_char_t *created = NULL;
     axis2_char_t *password_type = NULL;
     axis2_char_t *pw_callback_module = NULL;
+    axis2_char_t *authn_module_name = NULL;
     axis2_char_t *password_from_svr = NULL;
     axis2_char_t *password_to_compare = NULL;
     axis2_ctx_t *ctx = NULL;
     axis2_qname_t *qname = NULL;
     rampart_username_token_impl_t *username_token_impl = NULL;
+    rampart_authn_provider_status_t auth_status= RAMPART_AUTHN_PROVIDER_GENERAL_ERROR ;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     username_token_impl = AXIS2_INTF_TO_IMPL(username_token);
@@ -410,7 +413,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         return AXIS2_FAILURE;
     }
 
-    /*Get children of UsernameToken element*/
+    /*Get thru children of UsernameToken element*/
     children = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(ut_ele, env, ut_node);
     if (children)
     {
@@ -481,44 +484,69 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     
     /*Set the username to the SPR*/
     rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_USERNAME, username);
-
     ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
-    pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
-    if(!pw_callback_module){
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_usernametoken] Password callback module is not specified");
-        return AXIS2_FAILURE;
-    }
+
+    /**
+     * NOTE: Here we will try two apraoches to get the UT validated
+     * 1. Authentication module
+     * 2. Password callback module
+     *
+     * If authentication module is defined use it. 
+     * Else try the usual approach to get password from the callback and compare
+     * */
+
+    /*authn_module_name = "/home/kau/axis2/c/deploy/bin/samples/rampart/authn_provider/libauthn.so";*/
+    authn_module_name = RAMPART_ACTIONS_GET_AUTHN_MODULE_NAME(actions, env);
+    printf("AUTHN_MODULE_NAME =%s", authn_module_name);
+    if(authn_module_name){
+        AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password authentication using AUTH MODULE %s", authn_module_name);
+        auth_status = rampart_authenticate_un_pw(env, authn_module_name, username, password, nonce, created, password_type, msg_ctx);
+        if(RAMPART_AUTHN_PROVIDER_GRANTED == auth_status){
+            AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] User authenticated");
+            rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_UT_CHECKED, RAMPART_YES);
+            return AXIS2_SUCCESS;            
+        }else{
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password is not valid for user %s : status %d", username, auth_status);
+            return AXIS2_FAILURE;
+        }
+        
+    }else{
+        /*Auth module is NULL. Use Callback password*/
+        pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
+        if(!pw_callback_module){
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_usernametoken] Password callback module is not specified");
+            return AXIS2_FAILURE;
+        }
+        
+        AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password authentication using CALLBACK MODULE %s", pw_callback_module);
     
-    password_from_svr = rampart_callback_password(env, pw_callback_module, username, ctx);
+        password_from_svr = rampart_callback_password(env, pw_callback_module, username, ctx);
+        if (!password_from_svr)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_usernametoken] Cannot get the password for user %s", username);
+            return AXIS2_FAILURE;
+        }
 
-    if (!password_from_svr)
-    {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_usernametoken] Cannot get the password for user %s", username);
-        return AXIS2_FAILURE;
-    }
-    /*Alright NOW we have the password. Is digest needed?*/
-    if (0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST_URI))
-    {
-        AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Generating digest to compare from the password");
-        password_to_compare = rampart_crypto_sha1(env, nonce, created, password_from_svr);
-        rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_PASSWORD_TYPE, RAMPART_PASSWORD_DIGEST_URI);
-    }
-    else
-    {
-        password_to_compare = password_from_svr;
-        rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_PASSWORD_TYPE, RAMPART_PASSWORD_TEXT_URI);
-    }
+        /*Alright NOW we have the password. Is digest needed?*/
+        if (0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST_URI))
+        {
+            AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Generating digest to compare from the password");
+            password_to_compare = rampart_crypto_sha1(env, nonce, created, password_from_svr);
+            rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_PASSWORD_TYPE, RAMPART_PASSWORD_DIGEST_URI);
+        }else{
+            password_to_compare = password_from_svr;
+            rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_PASSWORD_TYPE, RAMPART_PASSWORD_TEXT_URI);
+        }
 
-    /*The BIG moment. Compare passwords*/
-    if (0 == AXIS2_STRCMP(password_to_compare , password))
-    {
-        AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password comparison SUCCESS");
-        rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_UT_CHECKED, RAMPART_YES);
-        return AXIS2_SUCCESS;
-    }
-    else
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password is not valid for user %s", username);
-        return AXIS2_FAILURE;
+        /*The BIG moment. Compare passwords*/
+        if (0 == AXIS2_STRCMP(password_to_compare , password))
+        {
+            AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password comparison SUCCESS");
+            rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_UT_CHECKED, RAMPART_YES);
+            return AXIS2_SUCCESS;
+        }else{
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password is not valid for user %s", username);
+            return AXIS2_FAILURE;
+        }
     }
 }

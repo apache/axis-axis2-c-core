@@ -377,5 +377,4 @@ openssl_x509_print(const axis2_env_t *env,
         printf("\n*************END PRINTING********************\n"); 
 
 
-
 }

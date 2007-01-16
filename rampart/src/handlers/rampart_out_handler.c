@@ -148,6 +148,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
             /*Get actions*/
             action_list = rampart_get_actions(env, ctx, param_out_flow_security);
 
+            
             if (!action_list)
             {
                 AXIS2_LOG_INFO(env->log, 
@@ -175,7 +176,10 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
 
             status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, 
 						param_action);
+            
         }
+
+        
         /*Then re-populate using the axis2_ctx. 
          *This is a hack to facilitate PHP extension to pass security parameters using options
          *In future we should change this to get the param_out_flow_security from a PROPERTY if it is not available

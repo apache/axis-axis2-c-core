@@ -61,7 +61,11 @@ openssl_pem_buf_read_pkey(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
     /*Load*/
-    *pkey = d2i_PrivateKey_bio(bio, NULL);
+    if(OPENSSL_PEM_PKEY_TYPE_PUBLIC_KEY == type){
+        *pkey = d2i_PUBKEY_bio(bio, NULL);
+    }else{
+        *pkey = d2i_PrivateKey_bio(bio, NULL);
+    }
     
     /*Free*/
     BIO_free(bio);
@@ -70,7 +74,8 @@ openssl_pem_buf_read_pkey(const axis2_env_t *env,
     buff = NULL;
 
     if(!*pkey){
-        printf("\npkey is NULL");
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "private key is NULL");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

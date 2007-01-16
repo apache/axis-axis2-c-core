@@ -102,7 +102,7 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     
     /*Wht ever the way, right now we should have either the public key or the private key*/
 
-    /*Alright if the prvkey is available, populate the openssl_pkey*/
+    /*If the prvkey is available, populate the openssl_pkey*/
     if(prvkey){
         open_prvkey = openssl_pkey_create(env);
         OPENSSL_PKEY_POPULATE(open_prvkey, env, prvkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);

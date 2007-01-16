@@ -41,6 +41,52 @@
 
 /*#define PRINTINFO 1 */
 
+AXIS2_EXTERN rampart_authn_provider_status_t AXIS2_CALL
+rampart_authenticate_un_pw(const axis2_env_t *env,
+    axis2_char_t *authn_module_name,
+    const axis2_char_t *username,
+    const axis2_char_t *password,
+    const axis2_char_t *nonce,/*Can be NULL if plain text*/
+    const axis2_char_t *created,/*Can be NULL if plain text*/
+    const axis2_char_t *password_type,
+    axis2_msg_ctx_t *msg_ctx)
+{
+    rampart_authn_provider_t *authp = NULL;
+    axis2_dll_desc_t *dll_desc = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    void *ptr = NULL;
+    rampart_authn_provider_status_t auth_status = RAMPART_AUTHN_PROVIDER_GENERAL_ERROR;
+
+    dll_desc = axis2_dll_desc_create(env);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, authn_module_name);
+    impl_info_param = axis2_param_create(env, NULL, NULL);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_class_loader_init(env);
+    ptr = axis2_class_loader_create_dll(env, impl_info_param);
+    
+    if (!ptr)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to load the authentication module %s. ERROR", authn_module_name);
+        return AXIS2_FAILURE;
+    }
+
+    authp = (rampart_authn_provider_t*)ptr;
+    if (!authp)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to identify the authentication  module %s. ERROR", authn_module_name);
+        return AXIS2_FAILURE;
+    }
+    /*If password digest*/
+    if(0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST_URI)){
+        auth_status = RAMPART_AUTHN_PROVIDER_CHECK_PASSWORD_DIGEST(authp, env, msg_ctx, username, nonce, created, password);
+    }else{
+        auth_status = RAMPART_AUTHN_PROVIDER_CHECK_PASSWORD(authp, env, msg_ctx, username, password);    
+    }
+
+    return auth_status;
+}
+
+
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_callback_password(const axis2_env_t *env,
         axis2_char_t *callback_module_name,
@@ -55,7 +101,7 @@ rampart_callback_password(const axis2_env_t *env,
     axis2_property_t* property = NULL; 
     void *cb_prop_val= NULL;
 
-    /*Get callback specific property if any from the ctx. This is specially done for PHP folks to send the hapassword file location.
+    /*Get callback specific property if any from the ctx. This is specially done for PHP folks to send the htpassword file location.
      */
     property = AXIS2_CTX_GET_PROPERTY(ctx, env, RAMPART_CALLBACK_SPECIFIC_PROPERTY, AXIS2_FALSE);
     if (property)

@@ -29,6 +29,7 @@
       <action>
         <items>UsernameToken Timestamp Encrypt</items>
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
+        <authnModuleName>/home/kau/axis2/c/deploy/bin/samples/rampart/authn_provider/libauthn.so</authnModuleName>
         <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/bhome/b_store.pfx</decryptionPropFile>
         <encryptionUser>b</encryptionUser>
       </action>

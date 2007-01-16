@@ -134,6 +134,18 @@ extern "C"
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
+        
+        /**
+        * Gets authn_module_name of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return authn_module_name
+        */
+        axis2_char_t *(AXIS2_CALL *
+        get_authn_module_name )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
 
         /**
         * Gets encryption_key_file of the rampart action.
@@ -339,6 +351,20 @@ extern "C"
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *password_callback_class
+                    );
+        
+        /**
+        * Sets authn_module_name of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param authn_module_name
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
+        axis2_status_t (AXIS2_CALL *
+        set_authn_module_name)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *authn_module_name
                     );
         
         /**
@@ -571,6 +597,12 @@ extern "C"
 
 #define RAMPART_ACTIONS_SET_PW_CB_CLASS(actions, env, password_callback_class)\
         ((actions)->ops->set_password_callback_class(actions, env,password_callback_class ))
+
+#define RAMPART_ACTIONS_GET_AUTHN_MODULE_NAME(actions, env) \
+        ((actions)->ops->get_authn_module_name(actions, env) )
+
+#define RAMPART_ACTIONS_SET_AUTHN_MODULE_NAME(actions, env, authn_module_name)\
+        ((actions)->ops->set_authn_module_name(actions, env, authn_module_name ))
 
 #define RAMPART_ACTIONS_GET_ENC_KEY_FILE(actions, env) \
         ((actions)->ops->get_encryption_key_file(actions, env) )

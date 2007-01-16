@@ -20,17 +20,15 @@
 #include <axis2_error.h>
 #include <axis2_env.h>
 #include <axis2_utils.h>
-#include <rampart_callback.h>
+#include <rampart_authn_provider.h>
+#include <rampart_crypto_util.h> 
 #include <axis2_string.h>
 #include <axis2_svc_skeleton.h>
 #include <axis2_string.h>
 
-#if 0
 axis2_char_t* AXIS2_CALL
-callback_get_sample_password_from_file(rampart_callback_t *rcb,
-        const axis2_env_t *env,
-        const axis2_char_t *username,
-        void *param)
+ramaprt_get_sample_password_from_file(const axis2_env_t *env,
+        const axis2_char_t *username)
 {
     axis2_char_t * password = NULL;
     FILE *file = NULL;
@@ -66,16 +64,12 @@ callback_get_sample_password_from_file(rampart_callback_t *rcb,
        AXIS2_LOG_INFO(env->log, "Cannot load the password file %s ", filename);
        perror ( filename );
     }
-    return password;
+    return password; 
 }
-
-#endif
-
+#if 0
 axis2_char_t* AXIS2_CALL
-get_sample_password(rampart_callback_t *rcb,
-        const axis2_env_t *env, 
-        const axis2_char_t *username,
-        void *param)
+ramaprt_get_sample_password(const axis2_env_t *env,
+        const axis2_char_t *username)
 {
     /*First set pf password are for sample usernames*/
     axis2_char_t * pw = NULL;
@@ -119,27 +113,83 @@ get_sample_password(rampart_callback_t *rcb,
     }
     return pw;
 };
+#endif
+
+/*Two sample implementations*/
+rampart_authn_provider_status_t AXIS2_CALL
+rampart_sample_authn_provider_check_password(rampart_authn_provider_t *authn_provider,
+                const axis2_env_t* env,
+                axis2_msg_ctx_t *msg_ctx,
+                const axis2_char_t *username,
+                const axis2_char_t *password)
+{
+    axis2_char_t *local_pw = NULL;
+
+    /*local_pw = ramaprt_get_sample_password( env, username);*/
+    local_pw = ramaprt_get_sample_password_from_file(env, username);
+    if(local_pw){
+        /*Compare passwords*/
+        if(0 == AXIS2_STRCMP(password, local_pw)){
+            return RAMPART_AUTHN_PROVIDER_GRANTED;
+        }else{
+            return RAMPART_AUTHN_PROVIDER_DENIED;
+        }
+    }else{
+        return RAMPART_AUTHN_PROVIDER_USER_NOT_FOUND;
+    }
+}
+
+rampart_authn_provider_status_t AXIS2_CALL
+rampart_sample_authn_provider_check_password_digest(rampart_authn_provider_t *authn_provider,
+                const axis2_env_t* env,
+                axis2_msg_ctx_t *msg_ctx,
+                const axis2_char_t *username,
+                const axis2_char_t *nonce,
+                const axis2_char_t *created,
+                const axis2_char_t *digest)
+{
+
+    axis2_char_t *local_pw = NULL;
+
+    /*local_pw = ramaprt_get_sample_password( env, username);*/
+    local_pw = ramaprt_get_sample_password_from_file(env, username);
+    if(local_pw){
+        axis2_char_t *local_digest = NULL;
+        /*Generate the digest*/
+        local_digest = rampart_crypto_sha1(env, nonce, created, local_pw);
+        /*Compare digest*/
+        if(0 == AXIS2_STRCMP(digest, local_digest)){
+            return RAMPART_AUTHN_PROVIDER_GRANTED;
+        }else{
+            return RAMPART_AUTHN_PROVIDER_DENIED;
+        }
+     
+    }else{
+        return RAMPART_AUTHN_PROVIDER_USER_NOT_FOUND;
+    }
+}
 
 /**
- * Following block distinguish the exposed part of the dll.
+ * Following block distinguishes the exposed part of the dll.
  */
 AXIS2_EXPORT int
-axis2_get_instance(rampart_callback_t **inst,
+axis2_get_instance(rampart_authn_provider_t **inst,
         const axis2_env_t *env)
 {
-    rampart_callback_t* rcb = NULL;
+    rampart_authn_provider_t* authn_p = NULL;
 
-    rcb = AXIS2_MALLOC(env->allocator,
-            sizeof(rampart_callback_t));
+    authn_p = AXIS2_MALLOC(env->allocator,
+            sizeof(rampart_authn_provider_t));
 
-    rcb->ops = AXIS2_MALLOC(
-                env->allocator, sizeof(rampart_callback_ops_t));
+    authn_p->ops = AXIS2_MALLOC(
+                env->allocator, sizeof(rampart_authn_provider_ops_t));
 
     /*assign function pointers*/
 
-    rcb->ops->callback_password = get_sample_password;
-
-    *inst = rcb;
+    authn_p->ops->rampart_authn_provider_check_password = rampart_sample_authn_provider_check_password;
+    authn_p->ops->rampart_authn_provider_check_password_digest = rampart_sample_authn_provider_check_password_digest;
+   
+    *inst = authn_p;
 
     if (!(*inst))
     {
@@ -150,7 +200,7 @@ axis2_get_instance(rampart_callback_t **inst,
 }
 
 AXIS2_EXPORT int
-axis2_remove_instance(rampart_callback_t *inst,
+axis2_remove_instance(rampart_authn_provider_t *inst,
         const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;

@@ -21,7 +21,7 @@
 #include <axis2_env.h>
 #include <axis2_property.h>
 #include <axis2_msg_ctx.h>
-
+#include <rampart_authn_provider.h>
 /**
   * @file rampart_util.h
   * @brief RAMPART-UTIL 
@@ -37,6 +37,17 @@ extern "C" {
   * @defgroup Rampart_Util
   * @ingroup Rampart_Util
   */
+
+
+AXIS2_EXTERN rampart_authn_provider_status_t AXIS2_CALL
+rampart_authenticate_un_pw(const axis2_env_t *env,
+    axis2_char_t *authn_module_name,
+    const axis2_char_t *username,
+    const axis2_char_t *password,
+    const axis2_char_t *nonce,/*Can be NULL if plain text*/
+    const axis2_char_t *created,/*Can be NULL if plain text*/
+    const axis2_char_t *password_type,
+    axis2_msg_ctx_t *msg_ctx);
 
  /**
 	*@env the environment

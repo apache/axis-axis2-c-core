@@ -76,8 +76,10 @@ AC_SUBST(TESTDIR)
 AC_SUBST(PARSER_DIR)
 
 AC_CONFIG_FILES([Makefile \
+        data/Makefile \
         callback/Makefile \
         callback/htpasswd_callback/Makefile \
+        authn_provider/Makefile \
         server/Makefile \
         server/sec_echo/Makefile \
         client/Makefile

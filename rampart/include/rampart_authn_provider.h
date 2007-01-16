@@ -18,19 +18,27 @@
 #ifndef RAMPART_AUTHN_PROVIDER_H
 #define RAMPART_AUTHN_PROVIDER_H
 
+#include <axis2_defines.h>
+#include <axis2_error.h>
+#include <axis2_env.h>
+#include <axis2_utils.h>
+#include <axis2_msg_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-    /*typedef enum {
-        AUTHN_PROVIDER_DENIED,
-        AUTHN_PROVIDER_GRANTED,
-        AUTHN_PROVIDER_FOUND,
-        AUTHN_PROVIDER_USER_NOT_FOUND,
-        AUTHN_PROVIDER_GENERAL_ERROR
+    enum rampart_authn_provider_status{
+        RAMPART_AUTHN_PROVIDER_DENIED = 0,
+        RAMPART_AUTHN_PROVIDER_GRANTED,
+        RAMPART_AUTHN_PROVIDER_FOUND,
+        RAMPART_AUTHN_PROVIDER_USER_FOUND,
+        RAMPART_AUTHN_PROVIDER_USER_NOT_FOUND,
+        RAMPART_AUTHN_PROVIDER_GENERAL_ERROR
     } rampart_authn_provider_status;
-    */
+   
+    typedef enum rampart_authn_provider_status rampart_authn_provider_status_t;
+
     /**
      * Struct to authenticate username/password pair
      * @defgroup rampart_authn_provider rampart authn_provider
@@ -55,7 +63,7 @@ extern "C"
     {            
            
 
-            axis2_status_t (AXIS2_CALL*
+            rampart_authn_provider_status_t (AXIS2_CALL*
             rampart_authn_provider_check_password)(
                 rampart_authn_provider_t *authn_provider,
                 const axis2_env_t* env,
@@ -64,13 +72,14 @@ extern "C"
                 const axis2_char_t *password
             );
             
-            axis2_status_t (AXIS2_CALL*
+            rampart_authn_provider_status_t (AXIS2_CALL*
             rampart_authn_provider_check_password_digest)(
                 rampart_authn_provider_t *authn_provider,
                 const axis2_env_t* env,
                 axis2_msg_ctx_t *msg_ctx,
-                const char *nonce, 
-                size_t nonce_length, 
+                const axis2_char_t *username,
+                const axis2_char_t *nonce, 
+                const axis2_char_t *created, 
                 const char *digest
             );
 
@@ -91,10 +100,10 @@ extern "C"
       ((authn_provider)->ops->free (authn_provider, env))
 
 #define RAMPART_AUTHN_PROVIDER_CHECK_PASSWORD(authn_provider, env, msg_ctx, username, password) \
-      ((authn_provider)->ops->authn_provider_password(authn_provider, env, msg_ctx, username, password))
+      ((authn_provider)->ops->rampart_authn_provider_check_password(authn_provider, env, msg_ctx, username, password))
 
-#define RAMPART_AUTHN_PROVIDER_CHECK_PASSWORD_DIGEST(authn_provider, env, msg_ctx, nonce, nonce_length, digest) \
-      ((authn_provider)->ops->authn_provider_password(authn_provider, env, msg_ctx, nonce, nonce_length, digest))
+#define RAMPART_AUTHN_PROVIDER_CHECK_PASSWORD_DIGEST(authn_provider, env, msg_ctx, username, nonce, nonce_length, digest) \
+      ((authn_provider)->ops->rampart_authn_provider_check_password_digest(authn_provider, env, msg_ctx, username, nonce, nonce_length, digest))
 
     /** @} */
 #ifdef __cplusplus
