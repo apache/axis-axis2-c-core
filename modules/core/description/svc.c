@@ -2066,7 +2066,7 @@ axis2_svc_add_module_qname(
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
 
-    qmodule_qname_l = AXIS2_QNAME_CLONE(module_qname, env);
+    qmodule_qname_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
     return AXIS2_ARRAY_LIST_ADD(AXIS2_INTF_TO_IMPL(svc)->module_list, env,
             qmodule_qname_l);
 }

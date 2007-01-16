@@ -175,7 +175,7 @@ axis2_disp_checker_set_qname(
 
     if (qname)
     {
-        disp_checker_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+        disp_checker_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
         if (!(disp_checker_impl->qname))
             return AXIS2_FAILURE;
     }

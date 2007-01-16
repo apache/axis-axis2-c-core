@@ -84,7 +84,7 @@ axis2_svc_name_create(
 
     if (qname)
     {
-        svc_name_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+        svc_name_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
         if (!(svc_name_impl->qname))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -152,7 +152,7 @@ axis2_svc_name_set_qname(
 
     if (qname)
     {
-        svc_name_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+        svc_name_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
         if (!(svc_name_impl->qname))
             return AXIS2_FAILURE;
     }

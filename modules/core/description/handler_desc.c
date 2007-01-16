@@ -170,7 +170,7 @@ axis2_handler_desc_create_with_qname(
 
     if (qname)
     {
-        handler_desc_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+        handler_desc_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
     }
 
     /* initialize ops */
@@ -219,7 +219,7 @@ axis2_handler_desc_set_qname(
     const axis2_qname_t *qname)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(handler_desc)->qname = AXIS2_QNAME_CLONE(qname, env);
+    AXIS2_INTF_TO_IMPL(handler_desc)->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
     return AXIS2_SUCCESS;
 
 }

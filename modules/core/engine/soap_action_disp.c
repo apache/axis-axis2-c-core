@@ -127,12 +127,7 @@ axiom_soap_action_disp_find_op(
 
             if (op_name)
             {
-                axis2_qname_t *op_qname = axis2_qname_create(env, op_name, NULL, NULL);
-
-                op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env,
-                        AXIS2_QNAME_GET_LOCALPART(op_qname, env));
-
-                AXIS2_QNAME_FREE(op_qname, env);
+                op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, op_name);
             }
         }
 

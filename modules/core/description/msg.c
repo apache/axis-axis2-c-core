@@ -452,7 +452,7 @@ axis2_msg_set_element_qname(
 
     if (element_qname)
     {
-        msg_impl->element_qname = AXIS2_QNAME_CLONE(element_qname, env);
+        msg_impl->element_qname = AXIS2_QNAME_CLONE((axis2_qname_t *)element_qname, env);
         if (!(msg_impl->element_qname))
             return AXIS2_FAILURE;
     }

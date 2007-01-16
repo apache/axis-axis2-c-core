@@ -239,7 +239,7 @@ axis2_wsdl_svc_set_qname(axis2_wsdl_svc_t *wsdl_svc,
         AXIS2_QNAME_FREE(wsdl_svc_impl->qname, env);
         wsdl_svc_impl->qname = NULL;
     }
-    wsdl_svc_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+    wsdl_svc_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
     if (!wsdl_svc_impl->qname)
     {
         return AXIS2_FAILURE;

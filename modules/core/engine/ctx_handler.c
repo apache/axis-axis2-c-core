@@ -48,7 +48,7 @@ axis2_ctx_handler_create(
 
     if (qname)
     {
-        handler_qname = AXIS2_QNAME_CLONE(qname, env);
+        handler_qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
         if (!(handler_qname))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

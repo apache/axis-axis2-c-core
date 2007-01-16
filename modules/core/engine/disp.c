@@ -97,7 +97,7 @@ axis2_disp_create(
 
     if (qname)
     {
-        disp_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+        disp_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
         if (!(disp_impl->qname))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

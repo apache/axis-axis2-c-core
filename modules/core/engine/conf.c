@@ -1992,7 +1992,7 @@ axis2_conf_engage_module(
             return status;
         }
         module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
-        module_qref_l = AXIS2_QNAME_CLONE(module_qname, env);
+        module_qref_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
         status = AXIS2_ARRAY_LIST_ADD(config_impl->engaged_modules, env,
                 module_qref_l);
     }

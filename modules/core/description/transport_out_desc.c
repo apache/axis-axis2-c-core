@@ -157,7 +157,7 @@ axis2_transport_out_desc_create_with_qname(
         return NULL;
     }
 
-    transport_out_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+    transport_out_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
 
     transport_out_impl->transport_out.ops =
         AXIS2_MALLOC(env->allocator, sizeof(axis2_transport_out_desc_ops_t));
@@ -307,7 +307,7 @@ axis2_transport_out_desc_set_qname(
         AXIS2_QNAME_FREE(transport_out_impl->qname, env);
         transport_out_impl->qname = NULL;
     }
-    transport_out_impl->qname = AXIS2_QNAME_CLONE(qname, env);
+    transport_out_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
     return AXIS2_SUCCESS;
 }
 

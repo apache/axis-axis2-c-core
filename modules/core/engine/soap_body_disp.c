@@ -196,15 +196,12 @@ axiom_soap_body_disp_find_op(
                             axis2_char_t *element_name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
                             if (element_name)
                             {
-                                axis2_qname_t *op_qname = NULL;
                                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                         "Checking for operation using SOAP message body's first child's local name : %s",
                                         element_name);
-                                op_qname = axis2_qname_create(env, element_name, NULL, NULL);
 
-                                op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, AXIS2_QNAME_GET_LOCALPART(op_qname, env));
+                                op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, element_name);
 
-                                AXIS2_QNAME_FREE(op_qname, env);
                                 if (op)
                                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                             "Operation found using SOAP message body's first child's local name");

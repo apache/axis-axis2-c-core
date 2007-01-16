@@ -412,7 +412,7 @@ axis2_wsdl_op_set_qname(axis2_wsdl_op_t *wsdl_op,
         AXIS2_QNAME_FREE(wsdl_op_impl->name, env);
         wsdl_op_impl->name = NULL;
     }
-    wsdl_op_impl->name = AXIS2_QNAME_CLONE(name, env);
+    wsdl_op_impl->name = AXIS2_QNAME_CLONE((axis2_qname_t *)name, env);
     if (!wsdl_op_impl->name)
     {
         return AXIS2_FAILURE;

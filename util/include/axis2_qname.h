@@ -98,7 +98,7 @@ extern "C"
     */
 
     AXIS2_EXTERN struct axis2_qname* AXIS2_CALL
-    axis2_qname_clone(const struct axis2_qname *qname,
+    axis2_qname_clone(struct axis2_qname *qname,
         const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL

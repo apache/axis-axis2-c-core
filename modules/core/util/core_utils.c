@@ -30,6 +30,7 @@ axis2_core_utils_create_out_msg_ctx(
     const axis2_env_t *env,
     axis2_msg_ctx_t *in_msg_ctx)
 {
+    axis2_ctx_t *ctx = NULL;
     axis2_msg_ctx_t *new_msg_ctx = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_transport_in_desc_t *transport_in = NULL;
@@ -48,7 +49,7 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_bool_t doing_mtom = AXIS2_FALSE;
     axis2_bool_t server_side = AXIS2_FALSE;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
-    axis2_property_t *property = NULL;
+    /*axis2_property_t *property = NULL;*/
     axis2_char_t *msg_uuid = NULL;
 
     AXIS2_PARAM_CHECK(env->error, in_msg_ctx, NULL);
@@ -120,7 +121,18 @@ axis2_core_utils_create_out_msg_ctx(
     svc_ctx = AXIS2_MSG_CTX_GET_SVC_CTX(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_SVC_CTX(new_msg_ctx, env, svc_ctx);
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
+    ctx = AXIS2_MSG_CTX_GET_BASE(in_msg_ctx, env);
+    if (ctx)
+    {
+        axis2_ctx_t *new_ctx = AXIS2_MSG_CTX_GET_BASE(new_msg_ctx, env);
+        if (new_ctx)
+        {
+            axis2_ctx_set_non_persistent_map(new_ctx, env,
+                axis2_ctx_get_non_persistent_map(ctx, env));
+        }
+    }
+
+    /*property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
             AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
     if (property)
     {
@@ -137,11 +149,11 @@ axis2_core_utils_create_out_msg_ctx(
         AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
             property, AXIS2_FALSE);
         property = NULL;
-    }
+    }*/
 
     /* Setting the charater set encoding */
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
+    /*property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
             AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
     if (property)
     {
@@ -157,7 +169,7 @@ axis2_core_utils_create_out_msg_ctx(
         AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env,
                 AXIS2_WSA_VERSION, property, AXIS2_FALSE);
         property = NULL;
-    }
+    }*/
 
     doing_rest = AXIS2_MSG_CTX_GET_DOING_REST(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_DOING_REST(new_msg_ctx, env, doing_rest);
@@ -198,14 +210,14 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
 
     AXIS2_MSG_CTX_SET_OP_CTX(out_msg_ctx, env, NULL);
     AXIS2_MSG_CTX_SET_SVC_CTX(out_msg_ctx, env, NULL);
-    AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_TRANSPORT_OUT, NULL,
+    /*AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_TRANSPORT_OUT, NULL,
             AXIS2_FALSE);
     AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
             NULL, AXIS2_FALSE);
     AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
             NULL, AXIS2_FALSE);
     AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_WSA_VERSION, NULL,
-            AXIS2_FALSE);
+            AXIS2_FALSE);*/
 
     AXIS2_MSG_CTX_SET_SVC_GRP_CTX(out_msg_ctx, env, NULL);
 

@@ -1399,7 +1399,7 @@ axis2_op_add_module_qname(
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
-    module_qname_l = AXIS2_QNAME_CLONE(module_qname, env);
+    module_qname_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
 
     return AXIS2_ARRAY_LIST_ADD(op_impl->module_qnames, env, module_qname_l);
 }

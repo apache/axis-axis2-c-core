@@ -32,6 +32,7 @@ struct axis2_qname
     axis2_char_t *prefix;
     /** qname represented as a string, used as keys in hash tables, etc. */
     axis2_char_t *qname_string;
+    unsigned int ref;
 };
 
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
@@ -64,6 +65,7 @@ axis2_qname_create(const axis2_env_t *env,
     qname->qname_string = NULL;
     qname->prefix = NULL;
     qname->namespace_uri = NULL;
+    qname->ref = 1;
 
 
     qname->localpart = (axis2_char_t *)AXIS2_STRDUP(localpart, env);
@@ -120,6 +122,11 @@ axis2_qname_free(axis2_qname_t * qname,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    qname->ref--;
+
+    if (qname->ref > 0)
+        return AXIS2_SUCCESS;
 
     if (qname->localpart)
     {
@@ -192,17 +199,21 @@ axis2_qname_equals(const axis2_qname_t *qname,
 
 
 AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
-axis2_qname_clone(const axis2_qname_t *qname,
+axis2_qname_clone(axis2_qname_t *qname,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
     if (!qname)
         return NULL;
+
+    qname->ref++;
     
-    return axis2_qname_create(env, qname->localpart,
+    /*return axis2_qname_create(env, qname->localpart,
             qname->namespace_uri,
-            qname->prefix);
+            qname->prefix);*/
+
+    return qname;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL

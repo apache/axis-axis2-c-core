@@ -326,7 +326,7 @@ axis2_endpoint_ref_set_interface_qname(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(endpoint_ref)->interface_qname =
-        AXIS2_QNAME_CLONE(interface_qname, env);
+        AXIS2_QNAME_CLONE((axis2_qname_t *)interface_qname, env);
     return AXIS2_SUCCESS;
 }
 
