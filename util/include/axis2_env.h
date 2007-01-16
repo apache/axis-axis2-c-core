@@ -182,11 +182,13 @@ extern "C"
         
 #define AXIS2_LOG(env, message, level) axis2_env_write_log (env,message, level)
 
-#define AXIS2_ENV_CHECK(env, error_return) \
+/*#define AXIS2_ENV_CHECK(env, error_return) \
     if(!env) \
     { \
         return error_return; \
-    }
+    }*/
+
+#define AXIS2_ENV_CHECK(env, error_return) 
 
     /** @} */
 

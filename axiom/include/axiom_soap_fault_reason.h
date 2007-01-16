@@ -31,7 +31,6 @@ extern "C"
 {
 #endif
 
-    typedef struct axiom_soap_fault_reason_ops axiom_soap_fault_reason_ops_t;
     typedef struct axiom_soap_fault_reason axiom_soap_fault_reason_t;
     struct axiom_soap_fault_text;
     struct axiom_soap_builder;
@@ -42,89 +41,65 @@ extern "C"
      */
 
     /**
-     *   \brief soap_fault_reason operations struct
-     *   ops Encapsulator struct of axiom_soap_fault_reason
-     */
-    struct axiom_soap_fault_reason_ops
-    {
-        /**
-          * Free an axiom_soap_fault_reason
-          * @param  fault_reason pointer to soap_fault_reason struct
-          * @param  env Environment. MUST NOT be NULL
-          * @return satus of the op. AXIS2_SUCCESS on success 
-          *         else AXIS2_FAILURE
-          */
-
-        axis2_status_t(AXIS2_CALL *
-                free_fn)(axiom_soap_fault_reason_t *fault_reason,
-                        const axis2_env_t *env);
-
-        struct axiom_soap_fault_text*(AXIS2_CALL *
-                            get_soap_fault_text)(axiom_soap_fault_reason_t *fault_reason,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *lang);
-
-        axis2_array_list_t*(AXIS2_CALL *
-                get_all_soap_fault_texts)(axiom_soap_fault_reason_t *fault_reason,
-                        const axis2_env_t *env);
-
-        struct axiom_soap_fault_text*(AXIS2_CALL *
-                            get_first_soap_fault_text)(axiom_soap_fault_reason_t *fault_reason,
-                                    const axis2_env_t *env);
-
-        axis2_status_t(AXIS2_CALL *
-                add_soap_fault_text)(axiom_soap_fault_reason_t *fault_reason,
-                        const axis2_env_t *env,
-                        struct axiom_soap_fault_text *fault_text);
-
-        axiom_node_t*(AXIS2_CALL *
-                get_base_node)(axiom_soap_fault_reason_t *fault_reason,
-                        const axis2_env_t *env);
-
-    };
-
-    /**
-      * \brief soap_fault_reason struct
-      * represent a soap_fault_reason
-      */
-    struct axiom_soap_fault_reason
-    {
-        /** operation of axiom_soap_fault_reason struct */
-        axiom_soap_fault_reason_ops_t *ops;
-
-    };
-
-    /**
       * creates a soap struct 
       * @param env Environment. MUST NOT be NULL
       */
-
-
     AXIS2_EXTERN axiom_soap_fault_reason_t * AXIS2_CALL
     axiom_soap_fault_reason_create_with_parent(const axis2_env_t *env,
             axiom_soap_fault_t *fault);
 
-    /******************** Macros **************************************************/
+    /**
+      * Free an axiom_soap_fault_reason
+      * @param  fault_reason pointer to soap_fault_reason struct
+      * @param  env Environment. MUST NOT be NULL
+      * @return satus of the op. AXIS2_SUCCESS on success 
+      *         else AXIS2_FAILURE
+      */
 
-    /** free soap_fault_reason */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN struct axiom_soap_fault_text* AXIS2_CALL
+    axiom_soap_fault_reason_get_soap_fault_text(axiom_soap_fault_reason_t *fault_reason,
+            const axis2_env_t *env,
+            axis2_char_t *lang);
+
+    AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL
+    axiom_soap_fault_reason_get_all_soap_fault_texts(axiom_soap_fault_reason_t *fault_reason,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN struct axiom_soap_fault_text* AXIS2_CALL
+    axiom_soap_fault_reason_get_first_soap_fault_text(axiom_soap_fault_reason_t *fault_reason,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_fault_reason_add_soap_fault_text(axiom_soap_fault_reason_t *fault_reason,
+            const axis2_env_t *env,
+            struct axiom_soap_fault_text *fault_text);
+
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+    axiom_soap_fault_reason_get_base_node(axiom_soap_fault_reason_t *fault_reason,
+            const axis2_env_t *env);
+
 #define AXIOM_SOAP_FAULT_REASON_FREE(fault_reason , env) \
-        ((fault_reason)->ops->free_fn(fault_reason, env))
+        axiom_soap_fault_reason_free(fault_reason, env)
 
 
 #define AXIOM_SOAP_FAULT_REASON_GET_SOAP_FAULT_TEXT(fault_reason , env, lang) \
-        ((fault_reason)->ops->get_soap_fault_text(fault_reason, env, lang))
+        axiom_soap_fault_reason_get_soap_fault_text(fault_reason, env, lang)
 
 #define AXIOM_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env) \
-        ((fault_reason)->ops->get_base_node(fault_reason, env))
+        axiom_soap_fault_reason_get_base_node(fault_reason, env)
 
 #define AXIOM_SOAP_FAULT_REASON_ADD_SOAP_FAULT_TEXT(fault_reason, env, fault_text) \
-        ((fault_reason)->ops->add_soap_fault_text(fault_reason, env, fault_text))
+        axiom_soap_fault_reason_add_soap_fault_text(fault_reason, env, fault_text)
 
 #define AXIOM_SOAP_FAULT_REASON_GET_ALL_SOAP_FAULT_TEXTS(fault_reason, env) \
-        ((fault_reason)->ops->get_all_soap_fault_texts(fault_reason, env))
+        axiom_soap_fault_reason_get_all_soap_fault_texts(fault_reason, env)
 
 #define AXIOM_SOAP_FAULT_REASON_GET_FIRST_SOAP_FAULT_TEXT(fault_reason, env) \
-        ((fault_reason)->ops->get_first_soap_fault_text(fault_reason, env))
+        axiom_soap_fault_reason_get_first_soap_fault_text(fault_reason, env)
 
     /** @} */
 

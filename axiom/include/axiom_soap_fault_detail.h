@@ -32,7 +32,6 @@ extern "C"
 {
 #endif
 
-    typedef struct axiom_soap_fault_detail_ops axiom_soap_fault_detail_ops_t;
     typedef struct axiom_soap_fault_detail axiom_soap_fault_detail_t;
 
     /**
@@ -42,75 +41,53 @@ extern "C"
      */
 
     /**
-     *   \brief soap_fault_detail operations struct
-     *   ops Encapsulator struct of axiom_soap_fault_detail
-     */
-    struct axiom_soap_fault_detail_ops
-    {
-        /**
-          * Free an axiom_soap_fault_detail
-          * @param  fault_detail pointer to soap_fault_detail struct
-          * @param  env Environment. MUST NOT be NULL
-          * @return satus of the op. AXIS2_SUCCESS on success 
-          *         else AXIS2_FAILURE
-          */
-
-        axis2_status_t(AXIS2_CALL *
-                free_fn)(axiom_soap_fault_detail_t *fault_detail,
-                        const axis2_env_t *env);
-
-        axis2_status_t(AXIS2_CALL *
-                add_detail_entry)(axiom_soap_fault_detail_t *fault_detail,
-                        const axis2_env_t *env,
-                        axiom_node_t *ele_node);
-
-        axiom_children_iterator_t*(AXIS2_CALL *
-                get_all_detail_entries)(axiom_soap_fault_detail_t *fault_detail,
-                        const axis2_env_t *env);
-
-        axiom_node_t*(AXIS2_CALL *
-                get_base_node)(axiom_soap_fault_detail_t *fault_code,
-                        const axis2_env_t *env);
-
-    };
-
-    /**
-      * \brief soap_fault_code struct
-      * represent a soap_fault_code
-      */
-    struct axiom_soap_fault_detail
-    {
-        /** operation of axiom_soap_fault_detail struct */
-        axiom_soap_fault_detail_ops_t *ops;
-
-    };
-
-    /**
       * creates a soap struct 
       * @param env Environment. MUST NOT be NULL
       */
-
-
-
     AXIS2_EXTERN axiom_soap_fault_detail_t * AXIS2_CALL
     axiom_soap_fault_detail_create_with_parent
     (const axis2_env_t *env,
             axiom_soap_fault_t *fault);
 
+    /**
+      * Free an axiom_soap_fault_detail
+      * @param  fault_detail pointer to soap_fault_detail struct
+      * @param  env Environment. MUST NOT be NULL
+      * @return satus of the op. AXIS2_SUCCESS on success 
+      *         else AXIS2_FAILURE
+      */
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_fault_detail_free(axiom_soap_fault_detail_t *fault_detail,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_fault_detail_add_detail_entry(axiom_soap_fault_detail_t *fault_detail,
+            const axis2_env_t *env,
+            axiom_node_t *ele_node);
+
+    AXIS2_EXTERN axiom_children_iterator_t* AXIS2_CALL
+    axiom_soap_fault_detail_get_all_detail_entries(axiom_soap_fault_detail_t *fault_detail,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+    axiom_soap_fault_detail_get_base_node(axiom_soap_fault_detail_t *fault_code,
+            const axis2_env_t *env);
+
     /******************** Macros **************************************************/
 
     /** free soap_fault_detail */
 #define AXIOM_SOAP_FAULT_DETAIL_FREE(fault_detail , env) \
-        ((fault_detail)->ops->free_fn(fault_detail, env))
+        axiom_soap_fault_detail_free(fault_detail, env)
 
 #define AXIOM_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(fault_detail, env, ele_node) \
-        ((fault_detail)->ops->add_detail_entry(fault_detail, env, ele_node))
+        axiom_soap_fault_detail_add_detail_entry(fault_detail, env, ele_node)
 
 #define AXIOM_SOAP_FAULT_DETAIL_GET_ALL_DETAIL_ENTRIES(fault_detail, env) \
-        ((fault_detail)->ops->get_all_detail_entries(fault_detail, env))
+        axiom_soap_fault_detail_get_all_detail_entries(fault_detail, env)
 
 #define AXIOM_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env) \
-        ((fault_detail)->ops->get_base_node(fault_detail, env))
+        axiom_soap_fault_detail_get_base_node(fault_detail, env)
 
 
 

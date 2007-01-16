@@ -30,12 +30,8 @@
 #include "_axiom_soap_fault_value.h"
 #include "_axiom_soap_fault_text.h"
 
-/********************* impl struct ********************************************/
-
-typedef struct axiom_soap12_builder_helper_impl_t
+struct axiom_soap12_builder_helper
 {
-    axiom_soap12_builder_helper_t builder_helper;
-
     axiom_soap_builder_t *soap_builder;
 
     axis2_bool_t code_present;
@@ -63,113 +59,65 @@ typedef struct axiom_soap12_builder_helper_impl_t
     axis2_bool_t reason_processing;
 
     axis2_array_list_t *detail_element_names;
-
-
-}
-axiom_soap12_builder_helper_impl_t;
-
-/******************** Macro ***************************************************/
-
-#define AXIS2_INTF_TO_IMPL(builder_helper) ((axiom_soap12_builder_helper_impl_t*)builder_helper)
-
-/******************** function prototypes *************************************/
-
-axis2_status_t AXIS2_CALL
-axiom_soap12_builder_helper_free(axiom_soap12_builder_helper_t *builder_helper,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axiom_soap12_builder_helper_handle_event
-(axiom_soap12_builder_helper_t *builder_helper,
-        const axis2_env_t *env,
-        axiom_node_t *om_element_node,
-        int element_level);
-
-/******************** function implementations ********************************/
+};
 
 AXIS2_EXTERN axiom_soap12_builder_helper_t* AXIS2_CALL
 axiom_soap12_builder_helper_create(const axis2_env_t *env,
         axiom_soap_builder_t *soap_builder)
 {
-    axiom_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
+    axiom_soap12_builder_helper_t *builder_helper = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, soap_builder, NULL);
 
-    builder_helper_impl = (axiom_soap12_builder_helper_impl_t*)AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_soap12_builder_helper_impl_t));
-    if (!builder_helper_impl)
+    builder_helper = (axiom_soap12_builder_helper_t*)AXIS2_MALLOC(
+                env->allocator, sizeof(axiom_soap12_builder_helper_t));
+    if (!builder_helper)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    builder_helper_impl->code_present = AXIS2_FALSE;
-    builder_helper_impl->detail_present = AXIS2_FALSE;
-    builder_helper_impl->reason_present = AXIS2_FALSE;
-    builder_helper_impl->role_present = AXIS2_FALSE;
-    builder_helper_impl->sub_code_present = AXIS2_FALSE;
-    builder_helper_impl->reason_processing = AXIS2_FALSE;
-    builder_helper_impl->code_processing = AXIS2_FALSE;
-    builder_helper_impl->sub_code_processing = AXIS2_FALSE;
-    builder_helper_impl->detail_element_names = NULL;
-    builder_helper_impl->node_present = AXIS2_FALSE;
-    builder_helper_impl->soap_builder = soap_builder;
-    builder_helper_impl->sub_sub_code_present = AXIS2_FALSE;
-    builder_helper_impl->value_present = AXIS2_FALSE;
-    builder_helper_impl->subcode_value_present = AXIS2_FALSE;
-    builder_helper_impl->builder_helper.ops = NULL;
+    builder_helper->code_present = AXIS2_FALSE;
+    builder_helper->detail_present = AXIS2_FALSE;
+    builder_helper->reason_present = AXIS2_FALSE;
+    builder_helper->role_present = AXIS2_FALSE;
+    builder_helper->sub_code_present = AXIS2_FALSE;
+    builder_helper->reason_processing = AXIS2_FALSE;
+    builder_helper->code_processing = AXIS2_FALSE;
+    builder_helper->sub_code_processing = AXIS2_FALSE;
+    builder_helper->detail_element_names = NULL;
+    builder_helper->node_present = AXIS2_FALSE;
+    builder_helper->soap_builder = soap_builder;
+    builder_helper->sub_sub_code_present = AXIS2_FALSE;
+    builder_helper->value_present = AXIS2_FALSE;
+    builder_helper->subcode_value_present = AXIS2_FALSE;
 
-    builder_helper_impl->builder_helper.ops = (axiom_soap12_builder_helper_ops_t*) AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_soap12_builder_helper_ops_t));
-
-    if (!(builder_helper_impl->builder_helper.ops))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_FREE(env->allocator, builder_helper_impl);
-        return NULL;
-    }
-
-    builder_helper_impl->builder_helper.ops->free_fn =
-        axiom_soap12_builder_helper_free;
-
-    builder_helper_impl->builder_helper.ops->handle_event =
-        axiom_soap12_builder_helper_handle_event;
-
-    return &(builder_helper_impl->builder_helper);
+    return builder_helper;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap12_builder_helper_free(axiom_soap12_builder_helper_t *builder_helper,
         const axis2_env_t *env)
 {
-    axiom_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
 
-    if (builder_helper_impl->detail_element_names)
+    if (builder_helper->detail_element_names)
     {
-        AXIS2_ARRAY_LIST_FREE(builder_helper_impl->detail_element_names, env);
-        builder_helper_impl->detail_element_names = NULL;
-    }
-    if (builder_helper_impl->builder_helper.ops)
-    {
-        AXIS2_FREE(env->allocator, builder_helper_impl->builder_helper.ops);
-        builder_helper_impl->builder_helper.ops = NULL;
+        AXIS2_ARRAY_LIST_FREE(builder_helper->detail_element_names, env);
+        builder_helper->detail_element_names = NULL;
     }
 
-    AXIS2_FREE(env->allocator, builder_helper_impl);
-    builder_helper_impl = NULL;
+    AXIS2_FREE(env->allocator, builder_helper);
+    builder_helper = NULL;
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_helper,
         const axis2_env_t *env,
         axiom_node_t *om_ele_node,
         int element_level)
 {
-    axiom_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
-
     axis2_char_t* ele_localname = NULL;
     axiom_element_t *om_ele = NULL;
 
@@ -179,7 +127,6 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_ele_node, AXIS2_FAILURE);
-    builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
 
     om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(om_ele_node, env);
     if (!om_ele)
@@ -189,7 +136,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
     if (!ele_localname)
         return AXIS2_FAILURE;
 
-    soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder_helper_impl->soap_builder, env);
+    soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder_helper->soap_builder, env);
     if (!soap_envelope)
         return AXIS2_FAILURE;
 
@@ -205,7 +152,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
     {
         if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME, ele_localname) == 0)
         {
-            if (builder_helper_impl->code_present)
+            if (builder_helper->code_present)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MULTIPLE_CODE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
 
@@ -222,21 +169,21 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
 
                 axiom_soap_fault_code_set_builder(soap_fault_code, env,
-                        builder_helper_impl->soap_builder);
+                        builder_helper->soap_builder);
 
                 axiom_soap_fault_set_code(soap_fault, env, soap_fault_code);
 
-                builder_helper_impl->code_present = AXIS2_TRUE;
-                builder_helper_impl->code_processing = AXIS2_TRUE;
+                builder_helper->code_present = AXIS2_TRUE;
+                builder_helper->code_processing = AXIS2_TRUE;
             }
         }
         else if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME, ele_localname) == 0)
         {
-            if (!(builder_helper_impl->code_processing) && !(builder_helper_impl->sub_code_processing))
+            if (!(builder_helper->code_processing) && !(builder_helper->sub_code_processing))
             {
-                if (builder_helper_impl->code_present)
+                if (builder_helper->code_present)
                 {
-                    if (builder_helper_impl->reason_present)
+                    if (builder_helper->reason_present)
                     {
                         AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_MULTIPLE_REASON_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
@@ -255,10 +202,10 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                         axiom_soap_fault_set_reason(soap_fault, env, fault_reason);
 
                         axiom_soap_fault_reason_set_builder(fault_reason , env,
-                                builder_helper_impl->soap_builder);
+                                builder_helper->soap_builder);
 
-                        builder_helper_impl->reason_present = AXIS2_TRUE;
-                        builder_helper_impl->reason_processing = AXIS2_TRUE;
+                        builder_helper->reason_present = AXIS2_TRUE;
+                        builder_helper->reason_processing = AXIS2_TRUE;
                     }
                 }
                 else
@@ -270,7 +217,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             }
             else
             {
-                if (builder_helper_impl->code_processing)
+                if (builder_helper->code_processing)
                 {
                     AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_SOAP_FAULT_CODE_DOES_NOT_HAVE_A_VALUE, AXIS2_FAILURE);
@@ -286,13 +233,13 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         }
         else if (AXIS2_STRCMP(ele_localname, AXIOM_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME) == 0)
         {
-            if (!(builder_helper_impl->reason_processing))
+            if (!(builder_helper->reason_processing))
             {
-                if (builder_helper_impl->reason_present &&
-                        !(builder_helper_impl->role_present) &&
-                        !(builder_helper_impl->detail_present))
+                if (builder_helper->reason_present &&
+                        !(builder_helper->role_present) &&
+                        !(builder_helper->detail_present))
                 {
-                    if (builder_helper_impl->node_present)
+                    if (builder_helper->node_present)
                     {
                         AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_MULTIPLE_NODE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
@@ -309,7 +256,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
                         axiom_soap_fault_set_node(soap_fault, env, soap_fault_node);
 
-                        builder_helper_impl->node_present = AXIS2_TRUE;
+                        builder_helper->node_present = AXIS2_TRUE;
                     }
                 }
                 else
@@ -331,11 +278,11 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         }
         else if (AXIS2_STRCMP(ele_localname, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
         {
-            if (!(builder_helper_impl->reason_processing))
+            if (!(builder_helper->reason_processing))
             {
-                if (builder_helper_impl->reason_present && !(builder_helper_impl->detail_present))
+                if (builder_helper->reason_present && !(builder_helper->detail_present))
                 {
-                    if (builder_helper_impl->role_present)
+                    if (builder_helper->role_present)
                     {
                         AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_MULTIPLE_ROLE_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
@@ -352,7 +299,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                         axiom_soap_fault_role_set_base_node(soap_fault_role, env, om_ele_node);
 
                         axiom_soap_fault_set_role(soap_fault, env, soap_fault_role);
-                        builder_helper_impl->role_present = AXIS2_TRUE;
+                        builder_helper->role_present = AXIS2_TRUE;
                     }
                 }
                 else
@@ -371,11 +318,11 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         }
         else if (AXIS2_STRCMP(ele_localname, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME) == 0)
         {
-            if (!(builder_helper_impl->reason_processing))
+            if (!(builder_helper->reason_processing))
             {
-                if (builder_helper_impl->reason_present)
+                if (builder_helper->reason_present)
                 {
-                    if (builder_helper_impl->detail_present)
+                    if (builder_helper->detail_present)
                     {
                         AXIS2_ERROR_SET(env->error,
                                 AXIS2_ERROR_MULTIPLE_DETAIL_ELEMENTS_ENCOUNTERED, AXIS2_FAILURE);
@@ -392,7 +339,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                         axiom_soap_fault_detail_set_base_node(soap_fault_detail, env, om_ele_node);
 
                         axiom_soap_fault_set_detail(soap_fault, env, soap_fault_detail);
-                        builder_helper_impl->detail_present = AXIS2_TRUE;
+                        builder_helper->detail_present = AXIS2_TRUE;
                     }
                 }
                 else
@@ -440,7 +387,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         {
             if (AXIS2_STRCMP(ele_localname, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME) == 0)
             {
-                if (!(builder_helper_impl->value_present))
+                if (!(builder_helper->value_present))
                 {
                     axiom_soap_fault_value_t *soap_fault_value = NULL;
                     axiom_soap_fault_code_t *parent_fcode = NULL;
@@ -457,8 +404,8 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
                     axiom_soap_fault_code_set_value(parent_fcode, env, soap_fault_value);
 
-                    builder_helper_impl->value_present = AXIS2_TRUE;
-                    builder_helper_impl->code_processing = AXIS2_FALSE;
+                    builder_helper->value_present = AXIS2_TRUE;
+                    builder_helper->code_processing = AXIS2_FALSE;
 
                 }
                 else
@@ -471,9 +418,9 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             else if (AXIS2_STRCMP(ele_localname,
                     AXIOM_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
             {
-                if (!(builder_helper_impl->sub_code_present))
+                if (!(builder_helper->sub_code_present))
                 {
-                    if (builder_helper_impl->value_present)
+                    if (builder_helper->value_present)
                     {
 
                         axiom_soap_fault_sub_code_t *fault_subcode = NULL;
@@ -493,10 +440,10 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                         axiom_soap_fault_code_set_sub_code(fault_code, env, fault_subcode);
 
                         axiom_soap_fault_sub_code_set_builder(fault_subcode, env,
-                                builder_helper_impl->soap_builder);
+                                builder_helper->soap_builder);
 
-                        builder_helper_impl->sub_code_present = AXIS2_TRUE;
-                        builder_helper_impl->sub_code_processing = AXIS2_TRUE;
+                        builder_helper->sub_code_present = AXIS2_TRUE;
+                        builder_helper->sub_code_processing = AXIS2_TRUE;
                     }
                     else
                     {
@@ -539,9 +486,9 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                 /*****************
                 AXIOM_NODE_SET_BUILD_STATUS(om_ele_node, env, AXIS2_FALSE);
                 ******************/
-                builder_helper_impl->reason_processing = AXIS2_FALSE;
+                builder_helper->reason_processing = AXIS2_FALSE;
 
-                AXIOM_SOAP_BUILDER_SET_BOOL_PROCESSING_MANDATORY_FAULT_ELEMENTS(builder_helper_impl->soap_builder, env, AXIS2_FALSE);
+                AXIOM_SOAP_BUILDER_SET_BOOL_PROCESSING_MANDATORY_FAULT_ELEMENTS(builder_helper->soap_builder, env, AXIS2_FALSE);
 
             }
             else
@@ -553,14 +500,14 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         }
         else if (AXIS2_STRCMP(parent_localname, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME) == 0)
         {
-            AXIOM_SOAP_BUILDER_SET_PROCESSING_DETAIL_ELEMENTS(builder_helper_impl->soap_builder, env, AXIS2_TRUE);
+            AXIOM_SOAP_BUILDER_SET_PROCESSING_DETAIL_ELEMENTS(builder_helper->soap_builder, env, AXIS2_TRUE);
 
-            if (!(builder_helper_impl->detail_element_names))
+            if (!(builder_helper->detail_element_names))
             {
-                builder_helper_impl->detail_element_names = axis2_array_list_create(env, 20);
+                builder_helper->detail_element_names = axis2_array_list_create(env, 20);
             }
 
-            AXIS2_ARRAY_LIST_ADD(builder_helper_impl->detail_element_names, env, ele_localname);
+            AXIS2_ARRAY_LIST_ADD(builder_helper->detail_element_names, env, ele_localname);
 
         }
         else
@@ -594,7 +541,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         {
             if (AXIS2_STRCMP(ele_localname, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME) == 0)
             {
-                if (builder_helper_impl->subcode_value_present)
+                if (builder_helper->subcode_value_present)
                 {
                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MULTIPLE_SUB_CODE_VALUES_ENCOUNTERED, AXIS2_FAILURE);
                     return AXIS2_FAILURE;
@@ -627,16 +574,16 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
                     axiom_soap_fault_sub_code_set_value(sub_code, env, value);
 
-                    builder_helper_impl->subcode_value_present = AXIS2_TRUE;
-                    builder_helper_impl->sub_sub_code_present = AXIS2_FALSE;
-                    builder_helper_impl->sub_code_processing = AXIS2_FALSE;
+                    builder_helper->subcode_value_present = AXIS2_TRUE;
+                    builder_helper->sub_sub_code_present = AXIS2_FALSE;
+                    builder_helper->sub_code_processing = AXIS2_FALSE;
                 }
             }
             else if (AXIS2_STRCMP(ele_localname, AXIOM_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
             {
-                if (builder_helper_impl->subcode_value_present)
+                if (builder_helper->subcode_value_present)
                 {
-                    if (!(builder_helper_impl->sub_sub_code_present))
+                    if (!(builder_helper->sub_sub_code_present))
                     {
                         axiom_soap_fault_code_t *fault_code = NULL;
                         axiom_soap_fault_sub_code_t *parent_subcode = NULL;
@@ -663,9 +610,9 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
                         axiom_soap_fault_sub_code_set_sub_code(parent_subcode, env, subcode);
 
-                        builder_helper_impl->subcode_value_present = AXIS2_FALSE;
-                        builder_helper_impl->sub_sub_code_present = AXIS2_TRUE;
-                        builder_helper_impl->sub_code_processing = AXIS2_TRUE;
+                        builder_helper->subcode_value_present = AXIS2_FALSE;
+                        builder_helper->sub_sub_code_present = AXIS2_TRUE;
+                        builder_helper->sub_code_processing = AXIS2_TRUE;
                     }
                     else
                     {
@@ -689,18 +636,18 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                 return AXIS2_FAILURE;
             }
         }
-        else if (AXIOM_SOAP_BUILDER_IS_PROCESSING_DETAIL_ELEMENTS(builder_helper_impl->soap_builder, env))
+        else if (AXIOM_SOAP_BUILDER_IS_PROCESSING_DETAIL_ELEMENTS(builder_helper->soap_builder, env))
         {
 
             int detail_element_level = 0;
             axis2_bool_t local_name_exists = AXIS2_FALSE;
             int i = 0;
-            if (!(builder_helper_impl->detail_element_names))
+            if (!(builder_helper->detail_element_names))
                 return AXIS2_FAILURE;
 
-            for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(builder_helper_impl->detail_element_names, env) ; i++)
+            for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(builder_helper->detail_element_names, env) ; i++)
             {
-                if (AXIS2_STRCMP(parent_localname, AXIS2_ARRAY_LIST_GET(builder_helper_impl->detail_element_names, env, i)) == 0)
+                if (AXIS2_STRCMP(parent_localname, AXIS2_ARRAY_LIST_GET(builder_helper->detail_element_names, env, i)) == 0)
                 {
                     local_name_exists = AXIS2_TRUE;
                     detail_element_level = i + 1;
@@ -708,7 +655,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             }
             if (local_name_exists)
             {
-                AXIS2_ARRAY_LIST_ADD(builder_helper_impl->detail_element_names, env, ele_localname);
+                AXIS2_ARRAY_LIST_ADD(builder_helper->detail_element_names, env, ele_localname);
             }
             else
             {

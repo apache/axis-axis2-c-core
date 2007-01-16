@@ -30,56 +30,12 @@ extern "C"
 {
 #endif
 
-    typedef struct axiom_soap_fault_node_ops axiom_soap_fault_node_ops_t;
     typedef struct axiom_soap_fault_node axiom_soap_fault_node_t;
     /**
      * @defgroup axiom_soap_fault_node soap fault node
      * @ingroup axiom_soap
      * @{
      */
-
-    /**
-     *   \brief soap_fault_node operations struct
-     *   ops Encapsulator struct of axiom_soap_fault_node
-     */
-    struct axiom_soap_fault_node_ops
-    {
-        /**
-          * Free an axiom_soap_fault_node
-          * @param  fault_node pointer to soap_fault_node struct
-          * @param  env Environment. MUST NOT be NULL
-          * @return satus of the op. AXIS2_SUCCESS on success 
-          *         else AXIS2_FAILURE
-          */
-
-        axis2_status_t(AXIS2_CALL *
-                free_fn)(axiom_soap_fault_node_t *fault_node,
-                        const axis2_env_t *env);
-
-        axis2_status_t(AXIS2_CALL *
-                set_value)(axiom_soap_fault_node_t *fault_node,
-                        const axis2_env_t *env,
-                        axis2_char_t *fault_val);
-
-        axis2_char_t*(AXIS2_CALL *
-                get_value)(axiom_soap_fault_node_t *fault_node,
-                        const axis2_env_t *env);
-
-        axiom_node_t*(AXIS2_CALL *
-                get_base_node)(axiom_soap_fault_node_t *fault_node,
-                        const axis2_env_t *env);
-    };
-
-    /**
-      * \brief soap_fault_node struct
-      * represent a soap_fault_node
-      */
-    struct axiom_soap_fault_node
-    {
-        /** operation of axiom_soap_fault_node struct */
-        axiom_soap_fault_node_ops_t *ops;
-
-    };
 
     /**
       * creates a soap struct 
@@ -89,22 +45,42 @@ extern "C"
     axiom_soap_fault_node_create_with_parent(const axis2_env_t *env,
             axiom_soap_fault_t *fault);
 
+    /**
+      * Free an axiom_soap_fault_node
+      * @param  fault_node pointer to soap_fault_node struct
+      * @param  env Environment. MUST NOT be NULL
+      * @return satus of the op. AXIS2_SUCCESS on success 
+      *         else AXIS2_FAILURE
+      */
 
-    /******************** Macros **************************************************/
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_fault_node_free(axiom_soap_fault_node_t *fault_node,
+            const axis2_env_t *env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_fault_node_set_value(axiom_soap_fault_node_t *fault_node,
+            const axis2_env_t *env,
+            axis2_char_t *fault_val);
 
-    /** free soap_fault_node */
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axiom_soap_fault_node_get_value(axiom_soap_fault_node_t *fault_node,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+    axiom_soap_fault_node_get_base_node(axiom_soap_fault_node_t *fault_node,
+            const axis2_env_t *env);
+
 #define AXIOM_SOAP_FAULT_NODE_FREE(fault_node , env) \
-        ((fault_node)->ops->free_fn(fault_node, env))
+        axiom_soap_fault_node_free(fault_node, env)
 
 #define AXIOM_SOAP_FAULT_NODE_GET_VALUE(fault_node , env) \
-        ((fault_node)->ops->get_value(fault_node, env))
+        axiom_soap_fault_node_get_value(fault_node, env)
 
 #define AXIOM_SOAP_FAULT_NODE_GET_BASE_NODE(fault_node, env) \
-        ((fault_node)->ops->get_base_node(fault_node, env))
+        axiom_soap_fault_node_get_base_node(fault_node, env)
 
 #define AXIOM_SOAP_FAULT_NODE_SET_VALUE(fault_node , env, uri) \
-        ((fault_node)->ops->set_value(fault_node, env, uri))
+        axiom_soap_fault_node_set_value(fault_node, env, uri)
 
     /** @} */
 

@@ -31,7 +31,6 @@ extern "C"
 {
 #endif
 
-    typedef struct axiom_soap_fault_role_ops axiom_soap_fault_role_ops_t;
     typedef struct axiom_soap_fault_role axiom_soap_fault_role_t;
     /**
      * @defgroup axiom_soap_fault_role soap fault role
@@ -40,73 +39,49 @@ extern "C"
      */
 
     /**
-     *   \brief soap_fault_role operations struct
-     *   ops Encapsulator struct of axiom_soap_fault_role
-     */
-    struct axiom_soap_fault_role_ops
-    {
-        /**
-          * Free an axiom_soap_fault_role
-          * @param  fault_role pointer to soap_fault_role struct
-          * @param  env Environment. MUST NOT be NULL
-          * @return satus of the op. AXIS2_SUCCESS on success 
-          *         else AXIS2_FAILURE
-          */
-
-        axis2_status_t(AXIS2_CALL *
-                free_fn)(axiom_soap_fault_role_t *fault_role,
-                        const axis2_env_t *env);
-
-        axis2_status_t(AXIS2_CALL *
-                set_role_value)(axiom_soap_fault_role_t *fault_role,
-                        const axis2_env_t *env,
-                        axis2_char_t* uri);
-
-        axis2_char_t*(AXIS2_CALL *
-                get_role_value)(axiom_soap_fault_role_t *fault_role,
-                        const axis2_env_t *env);
-
-        axiom_node_t*(AXIS2_CALL *
-                get_base_node)(axiom_soap_fault_role_t *fault_role,
-                        const axis2_env_t *env);
-
-    };
-
-    /**
-      * \brief soap_fault_role struct
-      * represent a soap_fault_role
-      */
-    struct axiom_soap_fault_role
-    {
-        /** operation of axiom_soap_fault_role struct */
-        axiom_soap_fault_role_ops_t *ops;
-
-    };
-
-    /**
       * creates a soap struct 
       * @param env Environment. MUST NOT be NULL
       */
-
     AXIS2_EXTERN axiom_soap_fault_role_t * AXIS2_CALL
     axiom_soap_fault_role_create_with_parent(const axis2_env_t *env,
             axiom_soap_fault_t *fault);
 
-    /******************** Macros **************************************************/
+    /**
+      * Free an axiom_soap_fault_role
+      * @param  fault_role pointer to soap_fault_role struct
+      * @param  env Environment. MUST NOT be NULL
+      * @return satus of the op. AXIS2_SUCCESS on success 
+      *         else AXIS2_FAILURE
+      */
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_fault_role_free(axiom_soap_fault_role_t *fault_role,
+            const axis2_env_t *env);
 
-    /** free soap_fault_role */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_soap_fault_role_set_role_value(axiom_soap_fault_role_t *fault_role,
+            const axis2_env_t *env,
+            axis2_char_t* uri);
+
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axiom_soap_fault_role_get_role_value(axiom_soap_fault_role_t *fault_role,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+    axiom_soap_fault_role_get_base_node(axiom_soap_fault_role_t *fault_role,
+            const axis2_env_t *env);
+
 #define AXIOM_SOAP_FAULT_ROLE_FREE(fault_role , env) \
-        ((fault_role)->ops->free_fn(fault_role, env))
+        axiom_soap_fault_role_free(fault_role, env)
 
 #define AXIOM_SOAP_FAULT_ROLE_GET_VALUE(fault_role , env) \
-        ((fault_role)->ops->get_role_value(fault_role, env))
+        axiom_soap_fault_role_get_role_value(fault_role, env)
 
 #define AXIOM_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env) \
-        ((fault_role)->ops->get_base_node(fault_role, env))
+        axiom_soap_fault_role_get_base_node(fault_role, env)
 
 #define AXIOM_SOAP_FAULT_ROLE_SET_VALUE(fault_role , env, value) \
-        ((fault_role)->ops->set_role_value(fault_role, env, value))
+        axiom_soap_fault_role_set_role_value(fault_role, env, value)
     /** @} */
 
 #ifdef __cplusplus
