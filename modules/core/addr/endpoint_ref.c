@@ -177,46 +177,6 @@ axis2_endpoint_ref_create(
         }
     }
 
-    endpoint_ref_impl->ref_param_list = axis2_array_list_create(env, 0);
-    if (!(endpoint_ref_impl->ref_param_list))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_endpoint_ref_free(&(endpoint_ref_impl->endpoint_ref), env);
-        return NULL;
-    }
-
-    endpoint_ref_impl->metadata_list = axis2_array_list_create(env, 0);
-    if (!(endpoint_ref_impl->metadata_list))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_endpoint_ref_free(&(endpoint_ref_impl->endpoint_ref), env);
-        return NULL;
-    }
-
-    endpoint_ref_impl->ref_attribute_list = axis2_array_list_create(env, 0);
-    if (!(endpoint_ref_impl->ref_attribute_list))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_endpoint_ref_free(&(endpoint_ref_impl->endpoint_ref), env);
-        return NULL;
-    }
-
-    endpoint_ref_impl->meta_attribute_list = axis2_array_list_create(env, 0);
-    if (!(endpoint_ref_impl->meta_attribute_list))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_endpoint_ref_free(&(endpoint_ref_impl->endpoint_ref), env);
-        return NULL;
-    }
-
-    endpoint_ref_impl->extension_list = axis2_array_list_create(env, 0);
-    if (!(endpoint_ref_impl->extension_list))
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_endpoint_ref_free(&(endpoint_ref_impl->endpoint_ref), env);
-        return NULL;
-    }
-
     /* initialize ops */
     endpoint_ref_impl->endpoint_ref.ops  =
         AXIS2_MALLOC(env->allocator, sizeof(axis2_endpoint_ref_ops_t));
@@ -463,6 +423,16 @@ axis2_endpoint_ref_add_ref_param(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
+    
+    if (!(endpoint_ref_impl->ref_param_list))
+    {
+        endpoint_ref_impl->ref_param_list = axis2_array_list_create(env, 0);
+        if (!(endpoint_ref_impl->ref_param_list))
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
 
     if (endpoint_ref_impl->ref_param_list && ref_param_node)
     {
@@ -483,6 +453,16 @@ axis2_endpoint_ref_add_metadata(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
+   
+    if (!(endpoint_ref_impl->metadata_list))
+    {
+        endpoint_ref_impl->metadata_list = axis2_array_list_create(env, 0);
+        if (!(endpoint_ref_impl->metadata_list))
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
 
     if (endpoint_ref_impl->metadata_list && meta_data_node)
     {
@@ -547,6 +527,16 @@ axis2_endpoint_ref_add_ref_attribute(
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
 
+    if (!(endpoint_ref_impl->ref_attribute_list))
+    {
+        endpoint_ref_impl->ref_attribute_list = axis2_array_list_create(env, 0);
+        if (!(endpoint_ref_impl->ref_attribute_list))
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
+
     if (endpoint_ref_impl->ref_attribute_list && attr)
     {
         return AXIS2_ARRAY_LIST_ADD(endpoint_ref_impl->ref_attribute_list, env, attr);
@@ -566,6 +556,16 @@ axis2_endpoint_ref_add_metadata_attribute(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
+    
+    if (!(endpoint_ref_impl->meta_attribute_list))
+    {
+        endpoint_ref_impl->meta_attribute_list = axis2_array_list_create(env, 0);
+        if (!(endpoint_ref_impl->meta_attribute_list))
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
 
     if (endpoint_ref_impl->meta_attribute_list && attr)
     {
@@ -586,6 +586,16 @@ axis2_endpoint_ref_add_extension(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     endpoint_ref_impl = AXIS2_INTF_TO_IMPL(endpoint_ref);
+
+    if (!(endpoint_ref_impl->extension_list))
+    {
+        endpoint_ref_impl->extension_list = axis2_array_list_create(env, 0);
+        if (!(endpoint_ref_impl->extension_list))
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
 
     if (endpoint_ref_impl->extension_list && extension_node)
     {
