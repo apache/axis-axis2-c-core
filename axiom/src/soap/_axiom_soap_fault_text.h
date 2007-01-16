@@ -39,7 +39,7 @@ extern "C"
  * @{
  */
 
-axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_text_set_base_node(axiom_soap_fault_text_t *fault_text,
                                       const axis2_env_t *env,
                                       axiom_node_t *node);

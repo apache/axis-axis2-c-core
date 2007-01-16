@@ -52,7 +52,7 @@ axiom_soap_message_create(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_soap_message_free(axiom_soap_message_t *message,
+axiom_soap_message_free(axiom_soap_message_t *soap_message,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -72,7 +72,7 @@ axiom_soap_message_free(axiom_soap_message_t *message,
 }
 
 AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-axiom_soap_message_get_soap_envelope(axiom_soap_message_t *message,
+axiom_soap_message_get_soap_envelope(axiom_soap_message_t *soap_message,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -89,7 +89,7 @@ axiom_soap_message_get_soap_envelope(axiom_soap_message_t *message,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_soap_message_serialize(axiom_soap_message_t *message,
+axiom_soap_message_serialize(axiom_soap_message_t *soap_message,
         const axis2_env_t *env,
         axiom_output_t *om_output)
 {
