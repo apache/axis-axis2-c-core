@@ -1689,6 +1689,8 @@ axis2_msg_ctx_set_options(
     msg_ctx->msg_info_headers =
         AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(options, env);
     msg_ctx->msg_info_headers_deep_copy = AXIS2_FALSE;
+    
+    msg_ctx->doing_mtom = AXIS2_OPTIONS_GET_ENABLE_MTOM(options, env);
 
     AXIS2_CTX_SET_NON_PERSISTANT_MAP(msg_ctx->base, env,
             AXIS2_OPTIONS_GET_PROPERTIES(options, env));

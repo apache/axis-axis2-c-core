@@ -120,11 +120,20 @@ extern "C"
 
 /******************************Message Labels**********************************/
 
+typedef enum axis2_wsdl_msg_labels 
+{
+    AXIS2_WSDL_MESSAGE_LABEL_IN = 0,
+    AXIS2_WSDL_MESSAGE_LABEL_OUT,
+    AXIS2_WSDL_MESSAGE_LABEL_MAX
+}axis2_wsdl_msg_labels_t;
+
 /**
  * Constant to represent the message label "In" which is used by the
  * following WSDL 2.0 defined MEPs: In-Only, Robust In-Only, In-Out,
  * In-Optional-Out, Out-In, Out-Optional-In.
  */
+
+
 #define AXIS2_MESSAGE_LABEL_IN 0
 
 #define AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE "In"

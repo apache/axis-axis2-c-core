@@ -100,7 +100,7 @@ const axis2_msg_ctx_t *AXIS2_CALL
 axis2_op_client_get_msg_ctx(
     const axis2_op_client_t *op_client,
     const axis2_env_t *env,
-    const axis2_char_t *message_label);
+    const axis2_wsdl_msg_labels_t message_label);
 
 axis2_status_t AXIS2_CALL
 axis2_op_client_set_callback(
@@ -264,7 +264,7 @@ axis2_op_client_add_msg_ctx(
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
     axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;
-    axis2_hash_t *msg_ctx_map = NULL;
+    axis2_msg_ctx_t **msg_ctx_map = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -272,10 +272,8 @@ axis2_op_client_add_msg_ctx(
 
     msg_ctx_map = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_client_impl->op_ctx, env);
 
-    out_msg_ctx = axis2_hash_get(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE,
-            AXIS2_HASH_KEY_STRING);
-    in_msg_ctx = axis2_hash_get(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE,
-            AXIS2_HASH_KEY_STRING);
+    out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+    in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
 
     if (out_msg_ctx && in_msg_ctx)
     {
@@ -283,20 +281,20 @@ axis2_op_client_add_msg_ctx(
            so reset */
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         out_msg_ctx = NULL;
-        axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+        msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
         AXIS2_MSG_CTX_FREE(in_msg_ctx, env);
         in_msg_ctx = NULL;
-        axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+        msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_client_impl->op_ctx, env, AXIS2_FALSE);
     }
 
     if (!out_msg_ctx)
     {
-        axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, mc);
+        msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = mc;
     }
     else
     {
-        axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, mc);
+        msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = mc;
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_client_impl->op_ctx, env, AXIS2_TRUE);
     }
 
@@ -318,8 +316,7 @@ axis2_op_client_add_msg_ctx(
         {
 			AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
 			out_msg_ctx = NULL;
-			axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, 
-						   AXIS2_HASH_KEY_STRING, NULL);
+			msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
         }
     }
     return AXIS2_SUCCESS;
@@ -332,7 +329,7 @@ axis2_op_client_add_out_msg_ctx(
     axis2_msg_ctx_t *mc)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
-    axis2_hash_t *msg_ctx_map = NULL;
+    axis2_msg_ctx_t **msg_ctx_map = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -340,7 +337,7 @@ axis2_op_client_add_out_msg_ctx(
 
     msg_ctx_map = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_client_impl->op_ctx, env);
 
-    axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, mc);
+    msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = mc;
 
     return AXIS2_SUCCESS;
 }
@@ -351,7 +348,7 @@ const axis2_msg_ctx_t *AXIS2_CALL
 axis2_op_client_get_msg_ctx(
     const axis2_op_client_t *op_client,
     const axis2_env_t *env,
-    const axis2_char_t *message_label)
+    const axis2_wsdl_msg_labels_t message_label)
 {
 
     axis2_op_client_impl_t *op_client_impl = NULL;
@@ -360,10 +357,11 @@ axis2_op_client_get_msg_ctx(
 
     op_client_impl = AXIS2_INTF_TO_IMPL(op_client);
 
-    if (!message_label)
+/*    if (!message_label)
     {
         return NULL;
     }
+    */
     return AXIS2_OP_CTX_GET_MSG_CTX(op_client_impl->op_ctx, env, message_label);
 }
 
@@ -431,7 +429,7 @@ axis2_op_client_execute(
 
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env);
     msg_ctx = (axis2_msg_ctx_t *)axis2_op_client_get_msg_ctx(op_client, env,
-            AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE);
+            AXIS2_WSDL_MESSAGE_LABEL_OUT);
 
     if (!msg_ctx)
     {

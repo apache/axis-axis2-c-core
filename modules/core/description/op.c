@@ -1807,10 +1807,9 @@ axis2_op_add_msg_ctx_in_only(
     op_impl = AXIS2_INTF_TO_IMPL(op);
     if (AXIS2_TRUE != AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
     {
-        axis2_hash_t *msg_ctxs = NULL;
+        axis2_msg_ctx_t **msg_ctxs = NULL;
         msg_ctxs = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
-        axis2_hash_set(msg_ctxs, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE,
-                AXIS2_HASH_KEY_STRING, msg_ctx);
+        msg_ctxs[AXIS2_WSDL_MESSAGE_LABEL_IN] = msg_ctx;
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, AXIS2_TRUE);
     }
     else
@@ -1836,10 +1835,9 @@ axis2_op_add_msg_ctx_out_only(
 
     if (AXIS2_TRUE != AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
     {
-        axis2_hash_t *msg_ctxs = NULL;
+        axis2_msg_ctx_t **msg_ctxs = NULL;
         msg_ctxs = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
-        axis2_hash_set(msg_ctxs, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE,
-                AXIS2_HASH_KEY_STRING, msg_ctx);
+        msg_ctxs[AXIS2_WSDL_MESSAGE_LABEL_OUT] =  msg_ctx;
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, AXIS2_TRUE);
     }
     else
@@ -1859,7 +1857,7 @@ axis2_op_add_msg_ctx_in_out(
     axis2_msg_ctx_t *msg_ctx,
     axis2_op_ctx_t *op_ctx)
 {
-    axis2_hash_t *mep = NULL;
+    axis2_msg_ctx_t **mep = NULL;
     axis2_msg_ctx_t *in_msg_ctx = NULL;
     axis2_msg_ctx_t *out_msg_ctx = NULL;
 
@@ -1868,10 +1866,8 @@ axis2_op_add_msg_ctx_in_out(
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
 
     mep = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
-    in_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep,
-            AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING);
-    out_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep,
-            AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
+    in_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_IN];
+    out_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_OUT];
     if (in_msg_ctx && NULL != out_msg_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
@@ -1880,13 +1876,11 @@ axis2_op_add_msg_ctx_in_out(
     }
     if (NULL == in_msg_ctx)
     {
-        axis2_hash_set(mep, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING,
-                msg_ctx);
+        mep[AXIS2_WSDL_MESSAGE_LABEL_IN] = msg_ctx;
     }
     else
     {
-        axis2_hash_set(mep, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING,
-                msg_ctx);
+        mep[AXIS2_WSDL_MESSAGE_LABEL_OUT] = msg_ctx;
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, AXIS2_TRUE);
     }
     return AXIS2_SUCCESS;
@@ -1899,7 +1893,7 @@ axis2_op_add_msg_ctx_out_in(
     axis2_msg_ctx_t *msg_ctx,
     axis2_op_ctx_t *op_ctx)
 {
-    axis2_hash_t *mep = NULL;
+    axis2_msg_ctx_t **mep = NULL;
     axis2_msg_ctx_t *in_msg_ctx = NULL;
     axis2_msg_ctx_t *out_msg_ctx = NULL;
 
@@ -1908,10 +1902,8 @@ axis2_op_add_msg_ctx_out_in(
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
 
     mep = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
-    in_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep,
-            AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING);
-    out_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep,
-            AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
+    in_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_IN];
+    out_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_OUT];
     if (in_msg_ctx && NULL != out_msg_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
@@ -1920,13 +1912,11 @@ axis2_op_add_msg_ctx_out_in(
     }
     if (NULL == out_msg_ctx)
     {
-        axis2_hash_set(mep, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING,
-                msg_ctx);
+        mep[AXIS2_WSDL_MESSAGE_LABEL_OUT] = msg_ctx;
     }
     else
     {
-        axis2_hash_set(mep, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING,
-                msg_ctx);
+        mep[AXIS2_WSDL_MESSAGE_LABEL_IN] = msg_ctx;
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, AXIS2_TRUE);
     }
     return AXIS2_SUCCESS;

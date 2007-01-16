@@ -843,7 +843,7 @@ axis2_svc_client_send_receive(
                 AXIS2_USLEEP(10000);
                 msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(
                             svc_client_impl->op_client, env,
-                            AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE);
+                            AXIS2_WSDL_MESSAGE_LABEL_OUT);
                 if (msg_ctx)
                 {
                     axis2_msg_ctx_t *res_msg_ctx =
@@ -918,7 +918,7 @@ axis2_svc_client_send_receive(
 
         AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
         AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
-        res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
+        res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
 
         if (res_msg_ctx)
             soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);

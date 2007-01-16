@@ -434,27 +434,25 @@ axis2_http_worker_process_request(
     if (op_ctx) 
     {
         axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;
-        axis2_hash_t *msg_ctx_map = NULL;
+        axis2_msg_ctx_t **msg_ctx_map = NULL;
 
         msg_ctx_map = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
 
-        out_msg_ctx = axis2_hash_get(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE,
-                AXIS2_HASH_KEY_STRING);
-        in_msg_ctx = axis2_hash_get(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE,
-                AXIS2_HASH_KEY_STRING);
+        out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+        in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
 
         if (out_msg_ctx)
         {
             AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
             out_msg_ctx = NULL;
-            axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
         }
 
         if (in_msg_ctx)
         {
             AXIS2_MSG_CTX_FREE(in_msg_ctx, env);
             in_msg_ctx = NULL;
-            axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+            msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
         }
 
     } /* Done freeing message contexts */

@@ -41,6 +41,7 @@
 #include <axis2_env.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_op.h>
+#include <axis2_wsdl.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -142,7 +143,7 @@ extern "C"
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
     axis2_op_ctx_get_msg_ctx(const axis2_op_ctx_t *op_ctx,
         const axis2_env_t *env,
-        const axis2_char_t *message_id);
+        const axis2_wsdl_msg_labels_t message_id);
 
     /**
      * Gets the bool value indicating if the MEP is complete.
@@ -201,7 +202,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash table containing message contexts
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_msg_ctx_t **AXIS2_CALL
     axis2_op_ctx_get_msg_ctx_map(const axis2_op_ctx_t *op_ctx,
         const axis2_env_t *env);
 

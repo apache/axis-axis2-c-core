@@ -138,7 +138,7 @@ extern "C"
                 get_msg_ctx)(
                     const axis2_op_client_t *op_client,
                     const axis2_env_t *env,
-                    const axis2_char_t *message_label);
+                    const axis2_wsdl_msg_labels_t message_label);
 
         /**
          * Sets the callback to be executed when a response message is received. 

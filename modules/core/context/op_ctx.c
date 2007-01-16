@@ -28,7 +28,7 @@ struct axis2_op_ctx
     /** parent of operation context is a service context instance */
     struct axis2_svc_ctx *parent;
     /** message context map */
-    axis2_hash_t *msg_ctx_map;
+    axis2_msg_ctx_t *msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_MAX];
     /**
      * the operation of which this is a running instance. The MEP of this
      * operation must be one of the 8 predefined ones in WSDL 2.0.
@@ -56,6 +56,7 @@ axis2_op_ctx_create(const axis2_env_t *env,
     struct axis2_svc_ctx *svc_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;
+    int i = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -68,7 +69,6 @@ axis2_op_ctx_create(const axis2_env_t *env,
 
     op_ctx->base = NULL;
     op_ctx->parent = NULL;
-    op_ctx->msg_ctx_map = NULL;
     op_ctx->op = NULL;
     op_ctx->op_mep = 0;
     op_ctx->is_complete = AXIS2_FALSE;
@@ -96,11 +96,9 @@ axis2_op_ctx_create(const axis2_env_t *env,
         op_ctx->op = op;
     }
 
-    op_ctx->msg_ctx_map = axis2_hash_make(env);
-    if (!(op_ctx->msg_ctx_map))
+    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i++)
     {
-        axis2_op_ctx_free(op_ctx, env);
-        return NULL;
+        op_ctx->msg_ctx_array[i] = NULL;
     }
 
     if (op_ctx->op)
@@ -129,6 +127,7 @@ axis2_op_ctx_free(
     struct axis2_op_ctx *op_ctx,
     const axis2_env_t *env)
 {
+    int i = 0;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (op_ctx->base)
@@ -137,23 +136,13 @@ axis2_op_ctx_free(
         op_ctx->base = NULL;
     }
 
-    if (op_ctx->msg_ctx_map)
+    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i ++)
     {
-        axis2_hash_index_t *hi = NULL;
-        void *ctx = NULL;
-        for (hi = axis2_hash_first(op_ctx->msg_ctx_map, env);
-            hi; hi = axis2_hash_next(env, hi))
+        if(op_ctx->msg_ctx_array[i])
         {
-            axis2_hash_this(hi, NULL, NULL, &ctx);
-            if (ctx)
-            {
-                axis2_msg_ctx_t *msg_ctx = (axis2_msg_ctx_t*)ctx;
-                AXIS2_MSG_CTX_FREE(msg_ctx, env);
-            }
+            AXIS2_MSG_CTX_FREE(op_ctx->msg_ctx_array[i], env);
+            op_ctx->msg_ctx_array[i] = NULL;
         }
-
-        axis2_hash_free(op_ctx->msg_ctx_map, env);
-        op_ctx->msg_ctx_map = NULL;
     }
 
     if (op_ctx->mutex)
@@ -174,8 +163,7 @@ axis2_op_ctx_init(
     const axis2_env_t *env,
     struct axis2_conf *conf)
 {
-    axis2_hash_index_t *hi = NULL;
-    void *ctx = NULL;
+    int i = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -198,17 +186,11 @@ axis2_op_ctx_init(
         }
     }
 
-    if (!(op_ctx->msg_ctx_map))
-        return AXIS2_SUCCESS;
-
-    for (hi = axis2_hash_first(op_ctx->msg_ctx_map, env);
-            hi; hi = axis2_hash_next(env, hi))
+    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i ++)
     {
-        axis2_hash_this(hi, NULL, NULL, &ctx);
-        if (ctx)
+        if(op_ctx->msg_ctx_array[i])
         {
-            axis2_msg_ctx_t *msg_ctx = (axis2_msg_ctx_t*)ctx;
-            AXIS2_MSG_CTX_INIT(msg_ctx, env, conf);
+            AXIS2_MSG_CTX_INIT(op_ctx->msg_ctx_array[i], env, conf);
         }
     }
 
@@ -239,45 +221,32 @@ axis2_op_ctx_add_msg_ctx(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
+    axis2_msg_ctx_t *out_msg_ctx = NULL;
+    axis2_msg_ctx_t *in_msg_ctx = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     axis2_thread_mutex_lock(op_ctx->mutex);
-    if (op_ctx->msg_ctx_map)
+
+
+
+    out_msg_ctx = op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+    in_msg_ctx = op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_IN];
+
+    if (out_msg_ctx && in_msg_ctx)
     {
-        axis2_msg_ctx_t *out_msg_ctx = NULL;
-        axis2_msg_ctx_t *in_msg_ctx = NULL;
-
-        /*const axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
-        if (message_id)
-        {
-            axis2_hash_set(op_ctx->msg_ctx_map, 
-                message_id, AXIS2_HASH_KEY_STRING, msg_ctx); 
-        }*/
-
-        out_msg_ctx = axis2_hash_get(op_ctx->msg_ctx_map,
-                AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
-        in_msg_ctx = axis2_hash_get(op_ctx->msg_ctx_map,
-                AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING);
-
-        if (out_msg_ctx && in_msg_ctx)
-        {
-            /*TODO:error - completed*/
-            return AXIS2_FAILURE;
-        }
-
-        if (!out_msg_ctx)
-        {
-            axis2_hash_set(op_ctx->msg_ctx_map,
-                AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING,
-                    msg_ctx);
-        }
-        else
-        {
-            axis2_hash_set(op_ctx->msg_ctx_map,
-                AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING,
-                    msg_ctx);
-        }
+        /*TODO:error - completed*/
+        return AXIS2_FAILURE;
     }
+
+    if (!out_msg_ctx)
+    {
+        op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_OUT] =  msg_ctx;
+    }
+    else
+    {
+        op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_IN] = msg_ctx;
+    }
+
     axis2_thread_mutex_unlock(op_ctx->mutex);
     return AXIS2_SUCCESS;
 }
@@ -286,16 +255,15 @@ AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_op_ctx_get_msg_ctx(
     const axis2_op_ctx_t *op_ctx,
     const axis2_env_t *env,
-    const axis2_char_t *message_id)
+    const axis2_wsdl_msg_labels_t message_id)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
     axis2_thread_mutex_lock(op_ctx->mutex);
-    if (op_ctx->msg_ctx_map)
+    if (op_ctx->msg_ctx_array)
     {
         axis2_msg_ctx_t *rv = NULL;
-        rv = axis2_hash_get(op_ctx->msg_ctx_map, message_id,
-                AXIS2_HASH_KEY_STRING);
+        rv = op_ctx->msg_ctx_array[message_id];
         axis2_thread_mutex_unlock(op_ctx->mutex);
         return rv;
     }
@@ -328,28 +296,16 @@ axis2_op_ctx_cleanup(
     struct axis2_op_ctx *op_ctx,
     const axis2_env_t *env)
 {
-    axis2_hash_index_t *hi = NULL;
-    void *ctx = NULL;
+    int i = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (!(op_ctx->msg_ctx_map))
-        return AXIS2_SUCCESS;
-
-    for (hi = axis2_hash_first(op_ctx->msg_ctx_map, env);
-            hi; hi = axis2_hash_next(env, hi))
+    for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i ++)
     {
-        axis2_hash_this(hi, NULL, NULL, &ctx);
-        if (ctx)
+        if(op_ctx->msg_ctx_array[i])
         {
-            axis2_msg_ctx_t *msg_ctx = (axis2_msg_ctx_t*)ctx;
-            const axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
-            if (message_id)
-            {
-                axis2_hash_set(op_ctx->msg_ctx_map,
-                        message_id, AXIS2_HASH_KEY_STRING, NULL);
-                return AXIS2_MSG_CTX_FREE(msg_ctx, env);
-            }
+            AXIS2_MSG_CTX_FREE(op_ctx->msg_ctx_array[i], env);
+            op_ctx->msg_ctx_array[i] = NULL;
         }
     }
 
@@ -385,11 +341,11 @@ axis2_op_ctx_set_parent(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axis2_msg_ctx_t **AXIS2_CALL
 axis2_op_ctx_get_msg_ctx_map(
     const axis2_op_ctx_t *op_ctx,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return op_ctx->msg_ctx_map;
+    return op_ctx->msg_ctx_array;
 }
