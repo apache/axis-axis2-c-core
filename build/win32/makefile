@@ -1031,6 +1031,7 @@ APPLINK_FILE = $(OPENSSL_BIN_DIR)\include\openssl\applink.c
 rampart_do_nothing:
 
 RAMPART_BIN_DIR = $(AXIS2_INSTALL_DIR)\bin
+RAMPART_SAMPLES_DIR = $(RAMPART_BIN_DIR)\samples\rampart
 RAMPART_SAMPLES_CLIENT_DIR = $(RAMPART_BIN_DIR)\samples\rampart\client
 RAMPART_SAMPLES_SERVER_DIR = $(RAMPART_BIN_DIR)\samples\rampart\server
 RAMPART_SAMPLES_KEYS_DIR = $(RAMPART_BIN_DIR)\samples\rampart\keys
@@ -1047,6 +1048,7 @@ mod_rampart:
 	if not exist $(RAMPART_MODULES_DIR)\rampart mkdir $(RAMPART_MODULES_DIR)\rampart
 
 	copy mod_rampart.dll $(RAMPART_MODULES_DIR)\rampart
+	copy mod_rampart.lib $(AXIS2_INSTALL_DIR)\lib
 	
 	del *.dll
 	del *.lib
@@ -1057,19 +1059,29 @@ mod_rampart_pwcb:
 	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:pwcb.dll /IMPLIB:pwcb.lib
 
-	if not exist $(RAMPART_SAMPLES_CLIENT_DIR)\callback mkdir $(RAMPART_SAMPLES_CLIENT_DIR)\callback
+	if not exist $(RAMPART_SAMPLES_DIR)\callback mkdir $(RAMPART_SAMPLES_DIR)\callback
 	
-	copy pwcb.dll $(RAMPART_SAMPLES_CLIENT_DIR)\callback\pwcb.dll
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c $(RAMPART_SAMPLES_CLIENT_DIR)\callback
+	copy pwcb.dll $(RAMPART_SAMPLES_DIR)\callback\pwcb.dll
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c $(RAMPART_SAMPLES_DIR)\callback
 	del pwcb.*
+
+mod_rampart_authn: 
+	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\authn_provider\authn_provider.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_RAMPART).lib $(AXIS2_UTIL).lib /DLL /OUT:authn.dll /IMPLIB:authn.lib
+
+	if not exist $(RAMPART_SAMPLES_DIR)\authn_provider mkdir $(RAMPART_SAMPLES_DIR)\authn_provider
+	
+	copy authn.dll $(RAMPART_SAMPLES_DIR)\authn_provider\authn.dll
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\authn_provider\authn_provider.c $(RAMPART_SAMPLES_DIR)\authn_provider
+	del authn*.*
 
 mod_rampart_htpwcb: 
 	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\htpasswd_callback\htpwcb.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:htpwcb.dll /IMPLIB:htpwcb.lib
 
-	if not exist $(RAMPART_SAMPLES_CLIENT_DIR)\callback\htpasswd mkdir $(RAMPART_SAMPLES_CLIENT_DIR)\callback\htpasswd
+	if not exist $(RAMPART_SAMPLES_DIR)\callback\htpasswd mkdir $(RAMPART_SAMPLES_DIR)\callback\htpasswd
 	
-	copy htpwcb.dll $(RAMPART_SAMPLES_CLIENT_DIR)\callback\htpasswd\htpwcb.dll
+	copy htpwcb.dll $(RAMPART_SAMPLES_DIR)\callback\htpasswd\htpwcb.dll
 	del htpwcb.*
 
 mod_rampart_services_sec_echo:
@@ -1117,7 +1129,7 @@ mod_rampart_copy_keys:
 	if not exist $(RAMPART_SAMPLES_KEYS_DIR) mkdir $(RAMPART_SAMPLES_KEYS_DIR)
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\keys\* $(RAMPART_SAMPLES_KEYS_DIR)
 
-mod_rampart_all: mod_rampart mod_rampart_pwcb mod_rampart_htpwcb mod_rampart_samples mod_rampart_copy_include
+mod_rampart_all: mod_rampart mod_rampart_authn mod_rampart_pwcb mod_rampart_htpwcb mod_rampart_samples mod_rampart_copy_include
 
 
 
@@ -1265,5 +1277,4 @@ all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_ws
 install: all
 
 dist: all mod_rampart_all axis2_IIS_module axis2_apache_module tcpmon codegen_tool copy_extra copy_samples mv_dist
-
 
