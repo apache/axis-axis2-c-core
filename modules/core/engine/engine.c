@@ -266,7 +266,6 @@ axis2_engine_send(
         }
     }
 
-
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
     {
         /* message has paused, so rerun it from the position it stopped.
@@ -327,7 +326,9 @@ axis2_engine_send(
         {
             transport_sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
             if (transport_sender)
+            {
                 AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
+            }
             else
                 return AXIS2_FAILURE;
         }

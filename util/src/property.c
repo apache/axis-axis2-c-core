@@ -16,12 +16,14 @@
  */
 
 #include <axis2_property.h>
+#include <stdio.h>
 
 struct axis2_property
 {
     axis2_scope_t scope;
     AXIS2_FREE_VOID_ARG free_func;
     void *value;
+    axis2_bool_t own_value;
 };
 
 axis2_property_t *AXIS2_CALL
@@ -42,6 +44,7 @@ axis2_property_create(const axis2_env_t *env)
     property->value = NULL;
     property->scope = AXIS2_SCOPE_REQUEST;
     property->free_func = 0;
+    property->own_value = AXIS2_TRUE;
 
     return property;
 }
@@ -50,6 +53,7 @@ axis2_property_t *AXIS2_CALL
 axis2_property_create_with_args(
     const axis2_env_t *env,
     axis2_scope_t scope,
+    axis2_bool_t own_value,
     AXIS2_FREE_VOID_ARG free_func,
     void *value) 
 {
@@ -66,6 +70,7 @@ axis2_property_create_with_args(
     }
     property->value = value;
     property->scope = scope;
+    property->own_value = own_value;
     property->free_func = free_func;
 
     return property;
@@ -83,11 +88,11 @@ axis2_property_free(axis2_property_t *property,
     {
         if (property->scope != AXIS2_SCOPE_APPLICATION)
         {
-            if (property->free_func)
+            if (property->free_func && property->own_value)
             {
                 property->free_func(property->value, env);
             }
-            else
+            else if(property->own_value)
             {
                 AXIS2_FREE(env->allocator, property->value);
             }
@@ -137,11 +142,11 @@ axis2_property_set_value(
     {
         if (property->scope != AXIS2_SCOPE_APPLICATION)
         {
-            if (property->free_func)
+            if (property->free_func && property->own_value)
             {
                 property->free_func(property->value, env);
             }
-            else
+            else if(property->own_value)
             {
                 AXIS2_FREE(env->allocator, property->value);
             }
@@ -162,6 +167,18 @@ axis2_property_get_value(axis2_property_t *property,
     return property->value;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_property_set_own_value(
+    axis2_property_t *property,
+    const axis2_env_t *env,
+    axis2_bool_t own_value)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    property->own_value = own_value;
+    return AXIS2_SUCCESS;
+}
+
 
 axis2_property_t* AXIS2_CALL
 axis2_property_clone(
@@ -173,8 +190,8 @@ axis2_property_clone(
     new_property = axis2_property_create(env);
     axis2_property_set_free_func(new_property, env, property->free_func);
     axis2_property_set_scope(new_property, env, property->scope);
+    axis2_property_set_own_value(new_property, env, property->own_value);
     axis2_property_set_value(new_property, env, property->value);
     return new_property; 
 }
-
 

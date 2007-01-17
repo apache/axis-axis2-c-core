@@ -222,6 +222,7 @@ axis2_http_transport_sender_invoke(
     if (property)
     {
         transport_url = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+        printf("transport_url:%s\n", transport_url);
         property = NULL;
     }
     if (transport_url)
@@ -302,7 +303,6 @@ axis2_http_transport_sender_invoke(
                     AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
             if (property)
             {
-
                 out_info = (axis2_http_out_transport_info_t *)
                     AXIS2_PROPERTY_GET_VALUE(property, env);
                 property = NULL;

@@ -126,12 +126,10 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
     if (!msg_info_headers)
         return AXIS2_SUCCESS; /* no addressing in use */
 	 wsa_action = AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env);
-
     if (!wsa_action || !axis2_strcmp (wsa_action, ""))
         return AXIS2_SUCCESS; /* If no action present, assume no addressing in use */
 

@@ -41,6 +41,7 @@ axis2_param_container_create(const axis2_env_t *env)
 
     param_container->params = NULL;
     param_container->params_list = NULL;
+    param_container->params_list = axis2_array_list_create(env, 0);
 
     param_container->params = axis2_hash_make(env);
     if (NULL == param_container->params)

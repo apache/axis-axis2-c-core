@@ -578,6 +578,18 @@ extern "C"
                     const axis2_bool_t manage_session);
 
         /**
+         * Sets WSA message information headers.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param pointer to message information headers struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_msg_info_headers) (
+                    const axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_msg_info_headers_t *msg_info_headers);
+        /**
          * Gets WSA message information headers.
          * @param options pointer to options struct
          * @param env pointer to environment struct
@@ -935,6 +947,11 @@ extern "C"
     @sa axis2_options_ops#set_manage_session*/
 #define AXIS2_OPTIONS_SET_MANAGE_SESSION(options, env, manage_session) \
       ((options)->ops->set_manage_session(options, env, manage_session))
+
+/** Sets message information headers.
+    @sa axis2_options_ops#set_msg_info_headers */
+#define AXIS2_OPTIONS_SET_MSG_INFO_HEADERS(options, env, msg_info_headers) \
+      ((options)->ops->set_msg_info_headers(options, env, msg_info_headers))
 
 /** Gets message information headers.
     @sa axis2_options_ops#get_msg_info_headers */

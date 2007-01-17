@@ -305,6 +305,12 @@ axis2_options_get_manage_session(
     const axis2_options_t *options,
     const axis2_env_t *env);
 
+axis2_status_t AXIS2_CALL
+axis2_options_set_msg_info_headers(
+    const axis2_options_t *options,
+    const axis2_env_t *env,
+    axis2_msg_info_headers_t *msg_info_headers);
+
 axis2_msg_info_headers_t *AXIS2_CALL
 axis2_options_get_msg_info_headers(
     const axis2_options_t *options,
@@ -1139,6 +1145,22 @@ axis2_options_get_manage_session(
     return options_impl->manage_session;
 }
 
+axis2_status_t AXIS2_CALL
+axis2_options_set_msg_info_headers(
+    const axis2_options_t *options,
+    const axis2_env_t *env,
+    axis2_msg_info_headers_t *msg_info_headers)
+{
+    axis2_options_impl_t *options_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    options_impl = AXIS2_INTF_TO_IMPL(options);
+
+    options_impl->msg_info_headers = msg_info_headers;
+    return AXIS2_SUCCESS;
+}
+
+
 axis2_msg_info_headers_t *AXIS2_CALL
 axis2_options_get_msg_info_headers(
     const axis2_options_t *options,
@@ -1302,6 +1324,7 @@ axis2_options_init_ops(
     options->ops->set_manage_session = axis2_options_set_manage_session;
     options->ops->get_manage_session = axis2_options_get_manage_session;
     options->ops->get_msg_info_headers = axis2_options_get_msg_info_headers;
+    options->ops->set_msg_info_headers = axis2_options_set_msg_info_headers;
     options->ops->set_soap_version = axis2_options_set_soap_version;
     options->ops->get_soap_version = axis2_options_get_soap_version;
     options->ops->set_enable_mtom = axis2_options_set_enable_mtom;

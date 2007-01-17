@@ -244,6 +244,19 @@ extern "C"
         const axis2_env_t *env);
 
     /**
+     * Sets message ID.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param msg_id
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_msg_id(
+        const axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        axis2_char_t *msg_id);
+
+    /**
      * Gets message ID.
      * @param msg_ctx message context
      * @param env pointer to environment struct
@@ -540,6 +553,20 @@ extern "C"
     axis2_msg_ctx_set_wsa_message_id(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         const axis2_char_t *message_id);
+        
+        /**
+         * Sets message information headers.
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param msg_info_headers pointer to message information headers,
+         * message context assumes the ownership of the struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_msg_info_headers)(
+                    axis2_msg_ctx_t *msg_ctx,
+                    const axis2_env_t *env,
+                    axis2_msg_info_headers_t *msg_info_headers);
 
     /**
      * Gets WS-Addressing message ID. 
@@ -765,7 +792,7 @@ extern "C"
     axis2_msg_ctx_set_conf_ctx(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         struct axis2_conf_ctx *conf_ctx);
-
+ 
     /**
      * Sets service context.                     
      * @param msg_ctx message context
@@ -1191,6 +1218,17 @@ extern "C"
     axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         struct axis2_svc *svc);
+   /**
+     * Gets the options to be used in invocation.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return  options pointer to options struct , message context does not 
+     * assume the ownership of the struct
+     */
+    AXIS2_EXTERN struct axis2_options *AXIS2_CALL
+        axis2_msg_ctx_get_options(
+            axis2_msg_ctx_t *msg_ctx,
+            const axis2_env_t *env);
 
     /**
      * Gets the bool value indicating the paused status.
@@ -1201,7 +1239,7 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_is_paused(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
-
+        
     /**
      * Sets the options to be used in invocation.
      * @param msg_ctx message context
@@ -1376,6 +1414,10 @@ extern "C"
 /** Gets message ID. */
 #define AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env) \
       axis2_msg_ctx_get_msg_id(msg_ctx, env)
+
+/** Sets message ID. */
+#define AXIS2_MSG_CTX_SET_MSG_ID(msg_ctx, env, msg_id) \
+      axis2_msg_ctx_set_msg_id(msg_ctx, env, msg_id)
 
 /** Gats bool value indicating if to process SOAP fault or not. */
 #define AXIS2_MSG_CTX_GET_PROCESS_FAULT(msg_ctx, env) \
@@ -1672,6 +1714,9 @@ extern "C"
 #define AXIS2_MSG_CTX_FIND_OP(msg_ctx, env, svc) \
       axis2_msg_ctx_find_op(msg_ctx, env, svc)
 
+/** Gets options.*/
+#define AXIS2_MSG_CTX_GET_OPTIONS(msg_ctx, env) \
+      axis2_msg_ctx_get_options(msg_ctx, env)
 /** Sets options. */
 #define AXIS2_MSG_CTX_SET_OPTIONS(msg_ctx, env, options) \
       axis2_msg_ctx_set_options(msg_ctx, env, options)

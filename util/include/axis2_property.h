@@ -62,6 +62,7 @@ extern "C"
     axis2_property_create_with_args(
         const axis2_env_t *env,
         axis2_scope_t scope,
+        axis2_bool_t own_value,
         AXIS2_FREE_VOID_ARG free_func,
         void *value);
 
@@ -82,6 +83,7 @@ extern "C"
         const axis2_env_t *env,
         AXIS2_FREE_VOID_ARG free_func);
 
+/*************************** Function macros **********************************/
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_property_set_value(axis2_property_t *property,
         const axis2_env_t *env,
@@ -90,6 +92,12 @@ extern "C"
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_property_get_value(axis2_property_t *property,
         const axis2_env_t *env);
+
+    axis2_status_t AXIS2_CALL
+    axis2_property_set_own_value(
+        axis2_property_t *property,
+        const axis2_env_t *env,
+        axis2_bool_t own_value);
 
     AXIS2_EXTERN axis2_property_t* AXIS2_CALL
     axis2_property_clone(axis2_property_t *property,
@@ -112,6 +120,8 @@ extern "C"
 
 #define AXIS2_PROPERTY_CLONE(property, env) \
         axis2_property_clone(property, env)
+
+/*************************** End of function macros ***************************/
 
     /** @} */
 

@@ -6,7 +6,7 @@ export AXIS2C_HOME
 
 echo "AXIS2C_HOME = ${AXIS2C_HOME}"
 
-./configure --prefix=${AXIS2C_HOME} 
+./configure --prefix=${AXIS2C_HOME} --with-axis2_util=${AXIS2C_HOME}/include --with-axiom=${AXIS2C_HOME}/include -with-apache2=/usr/local/apache2/include
 make 
 make install
 

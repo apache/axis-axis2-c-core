@@ -307,6 +307,12 @@ axis2_msg_ctx_free(
         msg_ctx->svc_ctx_id = NULL;
     }
 
+    /*if (msg_ctx->paused_phase_name)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx->paused_phase_name);
+        msg_ctx->paused_phase_name = NULL;
+    }*/
+
     if (msg_ctx->soap_action)
     {
         AXIS2_FREE(env->allocator, msg_ctx->soap_action);
@@ -455,6 +461,23 @@ axis2_msg_ctx_get_msg_id(
     }
 
     return NULL;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_msg_id(
+    const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_char_t *msg_id)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if (msg_ctx->msg_info_headers)
+    {
+        return AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(
+            msg_ctx->msg_info_headers, env, msg_id);
+    }
+
+    return AXIS2_SUCCESS;
 }
 
 axis2_bool_t AXIS2_CALL
@@ -1367,6 +1390,21 @@ axis2_msg_ctx_set_paused_phase_name(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
+    /*if (msg_ctx->paused_phase_name)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx->paused_phase_name);
+        msg_ctx->paused_phase_name = NULL;
+    }
+
+    if (paused_phase_name)
+    {
+        msg_ctx->paused_phase_name = AXIS2_STRDUP(paused_phase_name, env);
+        if (!(msg_ctx->paused_phase_name))
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }*/
     /* a shallow copy is sufficient as phase lives beyond message */
     msg_ctx->paused_phase_name = (axis2_char_t *)paused_phase_name; 
     return AXIS2_SUCCESS;
@@ -1666,6 +1704,24 @@ axis2_msg_ctx_set_find_op(
     msg_ctx->find_op = func;
     return AXIS2_SUCCESS;
 }
+
+axis2_options_t *AXIS2_CALL
+axis2_msg_ctx_get_options(
+    axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    axis2_options_t *options = NULL;
+    axis2_hash_t *properties = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+
+    options = axis2_options_create(env);
+    AXIS2_OPTIONS_SET_MSG_INFO_HEADERS(options, env, 
+        msg_ctx->msg_info_headers);
+    properties = AXIS2_CTX_GET_NON_PERSISTANT_MAP(msg_ctx->base, env);
+    AXIS2_OPTIONS_SET_PROPERTIES(options, env, properties);
+    return options;
+}
+
 
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_options(

@@ -442,6 +442,7 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx);
     if(!status)
         return status;
+
     status = AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_SYNC(msg_recv, env,
             msg_ctx, out_msg_ctx);
     if (AXIS2_SUCCESS != status)

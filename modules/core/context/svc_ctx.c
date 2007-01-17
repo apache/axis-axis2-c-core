@@ -102,6 +102,17 @@ struct axis2_svc_grp_ctx *AXIS2_CALL
 }
 
 axis2_status_t AXIS2_CALL
+            axis2_svc_ctx_set_parent(
+                axis2_svc_ctx_t *svc_ctx,
+                const axis2_env_t *env,
+                axis2_svc_grp_ctx_t *parent)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    svc_ctx->parent = parent;
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
 axis2_svc_ctx_free(
     struct axis2_svc_ctx *svc_ctx,
     const axis2_env_t *env)

@@ -79,6 +79,19 @@ extern "C"
     AXIS2_EXTERN struct axis2_svc_grp_ctx *AXIS2_CALL
     axis2_svc_ctx_get_parent(const axis2_svc_ctx_t *svc_ctx,
         const axis2_env_t *env);
+        
+    /**
+     * Sets parent which is of type service group context.
+     * @param svc_ctx pointer to service context
+     * @param env pointer to environment struct
+     * @param svc_grp_ctx
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_ctx_set_parent(
+        axis2_svc_ctx_t *svc_ctx,
+        const axis2_env_t *env,
+        struct axis2_svc_grp_ctx *parent);
 
 
     /**
@@ -175,6 +188,10 @@ extern "C"
 /** Gets parent which is of type service group context. */
 #define AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env) \
       axis2_svc_ctx_get_parent(svc_ctx, env)
+
+/** Gets parent which is of type service group context.*/
+#define AXIS2_SVC_CTX_SET_PARENT(svc_ctx, env, parent) \
+      axis2_svc_ctx_set_parent(svc_ctx, env, parent)
 
 /** Frees service context. */
 #define AXIS2_SVC_CTX_FREE(svc_ctx, env) \

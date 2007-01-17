@@ -260,13 +260,13 @@ axis2_soap_over_http_sender_send(
     /* We put the client into msg_ctx so that we can free it once the processing
      * is done at client side
      */
-    property = axis2_property_create(env);
+    /*property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env,
             axis2_http_client_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, sender_impl->client);
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_CLIENT,
-            property, AXIS2_FALSE);
+            property, AXIS2_FALSE);*/
 
     doing_mtom = AXIS2_MSG_CTX_GET_DOING_MTOM(msg_ctx, env);
 

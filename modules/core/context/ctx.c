@@ -93,8 +93,8 @@ axis2_ctx_set_property(
                     AXIS2_HASH_KEY_STRING);
 			if (temp_value)
 			{
-				void *temp_value_value = AXIS2_PROPERTY_GET_VALUE (temp_value, env);
-				void *value_value = AXIS2_PROPERTY_GET_VALUE (value, env);
+				void *temp_value_value =  AXIS2_PROPERTY_GET_VALUE (temp_value, env);
+				void *value_value =  AXIS2_PROPERTY_GET_VALUE (value, env);
 				if (temp_value_value != value_value)
 				{
 					AXIS2_PROPERTY_FREE(temp_value, env);

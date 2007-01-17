@@ -146,6 +146,7 @@ axis2_core_utils_create_out_msg_ctx(
             AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
     if (property)
     {
+        axis2_char_t *temp = AXIS2_PROPERTY_GET_VALUE(property, env);
         AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
             property, AXIS2_FALSE);
         property = NULL;

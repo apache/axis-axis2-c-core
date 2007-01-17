@@ -253,7 +253,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         {
             status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
 			fault_node =  AXIS2_SVC_SKELETON_ON_FAULT (svc_obj, env, om_node);
-			AXIS2_SVC_SKELETON_FREE(svc_obj, env);
+			/*AXIS2_SVC_SKELETON_FREE(svc_obj, env);*/
         }
     }
 

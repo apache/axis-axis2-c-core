@@ -179,6 +179,58 @@ void axis2_thread_yield(void)
     return;
 }
 
+/**
+ * function is used to allocate a new key. This key now becomes valid for all threads in our process. 
+ * When a key is created, the value it points to defaults to NULL. Later on each thread may change 
+ * its copy of the value as it wishes.
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_thread_key_create(
+    axis2_threadkey_t *axis2_key,
+    void (*destructor)(void *))
+{
+    int rc = -1;
+    pthread_key_t key = axis2_key->key;
+    rc = pthread_key_create(&key, destructor);
+    if(0 == rc)
+        return AXIS2_SUCCESS;
+    else
+        return AXIS2_FAILURE;
+}
+
+/**
+ * This function is used to get the value of a given key
+ * @return void*. A key's value is simply a void pointer (void*)
+ */
+AXIS2_EXTERN void * AXIS2_CALL
+axis2_thread_getspecific(
+    axis2_threadkey_t *axis2_key)
+{
+    void *value = NULL;
+    pthread_key_t key = axis2_key->key;
+    value = pthread_getspecific(key);
+    return value;
+}
+
+/**
+ * This function is used to get the value of a given key
+ * @param keys value. A key's value is simply a void pointer (void*), so we can 
+ *        store in it anything that we want
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_thread_setspecific(
+    axis2_threadkey_t *axis2_key,
+    void *value)
+{
+    int rc = -1;
+    pthread_key_t key = axis2_key->key;
+    rc = pthread_setspecific(key, value);
+    if(0 == rc)
+        return AXIS2_SUCCESS;
+    else
+        return AXIS2_FAILURE;
+}
+
 AXIS2_EXTERN axis2_os_thread_t* AXIS2_CALL
 axis2_os_thread_get(axis2_thread_t *thd)
 {
@@ -253,3 +305,4 @@ axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex)
     AXIS2_FREE(mutex->allocator, mutex);
     return AXIS2_SUCCESS;
 }
+
