@@ -323,7 +323,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
 
             /*status = AXIOM_ELEMENT_DECLARE_NAMESPACE(om_ele, env, node, om_ns);*/
 
-            status = axiom_element_declare_namespace_shallow(om_ele, env, om_ns);
+            status = axiom_element_declare_namespace_assume_param_ownership(om_ele, env, om_ns);
             /*
              temp_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, 
                              env, temp_ns_uri,temp_ns_prefix);
@@ -355,7 +355,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
             /*if (om_ele)
                 AXIOM_ELEMENT_SET_NAMESPACE(om_ele, env, om_ns, node);*/
             if (om_ele)
-                axiom_element_set_namespace_shallow(om_ele, env, om_ns);
+                axiom_element_set_namespace_assume_param_ownership(om_ele, env, om_ns);
         }
         else
         {

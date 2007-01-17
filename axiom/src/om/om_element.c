@@ -320,7 +320,7 @@ axiom_element_find_namespace(axiom_element_t *om_element,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_element_declare_namespace_shallow(axiom_element_t *om_element,
+axiom_element_declare_namespace_assume_param_ownership(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_namespace_t *ns)
 {
@@ -851,7 +851,7 @@ axiom_element_set_namespace(axiom_element_t *om_element,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_element_set_namespace_shallow(axiom_element_t *om_element,
+axiom_element_set_namespace_assume_param_ownership(axiom_element_t *om_element,
         const axis2_env_t *env,
         axiom_namespace_t *ns)
 {
