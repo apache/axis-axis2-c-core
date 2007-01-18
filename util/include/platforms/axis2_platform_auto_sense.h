@@ -39,7 +39,8 @@ extern "C"
    #include "windows/axis2_dir_windows.h"
    #include "windows/axis2_uuid_gen_windows.h"
    #include "windows/axis2_getopt_windows.h"
-   #include "windows/axis2_date_time_util_windows.h"     
+   #include "windows/axis2_date_time_util_windows.h"  
+   #include "windows/axis2_thread_windows.h"
 #elif defined ( __OS400__  )
   #include <os400/axis2_os400.h>
 #elif defined ( AIX )

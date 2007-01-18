@@ -18,6 +18,8 @@
 #include <axis2_utils.h>
 #include <platforms/windows/axis2_thread_windows.h>
 
+DWORD tls_axis2_thread = 0;
+
 AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
 axis2_threadattr_create(axis2_allocator_t *allocator)
 {

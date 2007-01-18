@@ -26,7 +26,7 @@
 
 typedef HANDLE axis2_os_thread_t; /* Native thread */
 /* Chosen for us by apr_initialize */
-DWORD tls_axis2_thread = 0;
+
 
 struct axis2_thread_t 
 {
@@ -50,5 +50,51 @@ struct axis2_thread_once_t
 {
    long value;
 };
+
+AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
+axis2_threadattr_create(axis2_allocator_t *allocator);
+
+/* Destroy the threadattr object */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+threadattr_cleanup(void *data);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_threadattr_detach_set(
+    axis2_threadattr_t *attr,
+    axis2_bool_t detached);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_threadattr_stacksize_set(axis2_threadattr_t *attr, size_t stacksize);
+
+
+AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
+axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
+        axis2_thread_start_t func, void *data);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator);
+
+AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
+axis2_os_thread_current(void);
+
+AXIS2_EXTERN int AXIS2_CALL
+axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_thread_join(axis2_thread_t *thd);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_thread_detach(axis2_thread_t *thd);
+
+AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
+axis2_os_thread_get(axis2_thread_t *thd, const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_thread_once_t * AXIS2_CALL
+axis2_thread_once_init(axis2_allocator_t *allocator);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_thread_once(axis2_thread_once_t *control, void(*func)(void));
 
 #endif  /* AXIS2_THREAD_WINDOWS_H */
