@@ -21,10 +21,12 @@
 #include <axis2_utils.h>
 #include <axis2_env.h>
 #include <axiom_xml_writer.h>
-/* /\*********************** function prototypes ***********************************\/ */
+
+/************************ function prototypes ************************************/
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_free(axiom_xml_writer_t *writer,
-        const axis2_env_t *env);
+guththila_xml_writer_wrapper_free(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_start_element(
@@ -33,8 +35,9 @@ guththila_xml_writer_wrapper_write_start_element(
     axis2_char_t *localname);
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_end_start_element(axiom_xml_writer_t *writer,
-        const axis2_env_t *env);
+guththila_xml_writer_wrapper_end_start_element(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_start_element_with_namespace(
@@ -73,18 +76,21 @@ guththila_xml_writer_wrapper_write_empty_element_with_namespace_prefix(
     axis2_char_t *prefix);
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_write_end_element(axiom_xml_writer_t *writer,
-        const axis2_env_t *env);
+guththila_xml_writer_wrapper_write_end_element(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_write_end_document(axiom_xml_writer_t *writer,
-        const axis2_env_t *env);
+guththila_xml_writer_wrapper_write_end_document(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_write_attribute(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *localname,
-        axis2_char_t *value);
+guththila_xml_writer_wrapper_write_attribute(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env,
+	axis2_char_t *localname,
+	axis2_char_t *value);
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_attribute_with_namespace(
@@ -112,14 +118,16 @@ guththila_xml_writer_wrapper_write_namespace(
 
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_write_default_namespace(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *namespace_uri);
+guththila_xml_writer_wrapper_write_default_namespace(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env,
+	axis2_char_t *namespace_uri);
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_write_comment(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *value);
+guththila_xml_writer_wrapper_write_comment(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env,
+	axis2_char_t *value);
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_processing_instruction(
@@ -135,14 +143,16 @@ guththila_xml_writer_wrapper_write_processing_instruction_data(
     axis2_char_t *data);
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_write_cdata(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *data);
+guththila_xml_writer_wrapper_write_cdata(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env,
+	axis2_char_t *data);
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_write_dtd(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *dtd);
+guththila_xml_writer_wrapper_write_dtd(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env,
+	axis2_char_t *dtd);
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_entity_ref(
@@ -175,15 +185,17 @@ guththila_xml_writer_wrapper_write_characters(
     axis2_char_t *text);
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_writer_wrapper_get_prefix(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *uri);
+guththila_xml_writer_wrapper_get_prefix(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env,
+	axis2_char_t *uri);
 
 axis2_status_t AXIS2_CALL
-guththila_xml_writer_wrapper_set_prefix(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *prefix,
-        axis2_char_t *uri);
+guththila_xml_writer_wrapper_set_prefix(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env,
+	axis2_char_t *prefix,
+	axis2_char_t *uri);
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_set_default_prefix(
     axiom_xml_writer_t *writer,
@@ -198,12 +210,18 @@ guththila_xml_writer_wrapper_write_encoded(
     int in_attr);
 
 void* AXIS2_CALL
-guththila_xml_writer_wrapper_get_xml(axiom_xml_writer_t *writer,
-        const axis2_env_t *env);
+guththila_xml_writer_wrapper_get_xml(
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+guththila_xml_writer_wrapper_write_raw (
+	axiom_xml_writer_t *writer,
+	const axis2_env_t *env,
+	axis2_char_t *content);
 
 
-
-/* /\**************************** end function pointers ****************************\/ */
+/***************************** end function pointers *****************************/
 
 typedef struct guththila_xml_writer_wrapper_impl
 {
@@ -213,18 +231,18 @@ typedef struct guththila_xml_writer_wrapper_impl
 guththila_xml_writer_wrapper_impl_t;
 
 
-/* /\***************************** Macros ******************************************\/ */
+/****************************** Macros *******************************************/
 
 #define AXIS2_INTF_TO_IMPL(p) ((guththila_xml_writer_wrapper_impl_t*)p)
 
-/* /\****************************** End macro **************************************\/ */
+/******************************* End macro ***************************************/
 
 AXIS2_EXTERN axiom_xml_writer_t * AXIS2_CALL
 axiom_xml_writer_create(const axis2_env_t *env,
-        axis2_char_t *filename,
-        axis2_char_t *encoding,
-        int is_prefix_default,
-        int compression)
+						axis2_char_t *filename,
+						axis2_char_t *encoding,
+						int is_prefix_default,
+						int compression)
 {
     guththila_xml_writer_wrapper_impl_t *writer_impl;
 
@@ -232,7 +250,7 @@ axiom_xml_writer_create(const axis2_env_t *env,
     AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = (guththila_xml_writer_wrapper_impl_t *)AXIS2_MALLOC(env->allocator,
-            sizeof(guththila_xml_writer_wrapper_impl_t));
+																	  sizeof(guththila_xml_writer_wrapper_impl_t));
 
     if (!writer_impl)
     {
@@ -253,8 +271,8 @@ axiom_xml_writer_create(const axis2_env_t *env,
     }
 
     guththila_create_xml_stream_writer((axis2_env_t*) env,
-            writer_impl->parser,
-            filename);
+									   writer_impl->parser,
+									   filename);
 
     if (!(writer_impl->parser->xsw))
     {
@@ -267,7 +285,7 @@ axiom_xml_writer_create(const axis2_env_t *env,
 
     writer_impl->writer.ops = NULL;
     writer_impl->writer.ops = (axiom_xml_writer_ops_t*)AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_xml_writer_ops_t));
+																	sizeof(axiom_xml_writer_ops_t));
     if (!(writer_impl->writer.ops))
     {
         AXIS2_FREE(env->allocator, writer_impl);
@@ -334,16 +352,18 @@ axiom_xml_writer_create(const axis2_env_t *env,
         guththila_xml_writer_wrapper_write_encoded;
     writer_impl->writer.ops->get_xml =
         guththila_xml_writer_wrapper_get_xml;
+    writer_impl->writer.ops->write_raw =
+        guththila_xml_writer_wrapper_write_raw;
 
     return &(writer_impl->writer);
 }
 
 AXIS2_EXTERN axiom_xml_writer_t * AXIS2_CALL
 axiom_xml_writer_create_for_memory(const axis2_env_t *env,
-        axis2_char_t *encoding,
-        int is_prefix_default,
-        int compression,
-        int type)
+								   axis2_char_t *encoding,
+								   int is_prefix_default,
+								   int compression,
+								   int type)
 {
     guththila_xml_writer_wrapper_impl_t *writer_impl = NULL;
 
@@ -351,7 +371,7 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
     AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = (guththila_xml_writer_wrapper_impl_t *)AXIS2_MALLOC(env->allocator,
-            sizeof(guththila_xml_writer_wrapper_impl_t));
+																	  sizeof(guththila_xml_writer_wrapper_impl_t));
 
     if (!writer_impl)
     {
@@ -373,7 +393,7 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
     }
     /* guththila xml stream writer for memory */
     guththila_create_xml_stream_writer_for_memory((axis2_env_t*) env,
-            writer_impl->parser);
+												  writer_impl->parser);
 
     if (!(writer_impl->parser->xsw))
     {
@@ -386,7 +406,7 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
 
     writer_impl->writer.ops = NULL;
     writer_impl->writer.ops = (axiom_xml_writer_ops_t*)AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_xml_writer_ops_t));
+																	sizeof(axiom_xml_writer_ops_t));
     if (!(writer_impl->writer.ops))
     {
         AXIS2_FREE(env->allocator, writer_impl);
@@ -453,6 +473,8 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
         guththila_xml_writer_wrapper_write_encoded;
     writer_impl->writer.ops->get_xml =
         guththila_xml_writer_wrapper_get_xml;
+    writer_impl->writer.ops->write_raw =
+        guththila_xml_writer_wrapper_write_raw;
 
     return &(writer_impl->writer);
 
@@ -460,17 +482,17 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_free(axiom_xml_writer_t *writer,
-        const axis2_env_t *env)
+								  const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (AXIS2_INTF_TO_IMPL(writer)->parser)
     {
         if (AXIS2_INTF_TO_IMPL(writer)->parser->xsw)
             guththila_xml_writer_free((axis2_env_t *)env,
-                    AXIS2_INTF_TO_IMPL(writer)->parser);
+									  AXIS2_INTF_TO_IMPL(writer)->parser);
 
         guththila_free((axis2_env_t *)env,
-                AXIS2_INTF_TO_IMPL(writer)->parser);
+					   AXIS2_INTF_TO_IMPL(writer)->parser);
     }
 
     if (writer->ops)
@@ -497,16 +519,6 @@ guththila_xml_writer_wrapper_write_start_element(
         localname);
     return status;
 }
-
-/* axis2_status_t AXIS2_CALL */
-/* guththila_xml_writer_wrapper_end_start_element(axiom_xml_writer_t *writer, */
-/*                                                const axis2_env_t *env) */
-/* { */
-/*     AXIS2_ENV_CHECK( env, AXIS2_FAILURE); */
-/*     return guththila_xml_stream_writer_end_start_element( */
-/*                     (axis2_env_t *)env, */
-/*                     AXIS2_INTF_TO_IMPL(writer)->guththila_writer); */
-/* } */
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_start_element_with_namespace(
@@ -604,7 +616,7 @@ guththila_xml_writer_wrapper_write_empty_element_with_namespace_prefix(
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_end_element(axiom_xml_writer_t *writer,
-        const axis2_env_t *env)
+											   const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     guththila_write_end_element(
@@ -615,7 +627,7 @@ guththila_xml_writer_wrapper_write_end_element(axiom_xml_writer_t *writer,
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_end_document(axiom_xml_writer_t *writer,
-        const axis2_env_t *env)
+												const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     guththila_write_end_document(
@@ -627,9 +639,9 @@ guththila_xml_writer_wrapper_write_end_document(axiom_xml_writer_t *writer,
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_attribute(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *localname,
-        axis2_char_t *value)
+											 const axis2_env_t *env,
+											 axis2_char_t *localname,
+											 axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
@@ -690,9 +702,9 @@ guththila_xml_writer_wrapper_write_attribute_with_namespace_prefix(
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_namespace(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *prefix,
-        axis2_char_t *namespace_uri)
+											 const axis2_env_t *env,
+											 axis2_char_t *prefix,
+											 axis2_char_t *namespace_uri)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespace_uri, AXIS2_FAILURE);
@@ -709,8 +721,8 @@ guththila_xml_writer_wrapper_write_namespace(axiom_xml_writer_t *writer,
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_default_namespace(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *namespace_uri)
+													 const axis2_env_t *env,
+													 axis2_char_t *namespace_uri)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespace_uri, AXIS2_FAILURE);
@@ -724,8 +736,8 @@ guththila_xml_writer_wrapper_write_default_namespace(axiom_xml_writer_t *writer,
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_comment(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *value)
+										   const axis2_env_t *env,
+										   axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
@@ -773,8 +785,8 @@ guththila_xml_writer_wrapper_write_processing_instruction_data(
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_cdata(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *data)
+										 const axis2_env_t *env,
+										 axis2_char_t *data)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, data, AXIS2_FAILURE);
@@ -787,8 +799,8 @@ guththila_xml_writer_wrapper_write_cdata(axiom_xml_writer_t *writer,
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_dtd(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *dtd)
+									   const axis2_env_t *env,
+									   axis2_char_t *dtd)
 {
     /* AXIS2_ENV_CHECK( env, AXIS2_FAILURE); */
     /*     AXIS2_PARAM_CHECK(env->error, dtd, AXIS2_FAILURE); */
@@ -884,21 +896,21 @@ guththila_xml_writer_wrapper_write_characters(
 
 axis2_char_t* AXIS2_CALL
 guththila_xml_writer_wrapper_get_prefix(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *uri)
+										const axis2_env_t *env,
+										axis2_char_t *uri)
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
     return guththila_get_prefix_for_namespace(
-                (axis2_env_t *)env,
-                AXIS2_INTF_TO_IMPL(writer)->parser, uri);
+		(axis2_env_t *)env,
+		AXIS2_INTF_TO_IMPL(writer)->parser, uri);
 }
 
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_set_prefix(axiom_xml_writer_t *writer,
-        const axis2_env_t *env,
-        axis2_char_t *prefix,
-        axis2_char_t *uri)
+										const axis2_env_t *env,
+										axis2_char_t *prefix,
+										axis2_char_t *uri)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
@@ -935,17 +947,33 @@ guththila_xml_writer_wrapper_write_encoded(
     /*     return guththila_write_encoded( */
     /*                     (axis2_env_t *)env, */
     /*                     AXIS2_INTF_TO_IMPL(writer)->parser, text,
-    		       in_attr); */
+						   in_attr); */
     return AXIS2_SUCCESS;
 }
 
 void* AXIS2_CALL
 guththila_xml_writer_wrapper_get_xml(axiom_xml_writer_t *writer,
-        const axis2_env_t *env)
+									 const axis2_env_t *env)
 {
     char *buffer = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     buffer = guththila_get_memory_buffer((axis2_env_t *)env,
-            AXIS2_INTF_TO_IMPL(writer)->parser);
+										 AXIS2_INTF_TO_IMPL(writer)->parser);
     return (void*)buffer ;
+}
+
+axis2_status_t AXIS2_CALL
+guththila_xml_writer_wrapper_write_raw (axiom_xml_writer_t *writer,
+										const axis2_env_t *env,
+										axis2_char_t *content)
+{
+	if (!content)
+		return AXIS2_FAILURE;
+	else
+	{
+		guththila_write_to_buffer ((axis2_env_t *)env, 
+								   AXIS2_INTF_TO_IMPL (writer)->parser, 
+								   (const axis2_char_t *) content);
+		return  AXIS2_SUCCESS;
+	}
 }
