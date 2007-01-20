@@ -275,6 +275,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\util\src\rand.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\util\src\stack.c"
 				>
 			</File>
@@ -361,6 +365,10 @@
 			<Filter
 				Name="platforms"
 				>
+				<File
+					RelativePath="..\..\..\..\util\include\platforms\axis2_platform_auto_sense.h"
+					>
+				</File>
 				<Filter
 					Name="windows"
 					>
@@ -402,6 +410,10 @@
 			>
 			<File
 				RelativePath="..\..\..\..\util\include\axis2_date_time_util.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\util\include\axis2_rand.h"
 				>
 			</File>
 			<Filter
