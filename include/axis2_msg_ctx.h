@@ -250,7 +250,7 @@ extern "C"
      * @param msg_id
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_msg_id(
         const axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,

@@ -216,7 +216,7 @@ extern "C"
     axis2_phases_info_create (
         const axis2_env_t *env);
 
-    axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
     axis2_phases_info_copy_flow(
         const axis2_env_t *env,
         const axis2_array_list_t *flow_to_copy);
