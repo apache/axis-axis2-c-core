@@ -204,7 +204,7 @@ openssl_x509_get_serial(const axis2_env_t *env,
     axis2_char_t *serial = NULL;
     int no = 0;
     /*WARN: Do not use the serial number without converting it to the integer.*/
-    serial = (axis2_char_t*)i2s_ASN1_INTEGER(NULL,X509_get_serialNumber(cert));
+    serial = (axis2_char_t*)i2s_ASN1_INTEGER(NULL, X509_get_serialNumber(cert));
     no = atoi(serial);
 
     return no;
@@ -248,7 +248,7 @@ openssl_x509_get_subject_key_identifier(const axis2_env_t *env,
                 "The extenension index of NID_subject_key_identifier is not valid");
        return NULL;
     }
-/*Get the extension*/
+    /*Get the extension*/
     ext = X509_get_ext(cert, index);
     if (ext == NULL) {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,

@@ -68,14 +68,12 @@ rampart_shb_build_message(const axis2_env_t *env,
         axiom_soap_header_block_t *sec_header_block = NULL;
         axiom_namespace_t *sec_ns_obj = NULL;
 
-/*>>*/
         /*We are checking for the soap header element*/
         soap_header  = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
         soap_header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
         soap_header_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                             soap_header_node, env);
 
-/*<<*/
         items = AXIS2_STRDUP(RAMPART_ACTIONS_GET_ITEMS(actions, env), env);
 
         if (!items)

@@ -140,7 +140,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
         {
             AXIS2_LOG_INFO(env->log, 
 			"[rampart][rampart_out_handler] No Outflow Security. So nothing to do");
-            /*return AXIS2_SUCCESS;*/
+            return AXIS2_SUCCESS;
         }else{
             
             /*Get actions*/
