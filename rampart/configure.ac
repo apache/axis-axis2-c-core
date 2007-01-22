@@ -77,6 +77,7 @@ AC_CONFIG_FILES([Makefile \
     src/omxmlsec/Makefile \
     src/omxmlsec/tokens/Makefile \
     src/omxmlsec/openssl/Makefile \
+    src/omxmlsec/c14n/Makefile \
     src/secpolicy/Makefile
     src/secpolicy/model/Makefile
     src/secpolicy/builder/Makefile
