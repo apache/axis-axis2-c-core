@@ -21,6 +21,181 @@
 #include <axis2_utils_defines.h>
 #include <stdarg.h> /* NULL */
 
+struct axis2_string
+{
+    axis2_char_t *buffer;
+    unsigned int length;
+    unsigned int ref_count;
+    axis2_bool_t owns_buffer;
+};
+
+AXIS2_EXTERN axis2_string_t * AXIS2_CALL
+axis2_string_create(const axis2_env_t *env,
+    const axis2_char_t *str)
+{
+    axis2_string_t *string = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+
+    /* str can't be null */
+    if (!str)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
+            AXIS2_FAILURE);
+        return NULL;
+    }
+
+    string = (axis2_string_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_string_t));
+    if (!string)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    /* set properties */
+    string->buffer = NULL;    
+    string->ref_count = 1;
+    string->owns_buffer = AXIS2_TRUE;
+    
+    string->length = axis2_strlen(str);
+    
+    if (string->length < 1)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
+            AXIS2_FAILURE);
+        axis2_string_free(string, env);
+        return NULL;
+    }
+    
+    string->buffer = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_char_t) * (string->length + 1));
+    if (!(string->buffer))
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        axis2_string_free(string, env);
+        return NULL;
+    }
+    memcpy(string->buffer, str, string->length + 1);
+
+    return string;
+}
+
+AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+axis2_string_create_const(const axis2_env_t *env,
+    const axis2_char_t *str)
+{
+    axis2_string_t *string = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+
+    /* str can't be null */
+    if (!str)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
+            AXIS2_FAILURE);
+        return NULL;
+    }
+
+    string = (axis2_string_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_string_t));
+    if (!string)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    /* set properties */
+    string->buffer = (axis2_char_t *)str;    
+    string->length = axis2_strlen(str);
+    string->ref_count = 1;
+    string->owns_buffer = AXIS2_FALSE;    
+    
+    if (string->length < 1)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
+            AXIS2_FAILURE);
+        axis2_string_free(string, env);
+        return NULL;
+    }
+    
+    return string;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_string_free(struct axis2_string *string,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    if (!string)
+        return AXIS2_FAILURE;
+    
+    string->ref_count--;
+
+    if (string->ref_count > 0)
+        return AXIS2_SUCCESS;
+    
+    if (string->owns_buffer && string->buffer)
+    {
+        AXIS2_FREE(env->allocator, string->buffer);
+        string->buffer = NULL;
+    }
+    
+    AXIS2_FREE(env->allocator, string);
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_string_equals(const struct axis2_string *string,
+    const axis2_env_t *env,
+    const struct axis2_string *string1)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    if (!string || !string1)
+        return AXIS2_FALSE;
+    
+    return (string->buffer == string1->buffer);
+}
+
+AXIS2_EXTERN struct axis2_string *AXIS2_CALL
+axis2_string_clone(struct axis2_string *string,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    if (!string)
+        return NULL;
+
+    string->ref_count++;
+    
+    return string;
+}
+
+AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
+axis2_string_get_buffer(const struct axis2_string *string,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    if (!string)
+        return NULL;
+
+    return string->buffer;
+}
+
+AXIS2_EXTERN unsigned int AXIS2_CALL
+axis2_string_get_length(const struct axis2_string *string,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    if (!string)
+        return -1;
+
+    return string->length;
+}
+
+/* END of string struct implementation */
+
+
 /** this is used to cache lengths in axis2_strcat */
 #define MAX_SAVED_LENGTHS  6
 
@@ -482,4 +657,3 @@ axis2_strcasestr(const axis2_char_t *heystack, const axis2_char_t *needle)
     }
     return (axis2_char_t *)heystack;
 }
-

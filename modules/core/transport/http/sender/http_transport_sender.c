@@ -161,6 +161,7 @@ axis2_http_transport_sender_invoke(
     axis2_msg_ctx_t *msg_ctx)
 {
     const axis2_char_t *char_set_enc = NULL;
+    axis2_string_t *char_set_enc_str = NULL;
     axis2_endpoint_ref_t *epr = NULL;
     axis2_char_t *transport_url = NULL;
     axiom_xml_writer_t *xml_writer = NULL;
@@ -176,14 +177,20 @@ axis2_http_transport_sender_invoke(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+    /*property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
             AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
     if (property)
     {
         char_set_enc = AXIS2_PROPERTY_GET_VALUE(property, env);
         property = NULL;
+    }*/
+    char_set_enc_str = axis2_msg_ctx_get_charset_encoding(msg_ctx, env);
+    if (char_set_enc_str)
+    {
+        char_set_enc = axis2_string_get_buffer(char_set_enc_str, env);
     }
-    if (NULL == char_set_enc)
+    
+    if (!char_set_enc)
     {
         axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
         if (op_ctx)

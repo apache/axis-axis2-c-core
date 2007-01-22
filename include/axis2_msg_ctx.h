@@ -960,7 +960,7 @@ extern "C"
      * @return AXIS2_TRUE if MTOM is enabled, else AXIS2_FALSE
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_msg_ctx_get_doing_mtom(const axis2_msg_ctx_t *msg_ctx,
+    axis2_msg_ctx_get_doing_mtom(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
 
     /**
@@ -1370,6 +1370,29 @@ extern "C"
     AXIS2_EXTERN int AXIS2_CALL
     axis2_msg_ctx_get_paused_phase_index(const axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
+
+    /**
+     * Gets character set encoding to be used.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    axis2_msg_ctx_get_charset_encoding(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
+    /**
+     * Sets character set encoding to be used.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param str pointer to string struct representing encoding
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_charset_encoding(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        axis2_string_t *str);
+
 
 /** Gets base context struct. */
 #define AXIS2_MSG_CTX_GET_BASE(msg_ctx, env) \

@@ -19,46 +19,13 @@
 #include <axis2_svc_name.h>
 #include <axis2_string.h>
 
-typedef struct axis2_svc_name_impl
+struct axis2_svc_name
 {
-    axis2_svc_name_t svc_name;
     /** service QName */
     axis2_qname_t *qname;
     /** service endpoint name */
     axis2_char_t *endpoint_name;
-}
-axis2_svc_name_impl_t;
-
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(svc_name) ((axis2_svc_name_impl_t *)svc_name)
-
-
-const axis2_qname_t *AXIS2_CALL
-axis2_svc_name_get_qname(
-    const axis2_svc_name_t *svc_name,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_svc_name_set_qname(
-    struct axis2_svc_name *svc_name,
-    const axis2_env_t *env,
-    const axis2_qname_t *qname);
-
-const axis2_char_t *AXIS2_CALL
-axis2_svc_name_get_endpoint_name(
-    const axis2_svc_name_t *svc_name,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_svc_name_set_endpoint_name(
-    struct axis2_svc_name *svc_name,
-    const axis2_env_t *env,
-    const axis2_char_t *endpoint_name);
-
-axis2_status_t AXIS2_CALL
-axis2_svc_name_free(
-    struct axis2_svc_name *svc_name,
-    const axis2_env_t *env);
+};
 
 axis2_svc_name_t *AXIS2_CALL
 axis2_svc_name_create(
@@ -66,61 +33,44 @@ axis2_svc_name_create(
     const axis2_qname_t *qname,
     const axis2_char_t *endpoint_name)
 {
-    axis2_svc_name_impl_t *svc_name_impl = NULL;
+    axis2_svc_name_t *svc_name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    svc_name_impl =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_name_impl_t));
-    if (!svc_name_impl)
+    svc_name =
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_name_t));
+    if (!svc_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    svc_name_impl->svc_name.ops = NULL;
-    svc_name_impl->qname = NULL;
-    svc_name_impl->endpoint_name = NULL;
+    svc_name->qname = NULL;
+    svc_name->endpoint_name = NULL;
 
     if (qname)
     {
-        svc_name_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
-        if (!(svc_name_impl->qname))
+        svc_name->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
+        if (!(svc_name->qname))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            axis2_svc_name_free(&(svc_name_impl->svc_name), env);
+            axis2_svc_name_free(svc_name, env);
             return NULL;
         }
     }
 
     if (endpoint_name)
     {
-        svc_name_impl->endpoint_name = AXIS2_STRDUP(endpoint_name, env);
-        if (!(svc_name_impl->endpoint_name))
+        svc_name->endpoint_name = AXIS2_STRDUP(endpoint_name, env);
+        if (!(svc_name->endpoint_name))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            axis2_svc_name_free(&(svc_name_impl->svc_name), env);
+            axis2_svc_name_free(svc_name, env);
             return NULL;
         }
     }
 
-    /* initialize ops */
-    svc_name_impl->svc_name.ops  =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_name_ops_t));
-    if (!svc_name_impl->svc_name.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_svc_name_free(&(svc_name_impl->svc_name), env);
-        return NULL;
-    }
-
-    svc_name_impl->svc_name.ops->get_qname = axis2_svc_name_get_qname;
-    svc_name_impl->svc_name.ops->set_qname = axis2_svc_name_set_qname;
-    svc_name_impl->svc_name.ops->get_endpoint_name = axis2_svc_name_get_endpoint_name;
-    svc_name_impl->svc_name.ops->set_endpoint_name = axis2_svc_name_set_endpoint_name;
-    svc_name_impl->svc_name.ops->free = axis2_svc_name_free;
-
-    return &(svc_name_impl->svc_name);
+    return svc_name;
 }
 
 const axis2_qname_t *AXIS2_CALL
@@ -129,7 +79,7 @@ axis2_svc_name_get_qname(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(svc_name)->qname;
+    return svc_name->qname;
 }
 
 axis2_status_t AXIS2_CALL
@@ -138,22 +88,18 @@ axis2_svc_name_set_qname(
     const axis2_env_t *env,
     const axis2_qname_t *qname)
 {
-    axis2_svc_name_impl_t *svc_name_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    svc_name_impl = AXIS2_INTF_TO_IMPL(svc_name);
-
-    if (svc_name_impl->qname)
+    if (svc_name->qname)
     {
-        AXIS2_QNAME_FREE(svc_name_impl->qname, env);
-        svc_name_impl->qname = NULL;
+        AXIS2_QNAME_FREE(svc_name->qname, env);
+        svc_name->qname = NULL;
     }
 
     if (qname)
     {
-        svc_name_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
-        if (!(svc_name_impl->qname))
+        svc_name->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
+        if (!(svc_name->qname))
             return AXIS2_FAILURE;
     }
 
@@ -166,7 +112,7 @@ axis2_svc_name_get_endpoint_name(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(svc_name)->endpoint_name;
+    return svc_name->endpoint_name;
 }
 
 axis2_status_t AXIS2_CALL
@@ -175,22 +121,18 @@ axis2_svc_name_set_endpoint_name(
     const axis2_env_t *env,
     const axis2_char_t *endpoint_name)
 {
-    axis2_svc_name_impl_t *svc_name_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    svc_name_impl = AXIS2_INTF_TO_IMPL(svc_name);
-
-    if (svc_name_impl->endpoint_name)
+    if (svc_name->endpoint_name)
     {
-        AXIS2_FREE(env->allocator, svc_name_impl->endpoint_name);
-        svc_name_impl->endpoint_name = NULL;
+        AXIS2_FREE(env->allocator, svc_name->endpoint_name);
+        svc_name->endpoint_name = NULL;
     }
 
     if (endpoint_name)
     {
-        svc_name_impl->endpoint_name = AXIS2_STRDUP(endpoint_name, env);
-        if (!(svc_name_impl->endpoint_name))
+        svc_name->endpoint_name = AXIS2_STRDUP(endpoint_name, env);
+        if (!(svc_name->endpoint_name))
             return AXIS2_FAILURE;
     }
 
@@ -202,32 +144,22 @@ axis2_svc_name_free(
     struct axis2_svc_name *svc_name,
     const axis2_env_t *env)
 {
-    axis2_svc_name_impl_t *svc_name_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    svc_name_impl = AXIS2_INTF_TO_IMPL(svc_name);
-
-    if (svc_name_impl->svc_name.ops)
+    if (svc_name->qname)
     {
-        AXIS2_FREE(env->allocator, svc_name_impl->svc_name.ops);
-        svc_name_impl->svc_name.ops = NULL;
+        AXIS2_QNAME_FREE(svc_name->qname, env);
+        svc_name->qname = NULL;
     }
 
-    if (svc_name_impl->qname)
+    if (svc_name->endpoint_name)
     {
-        AXIS2_QNAME_FREE(svc_name_impl->qname, env);
-        svc_name_impl->qname = NULL;
+        AXIS2_FREE(env->allocator, svc_name->endpoint_name);
+        svc_name->endpoint_name = NULL;
     }
 
-    if (svc_name_impl->endpoint_name)
-    {
-        AXIS2_FREE(env->allocator, svc_name_impl->endpoint_name);
-        svc_name_impl->endpoint_name = NULL;
-    }
-
-    AXIS2_FREE(env->allocator, svc_name_impl);
-    svc_name_impl = NULL;
+    AXIS2_FREE(env->allocator, svc_name);
+    svc_name = NULL;
 
     return AXIS2_SUCCESS;
 }

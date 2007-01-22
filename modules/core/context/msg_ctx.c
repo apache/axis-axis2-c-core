@@ -142,6 +142,7 @@ struct axis2_msg_ctx
                 const axis2_env_t *env,
                 struct axis2_svc *svc);
 
+    axis2_string_t *charset_encoding;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -204,6 +205,7 @@ axis2_msg_ctx_create(
     msg_ctx->paused_handler_index = -1;
     msg_ctx->current_phase_index = 0;
     msg_ctx->paused_phase_index = 0;
+    msg_ctx->charset_encoding = NULL;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
@@ -335,6 +337,12 @@ axis2_msg_ctx_free(
     {
         AXIOM_SOAP_ENVELOPE_FREE(msg_ctx->fault_soap_envelope, env);
         msg_ctx->fault_soap_envelope = NULL;
+    }
+
+    if (msg_ctx->charset_encoding)
+    {
+        axis2_string_free(msg_ctx->charset_encoding, env);
+        msg_ctx->charset_encoding = NULL;
     }
 
     AXIS2_FREE(env->allocator, msg_ctx);
@@ -1448,10 +1456,17 @@ axis2_msg_ctx_set_soap_action(
 
 axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_get_doing_mtom(
-    const axis2_msg_ctx_t *msg_ctx,
+    axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if (!(msg_ctx->doing_mtom) && msg_ctx->conf_ctx)
+    {
+        axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(msg_ctx->conf_ctx, env);
+        msg_ctx->doing_mtom  = axis2_conf_get_enable_mtom(conf, env);
+    }
+
     return msg_ctx->doing_mtom;
 }
 
@@ -1906,4 +1921,41 @@ axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
 {
     return msg_ctx->find_op(msg_ctx, env, svc);
 }
+
+
+AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+axis2_msg_ctx_get_charset_encoding(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{    
+    if (msg_ctx)
+        return msg_ctx->charset_encoding;
+    else
+        return NULL;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_charset_encoding(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_string_t *str)
+{    
+    if (msg_ctx)
+    {
+        if (msg_ctx->charset_encoding)
+        {
+            axis2_string_free(msg_ctx->charset_encoding, env);
+            msg_ctx->charset_encoding = NULL;
+        }
+        if (str)
+        {
+            msg_ctx->charset_encoding = axis2_string_clone(str, env);
+        }
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
 

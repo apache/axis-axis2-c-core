@@ -189,6 +189,9 @@ axis2_core_utils_create_out_msg_ctx(
     AXIS2_MSG_CTX_SET_KEEP_ALIVE(new_msg_ctx, env,
             AXIS2_MSG_CTX_IS_KEEP_ALIVE(in_msg_ctx, env));
 
+    axis2_msg_ctx_set_charset_encoding(new_msg_ctx, env, 
+        axis2_msg_ctx_get_charset_encoding(in_msg_ctx, env));
+
     return new_msg_ctx;
 }
 

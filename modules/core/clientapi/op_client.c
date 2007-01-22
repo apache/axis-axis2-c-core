@@ -544,7 +544,7 @@ axis2_op_client_execute(
             if(!to_epr)
                 to_epr = AXIS2_OPTIONS_GET_TO(op_client_impl->options, env);
             epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(to_epr, env);
-            property = axis2_property_create_with_args(env, 0, 0, 0, epr_address);
+            property = axis2_property_create_with_args(env, 0, 0, 0, (axis2_char_t *)epr_address);
             /*AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
                     AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);*/
             AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, op_client_impl->svc_ctx);

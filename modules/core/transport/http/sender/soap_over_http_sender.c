@@ -208,11 +208,11 @@ axis2_soap_over_http_sender_send(
     axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *buffer = NULL;
     const axis2_char_t *char_set_enc = NULL;
+    axis2_string_t *char_set_enc_str = NULL;
     int status_code = -1;
     axis2_http_header_t *http_header = NULL;
     axis2_http_simple_response_t *response = NULL;
     axis2_char_t *content_type = NULL;
-    axis2_property_t *property = NULL;
     axis2_byte_t *output_stream = NULL;
     int output_stream_size = 0;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
@@ -278,16 +278,22 @@ axis2_soap_over_http_sender_send(
     }
     xml_writer = AXIOM_OUTPUT_GET_XML_WRITER(sender_impl->om_output, env);
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+    /*property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
             AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
     if (property)
     {
         char_set_enc = AXIS2_PROPERTY_GET_VALUE(property, env);
         property = NULL;
-    }
-    if (NULL == char_set_enc)
+    }*/
+    
+    char_set_enc_str = axis2_msg_ctx_get_charset_encoding(msg_ctx, env);
+    if (!char_set_enc_str)
     {
         char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
+    }
+    else
+    {
+        char_set_enc = axis2_string_get_buffer(char_set_enc_str, env);
     }
 
     AXIOM_OUTPUT_SET_DO_OPTIMIZE(sender_impl->om_output, env,

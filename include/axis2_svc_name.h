@@ -45,92 +45,6 @@ extern "C"
 
     /** Type name for struct axis2_svc_name */
     typedef struct axis2_svc_name axis2_svc_name_t;
-    /** Type name for struct axis2_svc_name_ops */
-    typedef struct axis2_svc_name_ops axis2_svc_name_ops_t;
-
-
-    /**
-     * service name ops struct.
-     */
-    struct axis2_svc_name_ops
-    {
-        /**
-         * Gets QName. QName identifies the WSDL service element that contains 
-         * the definition of the endpoint being conveyed.
-         * @param svc_name pointer to service name struct
-         * @param env pointer to environment struct
-         * @return pointer to QName struct, returns a reference, not a cloned 
-         * copy
-         */
-        const axis2_qname_t *(AXIS2_CALL *
-                get_qname)(
-                    const axis2_svc_name_t *svc_name,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets QName. QName identifies the WSDL service element that contains 
-         * the definition of the endpoint being conveyed.
-         * @param svc_name pointer to service name struct
-         * @param env pointer to environment struct
-         * @param qname pointer to QName, service name creates a clone of QName
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_qname)(
-                    struct axis2_svc_name *svc_name,
-                    const axis2_env_t *env,
-                    const axis2_qname_t *qname);
-
-        /**
-         * Gets endpoint name. Endpoint name is a non-qualified name that 
-         * identifies the specific port in the service that corresponds to 
-         * the endpoint.
-         * @param svc_name pointer to service name struct
-         * @param env pointer to environment struct
-         * @return endpoint name string
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_endpoint_name)(
-                    const axis2_svc_name_t *svc_name,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets endpoint name. Endpoint name is a non-qualified name that 
-         * identifies the specific port in the service that corresponds to 
-         * the endpoint.
-         * @param svc_name pointer to service name struct
-         * @param env pointer to environment struct
-         * @param endpoint_name endpoint name string
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_endpoint_name)(
-                    struct axis2_svc_name *svc_name,
-                    const axis2_env_t *env,
-                    const axis2_char_t *endpoint_name);
-
-        /**
-         * Frees service name struct.
-         * @param svc_name pointer to service name struct
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    struct axis2_svc_name *svc_name,
-                    const axis2_env_t *env);
-
-    };
-
-    /**
-     * service name struct.
-     */
-    struct axis2_svc_name
-    {
-        /** service name related ops */
-        axis2_svc_name_ops_t *ops;
-    };
-
 
     /**
      * Creates a service name struct with given QName and endpoint name. 
@@ -145,30 +59,86 @@ extern "C"
         const axis2_qname_t *qname,
         const axis2_char_t *endpoint_name) ;
 
-/** Gets qualified name.
-    @sa axis2_svc_name_ops#get_qname */
+    /**
+     * Gets QName. QName identifies the WSDL service element that contains 
+     * the definition of the endpoint being conveyed.
+     * @param svc_name pointer to service name struct
+     * @param env pointer to environment struct
+     * @return pointer to QName struct, returns a reference, not a cloned 
+     * copy
+     */
+    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
+    axis2_svc_name_get_qname(const axis2_svc_name_t *svc_name,
+        const axis2_env_t *env);
+
+    /**
+     * Sets QName. QName identifies the WSDL service element that contains 
+     * the definition of the endpoint being conveyed.
+     * @param svc_name pointer to service name struct
+     * @param env pointer to environment struct
+     * @param qname pointer to QName, service name creates a clone of QName
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_name_set_qname(struct axis2_svc_name *svc_name,
+        const axis2_env_t *env,
+        const axis2_qname_t *qname);
+
+    /**
+     * Gets endpoint name. Endpoint name is a non-qualified name that 
+     * identifies the specific port in the service that corresponds to 
+     * the endpoint.
+     * @param svc_name pointer to service name struct
+     * @param env pointer to environment struct
+     * @return endpoint name string
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_svc_name_get_endpoint_name(const axis2_svc_name_t *svc_name,
+        const axis2_env_t *env);
+
+    /**
+     * Sets endpoint name. Endpoint name is a non-qualified name that 
+     * identifies the specific port in the service that corresponds to 
+     * the endpoint.
+     * @param svc_name pointer to service name struct
+     * @param env pointer to environment struct
+     * @param endpoint_name endpoint name string
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name,
+        const axis2_env_t *env,
+        const axis2_char_t *endpoint_name);
+
+    /**
+     * Frees service name struct.
+     * @param svc_name pointer to service name struct
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_name_free(struct axis2_svc_name *svc_name,
+        const axis2_env_t *env);
+
+/** Gets qualified name. */
 #define AXIS2_SVC_NAME_GET_QNAME(svc_name, env) \
-      ((svc_name)->ops->get_qname(svc_name, env))
+      axis2_svc_name_get_qname(svc_name, env)
 
-/** Sets Qname.
-    @sa axis2_svc_name_ops#set_qname */
+/** Sets Qname. */
 #define AXIS2_SVC_NAME_SET_QNAME(svc_name, env, qname) \
-      ((svc_name)->ops->set_qname(svc_name, env, qname))
+      axis2_svc_name_set_qname(svc_name, env, qname)
 
-/** Gets endpoint name.
-    @sa axis2_svc_name_ops#get_endpoint_name */
+/** Gets endpoint name. */
 #define AXIS2_SVC_NAME_GET_ENDPOINT_NAME(svc_name, env) \
-      ((svc_name)->ops->get_endpoint_name(svc_name, env))
+      axis2_svc_name_get_endpoint_name(svc_name, env)
 
-/** Sets endpoint name.
-    @sa axis2_svc_name_ops#set_endpoint_name */
+/** Sets endpoint name. */
 #define AXIS2_SVC_NAME_SET_ENDPOINT_NAME(svc_name, env, endpoint_name) \
-      ((svc_name)->ops->set_endpoint_name(svc_name, env, endpoint_name))
+      axis2_svc_name_set_endpoint_name(svc_name, env, endpoint_name)
 
-/** Frees service name.
-    @sa axis2_svc_name_ops#free */
+/** Frees service name. */
 #define AXIS2_SVC_NAME_FREE(svc_name, env) \
-      ((svc_name)->ops->free(svc_name, env))
+      axis2_svc_name_free(svc_name, env)
 
 /** @} */
 

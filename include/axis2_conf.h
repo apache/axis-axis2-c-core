@@ -714,6 +714,17 @@ extern "C"
     axis2_conf_create(
         const axis2_env_t *env);
 
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_conf_get_enable_mtom(
+        axis2_conf_t *conf,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_set_enable_mtom(
+        axis2_conf_t *conf,
+        const axis2_env_t *env,
+        axis2_bool_t enable_mtom);
+
 
 /** Frees the conf.
     @sa axis2_conf_ops#free */

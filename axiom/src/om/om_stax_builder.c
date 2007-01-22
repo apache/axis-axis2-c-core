@@ -409,8 +409,6 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
     }
     else if (AXIOM_NODE_IS_COMPLETE(om_builder->lastnode, env))
     {
-        axiom_element_t *om_ele = NULL;
-
         om_ele = axiom_element_create(env,
                 AXIOM_NODE_GET_PARENT(om_builder->lastnode, env),
                 temp_localname, NULL, &element_node);
@@ -427,7 +425,6 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
     }
     else
     {
-        axiom_element_t *om_ele = NULL;
         om_ele = axiom_element_create(env, om_builder->lastnode,
                 temp_localname, NULL, &element_node);
         if (element_node)

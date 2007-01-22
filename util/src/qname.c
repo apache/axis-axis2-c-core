@@ -78,16 +78,17 @@ axis2_qname_create(const axis2_env_t *env,
     }
     
     /** if prefix is null it is set to "" */
-    if (!prefix)
+    /*if (!prefix)
     {
         qname->prefix = (axis2_char_t*)AXIS2_STRDUP("", env);
     }
-    else
+    else*/
+    if (prefix)
     {
         qname->prefix = (axis2_char_t*)AXIS2_STRDUP(prefix, env);
     }
     
-    if (!(qname->prefix))
+    if (prefix && !(qname->prefix))
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
@@ -96,16 +97,17 @@ axis2_qname_create(const axis2_env_t *env,
     }
     
     /** if uri is null it is set to ""*/
-    if (!namespace_uri)
+    /*if (!namespace_uri)
     {
         qname->namespace_uri = (axis2_char_t*)AXIS2_STRDUP("", env);
     }
-    else
+    else*/
+    if (namespace_uri)
     {
         qname->namespace_uri = (axis2_char_t*)AXIS2_STRDUP(namespace_uri, env);
     }
 
-    if (!(qname->namespace_uri))
+    if (namespace_uri && !(qname->namespace_uri))
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);

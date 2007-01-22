@@ -112,7 +112,7 @@ axis2_http_transport_utils_get_services_html(
     const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_string_t *AXIS2_CALL
 axis2_http_transport_utils_get_charset_enc(
     const axis2_env_t *env,
     const axis2_char_t *content_type);
@@ -166,7 +166,7 @@ axis2_http_transport_utils_process_http_post_request(
     axiom_stax_builder_t *om_builder = NULL;
     axis2_bool_t is_soap11 = AXIS2_FALSE;
     axiom_xml_reader_t *xml_reader = NULL;
-    axis2_char_t *char_set = NULL;
+    axis2_string_t *char_set_str = NULL;
     /*axis2_char_t *xml_char_set = NULL;*/
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_callback_info_t *callback_ctx;
@@ -315,21 +315,17 @@ axis2_http_transport_utils_process_http_post_request(
 
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 
-    char_set = axis2_http_transport_utils_get_charset_enc(env, content_type);
+    char_set_str = axis2_http_transport_utils_get_charset_enc(env, content_type);
     xml_reader = axiom_xml_reader_create_for_io(env,
             axis2_http_transport_utils_on_data_request, NULL,
-            (void *) callback_ctx, char_set);
+            (void *) callback_ctx, axis2_string_get_buffer(char_set_str, env));
 
     if (NULL == xml_reader)
     {
         return AXIS2_FAILURE;
     }
 
-    property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-    AXIS2_PROPERTY_SET_VALUE(property, env, char_set);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
-            property, AXIS2_TRUE);
+    axis2_msg_ctx_set_charset_encoding(msg_ctx, env, char_set_str);
 
     om_builder = axiom_stax_builder_create(env, xml_reader);
     if (NULL == om_builder)
@@ -495,13 +491,16 @@ axis2_http_transport_utils_process_http_post_request(
     if (soap_body_str)
     {
         AXIS2_FREE(env->allocator, soap_body_str);
-        soap_body_str = NULL;
     }
 
     if (stream)
     {
         AXIS2_STREAM_FREE(stream, env);
-        stream = NULL;
+    }
+
+    if(char_set_str)
+    {
+        axis2_string_free(char_set_str, env);
     }
     
     return status;
@@ -605,13 +604,15 @@ axis2_http_transport_utils_do_write_mtom(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
-    axis2_property_t *property = NULL;
+    /*axis2_property_t *property = NULL;
     axis2_param_t *param = NULL;
-    axis2_char_t *value = NULL;
+    axis2_char_t *value = NULL;*/
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, AXIS2_ENABLE_MTOM);
+    return (axis2_msg_ctx_get_doing_mtom(msg_ctx, env));
+
+    /*param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, AXIS2_ENABLE_MTOM);
     if (param)
         value = AXIS2_PARAM_GET_VALUE(param, env);
 
@@ -624,7 +625,7 @@ axis2_http_transport_utils_do_write_mtom(
     {
         return (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0);
     }
-    return AXIS2_FALSE;
+    return AXIS2_FALSE;*/
 }
 
 
@@ -890,7 +891,7 @@ axis2_http_transport_utils_get_services_html(
     return ret;
 }
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_string_t *AXIS2_CALL
 axis2_http_transport_utils_get_charset_enc(
     const axis2_env_t *env,
     const axis2_char_t *content_type)
@@ -898,55 +899,63 @@ axis2_http_transport_utils_get_charset_enc(
     axis2_char_t *tmp = NULL;
     axis2_char_t *tmp_content_type = NULL;
     axis2_char_t *tmp2 = NULL;
+    axis2_string_t *str = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, content_type, NULL);
 
-    tmp_content_type = AXIS2_STRDUP(content_type, env);
-    if (NULL == tmp_content_type)
+    tmp_content_type = (axis2_char_t *)content_type;
+    if (!tmp_content_type)
     {
-        return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
+        return axis2_string_create_const(env, AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING);
     }
+
     tmp = strstr(tmp_content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
-    if (NULL == tmp)
+
+    if (tmp)
     {
-        AXIS2_FREE(env->allocator, tmp_content_type);
-        return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
-    }
-    tmp = strchr(tmp, '=');
-    tmp2 = strchr(tmp, ';');
-    if (tmp2)
-    {
-        if ('\'' == *(tmp2 - sizeof(axis2_char_t)) ||
-                '\"' == *(tmp2 - sizeof(axis2_char_t)))
+        tmp = strchr(tmp, '=');
+        tmp2 = strchr(tmp, ';');
+        if (tmp2)
         {
-            tmp2 -= sizeof(axis2_char_t);
+            if ('\'' == *(tmp2 - sizeof(axis2_char_t)) ||
+                    '\"' == *(tmp2 - sizeof(axis2_char_t)))
+            {
+                tmp2 -= sizeof(axis2_char_t);
+            }
+            *tmp2 = '\0';
         }
-        *tmp2 = '\0';
     }
-    if (NULL == tmp)
+    
+    if (tmp)
     {
-        AXIS2_FREE(env->allocator, tmp_content_type);
-        return AXIS2_STRDUP(AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING, env);
+        /* Following formats are acceptable
+         * charset="UTF-8"
+         * charser='UTF-8'
+         * charset=UTF-8
+         * But for our requirements charset we get should be UTF-8
+         */
+        if ('\'' == *(tmp + sizeof(axis2_char_t)) || '\"' == *(tmp +
+                sizeof(axis2_char_t)))
+        {
+            tmp += 2 * sizeof(axis2_char_t);
+        }
+        else
+        {
+            tmp += sizeof(axis2_char_t);
+        }
     }
-    /* Following formats are acceptable
-     * charset="UTF-8"
-     * charser='UTF-8'
-     * charset=UTF-8
-     * But for our requirements charset we get should be UTF-8
-     */
-    if ('\'' == *(tmp + sizeof(axis2_char_t)) || '\"' == *(tmp +
-            sizeof(axis2_char_t)))
+
+    
+    if (tmp)
     {
-        tmp += 2 * sizeof(axis2_char_t);
+        str = axis2_string_create(env, tmp);
     }
     else
     {
-        tmp += sizeof(axis2_char_t);
+        str = axis2_string_create_const(env, AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING);
     }
-    tmp2 =  AXIS2_STRDUP(tmp, env);
-    AXIS2_FREE(env->allocator, tmp_content_type);
-    return tmp2;
+    return str;
 }
 
 int AXIS2_CALL

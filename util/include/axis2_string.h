@@ -27,9 +27,96 @@
 extern "C"
 {
 #endif
-
+    
     /**
      * @defgroup axis2_string string
+     * @ingroup axis2_util
+     * @{
+     */
+
+    typedef struct axis2_string axis2_string_t;
+
+    /**
+     * Creates a string struct.
+     * @param str pointer to string. string struct would create a duplicate of 
+     * this    
+     * @param env pointer to environment struct
+     * @return a pointer to newly created string struct
+     */
+    AXIS2_EXTERN axis2_string_t * AXIS2_CALL
+    axis2_string_create(const axis2_env_t *env,
+        const axis2_char_t *str);
+
+    /**
+     * Creates a string struct.
+     * @param str pointer to string. string struct would not create a duplicate 
+     * of this and assumes the str would have longer life than that of itself
+     * @param env pointer to environment struct
+     * @return a pointer to newly created string struct     
+     */
+    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    axis2_string_create_const(const axis2_env_t *env,
+        const axis2_char_t *str);
+
+    /**
+     * Frees string struct.
+     * @param string pointer to string struct
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_string_free(struct axis2_string *string,
+        const axis2_env_t *env);
+
+    /**
+     * Compares two strings. Checks if the two strings point to the same buffer.
+     * Do not cmpare the buffer contents.
+     * @param string pointer to string struct
+     * @param env pointer to environment struct
+     * @param string1 pointer to string struct to be compared
+     * @return AXIS2_TRUE if string equals string1, AXIS2_FALSE otherwise 
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_string_equals(const struct axis2_string *string,
+        const axis2_env_t *env,
+        const struct axis2_string *string1);
+
+    /**
+     * Clones a given string. Does not duplicate the buffer, rather 
+     * increments the reference count. Each call to clone needs to have a 
+     * matching free, when the clone is done with. 
+     * @param string pointer to string struct
+     * @param env pointer to environment struct
+     * @returns pointer to cloned string struct instance
+     */
+    AXIS2_EXTERN struct axis2_string *AXIS2_CALL
+    axis2_string_clone(struct axis2_string *string,
+        const axis2_env_t *env);
+
+    /**
+     * Gets string buffer.
+     * @param string pointer to string struct
+     * @param env pointer to environment struct
+     * @returns pointer to string buffer
+     */
+    AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
+    axis2_string_get_buffer(const struct axis2_string *string,
+        const axis2_env_t *env);
+
+    /**
+     * Gets string length.
+     * @param string pointer to string struct
+     * @param env pointer to environment struct
+     * @returns buffer length
+     */
+    AXIS2_EXTERN unsigned int AXIS2_CALL
+    axis2_string_get_length(const struct axis2_string *string,
+        const axis2_env_t *env);
+    
+    /** @} */
+
+    /**
+     * @defgroup axis2_string_utils string_utils
      * @ingroup axis2_util
      * @{
      */

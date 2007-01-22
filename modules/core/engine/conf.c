@@ -61,6 +61,7 @@ struct axis2_conf_impl
     axis2_char_t *axis2_repo;
     axis2_dep_engine_t *dep_engine;
     axis2_array_list_t *handlers;
+    axis2_bool_t enable_mtom;
 };
 
 #define AXIS2_INTF_TO_IMPL(conf) ((axis2_conf_impl_t *)conf)
@@ -390,6 +391,7 @@ axis2_conf_create(
     config_impl->transports_out = NULL;
     config_impl->handlers = NULL;
     config_impl->conf.ops = NULL;
+    config_impl->enable_mtom = AXIS2_FALSE;
 
     config_impl->conf.param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
@@ -2167,3 +2169,28 @@ axis2_conf_engage_module_with_version(
     AXIS2_QNAME_FREE(module_qname, env);
     return status;
 }
+
+axis2_bool_t AXIS2_CALL
+axis2_conf_get_enable_mtom(
+    axis2_conf_t *conf,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+
+    return AXIS2_INTF_TO_IMPL(conf)->enable_mtom;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_enable_mtom(
+    axis2_conf_t *conf,
+    const axis2_env_t *env,
+    axis2_bool_t enable_mtom)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+
+    AXIS2_INTF_TO_IMPL(conf)->enable_mtom = enable_mtom;
+    return AXIS2_SUCCESS;
+}
+

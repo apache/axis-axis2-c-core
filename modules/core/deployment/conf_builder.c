@@ -215,6 +215,7 @@ axis2_conf_builder_populate_conf(
     axiom_element_t *disp_order_element = NULL;
     axiom_node_t *disp_order_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_param_t *param = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
@@ -333,6 +334,20 @@ axis2_conf_builder_populate_conf(
         }
     }
     /* TODO processing Axis Storages */
+
+    param = axis2_param_container_get_param(builder_impl->conf->param_container, 
+        env, AXIS2_ENABLE_MTOM);
+    if (param)
+    {
+        axis2_char_t *value = NULL;
+        value = AXIS2_PARAM_GET_VALUE(param, env);
+        if (value)
+        {
+            axis2_conf_set_enable_mtom(builder_impl->conf, env, 
+                (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0));
+        }
+    }
+    
     return AXIS2_SUCCESS;
 }
 
@@ -882,6 +897,7 @@ axis2_conf_builder_process_transport_senders(
             }
         }
     }
+    
     return AXIS2_SUCCESS;
 }
 
