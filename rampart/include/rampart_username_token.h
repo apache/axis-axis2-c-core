@@ -15,9 +15,13 @@
  * limitations under the License.
  */
 
-#ifndef USERNAME_TOKEN_H
-#define USERNAME_TOKEN_H
+#ifndef RAMPART_USERNAME_TOKEN_H
+#define RAMPART_USERNAME_TOKEN_H
 
+/**
+  * @file rampart_username_token.h
+  * @brief The Usernametoken
+  */
 
 #ifdef __cplusplus
 extern "C"
@@ -112,4 +116,4 @@ extern "C"
 #endif
 
 
-#endif /*USERNAME_TOKEN_H*/
+#endif /*RAMPART_USERNAME_TOKEN_H*/

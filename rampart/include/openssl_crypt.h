@@ -34,19 +34,25 @@ extern "C" {
  * @ingroup
  * @{
  */
-AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
+
+/**
+ * Encrypt or decrypts data in the @input_buf and place the result in the @output_buf.
+ * This function works for block ciphers AES-128, AES-192, AES-256 and 3-DES
+ * The key and the cipher name must be specified in the cipher context.
+ * @env pointer to environment struct
+ * @oc_ctx  openssl block cipher context
+ * @input_buf the input buffer to en/decrypt
+ * @output_buf the output buffer to place en/decrypted result
+ * @encrypt For encryption encrypt=OPENSSL_ENCRYPT and for decryption encrypt=OPENSSL_DECRYPT
+ * @return the length of the en/decrypted result OR -1 if failed
+ */
+
+AXIS2_EXTERN int AXIS2_CALL 
+openssl_bc_crypt(const axis2_env_t *env,
         openssl_cipher_ctx_t *oc_ctx,
         oxs_buffer_t *input_buf,
         oxs_buffer_t *output_buf,
         int encrypt);
-/**
-*   
-*@param bc_ctx block cipher context
-*@param in_buf buffer to en/decrypt
-*@param out_buf buffer to place the en/decrypted data
-*@param do_encrypt 1 to encrypt 0 to decrypt
-*@return -1 if failed
-*/
 
 
 

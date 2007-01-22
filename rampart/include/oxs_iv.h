@@ -21,7 +21,7 @@
 
 /**
   * @file oxs_key.h
-  * @brief 
+  * @brief Initial Vector related functionalities 
   */
 
 #include <axis2_defines.h>
@@ -37,7 +37,13 @@ extern "C"
 
 #define OXS_IV_DEFAULT    OPENSSL_DEFAULT_IV16
 
-
+/*TODO: Remove. No longer in use????*/
+/**
+ * Generates an Initial Vector(IV) for the given algorithm
+ * @param env pointer to environment struct
+ * @param key_algo the algorithm
+ * @return the generated IV 
+ */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_iv_generate_for_algo(const axis2_env_t *env, 
                             axis2_char_t *key_algo);

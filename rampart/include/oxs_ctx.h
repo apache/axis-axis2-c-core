@@ -21,7 +21,7 @@
 
 /**
   * @file oxs_ctx.h
-  * @brief 
+  * @brief Keeps configurations for the OMXMLSecurity 
   */
 
 #include <axis2_defines.h>
@@ -56,108 +56,211 @@ extern "C"
 
     /** Type name for struct oxs_ctx_ops */
     typedef struct oxs_ctx_ops oxs_ctx_ops_t;
+
     /** Type name for struct oxs_ctx */
     typedef struct oxs_ctx oxs_ctx_t;
 
 
     struct oxs_ctx_ops
     {
-
+        /**
+         * Free function of the context
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         free)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * Returns the mode of the context
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return mode of the context 
+         */
         oxs_ctx_mode_t (AXIS2_CALL *
         get_mode)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return operation of the context 
+         */
         oxs_ctx_operation_t (AXIS2_CALL *
         get_operation)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         oxs_key_t *(AXIS2_CALL *
         get_key)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axis2_char_t *(AXIS2_CALL *
         get_id)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axis2_char_t *(AXIS2_CALL *
         get_type)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axis2_char_t *(AXIS2_CALL *
         get_mime_type)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axis2_char_t *(AXIS2_CALL *
         get_encoding)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axis2_char_t *(AXIS2_CALL *
         get_recipient)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axis2_char_t *(AXIS2_CALL *
         get_carried_key_name)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axis2_char_t *(AXIS2_CALL *
         get_enc_mtd_algorithm)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axis2_char_t *(AXIS2_CALL *
         get_input_data)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axiom_node_t *(AXIS2_CALL *
         get_enc_data_node)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axiom_node_t *(AXIS2_CALL *
         get_enc_method_node)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axiom_node_t *(AXIS2_CALL *
         get_key_info_node)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @return of the context 
+         */
         axiom_node_t *(AXIS2_CALL *
         get_cipher_value_node)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param mode the mode of operation, EncryptedData/EncryptedKey
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_mode)(
                     oxs_ctx_t *ctx,
@@ -165,6 +268,13 @@ extern "C"
                     oxs_ctx_mode_t mode
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param operation the operation Encrypt/Decrypt/Sign/Verify
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_operation)(
                     oxs_ctx_t *ctx,
@@ -172,12 +282,26 @@ extern "C"
                     oxs_ctx_operation_t operation
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param key the key used
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_key)(
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env,
                     oxs_key_t *key
                     );
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param id the id of the context 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_id)(
                     oxs_ctx_t *ctx,
@@ -185,6 +309,13 @@ extern "C"
                     axis2_char_t *id
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param type ???Depricated?
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_type)(
                     oxs_ctx_t *ctx,
@@ -192,6 +323,13 @@ extern "C"
                     axis2_char_t *type
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param mime_type the mime type used
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_mime_type)(
                     oxs_ctx_t *ctx,
@@ -199,6 +337,13 @@ extern "C"
                     axis2_char_t *mime_type
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param encoding the encoding used
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_encoding)(
                     oxs_ctx_t *ctx,
@@ -206,6 +351,13 @@ extern "C"
                     axis2_char_t *encoding
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param recipient name of recipient
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_recipient)(
                     oxs_ctx_t *ctx,
@@ -213,6 +365,13 @@ extern "C"
                     axis2_char_t *recipient
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param carried_key_name the key name 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_carried_key_name)(
                     oxs_ctx_t *ctx,
@@ -220,6 +379,13 @@ extern "C"
                     axis2_char_t *carried_key_name
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param enc_mtd_algorithm the encryption method algorithm
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_enc_mtd_algorithm)(
                     oxs_ctx_t *ctx,
@@ -227,6 +393,13 @@ extern "C"
                     axis2_char_t *enc_mtd_algorithm
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param input_data the input data
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_input_data)(
                     oxs_ctx_t *ctx,
@@ -234,6 +407,13 @@ extern "C"
                     axis2_char_t *input_data
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param enc_data_node  reference to the EncryptionData node 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_enc_data_node)(
                     oxs_ctx_t *ctx,
@@ -241,6 +421,13 @@ extern "C"
                     axiom_node_t *enc_data_node
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param enc_method_node  reference to the EncryptionMethod node 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_enc_method_node)(
                     oxs_ctx_t *ctx,
@@ -248,6 +435,13 @@ extern "C"
                     axiom_node_t *enc_method_node
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param key_info_node  reference to the KeyInfo node  
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_key_info_node)(
                     oxs_ctx_t *ctx,
@@ -255,6 +449,13 @@ extern "C"
                     axiom_node_t *key_info_node
                     );
 
+        /**
+         * 
+         * @param ctx The OMXMLSecurity context 
+         * @param env pointer to environment struct
+         * @param cipher_value_node reference to the cipherValue node 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         set_cipher_value_node)(
                     oxs_ctx_t *ctx,
@@ -369,33 +570,6 @@ extern "C"
 #define OXS_CTX_SET_CIPHER_VALUE_NODE(ctx, env, cipher_value_node) \
         ((ctx)->ops->set_cipher_value_node(ctx, env, cipher_value_node) )
     
-
-/**
-  <complexType name='EncryptedType' abstract='true'>
-    <sequence>
-      <element name='EncryptionMethod' type='xenc:EncryptionMethodType' 
-               minOccurs='0'/>
-      <element ref='ds:KeyInfo' minOccurs='0'/>
-      <element ref='xenc:CipherData'/>
-      <element ref='xenc:EncryptionProperties' minOccurs='0'/>
-    </sequence>
-    <attribute name='Id' type='ID' use='optional'/>
-    <attribute name='Type' type='anyURI' use='optional'/>
-    <attribute name='MimeType' type='string' use='optional'/>
-    <attribute name='Encoding' type='anyURI' use='optional'/> 
-   </complexType>
-
-  <complexType name='EncryptionMethodType' mixed='true'>
-    <sequence>
-      <element name='KeySize' minOccurs='0' type='xenc:KeySizeType'/>
-      <element name='OAEPparams' minOccurs='0' type='base64Binary'/>
-      <any namespace='##other' minOccurs='0' maxOccurs='unbounded'/>
-    </sequence>
-    <attribute name='Algorithm' type='anyURI' use='required'/>
-  </complexType>
-
-
-*/
 
 
 

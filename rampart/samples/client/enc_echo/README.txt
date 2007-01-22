@@ -12,7 +12,7 @@ file.
 Start server in port 8080 
      ./axis2_http_server -p8080
 
-3. HOW TO CONFIGURE TCPMONITOR (To view messages)
+3. HOW TO CONFIGURE TCP MONITOR (To view messages)
 ------------------------------
     Listen port: 9090 [specified as in the client argument]
     Target port: 8080 [server port]
@@ -36,7 +36,7 @@ If everything is configured properly You should be able to see the security toke
     the SOAP message in the TCP Monitor.
 
 NOTE:
-You need to change the passwordCallbackClass and the en/decryptionPropFile
+You need to change the passwordCallbackClass/authnModule and the en/decryptionPropFile
 in rampart/samples/client/enc_echo/data/client.axis2.xml and
 rampart/samples/server/sec_echo/services.xml to suit your environment.
 

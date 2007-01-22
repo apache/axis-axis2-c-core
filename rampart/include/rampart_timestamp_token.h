@@ -15,10 +15,13 @@
  * limitations under the License.
  */
 
-#ifndef TIMESTAMP_TOKEN_H
-#define TIMESTAMP_TOKEN_H
+#ifndef RAMPART_TIMESTAMP_TOKEN_H
+#define RAMPART_TIMESTAMP_TOKEN_H
 
-
+/**
+  * @file rampart_timestamp.h
+  * @brief Timestamp token 
+  */
 #ifdef __cplusplus
 extern "C"
 {
@@ -108,4 +111,4 @@ extern "C"
 #endif
 
 
-#endif /*TIMESTAMP_TOKEN_H*/
+#endif /*RAMPART_TIMESTAMP_TOKEN_H*/

@@ -19,6 +19,11 @@
 #ifndef RAMPART_CONSTANTS_H
 #define RAMPART_CONSTANTS_H
 
+/**
+  * @file rampart_constants.h
+  * @brief Holds constants for rampart
+  */
+
 #ifdef __cplusplus
 extern "C"
 {

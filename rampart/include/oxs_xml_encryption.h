@@ -21,7 +21,7 @@
 
 /**
   * @file oxs_xml_enc.h
-  * @brief 
+  * @brief Does the XML encryption for OMXMLSecurity  
   */
 
 #include <axis2_defines.h>
@@ -36,30 +36,76 @@ extern "C"
 {
 #endif
 
+/**
+ * Encrypts a given node as specified in the @enc_ctx. 
+ * A reference is taken for the EncryptedData to place the encrypted data.
+ * @param env pointer to environment struct
+ * @param enc_ctx encryption context
+ * @param node the node tobe encrypted
+ * @param enc_type_node reference to the EncryptedData node
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_node(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *node,
                             axiom_node_t **enc_type_node);
 
+/**
+ * Decrypts a node as specified in the @enc_ctx.
+ * A reference is taken to assign the address of the decrypted node
+ * @param env pointer to environment struct
+ * @param enc_ctx encryption context
+ * @param enc_type_node the EncryptedData node which needs to be decrypted
+ * @param decrypted_node reference to the decrypted node
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_node(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *enc_type_node,
                             axiom_node_t **decrypted_node);
 
+/**
+ * Encrypts data or the content of the @content_buf as specified in the @enc_ctx.
+ * A reference is taken for the EncryptedData to place the encrypted data
+ * @param env pointer to environment struct
+ * @param enc_ctx encryption context
+ * @param content_buf the content to be encrypted. 
+ * @param enc_type_node reference to the EncryptedData node
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_data(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             oxs_buffer_t *content_buf,
                             axiom_node_t **enc_type_node);
 
+/**
+ * Decrypts @enc_type_node and places the data inside the @result_buf
+ * The name of the method is bit tricky as it doesn't exactly decrypts a data buffer.
+ * @param env pointer to environment struct
+ * @param enc_ctx encryption context
+ * @param enc_type_node the EncryptedData node which needs to be decrypted
+ * @param result_buf the buffer to keep the decrypted content
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_data(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *enc_type_node,
                             oxs_buffer_t *result_buf);
 
+/**
+ * Encrypts a key/data in asymmetric way as specified in @asym_ctx.
+ * This method is specifically written to support the key encryption in WS-Secruity
+ * @param env pointer to environment struct
+ * @param enc_ctx encryption context
+ * @param parent parent of the EncryptedKey node
+ * @param sym_key, the symmetric key that needs to be encrypted
+ * @param id_list the list of nodes that are encrypted by this particular key
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_key(const axis2_env_t *env,
                             oxs_asym_ctx_t * asym_ctx,
@@ -67,6 +113,16 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
                             oxs_key_t *sym_key,
                             axis2_array_list_t *id_list);
 
+/**
+ * Decrypts  a key/data in asymmetric way as specified in @asym_ctx.
+ * This method is specifically written to support the key decryption in WS-Secruity
+ * @param env pointer to environment struct
+ * @param enc_ctx encryption context
+ * @param parent parent of the EncryptedKey node
+ * @param encrypted_key_node the EncryptedKey node
+ * @param key, the key which holds the decrypted key data
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_key(const axis2_env_t *env,
                             oxs_asym_ctx_t * asym_ctx,

@@ -21,7 +21,7 @@
 
 /**
   * @file oxs_utilty.h
-  * @brief 
+  * @brief The utility module for OMXMLSecurity 
   */
 
 #include <axis2_defines.h>
@@ -32,15 +32,24 @@
 extern "C"
 {
 #endif
-/* Generates an id for an element.
+
+/**
+ * Generates an id for an element.
  * Specially used in xml encryption and signature references.
- * */
+ * @param env pointer to environment struct
+ * @param prefix the prefix of the id. For ex: EncDataID-1u343yrcarwqe
+ * @return the generated id
+ **/
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_util_generate_id(const axis2_env_t *env,
         axis2_char_t *prefix);
 
-/*Given the filename returns the format of the file.
-These formats are defined in asym_ctx.h*/
+/**
+ * Given the filename returns the format of the file.
+ * These formats are defined in asym_ctx.h
+ * @param env pointer to environment struct
+ * @param file_name the file name 
+ **/
 AXIS2_EXTERN oxs_asym_ctx_format_t AXIS2_CALL
 oxs_util_get_format_by_file_extension(const axis2_env_t *env,
         axis2_char_t *file_name);

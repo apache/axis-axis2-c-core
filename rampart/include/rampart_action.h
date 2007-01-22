@@ -20,8 +20,8 @@
 
 
 /**
-  * @file oxs_ctx.h
-  * @brief 
+  * @file rampart_action.h
+  * @brief Defines a single action of Rampart life cycle. Serves as the configuration module of the rampart.
   */
 
 #include <axis2_defines.h>

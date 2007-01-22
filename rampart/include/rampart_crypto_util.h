@@ -21,7 +21,7 @@
 
 /**
   * @file rampart_crypto_util.h
-  * @brief RAMPART-UTIL Crypto
+  * @brief Crypto related utility module
   */
 #ifndef RAMPART_CRYPTO_UTIL
 #define RAMPART_CRYPTO_UTIL

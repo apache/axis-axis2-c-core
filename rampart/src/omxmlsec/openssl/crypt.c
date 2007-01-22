@@ -26,7 +26,8 @@
 
 #define BUFSIZE 64
 
-AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
+AXIS2_EXTERN int AXIS2_CALL
+openssl_bc_crypt(const axis2_env_t *env,
         openssl_cipher_ctx_t *oc_ctx,
         oxs_buffer_t *input_buf,
         oxs_buffer_t *output_buf,
@@ -41,9 +42,13 @@ AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
     int last = 0;
     axis2_status_t status = AXIS2_FAILURE;
 
-    /**Init******************************************************************************/
+    /********************************Initialize*****************************************************/
+
     iv_length = EVP_CIPHER_iv_length(OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env));
+
+    /*Get the IV. If encrypt, we need to generate the IV else we need to get it from the input buffer*/
     if(encrypt){
+        /*Generate IV*/
         ret = RAND_bytes(iv, iv_length);
         /*IV to the output*/
         status = OXS_BUFFER_APPEND(output_buf, env, iv, iv_length);
@@ -61,19 +66,19 @@ AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
     okey = OPENSSL_CIPHER_CTX_GET_KEY(oc_ctx, env);
     memcpy(key,  OXS_KEY_GET_DATA(okey, env), OXS_KEY_GET_SIZE(okey, env));
 
-    /*Set iv */
+    /*Set the IV */
     ret = EVP_CipherInit(&ctx, (EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env), key, iv, encrypt);
 #ifndef OXS_OPENSSL_096
     EVP_CIPHER_CTX_set_padding(&ctx, 0);
 #endif
 
+    /*Get the block length of the cipher*/
     block_length = EVP_CIPHER_block_size((EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env));
 
-    /**Update****************************************************************************/
+    /*********************************Update***********************************************************/
     for(;;){/*Loop untill all the data are encrypted*/
         unsigned char *out_buf = NULL;
         int  in_size =0, out_size =0, fixed=0, out_length = 0;
-        oxs_buffer_t *temp_in = NULL;
 
         if (0 == OXS_BUFFER_GET_SIZE(input_buf, env)) {
             last = 1;            
@@ -86,9 +91,6 @@ AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
         }else{
             in_size = OXS_BUFFER_GET_SIZE(input_buf, env);
         }
-        /*Create a temp buffer and populate only data size of BUFSIZE*/
-        temp_in = oxs_buffer_create(env);
-        status = OXS_BUFFER_POPULATE(temp_in, env, OXS_BUFFER_GET_DATA(input_buf, env), in_size);        
 
         out_size = OXS_BUFFER_GET_SIZE(output_buf, env);
         
@@ -110,9 +112,10 @@ AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
         }
 #endif
         /* encrypt or decrypt */
-        ret = EVP_CipherUpdate(&ctx, out_buf, &out_length, OXS_BUFFER_GET_DATA(temp_in, env), in_size);
+        ret = EVP_CipherUpdate(&ctx, out_buf, &out_length, OXS_BUFFER_GET_DATA(input_buf, env), in_size);
 
-#ifndef OXS_OPENSSL_096    
+#ifndef OXS_OPENSSL_096   
+        /*If decrypt, we copy data from the out_buf to the ctx.final*/
         if(!ctx.encrypt) {
             if (block_length > 1 && !ctx.buf_len) {
                 out_length -= block_length;
@@ -136,14 +139,11 @@ AXIS2_EXTERN int AXIS2_CALL openssl_bc_crypt(const axis2_env_t *env,
         if(AXIS2_FAILURE == status){
             return -1;
         }
-        
-        /*Free temp buf*/
-        OXS_BUFFER_FREE(temp_in, env);
-        temp_in = NULL;
- 
+         
     }/*End of for loop*/
 
-    /**Final****************************************************************************/
+    /********************************Finalize*****************************************************/
+
     /* by now there should be no input */
     if(last == 1){
         unsigned char pad[EVP_MAX_BLOCK_LENGTH];

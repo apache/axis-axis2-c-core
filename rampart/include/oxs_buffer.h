@@ -21,7 +21,7 @@
 
 /**
   * @file oxs_buffer.h
-  * @brief 
+  * @brief The buffer representation in OMXMLSecurity. 
   */
 
 #include <axis2_defines.h>

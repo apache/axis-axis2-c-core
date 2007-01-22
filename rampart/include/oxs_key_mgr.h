@@ -20,8 +20,8 @@
 
 
 /**
-  * @file oxs_encryption.h
-  * @brief 
+  * @file oxs_key_mgr.h
+  * @brief the Key Manager responsible for loading keys for OMXMLSecurity
   */
 
 #include <axis2_defines.h>
@@ -40,12 +40,12 @@ extern "C"
 #endif
 	
 /**
-*Loads keys/certificates from a keystore or a PEm file depending on information available in the @ctx
-*@ctx pointer to the OMXMLSec asymmetric encryption context struct
-*@env pointer to environment struct
-*@password the password for the key store
-*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE	
-*/	
+ * Loads keys/certificates from a keystore or a PEm file depending on information available in the @ctx
+ * @ctx pointer to the OMXMLSec asymmetric encryption context struct
+ * @env pointer to environment struct
+ * @password the password for the key store
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE	
+ */	
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_key_mgr_load_key(const axis2_env_t *env,
     oxs_asym_ctx_t *ctx,

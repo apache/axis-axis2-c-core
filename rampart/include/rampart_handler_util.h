@@ -35,6 +35,10 @@
 #ifndef RAMPART_HANDLER_UTIL_H
 #define RAMPART_HANDLER_UTIL_H
 
+/**
+  * @file rampart_handler_util.h
+  * @brief Utilities related to handlers 
+  */
 
 #ifdef __cplusplus
 extern "C"

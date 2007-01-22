@@ -22,7 +22,7 @@
 
 /**
   * @file rampart_sec_processed_result.h
-  * @brief RAMPART-UTIL 
+  * @brief The module to keep  the results after processing the message 
   */
 #ifndef RAMPART_SEC_PROCESSED_RESULT
 #define RAMPART_SEC_PROCESSED_RESULT

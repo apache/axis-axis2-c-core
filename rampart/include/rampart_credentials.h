@@ -24,6 +24,11 @@
 #include <axis2_utils.h>
 #include <axis2_msg_ctx.h>
 
+/**
+  * @file rampart_credentials.h
+  * @brief The credentials interface for rampart. To retrieve a username and password pair.
+  */
+
 #ifdef __cplusplus
 extern "C"
 {

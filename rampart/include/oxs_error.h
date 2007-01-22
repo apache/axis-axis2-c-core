@@ -21,7 +21,7 @@
 
 /**
   * @file oxs_error.h
-  * @brief 
+  * @brief Represents an Error occured during the OMXMLSecurity execution 
   */
 
 #include <axis2_defines.h>
@@ -92,7 +92,7 @@ AXIS2_EXTERN int AXIS2_CALL
 oxs_errors_get_code(unsigned int pos);
 
 /**
- * Prints the error message
+ * Print/log the error message
  * @file:      file name
  * @line:      line number 
  * @func:      function 

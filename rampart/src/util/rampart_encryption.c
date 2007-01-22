@@ -87,6 +87,7 @@ rampart_enc_get_nodes_to_encrypt(const axis2_env_t *env,
         size = AXIS2_ARRAY_LIST_SIZE(str_list, env);
         for(i=0 ; i < size ; i++ ){
             local_name = AXIS2_ARRAY_LIST_GET(str_list, env, i);
+            /*We do not encrypt the security header*/
             if(0 == AXIS2_STRCMP(local_name, "Security")){
                 AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] We do not encrypt %s", local_name);
                 continue;

@@ -24,7 +24,7 @@
 #include <rampart_authn_provider.h>
 /**
   * @file rampart_util.h
-  * @brief RAMPART-UTIL 
+  * @brief Utilities of rampart 
   */
 #ifndef RAMPART_UTIL_H
 #define RAMPART_UTIL_H

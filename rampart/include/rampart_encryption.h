@@ -24,7 +24,7 @@
 #include <oxs_xml_encryption.h>
 /**
   * @file rampart_encryption.h
-  * @brief 
+  * @brief encrypts a SOAP message 
   */
 #ifndef RAMPART_ENCRYPTION_H
 #define RAMPART_ENCRYPTION_H

@@ -18,6 +18,11 @@
 #ifndef RAMPART_AUTHN_PROVIDER_H
 #define RAMPART_AUTHN_PROVIDER_H
 
+/**
+  * @file rampart_authn_provider.h
+  * @brief The authentication interface of rampart. Validates a username and password pair.
+  */
+
 #include <axis2_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
