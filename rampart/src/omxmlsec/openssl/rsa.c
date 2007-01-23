@@ -64,7 +64,25 @@ openssl_rsa_prv_decrypt(
     oxs_buffer_t *out);
 
 int AXIS2_CALL
+openssl_rsa_prv_encrypt(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env,
+    const openssl_pkey_t *pkey,
+    const axis2_char_t *padding,
+    oxs_buffer_t *in,
+    oxs_buffer_t *out);
+
+int AXIS2_CALL
 openssl_rsa_pub_encrypt(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env,
+    const openssl_pkey_t *pkey,
+    const axis2_char_t *padding,
+    oxs_buffer_t *in,
+    oxs_buffer_t *out);
+
+int AXIS2_CALL
+openssl_rsa_pub_decrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
@@ -80,6 +98,8 @@ openssl_rsa_init_ops(
     rsa->ops->free = openssl_rsa_free;
     rsa->ops->prv_decrypt = openssl_rsa_prv_decrypt;
     rsa->ops->pub_encrypt = openssl_rsa_pub_encrypt;
+    rsa->ops->prv_encrypt = openssl_rsa_prv_encrypt;
+    rsa->ops->pub_decrypt = openssl_rsa_pub_decrypt;
 }
 
 openssl_rsa_t *AXIS2_CALL
@@ -175,6 +195,49 @@ openssl_rsa_pub_encrypt(
 }
 
 int AXIS2_CALL
+openssl_rsa_pub_decrypt(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env,
+    const openssl_pkey_t *pkey,
+    const axis2_char_t *padding,
+    oxs_buffer_t *in,
+    oxs_buffer_t *out)
+{
+    unsigned char *decrypted = NULL;
+    openssl_rsa_impl_t *rsa_impl = NULL;
+    int ret;
+    EVP_PKEY *key = NULL;
+    int pad = RSA_PKCS1_PADDING;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
+
+    key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
+    if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
+        pad = RSA_PKCS1_OAEP_PADDING;
+    }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
+        pad = RSA_PKCS1_PADDING;
+    }
+
+    decrypted = AXIS2_MALLOC(env->allocator, RSA_size(key->pkey.rsa));
+    ret = RSA_public_decrypt(OXS_BUFFER_GET_SIZE(in, env),
+            OXS_BUFFER_GET_DATA(in, env),
+            decrypted,
+            key->pkey.rsa ,
+            pad);
+    
+    if (ret < 0)
+    {
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
+                            "PUBKEY decrypt (signature verification) failed");
+        return (-1);
+    }
+    OXS_BUFFER_POPULATE(out, env, decrypted, ret);
+    return ret;
+ }
+
+
+int AXIS2_CALL
 openssl_rsa_prv_decrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
@@ -218,5 +281,48 @@ openssl_rsa_prv_decrypt(
     return ret;
 }
 
+int AXIS2_CALL
+openssl_rsa_prv_encrypt(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env,
+    const openssl_pkey_t *pkey,
+    const axis2_char_t *padding,
+    oxs_buffer_t *in,
+    oxs_buffer_t *out)
+{
+    unsigned char *encrypted = NULL;
+    openssl_rsa_impl_t *rsa_impl = NULL;
+    int ret;
+    EVP_PKEY *key = NULL;
+    int pad = RSA_PKCS1_PADDING;
 
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
+
+    /*Get the private key*/
+    key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
+
+    /*Set padding. This is the only diff btwn RSA-v1.5 and RSA-OAEP*/
+    if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
+        pad = RSA_PKCS1_OAEP_PADDING;
+    }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
+        pad = RSA_PKCS1_PADDING;
+    }
+
+    encrypted =  AXIS2_MALLOC(env->allocator, RSA_size(key->pkey.rsa));
+    ret = RSA_private_encrypt(RSA_size(key->pkey.rsa),
+            OXS_BUFFER_GET_DATA(in, env),
+            encrypted,
+            key->pkey.rsa,
+            pad);
+
+    if (ret < 0)
+    {
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
+                            "RSA private encryption(Signing) failed");
+        return (-1);
+    }
+    OXS_BUFFER_POPULATE(out, env, encrypted, ret);
+    return ret;
+}
 
