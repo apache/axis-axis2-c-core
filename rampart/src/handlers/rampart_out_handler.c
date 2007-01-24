@@ -43,34 +43,11 @@ rampart_out_handler_invoke(struct axis2_handler *handler,
 /**********************end of header functions ****************************/
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-rampart_out_handler_create(const axis2_env_t *env, axis2_qname_t *qname)
+rampart_out_handler_create(const axis2_env_t *env,  axis2_string_t *name)
 {
     axis2_handler_t *handler = NULL;
-    axis2_qname_t *handler_qname = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-
-    if (qname)
-    {
-        handler_qname = AXIS2_QNAME_CLONE(qname, env);
-        if (!(handler_qname))
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
-                    AXIS2_FAILURE);
-            return NULL;
-        }
-    }
-    else
-    {
-        /* create default qname */
-        handler_qname = axis2_qname_create(env, "rampart_out_handler",
-                "http://axis.ws.apache.org",
-                NULL);
-        if (!handler_qname)
-        {
-            return NULL;
-        }
-    }
 
     handler = axis2_handler_create(env);
     if (!handler)
@@ -81,8 +58,6 @@ rampart_out_handler_create(const axis2_env_t *env, axis2_qname_t *qname)
     /* set the base struct's invoke op */
     if (handler->ops)
         handler->ops->invoke = rampart_out_handler_invoke;
-
-    AXIS2_QNAME_FREE(handler_qname, env);
 
     return handler;
 }
