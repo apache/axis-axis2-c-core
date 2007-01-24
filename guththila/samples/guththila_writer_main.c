@@ -20,6 +20,7 @@
 #include <guththila_reader.h>
 #include <guththila_writer.h>
 #include <guththila.h>
+#include <axis2_util.h>
 int main()
 {
     char *t;
@@ -31,18 +32,20 @@ int main()
     env = axis2_env_create(allocator);
     /*writer = guththila_writer_create_for_memory (env);*/
     parser = guththila_create(env, NULL);
-    guththila_create_xml_stream_writer_for_memory(env, parser);
+	guththila_create_xml_stream_writer_for_memory(env, parser);
 // guththila_write_start_element_with_prefix (env, parser, "my", "one");
-    guththila_write_start_element(env, parser, "two");
+	 guththila_write_start_element(env, parser, "two");
     guththila_write_default_namespace(env, parser, "http://another.host.com");
     guththila_write_start_element(env, parser, "two.one");
     guththila_write_end_element(env, parser);
     guththila_write_end_document(env, parser);
+	/*guththila_write_to_buffer (env, parser, xml);
+	  guththila_flush (env, parser);*/
     t = guththila_writer_get_buffer(env, parser->xsw->writer);
     printf("%s \n", t);
+	AXIS2_FREE (env->allocator, t);
     guththila_xml_writer_free(env, parser);
     guththila_free(env, parser);
-    axis2_allocator_free(allocator);
     axis2_env_free(env);
     return 0;
 }

@@ -28,7 +28,7 @@ main(int argc, char *argv[])
     guththila_t *parser;
     char *xml_buffer;
     allocator = axis2_allocator_init(NULL);
-    xml_buffer = "<?xml version = \"1.0\"?><test></test>";
+    xml_buffer = "<?xml version = \"1.0\"?><test a=\"din\">123</test>";
     environment =
         axis2_env_create(allocator);
 
@@ -67,11 +67,12 @@ main(int argc, char *argv[])
                     p = guththila_get_attribute_name
                             (environment, parser, a);
                     printf("%s=\"", p);
-                    AXIS2_FREE(allocator, p);
+                    AXIS2_FREE (allocator, p);
                     p = guththila_get_attribute_value
                             (environment, parser, a);
                     printf("%s\" ", p);
-                    AXIS2_FREE(allocator, p);
+                     AXIS2_FREE (allocator, p);
+					guththila_attribute_free (environment, a);
                 }
                 printf("?>\n");
             }
@@ -165,10 +166,11 @@ main(int argc, char *argv[])
             {
                 char *p;
                 p = guththila_get_value(environment, parser);
-                if (!parser->is_whitespace)
-                {
-                    printf(p);
-                }
+             /*    if (!parser->is_whitespace) */
+/*                 { */
+/*                     printf(p); */
+/*                 } */
+				printf (p);
                 AXIS2_FREE(allocator, p);
             }
             break;
@@ -178,7 +180,6 @@ main(int argc, char *argv[])
     }
     guththila_reader_free(environment, red);
     guththila_free(environment, parser);
-    axis2_allocator_free(allocator);
     axis2_env_free(environment);
     return 0;
 }

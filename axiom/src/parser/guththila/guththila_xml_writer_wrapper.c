@@ -974,6 +974,7 @@ guththila_xml_writer_wrapper_write_raw (axiom_xml_writer_t *writer,
 		guththila_write_to_buffer ((axis2_env_t *)env, 
 								   AXIS2_INTF_TO_IMPL (writer)->parser, 
 								   (const axis2_char_t *) content);
+		guththila_flush ((axis2_env_t *)env, AXIS2_INTF_TO_IMPL (writer)->parser);
 		return  AXIS2_SUCCESS;
 	}
 }

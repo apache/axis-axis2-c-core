@@ -25,7 +25,7 @@ guththila_create_xml_stream_writer(axis2_env_t *env, guththila_t *p, char *file)
     {
         p->xsw = (guththila_xml_writer_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_xml_writer_t));
         p->xsw->writer = guththila_writer_create_for_file(env, file);
-        p->xsw->writer_buffer = guththila_buffer_create(env, 1024);
+        p->xsw->writer_buffer = guththila_buffer_create(env, GUTHTHILA_BUFFER_SIZE);
         p->xsw->writer_buffer->buff[0] = 0;
         p->xsw->element = axis2_stack_create(env);
         p->xsw->attribute = axis2_stack_create(env);
@@ -33,7 +33,7 @@ guththila_create_xml_stream_writer(axis2_env_t *env, guththila_t *p, char *file)
         p->xsw->depth = axis2_stack_create(env);
         p->xsw->next = 0;
         p->xsw->offset = 0;
-        p->xsw->last = 1024;	/* size of the buffer */
+        p->xsw->last = GUTHTHILA_BUFFER_SIZE;	/* size of the buffer */
         p->xsw->start_element_open = -1;
         p->xsw->empty_element_open = -1;
     }
@@ -49,7 +49,7 @@ guththila_create_xml_stream_writer_for_memory(axis2_env_t *env, guththila_t *p)
     {
         p->xsw = (guththila_xml_writer_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_xml_writer_t));
         p->xsw->writer = guththila_writer_create_for_memory(env);
-        p->xsw->writer_buffer = guththila_buffer_create(env, 1024);
+        p->xsw->writer_buffer = guththila_buffer_create(env, GUTHTHILA_BUFFER_SIZE);
         p->xsw->writer_buffer->buff[0] = 0;
         p->xsw->element = axis2_stack_create(env);
         p->xsw->attribute = axis2_stack_create(env);
@@ -57,7 +57,7 @@ guththila_create_xml_stream_writer_for_memory(axis2_env_t *env, guththila_t *p)
         p->xsw->depth = axis2_stack_create(env);
         p->xsw->next = 0;
         p->xsw->offset = 0;
-        p->xsw->last = 1024;	/* size of the buffer */
+        p->xsw->last = GUTHTHILA_BUFFER_SIZE;	/* size of the buffer */
         p->xsw->start_element_open = -1;
         p->xsw->empty_element_open = -1;
     }
@@ -72,7 +72,7 @@ guththila_xml_writer_free(axis2_env_t *env, guththila_t *p)
     int size;
     size = 0;
 
-    guththila_check_xml_stream_writer(env, p);
+    
     /*   guththila_flush (env, p); */
     guththila_write_end_document(env, p);
     if (p->xsw->writer_buffer)
@@ -188,7 +188,7 @@ guththila_write_start_document(axis2_env_t *env,
         guththila_t *p)
 {
     char *sd =  NULL;
-    guththila_check_xml_stream_writer(env, p);
+    
     sd  = "<?xml version = \"1.0\" encoding = \"utf-8\" ?>";
     guththila_write_to_buffer(env, p, sd);
 }
@@ -198,7 +198,7 @@ AXIS2_EXTERN void AXIS2_CALL
 guththila_write_end_element(axis2_env_t *env, guththila_t *p)
 {
     void *element = NULL;
-    guththila_check_xml_stream_writer(env, p);
+    
     element = AXIS2_STACK_POP(p->xsw->element, env);
     if (p->xsw->empty_element_open)
     {
@@ -225,7 +225,7 @@ guththila_flush(axis2_env_t *env, guththila_t *p)
 {
     int c;
     int ii = 0;
-    guththila_check_xml_stream_writer(env, p);
+    
     if (p->xsw->writer_buffer->buff)
     {
         ii = strlen(p->xsw->writer_buffer->buff);
@@ -288,7 +288,7 @@ guththila_write_to_buffer(axis2_env_t *env, guththila_t *p, const char *buff)
 
         if (p->xsw->writer_buffer->buff && p->xsw->next > -1)
         {
-            strcat((p->xsw->writer_buffer->buff) + (p->xsw->next), buff);
+            memcpy ((p->xsw->writer_buffer->buff) + (p->xsw->next), buff, length);
             p->xsw->offset = p->xsw->next;
             p->xsw->next += length;
         }

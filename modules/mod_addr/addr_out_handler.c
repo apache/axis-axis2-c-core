@@ -329,10 +329,6 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         /* add the service group id as a reference parameter */
         svc_group_context_id = AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env);
 
-        if (svc_group_context_id
-                && AXIS2_STRCMP(svc_group_context_id, "") != 0)
-        {}
-
         axis2_addr_out_handler_add_to_soap_header(env, epr,
                 AXIS2_WSA_REPLY_TO,
                 soap_header, addr_ns);
@@ -691,36 +687,6 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
         }
     }
 
-    if (AXIS2_STRCMP(AXIS2_WSA_NAMESPACE_SUBMISSION, addr_ns) == 0)
-    {
-        /* axis2_any_content_type_t *referece_properties = NULL;
-         axiom_element_t *reference_ele = NULL;
-         axiom_node_t *reference_node = NULL;
-         referece_properties =
-             AXIS2_ENDPOINT_REF_GET_REF_PROPERTIES (endpoint_ref, env);
-         addr_ns_obj = axiom_namespace_create (env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-         reference_ele =
-             axiom_element_create (env, header_node,
-                                      EPR_REFERENCE_PROPERTIES, addr_ns_obj,
-                                      &reference_node);
-         axis2_addr_out_handler_process_any_content_type (env,
-                                                          referece_properties,
-                                                          reference_node,
-                                                          addr_ns);
-          if( reference_ele)
-         {
-             axiom_namespace_t *dec_ns = NULL;
-             dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE( reference_ele , env,
-                                                  addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-             if(! dec_ns)
-             {
-                  AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
-                  addr_ns_obj = NULL;
-             }
-         }
-         */
-
-    }
     return AXIS2_SUCCESS;
 }
 

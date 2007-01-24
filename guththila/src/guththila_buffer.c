@@ -20,6 +20,7 @@
 #include <string.h>
 #include "guththila_buffer.h"
 #include <axis2_env.h>
+#include <stdio.h>
 
 AXIS2_EXTERN guththila_buffer_t * AXIS2_CALL
 guththila_buffer_create(axis2_env_t * environment, int size)
@@ -36,9 +37,12 @@ guththila_buffer_create(axis2_env_t * environment, int size)
         name->next = 0;
         name->is_memory = 0;
         name->buff = NULL;
-        if (size != 0)
+        if (size)
+		{
             name->buff = (guththila_char_t *) AXIS2_MALLOC(
-                        environment->allocator, size);
+				environment->allocator, size * sizeof (guththila_char_t));
+			memset (name->buff, 0, size);
+		}
     }
     return name;
 }
@@ -88,7 +92,8 @@ guththila_buffer_grow(axis2_env_t * environment,
 
     guththila_char_t *x = NULL;
     name->size <<= 1;
-    x = (guththila_char_t *) AXIS2_MALLOC(environment->allocator, name->size);
+    x = (guththila_char_t *) AXIS2_MALLOC(environment->allocator, name->size + 1);
+	memset (x, 0, name->size);
     if (x)
 	{
 		memcpy (x, name->buff, strlen (name->buff));

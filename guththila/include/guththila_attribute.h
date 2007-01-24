@@ -26,7 +26,22 @@ typedef struct guththila_attribute_s
     guththila_token_t *prefix;
     guththila_token_t *name;
     guththila_token_t *value;
-  guththila_token_t *namespace_uri;
+	guththila_token_t *namespace_uri;
 } guththila_attribute_t;
+
+AXIS2_EXTERN guththila_attribute_t * AXIS2_CALL
+guththila_attribute_create (
+	axis2_env_t *env, 
+	guththila_token_t *prefix, 
+	guththila_token_t *name, 
+	guththila_token_t *value,
+	guththila_token_t *ns);
+
+
+AXIS2_EXTERN void AXIS2_CALL
+guththila_attribute_free (
+	axis2_env_t *env,
+	guththila_attribute_t *attribute);
+
 
 #endif /* GUTHTHILA_ATTRIBUTE_H */

@@ -36,11 +36,17 @@ guththila_token_create_token_buffer(axis2_env_t *environment,
 
 
 AXIS2_EXTERN void
-guththila_token_free_token_buffer(axis2_env_t * environment,
-        guththila_token_t * tok)
+guththila_token_free (axis2_env_t * environment,
+					  guththila_token_t * tok)
 {
     if (tok)
-        AXIS2_FREE(environment->allocator, tok);
+	{
+/*		if (tok->start)
+			AXIS2_FREE(environment->allocator, tok->start);
+		if (tok->end)
+		AXIS2_FREE(environment->allocator, tok->end);*/
+		AXIS2_FREE (environment->allocator, tok);
+	}
 }
 
 

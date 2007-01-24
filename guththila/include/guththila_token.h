@@ -56,8 +56,8 @@ guththila_token_create_token_buffer (axis2_env_t * environment,
                                      int size);
                                      
 AXIS2_EXTERN void
-guththila_token_free_token_buffer (axis2_env_t * environment,
-                                   guththila_token_t * tok);
+guththila_token_free (axis2_env_t * environment,
+					  guththila_token_t * tok);
 AXIS2_EXTERN int
 guththila_token_length (axis2_env_t * environment,
                         guththila_token_t * tok);
@@ -121,3 +121,8 @@ guththila_token_char_ref (axis2_env_t * environment,
                           
 
 #endif /* GUTHTHILA_TOKEN_H */
+
+
+
+
+

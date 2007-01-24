@@ -38,7 +38,7 @@ guththila_create(axis2_env_t * environment,
         parser->buffer = reader_buffer;
     }
     else
-        parser->buffer = guththila_buffer_create(environment, 1024);
+        parser->buffer = guththila_buffer_create(environment, GUTHTHILA_BUFFER_SIZE);
 
     parser->stack = axis2_stack_create(environment);
     parser->attrib = axis2_stack_create(environment);
@@ -56,6 +56,7 @@ guththila_create(axis2_env_t * environment,
     parser->xsw = NULL;
     parser->is_whitespace = 0;
     parser->is_char = 0;
+	parser->guththila_event = -1;
     return parser;
 }
 
@@ -67,10 +68,22 @@ guththila_free(axis2_env_t * environment,
     if (parser->buffer)
         guththila_buffer_free(environment, (void *) parser->buffer);
 
+	if (parser->name)
+		guththila_token_free (environment, parser->name);
+
     if (parser->stack)
         AXIS2_STACK_FREE(parser->stack, environment);
     if (parser->attrib)
+	{
+		int ii = AXIS2_STACK_SIZE(parser->attrib, environment);
+		guththila_attribute_t *attribute;
+		for (; ii > 0; ii--)
+		{
+			attribute = AXIS2_STACK_POP(parser->attrib, environment);
+			guththila_attribute_free (environment, attribute);
+		}
         AXIS2_STACK_FREE(parser->attrib, environment);
+	}
     if (parser->namesp)
         AXIS2_STACK_FREE(parser->namesp, environment);
     if (parser->dep)
@@ -85,15 +98,6 @@ guththila_exception(guththila_char_t * file, int line, int error_code)
 {
     printf("Throws guththila_exception \t %s \t %d \n", file,
             line);
-    /* Samisa: we should define a set of error codes and a corresponding error message set
-       rather than printing the above line to the console, we should be appending the
-       above string to the error message corresponding to the current error code
-       please delete this comment once this is fixed
-    */
-
-    /* Dinesh: Modified exception function to print line number , file
-       and return error code for particular error. If we feel that
-       file and line number is not necessary lets remove them later.*/
     return error_code;
 }
 
@@ -109,7 +113,9 @@ guththila_relocate_tokens(axis2_env_t *environment,
     /*   el = (guththila_token_t *) AXIS2_STACK_GET_AT (parser->stack, environment, isize-1); */
     for (; isize > 0; isize--)
     {
-        el = (guththila_token_t *) AXIS2_STACK_GET_AT(parser->stack, environment, isize - 1);
+        el = (guththila_token_t *) AXIS2_STACK_GET_AT(parser->stack, 
+													  environment, 
+													  isize - 1);
         guththila_token_relocate(environment, el, offset);
     }
 }
@@ -142,7 +148,8 @@ guththila_read(axis2_env_t * environment,
         }
         else
         {
-            int b = parser->buffer->size;
+            int b = 0;
+			b = parser->buffer->size;
             parser->buffer =
                 guththila_buffer_grow(environment, parser->buffer);
             guththila_relocate_tokens(
@@ -252,7 +259,7 @@ guththila_open_token(axis2_env_t * environment,
 {
     guththila_token_t *t =
         (guththila_token_t *) AXIS2_MALLOC(environment->allocator,
-                sizeof(guththila_token_t));
+		sizeof(guththila_token_t));
     t->type = Unknown;
     t->start = guththila_last_char(environment, parser);
     AXIS2_STACK_PUSH(parser->stack, environment, t);
@@ -503,9 +510,23 @@ guththila_reset(axis2_env_t * environment,
 {
     int ii;
     parser->offset = parser->_next;
-    parser->name = NULL;
-    parser->prefix = NULL;
-    parser->value = NULL;
+	if (parser->name)
+	{
+		guththila_token_free (environment, parser->name);
+		parser->name = NULL;
+	}
+
+	if (parser->prefix)
+	{
+		guththila_token_free (environment, parser->prefix);
+		parser->prefix = NULL;
+	}
+
+	if (parser->value)
+	{
+		guththila_token_free (environment, parser->value);
+		parser->value = NULL;
+	}
     parser->is_whitespace = 0;
     parser->is_char = 0;
 
@@ -1014,7 +1035,9 @@ guththila_next(axis2_env_t * environment,
             guththila_token_t *token;
             token = (guththila_token_t *) AXIS2_STACK_POP(parser->stack, environment);
             if (token->type == _name)
+			{
                 parser->name = token;
+			}
 
             if (AXIS2_STACK_SIZE(parser->stack, environment))
             {
@@ -1095,9 +1118,9 @@ guththila_close_element(axis2_env_t *
             AXIS2_FREE(environment->allocator, namespace->uri);
             namespace->uri = NULL;
         }
-
     }
-
+	if (depth)
+		AXIS2_FREE (environment->allocator, depth);
 }
 
 
@@ -1108,15 +1131,8 @@ guththila_add_attribute(axis2_env_t *
         guththila_token_t * name,
         guththila_token_t * value)
 {
-    guththila_attribute_t *att;
-    att =
-        (guththila_attribute_t *) AXIS2_MALLOC(environment->allocator,
-                sizeof
-                (guththila_attribute_t));
-    att->name = name;
-    att->value = value;
-    att->prefix = NULL;
-    /*   guththila_stack_push (environment, parser->attrib, NULL, att); */
+    guththila_attribute_t *att = NULL;
+	att = guththila_attribute_create (environment, NULL, name, value, NULL);
     AXIS2_STACK_PUSH(parser->attrib, environment, att);
 }
 
@@ -1133,18 +1149,9 @@ guththila_add_attribute_with_prefix(axis2_env_t *
         value)
 {
     guththila_attribute_t *att;
-    att =
-        (guththila_attribute_t *) AXIS2_MALLOC(environment->allocator,
-                sizeof
-                (guththila_attribute_t));
-    att->name = name;
-    att->value = value;
-    att->prefix = prefix;
+	att = guththila_attribute_create (environment, prefix, name, value, NULL);
     AXIS2_STACK_PUSH(parser->attrib, environment, att);
-
-    /* _element can keep , tokens and attributes here token set to null */
 }
-
 
 void AXIS2_CALL
 guththila_add_namespace(axis2_env_t *
@@ -1155,8 +1162,7 @@ guththila_add_namespace(axis2_env_t *
 {
     guththila_namespace_t *ns;
     ns = (guththila_namespace_t *) AXIS2_MALLOC(environment->allocator,
-            sizeof
-            (guththila_namespace_t));
+            sizeof (guththila_namespace_t));
     ns->name =
         guththila_token_to_string(environment, name, parser->unicode_state);
     ns->length = AXIS2_STRLEN(ns->name);
@@ -1323,10 +1329,11 @@ guththila_get_prefix(axis2_env_t * environment,
 
 
 AXIS2_EXTERN  int AXIS2_CALL
-guththila_get_namespace_count(axis2_env_t *
-        environment,
-        guththila_t *
-        parser)
+guththila_get_namespace_count(
+	axis2_env_t *
+	environment,
+	guththila_t *
+	parser)
 {
     if (parser->namesp)
         return AXIS2_STACK_SIZE(parser->namesp, environment);
@@ -1336,9 +1343,9 @@ guththila_get_namespace_count(axis2_env_t *
 
 
 AXIS2_EXTERN  guththila_namespace_t * AXIS2_CALL
-guththila_get_namespace(axis2_env_t *
-        environment,
-        guththila_t * parser)
+guththila_get_namespace(
+	axis2_env_t * environment,
+	guththila_t * parser)
 {
     guththila_namespace_t *namespace;
     namespace = (guththila_namespace_t *) AXIS2_STACK_GET(parser->namesp, environment);
