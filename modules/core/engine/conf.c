@@ -361,6 +361,7 @@ axis2_conf_create(
     axis2_conf_impl_t *config_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_phase_t *phase = NULL;
+    int i = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -392,7 +393,6 @@ axis2_conf_create(
     config_impl->handlers = NULL;
     config_impl->conf.ops = NULL;
     config_impl->enable_mtom = AXIS2_FALSE;
-    int i = 0;
 
     config_impl->conf.param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
