@@ -270,7 +270,7 @@ guththila_write_start_element(axis2_env_t *env, guththila_t *p, char *start_elem
 }
 
 
-void  AXIS2_CALL
+AXIS2_EXTERN void  AXIS2_CALL
 guththila_write_to_buffer(axis2_env_t *env, guththila_t *p, const char *buff)
 {
     if (buff)

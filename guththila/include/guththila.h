@@ -370,7 +370,7 @@ AXIS2_EXTERN void  AXIS2_CALL
 guththila_create_xml_stream_writer_for_memory (axis2_env_t *environment, 
 						    guththila_t *p);
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_write_to_buffer (axis2_env_t *env, 
 					   guththila_t *p,
 					   const char *buff);
