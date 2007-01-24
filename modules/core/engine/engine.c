@@ -566,6 +566,7 @@ axis2_engine_create_fault_msg_ctx(
     axis2_engine_impl_t *engine_impl = NULL;
     axis2_endpoint_ref_t *fault_to = NULL;
     axis2_endpoint_ref_t *reply_to = NULL;
+    axis2_stream_t *stream = NULL;
     axis2_property_t *property = NULL;
     axiom_soap_envelope_t *envelope = NULL;
     const axis2_char_t *wsa_action = NULL;
@@ -620,20 +621,18 @@ axis2_engine_create_fault_msg_ctx(
 
     }
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env,
-            AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
-    if (property)
+    stream = axis2_msg_ctx_get_transport_out_stream(processing_context, env);
+
+    if (stream)
     {
-        AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_TRANSPORT_OUT, property,
-                AXIS2_FALSE);
+        axis2_msg_ctx_set_transport_out_stream(fault_ctx, env, stream);
     }
 
-    if (!fault_to && !property)
+    if (!fault_to && !stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NOWHERE_TO_SEND_FAULT, AXIS2_FAILURE);
         return NULL;
     }
-    property = NULL;
 
     /* set WSA action */
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(processing_context, env);

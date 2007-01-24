@@ -290,15 +290,8 @@ axis2_http_transport_sender_invoke(
 
     if (!epr)
     {
-        axis2_stream_t *out_stream = NULL;
-
-        property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
-                AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
-        if (property)
-        {
-            out_stream = AXIS2_PROPERTY_GET_VALUE(property, env);
-            property = NULL;
-        }
+        axis2_stream_t *out_stream = axis2_msg_ctx_get_transport_out_stream(msg_ctx, env);
+        
         if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))
         {
             axis2_op_ctx_t *op_ctx = NULL;

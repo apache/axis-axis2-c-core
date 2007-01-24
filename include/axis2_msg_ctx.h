@@ -47,6 +47,7 @@
 #include <axis2_param.h>
 #include <axis2_handler_desc.h>
 #include <axis2_qname.h>
+#include <axis2_stream.h>
 #include <axis2_msg_info_headers.h>
 
 #ifdef __cplusplus
@@ -1393,6 +1394,18 @@ extern "C"
         const axis2_env_t *env,
         axis2_string_t *str);
 
+    AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
+    axis2_msg_ctx_get_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        axis2_stream_t *stream);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_reset_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
 
 /** Gets base context struct. */
 #define AXIS2_MSG_CTX_GET_BASE(msg_ctx, env) \

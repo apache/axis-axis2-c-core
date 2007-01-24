@@ -143,6 +143,7 @@ struct axis2_msg_ctx
                 struct axis2_svc *svc);
 
     axis2_string_t *charset_encoding;
+    axis2_stream_t *transport_out_stream;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -206,6 +207,7 @@ axis2_msg_ctx_create(
     msg_ctx->current_phase_index = 0;
     msg_ctx->paused_phase_index = 0;
     msg_ctx->charset_encoding = NULL;
+    msg_ctx->transport_out_stream = NULL;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
@@ -344,7 +346,12 @@ axis2_msg_ctx_free(
         axis2_string_free(msg_ctx->charset_encoding, env);
         msg_ctx->charset_encoding = NULL;
     }
-
+    
+    if (msg_ctx->transport_out_stream)
+    {
+       axis2_stream_free(msg_ctx->transport_out_stream, env); 
+    }
+        
     AXIS2_FREE(env->allocator, msg_ctx);
     msg_ctx = NULL;
 
@@ -1952,4 +1959,55 @@ axis2_msg_ctx_set_charset_encoding(axis2_msg_ctx_t *msg_ctx,
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
+axis2_msg_ctx_get_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    if (msg_ctx)
+    {
+        return msg_ctx->transport_out_stream;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_stream_t *stream)
+{
+    if (msg_ctx)
+    {
+        if (msg_ctx->transport_out_stream)
+        {
+           axis2_stream_free(msg_ctx->transport_out_stream, env); 
+        }
+        
+        msg_ctx->transport_out_stream = stream;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_reset_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    if (msg_ctx)
+    {
+        msg_ctx->transport_out_stream = NULL;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}
 

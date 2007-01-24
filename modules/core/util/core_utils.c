@@ -51,6 +51,7 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     /*axis2_property_t *property = NULL;*/
     axis2_char_t *msg_uuid = NULL;
+    axis2_stream_t *out_stream = NULL;
 
     AXIS2_PARAM_CHECK(env->error, in_msg_ctx, NULL);
 
@@ -132,6 +133,8 @@ axis2_core_utils_create_out_msg_ctx(
         }
     }
 
+    out_stream = axis2_msg_ctx_get_transport_out_stream(in_msg_ctx, env);
+    axis2_msg_ctx_set_transport_out_stream(new_msg_ctx, env, out_stream);
     /*property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
             AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
     if (property)
@@ -214,6 +217,7 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
 
     AXIS2_MSG_CTX_SET_OP_CTX(out_msg_ctx, env, NULL);
     AXIS2_MSG_CTX_SET_SVC_CTX(out_msg_ctx, env, NULL);
+    axis2_msg_ctx_reset_transport_out_stream(out_msg_ctx, env);
     /*AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_TRANSPORT_OUT, NULL,
             AXIS2_FALSE);
     AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,

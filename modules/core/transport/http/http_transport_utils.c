@@ -522,7 +522,6 @@ axis2_http_transport_utils_process_http_get_request(
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axis2_engine_t *engine = NULL;
-    axis2_property_t *property = NULL;
     axis2_op_t *op = NULL;
     xml_schema_element_t *schema_element = NULL;
 
@@ -537,12 +536,7 @@ axis2_http_transport_utils_process_http_get_request(
     AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env,
             request_uri));
 
-    property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
-    AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
-            AXIS2_TRANSPORT_OUT, property, AXIS2_FALSE);
+    axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
     if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env,

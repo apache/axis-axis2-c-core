@@ -211,12 +211,7 @@ axis2_apache2_worker_process_request(
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 
-    property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
-    AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, property,
-            AXIS2_FALSE);
+    axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
     /*AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS,
                    axis2_apache2_worker_get_headers(apache2_worker, env, 
