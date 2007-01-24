@@ -109,8 +109,8 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to QName of the handler
          */
-        const axis2_qname_t *(AXIS2_CALL *
-                get_qname)(
+        const axis2_string_t *(AXIS2_CALL *
+                get_name)(
                     const axis2_handler_t *handler,
                     const axis2_env_t *env);
 
@@ -157,7 +157,7 @@ extern "C"
     typedef axis2_handler_t *(AXIS2_CALL *
     AXIS2_HANDLER_CREATE_FUNC)(
         const axis2_env_t *env,
-        const axis2_qname_t *qname);
+        const axis2_string_t *name);
 
     /**
      * Creates handler struct instance.
@@ -178,7 +178,7 @@ extern "C"
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
     axis2_ctx_handler_create(
         const axis2_env_t *env, 
-        const axis2_qname_t *qname);
+        const axis2_string_t *qname);
 
 /** Frees handler.
     @sa axis2_handler_ops#free */
@@ -196,9 +196,9 @@ extern "C"
         ((handler)->ops->invoke(handler, env, msg_ctx))
 
 /** Gets handler QName.
-    @sa axis2_handler_ops#get_qname */
-#define AXIS2_HANDLER_GET_QNAME(handler, env) \
-        ((handler)->ops->get_qname(handler, env))
+    @sa axis2_handler_ops#get_name */
+#define AXIS2_HANDLER_GET_NAME(handler, env) \
+        ((handler)->ops->get_name(handler, env))
 
 /** Gets the named parameter.
     @sa axis2_handler_ops#get_param */

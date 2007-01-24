@@ -34,8 +34,8 @@ struct axis2_conf_impl
 {
     axis2_conf_t conf;
     axis2_hash_t *svc_grps;
-    axis2_hash_t *transports_in;
-    axis2_hash_t *transports_out;
+    axis2_transport_in_desc_t *transports_in[AXIS2_TRANSPORT_ENUM_MAX];
+    axis2_transport_out_desc_t *transports_out[AXIS2_TRANSPORT_ENUM_MAX];
     /**
      * Field modules
      */
@@ -150,32 +150,34 @@ axis2_transport_in_desc_t *AXIS2_CALL
 axis2_conf_get_transport_in(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
-    const axis2_qname_t *qname);
+    const AXIS2_TRANSPORT_ENUMS qname);
 
 axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_in(
     axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_transport_in_desc_t *transport);
+    axis2_transport_in_desc_t *transport,
+    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
 axis2_transport_out_desc_t *AXIS2_CALL
 axis2_conf_get_transport_out(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
-    const axis2_qname_t *qname);
+    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
 axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_out(
     axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_transport_out_desc_t *transport);
+    axis2_transport_out_desc_t *transport,
+    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
-axis2_hash_t *AXIS2_CALL
+axis2_transport_in_desc_t **AXIS2_CALL
 axis2_conf_get_all_in_transports(
     const axis2_conf_t *conf,
     const axis2_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axis2_transport_out_desc_t **AXIS2_CALL
 axis2_conf_get_all_out_transports(
     const axis2_conf_t *conf,
     const axis2_env_t *env);
@@ -387,11 +389,10 @@ axis2_conf_create(
     config_impl->dep_engine = NULL;
     config_impl->all_modules = NULL;
     config_impl->name_to_version_map = NULL;
-    config_impl->transports_in = NULL;
-    config_impl->transports_out = NULL;
     config_impl->handlers = NULL;
     config_impl->conf.ops = NULL;
     config_impl->enable_mtom = AXIS2_FALSE;
+    int i = 0;
 
     config_impl->conf.param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
@@ -410,20 +411,14 @@ axis2_conf_create(
         return NULL;
     }
 
-    config_impl->transports_in = axis2_hash_make(env);
-    if (NULL == config_impl->transports_in)
+    for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        axis2_conf_free(&(config_impl->conf), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
+        config_impl->transports_in[i] = NULL;
     }
 
-    config_impl->transports_out = axis2_hash_make(env);
-    if (NULL == config_impl->transports_out)
+    for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        axis2_conf_free(&(config_impl->conf), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
+        config_impl->transports_out[i] = NULL;
     }
 
     config_impl->engaged_modules = axis2_array_list_create(env, 0);
@@ -653,6 +648,7 @@ axis2_conf_free(
 {
     axis2_conf_impl_t *config_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
+    int i = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
@@ -684,49 +680,22 @@ axis2_conf_free(
         config_impl->svc_grps = NULL;
     }
 
-    if (config_impl->transports_in)
+    for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        axis2_hash_index_t *hi = NULL;
-        void *val = NULL;
-        for (hi = axis2_hash_first(config_impl->transports_in, env); hi;
-                hi = axis2_hash_next(env, hi))
+        if (config_impl->transports_in[i])
         {
-            axis2_transport_in_desc_t * transport_in = NULL;
-
-            axis2_hash_this(hi, NULL, NULL, &val);
-            transport_in = (axis2_transport_in_desc_t *) val;
-            if (transport_in)
-            {
-                AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
-                transport_in = NULL;
-            }
-            val = NULL;
+            AXIS2_TRANSPORT_IN_DESC_FREE(config_impl->transports_in[i], env);
+            config_impl->transports_in[i] = NULL;
         }
-        axis2_hash_free(config_impl->transports_in, env);
-        config_impl->transports_in = NULL;
     }
-
-    if (config_impl->transports_out)
+    
+    for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        axis2_hash_index_t *hi = NULL;
-        void *val = NULL;
-        for (hi = axis2_hash_first(config_impl->transports_out, env); hi;
-                hi = axis2_hash_next(env, hi))
+        if (config_impl->transports_out[i])
         {
-            axis2_transport_out_desc_t * transport_out = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
-            transport_out = (axis2_transport_out_desc_t *) val;
-            if (transport_out)
-            {
-                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
-                transport_out = NULL;
-            }
-
-            val = NULL;
-
+            AXIS2_TRANSPORT_OUT_DESC_FREE(config_impl->transports_out[i], env);
+            config_impl->transports_out[i] = NULL;
         }
-        axis2_hash_free(config_impl->transports_out, env);
-        config_impl->transports_out = NULL;
     }
 
     if (config_impl->dep_engine)
@@ -1239,45 +1208,31 @@ axis2_transport_in_desc_t *AXIS2_CALL
 axis2_conf_get_transport_in(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
-    const axis2_qname_t *qname)
+    const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
     axis2_conf_impl_t *config_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    return (axis2_transport_in_desc_t *) axis2_hash_get(config_impl->
-            transports_in, AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env), AXIS2_HASH_KEY_STRING);
+    return (axis2_transport_in_desc_t *) config_impl->transports_in[trans_enum];
 }
 
 axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_in(
     axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_transport_in_desc_t *transport)
+    axis2_transport_in_desc_t *transport,
+    const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
     axis2_conf_impl_t *config_impl = NULL;
-    const axis2_qname_t *qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, transport, AXIS2_FAILURE);
 
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    if (!config_impl->transports_in)
-    {
-        config_impl->transports_in = (axis2_hash_t *) axis2_hash_make(env);
-        if (!config_impl->transports_in)
-            return AXIS2_FAILURE;
-    }
-    qname = AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport, env);
-    if (!qname)
-        return AXIS2_FAILURE;
-
-    axis2_hash_set(config_impl->transports_in,
-            AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env), AXIS2_HASH_KEY_STRING,
-            transport);
+    config_impl->transports_in[trans_enum] = transport;
 
     return AXIS2_SUCCESS;
 
@@ -1287,50 +1242,36 @@ axis2_transport_out_desc_t *AXIS2_CALL
 axis2_conf_get_transport_out(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
-    const axis2_qname_t *qname)
+    const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
     axis2_conf_impl_t *config_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    return (axis2_transport_out_desc_t *) axis2_hash_get(config_impl->
-            transports_out, AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env), AXIS2_HASH_KEY_STRING);
+    return config_impl->transports_out[trans_enum];
 }
 
 axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_out(
     axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_transport_out_desc_t *transport)
+    axis2_transport_out_desc_t *transport,
+    const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
     axis2_conf_impl_t *config_impl = NULL;
-    const axis2_qname_t *qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, transport, AXIS2_FAILURE);
 
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    if (!config_impl->transports_out)
-    {
-        config_impl->transports_out = axis2_hash_make(env);
-        if (!config_impl->transports_out)
-            return AXIS2_FAILURE;
-    }
+    config_impl->transports_out[trans_enum] = transport;
 
-    qname = AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport, env);
-    if (!qname)
-        return AXIS2_FAILURE;
-    axis2_hash_set(config_impl->transports_out,
-            AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env),
-            AXIS2_HASH_KEY_STRING, transport);
     return AXIS2_SUCCESS;
-
 }
 
-axis2_hash_t *AXIS2_CALL
+axis2_transport_in_desc_t ** AXIS2_CALL
 axis2_conf_get_all_in_transports(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
@@ -1431,7 +1372,7 @@ axis2_conf_get_out_fault_flow(
     return AXIS2_INTF_TO_IMPL(conf)->out_fault_phases;
 }
 
-axis2_hash_t *AXIS2_CALL
+axis2_transport_out_desc_t **AXIS2_CALL
 axis2_conf_get_all_out_transports(
     const axis2_conf_t *conf,
     const axis2_env_t *env)

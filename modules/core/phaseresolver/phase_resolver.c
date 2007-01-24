@@ -673,12 +673,9 @@ axis2_phase_resolver_build_transport_chains(
     const axis2_env_t *env)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
-    axis2_hash_t *transports_in = NULL;
-    axis2_hash_t *transports_out = NULL;
-    axis2_hash_index_t *index_i = 0;
-    axis2_transport_in_desc_t *transport_in = NULL;
-    axis2_transport_out_desc_t *transport_out = NULL;
-    void *v = NULL;
+    axis2_transport_in_desc_t **transports_in = NULL;
+    axis2_transport_out_desc_t **transports_out = NULL;
+    int index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -702,34 +699,32 @@ axis2_phase_resolver_build_transport_chains(
         return AXIS2_SUCCESS;
     }
 
-    for (index_i = axis2_hash_first(transports_in, env); index_i; index_i =
-                axis2_hash_next(env, index_i))
+    for (index_i = 0; index_i < AXIS2_TRANSPORT_ENUM_MAX; index_i++)
     {
-
-        axis2_hash_this(index_i, NULL, NULL, &v);
-        transport_in = (axis2_transport_in_desc_t *) v;
-        status = axis2_phase_resolver_build_in_transport_chains(phase_resolver,
-                env, transport_in);
-        if (AXIS2_SUCCESS != status)
+        if (transports_in[index_i])
         {
-            return status;
+            status = axis2_phase_resolver_build_in_transport_chains(phase_resolver,
+                env, transports_in[index_i]);
+            if (AXIS2_SUCCESS != status)
+            {
+                return status;
+            }
         }
     }
 
-    for (index_i = axis2_hash_first(transports_out, env); index_i; index_i =
-                axis2_hash_next(env, index_i))
+    for (index_i = 0; index_i < AXIS2_TRANSPORT_ENUM_MAX; index_i++)
     {
-
-        axis2_hash_this(index_i, NULL, NULL, &v);
-        transport_out = (axis2_transport_out_desc_t *) v;
-        status = axis2_phase_resolver_build_out_transport_chains(phase_resolver,
-                env, transport_out);
-        if (AXIS2_SUCCESS != status)
+        if (transports_out[index_i])
         {
-            return status;
+            status = axis2_phase_resolver_build_out_transport_chains(phase_resolver,
+                env, transports_out[index_i]);
+            if (AXIS2_SUCCESS != status)
+            {
+                return status;
+            }
         }
-
     }
+
     /* If transport in or transport out maps are not null but still they don't
      * have chains configured then we return success, because there are no
      * chain to process

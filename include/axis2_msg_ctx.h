@@ -905,7 +905,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to QName of the paused handler
      */
-    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
+    AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
     axis2_msg_ctx_get_paused_handler_name(const axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
 

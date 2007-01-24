@@ -26,12 +26,12 @@ typedef struct axis2_handler_desc_impl
     axis2_handler_desc_t handler_desc;
 
     /** name */
-    axis2_qname_t *qname;
+    axis2_string_t *name;
     /** phase rules */
     axis2_phase_rule_t *rules;
     /** handler represented by meta information*/
     axis2_handler_t *handler;
-    /** class qname */
+    /** class name */
     axis2_char_t *class_name;
     /** parent param container */
     axis2_param_container_t *parent;
@@ -43,16 +43,16 @@ axis2_handler_desc_impl_t;
 #define AXIS2_INTF_TO_IMPL(handler_desc) \
         ((axis2_handler_desc_impl_t *)handler_desc)
 
-const axis2_qname_t *AXIS2_CALL
-axis2_handler_desc_get_qname(
+const axis2_string_t *AXIS2_CALL
+axis2_handler_desc_get_name(
     const axis2_handler_desc_t *handler_desc,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_handler_desc_set_qname(
+axis2_handler_desc_set_name(
     axis2_handler_desc_t *handler_desc,
     const axis2_env_t *env,
-    const axis2_qname_t *qname);
+    axis2_string_t *name);
 
 axis2_phase_rule_t *AXIS2_CALL
 axis2_handler_desc_get_rules(
@@ -127,9 +127,9 @@ axis2_handler_desc_free(
     const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
-axis2_handler_desc_create_with_qname(
+axis2_handler_desc_create(
     const axis2_env_t *env,
-    const axis2_qname_t *qname)
+    axis2_string_t *name)
 {
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;
 
@@ -144,7 +144,7 @@ axis2_handler_desc_create_with_qname(
     }
 
     handler_desc_impl->handler_desc.param_container = NULL;
-    handler_desc_impl->qname = NULL;
+    handler_desc_impl->name = NULL;
     handler_desc_impl->rules = NULL;
     handler_desc_impl->handler = NULL;
     handler_desc_impl->class_name = NULL;
@@ -168,9 +168,9 @@ axis2_handler_desc_create_with_qname(
         return NULL;
     }
 
-    if (qname)
+    if (name)
     {
-        handler_desc_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
+        handler_desc_impl->name = axis2_string_clone(name, env);
     }
 
     /* initialize ops */
@@ -184,8 +184,8 @@ axis2_handler_desc_create_with_qname(
         return NULL;
     }
 
-    handler_desc_impl->handler_desc.ops->get_qname = axis2_handler_desc_get_qname;
-    handler_desc_impl->handler_desc.ops->set_qname = axis2_handler_desc_set_qname;
+    handler_desc_impl->handler_desc.ops->get_name = axis2_handler_desc_get_name;
+    handler_desc_impl->handler_desc.ops->set_name = axis2_handler_desc_set_name;
     handler_desc_impl->handler_desc.ops->get_rules = axis2_handler_desc_get_rules;
     handler_desc_impl->handler_desc.ops->set_rules = axis2_handler_desc_set_rules;
     handler_desc_impl->handler_desc.ops->get_param = axis2_handler_desc_get_param;
@@ -203,23 +203,33 @@ axis2_handler_desc_create_with_qname(
     return &(handler_desc_impl->handler_desc);
 }
 
-const axis2_qname_t *AXIS2_CALL
-axis2_handler_desc_get_qname(
+const axis2_string_t *AXIS2_CALL
+axis2_handler_desc_get_name(
     const axis2_handler_desc_t *handler_desc,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(handler_desc)->qname;
+    return AXIS2_INTF_TO_IMPL(handler_desc)->name;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_handler_desc_set_qname(
+axis2_handler_desc_set_name(
     axis2_handler_desc_t *handler_desc,
     const axis2_env_t *env,
-    const axis2_qname_t *qname)
+    axis2_string_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(handler_desc)->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
+    if (AXIS2_INTF_TO_IMPL(handler_desc)->name)
+    {
+        axis2_string_free(AXIS2_INTF_TO_IMPL(handler_desc)->name, env);
+        AXIS2_INTF_TO_IMPL(handler_desc)->name = NULL;
+    }
+
+    if (name)
+    {
+        AXIS2_INTF_TO_IMPL(handler_desc)->name = axis2_string_clone(name, env);
+    }
+
     return AXIS2_SUCCESS;
 
 }
@@ -455,10 +465,10 @@ axis2_handler_desc_free(
         handler_desc_impl->handler_desc.param_container = NULL;
     }
 
-    if (handler_desc_impl->qname)
+    if (handler_desc_impl->name)
     {
-        AXIS2_QNAME_FREE(handler_desc_impl->qname, env);
-        handler_desc_impl->qname = NULL;
+        axis2_string_free(handler_desc_impl->name, env);
+        handler_desc_impl->name = NULL;
     }
 
     if (handler_desc_impl->rules)

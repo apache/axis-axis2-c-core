@@ -174,7 +174,6 @@ axis2_http_worker_process_request(
     axis2_hash_t *headers = NULL;
     axis2_property_t *property = NULL;
     axis2_char_t *url_external_form = NULL;
-    axis2_qname_t *tmp_qname = NULL;
     axis2_char_t *svc_grp_uuid = NULL;
     axis2_char_t *path = NULL;
 
@@ -234,14 +233,12 @@ axis2_http_worker_process_request(
     }
     request_body = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(simple_request, env);
 
-    tmp_qname = axis2_qname_create(env, AXIS2_TRANSPORT_HTTP, NULL, NULL);
     out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(AXIS2_CONF_CTX_GET_CONF
             (http_worker_impl->conf_ctx, env), env,
-            tmp_qname);
+            AXIS2_TRANSPORT_ENUM_HTTP);
     in_desc = AXIS2_CONF_GET_TRANSPORT_IN(AXIS2_CONF_CTX_GET_CONF
             (http_worker_impl->conf_ctx, env), env,
-            tmp_qname);
-    AXIS2_QNAME_FREE(tmp_qname, env);
+            AXIS2_TRANSPORT_ENUM_HTTP);
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 
@@ -565,15 +562,12 @@ axis2_http_worker_set_transport_out_config(
     axis2_http_simple_response_t *simple_response)
 {
     axis2_conf_t *config = NULL;
-    axis2_hash_t *tranport_outs = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, simple_response, AXIS2_FAILURE);
 
     config = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
-    tranport_outs = AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(config, env);
-
 
     /*
         TODO implement the method

@@ -179,49 +179,36 @@ axis2_init_transports(
     conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
     if (conf)
     {
-        axis2_hash_t *transport_map = NULL;
+        axis2_transport_in_desc_t **transport_in_map = NULL;
+        axis2_transport_out_desc_t **transport_out_map = NULL;
+        int i = 0;
 
-        transport_map = AXIS2_CONF_GET_ALL_IN_TRANSPORTS(conf, env);
-        if (transport_map)
+        transport_in_map = AXIS2_CONF_GET_ALL_IN_TRANSPORTS(conf, env);
+        for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
         {
-            axis2_hash_index_t *hi = NULL;
-            void *transport = NULL;
-            for (hi = axis2_hash_first(transport_map, env);
-                    hi; hi = axis2_hash_next(env, hi))
+            if (transport_in_map[i])
             {
-                axis2_hash_this(hi, NULL, NULL, &transport);
-                if (transport)
+                axis2_transport_receiver_t *listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in_map[i], env);
+                if (listener)
                 {
-                    axis2_transport_in_desc_t *transport_in = (axis2_transport_in_desc_t*)transport;
-                    axis2_transport_receiver_t *listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in, env);
-                    if (listener)
-                    {
-                        status = AXIS2_TRANSPORT_RECEIVER_INIT(listener, env, conf_ctx, transport_in);
-                    }
-
+                    status = AXIS2_TRANSPORT_RECEIVER_INIT(listener, env, conf_ctx, transport_in_map[i]);
                 }
+
             }
         }
 
-        transport_map = AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(conf, env);
-        if (transport_map)
+        transport_out_map = AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(conf, env);
+        for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
         {
-            axis2_hash_index_t *hi = NULL;
-            void *transport = NULL;
-            for (hi = axis2_hash_first(transport_map, env);
-                    hi; hi = axis2_hash_next(env, hi))
+            if (transport_out_map[i])
             {
-                axis2_hash_this(hi, NULL, NULL, &transport);
-                if (transport)
+                axis2_transport_sender_t *sender = 
+                    AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out_map[i], env);
+                if (sender)
                 {
-                    axis2_transport_out_desc_t *transport_out = (axis2_transport_out_desc_t*)transport;
-                    axis2_transport_sender_t *sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
-                    if (sender)
-                    {
-                        status = AXIS2_TRANSPORT_SENDER_INIT(sender, env, conf_ctx, transport_out);
-                    }
-
+                    status = AXIS2_TRANSPORT_SENDER_INIT(sender, env, conf_ctx, transport_out_map[i]);
                 }
+
             }
         }
         status = AXIS2_SUCCESS;

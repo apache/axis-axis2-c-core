@@ -36,8 +36,8 @@ axis2_handler_free(
     axis2_handler_t *handler,
     const axis2_env_t *env);
 
-const axis2_qname_t *AXIS2_CALL
-axis2_handler_get_qname(
+const axis2_string_t *AXIS2_CALL
+axis2_handler_get_name(
     const axis2_handler_t *handler,
     const axis2_env_t *env) ;
 
@@ -102,8 +102,8 @@ axis2_handler_create(
     handler_impl->handler.ops->invoke =
         axis2_handler_invoke;
 
-    handler_impl->handler.ops->get_qname =
-        axis2_handler_get_qname;
+    handler_impl->handler.ops->get_name =
+        axis2_handler_get_name;
 
     handler_impl->handler.ops->get_param =
         axis2_handler_get_param;
@@ -134,8 +134,8 @@ axis2_handler_free(
     return AXIS2_SUCCESS;
 }
 
-const axis2_qname_t *AXIS2_CALL
-axis2_handler_get_qname(
+const axis2_string_t *AXIS2_CALL
+axis2_handler_get_name(
     const axis2_handler_t *handler,
     const axis2_env_t *env)
 {
@@ -144,7 +144,7 @@ axis2_handler_get_qname(
     if (!(AXIS2_INTF_TO_IMPL(handler)->handler_desc))
         return NULL;
 
-    return AXIS2_HANDLER_DESC_GET_QNAME(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env);
+    return AXIS2_HANDLER_DESC_GET_NAME(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env);
 }
 
 axis2_status_t AXIS2_CALL

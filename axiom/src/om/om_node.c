@@ -708,7 +708,7 @@ axiom_node_to_string(axiom_node_t *om_node,
     status = AXIOM_NODE_SERIALIZE(om_node, env, om_output);
     if (status == AXIS2_SUCCESS)
     {
-        xml = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+        xml = axis2_strdup((axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env), env);
     }
     AXIOM_OUTPUT_FREE(om_output, env);
     return xml;

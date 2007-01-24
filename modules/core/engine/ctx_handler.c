@@ -17,10 +17,11 @@
 
 
 #include <axis2_handler_desc.h>
-#include <axis2_qname.h>
+#include <axis2_string.h>
 #include <axis2_svc.h>
 #include <axis2_conf_ctx.h>
 
+const axis2_char_t *AXIS2_CTX_HANDLER_NAME = "context_handler";
 
 /**
  * By the time the control comes to this handler, the dispatching must have
@@ -38,18 +39,18 @@ axis2_ctx_handler_invoke(
 axis2_handler_t *AXIS2_CALL
 axis2_ctx_handler_create(
     const axis2_env_t *env,
-    const axis2_qname_t *qname)
+    const axis2_string_t *string)
 {
     axis2_handler_t *handler = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
-    axis2_qname_t *handler_qname = NULL;
+    axis2_string_t *handler_string = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (qname)
+    if (string)
     {
-        handler_qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
-        if (!(handler_qname))
+        handler_string = axis2_string_clone((axis2_string_t *)string, env);
+        if (!(handler_string))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
@@ -57,11 +58,9 @@ axis2_ctx_handler_create(
     }
     else
     {
-        /* create default qname */
-        handler_qname = axis2_qname_create(env, "context_handler",
-                "http://axis.ws.apache.org",
-                NULL);
-        if (!handler_qname)
+        /* create default string */
+        handler_string = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_CTX_HANDLER_NAME);
+        if (!handler_string)
         {
             return NULL;
         }
@@ -74,8 +73,8 @@ axis2_ctx_handler_create(
     }
 
     /* handler desc of base handler */
-    handler_desc = axis2_handler_desc_create_with_qname(env, handler_qname);
-    AXIS2_QNAME_FREE(handler_qname, env);
+    handler_desc = axis2_handler_desc_create(env, handler_string);
+    axis2_string_free(handler_string, env);
     if (!handler_desc)
     {
         AXIS2_HANDLER_FREE(handler, env);

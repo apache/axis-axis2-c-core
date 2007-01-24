@@ -17,7 +17,7 @@
 
 #include <axis2_disp_checker.h>
 #include <axis2_handler_desc.h>
-#include <axis2_qname.h>
+#include <axis2_string.h>
 #include <axis2_relates_to.h>
 #include <axis2_svc.h>
 #include <axis2_const.h>
@@ -28,6 +28,8 @@
 #include <axiom_soap.h>
 #include <axiom.h>
 
+const axis2_char_t *AXIS2_DISP_CHECKER_NAME = "dispatch_post_conditions_evaluator";
+
 typedef struct axis2_disp_checker_impl
 {
     /** phase */
@@ -35,7 +37,7 @@ typedef struct axis2_disp_checker_impl
     /** base class, inherits from handler */
     axis2_handler_t *base;
     /** phase name */
-    axis2_qname_t *qname;
+    axis2_string_t *name;
 }
 axis2_disp_checker_impl_t;
 
@@ -53,16 +55,16 @@ axis2_disp_checker_get_base(
     const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env);
 
-axis2_qname_t *AXIS2_CALL
-axis2_disp_checker_get_qname(
+axis2_string_t *AXIS2_CALL
+axis2_disp_checker_get_name(
     const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_disp_checker_set_qname(
+axis2_disp_checker_set_name(
     axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env,
-    const axis2_qname_t *qname);
+    const axis2_string_t *name);
 
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_free(
@@ -86,14 +88,12 @@ axis2_disp_checker_create(
     }
 
     disp_checker_impl->disp_checker.ops = NULL;
-    disp_checker_impl->qname = NULL;
+    disp_checker_impl->name = NULL;
     disp_checker_impl->base = NULL;
 
-    /* create default qname */
-    disp_checker_impl->qname = axis2_qname_create(env, "dispatch_post_conditions_evaluator",
-            "http://axis.ws.apache.org",
-            NULL);
-    if (!(disp_checker_impl->qname))
+    /* create default name */
+    disp_checker_impl->name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_DISP_CHECKER_NAME);
+    if (!(disp_checker_impl->name))
     {
         axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
         return NULL;
@@ -107,7 +107,7 @@ axis2_disp_checker_create(
     }
 
     /* handler desc of base handler */
-    handler_desc = axis2_handler_desc_create_with_qname(env, disp_checker_impl->qname);
+    handler_desc = axis2_handler_desc_create(env, disp_checker_impl->name);
     if (!handler_desc)
     {
         axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
@@ -130,8 +130,8 @@ axis2_disp_checker_create(
     }
 
     disp_checker_impl->disp_checker.ops->get_base = axis2_disp_checker_get_base;
-    disp_checker_impl->disp_checker.ops->get_qname = axis2_disp_checker_get_qname;
-    disp_checker_impl->disp_checker.ops->set_qname = axis2_disp_checker_set_qname;
+    disp_checker_impl->disp_checker.ops->get_name = axis2_disp_checker_get_name;
+    disp_checker_impl->disp_checker.ops->set_name = axis2_disp_checker_set_name;
     disp_checker_impl->disp_checker.ops->free = axis2_disp_checker_free;
 
     return &(disp_checker_impl->disp_checker);
@@ -146,20 +146,20 @@ axis2_disp_checker_get_base(
     return AXIS2_INTF_TO_IMPL(disp_checker)->base;
 }
 
-axis2_qname_t *AXIS2_CALL
-axis2_disp_checker_get_qname(
+axis2_string_t *AXIS2_CALL
+axis2_disp_checker_get_name(
     const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(disp_checker)->qname;
+    return AXIS2_INTF_TO_IMPL(disp_checker)->name;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_disp_checker_set_qname(
+axis2_disp_checker_set_name(
     axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env,
-    const axis2_qname_t *qname)
+    const axis2_string_t *name)
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
 
@@ -167,16 +167,16 @@ axis2_disp_checker_set_qname(
 
     disp_checker_impl = AXIS2_INTF_TO_IMPL(disp_checker);
 
-    if (disp_checker_impl->qname)
+    if (disp_checker_impl->name)
     {
-        AXIS2_QNAME_FREE(disp_checker_impl->qname, env);
-        disp_checker_impl->qname = NULL;
+        axis2_string_free(disp_checker_impl->name, env);
+        disp_checker_impl->name = NULL;
     }
 
-    if (qname)
+    if (name)
     {
-        disp_checker_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
-        if (!(disp_checker_impl->qname))
+        disp_checker_impl->name = axis2_string_clone((axis2_string_t *)name, env);
+        if (!(disp_checker_impl->name))
             return AXIS2_FAILURE;
     }
 
@@ -192,10 +192,10 @@ axis2_disp_checker_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     disp_checker_impl = AXIS2_INTF_TO_IMPL(disp_checker);
 
-    if (disp_checker_impl->qname)
+    if (disp_checker_impl->name)
     {
-        AXIS2_QNAME_FREE(disp_checker_impl->qname, env);
-        disp_checker_impl->qname = NULL;
+        axis2_string_free(disp_checker_impl->name, env);
+        disp_checker_impl->name = NULL;
     }
 
     if (disp_checker_impl->disp_checker.ops)

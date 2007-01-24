@@ -70,6 +70,9 @@ test_om_build(const char *filename)
     axiom_xml_reader_t *reader = NULL;
     axiom_xml_writer_t *writer = NULL;
     char *buffer = NULL;
+    
+    printf("\nstart test_om_build\n");
+        
     f = fopen(filename, "r");
     if (!f)
         return -1;
@@ -182,7 +185,7 @@ test_om_build(const char *filename)
     AXIOM_STAX_BUILDER_FREE(builder, environment);
     if (buffer)
         AXIS2_FREE(environment->allocator, buffer);
-    printf("\ndone\n");
+    printf("\nend test_om_build\n");
     fclose(f);
     return 0;
 }
@@ -218,6 +221,8 @@ test_om_serialize()
     axiom_output_t *om_output = NULL;
     axiom_xml_writer_t *writer = NULL;
     axis2_char_t *output_buffer = NULL;
+    
+    printf("\nstart test_om_serialize\n");
 
     ns1 =
         axiom_namespace_create(environment,
@@ -283,8 +288,8 @@ test_om_serialize()
         printf("%s", output_buffer);
         AXIS2_FREE(environment->allocator, output_buffer);
     }
-    printf("\nDONE\n");
 
+    printf("\nend test_om_serialize\n");
 
     return 0;
 }

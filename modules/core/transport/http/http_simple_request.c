@@ -112,7 +112,8 @@ axis2_status_t AXIS2_CALL
 axis2_http_simple_request_set_body_string(
     axis2_http_simple_request_t *simple_request,
     const axis2_env_t *env,
-    axis2_char_t *str);
+    void *str,
+    unsigned int str_len);
 
 axis2_status_t AXIS2_CALL
 axis2_http_simple_request_free(
@@ -573,7 +574,8 @@ axis2_status_t AXIS2_CALL
 axis2_http_simple_request_set_body_string(
     axis2_http_simple_request_t *simple_request,
     const axis2_env_t *env,
-    axis2_char_t *str)
+    void *str,
+    unsigned int str_len)
 {
     axis2_stream_t *body_stream = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -590,6 +592,6 @@ axis2_http_simple_request_set_body_string(
         AXIS2_INTF_TO_IMPL(simple_request)->stream = body_stream;
         AXIS2_INTF_TO_IMPL(simple_request)->owns_stream = AXIS2_TRUE;
     }
-    AXIS2_STREAM_WRITE(body_stream, env, str, AXIS2_STRLEN(str));
+    AXIS2_STREAM_WRITE(body_stream, env, str, str_len);
     return AXIS2_SUCCESS;
 }

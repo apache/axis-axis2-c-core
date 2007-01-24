@@ -963,7 +963,7 @@ axis2_svc_client_send_receive_non_blocking(
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-    const axis2_char_t *transport_in_protocol = NULL;
+    AXIS2_TRANSPORT_ENUMS transport_in_protocol;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
     svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
@@ -1002,8 +1002,6 @@ axis2_svc_client_send_receive_non_blocking(
 
         transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
                     svc_client_impl->options, env);
-        if (!transport_in_protocol)
-            transport_in_protocol = AXIS2_TRANSPORT_HTTP;
         AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(svc_client_impl->listener_manager, env,
                 transport_in_protocol, svc_client_impl->conf_ctx);
 
@@ -1075,7 +1073,7 @@ axis2_svc_client_finalize_invoke(
     const axis2_env_t *env)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
-    const axis2_char_t *transport_in_protocol = NULL;
+    AXIS2_TRANSPORT_ENUMS transport_in_protocol;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -1083,8 +1081,6 @@ axis2_svc_client_finalize_invoke(
 
     transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
                 svc_client_impl->options, env);
-    if (!transport_in_protocol)
-        transport_in_protocol = AXIS2_TRANSPORT_HTTP;
 
     if (svc_client_impl->listener_manager)
     {

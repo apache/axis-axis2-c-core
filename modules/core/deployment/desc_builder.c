@@ -415,7 +415,7 @@ struct axis2_handler_desc *AXIS2_CALL
     AXIS2_PARAM_CHECK(env->error, handler_node, NULL);
     AXIS2_PARAM_CHECK(env->error, parent, NULL);
 
-    handler_desc = axis2_handler_desc_create_with_qname(env, NULL);
+    handler_desc = axis2_handler_desc_create(env, NULL);
     if (!handler_desc)
     {
         return NULL;
@@ -439,14 +439,14 @@ struct axis2_handler_desc *AXIS2_CALL
     }
     else
     {
-        axis2_qname_t *handler_qname = NULL;
+        axis2_string_t *handler_name = NULL;
         axis2_char_t *value = NULL;
 
         value = AXIOM_ATTRIBUTE_GET_VALUE(name_attrib, env);
-        handler_qname = axis2_qname_create(env, value, NULL, NULL);
-        status = AXIS2_HANDLER_DESC_SET_QNAME(handler_desc, env, handler_qname);
-        if (handler_qname)
-            AXIS2_QNAME_FREE(handler_qname, env);
+        handler_name = axis2_string_create(env, value);
+        status = AXIS2_HANDLER_DESC_SET_NAME(handler_desc, env, handler_name);
+        if (handler_name)
+            axis2_string_free(handler_name, env);
 
         if (AXIS2_SUCCESS != status)
         {

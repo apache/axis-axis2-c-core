@@ -479,7 +479,7 @@ axis2_op_client_execute(
             if (conf)
             {
                 transport_in = AXIS2_CONF_GET_TRANSPORT_IN(conf, env,
-                        AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out, env));
+                        AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out, env));
             }
         }
     }
@@ -646,7 +646,7 @@ axis2_op_client_complete(
     axis2_op_client_impl_t *op_client_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_listener_manager_t *listener_manager = NULL;
-    axis2_char_t *transport = NULL;
+    AXIS2_TRANSPORT_ENUMS transport = AXIS2_TRANSPORT_ENUM_HTTP;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 

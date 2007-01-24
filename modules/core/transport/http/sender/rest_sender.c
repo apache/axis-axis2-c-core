@@ -217,6 +217,7 @@ axis2_rest_sender_send(
     axis2_rest_sender_impl_t *sender_impl = NULL;
     axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *buffer = NULL;
+    unsigned int buffer_size = 0;
     const axis2_char_t *char_set_enc = NULL;
     int status_code = -1;
     axis2_http_header_t *http_header = NULL;
@@ -302,6 +303,7 @@ axis2_rest_sender_send(
          */
         AXIOM_NODE_SERIALIZE(out, env, sender_impl->om_output);
         buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+        buffer_size = AXIOM_XML_WRITER_GET_XML_SIZE(xml_writer, env);
 
         if (NULL == buffer)
         {
@@ -337,7 +339,7 @@ axis2_rest_sender_send(
         if (AXIS2_FALSE == sender_impl->chunked)
         {
             axis2_char_t tmp_buf[10];
-            sprintf(tmp_buf, "%d", (int)strlen(buffer));
+            sprintf(tmp_buf, "%d", buffer_size);
             http_header = axis2_http_header_create(env,
                     AXIS2_HTTP_HEADER_CONTENT_LENGTH, tmp_buf);
             AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
@@ -371,7 +373,7 @@ axis2_rest_sender_send(
         http_header = axis2_http_header_create(env,
                 AXIS2_HTTP_HEADER_CONTENT_TYPE, content_type);
         AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
-        AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
+        AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer, buffer_size);
     }
 
     if (0 == AXIS2_STRCMP(sender_impl->http_version,
@@ -419,8 +421,6 @@ axis2_rest_sender_send(
 	axis2_rest_sender_configure_server_cert (sender, env, msg_ctx);
     status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request);
 
-    AXIS2_FREE(env->allocator, buffer);
-    buffer = NULL;
     AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, env);
     request = NULL;
 

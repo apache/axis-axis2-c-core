@@ -279,7 +279,7 @@ axis2_phase_add_handler_at(
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
             "axis2_handler_t *%s added to the index %d of the phase %s",
-            AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_QNAME(handler, env), env),
+            axis2_string_get_buffer(AXIS2_HANDLER_GET_NAME(handler, env), env), 
             index,
             phase_impl->name);
 
@@ -299,7 +299,7 @@ axis2_phase_add_handler(
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
 
     AXIS2_LOG_INFO(env->log, "Handler %s added to phase %s",
-            AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_QNAME(handler, env), env),
+            axis2_string_get_buffer(AXIS2_HANDLER_GET_NAME(handler, env), env),
             phase_impl->name);
 
     /*return AXIS2_ARRAY_LIST_ADD(phase_impl->handlers, env, handler);*/
@@ -331,8 +331,8 @@ axis2_phase_invoke(
         {
             AXIS2_LOG_INFO(env->log,
                     "Invoke the first handler %s within the phase %s",
-                    AXIS2_QNAME_GET_LOCALPART(
-                        AXIS2_HANDLER_GET_QNAME(phase_impl->first_handler, env), env),
+                    axis2_string_get_buffer(
+                        AXIS2_HANDLER_GET_NAME(phase_impl->first_handler, env), env),
                     phase_impl->name);
 
             status = AXIS2_HANDLER_INVOKE(phase_impl->first_handler, env, msg_ctx);
@@ -357,7 +357,7 @@ axis2_phase_invoke(
             {
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                         "Invoke the handler %s within the phase %s",
-                        AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_QNAME(handler, env), env),
+                        AXIS2_HANDLER_GET_NAME(handler, env),
                         phase_impl->name);
                 status = AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
                 if (status != AXIS2_SUCCESS)
@@ -380,7 +380,7 @@ axis2_phase_invoke(
         else
         {
             AXIS2_LOG_INFO(env->log, "Invoke the last handler %s within the phase %s",
-                    AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_QNAME(phase_impl->last_handler, env), env),
+                    axis2_string_get_buffer(AXIS2_HANDLER_GET_NAME(phase_impl->last_handler, env), env),
                     phase_impl->name);
             status = AXIS2_HANDLER_INVOKE(phase_impl->last_handler, env, msg_ctx);
             if (status != AXIS2_SUCCESS)
@@ -633,7 +633,7 @@ _axis2_phase_is_valid_before(
         if (!handler_desc)
             return AXIS2_TRUE;
 
-        first_handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+        first_handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
 
         if (!first_handler_name)
             return AXIS2_TRUE;
@@ -680,7 +680,7 @@ _axis2_phase_is_valid_after(
         if (!handler_desc)
             return AXIS2_TRUE;
 
-        last_handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+        last_handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
 
         if (!last_handler_name)
             return AXIS2_TRUE;
@@ -753,7 +753,7 @@ axis2_phase_insert_before(
             return AXIS2_FAILURE;
         }
 
-        handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+        handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
         if (!handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -781,7 +781,7 @@ axis2_phase_insert_before(
                 return AXIS2_FAILURE;
             }
 
-            handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+            handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
             if (!handler_name)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -847,7 +847,7 @@ axis2_phase_insert_after(
             return AXIS2_FAILURE;
         }
 
-        handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+        handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
         if (!handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -874,7 +874,7 @@ axis2_phase_insert_after(
                 return AXIS2_FAILURE;
             }
 
-            handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+            handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
             if (!handler_name)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -960,7 +960,7 @@ axis2_phase_insert_before_and_after(
             return AXIS2_FAILURE;
         }
 
-        before_handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+        before_handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
         if (!handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -977,7 +977,7 @@ axis2_phase_insert_before_and_after(
             return AXIS2_FAILURE;
         }
 
-        after_handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+        after_handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
         if (!handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -1021,7 +1021,7 @@ axis2_phase_insert_before_and_after(
                 return AXIS2_FAILURE;
             }
 
-            handler_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env);
+            handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
             if (!handler_name)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -1212,23 +1212,24 @@ add_unique(
 {
     int i = 0, size = 0;
     axis2_bool_t add_handler = AXIS2_TRUE;
-    const axis2_qname_t *handler_qname = NULL;
+    const axis2_string_t *handler_name = NULL;
 
-    handler_qname = AXIS2_HANDLER_GET_QNAME(handler, env);
+    handler_name = AXIS2_HANDLER_GET_NAME(handler, env);
     size = AXIS2_ARRAY_LIST_SIZE(list, env);
     for (i = 0; i < size; i++)
     {
         axis2_handler_t *obj = NULL;
-        const axis2_qname_t *obj_qname = NULL;
+        const axis2_string_t *obj_name = NULL;
 
         obj = (axis2_handler_t *) AXIS2_ARRAY_LIST_GET(list, env, i);
-        obj_qname = AXIS2_HANDLER_GET_QNAME(obj, env);
+        obj_name = AXIS2_HANDLER_GET_NAME(obj, env);
         if (obj == handler)
         {
             add_handler = AXIS2_FALSE;
             break;
         }
-        else if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(handler_qname, env, obj_qname))
+        else if (0 == AXIS2_STRCMP(axis2_string_get_buffer(handler_name, env), 
+                            axis2_string_get_buffer(obj_name, env)))
         {
             add_handler = AXIS2_FALSE;
             break;

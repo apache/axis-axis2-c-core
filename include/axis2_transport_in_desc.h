@@ -41,7 +41,6 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_allocator.h>
-#include <axis2_qname.h>
 #include <axis2_array_list.h> 
 /*#include <axis2_transport_receiver.h>*/
 #include <axis2_phase_meta.h>
@@ -91,28 +90,28 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Gets QName.
+         * Gets transport enum.
          * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
-         * @return pointer to QName
+         * @return transport enum 
          */
-        const axis2_qname_t *(AXIS2_CALL *
-                get_qname)(
+        AXIS2_TRANSPORT_ENUMS (AXIS2_CALL *
+                get_enum)(
                     const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
         /**
-         * Sets QName.
+         * Sets transport enum.
          * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param qname pointer to QName, this method creates a clone of QName
+         * @param trans_enum transport enum
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
-                set_qname)(
+                set_enum)(
                     struct axis2_transport_in_desc *transport_in,
                     const axis2_env_t *env,
-                    const axis2_qname_t *qname);
+                    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
         /**
          * Gets in flow. In flow represents the list of phases invoked 
@@ -299,15 +298,15 @@ extern "C"
     };
 
     /**
-     * Creates transport in description with given QName.
+     * Creates transport in description with given transport enum.
      * @param env pointer to environment struct
-     * @param qname pointer to QName
+     * @param trans_enum transport enum 
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
-    axis2_transport_in_desc_create_with_qname (
+    axis2_transport_in_desc_create(
             const axis2_env_t *env,
-            const axis2_qname_t *qname);
+            const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
      * Frees transport in description given as a void parameter.
@@ -326,15 +325,15 @@ extern "C"
 #define AXIS2_TRANSPORT_IN_DESC_FREE(transport_in_desc, env) \
       ((transport_in_desc)->ops->free (transport_in_desc, env))
 
-/** Gets QName.
-    @sa axis2_transport_in_desc_ops#get_qname */
-#define AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env) \
-      ((transport_in_desc)->ops->get_qname (transport_in_desc, env))
+/** Gets transport enum.
+    @sa axis2_transport_in_desc_ops#get_enum */
+#define AXIS2_TRANSPORT_IN_DESC_GET_ENUM(transport_in_desc, env) \
+      ((transport_in_desc)->ops->get_enum (transport_in_desc, env))
 
-/** Sets QName.
-    @sa axis2_transport_in_desc_ops#set_qname */
-#define AXIS2_TRANSPORT_IN_DESC_SET_QNAME(transport_in_desc, env, qname) \
-      ((transport_in_desc)->ops->set_qname (transport_in_desc, env, qname))
+/** Sets transport enum.
+    @sa axis2_transport_in_desc_ops#set_enum */
+#define AXIS2_TRANSPORT_IN_DESC_SET_ENUM(transport_in_desc, env, trans_enum) \
+      ((transport_in_desc)->ops->set_enum (transport_in_desc, env, trans_enum))
 
 /** Gets in flow.
     @sa axis2_transport_in_desc_ops#get_in_flow */

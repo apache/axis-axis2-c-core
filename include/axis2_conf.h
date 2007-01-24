@@ -230,7 +230,7 @@ extern "C"
                 get_transport_in)(
                     const axis2_conf_t *conf,
                     const axis2_env_t *env,
-                    const axis2_qname_t *qname);
+                    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
         /**
          * Adds a transport in description.
@@ -244,7 +244,8 @@ extern "C"
                 add_transport_in)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
-                    axis2_transport_in_desc_t *transport);
+                    axis2_transport_in_desc_t *transport,
+                    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
         /**
          * Gets out transport corresponding to the given transport QName.
@@ -258,7 +259,7 @@ extern "C"
                 get_transport_out)(
                     const axis2_conf_t *conf,
                     const axis2_env_t *env,
-                    const axis2_qname_t *qname);
+                    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
        /**
         * Adds a transport out description.
@@ -272,7 +273,8 @@ extern "C"
                 add_transport_out)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
-                    axis2_transport_out_desc_t *transport);
+                    axis2_transport_out_desc_t *transport,
+                    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
         /**
          * Gets all in transports.
@@ -281,7 +283,7 @@ extern "C"
          * @return hash table containing all transport in descriptions. 
          * Returns a reference, not a cloned copy
          */
-        axis2_hash_t *(AXIS2_CALL *
+        axis2_transport_in_desc_t **(AXIS2_CALL *
                 get_all_in_transports)(
                     const axis2_conf_t *conf,
                     const axis2_env_t *env);
@@ -293,7 +295,7 @@ extern "C"
          * @return hash table containing all transport out descriptions. 
          * Returns a reference, not a cloned copy
          */
-        axis2_hash_t *(AXIS2_CALL *
+        axis2_transport_out_desc_t **(AXIS2_CALL *
                 get_all_out_transports)(
                     const axis2_conf_t *conf,
                     const axis2_env_t *env);
@@ -788,8 +790,8 @@ extern "C"
 
 /** Adds a transport in.
     @sa axis2_conf_ops#add_transport_in */
-#define AXIS2_CONF_ADD_TRANSPORT_IN(conf, env, transport) \
-        ((conf)->ops->add_transport_in(conf , env, transport))
+#define AXIS2_CONF_ADD_TRANSPORT_IN(conf, env, transport, trans_enum) \
+        ((conf)->ops->add_transport_in(conf , env, transport, trans_enum))
 
 /** Gets transport out description with given QName.
     @sa axis2_conf_ops#get_transport_out */
@@ -798,18 +800,8 @@ extern "C"
 
 /** Adds a transport out.
     @sa axis2_conf_ops#add_transport_out */
-#define AXIS2_CONF_ADD_TRANSPORT_OUT(conf, env, transport) \
-        ((conf)->ops->add_transport_out(conf , env, transport))
-
-/** Gets all the in transports.
-    @sa axis2_conf_ops#get_all_in_transports */
-#define AXIS2_CONF_GET_ALL_IN_TRANSPORTS(conf, env) \
-        ((conf)->ops->get_all_in_transports(conf , env))
-
-/** Gets all the out transport.
-    @sa axis2_conf_ops#get_all_out_transports */
-#define AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(conf, env) \
-        ((conf)->ops->get_all_out_transports(conf , env))
+#define AXIS2_CONF_ADD_TRANSPORT_OUT(conf, env, transport, trans_enum) \
+        ((conf)->ops->add_transport_out(conf , env, transport, trans_enum))
 
 /** Gets the named module.
     @sa axis2_conf_ops#get_module */
@@ -961,6 +953,15 @@ extern "C"
 #define AXIS2_CONF_ENGAGE_MODULE_WITH_VERSION(conf, env, mod_name, mod_ver)\
         ((conf)->ops->engage_module_with_version(conf, env, mod_name, mod_ver))
 
+/** Gets all the in transports.
+    @sa axis2_conf_ops#get_all_in_transports */
+#define AXIS2_CONF_GET_ALL_IN_TRANSPORTS(conf, env) \
+        ((conf)->ops->get_all_in_transports(conf , env))
+
+/** Gets all the out transports.
+    @sa axis2_conf_ops#get_all_out_transports */
+#define AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(conf, env) \
+        ((conf)->ops->get_all_out_transports(conf , env))
 /** @} */
 #ifdef __cplusplus
 }

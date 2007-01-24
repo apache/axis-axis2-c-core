@@ -344,12 +344,10 @@ axis2_mep_client_infer_transport(
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_conf_t *conf = NULL;
-        axis2_qname_t *qname = NULL;
         axis2_transport_out_desc_t *transport_out_desc = NULL;
-
-        qname = axis2_qname_create(env, transport, NULL, NULL);
-        if (!qname)
-            return NULL;
+        
+        AXIS2_TRANSPORT_ENUMS transport_enum = 
+            (axis2_strcmp(transport, "http") == 0)?AXIS2_TRANSPORT_ENUM_HTTP:AXIS2_TRANSPORT_ENUM_MAX;
 
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
         if (conf_ctx)
@@ -357,14 +355,12 @@ axis2_mep_client_infer_transport(
             conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
             if (conf)
             {
-                transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, qname);
+                transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, transport_enum);
             }
         }
 
         AXIS2_FREE(env->allocator, transport);
         transport = NULL;
-        AXIS2_QNAME_FREE(qname, env);
-        qname = NULL;
         return transport_out_desc;
 
     }

@@ -127,7 +127,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to transport in protocol string if set, else NULL
          */
-        const axis2_char_t* (AXIS2_CALL *
+        AXIS2_TRANSPORT_ENUMS (AXIS2_CALL *
                 get_transport_in_protocol)(
                     const axis2_options_t *options,
                     const axis2_env_t *env);
@@ -207,7 +207,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to transport out protocol string if set, else NULL
          */
-        const axis2_char_t* (AXIS2_CALL *
+        AXIS2_TRANSPORT_ENUMS (AXIS2_CALL *
                 get_sender_transport_protocol)(
                     const axis2_options_t *options,
                     const axis2_env_t *env);
@@ -374,7 +374,7 @@ extern "C"
                 set_transport_in_protocol)(
                     axis2_options_t *options,
                     const axis2_env_t *env,
-                    const axis2_char_t *transport_in_protocol);
+                    const AXIS2_TRANSPORT_ENUMS transport_in_protocol);
 
         /**
          * Sets message ID.
@@ -474,7 +474,7 @@ extern "C"
                 set_sender_transport)(
                     axis2_options_t *options,
                     const axis2_env_t *env,
-                    const axis2_char_t *sender_transport,
+                    const AXIS2_TRANSPORT_ENUMS sender_transport,
                     axis2_conf_t *conf);
 
         /**
@@ -521,8 +521,8 @@ extern "C"
                 set_transport_info)(
                     axis2_options_t *options,
                     const axis2_env_t *env,
-                    const axis2_char_t *sender_transport,
-                    const axis2_char_t *receiver_transport,
+                    const AXIS2_TRANSPORT_ENUMS sender_transport,
+                    const AXIS2_TRANSPORT_ENUMS receiver_transport,
                     const axis2_bool_t use_separate_listener);
 
         /**

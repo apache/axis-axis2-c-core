@@ -434,6 +434,10 @@ extern "C"
                 get_xml)(axiom_xml_writer_t *writer,
                         const axis2_env_t *env);
 
+        unsigned int(AXIS2_CALL *
+                get_xml_size)(axiom_xml_writer_t *writer,
+                        const axis2_env_t *env);
+
         int(AXIS2_CALL *
                 get_type)(axiom_xml_writer_t *writer,
                         const axis2_env_t *env);
@@ -579,6 +583,9 @@ extern "C"
 
 #define AXIOM_XML_WRITER_GET_XML(writer, env) \
         ((writer)->ops->get_xml(writer, env))
+
+#define AXIOM_XML_WRITER_GET_XML_SIZE(writer, env) \
+        ((writer)->ops->get_xml_size(writer, env))
 
 #define AXIOM_XML_WRITER_GET_TYPE(writer, env) \
         ((writer)->ops->get_type(writer, env))

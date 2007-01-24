@@ -62,8 +62,8 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to QName, returns a reference, not a cloned copy
          */
-        const axis2_qname_t *(AXIS2_CALL *
-                get_qname)(
+        const axis2_string_t *(AXIS2_CALL *
+                get_name)(
                     const axis2_handler_desc_t *handler_desc,
                     const axis2_env_t *env);
 
@@ -71,15 +71,15 @@ extern "C"
          * Sets QName.
          * @param handler_desc pointer to handler description
          * @param env pointer to environment struct
-         * @param qname pointer to QName, handler description creates a clone
+         * @param name pointer to string representing handler name 
          * of QName
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_qname)(
+                set_name)(
                     axis2_handler_desc_t *handler_desc,
                     const axis2_env_t *env,
-                    const axis2_qname_t *qname);
+                    axis2_string_t *name);
 
         /**
          * Gets phase rules.
@@ -267,14 +267,13 @@ extern "C"
     /**
      * Creates handler description struct instance.
      * @param env pointer to env pointer to environment struct
-     * @param qname pointer to QName of handler, can be NULL, create function 
+     * @param name pointer to string representing handler name, can be NULL, create function 
      * clones this    
      * @return pointer to newly created handler description struct
      */
     AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
-    axis2_handler_desc_create_with_qname(
-        const axis2_env_t *env, 
-        const axis2_qname_t *qname);
+    axis2_handler_desc_create(const axis2_env_t *env, 
+        axis2_string_t *name);
 
 /** Gets handler associated with handler description.
     @sa axis2_handler_desc_ops#get_handler */
@@ -297,14 +296,14 @@ extern "C"
         ((handler_desc)->ops->set_rules(handler_desc, env, rules))
 
 /** Gets QName.
-    @sa axis2_handler_desc_ops#get_qname */
-#define AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env) \
-        ((handler_desc)->ops->get_qname(handler_desc, env))
+    @sa axis2_handler_desc_ops#get_name */
+#define AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env) \
+        ((handler_desc)->ops->get_name(handler_desc, env))
 
 /** Sets QName.
-    @sa axis2_handler_desc_ops#set_qname */
-#define AXIS2_HANDLER_DESC_SET_QNAME(handler_desc, env, name) \
-        ((handler_desc)->ops->set_qname(handler_desc, env, name))
+    @sa axis2_handler_desc_ops#set_name */
+#define AXIS2_HANDLER_DESC_SET_NAME(handler_desc, env, name) \
+        ((handler_desc)->ops->set_name(handler_desc, env, name))
 
 /** Gets parameter with given name.
     @sa axis2_handler_desc_ops#get_param */

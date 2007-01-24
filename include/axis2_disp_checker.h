@@ -30,7 +30,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_qname.h>
+#include <axis2_string.h>
 #include <axis2_handler.h>
 
 #ifdef __cplusplus
@@ -68,8 +68,8 @@ extern "C"
          * @return returns a pointer to the QName, returns a reference not a 
          * cloned copy
          */
-        axis2_qname_t *(AXIS2_CALL *
-                get_qname)(
+        axis2_string_t *(AXIS2_CALL *
+                get_name)(
                     const axis2_disp_checker_t *disp_checker,
                     const axis2_env_t *env);
 
@@ -77,14 +77,14 @@ extern "C"
          * Sets QName.
          * @param disp_checker pointer to dispatcher checker
          * @param env pointer to environment struct
-         * @param qname pointer to QName. A clone would be created within the method
+         * @param name pointer to QName. A clone would be created within the method
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_qname)(
+                set_name)(
                     axis2_disp_checker_t *disp_checker,
                     const axis2_env_t *env,
-                    const axis2_qname_t *qname);
+                    const axis2_string_t *name);
 
         /**
          * Frees dispatcher checker.
@@ -125,14 +125,14 @@ extern "C"
       ((disp_checker)->ops->get_base(disp_checker, env))
 
 /** Gets QName.
-    @sa axis2_disp_checker_ops#get_qname */
-#define AXIS2_DISP_CHECKER_GET_QNAME(disp_checker, env) \
-      ((disp_checker)->ops->get_qname(disp_checker, env))
+    @sa axis2_disp_checker_ops#get_name */
+#define AXIS2_DISP_CHECKER_GET_NAME(disp_checker, env) \
+      ((disp_checker)->ops->get_name(disp_checker, env))
 
-/** Sets the qname.
-    @sa axis2_disp_checker_ops#set_qname */
-#define AXIS2_DISP_CHECKER_SET_QNAME(disp_checker, env, name) \
-      ((disp_checker)->ops->set_qname(disp_checker, env, name))
+/** Sets the name.
+    @sa axis2_disp_checker_ops#set_name */
+#define AXIS2_DISP_CHECKER_SET_NAME(disp_checker, env, name) \
+      ((disp_checker)->ops->set_name(disp_checker, env, name))
 
 /** Frees dispatcher checker.
     @sa axis2_disp_checker_ops#free */

@@ -776,8 +776,9 @@ axis2_engine_invoke_phases(
 
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                 "Invoking phase %s", AXIS2_PHASE_GET_NAME(phase, env));
-
+                
         status = AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
+
         if (status != AXIS2_SUCCESS)
         {
             return status;

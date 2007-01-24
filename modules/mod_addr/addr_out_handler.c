@@ -63,14 +63,14 @@ axiom_node_t *axis2_addr_out_handler_process_string_info(const axis2_env_t *env,
 
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-axis2_addr_out_handler_create(const axis2_env_t *env, axis2_qname_t * qname)
+axis2_addr_out_handler_create(const axis2_env_t *env, axis2_string_t * name)
 {
     axis2_handler_t *handler = NULL;
-    axis2_qname_t *handler_qname = NULL;
+    /*axis2_qname_t *handler_qname = NULL;*/
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (qname)
+    /*if (qname)
     {
         handler_qname = AXIS2_QNAME_CLONE(qname, env);
         if (!(handler_qname))
@@ -82,7 +82,7 @@ axis2_addr_out_handler_create(const axis2_env_t *env, axis2_qname_t * qname)
     }
     else
     {
-        /* create default qname */
+         create default qname 
         handler_qname = axis2_qname_create(env, "addr_out_handler",
                 "http://axis.ws.apache.org",
                 NULL);
@@ -90,7 +90,7 @@ axis2_addr_out_handler_create(const axis2_env_t *env, axis2_qname_t * qname)
         {
             return NULL;
         }
-    }
+    }*/
 
     handler = axis2_handler_create(env);
     if (!handler)
@@ -102,7 +102,7 @@ axis2_addr_out_handler_create(const axis2_env_t *env, axis2_qname_t * qname)
     if (handler->ops)
         handler->ops->invoke = axis2_addr_out_handler_invoke;
 
-    AXIS2_QNAME_FREE(handler_qname, env);
+    /*AXIS2_QNAME_FREE(handler_qname, env);*/
 
     return handler;
 }

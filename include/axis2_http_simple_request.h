@@ -188,7 +188,8 @@ extern "C"
                 set_body_string)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env,
-                    axis2_char_t *str);
+                    void *str,
+                    unsigned int str_len);
 
         /**
          * @param simple_request pointer to simple request
@@ -302,9 +303,9 @@ extern "C"
 
 /** Sets the body string.
     @sa axis2_http_simple_request_ops#set_body_string */
-#define AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(simple_request, env, str)\
+#define AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(simple_request, env, str, str_len)\
                             ((simple_request)->ops->set_body_string\
-                            (simple_request, env, str))
+                            (simple_request, env, str, str_len))
 
 /** Frees the http simple request.
     @sa axis2_http_simple_request_ops#free */

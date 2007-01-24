@@ -81,7 +81,7 @@ axis2_string_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_string_t* AXIS2_CALL
 axis2_string_create_const(const axis2_env_t *env,
-    const axis2_char_t *str)
+    axis2_char_t **str)
 {
     axis2_string_t *string = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -102,8 +102,8 @@ axis2_string_create_const(const axis2_env_t *env,
         return NULL;
     }
     /* set properties */
-    string->buffer = (axis2_char_t *)str;    
-    string->length = axis2_strlen(str);
+    string->buffer = *str;    
+    string->length = axis2_strlen(*str);
     string->ref_count = 1;
     string->owns_buffer = AXIS2_FALSE;    
     

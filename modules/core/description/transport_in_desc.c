@@ -23,7 +23,7 @@ typedef struct axis2_transport_in_desc_impl
     axis2_transport_in_desc_t transport_in;
     axis2_flow_t *in_flow;
     axis2_flow_t *fault_in_flow;
-    axis2_qname_t *qname;
+    AXIS2_TRANSPORT_ENUMS trans_enum;
     /**
      * transport receiver will have a shallow copy, but will be freed by 
      * free function.
@@ -41,16 +41,16 @@ axis2_transport_in_desc_free(
     axis2_transport_in_desc_t *transport_in,
     const axis2_env_t *env);
 
-const axis2_qname_t *AXIS2_CALL
-axis2_transport_in_desc_get_qname(
+AXIS2_TRANSPORT_ENUMS AXIS2_CALL
+axis2_transport_in_desc_get_enum(
     const axis2_transport_in_desc_t *transport_in,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_transport_in_desc_set_qname(
+axis2_transport_in_desc_set_enum(
     axis2_transport_in_desc_t *transport_in,
     const axis2_env_t *env,
-    const axis2_qname_t *qname);
+    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
 axis2_flow_t *AXIS2_CALL
 axis2_transport_in_desc_get_in_flow(
@@ -128,14 +128,13 @@ axis2_transport_in_desc_is_param_locked(
 
 
 AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
-axis2_transport_in_desc_create_with_qname(
+axis2_transport_in_desc_create(
     const axis2_env_t *env,
-    const axis2_qname_t *qname)
+    const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     transport_in_impl = (axis2_transport_in_desc_impl_t *) AXIS2_MALLOC(env->
             allocator, sizeof(axis2_transport_in_desc_impl_t));
@@ -146,7 +145,7 @@ axis2_transport_in_desc_create_with_qname(
         return NULL;
     }
 
-    transport_in_impl->qname = NULL;
+    transport_in_impl->trans_enum = trans_enum;
     transport_in_impl->in_phase = NULL;
     transport_in_impl->fault_phase = NULL;
     transport_in_impl->in_flow = NULL;
@@ -163,8 +162,6 @@ axis2_transport_in_desc_create_with_qname(
         return NULL;
     }
 
-    transport_in_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
-
     transport_in_impl->transport_in.ops =
         AXIS2_MALLOC(env->allocator, sizeof(axis2_transport_in_desc_ops_t));
     if (NULL == transport_in_impl->transport_in.ops)
@@ -178,10 +175,10 @@ axis2_transport_in_desc_create_with_qname(
     transport_in_impl->transport_in.ops->free_void_arg =
         axis2_transport_in_desc_free_void_arg;
 
-    transport_in_impl->transport_in.ops->get_qname =
-        axis2_transport_in_desc_get_qname;
-    transport_in_impl->transport_in.ops->set_qname =
-        axis2_transport_in_desc_set_qname;
+    transport_in_impl->transport_in.ops->get_enum =
+        axis2_transport_in_desc_get_enum;
+    transport_in_impl->transport_in.ops->set_enum =
+        axis2_transport_in_desc_set_enum;
     transport_in_impl->transport_in.ops->get_in_flow =
         axis2_transport_in_desc_get_in_flow;
     transport_in_impl->transport_in.ops->set_in_flow =
@@ -242,12 +239,6 @@ axis2_transport_in_desc_free(
         transport_in->param_container = NULL;
     }
 
-    if (transport_in_impl->qname)
-    {
-        AXIS2_QNAME_FREE(transport_in_impl->qname, env);
-        transport_in_impl->qname = NULL;
-    }
-
     if (transport_in_impl->in_flow)
     {
         AXIS2_FLOW_FREE(transport_in_impl->in_flow, env);
@@ -290,34 +281,28 @@ axis2_transport_in_desc_free_void_arg(
     return axis2_transport_in_desc_free(transport_in_l, env);
 }
 
-const axis2_qname_t *AXIS2_CALL
-axis2_transport_in_desc_get_qname(
+AXIS2_TRANSPORT_ENUMS AXIS2_CALL
+axis2_transport_in_desc_get_enum(
     const axis2_transport_in_desc_t *transport_in,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(transport_in)->qname;
+    return AXIS2_INTF_TO_IMPL(transport_in)->trans_enum;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_transport_in_desc_set_qname(
+axis2_transport_in_desc_set_enum(
     axis2_transport_in_desc_t *transport_in,
     const axis2_env_t *env,
-    const axis2_qname_t *qname)
+    const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
     axis2_transport_in_desc_impl_t *transport_in_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
 
     transport_in_impl = AXIS2_INTF_TO_IMPL(transport_in);
 
-    if (transport_in_impl->qname)
-    {
-        AXIS2_QNAME_FREE(transport_in_impl->qname, env);
-        transport_in_impl->qname = NULL;
-    }
-    transport_in_impl->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
+    transport_in_impl->trans_enum = trans_enum;
     return AXIS2_SUCCESS;
 }
 

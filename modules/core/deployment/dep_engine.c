@@ -1331,16 +1331,14 @@ axis2_dep_engine_add_module_flow_handlers(
     {
         axis2_handler_desc_t *handlermd = NULL;
         axis2_handler_t *handler = NULL;
-        const axis2_qname_t *handler_qname = NULL;
-        axis2_char_t *handler_name = NULL;
+        const axis2_string_t *handler_name = NULL;
         AXIS2_HANDLER_CREATE_FUNC handler_create_func = NULL;
 
         handlermd = AXIS2_FLOW_GET_HANDLER(flow, env, j);
-        handler_qname = AXIS2_HANDLER_DESC_GET_QNAME(handlermd, env);
-        handler_name = AXIS2_QNAME_GET_LOCALPART(handler_qname, env);
+        handler_name = AXIS2_HANDLER_DESC_GET_NAME(handlermd, env);
         handler_create_func = axis2_hash_get(handler_create_func_map,
-                handler_name, AXIS2_HASH_KEY_STRING);
-        handler = handler_create_func(env, handler_qname);
+                axis2_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
+        handler = handler_create_func(env, handler_name);
         AXIS2_HANDLER_INIT(handler, env, handlermd);
         AXIS2_HANDLER_DESC_SET_HANDLER(handlermd, env, handler);
     }

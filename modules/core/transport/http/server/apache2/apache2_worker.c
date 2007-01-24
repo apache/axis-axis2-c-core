@@ -158,9 +158,8 @@ axis2_apache2_worker_process_request(
     int send_status = -1;
     axis2_char_t *content_type = NULL;
     axis2_property_t *property = NULL;
-    axis2_url_t *url = NULL;
+    /*axis2_url_t *url = NULL;*/
     axis2_http_out_transport_info_t *apache2_out_transport_info = NULL;
-    axis2_qname_t *transport_qname = NULL;
     axis2_char_t *ctx_uuid = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
@@ -168,9 +167,9 @@ axis2_apache2_worker_process_request(
 
     apache2_worker_impl = AXIS2_INTF_TO_IMPL(apache2_worker);
     conf_ctx = apache2_worker_impl->conf_ctx;
-    url = axis2_url_create(env, "http",
+    /*url = axis2_url_create(env, "http",
             (axis2_char_t *)ap_get_server_name(request),
-            ap_get_server_port(request), request->unparsed_uri);
+            ap_get_server_port(request), request->unparsed_uri);*/
     if (NULL == conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
@@ -179,7 +178,8 @@ axis2_apache2_worker_process_request(
     }
     content_length = request->remaining;
     http_version = request->protocol;
-    req_url = AXIS2_URL_TO_EXTERNAL_FORM(url, env);
+    /*req_url = AXIS2_URL_TO_EXTERNAL_FORM(url, env);*/
+    req_url = request->unparsed_uri;
 
     content_type = (axis2_char_t *)apr_table_get(request->headers_in,
             AXIS2_HTTP_HEADER_CONTENT_TYPE);
@@ -201,15 +201,12 @@ axis2_apache2_worker_process_request(
 
     encoding_header_value = (axis2_char_t*)request->content_encoding;
 
-    transport_qname = axis2_qname_create(env, AXIS2_TRANSPORT_HTTP, NULL,
-            NULL);
     out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(AXIS2_CONF_CTX_GET_CONF
             (apache2_worker_impl->conf_ctx, env), env,
-            transport_qname);
+            AXIS2_TRANSPORT_ENUM_HTTP);
     in_desc = AXIS2_CONF_GET_TRANSPORT_IN(AXIS2_CONF_CTX_GET_CONF
             (apache2_worker_impl->conf_ctx, env), env,
-            transport_qname);
-    AXIS2_QNAME_FREE(transport_qname, env);
+            AXIS2_TRANSPORT_ENUM_HTTP);
 
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
@@ -333,7 +330,8 @@ axis2_apache2_worker_process_request(
         ap_rwrite(body_string, body_string_len, request);
         body_string = NULL;
     }
-    if (url)
+    
+    /*if (url)
     {
         AXIS2_URL_FREE(url, env);
         url = NULL;
@@ -342,7 +340,8 @@ axis2_apache2_worker_process_request(
     {
         AXIS2_FREE(env->allocator, req_url);
         req_url = NULL;
-    }
+    }*/
+    
     if (request_body)
     {
         AXIS2_STREAM_FREE(request_body, env);

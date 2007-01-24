@@ -48,11 +48,11 @@ typedef struct axis2_options_impl
 
     axis2_transport_in_desc_t *transport_in;
 
-    axis2_char_t *transport_in_protocol;
+    AXIS2_TRANSPORT_ENUMS transport_in_protocol;
 
     /** for sending and receiving messages */
     axis2_transport_out_desc_t *transport_out;
-    axis2_char_t *sender_transport_protocol;
+    AXIS2_TRANSPORT_ENUMS sender_transport_protocol;
 
     axis2_bool_t manage_session;
     axis2_bool_t enable_mtom;
@@ -100,7 +100,7 @@ axis2_options_get_transport_in(
     const axis2_options_t *options,
     const axis2_env_t *env);
 
-const axis2_char_t *AXIS2_CALL
+AXIS2_TRANSPORT_ENUMS AXIS2_CALL
 axis2_options_get_transport_in_protocol(
     const axis2_options_t *options,
     const axis2_env_t *env);
@@ -136,7 +136,7 @@ axis2_options_get_transport_out(
     const axis2_options_t *options,
     const axis2_env_t *env);
 
-const axis2_char_t *AXIS2_CALL
+AXIS2_TRANSPORT_ENUMS AXIS2_CALL
 axis2_options_get_sender_transport_protocol(
     const axis2_options_t *options,
     const axis2_env_t *env);
@@ -213,7 +213,7 @@ axis2_status_t AXIS2_CALL
 axis2_options_set_transport_in_protocol(
     axis2_options_t *options,
     const axis2_env_t *env,
-    const axis2_char_t *transport_in_protocol);
+    const AXIS2_TRANSPORT_ENUMS transport_in_protocol);
 
 
 axis2_status_t AXIS2_CALL
@@ -259,7 +259,7 @@ axis2_status_t AXIS2_CALL
 axis2_options_set_sender_transport(
     axis2_options_t *options,
     const axis2_env_t *env,
-    const axis2_char_t *sender_transport,
+    const AXIS2_TRANSPORT_ENUMS sender_transport,
     axis2_conf_t *conf);
 
 axis2_status_t AXIS2_CALL
@@ -278,8 +278,8 @@ axis2_status_t AXIS2_CALL
 axis2_options_set_transport_info(
     axis2_options_t *options,
     const axis2_env_t *env,
-    const axis2_char_t *sender_transport,
-    const axis2_char_t *receiver_transport,
+    const AXIS2_TRANSPORT_ENUMS sender_transport,
+    const AXIS2_TRANSPORT_ENUMS receiver_transport,
     const axis2_bool_t use_separate_listener);
 
 axis2_status_t AXIS2_CALL
@@ -531,7 +531,7 @@ axis2_options_get_transport_in(
     return options_impl->transport_in;
 }
 
-const axis2_char_t *AXIS2_CALL
+AXIS2_TRANSPORT_ENUMS AXIS2_CALL
 axis2_options_get_transport_in_protocol(const axis2_options_t *options,
         const axis2_env_t *env)
 {
@@ -540,7 +540,7 @@ axis2_options_get_transport_in_protocol(const axis2_options_t *options,
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    if (options_impl->transport_in_protocol == NULL && options_impl->parent)
+    if (options_impl->parent)
     {
         return axis2_options_get_transport_in_protocol(options_impl->parent, env);
     }
@@ -666,7 +666,7 @@ axis2_options_get_transport_out(
     return options_impl->transport_out;
 }
 
-const axis2_char_t *AXIS2_CALL
+AXIS2_TRANSPORT_ENUMS AXIS2_CALL
 axis2_options_get_sender_transport_protocol(
     const axis2_options_t *options,
     const axis2_env_t *env)
@@ -677,7 +677,7 @@ axis2_options_get_sender_transport_protocol(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    if (options_impl->sender_transport_protocol == NULL && options_impl->parent)
+    if (options_impl->parent)
     {
         return axis2_options_get_sender_transport_protocol(options_impl->parent, env);
     }
@@ -874,11 +874,11 @@ axis2_status_t AXIS2_CALL
 axis2_options_set_transport_in_protocol(
     axis2_options_t *options,
     const axis2_env_t *env,
-    const axis2_char_t *transport_in_protocol)
+    const AXIS2_TRANSPORT_ENUMS transport_in_protocol)
 {
     axis2_options_impl_t *options_impl = NULL;
     options_impl = AXIS2_INTF_TO_IMPL(options);
-    options_impl->transport_in_protocol = (axis2_char_t *)transport_in_protocol;
+    options_impl->transport_in_protocol = transport_in_protocol;
     return AXIS2_SUCCESS;
 }
 
@@ -976,24 +976,15 @@ axis2_status_t AXIS2_CALL
 axis2_options_set_sender_transport(
     axis2_options_t *options,
     const axis2_env_t *env,
-    const axis2_char_t *sender_transport,
+    const AXIS2_TRANSPORT_ENUMS sender_transport,
     axis2_conf_t *conf)
 {
     axis2_options_impl_t *options_impl = NULL;
-    axis2_qname_t *tmp = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    tmp = axis2_qname_create(env, sender_transport, NULL, NULL);
-    if (!tmp)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-
-    options_impl->transport_out = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, tmp);
-    AXIS2_QNAME_FREE(tmp, env);
+    options_impl->transport_out = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, sender_transport);
 
     if (!(options_impl->transport_out))
     {
@@ -1046,8 +1037,8 @@ axis2_status_t AXIS2_CALL
 axis2_options_set_transport_info(
     axis2_options_t *options,
     const axis2_env_t *env,
-    const axis2_char_t *sender_transport,
-    const axis2_char_t *receiver_transport,
+    const AXIS2_TRANSPORT_ENUMS sender_transport,
+    const AXIS2_TRANSPORT_ENUMS receiver_transport,
     const axis2_bool_t use_separate_listener)
 {
     axis2_options_impl_t *options_impl = NULL;
@@ -1059,7 +1050,7 @@ axis2_options_set_transport_info(
       */
     if (!use_separate_listener)
     {
-        if (0 != strcmp(sender_transport, receiver_transport))
+        if (sender_transport != receiver_transport)
         {
             /*TODO:error*/
             return AXIS2_FAILURE;
@@ -1072,7 +1063,7 @@ axis2_options_set_transport_info(
                 env, use_separate_listener);
     }
     axis2_options_set_transport_in_protocol(&(options_impl->options), env, receiver_transport);
-    options_impl->sender_transport_protocol = (axis2_char_t *)sender_transport;
+    options_impl->sender_transport_protocol = sender_transport;
 
     return AXIS2_SUCCESS;
 }
@@ -1225,18 +1216,6 @@ axis2_options_free(
         options_impl->soap_version_uri = NULL;
     }
 
-    if (options_impl->transport_in_protocol)
-    {
-        AXIS2_FREE(env->allocator, options_impl->transport_in_protocol);
-        options_impl->transport_in_protocol = NULL;
-    }
-
-    if (options_impl->sender_transport_protocol)
-    {
-        AXIS2_FREE(env->allocator, options_impl->sender_transport_protocol);
-        options_impl->sender_transport_protocol = NULL;
-    }
-
     if (options_impl->msg_info_headers)
     {
         AXIS2_MSG_INFO_HEADERS_FREE(options_impl->msg_info_headers, env);
@@ -1268,9 +1247,9 @@ axis2_options_init_data(
 
     options_impl->receiver = NULL;
     options_impl->transport_in = NULL;
-    options_impl->transport_in_protocol = NULL;
+    options_impl->transport_in_protocol = AXIS2_TRANSPORT_ENUM_HTTP;
     options_impl->transport_out = NULL;
-    options_impl->sender_transport_protocol = NULL;
+    options_impl->sender_transport_protocol = AXIS2_TRANSPORT_ENUM_HTTP;
     options_impl->manage_session = -1;
     options_impl->soap_version = AXIOM_SOAP12;
     options_impl->enable_mtom = AXIS2_FALSE;

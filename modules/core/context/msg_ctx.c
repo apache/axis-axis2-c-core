@@ -83,7 +83,7 @@ struct axis2_msg_ctx
     /** paused phase name */
     axis2_char_t *paused_phase_name;
     /** paused handler name */
-    axis2_qname_t *paused_handler_name;
+    axis2_string_t *paused_handler_name;
     /** SOAP action */
     axis2_char_t *soap_action;
     /** are we doing MTOM now? */
@@ -97,9 +97,9 @@ struct axis2_msg_ctx
     /** service group context id */
     axis2_char_t *svc_grp_ctx_id;
     /** qname of transport in */
-    axis2_qname_t *transport_in_desc_qname;
+    AXIS2_TRANSPORT_ENUMS transport_in_desc_enum;
     /** qname of transport out */
-    axis2_qname_t *transport_out_desc_qname;
+    AXIS2_TRANSPORT_ENUMS transport_out_desc_enum;
     /** service group id */
     axis2_char_t *svc_grp_id;
     /** service description qname */
@@ -194,8 +194,8 @@ axis2_msg_ctx_create(
     msg_ctx->do_rest_through_post = AXIS2_FALSE;
     msg_ctx->is_soap_11 = AXIS2_FALSE;
     msg_ctx->svc_grp_ctx_id = NULL;
-    msg_ctx->transport_in_desc_qname = NULL;
-    msg_ctx->transport_out_desc_qname = NULL;
+    msg_ctx->transport_in_desc_enum = AXIS2_TRANSPORT_ENUM_MAX;
+    msg_ctx->transport_out_desc_enum = AXIS2_TRANSPORT_ENUM_MAX;
     msg_ctx->svc_grp_id = NULL;
     msg_ctx->svc_qname = NULL;
     msg_ctx->op_qname = NULL;
@@ -222,11 +222,11 @@ axis2_msg_ctx_create(
         msg_ctx->conf_ctx = conf_ctx;
 
     if (msg_ctx->transport_in_desc)
-        msg_ctx->transport_in_desc_qname =
-            (axis2_qname_t *)AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env);
+        msg_ctx->transport_in_desc_enum =
+            AXIS2_TRANSPORT_IN_DESC_GET_ENUM(transport_in_desc, env);
     if (msg_ctx->transport_out_desc)
-        msg_ctx->transport_out_desc_qname =
-            (axis2_qname_t *)AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env);
+        msg_ctx->transport_out_desc_enum =
+            AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out_desc, env);
 
     msg_ctx->msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
     if (!(msg_ctx->msg_info_headers))
@@ -360,17 +360,11 @@ axis2_msg_ctx_init(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
-    if (msg_ctx->transport_in_desc_qname)
-    {
-        msg_ctx->transport_in_desc = AXIS2_CONF_GET_TRANSPORT_IN(conf, env,
-                msg_ctx->transport_in_desc_qname);
-    }
+    msg_ctx->transport_in_desc = AXIS2_CONF_GET_TRANSPORT_IN(conf, env,
+        msg_ctx->transport_in_desc_enum);
 
-    if (msg_ctx->transport_out_desc_qname)
-    {
-        msg_ctx->transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf,
-                env, msg_ctx->transport_out_desc_qname);
-    }
+    msg_ctx->transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf,
+        env, msg_ctx->transport_out_desc_enum);
 
     if (msg_ctx->svc_grp_id)
     {
@@ -910,8 +904,8 @@ axis2_msg_ctx_set_transport_in_desc(
     if (transport_in_desc)
     {
         msg_ctx->transport_in_desc = transport_in_desc;
-        msg_ctx->transport_in_desc_qname =
-            (axis2_qname_t *)AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env);
+        msg_ctx->transport_in_desc_enum =
+            AXIS2_TRANSPORT_IN_DESC_GET_ENUM(transport_in_desc, env);
     }
 
     return AXIS2_SUCCESS;
@@ -928,8 +922,8 @@ axis2_msg_ctx_set_transport_out_desc(
     if (transport_out_desc)
     {
         msg_ctx->transport_out_desc = transport_out_desc;
-        msg_ctx->transport_out_desc_qname =
-            (axis2_qname_t *)AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env);
+        msg_ctx->transport_out_desc_enum =
+            AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out_desc, env);
     }
 
     return AXIS2_SUCCESS;
@@ -1372,7 +1366,7 @@ axis2_msg_ctx_set_property(
     return AXIS2_CTX_SET_PROPERTY(msg_ctx->base, env, key, value, persistent);
 }
 
-const axis2_qname_t *AXIS2_CALL
+const axis2_string_t *AXIS2_CALL
 axis2_msg_ctx_get_paused_handler_name(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
@@ -1853,7 +1847,7 @@ axis2_msg_ctx_set_current_handler_index(
         if (handler)
         {
             msg_ctx->paused_handler_name =
-                (axis2_qname_t *)AXIS2_HANDLER_GET_QNAME(handler, env);
+                (axis2_string_t *)AXIS2_HANDLER_GET_NAME(handler, env);
         }
     }
     return AXIS2_SUCCESS;

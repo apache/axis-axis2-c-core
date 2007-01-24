@@ -43,6 +43,7 @@
 #include <axis2_msg.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
+const axis2_char_t * AXIS2_TRANS_UTIL_DEFAULT_CHAR_ENCODING =  AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING;
 
 /***************************** Function headers *******************************/
 
@@ -907,7 +908,7 @@ axis2_http_transport_utils_get_charset_enc(
     tmp_content_type = (axis2_char_t *)content_type;
     if (!tmp_content_type)
     {
-        return axis2_string_create_const(env, AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING);
+        return axis2_string_create_const(env, (axis2_char_t**)&AXIS2_TRANS_UTIL_DEFAULT_CHAR_ENCODING);
     }
 
     tmp = strstr(tmp_content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
@@ -953,7 +954,7 @@ axis2_http_transport_utils_get_charset_enc(
     }
     else
     {
-        str = axis2_string_create_const(env, AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING);
+        str = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_TRANS_UTIL_DEFAULT_CHAR_ENCODING);
     }
     return str;
 }

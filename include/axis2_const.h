@@ -108,22 +108,21 @@ extern "C"
 #define AXIS2_SESSION_CONTEXT_PROPERTY "SessionContext"
 
 /**
- * Field TRANSPORT_TCP
- */
-#define AXIS2_TRANSPORT_TCP "tcp"
-
-/**
- * Field TRANSPORT_HTTP
+ * TRANSPORT constants
  */
 #define AXIS2_TRANSPORT_HTTP "http"
+#define AXIS2_TRANSPORT_SMTP "smtp"
+#define AXIS2_TRANSPORT_TCP "tcp"
+#define AXIS2_TRANSPORT_XMPP "xmpp"
 
-
-
-#define AXIS2_TRANSPORT_MAIL "mail"
-
-#define AXIS2_TRANSPORT_JMS "jms"
-
-#define AXIS2_TRANSPORT_LOCAL "local"
+typedef enum
+{
+    AXIS2_TRANSPORT_ENUM_HTTP = 0,
+    AXIS2_TRANSPORT_ENUM_SMTP,
+    AXIS2_TRANSPORT_ENUM_TCP,
+    AXIS2_TRANSPORT_ENUM_XMPP,
+    AXIS2_TRANSPORT_ENUM_MAX
+} AXIS2_TRANSPORT_ENUMS;
 
 /**
  * Field LISTSERVICES

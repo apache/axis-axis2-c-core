@@ -92,7 +92,7 @@ axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
 axis2_addr_in_handler_create(const axis2_env_t *env,
-        axis2_qname_t *qname)
+        axis2_string_t *name)
 {
     axis2_handler_t *handler = NULL;
 

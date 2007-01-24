@@ -18,7 +18,7 @@
 
 #include <axis2_disp.h>
 #include <axis2_handler_desc.h>
-#include <axis2_qname.h>
+#include <axis2_string.h>
 #include <axis2_relates_to.h>
 #include <axis2_svc.h>
 #include <axis2_const.h>
@@ -26,7 +26,7 @@
 #include <axis2_addr.h>
 #include <axis2_utils.h>
 
-#define AXIS2_SOAP_ACTION_DISP_NAME "soap_action_based_dispatcher"
+const axis2_char_t *AXIS2_SOAP_ACTION_DISP_NAME = "soap_action_based_dispatcher";
 
 axis2_status_t AXIS2_CALL
 axiom_soap_action_disp_invoke(
@@ -51,15 +51,13 @@ axiom_soap_action_disp_create(
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
-    axis2_qname_t *qname = NULL;
+    axis2_string_t *name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    qname = axis2_qname_create(env, AXIS2_SOAP_ACTION_DISP_NAME,
-            AXIS2_DISP_NAMESPACE,
-            NULL);
+    name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_SOAP_ACTION_DISP_NAME);
 
-    disp = axis2_disp_create(env, qname);
+    disp = axis2_disp_create(env, name);
     if (!disp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -75,7 +73,7 @@ axiom_soap_action_disp_create(
 
     handler->ops->invoke = axiom_soap_action_disp_invoke;
 
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_string_free(name, env);
 
     return disp;
 }

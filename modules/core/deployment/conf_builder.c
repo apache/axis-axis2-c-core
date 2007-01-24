@@ -723,7 +723,6 @@ axis2_conf_builder_process_transport_senders(
             axis2_char_t *dll_name = NULL;
             axis2_char_t *class_name = NULL;
             axiom_children_qname_iterator_t *itr = NULL;
-            axis2_qname_t *qname = NULL;
             axis2_qname_t *qparamst = NULL;
             axis2_qname_t *qinflowst = NULL;
             axis2_qname_t *qoutflowst = NULL;
@@ -746,11 +745,25 @@ axis2_conf_builder_process_transport_senders(
             axis2_char_t *temp_path = NULL;
             axis2_char_t *temp_path2 = NULL;
             axis2_char_t *temp_path3 = NULL;
+            AXIS2_TRANSPORT_ENUMS transport_enum;
 
             name = AXIOM_ATTRIBUTE_GET_VALUE(trs_name, env);
-            qname = axis2_qname_create(env, name, NULL, NULL);
-            transport_out = axis2_transport_out_desc_create_with_qname(env, qname);
-            AXIS2_QNAME_FREE(qname, env);
+            if (name)
+            {
+                if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
+                else if (axis2_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
+                else if (axis2_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
+                else if (axis2_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
+                else
+                    return AXIS2_FAILURE;
+                
+                transport_out = axis2_transport_out_desc_create(env, transport_enum);
+            }
+
             if (NULL == transport_out)
             {
                 return AXIS2_FAILURE;
@@ -889,7 +902,7 @@ axis2_conf_builder_process_transport_senders(
 
             /* adding to axis config */
             status = AXIS2_CONF_ADD_TRANSPORT_OUT(builder_impl->conf, env,
-                    transport_out);
+                    transport_out, transport_enum);
             if (AXIS2_SUCCESS != status)
             {
                 AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
@@ -951,7 +964,6 @@ axis2_conf_builder_process_transport_recvs(
             axis2_char_t *name = NULL;
             axiom_attribute_t *trs_class_name = NULL;
             axiom_children_qname_iterator_t *itr = NULL;
-            axis2_qname_t *transport_in_desc_qname = NULL;
             axis2_qname_t *class_qname = NULL;
             axis2_qname_t *qparamst = NULL;
             axis2_qname_t *qinflowst = NULL;
@@ -966,13 +978,25 @@ axis2_conf_builder_process_transport_recvs(
             axiom_node_t *in_fault_flow_node = NULL;
             axiom_element_t *out_fault_flow_element = NULL;
             axiom_node_t *out_fault_flow_node = NULL;
-
+            AXIS2_TRANSPORT_ENUMS transport_enum;
 
             name = AXIOM_ATTRIBUTE_GET_VALUE(trs_name, env);
-            transport_in_desc_qname = axis2_qname_create(env, name, NULL, NULL);
-            transport_in = axis2_transport_in_desc_create_with_qname(env,
-                    transport_in_desc_qname);
-            AXIS2_QNAME_FREE(transport_in_desc_qname, env);
+            if (name)
+            {
+                if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
+                else if (axis2_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
+                else if (axis2_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
+                else if (axis2_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
+                else
+                    return AXIS2_FAILURE;
+
+                transport_in = axis2_transport_in_desc_create(env,
+                    transport_enum);
+            }
             if (!transport_in)
             {
                 return AXIS2_FAILURE;
@@ -1115,7 +1139,7 @@ axis2_conf_builder_process_transport_recvs(
 
             /* adding to axis config */
             status = AXIS2_CONF_ADD_TRANSPORT_IN(builder_impl->conf, env,
-                    transport_in);
+                    transport_in, transport_enum);
             if (AXIS2_SUCCESS != status)
             {
                 AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);

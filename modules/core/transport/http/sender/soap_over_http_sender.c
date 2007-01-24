@@ -207,6 +207,7 @@ axis2_soap_over_http_sender_send(
     axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
     axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *buffer = NULL;
+    unsigned int buffer_size = 0;
     const axis2_char_t *char_set_enc = NULL;
     axis2_string_t *char_set_enc_str = NULL;
     int status_code = -1;
@@ -348,20 +349,16 @@ axis2_soap_over_http_sender_send(
         AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     }
 
+    buffer_size = AXIOM_XML_WRITER_GET_XML_SIZE(xml_writer, env);
     if (AXIS2_FALSE == sender_impl->chunked)
     {
         axis2_char_t tmp_buf[10];
-        int size = 0;
-        if (buffer)
+        if (!buffer)
         {
-            size = strlen(buffer);
-        }
-        else
-        {
-            size = output_stream_size;
+            buffer_size = output_stream_size;
         }
 
-        sprintf(tmp_buf, "%d", size);
+        sprintf(tmp_buf, "%d", buffer_size);
         http_header = axis2_http_header_create(env,
                 AXIS2_HTTP_HEADER_CONTENT_LENGTH, tmp_buf);
         AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
@@ -461,7 +458,7 @@ axis2_soap_over_http_sender_send(
     }
     else
     {
-        AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
+        AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer, buffer_size);
     }
 
 	axis2_soap_over_http_sender_configure_server_cert(sender, env, msg_ctx);
@@ -473,8 +470,8 @@ axis2_soap_over_http_sender_send(
     status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request);
 
 
-    AXIS2_FREE(env->allocator, buffer);
-    buffer = NULL;
+    /*AXIS2_FREE(env->allocator, buffer);
+    buffer = NULL;*/
 
     AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, env);
     request = NULL;
@@ -781,7 +778,6 @@ axis2_soap_over_http_sender_configure_proxy(
     axis2_conf_t *conf = NULL;
     axis2_transport_out_desc_t *trans_desc = NULL;
     axis2_param_t *proxy_param = NULL;
-    axis2_qname_t *transport_qname = NULL;
     axis2_hash_t *transport_attrs = NULL;
     axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
 
@@ -799,17 +795,13 @@ axis2_soap_over_http_sender_configure_proxy(
     {
         return AXIS2_FAILURE;
     }
-    transport_qname = axis2_qname_create(env, "http", NULL, NULL);
-    if (transport_qname == NULL)
-    {
-        return AXIS2_FAILURE;
-    }
-    trans_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, transport_qname);
-    AXIS2_QNAME_FREE(transport_qname, env);
+    
+    trans_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
     if (NULL == trans_desc)
     {
         return AXIS2_FAILURE;
     }
+
     proxy_param = AXIS2_PARAM_CONTAINER_GET_PARAM(trans_desc->param_container,
             env, AXIS2_HTTP_PROXY);
     if (proxy_param)

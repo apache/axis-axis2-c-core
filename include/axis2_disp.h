@@ -36,7 +36,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_qname.h>
+#include <axis2_string.h>
 #include <axis2_handler.h>
 #include <axis2_svc.h>
 
@@ -71,30 +71,30 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Gets the qname of the dispatcher.
+         * Gets the name of the dispatcher.
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
-         * @return pointer to qname. Returns a reference, not a 
+         * @return pointer to name. Returns a reference, not a 
          * cloned copy
          */
-        axis2_qname_t *(AXIS2_CALL *
-                get_qname)(
+        axis2_string_t *(AXIS2_CALL *
+                get_name)(
                     const axis2_disp_t *disp,
                     const axis2_env_t *env);
 
         /**
-         * Sets the qname of the dispatcher.
+         * Sets the name of the dispatcher.
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
-         * @param qname pointer to qname, dispatcher assumes ownership of the 
-         * qname struct
+         * @param name pointer to name, dispatcher assumes ownership of the 
+         * name struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_qname)(
+                set_name)(
                     axis2_disp_t *disp,
                     const axis2_env_t *env, 
-                    axis2_qname_t *qname);
+                    axis2_string_t *name);
 
         /**
          * Frees dispatcher struct.
@@ -152,13 +152,13 @@ extern "C"
     /**
      * Creates a dispatcher struct instance.
      * @param env pointer to environment struct
-     * @param qname pointer to QName. QName is cloned by create method.
+     * @param name pointer to QName. QName is cloned by create method.
      * @return pointer to newly created dispatcher
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
     axis2_disp_create(
         const axis2_env_t *env, 
-        const axis2_qname_t *qname);
+        const axis2_string_t *name);
 
     /**
      * Invokes the dispatcher.
@@ -221,14 +221,14 @@ extern "C"
         ((disp)->ops->get_base(disp, env))
 
 /** Gets QName.
-    @sa axis2_disp_ops#get_qname */
-#define AXIS2_DISP_GET_QNAME(disp, env) \
-        ((disp)->ops->get_qname(disp, env))
+    @sa axis2_disp_ops#get_name */
+#define AXIS2_DISP_GET_NAME(disp, env) \
+        ((disp)->ops->get_name(disp, env))
 
 /** Sets QName.
-    @sa axis2_disp_ops#set_qname */
+    @sa axis2_disp_ops#set_name */
 #define AXIS2_DISP_SET_QNAME(disp, env, name) \
-        ((disp)->ops->set_qname(disp, env, name))
+        ((disp)->ops->set_name(disp, env, name))
 
 /** Frees dispatcher.
     @sa axis2_disp_ops#free */

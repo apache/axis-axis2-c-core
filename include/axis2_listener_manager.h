@@ -72,7 +72,7 @@ extern "C"
                 make_sure_started)(
                     axis2_listener_manager_t *listener_manager,
                     const axis2_env_t *env,
-                    const axis2_char_t *transport,
+                    const AXIS2_TRANSPORT_ENUMS transport,
                     axis2_conf_ctx_t *conf_ctx);
 
        /**
@@ -86,7 +86,7 @@ extern "C"
                 stop)(
                     axis2_listener_manager_t *listener_manager,
                     const axis2_env_t *env,
-                    const axis2_char_t *transport);
+                    const AXIS2_TRANSPORT_ENUMS transport);
         /**
          * Gets reply to end point reference. The engine will direct the 
          * response for the message to this reply to address.
@@ -102,7 +102,7 @@ extern "C"
                 const axis2_listener_manager_t *listener_manager,
                 const axis2_env_t *env,
                 const axis2_char_t *svc_name,
-                const axis2_char_t *transport);
+                const AXIS2_TRANSPORT_ENUMS transport);
 
         /**
          * Gets the configuration context that holds information on the transports 

@@ -56,7 +56,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_string_t* AXIS2_CALL
     axis2_string_create_const(const axis2_env_t *env,
-        const axis2_char_t *str);
+        axis2_char_t **str);
 
     /**
      * Frees string struct.

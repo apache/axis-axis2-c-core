@@ -40,7 +40,6 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_allocator.h>
-#include <axis2_qname.h>
 #include <axis2_array_list.h>
 #include <axis2_phase_meta.h>
 #include <axis2_phase.h>
@@ -90,28 +89,28 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Gets QName.
+         * Gets transport enum.
          * @param transport_out pointer to transport_out
          * @param env pointer to environment struct
-         * @return pointer to QName, returns a reference, not a cloned copy
+         * @return transport enum 
          */
-        const axis2_qname_t *(AXIS2_CALL *
-                get_qname)(
+        AXIS2_TRANSPORT_ENUMS (AXIS2_CALL *
+                get_enum)(
                     const axis2_transport_out_desc_t *transport_out,
                     const axis2_env_t *env);
 
         /**
-         * Sets QName.
+         * Sets transport enum.
          * @param transport_out pointer to transport_out
          * @param env pointer to environment struct
-         * @param qname pointer to QName, this method creates a clone of QName
+         * @param trans_enum transport enum
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_qname)(
+                set_enum)(
                     struct axis2_transport_out_desc *transport_out,
                     const axis2_env_t *env,
-                    const axis2_qname_t *qname);
+                    const AXIS2_TRANSPORT_ENUMS trans_enum);
 
         /**
          * Gets out flow. Out flow represents the list of phases invoked 
@@ -297,16 +296,15 @@ extern "C"
     };
 
     /**
-     * Creates transport out description with given QName.
+     * Creates transport out description with given transport enum.
      * @param env pointer to environment struct
-     * @param qname pointer to QName, newly created transport out description
-     * creates a clone of this
+     * @param trans_enum pointer to transport enum
      * @return pointer to newly created transport out
      */
     AXIS2_EXTERN axis2_transport_out_desc_t * AXIS2_CALL
-    axis2_transport_out_desc_create_with_qname (
+    axis2_transport_out_desc_create(
         const axis2_env_t *env,
-        const axis2_qname_t *qname);
+        const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
      * Frees transport out description given as a void pointer.
@@ -325,15 +323,15 @@ extern "C"
 #define AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out_desc, env) \
       ((transport_out_desc)->ops->free (transport_out_desc, env))
 
-/** Gets QName.
-    @sa axis2_transport_out_desc_ops#get_qname */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env) \
-      ((transport_out_desc)->ops->get_qname (transport_out_desc, env))
+/** Gets transport enum.
+    @sa axis2_transport_out_desc_ops#get_enum */
+#define AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out_desc, env) \
+      ((transport_out_desc)->ops->get_enum (transport_out_desc, env))
 
-/** Sets QName.
-    @sa axis2_transport_out_desc_ops#set_qname */
-#define AXIS2_TRANSPORT_OUT_DESC_SET_QNAME(transport_out_desc, env, qname) \
-      ((transport_out_desc)->ops->set_qname (transport_out_desc, env, qname))
+/** Sets transport enum.
+    @sa axis2_transport_out_desc_ops#set_enum */
+#define AXIS2_TRANSPORT_OUT_DESC_SET_ENUM(transport_out_desc, env, trans_enum) \
+      ((transport_out_desc)->ops->set_enum (transport_out_desc, env, trans_enum))
 
 /** Gets out flow.
     @sa axis2_transport_out_desc_ops#get_out_flow */
