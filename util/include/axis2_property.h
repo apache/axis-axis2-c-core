@@ -93,7 +93,7 @@ extern "C"
     axis2_property_get_value(axis2_property_t *property,
         const axis2_env_t *env);
 
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_property_set_own_value(
         axis2_property_t *property,
         const axis2_env_t *env,
