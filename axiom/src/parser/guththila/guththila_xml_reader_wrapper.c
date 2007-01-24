@@ -488,6 +488,7 @@ guththila_xml_reader_wrapper_free(axiom_xml_reader_t *parser,
 
     if (parser->ops)
         AXIS2_FREE(env->allocator, parser->ops);
+
     AXIS2_FREE(env->allocator, parser_impl);
     return AXIS2_SUCCESS;
 }
@@ -669,4 +670,3 @@ guththila_xml_reader_wrapper_xml_free(axiom_xml_reader_t *parser,
             data);
     return AXIS2_SUCCESS;
 }
-

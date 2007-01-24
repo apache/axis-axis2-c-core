@@ -72,7 +72,10 @@ guththila_free(axis2_env_t * environment,
 		guththila_token_free (environment, parser->name);
 
     if (parser->stack)
+	{
         AXIS2_STACK_FREE(parser->stack, environment);
+	}
+
     if (parser->attrib)
 	{
 		int ii = AXIS2_STACK_SIZE(parser->attrib, environment);
@@ -84,6 +87,7 @@ guththila_free(axis2_env_t * environment,
 		}
         AXIS2_STACK_FREE(parser->attrib, environment);
 	}
+
     if (parser->namesp)
         AXIS2_STACK_FREE(parser->namesp, environment);
     if (parser->dep)

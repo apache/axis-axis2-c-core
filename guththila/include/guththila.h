@@ -618,6 +618,11 @@ AXIS2_EXTERN char * AXIS2_CALL
 guththila_get_memory_buffer (axis2_env_t *environemnt, 
 					     guththila_t *p);
 
+AXIS2_EXTERN unsigned int AXIS2_CALL
+guththila_get_memory_buffer_size(axis2_env_t *env, 
+								 guththila_t *p);
+
+
 AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_writer_free (axis2_env_t *environment,
 					   guththila_t *t);
