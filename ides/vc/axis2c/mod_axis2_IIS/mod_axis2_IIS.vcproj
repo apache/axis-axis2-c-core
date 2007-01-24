@@ -63,6 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="axiom.lib axis2_parser.lib axis2_util.lib axis2_engine.lib axis2_http_receiver.lib axis2_http_sender.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories=".\..\deploy\lib"
 				ModuleDefinitionFile=".\..\..\..\..\modules\core\transport\http\server\IIS\mod_axis2.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
