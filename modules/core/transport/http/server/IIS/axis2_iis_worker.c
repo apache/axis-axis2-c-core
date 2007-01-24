@@ -238,15 +238,13 @@ axis2_iis_worker_process_request(
 	ret_val = lpECB->GetServerVariable(lpECB->ConnID, "CONTENT_ENCODING", encoding_header_value, &cbSize);  
 
     out_stream = axis2_stream_create_basic(env);	
-    transport_qname = axis2_qname_create(env, AXIS2_TRANSPORT_HTTP, NULL,
-            NULL);
+ 
     out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(AXIS2_CONF_CTX_GET_CONF
             (iis_worker_impl->conf_ctx, env), env,
-            transport_qname);
+            AXIS2_TRANSPORT_ENUM_HTTP);
     in_desc = AXIS2_CONF_GET_TRANSPORT_IN(AXIS2_CONF_CTX_GET_CONF
             (iis_worker_impl->conf_ctx, env), env,
-            transport_qname);
-    AXIS2_QNAME_FREE(transport_qname, env);
+            AXIS2_TRANSPORT_ENUM_HTTP);
 
 	msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
