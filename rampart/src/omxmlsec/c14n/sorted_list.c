@@ -60,8 +60,9 @@ sorted_list_insert(
 
    if(compar(val, (*node)->val, ctx)<0)
       sorted_list_insert(&(*node)->left, val, ctx, compar);
-   else /*if(val>(*node)->val)*/
+   else if(compar(val, (*node)->val, ctx)>0)
       sorted_list_insert(&(*node)->right, val, ctx, compar);
+   else; /*neglect if the same ns*/
 }
 
 void 
