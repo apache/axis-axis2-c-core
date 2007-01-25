@@ -1028,9 +1028,9 @@ guththila_write_start_element_with_prefix_and_namespace(axis2_env_t *env, guthth
     int size;
     void *element;
     char *start_element = NULL;
-	unsigned int length;
-	unsigned int prefix_length;
-	unsigned int name_length;
+	unsigned int length = 0;
+	unsigned int prefix_length = 0;
+	unsigned int name_length = 0;
 
     if (prefix && local_name)
 	{
