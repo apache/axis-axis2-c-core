@@ -471,7 +471,7 @@ axis2_conf_ctx_fill_ctxs(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
-    const axis2_char_t *svc_grp_ctx_id = NULL;
+    axis2_char_t *svc_grp_ctx_id = NULL;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_svc_t *svc = NULL;
@@ -512,12 +512,13 @@ axis2_conf_ctx_fill_ctxs(
     svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
     if (svc_grp)
     {
-        svc_grp_ctx_id = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+        svc_grp_ctx_id = (axis2_char_t*)AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
     }
 
     if (!svc_grp_ctx_id)
     {
-        svc_grp_ctx_id = AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env);
+        svc_grp_ctx_id = (axis2_char_t*)axis2_string_get_buffer(
+            AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env), env);
     }
 
     /* by this time service group context id must have a value,
@@ -542,7 +543,13 @@ axis2_conf_ctx_fill_ctxs(
     if (!svc_grp_ctx_id)
     {
         svc_grp_ctx_id = axis2_uuid_gen(env);
-        AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id);
+        if (svc_grp_ctx_id)
+        {
+            axis2_string_t *svc_grp_ctx_id_str = 
+                axis2_string_create_assume_ownership(env, &svc_grp_ctx_id);
+            AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id_str);
+            axis2_string_free(svc_grp_ctx_id_str, env);
+        }
     }
 
     if (!svc_grp_ctx)

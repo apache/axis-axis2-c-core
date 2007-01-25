@@ -79,6 +79,45 @@ axis2_string_create(const axis2_env_t *env,
     return string;
 }
 
+AXIS2_EXTERN axis2_string_t * AXIS2_CALL
+axis2_string_create_assume_ownership(const axis2_env_t *env,
+    axis2_char_t **str)
+{
+    axis2_string_t *string = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+
+    /* str can't be null */
+    if (!str || !(*str))
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
+            AXIS2_FAILURE);
+        return NULL;
+    }
+
+    string = (axis2_string_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_string_t));
+    if (!string)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    /* set properties */
+    string->buffer = *str;    
+    string->length = axis2_strlen(*str);
+    string->ref_count = 1;
+    string->owns_buffer = AXIS2_TRUE;    
+    
+    if (string->length < 1)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
+            AXIS2_FAILURE);
+        axis2_string_free(string, env);
+        return NULL;
+    }
+    
+    return string;
+}
+
 AXIS2_EXTERN axis2_string_t* AXIS2_CALL
 axis2_string_create_const(const axis2_env_t *env,
     axis2_char_t **str)

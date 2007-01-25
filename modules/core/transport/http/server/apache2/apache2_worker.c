@@ -146,7 +146,7 @@ axis2_apache2_worker_process_request(
     axis2_transport_out_desc_t *out_desc = NULL;
     axis2_transport_in_desc_t *in_desc = NULL;
     axis2_char_t *http_version = NULL;
-    axis2_char_t *soap_action = NULL;
+    axis2_string_t *soap_action = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
     axis2_char_t *ctx_written = NULL;
     int content_length = -1;
@@ -217,8 +217,12 @@ axis2_apache2_worker_process_request(
                    axis2_apache2_worker_get_headers(apache2_worker, env, 
                          simple_request), AXIS2_FALSE);*/
     ctx_uuid = axis2_uuid_gen(env);
-    AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, ctx_uuid);
-    AXIS2_FREE(env->allocator, ctx_uuid);
+    if (ctx_uuid)
+    {
+        axis2_string_t *uuid_str = axis2_string_create_assume_ownership(env, &ctx_uuid);
+        AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, uuid_str);
+        axis2_string_free(uuid_str, env);
+    }
 
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
@@ -230,8 +234,9 @@ axis2_apache2_worker_process_request(
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
             property, AXIS2_FALSE);
 
-    soap_action = (axis2_char_t *)apr_table_get(request->headers_in,
-            AXIS2_HTTP_HEADER_SOAP_ACTION);
+    soap_action = axis2_string_create(env, 
+            (axis2_char_t *)apr_table_get(request->headers_in,
+            AXIS2_HTTP_HEADER_SOAP_ACTION));
     request_body = axis2_stream_create_apache2(env, request);
     if (NULL == request_body)
     {
@@ -347,6 +352,8 @@ axis2_apache2_worker_process_request(
     {
         AXIS2_MSG_CTX_FREE(msg_ctx, env);
     }*/
+
+    axis2_string_free(soap_action, env);
 
     msg_ctx = NULL;
     return send_status;

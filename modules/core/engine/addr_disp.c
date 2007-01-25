@@ -238,8 +238,10 @@ axis2_addr_disp_invoke(
                             svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
                             if (svc_grp_ctx)
                             {
-                                AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env,
-                                        AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
+                                axis2_string_t *svc_grp_ctx_id_str = 
+                                    axis2_string_create(env, AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
+                                AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id_str);
+                                axis2_string_free(svc_grp_ctx_id_str, env);
                             }
                             return AXIS2_SUCCESS;
                         }

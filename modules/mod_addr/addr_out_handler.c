@@ -327,7 +327,8 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
 
         /* add the service group id as a reference parameter */
-        svc_group_context_id = AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env);
+        svc_group_context_id = axis2_string_get_buffer(
+            AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env), env);
 
         axis2_addr_out_handler_add_to_soap_header(env, epr,
                 AXIS2_WSA_REPLY_TO,

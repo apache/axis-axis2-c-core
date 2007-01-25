@@ -223,13 +223,15 @@ axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env,
                 conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
                 if (conf_ctx && grp_id)
                 {
+                    axis2_string_t *svc_grp_ctx_id_str = axis2_string_create(env, grp_id);
                     axis2_svc_grp_ctx_t *svc_ctx_grp_ctx = AXIS2_CONF_CTX_GET_SVC_GRP_CTX(conf_ctx, env, grp_id);
                     if (!svc_ctx_grp_ctx)
                     {
                         /** TODO, set error */
                         return AXIS2_FAILURE;
                     }
-                    AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, grp_id);
+                    AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id_str);
+                    axis2_string_free(svc_grp_ctx_id_str, env);
                     return AXIS2_SUCCESS;
                 }
             }

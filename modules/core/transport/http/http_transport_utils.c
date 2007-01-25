@@ -55,7 +55,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_stream_t *out_stream,
     const axis2_char_t *content_type,
     const int content_length,
-    axis2_char_t *soap_action_header,
+    axis2_string_t *soap_action_header,
     const axis2_char_t *request_uri);
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -65,7 +65,7 @@ axis2_http_transport_utils_process_http_get_request(
     axis2_stream_t *in_stream,
     axis2_stream_t *out_stream,
     const axis2_char_t *content_type,
-    axis2_char_t *soap_action_header,
+    axis2_string_t *soap_action_header,
     const axis2_char_t *request_uri,
     axis2_conf_ctx_t *conf_ctx,
     axis2_hash_t *request_params);
@@ -159,7 +159,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_stream_t *out_stream,
     const axis2_char_t *content_type,
     const int content_length,
-    axis2_char_t *soap_action_header,
+    axis2_string_t *soap_action_header,
     const axis2_char_t *request_uri)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
@@ -180,6 +180,8 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_char_t *soap_body_str = NULL;
     axis2_stream_t *stream = NULL;
     axis2_bool_t do_rest = AXIS2_FALSE;
+    axis2_char_t *soap_action = NULL;
+    unsigned int soap_action_len = 0;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FAILURE);
@@ -198,17 +200,20 @@ axis2_http_transport_utils_process_http_post_request(
     callback_ctx->unread_len = content_length;
     callback_ctx->chunked_stream = NULL;
 
-    if (soap_action_header && (strlen(soap_action_header) > 0))
+    soap_action = (axis2_char_t*)axis2_string_get_buffer(soap_action_header, env);
+    soap_action_len = axis2_string_get_length(soap_action_header, env);
+    
+    if (soap_action && (soap_action_len > 0))
     {
         /* remove leading and trailing " s */
-        if ('"' == soap_action_header[0])
+        if ('"' == soap_action[0])
         {
-            memmove(soap_action_header, soap_action_header + sizeof(axis2_char_t),
-                    strlen(soap_action_header) + sizeof(axis2_char_t));
+            memmove(soap_action, soap_action + sizeof(axis2_char_t),
+                    soap_action_len + sizeof(axis2_char_t));
         }
-        if ('"' == soap_action_header[strlen(soap_action_header) -1])
+        if ('"' == soap_action[soap_action_len -1])
         {
-            soap_action_header[strlen(soap_action_header) -1] = '\0';
+            soap_action[soap_action_len -1] = '\0';
         }
     }
     property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS,
@@ -515,7 +520,7 @@ axis2_http_transport_utils_process_http_get_request(
     axis2_stream_t *in_stream,
     axis2_stream_t *out_stream,
     const axis2_char_t *content_type,
-    axis2_char_t *soap_action_header,
+    axis2_string_t *soap_action_header,
     const axis2_char_t *request_uri,
     axis2_conf_ctx_t *conf_ctx,
     axis2_hash_t *request_params)

@@ -56,7 +56,7 @@ typedef struct axis2_options_impl
 
     axis2_bool_t manage_session;
     axis2_bool_t enable_mtom;
-    axis2_char_t *soap_action;
+    axis2_string_t *soap_action;
 	axis2_bool_t xml_parser_reset;
 }
 axis2_options_impl_t;
@@ -347,9 +347,9 @@ axis2_status_t AXIS2_CALL
 axis2_options_set_soap_action(
     axis2_options_t *options,
     const axis2_env_t *env,
-    const axis2_char_t *soap_action);
+    axis2_string_t *soap_action);
 
-const axis2_char_t* AXIS2_CALL
+axis2_string_t* AXIS2_CALL
 axis2_options_get_soap_action(
     const axis2_options_t *options,
     const axis2_env_t *env);
@@ -1224,7 +1224,7 @@ axis2_options_free(
 
     if (options_impl->soap_action)
     {
-        AXIS2_FREE(env->allocator, options_impl->soap_action);
+        axis2_string_free(options_impl->soap_action, env);
         options_impl->soap_action = NULL;
     }
 
@@ -1382,7 +1382,7 @@ axis2_options_get_enable_mtom(
     return AXIS2_INTF_TO_IMPL(options)->enable_mtom;
 }
 
-const axis2_char_t* AXIS2_CALL
+axis2_string_t* AXIS2_CALL
 axis2_options_get_soap_action(
     const axis2_options_t *options,
     const axis2_env_t *env)
@@ -1399,7 +1399,7 @@ axis2_status_t AXIS2_CALL
 axis2_options_set_soap_action(
     axis2_options_t *options,
     const axis2_env_t *env,
-    const axis2_char_t *soap_action)
+    axis2_string_t *soap_action)
 {
     axis2_options_impl_t *options_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1408,13 +1408,13 @@ axis2_options_set_soap_action(
 
     if (options_impl->soap_action)
     {
-        AXIS2_FREE(env->allocator, options_impl->soap_action);
+        axis2_string_free(options_impl->soap_action, env);
         options_impl->soap_action = NULL;
     }
 
     if (soap_action)
     {
-        options_impl->soap_action = axis2_strdup(soap_action, env);
+        options_impl->soap_action = axis2_string_clone(soap_action, env);
     }
     return AXIS2_SUCCESS;
 }

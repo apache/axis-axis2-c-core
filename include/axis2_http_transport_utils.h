@@ -68,7 +68,7 @@ extern "C"
         axis2_stream_t *out_stream,
         const axis2_char_t *content_type,
         const int content_length,
-        axis2_char_t *soap_action_header,
+        axis2_string_t *soap_action_header,
         const axis2_char_t *request_uri);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -78,7 +78,7 @@ extern "C"
         axis2_stream_t *in_stream,
         axis2_stream_t *out_stream,
         const axis2_char_t *content_type,
-        axis2_char_t *soap_action_header,
+        axis2_string_t *soap_action_header,
         const axis2_char_t *request_uri,
         axis2_conf_ctx_t *conf_ctx,
         axis2_hash_t *request_params);

@@ -59,7 +59,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return a pointer to SOAP action string
          */
-        const axis2_char_t *(AXIS2_CALL *
+        axis2_string_t *(AXIS2_CALL *
                 get_soap_action)(
                     const axis2_mep_client_t *mep_client,
                     const axis2_env_t *env);
@@ -160,7 +160,7 @@ extern "C"
                 set_soap_action)(
                     axis2_mep_client_t *mep_client,
                     const axis2_env_t *env,
-                    const axis2_char_t *soap_action);
+                    axis2_string_t *soap_action);
         
         /**
          * Sets WSA action.

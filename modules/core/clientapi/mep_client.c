@@ -36,7 +36,7 @@ typedef struct axis2_mep_client_impl
     /** SOAP version URI */
     axis2_char_t *soap_version_uri;
     /** SOAP action */
-    axis2_char_t *soap_action;
+    axis2_string_t *soap_action;
     /** WSA action  */
     axis2_char_t *wsa_action;
 }
@@ -45,7 +45,7 @@ axis2_mep_client_impl_t;
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(mep_client) ((axis2_mep_client_impl_t *)mep_client)
 
-const axis2_char_t *AXIS2_CALL
+axis2_string_t *AXIS2_CALL
 axis2_mep_client_get_soap_action(
     const axis2_mep_client_t *mep_client,
     const axis2_env_t *env);
@@ -90,7 +90,7 @@ axis2_status_t AXIS2_CALL
 axis2_mep_client_set_soap_action(
     axis2_mep_client_t *mep_client,
     const axis2_env_t *env,
-    const axis2_char_t *soap_action);
+    axis2_string_t *soap_action);
 
 axis2_status_t AXIS2_CALL
 axis2_mep_client_set_wsa_action(
@@ -185,7 +185,7 @@ axis2_mep_client_create(
     return &(mep_client_impl->mep_client);
 }
 
-const axis2_char_t *AXIS2_CALL
+axis2_string_t *AXIS2_CALL
 axis2_mep_client_get_soap_action(
     const axis2_mep_client_t *mep_client,
     const axis2_env_t *env)
@@ -461,7 +461,7 @@ axis2_status_t AXIS2_CALL
 axis2_mep_client_set_soap_action(
     axis2_mep_client_t *mep_client,
     const axis2_env_t *env,
-    const axis2_char_t *soap_action)
+    axis2_string_t *soap_action)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
 
@@ -471,13 +471,13 @@ axis2_mep_client_set_soap_action(
 
     if (mep_client_impl->soap_action)
     {
-        AXIS2_FREE(env->allocator, mep_client_impl->soap_action);
+        axis2_string_free(mep_client_impl->soap_action, env);
         mep_client_impl->soap_action = NULL;
     }
 
     if (soap_action)
     {
-        mep_client_impl->soap_action = AXIS2_STRDUP(soap_action, env);
+        mep_client_impl->soap_action = axis2_string_clone(soap_action, env);
         if (!(mep_client_impl->soap_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -591,7 +591,7 @@ axis2_mep_client_free(
 
     if (mep_client_impl->soap_action)
     {
-        AXIS2_FREE(env->allocator, mep_client_impl->soap_action);
+        axis2_string_free(mep_client_impl->soap_action, env);
         mep_client_impl->soap_action = NULL;
     }
 

@@ -46,6 +46,17 @@ extern "C"
     AXIS2_EXTERN axis2_string_t * AXIS2_CALL
     axis2_string_create(const axis2_env_t *env,
         const axis2_char_t *str);
+    
+    /**
+     * Creates a string struct.
+     * @param str pointer to string. string struct would not create a duplicate 
+     * of this, but would assume ownership
+     * @param env pointer to environment struct
+     * @return a pointer to newly created string struct
+     */
+    AXIS2_EXTERN axis2_string_t * AXIS2_CALL
+    axis2_string_create_assume_ownership(const axis2_env_t *env,
+        axis2_char_t **str);
 
     /**
      * Creates a string struct.

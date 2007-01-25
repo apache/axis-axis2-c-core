@@ -85,7 +85,7 @@ struct axis2_msg_ctx
     /** paused handler name */
     axis2_string_t *paused_handler_name;
     /** SOAP action */
-    axis2_char_t *soap_action;
+    axis2_string_t *soap_action;
     /** are we doing MTOM now? */
     axis2_bool_t doing_mtom;
     /** are we doing REST now? */
@@ -95,7 +95,7 @@ struct axis2_msg_ctx
     /** use SOAP 1.1? */
     axis2_bool_t is_soap_11;
     /** service group context id */
-    axis2_char_t *svc_grp_ctx_id;
+    axis2_string_t *svc_grp_ctx_id;
     /** qname of transport in */
     AXIS2_TRANSPORT_ENUMS transport_in_desc_enum;
     /** qname of transport out */
@@ -319,13 +319,13 @@ axis2_msg_ctx_free(
 
     if (msg_ctx->soap_action)
     {
-        AXIS2_FREE(env->allocator, msg_ctx->soap_action);
+        axis2_string_free(msg_ctx->soap_action, env);
         msg_ctx->soap_action = NULL;
     }
 
     if (msg_ctx->svc_grp_ctx_id)
     {
-        AXIS2_FREE(env->allocator, msg_ctx->svc_grp_ctx_id);
+        axis2_string_free(msg_ctx->svc_grp_ctx_id, env);
         msg_ctx->svc_grp_ctx_id = NULL;
     }
 
@@ -1419,7 +1419,7 @@ axis2_msg_ctx_set_paused_phase_name(
     return AXIS2_SUCCESS;
 }
 
-const axis2_char_t *AXIS2_CALL
+axis2_string_t *AXIS2_CALL
 axis2_msg_ctx_get_soap_action(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
@@ -1433,19 +1433,19 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_soap_action(
     struct axis2_msg_ctx *msg_ctx,
     const axis2_env_t *env,
-    const axis2_char_t *soap_action)
+    axis2_string_t *soap_action)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (msg_ctx->soap_action)
     {
-        AXIS2_FREE(env->allocator, msg_ctx->soap_action);
+        axis2_string_free(msg_ctx->soap_action, env);
         msg_ctx->soap_action = NULL;
     }
 
     if (soap_action)
     {
-        msg_ctx->soap_action = AXIS2_STRDUP(soap_action, env);
+        msg_ctx->soap_action = axis2_string_clone(soap_action, env);
         if (!(msg_ctx->soap_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1655,7 +1655,7 @@ axis2_msg_ctx_set_svc_grp(
     return AXIS2_SUCCESS;
 }
 
-const axis2_char_t *AXIS2_CALL
+const axis2_string_t *AXIS2_CALL
 axis2_msg_ctx_get_svc_grp_ctx_id(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
@@ -1668,24 +1668,19 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_svc_grp_ctx_id(
     struct axis2_msg_ctx *msg_ctx,
     const axis2_env_t *env,
-    const axis2_char_t *svc_grp_ctx_id)
+    axis2_string_t *svc_grp_ctx_id)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (msg_ctx->svc_grp_ctx_id)
     {
-        AXIS2_FREE(env->allocator, msg_ctx->svc_grp_ctx_id);
+        axis2_string_free(msg_ctx->svc_grp_ctx_id, env);
         msg_ctx->svc_grp_ctx_id = NULL;
     }
 
     if (svc_grp_ctx_id)
     {
-        msg_ctx->svc_grp_ctx_id = AXIS2_STRDUP(svc_grp_ctx_id, env);
-        if (!(msg_ctx->svc_grp_ctx_id))
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return AXIS2_FAILURE;
-        }
+        msg_ctx->svc_grp_ctx_id = axis2_string_clone(svc_grp_ctx_id, env);
     }
     return AXIS2_SUCCESS;
 }
@@ -1747,7 +1742,7 @@ axis2_msg_ctx_set_options(
 {
     axis2_property_t *rest_val = NULL;
 	axis2_char_t *value;
-	const axis2_char_t *soap_action = NULL;;
+	axis2_string_t *soap_action = NULL;;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, options, AXIS2_FAILURE);
@@ -1780,14 +1775,14 @@ axis2_msg_ctx_set_options(
 
     if (msg_ctx->soap_action)
     {
-        AXIS2_FREE(env->allocator, msg_ctx->soap_action);
+        axis2_string_free(msg_ctx->soap_action, env);
         msg_ctx->soap_action = NULL;
     }
     
     soap_action = AXIS2_OPTIONS_GET_SOAP_ACTION(options, env);
-    if (AXIS2_OPTIONS_GET_SOAP_ACTION(options, env))
+    if (soap_action)
     {
-        msg_ctx->soap_action = AXIS2_STRDUP(soap_action, env);
+        msg_ctx->soap_action = axis2_string_clone(soap_action, env);
     }
 
     return AXIS2_SUCCESS;

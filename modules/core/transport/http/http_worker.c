@@ -161,6 +161,7 @@ axis2_http_worker_process_request(
     axis2_transport_in_desc_t *in_desc = NULL;
     axis2_char_t *http_version = NULL;
     axis2_char_t *soap_action = NULL;
+    axis2_string_t *soap_action_str = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
     axis2_char_t *ctx_written = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -272,11 +273,11 @@ axis2_http_worker_process_request(
             AXIS2_FALSE);
 
     svc_grp_uuid = axis2_uuid_gen(env);
-    AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_uuid);
     if (svc_grp_uuid)
     {
-        AXIS2_FREE(env->allocator, svc_grp_uuid);
-        svc_grp_uuid = NULL;
+        axis2_string_t *svc_grp_uuid_str = axis2_string_create_assume_ownership(env, &svc_grp_uuid);
+        AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_uuid_str);
+        axis2_string_free(svc_grp_uuid_str, env);
     }
 
     property = axis2_property_create(env);
@@ -295,6 +296,7 @@ axis2_http_worker_process_request(
                     AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(
                         simple_request, env, AXIS2_HTTP_HEADER_SOAP_ACTION),
                     env);
+        soap_action_str = axis2_string_create(env, soap_action);
     }
     if (0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
                 AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
@@ -303,7 +305,7 @@ axis2_http_worker_process_request(
         processed = axis2_http_transport_utils_process_http_get_request
                 (env, msg_ctx, request_body, out_stream,
                         AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
-                            simple_request, env) , soap_action,
+                            simple_request, env) , soap_action_str,
                         AXIS2_URL_TO_EXTERNAL_FORM(request_url, env),
                         conf_ctx,
                         axis2_http_transport_utils_get_request_params(env,
@@ -343,7 +345,7 @@ axis2_http_worker_process_request(
         status = axis2_http_transport_utils_process_http_post_request
                 (env, msg_ctx, request_body, out_stream,
                         AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
-                            simple_request, env) , content_length, soap_action,
+                            simple_request, env) , content_length, soap_action_str,
                         url_external_form);
         if (status == AXIS2_FAILURE)
         {
@@ -452,6 +454,7 @@ axis2_http_worker_process_request(
     
     msg_ctx = NULL;
     AXIS2_URL_FREE(request_url, env);
+    axis2_string_free(soap_action_str, env);
     request_url = NULL;
     return status;
 }

@@ -30,6 +30,7 @@ int main(int argc, char** argv)
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
+    axis2_string_t *soap_action = NULL;
 
     /* Set up the environment */
     env = axis2_env_create_all("echo_blocking_soap11.log", AXIS2_LOG_LEVEL_TRACE);
@@ -53,7 +54,9 @@ int main(int argc, char** argv)
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
     AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
-    AXIS2_OPTIONS_SET_SOAP_ACTION(options, env, "http://ws.apache.org/axis2/c/samples/echo/soap_action");
+    soap_action = axis2_string_create(env, "http://ws.apache.org/axis2/c/samples/echo/soap_action");
+    AXIS2_OPTIONS_SET_SOAP_ACTION(options, env, soap_action);
+    axis2_string_free(soap_action, env);
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.

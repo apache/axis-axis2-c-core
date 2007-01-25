@@ -938,7 +938,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return SOAP action string
      */
-    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
     axis2_msg_ctx_get_soap_action(const axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
 
@@ -952,7 +952,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_soap_action(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
-        const axis2_char_t *soap_action);
+        axis2_string_t *soap_action);
 
     /**
      * Gets the boolean value indicating if MTOM is enabled or not.
@@ -1158,7 +1158,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return service group context ID string
      */
-    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
     axis2_msg_ctx_get_svc_grp_ctx_id(const axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
 
@@ -1172,7 +1172,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_svc_grp_ctx_id(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
-        const axis2_char_t *svc_grp_ctx_id);
+        axis2_string_t *svc_grp_ctx_id);
 
     /**
      * Finds the service to be invoked. This function is used by dispatchers 
