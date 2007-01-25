@@ -37,7 +37,8 @@ guththila_writer_create_for_memory(axis2_env_t *env)
 {
     guththila_writer_impl_t *wt = NULL;
 
-    wt = (guththila_writer_impl_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_writer_impl_t));
+    wt = (guththila_writer_impl_t *) AXIS2_MALLOC(env->allocator, 
+												  sizeof(guththila_writer_impl_t));
     wt->outputstream = NULL;
 
     wt->buffer = guththila_buffer_create(env, GUTHTHILA_BUFFER_SIZE);
@@ -62,6 +63,10 @@ guththila_writer_free(axis2_env_t *env, guththila_writer_t *wt)
                 fclose(writer_impl->outputstream);
             writer_impl->outputstream = NULL;
         }
+		else if (wt->guththila_writer_type ==  GUTHTHILA_WRITER_MEMORY)
+		{
+			guththila_buffer_free(env, writer_impl->buffer);
+		}
         AXIS2_FREE(env->allocator, (guththila_writer_t *)wt);
         wt = NULL;
     }

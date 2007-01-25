@@ -48,7 +48,8 @@ guththila_create_xml_stream_writer_for_memory(axis2_env_t *env, guththila_t *p)
 {
     if (p)
     {
-        p->xsw = (guththila_xml_writer_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_xml_writer_t));
+        p->xsw = (guththila_xml_writer_t *) AXIS2_MALLOC(env->allocator, 
+														 sizeof(guththila_xml_writer_t));
         p->xsw->writer = guththila_writer_create_for_memory(env);
         p->xsw->writer_buffer = guththila_buffer_create(env, GUTHTHILA_BUFFER_SIZE);
         p->xsw->writer_buffer->buff[0] = 0;
@@ -112,7 +113,7 @@ guththila_xml_writer_free(axis2_env_t *env, guththila_t *p)
             for (;size > 0; size--)
             {
                 att = (guththila_attribute_t *)AXIS2_STACK_POP(p->xsw->attribute, env);
-                AXIS2_FREE(env->allocator, att);
+				guththila_attribute_free (env, att);
                 att = NULL;
             }
         }
@@ -134,9 +135,9 @@ guththila_xml_writer_free(axis2_env_t *env, guththila_t *p)
                 AXIS2_FREE(env->allocator, ns);
                 ns = NULL;
             }
-            AXIS2_STACK_FREE(p->xsw->namespace, env);
-            p->xsw->namespace = NULL;
         }
+		AXIS2_STACK_FREE(p->xsw->namespace, env);
+		p->xsw->namespace = NULL;
     }
 
 
@@ -153,9 +154,10 @@ guththila_xml_writer_free(axis2_env_t *env, guththila_t *p)
                 AXIS2_FREE(env->allocator, depth);
                 depth = NULL;
             }
-            AXIS2_STACK_FREE(p->xsw->depth, env);
-            p->xsw->depth = NULL;
         }
+		AXIS2_STACK_FREE(p->xsw->depth, env);
+		p->xsw->depth = NULL;
+
     }
 
     if (p->xsw->writer)
@@ -1227,6 +1229,7 @@ guththila_close_depth_element(axis2_env_t *env, guththila_t *p)
                 AXIS2_FREE(env->allocator, elem);
         }
     }
+	AXIS2_FREE (env->allocator, e);
 }
 
 

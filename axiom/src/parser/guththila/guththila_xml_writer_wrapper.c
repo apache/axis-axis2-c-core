@@ -480,7 +480,7 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
         guththila_xml_writer_wrapper_write_encoded;
     writer_impl->writer.ops->get_xml =
         guththila_xml_writer_wrapper_get_xml;
- writer_impl->writer.ops->get_xml_size =
+	writer_impl->writer.ops->get_xml_size =
         guththila_xml_writer_wrapper_get_xml_size;
        writer_impl->writer.ops->write_raw =
         guththila_xml_writer_wrapper_write_raw;
