@@ -150,11 +150,18 @@ extern "C"
     axis2_stream_create_socket(const axis2_env_t *env, int socket);
 
     /**
+	 *Free stream
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axis2_stream_free(axis2_stream_t *stream, const axis2_env_t *env);	
+	
+	/**
      * Free stream passed as void pointer. This will be
      * cast into appropriate type and then pass the cast object
      * into the module_desc structure's free method
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stream_free_void_arg(void *stream,
         const axis2_env_t *env);
 
