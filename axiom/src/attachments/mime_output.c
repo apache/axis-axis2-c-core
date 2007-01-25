@@ -301,7 +301,7 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
     {
         temp_soap_body_buffer = AXIS2_STRACAT(soap_body_buffer, "\r\n", env);
         
-        AXIS2_FREE(env->allocator, soap_body_buffer);
+        /*AXIS2_FREE(env->allocator, soap_body_buffer);*/
         soap_body_buffer = temp_soap_body_buffer;
         
         soap_body_buffer_size = AXIS2_STRLEN(soap_body_buffer);
