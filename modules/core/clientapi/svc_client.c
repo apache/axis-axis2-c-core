@@ -1004,6 +1004,9 @@ axis2_svc_client_send_receive_non_blocking(
                     svc_client_impl->options, env);
         AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(svc_client_impl->listener_manager, env,
                 transport_in_protocol, svc_client_impl->conf_ctx);
+        /* Following sleep is required to ensure the listner is ready to receive response.
+           If it is missing, the response gets lost. - Samisa */
+        AXIS2_USLEEP(1);
 
         op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env,
                 op_qname);

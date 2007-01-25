@@ -99,7 +99,10 @@ axis2_uuid_gen_v1()
     /* sleep for 1000ns (1us) */
     tv.tv_sec  = 0;
     tv.tv_usec = 1;
-    select(0, NULL, NULL, NULL, &tv);
+    /*
+        The following select causes severe performance problems. 
+        Hence commenting out. I am not sure why this is required. - Samisa.    
+    select(0, NULL, NULL, NULL, &tv);*/
 
     time_val = (unsigned long long)time_now.tv_sec * 10000000ull;
     time_val += (unsigned long long)time_now.tv_usec * 10ull;
