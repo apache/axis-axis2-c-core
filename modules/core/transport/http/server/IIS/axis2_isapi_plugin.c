@@ -148,11 +148,11 @@ BOOL WINAPI TerminateExtension(DWORD dwFlags)
 
 axis2_status_t axis2_terminate()
 {
-	axiom_xml_reader_cleanup();
+//	axiom_xml_reader_cleanup();
 
-	AXIS2_IIS_WORKER_FREE(axis2_worker, axis2_env);
+//	AXIS2_IIS_WORKER_FREE(axis2_worker, axis2_env);
 
-	axis2_env_free(axis2_env);
+//	axis2_env_free(axis2_env);
 	return TRUE;
 }
 
@@ -161,28 +161,27 @@ axis2_status_t get_extension_url(char url[], char ret_url[])
 {
 	unsigned int i = 0;	
 	// Should contain "/axis2/"
-	ret_url[0] = '\0';
-	if (!url || strlen(url) < 5){
-		return FALSE;
-	}
-	// Before searching make it to lower case
-	while (url[i] != '\0'){
-		if(url[i] >= 'A' && url[i] <= 'Z')
-			url[i] = url[i] + 'a' - 'A';
-		i++;
-	}	
+	ret_url[0] = '\0';	
 	
 	// The url should begin with "/axis2/"
-	if (url[0] == '/' && url[1] == 'a' && url[2] == 'x' && url[3] == 'i' 
-					&& url[4] == 's' && url[5] == '2' && url[6] == '/' ){		
+	if (url[0] == '/' && (url[1] == 'a' || url[1] == 'A') 
+					&& (url[2] == 'x' || url[2] == 'X') 
+					&& (url[3] == 'i' || url[3] == 'I') 
+					&& (url[4] == 's' || url[4] == 'S') 
+					&& url[5] == '2' && url[6] == '/' )
+	{		
 
 		// Append the string to redirect the request
 		strcpy(ret_url, redirect_word);
 		strcat(ret_url, &url[7]);
 		return TRUE;
 	}
-	if (url[0] == '/' && url[1] == 'a' && url[2] == 'x' && url[3] == 'i' 
-					&& url[4] == 's' && url[5] == '2' && url[6] == '\0'){
+	if (url[0] == '/' && (url[1] == 'a' || url[1] == 'A') 
+					&& (url[2] == 'x' || url[2] == 'X') 
+					&& (url[3] == 'i' || url[3] == 'I') 
+					&& (url[4] == 's' || url[4] == 'S') 
+					&& url[5] == '2' && url[6] == '\0')
+	{
 		strcpy(ret_url, redirect_word);
 		return TRUE;
 	}	

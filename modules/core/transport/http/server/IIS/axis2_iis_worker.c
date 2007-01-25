@@ -249,14 +249,20 @@ axis2_iis_worker_process_request(
 	msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 
-    axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
+    AXIS2_PROPERTY_SET_VALUE(property, env, out_stream);
+    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_OUT, property,
+            AXIS2_FALSE);
+	//axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
 	ctx_uuid = axis2_uuid_gen(env);
     AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, ctx_uuid);
     AXIS2_FREE(env->allocator, ctx_uuid);
 
     property = axis2_property_create(env);	
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env,
             axis2_iis_out_transport_info_free_void_arg);
     iis_out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
@@ -367,17 +373,29 @@ axis2_iis_worker_process_request(
 		sprintf(headers_vhtml[1], "%d", strlen(body_string));
 		if(!start_response(lpECB, send_status, NULL, headers_names, headers_vhtml, 2))
 		{
-			
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
+                " writing response.");			
 		}
 
 		cbSize = strlen(body_string);
 		if(!write_response(lpECB, body_string, cbSize))
 		{
-
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
+                " writing response.");
 		}
         AXIS2_FREE(env->allocator, body_string);
         body_string = NULL;
-    }
+    } 
+	else 
+	{		
+		if(!start_response(lpECB, send_status, NULL, NULL, NULL, 0))
+		{
+			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
+                " writing response.");			
+		}
+	}
+		
+
     if (url)
     {
         AXIS2_URL_FREE(url, env);
@@ -547,7 +565,7 @@ axis2_status_t axis2_worker_get_original_url(char url[], char ret_url[])
 		ret_url[i] = url[i];
 
 	for (i = 7; url[i] != '\0'; i++)
-		ret_url[i] = url[i + 12];
+		ret_url[i] = url[i + 17];
 
 	ret_url[i] = '\0';
 		

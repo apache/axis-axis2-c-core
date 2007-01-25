@@ -94,8 +94,9 @@ DWORD WINAPI HttpFilterProc(
 
 			//GetHeader(pfc, "URL", url, &bufferLength);
 			pfc->GetServerVariable(pfc, "HTTP_URL", url, &bufferLength);			
-			retVal = get_extension_url(url, modified_url);
-			SetHeader(pfc, "URL", modified_url);
+			if(get_extension_url(url, modified_url)){
+				SetHeader(pfc, "URL", modified_url);
+			}
 			//return SF_STATUS_REQ_HANDLED_NOTIFICATION;
 			break;
 		case SF_NOTIFY_LOG:
