@@ -32,6 +32,7 @@ guththila_create_xml_stream_writer(axis2_env_t *env, guththila_t *p, char *file)
         p->xsw->attribute = axis2_stack_create(env);
         p->xsw->namespace = axis2_stack_create(env);
         p->xsw->depth = axis2_stack_create(env);
+        p->xsw->other = axis2_stack_create(env);
         p->xsw->next = 0;
         p->xsw->offset = 0;
         p->xsw->last = GUTHTHILA_BUFFER_SIZE;	/* size of the buffer */
@@ -57,6 +58,7 @@ guththila_create_xml_stream_writer_for_memory(axis2_env_t *env, guththila_t *p)
         p->xsw->attribute = axis2_stack_create(env);
         p->xsw->namespace = axis2_stack_create(env);
         p->xsw->depth = axis2_stack_create(env);
+        p->xsw->other = axis2_stack_create(env);
         p->xsw->next = 0;
         p->xsw->offset = 0;
         p->xsw->last = GUTHTHILA_BUFFER_SIZE;	/* size of the buffer */
@@ -160,6 +162,26 @@ guththila_xml_writer_free(axis2_env_t *env, guththila_t *p)
 
     }
 
+    if (p->xsw->other)
+    {
+        void *element;
+        size = 0;
+
+        size = AXIS2_STACK_SIZE(p->xsw->other, env);
+        if (size)
+        {
+            for (; size > 0; size--)
+            {
+                element = AXIS2_STACK_POP(p->xsw->other, env);
+                AXIS2_FREE(env->allocator, element);
+                element = NULL;
+            }
+        }
+        AXIS2_STACK_FREE(p->xsw->other, env);
+        p->xsw->other = NULL;
+    }
+
+
     if (p->xsw->writer)
     {
         guththila_writer_free(env, p->xsw->writer);
@@ -250,7 +272,7 @@ guththila_write_start_element(axis2_env_t *env, guththila_t *p, char *start_elem
         guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
     else
     {
-        guththila_check_xml_stream_writer(env, p);
+        
         guththila_close_start_element(env, p);
         guththila_open_depth_element(env, p);
         size = AXIS2_STACK_SIZE(p->xsw->element, env);
@@ -279,7 +301,7 @@ guththila_write_to_buffer(axis2_env_t *env, guththila_t *p, const char *buff)
     if (buff)
     {
         int length = 0;
-        guththila_check_xml_stream_writer(env, p);
+        
         length = strlen(buff);
 
         if ((p->xsw->next + length) >= p->xsw->last)
@@ -302,7 +324,7 @@ guththila_write_to_buffer(axis2_env_t *env, guththila_t *p, const char *buff)
 AXIS2_EXTERN void AXIS2_CALL
 guththila_write_characters(axis2_env_t *env, guththila_t *p, const char *buff)
 {
-    guththila_check_xml_stream_writer(env, p);
+    
     guththila_close_start_element(env, p);
 
     if (buff)
@@ -413,7 +435,7 @@ AXIS2_EXTERN void AXIS2_CALL
 guththila_write_comment(axis2_env_t *env, guththila_t *p, const char *buff)
 {
     char *s = NULL;
-    guththila_check_xml_stream_writer(env, p);
+    
     guththila_close_start_element(env, p);
     s   = strchr(buff, '-');
     if (s && s[1] == '-')
@@ -538,7 +560,7 @@ guththila_do_write_attribute(axis2_env_t *env,
 void AXIS2_CALL
 guththila_write_empty_element(axis2_env_t *env, guththila_t *p, char *empty_element)
 {
-    guththila_check_xml_stream_writer(env, p);
+    
     guththila_close_start_element(env, p);
     p->xsw->start_element_open = 0;
     p->xsw->empty_element_open = 1;
@@ -1006,22 +1028,31 @@ guththila_write_start_element_with_prefix_and_namespace(axis2_env_t *env, guthth
     int size;
     void *element;
     char *start_element = NULL;
-    if (prefix && local_name)
-        start_element = (char *) calloc((strlen(prefix) + strlen(local_name) + 2), 1);
+	unsigned int length;
+	unsigned int prefix_length;
+	unsigned int name_length;
 
+    if (prefix && local_name)
+	{
+		prefix_length = strlen(prefix);
+		name_length = strlen (local_name);
+		length = prefix_length + name_length + 2;
+        start_element = (char *) AXIS2_MALLOC (env->allocator, length);
+		memset (start_element, 0, length);
+	}
     if (!p || !local_name)
         guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
     else
     {
-        guththila_check_xml_stream_writer(env, p);
+        
         guththila_close_start_element(env, p);
         guththila_open_depth_element(env, p);
 
         if (prefix)
         {
-            strcat(start_element, prefix);
-            strcat(start_element, ":");
-            strcat(start_element, local_name);
+			memcpy (start_element, prefix, prefix_length);
+            memcpy (start_element + prefix_length, ":", 1);
+            memcpy (start_element + (prefix_length + 1), local_name, name_length);
         }
         else
             start_element = (char *)local_name;
@@ -1036,7 +1067,7 @@ guththila_write_start_element_with_prefix_and_namespace(axis2_env_t *env, guthth
                     guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
             }
         }
-
+		AXIS2_STACK_PUSH(p->xsw->other, env, start_element);
         guththila_check_name_validity(env, p, start_element);
         p->xsw->start_element_open = 1;
 
@@ -1062,7 +1093,7 @@ guththila_write_start_element_with_namespace(axis2_env_t *env, guththila_t *p, c
         else
         {
             char *prefix = NULL;
-            guththila_check_xml_stream_writer(env, p);
+            
             guththila_close_start_element(env, p);
             prefix = guththila_get_prefix_for_namespace(env, p, namespace_uri);
 
@@ -1115,7 +1146,7 @@ guththila_write_start_element_with_prefix(axis2_env_t *env, guththila_t *p, cons
             guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
         else
         {
-            guththila_check_xml_stream_writer(env, p);
+            
             guththila_close_start_element(env, p);
             guththila_open_depth_element(env, p);
 
@@ -1139,6 +1170,7 @@ guththila_write_start_element_with_prefix(axis2_env_t *env, guththila_t *p, cons
                     guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
             }
 
+			AXIS2_STACK_PUSH(p->xsw->other, env, start_element);
             guththila_check_name_validity(env, p, start_element);
             p->xsw->start_element_open = 1;
 
@@ -1157,7 +1189,7 @@ AXIS2_EXTERN void AXIS2_CALL
 guththila_write_empty_element_with_prefix_and_namespace(axis2_env_t *env, guththila_t *p, const char *prefix,
         const char *namespace_uri, const char *empty_element)
 {
-    guththila_check_xml_stream_writer(env, p);
+    
     guththila_close_start_element(env, p);
     p->xsw->start_element_open = 0;
     p->xsw->empty_element_open = 1;
@@ -1168,7 +1200,7 @@ guththila_write_empty_element_with_prefix_and_namespace(axis2_env_t *env, guthth
 AXIS2_EXTERN void AXIS2_CALL
 guththila_write_empty_element_with_namespace(axis2_env_t *env, guththila_t *p, const char *namespace_uri, const char *empty_element)
 {
-    guththila_check_xml_stream_writer(env, p);
+    
     guththila_close_start_element(env, p);
     p->xsw->start_element_open = 0;
     p->xsw->empty_element_open = 1;
@@ -1179,7 +1211,7 @@ guththila_write_empty_element_with_namespace(axis2_env_t *env, guththila_t *p, c
 AXIS2_EXTERN void AXIS2_CALL
 guththila_write_empty_element_with_prefix(axis2_env_t *env, guththila_t *p, const char *prefix, const char *empty_element)
 {
-    guththila_check_xml_stream_writer(env, p);
+    
     guththila_close_start_element(env, p);
     p->xsw->start_element_open = 0;
     p->xsw->empty_element_open = 1;

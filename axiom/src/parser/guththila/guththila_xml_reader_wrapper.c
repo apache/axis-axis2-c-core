@@ -154,7 +154,6 @@ axiom_xml_reader_create_for_file(const axis2_env_t *env,
         const char *encoding)
 {
     guththila_xml_reader_wrapper_impl_t *guththila_impl = NULL;
-    axis2_allocator_t *allocator = NULL;
     guththila_t *guththila = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -168,8 +167,6 @@ axiom_xml_reader_create_for_file(const axis2_env_t *env,
         return NULL;
     }
 
-    allocator = axis2_allocator_init(NULL);
-    /*     guththila_env  = guththila_environment_create(allocator,NULL, NULL); */
 
     guththila_impl->reader =
         guththila_reader_create_for_file((axis2_env_t *)env, filename);
@@ -254,7 +251,6 @@ axiom_xml_reader_create_for_io(const axis2_env_t *env,
         const char *encoding)
 {
     guththila_xml_reader_wrapper_impl_t *guththila_impl = NULL;
-    axis2_allocator_t *allocator = NULL;
     guththila_t *guththila = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -268,7 +264,6 @@ axiom_xml_reader_create_for_io(const axis2_env_t *env,
         return NULL;
     }
 
-    allocator = axis2_allocator_init(NULL);
 
     /*-------difference of two create function is here--------*/
     guththila_impl->reader =

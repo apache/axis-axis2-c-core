@@ -25,19 +25,21 @@
 
 typedef struct guththila_xml_writer_s
 {
-  axis2_stack_t *element;
-  axis2_stack_t *attribute;
-  axis2_stack_t *namespace;
-  axis2_stack_t *depth;
-  guththila_writer_t *writer;
-  guththila_buffer_t *writer_buffer;
-  int next;
-  int last;
-  int offset;
-  int start_element_open;
-  int empty_element_open;
+	axis2_stack_t *element;
+	axis2_stack_t *attribute;
+	axis2_stack_t *namespace;
+	axis2_stack_t *depth;
+	axis2_stack_t *other;
+	guththila_writer_t *writer;
+	guththila_buffer_t *writer_buffer;
+	int next;
+	int last;
+	int offset;
+	int start_element_open;
+	int empty_element_open;
 }guththila_xml_writer_t;
 
 
 
 #endif /* XML_STREAMWRITER_H */
+
