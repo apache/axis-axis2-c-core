@@ -374,7 +374,6 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
 {
     guththila_xml_writer_wrapper_impl_t *writer_impl = NULL;
 
-    axis2_allocator_t *allocator = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = (guththila_xml_writer_wrapper_impl_t *)AXIS2_MALLOC(env->allocator,
@@ -387,14 +386,13 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
         return NULL;
     }
 
-    allocator = axis2_allocator_init(NULL);
     /* creating guththila parser */
     writer_impl->parser = guththila_create((axis2_env_t *)env, NULL);
 
     if (!(writer_impl->parser))
     {
         AXIS2_FREE(env->allocator, writer_impl);
-        AXIS2_FREE(env->allocator, allocator);
+/*         AXIS2_FREE(env->allocator, allocator); */
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -406,7 +404,7 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
     {
         AXIS2_FREE(env->allocator, writer_impl->parser);
         AXIS2_FREE(env->allocator, writer_impl);
-        AXIS2_FREE(env->allocator, allocator);
+/*         AXIS2_FREE(env->allocator, allocator); */
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -417,7 +415,7 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
     if (!(writer_impl->writer.ops))
     {
         AXIS2_FREE(env->allocator, writer_impl);
-        AXIS2_FREE(env->allocator, allocator);
+/*         AXIS2_FREE(env->allocator, allocator); */
 
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

@@ -93,7 +93,16 @@ guththila_free(axis2_env_t * environment,
     if (parser->namesp)
         AXIS2_STACK_FREE(parser->namesp, environment);
     if (parser->dep)
+	{
+		int ii = AXIS2_STACK_SIZE(parser->dep, environment);
+		guththila_depth_t *depth;
+		for (; ii > 0; ii--)
+		{
+			depth = (guththila_depth_t *)AXIS2_STACK_POP(parser->dep, environment);
+			AXIS2_FREE(environment->allocator, depth);
+		}
         AXIS2_STACK_FREE(parser->dep, environment);
+	}
 
     AXIS2_FREE(environment->allocator, (void *) parser);
 }
