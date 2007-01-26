@@ -497,7 +497,6 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
 
     /*authn_module_name = "/home/kau/axis2/c/deploy/bin/samples/rampart/authn_provider/libauthn.so";*/
     authn_module_name = RAMPART_ACTIONS_GET_AUTHN_MODULE_NAME(actions, env);
-    printf("AUTHN_MODULE_NAME =%s", authn_module_name);
     if(authn_module_name){
         AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password authentication using AUTH MODULE %s", authn_module_name);
         auth_status = rampart_authenticate_un_pw(env, authn_module_name, username, password, nonce, created, password_type, msg_ctx);
