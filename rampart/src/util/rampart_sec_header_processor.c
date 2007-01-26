@@ -397,7 +397,7 @@ rampart_shp_process_message(const axis2_env_t *env,
         }else if(0 == AXIS2_STRCMP(cur_node_name , OXS_NODE_BINARY_SECURITY_TOKEN)){
              /*Process BinarySecurityToken*/
              AXIS2_LOG_INFO(env->log, "[rampart][shp] Process BinarySecurityToken");
-
+             status = AXIS2_SUCCESS;
         }else if(0 == AXIS2_STRCMP(cur_node_name ,OXS_NODE_REFERENCE_LIST)){
             /*List is placed Out side of the EncryptedKey*/
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process ReferenceList");
