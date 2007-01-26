@@ -61,11 +61,11 @@ enum guththila_event_types
     GUTHTHILA_START_DOCUMENT = 0,
     GUTHTHILA_START_ELEMENT,
     GUTHTHILA_END_ELEMENT,
-    GUTHTHILA_SPACE,
-    GUTHTHILA_EMPTY_ELEMENT,
+	GUTHTHILA_EMPTY_ELEMENT,
     GUTHTHILA_CHARACTER,
     GUTHTHILA_ENTITY_REFERANCE,
-    GUTHTHILA_COMMENT
+    GUTHTHILA_COMMENT,
+	GUTHTHILA_SPACE,
   };
 
 
@@ -82,7 +82,8 @@ typedef struct guththila_s
   axis2_stack_t *stack;
   axis2_stack_t *attrib;
   axis2_stack_t *namesp;
-  axis2_stack_t *dep;
+	axis2_stack_t *dep;
+	axis2_stack_t *other;
   int _next;
   int offset;
   int last;

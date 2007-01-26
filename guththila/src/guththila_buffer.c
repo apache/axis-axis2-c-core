@@ -40,8 +40,8 @@ guththila_buffer_create(axis2_env_t * environment, int size)
         if (size)
 		{
             name->buff = (guththila_char_t *) AXIS2_MALLOC(
-				environment->allocator, size * sizeof (guththila_char_t));
-			memset (name->buff, 0, size);
+				environment->allocator, (size+1) * sizeof (guththila_char_t));
+			name->buff [size] = 0;
 		}
     }
     return name;
@@ -87,13 +87,22 @@ guththila_buffer_free(axis2_env_t * environment,
 
 AXIS2_EXTERN guththila_buffer_t *
 guththila_buffer_grow(axis2_env_t * environment,
-        guththila_buffer_t * name)
+					  guththila_buffer_t * name,
+					  int buffer_length)
 {
 
     guththila_char_t *x = NULL;
+
     name->size <<= 1;
+
+	if (buffer_length > name->size)
+	{
+		name->size += buffer_length;
+	}
+
     x = (guththila_char_t *) AXIS2_MALLOC(environment->allocator, name->size + 1);
-	memset (x, 0, name->size);
+	x[name->size] = 0;
+
     if (x)
 	{
 		memcpy (x, name->buff, strlen (name->buff));

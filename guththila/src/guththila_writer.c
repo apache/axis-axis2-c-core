@@ -93,11 +93,15 @@ guththila_writer_write(axis2_env_t *env,
 
         if ((size + length) > writer_impl->buffer->size)
         {
-            writer_impl->buffer = guththila_buffer_grow(env, writer_impl->buffer);
+            writer_impl->buffer = guththila_buffer_grow(env, writer_impl->buffer, length);
         }
-        memcpy (writer_impl->buffer->buff, buffer, strlen (buffer));
-		writer_impl->buffer->next += length;
-        c = length;
+
+		if (buffer)
+		{
+			memcpy (writer_impl->buffer->buff + size, buffer, strlen (buffer));
+			writer_impl->buffer->next += length;
+			c = length;
+		}
     }
     return c;
 }

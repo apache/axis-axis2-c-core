@@ -28,7 +28,7 @@ main(int argc, char *argv[])
     guththila_t *parser;
     char *xml_buffer;
     allocator = axis2_allocator_init(NULL);
-    xml_buffer = "<?xml version = \"1.0\"?><test a=\"din\">123</test>";
+    xml_buffer = "<?xml version = \"1.0\"?><test a=\"din\">addddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd123</test>";
     environment =
         axis2_env_create(allocator);
 
@@ -131,18 +131,25 @@ main(int argc, char *argv[])
                 {
                     p = guththila_get_namespace_prefix_by_number(environment, parser, d);
                     if (strncmp(p, "xmlns", 5))
+					{
                         printf(" xmlns:");
-                    printf("%s=\"", p);
+						printf("%s=\"", p);
+					}
+					else
+						printf (" xmlns=\"");
                     AXIS2_FREE(allocator, p);
                     p = guththila_get_namespace_uri_by_number
                             (environment, parser, d);
-                    printf("%s\" ", p);
+                    printf("%s\"", p);
                     AXIS2_FREE(allocator, p);
                 }
                 if (parser->guththila_event == GUTHTHILA_START_ELEMENT)
                     printf(">");
-                else
+                else if (parser->guththila_event == GUTHTHILA_EMPTY_ELEMENT)
                     printf("/>");
+				else
+					printf ("error \n");
+
             }
             break;
             case GUTHTHILA_END_ELEMENT:
