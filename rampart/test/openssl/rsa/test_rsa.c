@@ -22,10 +22,9 @@
 #include <oxs_buffer.h>
 #include <oxs_error.h>
 #include <openssl_rsa.h>
+#include <openssl_digest.h>
 #include <openssl_constants.h>
 #include <oxs_axis2_utils.h>
-
-
 
 axis2_env_t *test_init()
 {
@@ -33,6 +32,18 @@ axis2_env_t *test_init()
     axis2_error_t *error = (axis2_error_t*)axis2_error_create(allocator);
     axis2_env_t *env = axis2_env_create_with_error(allocator, error);
     return env;
+}
+
+int md5(){
+    axis2_env_t *env = NULL;
+    axis2_char_t *plaintext = NULL;
+
+    env = test_init();
+    plaintxt = (unsigned char *)"We will we will rock ya...";
+
+    openssl_md5(env, plaintxt , AXIS2_STRLEN(plaintxt));    
+    printf("Finish  md5() \n");
+    return 0;
 }
 
 int encdec()
@@ -84,6 +95,7 @@ int encdec()
 
 int main()
 {
-    return encdec();
+/*    return encdec();*/
+    return md5();
 
 }

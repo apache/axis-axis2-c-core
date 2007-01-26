@@ -46,7 +46,10 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
                 axis2_char_t *input,
                 int length);
                                                                             
-
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+openssl_md5(const axis2_env_t *env,
+            axis2_char_t *input,
+            int length);
 /* @} */
 #ifdef __cplusplus
 }

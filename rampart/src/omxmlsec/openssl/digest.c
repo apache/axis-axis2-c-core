@@ -17,8 +17,10 @@
 
 #include <stdio.h>
 #include <openssl/sha.h>
+#include <openssl/md5.h>
 #include <openssl_digest.h>
 #include <axis2_base64.h>
+#include <axis2_util.h>
 
 #define SIZE_HASH 32
 
@@ -41,6 +43,23 @@ openssl_sha1(const axis2_env_t *env,
     return encoded_str;
 }
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+openssl_md5(const axis2_env_t *env,
+            axis2_char_t *input,
+            int length)
+{
+    MD5_CTX ctx;
+    unsigned char md[MD5_DIGEST_LENGTH]; 
+    axis2_char_t* encoded_str = NULL;
+ 
+    MD5_Init(&ctx);
+    MD5_Update(&ctx, (unsigned char*)input,length);
+    MD5_Final(md, &ctx); 
+    
+    encoded_str = AXIS2_MALLOC(env->allocator, MD5_DIGEST_LENGTH);
+    axis2_base64_encode(encoded_str, (char*)md, MD5_DIGEST_LENGTH);
 
+    return encoded_str;
+}
 
 

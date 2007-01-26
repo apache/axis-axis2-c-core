@@ -55,8 +55,8 @@ openssl_x509_load_from_buffer(const axis2_env_t *env,
     ret += len;
     if ((mem = BIO_new_mem_buf(buff, ilen)) == NULL)
     {
-        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
-                "BIO memeory allocation failure");
+        /*oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                "BIO memeory allocation failure");*/
         return AXIS2_FAILURE;
     }
 
