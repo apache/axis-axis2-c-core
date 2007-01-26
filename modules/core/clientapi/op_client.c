@@ -529,24 +529,7 @@ axis2_op_client_execute(
         if (block)
         {
             axis2_msg_ctx_t *response_mc = NULL;
-            const axis2_char_t *epr_address = NULL;
-            axis2_property_t *property = NULL;
-            axis2_endpoint_ref_t *to_epr = NULL;
-
-            /* Usual Request-Response Sync implementation */
-			/* property = AXIS2_OPTIONS_GET_PROPERTY(op_client_impl->options, env, 
-                 AXIS2_TARGET_EPR);
-            if(property)
-            {
-                to_epr = AXIS2_PROPERTY_GET_VALUE(property, env);
-                property = NULL;
-            }
-            if(!to_epr)
-                to_epr = AXIS2_OPTIONS_GET_TO(op_client_impl->options, env);
-				epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(to_epr, env);*/
-/*             property = axis2_property_create_with_args(env, 0, 0, 0, (axis2_char_t *)epr_address); */
-            /*AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
-                    AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);*/
+            
             AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, op_client_impl->svc_ctx);
             AXIS2_MSG_CTX_SET_CONF_CTX(msg_ctx, env,
                     AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env));
