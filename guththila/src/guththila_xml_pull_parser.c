@@ -148,7 +148,6 @@ guththila_free(axis2_env_t * environment,
         AXIS2_STACK_FREE(parser->other, environment);
 	}
 
-
     AXIS2_FREE(environment->allocator, (void *) parser);
 }
 
@@ -162,23 +161,6 @@ guththila_exception(guththila_char_t * file, int line, int error_code)
 }
 
 
-void AXIS2_CALL
-guththila_relocate_tokens(axis2_env_t *environment,
-						  guththila_t *parser,
-						  int offset)
-{
-    guththila_token_t *el = NULL;
-    int isize = 0;
-    isize = AXIS2_STACK_SIZE(parser->stack, environment);
-    /*   el = (guththila_token_t *) AXIS2_STACK_GET_AT (parser->stack, environment, isize-1); */
-    for (; isize > 0; isize--)
-    {
-        el = (guththila_token_t *) AXIS2_STACK_GET_AT(parser->stack, 
-													  environment, 
-													  isize - 1);
-        guththila_token_relocate(environment, el, offset);
-    }
-}
 
 
 void AXIS2_CALL
@@ -202,7 +184,7 @@ guththila_read(axis2_env_t * environment,
     {
         if (parser->offset > 0)
         {
-            guththila_relocate_tokens(environment, parser,
+            guththila_relocate_tokens(environment, parser->stack,
 									  parser->offset);
             guththila_shift(environment, parser);
         }
@@ -214,7 +196,7 @@ guththila_read(axis2_env_t * environment,
 			b = parser->buffer->size;
             parser->buffer =
                 guththila_buffer_grow(environment, parser->buffer, parser->_next);
-			guththila_relocate_tokens(environment, parser, 
+			guththila_relocate_tokens(environment, parser->stack, 
 									  (buff - parser->buffer->buff));
 			AXIS2_STACK_PUSH(parser->other, environment, buff);
         }
@@ -1050,8 +1032,8 @@ guththila_next(axis2_env_t * environment,
                         guththila_add_namespace(environment,
 												parser, name,
 												value);
-						guththila_token_free (environment, name);
-						guththila_token_free (environment, value);
+					guththila_token_free (environment, name);
+					guththila_token_free (environment, value);
 					}
                     else
                         guththila_add_attribute(environment,
@@ -1081,6 +1063,7 @@ guththila_next(axis2_env_t * environment,
 												attribute->
 												value);
 						guththila_attribute_free (environment, attribute);
+						guththila_token_free (environment, token);
                     }
                     else
                     {
@@ -1092,6 +1075,7 @@ guththila_next(axis2_env_t * environment,
                             guththila_add_attribute_with_prefix
 								(environment, parser, token,
 								 attribute->name, attribute->value);
+							AXIS2_STACK_PUSH (parser->other, environment, (void *) attribute);
                         }
                     }
                 }

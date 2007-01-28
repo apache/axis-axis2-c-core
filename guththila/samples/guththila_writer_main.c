@@ -21,29 +21,44 @@
 #include <guththila_writer.h>
 #include <guththila.h>
 #include <axis2_util.h>
-int main()
+#define MAXA 100000
+int main(int argc, char *argv[])
 {
     char *t;
     axis2_allocator_t *allocator;
     axis2_env_t *env ;
     guththila_t *parser ;
-    /*guththila_writer_t *writer;*/
+	char *xml = NULL;
+	FILE *file = NULL;
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
-    /*writer = guththila_writer_create_for_memory (env);*/
     parser = guththila_create(env, NULL);
 	guththila_create_xml_stream_writer_for_memory(env, parser);
-// guththila_write_start_element_with_prefix (env, parser, "my", "one");
-	 guththila_write_start_element(env, parser, "two");
+	guththila_write_start_element(env, parser, "two");
     guththila_write_default_namespace(env, parser, "http://another.host.com");
-    guththila_write_start_element(env, parser, "two.one");
-    guththila_write_end_element(env, parser);
+	guththila_write_start_element_with_prefix_and_namespace (env, parser, "ws", "http://www.wso2.org", "wso2");
+	guththila_write_start_element_with_prefix (env, parser, "ws", "stacks");
+	guththila_write_attribute_with_prefix (env, parser, "ws", "stack", "axis2");
+	guththila_write_characters (env, parser, "testadfjaldjf;ajf;lkajdfa;lkjfd;ajdf11111111111122334455");
     guththila_write_end_document(env, parser);
-	/*guththila_write_to_buffer (env, parser, xml);
-	  guththila_flush (env, parser);*/
+
+	xml = (char *) AXIS2_MALLOC (env->allocator, MAXA + 1);
+	memset (xml, 0, MAXA + 1);
+	if (!argv[1])
+	{
+		file = fopen ("/home/dinesh/tmp/mbox_backup/mbox.archived", "r");
+	}
+	else
+		file = fopen (argv[1], "r");
+
+	if (file)
+		fread (xml, 1, MAXA, file);
+
+	guththila_write_to_buffer (env, parser, xml);
     t = guththila_writer_get_buffer(env, parser->xsw->writer);
     printf("%s \n", t);
-	AXIS2_FREE (env->allocator, t);
+	free (xml);
+	fclose (file);
     guththila_xml_writer_free(env, parser);
     guththila_free(env, parser);
     axis2_env_free(env);

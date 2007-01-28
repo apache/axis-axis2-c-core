@@ -210,10 +210,10 @@ int AXIS2_CALL
 guththila_is_space (axis2_env_t *environment, int c);
 
 
-void AXIS2_CALL
+/*void AXIS2_CALL
 guththila_relocate_tokens (axis2_env_t *environment,
                                            guththila_t *p,
-                                           int offset);
+                                           int offset);*/
                                            
 void AXIS2_CALL
 guththila_shift (axis2_env_t *environment,
@@ -485,11 +485,6 @@ guththila_write_start_element (axis2_env_t *environment,
 AXIS2_EXTERN void   AXIS2_CALL
 guththila_write_end_element (axis2_env_t *environment, 
 					     guththila_t *p);
-
-
-AXIS2_EXTERN void   AXIS2_CALL
-guththila_flush (axis2_env_t *environment, 
-				 guththila_t *p);
 
 
 AXIS2_EXTERN void  AXIS2_CALL

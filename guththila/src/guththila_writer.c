@@ -74,11 +74,12 @@ guththila_writer_free(axis2_env_t *env, guththila_writer_t *wt)
 
 AXIS2_EXTERN int AXIS2_CALL
 guththila_writer_write(axis2_env_t *env,
-        char *buffer, int offset,
-        int length, guththila_writer_t *wt)
+					   char *buffer, int offset,
+					   int length, guththila_writer_t *wt)
 {
     int c = 0;
     guththila_writer_impl_t *writer_impl = NULL;
+
     if (wt->guththila_writer_type == GUTHTHILA_WRITER_FILE)
     {
         c = fwrite(buffer + offset, 1, length, ((guththila_writer_impl_t *)wt)->outputstream);
@@ -86,19 +87,16 @@ guththila_writer_write(axis2_env_t *env,
     else if (wt->guththila_writer_type == GUTHTHILA_WRITER_MEMORY)
     {
         int size = 0;
+/* 		int buffer_len = 0; */
+/* 		buffer_len = strlen (buffer); */
         writer_impl = (guththila_writer_impl_t *)wt;
 
 		 if (writer_impl->buffer->buff)
 			 size = writer_impl->buffer->next;
 
-        if ((size + length) > writer_impl->buffer->size)
-        {
-            writer_impl->buffer = guththila_buffer_grow(env, writer_impl->buffer, length);
-        }
-
 		if (buffer)
 		{
-			memcpy (writer_impl->buffer->buff + size, buffer, strlen (buffer));
+			memcpy (writer_impl->buffer->buff + size, buffer, length);
 			writer_impl->buffer->next += length;
 			c = length;
 		}
@@ -115,7 +113,9 @@ guththila_writer_get_buffer(axis2_env_t *env,
     writer_impl = (guththila_writer_impl_t *)wt;
 
     if (writer_impl->buffer->buff)
+	{
         return (char *)writer_impl->buffer->buff;
+	}
     else
         return (char *)NULL;
 }
@@ -132,10 +132,3 @@ guththila_writer_get_buffer_size (axis2_env_t *env,
 		size = (unsigned int) writer_impl->buffer->next;
 	return size;
 }
-
-
-
-
-
-
-

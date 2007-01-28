@@ -122,16 +122,16 @@ AXIS2_EXTERN guththila_char_t *
 guththila_token_char_ref(axis2_env_t * environment,
         guththila_char_t * buffer)
 {
-    int len;
-    int ii;
-    int ix;
+    int len = 0;
+    int ii = 0;
+    int ix = 0;
     guththila_char_t *ref_buffer = NULL;
 
     len = AXIS2_STRLEN(buffer);
     ref_buffer = (guththila_char_t *) AXIS2_MALLOC(
                 environment->allocator, len + 1);
 
-
+	ref_buffer[len] = 0;
     for (ii = 0, ix = 0; ii < len; ii++, ix++)
     {
         if (buffer[ii] == '&')
@@ -177,6 +177,7 @@ guththila_token_char_ref(axis2_env_t * environment,
         else
             ref_buffer[ix] = buffer[ii];
     }
+	AXIS2_FREE (environment->allocator, buffer);
     return ref_buffer;
 }
 
@@ -343,4 +344,22 @@ guththila_token_convert_utf16_to_utf8(axis2_env_t * environment,
         output_buffer = strcat(output_buffer, output_char);
     }
     return output_buffer;
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+guththila_relocate_tokens(axis2_env_t *environment,
+						  axis2_stack_t *stack,
+						  int offset)
+{
+    guththila_token_t *el = NULL;
+    int isize = 0;
+    isize = AXIS2_STACK_SIZE(stack, environment);
+    /*   el = (guththila_token_t *) AXIS2_STACK_GET_AT (stack, environment, isize-1); */
+    for (; isize > 0; isize--)
+    {
+        el = (guththila_token_t *) AXIS2_STACK_GET_AT(stack, 
+													  environment, 
+													  isize - 1);
+        guththila_token_relocate(environment, el, offset);
+    }
 }

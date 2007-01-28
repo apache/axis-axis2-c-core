@@ -103,7 +103,7 @@ main(int argc, char *argv[])
                 {
                     /* p = guththila_get_attribute_prefix_by_number
                        (parser, ia); */
-                    p = guththila_get_attribute_namespace_by_number(environment, parser, ia);
+                    p =	guththila_get_attribute_prefix_by_number(environment, parser, ia);
                     if (p)
                     {
                         printf(" %s:", p);
@@ -171,14 +171,14 @@ main(int argc, char *argv[])
             break;
             case GUTHTHILA_CHARACTER:
             {
-                char *p;
+                char *p = NULL;
                 p = guththila_get_value(environment, parser);
-             /*    if (!parser->is_whitespace) */
-/*                 { */
-/*                     printf(p); */
-/*                 } */
-				printf (p);
-                AXIS2_FREE(allocator, p);
+				/*    if (!parser->is_whitespace) */
+				/*                 { */
+				/*                     printf(p); */
+				/*                 } */
+				printf ("%s",p);
+				AXIS2_FREE(allocator, p);
             }
             break;
             case GUTHTHILA_COMMENT:

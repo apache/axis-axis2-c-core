@@ -35,7 +35,7 @@ typedef struct guththila_buffer_s
   guththila_char_t *buff;
 } guththila_buffer_t;
 
-#define GUTHTHILA_BUFFER_SIZE 50
+#define GUTHTHILA_BUFFER_SIZE 1024
 
 AXIS2_EXTERN guththila_buffer_t * AXIS2_CALL
 guththila_buffer_create (axis2_env_t * environment, int size);
