@@ -22,6 +22,7 @@
 #include <axis2_property.h>
 #include <axis2_msg_ctx.h>
 #include <rampart_authn_provider.h>
+#include <rampart_credentials.h>
 /**
   * @file rampart_util.h
   * @brief Utilities of rampart 
@@ -38,6 +39,22 @@ extern "C" {
   * @ingroup Rampart_Util
   */
 
+/**
+ *Load the credentials module
+ */
+AXIS2_EXTERN rampart_credentials_t* AXIS2_CALL
+rampart_load_credentials_module(const axis2_env_t *env,
+    axis2_char_t *cred_module_name);
+
+/**
+ *Call credentials module
+ */
+AXIS2_EXTERN rampart_credentials_status_t AXIS2_CALL
+rampart_call_credentials(const axis2_env_t *env,
+    rampart_credentials_t *cred_module,
+    axis2_msg_ctx_t *ctx,
+    axis2_char_t **username,
+    axis2_char_t **password);
 
 AXIS2_EXTERN rampart_authn_provider_status_t AXIS2_CALL
 rampart_authenticate_un_pw(const axis2_env_t *env,

@@ -106,6 +106,8 @@ rampart_get_password(const axis2_env_t *env,
         return password;
     }
 
+    /*TODO: If not in the context, get the password+username from the credentials module*/
+
     /*If not check whether there is a callback class specified*/
     pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
     if (pw_callback_module)

@@ -29,6 +29,7 @@
 #include <axis2_msg_ctx.h>
 #include <rampart_constants.h>
 #include <rampart_callback.h>
+#include <rampart_credentials.h>
 
 /*Calculate the hash of concatenated string of
  * nonce, created and the password.
@@ -41,6 +42,50 @@
 
 /*#define PRINTINFO 1 */
 
+AXIS2_EXTERN rampart_credentials_status_t AXIS2_CALL
+rampart_call_credentials(const axis2_env_t *env,
+    rampart_credentials_t *cred_module,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_char_t **username,
+    axis2_char_t **password)
+{
+    rampart_credentials_status_t cred_status = RAMPART_CREDENTIALS_GENERAL_ERROR;
+    
+    cred_status = RAMPART_CREDENTIALS_USERNAME_GET(cred_module, env, msg_ctx, username, password);
+    return cred_status;
+}
+
+AXIS2_EXTERN rampart_credentials_t* AXIS2_CALL
+rampart_load_credentials_module(const axis2_env_t *env,
+    axis2_char_t *cred_module_name)
+{
+    rampart_credentials_t *cred = NULL;
+    axis2_dll_desc_t *dll_desc = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    void *ptr = NULL;
+
+    dll_desc = axis2_dll_desc_create(env);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, cred_module_name);
+    impl_info_param = axis2_param_create(env, NULL, NULL);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_class_loader_init(env);
+    ptr = axis2_class_loader_create_dll(env, impl_info_param);
+
+    if (!ptr)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to load the credentials module %s. ERROR", cred_module_name);
+        return AXIS2_FAILURE;
+    }
+    cred = (rampart_credentials_t*)ptr;
+    if (!cred)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to identify the credentials  module %s. ERROR", cred_module_name);
+        return AXIS2_FAILURE;
+    }
+
+    return cred;
+}
+/*TODO: Seperate load and calling logic*/
 AXIS2_EXTERN rampart_authn_provider_status_t AXIS2_CALL
 rampart_authenticate_un_pw(const axis2_env_t *env,
     axis2_char_t *authn_module_name,
