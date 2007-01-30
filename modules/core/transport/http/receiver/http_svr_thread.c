@@ -377,7 +377,7 @@ axis2_svr_thread_worker_func (
         thread_env = NULL;
     }
 #ifdef AXIS2_SVR_MULTI_THREADED
-    AXIS2_THREAD_POOL_EXIT_THREAD(env->thread_pool, thd);
+    /*AXIS2_THREAD_POOL_EXIT_THREAD(env->thread_pool, thd);*/
 #endif
 
     return NULL;
