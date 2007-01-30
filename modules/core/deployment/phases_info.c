@@ -474,7 +474,7 @@ axis2_phases_info_get_op_in_phases(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    phase = axis2_hash_get(phases_info_impl->op_in_phases, 
+    /*phase = axis2_hash_get(phases_info_impl->op_in_phases, 
         AXIS2_PHASE_POLICY_DETERMINATION, AXIS2_HASH_KEY_STRING);
     if(!phase)
     {
@@ -491,7 +491,7 @@ axis2_phases_info_get_op_in_phases(
         AXIS2_ARRAY_LIST_FREE(op_in_phases, env);
         op_in_phases = NULL;
         return NULL;
-    }
+    }*/
     if (!phases_info_impl->in_phases)
     {
         return op_in_phases;
@@ -501,7 +501,7 @@ axis2_phases_info_get_op_in_phases(
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(
                     phases_info_impl->in_phases, env, i);
-        if (0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name) ||
+        if (0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name) ||
             0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||
             0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name) ||
             0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name))
@@ -571,42 +571,35 @@ axis2_phases_info_get_op_out_phases(
     {
         phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(phases_info_impl->
                 out_phases, env, i);
-        if (0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_OUT, phase_name))
+        phase = axis2_hash_get(phases_info_impl->op_out_phases, phase_name, 
+            AXIS2_HASH_KEY_STRING);
+        if(!phase)
         {
-            /* Do Nothing */
+            phase = axis2_phase_create(env, phase_name);
+            axis2_hash_set(phases_info_impl->op_out_phases, phase_name,
+                AXIS2_HASH_KEY_STRING, phase);
         }
-        else
+        status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
+        if (AXIS2_SUCCESS != status)
         {
-            phase = axis2_hash_get(phases_info_impl->op_out_phases, phase_name, 
-                AXIS2_HASH_KEY_STRING);
-            if(!phase)
-            {
-                phase = axis2_phase_create(env, phase_name);
-                axis2_hash_set(phases_info_impl->op_out_phases, phase_name,
-                    AXIS2_HASH_KEY_STRING, phase);
-            }
-            status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
-            if (AXIS2_SUCCESS != status)
-            {
-                int i = 0;
-                int size = 0;
+            int i = 0;
+            int size = 0;
 
+            AXIS2_PHASE_FREE(phase, env);
+            phase = NULL;
+            size = AXIS2_ARRAY_LIST_SIZE(op_out_phases, env);
+            for (i = 0; i < size; i++)
+            {
+                phase = AXIS2_ARRAY_LIST_GET(op_out_phases, env, i);
                 AXIS2_PHASE_FREE(phase, env);
                 phase = NULL;
-                size = AXIS2_ARRAY_LIST_SIZE(op_out_phases, env);
-                for (i = 0; i < size; i++)
-                {
-                    phase = AXIS2_ARRAY_LIST_GET(op_out_phases, env, i);
-                    AXIS2_PHASE_FREE(phase, env);
-                    phase = NULL;
-                }
-                AXIS2_ARRAY_LIST_FREE(op_out_phases, env);
-                op_out_phases = NULL;
-                return NULL;
             }
+            AXIS2_ARRAY_LIST_FREE(op_out_phases, env);
+            op_out_phases = NULL;
+            return NULL;
         }
     }
-    phase = axis2_hash_get(phases_info_impl->op_out_phases, 
+    /*phase = axis2_hash_get(phases_info_impl->op_out_phases, 
         AXIS2_PHASE_POLICY_DETERMINATION, AXIS2_HASH_KEY_STRING);
     if(!phase)
     {
@@ -641,8 +634,13 @@ axis2_phases_info_get_op_out_phases(
         axis2_hash_set(phases_info_impl->op_out_phases, 
             AXIS2_PHASE_MESSAGE_OUT, AXIS2_HASH_KEY_STRING, phase);
     }
-    status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
-    if (AXIS2_SUCCESS != status)
+
+    if(phase)
+    {
+        status = AXIS2_ARRAY_LIST_ADD(op_out_phases, env, phase);
+    }
+    
+    if (AXIS2_SUCCESS != status || !phase)
     {
         int i = 0;
         int size = 0;
@@ -660,7 +658,7 @@ axis2_phases_info_get_op_out_phases(
         op_out_phases = NULL;
         return NULL;
 
-    }
+    }*/
     return op_out_phases;
 }
 

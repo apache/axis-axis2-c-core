@@ -197,7 +197,8 @@ axis2_phase_holder_add_handler(
         phase = axis2_phase_holder_get_phase(phase_holder, env, phase_name);
         status = AXIS2_PHASE_ADD_HANDLER_DESC(phase, env, handler);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Add handler %s to phase %s",
-                AXIS2_HANDLER_DESC_GET_NAME(handler, env), phase_name);
+                axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler, env), env), 
+                phase_name);
     }
     else
     {

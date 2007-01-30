@@ -90,64 +90,31 @@
     <!-- Phases  -->
     <!-- ================================================= -->
     <phaseOrder type="inflow">
-        <!--  System pre defined phases       -->
-        <phase name="TransportIn"/>
+        <!-- System pre defined phases       -->
+        <phase name="Transport"/>
         <phase name="PreDispatch"/>
-        <phase name="Dispatch">
-            <handler name="AddressingBasedDispatcher"
-                     class="axis2_engine">
-                <order phase="Dispatch"/>
-            </handler>
-             <handler name="RequestURIBasedDispatcher"
-                     class="axis2_engine">
-                <order phase="Dispatch"/>
-            </handler>
-             <handler name="SOAPActionBasedDispatcher"
-                     class="axis2_engine">
-                <order phase="Dispatch"/>
-            </handler>
-             <handler name="SOAPMessageBodyBasedDispatcher"
-                     class="axis2_engine">
-                <order phase="Dispatch"/>
-            </handler>
-        </phase>
-        <phase name="PostDispatch">
-             <handler name="DispatchPostConditionsEvaluator"
-                     class="axis2_engine">
-                <order phase="PostDispatch"/>
-            </handler>
-            <handler name="InstanceDispatcher"
-                     class="axis2_engine">
-                <order phase="PostDispatch"/>
-            </handler>
-            <handler name="SOAPProcessingModelChecker"
-                     class="axis2_engine">
-                <order phase="PostDispatch"/>
-            </handler>
-        </phase>
-        <!--  System pre defined phases       -->
-        <!--   After Postdispatch phase module author or or service author can add any phase he want      -->
+        <phase name="Dispatch"/>
+        <phase name="PostDispatch"/>
+        <!-- System pre defined phases       -->
+        <!-- After PostDispatch phase, module or service author can add any phase as required  -->
         <!--phase name="userphase1"/-->
     </phaseOrder>
     <phaseOrder type="outflow">
-        <!--      user can add his own phases to this area  -->
+        <!-- User defined phases could be added here -->
 	    <!--phase name="RMPhase"/-->
         <!--phase name="userphase1"/-->
         <!--system predefined phase-->
-        <!--these phase will run irrespective of the service-->
-        <!--phase name="PolicyDetermination"/-->
-        <!--phase name="MessageOut"/-->
+        <phase name="MessageOut"/>
     </phaseOrder>
     <phaseOrder type="INfaultflow">
-        <!--      user can add his own phases to this area  -->
+        <!-- User defined phases could be added here -->
         <!--phase name="userphase1"/-->
 	    <!--phase name="RMPhase"/-->
     </phaseOrder>
     <phaseOrder type="Outfaultflow">
-        <!--      user can add his own phases to this area  -->
+        <!-- User defined phases could be added here -->
         <!--phase name="RMPhase"/-->
         <!--phase name="userphase1"/-->
-        <!--phase name="PolicyDetermination"/-->
         <phase name="MessageOut"/>
     </phaseOrder>
 </axisconfig>

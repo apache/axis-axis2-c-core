@@ -357,7 +357,7 @@ axis2_phase_invoke(
             {
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                         "Invoke the handler %s within the phase %s",
-                        AXIS2_HANDLER_GET_NAME(handler, env),
+                        axis2_string_get_buffer(AXIS2_HANDLER_GET_NAME(handler, env), env),
                         phase_impl->name);
                 status = AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
                 if (status != AXIS2_SUCCESS)

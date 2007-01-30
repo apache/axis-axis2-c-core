@@ -46,7 +46,7 @@ extern "C"
 /*#define  AXIS2_FAULT_OUT_FLOW 4*/
 
 /** phase transport in */
-#define AXIS2_PHASE_TRANSPORTIN "TransportIn"
+#define AXIS2_PHASE_TRANSPORT_IN "Transport"
 /** phase pre dispatch */
 #define AXIS2_PHASE_PRE_DISPATCH "PreDispatch"
 /** phase dispatch */
@@ -60,8 +60,6 @@ extern "C"
 
 /** phase message out */
 #define AXIS2_PHASE_MESSAGE_OUT "MessageOut"
-/** phase transport out */
-#define AXIS2_PHASE_TRANSPORT_OUT "MessageOut"
 
 /**
  * All the handlers inside transport_sender and tranport_recievre in axis2.xml gose

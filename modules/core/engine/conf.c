@@ -449,7 +449,7 @@ axis2_conf_create(
     {
         axis2_disp_t *uri_dispatch = NULL;
 
-        phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORTIN);
+        phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORT_IN);
         if (NULL == phase)
         {
             axis2_conf_free(&(config_impl->conf), env);

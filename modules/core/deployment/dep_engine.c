@@ -1051,7 +1051,7 @@ axis2_dep_engine_validate_system_predefined_phases(
         phase2 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 2);
         phase3 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 3);
     }
-    if ((phase0 && 0 != AXIS2_STRCMP(phase0, AXIS2_PHASE_TRANSPORTIN)) ||
+    if ((phase0 && 0 != AXIS2_STRCMP(phase0, AXIS2_PHASE_TRANSPORT_IN)) ||
             (phase1 && 0 != AXIS2_STRCMP(phase1, AXIS2_PHASE_PRE_DISPATCH)) ||
             (phase2 && 0 != AXIS2_STRCMP(phase2, AXIS2_PHASE_DISPATCH)) ||
             (phase3 && 0 != AXIS2_STRCMP(phase3, AXIS2_PHASE_POST_DISPATCH)))
@@ -1581,6 +1581,7 @@ axis2_dep_engine_do_deploy(
             }
             AXIS2_ARCH_READER_FREE(arch_reader, env);
         }
+        printf("end do dep\n");
     }
     return AXIS2_SUCCESS;
 }
