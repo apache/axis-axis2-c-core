@@ -1,3 +1,3 @@
 TESTS =
-SUBDIRS = enc_echo
+SUBDIRS = sec_echo
 
