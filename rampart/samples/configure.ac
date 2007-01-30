@@ -84,8 +84,8 @@ AC_CONFIG_FILES([Makefile \
         server/Makefile \
         server/sec_echo/Makefile \
         client/Makefile
-        client/enc_echo/Makefile \
-        client/enc_echo/data/Makefile \
+        client/sec_echo/Makefile \
+        client/sec_echo/data/Makefile \
         keys/Makefile \
         keys/ahome/Makefile \
         keys/bhome/Makefile \

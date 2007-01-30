@@ -1104,22 +1104,22 @@ mod_rampart_services_sec_echo:
 	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\*.h $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
 	copy $(AXIS2_SOURCE_DIR)\rampart\samples\server\sec_echo\services.xml $(RAMPART_SAMPLES_SERVICE_DIR)\sec_echo
 	
-mod_rampart_samples_enc_echo:
-	if not exist $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo mkdir $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo
+mod_rampart_samples_sec_echo:
+	if not exist $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo mkdir $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo
 	
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
-	$(AXIS2_SOURCE_DIR)\rampart\samples\client\enc_echo\echo.c /c
+	$(AXIS2_SOURCE_DIR)\rampart\samples\client\sec_echo\echo.c /c
 	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:enc_echo.exe
+	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:sec_echo.exe
 
 	del *.obj
-	copy enc_echo.exe $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo
-	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\enc_echo\echo.c $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo
+	copy sec_echo.exe $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\sec_echo\echo.c $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo
 	
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\enc_echo\data $(RAMPART_SAMPLES_CLIENT_DIR)\enc_echo\data
-	del enc_echo.exe
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\sec_echo\data $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo\data
+	del sec_echo.exe
 
-mod_rampart_samples: mod_rampart_samples_enc_echo mod_rampart_services_sec_echo
+mod_rampart_samples: mod_rampart_samples_sec_echo mod_rampart_services_sec_echo
 
 mod_rampart_copy_include:
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\include $(AXIS2_INSTALL_DIR)\rampart\include
