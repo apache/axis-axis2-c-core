@@ -1,5 +1,5 @@
 SUBDIRS = data 
-prgbindir=$(prefix)/bin/samples/rampart/client/enc_echo
+prgbindir=$(prefix)/bin/samples/rampart/client/sec_echo
 prgbin_PROGRAMS = echo
 #samplesdir=$(prefix)/samples/client/echo
 #samples_DATA=echo.c README.txt Makefile.am Makefile.in
