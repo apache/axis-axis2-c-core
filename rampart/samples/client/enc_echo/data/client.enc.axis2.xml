@@ -4,20 +4,17 @@
     <!-- ================================================= -->
     <parameter name="hotdeployment" locked="false">false</parameter>
     <parameter name="hotupdate" locked="false">false</parameter>
-    <parameter name="enableMTOM" locked="false">true</parameter>
+    <!--parameter name="enableMTOM" locked="false">true</parameter-->
     <!-- Uncomment this to enable REST support -->
-    <!--    <parameter name="enableREST" locked="false">true</parameter>-->
+    <parameter name="enableREST" locked="false">true</parameter>
 
 
     <parameter name="userName" locked="false">admin</parameter>
     <parameter name="password" locked="false">axis2</parameter>
 
     <parameter name="seralizeLocation" locked="false">.</parameter>
-    <hostConfiguration>
-        <ip>127.0.0.1</ip>
-        <port>5555</port>
-    </hostConfiguration>
-    
+
+
     <!--Rampart configurations START -->
     <parameter name="OutflowSecurity">
       <action>
@@ -28,7 +25,7 @@
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
         <timeToLive>360</timeToLive>
         <encryptionKeyTransportAlgorithm>http://www.w3.org/2001/04/xmlenc#rsa-1_5</encryptionKeyTransportAlgorithm>
-        <encryptionSymAlgorithm>http://www.w3.org/2001/04/xmlenc#aes256-cbc</encryptionSymAlgorithm>  
+        <encryptionSymAlgorithm>http://www.w3.org/2001/04/xmlenc#aes256-cbc</encryptionSymAlgorithm>
         <encryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/ahome/b_cert.cert</encryptionPropFile>
         <!--encryptionKeyIdentifier options : Embedded IssuerSerial DirectReference KeyIdentifier-->
         <encryptionKeyIdentifier>IssuerSerial</encryptionKeyIdentifier>
@@ -54,11 +51,6 @@
     <!--<parameter name="extractServiceArchive" locked="false">true</parameter>-->
 
 
-    <!--    The way of adding listener to the system-->
-    <!--    <listener class="org.apache.axis2.ObserverIMPL">-->
-    <!--        <parameter name="RSS_URL" locked="false">http://127.0.0.1/rss</parameter>-->
-    <!--    </listener>-->
-
     <!-- ================================================= -->
     <!-- Message Receivers -->
     <!-- ================================================= -->
@@ -71,6 +63,8 @@
     <transportReceiver name="http" class="axis2_http_receiver">
         <parameter name="port" locked="false">6060</parameter>
     </transportReceiver>
+
+
 
     <!-- Uncomment this one with the appropriate papameters to enable the SMTP transport Receiver
     <transportReceiver name="mail" class="org.apache.axis2.transport.mail.SimpleMailListener">
@@ -117,11 +111,10 @@
     <!-- Global Modules  -->
     <!-- ================================================= -->
     <!-- Comment this to disable Addressing -->
-    <!--module ref="addressing"/-->
-    
+    <module ref="addressing"/>
+
     <!-- Comment this to disable Security -->
     <module ref="rampart"/>
-
 
     <!--Configuring module , providing paramters for modules whether they refer or not-->
     <!--<moduleConfig name="addressing">-->
@@ -132,64 +125,31 @@
     <!-- Phases  -->
     <!-- ================================================= -->
     <phaseOrder type="inflow">
-        <!--  System pre defined phases       -->
-        <phase name="TransportIn"/>
+        <!-- System pre defined phases       -->
+        <phase name="Transport"/>
         <phase name="PreDispatch"/>
-        <phase name="Dispatch">
-            <handler name="AddressingBasedDispatcher"
-                     class="axis2_engine">
-                <order phase="Dispatch"/>
-            </handler>
-             <handler name="RequestURIBasedDispatcher"
-                     class="axis2_engine">
-                <order phase="Dispatch"/>
-            </handler>
-             <handler name="SOAPActionBasedDispatcher"
-                     class="axis2_engine">
-                <order phase="Dispatch"/>
-            </handler>
-             <handler name="SOAPMessageBodyBasedDispatcher"
-                     class="axis2_engine">
-                <order phase="Dispatch"/>
-            </handler>
-        </phase>
-        <phase name="PostDispatch">
-             <handler name="DispatchPostConditionsEvaluator"
-                     class="axis2_engine">
-                <order phase="PostDispatch"/>
-            </handler>
-            <handler name="InstanceDispatcher"
-                     class="axis2_engine">
-                <order phase="PostDispatch"/>
-            </handler>
-            <handler name="SOAPProcessingModelChecker"
-                     class="axis2_engine">
-                <order phase="PostDispatch"/>
-            </handler>
-        </phase>
-        <!--  System pre defined phases       -->
-        <!--   After Postdispatch phase module author or or service author can add any phase he want      -->
+        <phase name="Dispatch"/>
+        <phase name="PostDispatch"/>
+        <!-- System pre defined phases       -->
+        <!-- After PostDispatch phase, module or service author can add any phase as required  -->
         <!--phase name="userphase1"/-->
     </phaseOrder>
     <phaseOrder type="outflow">
-        <!--      user can add his own phases to this area  -->
+        <!-- User defined phases could be added here -->
 	    <!--phase name="RMPhase"/-->
         <!--phase name="userphase1"/-->
         <!--system predefined phase-->
-        <!--these phase will run irrespective of the service-->
-        <!--phase name="PolicyDetermination"/-->
-        <!--phase name="MessageOut"/-->
+        <phase name="MessageOut"/>
     </phaseOrder>
     <phaseOrder type="INfaultflow">
-        <!--      user can add his own phases to this area  -->
+        <!-- User defined phases could be added here -->
         <!--phase name="userphase1"/-->
 	    <!--phase name="RMPhase"/-->
     </phaseOrder>
     <phaseOrder type="Outfaultflow">
-        <!--      user can add his own phases to this area  -->
+        <!-- User defined phases could be added here -->
         <!--phase name="RMPhase"/-->
         <!--phase name="userphase1"/-->
-        <!--phase name="PolicyDetermination"/-->
         <phase name="MessageOut"/>
     </phaseOrder>
 </axisconfig>
