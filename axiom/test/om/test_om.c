@@ -178,13 +178,14 @@ test_om_build(const char *filename)
 
     buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, environment);
 
-    AXIOM_OUTPUT_FREE(om_output, environment);
     if (buffer)
         printf("%s", buffer);
 
+    AXIOM_OUTPUT_FREE(om_output, environment);
+
     AXIOM_STAX_BUILDER_FREE(builder, environment);
-    if (buffer)
-        AXIS2_FREE(environment->allocator, buffer);
+/*     if (buffer) */
+/*         AXIS2_FREE(environment->allocator, buffer); */
     printf("\nend test_om_build\n");
     fclose(f);
     return 0;
@@ -283,11 +284,11 @@ test_om_serialize()
     output_buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, environment);
 
     AXIOM_OUTPUT_FREE(om_output, environment);
-    if (output_buffer)
-    {
-        printf("%s", output_buffer);
-        AXIS2_FREE(environment->allocator, output_buffer);
-    }
+	/*    if (output_buffer) */
+	/*     { */
+	/*         printf("%s", output_buffer); */
+	/*         AXIS2_FREE(environment->allocator, output_buffer); */
+	/*     } */
 
     printf("\nend test_om_serialize\n");
 
