@@ -1581,7 +1581,6 @@ axis2_dep_engine_do_deploy(
             }
             AXIS2_ARCH_READER_FREE(arch_reader, env);
         }
-        printf("end do dep\n");
     }
     return AXIS2_SUCCESS;
 }
