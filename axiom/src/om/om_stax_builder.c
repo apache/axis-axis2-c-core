@@ -673,7 +673,7 @@ axiom_stax_builder_next(axiom_stax_builder_t *om_builder,
 
 
             case AXIOM_XML_READER_SPACE:
-                /* Do nothing */
+                node = axiom_stax_builder_create_om_text(om_builder, env);
                 break;
 
             case AXIOM_XML_READER_CHARACTER:

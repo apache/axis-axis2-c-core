@@ -541,8 +541,6 @@ axis2_http_transport_utils_process_http_get_request(
     AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env,
             request_uri));
 
-    axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
-
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
     if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env,
             msg_ctx))
