@@ -19,6 +19,8 @@
 #include <axis2_string.h>
 #include <axis2_http_transport.h>
 #include <axis2_string.h>
+
+#include "axis2_iis_constants.h"
 /**
  * @brief IIS Out transport info impl structure
  * Axis2 iis_out_transport_info_impl
@@ -29,7 +31,7 @@ typedef struct axis2_iis_out_transport_info_impl
 {
     axis2_http_out_transport_info_t out_transport_info;    
     axis2_char_t *encoding;
-	axis2_char_t *content_type;
+	axis2_char_t content_type[MAX_HTTP_CONTENT_TYPE_LEN];
 }
 
 axis2_iis_out_transport_info_impl_t;
@@ -133,33 +135,18 @@ axis2_http_out_transport_info_set_content_type(
     const axis2_env_t *env,
     const axis2_char_t *content_type)
 {
-    axis2_char_t *tmp1 = NULL;
-    axis2_char_t *tmp2 = NULL;
-	axis2_char_t *tmp3 = NULL;
-	axis2_char_t *tmp4 = NULL;
+	int temp = 0;
     axis2_iis_out_transport_info_impl_t *info_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FAILURE);
-
-    info_impl = AXIS2_INTF_TO_IMPL(info);
-
+	info_impl = AXIS2_INTF_TO_IMPL(info);	
+	info_impl->content_type[0] = '\0';	
     if (info_impl->encoding)
-    {
-        tmp1 = AXIS2_STRACAT(info_impl->content_type, content_type, env);
-		tmp2 = AXIS2_STRACAT(tmp1, ";charset:", env);
-		tmp3 = AXIS2_STRACAT(tmp2, info_impl->encoding, env);
-		//tmp4 = AXIS2_STRACAT(tmp3, "", env);
-		info_impl->content_type = AXIS2_STRDUP(tmp3, env);
-
-		AXIS2_FREE(env->allocator, tmp1);
-        AXIS2_FREE(env->allocator, tmp2);
-		AXIS2_FREE(env->allocator, tmp3);
-		AXIS2_FREE(env->allocator, tmp4);
+    {       
+		sprintf(info_impl->content_type, "%s%s%s", content_type, ";charser:", info_impl->encoding);			
     }
     else
     {
-		info_impl->content_type = AXIS2_STRDUP(content_type, env);
+		strcat(info_impl->content_type, content_type);
     }
     return AXIS2_SUCCESS;
 }
