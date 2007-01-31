@@ -42,6 +42,30 @@
 
 /*#define PRINTINFO 1 */
 
+AXIS2_EXTERN void* AXIS2_CALL
+rampart_load_module(const axis2_env_t *env,
+    axis2_char_t *module_name)
+{
+    axis2_dll_desc_t *dll_desc = NULL;
+    axis2_param_t *impl_info_param = NULL;
+    void *ptr = NULL;
+
+    dll_desc = axis2_dll_desc_create(env);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, module_name);
+    impl_info_param = axis2_param_create(env, NULL, NULL);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_class_loader_init(env);
+    ptr = axis2_class_loader_create_dll(env, impl_info_param);
+
+    if (!ptr)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to load the module %s. ERROR", module_name);
+        return NULL;
+    } 
+
+    return ptr;
+}
+
 AXIS2_EXTERN rampart_credentials_status_t AXIS2_CALL
 rampart_call_credentials(const axis2_env_t *env,
     rampart_credentials_t *cred_module,
@@ -60,23 +84,8 @@ rampart_load_credentials_module(const axis2_env_t *env,
     axis2_char_t *cred_module_name)
 {
     rampart_credentials_t *cred = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
-    axis2_param_t *impl_info_param = NULL;
-    void *ptr = NULL;
-
-    dll_desc = axis2_dll_desc_create(env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, cred_module_name);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-    axis2_class_loader_init(env);
-    ptr = axis2_class_loader_create_dll(env, impl_info_param);
-
-    if (!ptr)
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to load the credentials module %s. ERROR", cred_module_name);
-        return AXIS2_FAILURE;
-    }
-    cred = (rampart_credentials_t*)ptr;
+    
+    cred = (rampart_credentials_t*)rampart_load_module(env, cred_module_name);
     if (!cred)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to identify the credentials  module %s. ERROR", cred_module_name);
@@ -85,10 +94,26 @@ rampart_load_credentials_module(const axis2_env_t *env,
 
     return cred;
 }
-/*TODO: Seperate load and calling logic*/
+
+AXIS2_EXTERN void* AXIS2_CALL
+rampart_load_auth_module(const axis2_env_t *env,
+    axis2_char_t *auth_module_name)
+{
+    rampart_authn_provider_t *authp = NULL;
+
+    authp = (rampart_authn_provider_t*)rampart_load_module(env, auth_module_name);
+    if (!authp)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to identify the authentication module %s. ERROR", auth_module_name);
+        return AXIS2_FAILURE;
+    }
+
+    return authp;
+}
+
 AXIS2_EXTERN rampart_authn_provider_status_t AXIS2_CALL
 rampart_authenticate_un_pw(const axis2_env_t *env,
-    axis2_char_t *authn_module_name,
+    rampart_authn_provider_t *authp,
     const axis2_char_t *username,
     const axis2_char_t *password,
     const axis2_char_t *nonce,/*Can be NULL if plain text*/
@@ -96,30 +121,11 @@ rampart_authenticate_un_pw(const axis2_env_t *env,
     const axis2_char_t *password_type,
     axis2_msg_ctx_t *msg_ctx)
 {
-    rampart_authn_provider_t *authp = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
-    axis2_param_t *impl_info_param = NULL;
-    void *ptr = NULL;
     rampart_authn_provider_status_t auth_status = RAMPART_AUTHN_PROVIDER_GENERAL_ERROR;
 
-    dll_desc = axis2_dll_desc_create(env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, authn_module_name);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-    axis2_class_loader_init(env);
-    ptr = axis2_class_loader_create_dll(env, impl_info_param);
-    
-    if (!ptr)
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to load the authentication module %s. ERROR", authn_module_name);
-        return AXIS2_FAILURE;
-    }
-
-    authp = (rampart_authn_provider_t*)ptr;
     if (!authp)
     {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to identify the authentication  module %s. ERROR", authn_module_name);
-        return AXIS2_FAILURE;
+        return RAMPART_AUTHN_PROVIDER_GENERAL_ERROR;
     }
     /*If password digest*/
     if(0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST_URI)){
@@ -184,7 +190,8 @@ rampart_callback_password(const axis2_env_t *env,
     
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *env)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+rampart_generate_nonce(const axis2_env_t *env)
 {
     oxs_buffer_t *buffer = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -202,7 +209,8 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *
 }
 
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_time(const axis2_env_t *env, int ttl)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+rampart_generate_time(const axis2_env_t *env, int ttl)
 {
     axis2_date_time_t *dt = NULL;
     axis2_char_t *dt_str = NULL;

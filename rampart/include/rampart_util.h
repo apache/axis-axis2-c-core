@@ -38,6 +38,12 @@ extern "C" {
   * @defgroup Rampart_Util
   * @ingroup Rampart_Util
   */
+/**
+ * Load a DLL or .SO
+ */
+AXIS2_EXTERN void* AXIS2_CALL
+rampart_load_module(const axis2_env_t *env,
+    axis2_char_t *module_name);
 
 /**
  *Load the credentials module
@@ -56,9 +62,20 @@ rampart_call_credentials(const axis2_env_t *env,
     axis2_char_t **username,
     axis2_char_t **password);
 
+/**
+ * Load authentication module
+ */
+AXIS2_EXTERN void* AXIS2_CALL
+rampart_load_auth_module(const axis2_env_t *env,
+    axis2_char_t *auth_module_name);
+
+
+/**
+ * Call auth module
+ */
 AXIS2_EXTERN rampart_authn_provider_status_t AXIS2_CALL
 rampart_authenticate_un_pw(const axis2_env_t *env,
-    axis2_char_t *authn_module_name,
+    rampart_authn_provider_t *authp,
     const axis2_char_t *username,
     const axis2_char_t *password,
     const axis2_char_t *nonce,/*Can be NULL if plain text*/
