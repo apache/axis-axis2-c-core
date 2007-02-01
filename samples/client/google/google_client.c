@@ -120,7 +120,7 @@ int main(int argc, char** argv)
                 return AXIS2_FAILURE;
             }
 
-            ret_node1 = AXIOM_NODE_GET_FIRST_CHILD(ret_node, env); /*return*/
+            ret_node1 = AXIOM_NODE_GET_FIRST_ELEMENT(ret_node, env); /*return*/
             if (!ret_node1)
             {
                 print_invalid_om(env, ret_node);

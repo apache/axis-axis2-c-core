@@ -101,7 +101,8 @@ axiom_soap_body_disp_find_svc(
             if (body_node)
             {
                 axiom_node_t *body_first_child_node =
-                    AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+                    AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
+
                 if (body_first_child_node)
                 {
                     if (AXIOM_NODE_GET_NODE_TYPE(body_first_child_node, env) == AXIOM_ELEMENT)
@@ -182,7 +183,11 @@ axiom_soap_body_disp_find_op(
             if (body_node)
             {
                 axiom_node_t *body_first_child_node =
-                    AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+                    AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
+
+/*				while (AXIOM_NODE_GET_NODE_TYPE(body_first_child_node, env) != AXIOM_ELEMENT)
+				body_first_child_node = AXIOM_NODE_GET_NEXT_SIBLING (body_first_child_node, env);*/
+
                 if (body_first_child_node)
                 {
                     if (AXIOM_NODE_GET_NODE_TYPE(body_first_child_node, env) == AXIOM_ELEMENT)

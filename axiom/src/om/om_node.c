@@ -465,6 +465,33 @@ axiom_node_get_first_child(axiom_node_t *om_node,
 }
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+axiom_node_get_first_element(axiom_node_t *om_node,
+        const axis2_env_t *env)
+{
+    int token = 0;
+	axiom_node_t *first_element;
+    if (! om_node)
+        return NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    /**********************************************************/
+    while (!(om_node->first_child) && !(om_node->done)
+            && om_node->builder)
+    {
+        token = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node->builder, env);
+        if (token == -1)
+            return NULL;
+    }
+    /**********************************************************/
+	first_element = om_node->first_child;
+
+	while (AXIOM_NODE_GET_NODE_TYPE(first_element, env) != AXIOM_ELEMENT)
+		first_element = AXIOM_NODE_GET_NEXT_SIBLING (first_element, env);
+
+    return first_element;
+}
+
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_node_get_last_child(axiom_node_t *om_node,
         const axis2_env_t *env)
 {

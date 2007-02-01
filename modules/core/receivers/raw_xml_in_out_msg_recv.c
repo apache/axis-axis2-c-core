@@ -136,8 +136,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
             om_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
             om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
-            om_node = AXIOM_NODE_GET_FIRST_CHILD(om_node, env);
-        }
+            om_node = AXIOM_NODE_GET_FIRST_ELEMENT(om_node, env);
+/*             om_node = AXIOM_NODE_GET_FIRST_CHILD(om_node, env); */
+/* 			while (AXIOM_NODE_GET_NODE_TYPE(om_node, env) != AXIOM_ELEMENT)
+			om_node = AXIOM_NODE_GET_NEXT_SIBLING (om_node, env);*/
+         }
         else if (0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
         {
             axiom_soap_envelope_t *envelope = NULL;

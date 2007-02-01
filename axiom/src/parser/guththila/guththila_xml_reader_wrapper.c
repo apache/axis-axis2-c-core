@@ -456,8 +456,8 @@ guththila_xml_reader_wrapper_next(axiom_xml_reader_t *parser,
     int i = -1;
     AXIS2_ENV_CHECK(env, -1);
     i = guththila_next((axis2_env_t*) env, AXIS2_INTF_TO_IMPL(parser)->guththila_parser);
-    while (i == GUTHTHILA_CHARACTER && AXIS2_INTF_TO_IMPL(parser)->guththila_parser->is_whitespace)
-      i = guththila_next((axis2_env_t*) env, AXIS2_INTF_TO_IMPL(parser)->guththila_parser);
+/*    while (i == GUTHTHILA_CHARACTER && AXIS2_INTF_TO_IMPL(parser)->guththila_parser->is_whitespace)
+      i = guththila_next((axis2_env_t*) env, AXIS2_INTF_TO_IMPL(parser)->guththila_parser);*/
     return i == -1 ? -1 : AXIS2_INTF_TO_IMPL(parser)->event_map[i];
 }
 

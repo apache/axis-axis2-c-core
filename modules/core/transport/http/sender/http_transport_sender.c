@@ -365,7 +365,7 @@ axis2_http_transport_sender_invoke(
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
                 }
-                data_out = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+                data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
                 if (NULL == data_out || AXIOM_NODE_GET_NODE_TYPE(data_out, env)
                         != AXIOM_ELEMENT)
                 {
@@ -607,7 +607,7 @@ axis2_http_transport_sender_write_message(
         {
             return AXIS2_FAILURE;
         }
-        data_out = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+        data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
         if (NULL == data_out || AXIOM_NODE_GET_NODE_TYPE(data_out, env)
                 != AXIOM_ELEMENT)
         {

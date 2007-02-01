@@ -860,7 +860,7 @@ axis2_svc_client_send_receive(
                                 soap_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
                                 if (soap_node)
                                 {
-                                    return AXIOM_NODE_GET_FIRST_CHILD(soap_node, env);
+                                    return AXIOM_NODE_GET_FIRST_ELEMENT(soap_node, env);
                                 }
                             }
                         }
@@ -948,7 +948,7 @@ axis2_svc_client_send_receive(
     {
         return NULL;
     }
-    return AXIOM_NODE_GET_FIRST_CHILD(soap_node, env);
+    return AXIOM_NODE_GET_FIRST_ELEMENT(soap_node, env);
 }
 
 

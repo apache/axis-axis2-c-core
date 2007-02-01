@@ -181,6 +181,17 @@ extern "C"
     AXIS2_EXTERN axiom_node_t * AXIS2_CALL
     axiom_node_get_first_child(axiom_node_t  *om_node,
             const axis2_env_t *env);
+
+	/**get the first AXIOM_ELEMENT in om_node
+	 * @param om_node node
+	 * @param env environment must not be null
+	 * @returns pointer to first om element, NULL is returned on error
+	 * with error code set in environments error.
+	 */
+    AXIS2_EXTERN axiom_node_t * AXIS2_CALL
+    axiom_node_get_first_element(axiom_node_t  *om_node,
+            const axis2_env_t *env);
+
     /**
     * get the last child
     * @param om_node node
@@ -292,8 +303,10 @@ extern "C"
     /** get previous sibling */
 #define AXIOM_NODE_GET_PREVIOUS_SIBLING(om_node,env) \
         axiom_node_get_previous_sibling(om_node,env)
+    /** get firet element of this om_node  */
+#define AXIOM_NODE_GET_FIRST_ELEMENT(om_node,env) \
+        axiom_node_get_first_element(om_node,env)
     /** get build status */
-
 #define AXIOM_NODE_IS_COMPLETE(om_node,env) \
         axiom_node_is_complete(om_node,env)
     /** get data element of this node can be om_element om_text etc */
