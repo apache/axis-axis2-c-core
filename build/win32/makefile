@@ -1258,7 +1258,7 @@ axis2:
 ##############################################################################################
 
 
-all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_mod_log all_services all_clients axis2_server   copy_include clean_make_dir 
+all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_mod_log all_services all_clients axis2_server   copy_include clean_make_dir 
  
 install: all
 
