@@ -256,10 +256,10 @@ extern "C"
          * @return pointer to XML schema element, returns a reference, not 
          * a cloned copy
          */
-        xml_schema_element_t *(AXIS2_CALL *
+        /*xml_schema_element_t *(AXIS2_CALL *
                 get_schema_element)(
                     const axis2_msg_t *msg,
-                    const axis2_env_t *env);
+                    const axis2_env_t *env);*/
     };
 
     /**
@@ -360,8 +360,8 @@ extern "C"
 
 /** Gets schema element associated with message.
     @sa axis2_msg_ops#get_schema_element */
-#define AXIS2_MSG_GET_SCHEMA_ELEMENT(msg, env) \
-      ((msg)->ops->get_schema_element(msg, env))
+/*#define AXIS2_MSG_GET_SCHEMA_ELEMENT(msg, env) \
+      ((msg)->ops->get_schema_element(msg, env))*/
 
 /** @} */
 #ifdef __cplusplus

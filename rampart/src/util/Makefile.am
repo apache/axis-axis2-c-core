@@ -15,5 +15,4 @@ librampart_util_la_LIBADD  = -lssl \
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../../include \
 			-I ../../../util/include \
-			-I ../../../xml_schema/include \
 			-I ../../../axiom/include

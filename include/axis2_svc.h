@@ -55,10 +55,7 @@
 #include <axis2_module_desc.h>
 #include <axis2_conf.h>
 #include <axis2_string.h>
-#include <xml_schema.h>
-#include <xml_schema_external.h>
 #include <axis2_stream.h>
-#include <xml_schema_element.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -654,11 +651,11 @@ extern "C"
          * @param env pointer to environment struct
          * @return AXIS2_TRUE if XML schema is adjusted, else AXIS2_FALSE
          */
-        axis2_bool_t (AXIS2_CALL *
+        /*axis2_bool_t (AXIS2_CALL *
                 is_schema_location_adjusted)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env);
-
+        */
 
         /**
          * Sets the bool value indicating if the XML schema location is adjusted.
@@ -667,11 +664,12 @@ extern "C"
          * @param adjusted AXIS2_TRUE if XML schema is adjusted, else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
+         /*
         axis2_status_t (AXIS2_CALL *
                 set_schema_location_adjusted)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    const axis2_bool_t adjusted);
+                    const axis2_bool_t adjusted);*/
 
         /**
          * Gets XML schema mapping table for service. 
@@ -680,10 +678,11 @@ extern "C"
          * @return pointer to hash map with XML schema mappings, returns a 
          * reference, not a cloned copy
          */
+         /*
         axis2_hash_t *(AXIS2_CALL *
                 get_schema_mapping_table)(
                     const axis2_svc_t *svc,
-                    const axis2_env_t *env);
+                    const axis2_env_t *env);*/
 
         /**
          * Sets XML schema mapping table for service. 
@@ -692,23 +691,23 @@ extern "C"
          * @param table pointer to hash map with XML schema mappings, service 
          * assumes ownership of the map
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
+         *//*
         axis2_status_t (AXIS2_CALL *
                 set_schema_mapping_table)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    axis2_hash_t *table);
+                    axis2_hash_t *table);*/
 
         /**
          * Gets custom schema prefix.
          * @param svc pointer to service struct
          * @param env pointer to environment struct
          * @return custom schema prefix string
-         */
+         *//*
         const axis2_char_t *(AXIS2_CALL *
                 get_custom_schema_prefix)(
                     const axis2_svc_t *svc,
-                    const axis2_env_t *env);
+                    const axis2_env_t *env);*/
 
         /**
          * Sets custom schema prefix.
@@ -716,12 +715,12 @@ extern "C"
          * @param env pointer to environment struct
          * @param prefix custom schema prefix string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
+         *//*
         axis2_status_t (AXIS2_CALL *
                 set_custom_schema_prefix)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    const axis2_char_t *prefix);
+                    const axis2_char_t *prefix);*/
 
         /**
          * Gets custom schema suffix.
@@ -729,10 +728,11 @@ extern "C"
          * @param env pointer to environment struct
          * @return custom schema suffix string
          */
+         /*
         const axis2_char_t *(AXIS2_CALL *
                 get_custom_schema_suffix)(
                     const axis2_svc_t *svc,
-                    const axis2_env_t *env);
+                    const axis2_env_t *env);*/
 
         /**
          * Sets custom schema suffix.
@@ -741,11 +741,12 @@ extern "C"
          * @param suffix custom schema suffix string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
+         /*
         axis2_status_t (AXIS2_CALL *
                 set_custom_schema_suffix)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    const axis2_char_t *suffix);
+                    const axis2_char_t *suffix);*/
 
         /**
          * Prints the schema to given stream.
@@ -753,12 +754,12 @@ extern "C"
          * @param env pointer to environment struct
          * @param out_stream stream to print to
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
+         *//*
         axis2_status_t (AXIS2_CALL *
                 print_schema)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    axis2_stream_t *out_stream);
+                    axis2_stream_t *out_stream);*/
 
         /**
          * Gets the XML schema at the given index of XML schema array list.
@@ -767,11 +768,11 @@ extern "C"
          * @param index index of the XML schema to be retrieved
          * @return pointer to XML schema, returns a reference, not a cloned copy
          */
-        xml_schema_t *(AXIS2_CALL *
+        /*xml_schema_t *(AXIS2_CALL *
                 get_schema)(
                     const axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    const int index);
+                    const int index);*/
 
         /**
          * Adds all namespaces in the namespace map to the XML schema at 
@@ -782,11 +783,11 @@ extern "C"
          * @return pointer to XML schema with namespaces added, 
          * returns a reference, not a cloned copy         
          */
-        xml_schema_t *(AXIS2_CALL *
+/*        xml_schema_t *(AXIS2_CALL *
                 add_all_namespaces)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    int index);
+                    int index);*/
 
         /**
          * Gets the list of XML schemas associated with service. 
@@ -795,10 +796,11 @@ extern "C"
          * @return pointer to array list of XML schemas, returns a reference,
          * not a cloned copy
          */
+         /*
         axis2_array_list_t *(AXIS2_CALL *
                 get_all_schemas)(
                     const axis2_svc_t *svc,
-                    const axis2_env_t *env);
+                    const axis2_env_t *env);*/
 
         /**
          * Adds the given XML schema to the list of XML schemas associated 
@@ -809,11 +811,12 @@ extern "C"
          * ownership of struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
+         /*
         axis2_status_t (AXIS2_CALL *
                 add_schema)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    xml_schema_t *schema);
+                    xml_schema_t *schema);*/
 
         /**
          * Adds the list of all XML schemas to service.
@@ -821,23 +824,23 @@ extern "C"
          * @param env pointer to environment struct
          * @param schemas pointer to array list containing XML schemas
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
+         *//*
         axis2_status_t (AXIS2_CALL *
                 add_all_schemas)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    axis2_array_list_t *schemas);
+                    axis2_array_list_t *schemas);*/
 
         /**
          * Gets XML schema's target namespace.
          * @param svc pointer to service struct
          * @param env pointer to environment struct
          * @return XML schema target namespace string 
-         */
+         *//*
         const axis2_char_t *(AXIS2_CALL *
                 get_schema_target_ns)(
                     const axis2_svc_t *svc,
-                    const axis2_env_t *env);
+                    const axis2_env_t *env);*/
 
         /**
          * Sets XML schema's target namespace.
@@ -845,23 +848,23 @@ extern "C"
          * @param env pointer to environment struct
          * @param ns namespace string 
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
+         *//*
         axis2_status_t (AXIS2_CALL *
                 set_schema_target_ns)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    const axis2_char_t *ns);
+                    const axis2_char_t *ns);*/
 
         /**
          * Gets XML schema's target namespace prefix.
          * @param svc pointer to service struct
          * @param env pointer to environment struct
          * @return XML schema target namespace prefix string 
-         */
+         *//*
         const axis2_char_t *(AXIS2_CALL *
                 get_schema_target_ns_prefix)(
                     const axis2_svc_t *svc,
-                    const axis2_env_t *env);
+                    const axis2_env_t *env);*/
 
         /**
          * Sets XML schema's target namespace prefix.
@@ -869,12 +872,12 @@ extern "C"
          * @param env pointer to environment struct
          * @param prefix namespace prefix string 
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
+         *//*
         axis2_status_t (AXIS2_CALL *
                 set_schema_target_ns_prefix)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    const axis2_char_t *prefix);
+                    const axis2_char_t *prefix);*/
 
         /**
          * Gets target namespace.
@@ -932,11 +935,11 @@ extern "C"
          * @return pointer to XML schema element, returns a reference, not a 
          * cloned copy
          */
-        xml_schema_element_t *(AXIS2_CALL *
+        /*xml_schema_element_t *(AXIS2_CALL *
                 get_schema_element)(
                     const axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    const axis2_qname_t *qname);
+                    const axis2_qname_t *qname);*/
 
         /**
          * Gets the namespace map with all namespaces related to service.
@@ -971,10 +974,10 @@ extern "C"
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
-        axis2_status_t (AXIS2_CALL *
+        /*axis2_status_t (AXIS2_CALL *
                 populate_schema_mappings)(
                     axis2_svc_t *svc,
-                    const axis2_env_t *env);
+                    const axis2_env_t *env);*/
     };
 
     /**
@@ -1249,95 +1252,97 @@ extern "C"
 
 /** Checks if the XML schema location is adjusted.
     @sa axis2_svc_ops#is_schema_location_adjusted */
-#define AXIS2_SVC_IS_SCHEMA_LOCATION_ADJUSTED(svc, env) \
+/*#define AXIS2_SVC_IS_SCHEMA_LOCATION_ADJUSTED(svc, env) \
         ((svc)->ops->is_schema_location_adjusted(svc, env))
-
+*/
 /** Sets bool value indicating that XML schema location is adjusted.
     @sa axis2_svc_ops#set_schema_location_adjusted */
-#define AXIS2_SVC_SET_SCHEMA_LOCATION_ADJUSTED(svc, env, adjusted) \
+/*#define AXIS2_SVC_SET_SCHEMA_LOCATION_ADJUSTED(svc, env, adjusted) \
         ((svc)->ops->set_schema_location_adjusted(svc, env, adjusted))
-
+*/
 /** Gets XML schema mapping table.
     @sa axis2_svc_ops#get_schema_mapping_table */
-#define AXIS2_SVC_GET_SCHEMA_MAPPING_TABLE(svc, env) \
+/*#define AXIS2_SVC_GET_SCHEMA_MAPPING_TABLE(svc, env) \
         ((svc)->ops->get_schema_mapping_table(svc, env))
-
+*/
 /** Sets XML schema mapping table.
     @sa axis2_svc_ops#set_schema_mapping_table */
-#define AXIS2_SVC_SET_SCHEMA_MAPPING_TABLE(svc, env, table) \
+/*#define AXIS2_SVC_SET_SCHEMA_MAPPING_TABLE(svc, env, table) \
         ((svc)->ops->set_schema_mapping_table(svc, env, table))
-
+*/
 /** Gets custom XML schema prefix.
     @sa axis2_svc_ops#get_custom_schema_prefix */
-#define AXIS2_SVC_GET_CUSTOM_SCHEMA_PREFIX(svc, env) \
+/*#define AXIS2_SVC_GET_CUSTOM_SCHEMA_PREFIX(svc, env) \
         ((svc)->ops->get_custom_schema_prefix(svc, env))
+*/
 
 /** Sets custom XML schema prefix.
     @sa axis2_svc_ops#set_custom_schema_prefix */
-#define AXIS2_SVC_SET_CUSTOM_SCHEMA_PREFIX(svc, env, prefix) \
+/*#define AXIS2_SVC_SET_CUSTOM_SCHEMA_PREFIX(svc, env, prefix) \
         ((svc)->ops->set_custom_schema_prefix(svc, env, prefix))
-
+*/
 /** Gets custom XML schema suffix.
     @sa axis2_svc_ops#get_custom_schema_suffix */
-#define AXIS2_SVC_GET_CUSTOM_SCHEMA_SUFFIX(svc, env) \
+/*#define AXIS2_SVC_GET_CUSTOM_SCHEMA_SUFFIX(svc, env) \
         ((svc)->ops->get_custom_schema_suffix(svc, env))
-
+*/
 /** Sets custom XML schema suffix.
     @sa axis2_svc_ops#set_custom_schema_suffix */
-#define AXIS2_SVC_SET_CUSTOM_SCHEMA_SUFFIX(svc, env, suffix) \
+/*#define AXIS2_SVC_SET_CUSTOM_SCHEMA_SUFFIX(svc, env, suffix) \
         ((svc)->ops->set_custom_schema_suffix(svc, env, suffix))
-
+*/
 /** Prints XML schema to given stream.
     @sa axis2_svc_ops#print_schema */
-#define AXIS2_SVC_PRINT_SCHEMA(svc, env) \
+/*#define AXIS2_SVC_PRINT_SCHEMA(svc, env) \
         ((svc)->ops->print_schema(svc, env))
+*/
 
 /** Gets XML schema at the given index of the XML schema list.
     @sa axis2_svc_ops#get_schema */
-#define AXIS2_SVC_GET_SCHEMA(svc, env, index) \
+/*#define AXIS2_SVC_GET_SCHEMA(svc, env, index) \
         ((svc)->ops->get_schema(svc, env, index))
-
+*/
 /** Adds all namespaces to the XML schema at the given index of the XML 
     schema list.
     @sa axis2_svc_ops#add_all_namespaces */
-#define AXIS2_SVC_ADD_ALL_NAMESPACES(svc, env, index) \
+/*#define AXIS2_SVC_ADD_ALL_NAMESPACES(svc, env, index) \
         ((svc)->ops->add_all_namespaces(svc, env, index))
-
+*/
 /** Gets all XML schemas.
     @sa axis2_svc_ops#get_all_schemas */
-#define AXIS2_SVC_GET_ALL_SCHEMAS(svc, env) \
+/*#define AXIS2_SVC_GET_ALL_SCHEMAS(svc, env) \
         ((svc)->ops->get_all_schemas(svc, env))
-
+*/
 /** Adds given XML schema.
     @sa axis2_svc_ops#add_schema */
-#define AXIS2_SVC_ADD_SCHEMA(svc, env, schema) \
+/*#define AXIS2_SVC_ADD_SCHEMA(svc, env, schema) \
         ((svc)->ops->add_schema(svc, env, schema))
-
+*/
 /** Adds the given list as the list of XML schemas.
     @sa axis2_svc_ops#add_all_schemas */
-#define AXIS2_SVC_ADD_ALL_SCHEMAS(svc, env, schemas) \
+/*#define AXIS2_SVC_ADD_ALL_SCHEMAS(svc, env, schemas) \
         ((svc)->ops->add_all_schemas(svc, env, schemas))
-
+*/
 /** Gets XML schema target namespace.
     @sa axis2_svc_ops#get_schema_target_name_space */
-#define AXIS2_SVC_GET_SCHEMA_TARGET_NAME_SPACE(svc, env) \
+/*#define AXIS2_SVC_GET_SCHEMA_TARGET_NAME_SPACE(svc, env) \
         ((svc)->ops->get_schema_target_ns(svc, env))
-
+*/
 /** Sets XML schema target namespace.
     @sa axis2_svc_ops#set_schema_target_name_space */
-#define AXIS2_SVC_SET_SCHEMA_TARGET_NAME_SPACE(svc, env, ns) \
+/*#define AXIS2_SVC_SET_SCHEMA_TARGET_NAME_SPACE(svc, env, ns) \
         ((svc)->ops->set_schema_target_ns(svc, env, ns))
-
+*/
 /** Gets XML schema target namespace prefix.
     @sa axis2_svc_ops#get_schema_target_name_spaces_prefix */
-#define AXIS2_SVC_GET_SCHEMA_TARGET_NAME_SPACE_PREFIX(svc, env) \
+/*#define AXIS2_SVC_GET_SCHEMA_TARGET_NAME_SPACE_PREFIX(svc, env) \
         ((svc)->ops->get_schema_target_ns_prefix(svc, env))
-
+*/
 /** Sets XML schema target namespace prefix.
     @sa axis2_svc_ops#set_schema_target_name_space_prefix */
-#define AXIS2_SVC_SET_SCHEMA_TARGET_NAME_SPACE_PREFIX(svc, env, prefix) \
+/*#define AXIS2_SVC_SET_SCHEMA_TARGET_NAME_SPACE_PREFIX(svc, env, prefix) \
         ((svc)->ops->set_schema_target_ns_prefix(svc, env, prefix))
-
+*/
 /** Gets target namespace.
     @sa axis2_svc_ops#get_target_ns */
 #define AXIS2_SVC_GET_TARGET_NS(svc, env) \
@@ -1360,8 +1365,9 @@ extern "C"
 
 /** Gets XML schema element.
     @sa axis2_svc_ops#get_schema_element */
-#define AXIS2_SVC_GET_SCHEMA_ELEMENT(svc, env) \
+/*#define AXIS2_SVC_GET_SCHEMA_ELEMENT(svc, env) \
         ((svc)->ops->get_schema_element(svc, env))
+*/
 
 /** Gets namespace map.
     @sa axis2_svc_ops#get_ns_map */
@@ -1375,9 +1381,9 @@ extern "C"
 
 /** Populates XML schema mappings.
     @sa axis2_svc_ops#populate_schema_mappings */
-#define AXIS2_SVC_POPULATE_SCHEMA_MAPPINGS(svc, env) \
+/*#define AXIS2_SVC_POPULATE_SCHEMA_MAPPINGS(svc, env) \
         ((svc)->ops->populate_schema_mappings(svc, env))
-
+*/
 /** @} */
 #ifdef __cplusplus
 }

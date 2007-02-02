@@ -7,8 +7,7 @@ libmod_savan_la_SOURCES = mod_savan.c savan_sub_processor.c
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../../include \
 			-I ../../../util/include \
-			-I ../../../axiom/include \
-			-I ../../../xml_schema/include
+			-I ../../../axiom/include 
 
 libmod_savan_la_LIBADD = ../client/libsavan_client.la\
                         ../handlers/libsavan_handlers.la\

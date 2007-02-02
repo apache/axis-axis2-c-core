@@ -12,8 +12,6 @@ libaxis2_http_la_SOURCES =	http_worker.c \
                             http_chunked_stream.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/xml_schema/include \
             -I$(top_builddir)/util/include \
             -I$(top_builddir)/axiom/include

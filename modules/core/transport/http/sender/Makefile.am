@@ -17,7 +17,6 @@ libaxis2_http_sender_la_LIBADD += -lssl\
 endif
 
 INCLUDES = -I$(top_builddir)/include \
-	       -I$(top_builddir)/modules/wsdl\
 	       -I$(top_builddir)/modules/core/transport\
 	       -I$(top_builddir)/modules/core/transport/http \
            -I$(top_builddir)/modules/core/description \
@@ -25,6 +24,5 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/modules/core/phaseresolver \
            -I$(top_builddir)/modules/core/engine \
            -I$(top_builddir)/modules/core/deployment \
-           -I$(top_builddir)/xml_schema/include \
            -I$(top_builddir)/util/include \
            -I$(top_builddir)/axiom/include

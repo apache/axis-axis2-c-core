@@ -28,12 +28,10 @@ libaxis2_deployment_la_SOURCES =phases_info.c \
                                 conf_init.c
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/phaseresolver \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/modules/core/util \
-            -I$(top_builddir)/xml_schema/include \
             -I$(top_builddir)/axiom/include \
             -I$(top_builddir)/util/include

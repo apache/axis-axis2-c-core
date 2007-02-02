@@ -17,7 +17,6 @@
 
 #include <axis2_msg.h>
 #include <axis2_property.h>
-#include <xml_schema_obj_collection.h>
 
 typedef struct axis2_msg_impl
 {
@@ -120,10 +119,10 @@ axis2_msg_set_name(
     const axis2_env_t *env,
     const axis2_char_t *name);
 
-xml_schema_element_t *AXIS2_CALL
+/*xml_schema_element_t *AXIS2_CALL
 axis2_msg_get_schema_element(
     const axis2_msg_t *msg,
-    const axis2_env_t *env);
+    const axis2_env_t *env);*/
 
 
 AXIS2_EXTERN axis2_msg_t *AXIS2_CALL
@@ -190,7 +189,7 @@ axis2_msg_create(
     msg_impl->msg.ops->set_element_qname = axis2_msg_set_element_qname;
     msg_impl->msg.ops->get_name = axis2_msg_get_name;
     msg_impl->msg.ops->set_name = axis2_msg_set_name;
-    msg_impl->msg.ops->get_schema_element = axis2_msg_get_schema_element;
+    /*msg_impl->msg.ops->get_schema_element = axis2_msg_get_schema_element;*/
 
     return &(msg_impl->msg);
 }
@@ -461,7 +460,7 @@ axis2_msg_set_element_qname(
 }
 
 
-xml_schema_element_t *AXIS2_CALL
+/*xml_schema_element_t *AXIS2_CALL
 axis2_msg_get_schema_element(
     const axis2_msg_t *msg,
     const axis2_env_t *env)
@@ -514,7 +513,7 @@ axis2_msg_get_schema_element(
         }
     }
     return NULL;
-}
+}*/
 
 const axis2_char_t *AXIS2_CALL
 axis2_msg_get_name(

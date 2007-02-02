@@ -34,11 +34,6 @@
 #include <axis2_property.h>
 #include <axis2_utils.h>
 #include <axiom_mime_parser.h>
-#include <xml_schema_type.h>
-#include <xml_schema_group_base.h>
-#include <xml_schema_obj_collection.h>
-#include <xml_schema_particle.h>
-#include <xml_schema_complex_type.h>
 #include <axis2_disp.h>
 #include <axis2_msg.h>
 
@@ -141,13 +136,20 @@ axis2_http_transport_utils_dispatch_and_verify(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
-AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+/*AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_http_transport_utils_handle_media_type_url_encoded(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_hash_t *param_map,
     axis2_char_t *method,
-    xml_schema_element_t *schema_element);
+    xml_schema_element_t *schema_element);*/
+
+AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+axis2_http_transport_utils_handle_media_type_url_encoded(
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_hash_t *param_map,
+    axis2_char_t *method);
 
 /***************************** End of function headers ************************/
 
@@ -528,7 +530,7 @@ axis2_http_transport_utils_process_http_get_request(
     axiom_soap_envelope_t *soap_envelope = NULL;
     axis2_engine_t *engine = NULL;
     axis2_op_t *op = NULL;
-    xml_schema_element_t *schema_element = NULL;
+    /*xml_schema_element_t *schema_element = NULL;*/
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FALSE);
@@ -548,15 +550,14 @@ axis2_http_transport_utils_process_http_get_request(
         return AXIS2_FALSE;
     }
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
-    if (op)
+    /*if (op)
     {
         axis2_msg_t *msg = NULL;
         msg = AXIS2_OP_GET_MSG(op, env, AXIS2_MSG_IN);
         schema_element = AXIS2_MSG_GET_SCHEMA_ELEMENT(msg, env);
-    }
+    }*/
     soap_envelope = axis2_http_transport_utils_handle_media_type_url_encoded(
-                env, msg_ctx, request_params, AXIS2_HTTP_HEADER_GET,
-                schema_element);
+                env, msg_ctx, request_params, AXIS2_HTTP_HEADER_GET);
     if (NULL == soap_envelope)
     {
         return AXIS2_FALSE;
@@ -1310,7 +1311,7 @@ axis2_http_transport_utils_get_value_from_content_type(
     return tmp2;
 }
 
-AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+/*AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_http_transport_utils_handle_media_type_url_encoded(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
@@ -1438,7 +1439,61 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
         }
     }
     return soap_env;
+}*/
+
+AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+axis2_http_transport_utils_handle_media_type_url_encoded(
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axis2_hash_t *param_map,
+    axis2_char_t *method)
+{
+    axiom_soap_envelope_t *soap_env = NULL;
+    axiom_soap_body_t *soap_body = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, method, NULL);
+
+
+    soap_env = axiom_soap_envelope_create_default_soap_envelope(env,
+            AXIOM_SOAP11);
+    soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_env, env);
+    if (NULL == soap_body)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
+                AXIS2_FAILURE);
+        return NULL;
+    }
+
+    axiom_element_t *body_child = NULL;
+    axiom_node_t *body_child_node = NULL;
+
+    body_child = axiom_element_create_with_qname(env, NULL,
+            AXIS2_OP_GET_QNAME(AXIS2_MSG_CTX_GET_OP(msg_ctx, env),
+                    env), &body_child_node);
+    AXIOM_SOAP_BODY_ADD_CHILD(soap_body, env, body_child_node);
+    if (param_map)
+    {
+        axis2_hash_index_t *hi = NULL;
+        for (hi = axis2_hash_first(param_map, env); hi ;
+                hi = axis2_hash_next(env, hi))
+        {
+            void *name = NULL;
+            void *value = NULL;
+            axiom_node_t *node = NULL;
+            axiom_element_t *element = NULL;
+
+            axis2_hash_this(hi, (const void **)&name, NULL, (void **)&value);
+            element = axiom_element_create(env, NULL, (axis2_char_t *)name,
+                    NULL, &node);
+            AXIOM_ELEMENT_SET_TEXT(element, env, (axis2_char_t *)value, node);
+            AXIOM_NODE_ADD_CHILD(body_child_node, env, node);
+        }
+    }
+    return soap_env;
 }
+
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_dispatch_and_verify(

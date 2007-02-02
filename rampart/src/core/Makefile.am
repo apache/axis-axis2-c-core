@@ -14,5 +14,4 @@ libmod_rampart_la_LIBADD  = ../handlers/librampart_handlers.la \
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../../include \
 			-I ../../../util/include \
-			-I ../../../axiom/include \
-			-I ../../../xml_schema/include 
+			-I ../../../axiom/include 

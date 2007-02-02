@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 ./autogen.sh
 AXIS2C_HOME=${AXIS2C_HOME:=`pwd`/deploy}
 

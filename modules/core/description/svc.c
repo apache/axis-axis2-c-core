@@ -18,7 +18,6 @@
 #include <axis2_svc.h>
 #include <axis2_addr.h>
 #include <axis2_property.h>
-#include <xml_schema_obj_collection.h>
 #include <axis2_module.h>
 #include "../deployment/axis2_desc_builder.h"
 
@@ -340,7 +339,7 @@ axis2_svc_get_all_module_qnames(
     const axis2_svc_t *svc,
     const axis2_env_t *env);
 
-axis2_bool_t AXIS2_CALL
+/*axis2_bool_t AXIS2_CALL
 axis2_svc_is_schema_location_adjusted(
     axis2_svc_t *svc,
     const axis2_env_t *env);
@@ -440,7 +439,7 @@ axis2_svc_set_schema_target_ns_prefix(
     axis2_svc_t *svc,
     const axis2_env_t *env,
     const axis2_char_t *prefix);
-
+*/
 const axis2_char_t *AXIS2_CALL
 axis2_svc_get_target_ns(
     const axis2_svc_t *svc,
@@ -463,11 +462,12 @@ axis2_svc_set_target_ns_prefix(
     const axis2_env_t *env,
     const axis2_char_t *prefix);
 
-xml_schema_element_t *AXIS2_CALL
+/*xml_schema_element_t *AXIS2_CALL
 axis2_svc_get_schema_element(
     const axis2_svc_t *svc,
     const axis2_env_t *env,
     const axis2_qname_t *qname);
+*/
 
 axis2_hash_t *AXIS2_CALL
 axis2_svc_get_ns_map(
@@ -480,6 +480,7 @@ axis2_svc_set_ns_map(
     const axis2_env_t *env,
     axis2_hash_t *ns_map);
 
+/*
 axis2_status_t AXIS2_CALL
 axis2_svc_add_schema_ns(
     axis2_svc_t *svc,
@@ -504,6 +505,7 @@ axis2_svc_adjust_schema_names(
     const axis2_env_t *env,
     xml_schema_t *schema,
     axis2_hash_t *names);
+*/
 
 axis2_hash_t *AXIS2_CALL
 axis2_svc_swap_mapping_table(
@@ -689,7 +691,7 @@ axis2_svc_create(
     svc_impl->svc.ops->add_module_qname = axis2_svc_add_module_qname;
     svc_impl->svc.ops->get_all_module_qnames = axis2_svc_get_all_module_qnames;
 
-    svc_impl->svc.ops->is_schema_location_adjusted =
+    /*svc_impl->svc.ops->is_schema_location_adjusted =
         axis2_svc_is_schema_location_adjusted;
     svc_impl->svc.ops->set_schema_location_adjusted =
         axis2_svc_set_schema_location_adjusted;
@@ -706,9 +708,9 @@ axis2_svc_create(
     svc_impl->svc.ops->set_custom_schema_suffix =
         axis2_svc_set_custom_schema_suffix;
     svc_impl->svc.ops->print_schema = axis2_svc_print_schema;
-    svc_impl->svc.ops->get_schema = axis2_svc_get_schema;
-    svc_impl->svc.ops->add_all_namespaces = axis2_svc_add_all_namespaces;
-    svc_impl->svc.ops->get_all_schemas = axis2_svc_get_all_schemas;
+    svc_impl->svc.ops->get_schema = axis2_svc_get_schema;*/
+    /*svc_impl->svc.ops->add_all_namespaces = axis2_svc_add_all_namespaces;*/
+    /*svc_impl->svc.ops->get_all_schemas = axis2_svc_get_all_schemas;
     svc_impl->svc.ops->add_schema = axis2_svc_add_schema;
     svc_impl->svc.ops->add_all_schemas = axis2_svc_add_all_schemas;
     svc_impl->svc.ops->get_schema_target_ns = axis2_svc_get_schema_target_ns;
@@ -716,16 +718,16 @@ axis2_svc_create(
     svc_impl->svc.ops->get_schema_target_ns_prefix =
         axis2_svc_get_schema_target_ns_prefix;
     svc_impl->svc.ops->set_schema_target_ns_prefix =
-        axis2_svc_set_schema_target_ns_prefix;
+        axis2_svc_set_schema_target_ns_prefix;*/
     svc_impl->svc.ops->get_target_ns = axis2_svc_get_target_ns;
     svc_impl->svc.ops->set_target_ns = axis2_svc_set_target_ns;
     svc_impl->svc.ops->get_target_ns_prefix = axis2_svc_get_target_ns_prefix;
     svc_impl->svc.ops->set_target_ns_prefix = axis2_svc_set_target_ns_prefix;
-    svc_impl->svc.ops->get_schema_element = axis2_svc_get_schema_element;
+    /*svc_impl->svc.ops->get_schema_element = axis2_svc_get_schema_element;*/
     svc_impl->svc.ops->get_ns_map = axis2_svc_get_ns_map;
     svc_impl->svc.ops->set_ns_map = axis2_svc_set_ns_map;
-    svc_impl->svc.ops->populate_schema_mappings =
-        axis2_svc_populate_schema_mappings;
+    /*svc_impl->svc.ops->populate_schema_mappings =
+        axis2_svc_populate_schema_mappings;*/
 
     return &(svc_impl->svc);
 }
@@ -1936,7 +1938,7 @@ axis2_svc_get_all_module_qnames(
     return AXIS2_INTF_TO_IMPL(svc)->module_list;
 }
 
-axis2_bool_t AXIS2_CALL
+/*axis2_bool_t AXIS2_CALL
 axis2_svc_is_schema_location_adjusted(
     axis2_svc_t *svc,
     const axis2_env_t *env)
@@ -2244,7 +2246,7 @@ axis2_svc_set_schema_target_ns_prefix(
     }
     svc_impl->schema_target_ns_prefix = AXIS2_STRDUP(prefix, env);
     return AXIS2_SUCCESS;
-}
+}*/
 
 const axis2_char_t *AXIS2_CALL
 axis2_svc_get_target_ns(
@@ -2306,6 +2308,7 @@ axis2_svc_set_target_ns_prefix(
     return AXIS2_SUCCESS;
 }
 
+/*
 xml_schema_element_t *AXIS2_CALL
 axis2_svc_get_schema_element(
     const axis2_svc_t *svc,
@@ -2334,7 +2337,7 @@ axis2_svc_get_schema_element(
         }
     }
     return NULL;
-}
+}*/
 
 axis2_hash_t *AXIS2_CALL
 axis2_svc_get_ns_map(
@@ -2385,7 +2388,7 @@ axis2_svc_set_ns_map(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+/*axis2_status_t AXIS2_CALL
 axis2_svc_add_schema_ns(
     axis2_svc_t *svc,
     const axis2_env_t *env,
@@ -2459,21 +2462,16 @@ axis2_svc_populate_schema_mappings(
         axis2_hash_t *schema_table = NULL;
 
         count = AXIS2_ARRAY_LIST_SIZE(schemas, env);
-        /* calculate unique names for the schemas */
         for (i = 0; i < count; i++)
         {
             xml_schema_t *schema = AXIS2_ARRAY_LIST_GET(schemas, env, i);
             axis2_svc_calculate_schema_names(svc, env, schema, name_table);
         }
-        /* adjust the schema locations as per the calculated names */
         for (i = 0; i < count; i++)
         {
             xml_schema_t *schema = AXIS2_ARRAY_LIST_GET(schemas, env, i);
             axis2_svc_adjust_schema_names(svc, env, schema, name_table);
         }
-        /* reverse the name table so that there is a mapping from the
-         * name to the schema
-         */
         schema_table = axis2_svc_swap_mapping_table(svc, env, name_table);
         axis2_svc_set_schema_mapping_table(svc, env, schema_table);
     }
@@ -2581,7 +2579,7 @@ axis2_svc_adjust_schema_names(
         }
     }
     return AXIS2_SUCCESS;
-}
+}*/
 
 axis2_hash_t *AXIS2_CALL
 axis2_svc_swap_mapping_table(
