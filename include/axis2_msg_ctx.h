@@ -554,20 +554,6 @@ extern "C"
     axis2_msg_ctx_set_wsa_message_id(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         const axis2_char_t *message_id);
-        
-        /**
-         * Sets message information headers.
-         * @param msg_ctx message context
-         * @param env pointer to environment struct
-         * @param msg_info_headers pointer to message information headers,
-         * message context assumes the ownership of the struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_msg_info_headers)(
-                    axis2_msg_ctx_t *msg_ctx,
-                    const axis2_env_t *env,
-                    axis2_msg_info_headers_t *msg_info_headers);
 
     /**
      * Gets WS-Addressing message ID. 
