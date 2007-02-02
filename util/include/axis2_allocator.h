@@ -77,6 +77,8 @@ extern "C"
          void *local_pool;
         /** global memory pool */
          void *global_pool;
+         /** memory pool in use currently */
+         void *current_pool;
     } axis2_allocator_t;
 
   /**

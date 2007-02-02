@@ -231,7 +231,7 @@ axis2_handler(
     }
     ap_should_client_block(req);
 
-    axis2_env->allocator->local_pool = (void*) req->pool;
+    axis2_env->allocator->current_pool = (void*) req->pool;
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axis2_env, req);
 
     if (AXIS2_CRITICAL_FAILURE == rv)
@@ -245,7 +245,8 @@ void * AXIS2_CALL
 axis2_module_malloc(
     axis2_allocator_t *allocator, size_t size)
 {
-    return apr_palloc((apr_pool_t*) (allocator->local_pool), size);
+    void *ret_obj = NULL;
+    return apr_palloc((apr_pool_t*) (allocator->current_pool), size);
 }
 
 void * AXIS2_CALL
@@ -302,6 +303,7 @@ axis2_module_init(
     allocator->realloc = axis2_module_realloc;
     allocator->free_fn = axis2_module_free;
     allocator->local_pool = (void*) pool;
+    allocator->current_pool = (void*) pool;
     allocator->global_pool = (void*) pool;
 
     if (NULL == allocator)
