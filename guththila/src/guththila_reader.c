@@ -53,7 +53,7 @@ guththila_reader_create_for_file(axis2_env_t * environment,
 AXIS2_EXTERN guththila_reader_t * AXIS2_CALL
 guththila_reader_create_for_io(
     axis2_env_t *environment,
-    int(*input_read_callback)(char *buffer, int size, void* ctx), void* ctx)
+    AXIS2_READ_INPUT_CALLBACK input_read_callback, void* ctx)
 {
     guththila_reader_impl_t *io_reader =
         (guththila_reader_impl_t *) AXIS2_MALLOC(environment->allocator,

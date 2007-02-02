@@ -245,7 +245,7 @@ axiom_xml_reader_create_for_file(const axis2_env_t *env,
 
 axiom_xml_reader_t * AXIS2_CALL
 axiom_xml_reader_create_for_io(const axis2_env_t *env,
-        int(*read_input_callback)(char *buffer, int size, void* ctx),
+        AXIS2_READ_INPUT_CALLBACK read_input_callback,
         int(*close_input_callback)(void *ctx),
         void *ctx,
         const char *encoding)
