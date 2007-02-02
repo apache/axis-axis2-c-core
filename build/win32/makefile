@@ -55,7 +55,6 @@ AXIS2_MICRO_VERSION = 9
 AXIS2_UTIL   = axis2_util
 AXIS2_PARSER = axis2_parser
 AXIOM = axiom
-AXIS2_WSDL   = axis2_wsdl
 AXIS2_TRANSPORT_SENDER = axis2_http_sender
 AXIS2_TRANSPORT_RECEIVER = axis2_http_receiver
 AXIS2_ENGINE = axis2_engine
@@ -79,7 +78,6 @@ AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\om  \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\soap \
 		/I$(AXIS2_SOURCE_DIR)\util\include\platforms \
-		/I$(AXIS2_SOURCE_DIR)\modules\wsdl \
 		/I$(AXIS2_SOURCE_DIR)\modules\core\clientapi \
 		/I$(AXIS2_SOURCE_DIR)\modules\core\deployment \
 		/I$(AXIS2_SOURCE_DIR)\modules\core\description \
@@ -122,8 +120,6 @@ AXIS2_ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\modules\core\addr\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\receivers\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\util\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\*.c 
-
-AXIS2_WSDL_SRC = $(AXIS2_SOURCE_DIR)\modules\wsdl\*.c
 
 AXIS2_HTTP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\*.c
 !if "$(ENABLE_SSL)" == "1"
@@ -234,20 +230,10 @@ axiom:
 
 	del $(AXIOM).*
 
-axis2_wsdl: 
-	$(CC) $(CFLAGS) $(AXIS2_WSDL_SRC) /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(LIBS) \
-	/DLL /OUT:$(AXIS2_WSDL).dll /IMPLIB:$(AXIS2_WSDL).lib
-	del *.obj
-	del *.exp
-	copy $(AXIS2_WSDL).* $(AXIS2_LIBS)\
-	
-	del axis2*.*
-
 axis2_engine: 
 	$(CC) $(CFLAGS) $(AXIS2_ENGINE_SRC) /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(AXIS2_WSDL).lib woden.lib $(LIBS)  \
+	$(AXIS2_PARSER).lib woden.lib $(LIBS)  \
 	/DLL /OUT:$(AXIS2_ENGINE).dll /IMPLIB:$(AXIS2_ENGINE).lib
 	del *.obj
 	del *.exp
