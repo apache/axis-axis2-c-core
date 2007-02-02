@@ -1,5 +1,5 @@
-<service name="echo">
-    <parameter name="ServiceClass" locked="xsd:false">echo</parameter>
+<service name="sec_echo">
+    <parameter name="ServiceClass" locked="xsd:false">sec_echo</parameter>
 
    <description>
         This is a testing service , to test the system is working or not
