@@ -31,6 +31,26 @@ START_TEST (test_guththila)
 }
 END_TEST
 
+START_TEST (test_guththila_start_element)
+{
+	int c = 0;
+	char *p;
+	red = guththila_reader_create_for_file(environment, "resources/om/axis.xml");
+    parser = guththila_create(environment, red);
+	guththila_read (environment, parser);
+    while ((c = guththila_next(environment, parser)) != -1)
+    {
+        switch (c)
+        {
+            case GUTHTHILA_START_ELEMENT:
+                p = guththila_get_name(environment, parser);
+				break;
+		}
+	}
+	fail_unless (strcmp (p, "root"), "root element differed");
+}
+END_TEST
+
 Suite *
 guththila_suite (void)
 {
@@ -40,6 +60,7 @@ guththila_suite (void)
   TCase *tc_core = tcase_create ("Core");
   tcase_add_checked_fixture (tc_core, setup, teardown);
   tcase_add_test (tc_core, test_guththila);
+  tcase_add_test (tc_core, test_guththila_start_element);
   suite_add_tcase (s, tc_core);
   return s;
 }
