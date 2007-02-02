@@ -1096,14 +1096,14 @@ mod_rampart_samples_sec_echo:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
 	$(AXIS2_SOURCE_DIR)\rampart\samples\client\sec_echo\echo.c /c
 	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:sec_echo.exe
+	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:echo.exe
 
 	del *.obj
-	copy sec_echo.exe $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo
+	copy echo.exe $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo
 	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\sec_echo\echo.c $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo
 	
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\sec_echo\data $(RAMPART_SAMPLES_CLIENT_DIR)\sec_echo\data
-	del sec_echo.exe
+	del echo.exe
 
 mod_rampart_samples: mod_rampart_samples_sec_echo mod_rampart_services_sec_echo
 
