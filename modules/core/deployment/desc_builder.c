@@ -821,7 +821,7 @@ axis2_desc_builder_process_params(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, params, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param_container, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
+    /*AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);*/
 
     while (AXIS2_FALSE != AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(params, env))
     {
