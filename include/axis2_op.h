@@ -41,12 +41,10 @@
  */
 
 #include <axis2_param_container.h>
-#include <axis2_wsdl_op.h>
 #include <axis2_svc.h>
 #include <axis2_msg_recv.h>
 #include <axis2_array_list.h>
 #include <axis2_module_desc.h>
-#include <axis2_wsdl_msg_ref.h>
 #include <axis2_description.h>
 #include <axis2_phase_meta.h>
 #include <axis2_relates_to.h>
@@ -64,15 +62,11 @@ extern "C"
     /** Type name for struct axis2_op */
     typedef struct axis2_op axis2_op_t;
 
-    struct axis2_wsdl_op;
     struct axis2_svc;
     struct axis2_msg_recv;
     struct axis2_param_container;
     struct axis2_module_desc;
     struct axis2_op;
-    struct axis2_wsdl_feature;
-    struct axis2_wsdl_property;
-    struct axis2_wsdl_fault_ref;
     struct axis2_relates_to;
     struct axis2_op_ctx;
     struct axis2_svc_ctx;
@@ -488,214 +482,6 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Gets all in faults as a list.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @return pointer to linked list containing in faults, 
-         * returns a reference, not a cloned copy
-         */
-        axis2_linked_list_t *(AXIS2_CALL *
-                get_all_in_faults)(
-                    const axis2_op_t *op,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets all in faults as a list.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param in_faults pointer to linked list containing in faults, 
-         * operation does not assume the ownership of list
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_in_faults)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    axis2_linked_list_t *in_faults);
-
-        /**
-         * Gets input message as a WSDL message reference.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @return pointer to WSDL message reference struct, returns a reference
-         * not a cloned copy
-         */
-        struct axis2_wsdl_msg_ref *(AXIS2_CALL *
-                get_input_msg)(
-                    const axis2_op_t *op,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets input message as a WSDL message reference.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param input_msg pointer to WSDL message reference, operation takes 
-         * over the ownership of the struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_input_msg)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    struct axis2_wsdl_msg_ref *input_msg);
-
-        /**
-         * Gets all out faults as a list.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @return pointer to linked list containing out faults, 
-         * returns a reference, not a cloned copy
-         */
-        axis2_linked_list_t *(AXIS2_CALL *
-                get_all_out_faults)(
-                    const axis2_op_t *op,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets all out faults as a list.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param out_faults pointer to linked list containing out faults, 
-         * operation does not assume the ownership of list
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_out_faults)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    axis2_linked_list_t *out_faults);
-
-        /**
-         * Gets output message as a WSDL message reference.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @return pointer to WSDL message reference struct, returns a reference
-         * not a cloned copy
-         */
-        struct axis2_wsdl_msg_ref *(AXIS2_CALL *
-                get_output_msg)(
-                    const axis2_op_t *op,
-                    const axis2_env_t *env);
-
-        /**
-         * Gets output message as a WSDL message reference.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param output_msg pointer to WSDL message reference struct, 
-         * operation assumes ownership of struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_output_msg)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    struct axis2_wsdl_msg_ref *output_msg);
-
-        /**
-         * Gets target namespace associated with operation.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @return namespace URI string
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_target_namespace)(
-                    const axis2_op_t *op,
-                    const axis2_env_t *env);
-
-        /**
-         * Adds an in fault.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param in_fault pointer to WSDL fault reference struct, operation
-         * takes over the ownership of the struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_in_fault)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    struct axis2_wsdl_fault_ref *in_fault);
-
-        /**
-         * Adds an out fault.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param out_fault pointer to WSDL fault reference struct, operation
-         * assumes the ownership of the struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_out_fault)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    struct axis2_wsdl_fault_ref *out_fault);
-
-        /**
-         * Adds a WSDL feature associated with operation.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param feature pointer to WSDL feature struct, operation assumes 
-         * ownership of struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_feature)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    struct axis2_wsdl_feature *feature);
-
-        /**
-         * Gets list of all WSDL features associated with operation.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @return pointer to linked list containing all WSDL features
-         */
-        axis2_linked_list_t *(AXIS2_CALL *
-                get_all_features)(
-                    const axis2_op_t *op,
-                    const axis2_env_t *env);
-
-        /**
-         * Adds given WSDL property to operation.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param wsdl_property pointer to WSDL property struct, operation 
-         * assumes ownership of struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_property)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    struct axis2_wsdl_property *wsdl_property);
-
-        /**
-         * Gets all properties associated with operation.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @return pointer to linked list containing all properties, returns 
-         * a reference, not a cloned copy
-         */
-        axis2_linked_list_t *(AXIS2_CALL *
-                get_all_properties)(
-                    const axis2_op_t *op,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets WSDL operation that corresponds to this operation.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @param wsdl_op pointer to WSDL operation struct, operation assumes
-         * ownership of struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_wsdl_op)(
-                    axis2_op_t *op,
-                    const axis2_env_t *env,
-                    struct axis2_wsdl_op *wsdl_op);
-
-        /**
          * Finds operation context related to this operation using given message
          * context and service context. This method would create a new operation
          * context related to the operation, if one could not be found.
@@ -817,8 +603,6 @@ extern "C"
      */
      struct axis2_op
     {
-        /** base WSDL operation */
-        axis2_wsdl_op_t base;
         /** operations of operation struct */
         axis2_op_ops_t *ops;
         /** parameter container to hold operation related parameters  */
@@ -853,17 +637,6 @@ extern "C"
     axis2_op_create_with_qname(
         const axis2_env_t *env,
         const axis2_qname_t *name);
-
-    /**
-     * Creates operation struct with given WSDL operation as base.
-     * @param env pointer to environment struct
-     * @param wsdl_op pointer to WSDL operation
-     * @return pointer to newly created operation
-     */
-    AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_op_create_with_wsdl_op(
-        const axis2_env_t *env,
-        struct axis2_wsdl_op *wsdl_op);
 
     /**
      * Frees the operation given as a void pointer. This method would cast the 
@@ -1024,51 +797,6 @@ extern "C"
 #define AXIS2_OP_GET_ALL_MODULE_QNAMES(op, env) \
         ((op)->ops->get_all_module_qnames (op, env))
 
-/** Gets in faults.
-    @sa axis2_op_ops#get_all_in_faults */
-#define AXIS2_OP_GET_ALL_IN_FAULTS(op, env) \
-        ((op)->ops->get_all_in_faults (op, env))
-
-/** Sets in faults.
-    @sa axis2_op_ops#set_in_faults */
-#define AXIS2_OP_SET_IN_FAULTS(op, env) \
-        ((op)->ops->set_in_faults (op, env, in_faults))
-
-/** Gets input message.
-    @sa axis2_op_ops#get_input_msg */
-#define AXIS2_OP_GET_INPUT_MSG(op, env) \
-        ((op)->ops->get_input_msg (op, env))
-
-/** Sets input message.
-    @sa axis2_op_ops#set_input_msg */
-#define AXIS2_OP_SET_INPUT_MSG(op, env) \
-        ((op)->ops->set_input_msg (op, env, input_msg))
-
-/** Gets out faults.
-    @sa axis2_op_ops#get_all_out_faults */
-#define AXIS2_OP_GET_ALL_OUT_FAULTS(op, env) \
-        ((op)->ops->get_all_out_faults (op, env))
-
-/** Sets out faults.
-    @sa axis2_op_ops#set_out_faults */
-#define AXIS2_OP_SET_OUT_FAULTS(op, env) \
-        ((op)->ops->set_out_faults (op, env, out_faults))
-
-/** Gets output message.
-    @sa axis2_op_ops#get_output_msg */
-#define AXIS2_OP_GET_OUTPUT_MSG(op, env) \
-        ((op)->ops->get_output_msg (op, env))
-
-/** Sets output message.
-    @sa axis2_op_ops#set_output_msg */
-#define AXIS2_OP_SET_OUTPUT_MSG(op, env) \
-        ((op)->ops->set_output_msg (op, env, output_msg))
-
-/** Gets target namespace.
-    @sa axis2_op_ops#get_target_namespace */
-#define AXIS2_OP_GET_TARGET_NAMESPACE(op, env) \
-        ((op)->ops->get_target_namespace (op, env))
-
 /** Adds in fault.
     @sa axis2_op_ops#add_in_fault */
 #define AXIS2_OP_ADD_IN_FAULT(op, env, in_fault) \
@@ -1084,32 +812,16 @@ extern "C"
 #define AXIS2_OP_ADD_FEATURE(op, env, feature) \
         ((op)->ops->add_feature (op, env, feature))
 
-/** Gets all features.
-    @sa axis2_op_ops#get_all_features */
-#define AXIS2_OP_GET_ALL_FEATURES(op, env) \
-        ((op)->ops->get_all_features(op, env))
-
-/** Adds property.
-    @sa axis2_op_ops#add_property */
-#define AXIS2_OP_ADD_PROPERTY(op, env, wsdl_property) \
-        ((op)->ops->add_property (op, env, wsdl_property))
-
 /** Gets all properties.
     @sa axis2_op_ops#get_all_properties */
 #define AXIS2_OP_GET_ALL_PROPERTIES(op, env) \
         ((op)->ops->get_all_properties (op, env))
 
-/** Sets wsdl operation.
-    @sa axis2_op_ops#set_wsdl_op */
-#define AXIS2_OP_SET_WSDL_OP(op, env, wsdl_op) \
-        ((op)->ops->set_wsdl_op (op, env, wsdl_op))
-
-
 /** Finds operation context related to this operation.
     @sa axis2_op_ops#find_op_ctx */
 #define AXIS2_OP_FIND_OP_CTX(op, env, msg_ctx, svc_ctx) \
         ((op)->ops->find_op_ctx (op, env, msg_ctx, svc_ctx))
-
+        
 /** Finds existing operation context related to this operation.
     @sa axis2_op_ops#find_existing_op_ctx */
 #define AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, wsdl_op) \

@@ -213,6 +213,10 @@ typedef enum
 #define AXIS2_SINGLE_SERVICE "singleservice"
 #define AXIS2_WSDL_CONTENT "wsdl"
 
+#define AXIS2_STYLE_RPC  "rpc"
+#define AXIS2_STYLE_DOC  "doc"
+#define AXIS2_STYLE_MSG  "msg"
+
 /**
  * Field METHOD_NAME_ESCAPE_CHARACTOR
  */

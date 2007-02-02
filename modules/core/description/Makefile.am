@@ -11,13 +11,11 @@ libaxis2_description_la_SOURCES =desc.c \
                                 flow_container.c \
                                 transport_in_desc.c \
                                 transport_out_desc.c \
-                                msg.c \
-								client_utils.c
+                                msg.c 
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/woden/include \
             -I$(top_builddir)/xml_schema/include \
             -I$(top_builddir)/util/include \
             -I$(top_builddir)/axiom/include

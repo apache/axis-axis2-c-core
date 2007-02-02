@@ -293,8 +293,9 @@ axis2_svc_client_create_for_dynamic_invocation(
     wsdl_path = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
 
     svc_client_impl->options = axis2_options_create(env);
+    /* TODO: this method should be moved out of core implementation
     svc_client_impl->svc = axis2_client_utils_create_axis2_svc(env, wsdl_uri,
-            wsdl_svc_qname, endpoint_name, wsdl_path, svc_client_impl->options);
+            wsdl_svc_qname, endpoint_name, wsdl_path, svc_client_impl->options); */
     if (svc_client_impl->svc)
     {
         axis2_hash_index_t *i = NULL;

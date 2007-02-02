@@ -379,7 +379,7 @@ axis2_svc_builder_populate_svc(
             env, qinflowst, svc_node, &in_flow_node);
     AXIS2_QNAME_FREE(qinflowst, env) ;
     qinflowst = NULL;
-    if (in_flow_element  &&  in_flow_node)
+    /*if (in_flow_element  &&  in_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -391,14 +391,14 @@ axis2_svc_builder_populate_svc(
             AXIS2_FLOW_FREE(flow, env);
             return status;
         }
-    }
+    }*/
 
     qoutflowst = axis2_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
     out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
             env, qoutflowst, svc_node, &out_flow_node);
     AXIS2_QNAME_FREE(qoutflowst, env) ;
     qoutflowst = NULL;
-    if (out_flow_element && NULL != out_flow_node)
+    /*if (out_flow_element && NULL != out_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -410,7 +410,7 @@ axis2_svc_builder_populate_svc(
             AXIS2_FLOW_FREE(flow, env);
             return status;
         }
-    }
+    }*/
 
     qin_faultflowst = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
     in_faultflow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
@@ -418,7 +418,7 @@ axis2_svc_builder_populate_svc(
     AXIS2_QNAME_FREE(qin_faultflowst, env) ;
     qin_faultflowst = NULL;
 
-    if (in_faultflow_element  &&  in_faultflow_node)
+    /*if (in_faultflow_element  &&  in_faultflow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -431,14 +431,14 @@ axis2_svc_builder_populate_svc(
             AXIS2_FLOW_FREE(flow, env);
             return status;
         }
-    }
+    }*/
 
     qout_faultflowst = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
     out_faultflow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
             env, qoutflowst, svc_node, &out_faultflow_node);
     AXIS2_QNAME_FREE(qout_faultflowst, env) ;
     qout_faultflowst = NULL;
-    if (out_faultflow_element && NULL != out_faultflow_node)
+    /*if (out_faultflow_element && NULL != out_faultflow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -452,7 +452,7 @@ axis2_svc_builder_populate_svc(
             return status;
         }
 
-    }
+    }*/
 
     /* processing operations */
     qopst = axis2_qname_create(env, AXIS2_OPERATIONST, NULL, NULL);
@@ -533,7 +533,6 @@ axis2_svc_builder_process_ops(
         axis2_qname_t *qattname = NULL;
         axis2_char_t *mep_url = NULL;
         axis2_char_t *op_name = NULL;
-        axis2_wsdl_op_t *wsdl_op = NULL;
         axis2_op_t *op_desc = NULL;
         axiom_children_qname_iterator_t *params_itr = NULL;
         axiom_children_qname_iterator_t *module_itr = NULL;
@@ -570,27 +569,30 @@ axis2_svc_builder_process_ops(
         }
         op_name = AXIOM_ATTRIBUTE_GET_VALUE(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
-        wsdl_op = AXIS2_SVC_GET_WSDL_OP(builder_impl->svc, env, qopname);
-        if (NULL == wsdl_op)
-        {
-            if (NULL == mep_url)
-            {
+        /*wsdl_op = AXIS2_SVC_GET_WSDL_OP(builder_impl->svc, env, qopname);*/
+        /*if (NULL == wsdl_op)
+        {*/
+            /*if (NULL == mep_url)
+            {*/
                 /* assumed MEP is in-out */
                 op_desc = axis2_op_create(env);
-            }
+            /*}
             else
             {
-                op_desc = axis2_op_create(env);
+                op_desc = axis2_op_create(env);*/
+            if(mep_url)
+            {
                 AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_desc, env, mep_url);
             }
+            /*}*/
             AXIS2_OP_SET_QNAME(op_desc, env, qopname);
-        }
+        /*}
         else
         {
-            axis2_char_t *mep = NULL;
+            axis2_char_t *mep = NULL;*/
 
             /* Creating operation from existing operation */
-            mep = AXIS2_WSDL_OP_GET_MSG_EXCHANGE_PATTERN(wsdl_op, env);
+        /*    mep = AXIS2_WSDL_OP_GET_MSG_EXCHANGE_PATTERN(wsdl_op, env);
             if (NULL == mep)
             {
                 op_desc = axis2_op_create_with_wsdl_op(env, wsdl_op);
@@ -601,7 +603,7 @@ axis2_svc_builder_process_ops(
                 AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_desc, env, mep);
                 AXIS2_OP_SET_WSDL_OP(op_desc, env, wsdl_op);
             }
-        }
+        }*/
         AXIS2_QNAME_FREE(qopname, env);
         qopname = NULL;
         /* operation parameters */

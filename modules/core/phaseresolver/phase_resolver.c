@@ -328,7 +328,7 @@ axis2_phase_resolver_build_execution_chains(
     int size = 0;
     int status = AXIS2_FAILURE;
     axis2_flow_t *flow = NULL;
-    axis2_property_t *property = NULL;
+    /*axis2_property_t *property = NULL;*/
     axis2_phase_holder_t *phase_holder = NULL;
 
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
@@ -381,12 +381,12 @@ axis2_phase_resolver_build_execution_chains(
                     break;
                 }
             }
-            status = AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(resolver_impl->svc,
+            /*status = AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(resolver_impl->svc,
                     env, module_desc);
             if (AXIS2_SUCCESS != status)
             {
                 return status;
-            }
+            }*/
             status = AXIS2_OP_ADD_TO_ENGAGED_MODULE_LIST(op, env, module_desc);
             if (AXIS2_SUCCESS != status)
             {
@@ -463,7 +463,7 @@ axis2_phase_resolver_build_execution_chains(
 
     /* process handlers form service.xml */
     flow = NULL;
-    switch (type)
+    /*switch (type)
     {
 
         case AXIS2_IN_FLOW:
@@ -503,7 +503,7 @@ axis2_phase_resolver_build_execution_chains(
                 flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
             break;
         }
-    }
+    }*/
 
     if (flow)
     {
@@ -1063,11 +1063,11 @@ axis2_phase_resolver_engage_module_globally(
                 return status;
             }
 
-            status = AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_desc);
+            /*status = AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_desc);
             if (AXIS2_SUCCESS != status)
             {
                 return status;
-            }
+            }*/
         }
         mod_name = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         status = AXIS2_SVC_GRP_ADD_MODULE_QNAME(svc_grp, env,

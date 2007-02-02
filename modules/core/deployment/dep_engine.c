@@ -193,11 +193,11 @@ axis2_dep_engine_add_new_svc(
  * This method is used to fill the axis service , it dose loading service class and also the provider class
  * and it will also load the service handlers
  */
-static axis2_status_t
+/*static axis2_status_t
 axis2_dep_engine_load_svc_props(
     axis2_dep_engine_t *dep_engine,
     const axis2_env_t *env,
-    axis2_svc_t *svc);
+    axis2_svc_t *svc);*/
 
 static axis2_status_t
 axis2_dep_engine_load_module_dll(
@@ -212,11 +212,11 @@ axis2_dep_engine_add_module_flow_handlers(
     axis2_flow_t *flow,
     axis2_hash_t *handler_create_func_map);
 
-static axis2_status_t
+/*static axis2_status_t
 axis2_dep_engine_add_flow_handlers(
     axis2_dep_engine_t *dep_engine,
     const axis2_env_t *env,
-    axis2_flow_t *flow);
+    axis2_flow_t *flow);*/
 
 void *AXIS2_CALL
 axis2_dep_engine_get_handler_dll(
@@ -1097,7 +1097,7 @@ axis2_dep_engine_add_new_svc(
 
         svc = (axis2_svc_t *) AXIS2_ARRAY_LIST_GET(svcs, env, i);
 
-        axis2_dep_engine_load_svc_props(dep_engine, env, svc);
+        /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
         file = AXIS2_ARCH_FILE_DATA_GET_FILE(dep_engine_impl->curr_file, env);
         file_name = AXIS2_FILE_GET_NAME(file, env);
         AXIS2_SVC_SET_FILE_NAME(svc, env, file_name);
@@ -1204,7 +1204,7 @@ axis2_dep_engine_add_new_svc(
     return AXIS2_CONF_ADD_SVC_GRP(dep_engine_impl->conf, env, svc_metadata);
 }
 
-static axis2_status_t
+/*static axis2_status_t
 axis2_dep_engine_load_svc_props(
     axis2_dep_engine_t *dep_engine,
     const axis2_env_t *env,
@@ -1244,7 +1244,7 @@ axis2_dep_engine_load_svc_props(
         axis2_dep_engine_add_flow_handlers(dep_engine, env, out_fault_flow);
     }
     return AXIS2_SUCCESS;
-}
+}*/
 
 
 static axis2_status_t
@@ -1345,7 +1345,7 @@ axis2_dep_engine_add_module_flow_handlers(
     return AXIS2_SUCCESS;
 }
 
-static axis2_status_t
+/*static axis2_status_t
 axis2_dep_engine_add_flow_handlers(
     axis2_dep_engine_t *dep_engine,
     const axis2_env_t *env,
@@ -1374,8 +1374,6 @@ axis2_dep_engine_add_flow_handlers(
         handler_dll_name =
             AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env,
                     handler_class_name);
-        /* TODO
-         * set full dll path here instead of dll lib name only */
         AXIS2_DLL_DESC_SET_NAME(dll_desc, env, handler_dll_name);
         AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);
         axis2_class_loader_init(env);
@@ -1387,7 +1385,7 @@ axis2_dep_engine_add_flow_handlers(
         AXIS2_HANDLER_DESC_SET_HANDLER(handlermd, env, handler);
     }
     return AXIS2_SUCCESS;
-}
+}*/
 
 void *AXIS2_CALL
 axis2_dep_engine_get_handler_dll(
@@ -1706,7 +1704,7 @@ axis2_dep_engine_build_svc(
     node = AXIS2_DESC_BUILDER_BUILD_OM(dep_engine_impl->svc_builder->desc_builder,
             env);
     AXIS2_SVC_BUILDER_POPULATE_SVC(dep_engine_impl->svc_builder, env, node);
-    axis2_dep_engine_load_svc_props(dep_engine, env, svc);
+    /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
 
     return svc;
 }

@@ -108,7 +108,7 @@ axiom_soap_action_disp_find_op(
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                 "Checking for operation using SOAPAction : %s", action);
 
-        op = AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, action);
+        /*op = AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, action);*/
         if (!op)
         {
             const axis2_char_t * op_name = NULL;

@@ -179,6 +179,7 @@ axis2_op_client_create(
 
     op_client_impl->options = options;
     op_client_impl->svc_ctx = svc_ctx;
+    op_client_impl->op_client.ops = NULL;
 
     op_client_impl->op_ctx = axis2_op_ctx_create(env, op,
             op_client_impl->svc_ctx);
