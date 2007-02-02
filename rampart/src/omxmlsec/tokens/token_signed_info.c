@@ -15,40 +15,34 @@
  * limitations under the License.
  */
 
-#ifndef OXS_ENCRYPTION_METHOD_H
-#define OXS_ENCRYPTION_METHOD_H
-
-
-/**
-  * @file oxs_token_encryption_method.h
-  * @brief 
-  */
-
-#include <axis2_defines.h>
-#include <axis2_env.h>
-#include <axiom_node.h>
+#include <stdio.h>
+#include <oxs_constants.h>
+#include <oxs_error.h>
+#include <oxs_token_signed_info.h>
 #include <axiom_element.h>
-#include <axis2_qname.h>
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 
-/**
-* Encryption Method element
-*/
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_encryption_method_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t *algorithm
-                    );
+oxs_token_build_signed_info_element(const axis2_env_t *env,
+        axiom_node_t *parent
+                                )
+{
+    axiom_node_t *signed_info_node = NULL;
+    axiom_element_t *signed_info_ele = NULL;
+    axiom_namespace_t *ns_obj = NULL;
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_node);
-/** @} */
-#ifdef __cplusplus
+    ns_obj = axiom_namespace_create(env, OXS_DSIG_NS,
+            OXS_DS);
+
+
+    signed_info_ele = axiom_element_create(env, parent, OXS_NODE_SIGNEDINFO, ns_obj, &signed_info_node);
+    if (!signed_info_ele)
+    {
+        oxs_error(env, ERROR_LOCATION,
+                OXS_ERROR_ELEMENT_FAILED, "Error creating SignedInfo element");
+        return NULL;
+    }
+
+    return signed_info_node;
 }
-#endif
 
-#endif                          /* OXS_ENCRYPTION_METHOD_H */

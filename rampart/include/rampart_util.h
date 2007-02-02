@@ -23,6 +23,7 @@
 #include <axis2_msg_ctx.h>
 #include <rampart_authn_provider.h>
 #include <rampart_credentials.h>
+#include <rampart_callback.h>
 /**
   * @file rampart_util.h
   * @brief Utilities of rampart 
@@ -83,6 +84,14 @@ rampart_authenticate_un_pw(const axis2_env_t *env,
     const axis2_char_t *password_type,
     axis2_msg_ctx_t *msg_ctx);
 
+/**
+ * Load the password callback module 
+ *
+ */
+AXIS2_EXTERN rampart_callback_t* AXIS2_CALL
+rampart_load_pwcb_module(const axis2_env_t *env,
+        axis2_char_t *callback_module_name);
+
  /**
 	*@env the environment
 	*@callback_module_name the file name of the callback module (.so or .DLL)
@@ -90,12 +99,11 @@ rampart_authenticate_un_pw(const axis2_env_t *env,
 	*@ctx The axis2 context
 	*@return the password for the user or NULL if failed
 	*/
-
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_callback_password(const axis2_env_t *env,
-        axis2_char_t *callback_module_name,
+        rampart_callback_t *callback_module,
         const axis2_char_t *username,
-        axis2_ctx_t *ctx); 
+        axis2_ctx_t *ctx);
 
  /**
     * Generates the nonce. Nonce is a base64 encoded random string.

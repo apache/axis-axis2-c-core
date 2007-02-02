@@ -137,18 +137,30 @@ rampart_authenticate_un_pw(const axis2_env_t *env,
     return auth_status;
 }
 
+AXIS2_EXTERN rampart_callback_t* AXIS2_CALL
+rampart_load_pwcb_module(const axis2_env_t *env,
+        axis2_char_t *callback_module_name)
+{
+    rampart_callback_t *cb = NULL;
+
+    cb = (rampart_callback_t*)rampart_load_module(env, callback_module_name);
+    if (!cb)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_util] Unable to identify the callback module %s. ERROR", callback_module_name);
+        return AXIS2_FAILURE;
+    }
+
+    return cb;
+ 
+}
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_callback_password(const axis2_env_t *env,
-        axis2_char_t *callback_module_name,
+        rampart_callback_t *callback_module,
         const axis2_char_t *username,
         axis2_ctx_t *ctx)
 {
-    rampart_callback_t* rcb = NULL;
     axis2_char_t *password = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
-    void *ptr = NULL;
-    axis2_param_t *impl_info_param = NULL;
     axis2_property_t* property = NULL; 
     void *cb_prop_val= NULL;
 
@@ -161,31 +173,16 @@ rampart_callback_password(const axis2_env_t *env,
         property = NULL;
     }
 
-    dll_desc = axis2_dll_desc_create(env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, callback_module_name);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-    axis2_class_loader_init(env);
-    ptr = axis2_class_loader_create_dll(env, impl_info_param);
-
-    /*callback()*/
-    if (!ptr)
+    if (!callback_module)
     {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Unable to create the pw callback module %s. ERROR", callback_module_name);
-        return NULL;
-    }
-
-    rcb = (rampart_callback_t*)ptr;
-    if (!rcb)
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Unable to load the pw callback module %s. ERROR", callback_module_name);
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Cannot callback password. PWCB module is NULL. ERROR");
         return NULL;
     }
 
     /*Get the password thru the callback*/
-    password = RAMPART_CALLBACK_CALLBACK_PASSWORD(rcb, env, username, cb_prop_val);
+    password = RAMPART_CALLBACK_CALLBACK_PASSWORD(callback_module, env, username, cb_prop_val);
 
-    AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password taken from the callback module %s. SUCCESS", callback_module_name);
+    AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password taken from the callback module. SUCCESS");
     return password;
     
 }

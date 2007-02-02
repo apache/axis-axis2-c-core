@@ -40,7 +40,7 @@ oxs_token_build_cipher_data_element(const axis2_env_t *env,
     if (!cipher_data_ele)
     {
         oxs_error(env, ERROR_LOCATION,
-                OXS_ERROR_ELEMENT_FAILED, "Error creating cipher value element");
+                OXS_ERROR_ELEMENT_FAILED, "Error creating cipher data element");
         return NULL;
     }
 

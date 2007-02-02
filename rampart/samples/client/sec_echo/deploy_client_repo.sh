@@ -24,4 +24,4 @@ cp -r $AXIS2C_HOME/lib $CLIENT_REPO/
 echo "Copying latest modules to $CLIENT_REPO"
 cp -r $AXIS2C_HOME/modules $CLIENT_REPO/
 
-echo "WARNING: Make sure that you have correct configurations in sec_echo/services.xml and $AXIS2C_HOME/axis2.xmlfile"
+echo "WARNING: Make sure that you have correct configurations in sec_echo/services.xml and $CLIENT_REPO/axis2.xml file."

@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-#ifndef OXS_ENCRYPTION_METHOD_H
-#define OXS_ENCRYPTION_METHOD_H
+#ifndef OXS_TOKEN_SIGNED_INFO_H
+#define OXS_TOKEN_SIGNED_INFO_H
 
 
 /**
-  * @file oxs_token_encryption_method.h
+  * @file oxs_token_signed_info.h
   * @brief 
   */
 
@@ -34,21 +34,18 @@ extern "C"
 {
 #endif
 
-
 /**
-* Encryption Method element
+* SignedInfo element
 */
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_encryption_method_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t *algorithm
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+oxs_token_build_signed_info_element(const axis2_env_t *env,
+                        axiom_node_t *parent
                     );
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_node);
+
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* OXS_ENCRYPTION_METHOD_H */
+#endif                          /* OXS_TOKEN_SIGNED_INFO_H */

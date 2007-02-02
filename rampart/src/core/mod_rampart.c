@@ -58,6 +58,7 @@ mod_rampart_init(axis2_module_t *module,
         axis2_module_desc_t *module_desc)
 {
     /* Any initialization stuff of mod_rampart goes here */
+    AXIS2_LOG_INFO(env->log,"[rampart][mod_rampart] mod_rampart initialized");
     return AXIS2_SUCCESS;
 }
 
@@ -65,6 +66,7 @@ axis2_status_t AXIS2_CALL
 mod_rampart_shutdown(axis2_module_t *module,
         const axis2_env_t *env)
 {
+    AXIS2_LOG_INFO(env->log,"[rampart][mod_rampart] mod_rampart shutdown");
     if (module->ops)
     {
         AXIS2_FREE(env->allocator, module->ops);

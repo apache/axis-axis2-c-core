@@ -96,7 +96,7 @@ rampart_get_password(const axis2_env_t *env,
 {
     axis2_char_t *password = NULL;
     axis2_char_t *username = NULL;
-    axis2_char_t *pw_callback_module = NULL;
+    axis2_char_t *pw_callback_module_name = NULL;
 
     /*Check if password is in the context.
      i.e.In any context in the cotext hierarchy starting from msg, op, svc, etc.*/
@@ -109,11 +109,18 @@ rampart_get_password(const axis2_env_t *env,
     /*TODO: If not in the context, get the password+username from the credentials module*/
 
     /*If not check whether there is a callback class specified*/
-    pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
-    if (pw_callback_module)
+    pw_callback_module_name = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
+    if (pw_callback_module_name)
     {
+        rampart_callback_t *pwcb = NULL;
+
+        pwcb = rampart_load_pwcb_module(env, pw_callback_module_name);
+        if(!pwcb){
+            AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password callback module %s is NULL", pw_callback_module_name);
+            return NULL;
+        }
         username = RAMPART_ACTIONS_GET_USER(actions, env);
-        password = rampart_callback_password(env, pw_callback_module, username, ctx);
+        password = rampart_callback_password(env, pwcb, username, ctx);
     }
     return password;
 }
@@ -354,7 +361,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     axis2_char_t *nonce = NULL;
     axis2_char_t *created = NULL;
     axis2_char_t *password_type = NULL;
-    axis2_char_t *pw_callback_module = NULL;
+    axis2_char_t *pw_callback_module_name = NULL;
     axis2_char_t *authn_module_name = NULL;
     axis2_char_t *password_from_svr = NULL;
     axis2_char_t *password_to_compare = NULL;
@@ -514,16 +521,22 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         }
         
     }else{
+        rampart_callback_t *pwcb = NULL;
+
         /*Auth module is NULL. Use Callback password*/
-        pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
-        if(!pw_callback_module){
+        pw_callback_module_name = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
+        if(!pw_callback_module_name){
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_usernametoken] Password callback module is not specified");
             return AXIS2_FAILURE;
         }
         
-        AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password authentication using CALLBACK MODULE %s", pw_callback_module);
-    
-        password_from_svr = rampart_callback_password(env, pw_callback_module, username, ctx);
+        AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password authentication using CALLBACK MODULE %s", pw_callback_module_name);
+        pwcb = rampart_load_pwcb_module(env, pw_callback_module_name);
+        if(!pwcb){
+            AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password callback module %s is NULL", pw_callback_module_name);
+            return AXIS2_FAILURE;
+        }
+        password_from_svr = rampart_callback_password(env, pwcb, username, ctx);
         if (!password_from_svr)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_usernametoken] Cannot get the password for user %s", username);

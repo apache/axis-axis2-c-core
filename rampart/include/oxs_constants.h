@@ -175,6 +175,10 @@ extern "C"
 #define OXS_NODE_ENCRYPTED_KEY         "EncryptedKey" 
 #define OXS_HREF_ENCRYPTED_KEY         "http://www.w3.org/2001/04/xmlenc#EncryptedKey" 
 
+/****************************************************************
+   C14N
+****************************************************************/
+#define OXS_HREF_C14N                   "http://www.w3.org/TR/2001/REC-xml-c14n-20010315"
 
 /****************************************************************
     KeyNAME
