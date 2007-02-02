@@ -55,14 +55,6 @@ if test -d $srcdir/axiom; then
     AC_CONFIG_SUBDIRS(axiom)
 fi
 
-if test -d $srcdir/xml_schema; then
-    AC_CONFIG_SUBDIRS(xml_schema)
-fi
-
-if test -d $srcdir/woden; then
-    AC_CONFIG_SUBDIRS(woden)
-fi
-
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
@@ -346,14 +338,9 @@ AC_CONFIG_FILES([Makefile \
     modules/core/clientapi/Makefile \
     modules/core/receivers/Makefile \
     modules/core/util/Makefile \
-    modules/wsdl/Makefile \
-    modules/wsdl/builder/Makefile \
     modules/mod_addr/Makefile \
     modules/mod_log/Makefile \
     test/Makefile \
-    test/wsdl/Makefile \
-    test/wsdl/builder/Makefile \
-    test/wsdl/builder/print/Makefile \
     test/core/Makefile \
     test/core/description/Makefile \
     test/core/clientapi/Makefile \

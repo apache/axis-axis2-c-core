@@ -217,6 +217,84 @@ typedef enum
 #define AXIS2_STYLE_DOC  "doc"
 #define AXIS2_STYLE_MSG  "msg"
 
+typedef enum axis2_wsdl_msg_labels 
+{
+    AXIS2_WSDL_MESSAGE_LABEL_IN = 0,
+    AXIS2_WSDL_MESSAGE_LABEL_OUT,
+    AXIS2_WSDL_MESSAGE_LABEL_MAX
+}axis2_wsdl_msg_labels_t;
+
+/*********************Message Exchange Pattern Constants***********************/
+/**
+ * Field MEP_URI_IN_ONLY
+ */
+#define AXIS2_MEP_URI_IN_ONLY "http://www.w3.org/2004/08/wsdl/in-only"
+
+#define AXIS2_MEP_CONSTANT_IN_ONLY 10
+
+/**
+ * Field MEP_URI_ROBUST_IN_ONLY
+ */
+#define AXIS2_MEP_URI_ROBUST_IN_ONLY "http://www.w3.org/2004/08/wsdl/robust-in-only"
+
+#define AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY 11
+
+/**
+ * Field MEP_URI_IN_OUT
+ */
+#define AXIS2_MEP_URI_IN_OUT "http://www.w3.org/2004/08/wsdl/in-out"
+
+#define AXIS2_MEP_CONSTANT_IN_OUT 12
+
+/**
+ * Field MEP_URI_IN_OPTIONAL_OUT
+ */
+#define AXIS2_MEP_URI_IN_OPTIONAL_OUT "http://www.w3.org/2004/08/wsdl/in-opt-out"
+
+#define AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT 13
+
+/**
+ * Field MEP_URI_OUT_ONLY
+ */
+#define AXIS2_MEP_URI_OUT_ONLY "http://www.w3.org/2004/08/wsdl/out-only"
+
+#define AXIS2_MEP_CONSTANT_OUT_ONLY 14
+
+/**
+ * Field MEP_URI_ROBUST_OUT_ONLY
+ */
+#define AXIS2_MEP_URI_ROBUST_OUT_ONLY "http://www.w3.org/2004/08/wsdl/robust-out-only"
+
+#define AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY 15
+
+/**
+ * Field MEP_URI_OUT_IN
+ */
+#define AXIS2_MEP_URI_OUT_IN "http://www.w3.org/2004/08/wsdl/out-in"
+
+#define AXIS2_MEP_CONSTANT_OUT_IN 16
+
+/**
+ * Field MEP_URI_OUT_OPTIONL_IN
+ */
+#define AXIS2_MEP_URI_OUT_OPTIONAL_IN "http://www.w3.org/2004/08/wsdl/out-opt-in"
+
+#define AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN 17
+
+#define AXIS2_MEP_CONSTANT_INVALID -1
+
+/**
+ * Field WSDL_MESSAGE_DIRECTION_IN
+ */
+#define AXIS2_WSDL_MESSAGE_DIRECTION_IN "in"
+
+
+/**
+ * Field WSDL_MESSAGE_DIRECTION_OUT
+ */
+#define AXIS2_WSDL_MESSAGE_DIRECTION_OUT "out"
+
+
 /**
  * Field METHOD_NAME_ESCAPE_CHARACTOR
  */
