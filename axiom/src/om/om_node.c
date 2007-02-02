@@ -485,7 +485,7 @@ axiom_node_get_first_element(axiom_node_t *om_node,
     /**********************************************************/
 	first_element = om_node->first_child;
 
-	while (AXIOM_NODE_GET_NODE_TYPE(first_element, env) != AXIOM_ELEMENT)
+	while ((AXIOM_NODE_GET_NODE_TYPE(first_element, env) != AXIOM_ELEMENT) && first_element)
 		first_element = AXIOM_NODE_GET_NEXT_SIBLING (first_element, env);
 
     return first_element;
