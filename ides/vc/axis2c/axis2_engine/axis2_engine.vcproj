@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axiom.lib axis2_util.lib axis2_parser.lib xml_schema.lib woden.lib axis2_wsdl.lib"
+				AdditionalDependencies="axiom.lib axis2_util.lib axis2_parser.lib xml_schema.lib woden.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;"
 				GenerateManifest="true"
