@@ -1450,6 +1450,8 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
 {
     axiom_soap_envelope_t *soap_env = NULL;
     axiom_soap_body_t *soap_body = NULL;
+    axiom_element_t *body_child = NULL;
+    axiom_node_t *body_child_node = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
@@ -1465,9 +1467,6 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
                 AXIS2_FAILURE);
         return NULL;
     }
-
-    axiom_element_t *body_child = NULL;
-    axiom_node_t *body_child_node = NULL;
 
     body_child = axiom_element_create_with_qname(env, NULL,
             AXIS2_OP_GET_QNAME(AXIS2_MSG_CTX_GET_OP(msg_ctx, env),
