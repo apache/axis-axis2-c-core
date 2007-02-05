@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./../../../../../tools/codegen/include;"
+				AdditionalIncludeDirectories="./../../../../../tools/codegen/include;./../../../../../include;./../../../../../axiom/include;./../../../../../util/include;./../../../../../xml_schema/include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,6 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="axis2_util.lib w2c_codegen.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories=".\..\..\deploy\lib;.\..\..\deploy\lib\codegen;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

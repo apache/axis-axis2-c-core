@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./../../../../../tools/codegen/include;./../../../../../woden/include;"
+				AdditionalIncludeDirectories="./../../../../../tools/codegen/include;./../../../../../woden/include;./../../../../../include;./../../../../../axiom/include;./../../../../../util/include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;W2C_CSTUB_HEADER_WRITER_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,6 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="axis2_util.lib axiom.lib axis2_parser.lib woden.lib xml_schema.lib w2c_codegen.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories=".\..\..\deploy\lib;.\..\..\deploy\lib\codegen;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
