@@ -32,6 +32,10 @@ extern "C"
 {
 #endif
 
+#if defined( WIN32 ) && (_MSC_VER < 1300)
+#define __FUNCTION__ NULL
+#endif
+
 /*Macros for locating thr error*/
 #define FUNCTION_NAME __FUNCTION__
 #define LINE_NUMBER __LINE__

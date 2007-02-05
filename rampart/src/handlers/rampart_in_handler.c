@@ -48,9 +48,9 @@ AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
 rampart_in_handler_create(const axis2_env_t *env,
          axis2_string_t *name)
 {
+    axis2_handler_t *handler = NULL;
     AXIS2_LOG_INFO(env->log, 
 				"[rampart][rampart_in_handler] Created");
-    axis2_handler_t *handler = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     handler = axis2_handler_create(env);
     if (!handler)
