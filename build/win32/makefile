@@ -322,9 +322,9 @@ AXIS2_APACHE_MODULE_SRC=$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\a
 
 axis2_apache_module:
     if not exist $(AXIS2_INTDIR)\apache_module mkdir $(AXIS2_INTDIR)\apache_module
-    $(CC) $(CFLAGS) $(APACHE_INCLUE_PATH)  /Fo$(AXIS2_APACHE_MODULE_SRC)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_APACHE_MODULE_SRC)\*.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:$AXIS2_BINS)\mod_axis2.dll
+    $(CC) $(CFLAGS) $(APACHE_INCLUE_PATH)  $(AXIS2_APACHE_MODULE_SRC) /Fo$(AXIS2_INTDIR)\apache_module\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\apache_module\*.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib $(APACHE_LIBS) /DLL /OUT:$(AXIS2_BINS)\mod_axis2.dll
 	
 #mod IIS
 
