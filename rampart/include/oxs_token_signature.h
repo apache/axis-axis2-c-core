@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-#ifndef OXS_ENCRYPTED_DATA_H
-#define OXS_ENCRYPTED_DATA_H
+#ifndef OXS_SIGNATURE_H
+#define OXS_SIGNATURE_H
 
 
 /**
-  * @file oxs_token_encrypted_data.h
+  * @file oxs_token_signature.h
   * @brief 
   */
 
@@ -35,12 +35,11 @@ extern "C"
 #endif
 
 /**
-* EncryptedData  element
+* ds:Signature  element
 */
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_encrypted_data_element(const axis2_env_t *env,
+oxs_token_build_signature_element(const axis2_env_t *env,
                         axiom_node_t *parent,
-                        axis2_char_t* type_attribute,
                         axis2_char_t* id
                     );
 
@@ -49,4 +48,4 @@ oxs_token_build_encrypted_data_element(const axis2_env_t *env,
 }
 #endif
 
-#endif                          /* OXS_ENCRYPTED_DATA_H */
+#endif                          /* OXS_SIGNATURE_H */
