@@ -3,7 +3,7 @@ noinst_LTLIBRARIES = libomxmlsec.la
 
 libomxmlsec_la_SOURCES = ctx.c  buffer.c key.c cipher.c error.c axis2_utils.c axiom.c \
                          iv.c xml_encryption.c encryption.c\
-						utility.c asym_ctx.c x509_cert.c key_mgr.c
+						utility.c asym_ctx.c x509_cert.c key_mgr.c sign_part.c
 						
 
 libomxmlsec_la_LIBADD  = -lssl\
