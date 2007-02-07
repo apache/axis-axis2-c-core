@@ -52,6 +52,11 @@ oxs_sign_part_get_id(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env);
 
+axis2_char_t *AXIS2_CALL
+oxs_sign_part_get_digest_mtd(
+    const oxs_sign_part_t *sign_part,
+    const axis2_env_t *env);
+
 axiom_node_t *AXIS2_CALL
 oxs_sign_part_get_node(
     const oxs_sign_part_t *sign_part,
@@ -62,6 +67,7 @@ oxs_sign_part_get_transforms(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env);
 
+/**********************Setter functions******************************************/
 axis2_status_t AXIS2_CALL
 oxs_sign_part_set_id(
     oxs_sign_part_t *sign_part,
