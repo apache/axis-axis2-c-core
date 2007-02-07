@@ -46,7 +46,7 @@ AXIS2_SOURCE_DIR = ..\..
 
 #directories for intermediate files
 
-AXIS2_INTDIR= .\msvc.int
+AXIS2_INTDIR= .\int.msvc
 AXIS2_INTDIR_AXIOM = $(AXIS2_INTDIR)\axiom
 AXIS2_INTDIR_UTIL  = $(AXIS2_INTDIR)\util
 AXIS2_INTDIR_CORE  = $(AXIS2_INTDIR)\core
