@@ -259,12 +259,8 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
         OXS_BUFFER_FREE(dec_enc_buf, env);
         dec_enc_buf = NULL;
 
-    }else if(OXS_ASYM_CTX_OPERATION_PRV_ENCRYPT == operation ){
-        /**/
-    }else if(OXS_ASYM_CTX_OPERATION_PRV_ENCRYPT == operation ){
-        /**/
     }else{
-
+        /**/
     }
 
     /*TODO Set certificate information taken from the PEM file */
