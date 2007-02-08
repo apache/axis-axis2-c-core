@@ -1,5 +1,5 @@
 SUBDIRS = tokens openssl c14n
-noinst_LTLIBRARIES = libomxmlsec.la
+lib_LTLIBRARIES = libomxmlsec.la
 
 libomxmlsec_la_SOURCES = ctx.c  buffer.c key.c cipher.c error.c axis2_utils.c axiom.c \
                          iv.c xml_encryption.c encryption.c\

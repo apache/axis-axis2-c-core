@@ -20,8 +20,8 @@
 
 
 /**
-  * @file oxs_xml_enc.h
-  * @brief Does the XML encryption for OMXMLSecurity  
+  * @file oxs_xml_signature.h
+  * @brief Does the XML Signature for OMXMLSecurity  
   */
 
 #include <axis2_defines.h>

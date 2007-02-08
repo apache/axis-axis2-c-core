@@ -20,6 +20,7 @@
 #include <axis2_util.h>
 #include <oxs_constants.h>
 #include <oxs_utility.h>
+#include <oxs_axiom.h>
 #include <axiom.h>
 #include <axiom_xml_reader.h>
 #include <axis2_env.h>
@@ -72,6 +73,7 @@ int main(int argc, char *argv[])
     axiom_node_t *tmpl = NULL;
     oxs_sign_part_t *sign_part = NULL;
     oxs_sign_ctx_t *sign_ctx = NULL;
+    axis2_array_list_t *sign_parts = NULL;
     FILE *outf;
 
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
@@ -94,14 +96,19 @@ int main(int argc, char *argv[])
     
     /*Sign specific*/
     sign_part = oxs_sign_part_create(env);
+    status = AXIS2_FAILURE;
     status = oxs_sign_part_set_node(sign_part, env, AXIOM_NODE_GET_FIRST_CHILD(tmpl, env));
 
+    sign_parts = axis2_array_list_create(env, 1);
+    axis2_array_list_add(sign_parts, env, sign_part);
     sign_ctx = oxs_sign_ctx_create(env);
+    oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_parts);
+    /*Sign*/
+    oxs_xml_sig_sign(env, sign_ctx, tmpl);
 
-    
     signed_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
 
-    outf = fopen("result.xml", "wb");
+    outf = fopen("result-sign.xml", "wb");
     fwrite(signed_result, 1, AXIS2_STRLEN(signed_result), outf);
     fclose(outf);
     return 0;

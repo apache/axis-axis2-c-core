@@ -22,6 +22,7 @@
 #include <oxs_buffer.h>
 #include <oxs_cipher.h>
 #include <openssl_rsa.h>
+#include <openssl_digest.h>
 #include <oxs_sign_ctx.h>
 #include <oxs_sign_part.h>
 #include <oxs_token_ds_reference.h>
@@ -35,6 +36,7 @@
 #include <oxs_token_signature_value.h>
 #include <oxs_token_signed_info.h>
 /*Private functions*/
+
 
 /*parent is ds:SignedInfo*/
 static axis2_status_t
@@ -60,7 +62,8 @@ rampart_xml_sig_build_reference(const axis2_env_t *env,
 
     /*Get transforms if any*/
     transforms = oxs_sign_part_get_transforms(sign_part, env);
-    if(0 < AXIS2_ARRAY_LIST_SIZE(transforms, env)){
+    
+    if((transforms) && (0 < AXIS2_ARRAY_LIST_SIZE(transforms, env))){
         axiom_node_t *transforms_node = NULL;
         /*Add ds:Transforms element*/
         transforms_node = oxs_token_build_transforms_element(env, reference_node);
@@ -76,13 +79,43 @@ rampart_xml_sig_build_reference(const axis2_env_t *env,
 
     /*Make digest.*/
     digest_mtd = oxs_sign_part_get_digest_mtd(sign_part, env);
-    digest = "j6lwx3rvEPO0vKtMup4NbeVu8nk=";/*TODO : Hard coded*/ 
+    digest = openssl_sha1(env, serialized_node, axis2_strlen(serialized_node)); 
 
     /*Construct nodes*/
     digest_mtd_node = oxs_token_build_digest_method_element(env, reference_node, digest_mtd);
     digest_value_node = oxs_token_build_digest_value_element(env, reference_node, digest);
-
+    
     return AXIS2_SUCCESS; 
+}
+
+static axis2_status_t
+rampart_xml_sig_sign_signed_info(const axis2_env_t *env,
+    axiom_node_t *signature_node,
+    axiom_node_t *signed_info_node,
+    oxs_sign_ctx_t *sign_ctx)
+{
+    axis2_char_t *signature_val = "FAKE_SIG_VAL(734dwe93721fd8y2==";
+    axis2_char_t *serialized_signed_info = NULL;
+    axis2_char_t *sign_algo = NULL;
+    axis2_char_t *c14n_algo = NULL;
+    axiom_node_t *signature_val_node = NULL;
+
+    /*TODO : Cannonicalize <SignedInfo>*/
+    c14n_algo = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env);
+
+    /*Then serialize <SignedInfo>*/
+    serialized_signed_info = AXIOM_NODE_TO_STRING(signed_info_node, env);
+    
+    /*Then sign... NOTE: The signature process includes making the digest. e.g. rsa-sha1 => RSA(SHA-1(contents))*/ 
+    sign_algo = oxs_sign_ctx_get_sign_mtd_algo(sign_ctx, env);
+
+    /*Sign the data using the private key*/
+    signature_val = "MC0CFFrVLtRlk=";
+    
+    /*Construct <SignatureValue>*/
+    signature_val_node = oxs_token_build_signature_value_element(env, signature_node, signature_val);
+
+    return AXIS2_SUCCESS;
 }
 
 /*Public functions*/
@@ -94,11 +127,9 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     axiom_node_t *signed_info_node = NULL;
     axiom_node_t *signature_node = NULL;
     axiom_node_t *signature_mtd_node = NULL;
-    axiom_node_t *signature_val_node = NULL;
     axiom_node_t *c14n_mtd_node = NULL;
     axis2_char_t *sign_algo = NULL;
     axis2_char_t *c14n_algo = NULL;
-    axis2_char_t *signature_val = NULL;
     axis2_array_list_t *sign_parts = NULL;
     int i=0;
 
@@ -122,22 +153,16 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     /*For each and every signature part in sig ctx,*/
     for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(sign_parts, env); i++){
         oxs_sign_part_t *sign_part =  NULL;
+
         /*TODO Get ith sign_part*/
-        
+        sign_part = (oxs_sign_part_t*)axis2_array_list_get(sign_parts, env, i);
         /*Create <ds:Reference> elements */
         rampart_xml_sig_build_reference(env, signed_info_node, sign_part);
 
     }
-    /*Cannonicalize <SignedInfo>*/
-    
+    /*At this point we have a complete <SignedInfo> node. Now we need to sign it*/
+    rampart_xml_sig_sign_signed_info(env, signature_node, signed_info_node, sign_ctx); 
 
-    /*Then serialize <SignedInfo>*/
-     
-    /*Sign the data using the private key*/
-    signature_val = "MC0CFFrVLtRlk=";
-    
-    /*Construct <SignatureValue>*/
-    signature_val_node = oxs_token_build_signature_value_element(env, signature_node, signature_val);
     
     return AXIS2_SUCCESS;
 }

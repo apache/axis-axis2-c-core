@@ -100,6 +100,9 @@ oxs_sign_part_set_node(
     const axis2_env_t *env,
     axiom_node_t *node)
 {
+    if(sign_part->node){
+        sign_part->node = NULL;
+    }
     sign_part->node = node;
     return AXIS2_SUCCESS;
 }
@@ -110,6 +113,9 @@ oxs_sign_part_set_transforms(
     const axis2_env_t *env,
     axis2_array_list_t *transforms)
 {
+    if(sign_part->transforms){
+        sign_part->transforms = NULL;
+    }
     sign_part->transforms = transforms;
     return AXIS2_SUCCESS;
 }
