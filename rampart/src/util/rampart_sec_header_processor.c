@@ -168,6 +168,9 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         axiom_node_t *envelope_node = NULL;
         oxs_ctx_t *ctx = NULL;
         axiom_node_t *decrypted_node = NULL; 
+        axiom_soap_body_t *soap_body = NULL;
+        /*This need to be called to build the SOAP Body. Not in use but DO NOT remove*/
+        soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
 
         /*Get the i-th element and decrypt it */
         id = (axis2_char_t*)AXIS2_ARRAY_LIST_GET(reference_list, env, i);

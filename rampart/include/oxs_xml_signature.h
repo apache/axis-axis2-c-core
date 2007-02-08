@@ -30,6 +30,7 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axis2_qname.h>
+#include <oxs_sign_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -40,14 +41,16 @@ extern "C"
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_sign(const axis2_env_t *env,
-    oxs_sign_ctx_t *sign_ctx);
+    oxs_sign_ctx_t *sign_ctx,
+    axiom_node_t *parent);
 
 /**
  * Verify
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_verify(const axis2_env_t *env,
-    oxs_sign_ctx_t *sign_ctx);
+    oxs_sign_ctx_t *sign_ctx,
+    axiom_node_t *signature_node);
 
 /** @} */
 #ifdef __cplusplus

@@ -163,7 +163,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 return AXIS2_FAILURE;
             }                
 
-           
 
         }else{ /* End of sec_header */
             /*It's OK to have SOAP envelopes without headers*/

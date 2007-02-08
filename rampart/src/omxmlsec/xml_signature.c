@@ -29,6 +29,11 @@
 #include <oxs_token_digest_value.h>
 #include <oxs_token_transforms.h>
 #include <oxs_token_transform.h>
+#include <oxs_token_c14n_method.h>
+#include <oxs_token_signature.h>
+#include <oxs_token_signature_method.h>
+#include <oxs_token_signature_value.h>
+#include <oxs_token_signed_info.h>
 /*Private functions*/
 
 /*parent is ds:SignedInfo*/
@@ -83,13 +88,33 @@ rampart_xml_sig_build_reference(const axis2_env_t *env,
 /*Public functions*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 oxs_xml_sig_sign(const axis2_env_t *env,
-    oxs_sign_ctx_t *sign_ctx)
+    oxs_sign_ctx_t *sign_ctx,
+    axiom_node_t *parent)
 {
     axiom_node_t *signed_info_node = NULL;
+    axiom_node_t *signature_node = NULL;
+    axiom_node_t *signature_mtd_node = NULL;
+    axiom_node_t *signature_val_node = NULL;
+    axiom_node_t *c14n_mtd_node = NULL;
+    axis2_char_t *sign_algo = NULL;
+    axis2_char_t *c14n_algo = NULL;
+    axis2_char_t *signature_val = NULL;
     axis2_array_list_t *sign_parts = NULL;
     int i=0;
 
-    /*Get the signature context*/
+    /*Construct the <Signature> element*/
+    signature_node = oxs_token_build_signature_element(env, parent, "Sign-ID");
+
+    /*Construct the <SignedInfo>  */
+    signed_info_node = oxs_token_build_signed_info_element(env, signature_node);
+
+    /*Construct the <SignatureMethod>  */
+    sign_algo = oxs_sign_ctx_get_sign_mtd_algo(sign_ctx, env);
+    signature_mtd_node = oxs_token_build_signature_method_element(env, signed_info_node, sign_algo);
+
+    /*Construct the <CanonicalizationMethod> */
+    c14n_algo = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env);
+    c14n_mtd_node = oxs_token_build_c14n_method_element(env, signed_info_node, c14n_algo);
 
     /*Look for signature parts*/
     sign_parts = oxs_sign_ctx_get_sign_parts(sign_ctx , env);
@@ -103,23 +128,24 @@ oxs_xml_sig_sign(const axis2_env_t *env,
         rampart_xml_sig_build_reference(env, signed_info_node, sign_part);
 
     }
-
-    /*Then construct the <SignatureMethod> , <CanonicalizationMethod> */
-
-    /*Finalize <SignedInfo>*/
+    /*Cannonicalize <SignedInfo>*/
+    
 
     /*Then serialize <SignedInfo>*/
-
+     
     /*Sign the data using the private key*/
-
-    /*Construct the <Signature> element*/
+    signature_val = "MC0CFFrVLtRlk=";
+    
+    /*Construct <SignatureValue>*/
+    signature_val_node = oxs_token_build_signature_value_element(env, signature_node, signature_val);
     
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 oxs_xml_sig_verify(const axis2_env_t *env,
-    oxs_sign_ctx_t *sign_ctx)
+    oxs_sign_ctx_t *sign_ctx,
+    axiom_node_t *signature_node)
 {
     return AXIS2_SUCCESS;
 }

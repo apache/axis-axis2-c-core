@@ -26,11 +26,9 @@
 #include <oxs_ctx.h>
 #include <oxs_key.h>
 #include <oxs_error.h>
-#include <oxs_encryption.h>
-#include <oxs_xml_encryption.h>
-#include <oxs_token_encrypted_data.h>
-#include <oxs_x509_cert.h>
-
+#include <oxs_xml_signature.h>
+#include <oxs_sign_ctx.h>
+#include <oxs_sign_part.h>
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 load_sample_xml(const axis2_env_t *env,
@@ -65,60 +63,15 @@ axis2_env_t *test_init()
     return env;
 }
 
-oxs_key_t *create_key(axis2_env_t *env)
-{
-    oxs_key_t *key = NULL;
-    key = oxs_key_create(env);
-    OXS_KEY_POPULATE(key, env, (unsigned char*)"012345670123456701234567", "session_key",  32, OXS_KEY_USAGE_DECRYPT);
-    return key;
-}
-
-axis2_status_t decrypt(axis2_env_t *env,  axis2_char_t *filename)
-{
-    oxs_ctx_t *ctx = NULL;
-    axiom_node_t *tmpl = NULL;
-    axiom_node_t *enc_data_node = NULL;
-    axiom_node_t *decrypted_node = NULL;
-    oxs_key_t *key = NULL;
-
-    tmpl = load_sample_xml(env , tmpl, filename);
-    axis2_status_t temp_status = AXIS2_FAILURE;
-    axis2_char_t *serialized_data = NULL;
-    FILE *outf;
-
-    /*Create key*/
-    key = create_key(env);
-
-    /*Create ctx*/
-    ctx = oxs_ctx_create(env);
-    OXS_CTX_SET_KEY(ctx, env, key);
-
-    /*Get the EncryptedData node*/
-    enc_data_node = AXIOM_NODE_GET_FIRST_CHILD(tmpl, env);
-    temp_status = oxs_xml_enc_decrypt_node(env, ctx, enc_data_node, &decrypted_node);
-
-    if (temp_status){
-        printf("\nooxs_xml_enc_decrypt_node SUCCESS\n");
-    }else{
-        printf("\noxs_xml_enc_decrypt_node FAILURE\n");
-    }
-    serialized_data = AXIOM_NODE_TO_STRING(tmpl, env);
-    outf = fopen("decrypted-result.xml", "wb");
-    fwrite(serialized_data, 1, AXIS2_STRLEN(serialized_data), outf);
-    fclose(outf);
-    return AXIS2_SUCCESS;
-}
-
 int main(int argc, char *argv[])
 {
     axis2_env_t *env = NULL;
     axis2_char_t *filename = "input.xml";
-    oxs_ctx_t *ctx = NULL;
-    oxs_key_t *key = NULL;
-    axis2_status_t temp_status = AXIS2_FAILURE;
-    axiom_node_t *tmpl = NULL, *enc_node = NULL, *enc_data_node = NULL;
-    axis2_char_t *encrypted_result = NULL;
-    axis2_char_t *id = NULL;
+    axis2_char_t *signed_result = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    axiom_node_t *tmpl = NULL;
+    oxs_sign_part_t *sign_part = NULL;
+    oxs_sign_ctx_t *sign_ctx = NULL;
     FILE *outf;
 
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
@@ -138,42 +91,18 @@ int main(int argc, char *argv[])
         printf("load_sample_xml FAILED");
         return -1;
     }
-    /*Create key*/
-    key = create_key(env);
-   
-    /*Create ctx*/
-    ctx = oxs_ctx_create(env);
-    OXS_CTX_SET_KEY(ctx, env, key);
+    
+    /*Sign specific*/
+    sign_part = oxs_sign_part_create(env);
+    status = oxs_sign_part_set_node(sign_part, env, AXIOM_NODE_GET_FIRST_CHILD(tmpl, env));
 
-    /*Set algorithm*/
-    OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HREF_DES3_CBC);
+    sign_ctx = oxs_sign_ctx_create(env);
 
-    /*Get the node to be encrypted*/
-    enc_node = AXIOM_NODE_GET_FIRST_CHILD(tmpl, env);
-
-    /*Create a reference to encrypted node*/
-    id =  oxs_util_generate_id(env, OXS_ENCDATA_ID);
-    enc_data_node =  oxs_token_build_encrypted_data_element(env, tmpl, OXS_TYPE_ENC_ELEMENT, id); 
-    /*Encrypt***************************************************/
-
-    temp_status = oxs_xml_enc_encrypt_node(env, ctx,  enc_node, &enc_data_node);
-
-    if (temp_status)
-    {
-        printf("\noxs_enc_encrypt_template SUCCESS\n");
-    }
-    else
-    {
-        printf("\noxs_enc_encrypt_template FAILURE\n");
-    }
-
-    encrypted_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
-    /*printf("Final template is\n %s  ", encrypted_result);*/
+    
+    signed_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
 
     outf = fopen("result.xml", "wb");
-    fwrite(encrypted_result, 1, AXIS2_STRLEN(encrypted_result), outf);
+    fwrite(signed_result, 1, AXIS2_STRLEN(signed_result), outf);
     fclose(outf);
-    /*Decrypt**********************************************/
-    decrypt(env, "result.xml");
     return 0;
 }

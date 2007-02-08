@@ -53,7 +53,7 @@ oxs_sign_ctx_get_sign_mtd_algo(
     const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-oxs_sign_ctx_get_digest_mtd(
+oxs_sign_ctx_get_c14n_mtd(
     const oxs_sign_ctx_t *sign_ctx,
     const axis2_env_t *env);
 
