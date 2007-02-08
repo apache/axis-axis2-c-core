@@ -758,6 +758,8 @@ axis2_conf_builder_process_transport_senders(
                     transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
                 else if (axis2_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
                     transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
+                else if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTPS) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 else
                     return AXIS2_FAILURE;
                 
@@ -991,6 +993,8 @@ axis2_conf_builder_process_transport_recvs(
                     transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
                 else if (axis2_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
                     transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
+                else if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTPS) == 0)
+                    transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 else
                     return AXIS2_FAILURE;
 

@@ -345,9 +345,17 @@ axis2_mep_client_infer_transport(
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_conf_t *conf = NULL;
         axis2_transport_out_desc_t *transport_out_desc = NULL;
+		AXIS2_TRANSPORT_ENUMS transport_enum;
         
-        AXIS2_TRANSPORT_ENUMS transport_enum = 
-            (axis2_strcmp(transport, "http") == 0)?AXIS2_TRANSPORT_ENUM_HTTP:AXIS2_TRANSPORT_ENUM_MAX;
+		if (!axis2_strcmp(transport, "http"))
+		{
+			transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
+		}
+		else if (!axis2_strcmp (transport, "https"))
+		{
+			transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
+		}
+
 
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
         if (conf_ctx)
