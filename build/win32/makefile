@@ -222,7 +222,7 @@ deploy:
 	if not exist $(AXIS2_LOG) mkdir $(AXIS2_LOG)
 	if not exist $(AXIS2_MODULES)\addressing mkdir $(AXIS2_MODULES)\addressing
 			
-#intermidiate directories
+#intermediate directories
 	
 	if not exist $(AXIS2_INTDIR) mkdir $(AXIS2_INTDIR)
 	if not exist $(AXIS2_INTDIR_AXIOM) mkdir $(AXIS2_INTDIR_AXIOM)
@@ -512,56 +512,66 @@ axis2_client_mtom:
 	xcopy $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources $(AXIS2_BINS)\samples\resources 
 
 axis2_client_userguide:
+	if not exist $(AXIS2_INTDIR)\userguide\echo_blocking mkdir $(AXIS2_INTDIR)\userguide\echo_blocking
+	if not exist $(AXIS2_INTDIR)\userguide\echo_non_blocking mkdir $(AXIS2_INTDIR)\userguide\echo_non_blocking
+	if not exist $(AXIS2_INTDIR)\userguide\echo_blocking_addr mkdir $(AXIS2_INTDIR)\userguide\echo_blocking_addr
+	if not exist $(AXIS2_INTDIR)\userguide\echo_rest mkdir $(AXIS2_INTDIR)\userguide\echo_rest
+	if not exist $(AXIS2_INTDIR)\userguide\echo_blocking_dual mkdir $(AXIS2_INTDIR)\userguide\echo_blocking_dual
+	if not exist $(AXIS2_INTDIR)\userguide\echo_non_blocking_dual mkdir $(AXIS2_INTDIR)\userguide\echo_non_blocking_dual
+	if not exist $(AXIS2_INTDIR)\userguide\echo_blocking_soap11 mkdir $(AXIS2_INTDIR)\userguide\echo_blocking_soap11
+
+
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking.c \
-	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:echo_blocking.exe 
-	del *.obj
+	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking\*.obj $(AXIS2_UTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking.exe
+
 	
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking.c \
-	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:echo_non_blocking.exe 
-	del *.obj
+	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_non_blocking\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_non_blocking\*.obj $(AXIS2_UTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
+	/OUT:$(AXIS2_BINS)\samples\echo_non_blocking.exe
+
+
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_addr.c \
-	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:echo_blocking_addr.exe 
-	del *.obj
+	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_addr\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_addr\*.obj $(AXIS2_UTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
+	/OUT:$(AXIS2_BINS)\samples\echo_blocking_addr.exe 
+
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_rest.c \
-	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:echo_rest.exe 
-	del *.obj
+	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_rest\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_rest\*.obj $(AXIS2_UTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
+	/OUT:$(AXIS2_BINS)\samples\echo_rest.exe 
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_dual.c \
-	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:echo_blocking_dual.exe 
-	del *.obj
+	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_dual\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_dual\*.obj $(AXIS2_UTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking_dual.exe
 
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_non_blocking_dual.c \
-	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:echo_non_blocking_dual.exe 
-	del *.obj
-
+	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_non_blocking_dual\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_non_blocking_dual\*.obj $(AXIS2_UTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
+	/OUT:$(AXIS2_BINS)\samples\echo_non_blocking_dual.exe 
+	
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking_soap11.c \
-	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
-	$(AXIS2_ENGINE).lib  /OUT:echo_blocking_soap11.exe 
-	del *.obj
-	
-	copy *.exe $(AXIS2_BINS)\samples
-	del *.exe
+	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking_soap11\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking_soap11\*.obj $(AXIS2_UTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) \
+	$(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo_blocking_soap11.exe 
+
 	
 	
 copy_extra:
