@@ -15,37 +15,40 @@
  * limitations under the License.
  */
 
-#ifndef OXS_TOKEN_SIGNATURE_H
-#define OXS_TOKEN_SIGNATURE_H
+#ifndef OXS_SIGNATURE_H
+#define OXS_SIGNATURE_H
 
 
 /**
-  * @file oxs_token_signature.h
-  * @brief 
+  * @file oxs_signature.h
+  * @brief Does the XML Signature for OMXMLSecurity  
   */
 
 #include <axis2_defines.h>
+#include <oxs_ctx.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axis2_qname.h>
+#include <oxs_sign_ctx.h>
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
 /**
-* ds:Signature  element
-*/
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_signature_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t* id
-                    );
+ * Sign
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_sig_sign(const axis2_env_t *env,
+    oxs_sign_ctx_t *sign_ctx,
+    oxs_buffer_t *input,
+    oxs_buffer_t *output);
+
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* OXS_TOKEN_SIGNATURE_H */
+#endif                          /* OXS_SIGNATURE_H */

@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
     /*Sign specific*/
     sign_part = oxs_sign_part_create(env);
     status = AXIS2_FAILURE;
-    status = oxs_sign_part_set_node(sign_part, env, AXIOM_NODE_GET_FIRST_CHILD(tmpl, env));
+    status = oxs_sign_part_set_node(sign_part, env, axiom_node_get_first_element(tmpl, env));
 
     sign_parts = axis2_array_list_create(env, 1);
     axis2_array_list_add(sign_parts, env, sign_part);

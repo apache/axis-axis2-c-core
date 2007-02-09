@@ -25,10 +25,14 @@ struct oxs_sign_ctx_t
     axis2_char_t *sign_mtd_algo;
     axis2_char_t *c14n_mtd ; 
     axis2_array_list_t *sign_parts; 
-    /*TODO:  key*/
+    oxs_x509_cert_t *certificate ;
+    openssl_pkey_t *prv_key ;
+    openssl_pkey_t *pub_key ;
 };
 
 /*Public functions*/
+
+
 axis2_char_t *AXIS2_CALL
 oxs_sign_ctx_get_sign_mtd_algo(
     const oxs_sign_ctx_t *sign_ctx,
@@ -52,6 +56,73 @@ oxs_sign_ctx_get_sign_parts(
     const axis2_env_t *env)
 {
     return sign_ctx->sign_parts;
+}
+
+oxs_x509_cert_t *AXIS2_CALL
+oxs_sign_ctx_get_certificate(
+    const oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env)
+{
+    return sign_ctx->certificate ;
+}
+
+openssl_pkey_t *AXIS2_CALL
+oxs_sign_ctx_get_private_key(
+    const oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env)
+{
+    return sign_ctx->prv_key ;
+}
+
+openssl_pkey_t *AXIS2_CALL
+oxs_sign_ctx_get_public_key(
+    const oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env)
+{
+    return sign_ctx->pub_key ;
+}
+
+
+axis2_status_t AXIS2_CALL
+oxs_sign_ctx_set_certificate(
+    oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env,
+    oxs_x509_cert_t *certificate)
+{
+    if (sign_ctx->certificate )
+    {
+        sign_ctx->certificate = NULL;
+    }
+    sign_ctx->certificate =  certificate;
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_sign_ctx_set_private_key(
+    oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env,
+    openssl_pkey_t *prv_key)
+{
+    if (sign_ctx->prv_key )
+    {
+        sign_ctx->prv_key = NULL;
+    }
+    sign_ctx->prv_key = prv_key;
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_sign_ctx_set_public_key(
+    oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env,
+    openssl_pkey_t *pub_key)
+{
+    if (sign_ctx->pub_key )
+    {
+        sign_ctx->pub_key = NULL;
+    }
+    sign_ctx->pub_key = pub_key;
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
@@ -93,6 +164,9 @@ oxs_sign_ctx_set_sign_parts(
     const axis2_env_t *env,
     axis2_array_list_t *sign_parts)
 {
+    if(sign_ctx->sign_parts){
+        sign_ctx->sign_parts = NULL;
+    }
     sign_ctx->sign_parts = sign_parts;
     return AXIS2_SUCCESS;
 }
@@ -114,7 +188,10 @@ oxs_sign_ctx_create(const axis2_env_t *env)
     sign_ctx->sign_mtd_algo= NULL;
     sign_ctx->c14n_mtd = NULL;
     sign_ctx->sign_parts = NULL;
-
+    sign_ctx->certificate = NULL;
+    sign_ctx->prv_key = NULL;
+    sign_ctx->pub_key = NULL;
+ 
     return sign_ctx;
 }
 
@@ -139,6 +216,9 @@ oxs_sign_ctx_free(oxs_sign_ctx_t *sign_ctx,
     }
 
     sign_ctx->sign_parts = NULL;
+    sign_ctx->certificate = NULL;
+    sign_ctx->prv_key = NULL;
+    sign_ctx->pub_key = NULL;
 
     AXIS2_FREE(env->allocator,  sign_ctx);
     sign_ctx = NULL;

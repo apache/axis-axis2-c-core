@@ -21,6 +21,11 @@
 #include <oxs_key_mgr.h>
 #include <openssl_pem.h>
 
+/**
+ * Loads the key
+ * 1. If the key buffer is specified, Take that as the source.
+ * 2. Else if the key file name has specified, Take that as the source.
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_key_mgr_load_key(const axis2_env_t *env,
     oxs_asym_ctx_t *ctx,

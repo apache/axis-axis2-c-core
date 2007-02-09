@@ -15,37 +15,34 @@
  * limitations under the License.
  */
 
-#ifndef OXS_TOKEN_SIGNATURE_H
-#define OXS_TOKEN_SIGNATURE_H
+#include <stdio.h>
+#include <axis2_util.h>
+#include <oxs_constants.h>
+#include <oxs_error.h>
+#include <oxs_buffer.h>
+#include <oxs_cipher.h>
+#include <oxs_sign_ctx.h>
+#include <oxs_signature.h>
+#include <oxs_buffer.h>
+#include <openssl_rsa.h>
+#include <openssl_digest.h>
+/*Private functions*/
 
 
-/**
-  * @file oxs_token_signature.h
-  * @brief 
-  */
 
-#include <axis2_defines.h>
-#include <axis2_env.h>
-#include <axiom_node.h>
-#include <axiom_element.h>
-#include <axis2_qname.h>
-#ifdef __cplusplus
-extern "C"
+/*Public functions*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+oxs_sig_sign(const axis2_env_t *env,
+    oxs_sign_ctx_t *sign_ctx,
+    oxs_buffer_t *input,
+    oxs_buffer_t *output)
 {
-#endif
+    /*Get the content*/
+    
+    /*Make the digest*/
 
-/**
-* ds:Signature  element
-*/
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_signature_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t* id
-                    );
+    /*Sign*/
 
-/** @} */
-#ifdef __cplusplus
+    return AXIS2_SUCCESS;
 }
-#endif
 
-#endif                          /* OXS_TOKEN_SIGNATURE_H */
