@@ -319,7 +319,7 @@ openssl_rsa_prv_encrypt(
     if (ret < 0)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_OPENSSL_FUNC_FAILED,
-                            "RSA private encryption(Signing) failed");
+                            "RSA private encryption(Signing) failed. Error code %d: %s",ERR_get_error(), ERR_reason_error_string(ERR_get_error()));
         return (-1);
     }
     OXS_BUFFER_POPULATE(out, env, encrypted, ret);

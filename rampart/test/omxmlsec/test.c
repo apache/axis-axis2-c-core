@@ -26,6 +26,8 @@
 #include <axis2_env.h>
 #include <oxs_ctx.h>
 #include <oxs_key.h>
+#include <oxs_key_mgr.h>
+#include <openssl_pkey.h>
 #include <oxs_error.h>
 #include <oxs_xml_signature.h>
 #include <oxs_sign_ctx.h>
@@ -102,10 +104,26 @@ int main(int argc, char *argv[])
     sign_parts = axis2_array_list_create(env, 1);
     axis2_array_list_add(sign_parts, env, sign_part);
     sign_ctx = oxs_sign_ctx_create(env);
-    oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_parts);
-    /*Sign*/
-    oxs_xml_sig_sign(env, sign_ctx, tmpl);
+    if(sign_ctx){
+        openssl_pkey_t *prvkey = NULL;
 
+        /*Set private key*/
+        prvkey = oxs_key_mgr_load_private_key_from_file(env, "rsakey.pem", "");
+        if(!prvkey){
+            printf("Cannot load private key");
+        }
+        oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
+        /*Set sig algo*/
+        oxs_sign_ctx_set_sign_mtd_algo(sign_ctx, env, OXS_HREF_RSA_SHA1);
+        /*Set C14N method*/
+        oxs_sign_ctx_set_c14n_mtd(sign_ctx, env, OXS_HREF_C14N);
+        /*Set sig parts*/
+        oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_parts);
+        /*Sign*/
+        oxs_xml_sig_sign(env, sign_ctx, tmpl);
+    }else{
+        printf("Sign ctx creation failed");
+    }
     signed_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
 
     outf = fopen("result-sign.xml", "wb");

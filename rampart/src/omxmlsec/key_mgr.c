@@ -153,3 +153,51 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     }
     return AXIS2_SUCCESS;
 }
+
+/*These are new set of functions that break-up the complex logic in oxs_key_mgr_load_key()*/
+
+AXIS2_EXTERN openssl_pkey_t* AXIS2_CALL
+oxs_key_mgr_load_private_key_from_string(const axis2_env_t *env, 
+    axis2_char_t *string_buffer, /*in PEM format*/
+    axis2_char_t *password)
+{
+    openssl_pkey_t *open_prvkey = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    EVP_PKEY *prvkey = NULL;
+ 
+    /*load private key from buf*/
+    status = openssl_pem_buf_read_pkey(env, string_buffer, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey); 
+    /*Populate*/
+    if(prvkey){
+        open_prvkey = openssl_pkey_create(env);
+        OPENSSL_PKEY_POPULATE(open_prvkey, env, prvkey, NULL, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
+    }else{
+        return NULL;
+    }
+
+    return open_prvkey;
+}
+
+AXIS2_EXTERN openssl_pkey_t* AXIS2_CALL
+oxs_key_mgr_load_private_key_from_file(const axis2_env_t *env, 
+    axis2_char_t *filename,
+    axis2_char_t *password)
+{
+    openssl_pkey_t *open_prvkey = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    EVP_PKEY *prvkey = NULL;
+
+    /*Read EVP_PKEY*/
+    status = openssl_pem_read_pkey(env, filename, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey);
+
+    /*Populate*/
+    if(prvkey){
+        open_prvkey = openssl_pkey_create(env);
+        OPENSSL_PKEY_POPULATE(open_prvkey, env, prvkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
+    }else{
+        return NULL;
+    }
+    
+    return open_prvkey;
+}
+
