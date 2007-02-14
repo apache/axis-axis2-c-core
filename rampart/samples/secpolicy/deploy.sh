@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ $# -ne 1 ]
+then
+    echo "Usage : $0 scenarioX"
+    exit
+fi
 
 CLIENT_REPO="$AXIS2C_HOME/client_repo"
 SERVICE_HOME="$AXIS2C_HOME/services/sec_echo/"
