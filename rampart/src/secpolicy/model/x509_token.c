@@ -74,7 +74,7 @@ rp_x509_token_free(rp_x509_token_t *x509_token,
 /* Implementations */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_x509_token_get_inclsion(rp_x509_token_t *x509_token,
+rp_x509_token_get_inclusion(rp_x509_token_t *x509_token,
             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -91,7 +91,6 @@ rp_x509_token_set_inclusion(rp_x509_token_t *x509_token,
     AXIS2_PARAM_CHECK(env->error,inclusion,AXIS2_FAILURE);    
     
     x509_token->inclusion = inclusion;
-    printf("%s\n",x509_token->inclusion);
 
     return AXIS2_SUCCESS;
 }

@@ -83,7 +83,6 @@ rp_https_token_set_inclusion(rp_https_token_t *https_token,
     AXIS2_PARAM_CHECK(env->error,inclusion,AXIS2_FAILURE);
     
     https_token->inclusion = inclusion;
-    printf("%s\n",https_token->inclusion);
 
     return AXIS2_SUCCESS;
 }

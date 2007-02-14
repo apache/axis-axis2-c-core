@@ -95,8 +95,6 @@ rp_rampart_config_builder_populate(
         {
             axis2_char_t *user = NULL;
             user = AXIOM_ELEMENT_GET_TEXT(element,env,node);
-            printf("%s\n",local_name);
-            printf("%s\n",user);
 
             return rp_rampart_config_set_user(rampart_config,env,user);
         }
@@ -109,8 +107,6 @@ rp_rampart_config_builder_populate(
         {
             axis2_char_t *encryption_user = NULL;
             encryption_user = AXIOM_ELEMENT_GET_TEXT(element,env,node);
-            printf("%s\n",local_name);
-            printf("%s\n",encryption_user);
             return rp_rampart_config_set_encryption_user(rampart_config,env,encryption_user);
         }
         else
@@ -122,8 +118,6 @@ rp_rampart_config_builder_populate(
         {
             axis2_char_t *password_callback_class = NULL;
             password_callback_class = AXIOM_ELEMENT_GET_TEXT(element,env,node);
-            printf("%s\n",local_name);
-            printf("%s\n",password_callback_class);
             return rp_rampart_config_set_password_callback_class(rampart_config,env,password_callback_class);
         }
         else
@@ -135,13 +129,23 @@ rp_rampart_config_builder_populate(
         {
             axis2_char_t *authenticate_module = NULL;
             authenticate_module = AXIOM_ELEMENT_GET_TEXT(element,env,node);
-            printf("%s\n",local_name);
-            printf("%s\n",authenticate_module);
             return rp_rampart_config_set_authenticate_module(rampart_config,env,authenticate_module);
         }
         else
             return AXIS2_FAILURE;
     }
+    else if(AXIS2_STRCMP(local_name,RP_PASSWORD_TYPE)==0)
+    {
+        if(rp_match_rampart_config_qname(env,RP_PASSWORD_TYPE,node,element))
+        {
+            axis2_char_t *password_type = NULL;
+            password_type = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            return rp_rampart_config_set_password_type(rampart_config,env,password_type);
+        }
+        else
+            return AXIS2_FAILURE;
+    }
+
     else if(AXIS2_STRCMP(local_name,RP_SIGNATURE_CRYPTO)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_SIGNATURE_CRYPTO,node,element))
@@ -151,7 +155,6 @@ rp_rampart_config_builder_populate(
             if(!signature_crypto)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_rampart_config_set_signature_crypto(rampart_config,env,signature_crypto);
         }
         else
@@ -166,7 +169,6 @@ rp_rampart_config_builder_populate(
             if(!encryption_crypto)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_rampart_config_set_encryption_crypto(rampart_config,env,encryption_crypto);
         }
         else

@@ -37,7 +37,7 @@ rp_layout_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    layout->value = RP_LAYOUT_LAX;
+    layout->value = RP_LAYOUT_STRICT;
     return layout;
 
 }

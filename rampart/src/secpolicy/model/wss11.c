@@ -28,6 +28,7 @@ struct rp_wss11_t
     axis2_bool_t must_support_ref_thumbprint;
     axis2_bool_t must_support_ref_encryptedkey;
     axis2_bool_t require_signature_confirmation;
+    axis2_bool_t must_support_direct_reference;
 };
 
 AXIS2_EXTERN rp_wss11_t *AXIS2_CALL
@@ -52,6 +53,8 @@ rp_wss11_create(const axis2_env_t *env)
     wss11->must_support_ref_thumbprint = AXIS2_FALSE;
     wss11->must_support_ref_encryptedkey = AXIS2_FALSE;
     wss11->require_signature_confirmation = AXIS2_FALSE;
+    wss11->must_support_direct_reference = AXIS2_TRUE;
+
     return wss11;
 
 }

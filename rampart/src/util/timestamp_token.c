@@ -53,7 +53,6 @@ rampart_timestamp_token_free(rampart_timestamp_token_t *timestamp_token,
 axis2_status_t AXIS2_CALL
 rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
         const axis2_env_t *env,
-        const axis2_ctx_t *ctx,
         axiom_node_t *sec_node,
         const  axiom_namespace_t *sec_ns_obj,
         int ttl);
@@ -131,7 +130,6 @@ rampart_timestamp_token_free(rampart_timestamp_token_t *timestamp_token,
 axis2_status_t AXIS2_CALL
 rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
         const axis2_env_t *env,
-        const axis2_ctx_t *ctx,
         axiom_node_t *sec_node,
         const  axiom_namespace_t *sec_ns_obj,
         int ttl)

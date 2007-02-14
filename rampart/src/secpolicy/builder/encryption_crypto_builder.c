@@ -99,8 +99,6 @@ rp_encryption_crypto_builder_populate(
         {
             axis2_char_t *encryption_prop_file = NULL;
             encryption_prop_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
-            printf("%s\n",local_name);
-            printf("%s\n",encryption_prop_file);
 
             return rp_encryption_crypto_set_encryption_prop_file(encryption_crypto,env,encryption_prop_file);
         }
@@ -113,8 +111,6 @@ rp_encryption_crypto_builder_populate(
         {
             axis2_char_t *decryption_prop_file = NULL;
             decryption_prop_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
-            printf("%s\n",local_name);
-            printf("%s\n",decryption_prop_file);
 
             return rp_encryption_crypto_set_decryption_prop_file(encryption_crypto,env,decryption_prop_file);
         }

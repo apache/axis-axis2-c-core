@@ -95,7 +95,6 @@ rp_wss10_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_KEY_IDENTIFIER,node,element))
         {
             rp_wss10_set_must_support_ref_key_identifier(wss10,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -106,7 +105,6 @@ rp_wss10_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_ISSUER_SERIAL,node,element))
         {
             rp_wss10_set_must_support_ref_issuer_serial(wss10,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -117,7 +115,6 @@ rp_wss10_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_EXTERNAL_URI,node,element))
         {
             rp_wss10_set_must_support_ref_external_uri(wss10,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -128,7 +125,6 @@ rp_wss10_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_EMBEDDED_TOKEN,node,element))
         {
             rp_wss10_set_must_support_ref_embedded_token(wss10,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else

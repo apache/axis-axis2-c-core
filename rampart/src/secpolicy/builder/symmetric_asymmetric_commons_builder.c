@@ -35,7 +35,6 @@ rp_symmetric_asymmetric_commons_builder_build(
         if(rp_match_secpolicy_qname(env,RP_ENCRYPT_BEFORE_SIGNING,node,element))
         {            
             rp_symmetric_asymmetric_binding_commons_set_protection_order(as_commons,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         return AXIS2_FAILURE;
@@ -46,7 +45,6 @@ rp_symmetric_asymmetric_commons_builder_build(
         if(rp_match_secpolicy_qname(env,RP_ENCRYPT_SIGNATURE,node,element))
         {
             rp_symmetric_asymmetric_binding_commons_set_signature_protection(as_commons,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         return AXIS2_FAILURE;
@@ -57,7 +55,6 @@ rp_symmetric_asymmetric_commons_builder_build(
         if(rp_match_secpolicy_qname(env,RP_PROTECT_TOKENS,node,element))
         {
             rp_symmetric_asymmetric_binding_commons_set_token_protection(as_commons,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         return AXIS2_FAILURE;
@@ -68,7 +65,6 @@ rp_symmetric_asymmetric_commons_builder_build(
         if(rp_match_secpolicy_qname(env,RP_ONLY_SIGN_ENTIRE_HEADERS_AND_BODY,node,element))
         {
             rp_symmetric_asymmetric_binding_commons_set_entire_headers_and_body_signatures(as_commons,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         return AXIS2_FAILURE;

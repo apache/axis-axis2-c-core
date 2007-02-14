@@ -125,7 +125,6 @@ rp_security_context_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_EXTERNAL_URI_REFERENCE,node,element))
         {
             rp_security_context_token_set_require_external_uri_ref(security_context_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -136,7 +135,6 @@ rp_security_context_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_SC10_SECURITY_CONTEXT_TOKEN,node,element))
         {
             rp_security_context_token_set_sc10_security_context_token(security_context_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -147,7 +145,6 @@ rp_security_context_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_DERIVED_KEYS,node,element))
         {
             rp_security_context_token_set_derivedkeys(security_context_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else

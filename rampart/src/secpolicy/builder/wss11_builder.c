@@ -96,7 +96,6 @@ rp_wss11_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_KEY_IDENTIFIER,node,element))
         {
             rp_wss11_set_must_support_ref_key_identifier(wss11,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -107,7 +106,6 @@ rp_wss11_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_ISSUER_SERIAL,node,element))
         {
             rp_wss11_set_must_support_ref_issuer_serial(wss11,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -118,7 +116,6 @@ rp_wss11_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_EXTERNAL_URI,node,element))
         {
             rp_wss11_set_must_support_ref_external_uri(wss11,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -129,7 +126,6 @@ rp_wss11_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_EMBEDDED_TOKEN,node,element))
         {
             rp_wss11_set_must_support_ref_embedded_token(wss11,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -140,7 +136,6 @@ rp_wss11_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_THUMBPRINT,node,element))
         {
             rp_wss11_set_must_support_ref_thumbprint(wss11,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -151,7 +146,6 @@ rp_wss11_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_MUST_SUPPORT_REF_ENCRYPTED_KEY,node,element))
         {
             rp_wss11_set_must_support_ref_encryptedkey(wss11,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -162,7 +156,6 @@ rp_wss11_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_SIGNATURE_CONFIRMATION,node,element))
         {
             rp_wss11_set_require_signature_confirmation(wss11,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else

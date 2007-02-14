@@ -22,6 +22,7 @@
 #include <rampart_action.h>
 #include <oxs_asym_ctx.h>
 #include <oxs_xml_encryption.h>
+#include <rampart_context.h>
 /**
   * @file rampart_sec_header_processor.h
   * @brief Processes a message depending on it's security related claims 
@@ -48,7 +49,8 @@ extern "C" {
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_shp_process_message(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
-    rampart_actions_t *actions,
+ /* rampart_actions_t *actions,*/
+    rampart_context_t *rampart_context,
     axiom_soap_envelope_t *soap_envelope,
     axiom_node_t *sec_node);
 

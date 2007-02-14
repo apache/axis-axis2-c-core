@@ -126,7 +126,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_KEY_IDENTIFIRE_REFERENCE,node,element))
         {
             rp_x509_token_set_require_key_identifier_reference(x509_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -137,7 +136,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_ISSUER_SERIAL_REFERENCE,node,element))
         {
             rp_x509_token_set_require_issuer_serial_reference(x509_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -148,7 +146,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_EMBEDDED_TOKEN_REFERENCE,node,element))
         {
             rp_x509_token_set_require_embedded_token_reference(x509_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -159,7 +156,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_THUMBPRINT_REFERENCE,node,element))
         {
             rp_x509_token_set_require_thumb_print_reference(x509_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -170,7 +166,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_DERIVED_KEYS,node,element))
         {
             rp_x509_token_set_derivedkeys(x509_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -181,7 +176,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_X509_V1_TOKEN_10,node,element))
         {
             rp_x509_token_set_token_version_and_type(x509_token,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -192,7 +186,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_X509_V3_TOKEN_10,node,element))
         {
             rp_x509_token_set_token_version_and_type(x509_token,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -203,7 +196,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_X509_PKCS7_TOKEN_10,node,element))
         {
             rp_x509_token_set_token_version_and_type(x509_token,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -214,7 +206,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_X509_PKI_PATH_V1_TOKEN_10,node,element))
         {
             rp_x509_token_set_token_version_and_type(x509_token,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -225,7 +216,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_X509_V1_TOKEN_11,node,element))
         {
             rp_x509_token_set_token_version_and_type(x509_token,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -236,7 +226,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_X509_V3_TOKEN_11,node,element))
         {
             rp_x509_token_set_token_version_and_type(x509_token,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -247,7 +236,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_X509_PKCS7_TOKEN_11,node,element))
         {
             rp_x509_token_set_token_version_and_type(x509_token,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -258,7 +246,6 @@ rp_x509_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_X509_PKI_PATH_V1_TOKEN_11,node,element))
         {
             rp_x509_token_set_token_version_and_type(x509_token,env,local_name);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else

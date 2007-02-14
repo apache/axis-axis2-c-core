@@ -111,7 +111,6 @@ rp_symmetric_binding_builder_set_token_type(
             if(!protection_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_symmetric_binding_set_protection_token(symmetric_binding,env,protection_token);
         }
         else
@@ -126,7 +125,6 @@ rp_symmetric_binding_builder_set_token_type(
             if(!encryption_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_symmetric_binding_set_encryption_token(symmetric_binding,env,encryption_token);
         }
         else
@@ -142,7 +140,6 @@ rp_symmetric_binding_builder_set_token_type(
             if(!signature_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_symmetric_binding_set_signature_token(symmetric_binding,env,signature_token);
         }
         else

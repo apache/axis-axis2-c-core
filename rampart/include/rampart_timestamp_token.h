@@ -58,7 +58,6 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
         build)(rampart_timestamp_token_t *timestamp_token,
             const axis2_env_t *env,
-            const axis2_ctx_t *ctx,
             axiom_node_t *sec_node,
             const  axiom_namespace_t *sec_ns_obj,
             int ttl
@@ -99,8 +98,8 @@ extern "C"
 #define RAMPART_TIMESTAMP_TOKEN_FREE(timestamp_token, env) \
         ((timestamp_token)->ops->free(timestamp_token, env))
 
-#define RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env, ctx, sec_node, sec_ns_obj, ttl) \
-        ((timestamp_token)->ops->build(timestamp_token, env, ctx,  sec_node, sec_ns_obj, ttl))
+#define RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env, sec_node, sec_ns_obj, ttl) \
+        ((timestamp_token)->ops->build(timestamp_token, env, sec_node, sec_ns_obj, ttl))
 
 #define RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, msg_ctx, ts_node) \
         ((timestamp_token)->ops->validate(timestamp_token, env, msg_ctx, ts_node))

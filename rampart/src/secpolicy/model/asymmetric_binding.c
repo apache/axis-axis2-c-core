@@ -126,14 +126,9 @@ rp_asymmetric_binding_set_initiator_token(rp_asymmetric_binding_t *asymmetric_bi
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,initiator_token,AXIS2_FAILURE);
-    if(!asymmetric_binding->initiator_token)
-    {
-        return AXIS2_FAILURE;
-    }
     asymmetric_binding->initiator_token =initiator_token; 
-
     return AXIS2_SUCCESS;
-    
+
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
@@ -144,12 +139,8 @@ rp_asymmetric_binding_set_recipient_token(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,recipient_token,AXIS2_FAILURE);
-    if(!asymmetric_binding->recipient_token)
-    {
-        return AXIS2_FAILURE;
-    }
+    
     asymmetric_binding->recipient_token = recipient_token; 
-
     return AXIS2_SUCCESS;
     
 }

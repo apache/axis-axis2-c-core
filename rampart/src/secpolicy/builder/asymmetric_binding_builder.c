@@ -110,7 +110,6 @@ rp_asymmetric_binding_builder_set_token_type(
             if(!initiator_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_asymmetric_binding_set_initiator_token(asymmetric_binding,env,initiator_token);
         }
         else
@@ -125,7 +124,6 @@ rp_asymmetric_binding_builder_set_token_type(
             if(!recipient_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_asymmetric_binding_set_recipient_token(asymmetric_binding,env,recipient_token);
         }
         else

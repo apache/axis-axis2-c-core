@@ -86,7 +86,6 @@ rp_token_builder_set_token(
             if(!username_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",value);
             return rp_property_set_value(token,env,username_token,RP_TOKEN_USERNAME);
         }
         else
@@ -101,7 +100,6 @@ rp_token_builder_set_token(
             if(!x509_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",value);
             return rp_property_set_value(token,env,x509_token,RP_TOKEN_X509);
         }
         else
@@ -116,7 +114,6 @@ rp_token_builder_set_token(
             if(!security_context_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",value);
             return rp_property_set_value(token,env,security_context_token,RP_TOKEN_SECURITY_CONTEXT);
         }
         else
@@ -131,7 +128,6 @@ rp_token_builder_set_token(
             if(!https_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",value);
             return rp_property_set_value(token,env,https_token,RP_TOKEN_HTTPS);
 
         }

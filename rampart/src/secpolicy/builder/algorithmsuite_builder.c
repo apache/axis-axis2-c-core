@@ -46,9 +46,6 @@ rp_algorithmsuite_builder_build(
 
     if(algorithmsuite)
     {
-        algorithm_suite = rp_algorithmsuite_create(env);
-        if(!algorithm_suite)
-            return NULL;
         policy = AXIOM_NODE_GET_FIRST_CHILD(algorithmsuite,env);
         if(policy)
         {
@@ -62,7 +59,11 @@ rp_algorithmsuite_builder_build(
                     {
                         algosuite_string = AXIOM_ELEMENT_GET_LOCALNAME(name_ele, env);
                         if(algosuite_string)
-                        {                            
+                        {   
+                            algorithm_suite = rp_algorithmsuite_create(env);
+                            if(!algorithm_suite)
+                                return NULL;
+                            
                             status = rp_algorithmsuite_builder_set_algosuite(name,name_ele,algosuite_string,algorithm_suite,env);                                       if(status!=AXIS2_SUCCESS)
                             {
                                 rp_algorithmsuite_free(algorithm_suite,env);
@@ -93,7 +94,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC256,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -104,7 +104,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC192,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else 
@@ -115,7 +114,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC128,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -126,7 +124,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_TRIPLE_DES,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -137,7 +134,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC256_RSA15,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -148,7 +144,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC192_RSA15,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -159,7 +154,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC128_RSA15,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -170,7 +164,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_TRIPLE_DES_RSA15,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -181,7 +174,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC256_SHA256,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -192,7 +184,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC192_SHA256,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -203,7 +194,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC128_SHA256,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -214,7 +204,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_TRIPLE_DES_SHA256,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -225,7 +214,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC256_SHA256_RSA15,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -236,7 +224,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC192_SHA256_RSA15,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -247,7 +234,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC128_SHA256_RSA15,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -258,7 +244,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_ALGO_SUITE_BASIC256_RSA15,node,element))
         {
             rp_algorithmsuite_set_algosuite(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -269,7 +254,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_INCLUSIVE_C14N,node,element))
         {
             rp_algorithmsuite_set_c14n(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -280,7 +264,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_SOAP_NORMALIZATION_10,node,element))
         {
             rp_algorithmsuite_set_soap_normalization(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -291,7 +274,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_STR_TRANSFORM_10,node,element))
         {
             rp_algorithmsuite_set_str_transformation(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else
@@ -302,7 +284,6 @@ rp_algorithmsuite_builder_set_algosuite(
         if(rp_match_secpolicy_qname(env,RP_XPATH10,node,element))
         {
             rp_algorithmsuite_set_xpath(algorithmsuite,env,algosuite_string);
-            printf("%s\n",algosuite_string);
             return AXIS2_SUCCESS;
         }
         else

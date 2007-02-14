@@ -15,6 +15,7 @@
  */
 
 
+
 #include <axis2_utils_defines.h>
 #include <axis2_defines.h>
 #include <axis2_date_time.h>
@@ -26,7 +27,7 @@
 #include <rampart_callback.h>
 /**
   * @file rampart_util.h
-  * @brief Utilities of rampart 
+  * @brief Utilities of rampart
   */
 #ifndef RAMPART_UTIL_H
 #define RAMPART_UTIL_H
@@ -39,6 +40,8 @@ extern "C" {
   * @defgroup Rampart_Util
   * @ingroup Rampart_Util
   */
+
+
 /**
  * Load a DLL or .SO
  */
@@ -66,10 +69,9 @@ rampart_call_credentials(const axis2_env_t *env,
 /**
  * Load authentication module
  */
-AXIS2_EXTERN void* AXIS2_CALL
+AXIS2_EXTERN rampart_authn_provider_t* AXIS2_CALL
 rampart_load_auth_module(const axis2_env_t *env,
     axis2_char_t *auth_module_name);
-
 
 /**
  * Call auth module
@@ -85,7 +87,7 @@ rampart_authenticate_un_pw(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 /**
- * Load the password callback module 
+ * Load the password callback module
  *
  */
 AXIS2_EXTERN rampart_callback_t* AXIS2_CALL
@@ -93,23 +95,25 @@ rampart_load_pwcb_module(const axis2_env_t *env,
         axis2_char_t *callback_module_name);
 
  /**
-	*@env the environment
-	*@callback_module_name the file name of the callback module (.so or .DLL)
-	*@username the name of the user to get the password
-	*@ctx The axis2 context
-	*@return the password for the user or NULL if failed
-	*/
+    *@env the environment
+    *@callback_module_name the file name of the callback module (.so or .DLL)
+    *@username the name of the user to get the password
+    *@ctx The axis2 context
+    *@return the password for the user or NULL if failed
+    */
+
+
+
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_callback_password(const axis2_env_t *env,
         rampart_callback_t *callback_module,
-        const axis2_char_t *username,
-        axis2_ctx_t *ctx);
+        const axis2_char_t *username);
 
- /**
+/**
     * Generates the nonce. Nonce is a base64 encoded random string.
-	* @env the environment
+    * @env the environment
     * @return generated nonce
-    */    
+    */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
    rampart_generate_nonce(const axis2_env_t *env);
@@ -118,15 +122,15 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     * Generates the nonce. Nonce is a base64 encoded random string.
     * @param ttl Time to live. The time difference between created and expired in mili seconds.
     * @return generated nonce
-    **/    
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+    **/
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_generate_time(const axis2_env_t *env, int ttl);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1, axis2_char_t *dt2);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_print_info(const axis2_env_t *env, axis2_char_t* info);
 
 /* @} */
@@ -135,3 +139,5 @@ rampart_print_info(const axis2_env_t *env, axis2_char_t* info);
 #endif
 
 #endif    /* !RAMPART_UTIL_H */
+                                                                                                                           
+

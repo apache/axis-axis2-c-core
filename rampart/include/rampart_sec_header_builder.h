@@ -19,7 +19,7 @@
 #include <axis2_env.h>
 #include <axiom_soap.h>
 #include <axis2_msg_ctx.h>
-#include <rampart_action.h>
+#include <rampart_context.h>
 #include <oxs_asym_ctx.h>
 #include <oxs_xml_encryption.h>
 /**
@@ -44,7 +44,7 @@ extern "C" {
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_shb_build_message(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
-    rampart_actions_t *actions,
+    rampart_context_t *context,
     axiom_soap_envelope_t *soap_envelope);
 
 

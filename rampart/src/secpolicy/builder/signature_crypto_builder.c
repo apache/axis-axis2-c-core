@@ -95,8 +95,6 @@ rp_signature_crypto_builder_populate(
         {
             axis2_char_t *signature_prop_file = NULL;
             signature_prop_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
-            printf("%s\n",local_name);
-            printf("%s\n",signature_prop_file);
 
             return rp_signature_crypto_set_signature_prop_file(signature_crypto,env,signature_prop_file);
         }

@@ -128,7 +128,6 @@ rp_username_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_USERNAME_TOKEN_10,node,element))
         {
             rp_username_token_set_useUTprofile10(username_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -139,7 +138,6 @@ rp_username_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_WSS_USERNAME_TOKEN_11,node,element))
         {
             rp_username_token_set_useUTprofile11(username_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else
@@ -150,7 +148,6 @@ rp_username_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_DERIVED_KEYS,node,element))
         {
             rp_username_token_set_derivedkeys(username_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else

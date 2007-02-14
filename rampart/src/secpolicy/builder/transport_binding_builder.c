@@ -104,7 +104,6 @@ rp_transport_binding_builder_set_token_type(
             if(!transport_token)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_transport_binding_set_transport_token(transport_binding,env,transport_token);
         }
         else

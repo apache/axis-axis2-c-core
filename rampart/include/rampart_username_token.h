@@ -33,7 +33,7 @@ extern "C"
 #include <rampart_constants.h>
 #include <rampart_crypto_util.h>
 #include <rampart_action.h>
-
+#include <rampart_context.h>
     /** Type name for struct rampart_username_token_ops */
     typedef struct rampart_username_token_ops rampart_username_token_ops_t;
     /** Type name for struct rampart_username_token */
@@ -57,7 +57,7 @@ extern "C"
          * @param sec_ns_obj security namespace object
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */ 
-        axis2_status_t (AXIS2_CALL *
+/*      axis2_status_t (AXIS2_CALL *
         build)(rampart_username_token_t *username_token,
             const axis2_env_t *env,
             axis2_ctx_t *ctx,
@@ -65,7 +65,16 @@ extern "C"
             axiom_node_t *sec_node,
             axiom_namespace_t *sec_ns_obj
             );
-        /**
+*/        
+
+        axis2_status_t (AXIS2_CALL *
+        build)(rampart_username_token_t *username_token,
+            const axis2_env_t *env,
+            rampart_context_t *rampart_context,
+            axiom_node_t *sec_node,
+            axiom_namespace_t *sec_ns_obj
+            );
+        /*                            
          * Validates the given username token
          * @param env pointer to environment struct
          * @param msg_ctx axis2 message context
@@ -77,8 +86,8 @@ extern "C"
         validate)(rampart_username_token_t *username_token,
             const axis2_env_t *env,
             axis2_msg_ctx_t *msg_ctx,
-            axiom_soap_header_t *soap_header,
-            rampart_actions_t *actions
+            axiom_node_t *ut_node,
+            rampart_context_t *rampart_context
             );
     };
     
@@ -103,12 +112,17 @@ extern "C"
 /*************************** Function macros **********************************/
 #define RAMPART_USERNAME_TOKEN_FREE(username_token, env) \
         ((username_token)->ops->free(username_token, env))    
-
+/*
 #define RAMPART_USERNAME_TOKEN_BUILD(username_token, env, ctx, actions, sec_node, sec_ns_obj) \
         ((username_token)->ops->build(username_token, env, ctx, actions, sec_node, sec_ns_obj))    
+*/
 
-#define RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env, msg_ctx, soap_header, actions) \
-        ((username_token)->ops->validate(username_token, env, msg_ctx, soap_header, actions))    
+#define RAMPART_USERNAME_TOKEN_BUILD(username_token, env,rampart_context,sec_node, sec_ns_obj) \
+        ((username_token)->ops->build(username_token, env,rampart_context,sec_node, sec_ns_obj))
+
+
+#define RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env, msg_ctx, ut_node, rampart_context) \
+        ((username_token)->ops->validate(username_token, env, msg_ctx, ut_node, rampart_context))    
 
 /** @} */
 #ifdef __cplusplus

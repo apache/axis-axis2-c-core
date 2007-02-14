@@ -103,7 +103,6 @@ rp_secpolicy_builder_set_properties(
                 binding = NULL;
                 return AXIS2_FAILURE;              
             }
-            printf("%s\n",local_name);
             return rp_secpolicy_set_binding(secpolicy,env,binding);
         }
         else
@@ -132,7 +131,6 @@ rp_secpolicy_builder_set_properties(
                 binding = NULL;
                 return AXIS2_FAILURE;              
             }
-            printf("%s\n",local_name);
             return rp_secpolicy_set_binding(secpolicy,env,binding);
         }
         else
@@ -162,7 +160,6 @@ rp_secpolicy_builder_set_properties(
                 binding = NULL;
                 return AXIS2_FAILURE;
             }
-            printf("%s\n",local_name);
             return rp_secpolicy_set_binding(secpolicy,env,binding);
         }
         else
@@ -180,7 +177,6 @@ rp_secpolicy_builder_set_properties(
 
             rp_supporting_tokens_set_type(signed_supporting_tokens,env,RP_SUPPORTING_SIGNED_SUPPORTING);
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_signed_supporting_tokens(secpolicy,env,signed_supporting_tokens);
         }
         else
@@ -199,7 +195,6 @@ rp_secpolicy_builder_set_properties(
 
             rp_supporting_tokens_set_type(signed_endorsing_supporting_tokens,env,RP_SUPPORTING_SIGNED_ENDORSING_SUPPORTING);
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_signed_endorsing_supporting_tokens(secpolicy,env,signed_endorsing_supporting_tokens);
         }
         else
@@ -217,7 +212,6 @@ rp_secpolicy_builder_set_properties(
 
             rp_supporting_tokens_set_type(supporting_tokens,env,RP_SUPPORTING_SUPPORTING);
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_supporting_tokens(secpolicy,env,supporting_tokens);
         }
         else
@@ -235,7 +229,6 @@ rp_secpolicy_builder_set_properties(
 
             rp_supporting_tokens_set_type(endorsing_supporting_tokens,env,RP_SUPPORTING_ENDORSING_SUPPORTING);
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_endorsing_supporting_tokens(secpolicy,env,endorsing_supporting_tokens);
         }
         else
@@ -252,7 +245,6 @@ rp_secpolicy_builder_set_properties(
 
             rp_signed_encrypted_parts_set_signedparts(signed_parts,env,AXIS2_TRUE);
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_signed_parts(secpolicy,env,signed_parts);
         }
         else
@@ -270,7 +262,6 @@ rp_secpolicy_builder_set_properties(
 
             rp_signed_encrypted_parts_set_signedparts(encrypted_parts,env,AXIS2_FALSE);
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_encrypted_parts(secpolicy,env,encrypted_parts);
         }
         else
@@ -287,7 +278,6 @@ rp_secpolicy_builder_set_properties(
 
             rp_signed_encrypted_elements_set_signedelements(signed_elements,env,AXIS2_TRUE);
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_signed_elements(secpolicy,env,signed_elements);
         }
         else
@@ -305,7 +295,6 @@ rp_secpolicy_builder_set_properties(
 
             rp_signed_encrypted_elements_set_signedelements(encrypted_elements,env,AXIS2_FALSE);
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_encrypted_elements(secpolicy,env,encrypted_elements);
         }
         else
@@ -335,7 +324,6 @@ rp_secpolicy_builder_set_properties(
                 wss = NULL;
                 return AXIS2_FAILURE;
             }
-            printf("%s\n",local_name);
             return rp_secpolicy_set_wss(secpolicy,env,wss);
         }
         else
@@ -364,7 +352,6 @@ rp_secpolicy_builder_set_properties(
                 wss = NULL;
                 return AXIS2_FAILURE;
             }
-            printf("%s\n",local_name);
             return rp_secpolicy_set_wss(secpolicy,env,wss);
         }
         else
@@ -379,7 +366,6 @@ rp_secpolicy_builder_set_properties(
             if(!rampart_config)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_secpolicy_set_rampart_config(secpolicy,env,rampart_config);
         }
         else

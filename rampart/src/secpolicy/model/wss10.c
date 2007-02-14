@@ -25,6 +25,7 @@ struct rp_wss10_t
     axis2_bool_t must_support_ref_issuer_serial;
     axis2_bool_t must_support_ref_external_uri;
     axis2_bool_t must_support_ref_embedded_token;
+    axis2_bool_t must_support_direct_reference;
 };
 
 AXIS2_EXTERN rp_wss10_t *AXIS2_CALL
@@ -46,7 +47,8 @@ rp_wss10_create(const axis2_env_t *env)
     wss10->must_support_ref_issuer_serial  = AXIS2_FALSE;
     wss10->must_support_ref_external_uri = AXIS2_FALSE;
     wss10->must_support_ref_embedded_token = AXIS2_FALSE;
-        
+    wss10->must_support_direct_reference = AXIS2_TRUE;
+
     return wss10;
 
 }

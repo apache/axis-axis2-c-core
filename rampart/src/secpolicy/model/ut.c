@@ -70,7 +70,7 @@ rp_username_token_free(
 /* Implementations */
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL 
-rp_username_token_get_inclsion(
+rp_username_token_get_inclusion(
     rp_username_token_t *username_token,
     const axis2_env_t *env)
 {
@@ -89,7 +89,6 @@ rp_username_token_set_inclusion(
     AXIS2_PARAM_CHECK(env->error,inclusion,AXIS2_FAILURE);
     
     username_token->inclusion = inclusion;
-    printf("%s\n",username_token->inclusion);
 
     return AXIS2_SUCCESS;
 }

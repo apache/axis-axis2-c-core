@@ -14,38 +14,37 @@
  * limitations under the License.
  */
 
-#ifndef RP_LAYOUT_H
-#define RP_LAYOUT_H
+#ifndef RAMPART_ENGINE_H
+#define RAMPART_ENGINE_H
 
-/** @defgroup rp_layout
- * @ingroup rp_layout
+/** @defgroup rampart_engine 
+ * @ingroup rampart_engine
  * @{
  */
 
 #include <rp_includes.h>
+#include <rampart_context.h>
+#include <rp_secpolicy.h>
+#include <rampart_authn_provider.h>
+#include <rampart_util.h>
+#include <axis2_property.h>
+#include <rampart_constants.h>
+#include <rampart_callback.h>
+#include <rp_policy_creator.h>
+#include <rampart_handler_util.h>
+#include <axis2_msg_ctx.h>
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
     
-    typedef struct rp_layout_t rp_layout_t;
-
-    AXIS2_EXTERN rp_layout_t *AXIS2_CALL
-    rp_layout_create(const axis2_env_t *env);
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_layout_free(rp_layout_t *layout,
-                   const axis2_env_t *env);
-
-    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rp_layout_get_value(rp_layout_t *layout,
-                       const axis2_env_t *env);
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_layout_set_value(rp_layout_t *layout,
-                       const axis2_env_t *env,
-                       axis2_char_t *value);
+    AXIS2_EXTERN rampart_context_t* AXIS2_CALL
+    rampart_engine_init(const axis2_env_t *env,
+            axis2_msg_ctx_t *msg_ctx,
+            axis2_char_t *x_flow_policy);
+   
 
 #ifdef __cplusplus
 }

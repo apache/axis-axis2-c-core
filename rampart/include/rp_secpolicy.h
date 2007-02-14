@@ -25,10 +25,14 @@
 #include <rp_includes.h>
 #include <rp_property.h>
 #include <rp_asymmetric_binding.h>
+#include <rp_symmetric_binding.h>
+#include <rp_transport_binding.h>
 #include <rp_signed_encrypted_parts.h>
 #include <rp_signed_encrypted_elements.h>
 #include <rp_supporting_tokens.h>
 #include <rp_rampart_config.h>
+#include <rp_wss10.h>
+#include <rp_wss11.h>
 
 #ifdef __cplusplus
 extern "C"

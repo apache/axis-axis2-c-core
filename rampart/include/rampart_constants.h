@@ -24,6 +24,8 @@
   * @brief Holds constants for rampart
   */
 
+#include <oxs_constants.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -86,8 +88,14 @@ extern "C"
     </xs:element>
 </xs:schema>
 */
+/*    
 #define RAMPART_INFLOW_SECURITY                     "InflowSecurity"
 #define RAMPART_OUTFLOW_SECURITY                    "OutflowSecurity"
+*/
+
+#define RAMPART_INFLOW_SECURITY_POLICY              "InflowSecurityPolicy"
+#define RAMPART_OUTFLOW_SECURITY_POLICY             "OutflowSecurityPolicy"
+
 #define RAMPART_PASSWORD_TEXT                       "passwordText"
 #define RAMPART_PASSWORD_DIGEST                     "passwordDigest"
 #define RAMPART_ACTION                              "action"
@@ -157,7 +165,11 @@ extern "C"
 #define RAMPART_STR_KEY_IDENTIFIER      OXS_STR_KEY_IDENTIFIER
 #define RAMPART_STR_EMBEDDED            OXS_STR_EMBEDDED
 #define RAMPART_STR_ISSUER_SERIAL       OXS_STR_ISSUER_SERIAL
+#define RAMPART_STR_THUMB_PRINT         OXS_STR_THUMB_PRINT
+#define RAMPART_STR_EXTERNAL_URI        OXS_STR_EXTERNAL_URI
+#define RAMPART_STR_ENCRYPTED_KEY       OXS_STR_ENCRYPTED_KEY
 
+    
 #ifdef __cplusplus
 }
 #endif

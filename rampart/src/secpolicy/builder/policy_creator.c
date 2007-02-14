@@ -27,7 +27,6 @@ rp_policy_create_from_file(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
                 AXIS2_FAILURE);
-        printf("xml reader creation failed\n");
         return NULL;
     }
     
@@ -35,14 +34,12 @@ rp_policy_create_from_file(
     if(!builder)
     {
         AXIOM_XML_READER_FREE(reader, env);
-        printf("Builder creation failed\n");
         return NULL;
     }
     document = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, env);
     if(!document)
     {
         AXIOM_STAX_BUILDER_FREE(builder, env);
-        printf("Document creation failed\n");
         return NULL;
     }
 
@@ -60,7 +57,6 @@ rp_policy_create_from_file(
             root_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (root, env);
             if(root_ele)
             {
-                printf("%s\n" , AXIOM_ELEMENT_GET_LOCALNAME(root_ele, env));
             }
         }
         else
@@ -74,7 +70,6 @@ rp_policy_create_from_file(
             exat_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (exat_node, env);
             if(exat_ele)
             {
-                printf("%s\n" , AXIOM_ELEMENT_GET_LOCALNAME(exat_ele, env));
             }
         }
         else 
@@ -91,14 +86,12 @@ rp_policy_create_from_file(
             all_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (all_node, env);
             if(all_ele)
             {
-                printf("%s\n" , AXIOM_ELEMENT_GET_LOCALNAME(all_ele, env));
                 secpolicy = rp_secpolicy_builder_build(env,all_node);
             }
         }
         else 
             return NULL;
     }
-    printf("Successful\n");
     return secpolicy;
 
 }

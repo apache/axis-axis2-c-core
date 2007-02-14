@@ -134,7 +134,6 @@ rp_https_token_builder_set_req_client_cert(
 
     if(value)
     {   
-        printf("%s\n",value);
         if(AXIS2_STRCMP(value,"true")==0)
             return rp_https_token_set_require_client_certificate(token,env,AXIS2_TRUE);
         else if(AXIS2_STRCMP(value,"false")==0)
@@ -161,7 +160,6 @@ rp_https_token_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_REQUIRE_DERIVED_KEYS,node,element))
         {
             rp_https_token_set_derivedkeys(https_token,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else

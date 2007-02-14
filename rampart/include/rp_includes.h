@@ -30,8 +30,10 @@
 #include <axis2_error_default.h>
 #include <axis2_env.h>
 #include <axiom.h>
+#include <axiom_soap.h>
 #include <axis2_qname.h> 
 #include <rp_defines.h>
+
 
 /**
 * @file rp_includes.h

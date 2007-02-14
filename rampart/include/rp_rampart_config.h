@@ -80,6 +80,17 @@ extern "C"
             const axis2_env_t *env,
             axis2_char_t *authenticate_module);
 
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_rampart_config_get_password_type(
+            rp_rampart_config_t *rampart_config,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_rampart_config_set_password_type(rp_rampart_config_t *rampart_config,
+            const axis2_env_t *env,
+            axis2_char_t *password_type);
+
+
     AXIS2_EXTERN rp_signature_crypto_t *AXIS2_CALL
     rp_rampart_config_get_signature_crypto(
             rp_rampart_config_t *rampart_config,

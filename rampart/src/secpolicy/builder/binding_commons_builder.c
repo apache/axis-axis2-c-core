@@ -43,9 +43,9 @@ rp_binding_commons_builder_build(
             if(algo_suite)
             {   
                 rp_binding_commons_set_algorithmsuite(commons,env,algo_suite);
-                printf("%s\n",local_name);    
                 return AXIS2_SUCCESS;
-            }                
+            } 
+            else return AXIS2_FAILURE;
         }
         return AXIS2_FAILURE;
     }        
@@ -58,9 +58,9 @@ rp_binding_commons_builder_build(
             if(layout)
             {                
                 rp_binding_commons_set_layout(commons,env,layout);
-                printf("%s\n",local_name);
                 return AXIS2_SUCCESS;
-            }                
+            } 
+            else return AXIS2_FAILURE;
         }
         return AXIS2_FAILURE;
     }        
@@ -69,7 +69,6 @@ rp_binding_commons_builder_build(
         if(rp_match_secpolicy_qname(env,RP_INCLUDE_TIMESTAMP,node,element))
         {
             rp_binding_commons_set_include_timestamp(commons,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         } 
         return AXIS2_FAILURE;
@@ -86,7 +85,6 @@ rp_binding_commons_builder_build(
 
             rp_supporting_tokens_set_type(signed_supporting_tokens,env,RP_SUPPORTING_SIGNED_SUPPORTING);
 
-            printf("%s\n",local_name);
             return rp_binding_commons_set_signed_supporting_tokens(commons,env,signed_supporting_tokens);
         }
         else
@@ -105,7 +103,6 @@ rp_binding_commons_builder_build(
 
             rp_supporting_tokens_set_type(signed_endorsing_supporting_tokens,env,RP_SUPPORTING_SIGNED_ENDORSING_SUPPORTING);
 
-            printf("%s\n",local_name);
             return rp_binding_commons_set_signed_endorsing_supporting_tokens(commons,env,signed_endorsing_supporting_tokens);
         }
         else
@@ -123,7 +120,6 @@ rp_binding_commons_builder_build(
 
             rp_supporting_tokens_set_type(endorsing_supporting_tokens,env,RP_SUPPORTING_ENDORSING_SUPPORTING);
 
-            printf("%s\n",local_name);
             return rp_binding_commons_set_endorsing_supporting_tokens(commons,env,endorsing_supporting_tokens);
         }
         else
@@ -141,7 +137,6 @@ rp_binding_commons_builder_build(
 
             rp_supporting_tokens_set_type(supporting_tokens,env,RP_SUPPORTING_SUPPORTING);
 
-            printf("%s\n",local_name);
             return rp_binding_commons_set_supporting_tokens(commons,env,supporting_tokens);
         }
         else

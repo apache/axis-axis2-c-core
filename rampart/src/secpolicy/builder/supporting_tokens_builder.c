@@ -123,7 +123,6 @@ rp_supporting_tokens_builder_set_other_properties(
             if(!algorithmsuite)
                 return AXIS2_FAILURE;
 
-            printf("%s\n",local_name);
             return rp_supporting_tokens_set_algorithmsuite(supporting_tokens,env,algorithmsuite);
         }
         else
@@ -140,7 +139,6 @@ rp_supporting_tokens_builder_set_other_properties(
             
             rp_signed_encrypted_parts_set_signedparts(signed_parts,env,AXIS2_TRUE);
 
-            printf("%s\n",local_name);
             return rp_supporting_tokens_set_signed_parts(supporting_tokens,env,signed_parts);
         }
         else
@@ -157,7 +155,6 @@ rp_supporting_tokens_builder_set_other_properties(
             
             rp_signed_encrypted_elements_set_signedelements(signed_elements,env,AXIS2_TRUE);
 
-            printf("%s\n",local_name);
             return rp_supporting_tokens_set_signed_elements(supporting_tokens,env,signed_elements);
         }
         else
@@ -175,7 +172,6 @@ rp_supporting_tokens_builder_set_other_properties(
 
             rp_signed_encrypted_parts_set_signedparts(encrypted_parts,env,AXIS2_FALSE);
 
-            printf("%s\n",local_name);
             return rp_supporting_tokens_set_encrypted_parts(supporting_tokens,env,encrypted_parts);
         }
         else
@@ -193,7 +189,6 @@ rp_supporting_tokens_builder_set_other_properties(
 
             rp_signed_encrypted_elements_set_signedelements(encrypted_elements,env,AXIS2_FALSE);
 
-            printf("%s\n",local_name);
             return rp_supporting_tokens_set_encrypted_elements(supporting_tokens,env,encrypted_elements);
         }
         else

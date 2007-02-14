@@ -54,16 +54,6 @@ rp_header_free(rp_header_t *header,
     
     if(header)
     {
-        if(header->name)
-        {
-            AXIS2_FREE(env->allocator, header->name);
-            header->name = NULL;
-        }
-        if(header->namespace)
-        {
-            AXIS2_FREE(env->allocator, header->namespace);
-            header->namespace = NULL;
-        }
         AXIS2_FREE(env->allocator, header);
         header = NULL;
     }

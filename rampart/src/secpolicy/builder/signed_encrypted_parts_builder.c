@@ -99,7 +99,6 @@ rp_signed_encrypted_parts_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_BODY,node,element))
         {
             rp_signed_encrypted_parts_set_body(signed_encrypted_parts,env,AXIS2_TRUE);
-            printf("%s\n",local_name);
             return AXIS2_SUCCESS;
         }
         else

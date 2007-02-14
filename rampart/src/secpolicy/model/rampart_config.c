@@ -24,6 +24,7 @@ struct rp_rampart_config_t
     axis2_char_t *encryption_user;
     axis2_char_t *password_callback_class;
     axis2_char_t *authenticate_module;
+    axis2_char_t *password_type;
     rp_signature_crypto_t *signature_crypto;
     rp_encryption_crypto_t *encryption_crypto;
 };
@@ -49,7 +50,7 @@ rp_rampart_config_create(const axis2_env_t *env)
     rampart_config->signature_crypto = NULL;
     rampart_config->encryption_crypto = NULL;
     rampart_config->authenticate_module = NULL;
-
+    rampart_config->password_type = NULL;
     return rampart_config;
 }
 
@@ -168,6 +169,29 @@ rp_rampart_config_set_authenticate_module(rp_rampart_config_t *rampart_config,
     rampart_config->authenticate_module = authenticate_module;
     return AXIS2_SUCCESS;
 }
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rp_rampart_config_get_password_type(
+    rp_rampart_config_t *rampart_config,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    return rampart_config->password_type;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_rampart_config_set_password_type(rp_rampart_config_t *rampart_config,
+            const axis2_env_t *env,
+            axis2_char_t *password_type)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error,password_type,AXIS2_FAILURE);   
+        
+    rampart_config->password_type = password_type;
+    return AXIS2_SUCCESS;
+}
+
 
 AXIS2_EXTERN rp_signature_crypto_t *AXIS2_CALL
 rp_rampart_config_get_signature_crypto(

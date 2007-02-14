@@ -28,14 +28,12 @@ rp_layout_builder_build(
     axiom_node_t *name = NULL;
     axiom_element_t *name_ele = NULL;
     axis2_char_t * value = NULL;
+    axis2_status_t status = AXIS2_SUCCESS;
 
     AXIS2_ENV_CHECK(env,NULL);
 
     if(layout)
     {
-        lay_out = rp_layout_create(env);
-        if(!lay_out)
-            return NULL;
         policy = AXIOM_NODE_GET_FIRST_CHILD(layout,env);
         if(policy)
         {
@@ -49,7 +47,18 @@ rp_layout_builder_build(
                     {
                         value = AXIOM_ELEMENT_GET_LOCALNAME(name_ele, env);
                         if(value)
-                            rp_layout_builder_set_value(name,name_ele,value,lay_out,env); 
+                        {
+                            lay_out = rp_layout_create(env);
+                            if(!lay_out)
+                                return NULL;
+                           
+                            status = rp_layout_builder_set_value(name,name_ele,value,lay_out,env); 
+                            if(status!=AXIS2_SUCCESS)
+                            {
+                                rp_layout_free(lay_out,env);
+                                layout = NULL;
+                            }
+                        }                            
                     }
                 }
             }
@@ -73,7 +82,6 @@ rp_layout_builder_set_value(
         if(rp_match_secpolicy_qname(env,RP_LAYOUT_STRICT,node,element))
         {
             rp_layout_set_value(layout,env,value);
-            printf("%s\n",value);
             return AXIS2_SUCCESS;
         }
         else
@@ -84,7 +92,6 @@ rp_layout_builder_set_value(
         if(rp_match_secpolicy_qname(env,RP_LAYOUT_LAX,node,element))
         {
             rp_layout_set_value(layout,env,value);
-            printf("%s\n",value);
             return AXIS2_SUCCESS;
         }
         else
@@ -95,7 +102,6 @@ rp_layout_builder_set_value(
         if(rp_match_secpolicy_qname(env,RP_LAYOUT_LAX_TIMESTAMP_FIRST,node,element))
         {
             rp_layout_set_value(layout,env,value);
-            printf("%s\n",value);
             return AXIS2_SUCCESS;
         }
         else
@@ -106,7 +112,6 @@ rp_layout_builder_set_value(
         if(rp_match_secpolicy_qname(env,RP_LAYOUT_LAX_TIMESTAMP_LAST,node,element))
         {
             rp_layout_set_value(layout,env,value);
-            printf("%s\n",value);
             return AXIS2_SUCCESS;
         }
         else

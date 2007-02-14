@@ -322,7 +322,10 @@ extern "C"
 #define OXS_STR_KEY_IDENTIFIER "KeyIdentifier"
 #define OXS_STR_EMBEDDED "Embedded"
 #define OXS_STR_ISSUER_SERIAL "IssuerSerial"
-
+#define OXS_STR_THUMB_PRINT "ThumbPrint"
+#define OXS_STR_EXTERNAL_URI "ExternalUri"
+#define OXS_STR_ENCRYPTED_KEY "Encryptedkey"
+    
 /*************************************************************************/
 
 

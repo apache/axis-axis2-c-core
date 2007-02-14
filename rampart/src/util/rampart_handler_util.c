@@ -72,6 +72,11 @@ rampart_validate_security_token(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axiom_node_t *sec_node);
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rampart_get_policy_location(const axis2_env_t *env,
+        axis2_msg_ctx_t *msg_ctx,
+        axis2_char_t *param_name);
+
 /**********************end of header functions ****************************/
 
 axis2_char_t* AXIS2_CALL
@@ -80,10 +85,9 @@ rampart_callback_encuser_password(const axis2_env_t *env,
             axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *enc_user = NULL;
-    axis2_char_t *pw_callback_module_name = NULL;
+    axis2_char_t *pw_callback_module = NULL;
     axis2_char_t *password = NULL;
     axis2_ctx_t *ctx = NULL;
-    rampart_callback_t *pwcb = NULL;
 
     /*Check if encUserPassword is in the context. This is designed specially for PHP
     i.e.In any context in the context hierarchy starting from msg, op, svc, etc.*/
@@ -96,8 +100,8 @@ rampart_callback_encuser_password(const axis2_env_t *env,
     /*If not found then callback the password*/ 
 
     enc_user = RAMPART_ACTIONS_GET_ENC_USER(actions, env);
-    pw_callback_module_name = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
-    if(!pw_callback_module_name){
+    pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
+    if(!pw_callback_module){
         return NULL;
     }
     if(!enc_user){
@@ -109,17 +113,12 @@ rampart_callback_encuser_password(const axis2_env_t *env,
         }
     }
     /*Get axis2_ctx_t. This is designed specially for PHP*/
-    pwcb = rampart_load_pwcb_module(env, pw_callback_module_name);
-    if(!pwcb){
-        AXIS2_LOG_INFO(env->log, "[rampart][rhu] Password callback module %s is NULL", pw_callback_module_name);
-        return NULL;
-    }else{
-        password = rampart_callback_password(env, pwcb, enc_user, ctx);
-    }
+
+/*  password = rampart_callback_password(env, pw_callback_module, enc_user, ctx);*/
+/*  password = rampart_callback_password(env, pw_callback_module, enc_user);*/
 
     return password;
 }
-
 
 axis2_char_t* AXIS2_CALL
 rampart_get_property_from_ctx(const axis2_env_t *env,
@@ -320,5 +319,28 @@ rampart_validate_security_token(const axis2_env_t *env,
     }
 
     return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rampart_get_policy_location(const axis2_env_t *env,
+        axis2_msg_ctx_t *msg_ctx,
+        axis2_char_t *param_name)
+        
+{
+    axis2_param_t *param_x_flow_security = NULL;
+    axis2_char_t *value = NULL;
+
+    param_x_flow_security = rampart_get_security_param(env, msg_ctx,
+                                    param_name);
+    
+    if (!param_x_flow_security)
+    {
+        AXIS2_LOG_INFO(env->log,
+            "[rampart][rampart_handler_utils] some error in the configurations");
+        return NULL;
+    }
+    value = AXIS2_PARAM_GET_VALUE(param_x_flow_security, env);
+    return value;
 }
 
