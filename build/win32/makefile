@@ -901,7 +901,10 @@ codegen_tool: codegen_dirs w2c_codegen wsdl2code schema2code codegen_writers cod
 
 OMXMLSEC_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\*.c \
     	       $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\tokens\*.c \
-    	       $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\openssl\*.c 
+    	       $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\openssl\*.c
+
+SECPOLICY_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\secpolicy\builder\*.c \
+    	       $(AXIS2_SOURCE_DIR)\rampart\src\secpolicy\model\*.c 
 
 MOD_RAMPART_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\core\*.c \
 		$(AXIS2_SOURCE_DIR)\rampart\src\handlers\*.c \
@@ -935,7 +938,7 @@ RAMPART_SAMPLES_SERVICE_DIR = $(AXIS2_BINDIR)\services
 RAMPART_MODULES_DIR = $(AXIS2_BINDIR)\modules\
 
 mod_rampart:
-	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) $(OMXMLSEC_SRC) $(APPLINK_FILE) /c
+	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) $(OMXMLSEC_SRC) $(SECPOLICY_SRC) $(APPLINK_FILE) /c
 	$(LD) $(LDFLAGS) /LIBPATH:$(AXIS2_BINDIR)\rampart\rampart *.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib  $(LIBS) \
 	$(AXIS2_ENGINE).lib /DLL /OUT:mod_rampart.dll  /IMPLIB:mod_rampart.lib
