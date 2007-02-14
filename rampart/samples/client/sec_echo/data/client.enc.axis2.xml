@@ -16,32 +16,9 @@
 
 
     <!--Rampart configurations START -->
-    <parameter name="OutflowSecurity">
-      <action>
-        <items>UsernameToken Timestamp Encrypt</items>
-        <user>Gampola</user>
-        <passwordType>passwordDigest</passwordType>
-        <!--Following should be changed with your DLL or SO path-->
-        <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
-        <timeToLive>360</timeToLive>
-        <encryptionKeyTransportAlgorithm>http://www.w3.org/2001/04/xmlenc#rsa-1_5</encryptionKeyTransportAlgorithm>
-        <encryptionSymAlgorithm>http://www.w3.org/2001/04/xmlenc#aes256-cbc</encryptionSymAlgorithm>
-        <encryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/ahome/b_cert.cert</encryptionPropFile>
-        <!--encryptionKeyIdentifier options : Embedded IssuerSerial DirectReference KeyIdentifier-->
-        <encryptionKeyIdentifier>IssuerSerial</encryptionKeyIdentifier>
-      </action>
-    </parameter>
+    <parameter name="OutflowSecurityPolicy">/home/manjula/axis2/c/deploy/client_repo/outgoing-secpolicy.xml</parameter>
+    <parameter name="InflowSecurityPolicy">/home/manjula/axis2/c/deploy/client_repo/incoming-secpolicy.xml</parameter>
 
-
-    <parameter name="InflowSecurity">
-      <action>
-        <items>Timestamp</items>
-        <!--Following should be changed with your DLL or SO path-->
-        <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
-        <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/ahome/a_store.pfx</decryptionPropFile>
-        <encryptionUser>a</encryptionUser>
-      </action>
-    </parameter>
     <!--Rampart configurations END -->
 
 
