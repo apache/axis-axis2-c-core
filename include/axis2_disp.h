@@ -190,7 +190,7 @@ extern "C"
      * @return pointer to the newly created dispatcher with find_svc and find_op
      * methods implemented based on request URI processing.
      */
-    axis2_disp_t *AXIS2_CALL 
+    AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
     axis2_req_uri_disp_create(
         const axis2_env_t *env);
 

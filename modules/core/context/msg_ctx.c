@@ -61,6 +61,8 @@ struct axis2_msg_ctx
 
     /** SOAP envelope */
     axiom_soap_envelope_t *soap_envelope;
+    /** Response SOAP envelope */
+    axiom_soap_envelope_t *response_soap_envelope;
     /** SOAP Fault envelope */
     axiom_soap_envelope_t *fault_soap_envelope;
     /** response written? */
@@ -331,7 +333,7 @@ axis2_msg_ctx_free(
 
     if (msg_ctx->soap_envelope)
     {
-        AXIOM_SOAP_ENVELOPE_FREE(msg_ctx->soap_envelope, env);
+/*         AXIOM_SOAP_ENVELOPE_FREE(msg_ctx->soap_envelope, env); */
         msg_ctx->soap_envelope = NULL;
     }
 
@@ -445,6 +447,15 @@ axis2_msg_ctx_get_soap_envelope(
 {
     AXIS2_ENV_CHECK(env, NULL);
     return msg_ctx->soap_envelope;
+}
+
+axiom_soap_envelope_t *AXIS2_CALL
+axis2_msg_ctx_get_response_soap_envelope(
+    const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return msg_ctx->response_soap_envelope;
 }
 
 axiom_soap_envelope_t *AXIS2_CALL
@@ -628,6 +639,28 @@ axis2_msg_ctx_set_soap_envelope(
         msg_ctx->soap_envelope = NULL;
     }
 
+    return AXIS2_SUCCESS;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_response_soap_envelope(
+    struct axis2_msg_ctx *msg_ctx,
+    const axis2_env_t *env,
+    axiom_soap_envelope_t *soap_envelope)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if (soap_envelope)
+    {
+        int soap_v = AXIOM_SOAP12;
+        soap_v = AXIOM_SOAP_ENVELOPE_GET_SOAP_VERSION(soap_envelope, env);
+        msg_ctx->response_soap_envelope = soap_envelope;
+    }
+    else
+    {
+        msg_ctx->response_soap_envelope = NULL;
+    }
     return AXIS2_SUCCESS;
 }
 

@@ -3,11 +3,11 @@ libaxis2_clientapi_la_SOURCES = async_result.c \
                                 callback.c \
                                 listener_manager.c \
                                 callback_recv.c \
-								mep_client.c \
+				mep_client.c \
                                 stub.c \
-								options.c \
-								op_client.c \
-								svc_client.c
+				options.c \
+				op_client.c \
+				svc_client.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/engine \

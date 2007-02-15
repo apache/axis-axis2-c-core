@@ -1,11 +1,13 @@
 lib_LTLIBRARIES = libaxis2_http_receiver.la
-libaxis2_http_receiver_la_LIBADD=	$(top_builddir)/util/src/libaxis2_util.la
+libaxis2_http_receiver_la_LIBADD=$(top_builddir)/util/src/libaxis2_util.la\
+                                 $(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la
 
 
-libaxis2_http_receiver_la_SOURCES = simple_http_svr_conn.c\
-				                    http_response_writer.c\
-                                    http_svr_thread.c\
-                                    http_server.c
+libaxis2_http_receiver_la_SOURCES = http_response_writer.c\
+				    simple_http_svr_conn.c\
+                                    http_receiver.c\
+                                    http_svr_thread.c
+
 
 INCLUDES = -I$(top_builddir)/include \
 	       -I$(top_builddir)/modules/core/transport\

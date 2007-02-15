@@ -45,7 +45,7 @@ axis2_req_uri_disp_find_op(
     axis2_svc_t *svc);
 
 
-axis2_disp_t *AXIS2_CALL
+AXIS2_EXTERN axis2_disp_t *AXIS2_CALL
 axis2_req_uri_disp_create(
     const axis2_env_t *env)
 {

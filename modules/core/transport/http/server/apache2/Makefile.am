@@ -4,19 +4,16 @@ libmod_axis2_la_SOURCES = mod_axis2.c\
                        apache2_stream.c\
                        apache2_out_transport_info.c\
                        apache2_worker.c
+
 AM_CFLAGS = -DLINUX=2 -D_REENTRANT -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -D_SVID_SOURCE -D_GNU_SOURCE
 
 libmod_axis2_la_LIBADD   = $(LDFLAGS) \
-                    -L$(top_builddir)/modules/core/engine \
-                    -L$(top_builddir)/modules/core/transport/http/sender \
-                    -L$(top_builddir)/modules/core/transport/http/receiver \
 		     $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
-							$(top_builddir)/util/src/libaxis2_util.la \
-							../../../../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-                    -laxis2_engine \
+		     $(top_builddir)/modules/core/engine/libaxis2_engine.la\
+		     $(top_builddir)/util/src/libaxis2_util.la \
+		     $(top_builddir)/modules/core/transport/http/util/libaxis2_http_util.la\
+		     $(top_builddir)/axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la\
                     -lpthread \
-                    -laxis2_http_sender \
-                    -laxis2_http_receiver \
                     -L$(top_builddir)$(GUTHTHILA_LIBS) \
 					$(PARSER_LIBS) \
 					$(LIBXML2_LIBS)

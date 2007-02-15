@@ -576,7 +576,7 @@ axis2_http_client_recieve_header(
 							AXIS2_ERROR_RESPONSE_SERVER_SHUTDOWN,
 							AXIS2_FAILURE);
 			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Response error, Server Shutdown");
-			return -1;
+			return 0;
 		}
         status_line = axis2_http_status_line_create(env, str_status_line);
         if (NULL == status_line)

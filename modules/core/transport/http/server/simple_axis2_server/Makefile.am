@@ -5,18 +5,19 @@ AM_CFLAGS = -g -pthread
 axis2_http_server_SOURCES = http_server_main.c
 
 axis2_http_server_LDADD   =  $(LDFLAGS) \
-                            -L$(top_builddir)/modules/core/engine \
-                            -L$(top_builddir)/modules/core/transport/http/sender \
-                            -L$(top_builddir)/modules/core/transport/http/receiver \
-							$(top_builddir)/axiom/src/om/libaxis2_axiom.la \
-							$(top_builddir)/util/src/libaxis2_util.la \
-							../../../../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-                            -laxis2_engine \
-                            -lpthread \
-                            -laxis2_http_sender \
-                            -laxis2_http_receiver \
-							-L$(top_builddir)$(GUTHTHILA_LIBS) \
-                            $(LIBXML2_LIBS)
+		             $(top_builddir)/modules/core/transport/http/util/libaxis2_http_util.la \
+		             $(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la \
+			     $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
+			     $(top_builddir)/util/src/libaxis2_util.la \
+			     $(top_builddir)/axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+                             $(top_builddir)/modules/core/description/libaxis2_description.la \
+			     $(top_builddir)/modules/core/deployment/libaxis2_deployment.la \
+			     $(top_builddir)/modules/core/context/libaxis2_context.la \
+			     $(top_builddir)/modules/core/clientapi/libaxis2_clientapi.la \
+			     $(top_builddir)/modules/core/engine/libaxis2_engine.la \
+			     $(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \
+			     $(top_builddir)/modules/core/transport/http/receiver/libaxis2_http_receiver.la \
+                            -lpthread
                     
 INCLUDES =  -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/description\

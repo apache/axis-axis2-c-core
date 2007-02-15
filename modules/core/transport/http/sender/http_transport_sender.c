@@ -339,6 +339,7 @@ axis2_http_transport_sender_invoke(
             /* AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env,
              *            AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
              */
+		
             if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
             {
                 axiom_node_t *body_node = NULL;
@@ -424,6 +425,8 @@ axis2_http_transport_sender_invoke(
 
         }
     }
+
+	
     AXIOM_OUTPUT_FREE(om_output, env);
     om_output = NULL;
     xml_writer = NULL;
@@ -571,6 +574,9 @@ axis2_http_transport_sender_write_message(
     const axis2_char_t *url = NULL;
     axis2_soap_over_http_sender_t *sender = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+	const axis2_char_t *soap_ns_uri = NULL;
+	axiom_soap_envelope_t *response_envelope = NULL;
+	axis2_op_t *op = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -638,12 +644,34 @@ axis2_http_transport_sender_write_message(
                 AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
         status = AXIS2_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url
                 , soap_action);
-        /*
+
+		/*
          * TODO check for errors
          */
         AXIS2_SOAP_OVER_HTTP_SENDER_FREE(sender, env);
         sender = NULL;
     }
+
+    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    if (op)
+    {
+        /* handle one way case */
+        const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+        if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+            AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+        {
+            return status;
+        }
+		else
+		{
+			soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
+				AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI : AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+			response_envelope = axis2_http_transport_utils_create_soap_msg(env,
+																		   msg_ctx, soap_ns_uri);
+			AXIS2_MSG_CTX_SET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env, response_envelope);
+		}
+    }
+
     return status;
 }
 
@@ -677,3 +705,6 @@ axis2_remove_instance(
     }
     return status;
 }
+
+
+

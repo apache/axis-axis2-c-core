@@ -356,7 +356,6 @@ axis2_mep_client_infer_transport(
 			transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
 		}
 
-
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
         if (conf_ctx)
         {
@@ -663,7 +662,7 @@ axis2_mep_client_two_way_send(
     if (!response)
         return NULL;
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_FALSE);
+    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,AXIS2_TRANSPORT_IN, AXIS2_FALSE);
     if (property)
     {
         AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN, property,
@@ -683,11 +682,8 @@ axis2_mep_client_two_way_send(
     /* If request is REST we assume the response is REST, so set the variable*/
     AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
 
-    soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
-            AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI : AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
-
-    response_envelope = axis2_http_transport_utils_create_soap_msg(env,
-            msg_ctx, soap_ns_uri);
+	/* set response envelope */
+ 	response_envelope = AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env);
     if (response_envelope)
     {
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
@@ -779,11 +775,7 @@ axis2_mep_client_receive(
     /* If request is REST we assume the response is REST, so set the variable*/
     AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
 
-    soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
-            AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI : AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
-
-    response_envelope = axis2_http_transport_utils_create_soap_msg(env,
-            msg_ctx, soap_ns_uri);
+ 	response_envelope = AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env);
     if (response_envelope)
     {
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);

@@ -234,6 +234,11 @@ extern "C"
     axis2_msg_ctx_get_soap_envelope(const axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
 
+
+    AXIS2_EXTERN struct axiom_soap_envelope *AXIS2_CALL
+    axis2_msg_ctx_get_response_soap_envelope(const axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
     /**
      * Gets fault SOAP envelope.
      * @param msg_ctx message context
@@ -389,6 +394,12 @@ extern "C"
     axis2_msg_ctx_set_soap_envelope(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         struct axiom_soap_envelope *soap_envelope);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_response_soap_envelope(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        struct axiom_soap_envelope *soap_envelope);
+
 
     /**
      * Sets fault SOAP envelope.
@@ -1429,6 +1440,9 @@ extern "C"
 #define AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env) \
       axis2_msg_ctx_get_soap_envelope(msg_ctx, env)
 
+#define AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE(msg_ctx, env) \
+      axis2_msg_ctx_get_response_soap_envelope(msg_ctx, env)
+
 /** Gets fault SOAP envelope. */
 #define AXIS2_MSG_CTX_GET_FAULT_SOAP_ENVELOPE(msg_ctx, env) \
       axis2_msg_ctx_get_fault_soap_envelope(msg_ctx, env)
@@ -1481,6 +1495,10 @@ extern "C"
 /** Sets SOAP envelope. */
 #define AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope) \
       axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope)
+
+#define AXIS2_MSG_CTX_SET_RESPONSE_SOAP_ENVELOPE(msg_ctx, env, soap_envelope) \
+      axis2_msg_ctx_set_response_soap_envelope(msg_ctx, env, soap_envelope)
+
 
 /** Sats fault SOAP envelope. */
 #define AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope) \
