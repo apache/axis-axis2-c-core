@@ -627,7 +627,7 @@ c14n_apply_on_element(
     axis2_status_t res = AXIS2_SUCCESS;
     axiom_element_t *ele = NULL;
     axiom_namespace_t *ns = NULL;
-    axiom_children_iterator_t *child_itr = NULL;
+    /*axiom_children_iterator_t *child_itr = NULL;*/
     c14n_ns_stack_t *save_stack = NULL;
 
     ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT((axiom_node_t *)node, 
@@ -674,15 +674,24 @@ c14n_apply_on_element(
     c14n_output(">", ctx);
 
 #ifdef C14N_DEBUG
-    c14n_output("\n", ctx);
+    /*c14n_output("\n", ctx);*/
 #endif
+
+    /**/
+    axiom_node_t *child_node = NULL;
+    child_node = AXIOM_NODE_GET_FIRST_CHILD((axiom_node_t *)node, ctx->env);
+
+    while (child_node)
+    {
+        c14n_apply_on_node(child_node, ctx);
+        child_node = AXIOM_NODE_GET_NEXT_SIBLING(child_node, ctx->env);
+    }
 
     /*process child elements*/
 
-    child_itr = AXIOM_ELEMENT_GET_CHILDREN(ele, ctx->env, (axiom_node_t*)node);
+    /*child_itr = AXIOM_ELEMENT_GET_CHILDREN(ele, ctx->env, (axiom_node_t*)node);
     if (child_itr)
     {
-        /*AXIOM_CHILDREN_ITERATOR_RESET(child_itr, ctx->env);*/
 
         while(AXIOM_CHILDREN_ITERATOR_HAS_NEXT(child_itr, ctx->env))
         {
@@ -694,7 +703,7 @@ c14n_apply_on_element(
                 c14n_apply_on_node(child_node, ctx);
             }
         }
-    }
+    }*/
     
 
     /*print qname*/
@@ -724,7 +733,7 @@ c14n_apply_on_element(
     save_stack = NULL;
 
 #ifdef C14N_DEBUG
-    c14n_output("\n", ctx);
+    /*c14n_output("\n", ctx);*/
 #endif
 
     return res;
@@ -1316,7 +1325,7 @@ c14n_ns_visibly_utilized(
                         vu = AXIS2_TRUE;
                         break;
                     }
-                    /**/
+                    /*}*/
                 }
             }
         }
