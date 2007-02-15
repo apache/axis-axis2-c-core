@@ -747,16 +747,7 @@ axiom_element_serialize_start_part(axiom_element_t *om_element,
             }
         }
     }
-    if ((NULL == om_element->namespaces) && (NULL == om_element->ns))
-    {
-        axiom_namespace_t *default_ns = NULL;
-        default_ns = AXIOM_ELEMENT_GET_DEFAULT_NAMESPACE(om_element,
-                env, ele_node);
-        if (default_ns)
-        {
-            AXIOM_NAMESPACE_SERIALIZE(default_ns, env, om_output);
-        }
-    }
+    
     return status;
 }
 
