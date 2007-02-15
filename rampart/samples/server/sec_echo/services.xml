@@ -6,8 +6,8 @@
    </description>
     <!--Rampart configurations START -->
     <module ref="rampart"/>
-    <parameter name="OutflowSecurityPolicy">/home/manjula/axis2/c/deploy/services/sec_echo/outgoing-secpolicy.xml</parameter>
-    <parameter name="InflowSecurityPolicy">/home/manjula/axis2/c/deploy/services/sec_echo/incoming-secpolicy.xml</parameter>
+    <parameter name="OutflowSecurityPolicy">/home/AXIS2_USER/axis2/c/deploy/services/sec_echo/outgoing-secpolicy.xml</parameter>
+    <parameter name="InflowSecurityPolicy">/home/AXIS2_USER/axis2/c/deploy/services/sec_echo/incoming-secpolicy.xml</parameter>
     
     <!--Rampart configurations END -->
 

@@ -1,6 +1,12 @@
 #!/bin/bash
+if [ $# -ne 1 ]
+then
+    echo "Usage : $0 username"
+    exit
+fi
 
 CLIENT_REPO="$AXIS2C_HOME/client_repo"
+SERVICE_HOME="$AXIS2C_HOME/services/sec_echo"
 echo "Start creating a client repository at $CLIENT_REPO"
 
 if [ -d  $CLIENT_REPO ]; 
@@ -23,5 +29,8 @@ cp -r $AXIS2C_HOME/lib $CLIENT_REPO/
 #INSTALL MODULES to make sure that both server and client have the same module.
 echo "Copying latest modules to $CLIENT_REPO"
 cp -r $AXIS2C_HOME/modules $CLIENT_REPO/
+
+sed -i 's/AXIS2_USER/'$1'/g' $CLIENT_REPO/axis2.xml
+sed -i 's/AXIS2_USER/'$1'/g' $SERVICE_HOME/services.xml
 
 echo "WARNING: Make sure that you have correct configurations in sec_echo/services.xml and $CLIENT_REPO/axis2.xml file."

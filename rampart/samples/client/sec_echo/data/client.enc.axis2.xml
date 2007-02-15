@@ -16,8 +16,8 @@
 
 
     <!--Rampart configurations START -->
-    <parameter name="OutflowSecurityPolicy">/home/manjula/axis2/c/deploy/client_repo/outgoing-secpolicy.xml</parameter>
-    <parameter name="InflowSecurityPolicy">/home/manjula/axis2/c/deploy/client_repo/incoming-secpolicy.xml</parameter>
+    <parameter name="OutflowSecurityPolicy">/home/AXIS2_USER/axis2/c/deploy/client_repo/outgoing-secpolicy.xml</parameter>
+    <parameter name="InflowSecurityPolicy">/home/AXIS2_USER/axis2/c/deploy/client_repo/incoming-secpolicy.xml</parameter>
 
     <!--Rampart configurations END -->
 
