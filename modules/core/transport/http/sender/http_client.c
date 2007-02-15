@@ -51,6 +51,7 @@ typedef struct axis2_http_client_impl
     axis2_char_t *proxy_host_port;
     axis2_bool_t dump_input_msg;
 	axis2_char_t *server_cert;
+    axis2_char_t *key_file;
 }
 axis2_http_client_impl_t;
 
@@ -63,7 +64,9 @@ axis2_status_t AXIS2_CALL
 axis2_http_client_send(
     axis2_http_client_t *client,
     const axis2_env_t *env,
-    axis2_http_simple_request_t *request);
+    axis2_http_simple_request_t *request,
+    axis2_char_t *ssl_pp
+    );
 
 int AXIS2_CALL
 axis2_http_client_recieve_header(
@@ -110,6 +113,12 @@ axis2_http_client_set_server_cert(
     const axis2_env_t *env,
     axis2_char_t *server_cert);
 
+axis2_status_t AXIS2_CALL
+axis2_http_client_set_key_file(
+    axis2_http_client_t *client,
+    const axis2_env_t *env,
+    axis2_char_t *key_file);
+
 
 axis2_char_t *AXIS2_CALL
 axis2_http_client_get_proxy(
@@ -118,6 +127,11 @@ axis2_http_client_get_proxy(
 
 axis2_char_t *AXIS2_CALL
 axis2_http_client_get_server_cert(
+    const axis2_http_client_t *client,
+    const axis2_env_t *env);
+
+axis2_char_t *AXIS2_CALL
+axis2_http_client_get_key_file(
     const axis2_http_client_t *client,
     const axis2_env_t *env);
 
@@ -175,7 +189,7 @@ axis2_http_client_create(
     http_client_impl->proxy_host_port = NULL;
     http_client_impl->dump_input_msg = AXIS2_FALSE;
     http_client_impl->server_cert = NULL;
-
+    http_client_impl->key_file = NULL;
 
     http_client_impl->http_client.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_client_ops_t));
@@ -205,6 +219,10 @@ axis2_http_client_create(
         axis2_http_client_set_server_cert;
     http_client_impl->http_client.ops->get_server_cert =
         axis2_http_client_get_server_cert;
+    http_client_impl->http_client.ops->set_key_file =
+        axis2_http_client_set_key_file;
+    http_client_impl->http_client.ops->get_key_file =
+        axis2_http_client_get_key_file;
     http_client_impl->http_client.ops->set_dump_input_msg = 
         axis2_http_client_set_dump_input_msg;
     http_client_impl->http_client.ops->free = axis2_http_client_free;
@@ -261,7 +279,9 @@ axis2_status_t AXIS2_CALL
 axis2_http_client_send(
     axis2_http_client_t *client,
     const axis2_env_t *env,
-    axis2_http_simple_request_t *request)
+    axis2_http_simple_request_t *request,
+    axis2_char_t *ssl_pp
+    )
 {
     axis2_http_client_impl_t *client_impl = NULL;
     char *wire_format = NULL;
@@ -340,7 +360,10 @@ axis2_http_client_send(
             }
         }
         client_impl->data_stream = axis2_stream_create_ssl(env,
-                client_impl->sockfd, AXIS2_HTTP_CLIENT_GET_SERVER_CERT(client, env));
+                client_impl->sockfd, 
+                AXIS2_HTTP_CLIENT_GET_SERVER_CERT(client, env),
+                AXIS2_HTTP_CLIENT_GET_KEY_FILE(client, env),
+                ssl_pp);
 #else
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
                 AXIS2_FAILURE);
@@ -873,4 +896,28 @@ axis2_http_client_get_server_cert(
 {
    AXIS2_ENV_CHECK(env, NULL);
    return AXIS2_INTF_TO_IMPL(client)->server_cert;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_http_client_set_key_file(
+    axis2_http_client_t *client,
+    const axis2_env_t *env,
+    axis2_char_t *key_file)
+{
+   axis2_http_client_impl_t *client_impl = NULL;
+    
+   client_impl = AXIS2_INTF_TO_IMPL(client);
+
+   client_impl->key_file = key_file;
+
+   return AXIS2_SUCCESS;
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_http_client_get_key_file(
+    const axis2_http_client_t *client,
+    const axis2_env_t *env)
+{
+   AXIS2_ENV_CHECK(env, NULL);
+   return AXIS2_INTF_TO_IMPL(client)->key_file;
 }

@@ -420,10 +420,19 @@ extern "C"
 #define AXIS2_HTTP_METHOD "HTTP_METHOD"
 
 /**
- *Constant for SSL Server Certificate
+ * Constant for SSL Server Certificate
  */
 #define AXIS2_SSL_SERVER_CERT "SERVER_CERT"
 
+/**
+ * Constant for SSL Key File
+ */
+#define AXIS2_SSL_KEY_FILE "KEY_FILE"
+
+/**
+ * Constant for SSL Passphrase
+ */
+#define AXIS2_SSL_PASSPHRASE "SSL_PASSPHRASE"
 
 /**
  *Constant for HTTP headers that user specify, Those headers will

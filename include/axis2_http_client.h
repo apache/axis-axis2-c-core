@@ -64,7 +64,9 @@ extern "C"
                 send)(
                     axis2_http_client_t *client,
                     const axis2_env_t *env,
-                    axis2_http_simple_request_t *request);
+                    axis2_http_simple_request_t *request,
+                    axis2_char_t *ssl_pp
+                    );
 
         /**
          * @param client pointer to client
@@ -176,6 +178,27 @@ extern "C"
                     const axis2_http_client_t *client,
                     const axis2_env_t *env);
 
+        /**
+         * @param client pointer to client
+         * @param env pointer to environment struct
+         * @param key_file chain file containing 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_key_file)(
+                    axis2_http_client_t *client,
+                    const axis2_env_t *env,
+                    axis2_char_t *key_file);
+
+        /**
+         * @param client pointer to client
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
+                get_key_file)(
+                    const axis2_http_client_t *client,
+                    const axis2_env_t *env);
+
 
         /**
          * @param client pointer to client
@@ -222,8 +245,9 @@ extern "C"
 
 /** Send.
     @sa axis2_http_client_ops#send */
-#define AXIS2_HTTP_CLIENT_SEND(client, env, request) \
-                                ((client)->ops->send(client, env, request))
+#define AXIS2_HTTP_CLIENT_SEND(client, env, request, ssl_passphrase) \
+                                ((client)->ops->send(client, env, request, \
+                                ssl_passphrase))
 
 /** Receive header.
     @sa axis2_http_client_ops#receive_header */
@@ -272,16 +296,27 @@ extern "C"
 #define AXIS2_HTTP_CLIENT_SET_DUMP_INPUT_MSG(client, env, dump_input_msg) \
         ((client)->ops->set_dump_input_msg(client, env, dump_input_msg))
 
-/** Sets the proxy.
+/** Sets the server certificate.
     @sa axis2_http_client_ops#set_server_cert */
 #define AXIS2_HTTP_CLIENT_SET_SERVER_CERT(client, env, server_cert) \
                                 ((client)->ops->set_server_cert(client, env,\
                         server_cert))
 
-/** Gets the proxy.
+/** Gets the server certificate.
     @sa axis2_http_client_ops#get_server_cert */
 #define AXIS2_HTTP_CLIENT_GET_SERVER_CERT(client, env) \
                                 ((client)->ops->get_server_cert(client, env))
+
+/** Sets the client chain file containing the privat key and the public key.
+    @sa axis2_http_client_ops#set_key_file*/
+#define AXIS2_HTTP_CLIENT_SET_KEY_FILE(client, env, key_file) \
+                                ((client)->ops->set_key_file(client, env,\
+                        key_file))
+
+/** Gets the client chain file containing the privat key and the public key.
+    @sa axis2_http_client_ops#get_key_file*/
+#define AXIS2_HTTP_CLIENT_GET_KEY_FILE(client, env) \
+                                ((client)->ops->get_key_file(client, env))
 
 
 

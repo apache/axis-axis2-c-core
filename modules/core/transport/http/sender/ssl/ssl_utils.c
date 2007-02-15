@@ -17,20 +17,45 @@
 #include "ssl_utils.h"
 BIO *bio_err = 0;
 
+static int password_cb(
+    char *buf,
+    int size, 
+    int rwflag, 
+    void *passwd
+    )
+{
+    strncpy(buf, (char *)passwd, size);
+    buf[size-1] = '\0';
+    /*printf("ssl_passphrase:%s", buf);*/
+    return(strlen(buf));
+}
+
 AXIS2_EXTERN SSL_CTX* AXIS2_CALL
-axis2_ssl_utils_initialize_ctx(const axis2_env_t *env, axis2_char_t *server_cert)
+axis2_ssl_utils_initialize_ctx(
+    const axis2_env_t *env,
+    axis2_char_t *server_cert,
+    axis2_char_t *key_file,
+    axis2_char_t *ssl_pp
+)
 {
     SSL_METHOD *meth = NULL;
-    axis2_char_t *ca_file = NULL;
     SSL_CTX *ctx = NULL;
+    axis2_char_t *ca_file = server_cert; /*TODO: remove ca_file*/
+    /*axis2_char_t *key_file = NULL;*/
 
     AXIS2_ENV_CHECK(env, NULL);
 
     /*TODO getenv */
-	if (server_cert)
+	/*if (server_cert)
 		ca_file = server_cert;
 	else
 		ca_file = AXIS2_GETENV("AXIS2_SSL_CA_FILE");
+
+    key_file = AXIS2_GETENV("AXIS2_SSL_KEY_FILE");
+    */
+
+    /*printf("key_file: %s\n", key_file);
+    printf("ca_file: %s\n", server_cert);*/
 
     if (NULL == ca_file)
     {
@@ -38,6 +63,7 @@ axis2_ssl_utils_initialize_ctx(const axis2_env_t *env, axis2_char_t *server_cert
                 AXIS2_FAILURE);
         return NULL;
     }
+
     if (!bio_err)
     {
         /* Global system initialization*/
@@ -54,15 +80,32 @@ axis2_ssl_utils_initialize_ctx(const axis2_env_t *env, axis2_char_t *server_cert
 
     /* Load our keys and certificates
      * If we need client certificates it has to be done here
+     * TODO 
      */
-    /*if(!(SSL_CTX_use_certificate_chain_file(ctx, keyfile)))
+    if (key_file) /*can we check if the server needs client auth?*/
     {
-        SSL_CTX_free(ctx);
-        return NULL;
-    }*/
+        SSL_CTX_set_default_passwd_cb_userdata(ctx, (void *)ssl_pp);
+        SSL_CTX_set_default_passwd_cb(ctx, password_cb);
+
+        if(!(SSL_CTX_use_certificate_chain_file(ctx, key_file)))
+        {
+            printf("Loading client certificate failed!\n");
+            SSL_CTX_free(ctx);
+            return NULL;
+        }
+
+        if(!(SSL_CTX_use_PrivateKey_file(ctx, key_file, SSL_FILETYPE_PEM)))
+        {
+            printf("Loading client key failed!\n");
+            SSL_CTX_free(ctx);
+            return NULL;
+        }
+    }
+
     /* Load the CAs we trust*/
     if (!(SSL_CTX_load_verify_locations(ctx, ca_file, 0)))
     {
+        printf("Loading CA certifiate failed!\n");
         SSL_CTX_free(ctx);
         return NULL;
     }
@@ -75,8 +118,11 @@ axis2_ssl_utils_initialize_ctx(const axis2_env_t *env, axis2_char_t *server_cert
 }
 
 AXIS2_EXTERN SSL* AXIS2_CALL
-axis2_ssl_utils_initialize_ssl(const axis2_env_t *env, SSL_CTX *ctx,
-        axis2_socket_t socket)
+axis2_ssl_utils_initialize_ssl(
+    const axis2_env_t *env, 
+    SSL_CTX *ctx,
+    axis2_socket_t socket
+    )
 {
     SSL *ssl = NULL;
     BIO *sbio = NULL;
@@ -105,7 +151,11 @@ axis2_ssl_utils_initialize_ssl(const axis2_env_t *env, SSL_CTX *ctx,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_ssl_utils_cleanup_ssl(const axis2_env_t *env, SSL_CTX *ctx, SSL *ssl)
+axis2_ssl_utils_cleanup_ssl(
+    const axis2_env_t *env,
+    SSL_CTX *ctx,
+    SSL *ssl
+    )
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 

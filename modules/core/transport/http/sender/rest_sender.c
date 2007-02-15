@@ -419,7 +419,7 @@ axis2_rest_sender_send(
 	}
 
 	axis2_rest_sender_configure_server_cert (sender, env, msg_ctx);
-    status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request);
+    status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request, NULL);
 
     AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, env);
     request = NULL;
