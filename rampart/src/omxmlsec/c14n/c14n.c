@@ -67,6 +67,7 @@ typedef struct c14n_ctx {
     axis2_bool_t exclusive;
     axis2_bool_t use_stream;
     const axis2_array_list_t *ns_prefixes;
+    const axiom_node_t *node;
     c14n_ns_stack_t *ns_stack;
 } c14n_ctx_t;
 
@@ -366,6 +367,13 @@ c14n_no_output_ancestor_uses_prefix(
     const c14n_ctx_t *ctx
     );
 
+/*static axis2_bool_t
+c14n_in_nodeset(
+    const axiom_node_t *node,
+    const c14n_ctx_t *ctx
+    );
+*/
+
 /* Implementations */
 
 static void
@@ -390,7 +398,8 @@ c14n_init(
     axis2_stream_t *stream,
     const axis2_bool_t exclusive,
     const axis2_array_list_t *ns_prefixes,
-    const axis2_bool_t use_stream
+    const axis2_bool_t use_stream,
+    const axiom_node_t *node
     )
 {
     c14n_ctx_t *ctx = (c14n_ctx_t *)(AXIS2_MALLOC(env->allocator, 
@@ -404,6 +413,7 @@ c14n_init(
         ctx->exclusive = exclusive;
         ctx->ns_prefixes = ns_prefixes;
         ctx->use_stream = use_stream;
+        ctx->node = node;
         if (use_stream)
             ctx->outstream = stream;
 
@@ -416,6 +426,17 @@ c14n_init(
     return ctx;
 }
 
+/*static axis2_bool_t
+c14n_in_nodeset(
+    const axiom_node_t *node,
+    const c14n_ctx_t *ctx
+    )
+{
+    
+    return AXIS2_SUCCESS;
+}*/
+
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_c14n_apply_stream(
     const axis2_env_t *env,
@@ -423,7 +444,8 @@ oxs_c14n_apply_stream(
     axis2_bool_t comments,
     axis2_stream_t *stream,
     const axis2_bool_t exclusive,
-    const axis2_array_list_t *ns_prefixes
+    const axis2_array_list_t *ns_prefixes,
+    const axiom_node_t *node
     )
 {
     c14n_ctx_t *ctx = NULL;
@@ -434,17 +456,18 @@ oxs_c14n_apply_stream(
     axis2_stream_t *outstream = NULL;
 
     ctx = c14n_init(env, doc, comments, NULL, stream, exclusive, ns_prefixes,
-            AXIS2_TRUE);
+            AXIS2_TRUE, node);
 
     if (ctx && ctx->outstream)
     {
 
         root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT((axiom_document_t *)doc,
                 env); 
+
         /* shouldn't the called method's document be const?*/
 
         root_ele = AXIOM_NODE_GET_DATA_ELEMENT(root_node, env);
-        status = c14n_apply_on_node(root_node, ctx);
+        status = c14n_apply_on_node((node ? node : root_node), ctx);
         
         if (!status)
         {
@@ -516,12 +539,13 @@ oxs_c14n_apply(
     axis2_bool_t comments,
     axis2_char_t **outbuf,
     const axis2_bool_t exclusive,
-    const axis2_array_list_t *ns_prefixes
+    const axis2_array_list_t *ns_prefixes,
+    const axiom_node_t *node
     )
 {
     axis2_stream_t *stream = axis2_stream_create_basic(env);
     axis2_status_t ret = oxs_c14n_apply_stream(env, doc, comments, 
-            stream, exclusive, ns_prefixes);
+            stream, exclusive, ns_prefixes, node);
 
     *outbuf = NULL;
 
@@ -677,7 +701,8 @@ c14n_apply_on_element(
     /*c14n_output("\n", ctx);*/
 #endif
 
-    /**/
+    /*process child elements*/
+    
     axiom_node_t *child_node = NULL;
     child_node = AXIOM_NODE_GET_FIRST_CHILD((axiom_node_t *)node, ctx->env);
 

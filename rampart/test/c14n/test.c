@@ -83,7 +83,7 @@ int test(int argc, char **argv)
     if (!om_builder) { p_fail(); return 1; }
 
     doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
-    
+    AXIOM_DOCUMENT_BUILD_ALL (doc, env); 
     if (!doc) { p_fail(); return 1; }
     axis2_char_t *txt = NULL;
     /*res = oxs_c14n_apply(env, doc, AXIS2_TRUE, &txt, AXIS2_FALSE, NULL);
@@ -93,10 +93,13 @@ int test(int argc, char **argv)
     
     stream = axis2_stream_create_basic(env);
     
+    axiom_node_t *root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(doc, env);
+    axiom_node_t *c14n_node = AXIOM_NODE_GET_FIRST_ELEMENT(root_node, env);
+
     if (argc>2 && !(argv[2][0]-'e'))
-        res = oxs_c14n_apply_stream(env, doc, AXIS2_TRUE, stream, AXIS2_TRUE , NULL);
+        res = oxs_c14n_apply_stream(env, doc, AXIS2_TRUE, stream, AXIS2_TRUE , NULL, c14n_node);
     else
-        res = oxs_c14n_apply_stream(env, doc, AXIS2_TRUE, stream, AXIS2_FALSE , NULL);
+        res = oxs_c14n_apply_stream(env, doc, AXIS2_TRUE, stream, AXIS2_FALSE , NULL, c14n_node);
 
     if (!res) return -1; /*error occured!*/
 
@@ -136,6 +139,6 @@ int test(int argc, char **argv)
         env = NULL;
     }
 
-    printf("\n");
+    /*printf("\n");*/
     return 0;
 }

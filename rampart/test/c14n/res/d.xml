@@ -5,5 +5,5 @@
         a:attr1="one"         b:attr2='two' a:attr2="three"/>
     <test:f id=' &apos; &amp;  &#x20;&#13;&#xa;&#9;  &apos; '/>
     <g> &apos; &amp;  &#x20;&#13;&#xa;&#9;  &apos; </g>
-</doc>
 <!--this is a comment outside-->
+</doc>

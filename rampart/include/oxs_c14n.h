@@ -42,6 +42,7 @@
 extern "C"
 {
 #endif
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     oxs_c14n_apply_stream(
         const axis2_env_t *env,
@@ -49,7 +50,8 @@ extern "C"
         axis2_bool_t comments,
         axis2_stream_t *stream,
         const axis2_bool_t exclusive,
-        const axis2_array_list_t *ns_prefixes
+        const axis2_array_list_t *ns_prefixes,
+        const axiom_node_t *node
         );
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -59,7 +61,8 @@ extern "C"
         const axis2_bool_t comments,
         axis2_char_t **outbuf,
         const axis2_bool_t exclusive,
-        const axis2_array_list_t *ns_prefixes
+        const axis2_array_list_t *ns_prefixes,
+        const axiom_node_t *node
         );
 
 #ifdef __cplusplus
