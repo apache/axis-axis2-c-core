@@ -246,10 +246,6 @@ axis2_msg_recv_get_impl_obj(
     struct axis2_svc *svc = NULL;
     struct axis2_op_ctx *op_ctx = NULL;
     struct axis2_svc_ctx *svc_ctx = NULL;
-    struct axis2_param *scope_param = NULL;
-    const axis2_qname_t *svc_qname = NULL;
-    axis2_char_t *param_value = NULL;
-    axis2_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
@@ -261,64 +257,8 @@ axis2_msg_recv_get_impl_obj(
     {
         return NULL;
     }
-    scope_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SCOPE);
-    svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
-    if (scope_param)
-        param_value = AXIS2_PARAM_GET_VALUE(scope_param, env);
-    /* TODO
-     * This part is left until session_ctx is implemented or this will before
-     * totally removed???
-     */
-    /*
-    if( scope_param && (0 == AXIS2_STRCMP(AXIS2_SESSION_SCOPE, 
-        param_value)))
-    {
-        SessionContext sessionContext = msgContext.getSessionContext();
-        synchronized (sessionContext) {
-            Object obj =
-                sessionContext.getProperty(serviceName.getLocalPart());
-            if (obj == null) {
-                obj = makeNewServiceObject(msgContext);
-                sessionContext.setProperty(serviceName.getLocalPart(), obj);
-            }
-            return obj;
-        }
-    }
-    else if
-    */
-    if (scope_param && (0 == AXIS2_STRCMP(AXIS2_APPLICATION_SCOPE,
-            param_value)))
-    {
-        struct axis2_conf_ctx *global_ctx = NULL;
-        void *obj = NULL;
-        axis2_char_t *local_part = NULL;
-        struct axis2_ctx *ctx = NULL;
-
-        global_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
-        local_part = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
-        ctx = AXIS2_CONF_CTX_GET_BASE(global_ctx, env);
-        property = AXIS2_CTX_GET_PROPERTY(ctx, env, local_part, AXIS2_FALSE);
-        if (property)
-        {
-            obj = AXIS2_PROPERTY_GET_VALUE(property , env);
-        }
-        else
-        {
-            property = axis2_property_create(env);
-            AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
-            obj = (axis2_svc_skeleton_t *) axis2_msg_recv_make_new_svc_obj(
-                        msg_recv, env, msg_ctx);
-            AXIS2_PROPERTY_SET_VALUE(property, env, obj);
-        }
-        AXIS2_CTX_SET_PROPERTY(ctx, env, local_part, property, AXIS2_FALSE);
-        return obj;
-    }
-    else
-    {
-        return axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx);
-    }
-
-    return NULL;
+    
+    return axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx);
 }
 
 axis2_status_t AXIS2_CALL
