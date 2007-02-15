@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ $# -ne 1 ]
+then
+    echo "Usage : $0 username"
+    exit
+fi
 
 for i in '*.xml'
 do
