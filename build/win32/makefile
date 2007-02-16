@@ -1084,9 +1084,9 @@ axis2:
 ##############################################################################################
 
 
-all: clean_make_dir clean deploy axis2_core copy_include clean_make_dir 
+all: clean_make_dir clean deploy axis2_core axis2_samples copy_include clean_make_dir 
  
 install: all
 
-dist: all mod_rampart_all axis2_apache_module axis2_IIS_moule copy_extra copy_samples mv_dist
+dist: all mod_rampart_all axis2_server_modules copy_extra copy_samples mv_dist
 
