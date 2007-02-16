@@ -64,7 +64,6 @@ openssl_sign(const axis2_env_t *env,
         ERR_print_errors_fp (stderr);     
     }
     /*Fill the output buffer*/
-    output_buf = oxs_buffer_create(env);
     OXS_BUFFER_POPULATE(output_buf, env, sig_buf, sig_len);
 
     return sig_len;

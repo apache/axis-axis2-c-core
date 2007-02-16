@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_C14N_H
-#define AXIS2_C14N_H
+#ifndef OXS_C14N_H
+#define OXS_C14N_H
 
-/** @defgroup axis2c_c14n c14n
- * @ingroup axis2_c14n
+/** @defgroup oxs_c14n c14n
+ * @ingroup oxs_c14n
  * XML Canonicalization (XML-C14N).
  * @{
  */
 
 /**
- * @file axis2_c14n.h
+ * @file oxs_c14n.h
  * @brief
  */
 
@@ -68,4 +68,4 @@ extern "C"
 #ifdef __cplusplus
 }
 #endif
-#endif  /* AXIS2_C14N_H */
+#endif  /* OXS_C14N_H */

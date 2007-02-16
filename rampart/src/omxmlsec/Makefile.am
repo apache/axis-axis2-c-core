@@ -10,6 +10,7 @@ libomxmlsec_la_SOURCES = ctx.c  buffer.c key.c cipher.c error.c axis2_utils.c ax
 libomxmlsec_la_LIBADD  = -lssl\
 			../../../util/src/libaxis2_util.la \
 			../../../axiom/src/om/libaxis2_axiom.la \
+			c14n/liboxsc14n.la \
 			-lcrypto 
 
 INCLUDES = -I$(top_builddir)/include \

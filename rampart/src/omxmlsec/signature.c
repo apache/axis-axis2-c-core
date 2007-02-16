@@ -33,32 +33,16 @@ oxs_sig_sign_rsa_sha1(const axis2_env_t *env,
     oxs_buffer_t *input,
     oxs_buffer_t *output)
 {
-    axis2_char_t *to_be_signed_content = NULL;
     axis2_char_t *encoded_str = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    oxs_buffer_t *digested_buf = NULL;
     oxs_buffer_t *signed_result_buf = NULL;
-    openssl_pkey_t *prv_key = NULL;
-    openssl_rsa_t *rsa = NULL;
     int signedlen = -1, encodedlen = -1, ret = -1;
-
-    /*Make sha-1 digest. Do we really need to do this OR is it part of OpenSSL operation????*/
-    to_be_signed_content = openssl_sha1(env, (axis2_char_t*)OXS_BUFFER_GET_DATA(input, env),  OXS_BUFFER_GET_SIZE(input, env));
-  
-    /*Create and populate the new input buffer*/
-    digested_buf = oxs_buffer_create(env);
-    OXS_BUFFER_POPULATE(digested_buf, env, (unsigned char*)to_be_signed_content, axis2_strlen(to_be_signed_content));
-
-
-    /*Get the key*/
-    prv_key = oxs_sign_ctx_get_private_key(sign_ctx, env);
 
     /*Create output buffer to store signed data*/
     signed_result_buf = oxs_buffer_create(env);
 
     /*Sign */
-    rsa = openssl_rsa_create(env);
-    signedlen = OPENSSL_RSA_PRV_ENCRYPT(rsa, env, prv_key, OPENSSL_RSA_PKCS1_PADDING, digested_buf, signed_result_buf);
+    signedlen = openssl_sign(env, sign_ctx, input, signed_result_buf);
     if(signedlen < 0){
         /*Error*/
     }
@@ -69,10 +53,8 @@ oxs_sig_sign_rsa_sha1(const axis2_env_t *env,
     ret = axis2_base64_encode(encoded_str, (const char *)OXS_BUFFER_GET_DATA(signed_result_buf, env), signedlen);
     status = OXS_BUFFER_POPULATE(output, env, (unsigned char*)AXIS2_STRDUP(encoded_str, env), encodedlen);
 
-    /*Free digested_buf*/
     /*Free signed_result_buf*/
-    /*Free rsa*/
-
+    
     return AXIS2_SUCCESS;
 }
 

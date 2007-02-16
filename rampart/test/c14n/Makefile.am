@@ -13,4 +13,4 @@ INCLUDES = -I$(top_builddir)/include \
 test_c14n_LDADD   =	../../../util/src/libaxis2_util.la \
 					../../../axiom/src/om/libaxis2_axiom.la \
 					../../../axiom/src/parser/libxml2/libaxis2_libxml2.la \
-					../../../rampart/src/omxmlsec/c14n/libaxis2_c14n.la 
+					../../../rampart/src/omxmlsec/c14n/liboxsc14n.la 

@@ -21,6 +21,7 @@
 #include <oxs_error.h>
 #include <oxs_buffer.h>
 #include <oxs_cipher.h>
+#include <oxs_c14n.h>
 #include <openssl_rsa.h>
 #include <openssl_digest.h>
 #include <oxs_sign_ctx.h>
@@ -101,16 +102,20 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
     axis2_char_t *signature_val = "FAKE_SIG_VAL(734dwe93721fd8y2==";
     axis2_char_t *serialized_signed_info = NULL;
     axis2_char_t *c14n_algo = NULL;
+    axis2_char_t *c14nized = NULL;
     axiom_node_t *signature_val_node = NULL;
+    axiom_document_t *doc = NULL;
     oxs_buffer_t *input_buf = NULL;
     oxs_buffer_t *output_buf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     /*TODO : Cannonicalize <SignedInfo>*/
     c14n_algo = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env);
-
+    doc = axiom_node_get_document(signed_info_node, env);
+    oxs_c14n_apply(env, doc, AXIS2_FALSE, &c14nized, AXIS2_TRUE, NULL, signed_info_node); 
+    
     /*Then serialize <SignedInfo>*/
-    serialized_signed_info = AXIOM_NODE_TO_STRING(signed_info_node, env);
+    serialized_signed_info = c14nized; /*AXIOM_NODE_TO_STRING(signed_info_node, env);*/
     printf("serialized_signed_info %s\n",serialized_signed_info); 
 
     /*Make the input and out put buffers*/
@@ -121,8 +126,7 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
     /*Then sign... NOTE: The signature process includes making the digest. e.g. rsa-sha1 => RSA(SHA-1(contents))*/ 
     status = oxs_sig_sign(env, sign_ctx, input_buf, output_buf);
 
-    /*Sign the data using the private key*/
-    signature_val = "MC0CFFrVLtRlk=";
+    signature_val = (axis2_char_t*)OXS_BUFFER_GET_DATA(output_buf, env);
     
     /*Construct <SignatureValue>*/
     signature_val_node = oxs_token_build_signature_value_element(env, signature_node, signature_val);

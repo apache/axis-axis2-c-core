@@ -1,2 +1,2 @@
-SUBDIRS = openssl c14n omxmlsec
+SUBDIRS = openssl  omxmlsec
 
