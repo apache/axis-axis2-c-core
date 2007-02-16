@@ -249,15 +249,9 @@ axis2_iis_worker_process_request(
         AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, uuid_str);
         axis2_string_free(uuid_str, env);
 	}
-    property = axis2_property_create(env);	
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env,
-            axis2_iis_out_transport_info_free_void_arg);
-    iis_out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
-    AXIS2_PROPERTY_SET_VALUE(property, env, iis_out_transport_info);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-            property, AXIS2_FALSE);
 
+    iis_out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
+    axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env, iis_out_transport_info);
 	
 	cbSize = INTERNET_MAX_URL_LENGTH;
 	if (lpECB->GetServerVariable(lpECB->ConnID, "HTTP_SOAPAction", soap_action, &cbSize))

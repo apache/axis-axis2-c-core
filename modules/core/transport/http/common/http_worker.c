@@ -280,14 +280,8 @@ axis2_http_worker_process_request(
         axis2_string_free(svc_grp_uuid_str, env);
     }
 
-    property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env,
-            axis2_http_out_transport_info_free_void_arg);
     http_out_transport_info = axis2_http_out_transport_info_create(env, response);
-    AXIS2_PROPERTY_SET_VALUE(property, env, http_out_transport_info);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-            property, AXIS2_FALSE);
+    axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env, http_out_transport_info);
 
     if (AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request, env,
             AXIS2_HTTP_HEADER_SOAP_ACTION))

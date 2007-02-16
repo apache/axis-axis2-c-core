@@ -113,6 +113,7 @@ extern "C"
     struct axis2_options;
     struct axis2_transport_in_desc;    
     struct axis2_transport_out_desc;
+    struct axis2_http_out_transport_info;
 
     /**
      * Creates a message context struct instance.
@@ -1402,6 +1403,19 @@ extern "C"
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_reset_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN struct axis2_http_out_transport_info *AXIS2_CALL
+    axis2_msg_ctx_get_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        struct axis2_http_out_transport_info *http_out_transport_info);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_reset_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
 
 /** Gets base context struct. */

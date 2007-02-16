@@ -567,7 +567,6 @@ axis2_engine_create_fault_msg_ctx(
     axis2_endpoint_ref_t *fault_to = NULL;
     axis2_endpoint_ref_t *reply_to = NULL;
     axis2_stream_t *stream = NULL;
-    axis2_property_t *property = NULL;
     axiom_soap_envelope_t *envelope = NULL;
     const axis2_char_t *wsa_action = NULL;
     const axis2_char_t *msg_id = NULL;
@@ -665,14 +664,8 @@ axis2_engine_create_fault_msg_ctx(
     AXIS2_MSG_CTX_SET_PROCESS_FAULT(fault_ctx, env, AXIS2_TRUE);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(fault_ctx, env, AXIS2_TRUE);
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env,
-            AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
-    if (property)
-    {
-        AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-            AXIS2_PROPERTY_CLONE(property, env) , AXIS2_FALSE);
-        property = NULL;
-    }
+    axis2_msg_ctx_set_http_out_transport_info(fault_ctx, env, 
+        axis2_msg_ctx_get_http_out_transport_info(processing_context, env));
 
     envelope = AXIS2_MSG_CTX_GET_FAULT_SOAP_ENVELOPE(processing_context, env);
 
@@ -705,10 +698,8 @@ axis2_engine_create_fault_msg_ctx(
     }
 
     AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(fault_ctx, env, envelope);
-    property = AXIS2_MSG_CTX_GET_PROPERTY(processing_context, env, 
-        AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
-    AXIS2_MSG_CTX_SET_PROPERTY(fault_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-        AXIS2_PROPERTY_CLONE(property, env), AXIS2_FALSE);
+    axis2_msg_ctx_set_http_out_transport_info(fault_ctx, env, 
+        axis2_msg_ctx_get_http_out_transport_info(processing_context, env));
     return fault_ctx;
 }
 

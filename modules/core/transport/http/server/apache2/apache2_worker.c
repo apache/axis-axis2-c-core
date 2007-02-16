@@ -224,15 +224,9 @@ axis2_apache2_worker_process_request(
         axis2_string_free(uuid_str, env);
     }
 
-    property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env,
-            axis2_apache2_out_transport_info_free_void_arg);
     apache2_out_transport_info = axis2_apache2_out_transport_info_create(env,
             request);
-    AXIS2_PROPERTY_SET_VALUE(property, env, apache2_out_transport_info);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-            property, AXIS2_FALSE);
+    axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env, apache2_out_transport_info);
 
     soap_action = axis2_string_create(env, 
             (axis2_char_t *)apr_table_get(request->headers_in,

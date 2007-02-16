@@ -23,6 +23,7 @@
 #include <axis2_conf.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
+#include <axis2_http_out_transport_info.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_const.h>
 #include <axis2_options.h>
@@ -146,6 +147,7 @@ struct axis2_msg_ctx
 
     axis2_string_t *charset_encoding;
     axis2_stream_t *transport_out_stream;
+    axis2_http_out_transport_info_t *http_out_transport_info;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -210,6 +212,7 @@ axis2_msg_ctx_create(
     msg_ctx->paused_phase_index = 0;
     msg_ctx->charset_encoding = NULL;
     msg_ctx->transport_out_stream = NULL;
+    msg_ctx->http_out_transport_info = NULL;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
@@ -352,6 +355,11 @@ axis2_msg_ctx_free(
     if (msg_ctx->transport_out_stream)
     {
        AXIS2_STREAM_FREE(msg_ctx->transport_out_stream, env); 
+    }
+    
+    if (msg_ctx->http_out_transport_info)
+    {
+        AXIS2_HTTP_OUT_TRANSPORT_INFO_FREE(msg_ctx->http_out_transport_info, env);
     }
         
     AXIS2_FREE(env->allocator, msg_ctx);
@@ -2039,3 +2047,55 @@ axis2_msg_ctx_reset_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL
+axis2_msg_ctx_get_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    if (msg_ctx)
+    {
+        return msg_ctx->http_out_transport_info;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_http_out_transport_info_t *http_out_transport_info)
+{
+    if (msg_ctx)
+    {
+        if (msg_ctx->http_out_transport_info)
+        {
+           AXIS2_HTTP_OUT_TRANSPORT_INFO_FREE(msg_ctx->http_out_transport_info, env); 
+        }
+        
+        msg_ctx->http_out_transport_info = http_out_transport_info;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}      
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_reset_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    if (msg_ctx)
+    {
+        msg_ctx->http_out_transport_info = NULL;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+    
