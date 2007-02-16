@@ -154,11 +154,12 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
+/********************************************************************************************/
 /*These are new set of functions that break-up the complex logic in oxs_key_mgr_load_key()*/
 
 AXIS2_EXTERN openssl_pkey_t* AXIS2_CALL
 oxs_key_mgr_load_private_key_from_string(const axis2_env_t *env, 
-    axis2_char_t *pem_buf, /*in PEM format*/
+    axis2_char_t *pem_string, /*in PEM format*/
     axis2_char_t *password)
 {
     openssl_pkey_t *open_prvkey = NULL;
@@ -166,7 +167,7 @@ oxs_key_mgr_load_private_key_from_string(const axis2_env_t *env,
     EVP_PKEY *prvkey = NULL;
  
     /*load private key from buf*/
-    status = openssl_pem_buf_read_pkey(env, pem_buf, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey); 
+    status = openssl_pem_buf_read_pkey(env, pem_string, password, OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY, &prvkey); 
     /*Populate*/
     if(prvkey){
         open_prvkey = openssl_pkey_create(env);
@@ -247,34 +248,14 @@ oxs_key_mgr_load_x509_cert_from_pem_file(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN oxs_x509_cert_t* AXIS2_CALL
-oxs_key_mgr_load_x509_cert_from_buf(const axis2_env_t *env,
-    axis2_char_t *pem_buf)
+oxs_key_mgr_load_x509_cert_from_string(const axis2_env_t *env,
+    axis2_char_t *pem_string)
 {
     X509 *cert = NULL;
     oxs_x509_cert_t *oxs_cert = NULL;
-    openssl_x509_load_from_buffer(env, pem_buf, &cert);
+    openssl_x509_load_from_buffer(env, pem_string, &cert);
   
-    if(cert){
-        EVP_PKEY *pubkey = NULL;
-        openssl_pkey_t *open_pubkey = NULL;
-
-        oxs_cert = oxs_x509_cert_create(env);
-
-        oxs_x509_cert_set_data(oxs_cert, env, openssl_x509_get_cert_data(env, cert));
-        oxs_x509_cert_set_date(oxs_cert, env, openssl_x509_get_info(env, OPENSSL_X509_INFO_VALID_TO ,cert));
-        oxs_x509_cert_set_issuer(oxs_cert, env, openssl_x509_get_info(env, OPENSSL_X509_INFO_ISSUER ,cert));
-        oxs_x509_cert_set_subject(oxs_cert, env, openssl_x509_get_info(env, OPENSSL_X509_INFO_SUBJECT ,cert));
-        oxs_x509_cert_set_fingerprint(oxs_cert, env, openssl_x509_get_info(env, OPENSSL_X509_INFO_FINGER,cert));
-        oxs_x509_cert_set_serial_number(oxs_cert, env, openssl_x509_get_serial(env, cert));
-        oxs_x509_cert_set_key_identifier(oxs_cert, env, openssl_x509_get_subject_key_identifier(env, cert));
-
-        /*Additionally we need to set the public key*/
-        openssl_x509_get_pubkey(env, cert, &pubkey);
-        open_pubkey = openssl_pkey_create(env);
-        OPENSSL_PKEY_POPULATE(open_pubkey, env, pubkey, openssl_x509_get_info(env, OPENSSL_X509_INFO_FINGER,cert), OPENSSL_PKEY_TYPE_PUBLIC_KEY);
-        /*Set the public key to the x509 certificate*/
-        oxs_x509_cert_set_public_key(oxs_cert, env, open_pubkey);
-    }
+    oxs_cert = oxs_key_mgr_convert_to_x509(env, cert);
 
     return oxs_cert; 
 
