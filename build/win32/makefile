@@ -118,7 +118,7 @@ WODEN_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\woden\include \
 
 
 !if "$(ENABLE_SSL)" == "1"
-AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR )\include
+AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
 !endif
 
 #source paths for core modules
@@ -161,9 +161,13 @@ AXIS2_ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\modules\core\addr\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\phaseresolver\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\receivers\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\util\*.c \
-		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\*.c
+		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\common\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\util\*.c
+		
 		
 AXIS2_HTTP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\*.c
+
+
 !if "$(ENABLE_SSL)" == "1"
 AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
 		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\ssl\*.c
@@ -189,7 +193,7 @@ LDFLAGS = /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXSLT_BIN_DIR)\lib \
 LIBS =  Rpcrt4.lib Ws2_32.lib
 
 !if "$(ENABLE_SSL)" == "1"
-LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_BIN_DIR )\lib\VC
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_BIN_DIR)\lib\VC
 LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
 !endif
 
@@ -1080,9 +1084,9 @@ axis2:
 ##############################################################################################
 
 
-all: clean_make_dir clean deploy axis2_core axis2_samples axis2_other_samples copy_include clean_make_dir 
+all: clean_make_dir clean deploy axis2_core copy_include clean_make_dir 
  
 install: all
 
-dist: all mod_rampart_all axis2_IIS_module tcpmon codegen_tool copy_extra copy_samples mv_dist
+dist: all mod_rampart_all axis2_apache_module axis2_IIS_moule copy_extra copy_samples mv_dist
 
