@@ -529,42 +529,6 @@
 				<Filter
 					Name="http"
 					>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_chunked_stream.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_header.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_out_transport_info.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_request_line.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_simple_request.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_simple_response.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_status_line.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_transport_utils.c"
-						>
-					</File>
-					<File
-						RelativePath="..\..\..\..\modules\core\transport\http\http_worker.c"
-						>
-					</File>
 				</Filter>
 			</Filter>
 			<Filter
