@@ -905,6 +905,7 @@ codegen_tool: codegen_dirs w2c_codegen wsdl2code schema2code codegen_writers cod
 
 OMXMLSEC_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\*.c \
     	       $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\tokens\*.c \
+    	       $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\c14n\*.c \
     	       $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\openssl\*.c
 
 SECPOLICY_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\secpolicy\builder\*.c \
