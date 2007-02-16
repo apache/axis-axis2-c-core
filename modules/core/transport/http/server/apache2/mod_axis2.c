@@ -245,7 +245,6 @@ void * AXIS2_CALL
 axis2_module_malloc(
     axis2_allocator_t *allocator, size_t size)
 {
-    void *ret_obj = NULL;
     return apr_palloc((apr_pool_t*) (allocator->current_pool), size);
 }
 
