@@ -22,7 +22,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/om \
 			-I ../../../util/include
 
-EXTRA_DIST = maven.xml project.xml axiom_soap11_builder_helper.h \
+EXTRA_DIST =     axiom_soap11_builder_helper.h \
 		_axiom_soap_fault_code.h _axiom_soap_fault_reason.h \
 		_axiom_soap_fault_value.h axiom_soap12_builder_helper.h \
 		_axiom_soap_fault_detail.h _axiom_soap_fault_role.h \
