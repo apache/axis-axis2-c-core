@@ -50,6 +50,10 @@
 #define c14n_ns_stack_get_default(ctx) \
         ((ctx)->ns_stack->def_ns)
 
+#define C14N_GET_ROOT_NODE_FROM_DOC_OR_NODE(doc, node, ctx) \
+    ((doc) ? AXIOM_DOCUMENT_GET_ROOT_ELEMENT((axiom_document_t *)(doc), \
+        (ctx)->env) : c14n_get_root_node((node), (ctx))) 
+
 
 typedef struct c14n_ns_stack {
     int head; /*index of the currnt stack TOP*/
@@ -367,6 +371,12 @@ c14n_no_output_ancestor_uses_prefix(
     const c14n_ctx_t *ctx
     );
 
+static axiom_node_t*
+c14n_get_root_node(
+    const axiom_node_t *node,
+    const c14n_ctx_t *ctx
+    );
+
 /*static axis2_bool_t
 c14n_in_nodeset(
     const axiom_node_t *node,
@@ -436,6 +446,23 @@ c14n_in_nodeset(
     return AXIS2_SUCCESS;
 }*/
 
+static axiom_node_t*
+c14n_get_root_node(
+    const axiom_node_t *node,
+    const c14n_ctx_t *ctx
+    )
+{
+    const axiom_node_t *parent;
+    const axiom_node_t *prv_parent;
+
+    parent = node;
+    while (parent)
+    {
+        prv_parent = parent;
+        parent = AXIOM_NODE_GET_PARENT((axiom_node_t *)parent, ctx->env);
+    }
+    return (axiom_node_t *)prv_parent;
+}
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_c14n_apply_stream(
@@ -460,9 +487,9 @@ oxs_c14n_apply_stream(
 
     if (ctx && ctx->outstream)
     {
-
-        root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT((axiom_document_t *)doc,
-                env); 
+        root_node = C14N_GET_ROOT_NODE_FROM_DOC_OR_NODE(doc, node, ctx);
+        /*root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT((axiom_document_t *)doc,
+                ctx->env); */
 
         /* shouldn't the called method's document be const?*/
 
