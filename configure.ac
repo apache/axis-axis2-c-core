@@ -327,6 +327,7 @@ AC_CONFIG_FILES([Makefile \
     modules/core/engine/Makefile \
     modules/core/addr/Makefile \
     modules/core/phaseresolver/Makefile \
+    modules/core/transport/Makefile \
     modules/core/transport/http/Makefile \
     modules/core/transport/http/common/Makefile \
     modules/core/transport/http/util/Makefile \
