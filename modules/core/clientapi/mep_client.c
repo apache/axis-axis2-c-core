@@ -625,7 +625,6 @@ axis2_mep_client_two_way_send(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_op_t *op = NULL;
     axiom_soap_envelope_t *response_envelope = NULL;
-    const axis2_char_t *soap_ns_uri = NULL;
     axis2_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -743,7 +742,6 @@ axis2_mep_client_receive(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_op_t *op = NULL;
     axiom_soap_envelope_t *response_envelope = NULL;
-    const axis2_char_t *soap_ns_uri = NULL;
     axis2_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);

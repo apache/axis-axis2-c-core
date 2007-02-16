@@ -226,7 +226,6 @@ axis2_soap_over_http_sender_send(
     axis2_bool_t doing_mtom = AXIS2_FALSE;
     axis2_property_t *dump_property = NULL;
     axis2_param_t *ssl_pp_param = NULL; /* ssl passphrase */
-    axis2_property_t *ssl_pp_property = NULL;
     axis2_char_t *ssl_pp = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
