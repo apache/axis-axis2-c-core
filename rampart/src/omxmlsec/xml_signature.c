@@ -38,8 +38,43 @@
 #include <oxs_token_signature_method.h>
 #include <oxs_token_signature_value.h>
 #include <oxs_token_signed_info.h>
+#include <oxs_token_x509_certificate.h>
+#include <oxs_token_x509_data.h>
+#include <oxs_token_key_info.h>
 /*Private functions*/
 
+/*parent is ds:Signature*/
+static axis2_status_t
+oxs_xml_sig_build_key_info(const axis2_env_t *env,
+    axiom_node_t *parent,
+    oxs_sign_ctx_t *sign_ctx)
+{
+    axiom_node_t *key_info_node = NULL;
+    axiom_node_t *x509_data_node = NULL;
+    axiom_node_t *x509_certificate_node = NULL;
+    axis2_char_t *cert_data = NULL;
+    oxs_x509_cert_t *cert = NULL;
+    
+    /*Build the KeyInfo node*/
+    key_info_node = oxs_token_build_key_info_element(env, parent);
+
+    /*TODO: Right now we support only X509Data. But should support other patterns as well*/
+    cert = oxs_sign_ctx_get_certificate(sign_ctx, env);
+    if(!cert){
+        return AXIS2_FAILURE;
+    }
+
+    /*Get certificate data*/
+    cert_data = oxs_x509_cert_get_data(cert, env);
+
+    /*Build the X509Data node*/
+    x509_data_node = oxs_token_build_x509_data_element(env, key_info_node);
+
+    /*Now build the X509Certificate node*/
+    x509_certificate_node = oxs_token_build_x509_certificate_element(env, x509_data_node, cert_data); 
+
+    return AXIS2_SUCCESS;
+}
 
 /*parent is ds:SignedInfo*/
 static axis2_status_t
@@ -179,7 +214,9 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     /*At this point we have a complete <SignedInfo> node. Now we need to sign it*/
     oxs_xml_sig_sign_signed_info(env, signature_node, signed_info_node, sign_ctx); 
 
-    
+    /*Now we need to build the KeyInfo node*/    
+    oxs_xml_sig_build_key_info(env, signature_node, sign_ctx);     
+
     return AXIS2_SUCCESS;
 }
 

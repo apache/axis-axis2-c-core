@@ -113,6 +113,9 @@ int main(int argc, char *argv[])
             printf("Cannot load private key");
         }
         oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
+
+        /*TODO : Set x509 certificate. This is required to set the Key Information in ds:KeyInfo*/
+
         /*Set sig algo*/
         oxs_sign_ctx_set_sign_mtd_algo(sign_ctx, env, OXS_HREF_RSA_SHA1);
         /*Set C14N method*/
