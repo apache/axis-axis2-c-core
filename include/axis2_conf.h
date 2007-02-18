@@ -48,7 +48,6 @@
 #include <axis2_hash.h>
 #include <axis2_phases_info.h>
 #include <axis2_msg_recv.h>
-#include <axis2_disp_checker.h>
 
 #ifdef __cplusplus
 extern "C"
