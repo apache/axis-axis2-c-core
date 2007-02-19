@@ -680,6 +680,7 @@ c14n_apply_on_element(
     axiom_namespace_t *ns = NULL;
     /*axiom_children_iterator_t *child_itr = NULL;*/
     c14n_ns_stack_t *save_stack = NULL;
+    axiom_node_t *child_node = NULL;
 
     ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT((axiom_node_t *)node, 
             ctx->env);
@@ -730,7 +731,6 @@ c14n_apply_on_element(
 
     /*process child elements*/
     
-    axiom_node_t *child_node = NULL;
     child_node = AXIOM_NODE_GET_FIRST_CHILD((axiom_node_t *)node, ctx->env);
 
     while (child_node)
@@ -1218,9 +1218,10 @@ c14n_apply_on_namespace_axis_exclusive(
         
                 if (v)
                 {
+                    axis2_char_t *pfx = NULL;
                     ns = (axiom_namespace_t *) v;
                      
-                    axis2_char_t *pfx = AXIOM_NAMESPACE_GET_PREFIX(ns, ctx->env);
+                    pfx = AXIOM_NAMESPACE_GET_PREFIX(ns, ctx->env);
                     /*axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI(ns, ctx->env);*/
                     
                     if (AXIS2_STRLEN(pfx) == 0)
