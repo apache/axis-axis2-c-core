@@ -148,17 +148,13 @@ axis2_apache2_worker_process_request(
     axis2_char_t *http_version = NULL;
     axis2_string_t *soap_action = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
-    axis2_char_t *ctx_written = NULL;
     int content_length = -1;
     axis2_char_t *encoding_header_value = NULL;
-    axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *req_url = NULL;
     axis2_char_t *body_string = NULL;
     unsigned int body_string_len = 0;
     int send_status = -1;
     axis2_char_t *content_type = NULL;
-    axis2_property_t *property = NULL;
-    /*axis2_url_t *url = NULL;*/
     axis2_http_out_transport_info_t *apache2_out_transport_info = NULL;
     axis2_char_t *ctx_uuid = NULL;
 
@@ -213,9 +209,9 @@ axis2_apache2_worker_process_request(
 
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
-    /*AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS,
+    /*axis2_msg_ctx_set_transport_headers(msg_ctx, env, 
                    axis2_apache2_worker_get_headers(apache2_worker, env, 
-                         simple_request), AXIS2_FALSE);*/
+                         simple_request));*/
     ctx_uuid = axis2_uuid_gen(env);
     if (ctx_uuid)
     {
@@ -289,23 +285,8 @@ axis2_apache2_worker_process_request(
     }
     if (-1 == send_status)
     {
-        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-        if (op_ctx)
-        {
-            axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
-                        msg_ctx, env), env);
-            if (ctx)
-            {
-                property = AXIS2_CTX_GET_PROPERTY(ctx, env,
-                        AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
-                if (property)
-                {
-                    ctx_written = AXIS2_PROPERTY_GET_VALUE(property, env);
-                    property = NULL;
-                }
-            }
-        }
-        if (ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
+        axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        if (axis2_op_ctx_get_response_written(op_ctx, env))
         {
             send_status = OK;
             if (out_stream)

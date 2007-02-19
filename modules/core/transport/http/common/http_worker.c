@@ -163,7 +163,6 @@ axis2_http_worker_process_request(
     axis2_char_t *soap_action = NULL;
     axis2_string_t *soap_action_str = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
-    axis2_char_t *ctx_written = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     int content_length = -1;
     axis2_http_header_t *encoding_header = NULL;
@@ -173,7 +172,6 @@ axis2_http_worker_process_request(
     axis2_url_t *request_url = NULL;
     axis2_http_out_transport_info_t *http_out_transport_info = NULL;
     axis2_hash_t *headers = NULL;
-    axis2_property_t *property = NULL;
     axis2_char_t *url_external_form = NULL;
     axis2_char_t *svc_grp_uuid = NULL;
     axis2_char_t *path = NULL;
@@ -264,13 +262,8 @@ axis2_http_worker_process_request(
     
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
-    property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_hash_free_void_arg);
     headers = axis2_http_worker_get_headers(http_worker, env, simple_request);
-    AXIS2_PROPERTY_SET_VALUE(property, env, headers);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS, property,
-            AXIS2_FALSE);
+    axis2_msg_ctx_set_transport_headers(msg_ctx, env, headers);
 
     svc_grp_uuid = axis2_uuid_gen(env);
     if (svc_grp_uuid)
@@ -385,20 +378,9 @@ axis2_http_worker_process_request(
 
         }
     }
+
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-    if (op_ctx)
-    {
-        axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
-                    msg_ctx, env), env);
-        if (ctx)
-        {
-            property = AXIS2_CTX_GET_PROPERTY(ctx, env,
-                    AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
-            if (property)
-                ctx_written = AXIS2_PROPERTY_GET_VALUE(property, env);
-        }
-    }
-    if (ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
+    if (axis2_op_ctx_get_response_written(op_ctx, env))
     {
         AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env, http_version,
                 AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
@@ -420,6 +402,7 @@ axis2_http_worker_process_request(
        operation context that holds it
     AXIS2_MSG_CTX_FREE(msg_ctx, env); */
     /* Free message contextx */
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     if (op_ctx) 
     {
         axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;

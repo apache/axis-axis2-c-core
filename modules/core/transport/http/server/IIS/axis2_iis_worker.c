@@ -167,7 +167,6 @@ axis2_iis_worker_process_request(
     axis2_bool_t processed = AXIS2_FALSE;
     axis2_char_t *ctx_written = NULL;
     //int content_length = -1;
-    axis2_op_ctx_t *op_ctx = NULL;
     //axis2_char_t *req_url = NULL;
     axis2_char_t *body_string = NULL;
     int send_status = -1;
@@ -324,23 +323,8 @@ axis2_iis_worker_process_request(
 	// Nothing wrong has happen. So proceed with the request
     if (-1 == send_status)
     {
-        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-        if (op_ctx)
-        {
-            axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
-                        msg_ctx, env), env);
-            if (ctx)
-            {
-                property = AXIS2_CTX_GET_PROPERTY(ctx, env,
-                        AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
-                if (property)
-                {
-                    ctx_written = AXIS2_PROPERTY_GET_VALUE(property, env);
-                    property = NULL;
-                }
-            }
-        }
-        if (ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
+        axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        if (axis2_op_ctx_get_response_written(op_ctx, env))
         {
             if (out_stream)
             {

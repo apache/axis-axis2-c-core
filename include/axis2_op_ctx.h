@@ -205,6 +205,31 @@ extern "C"
     axis2_op_ctx_get_msg_ctx_map(const axis2_op_ctx_t *op_ctx,
         const axis2_env_t *env);
 
+    /**
+     * Sets the bool value indicating the status of response.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @param response_written AXIS2_TRUE if response is written, else 
+     * AXIS2_FALSE
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_op_ctx_set_response_written(axis2_op_ctx_t *op_ctx,
+        const axis2_env_t *env,
+        const axis2_bool_t response_written);
+
+
+    /**
+     * Checks the response status, whether it is written or not.
+     * @param msg_ctx message context
+     * @param env pointer to environment struct
+     * @return AXIS2_TRUE if response is already written, else AXIS2_FALSE         
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
+        const axis2_env_t *env);
+
+
 /** Gets base context struct. */
 #define AXIS2_OP_CTX_GET_BASE(op_ctx, env) \
       axis2_op_ctx_get_base(op_ctx, env)

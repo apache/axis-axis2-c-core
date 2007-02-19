@@ -224,14 +224,8 @@ axis2_http_transport_sender_invoke(
     /*AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx,
                       env, axis2_http_transport_utils_is_doing_rest(env, 
                       msg_ctx));*/
-    property = (axis2_property_t *)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
-            AXIS2_TRANSPORT_URL, AXIS2_FALSE);
-    if (property)
-    {
-        transport_url = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
-        printf("transport_url:%s\n", transport_url);
-        property = NULL;
-    }
+
+    transport_url = axis2_msg_ctx_get_transport_url(msg_ctx, env);
     if (transport_url)
     {
         epr = axis2_endpoint_ref_create(env, transport_url);
@@ -294,10 +288,9 @@ axis2_http_transport_sender_invoke(
         
         if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))
         {
-            axis2_op_ctx_t *op_ctx = NULL;
-            axis2_ctx_t *ctx = NULL;
             axis2_http_out_transport_info_t *out_info = NULL;
             axis2_bool_t is_soap11 = AXIS2_FALSE;
+            axis2_op_ctx_t *op_ctx = NULL; 
 
             out_info = axis2_msg_ctx_get_http_out_transport_info(msg_ctx, env);
 
@@ -399,22 +392,7 @@ axis2_http_transport_sender_invoke(
             /*AXIS2_FREE(env->allocator, buffer);*/
 
             op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-            if (op_ctx)
-            {
-                ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
-                if (ctx)
-                {
-                    axis2_char_t *value = NULL;
-
-                    value = AXIS2_STRDUP("TRUE", env);
-                    property = axis2_property_create(env);
-                    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-                    AXIS2_PROPERTY_SET_VALUE(property, env, value);
-                    AXIS2_CTX_SET_PROPERTY(ctx, env, AXIS2_RESPONSE_WRITTEN,
-                            property, AXIS2_FALSE);
-                }
-            }
-
+            axis2_op_ctx_set_response_written(op_ctx, env, AXIS2_TRUE);
         }
     }
 

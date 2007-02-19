@@ -307,16 +307,6 @@ extern "C"
         const axis2_env_t *env);
 
     /**
-     * Checks the response status, whether it is written or not.
-     * @param msg_ctx message context
-     * @param env pointer to environment struct
-     * @return AXIS2_TRUE if response is already written, else AXIS2_FALSE         
-     */
-    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_msg_ctx_get_response_written(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
-
-    /**
      * Checks if it is on the server side that the message is being dealt 
      * with, or on the client side.
      * @param msg_ctx message context
@@ -466,19 +456,6 @@ extern "C"
     axis2_msg_ctx_set_reply_to(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         axis2_endpoint_ref_t *referance);
-
-    /**
-     * Sets the bool value indicating the status of response.
-     * @param msg_ctx message context
-     * @param env pointer to environment struct
-     * @param response_written AXIS2_TRUE if response is written, else 
-     * AXIS2_FALSE
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_msg_ctx_set_response_written(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
-        const axis2_bool_t response_written);
 
     /**
      * Sets the bool value indicating if it is the server side or the
@@ -1418,6 +1395,33 @@ extern "C"
     axis2_msg_ctx_reset_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
 
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    axis2_msg_ctx_get_transport_headers(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_transport_headers(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        axis2_hash_t *transport_headers);
+
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_msg_ctx_get_transfer_encoding(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_transfer_encoding(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        axis2_char_t *str);
+
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_msg_ctx_get_transport_url(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_ctx_set_transport_url(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        axis2_char_t *str);
+
 /** Gets base context struct. */
 #define AXIS2_MSG_CTX_GET_BASE(msg_ctx, env) \
       axis2_msg_ctx_get_base(msg_ctx, env)
@@ -1481,10 +1485,6 @@ extern "C"
 #define AXIS2_MSG_CTX_GET_REPLY_TO(msg_ctx, env) \
       axis2_msg_ctx_get_reply_to(msg_ctx, env)
 
-/** Gets bool value indicating response written status. */
-#define AXIS2_MSG_CTX_GET_RESPONSE_WRITTEN(msg_ctx, env) \
-      axis2_msg_ctx_get_response_written(msg_ctx, env)
-
 /** Gets bool value indicating whether the invocation is happening on server 
     side or client side. */
 #define AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env) \
@@ -1534,10 +1534,6 @@ extern "C"
 #define AXIS2_MSG_CTX_SET_REPLY_TO(msg_ctx, env, reference) \
       axis2_msg_ctx_set_reply_to(msg_ctx, env, reference)
 
-/** Sets bool value indicating response written status. */
-#define AXIS2_MSG_CTX_SET_RESPONSE_WRITTEN(msg_ctx, env, response_written) \
-      axis2_msg_ctx_set_response_written(msg_ctx, env, response_written)
-
 /** Sets bool value indicating whether the invocation is happening on server 
     side or client side. */
 #define AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, server_side) \
@@ -1546,14 +1542,6 @@ extern "C"
 /** Sets WS-Addressing to address. */
 #define AXIS2_MSG_CTX_SET_TO(msg_ctx, env, reference) \
       axis2_msg_ctx_set_to(msg_ctx, env, reference)
-
-/** Gets bool value indicating if a new thread required in invocation. */
-#define AXIS2_MSG_CTX_GET_NEW_THREAD_REQUIRED(msg_ctx, env) \
-      axis2_msg_ctx_set_response_written(msg_ctx, env)
-
-/** Sets bool value indicating if a new thread required in invocation. */
-#define AXIS2_MSG_CTX_SET_NEW_THREAD_REQUIRED(msg_ctx, env, new_thread_required) \
-      axis2_msg_ctx_set_response_written(msg_ctx, env, new_thread_required)
 
 /** Sets WS-Addressing action. */
 #define AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, action_uri) \

@@ -66,8 +66,6 @@ struct axis2_msg_ctx
     axiom_soap_envelope_t *response_soap_envelope;
     /** SOAP Fault envelope */
     axiom_soap_envelope_t *fault_soap_envelope;
-    /** response written? */
-    axis2_bool_t response_written;
     /** in fault flow? */
     axis2_bool_t in_fault_flow;
     /** is this server side? */
@@ -148,6 +146,9 @@ struct axis2_msg_ctx
     axis2_string_t *charset_encoding;
     axis2_stream_t *transport_out_stream;
     axis2_http_out_transport_info_t *http_out_transport_info;
+    axis2_hash_t *transport_headers;
+    axis2_char_t *transfer_encoding;
+    axis2_char_t *transport_url;
 };
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
@@ -182,7 +183,6 @@ axis2_msg_ctx_create(
     msg_ctx->transport_out_desc = NULL;
     msg_ctx->soap_envelope = NULL;
     msg_ctx->fault_soap_envelope = NULL;
-    msg_ctx->response_written = AXIS2_FALSE;
     msg_ctx->in_fault_flow = AXIS2_FALSE;
     msg_ctx->server_side = AXIS2_FALSE;
     msg_ctx->message_id = NULL;
@@ -213,6 +213,9 @@ axis2_msg_ctx_create(
     msg_ctx->charset_encoding = NULL;
     msg_ctx->transport_out_stream = NULL;
     msg_ctx->http_out_transport_info = NULL;
+    msg_ctx->transport_headers = NULL;
+    msg_ctx->transfer_encoding = NULL;
+    msg_ctx->transport_url = NULL;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
@@ -349,7 +352,6 @@ axis2_msg_ctx_free(
     if (msg_ctx->charset_encoding)
     {
         axis2_string_free(msg_ctx->charset_encoding, env);
-        msg_ctx->charset_encoding = NULL;
     }
     
     if (msg_ctx->transport_out_stream)
@@ -362,6 +364,16 @@ axis2_msg_ctx_free(
         AXIS2_HTTP_OUT_TRANSPORT_INFO_FREE(msg_ctx->http_out_transport_info, env);
     }
         
+    if (msg_ctx->transport_headers)
+    {
+        axis2_hash_free(msg_ctx->transport_headers, env);
+    }
+        
+    if (msg_ctx->transfer_encoding)
+    {
+        AXIS2_FREE(env->allocator, msg_ctx->transfer_encoding);
+    }
+    
     AXIS2_FREE(env->allocator, msg_ctx);
     msg_ctx = NULL;
 
@@ -545,15 +557,6 @@ axis2_msg_ctx_get_reply_to(
     }
 
     return NULL;
-}
-
-axis2_bool_t AXIS2_CALL
-axis2_msg_ctx_get_response_written(
-    const axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return msg_ctx->response_written;
 }
 
 axis2_bool_t AXIS2_CALL
@@ -745,17 +748,6 @@ axis2_msg_ctx_set_reply_to(
     }
 
     return AXIS2_SUCCESS;
-}
-
-axis2_status_t AXIS2_CALL
-axis2_msg_ctx_set_response_written(
-    struct axis2_msg_ctx *msg_ctx,
-    const axis2_env_t *env,
-    axis2_bool_t response_written)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    msg_ctx->response_written  = response_written ;
-    return  AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
@@ -2098,4 +2090,105 @@ axis2_msg_ctx_reset_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
 
     return AXIS2_SUCCESS;
 }
+   
+AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+axis2_msg_ctx_get_transport_headers(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    if (msg_ctx)
+    {
+        return msg_ctx->transport_headers;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_transport_headers(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_hash_t *transport_headers)
+{
+    if (msg_ctx)
+    {
+        if (msg_ctx->transport_headers)
+        {
+            axis2_hash_free(msg_ctx->transport_headers, env); 
+        }
+        
+        msg_ctx->transport_headers = transport_headers;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
     
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_msg_ctx_get_transfer_encoding(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{    
+    if (msg_ctx)
+        return msg_ctx->transfer_encoding;
+    else
+        return NULL;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_transfer_encoding(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_char_t *str)
+{    
+    if (msg_ctx)
+    {
+        if (msg_ctx->transfer_encoding)
+        {
+            AXIS2_FREE(env->allocator, msg_ctx->transfer_encoding);
+            msg_ctx->transfer_encoding = NULL;
+        }
+        if (str)
+        {
+            msg_ctx->transfer_encoding = str;
+        }
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_msg_ctx_get_transport_url(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{    
+    if (msg_ctx)
+        return msg_ctx->transport_url;
+    else
+        return NULL;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_transport_url(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_char_t *str)
+{    
+    if (msg_ctx)
+    {
+        /* this is a shallow copy, no need to free */
+        msg_ctx->transport_url = str;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
+

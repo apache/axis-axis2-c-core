@@ -48,6 +48,7 @@ struct axis2_op_ctx
     axis2_qname_t *svc_qname;
     /* mutex to synchronize the read/write operations */
     axis2_thread_mutex_t *mutex;
+    axis2_bool_t response_written;
 };
 
 AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
@@ -75,6 +76,7 @@ axis2_op_ctx_create(const axis2_env_t *env,
     op_ctx->op_ctx_map = NULL;
     op_ctx->op_qname = NULL;
     op_ctx->svc_qname = NULL;
+    op_ctx->response_written = AXIS2_FALSE;
     op_ctx->mutex = axis2_thread_mutex_create(env->allocator,
             AXIS2_THREAD_MUTEX_DEFAULT);
 
@@ -350,3 +352,32 @@ axis2_op_ctx_get_msg_ctx_map(
     AXIS2_ENV_CHECK(env, NULL);
     return (axis2_msg_ctx_t **)(op_ctx->msg_ctx_array);
 }
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
+    const axis2_env_t *env)
+{
+    if (op_ctx)
+        return op_ctx->response_written;
+    else
+        return AXIS2_FAILURE;
+
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_op_ctx_set_response_written(axis2_op_ctx_t *op_ctx,
+    const axis2_env_t *env,
+    const axis2_bool_t written)
+{
+    if (op_ctx)
+    {
+        op_ctx->response_written = written;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
+ 
+    return AXIS2_SUCCESS;
+}
+

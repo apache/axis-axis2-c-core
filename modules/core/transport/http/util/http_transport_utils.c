@@ -176,7 +176,6 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_hash_t *headers = NULL;
     axis2_engine_t *engine = NULL;
     axiom_soap_body_t *soap_body = NULL;
-    axis2_property_t *property = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_hash_t *binary_data_map = NULL;
     axis2_char_t *soap_body_str = NULL;
@@ -218,13 +217,8 @@ axis2_http_transport_utils_process_http_post_request(
             soap_action[soap_action_len -1] = '\0';
         }
     }
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_HEADERS,
-            AXIS2_FALSE);
-    if (property)
-    {
-        headers = AXIS2_PROPERTY_GET_VALUE(property, env);
-        property = NULL;
-    }
+
+    headers = axis2_msg_ctx_get_transport_headers(msg_ctx, env);
     if (headers)
     {
         axis2_http_header_t *encoding_header = NULL;
@@ -254,13 +248,7 @@ axis2_http_transport_utils_process_http_post_request(
     else
     {
         /* check content encoding from msg ctx property */
-        axis2_property_t *property = NULL;
-        axis2_char_t *value = NULL;
-        property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
-            AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
-            AXIS2_FALSE);
-        if (property)
-            value = (axis2_char_t *)AXIS2_PROPERTY_GET_VALUE(property, env);
+        axis2_char_t *value = axis2_msg_ctx_get_transfer_encoding(msg_ctx, env);
 
         if (value && AXIS2_STRSTR(value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
         {
@@ -1082,13 +1070,9 @@ axis2_http_transport_utils_create_soap_msg(
         AXIS2_FREE(env->allocator, callback_ctx);
         return NULL;
     }
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
-            AXIS2_HTTP_HEADER_TRANSFER_ENCODING, AXIS2_FALSE);
-    if (property)
-    {
-        trans_enc = AXIS2_PROPERTY_GET_VALUE(property, env);
-        property = NULL;
-    }
+
+    trans_enc = axis2_msg_ctx_get_transfer_encoding(msg_ctx, env);
+    
     if (trans_enc && 0 == AXIS2_STRCMP(trans_enc,
             AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
     {
