@@ -51,7 +51,8 @@ oxs_transforms_factory_produce_transform(const axis2_env_t *env,
         oxs_transform_set_id(tr, env, id);
         oxs_transform_set_input_data_type(tr, env, OXS_TRANSFORM_TYPE_NODE);
         oxs_transform_set_output_data_type(tr, env, OXS_TRANSFORM_TYPE_CHAR);
-        oxs_transform_set_transform_func(tr, env, oxs_transforms_exc_c14n);
+        /*oxs_transform_set_transform_func(tr, env, oxs_transforms_exc_c14n);*/
+        return tr;
     }else{
         /*Error we do not support*/
         return NULL;

@@ -107,4 +107,32 @@ oxs_transform_set_transform_function(
     return AXIS2_SUCCESS;
 }
 
+    /*Create function*/
+AXIS2_EXTERN oxs_transform_t *AXIS2_CALL
+oxs_transform_create(const axis2_env_t *env)
+{
+    oxs_transform_t *transform = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    transform = AXIS2_MALLOC(env->allocator, sizeof(oxs_transform_t));
+    if (!transform)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    /*TODO Set defaults*/
+
+    return transform;
+}
+
+    /*Free*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_transform_free(oxs_transform_t *ctx,
+        const axis2_env_t *env)
+{
+    /*TODO free*/
+    return AXIS2_SUCCESS;
+}
 
