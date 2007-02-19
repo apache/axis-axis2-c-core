@@ -112,9 +112,7 @@ AXIS2_EXTERN oxs_transform_t *AXIS2_CALL
 oxs_transform_create(const axis2_env_t *env)
 {
     oxs_transform_t *transform = NULL;
-
     AXIS2_ENV_CHECK(env, NULL);
-
     transform = AXIS2_MALLOC(env->allocator, sizeof(oxs_transform_t));
     if (!transform)
     {
@@ -123,16 +121,28 @@ oxs_transform_create(const axis2_env_t *env)
     }
 
     /*TODO Set defaults*/
+    transform->id = NULL;
 
     return transform;
 }
 
     /*Free*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_transform_free(oxs_transform_t *ctx,
+oxs_transform_free(oxs_transform_t *transform,
         const axis2_env_t *env)
 {
     /*TODO free*/
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if (transform->id)
+    {
+        AXIS2_FREE(env->allocator, transform->id);
+        transform->id = NULL;
+    }
+
+    AXIS2_FREE(env->allocator,  transform);
+    transform = NULL;
+
     return AXIS2_SUCCESS;
 }
 
