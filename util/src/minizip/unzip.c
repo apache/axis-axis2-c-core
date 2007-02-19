@@ -225,8 +225,8 @@ voidpf filestream;
 uLong *pX;
 {
     uLong x ;
-    int i;
-    int err;
+    int i = 0;
+    int err = 0;
 
     err = unzlocal_getByte(pzlib_filefunc_def, filestream, &i);
     x = (uLong)i;
@@ -253,8 +253,8 @@ voidpf filestream;
 uLong *pX;
 {
     uLong x ;
-    int i;
-    int err;
+    int i = 0;
+    int err = 0;
 
     err = unzlocal_getByte(pzlib_filefunc_def, filestream, &i);
     x = (uLong)i;
@@ -376,7 +376,7 @@ voidpf filestream;
     while (uBackRead < uMaxBack)
     {
         uLong uReadSize, uReadPos ;
-        int i;
+        int i = 0;
         if (uBackRead + BUFREADCOMMENT > uMaxBack)
             uBackRead = uMaxBack;
         else
@@ -856,7 +856,7 @@ const char *szFileName;
 int iCaseSensitivity;
 {
     unz_s* s;
-    int err;
+    int err = 0;
 
     /* We remember the 'current' position in the file so that we can jump
      * back there if we fail.
@@ -952,7 +952,7 @@ extern int ZEXPORT unzGoToFilePos(file, file_pos)
 unz_file_pos* file_pos;
 {
     unz_s* s;
-    int err;
+    int err = 0;
 
     if (file == NULL || file_pos == NULL)
         return UNZ_PARAMERROR;
@@ -1203,7 +1203,7 @@ const char* password;
 #    ifndef NOUNCRYPT
     if (password)
     {
-        int i;
+        int i = 0;
         s->pcrc_32_tab = get_crc_table();
         init_keys(password, s->keys, s->pcrc_32_tab);
         if (ZSEEK(s->z_filefunc, s->filestream,
