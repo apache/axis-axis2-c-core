@@ -664,9 +664,6 @@ axis2_engine_create_fault_msg_ctx(
     AXIS2_MSG_CTX_SET_PROCESS_FAULT(fault_ctx, env, AXIS2_TRUE);
     AXIS2_MSG_CTX_SET_SERVER_SIDE(fault_ctx, env, AXIS2_TRUE);
 
-    axis2_msg_ctx_set_http_out_transport_info(fault_ctx, env, 
-        axis2_msg_ctx_get_http_out_transport_info(processing_context, env));
-
     envelope = AXIS2_MSG_CTX_GET_FAULT_SOAP_ENVELOPE(processing_context, env);
 
     if (!envelope)
