@@ -258,5 +258,4 @@ oxs_key_mgr_load_x509_cert_from_string(const axis2_env_t *env,
     oxs_cert = oxs_key_mgr_convert_to_x509(env, cert);
 
     return oxs_cert; 
-
 }

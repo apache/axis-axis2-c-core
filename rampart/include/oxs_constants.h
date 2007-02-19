@@ -181,6 +181,13 @@ extern "C"
 #define OXS_HREF_C14N                   "http://www.w3.org/TR/2001/REC-xml-c14n-20010315"
 
 /****************************************************************
+   Transforms
+****************************************************************/
+#define OXS_HREF_TRANSFORM_XML_EXC_C14N     "http://www.w3.org/2001/10/xml-exc-c14n#"
+#define OXS_HREF_TRANSFORM_STR_TRANSFORM     "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#STR-Transform"
+#define OXS_HREF_TRANSFORM_ENVELOPED_SIGNATURE "http://www.w3.org/2000/09/xmldsig#enveloped-signature"
+
+/****************************************************************
     KeyNAME
 ****************************************************************/
 #define OXS_NAME_KEY_NAME          "key-name" 

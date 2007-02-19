@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
     sign_ctx = oxs_sign_ctx_create(env);
     if(sign_ctx){
         openssl_pkey_t *prvkey = NULL;
+        oxs_x509_cert_t *cert = NULL;
 
         /*Set private key*/
         prvkey = oxs_key_mgr_load_private_key_from_file(env, "rsakey.pem", "");
@@ -115,6 +116,11 @@ int main(int argc, char *argv[])
         oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
 
         /*TODO : Set x509 certificate. This is required to set the Key Information in ds:KeyInfo*/
+        cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, "rsacert.pem");
+        if(!cert){
+             printf("Cannot load certificate");
+        }
+        oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
 
         /*Set sig algo*/
         oxs_sign_ctx_set_sign_mtd_algo(sign_ctx, env, OXS_HREF_RSA_SHA1);

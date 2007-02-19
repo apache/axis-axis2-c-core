@@ -105,7 +105,7 @@ oxs_xml_sig_build_reference(const axis2_env_t *env,
         axiom_node_t *transforms_node = NULL;
         /*Add ds:Transforms element*/
         transforms_node = oxs_token_build_transforms_element(env, reference_node);
-        /*LOOP: Apply transforms. This usually C14N*/
+        /*LOOP: Apply transforms. For example exclusive C14N*/
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(transforms, env); i++){
             /*Apply transform*/
 
