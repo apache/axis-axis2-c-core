@@ -1,6 +1,5 @@
 TESTS = test_thread
-bindir=$(prefix)/bin/system_test
-bin_PROGRAMS = test_util test_thread
+noinst_PROGRAMS = test_util test_thread
 noinst_HEADERS = test_log.h \
                     test_thread.h 
 check_PROGRAMS = test_util test_thread
