@@ -134,7 +134,7 @@ void test_http_client(const axis2_env_t *env)
     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, header);
     client = axis2_http_client_create(env, url);
 
-    status = AXIS2_HTTP_CLIENT_SEND(client, env, request);
+    status = AXIS2_HTTP_CLIENT_SEND(client, env, request, NULL);
     if (status < 0)
     {
         printf("Test FAILED .........Can't send the request. Status :%d\n", status);
