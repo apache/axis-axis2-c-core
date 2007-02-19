@@ -1,6 +1,5 @@
 TESTS = test_print
-bindir=$(prefix)/bin/system_test
-bin_PROGRAMS = test_print
+noinst_PROGRAMS = test_print
 SUBDIRS =
 AM_CFLAGS = -g -O2 -pthread
 test_print_SOURCES = test_print.c

@@ -1,6 +1,5 @@
 TESTS = test_deployment
-bindir=$(prefix)/bin/system_test
-bin_PROGRAMS = test_deployment
+noinst_PROGRAMS = test_deployment
 SUBDIRS =
 AM_CFLAGS = $(CFLAGS) -g -pthread
 test_deployment_SOURCES = test_deployment.c

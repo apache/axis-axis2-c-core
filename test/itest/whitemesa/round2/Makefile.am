@@ -1,5 +1,4 @@
-bindir=$(prefix)/bin/itest
-bin_PROGRAMS = round2 
+noinst_PROGRAMS = round2 
 round2_SOURCES = round2_client.c
 
 round2_LDADD   =    $(LDFLAGS) \

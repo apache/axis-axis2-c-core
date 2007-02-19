@@ -1,7 +1,6 @@
-bindir=$(prefix)/bin/system_test
 TESTS = test_context
 check_PROGRAMS = test_context
-bin_PROGRAMS = test_context
+noinst_PROGRAMS = test_context
 SUBDIRS =
 AM_CFLAGS = -g -pthread
 test_context_SOURCES = test_context.c
