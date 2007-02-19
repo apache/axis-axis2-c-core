@@ -697,7 +697,8 @@ write_to_file (char *filename,
 	 int size = 0;
 	 if (filename)
 		{
-			 FILE *fp = fopen (filename, "w");
+			 //FILE *fp = fopen (filename, "w");
+			 FILE *fp = fopen (filename, "a+");
 			 size = fwrite (buffer, 1, strlen (buffer), fp);
 			 fclose (fp);
 		}
