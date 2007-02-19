@@ -26,6 +26,8 @@
 #include <oxs_buffer.h>
 #include <openssl_rsa.h>
 #include <openssl_digest.h>
+#include <openssl_sign.h>
+
 /*Private functions*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sig_sign_rsa_sha1(const axis2_env_t *env,
