@@ -1,6 +1,5 @@
 TESTS = test_soap
-bindir=$(prefix)/bin/system_test
-bin_PROGRAMS = test_soap
+noinst_PROGRAMS = test_soap
 check_PROGRAMS = test_soap
 SUBDIRS =
 AM_CFLAGS = -g -O2 -pthread
