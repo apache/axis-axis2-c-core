@@ -530,14 +530,8 @@ axis2_rest_sender_get_header_info(
                 transfer_encoding =
                     AXIS2_STRDUP(AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED,
                             env);
-                property = axis2_property_create(env);
-                AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-                AXIS2_PROPERTY_SET_VALUE(property, env, transfer_encoding);
-                AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
-                        AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
-                        property,
-                        AXIS2_FALSE);
                 response_chunked = AXIS2_TRUE;
+                axis2_msg_ctx_set_transfer_encoding(msg_ctx, env, transfer_encoding);
             }
             if (0 != AXIS2_STRCMP(name, AXIS2_HTTP_HEADER_CONTENT_TYPE))
             {

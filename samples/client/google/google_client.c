@@ -68,6 +68,8 @@ int main(int argc, char** argv)
         google_key = argv[1];
     if (argc > 2)
         word_to_spell = argv[2];
+    if (argc > 3)
+        address = argv[3];
 
     printf("Using endpoint : %s\n", address);
     printf("\nInvoking operation %s with params %s and %s\n", operation, google_key, word_to_spell);
