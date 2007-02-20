@@ -216,6 +216,7 @@ axis2_msg_ctx_create(
     msg_ctx->transport_headers = NULL;
     msg_ctx->transfer_encoding = NULL;
     msg_ctx->transport_url = NULL;
+    msg_ctx->response_soap_envelope = NULL;
 
     msg_ctx->base = axis2_ctx_create(env);
     if (!(msg_ctx->base))
