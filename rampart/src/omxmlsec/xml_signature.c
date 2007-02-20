@@ -96,6 +96,8 @@ oxs_xml_sig_build_reference(const axis2_env_t *env,
 
     /*Get the node to digest*/
     node = oxs_sign_part_get_node(sign_part, env);
+    
+    /*Add the reference ID to the node and hence to the ds:Reference node*/
 
     reference_node = oxs_token_build_ds_reference_element(env, parent ,NULL, uri, NULL);
 
@@ -126,6 +128,7 @@ oxs_xml_sig_build_reference(const axis2_env_t *env,
             tr_func = oxs_transform_get_transform_function(tr, env);
             input_dtype = oxs_transform_get_input_data_type(tr, env);
             
+            printf("Transform required = %s", tr_id);
             /*Prepare the input*/
             /*If the required input type is CHAR and what we have is a NODE*/
             if((input_dtype == OXS_TRANSFORM_TYPE_CHAR) && (output_dtype == OXS_TRANSFORM_TYPE_NODE)){
@@ -231,13 +234,13 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     /*Construct the <SignedInfo>  */
     signed_info_node = oxs_token_build_signed_info_element(env, signature_node);
 
-    /*Construct the <SignatureMethod>  */
-    sign_algo = oxs_sign_ctx_get_sign_mtd_algo(sign_ctx, env);
-    signature_mtd_node = oxs_token_build_signature_method_element(env, signed_info_node, sign_algo);
-
     /*Construct the <CanonicalizationMethod> */
     c14n_algo = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env);
     c14n_mtd_node = oxs_token_build_c14n_method_element(env, signed_info_node, c14n_algo);
+
+    /*Construct the <SignatureMethod>  */
+    sign_algo = oxs_sign_ctx_get_sign_mtd_algo(sign_ctx, env);
+    signature_mtd_node = oxs_token_build_signature_method_element(env, signed_info_node, sign_algo);
 
     /*Look for signature parts*/
     sign_parts = oxs_sign_ctx_get_sign_parts(sign_ctx , env);

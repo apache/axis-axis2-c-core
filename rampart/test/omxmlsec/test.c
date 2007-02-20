@@ -72,6 +72,8 @@ int main(int argc, char *argv[])
 {
     axis2_env_t *env = NULL;
     axis2_char_t *filename = "input.xml";
+    axis2_char_t *certfile = "rsacert.pem";
+    axis2_char_t *prvkeyfile = "rsakey.pem";
     axis2_char_t *signed_result = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axiom_node_t *tmpl = NULL;
@@ -108,7 +110,8 @@ int main(int argc, char *argv[])
     /*We need C14N transform*/
     tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
     axis2_array_list_add(tr_list, env, tr);
-    oxs_sign_part_set_transforms(sign_part, env, tr_list);
+    /*oxs_sign_part_set_transforms(sign_part, env, tr_list);*/
+    
     /*We need to sign this node*/
     status = oxs_sign_part_set_node(sign_part, env, axiom_node_get_first_element(tmpl, env));
 
@@ -121,14 +124,14 @@ int main(int argc, char *argv[])
         oxs_x509_cert_t *cert = NULL;
 
         /*Set private key*/
-        prvkey = oxs_key_mgr_load_private_key_from_file(env, "rsakey.pem", "");
+        prvkey = oxs_key_mgr_load_private_key_from_file(env, prvkeyfile, "");
         if(!prvkey){
             printf("Cannot load private key");
         }
         oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
 
         /*TODO : Set x509 certificate. This is required to set the Key Information in ds:KeyInfo*/
-        cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, "rsacert.pem");
+        cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, certfile);
         if(!cert){
              printf("Cannot load certificate");
         }

@@ -38,6 +38,7 @@ struct oxs_asym_ctx_t
 
 /*Public functions*/
 
+AXIS2_EXTERN
 axis2_char_t *AXIS2_CALL
 oxs_asym_ctx_get_file_name(
     const oxs_asym_ctx_t *asym_ctx,
@@ -46,6 +47,7 @@ oxs_asym_ctx_get_file_name(
     return asym_ctx->file_name;
 }
 
+AXIS2_EXTERN
 axis2_char_t *AXIS2_CALL
 oxs_asym_ctx_get_pem_buf(
     const oxs_asym_ctx_t *asym_ctx,
@@ -53,6 +55,7 @@ oxs_asym_ctx_get_pem_buf(
 {
     return asym_ctx->pem_buf;
 }
+AXIS2_EXTERN
 axis2_char_t *AXIS2_CALL
 oxs_asym_ctx_get_password(
     const oxs_asym_ctx_t *asym_ctx,
@@ -60,6 +63,7 @@ oxs_asym_ctx_get_password(
 {
     return asym_ctx->password;
 }
+AXIS2_EXTERN
 oxs_asym_ctx_format_t AXIS2_CALL
 oxs_asym_ctx_get_format(
     const oxs_asym_ctx_t *asym_ctx,
@@ -68,6 +72,7 @@ oxs_asym_ctx_get_format(
     return asym_ctx->format;
 }
 
+AXIS2_EXTERN
 axis2_char_t *AXIS2_CALL
 oxs_asym_ctx_get_algorithm(
     const oxs_asym_ctx_t *asym_ctx,
@@ -76,6 +81,7 @@ oxs_asym_ctx_get_algorithm(
     return asym_ctx->algorithm;
 }
 
+AXIS2_EXTERN
 axis2_char_t *AXIS2_CALL
 oxs_asym_ctx_get_st_ref_pattern(
     const oxs_asym_ctx_t *asym_ctx,
@@ -84,6 +90,7 @@ oxs_asym_ctx_get_st_ref_pattern(
     return asym_ctx->st_ref_pattern;
 }
 
+AXIS2_EXTERN
 oxs_asym_ctx_operation_t AXIS2_CALL
 oxs_asym_ctx_get_operation(
     const oxs_asym_ctx_t *asym_ctx,
@@ -92,6 +99,7 @@ oxs_asym_ctx_get_operation(
     return asym_ctx->operation;
 }
 
+AXIS2_EXTERN
 openssl_pkey_t *AXIS2_CALL
 oxs_asym_ctx_get_private_key(
     const oxs_asym_ctx_t *asym_ctx,
@@ -101,6 +109,7 @@ oxs_asym_ctx_get_private_key(
     return asym_ctx->private_key;
 }
 
+AXIS2_EXTERN
 oxs_x509_cert_t *AXIS2_CALL
 oxs_asym_ctx_get_certificate(
     const oxs_asym_ctx_t *asym_ctx,
@@ -110,6 +119,7 @@ oxs_asym_ctx_get_certificate(
     return asym_ctx->certificate;
 }
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_file_name(
     oxs_asym_ctx_t *asym_ctx,
@@ -126,6 +136,7 @@ oxs_asym_ctx_set_file_name(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_pem_buf(
     oxs_asym_ctx_t *asym_ctx,
@@ -142,6 +153,7 @@ oxs_asym_ctx_set_pem_buf(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_password(
     oxs_asym_ctx_t *asym_ctx,
@@ -158,6 +170,7 @@ oxs_asym_ctx_set_password(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_format(
     oxs_asym_ctx_t *asym_ctx,
@@ -169,6 +182,7 @@ oxs_asym_ctx_set_format(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_algorithm(
     oxs_asym_ctx_t *asym_ctx,
@@ -185,6 +199,7 @@ oxs_asym_ctx_set_algorithm(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_st_ref_pattern(
     oxs_asym_ctx_t *asym_ctx,
@@ -200,6 +215,7 @@ oxs_asym_ctx_set_st_ref_pattern(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_operation(
     oxs_asym_ctx_t *asym_ctx,
@@ -212,6 +228,7 @@ oxs_asym_ctx_set_operation(
 }
 
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_certificate(
     oxs_asym_ctx_t *asym_ctx,
@@ -228,6 +245,7 @@ oxs_asym_ctx_set_certificate(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_private_key(
     oxs_asym_ctx_t *asym_ctx,
@@ -245,7 +263,8 @@ oxs_asym_ctx_set_private_key(
 }
 
 
-AXIS2_EXTERN oxs_asym_ctx_t *AXIS2_CALL
+AXIS2_EXTERN 
+oxs_asym_ctx_t *AXIS2_CALL
 oxs_asym_ctx_create(const axis2_env_t *env)
 {
     oxs_asym_ctx_t *asym_ctx = NULL;
@@ -272,6 +291,7 @@ oxs_asym_ctx_create(const axis2_env_t *env)
 }
 
 
+AXIS2_EXTERN
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_free(oxs_asym_ctx_t *asym_ctx,
         const axis2_env_t *env)

@@ -47,46 +47,46 @@ extern "C"
 
 
 /**********************Getter functions******************************************/
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_sign_part_get_id(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env);
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_sign_part_get_digest_mtd(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env);
 
-axiom_node_t *AXIS2_CALL
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 oxs_sign_part_get_node(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 oxs_sign_part_get_transforms(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env);
 
 /**********************Setter functions******************************************/
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_id(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
     axis2_char_t *id);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_digest_mtd(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
     axis2_char_t *digest_mtd);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_node(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
     axiom_node_t *node);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_transforms(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
