@@ -28,6 +28,7 @@
 #include <oxs_sign_part.h>
 #include <oxs_xml_signature.h>
 #include <oxs_signature.h>
+#include <oxs_transform.h>
 #include <oxs_token_ds_reference.h>
 #include <oxs_token_digest_method.h>
 #include <oxs_token_digest_value.h>
@@ -103,18 +104,59 @@ oxs_xml_sig_build_reference(const axis2_env_t *env,
     
     if((transforms) && (0 < AXIS2_ARRAY_LIST_SIZE(transforms, env))){
         axiom_node_t *transforms_node = NULL;
+        oxs_tr_dtype_t output_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;/*This will always be the current dtype*/
+        void *tr_output = NULL;
+        output_dtype = OXS_TRANSFORM_TYPE_NODE; /*We always begin with a node*/
+        
+        tr_output = node; /*The first transformation is applied to the node*/
+
         /*Add ds:Transforms element*/
         transforms_node = oxs_token_build_transforms_element(env, reference_node);
         /*LOOP: Apply transforms. For example exclusive C14N*/
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(transforms, env); i++){
-            /*Apply transform*/
+            oxs_transform_t *tr = NULL;
+            oxs_transform_tr_func tr_func = NULL;
+            oxs_tr_dtype_t input_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;
+            void *tr_input = NULL;
+            axis2_char_t *tr_id = NULL;
 
-            /*Add to ds:Transforms*/
+            /*Get the ith transform*/
+            tr = (oxs_transform_t*)AXIS2_ARRAY_LIST_GET(transforms, env, i);
+            tr_id = oxs_transform_get_id(tr, env);
+            tr_func = oxs_transform_get_transform_function(tr, env);
+            input_dtype = oxs_transform_get_input_data_type(tr, env);
+            
+            /*Prepare the input*/
+            /*If the required input type is CHAR and what we have is a NODE*/
+            if((input_dtype == OXS_TRANSFORM_TYPE_CHAR) && (output_dtype == OXS_TRANSFORM_TYPE_NODE)){
+                /*Serialize*/
+                tr_input = axiom_node_to_string((axiom_node_t*)tr_output, env);
+            /*If the required input type is NODE and what we have is a CHAR*/
+            }else if((input_dtype == OXS_TRANSFORM_TYPE_NODE) && (output_dtype == OXS_TRANSFORM_TYPE_CHAR)){
+                /*TODO De-serialize*/
+            }else{
+                /*Let it go as it is. */
+                tr_input = tr_output;
+            }
+
+            /*Apply transform*/
+            if(tr_func){
+                output_dtype = (*tr_func)(env, tr_input, input_dtype, &tr_output);
+            }else{
+                oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Cannot get the transform implementation for %s", tr_id);
+            }
+            /*If the output data type is unknown OR the output is NULL its an error*/
+            if((output_dtype == OXS_TRANSFORM_TYPE_UNKNOWN) || (!tr_output)){
+                oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Transform failed for %s", tr_id);
+                /*return AXIS2_FAILURE*/
+            }
+            /*Add to ds:Transforms element*/
+            oxs_token_build_transform_element(env, transforms_node, tr_id);
         }
     }
     /*Serialize node*/
     serialized_node = AXIOM_NODE_TO_STRING(node, env);
-    printf("serialized_node %s\n", serialized_node);
+    
     /*Make digest.*/
     digest_mtd = oxs_sign_part_get_digest_mtd(sign_part, env);
     digest = openssl_sha1(env, serialized_node, axis2_strlen(serialized_node)); 
@@ -151,7 +193,6 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
     
     /*Then serialize <SignedInfo>*/
     serialized_signed_info = c14nized; /*AXIOM_NODE_TO_STRING(signed_info_node, env);*/
-    printf("serialized_signed_info %s\n",serialized_signed_info); 
 
     /*Make the input and out put buffers*/
     input_buf = oxs_buffer_create(env);

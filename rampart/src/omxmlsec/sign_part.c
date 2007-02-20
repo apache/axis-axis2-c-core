@@ -30,7 +30,7 @@ struct oxs_sign_part_t
 
 
 /*Public functions*/
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_sign_part_get_id(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env)
@@ -38,7 +38,7 @@ oxs_sign_part_get_id(
     return sign_part->id;
 }
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_sign_part_get_digest_mtd(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env)
@@ -46,7 +46,7 @@ oxs_sign_part_get_digest_mtd(
     return sign_part->digest_mtd;
 }
 
-axiom_node_t *AXIS2_CALL
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 oxs_sign_part_get_node(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env)
@@ -54,7 +54,7 @@ oxs_sign_part_get_node(
     return sign_part->node;
 }
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 oxs_sign_part_get_transforms(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env)
@@ -62,7 +62,7 @@ oxs_sign_part_get_transforms(
     return sign_part->transforms;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_id(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
@@ -78,7 +78,7 @@ oxs_sign_part_set_id(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_digest_mtd(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
@@ -94,7 +94,7 @@ oxs_sign_part_set_digest_mtd(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_node(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
@@ -107,7 +107,7 @@ oxs_sign_part_set_node(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_transforms(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
@@ -143,7 +143,7 @@ oxs_sign_part_create(const axis2_env_t *env)
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_free(oxs_sign_part_t *sign_part,
         const axis2_env_t *env)
 {

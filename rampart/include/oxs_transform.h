@@ -36,18 +36,18 @@ extern "C"
 
     /*The input or output data type*/
     typedef enum  {
-        OXS_TRANSFORM_TYPE_NODE = 0,
-        OXS_TRANSFORM_TYPE_CHAR
+        OXS_TRANSFORM_TYPE_UNKNOWN = 0,
+        OXS_TRANSFORM_TYPE_CHAR,
+        OXS_TRANSFORM_TYPE_NODE 
     } oxs_tr_dtype_t;
 
 
     /*Function interface for any transform*/
-    typedef axis2_status_t (AXIS2_CALL*
-            tr_func)(const axis2_env_t *env,
+    typedef oxs_tr_dtype_t (AXIS2_CALL*
+            oxs_transform_tr_func)(const axis2_env_t *env,
             void *input,
             oxs_tr_dtype_t input_dtype,
-            void **output,
-            oxs_tr_dtype_t **output_dtype);
+            void **output);
 
     typedef struct oxs_transform_t oxs_transform_t;
 
@@ -63,50 +63,50 @@ extern "C"
 
 
 /**********************Getter functions******************************************/
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_transform_get_id(
     const oxs_transform_t *transform,
     const axis2_env_t *env);
 
-oxs_tr_dtype_t AXIS2_CALL
+AXIS2_EXTERN oxs_tr_dtype_t AXIS2_CALL
 oxs_transform_get_input_data_type(
     const oxs_transform_t *transform,
     const axis2_env_t *env);
 
-oxs_tr_dtype_t AXIS2_CALL
+AXIS2_EXTERN oxs_tr_dtype_t AXIS2_CALL
 oxs_transform_get_output_data_type(
     const oxs_transform_t *transform,
     const axis2_env_t *env);
 
-tr_func *AXIS2_CALL
+AXIS2_EXTERN oxs_transform_tr_func AXIS2_CALL
     oxs_transform_get_transform_function(
     const oxs_transform_t *transform,
     const axis2_env_t *env);
 
 /**********************Setter functions******************************************/
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_transform_set_id(
     oxs_transform_t *transform,
     const axis2_env_t *env,
     axis2_char_t *id);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_transform_set_input_data_type(
     oxs_transform_t *transform,
     const axis2_env_t *env,
     oxs_tr_dtype_t input_data_type);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_transform_set_output_data_type(
     oxs_transform_t *transform,
     const axis2_env_t *env,
     oxs_tr_dtype_t output_data_type);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_transform_set_transform_func(
     oxs_transform_t *transform,
     const axis2_env_t *env,
-    tr_func *transform_func);
+    oxs_transform_tr_func transform_func);
 
 /** @} */
 #ifdef __cplusplus

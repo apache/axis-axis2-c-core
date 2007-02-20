@@ -25,6 +25,7 @@
 #include <oxs_signature.h>
 #include <oxs_buffer.h>
 #include <openssl_rsa.h>
+#include <openssl_sign.h>
 #include <openssl_digest.h>
 #include <openssl_sign.h>
 

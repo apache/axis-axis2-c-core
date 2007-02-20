@@ -26,10 +26,10 @@ struct oxs_transform_t
     axis2_char_t *id ;
     oxs_tr_dtype_t input_data_type;
     oxs_tr_dtype_t output_data_type;
-    tr_func *transform_func; /*The function to implement the transform*/
+    oxs_transform_tr_func transform_func; /*The function to implement the transform*/
 };
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_transform_get_id(
     const oxs_transform_t *transform,
     const axis2_env_t *env)
@@ -37,7 +37,7 @@ oxs_transform_get_id(
     return transform->id;
 }
 
-oxs_tr_dtype_t AXIS2_CALL
+AXIS2_EXTERN oxs_tr_dtype_t AXIS2_CALL
 oxs_transform_get_input_data_type(
     const oxs_transform_t *transform,
     const axis2_env_t *env)
@@ -45,7 +45,7 @@ oxs_transform_get_input_data_type(
     return transform->input_data_type;
 }
 
-oxs_tr_dtype_t AXIS2_CALL
+AXIS2_EXTERN oxs_tr_dtype_t AXIS2_CALL
 oxs_transform_get_output_data_type(
     const oxs_transform_t *transform,
     const axis2_env_t *env)
@@ -53,7 +53,7 @@ oxs_transform_get_output_data_type(
     return transform->output_data_type;
 }
 
-tr_func *AXIS2_CALL
+AXIS2_EXTERN oxs_transform_tr_func AXIS2_CALL
 oxs_transform_get_transform_function(
     const oxs_transform_t *transform,
     const axis2_env_t *env)
@@ -61,7 +61,7 @@ oxs_transform_get_transform_function(
     return transform->transform_func;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_transform_set_id(
     oxs_transform_t *transform,
     const axis2_env_t *env,
@@ -77,7 +77,7 @@ oxs_transform_set_id(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_transform_set_input_data_type(
     oxs_transform_t *transform,
     const axis2_env_t *env,
@@ -87,7 +87,7 @@ oxs_transform_set_input_data_type(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_transform_set_output_data_type(
     oxs_transform_t *transform,
     const axis2_env_t *env,
@@ -97,11 +97,11 @@ oxs_transform_set_output_data_type(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
-oxs_transform_set_transform_function(
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_transform_set_transform_func(
     oxs_transform_t *transform,
     const axis2_env_t *env,
-    tr_func *transform_func)
+    oxs_transform_tr_func transform_func)
 {
     transform->transform_func = transform_func;
     return AXIS2_SUCCESS;

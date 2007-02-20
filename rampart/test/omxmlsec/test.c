@@ -29,6 +29,8 @@
 #include <oxs_key_mgr.h>
 #include <openssl_pkey.h>
 #include <oxs_error.h>
+#include <oxs_transform.h>
+#include <oxs_transforms_factory.h>
 #include <oxs_xml_signature.h>
 #include <oxs_sign_ctx.h>
 #include <oxs_sign_part.h>
@@ -75,7 +77,9 @@ int main(int argc, char *argv[])
     axiom_node_t *tmpl = NULL;
     oxs_sign_part_t *sign_part = NULL;
     oxs_sign_ctx_t *sign_ctx = NULL;
+    oxs_transform_t *tr = NULL;
     axis2_array_list_t *sign_parts = NULL;
+    axis2_array_list_t *tr_list = NULL;
     FILE *outf;
 
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
@@ -99,7 +103,15 @@ int main(int argc, char *argv[])
     /*Sign specific*/
     sign_part = oxs_sign_part_create(env);
     status = AXIS2_FAILURE;
+
+    tr_list = axis2_array_list_create(env, 1);
+    /*We need C14N transform*/
+    tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
+    axis2_array_list_add(tr_list, env, tr);
+    oxs_sign_part_set_transforms(sign_part, env, tr_list);
+    /*We need to sign this node*/
     status = oxs_sign_part_set_node(sign_part, env, axiom_node_get_first_element(tmpl, env));
+
 
     sign_parts = axis2_array_list_create(env, 1);
     axis2_array_list_add(sign_parts, env, sign_part);
@@ -125,7 +137,7 @@ int main(int argc, char *argv[])
         /*Set sig algo*/
         oxs_sign_ctx_set_sign_mtd_algo(sign_ctx, env, OXS_HREF_RSA_SHA1);
         /*Set C14N method*/
-        oxs_sign_ctx_set_c14n_mtd(sign_ctx, env, OXS_HREF_C14N);
+        oxs_sign_ctx_set_c14n_mtd(sign_ctx, env, OXS_HREF_XML_EXC_C14N);
         /*Set sig parts*/
         oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_parts);
         /*Sign*/

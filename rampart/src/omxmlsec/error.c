@@ -34,6 +34,7 @@ static oxs_error_description oxs_errors_table[OXS_ERRORS_MAX_NUMBER] =
         {OXS_ERROR_INVALID_SIZE , "invalid size"},
         {OXS_ERROR_INVALID_FORMAT , "invalid format"},
         {OXS_ERROR_ELEMENT_FAILED , "element failed"},
+        {OXS_ERROR_TRANSFORM_FAILED , "Transformation failed"},
     };
 
 AXIS2_EXTERN const char* AXIS2_CALL

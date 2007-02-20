@@ -48,7 +48,7 @@ oxs_token_build_c14n_method_element(const axis2_env_t *env,
     /*If c14n algorithm is NULL then use the default*/
     if (!algorithm)
     {
-        algorithm = (axis2_char_t*)OXS_HREF_C14N;
+        algorithm = (axis2_char_t*)OXS_HREF_XML_EXC_C14N;
     }
 
     algo_attr =  axiom_attribute_create(env, OXS_ATTR_ALGORITHM, algorithm, NULL);
