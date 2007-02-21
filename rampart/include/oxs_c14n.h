@@ -42,6 +42,26 @@
 extern "C"
 {
 #endif
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    oxs_c14n_apply_stream_algo(
+        const axis2_env_t *env,
+        const axiom_document_t *doc,
+        axis2_stream_t *stream,
+        const axis2_array_list_t *ns_prefixes,
+        const axiom_node_t *node,
+        const axis2_char_t* algo
+        );
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    oxs_c14n_apply_algo(
+        const axis2_env_t *env,
+        const axiom_document_t *doc,
+        axis2_char_t **outbuf,
+        const axis2_array_list_t *ns_prefixes,
+        const axiom_node_t *node,
+        const axis2_char_t *algo
+        );
+
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     oxs_c14n_apply_stream(

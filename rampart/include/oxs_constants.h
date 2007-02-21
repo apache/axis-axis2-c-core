@@ -178,9 +178,12 @@ extern "C"
 /****************************************************************
    C14N
 ****************************************************************/
+
 #define OXS_HREF_XML_C14N                   "http://www.w3.org/TR/2001/REC-xml-c14n-20010315"
 #define OXS_HREF_XML_EXC_C14N     "http://www.w3.org/2001/10/xml-exc-c14n#"
 
+#define OXS_HREF_XML_C14N_WITH_COMMENTS         "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"
+#define OXS_HREF_XML_EXC_C14N_WITH_COMMENTS "http://www.w3.org/2001/10/xml-exc-c14n#WithComments"
 /****************************************************************
    Transforms
 ****************************************************************/

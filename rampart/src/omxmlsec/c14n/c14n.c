@@ -29,6 +29,7 @@
 #include <axiom_children_iterator.h>
 #include <axiom_document.h>
 #include <axiom_comment.h>
+#include <oxs_constants.h>
 #include <oxs_c14n.h>
 #include "c14n_sorted_list.h"
 
@@ -54,6 +55,12 @@
     ((doc) ? AXIOM_DOCUMENT_GET_ROOT_ELEMENT((axiom_document_t *)(doc), \
         (ctx)->env) : c14n_get_root_node((node), (ctx))) 
 
+typedef enum {
+    C14N_XML_C14N = 1,
+    C14N_XML_C14N_WITH_COMMENTS,
+    C14N_XML_EXC_C14N,
+    C14N_XML_EXC_C14N_WITH_COMMENTS,
+} c14n_algo_t;
 
 typedef struct c14n_ns_stack {
     int head; /*index of the currnt stack TOP*/
@@ -377,6 +384,11 @@ c14n_get_root_node(
     const c14n_ctx_t *ctx
     );
 
+static c14n_algo_t 
+c14n_get_algorithm(
+    const axis2_char_t* algo
+    );
+
 /*static axis2_bool_t
 c14n_in_nodeset(
     const axiom_node_t *node,
@@ -462,6 +474,86 @@ c14n_get_root_node(
         parent = AXIOM_NODE_GET_PARENT((axiom_node_t *)parent, ctx->env);
     }
     return (axiom_node_t *)prv_parent;
+}
+
+static c14n_algo_t 
+c14n_get_algorithm(
+    const axis2_char_t* algo
+    )
+{
+   if (axis2_strcmp(algo, OXS_HREF_XML_C14N))
+            return C14N_XML_C14N;
+
+   if (axis2_strcmp(algo, OXS_HREF_XML_C14N_WITH_COMMENTS))
+            return C14N_XML_C14N_WITH_COMMENTS;
+
+   if (axis2_strcmp(algo, OXS_HREF_XML_EXC_C14N))
+            return C14N_XML_EXC_C14N;
+
+   if (axis2_strcmp(algo, OXS_HREF_XML_EXC_C14N_WITH_COMMENTS))
+            return C14N_XML_EXC_C14N_WITH_COMMENTS;
+
+   return 0; /*c14n_algo_t enum starts with 1*/
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_c14n_apply_stream_algo(
+    const axis2_env_t *env,
+    const axiom_document_t *doc,
+    axis2_stream_t *stream,
+    const axis2_array_list_t *ns_prefixes,
+    const axiom_node_t *node,
+    const axis2_char_t* algo
+    )
+{
+    switch (c14n_get_algorithm(algo))
+    {
+        case C14N_XML_C14N:
+            return oxs_c14n_apply_stream(env, doc, AXIS2_FALSE, stream, AXIS2_FALSE,
+                    ns_prefixes, node);
+        case C14N_XML_C14N_WITH_COMMENTS:
+            return oxs_c14n_apply_stream(env, doc, AXIS2_TRUE, stream, AXIS2_FALSE,
+                    ns_prefixes, node);
+        case C14N_XML_EXC_C14N:
+            return oxs_c14n_apply_stream(env, doc, AXIS2_FALSE, stream, AXIS2_TRUE,
+                    ns_prefixes, node);
+        case C14N_XML_EXC_C14N_WITH_COMMENTS:
+            return oxs_c14n_apply_stream(env, doc, AXIS2_TRUE, stream, AXIS2_TRUE,
+                    ns_prefixes, node);
+        default:
+            /*TODO: set the error*/
+            return AXIS2_FAILURE;
+     }
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_c14n_apply_algo(
+    const axis2_env_t *env,
+    const axiom_document_t *doc,
+    axis2_char_t **outbuf,
+    const axis2_array_list_t *ns_prefixes,
+    const axiom_node_t *node,
+    const axis2_char_t *algo
+    )
+{
+    switch (c14n_get_algorithm(algo))
+    {
+        case C14N_XML_C14N:
+            return oxs_c14n_apply(env, doc, AXIS2_FALSE, outbuf, AXIS2_FALSE,
+                    ns_prefixes, node);
+        case C14N_XML_C14N_WITH_COMMENTS:
+            return oxs_c14n_apply(env, doc, AXIS2_TRUE, outbuf, AXIS2_FALSE,
+                    ns_prefixes, node);
+        case C14N_XML_EXC_C14N:
+            return oxs_c14n_apply(env, doc, AXIS2_FALSE, outbuf, AXIS2_TRUE,
+                    ns_prefixes, node);
+        case C14N_XML_EXC_C14N_WITH_COMMENTS:
+            return oxs_c14n_apply(env, doc, AXIS2_TRUE, outbuf, AXIS2_TRUE,
+                    ns_prefixes, node);
+        default:
+            /*TODO:set the error*/
+            return AXIS2_FAILURE;
+     }
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
