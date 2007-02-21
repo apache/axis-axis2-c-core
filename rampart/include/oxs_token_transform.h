@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef OXS_TRANSFORM_H
-#define OXS_TRANSFORM_H
+#ifndef OXS_TOKEN_TRANSFORM_H
+#define OXS_TOKEN_TRANSFORM_H
 
 
 /**
@@ -51,4 +51,4 @@ oxs_token_get_transform(const axis2_env_t *env, axiom_node_t *transform_node);
 }
 #endif
 
-#endif                          /* OXS_TRANSFORM_H */
+#endif                          /* OXS_TOKEN_TRANSFORM_H */
