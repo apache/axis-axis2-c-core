@@ -61,10 +61,13 @@ listener_on_fault(axis2_svc_skeleton_t *svc_skeli,
 axis2_svc_skeleton_t *
 axis2_listener_create(const axis2_env_t *env)
 {
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "listener service create called");
 
     axis2_svc_skeleton_t *svc_skeleton = NULL;
-    /* Allocate memory for the structs */
+
+	
+	AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "listener service create called");
+
+	/* Allocate memory for the structs */
     svc_skeleton = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_skeleton_t));
 
     svc_skeleton->ops = AXIS2_MALLOC(

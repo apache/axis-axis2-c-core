@@ -47,7 +47,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     savan_publishing_client_publish(
         savan_publishing_client_t *client,
         const axis2_env_t *env,

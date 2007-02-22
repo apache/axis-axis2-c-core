@@ -50,7 +50,7 @@ extern "C"
      * @param options map containing options for the Subscribe request
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     savan_client_subscribe(
         savan_client_t *client,
         const axis2_env_t *env,
@@ -65,7 +65,7 @@ extern "C"
      * @param options map containing options for the Renew request
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     savan_client_renew(
         savan_client_t *client,
         const axis2_env_t *env,
@@ -79,7 +79,7 @@ extern "C"
      * @param svc_client client for the publisher service
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     savan_client_unsubscribe(
         savan_client_t *client,
         const axis2_env_t *env,
@@ -92,7 +92,7 @@ extern "C"
      * @param svc_client client for the publisher service
      * @return expiry string on success, NULL on failure
      */
-    axis2_char_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     savan_client_get_status(
         savan_client_t *client,
         const axis2_env_t *env,
@@ -104,7 +104,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return id string on success, NULL on failure
      */
-    axis2_char_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     savan_client_get_sub_id(
         savan_client_t *client);
     

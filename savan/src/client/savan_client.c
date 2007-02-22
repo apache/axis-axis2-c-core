@@ -67,7 +67,7 @@ savan_client_create(
 
 /******************************************************************************/
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 savan_client_subscribe(
     savan_client_t *client,
     const axis2_env_t *env,
@@ -176,7 +176,7 @@ savan_client_subscribe(
 
 /******************************************************************************/
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 savan_client_renew(
     savan_client_t *client,
     const axis2_env_t *env,
@@ -235,7 +235,7 @@ savan_client_renew(
 
 /******************************************************************************/
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 savan_client_unsubscribe(
     savan_client_t *client,
     const axis2_env_t *env,
@@ -282,7 +282,7 @@ savan_client_unsubscribe(
 
 /******************************************************************************/
 
-axis2_char_t * AXIS2_CALL
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 savan_client_get_status(
     savan_client_t *client,
     const axis2_env_t *env,
@@ -357,7 +357,7 @@ savan_client_get_status(
 }
 
 /*****************************************************************************/
-axis2_char_t * AXIS2_CALL
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 savan_client_get_sub_id(
     savan_client_t *client)
 {

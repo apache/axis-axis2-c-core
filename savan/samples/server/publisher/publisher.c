@@ -25,11 +25,13 @@ build_om_programatically(const axis2_env_t *env, axis2_char_t *text);
 axiom_node_t *
 axis2_publisher_start(const axis2_env_t *env, axiom_node_t *node)
 {
+	axiom_node_t *ret_node = NULL;
+
     printf("Publisher service start called.\n");
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    axiom_node_t *ret_node = build_om_programatically(env, "Publisher started");
+    ret_node = build_om_programatically(env, "Publisher started");
 
     return ret_node;
 }

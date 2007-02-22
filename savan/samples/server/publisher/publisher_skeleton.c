@@ -77,9 +77,12 @@ publisher_worker_func(
 axis2_svc_skeleton_t *
 axis2_publisher_create(const axis2_env_t *env)
 {
+
+	axis2_svc_skeleton_t *svc_skeleton = NULL;
+
     printf("publisher create called.\n");
 
-    axis2_svc_skeleton_t *svc_skeleton = NULL;
+    
     
     /* Allocate memory for the structs */
     svc_skeleton = AXIS2_MALLOC(env->allocator, 
@@ -126,18 +129,22 @@ publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
             axiom_node_t *node,
             axis2_msg_ctx_t *msg_ctx)
 {
+
+	axis2_thread_t *worker_thread = NULL;
+	publisher_data_t *data = NULL;
+
     printf("publisher invoke called.\n");
 
     /* Invoke the business logic.
      * Depending on the function name invoke the correct impl method.
      */
 
-    publisher_data_t *data = AXIS2_MALLOC(env->allocator, sizeof(publisher_data_t));
+    data = AXIS2_MALLOC(env->allocator, sizeof(publisher_data_t));
     data->env = (axis2_env_t*)env;
     data->svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
     data->conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
     
-    axis2_thread_t *worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+    worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
         publisher_worker_func, (void*)data);
     if(NULL == worker_thread)
     {
@@ -235,7 +242,7 @@ publisher_worker_func(
     {
         savan_publishing_client_publish(pub_client, env, test_node);
 
-        sleep(10);
+        AXIS2_SLEEP(10);
         
         printf("Returned from sleep\n");
     }
@@ -262,8 +269,10 @@ AXIS2_EXPORT int
 axis2_remove_instance(axis2_svc_skeleton_t *inst,
                       const axis2_env_t *env)
 {
+	axis2_status_t status = AXIS2_FAILURE;
+
     printf("remove instance called.\n");
-    axis2_status_t status = AXIS2_FAILURE;
+    
    if (inst)
    {
         status = AXIS2_SVC_SKELETON_FREE(inst, env);

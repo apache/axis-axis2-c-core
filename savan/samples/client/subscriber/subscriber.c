@@ -102,7 +102,7 @@ int main(int argc, char** argv)
         printf("Subscription ID: %s\n", savan_client_get_sub_id(savan_client));
     }
 
-    sleep(10);
+    AXIS2_SLEEP(10);
 
     printf("\n***************************************\n");
     printf("Renewing subscription...\n");
@@ -114,7 +114,7 @@ int main(int argc, char** argv)
     }
 
 
-    sleep(10);
+    AXIS2_SLEEP(10);
 
     printf("\n***************************************\n");
     printf("Getting status of subscription...\n");
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
         printf("New expire time: %s\n", expire_time);
     }
 
-    sleep(10);
+    AXIS2_SLEEP(10);
 
     printf("\n***************************************\n");
     printf("Unsubscribing...\n");
