@@ -181,11 +181,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\receiver\http_response_writer.c"
+				RelativePath="..\..\..\..\modules\core\transport\http\receiver\http_receiver.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\receiver\http_server.c"
+				RelativePath="..\..\..\..\modules\core\transport\http\receiver\http_response_writer.c"
 				>
 			</File>
 			<File
