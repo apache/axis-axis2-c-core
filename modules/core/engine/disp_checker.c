@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axis2_disp_checker.h>
+#include "axis2_disp_checker.h"
 #include <axis2_handler_desc.h>
 #include <axis2_string.h>
 #include <axis2_relates_to.h>

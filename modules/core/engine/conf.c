@@ -17,7 +17,7 @@
 
 #include <string.h>
 #include <axis2_disp.h>
-#include <axis2_disp_checker.h>
+#include "axis2_disp_checker.h"
 #include <axis2_conf.h>
 #include <axis2_dir_handler.h>
 #include <axis2_dep_engine.h>
