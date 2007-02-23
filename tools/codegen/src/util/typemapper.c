@@ -152,7 +152,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
     axis2_char_t *file_path = NULL;
     axiom_node_t *root = NULL;
     axiom_element_t *root_ele = NULL;
-    axiom_children_iterator_t *it = NULL;
+    axiom_children_iterator_t *it = NULL, *it2 = NULL;
     axiom_node_t *child = NULL;
     axiom_element_t *child_ele = NULL;
     axis2_bool_t is_default = AXIS2_FALSE;
@@ -198,6 +198,11 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
     it = AXIOM_ELEMENT_GET_CHILDREN(root_ele, env, root);
     while ( (child = AXIOM_CHILDREN_ITERATOR_NEXT(it, env )) != NULL )
     {
+        if(AXIOM_NODE_GET_NODE_TYPE(child, env) != AXIOM_ELEMENT)
+        {
+            continue; /* skip the starting empty */
+        }
+
         child_ele = AXIOM_NODE_GET_DATA_ELEMENT( child, env);
         is_default = AXIS2_FALSE;
         if ( (attri_val = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME
@@ -205,7 +210,18 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
         {
             is_default = AXIS2_TRUE;
         }
-        child = AXIOM_NODE_GET_FIRST_CHILD( child, env);
+        /** next get the 2nd child iterator to the child */
+        it2 = AXIOM_ELEMENT_GET_CHILDREN( child_ele, env, child);
+
+        /** here on ward child referes to the childs of child */
+        while ( (child = AXIOM_CHILDREN_ITERATOR_NEXT(it2, env )) != NULL )
+        {
+            if( AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT )
+            {
+                break; /* stop at the first valid child */
+            }
+        }
+
         child_ele = AXIOM_NODE_GET_DATA_ELEMENT( child, env);
         uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME
                     (child_ele, env, "namespace");
@@ -217,7 +233,14 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
         qname2str = w2c_string_add_string( qname2str, "|", env);
         qname2str = w2c_string_add_string( qname2str, uri, env);
 
-        child = AXIOM_NODE_GET_NEXT_SIBLING( child, env );
+        while ( (child = AXIOM_CHILDREN_ITERATOR_NEXT(it2, env )) != NULL )
+        {
+            if( AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT )
+            {
+                break; /* stop at the second valid child */
+            }
+        }
+        /* child = AXIOM_NODE_GET_NEXT_SIBLING( child, env ); */
         child_ele = AXIOM_NODE_GET_DATA_ELEMENT( child, env);
         type_val = AXIOM_ELEMENT_GET_TEXT( child_ele, env, child);
         type_val = AXIS2_STRDUP( type_val, env);

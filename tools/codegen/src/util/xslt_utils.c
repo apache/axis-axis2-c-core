@@ -119,7 +119,7 @@ w2c_xslt_utils_copy_node_tree(
             text = AXIS2_STRDUP ( text, env);
             AXIOM_ELEMENT_SET_TEXT ( to_ele, env, text, to);
         }
-        else
+        else if ( AXIOM_NODE_GET_NODE_TYPE ( from_child, env ) == AXIOM_ELEMENT )
         {
             from_child_ele = AXIOM_NODE_GET_DATA_ELEMENT ( from_child, env );
             qname = AXIOM_ELEMENT_GET_QNAME ( from_child_ele, env, from_child );

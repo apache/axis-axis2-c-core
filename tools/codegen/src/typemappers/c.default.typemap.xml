@@ -1,5 +1,4 @@
-<mappings dbf="c-default">
-    <mapping default="yes">
+<mappings dbf="c-default"><mapping default="yes">
         <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">content</qname>
         <value>axiom_node_t*</value>
     </mapping>
