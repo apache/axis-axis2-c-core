@@ -22,6 +22,8 @@
 #include <oxs_buffer.h>
 #include <oxs_cipher.h>
 #include <oxs_c14n.h>
+#include <oxs_axiom.h>
+#include <oxs_utility.h>
 #include <openssl_rsa.h>
 #include <openssl_digest.h>
 #include <oxs_sign_ctx.h>
@@ -83,10 +85,11 @@ oxs_xml_sig_build_reference(const axis2_env_t *env,
     axiom_node_t *parent,
     oxs_sign_part_t *sign_part)
 {
-    axis2_char_t *uri = NULL; 
     axis2_char_t *serialized_node = NULL; 
     axis2_char_t *digest = NULL; 
     axis2_char_t *digest_mtd = NULL; 
+    axis2_char_t *ref_id = NULL; 
+    axis2_char_t *id = NULL; 
     axis2_array_list_t *transforms = NULL;
     axiom_node_t *node = NULL;
     axiom_node_t *reference_node = NULL;
@@ -97,9 +100,11 @@ oxs_xml_sig_build_reference(const axis2_env_t *env,
     /*Get the node to digest*/
     node = oxs_sign_part_get_node(sign_part, env);
     
-    /*Add the reference ID to the node and hence to the ds:Reference node*/
-
-    reference_node = oxs_token_build_ds_reference_element(env, parent ,NULL, uri, NULL);
+    /*Get the reference ID from the node and hence to the ds:Reference node*/
+    id = oxs_axiom_get_attribute_value_of_node_by_name(env, node, "wsu:Id"); 
+    
+    ref_id = AXIS2_STRACAT("#", id, env);/* <ds:Reference URI="#id">*/
+    reference_node = oxs_token_build_ds_reference_element(env, parent ,NULL, ref_id, NULL);
 
     /*Get transforms if any*/
     transforms = oxs_sign_part_get_transforms(sign_part, env);

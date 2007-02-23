@@ -28,6 +28,7 @@ struct oxs_sign_ctx_t
     oxs_x509_cert_t *certificate ;
     openssl_pkey_t *prv_key ;
     openssl_pkey_t *pub_key ;
+    oxs_sign_operation_t operation;
 };
 
 /*Public functions*/
@@ -82,6 +83,13 @@ oxs_sign_ctx_get_public_key(
     return sign_ctx->pub_key ;
 }
 
+AXIS2_EXTERN oxs_sign_operation_t AXIS2_CALL
+oxs_sign_ctx_get_operation(
+    const oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env)
+{
+    return sign_ctx->operation;
+}
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_ctx_set_certificate(
@@ -171,6 +179,17 @@ oxs_sign_ctx_set_sign_parts(
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_sign_ctx_set_operation(
+    oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env,
+    oxs_sign_operation_t operation
+)
+{
+    sign_ctx->operation = operation;
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN oxs_sign_ctx_t *AXIS2_CALL
 oxs_sign_ctx_create(const axis2_env_t *env)
 {
@@ -191,7 +210,7 @@ oxs_sign_ctx_create(const axis2_env_t *env)
     sign_ctx->certificate = NULL;
     sign_ctx->prv_key = NULL;
     sign_ctx->pub_key = NULL;
- 
+    sign_ctx->operation = OXS_SIGN_OPERATION_NONE; 
     return sign_ctx;
 }
 
@@ -219,6 +238,7 @@ oxs_sign_ctx_free(oxs_sign_ctx_t *sign_ctx,
     sign_ctx->certificate = NULL;
     sign_ctx->prv_key = NULL;
     sign_ctx->pub_key = NULL;
+    sign_ctx->operation = OXS_SIGN_OPERATION_NONE; 
 
     AXIS2_FREE(env->allocator,  sign_ctx);
     sign_ctx = NULL;

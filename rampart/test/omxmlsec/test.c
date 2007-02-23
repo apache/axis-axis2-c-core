@@ -77,19 +77,29 @@ int main(int argc, char *argv[])
     axis2_char_t *signed_result = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axiom_node_t *tmpl = NULL;
+    axiom_node_t *node = NULL;
     oxs_sign_part_t *sign_part = NULL;
     oxs_sign_ctx_t *sign_ctx = NULL;
     oxs_transform_t *tr = NULL;
     axis2_array_list_t *sign_parts = NULL;
     axis2_array_list_t *tr_list = NULL;
+    axis2_char_t *id = NULL;
     FILE *outf;
 
+
+    if (argc > 3){
+        filename = argv[1];
+        prvkeyfile = argv[2];
+        certfile = argv[3];
+        printf("Signing %s with %s. Certificate file is %s", filename, prvkeyfile, certfile);
+    }else{
+        printf("Usage ./test inputfile prvkey certificate\n");
+        return -1;
+    }
+    
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
     printf("--Testing started--------------------------------------------\n");
-
-    if (argc > 1)
-        filename = argv[1];
-
+    
     tmpl = load_sample_xml(env , tmpl, filename);
 
     if (tmpl)
@@ -110,10 +120,13 @@ int main(int argc, char *argv[])
     /*We need C14N transform*/
     tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
     axis2_array_list_add(tr_list, env, tr);
-    /*oxs_sign_part_set_transforms(sign_part, env, tr_list);*/
+    oxs_sign_part_set_transforms(sign_part, env, tr_list);
     
-    /*We need to sign this node*/
-    status = oxs_sign_part_set_node(sign_part, env, axiom_node_get_first_element(tmpl, env));
+    /*We need to sign this node add an ID to it*/
+    node = axiom_node_get_first_element(tmpl, env);
+    id = "Sig-ID-EFG";  /*oxs_util_generate_id(env,(axis2_char_t*)OXS_SIG_ID);*/
+    oxs_axiom_add_attribute(env, node, OXS_WSU, OXS_WSSE_XMLNS,  OXS_ATTR_ID, id);
+    status = oxs_sign_part_set_node(sign_part, env,node);
 
 
     sign_parts = axis2_array_list_create(env, 1);

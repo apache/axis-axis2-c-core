@@ -36,7 +36,13 @@ extern "C"
 {
 #endif
 
-
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_axiom_add_attribute(const axis2_env_t *env,
+    axiom_node_t* node,
+    axis2_char_t* attribute_ns,
+    axis2_char_t* attribute_ns_uri,
+    axis2_char_t* attribute,
+    axis2_char_t* value);
 
 AXIS2_EXTERN int AXIS2_CALL
 oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,

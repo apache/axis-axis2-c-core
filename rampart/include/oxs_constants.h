@@ -36,12 +36,14 @@ extern "C"
 #define OXS_XENC "xenc"
 #define OXS_DS "ds"
 #define OXS_WSSE "wsse"
-
+#define OXS_WSSE_XMLNS "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+#define OXS_WSU "wsu"
 /****************************************************************
     ID Prefixes
 ****************************************************************/
 #define OXS_ENCDATA_ID "EncDataID"
 #define OXS_ENCKEY_ID "EncKeyID"
+#define OXS_SIG_ID "SigID"
 #define OXS_CERT_ID "CertID"
 #define OXS_EMBEDDED_ID "EmbeddedID"
 

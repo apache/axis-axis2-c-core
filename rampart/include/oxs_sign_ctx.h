@@ -34,6 +34,13 @@
 extern "C"
 {
 #endif
+    
+    /*The type of operation*/
+    typedef enum  {
+        OXS_SIGN_OPERATION_NONE = 0,
+        OXS_SIGN_OPERATION_SIGN,
+        OXS_SIGN_OPERATION_VERIFY
+    } oxs_sign_operation_t;
 
 
     typedef struct oxs_sign_ctx_t oxs_sign_ctx_t;
@@ -79,6 +86,11 @@ oxs_sign_ctx_get_public_key(
     const oxs_sign_ctx_t *sign_ctx,
     const axis2_env_t *env);
 
+AXIS2_EXTERN oxs_sign_operation_t AXIS2_CALL
+oxs_sign_ctx_get_operation(
+    const oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env);
+
 /**********************Setter functions******************************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_ctx_set_sign_mtd_algo(
@@ -116,7 +128,11 @@ oxs_sign_ctx_set_public_key(
     const axis2_env_t *env,
     openssl_pkey_t *pub_key);
 
-
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_sign_ctx_set_operation(
+    oxs_sign_ctx_t *sign_ctx,
+    const axis2_env_t *env,
+    oxs_sign_operation_t operation);
 /** @} */
 #ifdef __cplusplus
 }

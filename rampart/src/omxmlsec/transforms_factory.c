@@ -33,6 +33,7 @@ oxs_transforms_exc_c14n(const axis2_env_t *env,
             axis2_char_t **output)
 {
     axiom_document_t *doc = NULL;
+    axis2_char_t *algo = NULL;
     axis2_char_t *c14nized = NULL;
     oxs_tr_dtype_t output_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;
 
@@ -40,9 +41,10 @@ oxs_transforms_exc_c14n(const axis2_env_t *env,
        oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Transform expects a NODE.");
        return OXS_TRANSFORM_TYPE_UNKNOWN;
     }
-    doc = axiom_node_get_document((axiom_node_t*)input, env);
     
-    oxs_c14n_apply(env, doc, AXIS2_FALSE, &c14nized, AXIS2_TRUE, NULL, (axiom_node_t*)input);
+    algo = OXS_HREF_TRANSFORM_XML_EXC_C14N;
+    oxs_c14n_apply_algo(env, doc, &c14nized, NULL, (axiom_node_t*)input, algo);
+    /*oxs_c14n_apply(env, doc, AXIS2_FALSE, &c14nized, AXIS2_TRUE, NULL, (axiom_node_t*)input);*/
 
     *output= c14nized;
     output_dtype = OXS_TRANSFORM_TYPE_CHAR;

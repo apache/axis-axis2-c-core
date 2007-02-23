@@ -29,6 +29,28 @@
 #include <axiom_stax_builder.h>
 #include <axiom_util.h>
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_axiom_add_attribute(const axis2_env_t *env,
+    axiom_node_t* node,
+    axis2_char_t* attribute_ns,
+    axis2_char_t* attribute_ns_uri,
+    axis2_char_t* attribute,
+    axis2_char_t* value)
+{
+    axiom_attribute_t *attr = NULL;
+    axiom_element_t *ele = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    axiom_namespace_t *ns = NULL;
+
+    ns =  axiom_namespace_create(env, attribute_ns_uri, attribute_ns);
+
+    ele =  AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+    attr =  axiom_attribute_create(env, attribute , value, ns);
+    status = AXIOM_ELEMENT_ADD_ATTRIBUTE(ele, env, attr, node);
+    
+    return status;
+}
+
 AXIS2_EXTERN int AXIS2_CALL
 oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
         axiom_node_t* parent,
