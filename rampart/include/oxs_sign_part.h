@@ -57,6 +57,11 @@ oxs_sign_part_get_digest_mtd(
     const oxs_sign_part_t *sign_part,
     const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_sign_part_get_digest_val(
+    const oxs_sign_part_t *sign_part,
+    const axis2_env_t *env);
+
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 oxs_sign_part_get_node(
     const oxs_sign_part_t *sign_part,
@@ -79,6 +84,12 @@ oxs_sign_part_set_digest_mtd(
     oxs_sign_part_t *sign_part,
     const axis2_env_t *env,
     axis2_char_t *digest_mtd);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_sign_part_set_digest_val(
+    oxs_sign_part_t *sign_part,
+    const axis2_env_t *env,
+    axis2_char_t *digest_val);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sign_part_set_node(

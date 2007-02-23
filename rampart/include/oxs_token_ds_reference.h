@@ -44,6 +44,9 @@ oxs_token_build_ds_reference_element(const axis2_env_t *env,
         axis2_char_t *uri,
         axis2_char_t *type);
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_token_get_ds_reference(const axis2_env_t *env, axiom_node_t *ref_node);
+
 /** @} */
 #ifdef __cplusplus
 }

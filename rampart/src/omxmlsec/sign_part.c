@@ -24,6 +24,7 @@ struct oxs_sign_part_t
 {
     axis2_char_t *id;
     axis2_char_t *digest_mtd;
+    axis2_char_t *digest_val;
     axiom_node_t *node ; /*Shallow copies*/
     axis2_array_list_t *transforms; /*Shallow copies*/
 };
@@ -44,6 +45,14 @@ oxs_sign_part_get_digest_mtd(
     const axis2_env_t *env)
 {
     return sign_part->digest_mtd;
+}
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_sign_part_get_digest_val(
+    const oxs_sign_part_t *sign_part,
+    const axis2_env_t *env)
+{
+    return sign_part->digest_val;
 }
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
@@ -91,6 +100,22 @@ oxs_sign_part_set_digest_mtd(
         sign_part->digest_mtd = NULL;
     }
     sign_part->digest_mtd = AXIS2_STRDUP(digest_mtd, env);
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_sign_part_set_digest_val(
+    oxs_sign_part_t *sign_part,
+    const axis2_env_t *env,
+    axis2_char_t *digest_val)
+{
+
+    if (sign_part->digest_val)
+    {
+        AXIS2_FREE(env->allocator, sign_part->digest_val);
+        sign_part->digest_val = NULL;
+    }
+    sign_part->digest_val = AXIS2_STRDUP(digest_val, env);
     return AXIS2_SUCCESS;
 }
 

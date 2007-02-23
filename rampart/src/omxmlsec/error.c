@@ -35,6 +35,8 @@ static oxs_error_description oxs_errors_table[OXS_ERRORS_MAX_NUMBER] =
         {OXS_ERROR_INVALID_FORMAT , "invalid format"},
         {OXS_ERROR_ELEMENT_FAILED , "element failed"},
         {OXS_ERROR_TRANSFORM_FAILED , "Transformation failed"},
+        {OXS_ERROR_SIGN_FAILED , "Signing failed"},
+        {OXS_ERROR_SIG_VERIFICATION_FAILED , "Signature verification failed"},
     };
 
 AXIS2_EXTERN const char* AXIS2_CALL

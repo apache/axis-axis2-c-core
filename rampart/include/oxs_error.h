@@ -57,6 +57,8 @@ extern "C"
 #define OXS_ERROR_DATA_CONV_FAILED     10
 #define OXS_ERROR_OPENSSL_FUNC_FAILED  11
 #define OXS_ERROR_TRANSFORM_FAILED     12
+#define OXS_ERROR_SIGN_FAILED          13
+#define OXS_ERROR_SIG_VERIFICATION_FAILED        14
 
 typedef struct _oxs_error_description oxs_error_description, *oxs_error_description_ptr;
 

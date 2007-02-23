@@ -28,6 +28,7 @@
 #include <axis2_env.h>
 #include <axis2_util.h>
 #include <axiom_node.h>
+#include <axiom_util.h>
 #include <axiom_document.h>
 #include <axiom.h>
 

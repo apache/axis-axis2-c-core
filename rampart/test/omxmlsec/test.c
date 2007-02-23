@@ -156,6 +156,8 @@ int main(int argc, char *argv[])
         oxs_sign_ctx_set_c14n_mtd(sign_ctx, env, OXS_HREF_XML_EXC_C14N);
         /*Set sig parts*/
         oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_parts);
+        /*Set the operation*/
+        oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_SIGN);
         /*Sign*/
         oxs_xml_sig_sign(env, sign_ctx, tmpl);
     }else{

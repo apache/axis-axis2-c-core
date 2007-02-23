@@ -67,4 +67,22 @@ oxs_token_build_ds_reference_element(const axis2_env_t *env,
     return ds_reference_node;
 }
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_token_get_ds_reference(const axis2_env_t *env, axiom_node_t *ref_node)
+{
+    axis2_char_t *ref = NULL;
+    axiom_element_t *reference_ele = NULL;
+
+    reference_ele = AXIOM_NODE_GET_DATA_ELEMENT(ref_node, env);
+    if (!reference_ele)
+    {
+        oxs_error(env, ERROR_LOCATION,
+                OXS_ERROR_ELEMENT_FAILED, "Error retrieving data reference element");
+        return NULL;
+    }
+
+    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(reference_ele, env, OXS_ATTR_URI);
+    return ref;
+
+}
 
