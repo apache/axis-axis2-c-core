@@ -225,6 +225,7 @@ axis2_soap_over_http_sender_send(
     int output_stream_size = 0;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
     axis2_property_t *dump_property = NULL;
+    axis2_property_t *ssl_pp_property = NULL;
     axis2_param_t *ssl_pp_param = NULL; /* ssl passphrase */
     axis2_char_t *ssl_pp = NULL;
 
@@ -480,14 +481,23 @@ axis2_soap_over_http_sender_send(
     
     /* TODO: Load from property
      * ssl_pp_property = AXIS2_MSG_CTX_GET_PROPERTY(AXIS2_SSL_PASSPHRASE);*/
-
-    ssl_pp_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, AXIS2_SSL_PASSPHRASE);
-
-    if (ssl_pp_param)
+    
+    ssl_pp_property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+            AXIS2_SSL_PASSPHRASE, AXIS2_FALSE);
+    if (ssl_pp_property)
     {
-        ssl_pp = AXIS2_PARAM_GET_VALUE(ssl_pp_param, env);
+        ssl_pp = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE(
+                ssl_pp_property, env);
     }
+    else
+    {
+        ssl_pp_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, AXIS2_SSL_PASSPHRASE);
 
+        if (ssl_pp_param)
+        {
+            ssl_pp = AXIS2_PARAM_GET_VALUE(ssl_pp_param, env);
+        }
+    }
     status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request, ssl_pp);
 
 
