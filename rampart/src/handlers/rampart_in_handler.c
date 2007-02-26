@@ -108,7 +108,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     }
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "SOAP header found");
 
-    rampart_context = rampart_engine_init(env,msg_ctx,RAMPART_INFLOW_SECURITY_POLICY);
+    rampart_context = rampart_engine_init(env,msg_ctx,AXIS2_TRUE);
     if(!rampart_context)
         return AXIS2_FAILURE;
 
@@ -130,7 +130,9 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     
     status = rampart_shp_process_message(env, msg_ctx, rampart_context, 
 						soap_envelope, sec_node);
-        
+    
+    status = rampart_engine_shutdown(env,rampart_context);
+
 /*    
     rampart_context_free(rampart_context,env);
     rampart_context = NULL;

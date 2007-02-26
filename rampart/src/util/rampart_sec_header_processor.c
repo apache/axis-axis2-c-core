@@ -42,6 +42,7 @@
 #include <oxs_token_reference_list.h>
 #include <axis2_utils.h>
 #include <axis2_array_list.h>
+#include <axis2_key_type.h>
 
 /*Private functions*/
 static axis2_bool_t 
@@ -223,7 +224,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     axiom_node_t *enc_mtd_node = NULL;
     axis2_array_list_t *reference_list = NULL;
     axis2_char_t *enc_asym_algo = NULL;
-    axis2_char_t *dec_key_file = NULL;
+    axis2_char_t *prv_key_file = NULL;
     axis2_char_t *password = NULL;
     axis2_char_t *enc_user = NULL;
     rampart_callback_t *password_callback = NULL;
@@ -232,9 +233,10 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     oxs_key_t *decrypted_sym_key = NULL;
     axis2_char_t *enc_asym_algo_in_pol = NULL; 
     axis2_char_t *enc_sym_algo_in_pol = NULL;
-    pfunc password_function = NULL;
+    password_callback_fn password_function = NULL;
     void *param = NULL;
     int i = 0;
+    void *key_buf = NULL;
     
     /*Get EncryptedData references */
     ref_list_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_REFERENCE_LIST, NULL, NULL);
@@ -263,48 +265,65 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
                     
-    asym_ctx = oxs_asym_ctx_create(env);
-    dec_key_file = rampart_context_get_decryption_prop_file(rampart_context,env);
-    if(!dec_key_file)
-    {
-        AXIS2_LOG_INFO(env->log, "Decryption Profile is not specified.");
-        return AXIS2_FAILURE;
-    }
     /*Get the password to retrieve the key from key store*/
 /*  password = rampart_callback_encuser_password(env, actions, msg_ctx);*/
 
-    enc_user = rampart_context_get_encryption_user(rampart_context,env);
+    password = rampart_context_get_prv_key_password(rampart_context,env);
 
-    if(!enc_user)
-        enc_user = rampart_context_get_user(rampart_context,env);
-
-    if(!enc_user)
-        return AXIS2_FAILURE;
-
-    password_function = rampart_context_get_password_function(rampart_context,env);
-    if(password_function)
-        password = (*password_function)(env,enc_user,param);
-
-    else
+    if(!password)
     {
-        password_callback = rampart_context_get_password_callback(rampart_context,env);
-        if(!password_callback)
+        enc_user = rampart_context_get_encryption_user(rampart_context,env);
+
+        if(!enc_user)
+            enc_user = rampart_context_get_user(rampart_context,env);
+
+        if(!enc_user)
+            return AXIS2_FAILURE;
+
+        password_function = rampart_context_get_pwcb_function(rampart_context,env);
+        if(password_function)
+            password = (*password_function)(env,enc_user,param);
+
+        else
         {
-            AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] Password call back module is not specified.");
+            password_callback = rampart_context_get_password_callback(rampart_context,env);
+            if(!password_callback)
+            {
+                AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] Password call back module is not specified.");
+                return AXIS2_FAILURE;
+            }
+            password = rampart_callback_password(env, password_callback, enc_user);
+        }
+    }   
+    asym_ctx = oxs_asym_ctx_create(env);
+    
+    key_buf = rampart_context_get_prv_key(rampart_context,env);
+    if(key_buf)
+    {
+        axis2_key_type_t type = 0;
+        type = rampart_context_get_prv_key_type(rampart_context,env);
+        if(type == AXIS2_KEY_TYPE_PEM)
+        {
+            oxs_asym_ctx_set_pem_buf(asym_ctx, env, (axis2_char_t *)key_buf);
+            oxs_asym_ctx_set_format(asym_ctx, env,OXS_ASYM_CTX_FORMAT_PEM);
+        }            
+    }        
+    else
+    {        
+        oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
+        prv_key_file = rampart_context_get_private_key_file(rampart_context,env);
+        if(!prv_key_file)
+        {
+            AXIS2_LOG_INFO(env->log, "Private Key is not specified.");
             return AXIS2_FAILURE;
         }
-        password = rampart_callback_password(env, password_callback, enc_user);
-    }
-    
-    oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
-    oxs_asym_ctx_set_file_name(asym_ctx, env, dec_key_file);
-    
-/*  oxs_asym_ctx_set_pem_buf(asym_ctx, env, RAMPART_ACTIONS_GET_KEY_BUF(actions, env));*/
+        oxs_asym_ctx_set_file_name(asym_ctx, env, prv_key_file);
+        oxs_asym_ctx_set_format(asym_ctx, env, oxs_util_get_format_by_file_extension(env, prv_key_file));
+    }    
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PRV_DECRYPT);
     oxs_asym_ctx_set_password(asym_ctx, env, password);
     
     /*oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PKCS12);*/
-    oxs_asym_ctx_set_format(asym_ctx, env, oxs_util_get_format_by_file_extension(env, dec_key_file));
 
     /*Create an empty key*/
     decrypted_sym_key = oxs_key_create(env);
@@ -586,7 +605,6 @@ rampart_shp_process_message(const axis2_env_t *env,
                     AXIS2_LOG_INFO(env->log, "[rampart][shp] Error in the security header");
                     return AXIS2_FAILURE;
                 }                   
-   
                 AXIS2_LOG_INFO(env->log, "[rampart][shp] Process EncryptedKey");
                 status = rampart_shp_process_encrypted_key(env,msg_ctx, rampart_context, soap_envelope, sec_node, cur_node);
                 if(status!=AXIS2_SUCCESS)

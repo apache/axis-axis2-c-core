@@ -96,8 +96,15 @@ extern "C"
 #define RAMPART_INFLOW_SECURITY_POLICY              "InflowSecurityPolicy"
 #define RAMPART_OUTFLOW_SECURITY_POLICY             "OutflowSecurityPolicy"
 
+#define INFLOW_RAMPART_CONTEXT                      "InflowRampartContext"
+#define OUTFLOW_RAMPART_CONTEXT                     "OutflowRampartContext"    
+/*
 #define RAMPART_PASSWORD_TEXT                       "passwordText"
 #define RAMPART_PASSWORD_DIGEST                     "passwordDigest"
+*/
+#define RAMPART_PASSWORD_TEXT                       "plainText"
+#define RAMPART_PASSWORD_DIGEST                     "Digest"
+
 #define RAMPART_ACTION                              "action"
 /*These are the parameters of actions in the axis2.xml file*/
 #define RAMPART_ACTION_ITEMS                        "items"
@@ -169,6 +176,7 @@ extern "C"
 #define RAMPART_STR_EXTERNAL_URI        OXS_STR_EXTERNAL_URI
 #define RAMPART_STR_ENCRYPTED_KEY       OXS_STR_ENCRYPTED_KEY
 
+#define AXIS2_PEM 10    
     
 #ifdef __cplusplus
 }

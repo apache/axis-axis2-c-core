@@ -103,7 +103,8 @@ rampart_shb_build_message(const axis2_env_t *env,
             AXIS2_LOG_INFO(env->log, "[rampart][shb]  building Timestamp Token");
             AXIS2_LOG_INFO(env->log, "[rampart][shb]  Using default timeToLive value %d",
                 RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE);
-            ttl = RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE;
+           /*ttl = RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE;*/
+            ttl = rampart_context_get_ttl(rampart_context,env);
             
             timestamp_token = rampart_timestamp_token_create(env);
             status = RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env,
@@ -161,7 +162,6 @@ rampart_shb_build_message(const axis2_env_t *env,
             status = rampart_enc_encrypt_message(env, msg_ctx,rampart_context,soap_envelope,sec_node);
             if(!status)
                 return AXIS2_FAILURE;
-
         }            
 
         return AXIS2_SUCCESS;        

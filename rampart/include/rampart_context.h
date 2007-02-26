@@ -30,6 +30,7 @@
 #include <rampart_constants.h>
 #include <rampart_callback.h>
 #include <rampart_authn_provider.h>
+#include <axis2_key_type.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -37,9 +38,9 @@ extern "C"
 #endif
    
     typedef axis2_char_t *(AXIS2_CALL*
-            pfunc)(const axis2_env_t *env,
+            password_callback_fn)(const axis2_env_t *env,
             const axis2_char_t *username,
-            void *param);
+            void *ctx);
 
     typedef rampart_authn_provider_status_t (AXIS2_CALL*
             auth_password_func)(const axis2_env_t* env,
@@ -62,6 +63,130 @@ extern "C"
     rampart_context_free(rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
+
+    /*Following functions are the interface between rampart and PHP
+     *extension */
+        
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_policy_node(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axiom_node_t *policy_node);
+                    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_prv_key(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            void *prv_key);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_prv_key_type(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axis2_key_type_t type);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_pub_key(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            void *pub_key);
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_pub_key_type(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axis2_key_type_t type);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_user(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axis2_char_t *user);
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_password(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axis2_char_t *password);
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_prv_key_password(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axis2_char_t *prv_key_password);
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_pwcb_function(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            password_callback_fn pwcb_function,
+            void *ctx);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_password_type(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axis2_char_t *password_type);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_ttl(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            int ttl);
+
+    /*End of the PHP extension-rampart interface*/
+
+    /*Getters of the above set functions*/
+
+    AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+    rampart_context_get_policy_node(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+                    
+    AXIS2_EXTERN void *AXIS2_CALL
+    rampart_context_get_prv_key(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_key_type_t AXIS2_CALL
+    rampart_context_get_prv_key_type(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN void *AXIS2_CALL
+    rampart_context_get_pub_key(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_key_type_t AXIS2_CALL
+    rampart_context_get_pub_key_type(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_user(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+       
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_password(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+    
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_prv_key_password(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN password_callback_fn AXIS2_CALL
+    rampart_context_get_pwcb_function(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN int AXIS2_CALL
+    rampart_context_get_ttl(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_password_type(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+
+    /*End of Getters */
+
+/*Rampart specific functions */
     AXIS2_EXTERN rp_secpolicy_t *AXIS2_CALL
     rampart_context_get_secpolicy(
             rampart_context_t *rampart_context,
@@ -81,16 +206,6 @@ extern "C"
     rampart_context_set_password_callback(rampart_context_t *rampart_context,
             const axis2_env_t *env,
             rampart_callback_t *password_callback_module);
-
-    AXIS2_EXTERN pfunc AXIS2_CALL
-    rampart_context_get_password_function(
-            rampart_context_t *rampart_context,
-            const axis2_env_t *env);
-
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rampart_context_set_password_function(rampart_context_t *rampart_context,
-            const axis2_env_t *env,
-            pfunc password_func);
 
     AXIS2_EXTERN auth_password_func AXIS2_CALL
     rampart_context_get_auth_password_function(
@@ -138,22 +253,12 @@ extern "C"
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rampart_context_get_user(
-            rampart_context_t *rampart_context,
-            const axis2_env_t *env);
-
-    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rampart_context_get_password_callback_class(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rampart_context_get_authn_module_name(
-            rampart_context_t *rampart_context,
-            const axis2_env_t *env);
-
-    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    rampart_context_get_password_type(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
@@ -192,11 +297,6 @@ extern "C"
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rampart_context_get_encryption_prop_file(
-            rampart_context_t *rampart_context,
-            const axis2_env_t *env);
-
-    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rampart_context_get_encryption_user(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
@@ -213,16 +313,36 @@ extern "C"
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rampart_context_get_decryption_prop_file(
-            rampart_context_t *rampart_context,
-            const axis2_env_t *env);
-
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     rampart_context_check_whether_to_encrypt(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_user_from_file(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_password_type_from_file(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_public_key_file(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_private_key_file(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+            
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_ttl_from_file(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+        
 
 #ifdef __cplusplus
 }

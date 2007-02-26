@@ -51,6 +51,43 @@ rp_match_secpolicy_qname(
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+rp_match_policy_qname(
+            const axis2_env_t *env,
+            const axis2_char_t *local_name,
+            axiom_node_t *node,
+            axiom_element_t *element)
+{
+    
+	axis2_qname_t *qname = NULL;
+    axis2_qname_t *node_qname = NULL;
+	
+	AXIS2_ENV_CHECK(env,AXIS2_FALSE);
+
+    qname = axis2_qname_create(env,local_name,RP_POLICY_NS,RP_POLICY_PREFIX);
+    if(!qname)
+        return AXIS2_FALSE;
+
+    node_qname = AXIOM_ELEMENT_GET_QNAME(element,env,node);
+
+    if(!node_qname)
+    {
+        AXIS2_QNAME_FREE(qname,env);
+        qname = NULL;
+        return AXIS2_FALSE;
+    }
+
+    if(AXIS2_QNAME_EQUALS(qname,env,node_qname))
+    {        
+        AXIS2_QNAME_FREE(qname,env);
+        qname = NULL;
+        return AXIS2_TRUE;
+    }
+
+    return AXIS2_FALSE;
+}
+
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 rp_match_rampart_config_qname(
             const axis2_env_t *env,
             const axis2_char_t *local_name,

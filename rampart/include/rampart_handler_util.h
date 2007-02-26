@@ -153,9 +153,8 @@ rampart_validate_security_token(const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axiom_node_t *sec_node);  
 
-
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-rampart_get_policy_location(const axis2_env_t *env,
+AXIS2_EXTERN void *AXIS2_CALL
+rampart_get_rampart_configuration(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axis2_char_t *param_name);
 

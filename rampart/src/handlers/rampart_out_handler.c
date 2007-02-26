@@ -75,23 +75,12 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
     axiom_element_t *soap_header_ele = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     rampart_context_t *rampart_context = NULL;
-/*  rp_secpolicy_t *secpolicy = NULL;*/
-/*  axis2_char_t *file_name = "/home/manjula/axis2/scratch/security-policy/c/rampart/src/secpolicy/test-resources/2.xml";*/
-/*  axis2_char_t *file_name = NULL;*/
     axis2_bool_t serverside = AXIS2_FALSE;
     
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     serverside = axis2_msg_ctx_get_server_side(msg_ctx,env);
-/*
-    if(serverside)
-        file_name = "/home/manjula/axis2/scratch/security-policy/c/rampart/src/secpolicy/test-resources/outgoing_policy.xml";
-
-    else
-        file_name = "/home/manjula/axis2/scratch/security-policy/c/deploy/client_repo/outgoing_policy.xml";
-*/
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if (!soap_envelope)
     {
@@ -121,7 +110,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
         }
         soap_header_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(soap_header_node,env);
 
-        rampart_context = rampart_engine_init(env,msg_ctx,RAMPART_OUTFLOW_SECURITY_POLICY);
+        rampart_context = rampart_engine_init(env,msg_ctx,AXIS2_FALSE);
         if(!rampart_context)
             return AXIS2_FAILURE;
 
@@ -130,9 +119,9 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
         if(AXIS2_FAILURE == status){
                 AXIS2_LOG_INFO(env->log,
                     "[rampart][rampart_out_handler] Security header building failed ERROR");
+                rampart_engine_shutdown(env,rampart_context);
         }
+        status = rampart_engine_shutdown(env,rampart_context);
     }
-
     return status;
-    
 }

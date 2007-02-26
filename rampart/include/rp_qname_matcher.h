@@ -37,6 +37,13 @@ extern "C"
         axiom_element_t *element);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rp_match_policy_qname(
+        const axis2_env_t *env,
+        const axis2_char_t *local_name,
+        axiom_node_t *node,
+        axiom_element_t *element);
+    
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     rp_match_rampart_config_qname(
         const axis2_env_t *env,
         const axis2_char_t *local_name,

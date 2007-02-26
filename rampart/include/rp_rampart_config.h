@@ -23,8 +23,6 @@
  */
 
 #include <rp_includes.h>
-#include <rp_signature_crypto.h>
-#include <rp_encryption_crypto.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -90,26 +88,35 @@ extern "C"
             const axis2_env_t *env,
             axis2_char_t *password_type);
 
-
-    AXIS2_EXTERN rp_signature_crypto_t *AXIS2_CALL
-    rp_rampart_config_get_signature_crypto(
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_rampart_config_get_private_key_file(
             rp_rampart_config_t *rampart_config,
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_rampart_config_set_signature_crypto(rp_rampart_config_t *rampart_config,
+    rp_rampart_config_set_private_key_file(rp_rampart_config_t *rampart_config,
             const axis2_env_t *env,
-            rp_signature_crypto_t *signature_crypto);
+            axis2_char_t *private_key_file);
 
-    AXIS2_EXTERN rp_encryption_crypto_t *AXIS2_CALL
-    rp_rampart_config_get_encryption_crypto(
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_rampart_config_get_public_key_file(
             rp_rampart_config_t *rampart_config,
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_rampart_config_set_encryption_crypto(rp_rampart_config_t *rampart_config,
+    rp_rampart_config_set_public_key_file(rp_rampart_config_t *rampart_config,
             const axis2_env_t *env,
-            rp_encryption_crypto_t *encryption_crypto);
+            axis2_char_t *public_key_file);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_rampart_config_get_time_to_live(
+            rp_rampart_config_t *rampart_config,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_rampart_config_set_time_to_live(rp_rampart_config_t *rampart_config,
+            const axis2_env_t *env,
+            axis2_char_t *time_to_live);
 
 #ifdef __cplusplus
 }

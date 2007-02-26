@@ -146,30 +146,35 @@ rp_rampart_config_builder_populate(
             return AXIS2_FAILURE;
     }
 
-    else if(AXIS2_STRCMP(local_name,RP_SIGNATURE_CRYPTO)==0)
+    else if(AXIS2_STRCMP(local_name,RP_PUBLIC_KEY)==0)
     {
-        if(rp_match_rampart_config_qname(env,RP_SIGNATURE_CRYPTO,node,element))
+        if(rp_match_rampart_config_qname(env,RP_PUBLIC_KEY,node,element))
         {
-            rp_signature_crypto_t *signature_crypto = NULL;
-            signature_crypto = rp_signature_crypto_builder_build(env,node);
-            if(!signature_crypto)
-                return AXIS2_FAILURE;
-
-            return rp_rampart_config_set_signature_crypto(rampart_config,env,signature_crypto);
+            axis2_char_t *public_key_file = NULL;
+            public_key_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            return rp_rampart_config_set_public_key_file(rampart_config,env,public_key_file);
         }
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_ENCRYPTION_CRYPTO)==0)
+    else if(AXIS2_STRCMP(local_name,RP_PRIVATE_KEY)==0)
     {
-        if(rp_match_rampart_config_qname(env,RP_ENCRYPTION_CRYPTO,node,element))
+        if(rp_match_rampart_config_qname(env,RP_PRIVATE_KEY,node,element))
         {
-            rp_encryption_crypto_t *encryption_crypto = NULL;
-            encryption_crypto = rp_encryption_crypto_builder_build(env,node);
-            if(!encryption_crypto)
-                return AXIS2_FAILURE;
-
-            return rp_rampart_config_set_encryption_crypto(rampart_config,env,encryption_crypto);
+            axis2_char_t *private_key_file = NULL;
+            private_key_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            return rp_rampart_config_set_private_key_file(rampart_config,env,private_key_file);
+        }
+        else
+            return AXIS2_FAILURE;
+    }
+    else if(AXIS2_STRCMP(local_name,RP_TIME_TO_LIVE)==0)
+    {
+        if(rp_match_rampart_config_qname(env,RP_TIME_TO_LIVE,node,element))
+        {
+            axis2_char_t *time_to_live = NULL;
+            time_to_live = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            return rp_rampart_config_set_time_to_live(rampart_config,env,time_to_live);
         }
         else
             return AXIS2_FAILURE;

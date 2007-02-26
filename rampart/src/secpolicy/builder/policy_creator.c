@@ -1,8 +1,7 @@
 #include <rp_layout.h>
-/*#include <rp_secpolicy.h>*/
 #include <rp_secpolicy_builder.h>
 #include <rp_policy_creator.h>
-
+#include <rp_qname_matcher.h>
 
 AXIS2_EXTERN rp_secpolicy_t *AXIS2_CALL 
 rp_policy_create_from_file(
@@ -14,11 +13,7 @@ rp_policy_create_from_file(
     axiom_stax_builder_t *builder = NULL;
     axiom_document_t *document = NULL;
     axiom_node_t *root = NULL;
-    axiom_element_t *all_ele = NULL;
     axiom_element_t *root_ele = NULL;
-    axiom_node_t *exat_node = NULL;
-    axiom_element_t *exat_ele = NULL;
-    axiom_node_t *all_node = NULL;
     rp_secpolicy_t *secpolicy = NULL;
 
     reader = axiom_xml_reader_create_for_file(env,filename,NULL);
@@ -62,6 +57,38 @@ rp_policy_create_from_file(
         else
             return NULL;
     }
+    secpolicy = rp_policy_create_from_om_node(env,root);
+
+    return secpolicy;
+
+}
+
+
+AXIS2_EXTERN rp_secpolicy_t *AXIS2_CALL 
+rp_policy_create_from_om_node(
+    const axis2_env_t *env,
+    axiom_node_t *root)
+{
+
+    axiom_element_t *all_ele = NULL;
+    axiom_element_t *root_ele = NULL;
+    axiom_node_t *exat_node = NULL;
+    axiom_element_t *exat_ele = NULL;
+    axiom_node_t *all_node = NULL;
+    rp_secpolicy_t *secpolicy = NULL;
+
+    
+    if(AXIOM_NODE_GET_NODE_TYPE(root, env) == AXIOM_ELEMENT)
+    {
+        root_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (root, env);
+        if(root_ele)
+        {
+            
+        }
+    }
+        else
+            return NULL;
+    
     exat_node = AXIOM_NODE_GET_FIRST_CHILD(root,env);
     if(exat_node)
     {
@@ -95,3 +122,5 @@ rp_policy_create_from_file(
     return secpolicy;
 
 }
+
+

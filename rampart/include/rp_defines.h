@@ -25,7 +25,11 @@
 extern "C"
 {
 #endif
-    
+
+    #define RP_POLICY "Policy"
+    #define RP_EXACTLY_ONE "ExactlyOne"
+    #define RP_ALL "All"
+
     #define RP_TOKEN_USERNAME 1
     #define RP_TOKEN_X509 2
     #define RP_TOKEN_SECURITY_CONTEXT 3
@@ -181,22 +185,22 @@ extern "C"
     #define RP_REQUIRE_CLIENT_CERTIFICATE "RequireClientCertificate"
 
     #define RP_RAMPART_CONFIG "RampartConfig"
-    #define RP_USER "user"
-    #define RP_ENCRYPTION_USER "encryptionUser"
-    #define RP_PASSWORD_CALLBACK_CLASS "passwordCallbackClass"
-    #define RP_AUTHN_MODULE_NAME "authnModuleName"
-    #define RP_PASSWORD_TYPE "passwordType"
+    #define RP_USER "User"
+    #define RP_ENCRYPTION_USER "EncryptionUser"
+    #define RP_PASSWORD_CALLBACK_CLASS "PasswordCallbackClass"
+    #define RP_AUTHN_MODULE_NAME "AuthnModuleName"
+    #define RP_PASSWORD_TYPE "PasswordType"
     #define RP_PLAINTEXT "plainText"
     #define RP_DIGEST "Digest"
-    #define RP_SIGNATURE_CRYPTO "signatureCrypto"
-    #define RP_SIGNATURE_PROP_FILE "signaturePropFile"
-    #define RP_ENCRYPTION_CRYPTO "encryptionCypto"
-    #define RP_ENCRYPTION_PROP_FILE "encryptionPropFile"
-    #define RP_DECRYPTION_PROP_FILE "decryptionPropFile"
+    #define RP_PUBLIC_KEY "PublicKey"
+    #define RP_PRIVATE_KEY "PrivateKey"
+    #define RP_TIME_TO_LIVE "TimeToLive"
 
     #define RP_SP_NS "http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
     #define RP_SECURITY_NS "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+    #define RP_POLICY_NS "http://schemas.xmlsoap.org/ws/2004/09/policy"
     #define RP_RAMPART_NS "http://ws.apache.org/rampart/c/policy"
+    #define RP_POLICY_PREFIX "wsp"
     #define RP_RAMPART_PREFIX "rampc"
     #define RP_SP_PREFIX "sp"
 

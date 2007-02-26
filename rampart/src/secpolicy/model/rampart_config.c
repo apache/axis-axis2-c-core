@@ -25,8 +25,9 @@ struct rp_rampart_config_t
     axis2_char_t *password_callback_class;
     axis2_char_t *authenticate_module;
     axis2_char_t *password_type;
-    rp_signature_crypto_t *signature_crypto;
-    rp_encryption_crypto_t *encryption_crypto;
+    axis2_char_t *time_to_live;
+    axis2_char_t *public_key_file;
+    axis2_char_t *private_key_file;
 };
 
 AXIS2_EXTERN rp_rampart_config_t *AXIS2_CALL 
@@ -47,10 +48,11 @@ rp_rampart_config_create(const axis2_env_t *env)
     rampart_config->user = NULL;
     rampart_config->encryption_user = NULL;
     rampart_config->password_callback_class = NULL;
-    rampart_config->signature_crypto = NULL;
-    rampart_config->encryption_crypto = NULL;
+    rampart_config->private_key_file = NULL;
+    rampart_config->public_key_file = NULL;
     rampart_config->authenticate_module = NULL;
     rampart_config->password_type = NULL;
+    rampart_config->time_to_live = NULL;
     return rampart_config;
 }
 
@@ -62,16 +64,6 @@ rp_rampart_config_free(rp_rampart_config_t *rampart_config,
 
     if(rampart_config)
     {
-        if(rampart_config->encryption_crypto)
-        {
-            rp_encryption_crypto_free(rampart_config->encryption_crypto,env);
-            rampart_config->encryption_crypto = NULL;
-        }
-        if(rampart_config->signature_crypto)
-        {
-            rp_signature_crypto_free(rampart_config->signature_crypto,env);
-            rampart_config->signature_crypto = NULL;
-        }
         AXIS2_FREE(env->allocator,rampart_config);
         rampart_config = NULL;
     }
@@ -193,46 +185,69 @@ rp_rampart_config_set_password_type(rp_rampart_config_t *rampart_config,
 }
 
 
-AXIS2_EXTERN rp_signature_crypto_t *AXIS2_CALL
-rp_rampart_config_get_signature_crypto(
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rp_rampart_config_get_private_key_file(
     rp_rampart_config_t *rampart_config,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    return rampart_config->signature_crypto;
+    return rampart_config->private_key_file;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_signature_crypto(rp_rampart_config_t *rampart_config,
+rp_rampart_config_set_private_key_file(rp_rampart_config_t *rampart_config,
             const axis2_env_t *env,
-            rp_signature_crypto_t *signature_crypto)
+            axis2_char_t *private_key_file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,signature_crypto,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error,private_key_file,AXIS2_FAILURE);
         
-    rampart_config->signature_crypto = signature_crypto;
+    rampart_config->private_key_file = private_key_file;
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN rp_encryption_crypto_t *AXIS2_CALL
-rp_rampart_config_get_encryption_crypto(
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rp_rampart_config_get_public_key_file(
     rp_rampart_config_t *rampart_config,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    return rampart_config->encryption_crypto;
+    return rampart_config->public_key_file;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rp_rampart_config_set_encryption_crypto(rp_rampart_config_t *rampart_config,
+rp_rampart_config_set_public_key_file(rp_rampart_config_t *rampart_config,
             const axis2_env_t *env,
-            rp_encryption_crypto_t *encryption_crypto)
+            axis2_char_t *public_key_file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,encryption_crypto,AXIS2_FAILURE);   
+    AXIS2_PARAM_CHECK(env->error,public_key_file,AXIS2_FAILURE);   
         
-    rampart_config->encryption_crypto = encryption_crypto;
+    rampart_config->public_key_file = public_key_file;
+    return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rp_rampart_config_get_time_to_live(
+    rp_rampart_config_t *rampart_config,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    return rampart_config->time_to_live;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rp_rampart_config_set_time_to_live(rp_rampart_config_t *rampart_config,
+            const axis2_env_t *env,
+            axis2_char_t *time_to_live)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error,time_to_live,AXIS2_FAILURE);   
+        
+    rampart_config->time_to_live = time_to_live;
     return AXIS2_SUCCESS;
 }

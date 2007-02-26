@@ -322,14 +322,14 @@ rampart_validate_security_token(const axis2_env_t *env,
 }
 
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-rampart_get_policy_location(const axis2_env_t *env,
+AXIS2_EXTERN void *AXIS2_CALL
+rampart_get_rampart_configuration(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axis2_char_t *param_name)
         
 {
     axis2_param_t *param_x_flow_security = NULL;
-    axis2_char_t *value = NULL;
+    void *value = NULL;
 
     param_x_flow_security = rampart_get_security_param(env, msg_ctx,
                                     param_name);
@@ -337,7 +337,7 @@ rampart_get_policy_location(const axis2_env_t *env,
     if (!param_x_flow_security)
     {
         AXIS2_LOG_INFO(env->log,
-            "[rampart][rampart_handler_utils] some error in the configurations");
+            "[rampart][rampart_handler_utils] %s parameter is not set.",param_x_flow_security);
         return NULL;
     }
     value = AXIS2_PARAM_GET_VALUE(param_x_flow_security, env);

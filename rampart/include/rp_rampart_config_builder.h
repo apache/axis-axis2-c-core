@@ -24,8 +24,6 @@
 
 #include <rp_includes.h>
 #include <rp_qname_matcher.h>
-#include <rp_signature_crypto_builder.h>
-#include <rp_encryption_crypto_builder.h>
 #include <rp_rampart_config.h>
 
 #ifdef __cplusplus

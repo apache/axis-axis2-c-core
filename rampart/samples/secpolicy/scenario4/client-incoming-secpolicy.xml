@@ -21,39 +21,12 @@
 							</sp:X509Token>
 						</wsp:Policy>
 					</sp:RecipientToken>
-					<sp:AlgorithmSuite>
-						<wsp:Policy>
-							<sp:Basic256Rsa15/>
-						</wsp:Policy>
-					</sp:AlgorithmSuite>
-					<sp:Layout>
-						<wsp:Policy>
-							<sp:Strict/>
-						</wsp:Policy>
-					</sp:Layout>
                     <sp:IncludeTimestamp/>
-                    <sp:EncryptBeforeSigning/>
-					<sp:OnlySignEntireHeadersAndBody/>
 				</wsp:Policy>
             </sp:AsymmetricBinding>
-			<sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-                <wsp:Policy>
-                    <sp:MustSupportRefKeyIdentifier/>
-				</wsp:Policy>
-            </sp:Wss10>
             <rampc:RampartConfig xmlns:rampc="http://ws.apache.org/rampart/c/policy">
-                <rampc:user>Gampola</rampc:user>
-                <rampc:encryptionUser>a</rampc:encryptionUser>
-                <rampc:passwordType>Digest</rampc:passwordType>
-                <rampc:passwordCallbackClass>/home/AXIS2_USER/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</rampc:passwordCallbackClass>
-                <rampc:signatureCrypto>
-                    <rampc:signaturePropFile>/home/AXIS2_USER/axis2/c/rampart/samples/keys/ahome/b_cert.cert</rampc:signaturePropFile>
-                </rampc:signatureCrypto>
-                <rampc:encryptionCypto>
-                    <rampc:encryptionPropFile>/home/AXIS2_USER/axis2/c/rampart/samples/keys/ahome/b_cert.cert</rampc:encryptionPropFile>
-                    <rampc:decryptionPropFile>/home/AXIS2_USER/axis2/c/rampart/samples/keys/ahome/a_store.pfx</rampc:decryptionPropFile>
-                </rampc:encryptionCypto>
-        </rampc:RampartConfig>
+                <rampc:TimeToLive>360</rampc:TimeToLive>
+            </rampc:RampartConfig>
 		</wsp:All>
 	</wsp:ExactlyOne>
 </wsp:Policy>
