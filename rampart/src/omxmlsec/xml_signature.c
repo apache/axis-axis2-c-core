@@ -31,6 +31,7 @@
 #include <oxs_xml_signature.h>
 #include <oxs_signature.h>
 #include <oxs_transform.h>
+#include <oxs_transforms_factory.h>
 #include <oxs_token_ds_reference.h>
 #include <oxs_token_digest_method.h>
 #include <oxs_token_digest_value.h>
@@ -64,6 +65,7 @@ oxs_xml_sig_build_key_info(const axis2_env_t *env,
     /*TODO: Right now we support only X509Data. But should support other patterns as well*/
     cert = oxs_sign_ctx_get_certificate(sign_ctx, env);
     if(!cert){
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIGN_FAILED,"Cannot get the certificate to build <ds:KeyInfo> element" );        
         return AXIS2_FAILURE;
     }
 
@@ -271,20 +273,17 @@ oxs_xml_sig_sign(const axis2_env_t *env,
 
 /*******************************Verification specific*****************************/
 
+/*Populates a sign_part according to the <ds:Reference> node*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_process_ref_node(const axis2_env_t *env,
-    oxs_sign_ctx_t *sign_ctx,
+    oxs_sign_part_t *sign_part,
     axiom_node_t *ref_node,
     axiom_node_t *scope_node)
 {
     axis2_char_t *ref_id = NULL;
     axis2_char_t *child_node_name = NULL;
-    oxs_sign_part_t *sign_part = NULL;
     axiom_node_t *reffed_node = NULL;
     axiom_node_t *child_node = NULL;
-
-    /*Create a sign part and populate it*/
-    sign_part = oxs_sign_part_create(env);
 
     ref_id =  oxs_token_get_ds_reference(env, ref_node);
     oxs_sign_part_set_id(sign_part, env, ref_id);
@@ -294,6 +293,7 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
     if(reffed_node){
        oxs_sign_part_set_node(sign_part, env, reffed_node); 
     }else{
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find node with Id=%s ", ref_id );        
         return AXIS2_FAILURE; /*No such node. Its an error*/
     }
 
@@ -303,13 +303,50 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
     if(0 == axis2_strcmp(child_node_name, OXS_NODE_TRANSFORMS)){
         /*Transforms found*/
         /*TODO*/
+        axiom_node_t *tr_node = NULL;
+        axis2_array_list_t *tr_list = NULL;
+
+        /*Create a list to hold transforms*/
+        tr_list = axis2_array_list_create(env, 1);
+        tr_node = AXIOM_NODE_GET_FIRST_CHILD(child_node, env);
+        /*Iterate thru all the <ds:Transform> nodes in <ds:Transforms>*/
+        while(tr_node)
+        {
+            axis2_char_t *node_name = NULL;
+
+            node_name = axiom_util_get_localname(tr_node, env);
+            if( 0 == axis2_strcmp(OXS_NODE_TRANSFORM, node_name)){
+                axis2_char_t *tr_id = NULL;
+                oxs_transform_t *tr = NULL;
+
+                tr_id = oxs_token_get_transform(env, tr_node);
+                /*Get the transform given the id*/
+                tr = oxs_transforms_factory_produce_transform(env, tr_id);
+                if(!tr) {
+                    /*The transform not supported*/
+                    oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Cannot produce the transform for %s", tr_id);
+                    return AXIS2_FAILURE;
+                }
+                /*Add the transform to the list*/
+                AXIS2_ARRAY_LIST_ADD(tr_list, env, tr);
+            }else{
+                /*<ds:Transforms> cant have any other element*/
+                oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"<ds:Transforms> cannot have node %s ", node_name );        
+                return AXIS2_FAILURE;
+            }
+            /*Set the next node to be precessed*/
+            tr_node = AXIOM_NODE_GET_NEXT_SIBLING(tr_node, env);
+        }/*eof while*/
+        /*Set transforms for this signature part*/
+        oxs_sign_part_set_transforms(sign_part, env, tr_list);
 
         /*At the end, set the next node as the child node*/
         child_node = AXIOM_NODE_GET_NEXT_SIBLING(child_node, env);
     }else{
         /*There are no transforms for this sign part*/
     }
-    /* mandatory ds:DigestMethod*/
+
+    /* Process mandatory ds:DigestMethod*/
     child_node_name = axiom_util_get_localname(child_node, env);
     if(0 == axis2_strcmp(child_node_name, OXS_NODE_DIGEST_METHOD)){
         axis2_char_t *digest_mtd = NULL;
@@ -320,10 +357,11 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
         /*At the end, set the next node as the child node*/
         child_node = AXIOM_NODE_GET_NEXT_SIBLING(child_node, env);
     }else{
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find <ds:DigestMethod> " );        
         return AXIS2_FAILURE;
     }
 
-    /* mandatory ds:DigestValue*/
+    /* Process mandatory ds:DigestValue*/
     child_node_name = axiom_util_get_localname(child_node, env);
     if(0 == axis2_strcmp(child_node_name, OXS_NODE_DIGEST_VALUE)){
         /*ds:DigestValue found*/
@@ -331,6 +369,7 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
         digest_val = oxs_token_get_digest_value(env, child_node);  
         oxs_sign_part_set_digest_val(sign_part, env, digest_val);
     }else{
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find <ds:DigestValue> " );        
         return AXIS2_FAILURE;
     }
 
@@ -338,7 +377,8 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
 
 }
 
-    /*Process Signature Node. We need to populate 
+    /*Process Signature Node along with its most loving child ds:SignedInfo. 
+     * We need to populate 
      * 1. Sig_mtd
      * 2. C14N Mtd
      * 3. Sign parts
@@ -354,14 +394,19 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
 {
     axiom_node_t *cur_node = NULL;
     axiom_node_t *signed_info_node = NULL;
+    axiom_node_t *sig_val_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-
+    axis2_array_list_t *sign_part_list = NULL;
+    
     signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node, 
                             OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
+                                
     if(!signed_info_node){
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find <ds:SignedInfo> " );        
         return AXIS2_FAILURE;
     }
+    /*Create the list for sign parts*/
+    sign_part_list = axis2_array_list_create(env,5);
 
     /*Process signed info element*/
     cur_node = AXIOM_NODE_GET_FIRST_CHILD(signed_info_node, env);
@@ -382,18 +427,44 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
             oxs_sign_ctx_set_sign_mtd_algo(sign_ctx, env, sig_mtd);
 
         }else if(0 == axis2_strcmp(localname, OXS_NODE_REFERENCE)){
-            /*There might be multiple references*/
-            status = oxs_xml_sig_process_ref_node(env, sign_ctx, cur_node, scope_node);        
+            oxs_sign_part_t *sign_part = NULL;
+
+            /* There might be multiple references. 
+             * For each create a sign_part and add to sign_part_list in the sign_ctx*/
+            sign_part = oxs_sign_part_create(env);
+            status = oxs_xml_sig_process_ref_node(env, sign_part, cur_node, scope_node);        
             if(status == AXIS2_FAILURE){
+                oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"<ds:Reference> node processing failed " );        
                 return AXIS2_FAILURE;
             }
-
+           
+            /*Now we have a new sign_part. Add it to the list.*/
+            axis2_array_list_add(sign_part_list, env, sign_part);
+            
         }else{
             printf("oxs_sig : We do not process cur node name %s", localname);
         }
-        
         cur_node = AXIOM_NODE_GET_NEXT_SIBLING(cur_node, env);
     }
+    
+    oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_part_list);
+    /*Finished processing SignedInfo. Now we are processing the Signature Value element*/
+    /*The very next child of SignedInfo Should be the ds:SignatureValue*/
+    sig_val_node = AXIOM_NODE_GET_NEXT_SIBLING(signed_info_node, env);
+    if(0 == axis2_strcmp( OXS_NODE_SIGNATURE_VALUE, axiom_util_get_localname(sig_val_node, env))){
+        axis2_char_t *sig_val = NULL;
+
+        sig_val = oxs_token_get_signature_value(env, sig_val_node);
+        oxs_sign_ctx_set_sig_val(sign_ctx, env, sig_val);
+
+    }else{
+        /*Error the node should be the ds:SignatureValue*/
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find <ds:SignatureValue> " ); 
+        return AXIS2_FAILURE;
+    }
+
+    /*We need to process the KeyInfo node. Do we???*/
+    /*TODO*/
     return AXIS2_SUCCESS;
 }
 
@@ -411,9 +482,9 @@ oxs_xml_sig_verify(const axis2_env_t *env,
     status = oxs_xml_sig_process_signature_node(env, sign_ctx, signature_node, scope_node);
     if(status != AXIS2_SUCCESS){
         /*Something went wrong in the Signature node!!! :(*/
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"<ds:Signature> node processing failed " );        
         return AXIS2_FAILURE;
     }
-    
-    /*Verify*/
+    /*At this point we have a ready to process signature context. So why wait...? Verify*/ 
     return AXIS2_SUCCESS;
 }
