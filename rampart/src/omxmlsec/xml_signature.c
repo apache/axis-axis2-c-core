@@ -288,6 +288,9 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
     ref_id =  oxs_token_get_ds_reference(env, ref_node);
     oxs_sign_part_set_id(sign_part, env, ref_id);
 
+    /*Remove the # from the id*/ 
+    ref_id =  axis2_string_substring_starting_at(ref_id, 1);
+
     /*Find the node refered by this ref_id and set to the sign part*/
     reffed_node = oxs_axiom_get_node_by_id(env, scope_node, "wsu:Id", ref_id );
     if(reffed_node){
@@ -468,6 +471,56 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_xml_sig_verify_sign_part(const axis2_env_t *env,
+    oxs_sign_part_t *sign_part)
+{
+    axis2_char_t *id = NULL;
+    axis2_char_t *digest_mtd = NULL;
+    axis2_char_t *digest_val = NULL;
+    axiom_node_t *node = NULL;
+    axis2_array_list_t *transforms = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    id =            oxs_sign_part_get_id(sign_part, env);
+    digest_mtd =    oxs_sign_part_get_digest_mtd(sign_part, env);
+    digest_val =    oxs_sign_part_get_digest_val(sign_part, env);
+    node =          oxs_sign_part_get_node(sign_part, env);
+    transforms =    oxs_sign_part_get_transforms(sign_part, env);
+
+    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] Verifying signature part %s ", id );  
+   
+    /*Do transforms to the node*/ 
+    
+    /*Make the digest*/
+
+    /*Compare the value*/    
+
+    return status;      
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_xml_sig_verify_digests(const axis2_env_t *env,
+    oxs_sign_ctx_t *sign_ctx)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_array_list_t *sign_parts = NULL;
+    int i = 0 ;
+
+    /*Get the sign_part list*/
+    sign_parts =  oxs_sign_ctx_get_sign_parts(sign_ctx, env);
+    /*For each and every signature part in sig ctx,*/
+    for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(sign_parts, env); i++){
+        oxs_sign_part_t *sign_part =  NULL;
+
+        /*Get ith sign_part*/
+        sign_part = (oxs_sign_part_t*)axis2_array_list_get(sign_parts, env, i);
+        status = oxs_xml_sig_verify_sign_part(env, sign_part);      
+    }
+    
+    return status;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 oxs_xml_sig_verify(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx,
@@ -486,5 +539,9 @@ oxs_xml_sig_verify(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
     /*At this point we have a ready to process signature context. So why wait...? Verify*/ 
+
+    /*First step is to Verify the integrity of the message by comparing the digest values of each and every reference.*/
+    status = oxs_xml_sig_verify_digests(env, sign_ctx);
+
     return AXIS2_SUCCESS;
 }

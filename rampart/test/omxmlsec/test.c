@@ -72,8 +72,8 @@ axis2_env_t *test_init()
 
 axis2_status_t verify(axis2_env_t *env,
     axis2_char_t *filename,
-    axis2_char_t *certfile,
-    axis2_char_t *prvkeyfile
+        openssl_pkey_t *prvkey ,
+        oxs_x509_cert_t *cert
     )
 {
     oxs_sign_ctx_t *sign_ctx = NULL;
@@ -83,22 +83,21 @@ axis2_status_t verify(axis2_env_t *env,
     tmpl = load_sample_xml(env , tmpl, filename);
     sign_ctx = oxs_sign_ctx_create(env);
     if(sign_ctx){
-        openssl_pkey_t *prvkey = NULL;
-        oxs_x509_cert_t *cert = NULL;
         axiom_node_t *sig_node = NULL;
-
+#if 0
         /*Set private key*/
         prvkey = oxs_key_mgr_load_private_key_from_file(env, prvkeyfile, "");
         if(!prvkey){
-            printf("Cannot load private key");
+            printf("Verification : Cannot load private key\n");
         }
-        oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
 
         /*TODO : Set x509 certificate. This is required to set the Key Information in ds:KeyInfo*/
         cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, certfile);
         if(!cert){
-             printf("Cannot load certificate");
+             printf("Verification : Cannot load certificate\n");
         }
+#endif        
+        oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
         oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
         /*Set the operation*/
         oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_SIGN);
@@ -106,7 +105,7 @@ axis2_status_t verify(axis2_env_t *env,
         sig_node = oxs_axiom_get_first_child_node_by_name(env, tmpl,
                                     OXS_NODE_SIGNATURE, OXS_DSIG_NS, OXS_DS );
         if(!sig_node){
-            printf("Cannot find ds:Signature node ");
+            printf("Verification : Cannot find ds:Signature node\n");
         }
         /*Verify*/
         status = oxs_xml_sig_verify(env, sign_ctx, sig_node, tmpl);
@@ -133,6 +132,8 @@ int main(int argc, char *argv[])
     axis2_array_list_t *sign_parts = NULL;
     axis2_array_list_t *tr_list = NULL;
     axis2_char_t *id = NULL;
+        openssl_pkey_t *prvkey = NULL;
+        oxs_x509_cert_t *cert = NULL;
     FILE *outf;
 
 
@@ -182,8 +183,6 @@ int main(int argc, char *argv[])
     axis2_array_list_add(sign_parts, env, sign_part);
     sign_ctx = oxs_sign_ctx_create(env);
     if(sign_ctx){
-        openssl_pkey_t *prvkey = NULL;
-        oxs_x509_cert_t *cert = NULL;
 
         /*Set private key*/
         prvkey = oxs_key_mgr_load_private_key_from_file(env, prvkeyfile, "");
@@ -219,7 +218,7 @@ int main(int argc, char *argv[])
     fclose(outf);
 
     /*****************VERIFY*********************/
-    verify(env, signed_filename, prvkeyfile, certfile);
+    verify(env, signed_filename, prvkey, cert);
 
     printf("\nDONE\n");
     return 0;

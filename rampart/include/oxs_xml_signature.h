@@ -50,6 +50,15 @@ oxs_xml_sig_sign(const axis2_env_t *env,
 /**
  * Verify
  */
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_xml_sig_verify_sign_part(const axis2_env_t *env,
+    oxs_sign_part_t *sign_part);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_xml_sig_verify_digests(const axis2_env_t *env,
+    oxs_sign_ctx_t *sign_ctx);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_verify(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx,
