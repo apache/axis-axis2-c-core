@@ -50,27 +50,32 @@ oxs_xml_sig_sign(const axis2_env_t *env,
 /**
  * Verify
  */
-
+/* Do transforms, Generate digest and compare with the digest in hand
+ * For a single signature part*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_verify_sign_part(const axis2_env_t *env,
     oxs_sign_part_t *sign_part);
 
+/*Verify all digests in signature parts*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_verify_digests(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx);
 
+/*Verify a complete xml document*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_verify(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx,
     axiom_node_t *signature_node,
     axiom_node_t *scope_node);
 
+/*Process the ds:Reference node. Populate a signature part*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_process_ref_node(const axis2_env_t *env,
     oxs_sign_part_t *sign_part,
     axiom_node_t *ref_node,
     axiom_node_t *scope_node);
 
+/*Process the ds:Signature node. Populate a signature context*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_process_signature_node(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx,

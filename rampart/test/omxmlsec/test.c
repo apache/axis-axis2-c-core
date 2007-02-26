@@ -62,13 +62,6 @@ load_sample_xml(const axis2_env_t *env,
 
 
 
-axis2_env_t *test_init()
-{
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
-    axis2_error_t *error = (axis2_error_t*)axis2_error_create(allocator);
-    axis2_env_t *env = axis2_env_create_with_error(allocator, error);
-    return env;
-}
 
 axis2_status_t verify(axis2_env_t *env,
     axis2_char_t *filename,
@@ -147,7 +140,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     
-    env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axis2_env_create_all("./oxs.log", AXIS2_LOG_LEVEL_TRACE);
     printf("--Testing started--------------------------------------------\n");
     
     tmpl = load_sample_xml(env , tmpl, filename);

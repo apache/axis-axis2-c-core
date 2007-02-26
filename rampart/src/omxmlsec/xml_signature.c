@@ -81,13 +81,89 @@ oxs_xml_sig_build_key_info(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
+/*This method is common for both signing and verification*/
+static axis2_char_t *
+oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
+    axiom_node_t *node,
+    axis2_array_list_t *transforms,
+    axis2_char_t *digest_mtd)
+{
+    axis2_char_t *serialized_node = NULL; 
+    axis2_char_t *digest = NULL; 
+    int i = 0;
+
+    printf("oxs_xml_sig_transform_n_digest\n");
+    if((transforms) && (0 < AXIS2_ARRAY_LIST_SIZE(transforms, env))){
+        oxs_tr_dtype_t output_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;/*This will always be the current dtype*/
+        void *tr_output = NULL;
+        output_dtype = OXS_TRANSFORM_TYPE_NODE; /*We always begin with a node*/
+
+        tr_output = node; /*The first transformation is applied to the node*/
+
+        /*LOOP: Apply transforms. For example exclusive C14N*/
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(transforms, env); i++){
+            oxs_transform_t *tr = NULL;
+            oxs_transform_tr_func tr_func = NULL;
+            oxs_tr_dtype_t input_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;
+            void *tr_input = NULL;
+            axis2_char_t *tr_id = NULL;
+
+            /*Get the ith transform*/
+            tr = (oxs_transform_t*)AXIS2_ARRAY_LIST_GET(transforms, env, i);
+            tr_id = oxs_transform_get_id(tr, env);
+            tr_func = oxs_transform_get_transform_function(tr, env);
+            input_dtype = oxs_transform_get_input_data_type(tr, env);
+
+            printf("Transform required = %s", tr_id);
+            /*Prepare the input*/
+            /*If the required input type is CHAR and what we have is a NODE*/
+            if((input_dtype == OXS_TRANSFORM_TYPE_CHAR) && (output_dtype == OXS_TRANSFORM_TYPE_NODE)){
+                /*Serialize*/
+                tr_input = axiom_node_to_string((axiom_node_t*)tr_output, env);
+            /*If the required input type is NODE and what we have is a CHAR*/
+            }else if((input_dtype == OXS_TRANSFORM_TYPE_NODE) && (output_dtype == OXS_TRANSFORM_TYPE_CHAR)){
+                /*TODO De-serialize*/
+            }else{
+                /*Let it go as it is. */
+                tr_input = tr_output;
+            }
+            /*Apply transform*/
+            if(tr_func){
+                output_dtype = (*tr_func)(env, tr_input, input_dtype, &tr_output);
+            }else{
+                oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Cannot get the transform implementation for %s", tr_id);
+            }
+            /*If the output data type is unknown OR the output is NULL its an error*/
+            if((output_dtype == OXS_TRANSFORM_TYPE_UNKNOWN) || (!tr_output)){
+                oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Transform failed for %s", tr_id);
+                /*return AXIS2_FAILURE*/
+            }
+        }/*eof for loop*/
+        /*We have applied all our transforms now*/
+        /*Serialize node*/
+        if(OXS_TRANSFORM_TYPE_NODE == output_dtype ){
+            serialized_node = AXIOM_NODE_TO_STRING((axiom_node_t*)tr_output, env);
+        }else if(OXS_TRANSFORM_TYPE_CHAR == output_dtype){
+            serialized_node = (axis2_char_t*)tr_output;
+        }else{
+           /*Error*/
+        }
+    }else{
+        /*No transforms defined. Thus we simply direct the node, to make the digest*/
+        serialized_node = AXIOM_NODE_TO_STRING(node, env);
+    }
+    /*TODO Check digest type. We support SHA-1 only*/
+    digest = openssl_sha1(env, serialized_node, axis2_strlen(serialized_node));
+
+    return digest;
+}
+
 /*parent is ds:SignedInfo*/
 static axis2_status_t
 oxs_xml_sig_build_reference(const axis2_env_t *env,
     axiom_node_t *parent,
     oxs_sign_part_t *sign_part)
 {
-    axis2_char_t *serialized_node = NULL; 
     axis2_char_t *digest = NULL; 
     axis2_char_t *digest_mtd = NULL; 
     axis2_char_t *ref_id = NULL; 
@@ -110,67 +186,27 @@ oxs_xml_sig_build_reference(const axis2_env_t *env,
 
     /*Get transforms if any*/
     transforms = oxs_sign_part_get_transforms(sign_part, env);
+    /*Get the digest method*/
+    digest_mtd = oxs_sign_part_get_digest_mtd(sign_part, env);
+
+    /*Transform and Digest*/
+    digest = oxs_xml_sig_transform_n_digest(env, node, transforms, digest_mtd);
     
+    /*Build ds:Transforms node and its children*/
     if((transforms) && (0 < AXIS2_ARRAY_LIST_SIZE(transforms, env))){
         axiom_node_t *transforms_node = NULL;
-        oxs_tr_dtype_t output_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;/*This will always be the current dtype*/
-        void *tr_output = NULL;
-        output_dtype = OXS_TRANSFORM_TYPE_NODE; /*We always begin with a node*/
-        
-        tr_output = node; /*The first transformation is applied to the node*/
 
-        /*Add ds:Transforms element*/
         transforms_node = oxs_token_build_transforms_element(env, reference_node);
-        /*LOOP: Apply transforms. For example exclusive C14N*/
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(transforms, env); i++){
             oxs_transform_t *tr = NULL;
-            oxs_transform_tr_func tr_func = NULL;
-            oxs_tr_dtype_t input_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;
-            void *tr_input = NULL;
-            axis2_char_t *tr_id = NULL;
+            axis2_char_t *tr_id = NULL;    
 
             /*Get the ith transform*/
             tr = (oxs_transform_t*)AXIS2_ARRAY_LIST_GET(transforms, env, i);
             tr_id = oxs_transform_get_id(tr, env);
-            tr_func = oxs_transform_get_transform_function(tr, env);
-            input_dtype = oxs_transform_get_input_data_type(tr, env);
-            
-            printf("Transform required = %s", tr_id);
-            /*Prepare the input*/
-            /*If the required input type is CHAR and what we have is a NODE*/
-            if((input_dtype == OXS_TRANSFORM_TYPE_CHAR) && (output_dtype == OXS_TRANSFORM_TYPE_NODE)){
-                /*Serialize*/
-                tr_input = axiom_node_to_string((axiom_node_t*)tr_output, env);
-            /*If the required input type is NODE and what we have is a CHAR*/
-            }else if((input_dtype == OXS_TRANSFORM_TYPE_NODE) && (output_dtype == OXS_TRANSFORM_TYPE_CHAR)){
-                /*TODO De-serialize*/
-            }else{
-                /*Let it go as it is. */
-                tr_input = tr_output;
-            }
-
-            /*Apply transform*/
-            if(tr_func){
-                output_dtype = (*tr_func)(env, tr_input, input_dtype, &tr_output);
-            }else{
-                oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Cannot get the transform implementation for %s", tr_id);
-            }
-            /*If the output data type is unknown OR the output is NULL its an error*/
-            if((output_dtype == OXS_TRANSFORM_TYPE_UNKNOWN) || (!tr_output)){
-                oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Transform failed for %s", tr_id);
-                /*return AXIS2_FAILURE*/
-            }
-            /*Add to ds:Transforms element*/
             oxs_token_build_transform_element(env, transforms_node, tr_id);
         }
     }
-    /*Serialize node*/
-    serialized_node = AXIOM_NODE_TO_STRING(node, env);
-    
-    /*Make digest.*/
-    digest_mtd = oxs_sign_part_get_digest_mtd(sign_part, env);
-    digest = openssl_sha1(env, serialized_node, axis2_strlen(serialized_node)); 
-
     /*Construct nodes*/
     digest_mtd_node = oxs_token_build_digest_method_element(env, reference_node, digest_mtd);
     digest_value_node = oxs_token_build_digest_value_element(env, reference_node, digest);
@@ -478,6 +514,7 @@ oxs_xml_sig_verify_sign_part(const axis2_env_t *env,
     axis2_char_t *id = NULL;
     axis2_char_t *digest_mtd = NULL;
     axis2_char_t *digest_val = NULL;
+    axis2_char_t *new_digest = NULL;
     axiom_node_t *node = NULL;
     axis2_array_list_t *transforms = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -491,10 +528,16 @@ oxs_xml_sig_verify_sign_part(const axis2_env_t *env,
     AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] Verifying signature part %s ", id );  
    
     /*Do transforms to the node*/ 
-    
-    /*Make the digest*/
+    new_digest = oxs_xml_sig_transform_n_digest(env, node, transforms, digest_mtd); 
 
-    /*Compare the value*/    
+    /*Compare values*/    
+    if(0 == axis2_strcmp(new_digest, digest_val)){
+        AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] Digest verification success for node Id= %s ", id );
+        status = AXIS2_SUCCESS;
+    }else{
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Digest verification failed for node Id= %s  ", id );        
+        status =  AXIS2_FAILURE;
+    }
 
     return status;      
 }
@@ -540,8 +583,15 @@ oxs_xml_sig_verify(const axis2_env_t *env,
     }
     /*At this point we have a ready to process signature context. So why wait...? Verify*/ 
 
-    /*First step is to Verify the integrity of the message by comparing the digest values of each and every reference.*/
+    /*First step is to Verify the integrity of the signed parts by comparing the digest values of each and every reference.*/
     status = oxs_xml_sig_verify_digests(env, sign_ctx);
 
+    if(AXIS2_FAILURE == status){
+        return AXIS2_FAILURE;
+    }
+   
+    /*At this point we have compared the digest. Next step is to compare the Signature value */ 
+    /*TODO*/
+    
     return AXIS2_SUCCESS;
 }
