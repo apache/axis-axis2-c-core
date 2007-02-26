@@ -1244,7 +1244,10 @@ axis2_svc_engage_module(
             module_desc);
     if (status)
     {
+        const axis2_qname_t *qname = NULL;
         status = AXIS2_ARRAY_LIST_ADD(svc_impl->engaged_modules, env, module_desc);
+        qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+        axis2_svc_add_module_qname(svc, env, qname);
     }
     if (phase_resolver)
     {

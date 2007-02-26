@@ -703,8 +703,38 @@ axis2_mep_client_two_way_send(
     }
     else
     {
+        int count = 0;
+        while (!response_envelope && count < 5)
+        {
+            count++;
+            sleep(1);
+            axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+            axis2_svc_ctx_t *svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+            axis2_ctx_t *ctx = AXIS2_SVC_CTX_GET_BASE((const axis2_svc_ctx_t *)svc_ctx, env);
+            axis2_property_t *prop = AXIS2_CTX_GET_PROPERTY(ctx, env, AXIS2_RESPONSE_SOAP_ENVELOPE, AXIS2_FALSE);
+            if (prop)
+                response_envelope = AXIS2_PROPERTY_GET_VALUE(prop, env);
+            if (response_envelope)
+                AXIS2_MSG_CTX_SET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env, response_envelope);
+        }
+
+
         /* if it is a two way message, then the status should be in error,
            else it is a one way message */
+        if (response_envelope)
+        {
+            AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
+            engine = axis2_engine_create(env, conf_ctx);
+            if (engine)
+            {
+                status = AXIS2_ENGINE_RECEIVE(engine, env, response);
+                if (status != AXIS2_SUCCESS)
+                    return NULL;
+            }
+        }
+        else
+        {
+
         if (AXIS2_ERROR_GET_STATUS_CODE(env->error) != AXIS2_SUCCESS)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
@@ -715,6 +745,7 @@ axis2_mep_client_two_way_send(
             }
             AXIS2_MSG_CTX_FREE(response, env);
             return NULL;
+        }
         }
     }
 
@@ -788,7 +819,9 @@ axis2_mep_client_receive(
         {
             status = AXIS2_ENGINE_RECEIVE(engine, env, response);
             if (status != AXIS2_SUCCESS)
+            {
                 return NULL;
+            }
         }
 
     }

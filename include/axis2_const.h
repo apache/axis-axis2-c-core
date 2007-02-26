@@ -343,6 +343,7 @@ typedef enum axis2_wsdl_msg_labels
 #define AXIS2_SVC_GRP_ID "ServiceGroupId"    
 
 
+#define AXIS2_RESPONSE_SOAP_ENVELOPE "Axis2ResponseEnvelope"    
 
 #ifdef __cplusplus
 }

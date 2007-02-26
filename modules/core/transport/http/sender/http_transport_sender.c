@@ -251,7 +251,8 @@ axis2_http_transport_sender_invoke(
                 AXIS2_FAILURE);
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
                 AXIS2_ERROR_GET_MESSAGE(env->error));
-        return AXIS2_FAILURE;
+        /*return AXIS2_FAILURE;*/
+        return AXIS2_SUCCESS;
     }
     xml_writer = axiom_xml_writer_create_for_memory(env, NULL,
             AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
@@ -627,8 +628,11 @@ axis2_http_transport_sender_write_message(
     {
         /* handle one way case */
         const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "OP name axis2_qname_get_localpart = %s",
+                mep);
         if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-            AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+            AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0 ||
+            AXIS2_STRCMP(mep, AXIS2_MEP_URI_IN_ONLY) == 0)
         {
             return status;
         }
@@ -638,7 +642,8 @@ axis2_http_transport_sender_write_message(
 				AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI : AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
 			response_envelope = axis2_http_transport_utils_create_soap_msg(env,
 																		   msg_ctx, soap_ns_uri);
-			AXIS2_MSG_CTX_SET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env, response_envelope);
+            if (response_envelope)
+    			AXIS2_MSG_CTX_SET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env, response_envelope);
 		}
     }
 

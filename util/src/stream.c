@@ -274,6 +274,8 @@ axis2_stream_write_basic(axis2_stream_t *stream, const axis2_env_t *env,
     if (NULL == buffer)
         return -1;
 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[axis2_stream_write_basic]  %s %d",(char*)buffer, count);
+    
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     new_len = stream_impl->len + count;
     if (new_len > stream_impl->max_len)
