@@ -42,7 +42,11 @@ openssl_sign(const axis2_env_t *env,
         oxs_buffer_t *input_buf,
         oxs_buffer_t *output_buf);
 
-
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_sig_verify(const axis2_env_t *env,
+        oxs_sign_ctx_t *sign_ctx,
+        oxs_buffer_t *input_buf,
+        oxs_buffer_t *sig_buf);
 /** @} */
 #ifdef __cplusplus
 }

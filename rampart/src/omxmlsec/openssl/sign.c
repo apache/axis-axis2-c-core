@@ -31,6 +31,56 @@
 #include <openssl/bio.h>
 
 #define BUFSIZE 64
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_sig_verify(const axis2_env_t *env,
+    oxs_sign_ctx_t *sign_ctx,
+    oxs_buffer_t *input_buf,
+    oxs_buffer_t *sig_buf)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    openssl_pkey_t *open_pubkey = NULL;
+    oxs_x509_cert_t *cert = NULL;
+    const EVP_MD*   digest;
+    EVP_MD_CTX      md_ctx;
+    EVP_PKEY*       pkey;
+    int  ret;
+
+    /*Get the publickey*/
+    cert = oxs_sign_ctx_get_certificate(sign_ctx, env);
+    open_pubkey = oxs_x509_cert_get_public_key(cert, env);
+    pkey = OPENSSL_PKEY_GET_KEY(open_pubkey, env);
+
+    /*Set the digest according to the signature method*/
+    digest = EVP_sha1();
+    
+    ret = EVP_VerifyInit(&md_ctx, digest);
+    if(ret != 1) {
+        /*Error*/
+    }
+    ret = EVP_VerifyUpdate(&md_ctx,  OXS_BUFFER_GET_DATA(input_buf, env),  OXS_BUFFER_GET_SIZE(input_buf, env));
+    if(ret != 1) {
+        /*Error*/
+    }
+    
+    ret = EVP_VerifyFinal(&md_ctx, OXS_BUFFER_GET_DATA(sig_buf, env), 
+                                   OXS_BUFFER_GET_SIZE(sig_buf, env),
+                                   pkey);
+    if(ret == 0){
+        /*Error. Signature verification FAILED */
+        status = AXIS2_FAILURE;
+    }else if(ret < 0){
+        /*Erorr. Some other error*/
+        status = AXIS2_FAILURE;
+    }else{
+        /*SUCCESS. Det ar bra :-)*/ 
+        status = AXIS2_SUCCESS;
+    }
+
+    return status;    
+    
+}
+
 AXIS2_EXTERN int AXIS2_CALL
 openssl_sign(const axis2_env_t *env,
         oxs_sign_ctx_t *sign_ctx,
