@@ -577,7 +577,7 @@ oxs_xml_sig_verify(const axis2_env_t *env,
     /*Populate the sign_ctx by inspecting the ds:Signature node*/
     status = oxs_xml_sig_process_signature_node(env, sign_ctx, signature_node, scope_node);
     if(status != AXIS2_SUCCESS){
-        /*Something went wrong in the Signature node!!! :(*/
+        /*Something went wrong while processing the Signature node!!! :(*/
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"<ds:Signature> node processing failed " );        
         return AXIS2_FAILURE;
     }

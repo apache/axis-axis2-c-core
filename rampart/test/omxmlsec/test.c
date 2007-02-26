@@ -60,8 +60,79 @@ load_sample_xml(const axis2_env_t *env,
     return tmpl;
 }
 
+axis2_status_t sign(axis2_env_t *env,
+    axis2_char_t *filename,
+    openssl_pkey_t *prvkey ,
+    oxs_x509_cert_t *cert)
+{
+    axis2_char_t *signed_result = NULL;
+    axis2_char_t *signed_filename = "result-sign.xml";
+    axiom_node_t *node = NULL;
+    axiom_node_t *tmpl = NULL;
+    oxs_sign_part_t *sign_part = NULL;
+    oxs_sign_ctx_t *sign_ctx = NULL;
+    oxs_transform_t *tr = NULL;
+    axis2_array_list_t *sign_parts = NULL;
+    axis2_array_list_t *tr_list = NULL;
+    axis2_char_t *id = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    FILE *outf;
+    
+    tmpl = load_sample_xml(env , tmpl, filename);
+
+    if (tmpl)
+    {
+        printf("load_sample_xml SUCCESS\n");
+    }
+    else
+    {
+        printf("load_sample_xml FAILED");
+        return -1;
+    }
+    
+     /*Sign specific*/
+    sign_part = oxs_sign_part_create(env);
+
+    tr_list = axis2_array_list_create(env, 1);
+    /*We need C14N transform*/
+    tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
+    axis2_array_list_add(tr_list, env, tr);
+    oxs_sign_part_set_transforms(sign_part, env, tr_list);
+
+    /*We need to sign this node add an ID to it*/
+    node = axiom_node_get_first_element(tmpl, env);
+    id = "Sig-ID-EFG";  /*oxs_util_generate_id(env,(axis2_char_t*)OXS_SIG_ID);*/
+    oxs_axiom_add_attribute(env, node, OXS_WSU, OXS_WSSE_XMLNS,  OXS_ATTR_ID, id);
+    status = oxs_sign_part_set_node(sign_part, env,node);
 
 
+    sign_parts = axis2_array_list_create(env, 1);
+    axis2_array_list_add(sign_parts, env, sign_part);
+    sign_ctx = oxs_sign_ctx_create(env);
+    if(sign_ctx){
+        oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
+        oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
+        /*Set sig algo*/
+        oxs_sign_ctx_set_sign_mtd_algo(sign_ctx, env, OXS_HREF_RSA_SHA1);
+        /*Set C14N method*/
+        oxs_sign_ctx_set_c14n_mtd(sign_ctx, env, OXS_HREF_XML_EXC_C14N);
+        /*Set sig parts*/
+        oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_parts);
+        /*Set the operation*/
+        oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_SIGN);
+        /*Sign*/
+        oxs_xml_sig_sign(env, sign_ctx, tmpl);
+    }else{
+        printf("Sign ctx creation failed");
+    }
+    signed_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
+
+    outf = fopen(signed_filename, "wb");
+    fwrite(signed_result, 1, AXIS2_STRLEN(signed_result), outf);
+
+    return AXIS2_SUCCESS;
+
+}
 
 axis2_status_t verify(axis2_env_t *env,
     axis2_char_t *filename,
@@ -77,19 +148,6 @@ axis2_status_t verify(axis2_env_t *env,
     sign_ctx = oxs_sign_ctx_create(env);
     if(sign_ctx){
         axiom_node_t *sig_node = NULL;
-#if 0
-        /*Set private key*/
-        prvkey = oxs_key_mgr_load_private_key_from_file(env, prvkeyfile, "");
-        if(!prvkey){
-            printf("Verification : Cannot load private key\n");
-        }
-
-        /*TODO : Set x509 certificate. This is required to set the Key Information in ds:KeyInfo*/
-        cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, certfile);
-        if(!cert){
-             printf("Verification : Cannot load certificate\n");
-        }
-#endif        
         oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
         oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
         /*Set the operation*/
@@ -99,6 +157,7 @@ axis2_status_t verify(axis2_env_t *env,
                                     OXS_NODE_SIGNATURE, OXS_DSIG_NS, OXS_DS );
         if(!sig_node){
             printf("Verification : Cannot find ds:Signature node\n");
+            return AXIS2_FAILURE;
         }
         /*Verify*/
         status = oxs_xml_sig_verify(env, sign_ctx, sig_node, tmpl);
@@ -112,12 +171,11 @@ int main(int argc, char *argv[])
 {
     axis2_env_t *env = NULL;
     axis2_char_t *filename = "input.xml";
-    axis2_char_t *signed_filename = "result-sign.xml";
     axis2_char_t *certfile = "rsacert.pem";
     axis2_char_t *prvkeyfile = "rsakey.pem";
+    axis2_char_t *operation = "S";
+#if 0
     axis2_char_t *signed_result = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
-    axiom_node_t *tmpl = NULL;
     axiom_node_t *node = NULL;
     oxs_sign_part_t *sign_part = NULL;
     oxs_sign_ctx_t *sign_ctx = NULL;
@@ -125,36 +183,36 @@ int main(int argc, char *argv[])
     axis2_array_list_t *sign_parts = NULL;
     axis2_array_list_t *tr_list = NULL;
     axis2_char_t *id = NULL;
-        openssl_pkey_t *prvkey = NULL;
-        oxs_x509_cert_t *cert = NULL;
-    FILE *outf;
+#endif
+    openssl_pkey_t *prvkey = NULL;
+    oxs_x509_cert_t *cert = NULL;
 
 
-    if (argc > 3){
+    if (argc > 4){
         filename = argv[1];
         prvkeyfile = argv[2];
         certfile = argv[3];
-        printf("Signing %s with %s. Certificate file is %s", filename, prvkeyfile, certfile);
+        operation = argv[4];
     }else{
-        printf("Usage ./test inputfile prvkey certificate\n");
+        printf("Usage ./test inputfile prvkey certificate operation\n");
         return -1;
     }
     
     env = axis2_env_create_all("./oxs.log", AXIS2_LOG_LEVEL_TRACE);
     printf("--Testing started--------------------------------------------\n");
     
-    tmpl = load_sample_xml(env , tmpl, filename);
+    /*Load private key*/
+    prvkey = oxs_key_mgr_load_private_key_from_file(env, prvkeyfile, "");
+    if(!prvkey){
+            printf("Cannot load private key");
+    }
 
-    if (tmpl)
-    {
-        printf("load_sample_xml SUCCESS\n");
+    /*Load certificate*/
+    cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, certfile);
+    if(!cert){
+         printf("Cannot load certificate");
     }
-    else
-    {
-        printf("load_sample_xml FAILED");
-        return -1;
-    }
-    
+#if 0
     /*Sign specific*/
     sign_part = oxs_sign_part_create(env);
     status = AXIS2_FAILURE;
@@ -176,21 +234,8 @@ int main(int argc, char *argv[])
     axis2_array_list_add(sign_parts, env, sign_part);
     sign_ctx = oxs_sign_ctx_create(env);
     if(sign_ctx){
-
-        /*Set private key*/
-        prvkey = oxs_key_mgr_load_private_key_from_file(env, prvkeyfile, "");
-        if(!prvkey){
-            printf("Cannot load private key");
-        }
         oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
-
-        /*TODO : Set x509 certificate. This is required to set the Key Information in ds:KeyInfo*/
-        cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, certfile);
-        if(!cert){
-             printf("Cannot load certificate");
-        }
         oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
-
         /*Set sig algo*/
         oxs_sign_ctx_set_sign_mtd_algo(sign_ctx, env, OXS_HREF_RSA_SHA1);
         /*Set C14N method*/
@@ -209,9 +254,13 @@ int main(int argc, char *argv[])
     outf = fopen("result-sign.xml", "wb");
     fwrite(signed_result, 1, AXIS2_STRLEN(signed_result), outf);
     fclose(outf);
-
-    /*****************VERIFY*********************/
-    verify(env, signed_filename, prvkey, cert);
+#endif
+    
+    if(0 == axis2_strcmp(operation, "SIGN")){
+        sign(env, filename, prvkey, cert);
+    }else{
+        verify(env, filename, prvkey, cert);
+    }
 
     printf("\nDONE\n");
     return 0;
