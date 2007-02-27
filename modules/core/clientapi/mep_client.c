@@ -24,6 +24,7 @@
 #include <axiom_soap_body.h>
 #include <axis2_http_transport_utils.h>
 #include <axis2_property.h>
+#include <axis2_platform_auto_sense.h>
 
 typedef struct axis2_mep_client_impl
 {
@@ -704,14 +705,18 @@ axis2_mep_client_two_way_send(
     else
     {
         int count = 0;
+		axis2_op_ctx_t *op_ctx = NULL;
+		axis2_svc_ctx_t *svc_ctx = NULL;
+		axis2_ctx_t *ctx = NULL;
+		axis2_property_t *prop = NULL;
         while (!response_envelope && count < 5)
         {
             count++;
-            sleep(1);
-            axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-            axis2_svc_ctx_t *svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
-            axis2_ctx_t *ctx = AXIS2_SVC_CTX_GET_BASE((const axis2_svc_ctx_t *)svc_ctx, env);
-            axis2_property_t *prop = AXIS2_CTX_GET_PROPERTY(ctx, env, AXIS2_RESPONSE_SOAP_ENVELOPE, AXIS2_FALSE);
+            AXIS2_SLEEP(1);
+            op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+            svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+            ctx = AXIS2_SVC_CTX_GET_BASE((const axis2_svc_ctx_t *)svc_ctx, env);
+            prop = AXIS2_CTX_GET_PROPERTY(ctx, env, AXIS2_RESPONSE_SOAP_ENVELOPE, AXIS2_FALSE);
             if (prop)
                 response_envelope = AXIS2_PROPERTY_GET_VALUE(prop, env);
             if (response_envelope)
