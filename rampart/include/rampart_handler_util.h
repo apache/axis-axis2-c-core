@@ -158,6 +158,11 @@ rampart_get_rampart_configuration(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axis2_char_t *param_name);
 
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+rampart_is_rampart_engaged(const axis2_env_t *env,
+        axis2_msg_ctx_t *msg_ctx);
+
+
 
 /** @} */
 #ifdef __cplusplus

@@ -46,7 +46,8 @@ extern "C"
 #define RAMPART_SECURITY_TIMESTAMP "Timestamp"
 #define RAMPART_SECURITY_TIMESTAMP_CREATED "Created"
 #define RAMPART_SECURITY_TIMESTAMP_EXPIRES "Expires"
-    
+#define RAMPART_RAMPART "rampart"   
+
 /*Rampart URIs*/
 #define RAMPART_WSSE "wsse"
 #define RAMPART_WSSE_XMLNS "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"

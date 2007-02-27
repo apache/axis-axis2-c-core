@@ -110,6 +110,17 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
         }
         soap_header_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(soap_header_node,env);
 
+        /*since rampart in handler is a global handler we should
+        first check whether the rampart module is engaged.If not engaged we
+        should not process the message but return success.*/
+
+        /*This method is implemented in rampart_handler utils.*/
+        if(!rampart_is_rampart_engaged(env,msg_ctx))
+        {
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Not intended for processing in Rampart");            
+            return AXIS2_SUCCESS;
+        }
+
         rampart_context = rampart_engine_init(env,msg_ctx,AXIS2_FALSE);
         if(!rampart_context)
             return AXIS2_FAILURE;

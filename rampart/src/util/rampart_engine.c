@@ -34,7 +34,6 @@ build_rampart_context_from_file(
             const axis2_env_t *env,
             axis2_char_t *file_name);
 
-
 AXIS2_EXTERN rampart_context_t* AXIS2_CALL
 rampart_engine_init(const axis2_env_t *env, 
         axis2_msg_ctx_t *msg_ctx,
@@ -194,7 +193,6 @@ build_rampart_context_from_file(
     return rampart_context;
 
 }
-
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_engine_shutdown(const axis2_env_t *env,
