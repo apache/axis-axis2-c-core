@@ -57,10 +57,14 @@ openssl_sig_verify(const axis2_env_t *env,
     ret = EVP_VerifyInit(&md_ctx, digest);
     if(ret != 1) {
         /*Error*/
+         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"EVP_VerifyInit failed" );
+        return AXIS2_FAILURE;
     }
     ret = EVP_VerifyUpdate(&md_ctx,  OXS_BUFFER_GET_DATA(input_buf, env),  OXS_BUFFER_GET_SIZE(input_buf, env));
     if(ret != 1) {
         /*Error*/
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"EVP_VerifyUpdate failed" );
+        return AXIS2_FAILURE;
     }
     
     ret = EVP_VerifyFinal(&md_ctx, OXS_BUFFER_GET_DATA(sig_buf, env), 
@@ -68,12 +72,15 @@ openssl_sig_verify(const axis2_env_t *env,
                                    pkey);
     if(ret == 0){
         /*Error. Signature verification FAILED */
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Signature verification FAILED." );
         status = AXIS2_FAILURE;
     }else if(ret < 0){
         /*Erorr. Some other error*/
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Error occured while verifying the signature." );
         status = AXIS2_FAILURE;
     }else{
         /*SUCCESS. Det ar bra :-)*/ 
+        AXIS2_LOG_INFO(env->log, "[openssl][sig] Signature verification SUCCESS " );
         status = AXIS2_SUCCESS;
     }
 

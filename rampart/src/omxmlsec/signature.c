@@ -27,7 +27,6 @@
 #include <openssl_rsa.h>
 #include <openssl_sign.h>
 #include <openssl_digest.h>
-#include <openssl_sign.h>
 
 /*Private functions*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -93,3 +92,47 @@ oxs_sig_sign(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_sig_verify(const axis2_env_t *env,
+    oxs_sign_ctx_t *sign_ctx,
+    axis2_char_t *content,
+    axis2_char_t *signature)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    oxs_buffer_t *in_buf =  NULL;    
+    oxs_buffer_t *sig_buf =  NULL;    
+    unsigned char* decoded_data = NULL;
+    int decoded_len = -1;
+    int ret = -1;
+
+    /*Base64 decode the signature value and create the sig buffer*/
+    /*Allocate enough space*/
+    decoded_data = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len(signature));
+    decoded_len = axis2_base64_decode_binary(decoded_data, signature );
+    if (decoded_len < 0)
+    {
+            oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,
+                    "axis2_base64_decode_binary failed");
+            return AXIS2_FAILURE;
+    }
+    /*Create the signature buffer*/
+    sig_buf = oxs_buffer_create(env);
+    ret = OXS_BUFFER_POPULATE(sig_buf, env, decoded_data, decoded_len);     
+
+    /*Create the input buffer*/
+    in_buf = oxs_buffer_create(env);
+    status = OXS_BUFFER_POPULATE(in_buf, env, (unsigned char*)content, axis2_strlen(content));
+
+    /*Call OpenSSL function to verify the signature*/
+    status = openssl_sig_verify(env, sign_ctx, in_buf, sig_buf);
+    if(AXIS2_SUCCESS != status){
+        /*Error in signature processing*/
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Signature verification FAILED.");
+        return AXIS2_FAILURE;
+    }else{
+
+        AXIS2_LOG_INFO(env->log, "[oxs][sig] Signature verification SUCCESS " );
+        return AXIS2_SUCCESS;
+    }
+    
+}

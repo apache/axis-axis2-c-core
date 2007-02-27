@@ -52,7 +52,14 @@ oxs_sig_sign(const axis2_env_t *env,
     oxs_buffer_t *input,
     oxs_buffer_t *output);
 
-
+/**
+ * Verify
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_sig_verify(const axis2_env_t *env,
+    oxs_sign_ctx_t *sign_ctx,
+    axis2_char_t *content,
+    axis2_char_t *signature);
 /** @} */
 #ifdef __cplusplus
 }
