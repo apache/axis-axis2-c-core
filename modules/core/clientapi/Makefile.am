@@ -13,4 +13,5 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/util/include \
+           -I$(top_builddir)/util/include/platforms \
             -I$(top_builddir)/axiom/include
