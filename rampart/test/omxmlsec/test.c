@@ -151,7 +151,7 @@ axis2_status_t verify(axis2_env_t *env,
         oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
         oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
         /*Set the operation*/
-        oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_SIGN);
+        oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_VERIFY);
         
         sig_node = oxs_axiom_get_first_child_node_by_name(env, tmpl,
                                     OXS_NODE_SIGNATURE, OXS_DSIG_NS, OXS_DS );
@@ -161,7 +161,11 @@ axis2_status_t verify(axis2_env_t *env,
         }
         /*Verify*/
         status = oxs_xml_sig_verify(env, sign_ctx, sig_node, tmpl);
-        status = AXIS2_SUCCESS;    
+        if(AXIS2_SUCCESS != status){
+            printf("Signature Failed :-(\n");
+        }else{
+            printf("Signature Verified :-)\n");
+        }
     }
 
     return status;
@@ -173,17 +177,7 @@ int main(int argc, char *argv[])
     axis2_char_t *filename = "input.xml";
     axis2_char_t *certfile = "rsacert.pem";
     axis2_char_t *prvkeyfile = "rsakey.pem";
-    axis2_char_t *operation = "S";
-#if 0
-    axis2_char_t *signed_result = NULL;
-    axiom_node_t *node = NULL;
-    oxs_sign_part_t *sign_part = NULL;
-    oxs_sign_ctx_t *sign_ctx = NULL;
-    oxs_transform_t *tr = NULL;
-    axis2_array_list_t *sign_parts = NULL;
-    axis2_array_list_t *tr_list = NULL;
-    axis2_char_t *id = NULL;
-#endif
+    axis2_char_t *operation = "SIGN";
     openssl_pkey_t *prvkey = NULL;
     oxs_x509_cert_t *cert = NULL;
 
@@ -212,49 +206,6 @@ int main(int argc, char *argv[])
     if(!cert){
          printf("Cannot load certificate");
     }
-#if 0
-    /*Sign specific*/
-    sign_part = oxs_sign_part_create(env);
-    status = AXIS2_FAILURE;
-
-    tr_list = axis2_array_list_create(env, 1);
-    /*We need C14N transform*/
-    tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
-    axis2_array_list_add(tr_list, env, tr);
-    oxs_sign_part_set_transforms(sign_part, env, tr_list);
-    
-    /*We need to sign this node add an ID to it*/
-    node = axiom_node_get_first_element(tmpl, env);
-    id = "Sig-ID-EFG";  /*oxs_util_generate_id(env,(axis2_char_t*)OXS_SIG_ID);*/
-    oxs_axiom_add_attribute(env, node, OXS_WSU, OXS_WSSE_XMLNS,  OXS_ATTR_ID, id);
-    status = oxs_sign_part_set_node(sign_part, env,node);
-
-
-    sign_parts = axis2_array_list_create(env, 1);
-    axis2_array_list_add(sign_parts, env, sign_part);
-    sign_ctx = oxs_sign_ctx_create(env);
-    if(sign_ctx){
-        oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
-        oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
-        /*Set sig algo*/
-        oxs_sign_ctx_set_sign_mtd_algo(sign_ctx, env, OXS_HREF_RSA_SHA1);
-        /*Set C14N method*/
-        oxs_sign_ctx_set_c14n_mtd(sign_ctx, env, OXS_HREF_XML_EXC_C14N);
-        /*Set sig parts*/
-        oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_parts);
-        /*Set the operation*/
-        oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_SIGN);
-        /*Sign*/
-        oxs_xml_sig_sign(env, sign_ctx, tmpl);
-    }else{
-        printf("Sign ctx creation failed");
-    }
-    signed_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
-
-    outf = fopen("result-sign.xml", "wb");
-    fwrite(signed_result, 1, AXIS2_STRLEN(signed_result), outf);
-    fclose(outf);
-#endif
     
     if(0 == axis2_strcmp(operation, "SIGN")){
         sign(env, filename, prvkey, cert);

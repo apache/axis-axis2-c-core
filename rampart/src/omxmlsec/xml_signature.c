@@ -610,9 +610,11 @@ oxs_xml_sig_verify(const axis2_env_t *env,
     /*In the final step we Verify*/ 
     status = oxs_sig_verify(env, sign_ctx, content , signature_val);
     if(AXIS2_FAILURE == status){
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Signature is not valid " );        
         return AXIS2_FAILURE;
+    }else{
+        return AXIS2_SUCCESS;
     }
 
 
-    return AXIS2_SUCCESS;
 }

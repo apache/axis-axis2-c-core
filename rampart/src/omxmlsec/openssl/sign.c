@@ -32,6 +32,50 @@
 
 #define BUFSIZE 64
 
+AXIS2_EXTERN int AXIS2_CALL
+openssl_sign(const axis2_env_t *env,
+        oxs_sign_ctx_t *sign_ctx,
+        oxs_buffer_t *input_buf,
+        oxs_buffer_t *output_buf)
+{
+    openssl_pkey_t *open_pkey = NULL;
+    unsigned char sig_buf[4096]; /*Enough for the signature*/
+    unsigned int sig_len;
+    const EVP_MD*   digest;
+    EVP_MD_CTX      md_ctx;
+    EVP_PKEY*       pkey = NULL;
+    int err, ret;
+    /*Get the key*/
+    open_pkey = oxs_sign_ctx_get_private_key(sign_ctx, env);
+    pkey = OPENSSL_PKEY_GET_KEY(open_pkey, env);
+    if(!pkey){
+         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIGN_FAILED,"Cannot load the private key" );
+    }
+
+    /*TODO: Set the digest according to the signature method*/
+    digest = EVP_sha1();
+
+    /*MD Ctx init*/
+    EVP_MD_CTX_init(&md_ctx);
+
+    /*Sign init*/
+    ret = EVP_SignInit(&md_ctx, digest);
+    AXIS2_LOG_INFO(env->log, "[openssl][sig] Signing content %s", OXS_BUFFER_GET_DATA(input_buf, env) );    
+    EVP_SignUpdate (&md_ctx, OXS_BUFFER_GET_DATA(input_buf, env), OXS_BUFFER_GET_SIZE(input_buf, env));
+    sig_len = sizeof(sig_buf);
+    err = EVP_SignFinal (&md_ctx,
+               sig_buf,
+               &sig_len,
+               pkey);
+    if (err != 1) {  
+        ERR_print_errors_fp (stderr);     
+    }
+    /*Fill the output buffer*/
+    OXS_BUFFER_POPULATE(output_buf, env, sig_buf, sig_len);
+
+    return sig_len;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_sig_verify(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx,
@@ -43,15 +87,17 @@ openssl_sig_verify(const axis2_env_t *env,
     oxs_x509_cert_t *cert = NULL;
     const EVP_MD*   digest;
     EVP_MD_CTX      md_ctx;
-    EVP_PKEY*       pkey;
+    EVP_PKEY*       pkey = NULL;
     int  ret;
 
     /*Get the publickey*/
     cert = oxs_sign_ctx_get_certificate(sign_ctx, env);
     open_pubkey = oxs_x509_cert_get_public_key(cert, env);
     pkey = OPENSSL_PKEY_GET_KEY(open_pubkey, env);
-
-    /*Set the digest according to the signature method*/
+    if(!pkey){
+         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot load the public key" );
+    }
+    /*TODO Set the digest according to the signature method*/
     digest = EVP_sha1();
 
     /*Init MD Ctx*/
@@ -90,46 +136,5 @@ openssl_sig_verify(const axis2_env_t *env,
 
     return status;    
     
-}
-
-AXIS2_EXTERN int AXIS2_CALL
-openssl_sign(const axis2_env_t *env,
-        oxs_sign_ctx_t *sign_ctx,
-        oxs_buffer_t *input_buf,
-        oxs_buffer_t *output_buf)
-{
-    openssl_pkey_t *open_pkey = NULL;
-    unsigned char sig_buf[4096]; /*Allocate enough memory dynamically*/
-    unsigned int sig_len;
-    const EVP_MD*   digest;
-    EVP_MD_CTX      md_ctx;
-    EVP_PKEY*       pkey;
-    int err, ret;
-    /*Get the key*/
-    open_pkey = oxs_sign_ctx_get_private_key(sign_ctx, env);
-    pkey = OPENSSL_PKEY_GET_KEY(open_pkey, env);
-
-    /*Set the digest according to the signature method*/
-    digest = EVP_sha1();
-
-    /*MD Ctx init*/
-    EVP_MD_CTX_init(&md_ctx);
-
-    /*Sign init*/
-    ret = EVP_SignInit(&md_ctx, digest);
-    
-    EVP_SignUpdate (&md_ctx, OXS_BUFFER_GET_DATA(input_buf, env), OXS_BUFFER_GET_SIZE(input_buf, env));
-    sig_len = sizeof(sig_buf);
-    err = EVP_SignFinal (&md_ctx,
-               sig_buf,
-               &sig_len,
-               pkey);
-    if (err != 1) {  
-        ERR_print_errors_fp (stderr);     
-    }
-    /*Fill the output buffer*/
-    OXS_BUFFER_POPULATE(output_buf, env, sig_buf, sig_len);
-
-    return sig_len;
 }
 
