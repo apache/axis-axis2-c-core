@@ -571,9 +571,15 @@ oxs_xml_sig_verify(const axis2_env_t *env,
     axiom_node_t *scope_node)
 {
     axis2_status_t status = AXIS2_FAILURE;
+    axiom_node_t *signed_info_node = NULL;
+    axiom_document_t *doc = NULL;
+    axis2_char_t *c14n_mtd = NULL;
+    axis2_char_t *content = NULL;
+    axis2_char_t *signature_val = NULL;
 
     /*Set operation to verify*/
     oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_VERIFY);
+    
     /*Populate the sign_ctx by inspecting the ds:Signature node*/
     status = oxs_xml_sig_process_signature_node(env, sign_ctx, signature_node, scope_node);
     if(status != AXIS2_SUCCESS){
@@ -581,17 +587,32 @@ oxs_xml_sig_verify(const axis2_env_t *env,
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"<ds:Signature> node processing failed " );        
         return AXIS2_FAILURE;
     }
-    /*At this point we have a ready to process signature context. So why wait...? Verify*/ 
+    /*At this point we have a ready to process signature context. So start verification process*/ 
 
-    /*First step is to Verify the integrity of the signed parts by comparing the digest values of each and every reference.*/
+    /*Verify the integrity of the signed parts by comparing the digest values of each and every reference.*/
     status = oxs_xml_sig_verify_digests(env, sign_ctx);
 
     if(AXIS2_FAILURE == status){
         return AXIS2_FAILURE;
     }
-   
+
     /*At this point we have compared the digest. Next step is to compare the Signature value */ 
-    /*TODO*/
-    
+    /*First get the signature value from the context*/
+    signature_val = oxs_sign_ctx_get_sig_val(sign_ctx, env);
+
+    /*Then we apply the C14N for the ds:SignedInfo*/
+    signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node,
+                                OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
+    c14n_mtd = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env); 
+    doc = axiom_node_get_document(signed_info_node, env);
+    oxs_c14n_apply(env, doc, AXIS2_FALSE, &content, AXIS2_TRUE, NULL, signed_info_node);
+
+    /*In the final step we Verify*/ 
+    status = oxs_sig_verify(env, sign_ctx, content , signature_val);
+    if(AXIS2_FAILURE == status){
+        return AXIS2_FAILURE;
+    }
+
+
     return AXIS2_SUCCESS;
 }

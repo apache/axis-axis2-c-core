@@ -53,7 +53,11 @@ openssl_sig_verify(const axis2_env_t *env,
 
     /*Set the digest according to the signature method*/
     digest = EVP_sha1();
-    
+
+    /*Init MD Ctx*/
+    EVP_MD_CTX_init(&md_ctx);
+   
+    /*Intialize verification*/
     ret = EVP_VerifyInit(&md_ctx, digest);
     if(ret != 1) {
         /*Error*/
@@ -107,8 +111,11 @@ openssl_sign(const axis2_env_t *env,
 
     /*Set the digest according to the signature method*/
     digest = EVP_sha1();
+
+    /*MD Ctx init*/
+    EVP_MD_CTX_init(&md_ctx);
+
     /*Sign init*/
-    
     ret = EVP_SignInit(&md_ctx, digest);
     
     EVP_SignUpdate (&md_ctx, OXS_BUFFER_GET_DATA(input_buf, env), OXS_BUFFER_GET_SIZE(input_buf, env));
