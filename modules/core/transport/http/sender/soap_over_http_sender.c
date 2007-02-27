@@ -80,6 +80,11 @@ axis2_soap_over_http_sender_send(
     const axis2_char_t *str_url,
     const axis2_char_t *soap_action);
 
+axis2_http_client_t* AXIS2_CALL
+axis2_soap_over_http_sender_get_client(
+    axis2_soap_over_http_sender_t *sender,
+    const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_set_chunked(
     axis2_soap_over_http_sender_t *sender,
@@ -162,6 +167,8 @@ axis2_soap_over_http_sender_create(
 
     sender_impl->sender.ops->send =
         axis2_soap_over_http_sender_send;
+    sender_impl->sender.ops->get_client =
+        axis2_soap_over_http_sender_get_client;
     sender_impl->sender.ops->set_chunked =
         axis2_soap_over_http_sender_set_chunked;
     sender_impl->sender.ops->set_om_output =
@@ -564,6 +571,16 @@ axis2_soap_over_http_sender_send(
     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
             AXIS2_FAILURE);
     return AXIS2_FAILURE;
+}
+
+
+axis2_http_client_t* AXIS2_CALL
+axis2_soap_over_http_sender_get_client(
+    axis2_soap_over_http_sender_t *sender,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(sender)->client;
 }
 
 

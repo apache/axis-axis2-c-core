@@ -35,6 +35,7 @@
 #include <axiom_output.h>
 #include <axis2_http_simple_response.h>
 #include <axiom_soap_envelope.h>
+#include <axis2_http_client.h>
 
 
 #ifdef __cplusplus
@@ -72,6 +73,11 @@ extern "C"
                     axiom_soap_envelope_t *out,
                     const axis2_char_t *str_url,
                     const axis2_char_t *soap_action);
+
+        axis2_http_client_t* (AXIS2_CALL *
+                get_client)(
+                    axis2_soap_over_http_sender_t *sender,
+                    const axis2_env_t *env);
 
         /**
          * @param sender sender
@@ -183,6 +189,9 @@ extern "C"
 #define AXIS2_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, output, url, \
                   soap_action) ((sender)->ops->send (sender, env, msg_ctx\
                   ,output, url, soap_action))
+
+#define AXIS2_SOAP_OVER_HTTP_SENDER_GET_CLIENT(sender, env) \
+                        ((sender)->ops->get_client(sender, env))
 
 /** Set chunked.
     @sa axis2_soap_over_http_sender_ops#set_chunked */

@@ -548,6 +548,7 @@ axis2_http_transport_sender_write_message(
 	const axis2_char_t *soap_ns_uri = NULL;
 	axiom_soap_envelope_t *response_envelope = NULL;
 	axis2_op_t *op = NULL;
+    axis2_http_client_t *client = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -616,6 +617,10 @@ axis2_http_transport_sender_write_message(
         status = AXIS2_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url
                 , soap_action);
 
+        /* Get the client used to send.  We will own this, and free it after
+         * having read the response */
+        client = AXIS2_SOAP_OVER_HTTP_SENDER_GET_CLIENT(sender, env);
+
 		/*
          * TODO check for errors
          */
@@ -647,14 +652,31 @@ axis2_http_transport_sender_write_message(
 		}
     }
 
+    /* Free the client */
+    if (client)
+    {
+        AXIS2_HTTP_CLIENT_FREE(client, env);
+        client = NULL;
+    }
+
     return status;
 }
 
 /**
  * Following block distinguish the exposed part of the dll.
  */
+
+/* When building for static deployment, give the get and remove methods
+ * unique names.  This avoids having the linker fail with duplicate symbol
+ * errors.
+ */
+
 AXIS2_EXPORT int
+#ifndef AXIS2_STATIC_DEPLOY
 axis2_get_instance(
+#else
+axis2_http_transport_sender_get_instance(
+#endif
     struct axis2_transport_sender **inst,
     const axis2_env_t *env)
 {
@@ -669,7 +691,11 @@ axis2_get_instance(
 }
 
 AXIS2_EXPORT int
+#ifndef AXIS2_STATIC_DEPLOY
 axis2_remove_instance(
+#else
+axis2_http_transport_sender_remove_instance(
+#endif
     axis2_transport_sender_t *inst,
     const axis2_env_t *env)
 {

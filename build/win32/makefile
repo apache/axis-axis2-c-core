@@ -31,6 +31,9 @@ AUTOCONF = configure.in
 
 # directory structure of install directory
 
+
+AXIS2_RELEASE_DIR=axis2c-bin-$(RELEASE_VER)-win32
+ 
 AXIS2_BINDIR   = ..\deploy
 AXIS2_SERVICES = $(AXIS2_BINDIR)\services
 AXIS2_MODULES  = $(AXIS2_BINDIR)\modules
@@ -670,9 +673,11 @@ copy_include:
 
 
 mv_dist:
+	cd $(AXIS2_BINDIR)
 	cd ..
-	if exist axis2c-bin-$(RELEASE_VER)-win32 rmdir /S /Q axis2c-bin-$(RELEASE_VER)-win32
-	rename 	deploy axis2c-bin-$(RELEASE_VER)-win32
+	if exist $(AXIS2_RELEASE_DIR) rmdir /S /Q $(AXIS2_RELEASE_DIR)
+	rename  deploy $(AXIS2_RELEASE_DIR)
+
 
 all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_calculator 
 
@@ -1156,5 +1161,5 @@ all: clean_make_dir clean deploy axis2_core axis2_samples copy_include clean_mak
  
 install: all
 
-dist: all mod_rampart_all axis2_server_modules savan copy_extra copy_samples mv_dist
+dist: all axis2_server_modules savan copy_extra copy_samples mv_dist
 
