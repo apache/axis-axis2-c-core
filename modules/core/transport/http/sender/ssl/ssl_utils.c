@@ -89,14 +89,14 @@ axis2_ssl_utils_initialize_ctx(
 
         if(!(SSL_CTX_use_certificate_chain_file(ctx, key_file)))
         {
-            printf("Loading client certificate failed!\n");
+			AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[ssl client] loading client certificate failed ");
             SSL_CTX_free(ctx);
             return NULL;
         }
 
         if(!(SSL_CTX_use_PrivateKey_file(ctx, key_file, SSL_FILETYPE_PEM)))
         {
-            printf("Loading client key failed!\n");
+			AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[ssl client] Loading client key failed");
             SSL_CTX_free(ctx);
             return NULL;
         }
@@ -105,7 +105,7 @@ axis2_ssl_utils_initialize_ctx(
     /* Load the CAs we trust*/
     if (!(SSL_CTX_load_verify_locations(ctx, ca_file, 0)))
     {
-        printf("Loading CA certifiate failed!\n");
+		AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[ ssl client ] Loading CA certificate failed ");
         SSL_CTX_free(ctx);
         return NULL;
     }
