@@ -89,7 +89,14 @@ oxs_sign_ctx_get_public_key(
     const oxs_sign_ctx_t *sign_ctx,
     const axis2_env_t *env)
 {
-    return sign_ctx->pub_key ;
+    /*If the public key is set then use it. Else get the public key from the certificate.*/
+    if(sign_ctx->pub_key){
+        return sign_ctx->pub_key ;
+    }else if(sign_ctx->certificate){
+        return oxs_x509_cert_get_public_key(sign_ctx->certificate, env);
+    }else{
+        return NULL;
+    }
 }
 
 AXIS2_EXTERN oxs_sign_operation_t AXIS2_CALL

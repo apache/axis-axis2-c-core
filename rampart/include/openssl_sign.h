@@ -37,14 +37,14 @@ extern "C" {
  */
 
 AXIS2_EXTERN int AXIS2_CALL
-openssl_sign(const axis2_env_t *env,
-        oxs_sign_ctx_t *sign_ctx,
+openssl_sig_sign(const axis2_env_t *env,
+        openssl_pkey_t *prvkey,
         oxs_buffer_t *input_buf,
         oxs_buffer_t *output_buf);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_sig_verify(const axis2_env_t *env,
-        oxs_sign_ctx_t *sign_ctx,
+        openssl_pkey_t *pubkey,
         oxs_buffer_t *input_buf,
         oxs_buffer_t *sig_buf);
 /** @} */

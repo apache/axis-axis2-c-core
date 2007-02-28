@@ -38,15 +38,19 @@ oxs_sig_sign_rsa_sha1(const axis2_env_t *env,
     axis2_char_t *encoded_str = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     oxs_buffer_t *signed_result_buf = NULL;
+    openssl_pkey_t *prvkey = NULL;
     int signedlen = -1, encodedlen = -1, ret = -1;
 
     /*Create output buffer to store signed data*/
     signed_result_buf = oxs_buffer_create(env);
 
     /*Sign */
-    signedlen = openssl_sign(env, sign_ctx, input, signed_result_buf);
+    prvkey = oxs_sign_ctx_get_private_key(sign_ctx, env);
+    signedlen = openssl_sig_sign(env, prvkey, input, signed_result_buf);
     if(signedlen < 0){
         /*Error*/
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIGN_FAILED,
+                        "Signature failed. The length of signature is %d", signedlen);
     }
     
     /*Base64 encode*/
@@ -100,7 +104,9 @@ oxs_sig_verify(const axis2_env_t *env,
 {
     axis2_status_t status = AXIS2_FAILURE;
     oxs_buffer_t *in_buf =  NULL;    
-    oxs_buffer_t *sig_buf =  NULL;    
+    oxs_buffer_t *sig_buf =  NULL;   
+    openssl_pkey_t *pubkey = NULL;
+
     unsigned char* decoded_data = NULL;
     int decoded_len = -1;
     int ret = -1;
@@ -123,8 +129,12 @@ oxs_sig_verify(const axis2_env_t *env,
     in_buf = oxs_buffer_create(env);
     status = OXS_BUFFER_POPULATE(in_buf, env, (unsigned char*)content, axis2_strlen(content));
 
+    /*Get the public key. See.. this method is tricky. It might take the public key from the certificate if
+     * the public key is not available directly*/
+    pubkey = oxs_sign_ctx_get_public_key(sign_ctx, env);
+
     /*Call OpenSSL function to verify the signature*/
-    status = openssl_sig_verify(env, sign_ctx, in_buf, sig_buf);
+    status = openssl_sig_verify(env, pubkey, in_buf, sig_buf);
     if(AXIS2_SUCCESS != status){
         /*Error in signature processing*/
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Signature verification FAILED.");
