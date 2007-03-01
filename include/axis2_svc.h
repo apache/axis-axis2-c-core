@@ -260,6 +260,11 @@ extern "C"
                     struct axis2_conf *conf);
 
         /**
+         * Check whether a given module is engaged to the service.
+         * @param svc pointer to service struct
+         * @param env pointer to environment struct
+         * @param  module_qname pointer to module qname to be engaged, 
+         * @return AXIS2_TRUE if module is engaged, else AXIS2_FALSE 
          */
         axis2_bool_t (AXIS2_CALL *
                 is_module_engaged) (
