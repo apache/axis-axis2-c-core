@@ -92,8 +92,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axis2_http_util", "axis2_ht
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_savan", "mod_savan\mod_savan.vcproj", "{C781F3DE-8F38-4778-A50F-003D04336A10}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_rampart", "mod_rampart\mod_rampart.vcproj", "{E29A8228-26E8-431F-A218-3F2849BC724D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -156,10 +154,6 @@ Global
 		{C781F3DE-8F38-4778-A50F-003D04336A10}.Debug|Win32.Build.0 = Debug|Win32
 		{C781F3DE-8F38-4778-A50F-003D04336A10}.Release|Win32.ActiveCfg = Release|Win32
 		{C781F3DE-8F38-4778-A50F-003D04336A10}.Release|Win32.Build.0 = Release|Win32
-		{E29A8228-26E8-431F-A218-3F2849BC724D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E29A8228-26E8-431F-A218-3F2849BC724D}.Debug|Win32.Build.0 = Debug|Win32
-		{E29A8228-26E8-431F-A218-3F2849BC724D}.Release|Win32.ActiveCfg = Release|Win32
-		{E29A8228-26E8-431F-A218-3F2849BC724D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
