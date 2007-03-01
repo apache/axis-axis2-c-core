@@ -260,6 +260,14 @@ extern "C"
                     struct axis2_conf *conf);
 
         /**
+         */
+        axis2_bool_t (AXIS2_CALL *
+                is_module_engaged) (
+                    axis2_svc_t *svc,
+                    const axis2_env_t *env,
+                    axis2_qname_t *module_qname);
+
+        /**
          * Adds operations defined in a module to this service. It is possible 
          * to define operations that are associated to a module in a module.xml 
          * file. These operations in turn could be invoked in relation to a 
@@ -289,11 +297,11 @@ extern "C"
          * assume the ownership of module description
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
-        /*axis2_status_t (AXIS2_CALL *
+        axis2_status_t (AXIS2_CALL *
                 add_to_engaged_module_list)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env,
-                    struct axis2_module_desc *module_desc);*/
+                    struct axis2_module_desc *module_desc);
 
         /**
          * Gets all engaged modules.
@@ -301,10 +309,10 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to array list containing all engaged modules
          */
-/*        axis2_array_list_t *(AXIS2_CALL *
+        axis2_array_list_t *(AXIS2_CALL *
                 get_all_engaged_modules)(
                     const axis2_svc_t *svc,
-                    const axis2_env_t *env);*/
+                    const axis2_env_t *env);
 
         /**
          * Sets style. Style can be either RPC or document literal.
@@ -1094,6 +1102,11 @@ extern "C"
 #define AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, axis2_config) \
         ((svc)->ops->engage_module(svc, env, module_desc, axis2_config))
 
+/** Check whether given module is engaged to the service.
+    @sa axis2_svc_ops#is_module_engaged */
+#define AXIS2_SVC_IS_MODULE_ENGAGED(svc, env, module_qname) \
+        ((svc)->ops->is_module_engaged(svc, env, module_qname))
+
 /** Adds operations defined in module configuration to service.
     @sa axis2_svc_ops#add_module_ops */
 #define AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, axis2_config) \
@@ -1101,14 +1114,14 @@ extern "C"
 
 /** Adds the named module to engaged module list.
     @sa axis2_svc_ops#add_to_engaged_module_list */
-/*#define AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_name) \
+#define AXIS2_SVC_ADD_TO_ENGAGED_MODULE_LIST(svc, env, module_name) \
         ((svc)->ops->add_to_engaged_module_list(svc, env, module_name))
-*/
+
 /** Gets all engaged modules.
     @sa axis2_svc_ops#get_all_engaged_modules */
-/*#define AXIS2_SVC_GET_ALL_ENGAGED_MODULES(svc, env) \
+#define AXIS2_SVC_GET_ALL_ENGAGED_MODULES(svc, env) \
         ((svc)->ops->get_all_engaged_modules(svc, env))
-*/
+
 /** Sets service style.
     @sa axis2_svc_ops#set_style */
 #define AXIS2_SVC_SET_STYLE(svc, env, style) \
