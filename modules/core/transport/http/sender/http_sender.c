@@ -35,7 +35,7 @@
 #include <axis2_util.h>
 #include <axiom_soap.h>
 
-#ifndef AXIS2_LIBCURL_ENABLED
+#ifdef AXIS2_LIBCURL_ENABLED
 #include <libcurl/axis2_libcurl.h>
 #endif
 /**
