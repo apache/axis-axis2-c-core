@@ -220,7 +220,3 @@ extern "C"
 }
 #endif
 #endif /* AXIS2_SOAP_OVER_HTTP_SENDER_H */
-
-
-
-

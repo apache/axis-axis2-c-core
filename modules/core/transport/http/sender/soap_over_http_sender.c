@@ -225,7 +225,8 @@ axis2_soap_over_http_sender_send(
     const axis2_char_t *char_set_enc = NULL;
     axis2_string_t *char_set_enc_str = NULL;
     int status_code = -1;
-	axis2_http_simple_response_t *response = NULL;
+    axis2_http_header_t *http_header = NULL;
+    axis2_http_simple_response_t *response = NULL;
     axis2_char_t *content_type = NULL;
     axis2_byte_t *output_stream = NULL;
     int output_stream_size = 0;
@@ -342,7 +343,9 @@ axis2_soap_over_http_sender_send(
     request = axis2_http_simple_request_create(env, request_line, NULL, 0,
             NULL);
 
-	axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_USER_AGENT, "Axis2/C");
+    http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_USER_AGENT,
+            "Axis2/C");
+    AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
     {
         if ('\"' != *soap_action)
@@ -351,13 +354,16 @@ axis2_soap_over_http_sender_send(
             tmp_soap_action = AXIS2_MALLOC(env->allocator, (
                         AXIS2_STRLEN(soap_action) + 5) * sizeof(axis2_char_t));
             sprintf(tmp_soap_action, "\"%s\"", soap_action);
-			axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_SOAP_ACTION, tmp_soap_action);
+            http_header = axis2_http_header_create(env,
+                    AXIS2_HTTP_HEADER_SOAP_ACTION, tmp_soap_action);
             AXIS2_FREE(env->allocator, tmp_soap_action);
         }
         else
         {
-			axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_SOAP_ACTION, soap_action);
+            http_header = axis2_http_header_create(env,
+                    AXIS2_HTTP_HEADER_SOAP_ACTION, soap_action);
         }
+        AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     }
 
     buffer_size = AXIOM_XML_WRITER_GET_XML_SIZE(xml_writer, env);
@@ -370,13 +376,16 @@ axis2_soap_over_http_sender_send(
         }
 
         sprintf(tmp_buf, "%d", buffer_size);
-		axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_CONTENT_LENGTH, tmp_buf);
+        http_header = axis2_http_header_create(env,
+                AXIS2_HTTP_HEADER_CONTENT_LENGTH, tmp_buf);
+        AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     }
     else
     {
-		axis2_http_sender_util_add_header (env, request, 
-										   AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED, 
-										   AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
+        http_header = axis2_http_header_create(env,
+                AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
+                AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
+        AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     }
     
     if (doing_mtom)
@@ -429,13 +438,15 @@ axis2_soap_over_http_sender_send(
         content_type = temp_content_type;
     }
 
-	axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_CONTENT_TYPE, content_type);
+    http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
+            content_type);
     if (content_type)
     {
         AXIS2_FREE(env->allocator, content_type);
         content_type = NULL;
     }
 
+    AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 
     if (0 == AXIS2_STRCMP(sender_impl->http_version,
             AXIS2_HTTP_HEADER_PROTOCOL_11))
@@ -446,9 +457,12 @@ axis2_soap_over_http_sender_send(
                     axis2_char_t));
         sprintf(header, "%s:%d", AXIS2_URL_GET_SERVER(url, env),
                 AXIS2_URL_GET_PORT(url, env));
-		axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_HOST, header);
+        http_header = axis2_http_header_create(env,
+                AXIS2_HTTP_HEADER_HOST,
+                header);
         AXIS2_FREE(env->allocator, header);
         header = NULL;
+        AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
     }
 
     if (doing_mtom)

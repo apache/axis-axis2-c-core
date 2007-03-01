@@ -279,24 +279,6 @@ AC_ARG_ENABLE(openssl, [  --enable-openssl  enable ssl. default=no],
   CFLAGS="$CFLAGS"
 )
 
-AC_MSG_CHECKING(whether to use libcurl)
-AC_ARG_ENABLE(libcurl, [  --enable-libcurl  enable libcurl. default=no],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    CFLAGS="$CFLAGS"
-    libcurl_enabled=false
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    CFLAGS="$CFLAGS -DAXIS2_LIBCURL_ENABLED"
-    libcurl_enabled=true
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-  CFLAGS="$CFLAGS"
-)
-
 
 AC_MSG_CHECKING(whether to build dynamic invocation client library)
 AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient library wrapper. default=no],
@@ -333,7 +315,6 @@ AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(RAMPART_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
-AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
 #export PARSER_DIR
 export WRAPPER_DIR
 export prefix 
@@ -352,7 +333,6 @@ AC_CONFIG_FILES([Makefile \
     modules/core/transport/http/util/Makefile \
     modules/core/transport/http/sender/Makefile \
     modules/core/transport/http/sender/ssl/Makefile \
-    modules/core/transport/http/sender/libcurl/Makefile \
     modules/core/transport/http/receiver/Makefile \
     modules/core/transport/http/server/simple_axis2_server/Makefile \
     modules/core/transport/http/server/Makefile \

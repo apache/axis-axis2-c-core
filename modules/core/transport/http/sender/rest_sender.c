@@ -116,6 +116,12 @@ axis2_rest_sender_get_param_string(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
+static axis2_char_t *AXIS2_CALL
+axis2_url_encode (
+	const axis2_env_t *env,
+	axis2_char_t *dest,
+	axis2_char_t *src,
+	int strlen);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_configure_server_cert(
@@ -123,6 +129,8 @@ axis2_rest_sender_configure_server_cert(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
+static int AXIS2_CALL
+is_safe_or_unreserve (char c);
 
 /***************************** End of function headers ************************/
 
@@ -661,6 +669,149 @@ axis2_rest_sender_set_http_version(
     return AXIS2_SUCCESS;
 }
 
+axis2_char_t *AXIS2_CALL
+axis2_rest_sender_get_param_string(
+    axis2_rest_sender_t *sender,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx)
+{
+    axiom_soap_envelope_t *soap_env = NULL;
+    axiom_node_t *body_node = NULL;
+    axiom_node_t *data_node = NULL;
+    axiom_element_t *data_element = NULL;
+    axiom_child_element_iterator_t *iterator = NULL;
+    axis2_array_list_t *param_list = NULL;
+    axis2_char_t *param_string = NULL;
+    int i = 0;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+
+    soap_env = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    if (NULL == soap_env)
+    {
+        return NULL;
+    }
+    body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(
+                AXIOM_SOAP_ENVELOPE_GET_BODY(soap_env, env), env);
+    data_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+    if (NULL == data_node)
+    {
+        return NULL;
+    }
+    param_list = axis2_array_list_create(env, AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
+    data_element = AXIOM_NODE_GET_DATA_ELEMENT(data_node, env);
+    iterator = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(data_element, env, data_node);
+    while (AXIS2_TRUE == AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(iterator, env))
+    {
+        axiom_node_t *node = NULL;
+        axiom_element_t *element = NULL;
+        axis2_char_t *name = NULL;
+        axis2_char_t *value = NULL;
+		axis2_char_t *encoded_value = NULL;
+ 
+        node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env);
+        element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
+        value = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+
+		encoded_value = (axis2_char_t *) AXIS2_MALLOC (env->allocator, strlen (value));
+		memset (encoded_value, 0, strlen (value));
+		encoded_value = axis2_url_encode (env, encoded_value, value, strlen (value));
+
+        AXIS2_ARRAY_LIST_ADD(param_list, env, axis2_strcat(env, name, "=",
+                encoded_value, NULL));
+    }
+    for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(param_list, env); i++)
+    {
+        axis2_char_t *tmp_string = NULL;
+        axis2_char_t *pair = NULL;
+
+        pair = AXIS2_ARRAY_LIST_GET(param_list, env, i);
+		if(i ==0)
+			tmp_string = AXIS2_STRACAT(param_string, pair, env);
+		else
+		tmp_string = axis2_strcat(env, param_string, "&", pair, NULL);				
+
+        if (param_string)
+        {
+            AXIS2_FREE(env->allocator, param_string);
+            param_string = NULL;
+        }
+        AXIS2_FREE(env->allocator, pair);
+        param_string = tmp_string;
+    }
+    AXIS2_ARRAY_LIST_FREE(param_list, env);
+    return param_string;
+}
+
+static axis2_char_t *AXIS2_CALL
+axis2_url_encode (
+	const axis2_env_t *env, 
+	axis2_char_t *dest, 
+	axis2_char_t *buff, 
+	int len)
+{
+	axis2_char_t string[4];
+	axis2_char_t *expand_buffer;
+    int i;
+    for (i = 0; i < len  && buff[i]; i++)
+    {
+        if (isalnum (buff[i]) || is_safe_or_unreserve (buff[i]))
+        {
+            sprintf (string,"%c", buff[i]);
+        }
+        else
+        {
+            sprintf (string, "%%%x", buff[i]);
+        }
+
+		if ((strlen (dest) + 4) > len)
+		{
+			expand_buffer = (axis2_char_t *) AXIS2_MALLOC (env->allocator, len*2);
+			memset (expand_buffer, 0, len*2);
+			len *= 2;
+			dest = memmove (expand_buffer, dest, len);
+		}
+		strcat (dest, string);
+    }
+    return dest;
+}
+
+static int AXIS2_CALL
+is_safe_or_unreserve (
+	char c)
+{
+    char safe [] = {'$' , '-' , '_' , '.' , '+'};
+    char reserve [] = {';', '/', '?' ,':', '@',  '&', '='};
+
+/* reserved       = ";" | "/" | "?" | ":" | "@" | "&" | "="
+   safe           = "$" | "-" | "_" | "." | "+" */
+
+    int flag = 0;
+    int i = 0;
+
+    int size = sizeof (safe)/sizeof (safe[0]);
+    for (i = 0; i < size; i++)
+    {
+        if (c == safe[i])
+        {
+            flag = 1;
+            return flag;
+        }
+    }
+
+    size = sizeof (reserve)/sizeof (reserve[0]);
+    for (i = 0; i < size; i++)
+    {
+        if (c == reserve[i])
+        {
+            flag = 0;
+            return flag;
+        }
+    }
+    return flag;
+}
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_configure_server_cert(
