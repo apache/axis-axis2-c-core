@@ -36,3 +36,5 @@ INCLUDES = 	-I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/clientapi \
             -I$(top_builddir)/util/include \
             -I$(top_builddir)/axiom/include
+
+EXTRA_DIST=axis2_disp_checker.h
