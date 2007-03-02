@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
     axis2_char_t *filename = "input.xml";
     axis2_char_t *certfile = "rsacert.pem";
     axis2_char_t *prvkeyfile = "rsakey.pem";
-    axis2_char_t *operation = "SIGN";
+    axis2_char_t *operation = "S";
     openssl_pkey_t *prvkey = NULL;
     oxs_x509_cert_t *cert = NULL;
 
@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
          printf("Cannot load certificate");
     }
     
-    if(0 == axis2_strcmp(operation, "SIGN")){
+    if(0 == axis2_strcmp(operation, "S")){
         sign(env, filename, prvkey, cert);
     }else{
         verify(env, filename, prvkey, cert);

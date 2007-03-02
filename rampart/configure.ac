@@ -89,6 +89,7 @@ AC_CONFIG_FILES([Makefile \
     test/omxmlsec/Makefile \
     test/c14n/Makefile \
     test/openssl/Makefile 
+    test/openssl/sign/Makefile 
     ])
     
 AC_OUTPUT
