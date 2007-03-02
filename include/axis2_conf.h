@@ -726,6 +726,20 @@ extern "C"
         const axis2_env_t *env,
         axis2_bool_t enable_mtom);
 
+/*The following two methods are used in Rampart to 
+ *check whether security is engaed. */
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_conf_get_enable_security(
+        axis2_conf_t *conf,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_set_enable_security(
+        axis2_conf_t *conf,
+        const axis2_env_t *env,
+        axis2_bool_t enable_security);
+
 
 /** Frees the conf.
     @sa axis2_conf_ops#free */
