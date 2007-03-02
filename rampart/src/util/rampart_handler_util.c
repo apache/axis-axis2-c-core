@@ -350,7 +350,7 @@ AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 rampart_is_rampart_engaged(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx)
 {
-    axis2_svc_t *svc = NULL;
+    struct axis2_svc *svc = NULL;
     axis2_array_list_t *engaged_modules = NULL;
     int size = 0;
     int i = 0;
@@ -371,61 +371,45 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
         AXIS2_LOG_INFO(env->log, "[rampart][rhu] Cannot get the axis2 conf from conf context. ");
         return AXIS2_FALSE;
     }
-
-/*If it is server side first check ramaprt is engaged globally.*/
-
-    if(axis2_msg_ctx_get_server_side(msg_ctx,env))
+    
+    engaged_modules = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(conf, env);
+    if(engaged_modules)
     {
-        engaged_modules = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(conf, env);
-        if(engaged_modules)
+        size = AXIS2_ARRAY_LIST_SIZE(engaged_modules,env);
+        for(i=0; i<size; i++)
         {
-            size = AXIS2_ARRAY_LIST_SIZE(engaged_modules,env);
-            for(i=0; i<size; i++)
-            {
-                qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(engaged_modules,env,i);
-                local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
-                if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
-                    return AXIS2_TRUE;
-            }
-        }            
-/*If not engaed gloabally check whether it is engaged at service level.*/
-        svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx,env);
-        if(!svc)
-        {
-            AXIS2_LOG_INFO(env->log, "[rampart][rhu] Service is NULL.");
-            return AXIS2_FALSE;
-        }            
-        engaged_modules = AXIS2_SVC_GET_ALL_MODULE_QNAMES(svc,env);
-        if(engaged_modules)
-        {
-            size = AXIS2_ARRAY_LIST_SIZE(engaged_modules,env);
-            for(i=0; i<size; i++)
-            {
-                qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(engaged_modules,env,i);
-                local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
-                if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
-                    return AXIS2_TRUE;
-            }
+            qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(engaged_modules,env,i);
+            local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
+            if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
+                return AXIS2_TRUE;
         }
-        return AXIS2_FALSE;
-    }
-/*In client side no options we should check gloabally.*/
+    }            
+/*If not engaed gloabally check whether it is engaged at service level.
+ *And If service is not there check whether the rampart is enabled by 
+ a previous invocation of a handler.*/
 
-    else
+    svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx,env);
+    if(!svc)
     {
-        engaged_modules = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(conf, env);
-        if(engaged_modules)
+        AXIS2_LOG_INFO(env->log, "[rampart][rhu] Service is NULL.");
+        return axis2_conf_get_enable_security(conf,env);
+    }    
+            
+    engaged_modules = AXIS2_SVC_GET_ALL_MODULE_QNAMES(svc,env);
+    if(engaged_modules)
+    {
+        size = AXIS2_ARRAY_LIST_SIZE(engaged_modules,env);
+        for(i=0; i<size; i++)
         {
-            size = AXIS2_ARRAY_LIST_SIZE(engaged_modules,env);
-            for(i=0; i<size; i++)
-            {
-                qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(engaged_modules,env,i);
-                local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
-                if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
-                    return AXIS2_TRUE;
-            }
+            qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(engaged_modules,env,i);
+            local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
+            if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
+            {                
+                axis2_conf_set_enable_security(conf,env,AXIS2_TRUE);
+                return AXIS2_TRUE;
+            }                
         }
-        return AXIS2_FALSE;
     }
+    return AXIS2_FALSE;
 }
 

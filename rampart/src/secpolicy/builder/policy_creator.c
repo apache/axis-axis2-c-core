@@ -13,7 +13,6 @@ rp_policy_create_from_file(
     axiom_stax_builder_t *builder = NULL;
     axiom_document_t *document = NULL;
     axiom_node_t *root = NULL;
-    axiom_element_t *root_ele = NULL;
     rp_secpolicy_t *secpolicy = NULL;
 
     reader = axiom_xml_reader_create_for_file(env,filename,NULL);
@@ -42,25 +41,14 @@ rp_policy_create_from_file(
     if(!root)
     {
         AXIOM_STAX_BUILDER_FREE(builder, env);
+        AXIS2_LOG_INFO(env->log,"[rp][policy_creator] Root element is NULL");
         return NULL;
     }
-
-    if(root)
+    else    
     {
-        if(AXIOM_NODE_GET_NODE_TYPE(root, env) == AXIOM_ELEMENT)
-        {
-            root_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (root, env);
-            if(root_ele)
-            {
-            }
-        }
-        else
-            return NULL;
+        secpolicy = rp_policy_create_from_om_node(env,root);
+        return secpolicy;
     }
-    secpolicy = rp_policy_create_from_om_node(env,root);
-
-    return secpolicy;
-
 }
 
 
@@ -76,18 +64,32 @@ rp_policy_create_from_om_node(
     axiom_element_t *exat_ele = NULL;
     axiom_node_t *all_node = NULL;
     rp_secpolicy_t *secpolicy = NULL;
-
+    axis2_char_t *local_name = NULL;
     
     if(AXIOM_NODE_GET_NODE_TYPE(root, env) == AXIOM_ELEMENT)
     {
         root_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (root, env);
         if(root_ele)
         {
-            
+            local_name = AXIOM_ELEMENT_GET_LOCALNAME(root_ele,env);
+            if(local_name)
+            {
+                if(AXIS2_STRCMP(local_name,RP_POLICY)==0)
+                {                    
+                    if(!rp_match_policy_qname(env,local_name,root,root_ele))
+                    {
+                        AXIS2_LOG_INFO(env->log,"[rp][policy_creator] Error in policy configurations.");
+                        return NULL;
+                    }
+                }
+                else return NULL;
+            }
+            else return NULL;                
         }
+        else return NULL;
     }
-        else
-            return NULL;
+    else
+        return NULL;
     
     exat_node = AXIOM_NODE_GET_FIRST_CHILD(root,env);
     if(exat_node)
@@ -97,7 +99,22 @@ rp_policy_create_from_om_node(
             exat_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (exat_node, env);
             if(exat_ele)
             {
+                local_name = AXIOM_ELEMENT_GET_LOCALNAME(exat_ele,env);
+                if(local_name)
+                {
+                    if(AXIS2_STRCMP(local_name,RP_EXACTLY_ONE)==0)
+                    {
+                        if(!rp_match_policy_qname(env,local_name,exat_node,exat_ele))
+                        {
+                            AXIS2_LOG_INFO(env->log,"[rp][policy_creator] Error in policy configurations.");
+                            return NULL;
+                        }
+                    }
+                    else return NULL;
+                }
+                else return NULL;
             }
+            else return NULL;
         }
         else 
             return NULL;
@@ -110,17 +127,34 @@ rp_policy_create_from_om_node(
     {
         if(AXIOM_NODE_GET_NODE_TYPE(all_node, env) == AXIOM_ELEMENT)
         {
-            all_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (all_node, env);
+            all_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(all_node, env);
             if(all_ele)
             {
-                secpolicy = rp_secpolicy_builder_build(env,all_node);
+                local_name = AXIOM_ELEMENT_GET_LOCALNAME(all_ele,env);
+                if(local_name)
+                {
+                    if(AXIS2_STRCMP(local_name,RP_ALL)==0)
+                    {
+                        if(!rp_match_policy_qname(env,local_name,all_node,all_ele))
+                        {
+                            AXIS2_LOG_INFO(env->log,"[rp][policy_creator] Error in policy configurations.");
+                            return NULL;
+                        }
+                        else
+                        {
+                            secpolicy = rp_secpolicy_builder_build(env,all_node);
+                            return secpolicy;
+                        }
+                    }
+                    else return NULL;
+                }
+                else return NULL;
             }
+            else return NULL;
         }
-        else 
-            return NULL;
+        else return NULL;
     }
-    return secpolicy;
-
+    else return NULL;
 }
 
 

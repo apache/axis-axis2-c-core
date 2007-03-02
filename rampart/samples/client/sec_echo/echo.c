@@ -110,7 +110,7 @@ int main(int argc, char** argv)
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_payload_for_echo_svc(env);
-
+    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "rampart");
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
 
