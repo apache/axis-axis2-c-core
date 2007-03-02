@@ -63,6 +63,9 @@ struct axis2_conf_impl
     axis2_dep_engine_t *dep_engine;
     axis2_array_list_t *handlers;
     axis2_bool_t enable_mtom;
+
+    /*This is used in rampart*/    
+    axis2_bool_t enable_security;
 };
 
 #define AXIS2_INTF_TO_IMPL(conf) ((axis2_conf_impl_t *)conf)
@@ -394,6 +397,7 @@ axis2_conf_create(
     config_impl->handlers = NULL;
     config_impl->conf.ops = NULL;
     config_impl->enable_mtom = AXIS2_FALSE;
+    config_impl->enable_security = AXIS2_FALSE;
 
     config_impl->conf.param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
@@ -2135,6 +2139,31 @@ axis2_conf_set_enable_mtom(
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
     AXIS2_INTF_TO_IMPL(conf)->enable_mtom = enable_mtom;
+    return AXIS2_SUCCESS;
+}
+
+
+axis2_bool_t AXIS2_CALL
+axis2_conf_get_enable_security(
+    axis2_conf_t *conf,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+
+    return AXIS2_INTF_TO_IMPL(conf)->enable_security;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_conf_set_enable_security(
+    axis2_conf_t *conf,
+    const axis2_env_t *env,
+    axis2_bool_t enable_security)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+
+    AXIS2_INTF_TO_IMPL(conf)->enable_security = enable_security;
     return AXIS2_SUCCESS;
 }
 
