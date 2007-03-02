@@ -1,7 +1,7 @@
 #!/bin/bash
-if [ $# -ne 2 ]
+if [ $# -ne 1 ]
 then
-    echo "Usage : $0 scenarioX username"
+    echo "Usage : $0 scenarioX"
     exit
 fi
 
@@ -16,8 +16,8 @@ cp $1/client-outgoing-secpolicy.xml $CLIENT_REPO/outgoing-secpolicy.xml
 cp $1/client-incoming-secpolicy.xml $CLIENT_REPO/incoming-secpolicy.xml
 
 echo "replacing username in policy files."
-sed -i 's/AXIS2_USER/'$2'/g' $CLIENT_REPO/outgoing-secpolicy.xml
-sed -i 's/AXIS2_USER/'$2'/g' $CLIENT_REPO/incoming-secpolicy.xml
+sed -i 's/AXIS2_USER/'$USER'/g' $CLIENT_REPO/outgoing-secpolicy.xml
+sed -i 's/AXIS2_USER/'$USER'/g' $CLIENT_REPO/incoming-secpolicy.xml
 
 
 #copy service policy files to SERVICE_HOME
@@ -26,6 +26,6 @@ cp $1/service-outgoing-secpolicy.xml $SERVICE_HOME/outgoing-secpolicy.xml
 cp $1/service-incoming-secpolicy.xml $SERVICE_HOME/incoming-secpolicy.xml
 
 echo "replacing username in policy files."
-sed -i 's/AXIS2_USER/'$2'/g' $SERVICE_HOME/outgoing-secpolicy.xml
-sed -i 's/AXIS2_USER/'$2'/g' $SERVICE_HOME/incoming-secpolicy.xml
+sed -i 's/AXIS2_USER/'$USER'/g' $SERVICE_HOME/outgoing-secpolicy.xml
+sed -i 's/AXIS2_USER/'$USER'/g' $SERVICE_HOME/incoming-secpolicy.xml
 
