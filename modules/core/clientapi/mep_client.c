@@ -704,7 +704,18 @@ axis2_mep_client_two_way_send(
         engine = NULL;
     }
  	response_envelope = AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env);
-    if(!response_envelope)
+    if(response_envelope)
+    {
+        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
+        engine = axis2_engine_create(env, conf_ctx);
+        if (engine)
+        {
+            status = AXIS2_ENGINE_RECEIVE(engine, env, response);
+            if (status != AXIS2_SUCCESS)
+                return NULL;
+        }
+    }
+    else
     {
         while(!response_envelope && index > 0)
         {
@@ -715,18 +726,32 @@ axis2_mep_client_two_way_send(
             response_envelope = axis2_msg_ctx_get_response_soap_envelope(
                 msg_ctx, env);
         }
-        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
-        return response;
-    }
-    else
-    {
-        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
-        engine = axis2_engine_create(env, conf_ctx);
-        if (engine)
+        /* if it is a two way message, then the status should be in error,
+           else it is a one way message */
+        if (response_envelope)
         {
-            status = AXIS2_ENGINE_RECEIVE(engine, env, response);
-            if (status != AXIS2_SUCCESS)
+            AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
+            engine = axis2_engine_create(env, conf_ctx);
+            if (engine)
+            {
+                status = AXIS2_ENGINE_RECEIVE(engine, env, response);
+                if (status != AXIS2_SUCCESS)
+                    return NULL;
+            }
+        }
+        else
+        {
+            if (AXIS2_ERROR_GET_STATUS_CODE(env->error) != AXIS2_SUCCESS)
+            {
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
+                if (engine)
+                {
+                    AXIS2_ENGINE_FREE(engine, env);
+                    engine = NULL;
+                }
+                AXIS2_MSG_CTX_FREE(response, env);
                 return NULL;
+            }
         }
     }
 
