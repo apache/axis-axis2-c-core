@@ -183,15 +183,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\modules\core\transport\http\sender\http_sender.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\modules\core\transport\http\sender\http_transport_sender.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\sender\rest_sender.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\sender\soap_over_http_sender.c"
+				RelativePath="..\..\..\..\modules\core\transport\http\sender\sender_util.c"
 				>
 			</File>
 			<Filter
