@@ -35,13 +35,20 @@ extern "C" {
  * @ingroup
  * @{
  */
-
+/**
+ * Signs a content a @input_buf using the private key @prvkey
+ * The result would be placed in the @output_buf
+ */
 AXIS2_EXTERN int AXIS2_CALL
 openssl_sig_sign(const axis2_env_t *env,
         openssl_pkey_t *prvkey,
         oxs_buffer_t *input_buf,
         oxs_buffer_t *output_buf);
-
+/**
+ * Verifies a signature placed in @sig_buf with 
+ * the content placed in the @input_buf 
+ * using the public key @pubkey
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_sig_verify(const axis2_env_t *env,
         openssl_pkey_t *pubkey,

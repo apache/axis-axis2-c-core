@@ -117,10 +117,11 @@ oxs_sig_verify(const axis2_env_t *env,
     decoded_len = axis2_base64_decode_binary(decoded_data, signature );
     if (decoded_len < 0)
     {
-            oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,
                     "axis2_base64_decode_binary failed");
-            return AXIS2_FAILURE;
+        return AXIS2_FAILURE;
     }
+    
     /*Create the signature buffer*/
     sig_buf = oxs_buffer_create(env);
     ret = OXS_BUFFER_POPULATE(sig_buf, env, decoded_data, decoded_len);     

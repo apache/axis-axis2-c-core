@@ -45,15 +45,17 @@ int main()
     env = axis2_env_create_all("./openssl.log", AXIS2_LOG_LEVEL_TRACE);
     
     /*Load private key*/
-    prvkey = oxs_key_mgr_load_private_key_from_file(env, "rsakey.pem", "");
+    prvkey = oxs_key_mgr_load_private_key_from_file(env, "key.pem", "");
     if(!prvkey){
             printf("Cannot load private key");
+            return 0;
     }
 
     /*Load certificate*/
-    cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, "rsacert.pem");
+    cert = oxs_key_mgr_load_x509_cert_from_pem_file(env, "cert.pem");
     if(!cert){
          printf("Cannot load certificate");
+         return 0;
     }
 
     inbuf = oxs_buffer_create(env);

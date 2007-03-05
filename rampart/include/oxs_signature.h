@@ -44,7 +44,10 @@ oxs_sig_sign_rsa_sha1(const axis2_env_t *env,
     oxs_buffer_t *output);
 
 /**
- * Sign
+ * Signs a content placed in @input buf using the information
+ * available in the signature context @sign_ctx.
+ * The result will be placed in the buffer @output.
+ * Note that the result is base64 encoded.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sig_sign(const axis2_env_t *env,
@@ -53,7 +56,9 @@ oxs_sig_sign(const axis2_env_t *env,
     oxs_buffer_t *output);
 
 /**
- * Verify
+ * Verifies a @signature with @content using the information
+ * available in the signature content @sign_ctx.
+ * Note that the signature should be the base64 encoded value of a digital signature.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_sig_verify(const axis2_env_t *env,

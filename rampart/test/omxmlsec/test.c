@@ -101,10 +101,11 @@ axis2_status_t sign(axis2_env_t *env,
 
     /*We need to sign this node add an ID to it*/
     node = axiom_node_get_first_element(tmpl, env);
-    id = "Sig-ID-EFG";  /*oxs_util_generate_id(env,(axis2_char_t*)OXS_SIG_ID);*/
+    id = /*"Sig-ID-EFG";*/  oxs_util_generate_id(env,(axis2_char_t*)OXS_SIG_ID);
     oxs_axiom_add_attribute(env, node, OXS_WSU, OXS_WSSE_XMLNS,  OXS_ATTR_ID, id);
     status = oxs_sign_part_set_node(sign_part, env,node);
 
+    status = oxs_sign_part_set_digest_mtd(sign_part, env, OXS_HREF_SHA1);
 
     sign_parts = axis2_array_list_create(env, 1);
     axis2_array_list_add(sign_parts, env, sign_part);
@@ -135,16 +136,16 @@ axis2_status_t sign(axis2_env_t *env,
 }
 
 axis2_status_t verify(axis2_env_t *env,
-    axis2_char_t *filename,
+        axis2_char_t *filename,
         openssl_pkey_t *prvkey ,
-        oxs_x509_cert_t *cert
-    )
+        oxs_x509_cert_t *cert)
 {
     oxs_sign_ctx_t *sign_ctx = NULL;
     axiom_node_t *tmpl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     tmpl = load_sample_xml(env , tmpl, filename);
+    printf("File : \n%s\n", axiom_node_to_string(tmpl, env));
     sign_ctx = oxs_sign_ctx_create(env);
     if(sign_ctx){
         axiom_node_t *sig_node = NULL;
@@ -162,9 +163,9 @@ axis2_status_t verify(axis2_env_t *env,
         /*Verify*/
         status = oxs_xml_sig_verify(env, sign_ctx, sig_node, tmpl);
         if(AXIS2_SUCCESS != status){
-            printf("Signature Failed :-(\n");
+            printf("\nSignature Failed :-(\n");
         }else{
-            printf("Signature Verified :-)\n");
+            printf("\nSignature Verified :-)\n");
         }
     }
 
@@ -188,7 +189,7 @@ int main(int argc, char *argv[])
         certfile = argv[3];
         operation = argv[4];
     }else{
-        printf("Usage ./test inputfile prvkey certificate operation\n");
+        printf("Usage ./test inputfile prvkey certificate operation[S/V]\n");
         return -1;
     }
     

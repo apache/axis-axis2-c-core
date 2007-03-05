@@ -62,7 +62,7 @@ oxs_xml_sig_build_key_info(const axis2_env_t *env,
     /*Build the KeyInfo node*/
     key_info_node = oxs_token_build_key_info_element(env, parent);
 
-    /*TODO: Right now we support only X509Data. But should support other patterns as well*/
+    /*Right now we support only X509Data. But should support other patterns as well*/
     cert = oxs_sign_ctx_get_certificate(sign_ctx, env);
     if(!cert){
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIGN_FAILED,"Cannot get the certificate to build <ds:KeyInfo> element" );        
@@ -91,8 +91,8 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
     axis2_char_t *serialized_node = NULL; 
     axis2_char_t *digest = NULL; 
     int i = 0;
-
-    printf("oxs_xml_sig_transform_n_digest\n");
+    
+    printf("oxs_xml_sig_transform_n_digest\n %s", axiom_node_to_string(node, env));
     if((transforms) && (0 < AXIS2_ARRAY_LIST_SIZE(transforms, env))){
         oxs_tr_dtype_t output_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;/*This will always be the current dtype*/
         void *tr_output = NULL;
@@ -114,7 +114,6 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
             tr_func = oxs_transform_get_transform_function(tr, env);
             input_dtype = oxs_transform_get_input_data_type(tr, env);
 
-            printf("Transform required = %s", tr_id);
             /*Prepare the input*/
             /*If the required input type is CHAR and what we have is a NODE*/
             if((input_dtype == OXS_TRANSFORM_TYPE_CHAR) && (output_dtype == OXS_TRANSFORM_TYPE_NODE)){
@@ -122,7 +121,8 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
                 tr_input = axiom_node_to_string((axiom_node_t*)tr_output, env);
             /*If the required input type is NODE and what we have is a CHAR*/
             }else if((input_dtype == OXS_TRANSFORM_TYPE_NODE) && (output_dtype == OXS_TRANSFORM_TYPE_CHAR)){
-                /*TODO De-serialize*/
+                /*De-serialize*/
+                tr_input =  oxs_axiom_deserialize_node(env, (axis2_char_t *)tr_output);
             }else{
                 /*Let it go as it is. */
                 tr_input = tr_output;
@@ -136,7 +136,7 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
             /*If the output data type is unknown OR the output is NULL its an error*/
             if((output_dtype == OXS_TRANSFORM_TYPE_UNKNOWN) || (!tr_output)){
                 oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Transform failed for %s", tr_id);
-                /*return AXIS2_FAILURE*/
+                return NULL;
             }
         }/*eof for loop*/
         /*We have applied all our transforms now*/
@@ -147,14 +147,18 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
             serialized_node = (axis2_char_t*)tr_output;
         }else{
            /*Error*/
+            oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Unsupported transform data type  %d", output_dtype);
         }
     }else{
         /*No transforms defined. Thus we simply direct the node, to make the digest*/
         serialized_node = AXIOM_NODE_TO_STRING(node, env);
     }
-    /*TODO Check digest type. We support SHA-1 only*/
-    digest = openssl_sha1(env, serialized_node, axis2_strlen(serialized_node));
-
+    if(0 == axis2_strcmp( OXS_HREF_SHA1 , digest_mtd)){
+        digest = openssl_sha1(env, serialized_node, axis2_strlen(serialized_node));
+    }else{
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Unsupported digest method  %s", digest_mtd);
+        return NULL;
+    }
     return digest;
 }
 
@@ -236,6 +240,8 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
     c14n_algo = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env);
     doc = axiom_node_get_document(signed_info_node, env);
     oxs_c14n_apply(env, doc, AXIS2_FALSE, &c14nized, AXIS2_TRUE, NULL, signed_info_node); 
+   
+    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (sig)= %s ", c14nized );
     
     /*Then serialize <SignedInfo>*/
     serialized_signed_info = c14nized; /*AXIOM_NODE_TO_STRING(signed_info_node, env);*/
@@ -317,6 +323,7 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
     axiom_node_t *scope_node)
 {
     axis2_char_t *ref_id = NULL;
+    axis2_char_t *ref_id2 = NULL;
     axis2_char_t *child_node_name = NULL;
     axiom_node_t *reffed_node = NULL;
     axiom_node_t *child_node = NULL;
@@ -325,14 +332,16 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
     oxs_sign_part_set_id(sign_part, env, ref_id);
 
     /*Remove the # from the id*/ 
-    ref_id =  axis2_string_substring_starting_at(ref_id, 1);
+    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] XXX1 node= %s ", axiom_node_to_string(scope_node, env) );
+    ref_id2 =  axis2_string_substring_starting_at(axis2_strdup(ref_id, env), 1);
+    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] XXX2 node= %s ", axiom_node_to_string(scope_node, env) );
 
-    /*Find the node refered by this ref_id and set to the sign part*/
-    reffed_node = oxs_axiom_get_node_by_id(env, scope_node, "wsu:Id", ref_id );
+    /*Find the node refered by this ref_id2 and set to the sign part*/
+    reffed_node = oxs_axiom_get_node_by_id(env, scope_node, "wsu:Id", ref_id2 );
     if(reffed_node){
        oxs_sign_part_set_node(sign_part, env, reffed_node); 
     }else{
-        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find node with Id=%s ", ref_id );        
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find node with Id=%s ", ref_id2 );        
         return AXIS2_FAILURE; /*No such node. Its an error*/
     }
 
@@ -481,7 +490,7 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
             axis2_array_list_add(sign_part_list, env, sign_part);
             
         }else{
-            printf("oxs_sig : We do not process cur node name %s", localname);
+            /*We do not process*/
         }
         cur_node = AXIOM_NODE_GET_NEXT_SIBLING(cur_node, env);
     }
@@ -502,8 +511,6 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
 
-    /*We need to process the KeyInfo node. Do we???*/
-    /*TODO*/
     return AXIS2_SUCCESS;
 }
 
@@ -564,6 +571,7 @@ oxs_xml_sig_verify_digests(const axis2_env_t *env,
     return status;
 }
 
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 oxs_xml_sig_verify(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx,
@@ -587,13 +595,19 @@ oxs_xml_sig_verify(const axis2_env_t *env,
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"<ds:Signature> node processing failed " );        
         return AXIS2_FAILURE;
     }
+    /*TODO Process KeyInfo if available*/
+
+    /*-----------------------------------------------------------------------------------------*/
     /*At this point we have a ready to process signature context. So start verification process*/ 
+    /*-----------------------------------------------------------------------------------------*/
 
     /*Verify the integrity of the signed parts by comparing the digest values of each and every reference.*/
     status = oxs_xml_sig_verify_digests(env, sign_ctx);
 
     if(AXIS2_FAILURE == status){
         return AXIS2_FAILURE;
+    }else{
+        AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] Digests verification SUCCESS " );
     }
 
     /*At this point we have compared the digest. Next step is to compare the Signature value */ 
@@ -605,7 +619,11 @@ oxs_xml_sig_verify(const axis2_env_t *env,
                                 OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
     c14n_mtd = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env); 
     doc = axiom_node_get_document(signed_info_node, env);
+    
+    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (verif1)= %s ", axiom_node_to_string(signed_info_node, env) );
     oxs_c14n_apply(env, doc, AXIS2_FALSE, &content, AXIS2_TRUE, NULL, signed_info_node);
+
+    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (verif2)= %s ", content );
 
     /*In the final step we Verify*/ 
     status = oxs_sig_verify(env, sign_ctx, content , signature_val);
