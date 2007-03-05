@@ -19,21 +19,9 @@
 #include <rampart_constants.h>
 #include <oxs_axiom.h>
 
-
-/*
 struct rampart_context_t
 {
-    rp_secpolicy_t *secpolicy;
-    rampart_callback_t* password_callback_module;
-    rampart_authn_provider_t *authn_provider;
-    pfunc password_func; 
-    auth_password_func authenticate_with_password;
-    auth_digest_func authenticate_with_digest;
-};
-*/
-struct rampart_context_t
-{
-    /*PHP extension will set these members*/
+    /*****************************/
     axiom_node_t *policy_node;
     void *prv_key;
     axis2_key_type_t prv_key_type;
@@ -45,6 +33,8 @@ struct rampart_context_t
     password_callback_fn pwcb_function;
     int ttl;
     axis2_char_t *password_type;
+
+    /****************************/
 
     /*Rampart specific members*/
     rp_secpolicy_t *secpolicy;

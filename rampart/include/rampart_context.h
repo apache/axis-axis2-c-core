@@ -64,9 +64,7 @@ extern "C"
             const axis2_env_t *env);
 
 
-    /*Following functions are the interface between rampart and PHP
-     *extension */
-        
+    /****************************************************************/    
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rampart_context_set_policy_node(rampart_context_t *rampart_context,
@@ -124,7 +122,7 @@ extern "C"
             const axis2_env_t *env,
             int ttl);
 
-    /*End of the PHP extension-rampart interface*/
+    /**********************************************************8*/
 
     /*Getters of the above set functions*/
 
