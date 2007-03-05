@@ -17,6 +17,7 @@
 
 
 #include <axis2_mep_client.h>
+#include <axis2_options.h>
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_engine.h>
@@ -24,6 +25,7 @@
 #include <axiom_soap_body.h>
 #include <axis2_http_transport_utils.h>
 #include <axis2_property.h>
+#include <axis2_types.h>
 #include <axis2_platform_auto_sense.h>
 
 typedef struct axis2_mep_client_impl
@@ -627,6 +629,8 @@ axis2_mep_client_two_way_send(
     axis2_op_t *op = NULL;
     axiom_soap_envelope_t *response_envelope = NULL;
     axis2_property_t *property = NULL;
+    long index = -1;
+    axis2_bool_t wait_indefinitely = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -634,6 +638,19 @@ axis2_mep_client_two_way_send(
     engine = axis2_engine_create(env, conf_ctx);
     if (!engine)
         return NULL;
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TIMEOUT_IN_SECONDS, 
+        AXIS2_FALSE);
+    if(property)
+    {
+        axis2_char_t *value = axis2_property_get_value(property, env);
+        if(value)
+            index = AXIS2_ATOI(value);
+        if(index == -1)
+        {
+            wait_indefinitely = AXIS2_TRUE;
+            index = 1;
+        }
+    }
 
     status = AXIS2_ENGINE_SEND(engine, env, msg_ctx);
     
@@ -670,7 +687,6 @@ axis2_mep_client_two_way_send(
         property = NULL;
     }
 
-    /*op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);*/
     if (op)
     {
         AXIS2_OP_REGISTER_OP_CTX(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));
@@ -681,76 +697,36 @@ axis2_mep_client_two_way_send(
 
     /* If request is REST we assume the response is REST, so set the variable*/
     AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
-
 	/* set response envelope */
+    if (engine)
+    {
+        AXIS2_ENGINE_FREE(engine, env);
+        engine = NULL;
+    }
  	response_envelope = AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env);
-    if (response_envelope)
+    if(!response_envelope)
+    {
+        while(!response_envelope && index > 0)
+        {
+            /*wait till the response arrives*/
+            AXIS2_SLEEP(1);
+            if(!wait_indefinitely)
+                index--;
+            response_envelope = axis2_msg_ctx_get_response_soap_envelope(
+                msg_ctx, env);
+        }
+        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
+        return response;
+    }
+    else
     {
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
-        if (engine)
-        {
-            AXIS2_ENGINE_FREE(engine, env);
-            engine = NULL;
-        }
-
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {
             status = AXIS2_ENGINE_RECEIVE(engine, env, response);
             if (status != AXIS2_SUCCESS)
                 return NULL;
-        }
-
-    }
-    else
-    {
-        int count = 0;
-		axis2_op_ctx_t *op_ctx = NULL;
-		axis2_svc_ctx_t *svc_ctx = NULL;
-		axis2_ctx_t *ctx = NULL;
-		axis2_property_t *prop = NULL;
-        while (!response_envelope && count < 5)
-        {
-            count++;
-            AXIS2_SLEEP(1);
-            op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-            svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
-            ctx = AXIS2_SVC_CTX_GET_BASE((const axis2_svc_ctx_t *)svc_ctx, env);
-            prop = AXIS2_CTX_GET_PROPERTY(ctx, env, AXIS2_RESPONSE_SOAP_ENVELOPE, AXIS2_FALSE);
-            if (prop)
-                response_envelope = AXIS2_PROPERTY_GET_VALUE(prop, env);
-            if (response_envelope)
-                AXIS2_MSG_CTX_SET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env, response_envelope);
-        }
-
-
-        /* if it is a two way message, then the status should be in error,
-           else it is a one way message */
-        if (response_envelope)
-        {
-            AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
-            engine = axis2_engine_create(env, conf_ctx);
-            if (engine)
-            {
-                status = AXIS2_ENGINE_RECEIVE(engine, env, response);
-                if (status != AXIS2_SUCCESS)
-                    return NULL;
-            }
-        }
-        else
-        {
-
-        if (AXIS2_ERROR_GET_STATUS_CODE(env->error) != AXIS2_SUCCESS)
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
-            if (engine)
-            {
-                AXIS2_ENGINE_FREE(engine, env);
-                engine = NULL;
-            }
-            AXIS2_MSG_CTX_FREE(response, env);
-            return NULL;
-        }
         }
     }
 
