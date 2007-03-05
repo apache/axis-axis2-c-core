@@ -48,7 +48,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_free(axis2_desc_t *desc,
         const axis2_env_t *env);
 
@@ -59,7 +59,7 @@ extern "C"
      * @param param pointer to parameter
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_add_param(axis2_desc_t *desc,
         const axis2_env_t *env,
         axis2_param_t *param);
@@ -71,7 +71,7 @@ extern "C"
      * @param param_name parameter name string
      * @return pointer to named parameter, NULL if it does not exist
      */
-    axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_desc_get_param(const axis2_desc_t *desc,
         const axis2_env_t *env,
         const axis2_char_t *param_name);
@@ -82,7 +82,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to array list containing the list of parameters
      */
-    axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
     axis2_desc_get_all_params(const axis2_desc_t *desc,
         const axis2_env_t *env);
 
@@ -93,7 +93,7 @@ extern "C"
      * @param param_name parameter name string
      * @return AXIS2_TRUE if parameter is locked, else AXIS2_FALSE
      */
-    axis2_bool_t AXIS2_CALL
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_desc_is_param_locked(const axis2_desc_t *desc,
         const axis2_env_t *env,
         const axis2_char_t *param_name);
@@ -109,7 +109,7 @@ extern "C"
      * @param child child to be added
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_add_child(const axis2_desc_t *desc,
         const axis2_env_t *env,
         const axis2_char_t *key,
@@ -121,7 +121,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing children
      */
-    axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_desc_get_all_children(const axis2_desc_t *desc,
         const axis2_env_t *env);
 
@@ -133,7 +133,7 @@ extern "C"
      * @return pointer to child, returned as a void* value, need to cast to 
      * correct type
      */
-    void *AXIS2_CALL
+    AXIS2_EXTERN void *AXIS2_CALL
     axis2_desc_get_child(const axis2_desc_t *desc,
         const axis2_env_t *env,
         const axis2_char_t *key);
@@ -145,7 +145,7 @@ extern "C"
      * @param key key that represents the child to be removed
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_remove_child(const axis2_desc_t *desc,
         const axis2_env_t *env,
         const axis2_char_t *key);

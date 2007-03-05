@@ -58,7 +58,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_free(axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -70,7 +70,7 @@ extern "C"
      * parameter
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_add_param(axis2_msg_t *msg,
         const axis2_env_t *env,
         axis2_param_t *param);
@@ -83,7 +83,7 @@ extern "C"
      * @return pointer to parameter corresponding to the same name, returns
      * a reference, not a cloned copy
      */
-    axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_msg_get_param(const axis2_msg_t *msg,
         const axis2_env_t *env,
         const axis2_char_t *name);
@@ -95,7 +95,7 @@ extern "C"
      * @return pointer to list of parameters, returns a reference, not a 
      * cloned copy
      */
-    axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
     axis2_msg_get_all_params(const axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -106,7 +106,7 @@ extern "C"
      * @param param_name parameter name string
      * @return AXIS2_TRUE if the parameter is locked, else AXIS2_FALSE         
      */
-    axis2_bool_t AXIS2_CALL
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_is_param_locked(axis2_msg_t *msg,
         const axis2_env_t *env,
         const axis2_char_t *param_name);
@@ -119,7 +119,7 @@ extern "C"
      * ownership of parent
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_parent(axis2_msg_t *msg,
         const axis2_env_t *env,
         axis2_op_t *op);
@@ -131,7 +131,7 @@ extern "C"
      * @return pointer to parent operation, returns a reference, not a 
      * cloned copy
      */
-    axis2_op_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_op_t *AXIS2_CALL
     axis2_msg_get_parent(const axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -142,7 +142,7 @@ extern "C"
      * @return pointer to array list containing the list of phases 
      * representing the flow
      */
-    axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
     axis2_msg_get_flow( const axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -154,7 +154,7 @@ extern "C"
      * message assumes ownership of flow
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_flow(axis2_msg_t *msg,
         const axis2_env_t *env,
         axis2_array_list_t *flow);
@@ -165,7 +165,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return direction string
      */
-    const axis2_char_t *AXIS2_CALL
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_get_direction(const axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -176,7 +176,7 @@ extern "C"
      * @param direction pointer to direction
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_direction(axis2_msg_t *msg,
         const axis2_env_t *env,
         const axis2_char_t *direction);
@@ -187,7 +187,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to QName, returns a reference, not a cloned copy
      */
-    const axis2_qname_t *AXIS2_CALL
+    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
     axis2_msg_get_element_qname(const axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -199,7 +199,7 @@ extern "C"
      * function creates a clone of QName
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_element_qname(axis2_msg_t *msg,
         const axis2_env_t *env,
         const axis2_qname_t *element_qname);
@@ -210,7 +210,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return message name string.
      */
-    const axis2_char_t *AXIS2_CALL
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_get_name(const axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -221,7 +221,7 @@ extern "C"
      * @param message name string
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_name(axis2_msg_t *msg,
         const axis2_env_t *env,
         const axis2_char_t *name);
