@@ -34,7 +34,7 @@
 #include <oxs_xml_signature.h>
 #include <oxs_sign_ctx.h>
 #include <oxs_sign_part.h>
-
+#include <oxs_xml_key_processor.h>
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 load_sample_xml(const axis2_env_t *env,
         axiom_node_t* tmpl,
@@ -149,8 +149,6 @@ axis2_status_t verify(axis2_env_t *env,
     sign_ctx = oxs_sign_ctx_create(env);
     if(sign_ctx){
         axiom_node_t *sig_node = NULL;
-        oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
-        oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
         /*Set the operation*/
         oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_VERIFY);
         
@@ -160,6 +158,23 @@ axis2_status_t verify(axis2_env_t *env,
             printf("Verification : Cannot find ds:Signature node\n");
             return AXIS2_FAILURE;
         }
+       
+        /**If the certificate is not given check key information*/
+        if(!cert){
+            axiom_node_t *ki_node = NULL;
+            axiom_node_t *x509_node = NULL;
+            ki_node = oxs_axiom_get_first_child_node_by_name(env, sig_node, OXS_NODE_KEY_INFO, OXS_DSIG_NS, OXS_DS);
+            x509_node = oxs_axiom_get_first_child_node_by_name(env, ki_node, OXS_NODE_X509_DATA, OXS_DSIG_NS, OXS_DS);
+            cert = oxs_xml_key_process_X509Data(env, x509_node);
+            if(!cert){
+                printf("Error reading KeyInfo\n");
+                return AXIS2_FAILURE;
+            }
+        }            
+
+        
+        /*Set certificate*/
+        oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
         /*Verify*/
         status = oxs_xml_sig_verify(env, sign_ctx, sig_node, tmpl);
         if(AXIS2_SUCCESS != status){
@@ -175,19 +190,19 @@ axis2_status_t verify(axis2_env_t *env,
 int main(int argc, char *argv[])
 {
     axis2_env_t *env = NULL;
-    axis2_char_t *filename = "input.xml";
-    axis2_char_t *certfile = "rsacert.pem";
-    axis2_char_t *prvkeyfile = "rsakey.pem";
-    axis2_char_t *operation = "S";
+    axis2_char_t *filename = NULL;
+    axis2_char_t *certfile = NULL;
+    axis2_char_t *prvkeyfile = NULL;
+    axis2_char_t *operation = NULL;
     openssl_pkey_t *prvkey = NULL;
     oxs_x509_cert_t *cert = NULL;
 
 
-    if (argc > 4){
+    if (argc > 2){
         filename = argv[1];
-        prvkeyfile = argv[2];
+        operation = argv[2];
         certfile = argv[3];
-        operation = argv[4];
+        prvkeyfile = argv[4];
     }else{
         printf("Usage ./test inputfile prvkey certificate operation[S/V]\n");
         return -1;

@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#ifndef OXS_KEY_PROCESSOR_H
-#define OXS_KEY_PROCESSOR_H
+#ifndef OXS_XML_KEY_PROCESSOR_H
+#define OXS_XML_KEY_PROCESSOR_H
 
 
 /**
-  * @file oxs_xml_signature.h
-  * @brief Does the XML Signature for OMXMLSecurity  
+  * @file oxs_xml_key_processor.h
+  * @brief Process elements available under ds:KeyInfo  
   */
 
 #include <axis2_defines.h>
@@ -38,12 +38,12 @@ extern "C"
 
 /*Process data in a ds:X509Certificate and returns a certificate*/
 AXIS2_EXTERN oxs_x509_cert_t *AXIS2_CALL
-oxs_key_process_X509Certificate(const axis2_env_t *env,
+oxs_xml_key_process_X509Certificate(const axis2_env_t *env,
     axiom_node_t *X509_cert_node);
 
 /*Higher level function ot process an ds:X509Data element*/
 AXIS2_EXTERN oxs_x509_cert_t *AXIS2_CALL
-oxs_key_process_X509Data(const axis2_env_t *env,
+oxs_xml_key_process_X509Data(const axis2_env_t *env,
     axiom_node_t *X509_data_node);
 
 
@@ -52,4 +52,4 @@ oxs_key_process_X509Data(const axis2_env_t *env,
 }
 #endif
 
-#endif                          /* OXS_KEY_PROCESSOR_H */
+#endif                          /* OXS_XML_KEY_PROCESSOR_H */
