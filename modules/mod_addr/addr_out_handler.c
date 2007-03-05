@@ -784,7 +784,7 @@ axis2_addr_out_handler_process_any_content_type(const axis2_env_t *env,
         void *v = NULL;
         axis2_ssize_t len = 0;
         value_ht =
-            AXIS2_ANY_CONTENT_TYPE_GET_VALUE_MAP(reference_values, env);
+            axis2_any_content_type_get_value_map(reference_values, env);
         if (!value_ht)
             return AXIS2_FAILURE;
 

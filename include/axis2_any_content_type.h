@@ -27,11 +27,6 @@
  * @{
  */
 
-
-/**
- * @file axis2_any_content_type.h
- */
-
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_const.h>
@@ -47,7 +42,7 @@ extern "C"
     typedef struct axis2_any_content_type axis2_any_content_type_t;
 
     /**
-     * creates an instance of any content type struct.
+     * Creates an instance of any content type struct.
      * @param env pointer to environment struct
      * @return pointer to the newly created any content type instance
      */
@@ -101,22 +96,6 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_any_content_type_free(axis2_any_content_type_t *any_content_type,
         const axis2_env_t *env);
-
-/** Adds given value with given QName to the value map. */
-#define AXIS2_ANY_CONTENT_TYPE_ADD_VALUE(any_content_type, env, qname, value) \
-    axis2_any_content_type_add_value(any_content_type, env, qname, value)
-
-/** Gets value corresponding to given QName. */
-#define AXIS2_ANY_CONTENT_TYPE_GET_VALUE(any_content_type, env, qname) \
-    axis2_any_content_type_get_value(any_content_type, env, qname)
-
-/** Gets the value map. */
-#define AXIS2_ANY_CONTENT_TYPE_GET_VALUE_MAP(any_content_type, env) \
-    axis2_any_content_type_get_value_map(any_content_type, env)
-
-/** Frees any content type struct. */
-#define AXIS2_ANY_CONTENT_TYPE_FREE(any_content_type, env) \
-    axis2_any_content_type_free(any_content_type, env)
 
 /** @} */
 

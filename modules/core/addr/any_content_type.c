@@ -25,15 +25,14 @@ struct axis2_any_content_type
 };
 
 AXIS2_EXTERN axis2_any_content_type_t *AXIS2_CALL
-axis2_any_content_type_create(
-    const axis2_env_t *env)
+axis2_any_content_type_create(const axis2_env_t *env)
 {
     axis2_any_content_type_t *any_content_type = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     any_content_type = AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_any_content_type_t));
+	    sizeof(axis2_any_content_type_t));
     if (!any_content_type)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -55,8 +54,7 @@ axis2_any_content_type_create(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_any_content_type_add_value(
-    axis2_any_content_type_t *any_content_type,
+axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env,
     const axis2_qname_t *qname,
     const axis2_char_t *value)
@@ -69,42 +67,36 @@ axis2_any_content_type_add_value(
 
         name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
         axis2_hash_set(any_content_type->value_map, name,
-                AXIS2_HASH_KEY_STRING, value);
+		    AXIS2_HASH_KEY_STRING, value);
     }
     return AXIS2_SUCCESS;
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_any_content_type_get_value(
-    const axis2_any_content_type_t *any_content_type,
+axis2_any_content_type_get_value(const axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env,
     const axis2_qname_t *qname)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (any_content_type->value_map)
     {
         axis2_char_t *name = NULL;
 
         name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
         return axis2_hash_get(any_content_type->value_map, name,
-                AXIS2_HASH_KEY_STRING);
+            AXIS2_HASH_KEY_STRING);
     }
     return NULL;
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_any_content_type_get_value_map(
-    const axis2_any_content_type_t *any_content_type,
+axis2_any_content_type_get_value_map(const axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return any_content_type->value_map;
+	return any_content_type->value_map;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_any_content_type_free(
-    axis2_any_content_type_t *any_content_type,
+axis2_any_content_type_free(axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -112,11 +104,9 @@ axis2_any_content_type_free(
     if (any_content_type->value_map)
     {
         axis2_hash_free(any_content_type->value_map, env);
-        any_content_type->value_map = NULL;
     }
 
     AXIS2_FREE(env->allocator, any_content_type);
-    any_content_type = NULL;
-
-    return AXIS2_SUCCESS;
+    
+	return AXIS2_SUCCESS;
 }
