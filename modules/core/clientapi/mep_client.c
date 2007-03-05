@@ -26,7 +26,7 @@
 #include <axis2_http_transport_utils.h>
 #include <axis2_property.h>
 #include <axis2_types.h>
-#include <axis2_platform_auto_sense.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 typedef struct axis2_mep_client_impl
 {
