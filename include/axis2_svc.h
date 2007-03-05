@@ -265,7 +265,7 @@ extern "C"
      * the modules
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axis2_svc_add_module_ops(axis2_svc_t *svc,
         const axis2_env_t *env,
         struct axis2_module_desc *module_desc,
