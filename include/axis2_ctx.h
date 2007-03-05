@@ -35,10 +35,6 @@
  * @{
  */
 
-/**
- * @file axis2_ctx.h
- */
-
 #include <axis2_defines.h>
 #include <axis2_hash.h>
 #include <axis2_env.h>
@@ -89,7 +85,7 @@ extern "C"
      * retrieved from the non-persistent store
      * @return pointer to property struct corresponding to the given key
      */
-    AXIS2_EXTERN axis2_property_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_property_t *AXIS2_CALL
     axis2_ctx_get_property(const axis2_ctx_t *ctx,
         const axis2_env_t *env,
         const axis2_char_t *key,
@@ -102,7 +98,7 @@ extern "C"
      * @return pointer to the hash map which stores the non-persistent
      * properties
      */
-    AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_ctx_get_non_persistent_map(const axis2_ctx_t *ctx,
         const axis2_env_t *env);
 
@@ -113,7 +109,7 @@ extern "C"
      * @return pointer to the hash map which stores the persistent
      * properties
      */
-    AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_ctx_get_persistent_map(const axis2_ctx_t *ctx,
         const axis2_env_t *env);
                 
@@ -123,7 +119,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash table containing all properties
      */
-    AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_ctx_get_all_properties(const axis2_ctx_t *ctx,
         const axis2_env_t *env);
 
@@ -134,7 +130,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ctx_free(axis2_ctx_t *ctx,
         const axis2_env_t *env);
 
@@ -145,7 +141,7 @@ extern "C"
      * @param map pointer to hash map, context assumes ownership of the map
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */ 
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ctx_set_non_persistent_map(struct axis2_ctx *ctx,
         const axis2_env_t *env,
         axis2_hash_t *map);
@@ -157,7 +153,7 @@ extern "C"
      * @param map pointer to hash map, context assumes ownership of the map
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_status_t  AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ctx_set_persistent_map(struct axis2_ctx *ctx,
         const axis2_env_t *env,
         axis2_hash_t *map);
