@@ -265,38 +265,10 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
                     
-    /*Get the password to retrieve the key from key store*/
-/*  password = rampart_callback_encuser_password(env, actions, msg_ctx);*/
-
-    password = rampart_context_get_prv_key_password(rampart_context,env);
-
-    if(!password)
-    {
-        enc_user = rampart_context_get_encryption_user(rampart_context,env);
-
-        if(!enc_user)
-            enc_user = rampart_context_get_user(rampart_context,env);
-
-        if(!enc_user)
-            return AXIS2_FAILURE;
-
-        password_function = rampart_context_get_pwcb_function(rampart_context,env);
-        if(password_function)
-            password = (*password_function)(env,enc_user,param);
-
-        else
-        {
-            password_callback = rampart_context_get_password_callback(rampart_context,env);
-            if(!password_callback)
-            {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] Password call back module is not specified.");
-                return AXIS2_FAILURE;
-            }
-            password = rampart_callback_password(env, password_callback, enc_user);
-        }
-    }   
     asym_ctx = oxs_asym_ctx_create(env);
-    
+
+    oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
+
     key_buf = rampart_context_get_prv_key(rampart_context,env);
     if(key_buf)
     {
@@ -310,7 +282,6 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     }        
     else
     {        
-        oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
         prv_key_file = rampart_context_get_private_key_file(rampart_context,env);
         if(!prv_key_file)
         {
@@ -319,9 +290,40 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         }
         oxs_asym_ctx_set_file_name(asym_ctx, env, prv_key_file);
         oxs_asym_ctx_set_format(asym_ctx, env, oxs_util_get_format_by_file_extension(env, prv_key_file));
-    }    
+
+        /*Get the password to retrieve the key from key store*/
+        /*  password = rampart_callback_encuser_password(env, actions, msg_ctx);*/
+
+        password = rampart_context_get_prv_key_password(rampart_context,env);
+
+        if(!password)
+        {
+            enc_user = rampart_context_get_encryption_user(rampart_context,env);
+
+            if(!enc_user)
+                enc_user = rampart_context_get_user(rampart_context,env);
+
+            if(enc_user)
+            {                
+                password_function = rampart_context_get_pwcb_function(rampart_context,env);
+                if(password_function)
+                    password = (*password_function)(env,enc_user,param);
+
+                else
+                {
+                    password_callback = rampart_context_get_password_callback(rampart_context,env);
+                    if(!password_callback)
+                    {
+                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] Password call back module is not specified.");
+                        return AXIS2_FAILURE;
+                    }
+                    password = rampart_callback_password(env, password_callback, enc_user);
+                }
+            }   
+        }
+        oxs_asym_ctx_set_password(asym_ctx, env, password);
+    }        
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PRV_DECRYPT);
-    oxs_asym_ctx_set_password(asym_ctx, env, password);
     
     /*oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PKCS12);*/
 
@@ -663,15 +665,15 @@ rampart_shp_process_message(const axis2_env_t *env,
         if(status!=AXIS2_SUCCESS)
             return status; 
 
-        status = rampart_shp_process_usernametoken(env,msg_ctx,rampart_context,sec_node);      
-        if(status!=AXIS2_SUCCESS)
-            return status;
-
+        if(AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))
+        {            
+            status = rampart_shp_process_usernametoken(env,msg_ctx,rampart_context,sec_node);      
+            if(status!=AXIS2_SUCCESS)
+                return status;
+        }
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Security header element processing, DONE ");
         /*Do the action accordingly*/
         return AXIS2_SUCCESS;
-
-         
     }            
     else if((rampart_context_get_binding_type(rampart_context,env)) == RP_BINDING_SYMMETRIC)   
     {

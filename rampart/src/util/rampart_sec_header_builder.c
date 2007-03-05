@@ -125,7 +125,7 @@ rampart_shb_build_message(const axis2_env_t *env,
                 rampart_username_token_t *username_token = NULL;
 
                 username_token = rampart_username_token_create(env);
-        /*Now we are passing rampart_context here so inside this method user can 
+        /*Now we are passing rampart_context here so inside this method  
         relevant parameters are extracted. */
 
                 AXIS2_LOG_INFO(env->log, "[rampart][shb]  building UsernmaeToken");
