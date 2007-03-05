@@ -245,7 +245,7 @@ extern "C"
      * @param  module_qname pointer to module qname to be engaged, 
      * @return AXIS2_TRUE if module is engaged, else AXIS2_FALSE 
      */
-    axis2_bool_t AXIS2_CALL 
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axis2_svc_is_module_engaged (axis2_svc_t *svc,
         const axis2_env_t *env,
         axis2_qname_t *module_qname);

@@ -709,7 +709,7 @@ axis2_svc_engage_module(
     return status;
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_svc_is_module_engaged(
     axis2_svc_t *svc,
     const axis2_env_t *env,
