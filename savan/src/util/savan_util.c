@@ -38,7 +38,7 @@ savan_util_get_message_type(
         return SAVAN_MSG_TYPE_UNKNOWN;
     }
     
-    action = AXIS2_MSG_INFO_HEADERS_GET_ACTION(info_header, env);
+    action = axis2_msg_info_headers_get_action(info_header, env);
     if( ! action)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Cannot extract soap "

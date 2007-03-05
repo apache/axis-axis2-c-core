@@ -129,7 +129,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
     if (!msg_info_headers)
         return AXIS2_SUCCESS; /* no addressing in use */
-	 wsa_action = AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env);
+	 wsa_action = axis2_msg_info_headers_get_action (msg_info_headers, env);
     if (!wsa_action || !axis2_strcmp (wsa_action, ""))
         return AXIS2_SUCCESS; /* If no action present, assume no addressing in use */
 
@@ -235,7 +235,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         AXIOM_ELEMENT_DECLARE_NAMESPACE(soap_header_ele, env,
                 soap_header_node, addressing_namespace);
 
-        epr = AXIS2_MSG_INFO_HEADERS_GET_TO(msg_info_headers, env);
+        epr = axis2_msg_info_headers_get_to(msg_info_headers, env);
 
         if (soap_envelope && epr)
         {
@@ -246,7 +246,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                    the adress specified by FaultTo */
                 if (AXIOM_SOAP_BODY_HAS_FAULT(body, env))
                 {
-                    axis2_endpoint_ref_t *fault_epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers, env);
+                    axis2_endpoint_ref_t *fault_epr = axis2_msg_info_headers_get_fault_to(msg_info_headers, env);
                     if (fault_epr)
                     {
                         const axis2_char_t *fault_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(fault_epr, env);
@@ -289,7 +289,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             }
         }
 
-        action = AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_info_headers, env);
+        action = axis2_msg_info_headers_get_action(msg_info_headers, env);
         if (action && axis2_strcmp(action, ""))
         {
             axis2_addr_out_handler_process_string_info(env, action,
@@ -298,12 +298,12 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                     addr_ns);
         }
 
-        epr = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(msg_info_headers, env);
+        epr = axis2_msg_info_headers_get_reply_to(msg_info_headers, env);
         if (!epr)
         {
             const axis2_char_t *anonymous_uri = NULL;
-            axis2_bool_t anonymous = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_ANONYMOUS(msg_info_headers, env);
-            axis2_bool_t none = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_NONE(msg_info_headers, env);
+            axis2_bool_t anonymous = axis2_msg_info_headers_get_reply_to_anonymous(msg_info_headers, env);
+            axis2_bool_t none = axis2_msg_info_headers_get_reply_to_none(msg_info_headers, env);
             if (AXIS2_STRCMP(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
             {
                 if (none)
@@ -322,7 +322,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             if (anonymous_uri)
                 epr = axis2_endpoint_ref_create(env, anonymous_uri);
             if (epr)
-                AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, epr);
+                axis2_msg_info_headers_set_reply_to(msg_info_headers, env, epr);
         }
 
 
@@ -343,7 +343,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             epr = NULL;
         }*/
 
-        epr = AXIS2_MSG_INFO_HEADERS_GET_FROM(msg_info_headers, env);
+        epr = axis2_msg_info_headers_get_from(msg_info_headers, env);
 
         if (epr)
         {
@@ -353,12 +353,12 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
         }
 
-        epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers, env);
+        epr = axis2_msg_info_headers_get_fault_to(msg_info_headers, env);
         if (!epr)
         {
             const axis2_char_t *anonymous_uri = NULL;
-            axis2_bool_t anonymous = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_ANONYMOUS(msg_info_headers, env);
-            axis2_bool_t none = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_NONE(msg_info_headers, env);
+            axis2_bool_t anonymous = axis2_msg_info_headers_get_fault_to_anonymous(msg_info_headers, env);
+            axis2_bool_t none = axis2_msg_info_headers_get_fault_to_none(msg_info_headers, env);
             if (AXIS2_STRCMP(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
             {
                 if (none)
@@ -386,7 +386,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                     soap_header, addr_ns);
         }
 
-        message_id = AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(msg_info_headers, env);
+        message_id = axis2_msg_info_headers_get_message_id(msg_info_headers, env);
 
         if (message_id)
         {
@@ -396,7 +396,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                     addr_ns);
         }
 
-        relates_to = AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO(msg_info_headers, env);
+        relates_to = axis2_msg_info_headers_get_relates_to(msg_info_headers, env);
         if (relates_to)
         {
             const axis2_char_t *value = NULL;

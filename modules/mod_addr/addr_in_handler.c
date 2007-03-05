@@ -346,7 +346,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
                 status = AXIS2_FAILURE;
                 continue;
             }
-            AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, epr);
+            axis2_msg_info_headers_set_to(msg_info_headers, env, epr);
 
             axis2_addr_in_extract_to_epr_ref_params(env, epr, soap_header, addr_ns_str);
             AXIOM_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
@@ -354,7 +354,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
         }
         else if (AXIS2_STRCMP(ele_localname, AXIS2_WSA_FROM) == 0)
         {
-            epr = AXIS2_MSG_INFO_HEADERS_GET_FROM(msg_info_headers, env);
+            epr = axis2_msg_info_headers_get_from(msg_info_headers, env);
             if (!epr)
             {
                 /* The address is not know now. Pass the empty
@@ -362,14 +362,14 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
                     under this is processed. */
 
                 epr = axis2_endpoint_ref_create(env, "");
-                AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, epr);
+                axis2_msg_info_headers_set_from(msg_info_headers, env, epr);
             }
             axis2_addr_in_extract_epr_information(env, header_block, epr, addr_ns_str);
             AXIOM_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
         }
         else if (AXIS2_STRCMP(ele_localname, AXIS2_WSA_REPLY_TO) == 0)
         {
-            epr = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(msg_info_headers, env);
+            epr = axis2_msg_info_headers_get_reply_to(msg_info_headers, env);
 
             if (reply_to_found == AXIS2_TRUE)
             {
@@ -383,7 +383,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
             if (!epr)
             {
                 epr = axis2_endpoint_ref_create(env, "");
-                AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, epr);
+                axis2_msg_info_headers_set_reply_to(msg_info_headers, env, epr);
             }
             axis2_addr_in_extract_epr_information(env, header_block, epr, addr_ns_str);
             AXIOM_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
@@ -391,7 +391,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
         }
         else if (AXIS2_STRCMP(ele_localname, AXIS2_WSA_FAULT_TO) == 0)
         {
-            epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers , env);
+            epr = axis2_msg_info_headers_get_fault_to(msg_info_headers , env);
 
             if (fault_to_found == AXIS2_TRUE)
             {
@@ -399,14 +399,14 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
                 axis2_addr_in_create_fault_envelope(env,
                         "wsa:FaultTo", addr_ns_str, msg_ctx);
                 status = AXIS2_FAILURE;
-                AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, NULL);
+                axis2_msg_info_headers_set_fault_to(msg_info_headers, env, NULL);
                 continue;
             }
 
             if (!epr)
             {
                 epr = axis2_endpoint_ref_create(env, "");
-                AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, epr);
+                axis2_msg_info_headers_set_fault_to(msg_info_headers, env, epr);
             }
             axis2_addr_in_extract_epr_information(env, header_block, epr, addr_ns_str);
             AXIOM_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
@@ -426,7 +426,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
             }
 
             text = AXIOM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node);
-            AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, text);
+            axis2_msg_info_headers_set_message_id(msg_info_headers, env, text);
             AXIOM_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
             msg_id_found = AXIS2_TRUE;
         }
@@ -444,7 +444,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
             }
 
             text = AXIOM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node);
-            AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, text);
+            axis2_msg_info_headers_set_action(msg_info_headers, env, text);
             AXIOM_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
             action_found = AXIS2_TRUE;
         }
@@ -481,7 +481,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
 
             address = AXIOM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node);
             relates_to = axis2_relates_to_create(env, address, relationship_type_value);
-            AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(msg_info_headers, env, relates_to);
+            axis2_msg_info_headers_set_relates_to(msg_info_headers, env, relates_to);
             AXIOM_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block, env);
 
             AXIS2_QNAME_FREE(rqn, env);
@@ -610,7 +610,7 @@ axis2_addr_in_extract_ref_params(const axis2_env_t *env,
                 attr_value = AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
                 if (AXIS2_STRCMP(attr_value, AXIS2_WSA_TYPE_ATTRIBUTE_VALUE) == 0)
                 {
-                    AXIS2_MSG_INFO_HEADERS_ADD_REF_PARAM(msg_info_headers, env, header_block_node);
+                    axis2_msg_info_headers_add_ref_param(msg_info_headers, env, header_block_node);
                 }
             }
         }

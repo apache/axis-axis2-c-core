@@ -441,7 +441,7 @@ axis2_options_get_action(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    action = AXIS2_MSG_INFO_HEADERS_GET_ACTION(options_impl->msg_info_headers, env);
+    action = axis2_msg_info_headers_get_action(options_impl->msg_info_headers, env);
 
     if (action == NULL && options_impl->parent)
     {
@@ -462,7 +462,7 @@ axis2_options_get_fault_to(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    fault_to = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(options_impl->msg_info_headers, env);
+    fault_to = axis2_msg_info_headers_get_fault_to(options_impl->msg_info_headers, env);
 
     if (fault_to == NULL && options_impl->parent)
     {
@@ -484,7 +484,7 @@ axis2_options_get_from(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    from = AXIS2_MSG_INFO_HEADERS_GET_FROM(options_impl->msg_info_headers, env);
+    from = axis2_msg_info_headers_get_from(options_impl->msg_info_headers, env);
 
     if (from == NULL && options_impl->parent)
     {
@@ -558,7 +558,7 @@ axis2_options_get_message_id(const axis2_options_t *options,
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    message_id = AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(options_impl->msg_info_headers, env);
+    message_id = axis2_msg_info_headers_get_message_id(options_impl->msg_info_headers, env);
 
     if (message_id == NULL && options_impl->parent)
     {
@@ -616,7 +616,7 @@ axis2_options_get_relates_to(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    relates_to = AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO(options_impl->msg_info_headers, env);
+    relates_to = axis2_msg_info_headers_get_relates_to(options_impl->msg_info_headers, env);
 
     if (relates_to == NULL && options_impl->parent)
     {
@@ -638,7 +638,7 @@ axis2_options_get_reply_to(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    reply_to = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(options_impl->msg_info_headers, env);
+    reply_to = axis2_msg_info_headers_get_reply_to(options_impl->msg_info_headers, env);
 
     if (reply_to == NULL && options_impl->parent)
     {
@@ -741,7 +741,7 @@ axis2_options_get_to(const axis2_options_t *options,
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    to = AXIS2_MSG_INFO_HEADERS_GET_TO(options_impl->msg_info_headers, env);
+    to = axis2_msg_info_headers_get_to(options_impl->msg_info_headers, env);
 
     if (to == NULL && options_impl->parent)
     {
@@ -804,7 +804,7 @@ axis2_options_set_action(
 {
     axis2_options_impl_t *options_impl = NULL;
     options_impl = AXIS2_INTF_TO_IMPL(options);
-    AXIS2_MSG_INFO_HEADERS_SET_ACTION(options_impl->msg_info_headers, env, action);
+    axis2_msg_info_headers_set_action(options_impl->msg_info_headers, env, action);
     return AXIS2_SUCCESS;
 }
 
@@ -816,7 +816,7 @@ axis2_options_set_fault_to(
 {
     axis2_options_impl_t *options_impl = NULL;
     options_impl = AXIS2_INTF_TO_IMPL(options);
-    AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(options_impl->msg_info_headers, env, fault_to);
+    axis2_msg_info_headers_set_fault_to(options_impl->msg_info_headers, env, fault_to);
     return AXIS2_SUCCESS;
 }
 
@@ -828,7 +828,7 @@ axis2_options_set_from(
 {
     axis2_options_impl_t *options_impl = NULL;
     options_impl = AXIS2_INTF_TO_IMPL(options);
-    AXIS2_MSG_INFO_HEADERS_SET_FROM(options_impl->msg_info_headers, env, from);
+    axis2_msg_info_headers_set_from(options_impl->msg_info_headers, env, from);
     return AXIS2_SUCCESS;
 }
 
@@ -840,7 +840,7 @@ axis2_options_set_to(
 {
     axis2_options_impl_t *options_impl = NULL;
     options_impl = AXIS2_INTF_TO_IMPL(options);
-    AXIS2_MSG_INFO_HEADERS_SET_TO(options_impl->msg_info_headers, env, to);
+    axis2_msg_info_headers_set_to(options_impl->msg_info_headers, env, to);
     return AXIS2_SUCCESS;
 }
 
@@ -892,7 +892,7 @@ axis2_options_set_message_id(
 
     axis2_options_impl_t *options_impl = NULL;
     options_impl = AXIS2_INTF_TO_IMPL(options);
-    AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(options_impl->msg_info_headers, env, message_id);
+    axis2_msg_info_headers_set_message_id(options_impl->msg_info_headers, env, message_id);
     return AXIS2_SUCCESS;
 }
 
@@ -940,7 +940,7 @@ axis2_options_set_relates_to(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(options_impl->msg_info_headers, env, relates_to);
+    axis2_msg_info_headers_set_relates_to(options_impl->msg_info_headers, env, relates_to);
     return AXIS2_SUCCESS;
 }
 
@@ -954,7 +954,7 @@ axis2_options_set_reply_to(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(options_impl->msg_info_headers, env, reply_to);
+    axis2_msg_info_headers_set_reply_to(options_impl->msg_info_headers, env, reply_to);
     return AXIS2_SUCCESS;
 }
 
@@ -1093,7 +1093,7 @@ axis2_options_add_reference_parameter(
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    AXIS2_MSG_INFO_HEADERS_ADD_REF_PARAM(options_impl->msg_info_headers,
+    axis2_msg_info_headers_add_ref_param(options_impl->msg_info_headers,
             env, reference_parameter);
     return AXIS2_SUCCESS;
 }
@@ -1218,7 +1218,7 @@ axis2_options_free(
 
     if (options_impl->msg_info_headers)
     {
-        AXIS2_MSG_INFO_HEADERS_FREE(options_impl->msg_info_headers, env);
+        axis2_msg_info_headers_free(options_impl->msg_info_headers, env);
         options_impl->msg_info_headers = NULL;
     }
 

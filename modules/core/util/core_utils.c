@@ -80,14 +80,14 @@ axis2_core_utils_create_out_msg_ctx(
     }
 
     msg_uuid =  axis2_uuid_gen(env);
-    AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, msg_uuid);
+    axis2_msg_info_headers_set_message_id(msg_info_headers, env, msg_uuid);
     if (msg_uuid)
     {
         AXIS2_FREE(env->allocator, msg_uuid);
         msg_uuid = NULL;
     }
-    reply_to = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(old_msg_info_headers, env);
-    AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, reply_to);
+    reply_to = axis2_msg_info_headers_get_reply_to(old_msg_info_headers, env);
+    axis2_msg_info_headers_set_to(msg_info_headers, env, reply_to);
     /*if (reply_to)
     {
         axis2_endpoint_ref_t *epr = NULL;
@@ -97,24 +97,24 @@ axis2_core_utils_create_out_msg_ctx(
         if (address)
         {
             epr = axis2_endpoint_ref_create (env, address);
-            AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, epr);
+            axis2_msg_info_headers_set_reply_to(msg_info_headers, env, epr);
         }
     }*/
 
 
-    fault_to = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(old_msg_info_headers, env);
-    AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, fault_to);
+    fault_to = axis2_msg_info_headers_get_fault_to(old_msg_info_headers, env);
+    axis2_msg_info_headers_set_fault_to(msg_info_headers, env, fault_to);
 
-    to = AXIS2_MSG_INFO_HEADERS_GET_TO(old_msg_info_headers, env);
-    AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, to);
+    to = axis2_msg_info_headers_get_to(old_msg_info_headers, env);
+    axis2_msg_info_headers_set_from(msg_info_headers, env, to);
 
-    msg_id = AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(old_msg_info_headers, env);
+    msg_id = axis2_msg_info_headers_get_message_id(old_msg_info_headers, env);
     relates_to = axis2_relates_to_create(env, msg_id,
             AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE);
-    AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(msg_info_headers, env, relates_to);
+    axis2_msg_info_headers_set_relates_to(msg_info_headers, env, relates_to);
 
-    action = AXIS2_MSG_INFO_HEADERS_GET_ACTION(old_msg_info_headers, env);
-    AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, action);
+    action = axis2_msg_info_headers_get_action(old_msg_info_headers, env);
+    axis2_msg_info_headers_set_action(msg_info_headers, env, action);
 
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_OP_CTX(new_msg_ctx, env, op_ctx);
@@ -211,10 +211,10 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(out_msg_ctx, env);
     if (msg_info_headers)
     {
-        AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, NULL);
-        AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, NULL);
-        AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, NULL);
-        AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, NULL);
+        axis2_msg_info_headers_set_to(msg_info_headers, env, NULL);
+        axis2_msg_info_headers_set_fault_to(msg_info_headers, env, NULL);
+        axis2_msg_info_headers_set_from(msg_info_headers, env, NULL);
+        axis2_msg_info_headers_set_reply_to(msg_info_headers, env, NULL);
     }
 
     AXIS2_MSG_CTX_SET_OP_CTX(out_msg_ctx, env, NULL);

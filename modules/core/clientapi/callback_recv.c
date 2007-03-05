@@ -231,7 +231,7 @@ axis2_callback_recv_receive(
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
     if (msg_info_headers)
     {
-        relates_to = AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO(msg_info_headers, env);
+        relates_to = axis2_msg_info_headers_get_relates_to(msg_info_headers, env);
         if (relates_to)
         {
             const axis2_char_t *msg_id = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);

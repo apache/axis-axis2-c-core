@@ -304,7 +304,7 @@ axis2_msg_ctx_free(
 
     if (msg_ctx->msg_info_headers && msg_ctx->msg_info_headers_deep_copy)
     {
-        AXIS2_MSG_INFO_HEADERS_FREE(msg_ctx->msg_info_headers, env);
+        axis2_msg_info_headers_free(msg_ctx->msg_info_headers, env);
         msg_ctx->msg_info_headers = NULL;
     }
 
@@ -430,7 +430,7 @@ axis2_msg_ctx_get_fault_to(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_ctx->msg_info_headers, env);
+        return axis2_msg_info_headers_get_fault_to(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -446,7 +446,7 @@ axis2_msg_ctx_get_from(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_FROM(msg_ctx->msg_info_headers, env);
+        return axis2_msg_info_headers_get_from(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -497,7 +497,7 @@ axis2_msg_ctx_get_msg_id(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(
+        return axis2_msg_info_headers_get_message_id(
                     msg_ctx->msg_info_headers, env);
     }
 
@@ -514,7 +514,7 @@ axis2_msg_ctx_set_msg_id(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(
+        return axis2_msg_info_headers_set_message_id(
             msg_ctx->msg_info_headers, env, msg_id);
     }
 
@@ -539,7 +539,7 @@ axis2_msg_ctx_get_relates_to(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO(msg_ctx->msg_info_headers, env);
+        return axis2_msg_info_headers_get_relates_to(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -554,7 +554,7 @@ axis2_msg_ctx_get_reply_to(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(msg_ctx->msg_info_headers, env);
+        return axis2_msg_info_headers_get_reply_to(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -578,7 +578,7 @@ axis2_msg_ctx_get_to(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_TO(msg_ctx->msg_info_headers, env);
+        return axis2_msg_info_headers_get_to(msg_ctx->msg_info_headers, env);
     }
 
     return NULL;
@@ -595,7 +595,7 @@ axis2_msg_ctx_set_fault_to(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_TO(msg_ctx->msg_info_headers,
+        return axis2_msg_info_headers_set_to(msg_ctx->msg_info_headers,
                 env, reference);
     }
 
@@ -612,7 +612,7 @@ axis2_msg_ctx_set_from(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_ctx->msg_info_headers,
+        return axis2_msg_info_headers_set_from(msg_ctx->msg_info_headers,
                 env, reference);
     }
 
@@ -697,7 +697,7 @@ axis2_msg_ctx_set_message_id(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(
+        return axis2_msg_info_headers_set_message_id(
                     msg_ctx->msg_info_headers, env, message_id);
     }
 
@@ -726,7 +726,7 @@ axis2_msg_ctx_set_relates_to(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(
+        return axis2_msg_info_headers_set_relates_to(
                     msg_ctx->msg_info_headers, env, reference);
     }
 
@@ -744,7 +744,7 @@ axis2_msg_ctx_set_reply_to(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(
+        return axis2_msg_info_headers_set_reply_to(
                     msg_ctx->msg_info_headers, env, reference);
     }
 
@@ -772,7 +772,7 @@ axis2_msg_ctx_set_to(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_TO(msg_ctx->msg_info_headers,
+        return axis2_msg_info_headers_set_to(msg_ctx->msg_info_headers,
                 env, reference);
     }
 
@@ -809,7 +809,7 @@ axis2_msg_ctx_set_wsa_action(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_ctx->msg_info_headers,
+        return axis2_msg_info_headers_set_action(msg_ctx->msg_info_headers,
                 env, action_uri);
     }
 
@@ -825,7 +825,7 @@ axis2_msg_ctx_get_wsa_action(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_ctx->msg_info_headers,
+        return axis2_msg_info_headers_get_action(msg_ctx->msg_info_headers,
                 env);
     }
 
@@ -842,7 +842,7 @@ axis2_msg_ctx_set_wsa_message_id(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(
+        return axis2_msg_info_headers_set_message_id(
                     msg_ctx->msg_info_headers, env, message_id);
     }
 
@@ -858,7 +858,7 @@ axis2_msg_ctx_get_wsa_message_id(
 
     if (msg_ctx->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(
+        return axis2_msg_info_headers_get_message_id(
                     msg_ctx->msg_info_headers, env);
     }
 
@@ -1130,7 +1130,7 @@ axis2_msg_ctx_set_msg_info_headers(
         if (msg_ctx->msg_info_headers && 
             msg_ctx->msg_info_headers_deep_copy)
         {
-            AXIS2_MSG_INFO_HEADERS_FREE(msg_ctx->msg_info_headers, env);
+            axis2_msg_info_headers_free(msg_ctx->msg_info_headers, env);
             msg_ctx->msg_info_headers = NULL;
         }
         msg_ctx->msg_info_headers = msg_info_headers;
@@ -1783,7 +1783,7 @@ axis2_msg_ctx_set_options(
 
     if (msg_ctx->msg_info_headers && msg_ctx->msg_info_headers_deep_copy)
     {
-        AXIS2_MSG_INFO_HEADERS_FREE(
+        axis2_msg_info_headers_free(
             msg_ctx->msg_info_headers, env);
         msg_ctx->msg_info_headers = NULL;
     }

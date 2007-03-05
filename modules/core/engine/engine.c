@@ -637,7 +637,7 @@ axis2_engine_create_fault_msg_ctx(
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(processing_context, env);
     if (msg_info_headers)
     {
-        wsa_action = AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env);
+        wsa_action = axis2_msg_info_headers_get_action (msg_info_headers, env);
         if (wsa_action)
         {
             wsa_action = "http://www.w3.org/2005/08/addressing/fault";

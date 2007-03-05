@@ -190,7 +190,7 @@ savan_msg_recv_handle_sub_request(
     
     /* set wsa action as SubscribeResponse. */
     info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
-    AXIS2_MSG_INFO_HEADERS_SET_ACTION(info_header, env, SAVAN_ACTIONS_SUB_RESPONSE);
+    axis2_msg_info_headers_set_action(info_header, env, SAVAN_ACTIONS_SUB_RESPONSE);
     
     default_envelope = savan_msg_recv_build_soap_envelope(env, &body_node);
     if (!default_envelope)
@@ -216,7 +216,7 @@ savan_msg_recv_handle_sub_request(
     addr_elem = axiom_element_create(env, submgr_node, ELEM_NAME_ADDR, addr_ns,
         &addr_node);
     old_info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
-    submgr_epr = AXIS2_MSG_INFO_HEADERS_GET_TO(old_info_header, env);
+    submgr_epr = axis2_msg_info_headers_get_to(old_info_header, env);
     submgr_addr = AXIS2_ENDPOINT_REF_GET_ADDRESS(submgr_epr, env);
     AXIOM_ELEMENT_SET_TEXT(addr_elem, env, submgr_addr, addr_node);
     
@@ -279,7 +279,7 @@ savan_msg_recv_handle_unsub_request(
 
     /* Set wsa action as UnsubscribeResponse. */
     info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
-    AXIS2_MSG_INFO_HEADERS_SET_ACTION(info_header, env, SAVAN_ACTIONS_UNSUB_RESPONSE);
+    axis2_msg_info_headers_set_action(info_header, env, SAVAN_ACTIONS_UNSUB_RESPONSE);
     
     default_envelope = savan_msg_recv_build_soap_envelope(env, &body_node);
     if (!default_envelope)
@@ -347,7 +347,7 @@ savan_msg_recv_handle_renew_request(
 
     /* Set wsa action as RenewResponse. */
     info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
-    AXIS2_MSG_INFO_HEADERS_SET_ACTION(info_header, env, SAVAN_ACTIONS_RENEW_RESPONSE);
+    axis2_msg_info_headers_set_action(info_header, env, SAVAN_ACTIONS_RENEW_RESPONSE);
     
     default_envelope = savan_msg_recv_build_soap_envelope(env, &body_node);
     if (!default_envelope)
@@ -404,7 +404,7 @@ savan_msg_recv_handle_get_status_request(
 
     /* set wsa action as GetStatusResponse. */
     info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
-    AXIS2_MSG_INFO_HEADERS_SET_ACTION(info_header, env, SAVAN_ACTIONS_GET_STATUS_RESPONSE);
+    axis2_msg_info_headers_set_action(info_header, env, SAVAN_ACTIONS_GET_STATUS_RESPONSE);
     
     default_envelope = savan_msg_recv_build_soap_envelope(env, &body_node);
     if (!default_envelope)

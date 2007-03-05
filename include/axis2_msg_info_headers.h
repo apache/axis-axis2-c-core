@@ -35,10 +35,6 @@
  * @{
  */
 
-/**
- * @file axis2_msg_info_headers.h
- */
-
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_const.h>
@@ -124,7 +120,7 @@ extern "C"
 
     /**
      * Gets reply to endpoint. reply to endpoint identifies the intended 
-     * receiver for replies to a message.
+     * receiver to which a message is replied.
      * @param msg_info_headers pointer to message information headers struct
      * @param env pointer to environment struct
      * @return pointer to endpoint reference representing reply to address, 
@@ -136,7 +132,7 @@ extern "C"
 
     /**
      * Sets reply to endpoint. reply to endpoint identifies the intended 
-     * receiver for replies to a message.
+     * receiver to which a message is replied.
      * @param msg_info_headers pointer to message information headers struct
      * @param env pointer to environment struct
      * @param reply_to pointer to endpoint reference representing reply to 
@@ -331,7 +327,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_headers,
         const axis2_env_t *env,
-        const axis2_char_t *action);
+        const axis2_string_t *action);
 
     /**
      * Gets message ID. message ID is an absolute IRI that uniquely 
@@ -416,106 +412,6 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_free(struct axis2_msg_info_headers *msg_info_headers,
         const axis2_env_t *env);
-
-/** Gets to endpoint. */
-#define AXIS2_MSG_INFO_HEADERS_GET_TO(msg_info_headers, env) \
-        axis2_msg_info_headers_get_to(msg_info_headers, env)
-
-/** Sets to endpoint. */
-#define AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, to) \
-        axis2_msg_info_headers_set_to(msg_info_headers, env, to)
-
-/** Gets from endpoint. */
-#define AXIS2_MSG_INFO_HEADERS_GET_FROM(msg_info_headers, env) \
-        axis2_msg_info_headers_get_from(msg_info_headers, env)
-
-/** Sets from endpoint. */
-#define AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, from) \
-        axis2_msg_info_headers_set_from(msg_info_headers, env, from)
-
-/** Gets reply to endpoint. */
-#define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(msg_info_headers, env) \
-        axis2_msg_info_headers_get_reply_to(msg_info_headers, env)
-
-/** Sets reply to endpoint. */
-#define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, reply_to) \
-        axis2_msg_info_headers_set_reply_to(msg_info_headers, env, reply_to)
-
-/** Sets bool value indicating if reply to is none. */
-#define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO_NONE(msg_info_headers, env, none) \
-        axis2_msg_info_headers_set_reply_to_none(msg_info_headers, env, none)
-
-/** Gets bool value indicating if reply to is none. */
-#define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_NONE(msg_info_headers, env) \
-        axis2_msg_info_headers_get_reply_to_none(msg_info_headers, env)
-
-/** Sets bool value indicating if reply to is anonymous. */
-#define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO_ANONYMOUS(msg_info_headers, env, anonymous) \
-        axis2_msg_info_headers_set_reply_to_anonymous(msg_info_headers, env, anonymous)
-
-/** Gets bool value indicating if reply to is anonymous. */
-#define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_ANONYMOUS(msg_info_headers, env) \
-        axis2_msg_info_headers_get_reply_to_anonymous(msg_info_headers, env)
-
-/** Gets fault to endpoint. */
-#define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers, env) \
-        axis2_msg_info_headers_get_fault_to(msg_info_headers, env)
-
-/** Sets fault to endpoint. */
-#define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, fault_to) \
-        axis2_msg_info_headers_set_fault_to(msg_info_headers, env, fault_to)
-
-/** Sets bool value indicating if fault to is none. */
-#define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO_NONE(msg_info_headers, env, none) \
-        axis2_msg_info_headers_set_fault_to_none(msg_info_headers, env, none)
-
-/** Gets bool value indicating if fault to is none. */
-#define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_NONE(msg_info_headers, env) \
-        axis2_msg_info_headers_get_fault_to_none(msg_info_headers, env)
-
-/** Sets bool value indicating if fault to is anonymous. */
-#define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO_ANONYMOUS(msg_info_headers, env, anonymous) \
-        axis2_msg_info_headers_set_fault_to_anonymous(msg_info_headers, env, anonymous)
-
-/** Gets bool value indicating if fault to is anonymous. */
-#define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_ANONYMOUS(msg_info_headers, env) \
-        axis2_msg_info_headers_get_fault_to_anonymous(msg_info_headers, env)
-
-/** Gets WS-Addressing action. */
-#define AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_info_headers, env) \
-        axis2_msg_info_headers_get_action(msg_info_headers, env)
-
-/** Sets WS-Addressing action. */
-#define AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, action) \
-        axis2_msg_info_headers_set_action(msg_info_headers, env, action)
-
-/** Gets message ID. */
-#define AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(msg_info_headers, env) \
-        axis2_msg_info_headers_get_message_id(msg_info_headers, env)
-
-/** Sets message ID. */
-#define AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, message_id) \
-        axis2_msg_info_headers_set_message_id(msg_info_headers, env, message_id)
-
-/** Gets relates to information for the message. */
-#define AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO(msg_info_headers, env) \
-        axis2_msg_info_headers_get_relates_to(msg_info_headers, env)
-
-/** Sets relates to information for the message. */
-#define AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(msg_info_headers, env, relates_to) \
-        axis2_msg_info_headers_set_relates_to(msg_info_headers, env, relates_to)
-
-/** Gets all reference parameters. */
-#define AXIS2_MSG_INFO_HEADERS_GET_ALL_REF_PARAMS(msg_info_headers, env) \
-        axis2_msg_info_headers_get_all_ref_params(msg_info_headers, env)
-
-/** Adds reference parameter. */
-#define AXIS2_MSG_INFO_HEADERS_ADD_REF_PARAM(msg_info_headers, env, ref_param) \
-        axis2_msg_info_headers_add_ref_param(msg_info_headers, env, ref_param)
-
-/** Frees message information headers struct. */
-#define AXIS2_MSG_INFO_HEADERS_FREE(msg_info_headers, env) \
-        axis2_msg_info_headers_free(msg_info_headers, env)
 
 /** @} */
 
