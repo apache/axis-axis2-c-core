@@ -133,7 +133,7 @@ int main(int argc, char** argv)
             /* We are done with the callback */
             break;
         }
-        AXIS2_SLEEP(1);
+/*         AXIS2_SLEEP(1); */
         count++;
     }
 
