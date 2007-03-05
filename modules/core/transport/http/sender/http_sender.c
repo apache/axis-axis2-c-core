@@ -1138,28 +1138,34 @@ axis2_http_sender_get_param_string(
         return NULL;
     }
     param_list = axis2_array_list_create(env, AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
-    data_element = AXIOM_NODE_GET_DATA_ELEMENT(data_node, env);
-    iterator = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(data_element, env, data_node);
-    while (AXIS2_TRUE == AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(iterator, env))
-    {
-        axiom_node_t *node = NULL;
-        axiom_element_t *element = NULL;
-        axis2_char_t *name = NULL;
-        axis2_char_t *value = NULL;
-		axis2_char_t *encoded_value = NULL;
- 
-        node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env);
-        element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-        name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
-        value = AXIOM_ELEMENT_GET_TEXT(element, env, node);
 
-		encoded_value = (axis2_char_t *) AXIS2_MALLOC (env->allocator, strlen (value));
-		memset (encoded_value, 0, strlen (value));
-		encoded_value = axis2_url_encode (env, encoded_value, value, strlen (value));
+	data_element = AXIOM_NODE_GET_DATA_ELEMENT(data_node, env);
 
-        AXIS2_ARRAY_LIST_ADD(param_list, env, axis2_strcat(env, name, "=",
-														   encoded_value, NULL));
-    }
+	iterator = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(data_element, env, data_node);
+
+	if(iterator){
+		while (AXIS2_TRUE == AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(iterator, env))
+		{
+			axiom_node_t *node = NULL;
+			axiom_element_t *element = NULL;
+			axis2_char_t *name = NULL;
+			axis2_char_t *value = NULL;
+			axis2_char_t *encoded_value = NULL;
+	 
+			node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env);
+			element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+			name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
+			value = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+			if(value){
+				encoded_value = (axis2_char_t *) AXIS2_MALLOC (env->allocator, strlen (value));
+				memset (encoded_value, 0, strlen (value));
+				encoded_value = axis2_url_encode (env, encoded_value, value, strlen (value));
+
+				AXIS2_ARRAY_LIST_ADD(param_list, env, axis2_strcat(env, name, "=",
+																   encoded_value, NULL));
+			}
+		}
+	}
     for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(param_list, env); i++)
     {
         axis2_char_t *tmp_string = NULL;
