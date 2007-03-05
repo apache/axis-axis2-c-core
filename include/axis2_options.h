@@ -44,6 +44,8 @@
 
 /** Default timeout */
 #define AXIS2_DEFAULT_TIMEOUT_MILLISECONDS 30000
+/** Timeout in seconds waiting for a response envelope */
+#define AXIS2_TIMEOUT_IN_SECONDS "time_out"
 /** Copy properties */
 #define AXIS2_COPY_PROPERTIES   "copy_properties"
 
