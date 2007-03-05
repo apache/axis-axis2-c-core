@@ -36,6 +36,11 @@ extern "C"
 {
 #endif
 
+/*Process a ds:X509IssuerSerial element and populate a certificate*/
+AXIS2_EXTERN oxs_x509_cert_t *AXIS2_CALL
+oxs_xml_key_process_X509IssuerSerial(const axis2_env_t *env,
+    axiom_node_t *X509_issuer_serial_node);
+
 /*Process data in a ds:X509Certificate and returns a certificate*/
 AXIS2_EXTERN oxs_x509_cert_t *AXIS2_CALL
 oxs_xml_key_process_X509Certificate(const axis2_env_t *env,
