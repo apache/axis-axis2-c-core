@@ -53,247 +53,213 @@ extern "C"
 
     /** Type name for struct axis2_transport_out_desc */
     typedef struct axis2_transport_out_desc axis2_transport_out_desc_t;
-    /** Type name for struct axis2_transport_out_desc_ops  */
-    typedef struct axis2_transport_out_desc_ops axis2_transport_out_desc_ops_t;
 
     struct axis2_phase;
     struct axis2_transport_sender;
 
     /**
-     * transport out description ops struct.
-     * Encapsulator struct for ops of axis2_transport_out_desc.
+     * Frees transport out description.
+     * @param transport_out_dec pointer to transport out description
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_transport_out_desc_ops
-    {
-        /**
-         * Frees transport out description.
-         * @param transport_out_dec pointer to transport out description
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_transport_out_desc_t *transport_out_desc,
-                    const axis2_env_t *env);
-
-        /**
-         * Frees transport out description given as a void pointer.
-         * @param transport_out_dec pointer to transport out description as a 
-         * void pointer 
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free_void_arg)(
-                    void *transport_out,
-                    const axis2_env_t *env);
-
-        /**
-         * Gets transport enum.
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @return transport enum 
-         */
-        AXIS2_TRANSPORT_ENUMS (AXIS2_CALL *
-                get_enum)(
-                    const axis2_transport_out_desc_t *transport_out,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets transport enum.
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @param trans_enum transport enum
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_enum)(
-                    struct axis2_transport_out_desc *transport_out,
-                    const axis2_env_t *env,
-                    const AXIS2_TRANSPORT_ENUMS trans_enum);
-
-        /**
-         * Gets out flow. Out flow represents the list of phases invoked 
-         * along the sender path.
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @return pointer to flow representing out flow, returns a reference,
-         * not a cloned copy
-         */
-        struct axis2_flow *(AXIS2_CALL *
-                get_out_flow)(
-                    const axis2_transport_out_desc_t *transport_out,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets out flow. Out flow represents the list of phases invoked 
-         * along the sender path.
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @param out_flow pointer to out flow, transport out description 
-         * assumes ownership of flow
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_out_flow)(
-                    struct axis2_transport_out_desc *transport_out,
-                    const axis2_env_t *env,
-                    struct axis2_flow *out_flow);
-
-        /**
-         * Gets fault out flow. Fault out flow represents the list of phases 
-         * invoked along the sender path if a fault happens.         
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @return pointer to flow representing fault out flow
-         */
-        struct axis2_flow *(AXIS2_CALL *
-                get_fault_out_flow)(
-                    const axis2_transport_out_desc_t *transport_out,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets fault out flow. Fault out flow represents the list of phases 
-         * invoked along the sender path if a fault happens.         
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @param fault_out_flow pointer to fault_out_flow
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_fault_out_flow)(
-                    struct axis2_transport_out_desc *transport_out,
-                    const axis2_env_t *env,
-                    struct axis2_flow *fault_out_flow);
-
-        /**
-         * Gets transport sender.
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @return pointer to transport sender associated wit the transport out
-         * description, returns a reference, not a cloned copy
-         */
-        axis2_transport_sender_t *(AXIS2_CALL *
-                get_sender)(
-                    const axis2_transport_out_desc_t *transport_out,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets transport sender.
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @param sender pointer to transport sender, transport description
-         * assumes ownership of sender 
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_sender)(
-                    struct axis2_transport_out_desc *transport_out,
-                    const axis2_env_t *env,
-                    axis2_transport_sender_t *sender);
-
-        /**
-         * Gets transport out phase.
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @return pointer to phase representing transport out phase, returns a 
-         * reference, not a cloned copy
-         */
-        struct axis2_phase * (AXIS2_CALL *
-                get_out_phase)(
-                    const axis2_transport_out_desc_t *transport_out,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets transport out phase.
-         * @param transport_out pointer to transport_out 
-         * @param env pointer to environment struct
-         * @param out_phase pointer to phase representing transport out phase,
-         * transport out description assumes ownership of phase
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_out_phase)(
-                    struct axis2_transport_out_desc *transport_out,
-                    const axis2_env_t *env,
-                    struct axis2_phase *out_phase);
-
-        /**
-         * Gets fault phase.
-         * @param transport_out  pointer to transport_out
-         * @param env pointer to environment struct
-         * @return pointer to phase representing fault phase, returns a 
-         * reference, not a cloned copy
-         */
-        struct axis2_phase *(AXIS2_CALL *
-                get_fault_phase)(
-                    const axis2_transport_out_desc_t *transport_out,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets fault phase.
-         * @param transport_out pointer to transport_out
-         * @param env pointer to environment struct
-         * @param fault_phase pointer to phase representing fault phase, 
-         * transport description assumes ownership of phase
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_fault_phase)(
-                    struct axis2_transport_out_desc *transport_out,
-                    const axis2_env_t *env,
-                    struct axis2_phase *fault_phase);
-
-        /**
-         * Adds parameter.
-         * @param transport_out_desc pointer to tarn sport out description
-         * @param env pointer to environment struct
-         * @param param pointer to parameter, transport out description assumes
-         * ownership of parameter
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_param)(
-                    axis2_transport_out_desc_t *transport_out_desc,
-                    const axis2_env_t *env,
-                    axis2_param_t *param);
-
-        /**
-         * Gets named parameter. 
-         * @param transport_out_desc pointer to transport out description
-         * @param env pointer to environment struct
-         * @param param_name parameter name string
-         */
-        axis2_param_t *(AXIS2_CALL *
-                get_param)(
-                    const axis2_transport_out_desc_t *transport_out_desc,
-                    const axis2_env_t *env,
-                    const axis2_char_t *param_name);
-
-        /**
-         * Checks if the named parameter is locked.
-         * @param transport_out_desc pointer to transport out description
-         * @param env pointer to environment struct
-         * @param param_name pointer to parameter name
-         */
-        axis2_bool_t (AXIS2_CALL *
-                is_param_locked)(
-                    axis2_transport_out_desc_t *transport_out_desc,
-                    const axis2_env_t *env,
-                    const axis2_char_t *param_name);
-
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_free(axis2_transport_out_desc_t *transport_out_desc,
+        const axis2_env_t *env);
 
     /**
-     * transport out description struct.
+     * Frees transport out description given as a void pointer.
+     * @param transport_out_dec pointer to transport out description as a 
+     * void pointer 
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_transport_out_desc
-    {
-        /** operations of transport out description struct */
-        axis2_transport_out_desc_ops_t *ops;
-        /** parameter container that holds parameter */
-        axis2_param_container_t *param_container;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_free_void_arg(void *transport_out,
+        const axis2_env_t *env);
+
+    /**
+     * Gets transport enum.
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @return transport enum 
+     */
+    AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
+    axis2_transport_out_desc_get_enum(const axis2_transport_out_desc_t *transport_out,
+        const axis2_env_t *env);
+
+    /**
+     * Sets transport enum.
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @param trans_enum transport enum
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_set_enum(struct axis2_transport_out_desc *transport_out,
+        const axis2_env_t *env,
+        const AXIS2_TRANSPORT_ENUMS trans_enum);
+
+    /**
+     * Gets out flow. Out flow represents the list of phases invoked 
+     * along the sender path.
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @return pointer to flow representing out flow, returns a reference,
+     * not a cloned copy
+     */
+    AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
+    axis2_transport_out_desc_get_out_flow(const axis2_transport_out_desc_t *transport_out,
+        const axis2_env_t *env);
+
+    /**
+     * Sets out flow. Out flow represents the list of phases invoked 
+     * along the sender path.
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @param out_flow pointer to out flow, transport out description 
+     * assumes ownership of flow
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_set_out_flow(struct axis2_transport_out_desc *transport_out,
+        const axis2_env_t *env,
+        struct axis2_flow *out_flow);
+
+    /**
+     * Gets fault out flow. Fault out flow represents the list of phases 
+     * invoked along the sender path if a fault happens.         
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @return pointer to flow representing fault out flow
+     */
+    AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
+    axis2_transport_out_desc_get_fault_out_flow(const axis2_transport_out_desc_t *transport_out,
+        const axis2_env_t *env);
+
+    /**
+     * Sets fault out flow. Fault out flow represents the list of phases 
+     * invoked along the sender path if a fault happens.         
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @param fault_out_flow pointer to fault_out_flow
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_set_fault_out_flow(struct axis2_transport_out_desc *transport_out,
+        const axis2_env_t *env,
+        struct axis2_flow *fault_out_flow);
+
+    /**
+     * Gets transport sender.
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @return pointer to transport sender associated wit the transport out
+     * description, returns a reference, not a cloned copy
+     */
+    AXIS2_EXTERN axis2_transport_sender_t *AXIS2_CALL
+    axis2_transport_out_desc_get_sender(const axis2_transport_out_desc_t *transport_out,
+        const axis2_env_t *env);
+
+    /**
+     * Sets transport sender.
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @param sender pointer to transport sender, transport description
+     * assumes ownership of sender 
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_set_sender(struct axis2_transport_out_desc *transport_out,
+        const axis2_env_t *env,
+        axis2_transport_sender_t *sender);
+
+    /**
+     * Gets transport out phase.
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @return pointer to phase representing transport out phase, returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN struct axis2_phase * AXIS2_CALL
+    axis2_transport_out_desc_get_out_phase(const axis2_transport_out_desc_t *transport_out,
+        const axis2_env_t *env);
+
+    /**
+     * Sets transport out phase.
+     * @param transport_out pointer to transport_out 
+     * @param env pointer to environment struct
+     * @param out_phase pointer to phase representing transport out phase,
+     * transport out description assumes ownership of phase
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_set_out_phase(struct axis2_transport_out_desc *transport_out,
+        const axis2_env_t *env,
+        struct axis2_phase *out_phase);
+
+    /**
+     * Gets fault phase.
+     * @param transport_out  pointer to transport_out
+     * @param env pointer to environment struct
+     * @return pointer to phase representing fault phase, returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN struct axis2_phase *AXIS2_CALL
+    axis2_transport_out_desc_get_fault_phase(const axis2_transport_out_desc_t *transport_out,
+        const axis2_env_t *env);
+
+    /**
+     * Sets fault phase.
+     * @param transport_out pointer to transport_out
+     * @param env pointer to environment struct
+     * @param fault_phase pointer to phase representing fault phase, 
+     * transport description assumes ownership of phase
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_set_fault_phase(struct axis2_transport_out_desc *transport_out,
+        const axis2_env_t *env,
+        struct axis2_phase *fault_phase);
+
+    /**
+     * Adds parameter.
+     * @param transport_out_desc pointer to tarn sport out description
+     * @param env pointer to environment struct
+     * @param param pointer to parameter, transport out description assumes
+     * ownership of parameter
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_add_param(axis2_transport_out_desc_t *transport_out_desc,
+        const axis2_env_t *env,
+        axis2_param_t *param);
+
+    /**
+     * Gets named parameter. 
+     * @param transport_out_desc pointer to transport out description
+     * @param env pointer to environment struct
+     * @param param_name parameter name string
+     */
+    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    axis2_transport_out_desc_get_param(const axis2_transport_out_desc_t *transport_out_desc,
+        const axis2_env_t *env,
+        const axis2_char_t *param_name);
+
+    /**
+     * Checks if the named parameter is locked.
+     * @param transport_out_desc pointer to transport out description
+     * @param env pointer to environment struct
+     * @param param_name pointer to parameter name
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_transport_out_desc_is_param_locked(axis2_transport_out_desc_t *transport_out_desc,
+        const axis2_env_t *env,
+        const axis2_char_t *param_name);
+
+    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    axis2_transport_out_desc_param_container(const axis2_transport_out_desc_t *transport_out_desc,
+        const axis2_env_t *env);
 
     /**
      * Creates transport out description with given transport enum.
@@ -302,8 +268,7 @@ extern "C"
      * @return pointer to newly created transport out
      */
     AXIS2_EXTERN axis2_transport_out_desc_t * AXIS2_CALL
-    axis2_transport_out_desc_create(
-        const axis2_env_t *env,
+    axis2_transport_out_desc_create(const axis2_env_t *env,
         const AXIS2_TRANSPORT_ENUMS trans_enum);
 
     /**
@@ -313,90 +278,73 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    axis2_status_t AXIS2_CALL
-    axis2_transport_out_desc_free_void_arg(
-        void *transport_out,
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_transport_out_desc_free_void_arg(void *transport_out,
         const axis2_env_t *env);
 
-/** Frees transport out description.
-    @sa axis2_transport_out_desc_ops#free */
+/** Frees transport out description. */
 #define AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out_desc, env) \
-      ((transport_out_desc)->ops->free (transport_out_desc, env))
+      axis2_transport_out_desc_free (transport_out_desc, env)
 
-/** Gets transport enum.
-    @sa axis2_transport_out_desc_ops#get_enum */
+/** Gets transport enum. */
 #define AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out_desc, env) \
-      ((transport_out_desc)->ops->get_enum (transport_out_desc, env))
+      axis2_transport_out_desc_get_enum (transport_out_desc, env)
 
-/** Sets transport enum.
-    @sa axis2_transport_out_desc_ops#set_enum */
+/** Sets transport enum. */
 #define AXIS2_TRANSPORT_OUT_DESC_SET_ENUM(transport_out_desc, env, trans_enum) \
-      ((transport_out_desc)->ops->set_enum (transport_out_desc, env, trans_enum))
+      axis2_transport_out_desc_set_enum (transport_out_desc, env, trans_enum)
 
-/** Gets out flow.
-    @sa axis2_transport_out_desc_ops#get_out_flow */
+/** Gets out flow. */
 #define AXIS2_TRANSPORT_OUT_DESC_GET_OUT_FLOW(transport_out_desc, env) \
-      ((transport_out_desc)->ops->get_out_flow (transport_out_desc, env))
+      axis2_transport_out_desc_get_out_flow (transport_out_desc, env)
 
-/** Sets out flow.
-    @sa axis2_transport_out_desc_ops#set_out_flow */
+/** Sets out flow. */
 #define AXIS2_TRANSPORT_OUT_DESC_SET_OUT_FLOW(transport_out_desc, env, out_flow) \
-      ((transport_out_desc)->ops->set_out_flow (transport_out_desc, env, out_flow))
+      axis2_transport_out_desc_set_out_flow (transport_out_desc, env, out_flow)
 
-/** Gets fault out flow.
-    @sa axis2_transport_out_desc_ops#get_fault_out_flow */
+/** Gets fault out flow. */
 #define AXIS2_TRANSPORT_OUT_DESC_GET_FAULT_OUT_FLOW(transport_out_desc, env) \
-      ((transport_out_desc)->ops->get_fault_out_flow (transport_out_desc, env))
+      axis2_transport_out_desc_get_fault_out_flow (transport_out_desc, env)
 
-/** Sets fault out flow.
-    @sa axis2_transport_out_desc_ops#set_fault_out_flow */
+/** Sets fault out flow. */
 #define AXIS2_TRANSPORT_OUT_DESC_SET_FAULT_OUT_FLOW(transport_out_desc, env, fault_out_flow) \
-      ((transport_out_desc)->ops->set_fault_out_flow (transport_out_desc, env, fault_out_flow))
+      axis2_transport_out_desc_set_fault_out_flow (transport_out_desc, env, fault_out_flow)
 
-/** Gets transport sender.
-    @sa axis2_transport_out_desc_ops#get_sender */
+/** Gets transport sender. */
 #define AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out_desc, env) \
-      ((transport_out_desc)->ops->get_sender (transport_out_desc, env))
+      axis2_transport_out_desc_get_sender (transport_out_desc, env)
 
-/** Sets transport sender.
-    @sa axis2_transport_out_desc_ops#set_sender */
+/** Sets transport sender. */
 #define AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out_desc, env, sender) \
-      ((transport_out_desc)->ops->set_sender (transport_out_desc, env, sender))
+      axis2_transport_out_desc_set_sender (transport_out_desc, env, sender)
 
-/** Gets out phase.
-    @sa axis2_transport_out_desc_ops#get_out_phase */
+/** Gets out phase. */
 #define AXIS2_TRANSPORT_OUT_DESC_GET_OUT_PHASE(transport_out_desc, env) \
-      ((transport_out_desc)->ops->get_out_phase (transport_out_desc, env))
+      axis2_transport_out_desc_get_out_phase (transport_out_desc, env)
 
-/** Sets out phase.
-    @sa axis2_transport_out_desc_ops#set_out_phase */
+/** Sets out phase. */
 #define AXIS2_TRANSPORT_OUT_DESC_SET_OUT_PHASE(transport_out_desc, env, out_phase) \
-      ((transport_out_desc)->ops->set_out_phase (transport_out_desc, env, out_phase))
+      axis2_transport_out_desc_set_out_phase (transport_out_desc, env, out_phase)
 
-/** Gets fault phase.
-    @sa axis2_transport_out_desc_ops#get_fault_phase */
+/** Gets fault phase. */
 #define AXIS2_TRANSPORT_OUT_DESC_GET_FAULT_PHASE(transport_out_desc, env) \
-      ((transport_out_desc)->ops->get_fault_phase (transport_out_desc, env))
+      axis2_transport_out_desc_get_fault_phase (transport_out_desc, env)
 
-/** Sets fault phase.
-    @sa axis2_transport_out_desc_ops#set_fault_phase */
+/** Sets fault phase. */
 #define AXIS2_TRANSPORT_OUT_DESC_SET_FAULT_PHASE(transport_out_desc, env, fault_phase) \
-      ((transport_out_desc)->ops->set_fault_phase (transport_out_desc, env, fault_phase))
+      axis2_transport_out_desc_set_fault_phase (transport_out_desc, env, fault_phase)
 
-/** Adds given parameter.
-    @sa axis2_transport_out_desc_ops#add_param */
+/** Adds given parameter. */
 #define AXIS2_TRANSPORT_OUT_DESC_ADD_PARAM(transport_out_desc, env, param) \
-      ((transport_out_desc)->ops->add_param (transport_out_desc, env, param))
+      axis2_transport_out_desc_add_param (transport_out_desc, env, param)
 
-/** Gets named parameter.
-    @sa axis2_transport_out_desc_ops#get_param */
+/** Gets named parameter. */
 #define AXIS2_TRANSPORT_OUT_DESC_GET_PARAM(transport_out_desc, env, param_name) \
-      ((transport_out_desc)->ops->get_param (transport_out_desc, env, param_name))
+      axis2_transport_out_desc_get_param (transport_out_desc, env, param_name)
 
-/** Checks if the named parameter locked.
-    @sa axis2_transport_out_desc_ops#is_param_locked */
+/** Checks if the named parameter locked. */
 #define AXIS2_TRANSPORT_OUT_DESC_IS_PARAM_LOCKED(transport_out_desc, env, param_name) \
-      ((transport_out_desc)->ops->is_param_locked (transport_out_desc, env, param_name))
+      axis2_transport_out_desc_is_param_locked (transport_out_desc, env, param_name)
 
 /** @} */
 

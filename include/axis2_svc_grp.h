@@ -53,8 +53,6 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_svc_grp_ops */
-    typedef struct axis2_svc_grp_ops axis2_svc_grp_ops_t;
     /** Type name for struct axis2_svc_grp */
     typedef struct axis2_svc_grp axis2_svc_grp_t;
 
@@ -62,271 +60,236 @@ extern "C"
     struct axis2_svc_grp_ctx;
 
     /**
-     * service group ops struct.
-     * Encapsulator struct for ops of axis2_svc_grp.
-     */
-    struct axis2_svc_grp_ops
-    {
-        /**
-          * Frees service group.
-          * @param svc_grp pointer to service group struct
-          * @param env pointer to environment struct
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-          */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets service group name.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param svc_grp_name service group name string 
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_name)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    const axis2_char_t *svc_grp_name);
-
-        /**
-         * Gets service group name.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @return service group name string 
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_name)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env) ;
-
-        /**
-         * Adds given service to service group.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param service service to be added, service group assumes ownership
-         * of service
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_svc)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    struct axis2_svc *svc) ;
-
-        /**
-         * Gets named service from service group.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param svc_qname pointer to QName of the service
-         * @return pointer to service corresponding to given QName, returns a 
-         * reference, not a cloned copy
-         */
-        struct axis2_svc *(AXIS2_CALL *
-                get_svc)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    const axis2_qname_t *svc_qname);
-
-        /**
-         * Gets all services associated with service group. 
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @return pointer to hash table containing all services, returns a 
-         * reference, not a cloned copy
-         */
-        axis2_hash_t *(AXIS2_CALL *
-                get_all_svcs)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env);
-
-        /**
-         * Removes named service from service group.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param svc_name pointer to service QName
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
-        axis2_status_t (AXIS2_CALL *
-                remove_svc)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    const axis2_qname_t *svc_qname);
-
-        /**
-         * Adds parameter.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param param pointer to parameter, service group assumes ownership 
-         * of parameter
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_param)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    axis2_param_t *param);
-
-        /**
-         * Gets named parameter.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param name parameter name
-         * @return pointer to named parameter if exists, else NULL. Returns a 
-         * reference, not a cloned copy
-         */
-        axis2_param_t *(AXIS2_CALL *
-                get_param)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    const axis2_char_t *name);
-
-        /**
-         * Gets all parameters set on service group.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @return pointer to array list containing parameter, returns a 
-         * reference, not a cloned copy
-         */
-        axis2_array_list_t *(AXIS2_CALL *
-                get_all_params)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env);
-
-        /**
-         * Checks if the named parameter is locked.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param param_name pointer to param name
-         * @return AXIS2_TRUE if the named parameter is locked, else AXIS2_FALSE
-         */
-        axis2_bool_t (AXIS2_CALL *
-                is_param_locked)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    const axis2_char_t *param_name);
-
-        /**
-         * Adds given module QName to list of module QNames.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param module_name pointer to module QName
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_module_qname)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    const axis2_qname_t *module_qname);
-
-        /**
-         * Gets parent which is of type configuration.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @return pointer to parent configuration, returns a 
-         * reference, not a cloned copy
-         */
-        struct axis2_conf *(AXIS2_CALL *
-                get_parent)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets parent which is of type configuration.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param parent parent configuration, service group does not assume
-         * the ownership of configuration
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_parent)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    struct axis2_conf *parent);
-
-        /**
-         * Engages named module to service group. Engaging a module to service 
-         * group would ensure that the same module would be engaged to all 
-         * services within the group.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param module_name pointer to module QName
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
-        axis2_status_t (AXIS2_CALL *
-                engage_module)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    const axis2_qname_t *module_qname);
-
-        /**
-         * Gets all module QNames associated with service group.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @return pointer to array list containing all QNames, returns a 
-         * reference, not a cloned copy
-         */
-        axis2_array_list_t *(AXIS2_CALL *
-                get_all_module_qnames)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env);
-
-        /**
-         * Adds module reference.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param moduleref pointer to module QName
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_module_ref)(
-                    axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    const axis2_qname_t *moduleref);
-
-        /**
-         * Gets all module references.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @return pointer to array list containing module reference, returns 
-         * a reference, not a cloned copy
-         */
-        axis2_array_list_t *(AXIS2_CALL *
-                get_all_module_refs)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env);
-
-        /**
-         * Gets service group context related to this service group.
-         * @param svc_grp pointer to service group struct
-         * @param env pointer to environment struct
-         * @param parent pointer to configuration context which is the parent of 
-         * the context hierarchy
-         * @return pointer to service group context related to this service 
-         * group, returns a reference, not a cloned copy
-         */
-        struct axis2_svc_grp_ctx *(AXIS2_CALL *
-                get_svc_grp_ctx)(
-                    const axis2_svc_grp_t *svc_grp,
-                    const axis2_env_t *env,
-                    struct axis2_conf_ctx *parent);
-
-    };
+      * Frees service group.
+      * @param svc_grp pointer to service group struct
+      * @param env pointer to environment struct
+      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+      */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_free(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env);
 
     /**
-     * service group struct.
+     * Sets service group name.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param svc_grp_name service group name string 
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
      */
-    struct axis2_svc_grp
-    {
-        /** operations of service group */
-        axis2_svc_grp_ops_t *ops;
-        /** parameter container to hold service related parameters */
-        axis2_param_container_t *param_container;
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_set_name(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        const axis2_char_t *svc_grp_name);
 
-    };
+    /**
+     * Gets service group name.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @return service group name string 
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_svc_grp_get_name(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env) ;
+
+    /**
+     * Adds given service to service group.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param service service to be added, service group assumes ownership
+     * of service
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_add_svc(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        struct axis2_svc *svc) ;
+
+    /**
+     * Gets named service from service group.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param svc_qname pointer to QName of the service
+     * @return pointer to service corresponding to given QName, returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
+    axis2_svc_grp_get_svc(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        const axis2_qname_t *svc_qname);
+
+    /**
+     * Gets all services associated with service group. 
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @return pointer to hash table containing all services, returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    axis2_svc_grp_get_all_svcs(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env);
+
+    /**
+     * Removes named service from service group.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param svc_name pointer to service QName
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_remove_svc(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        const axis2_qname_t *svc_qname);
+
+    /**
+     * Adds parameter.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param param pointer to parameter, service group assumes ownership 
+     * of parameter
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_add_param(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        axis2_param_t *param);
+
+    /**
+     * Gets named parameter.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param name parameter name
+     * @return pointer to named parameter if exists, else NULL. Returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    axis2_svc_grp_get_param(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        const axis2_char_t *name);
+
+    /**
+     * Gets all parameters set on service group.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @return pointer to array list containing parameter, returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    axis2_svc_grp_get_all_params(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env);
+
+    /**
+     * Checks if the named parameter is locked.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param param_name pointer to param name
+     * @return AXIS2_TRUE if the named parameter is locked, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_svc_grp_is_param_locked(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        const axis2_char_t *param_name);
+
+    /**
+     * Adds given module QName to list of module QNames.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param module_name pointer to module QName
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_add_module_qname(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        const axis2_qname_t *module_qname);
+
+    /**
+     * Gets parent which is of type configuration.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @return pointer to parent configuration, returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
+    axis2_svc_grp_get_parent(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env);
+
+    /**
+     * Sets parent which is of type configuration.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param parent parent configuration, service group does not assume
+     * the ownership of configuration
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_set_parent(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        struct axis2_conf *parent);
+
+    /**
+     * Engages named module to service group. Engaging a module to service 
+     * group would ensure that the same module would be engaged to all 
+     * services within the group.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param module_name pointer to module QName
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_engage_module(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        const axis2_qname_t *module_qname);
+
+    /**
+     * Gets all module QNames associated with service group.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @return pointer to array list containing all QNames, returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    axis2_svc_grp_get_all_module_qnames(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env);
+
+    /**
+     * Adds module reference.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param moduleref pointer to module QName
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_add_module_ref(axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        const axis2_qname_t *moduleref);
+
+    /**
+     * Gets all module references.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @return pointer to array list containing module reference, returns 
+     * a reference, not a cloned copy
+     */
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    axis2_svc_grp_get_all_module_refs(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env);
+
+    /**
+     * Gets service group context related to this service group.
+     * @param svc_grp pointer to service group struct
+     * @param env pointer to environment struct
+     * @param parent pointer to configuration context which is the parent of 
+     * the context hierarchy
+     * @return pointer to service group context related to this service 
+     * group, returns a reference, not a cloned copy
+     */
+    AXIS2_EXTERN struct axis2_svc_grp_ctx *AXIS2_CALL
+    axis2_svc_grp_get_svc_grp_ctx(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env,
+        struct axis2_conf_ctx *parent);
+
+    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    axis2_svc_grp_get_param_container(const axis2_svc_grp_t *svc_grp,
+        const axis2_env_t *env);
 
     /**
      * Creates a service group struct instance.
@@ -334,8 +297,7 @@ extern "C"
      * @return pointer to newly created service group
      */
     AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
-    axis2_svc_grp_create(
-        const axis2_env_t *env);
+    axis2_svc_grp_create(const axis2_env_t *env);
 
     /**
      * Creates service group with given configuration as the parent.
@@ -345,103 +307,83 @@ extern "C"
      * @return pointer to newly created service group
      */
     AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
-    axis2_svc_grp_create_with_conf(
-        const axis2_env_t *env,
+    axis2_svc_grp_create_with_conf(const axis2_env_t *env,
         struct axis2_conf *conf);
 
-/** Frees service group.
-    @sa axis2_svc_grp_ops#free */
-#define AXIS2_SVC_GRP_FREE(svc_grp, env) ((svc_grp)->ops->free (svc_grp , env))
+/** Frees service group. */
+#define AXIS2_SVC_GRP_FREE(svc_grp, env) axis2_svc_grp_free (svc_grp , env)
 
-/** Sets name.
-    @sa axis2_svc_grp_ops#set_name */
+/** Sets name. */
 #define AXIS2_SVC_GRP_SET_NAME(svc_grp, env , svc_grp_name) \
-        ((svc_grp)->ops->set_name (svc_grp, env, svc_grp_name))
+        axis2_svc_grp_set_name (svc_grp, env, svc_grp_name)
 
-/** Gets name.
-    @sa axis2_svc_grp_ops#get_name */
+/** Gets name. */
 #define AXIS2_SVC_GRP_GET_NAME(svc_grp, env) \
-        ((svc_grp)->ops->get_name(svc_grp, env))
+        axis2_svc_grp_get_name(svc_grp, env)
 
-/** Adds service.
-    @sa axis2_svc_grp_ops#add_svc */
+/** Adds service. */
 #define AXIS2_SVC_GRP_ADD_SVC(svc_grp, env , svc) \
-        ((svc_grp)->ops->add_svc (svc_grp, env, svc))
+        axis2_svc_grp_add_svc (svc_grp, env, svc)
 
-/** Gets named service.
-    @sa axis2_svc_grp_ops#get_svc */
+/** Gets named service. */
 #define AXIS2_SVC_GRP_GET_SVC(svc_grp, env , svc_name) \
-        ((svc_grp)->ops->get_svc(svc_grp, env, svc_names))
+        axis2_svc_grp_get_svc(svc_grp, env, svc_names)
 
-/** Gets all services.
-    @sa axis2_svc_grp_ops#get_all_svcs */
+/** Gets all services. */
 #define AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp, env) \
-        ((svc_grp)->ops->get_all_svcs(svc_grp, env))
+        axis2_svc_grp_get_all_svcs(svc_grp, env)
 
-/** Removes named service.
-    @sa axis2_svc_grp_ops#remove_svc */
+/** Removes named service. */
 #define AXIS2_SVC_GRP_REMOVE_SVC(svc_grp, env, svc_name) \
-      ((svc_grp)->ops->remove_svc(svc_grp, env, svc_name))
+      axis2_svc_grp_remove_svc(svc_grp, env, svc_name)
 
-/** Adds parameter.
-    @sa axis2_svc_grp_ops#add_param */
+/** Adds parameter. */
 #define AXIS2_SVC_GRP_ADD_PARAM(svc_grp, env, param) \
-      ((svc_grp)->ops->add_param(svc_grp, env, param))
+      axis2_svc_grp_add_param(svc_grp, env, param)
 
-/** Gets named parameter.
-    @sa axis2_svc_grp_ops#get_param */
+/** Gets named parameter. */
 #define AXIS2_SVC_GRP_GET_PARAM(svc_grp, env, name) \
-      ((svc_grp)->ops->get_param(svc_grp, env, name))
+      axis2_svc_grp_get_param(svc_grp, env, name)
 
-/** Gets all parameters.
-    @sa axis2_svc_grp_ops#get_all_params */
+/** Gets all parameters. */
 #define AXIS2_SVC_GRP_GET_ALL_PARAMS(svc_grp, env) \
-        ((svc_grp)->ops->get_all_params(svc_grp, env))
+        axis2_svc_grp_get_all_params(svc_grp, env)
 
-/** Checks if the named parameter is locked.
-    @sa axis2_svc_grp_ops#is_param_locked */
+/** Checks if the named parameter is locked. */
 #define AXIS2_SVC_GRP_IS_PARAM_LOCKED(svc_grp, env , param_name) \
-        ((svc_grp)->ops->is_param_locked(svc_grp, env, param_name))
+        axis2_svc_grp_is_param_locked(svc_grp, env, param_name)
 
-/** Adds module QName.
-    @sa axis2_svc_grp_ops#add_module_qname */
+/** Adds module QName. */
 #define AXIS2_SVC_GRP_ADD_MODULE_QNAME(svc_grp, env , module_qname) \
-        ((svc_grp)->ops->add_module_qname(svc_grp, env, module_qname))
+        axis2_svc_grp_add_module_qname(svc_grp, env, module_qname)
 
-/** Gets parent configuration.
-    @sa axis2_svc_grp_ops#get_parent */
+/** Gets parent configuration. */
 #define AXIS2_SVC_GRP_GET_PARENT(svc_grp, env) \
-        ((svc_grp)->ops->get_parent(svc_grp, env))
+        axis2_svc_grp_get_parent(svc_grp, env)
 
-/** Sets parent configuration.
-    @sa axis2_svc_grp_ops#set_parent */
+/** Sets parent configuration. */
 #define AXIS2_SVC_GRP_SET_PARENT(svc_grp, env , parent) \
-        ((svc_grp)->ops->set_parent(svc_grp, env, parent))
+        axis2_svc_grp_set_parent(svc_grp, env, parent)
 
-/** Engages module to service group.
-    @sa axis2_svc_grp_ops#engage_module */
+/** Engages module to service group. */
 #define AXIS2_SVC_GRP_ENGAGE_MODULE(svc_grp, env, module_name) \
-        ((svc_grp)engage_module_modulep, env, module_name))
+        ((svc_grp)engage_module_modulep, env, module_name)
 
-/** Gets all module QNames.
-    @sa axis2_svc_grp_ops#get_all_module_qnames */
+/** Gets all module QNames. */
 #define AXIS2_SVC_GRP_GET_ALL_MODULE_QNAMES(svc_grp, env) \
-        ((svc_grp)->ops->get_all_module_qnames(svc_grp, env))
+        axis2_svc_grp_get_all_module_qnames(svc_grp, env)
 
-/** Adds module reference.
-    @sa axis2_svc_grp_ops#add_module_ref */
+/** Adds module reference. */
 #define AXIS2_SVC_GRP_ADD_MODULE_REF(svc_grp, env, moduleref) \
-        ((svc_grp)->ops->add_module_ref(svc_grp, env, moduleref))
+        axis2_svc_grp_add_module_ref(svc_grp, env, moduleref)
 
-/** Get all module references.
-    @sa axis2_svc_grp_ops#get_all_module_refs */
+/** Get all module references. */
 #define AXIS2_SVC_GRP_GET_ALL_MODULE_REFS(svc_grp, env) \
-        ((svc_grp)->ops->get_all_module_refs(svc_grp, env))
+        axis2_svc_grp_get_all_module_refs(svc_grp, env)
 
-/** Gets service group context related to service.
-    @sa axis2_svc_grp_ops#get_svc_grp_ctx */
+/** Gets service group context related to service. */
 #define AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, parent) \
-        ((svc_grp)->ops->get_svc_grp_ctx(svc_grp, env, parent))
+        axis2_svc_grp_get_svc_grp_ctx(svc_grp, env, parent)
 
 /** @} */
 #ifdef __cplusplus

@@ -45,75 +45,53 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_flow_ops */
-    typedef struct axis2_flow_ops axis2_flow_ops_t;
     /** Type name for struct axis2_flow */
     typedef struct axis2_flow axis2_flow_t;
 
 
-    /**
-     * flow ops struct.
-     * Encapsulator struct for ops of axis2_flow.
+    /** 
+     * Frees flow struct.
+     * @param flow pointer to flow
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_flow_ops
-    {
-        /** 
-         * Frees flow struct.
-         * @param flow pointer to flow
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_flow_t *flow,
-                    const axis2_env_t *env);
-
-        /**
-         * Adds a handler description to flow.
-         * @param flow pointer to flow
-         * @param env pointer to environment struct
-         * @param handler pointer to handler description
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_handler)(
-                    axis2_flow_t *flow,
-                    const axis2_env_t *env,
-                    axis2_handler_desc_t *handler);
-
-        /**
-         * Gets handler description at given index.
-         * @param flow pointer to flow
-         * @param env pointer to environment struct
-         * @param index index of the handler
-         * @return pointer to handler description
-         */
-        axis2_handler_desc_t *(AXIS2_CALL *
-                get_handler)(
-                    const axis2_flow_t *flow,
-                    const axis2_env_t *env,
-                    const int index);
-
-        /**
-         * Gets handler count.
-         * @param flow pointer to flow
-         * @param env pointer to environment struct
-         * @return handler count
-         */
-        int (AXIS2_CALL *
-                get_handler_count)(
-                    const axis2_flow_t *flow,
-                    const axis2_env_t *env);
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_flow_free(axis2_flow_t *flow,
+        const axis2_env_t *env);
 
     /**
-     * flow struct.
+     * Adds a handler description to flow.
+     * @param flow pointer to flow
+     * @param env pointer to environment struct
+     * @param handler pointer to handler description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_flow
-    {
-        /** Operations of flow */
-        axis2_flow_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_flow_add_handler(axis2_flow_t *flow,
+        const axis2_env_t *env,
+        axis2_handler_desc_t *handler);
+
+    /**
+     * Gets handler description at given index.
+     * @param flow pointer to flow
+     * @param env pointer to environment struct
+     * @param index index of the handler
+     * @return pointer to handler description
+     */
+    AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
+    axis2_flow_get_handler(const axis2_flow_t *flow,
+        const axis2_env_t *env,
+        const int index);
+
+    /**
+     * Gets handler count.
+     * @param flow pointer to flow
+     * @param env pointer to environment struct
+     * @return handler count
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_flow_get_handler_count(const axis2_flow_t *flow,
+        const axis2_env_t *env);
 
     /**
      * Creates flow struct.
@@ -121,8 +99,7 @@ extern "C"
      * @return pointer to newly created flow
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-    axis2_flow_create (
-        const axis2_env_t *env);
+    axis2_flow_create (const axis2_env_t *env);
 
     /**
      * Frees flow passed as void pointer. This method would cast the void 
@@ -132,29 +109,24 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_flow_free_void_arg (
-        void *flow,
+    axis2_flow_free_void_arg (void *flow,
         const axis2_env_t *env);
 
 
-/** Frees flow.
-    @sa axis2_flow_ops#free */
-#define AXIS2_FLOW_FREE(flow, env) ((flow)->ops->free (flow, env))
+/** Frees flow. */
+#define AXIS2_FLOW_FREE(flow, env) axis2_flow_free (flow, env)
 
-/** Adds handler.
-    @sa axis2_flow_ops#add_handler */
+/** Adds handler. */
 #define AXIS2_FLOW_ADD_HANDLER(flow, env, handler) \
-      ((flow)->ops->add_handler (flow, env, handler))
+      axis2_flow_add_handler (flow, env, handler)
 
-/** Gets handler at given index.
-    @sa axis2_flow_ops#get_handler */
+/** Gets handler at given index. */
 #define AXIS2_FLOW_GET_HANDLER(flow, env, index) \
-      ((flow)->ops->get_handler (flow, env, index))
+      axis2_flow_get_handler (flow, env, index)
 
-/** Gets handler count.
-    @sa axis2_flow_ops#get_handler_count */
+/** Gets handler count. */
 #define AXIS2_FLOW_GET_HANDLER_COUNT(flow, env) \
-      ((flow)->ops->get_handler_count (flow, env))
+      axis2_flow_get_handler_count (flow, env)
 
 /** @} */
 

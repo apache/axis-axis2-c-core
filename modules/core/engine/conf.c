@@ -916,7 +916,7 @@ axis2_conf_free(
             handler_desc = (axis2_handler_desc_t *)
                     AXIS2_ARRAY_LIST_GET(config_impl->handlers, env, i);
             if (handler_desc)
-                AXIS2_HANDLER_FREE(handler_desc, env);
+                AXIS2_HANDLER_DESC_FREE(handler_desc, env);
 
             handler_desc = NULL;
 

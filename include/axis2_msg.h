@@ -49,229 +49,193 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_msg_ops */ 
-    typedef struct axis2_msg_ops axis2_msg_ops_t;
     /** Type name for struct axis2_msg */ 
     typedef struct axis2_msg axis2_msg_t;
 
-    /**
-     * message ops struct.
-     * Encapsulator struct for ops of axis2_msg.
+    /** 
+     * Frees message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_msg_ops
-    {
-        /** 
-         * Frees message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_msg_t *msg,
-                    const axis2_env_t *env);
+    axis2_status_t AXIS2_CALL
+    axis2_msg_free(axis2_msg_t *msg,
+        const axis2_env_t *env);
 
-        /** 
-         * Adds a parameter.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @param param pointer to parameter, message assumes ownership of 
-         * parameter
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_param)(
-                    axis2_msg_t *msg,
-                    const axis2_env_t *env,
-                    axis2_param_t *param);
-
-        /**
-         * Gets the named parameter.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @param name parameter name string
-         * @return pointer to parameter corresponding to the same name, returns
-         * a reference, not a cloned copy
-         */
-        axis2_param_t *(AXIS2_CALL *
-                get_param)(
-                    const axis2_msg_t *msg,
-                    const axis2_env_t *env,
-                    const axis2_char_t *name);
-
-        /** 
-         * Gets all parameters stored in message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @return pointer to list of parameters, returns a reference, not a 
-         * cloned copy
-         */
-        axis2_array_list_t *(AXIS2_CALL *
-                get_all_params)(
-                    const axis2_msg_t *msg,
-                    const axis2_env_t *env);
-
-        /** 
-         * Checks if the named parameter is locked.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @param param_name parameter name string
-         * @return AXIS2_TRUE if the parameter is locked, else AXIS2_FALSE         
-         */
-        axis2_bool_t (AXIS2_CALL *
-                is_param_locked)(
-                    axis2_msg_t *msg,
-                    const axis2_env_t *env,
-                    const axis2_char_t *param_name);
-
-        /** 
-         * Sets parent. Parent of a message is of type operation.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @param op pointer to parent operation, message does not assume 
-         * ownership of parent
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_parent)(
-                    axis2_msg_t *msg,
-                    const axis2_env_t *env,
-                    axis2_op_t *op);
-
-        /** 
-         * Gets parent. Parent of a message is of type operation.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @return pointer to parent operation, returns a reference, not a 
-         * cloned copy
-         */
-        axis2_op_t *(AXIS2_CALL *
-                get_parent)(
-                    const axis2_msg_t *msg,
-                    const axis2_env_t *env);
-
-        /**
-         * Gets flow of execution associated with the message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @return pointer to array list containing the list of phases 
-         * representing the flow
-         */
-        axis2_array_list_t *(AXIS2_CALL *
-                get_flow)(
-                    const axis2_msg_t *msg,
-                    const axis2_env_t *env);
-
-        /** 
-         * Sets flow of execution associated with the message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @param flow pointer to array list of phases representing the flow,
-         * message assumes ownership of flow
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_flow)(
-                    axis2_msg_t *msg,
-                    const axis2_env_t *env,
-                    axis2_array_list_t *flow);
-
-        /** 
-         * Gets direction of message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @return direction string
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_direction)(
-                    const axis2_msg_t *msg,
-                    const axis2_env_t *env);
-
-        /** 
-         * Sets direction of message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @param direction pointer to direction
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_direction)(
-                    axis2_msg_t *msg,
-                    const axis2_env_t *env,
-                    const axis2_char_t *direction);
-
-        /** 
-         * Gets QName representing message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @return pointer to QName, returns a reference, not a cloned copy
-         */
-        const axis2_qname_t *(AXIS2_CALL *
-                get_element_qname)(
-                    const axis2_msg_t *msg,
-                    const axis2_env_t *env);
-
-        /** 
-         * Sets QName representing message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @param element_qname pointer to QName representing message, this 
-         * function creates a clone of QName
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_element_qname)(
-                    axis2_msg_t *msg,
-                    const axis2_env_t *env,
-                    const axis2_qname_t *element_qname);
-
-        /** 
-         * Gets message name.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @return message name string.
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_name)(
-                    const axis2_msg_t *msg,
-                    const axis2_env_t *env);
-
-        /** 
-         * Sets message name.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @param message name string
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_name)(
-                    axis2_msg_t *msg,
-                    const axis2_env_t *env,
-                    const axis2_char_t *name);
-
-        /** 
-         * Gets XML schema element associated with the message.
-         * @param msg pointer to message
-         * @param env pointer to environment struct
-         * @return pointer to XML schema element, returns a reference, not 
-         * a cloned copy
-         */
-        /*xml_schema_element_t *(AXIS2_CALL *
-                get_schema_element)(
-                    const axis2_msg_t *msg,
-                    const axis2_env_t *env);*/
-    };
+    /** 
+     * Adds a parameter.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @param param pointer to parameter, message assumes ownership of 
+     * parameter
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_add_param(axis2_msg_t *msg,
+        const axis2_env_t *env,
+        axis2_param_t *param);
 
     /**
-     * message struct.
+     * Gets the named parameter.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @param name parameter name string
+     * @return pointer to parameter corresponding to the same name, returns
+     * a reference, not a cloned copy
      */
-    struct axis2_msg
-    {
-        /** operations of message struct */
-        axis2_msg_ops_t *ops;
-        /** parameter container to hold message parameters */
-        struct axis2_param_container *param_container;
-    };
+    axis2_param_t *AXIS2_CALL
+    axis2_msg_get_param(const axis2_msg_t *msg,
+        const axis2_env_t *env,
+        const axis2_char_t *name);
+
+    /** 
+     * Gets all parameters stored in message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to list of parameters, returns a reference, not a 
+     * cloned copy
+     */
+    axis2_array_list_t *AXIS2_CALL
+    axis2_msg_get_all_params(const axis2_msg_t *msg,
+        const axis2_env_t *env);
+
+    /** 
+     * Checks if the named parameter is locked.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @param param_name parameter name string
+     * @return AXIS2_TRUE if the parameter is locked, else AXIS2_FALSE         
+     */
+    axis2_bool_t AXIS2_CALL
+    axis2_msg_is_param_locked(axis2_msg_t *msg,
+        const axis2_env_t *env,
+        const axis2_char_t *param_name);
+
+    /** 
+     * Sets parent. Parent of a message is of type operation.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @param op pointer to parent operation, message does not assume 
+     * ownership of parent
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_set_parent(axis2_msg_t *msg,
+        const axis2_env_t *env,
+        axis2_op_t *op);
+
+    /** 
+     * Gets parent. Parent of a message is of type operation.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to parent operation, returns a reference, not a 
+     * cloned copy
+     */
+    axis2_op_t *AXIS2_CALL
+    axis2_msg_get_parent(const axis2_msg_t *msg,
+        const axis2_env_t *env);
+
+    /**
+     * Gets flow of execution associated with the message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to array list containing the list of phases 
+     * representing the flow
+     */
+    axis2_array_list_t *AXIS2_CALL
+    axis2_msg_get_flow( const axis2_msg_t *msg,
+        const axis2_env_t *env);
+
+    /** 
+     * Sets flow of execution associated with the message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @param flow pointer to array list of phases representing the flow,
+     * message assumes ownership of flow
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_set_flow(axis2_msg_t *msg,
+        const axis2_env_t *env,
+        axis2_array_list_t *flow);
+
+    /** 
+     * Gets direction of message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return direction string
+     */
+    const axis2_char_t *AXIS2_CALL
+    axis2_msg_get_direction(const axis2_msg_t *msg,
+        const axis2_env_t *env);
+
+    /** 
+     * Sets direction of message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @param direction pointer to direction
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_set_direction(axis2_msg_t *msg,
+        const axis2_env_t *env,
+        const axis2_char_t *direction);
+
+    /** 
+     * Gets QName representing message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to QName, returns a reference, not a cloned copy
+     */
+    const axis2_qname_t *AXIS2_CALL
+    axis2_msg_get_element_qname(const axis2_msg_t *msg,
+        const axis2_env_t *env);
+
+    /** 
+     * Sets QName representing message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @param element_qname pointer to QName representing message, this 
+     * function creates a clone of QName
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_set_element_qname(axis2_msg_t *msg,
+        const axis2_env_t *env,
+        const axis2_qname_t *element_qname);
+
+    /** 
+     * Gets message name.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return message name string.
+     */
+    const axis2_char_t *AXIS2_CALL
+    axis2_msg_get_name(const axis2_msg_t *msg,
+        const axis2_env_t *env);
+
+    /** 
+     * Sets message name.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @param message name string
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_msg_set_name(axis2_msg_t *msg,
+        const axis2_env_t *env,
+        const axis2_char_t *name);
+
+    /** 
+     * Gets XML schema element associated with the message.
+     * @param msg pointer to message
+     * @param env pointer to environment struct
+     * @return pointer to XML schema element, returns a reference, not 
+     * a cloned copy
+     */
+    /*xml_schema_element_t *AXIS2_CALL
+    axis2_msg_get_schema_element(const axis2_msg_t *msg,
+        const axis2_env_t *env);*/
 
     /**
      * Creates message struct instance.
@@ -279,89 +243,72 @@ extern "C"
      * @return pointer to newly created message
      */
     AXIS2_EXTERN axis2_msg_t *AXIS2_CALL
-    axis2_msg_create(
-        const axis2_env_t *env);
+    axis2_msg_create(const axis2_env_t *env);
 
 
-/** Frees message.
-    @sa axis2_msg_ops#get_svc */
+/** Frees message. */
 #define AXIS2_MSG_FREE(msg, env) \
-        ((msg)->ops->free (msg, env))
+        axis2_msg_free (msg, env)
 
-/** Adds given parameter.
-    @sa axis2_msg_ops#add_param */
+/** Adds given parameter. */
 #define AXIS2_MSG_ADD_PARAM(msg, env, param) \
-      ((msg)->ops->add_param (msg, env, param))
+      axis2_msg_add_param (msg, env, param)
 
-/** Gets named parameter.
-    @sa axis2_msg_ops#get_param */
+/** Gets named parameter. */
 #define AXIS2_MSG_GET_PARAM(msg, env, key) \
-      ((msg)->ops->get_param (msg, env, key))
+      axis2_msg_get_param (msg, env, key)
 
-/** Gets all parameters.
-    @sa axis2_msg_ops#get_all_params */
+/** Gets all parameters. */
 #define AXIS2_MSG_GET_ALL_PARAMS(msg, env) \
-      ((msg)->ops->get_all_params (msg, env))
+      axis2_msg_get_all_params (msg, env)
 
-/** Checks if named parameter is locked.
-    @sa axis2_msg_ops#is_param_locked */
+/** Checks if named parameter is locked. */
 #define AXIS2_MSG_IS_PARAM_LOCKED(msg, env, param_name) \
-        ((msg)->ops->is_param_locked(msg, env, param_name))
+        axis2_msg_is_param_locked(msg, env, param_name)
 
-/** Sets parent operation.
-    @sa axis2_msg_ops#set_parent */
+/** Sets parent operation. */
 #define AXIS2_MSG_SET_PARENT(msg, env, service_desc) \
-        ((msg)->ops->set_parent (msg, env, service_desc))
+        axis2_msg_set_parent (msg, env, service_desc)
 
-/** Gets parent operation.
-    @sa axis2_msg_ops#get_parent */
+/** Gets parent operation. */
 #define AXIS2_MSG_GET_PARENT(msg, env) \
-      ((msg)->ops->get_parent (msg, env))
+      axis2_msg_get_parent (msg, env)
 
-/** Gets execution flow.
-    @sa axis2_msg_ops#get_flow */
+/** Gets execution flow. */
 #define AXIS2_MSG_GET_FLOW(msg, env) \
-      ((msg)->ops->get_flow (msg, env))
+      axis2_msg_get_flow (msg, env)
 
-/** Sets execution flow.
-    @sa axis2_msg_ops#set_flow */
+/** Sets execution flow. */
 #define AXIS2_MSG_SET_FLOW(msg, env, flow) \
-      ((msg)->ops->set_flow (msg, env, flow))
+      axis2_msg_set_flow (msg, env, flow)
 
-/** Gets message direction.
-    @sa axis2_msg_ops#get_direction */
+/** Gets message direction. */
 #define AXIS2_MSG_GET_DIRECTION(msg, env) \
-      ((msg)->ops->get_direction (msg, env))
+      axis2_msg_get_direction (msg, env)
 
-/** Sets message direction.
-    @sa axis2_msg_ops#set_direction */
+/** Sets message direction. */
 #define AXIS2_MSG_SET_DIRECTION(msg, env, direction) \
-      ((msg)->ops->set_direction (msg, env, direction))
+      axis2_msg_set_direction (msg, env, direction)
 
-/** Gets element QName.
-    @sa axis2_msg_ops#get_element_qname */
+/** Gets element QName. */
 #define AXIS2_MSG_GET_ELEMENT_QNAME(msg, env) \
-      ((msg)->ops->get_element_qname(msg, env))
+      axis2_msg_get_element_qname(msg, env)
 
-/** Sets element QName.
-    @sa axis2_msg_ops#set_element_qname */
+/** Sets element QName. */
 #define AXIS2_MSG_SET_ELEMENT_QNAME(msg, env, element_qname) \
-      ((msg)->ops->set_element_qname(msg, env, element_qname))
+      axis2_msg_set_element_qname(msg, env, element_qname)
 
-/** Gets name.
-    @sa axis2_msg_ops#get_name */
+/** Gets name. */
 #define AXIS2_MSG_GET_NAME(msg, env) \
-      ((msg)->ops->get_name(msg, env))
+      axis2_msg_get_name(msg, env)
 
-/** Sets name.
-    @sa axis2_msg_ops#set_name */
+/** Sets name. */
 #define AXIS2_MSG_SET_NAME(msg, env, name) \
-      ((msg)->ops->set_name(msg, env, name))
+      axis2_msg_set_name(msg, env, name)
 
-/** Gets schema element associated with message.
-    @sa axis2_msg_ops#get_schema_element */
+/** Gets schema element associated with message. */
 /*#define AXIS2_MSG_GET_SCHEMA_ELEMENT(msg, env) \
-      ((msg)->ops->get_schema_element(msg, env))*/
+      axis2_msg_get_schema_element(msg, env)*/
 
 /** @} */
 #ifdef __cplusplus

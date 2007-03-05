@@ -278,7 +278,9 @@ axis2_svc_builder_populate_svc(
     parent = AXIS2_SVC_GET_PARENT(builder_impl->svc, env);
 
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder, env,
-            itr, builder_impl->svc->param_container, parent->param_container);
+            itr, 
+            axis2_svc_get_param_container(builder_impl->svc, env), 
+            axis2_svc_grp_get_param_container(parent, env));
     if (AXIS2_SUCCESS != status)
     {
         return status;
@@ -322,7 +324,8 @@ axis2_svc_builder_populate_svc(
      */
     dll_desc = axis2_dll_desc_create(env);
     impl_info_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
-                builder_impl->svc->param_container, env,
+                axis2_svc_get_param_container(builder_impl->svc, env),
+                env,
                 AXIS2_SERVICE_CLASS);
     if (!impl_info_param)
     {
@@ -613,8 +616,9 @@ axis2_svc_builder_process_ops(
         AXIS2_QNAME_FREE(qparamst, env);
         qparamst = NULL;
         status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder,
-                env, params_itr, op_desc->param_container, builder_impl->svc->
-                param_container);
+                env, params_itr, 
+                axis2_op_get_param_container(op_desc, env), 
+                axis2_svc_get_param_container(builder_impl->svc, env));
         /* To process wsamapping */
         AXIS2_DESC_BUILDER_PROCESS_ACTION_MAPPINGS(svc_builder->desc_builder, 
             env, op_node, op_desc);

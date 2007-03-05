@@ -189,7 +189,8 @@ axis2_svc_grp_builder_populate_svc_grp(
 
     parent = AXIS2_SVC_GRP_GET_PARENT(svc_grp, env);
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(grp_builder_impl->svc_grp_builder.
-            desc_builder, env, itr, svc_grp->param_container, parent->param_container);
+            desc_builder, env, itr, 
+            axis2_svc_grp_get_param_container(svc_grp, env), parent->param_container);
 
     /* Processing service modules required to be engaged globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);

@@ -292,7 +292,8 @@ axis2_module_builder_populate_module(
     if (parent)
         parent_container = parent->param_container;
     AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
-            itr, builder_impl->module_desc->params, parent_container);
+            itr, axis2_module_desc_get_param_container(builder_impl->module_desc, env), 
+            parent_container);
 
     /* Process IN_FLOW */
     qinflowst = axis2_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
@@ -306,7 +307,8 @@ axis2_module_builder_populate_module(
         axis2_flow_t *flow = NULL;
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
-                desc_builder, env, in_flow_element, builder_impl->module_desc->params,
+                desc_builder, env, in_flow_element, 
+                axis2_module_desc_get_param_container(builder_impl->module_desc, env),
                 in_flow_node);
         status = AXIS2_MODULE_DESC_SET_IN_FLOW(builder_impl->module_desc, env, flow);
         if (AXIS2_SUCCESS != status)
@@ -328,7 +330,8 @@ axis2_module_builder_populate_module(
         axis2_flow_t *flow = NULL;
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
-                desc_builder, env, out_flow_element, builder_impl->module_desc->params,
+                desc_builder, env, out_flow_element, 
+                axis2_module_desc_get_param_container(builder_impl->module_desc, env),
                 out_flow_node);
         status = AXIS2_MODULE_DESC_SET_OUT_FLOW(builder_impl->module_desc, env, flow);
         if (AXIS2_SUCCESS != status)
@@ -349,8 +352,9 @@ axis2_module_builder_populate_module(
         axis2_flow_t *flow = NULL;
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
-                desc_builder, env, in_fault_flow_element, builder_impl->module_desc->
-                params, in_fault_flow_node);
+                desc_builder, env, in_fault_flow_element, 
+                axis2_module_desc_get_param_container(builder_impl->module_desc, env),
+                in_fault_flow_node);
         status = AXIS2_MODULE_DESC_SET_FAULT_IN_FLOW(builder_impl->module_desc, env, flow);
         if (AXIS2_SUCCESS != status)
         {
@@ -370,8 +374,9 @@ axis2_module_builder_populate_module(
         axis2_flow_t *flow = NULL;
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
-                desc_builder, env, out_fault_flow_element, builder_impl->module_desc->
-                params, out_fault_flow_node);
+                desc_builder, env, out_fault_flow_element, 
+                axis2_module_desc_get_param_container(builder_impl->module_desc, env),
+                out_fault_flow_node);
         status = AXIS2_MODULE_DESC_SET_FAULT_OUT_FLOW(builder_impl->module_desc,
                 env, flow);
         if (AXIS2_SUCCESS != status)
@@ -489,7 +494,9 @@ axis2_module_builder_process_ops(
             AXIS2_QNAME_FREE(qparamst, env);
 
         AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
-                params, op_desc->param_container, builder_impl->module_desc->params);
+                params, 
+                axis2_op_get_param_container(op_desc, env), 
+                axis2_module_desc_get_param_container(builder_impl->module_desc, env));
         /* To process wsamapping */
         AXIS2_DESC_BUILDER_PROCESS_ACTION_MAPPINGS(module_builder->desc_builder, 
             env, op_node, op_desc);

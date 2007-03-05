@@ -601,7 +601,7 @@ struct axis2_handler_desc *AXIS2_CALL
                 env, param_qname, handler_node);
         AXIS2_QNAME_FREE(param_qname, env);
         status = axis2_desc_builder_process_params(desc_builder, env, params,
-                handler_desc->param_container, parent);
+                axis2_handler_desc_get_param_container(handler_desc, env), parent);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_HANDLER_DESC_FREE(handler_desc, env);

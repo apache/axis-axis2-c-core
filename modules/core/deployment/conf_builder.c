@@ -828,7 +828,8 @@ axis2_conf_builder_process_transport_senders(
                     env, qparamst, transport_node);
             AXIS2_QNAME_FREE(qparamst, env);
             status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
-                    itr, transport_out->param_container, builder_impl->conf->
+                    itr, 
+                    axis2_transport_out_desc_param_container(transport_out, env), builder_impl->conf->
                     param_container);
             if (AXIS2_SUCCESS != status)
             {
@@ -1067,7 +1068,8 @@ axis2_conf_builder_process_transport_recvs(
                     env, qparamst, transport_node);
             AXIS2_QNAME_FREE(qparamst, env);
             status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
-                    itr, transport_in->param_container,
+                    itr, 
+                    axis2_transport_in_desc_param_container(transport_in, env),
                     builder_impl->conf->param_container);
             if (AXIS2_SUCCESS != status)
             {

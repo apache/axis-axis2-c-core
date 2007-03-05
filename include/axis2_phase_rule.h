@@ -44,177 +44,144 @@ extern "C"
 
     /** Type name for struct axis2_phase_rule */
     typedef struct axis2_phase_rule axis2_phase_rule_t;
-    /** Type name for struct axis2_phase_rule_ops */
-    typedef struct axis2_phase_rule_ops axis2_phase_rule_ops_t;
-
 
     /**
-     * phase rule ops struct.
-     * Encapsulator struct for ops of axis2_phase_rule.
+     * Gets the name of the handler before which the handler associated with 
+     * this rule should be placed.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @return name of handler before which the handler should be placed
      */
-    struct axis2_phase_rule_ops
-    {
-        /**
-         * Gets the name of the handler before which the handler associated with 
-         * this rule should be placed.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @return name of handler before which the handler should be placed
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_before)(
-                    const axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets the name of the handler before which the handler associated with 
-         * this rule should be placed.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @param before name of handler before which the handler should be placed
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_before)(
-                    axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env,
-                    const axis2_char_t *before);
-
-        /**
-         * Gets the name of the handler after which the handler associated with 
-         * this rule should be placed.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @return name of handler after which the handler should be placed
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_after)(
-                    const axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets the name of the handler after which the handler associated with 
-         * this rule should be placed.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @param after name of handler after which the handler should be placed
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_after)(
-                    axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env,
-                    const axis2_char_t *after);
-
-        /**
-         * Gets name.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @return name string
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_name)(
-                    const axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets name.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @param name name string
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_name)(
-                    axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env,
-                    const axis2_char_t *name);
-
-        /**
-         * Checks if the handler is the first in phase. 
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @return AXIS2_TRUE if the handler associated with this rule is the 
-         * first in phase, else AXIS2_FALSE
-         */
-        axis2_bool_t (AXIS2_CALL *
-                is_first)(
-                    const axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets handler to be the first in phase.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @param first AXIS2_TRUE if the handler associated with this rule is the 
-         * first in phase, else AXIS2_FALSE
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_first)(
-                    axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env,
-                    axis2_bool_t first);
-
-        /**
-         * Checks if the handler is the last in phase. 
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @return AXIS2_TRUE if the handler associated with this rule is the 
-         * last in phase, else AXIS2_FALSE
-         */
-        axis2_bool_t (AXIS2_CALL *
-                is_last)(
-                    const axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets handler to be the last in phase.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @param last AXIS2_TRUE if the handler associated with this rule is the 
-         * last in phase, else AXIS2_FALSE
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_last)(
-                    axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env,
-                    axis2_bool_t last);
-
-        /**
-         * Frees phase rule.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env);
-
-        /**
-         * Clones phase rule.
-         * @param phase_rule pointer to phase rule
-         * @param env pointer to environment struct
-         * @return pointer to newly cloned phase rule
-         */
-        axis2_phase_rule_t *(AXIS2_CALL *
-                clone)(
-                    axis2_phase_rule_t *phase_rule,
-                    const axis2_env_t *env);
-
-    };
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_phase_rule_get_before(const axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env);
 
     /**
-     * phase rule struct.
+     * Sets the name of the handler before which the handler associated with 
+     * this rule should be placed.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @param before name of handler before which the handler should be placed
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_phase_rule
-    {
-        /** phase rule related ops */
-        axis2_phase_rule_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_rule_set_before(axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env,
+        const axis2_char_t *before);
 
+    /**
+     * Gets the name of the handler after which the handler associated with 
+     * this rule should be placed.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @return name of handler after which the handler should be placed
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_phase_rule_get_after(const axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env);
+
+    /**
+     * Sets the name of the handler after which the handler associated with 
+     * this rule should be placed.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @param after name of handler after which the handler should be placed
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_rule_set_after(axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env,
+        const axis2_char_t *after);
+
+    /**
+     * Gets name.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @return name string
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_phase_rule_get_name(const axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env);
+
+    /**
+     * Sets name.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @param name name string
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_rule_set_name(axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env,
+        const axis2_char_t *name);
+
+    /**
+     * Checks if the handler is the first in phase. 
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @return AXIS2_TRUE if the handler associated with this rule is the 
+     * first in phase, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_phase_rule_is_first(const axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env);
+
+    /**
+     * Sets handler to be the first in phase.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @param first AXIS2_TRUE if the handler associated with this rule is the 
+     * first in phase, else AXIS2_FALSE
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_rule_set_first(axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env,
+        axis2_bool_t first);
+
+    /**
+     * Checks if the handler is the last in phase. 
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @return AXIS2_TRUE if the handler associated with this rule is the 
+     * last in phase, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_phase_rule_is_last(const axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env);
+
+    /**
+     * Sets handler to be the last in phase.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @param last AXIS2_TRUE if the handler associated with this rule is the 
+     * last in phase, else AXIS2_FALSE
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_rule_set_last(axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env,
+        axis2_bool_t last);
+
+    /**
+     * Frees phase rule.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_rule_free(axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env);
+
+    /**
+     * Clones phase rule.
+     * @param phase_rule pointer to phase rule
+     * @param env pointer to environment struct
+     * @return pointer to newly cloned phase rule
+     */
+    AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
+    axis2_phase_rule_clone(axis2_phase_rule_t *phase_rule,
+        const axis2_env_t *env);
 
     /**
      * Creates a phase rule struct instance.
@@ -223,73 +190,60 @@ extern "C"
      * @return pointer to newly created phase rule
      */
     AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
-    axis2_phase_rule_create(
-        const axis2_env_t *env,
+    axis2_phase_rule_create(const axis2_env_t *env,
         const axis2_char_t *name);
 
 /** Gets name of the handler before which the handler associated with this rule 
-    is to be placed.
-    @sa axis2_phase_rule_ops#get_before */
+    is to be placed. */
 #define AXIS2_PHASE_RULE_GET_BEFORE(phase_rule, env) \
-      ((phase_rule)->ops->get_before(phase_rule, env))
+      axis2_phase_rule_get_before(phase_rule, env)
 
 /** Sets name of the handler before which the handler associated with this rule 
-    is to be placed.
-    @sa axis2_phase_rule_ops#set_before */
+    is to be placed. */
 #define AXIS2_PHASE_RULE_SET_BEFORE(phase_rule, env, before) \
-      ((phase_rule)->ops->set_before(phase_rule, env, before))
+      axis2_phase_rule_set_before(phase_rule, env, before)
 
 /** Gets name of the handler after which the handler associated with this rule 
-    is to be placed.
-    @sa axis2_phase_rule_ops#get_after */
+    is to be placed. */
 #define AXIS2_PHASE_RULE_GET_AFTER(phase_rule, env) \
-      ((phase_rule)->ops->get_after(phase_rule, env))
+      axis2_phase_rule_get_after(phase_rule, env)
 
 /** Sets name of the handler after which the handler associated with this rule 
-    is to be placed.
-    @sa axis2_phase_rule_ops#set_after */
+    is to be placed. */
 #define AXIS2_PHASE_RULE_SET_AFTER(phase_rule, env, after) \
-      ((phase_rule)->ops->set_after(phase_rule, env, after))
+      axis2_phase_rule_set_after(phase_rule, env, after)
 
-/** Gets name.
-    @sa axis2_phase_rule_ops#get_name */
+/** Gets name. */
 #define AXIS2_PHASE_RULE_GET_NAME(phase_rule, env) \
-      ((phase_rule)->ops->get_name(phase_rule, env))
+      axis2_phase_rule_get_name(phase_rule, env)
 
-/** Sets name.
-    @sa axis2_phase_rule_ops#set_name */
+/** Sets name. */
 #define AXIS2_PHASE_RULE_SET_NAME(phase_rule, env, name)\
-      ((phase_rule)->ops->set_name(phase_rule, env, name))
+      axis2_phase_rule_set_name(phase_rule, env, name)
 
-/** Checks if the associated handler is the first in phase.
-    @sa axis2_phase_rule_ops#is_first */
+/** Checks if the associated handler is the first in phase. */
 #define AXIS2_PHASE_RULE_IS_FIRST(phase_rule, env) \
-      ((phase_rule)->ops->is_first(phase_rule, env))
+      axis2_phase_rule_is_first(phase_rule, env)
 
-/** Sets the associated handler to be the first in phase.
-    @sa axis2_phase_rule_ops#set_first */
+/** Sets the associated handler to be the first in phase. */
 #define AXIS2_PHASE_RULE_SET_FIRST(phase_rule, env, first) \
-      ((phase_rule)->ops->set_first(phase_rule, env, first))
+      axis2_phase_rule_set_first(phase_rule, env, first)
 
-/** Checks if the associated handler is the last in phase.
-    @sa axis2_phase_rule_ops#is_last */
+/** Checks if the associated handler is the last in phase. */
 #define AXIS2_PHASE_RULE_IS_LAST(phase_rule, env) \
-      ((phase_rule)->ops->is_last(phase_rule, env))
+      axis2_phase_rule_is_last(phase_rule, env)
 
-/** Sets the associated handler to be the last in phase.
-    @sa axis2_phase_rule_ops#set_last */
+/** Sets the associated handler to be the last in phase. */
 #define AXIS2_PHASE_RULE_SET_LAST(phase_rule, env, last) \
-      ((phase_rule)->ops->set_last(phase_rule, env, last))
+      axis2_phase_rule_set_last(phase_rule, env, last)
 
-/** Frees phase rule.
-    @sa axis2_phase_rule_ops#free */
+/** Frees phase rule. */
 #define AXIS2_PHASE_RULE_FREE(phase_rule, env) \
-      ((phase_rule)->ops->free(phase_rule, env))
+      axis2_phase_rule_free(phase_rule, env)
 
-/** Clones given phase rule.
-    @sa axis2_phase_rule_ops#clone */
+/** Clones given phase rule. */
 #define AXIS2_PHASE_RULE_CLONE(phase_rule, env) \
-      ((phase_rule)->ops->clone(phase_rule, env))
+      axis2_phase_rule_clone(phase_rule, env)
 
 /** @} */
 

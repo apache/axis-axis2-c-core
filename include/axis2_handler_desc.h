@@ -47,221 +47,194 @@ extern "C"
 
     /** Type name for struct axis2_handler_desc */
     typedef struct axis2_handler_desc axis2_handler_desc_t;
-    /** Type name for struct axis2_handler_desc_ops  */
-    typedef struct axis2_handler_desc_ops axis2_handler_desc_ops_t;
 
     /**
-     * handler description ops struct.
-     * Encapsulator struct for ops of axis2_handler_desc.
+     * Gets QName.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @return pointer to QName, returns a reference, not a cloned copy
      */
-    struct axis2_handler_desc_ops
-    {
-        /**
-         * Gets QName.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @return pointer to QName, returns a reference, not a cloned copy
-         */
-        const axis2_string_t *(AXIS2_CALL *
-                get_name)(
-                    const axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets QName.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @param name pointer to string representing handler name 
-         * of QName
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_name)(
-                    axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env,
-                    axis2_string_t *name);
-
-        /**
-         * Gets phase rules.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @return pointer to phase rule struct containing phase rules
-         */
-        axis2_phase_rule_t *(AXIS2_CALL *
-                get_rules)(
-                    const axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets phase rules.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @param phase_rule pointer to phase rule struct, handler description
-         * assumes ownership of the struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_rules)(
-                    axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env,
-                    axis2_phase_rule_t *phase_rule);
-
-        /**
-         * Gets named parameter.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @param name parameter name string 
-         * @return pointer to parameter if found, else NULL. Return a reference
-         * not a cloned copy
-         */
-        axis2_param_t *(AXIS2_CALL *
-                get_param)(
-                    const axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env,
-                    const axis2_char_t *name);
-
-        /**
-         * Adds given parameter to the parameter list.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @param param pointer to param
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_param)(
-                    axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env,
-                    axis2_param_t *param);
-
-        /**
-         * Gets all parameters stored within handler description.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @return pointer to array list containing parameters, returns a 
-         * reference, not a cloned copy
-         */
-        axis2_array_list_t *(AXIS2_CALL *
-                get_all_params)(
-                    const axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env);
-
-        /**
-         * Checks if the named parameter is locked at any level
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @param param_name parameter name string 
-         * @return AXIS2_TRUE if the parameter is locked, else AXIS2_FALSE
-         */
-        axis2_bool_t (AXIS2_CALL *
-                is_param_locked)(
-                    const axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env, 
-                    const axis2_char_t *param_name);
-
-        /**
-         * Gets the handler associated with the handler description.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @return pointer to handler, returns a reference, not a cloned copy
-         */
-        axis2_handler_t *(AXIS2_CALL *
-                get_handler)(
-                    const axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets the handler associated with the handler description.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @param handler pointer to handler, handler description assumes
-         * the ownership of the handler
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_handler)(
-                    axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env,
-                    axis2_handler_t *handler);
-
-        /**
-         * Gets the class name. Class name is the name of the shared library 
-         * file that contains the implementation of the handler.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @return class name string
-         */
-        const axis2_char_t *(AXIS2_CALL *
-                get_class_name)(
-                    const axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets the class name. Class name is the name of the shared library 
-         * file that contains the implementation of the handler.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @param class_name class name string
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_class_name)(
-                    axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env,
-                    const axis2_char_t *class_name);
-
-        /**
-         * Gets the parent. Parent of handler description is of type parameter
-         * container.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @return pointer to parent parameter container, returns a reference,
-         * not a cloned copy
-         */
-        axis2_param_container_t *(AXIS2_CALL *
-                get_parent)(
-                    const axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env);
-
-        /**
-         * Gets the parent. Parent of handler description is of type parameter
-         * container.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @param parent pointer to parent parameter container struct, handler
-         * description assumes ownership of struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_parent)(
-                    axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env,
-                    axis2_param_container_t *parent);
-
-        /**
-         * Frees handler description.
-         * @param handler_desc pointer to handler description
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_handler_desc_t *handler_desc,
-                    const axis2_env_t *env);
-
-    };
+    AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
+    axis2_handler_desc_get_name(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env);
 
     /**
-     * handler description struct
+     * Sets QName.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @param name pointer to string representing handler name 
+     * of QName
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_handler_desc
-    {
-        /** handler description related ops */
-        axis2_handler_desc_ops_t *ops;
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_desc_set_name(axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env,
+        axis2_string_t *name);
 
-        /** parameter container */
-        axis2_param_container_t *param_container;
+    /**
+     * Gets phase rules.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @return pointer to phase rule struct containing phase rules
+     */
+    AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
+    axis2_handler_desc_get_rules(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env);
 
-    };
+    /**
+     * Sets phase rules.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @param phase_rule pointer to phase rule struct, handler description
+     * assumes ownership of the struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_desc_set_rules(axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env,
+        axis2_phase_rule_t *phase_rule);
+
+    /**
+     * Gets named parameter.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @param name parameter name string 
+     * @return pointer to parameter if found, else NULL. Return a reference
+     * not a cloned copy
+     */
+    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    axis2_handler_desc_get_param(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env,
+        const axis2_char_t *name);
+
+    /**
+     * Adds given parameter to the parameter list.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @param param pointer to param
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_desc_add_param(axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env,
+        axis2_param_t *param);
+
+    /**
+     * Gets all parameters stored within handler description.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @return pointer to array list containing parameters, returns a 
+     * reference, not a cloned copy
+     */
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    axis2_handler_desc_get_all_params(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env);
+
+    /**
+     * Checks if the named parameter is locked at any level
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @param param_name parameter name string 
+     * @return AXIS2_TRUE if the parameter is locked, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_handler_desc_is_param_locked(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env, 
+        const axis2_char_t *param_name);
+
+    /**
+     * Gets the handler associated with the handler description.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @return pointer to handler, returns a reference, not a cloned copy
+     */
+    AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
+    axis2_handler_desc_get_handler(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env);
+
+    /**
+     * Sets the handler associated with the handler description.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @param handler pointer to handler, handler description assumes
+     * the ownership of the handler
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_desc_set_handler(axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env,
+        axis2_handler_t *handler);
+
+    /**
+     * Gets the class name. Class name is the name of the shared library 
+     * file that contains the implementation of the handler.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @return class name string
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_handler_desc_get_class_name(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env);
+
+    /**
+     * Sets the class name. Class name is the name of the shared library 
+     * file that contains the implementation of the handler.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @param class_name class name string
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_desc_set_class_name(axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env,
+        const axis2_char_t *class_name);
+
+    /**
+     * Gets the parent. Parent of handler description is of type parameter
+     * container.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @return pointer to parent parameter container, returns a reference,
+     * not a cloned copy
+     */
+    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    axis2_handler_desc_get_parent(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env);
+
+    /**
+     * Gets the parent. Parent of handler description is of type parameter
+     * container.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @param parent pointer to parent parameter container struct, handler
+     * description assumes ownership of struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_desc_set_parent(axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env,
+        axis2_param_container_t *parent);
+
+    /**
+     * Frees handler description.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env);
+
+    /**
+     * Gets the param container.
+     * @param handler_desc pointer to handler description
+     * @param env pointer to environment struct
+     * @return pointer to parameter container, returns a reference,
+     * not a cloned copy
+     */
+    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    axis2_handler_desc_get_param_container(const axis2_handler_desc_t *handler_desc,
+        const axis2_env_t *env);
 
 
     /**
@@ -275,70 +248,57 @@ extern "C"
     axis2_handler_desc_create(const axis2_env_t *env, 
         axis2_string_t *name);
 
-/** Gets handler associated with handler description.
-    @sa axis2_handler_desc_ops#get_handler */
+/** Gets handler associated with handler description. */
 #define AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env) \
-        ((handler_desc)->ops->get_handler(handler_desc, env))
+        axis2_handler_desc_get_handler(handler_desc, env)
 
-/** Sets handler associated with handler description.
-    @sa axis2_handler_desc_ops#set_handler */
+/** Sets handler associated with handler description. */
 #define AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler) \
-        ((handler_desc)->ops->set_handler(handler_desc, env, handler))
+        axis2_handler_desc_set_handler(handler_desc, env, handler)
 
-/** Gets rules.
-    @sa axis2_handler_desc_ops#get_rules */
+/** Gets rules. */
 #define AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env) \
-        ((handler_desc)->ops->get_rules(handler_desc, env))
+        axis2_handler_desc_get_rules(handler_desc, env)
 
-/** Sets rules.
-    @sa axis2_handler_desc_ops#set_rules */
+/** Sets rules. */
 #define AXIS2_HANDLER_DESC_SET_RULES(handler_desc, env, rules) \
-        ((handler_desc)->ops->set_rules(handler_desc, env, rules))
+        axis2_handler_desc_set_rules(handler_desc, env, rules)
 
-/** Gets QName.
-    @sa axis2_handler_desc_ops#get_name */
+/** Gets QName. */
 #define AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env) \
-        ((handler_desc)->ops->get_name(handler_desc, env))
+        axis2_handler_desc_get_name(handler_desc, env)
 
-/** Sets QName.
-    @sa axis2_handler_desc_ops#set_name */
+/** Sets QName. */
 #define AXIS2_HANDLER_DESC_SET_NAME(handler_desc, env, name) \
-        ((handler_desc)->ops->set_name(handler_desc, env, name))
+        axis2_handler_desc_set_name(handler_desc, env, name)
 
-/** Gets parameter with given name.
-    @sa axis2_handler_desc_ops#get_param */
+/** Gets parameter with given name. */
 #define AXIS2_HANDLER_DESC_GET_PARAM(handler_desc, env, name) \
-        ((handler_desc)->ops->get_param(handler_desc, env, name))
+        axis2_handler_desc_get_param(handler_desc, env, name)
 
-/** Adds parameter to parameter list.
-    @sa axis2_handler_desc_ops#add_param */
+/** Adds parameter to parameter list. */
 #define AXIS2_HANDLER_DESC_ADD_PARAM(handler_desc, env, param) \
-        ((handler_desc)->ops->add_param(handler_desc, env, param))
+        axis2_handler_desc_add_param(handler_desc, env, param)
 
-/** Gets class name of handler.
-    @sa axis2_handler_desc_ops#get_class_name */
+/** Gets class name of handler. */
 #define AXIS2_HANDLER_DESC_GET_CLASS_NAME(handler_desc, env) \
-        ((handler_desc)->ops->get_class_name(handler_desc, env))
+        axis2_handler_desc_get_class_name(handler_desc, env)
 
-/** Sets class name of handler.
-    @sa axis2_handler_desc_ops#set_class_name */
+/** Sets class name of handler. */
 #define AXIS2_HANDLER_DESC_SET_CLASS_NAME(handler_desc, env, class_name) \
-        ((handler_desc)->ops->set_class_name(handler_desc, env, class_name))
+        axis2_handler_desc_set_class_name(handler_desc, env, class_name)
 
-/** Gets parent.
-    @sa axis2_handler_desc_ops#get_parent */
+/** Gets parent. */
 #define AXIS2_HANDLER_DESC_GET_PARENT(handler_desc, env) \
-        ((handler_desc)->ops->get_parent(handler_desc, env))
+        axis2_handler_desc_get_parent(handler_desc, env)
 
-/** Sets parent.
-    @sa axis2_handler_desc_ops#set_parent */
+/** Sets parent. */
 #define AXIS2_HANDLER_DESC_SET_PARENT(handler_desc, env, parent) \
-        ((handler_desc)->ops->set_parent(handler_desc, env, parent))
+        axis2_handler_desc_set_parent(handler_desc, env, parent)
 
-/** Frees handler description.
-    @sa axis2_handler_desc_ops#free */
+/** Frees handler description. */
 #define AXIS2_HANDLER_DESC_FREE(handler_desc, env) \
-        ((handler_desc)->ops->free(handler_desc, env))
+        axis2_handler_desc_free(handler_desc, env)
 
 /** @} */
 

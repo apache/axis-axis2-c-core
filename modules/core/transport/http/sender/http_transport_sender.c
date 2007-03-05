@@ -449,7 +449,7 @@ axis2_http_transport_sender_init(
     AXIS2_PARAM_CHECK(env->error, out_desc, AXIS2_FAILURE);
 
     version_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
-                out_desc->param_container, env,
+                axis2_transport_out_desc_param_container(out_desc, env), env,
                 AXIS2_HTTP_PROTOCOL_VERSION);
     if (version_param)
     {
@@ -469,7 +469,7 @@ axis2_http_transport_sender_init(
             AXIS2_INTF_TO_IMPL(transport_sender)->http_version = AXIS2_STRDUP(
                         version, env);
             encoding_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
-                        out_desc->param_container, env,
+                        axis2_transport_out_desc_param_container(out_desc, env), env,
                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
             if (encoding_param)
             {
@@ -506,7 +506,7 @@ axis2_http_transport_sender_init(
 
 
     temp_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
-                out_desc->param_container, env,
+                axis2_transport_out_desc_param_container(out_desc, env), env,
                 AXIS2_HTTP_SO_TIMEOUT);
     if (temp_param)
     {
@@ -517,7 +517,7 @@ axis2_http_transport_sender_init(
         AXIS2_INTF_TO_IMPL(transport_sender)->so_timeout = AXIS2_ATOI(temp);
     }
     temp = (axis2_char_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
-                out_desc->param_container, env,
+                axis2_transport_out_desc_param_container(out_desc, env), env,
                 AXIS2_HTTP_CONNECTION_TIMEOUT);
     if (temp_param)
     {

@@ -555,11 +555,11 @@ axis2_http_sender_send(
 
 		axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_CONTENT_TYPE, content_type);
 
-		if (content_type)
+		/*if (content_type)
 		{
 			AXIS2_FREE(env->allocator, content_type);
 			content_type = NULL;
-		}
+		}*/
 	}
 
     if (0 == AXIS2_STRCMP(sender_impl->http_version,
@@ -947,8 +947,9 @@ axis2_http_sender_configure_proxy(
         return AXIS2_FAILURE;
     }
 
-    proxy_param = AXIS2_PARAM_CONTAINER_GET_PARAM(trans_desc->param_container,
-												  env, AXIS2_HTTP_PROXY);
+    proxy_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
+        axis2_transport_out_desc_param_container(trans_desc, env), 
+	    env, AXIS2_HTTP_PROXY);
     if (proxy_param)
     {
         transport_attrs = AXIS2_PARAM_GET_ATTRIBUTES(proxy_param, env);
