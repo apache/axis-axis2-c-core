@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
         certfile = argv[3];
         prvkeyfile = argv[4];
     }else{
-        printf("Usage ./test inputfile prvkey certificate operation[S/V]\n");
+        printf("Usage ./test inputfile operation[S/V] certificate prvkey \n");
         return -1;
     }
     

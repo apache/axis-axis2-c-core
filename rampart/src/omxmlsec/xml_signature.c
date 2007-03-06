@@ -278,7 +278,7 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     int i=0;
 
     /*Construct the <Signature> element*/
-    signature_node = oxs_token_build_signature_element(env, parent, "Sign-ID");
+    signature_node = oxs_token_build_signature_element(env, parent,  oxs_util_generate_id(env,OXS_SIG_ID));
 
     /*Construct the <SignedInfo>  */
     signed_info_node = oxs_token_build_signed_info_element(env, signature_node);
