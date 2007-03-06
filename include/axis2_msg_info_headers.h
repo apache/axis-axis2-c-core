@@ -327,7 +327,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_headers,
         const axis2_env_t *env,
-        const axis2_string_t *action);
+        const axis2_char_t *action);
 
     /**
      * Gets message ID. message ID is an absolute IRI that uniquely 

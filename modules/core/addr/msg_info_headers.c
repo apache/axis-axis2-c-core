@@ -190,7 +190,7 @@ axis2_msg_info_headers_get_action(const axis2_msg_info_headers_t *msg_info_heade
 axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_headers,
     const axis2_env_t *env,
-    const axis2_string_t *action)
+    const axis2_char_t *action)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (msg_info_headers->action)
@@ -199,7 +199,9 @@ axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_header
         msg_info_headers->action = NULL;
     }
     if (action)
-        msg_info_headers->action = axis2_string_clone(action, env);
+	{
+        msg_info_headers->action = AXIS2_STRDUP(action, env);
+	}
     return AXIS2_SUCCESS;
 }
 
