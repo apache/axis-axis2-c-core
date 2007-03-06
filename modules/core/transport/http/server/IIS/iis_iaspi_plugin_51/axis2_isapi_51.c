@@ -45,12 +45,8 @@ BOOL WINAPI GetFilterVersion(PHTTP_FILTER_VERSION pVer)
 		2. Log 
 		3. All the request coming in secure and none secure ports.
 	*/
-	pVer->dwFlags = (SF_NOTIFY_ORDER_HIGH |
-                    SF_NOTIFY_SECURE_PORT |
-                    SF_NOTIFY_NONSECURE_PORT |
-                    SF_NOTIFY_PREPROC_HEADERS |
-                    SF_NOTIFY_LOG |
-                    SF_NOTIFY_AUTH_COMPLETE
+	pVer->dwFlags = (SF_NOTIFY_ORDER_HIGH |                    
+                    SF_NOTIFY_PREPROC_HEADERS 
 					);
 
 	// Give a short discription about the module.
@@ -86,25 +82,17 @@ DWORD WINAPI HttpFilterProc(
 		(struct _HTTP_FILTER_CONTEXT * pfc, LPSTR lpszName,
 		 LPSTR lpszValue);
 
-	switch (notificationType)
+	if (notificationType == SF_NOTIFY_PREPROC_HEADERS)
 	{
-		case SF_NOTIFY_PREPROC_HEADERS:			
-			GetHeader = ((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->GetHeader;
-			SetHeader = ((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->SetHeader;
-
-			//GetHeader(pfc, "URL", url, &bufferLength);
-			pfc->GetServerVariable(pfc, "HTTP_URL", url, &bufferLength);			
-			if(get_extension_url(url, modified_url)){
-				SetHeader(pfc, "URL", modified_url);
-			}
-			//return SF_STATUS_REQ_HANDLED_NOTIFICATION;
-			break;
-		case SF_NOTIFY_LOG:
-			break;
-		case SF_NOTIFY_SEND_RESPONSE:
-			break;
-		default:
-			break;
+		GetHeader = ((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->GetHeader;
+		SetHeader = ((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->SetHeader;
+		//GetHeader(pfc, "URL", url, &bufferLength);
+		pfc->GetServerVariable(pfc, "HTTP_URL", url, &bufferLength);			
+		if(get_extension_url(url, modified_url))
+		{
+			SetHeader(pfc, "URL", modified_url);
+			return SF_STATUS_REQ_HANDLED_NOTIFICATION;
+		}			
 	}
 	return SF_STATUS_REQ_NEXT_NOTIFICATION;
 }
