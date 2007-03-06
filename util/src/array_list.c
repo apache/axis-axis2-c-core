@@ -138,7 +138,6 @@ axis2_array_list_get(struct axis2_array_list *array_list,
     const axis2_env_t *env, 
     int index)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     if (axis2_array_list_check_bound_exclusive(array_list, env, index))
         return array_list->data[index];
     else
@@ -155,13 +154,11 @@ axis2_array_list_set(struct axis2_array_list *array_list,
 
     AXIS2_ENV_CHECK(env, NULL);
 
-
     if (axis2_array_list_check_bound_exclusive(array_list, env, index))
     {
         result = array_list->data[index];
         array_list->data[index] = e;
     }
-
     return result;
 }
 
@@ -171,7 +168,6 @@ axis2_array_list_add(struct axis2_array_list *array_list,
     const void* e)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (array_list->size == array_list->capacity)
         if (axis2_array_list_ensure_capacity(array_list, env, array_list->size + 1) != AXIS2_SUCCESS)
             return AXIS2_FAILURE;
@@ -186,24 +182,19 @@ axis2_array_list_add_at(struct axis2_array_list *array_list,
     const void* e)
 {
     int i = 0;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (!axis2_array_list_check_bound_inclusive(array_list, env, index))
         return AXIS2_FAILURE;
-
     if (array_list->size == array_list->capacity)
     {
         if (axis2_array_list_ensure_capacity(array_list, env, array_list->size + 1) != AXIS2_SUCCESS)
             return AXIS2_FAILURE;
     }
-
     if (index != array_list->size)
     {
         for (i = array_list->size; i > index; i--)
             array_list->data[i] = array_list->data[i - 1];
     }
-
     array_list->data[index] = (void *)e;
     array_list->size++;
     return AXIS2_SUCCESS;
@@ -216,7 +207,6 @@ axis2_array_list_remove(struct axis2_array_list *array_list,
 {
     void* result = NULL;
     int i = 0;
-
     AXIS2_ENV_CHECK(env, NULL);
 
     if (axis2_array_list_check_bound_exclusive(array_list, env, index))
@@ -269,12 +259,8 @@ axis2_array_list_free(struct axis2_array_list *array_list,
     if (array_list->data)
     {
         AXIS2_FREE(env->allocator, array_list->data);
-        array_list->data = NULL;
     }
-
     AXIS2_FREE(env->allocator, array_list);
-    array_list = NULL;
-
     return AXIS2_SUCCESS;
 }
 
@@ -289,4 +275,3 @@ axis2_array_list_free_void_arg(void *array_list,
     array_list_l = (axis2_array_list_t *) array_list;
     return axis2_array_list_free(array_list_l, env);
 }
-
