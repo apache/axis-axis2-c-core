@@ -95,7 +95,7 @@ axis2_req_uri_disp_find_svc(
     {
         const axis2_char_t *address = NULL;
 
-        address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
+        address = axis2_endpoint_ref_get_address(endpoint_ref, env);
         if (address)
         {
             axis2_char_t **url_tokens = NULL;
@@ -152,7 +152,7 @@ axis2_req_uri_disp_find_op(
     {
         const axis2_char_t *address = NULL;
 
-        address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
+        address = axis2_endpoint_ref_get_address(endpoint_ref, env);
         if (address)
         {
             axis2_char_t **url_tokens = NULL;

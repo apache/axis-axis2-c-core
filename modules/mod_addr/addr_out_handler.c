@@ -400,7 +400,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         if (relates_to)
         {
             const axis2_char_t *value = NULL;
-            value = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);
+            value = axis2_relates_to_get_value(relates_to, env);
             relates_to_header_node =
                 axis2_addr_out_handler_process_string_info(env, value,
                         AXIS2_WSA_RELATES_TO,
@@ -411,7 +411,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         if (relates_to_header_node)
         {
             const axis2_char_t *relationship_type = NULL;
-            relationship_type = AXIS2_RELATES_TO_GET_RELATIONSHIP_TYPE(relates_to, env);
+            relationship_type = axis2_relates_to_get_relationship_type(relates_to, env);
             if (AXIS2_STRCMP(relationship_type, "") != 0)
             {
                 axiom_attribute_t *om_attr = NULL;

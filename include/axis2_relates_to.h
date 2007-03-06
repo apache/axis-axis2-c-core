@@ -115,26 +115,6 @@ extern "C"
     axis2_relates_to_free(struct axis2_relates_to *relates_to,
         const axis2_env_t *env);
 
-/** Gets value. */
-#define AXIS2_RELATES_TO_GET_VALUE(relates_to, env) \
-      axis2_relates_to_get_value(relates_to, env)
-
-/** Sets value. */
-#define AXIS2_RELATES_TO_SET_VALUE(relates_to, env, vlaue) \
-      axis2_relates_to_set_value(relates_to, env, vlaue)
-
-/** Gets relationship type. */
-#define AXIS2_RELATES_TO_GET_RELATIONSHIP_TYPE(relates_to, env) \
-      axis2_relates_to_get_relationship_type(relates_to, env)
-
-/** Sets relationship type. */
-#define AXIS2_RELATES_TO_SET_RELATIONSHIP_TYPE(relates_to, env, relationship_type) \
-      axis2_relates_to_set_relationship_type(relates_to, env, relationship_type)
-
-/** Frees relates to struct. */
-#define AXIS2_RELATES_TO_FREE(relates_to, env) \
-      axis2_relates_to_free(relates_to, env)
-
 /** @} */
 
 #ifdef __cplusplus

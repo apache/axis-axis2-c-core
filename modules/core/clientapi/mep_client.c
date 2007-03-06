@@ -338,7 +338,7 @@ axis2_mep_client_infer_transport(
 
     if (epr)
     {
-        const axis2_char_t *to_url = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
+        const axis2_char_t *to_url = axis2_endpoint_ref_get_address(epr, env);
 
         transport = axis2_get_transport_from_url(to_url, env);
     }

@@ -305,7 +305,7 @@ axis2_msg_info_headers_free(
     }
     if (msg_info_headers->relates_to)
     {
-        AXIS2_RELATES_TO_FREE(msg_info_headers->relates_to, env);
+        axis2_relates_to_free(msg_info_headers->relates_to, env);
     }
 
     if (msg_info_headers->fault_to)

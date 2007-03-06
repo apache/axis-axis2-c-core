@@ -262,7 +262,7 @@ axis2_disp_checker_invoke(
 
     endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
     if (endpoint_ref)
-        address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
+        address = axis2_endpoint_ref_get_address(endpoint_ref, env);
 
     svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
     if (!svc)

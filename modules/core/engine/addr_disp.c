@@ -100,7 +100,7 @@ axis2_addr_disp_find_svc(
     {
         const axis2_char_t *address = NULL;
 
-        address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
+        address = axis2_endpoint_ref_get_address(endpoint_ref, env);
         if (address)
         {
             axis2_char_t **url_tokens = NULL;
@@ -202,7 +202,7 @@ axis2_addr_disp_invoke(
     if (relates_to)
     {
         const axis2_char_t *relates_to_value = NULL;
-        relates_to_value = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);
+        relates_to_value = axis2_relates_to_get_value(relates_to, env);
         if (relates_to_value && AXIS2_STRCMP(relates_to_value, "") != 0)
         {
             axis2_conf_ctx_t *conf_ctx = NULL;

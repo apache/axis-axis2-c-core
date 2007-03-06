@@ -235,9 +235,9 @@ axis2_http_transport_sender_invoke(
         axis2_endpoint_ref_t *ctx_epr = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
         if (ctx_epr && 0 != AXIS2_STRCMP(
                     AXIS2_WSA_ANONYMOUS_URL_SUBMISSION,
-                    AXIS2_ENDPOINT_REF_GET_ADDRESS(ctx_epr, env)) &&
+                    axis2_endpoint_ref_get_address(ctx_epr, env)) &&
                 0 != AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL,
-                        AXIS2_ENDPOINT_REF_GET_ADDRESS(ctx_epr, env)))
+                        axis2_endpoint_ref_get_address(ctx_epr, env)))
         {
             epr = ctx_epr;
         }
@@ -271,8 +271,8 @@ axis2_http_transport_sender_invoke(
     AXIOM_OUTPUT_SET_SOAP11(om_output, env, AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env));
     if (epr)
     {
-        if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env)) == 0 ||
-                AXIS2_STRCMP(AXIS2_WSA_NONE_URL, AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env)) == 0)
+        if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, axis2_endpoint_ref_get_address(epr, env)) == 0 ||
+                AXIS2_STRCMP(AXIS2_WSA_NONE_URL, axis2_endpoint_ref_get_address(epr, env)) == 0)
         {
             epr = NULL;
         }
@@ -555,7 +555,7 @@ axis2_http_transport_sender_write_message(
     AXIS2_PARAM_CHECK(env->error, epr, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
-    url = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
+    url = axis2_endpoint_ref_get_address(epr, env);
     
     soap_action = axis2_string_get_buffer(AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env), env);
     

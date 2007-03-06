@@ -919,7 +919,7 @@ axis2_op_find_op_ctx(
         const axis2_char_t *value = NULL;
 
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
-        value = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);
+        value = axis2_relates_to_get_value(relates_to, env);
         op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
         if (NULL == op_ctx)
         {
