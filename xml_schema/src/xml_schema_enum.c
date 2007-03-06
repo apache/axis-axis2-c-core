@@ -168,7 +168,7 @@ xml_schema_enum_free(void *schema_enum,
 
     if (schema_enum_impl->values)
     {
-        AXIS2_ARRAY_LIST_FREE(schema_enum_impl->values, env);
+        axis2_array_list_free(schema_enum_impl->values, env);
         schema_enum_impl->values = NULL;
     }
 
@@ -342,11 +342,11 @@ xml_schema_enum_index(axis2_char_t *value,
     AXIS2_ENV_CHECK(env, -1);
     AXIS2_PARAM_CHECK(env->error, value, -1);
     AXIS2_PARAM_CHECK(env->error, values, -1);
-    size = AXIS2_ARRAY_LIST_SIZE(values, env);
+    size = axis2_array_list_size(values, env);
     for (i = 0; i < size; i++)
     {
         axis2_char_t *mem_val = NULL;
-        mem_val = (axis2_char_t *)AXIS2_ARRAY_LIST_GET(values,  env, i);
+        mem_val = (axis2_char_t *)axis2_array_list_get(values,  env, i);
         if (mem_val && AXIS2_STRCMP(mem_val, value) == 0)
         {
             return i;

@@ -180,7 +180,7 @@ w2c_cmdline_option_parser_get_invalid_options (
          axis2_hash_this(hi, NULL, NULL, (void*)&option);
          if (w2c_cmdline_option_validator_isinvalid ( env,option ) )
          {
-             AXIS2_ARRAY_LIST_ADD ( invalid_arr, env, option );
+             axis2_array_list_add ( invalid_arr, env, option );
          }
      }
      return invalid_arr;
@@ -211,7 +211,7 @@ w2c_cmdline_option_parser_parse( w2c_cmdline_option_parser_impl_t *parser,
             && !(w2c_string_indexof_cs ( argv[i], "--" ) == 0) )
         {
             value = (axis2_char_t*)AXIS2_STRDUP(argv[i], env);
-            AXIS2_ARRAY_LIST_ADD ( values_arr, env, value );
+            axis2_array_list_add ( values_arr, env, value );
             i ++;
         }
         option = (w2c_cmdline_option_t*)

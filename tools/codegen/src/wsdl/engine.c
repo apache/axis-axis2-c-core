@@ -165,13 +165,13 @@ w2c_engine_free (w2c_engine_t *engine,
 
     /* following should be free 1 by 1 after the extension developed */
     if(engine_impl-> pre_extensions )
-         AXIS2_ARRAY_LIST_FREE (engine_impl-> pre_extensions, env );
+         axis2_array_list_free (engine_impl-> pre_extensions, env );
     if(engine_impl-> post_extensions )
-         AXIS2_ARRAY_LIST_FREE (engine_impl-> post_extensions, env );
+         axis2_array_list_free (engine_impl-> post_extensions, env );
     if(engine_impl-> pre_extensions_dll_desc )
-         AXIS2_ARRAY_LIST_FREE (engine_impl-> pre_extensions_dll_desc, env );
+         axis2_array_list_free (engine_impl-> pre_extensions_dll_desc, env );
     if(engine_impl-> post_extensions_dll_desc )
-         AXIS2_ARRAY_LIST_FREE (engine_impl-> post_extensions_dll_desc, env );
+         axis2_array_list_free (engine_impl-> post_extensions_dll_desc, env );
  
     if(engine_impl-> conf)
          W2C_ENGINE_CONFIGURATION_FREE (engine_impl-> conf, env);
@@ -214,11 +214,11 @@ w2c_engine_generate(w2c_engine_t *engine,
     
     if ( engine_impl-> pre_extensions != NULL )
     {
-        size = AXIS2_ARRAY_LIST_SIZE( engine_impl-> pre_extensions, env);
+        size = axis2_array_list_size( engine_impl-> pre_extensions, env);
         for (i = 0; i < size ; i++)
         {
             ext = (w2c_extension_t*)
-                       AXIS2_ARRAY_LIST_GET( engine_impl-> pre_extensions, env, i);
+                       axis2_array_list_get( engine_impl-> pre_extensions, env, i);
             W2C_EXTENSION_ENGAGE ( ext, env, engine_impl-> conf);
         }
     }
@@ -268,32 +268,32 @@ w2c_engine_generate(w2c_engine_t *engine,
  
     if ( engine_impl-> post_extensions != NULL )
     {
-        size = AXIS2_ARRAY_LIST_SIZE( engine_impl-> post_extensions, env);
+        size = axis2_array_list_size( engine_impl-> post_extensions, env);
         for (i = 0; i < size ; i++)
         {
             ext = (w2c_extension_t*)
-                       AXIS2_ARRAY_LIST_GET( engine_impl-> post_extensions, env, i);
+                       axis2_array_list_get( engine_impl-> post_extensions, env, i);
             W2C_EXTENSION_ENGAGE( ext, env, engine_impl-> conf); 
         }
     }
     /** freeing used extension right here */
     if ( engine_impl-> pre_extensions != NULL )
     {
-        size = AXIS2_ARRAY_LIST_SIZE( engine_impl-> pre_extensions, env);
+        size = axis2_array_list_size( engine_impl-> pre_extensions, env);
         for (i = 0; i < size ; i++)
         {
             dll_desc = (axis2_dll_desc_t*)
-              AXIS2_ARRAY_LIST_GET( engine_impl-> pre_extensions_dll_desc, env, i);
+              axis2_array_list_get( engine_impl-> pre_extensions_dll_desc, env, i);
             /*w2c_class_loader_free_loaded_class(env, dll_desc);*/
         }
   
     if ( engine_impl-> post_extensions != NULL )
     {
-        size = AXIS2_ARRAY_LIST_SIZE( engine_impl-> post_extensions, env);
+        size = axis2_array_list_size( engine_impl-> post_extensions, env);
         for (i = 0; i < size ; i++)
         {
             dll_desc = (axis2_dll_desc_t*)
-              AXIS2_ARRAY_LIST_GET( engine_impl-> post_extensions_dll_desc, env, i);
+              axis2_array_list_get( engine_impl-> post_extensions_dll_desc, env, i);
             /*w2c_class_loader_free_loaded_class(env, dll_desc);*/
         }
     }  } 
@@ -323,18 +323,18 @@ w2c_engine_load_extension (w2c_engine_impl_t *engine_impl,
            = axis2_array_list_create ( env, 10 );
        engine_impl-> pre_extensions_dll_desc
            = axis2_array_list_create ( env, 10 );
-       size = AXIS2_ARRAY_LIST_SIZE ( extension_names ,env);
+       size = axis2_array_list_size ( extension_names ,env);
        for ( i = 0; i < size; i ++ )
        {
-           class_name = (axis2_char_t*)AXIS2_ARRAY_LIST_GET 
+           class_name = (axis2_char_t*)axis2_array_list_get 
                                  ( extension_names, env , i );
            ext = w2c_class_loader_get_object_from_class_name
                    ( env, class_name, W2C_CLASS_LOADER_EXTENSION_PATH, &dll_desc);
            if ( NULL!= ext )
            {
-               AXIS2_ARRAY_LIST_ADD_AT ( engine_impl-> pre_extensions,
+               axis2_array_list_add_at ( engine_impl-> pre_extensions,
                                    env, i,(void*)ext);
-               AXIS2_ARRAY_LIST_ADD_AT (engine_impl-> pre_extensions_dll_desc,
+               axis2_array_list_add_at (engine_impl-> pre_extensions_dll_desc,
                                    env, i,(void*)dll_desc);
            }
            else
@@ -353,18 +353,18 @@ w2c_engine_load_extension (w2c_engine_impl_t *engine_impl,
            = axis2_array_list_create ( env, 10 );
        engine_impl-> post_extensions_dll_desc
            = axis2_array_list_create ( env, 10 );
-       size = AXIS2_ARRAY_LIST_SIZE ( extension_names ,env);
+       size = axis2_array_list_size ( extension_names ,env);
        for ( i = 0; i < size; i ++ )
        {
-           class_name = (axis2_char_t*)AXIS2_ARRAY_LIST_GET 
+           class_name = (axis2_char_t*)axis2_array_list_get 
                                  ( extension_names, env , i );
            ext = w2c_class_loader_get_object_from_class_name 
                 ( env, class_name, W2C_CLASS_LOADER_EXTENSION_PATH, &dll_desc );
            if ( NULL != ext )
            {
-               AXIS2_ARRAY_LIST_ADD_AT ( engine_impl-> post_extensions,
+               axis2_array_list_add_at ( engine_impl-> post_extensions,
                                    env, i,ext );
-               AXIS2_ARRAY_LIST_ADD_AT (engine_impl-> post_extensions_dll_desc,
+               axis2_array_list_add_at (engine_impl-> post_extensions_dll_desc,
                                    env, i,(void*)dll_desc);
            }
            else

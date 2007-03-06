@@ -210,16 +210,16 @@ axis2_param_set_value_list(
     {
         int i = 0, size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(param->value_list, env);
+        size = axis2_array_list_size(param->value_list, env);
         for (i = 0; i < size; i++)
         {
             axis2_param_t *param = NULL;
 
-            param = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(
+            param = (axis2_param_t *) axis2_array_list_get(
                         param->value_list, env, i);
             AXIS2_PARAM_FREE(param, env);
         }
-        AXIS2_ARRAY_LIST_FREE(param->value_list, env);
+        axis2_array_list_free(param->value_list, env);
     }
     param->value_list = value_list;
 
@@ -276,19 +276,19 @@ axis2_param_free(axis2_param_t *param,
     {
         int i = 0, size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(param->value_list, env);
+        size = axis2_array_list_size(param->value_list, env);
         for (i = 0; i < size; i++)
         {
             axis2_param_t *param_l = NULL;
 
-            param_l = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(
+            param_l = (axis2_param_t *) axis2_array_list_get(
                         param->value_list, env, i);
             if (param_l)
             {
                 AXIS2_PARAM_FREE(param_l, env);
             }
         }
-        AXIS2_ARRAY_LIST_FREE(param->value_list, env);
+        axis2_array_list_free(param->value_list, env);
     }
     param_name = axis2_param_get_name(param, env);
     AXIS2_FREE(env->allocator, param_name);

@@ -70,18 +70,18 @@ rp_signed_encrypted_elements_free(rp_signed_encrypted_elements_t *signed_encrypt
         if(signed_encrypted_elements->xpath_expressions)
         {
             int i = 0;
-            for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(signed_encrypted_elements->xpath_expressions,
+            for (i = 0; i < axis2_array_list_size(signed_encrypted_elements->xpath_expressions,
                 env); i++)
             {
                 axis2_char_t *expression = NULL;
                 expression = (axis2_char_t *)
-                    AXIS2_ARRAY_LIST_GET(signed_encrypted_elements->xpath_expressions,env, i);
+                    axis2_array_list_get(signed_encrypted_elements->xpath_expressions,env, i);
                 if (expression)
                     AXIS2_FREE(env->allocator,expression);
 
                 expression = NULL;
             }
-            AXIS2_ARRAY_LIST_FREE(signed_encrypted_elements->xpath_expressions, env);
+            axis2_array_list_free(signed_encrypted_elements->xpath_expressions, env);
             signed_encrypted_elements->xpath_expressions = NULL;
 
         }
@@ -133,7 +133,7 @@ rp_signed_encrypted_elements_add_expression(rp_signed_encrypted_elements_t *sign
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,expression,AXIS2_FAILURE);
 
-    AXIS2_ARRAY_LIST_ADD(signed_encrypted_elements->xpath_expressions,env,expression);    
+    axis2_array_list_add(signed_encrypted_elements->xpath_expressions,env,expression);    
     return AXIS2_SUCCESS;
 }
 

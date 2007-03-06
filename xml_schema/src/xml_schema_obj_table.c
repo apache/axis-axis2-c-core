@@ -159,13 +159,13 @@ xml_schema_obj_table_free(xml_schema_obj_table_t *obj_table,
 
     if (obj_table_impl->names)
     {
-        AXIS2_ARRAY_LIST_FREE(obj_table_impl->names, env);
+        axis2_array_list_free(obj_table_impl->names, env);
         obj_table_impl->names = NULL;
     }
 
     if (obj_table_impl->values)
     {
-        AXIS2_ARRAY_LIST_FREE(obj_table_impl->values, env);
+        axis2_array_list_free(obj_table_impl->values, env);
         obj_table_impl->values = NULL;
     }
 
@@ -235,7 +235,7 @@ xml_schema_obj_table_get_names(xml_schema_obj_table_t *obj_table,
 
     if (obj_table_impl->names)
     {
-        AXIS2_ARRAY_LIST_FREE(obj_table_impl->names, env);
+        axis2_array_list_free(obj_table_impl->names, env);
         obj_table_impl->names = NULL;
     }
 
@@ -254,7 +254,7 @@ xml_schema_obj_table_get_names(xml_schema_obj_table_t *obj_table,
         /*axis2_hash_this (hi, NULL, NULL, &val);*/
         axis2_hash_this(hi, &val, NULL, NULL);
         qname = axis2_qname_create_from_string(env, val);
-        AXIS2_ARRAY_LIST_ADD(obj_table_impl->names, env, qname);
+        axis2_array_list_add(obj_table_impl->names, env, qname);
         val = NULL;
     }
     return obj_table_impl->names;
@@ -271,7 +271,7 @@ xml_schema_obj_table_get_values(xml_schema_obj_table_t *obj_table,
 
     if (obj_table_impl->values)
     {
-        AXIS2_ARRAY_LIST_FREE(obj_table_impl->values, env);
+        axis2_array_list_free(obj_table_impl->values, env);
         obj_table_impl->values = NULL;
     }
 
@@ -287,7 +287,7 @@ xml_schema_obj_table_get_values(xml_schema_obj_table_t *obj_table,
     {
         void *val = NULL;
         axis2_hash_this(hi, NULL, NULL, &val);
-        AXIS2_ARRAY_LIST_ADD(obj_table_impl->values, env, val);
+        axis2_array_list_add(obj_table_impl->values, env, val);
         val = NULL;
     }
     return obj_table_impl->values;

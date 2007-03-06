@@ -628,7 +628,7 @@ axis2_svc_client_add_header(
             return AXIS2_FAILURE;
         }
     }
-    AXIS2_ARRAY_LIST_ADD(svc_client_impl->headers, env, header);
+    axis2_array_list_add(svc_client_impl->headers, env, header);
 
     return AXIS2_SUCCESS;
 }
@@ -647,11 +647,11 @@ axis2_svc_client_remove_all_headers(
     if (!svc_client_impl->headers)
         return AXIS2_FAILURE;
 
-    size = AXIS2_ARRAY_LIST_SIZE(svc_client_impl->headers, env);
+    size = axis2_array_list_size(svc_client_impl->headers, env);
     for (i = 0; i < size; i++)
     {
         axiom_node_t *node = NULL;
-        node = AXIS2_ARRAY_LIST_GET(svc_client_impl->headers, env, i);
+        node = axis2_array_list_get(svc_client_impl->headers, env, i);
         if (node)
         {
             AXIOM_NODE_FREE_TREE(node, env);
@@ -1465,11 +1465,11 @@ axis2_svc_client_fill_soap_envelope(
             {
                 int size = 0;
                 int i = 0;
-                size = AXIS2_ARRAY_LIST_SIZE(svc_client_impl->headers, env);
+                size = axis2_array_list_size(svc_client_impl->headers, env);
                 for (i = 0; i < size; i++)
                 {
                     axiom_node_t *node = NULL;
-                    node = AXIS2_ARRAY_LIST_GET(svc_client_impl->headers, env, i);
+                    node = axis2_array_list_get(svc_client_impl->headers, env, i);
                     if (node)
                     {
                         AXIOM_NODE_ADD_CHILD(header_node, env, node);

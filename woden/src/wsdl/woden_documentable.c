@@ -194,7 +194,7 @@ woden_documentable_free(
 
     if (documentable_impl->f_doc_elems)
     {
-        AXIS2_ARRAY_LIST_FREE(documentable_impl->f_doc_elems, env);
+        axis2_array_list_free(documentable_impl->f_doc_elems, env);
         documentable_impl->f_doc_elems = NULL;
     }
 
@@ -314,7 +314,7 @@ woden_documentable_add_documentation_element(
             return AXIS2_FAILURE;
         }
     }
-    return AXIS2_ARRAY_LIST_ADD(documentable_impl->f_doc_elems, env,
+    return axis2_array_list_add(documentable_impl->f_doc_elems, env,
             documentation);
 }
 

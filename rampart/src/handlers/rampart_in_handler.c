@@ -201,13 +201,13 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 if (action_list)
                 {
 
-                    if (AXIS2_ARRAY_LIST_IS_EMPTY(action_list, env))
+                    if (axis2_array_list_is_empty(action_list, env))
                     {
                         AXIS2_LOG_INFO(env->log, 
 						"[rampart][rampart_in_handler] No actions defined.");
                     }
 
-                    param_action = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(action_list,
+                    param_action = (axis2_param_t*) axis2_array_list_get(action_list,
 						env, 0);
 
                     if (param_action)

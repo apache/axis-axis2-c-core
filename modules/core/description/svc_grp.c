@@ -138,13 +138,13 @@ axis2_svc_grp_free(
 
     if (svc_grp->module_qnames)
     {
-        AXIS2_ARRAY_LIST_FREE(svc_grp->module_qnames, env);
+        axis2_array_list_free(svc_grp->module_qnames, env);
         svc_grp->module_qnames = NULL;
     }
 
     if (svc_grp->module_list)
     {
-        AXIS2_ARRAY_LIST_FREE(svc_grp->module_list, env);
+        axis2_array_list_free(svc_grp->module_list, env);
         svc_grp->module_list = NULL;
     }
 
@@ -395,7 +395,7 @@ axis2_svc_grp_add_module_qname(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    return AXIS2_ARRAY_LIST_ADD(svc_grp->module_qnames, env,
+    return axis2_array_list_add(svc_grp->module_qnames, env,
             module_qname);
 }
 
@@ -444,14 +444,14 @@ axis2_svc_grp_engage_module(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
-    size = AXIS2_ARRAY_LIST_SIZE(svc_grp->module_qnames, env);
+    size = axis2_array_list_size(svc_grp->module_qnames, env);
     if (AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return AXIS2_FAILURE;
     }
     for (i = 0; size; i++)
     {
-        modu = AXIS2_ARRAY_LIST_GET(svc_grp->module_qnames, env, i);
+        modu = axis2_array_list_get(svc_grp->module_qnames, env, i);
         modu_local = AXIS2_QNAME_GET_LOCALPART(modu, env);
         module_name_local = AXIS2_QNAME_GET_LOCALPART(module_name, env);
         if (0 == AXIS2_STRCMP(modu_local, module_name_local))
@@ -535,7 +535,7 @@ axis2_svc_grp_add_module_ref(
         if (!svc_grp->module_list)
             return AXIS2_FAILURE;
     }
-    return AXIS2_ARRAY_LIST_ADD(svc_grp->module_list, env, moduleref);
+    return axis2_array_list_add(svc_grp->module_list, env, moduleref);
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL

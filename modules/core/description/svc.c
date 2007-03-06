@@ -282,30 +282,30 @@ axis2_svc_free(
         int i = 0;
         int size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(svc->module_list, env);
+        size = axis2_array_list_size(svc->module_list, env);
         for (i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
-            qname = AXIS2_ARRAY_LIST_GET(svc->module_list, env, i);
+            qname = axis2_array_list_get(svc->module_list, env, i);
             if (qname)
             {
                 AXIS2_QNAME_FREE(qname, env);
                 qname = NULL;
             }
         }
-        AXIS2_ARRAY_LIST_FREE(svc->module_list, env);
+        axis2_array_list_free(svc->module_list, env);
         svc->module_list = NULL;
     }
 
     if (svc->schema_list)
     {
-        AXIS2_ARRAY_LIST_FREE(svc->schema_list, env);
+        axis2_array_list_free(svc->schema_list, env);
         svc->schema_list = NULL;
     }
 
     if (svc->engaged_modules)
     {
-        AXIS2_ARRAY_LIST_FREE(svc->engaged_modules, env);
+        axis2_array_list_free(svc->engaged_modules, env);
     }
 
     if (svc->axis_svc_name)
@@ -696,7 +696,7 @@ axis2_svc_engage_module(
     if (status)
     {
         const axis2_qname_t *qname = NULL;
-        status = AXIS2_ARRAY_LIST_ADD(svc->engaged_modules, env, module_desc);
+        status = axis2_array_list_add(svc->engaged_modules, env, module_desc);
         qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         axis2_svc_add_module_qname(svc, env, qname);
     }
@@ -1354,7 +1354,7 @@ axis2_svc_add_module_qname(
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
 
     qmodule_qname_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
-    return AXIS2_ARRAY_LIST_ADD(svc->module_list, env,
+    return axis2_array_list_add(svc->module_list, env,
             qmodule_qname_l);
 }
 
@@ -1494,12 +1494,12 @@ axis2_svc_print_schema(
         return AXIS2_FAILURE;
     }
 
-    size = AXIS2_ARRAY_LIST_SIZE(svc->schema_list, env);
+    size = axis2_array_list_size(svc->schema_list, env);
     for (i = 0; i < size; i++)
     {
         xml_schema_t *schema = NULL;
         axis2_char_t *buffer = NULL;
-        schema = AXIS2_ARRAY_LIST_GET(svc->schema_list, env, i);
+        schema = axis2_array_list_get(svc->schema_list, env, i);
         buffer = XML_SCHEMA_SERIALIZE(schema, env);
         if (buffer)
         {
@@ -1538,7 +1538,7 @@ axis2_svc_add_all_namespaces(
                 AXIS2_FAILURE);
         return NULL;
     }
-    schema = (xml_schema_t *)AXIS2_ARRAY_LIST_GET(svc->schema_list, env, index);
+    schema = (xml_schema_t *)axis2_array_list_get(svc->schema_list, env, index);
     prefix_map = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(schema, env);
     if (NULL == prefix_map)
     {
@@ -1582,7 +1582,7 @@ axis2_svc_add_schema(
                 AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    AXIS2_ARRAY_LIST_ADD(svc->schema_list, env, schema);
+    axis2_array_list_add(svc->schema_list, env, schema);
     return axis2_svc_add_schema_ns(svc, env, XML_SCHEMA_GET_TARGET_NAMESPACE(
                 schema, env));
 }
@@ -1724,11 +1724,11 @@ axis2_svc_get_schema_element(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(svc->schema_list, env); i++)
+    for (i = 0; i < axis2_array_list_size(svc->schema_list, env); i++)
     {
         xml_schema_t *schema = NULL;
         xml_schema_element_t *schema_element = NULL;
-        schema = AXIS2_ARRAY_LIST_GET(svc->schema_list, env, i);
+        schema = axis2_array_list_get(svc->schema_list, env, i);
         if (schema)
         {
             schema_element = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env,

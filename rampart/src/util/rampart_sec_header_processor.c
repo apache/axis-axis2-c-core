@@ -242,11 +242,11 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     ref_list_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_REFERENCE_LIST, NULL, NULL);
     reference_list = oxs_token_get_reference_list_data(env, ref_list_node);
     /*If there are no references. Nothing to do. Return success*/
-    if((!reference_list) || (0 == AXIS2_ARRAY_LIST_SIZE(reference_list, env))){
+    if((!reference_list) || (0 == axis2_array_list_size(reference_list, env))){
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List is empty");
         return AXIS2_SUCCESS;
     }
-    AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List has %d node reference(s)", AXIS2_ARRAY_LIST_SIZE(reference_list, env));
+    AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List has %d node reference(s)", axis2_array_list_size(reference_list, env));
 
     /*Get the algorithm to decrypt the sesison key*/
     enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
@@ -348,7 +348,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     if(!enc_sym_algo_in_pol)
         return AXIS2_FAILURE;
 
-    for(i=0 ; i < AXIS2_ARRAY_LIST_SIZE(reference_list, env); i++ )
+    for(i=0 ; i < axis2_array_list_size(reference_list, env); i++ )
     {
         axis2_char_t *id = NULL;
         axis2_char_t *id2 = NULL;
@@ -365,7 +365,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
 
         /*Get the i-th element and decrypt it */
-        id = (axis2_char_t*)AXIS2_ARRAY_LIST_GET(reference_list, env, i);
+        id = (axis2_char_t*)axis2_array_list_get(reference_list, env, i);
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Decrypting node, ID=%s", id);
 
         /*Need to remove # sign from the ID*/
@@ -452,13 +452,13 @@ rampart_shp_pre_security_check(const axis2_env_t *env,
 
   
     items_list = axis2_tokenize(env, items, ' ');
-    size = AXIS2_ARRAY_LIST_SIZE(items_list, env);
+    size = axis2_array_list_size(items_list, env);
 
   
     for (i = 0; i < size; i++)
     {
         axis2_char_t *item = NULL;
-        item = AXIS2_ARRAY_LIST_GET(items_list, env, i);    
+        item = axis2_array_list_get(items_list, env, i);    
         
         if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL))){
   
@@ -511,14 +511,14 @@ rampart_shp_post_security_check(const axis2_env_t *env,
 
 
     items_list = axis2_tokenize(env, items, ' ');
-    size = AXIS2_ARRAY_LIST_SIZE(items_list, env);
+    size = axis2_array_list_size(items_list, env);
 
 
     for (i = 0; i < size; i++)
     {
         axis2_char_t *item = NULL;
         axis2_char_t *result = NULL;
-        item = AXIS2_ARRAY_LIST_GET(items_list, env, i);
+        item = axis2_array_list_get(items_list, env, i);
 
         if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL))){
 

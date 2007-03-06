@@ -213,10 +213,10 @@ axis2_op_free(
     if (op->module_qnames)
     {
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op->module_qnames, env); i++)
+        for (i = 0; i < axis2_array_list_size(op->module_qnames, env); i++)
         {
             axis2_qname_t *module_ref = NULL;
-            module_ref = AXIS2_ARRAY_LIST_GET(op->module_qnames, env, i);
+            module_ref = axis2_array_list_get(op->module_qnames, env, i);
 
             if (module_ref)
             {
@@ -224,17 +224,17 @@ axis2_op_free(
                 module_ref = NULL;
             }
         }
-        AXIS2_ARRAY_LIST_FREE(op->module_qnames, env);
+        axis2_array_list_free(op->module_qnames, env);
         op->module_qnames = NULL;
     }
     if (op->engaged_module_list)
     {
-        AXIS2_ARRAY_LIST_FREE(op->engaged_module_list, env);
+        axis2_array_list_free(op->engaged_module_list, env);
         op->engaged_module_list = NULL;
     }
     if (op->wsamapping_list)
     {
-        AXIS2_ARRAY_LIST_FREE(op->wsamapping_list, env);
+        axis2_array_list_free(op->wsamapping_list, env);
         op->wsamapping_list = NULL;
     }
 
@@ -527,7 +527,7 @@ axis2_op_engage_module(
 
     collection_module = op->engaged_module_list;
     if (collection_module)
-        size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
+        size = axis2_array_list_size(collection_module, env);
     if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return AXIS2_ERROR_GET_STATUS_CODE(env->error);
@@ -538,7 +538,7 @@ axis2_op_engage_module(
         const axis2_qname_t *qname1 = NULL;
         const axis2_qname_t *qname2 = NULL;
 
-        module_desc = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
+        module_desc = (axis2_module_desc_t *) axis2_array_list_get(
                     collection_module, env, index);
         if (!module_desc)
         {
@@ -575,7 +575,7 @@ axis2_op_engage_module(
         }
         if (AXIS2_TRUE == need_to_add)
         {
-            AXIS2_ARRAY_LIST_ADD(collection_module, env, moduleref);
+            axis2_array_list_add(collection_module, env, moduleref);
         }
     }
     else
@@ -604,7 +604,7 @@ axis2_op_add_to_engaged_module_list(
     {
         op->engaged_module_list = axis2_array_list_create(env, 0);
     }
-    size = AXIS2_ARRAY_LIST_SIZE(op->engaged_module_list, env);
+    size = axis2_array_list_size(op->engaged_module_list, env);
 
     if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
@@ -615,7 +615,7 @@ axis2_op_add_to_engaged_module_list(
     {
         const axis2_qname_t *module_qname_l = NULL;
 
-        module_desc_l = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
+        module_desc_l = (axis2_module_desc_t *) axis2_array_list_get(
                     op->engaged_module_list, env, index);
         module_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);
         if (AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
@@ -624,7 +624,7 @@ axis2_op_add_to_engaged_module_list(
         }
 
     }
-    return AXIS2_ARRAY_LIST_ADD(op->engaged_module_list, env, module_desc);
+    return axis2_array_list_add(op->engaged_module_list, env, module_desc);
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
@@ -876,7 +876,7 @@ axis2_op_add_module_qname(
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
     module_qname_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
 
-    return AXIS2_ARRAY_LIST_ADD(op->module_qnames, env, module_qname_l);
+    return axis2_array_list_add(op->module_qnames, env, module_qname_l);
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
@@ -1197,7 +1197,7 @@ axis2_op_set_wsamapping_list(
     
     if (op->wsamapping_list)
     {
-        AXIS2_ARRAY_LIST_FREE(op->wsamapping_list, env);
+        axis2_array_list_free(op->wsamapping_list, env);
         op->wsamapping_list = NULL;
     }
     op->wsamapping_list = mapping_list;

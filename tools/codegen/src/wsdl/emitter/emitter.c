@@ -368,7 +368,7 @@ w2c_emitter_pick_service_name ( w2c_emitter_impl_t *emitter_impl,
             WODEN_WSDL10_DESC_ELEMENT_GET_SVC_ELEMENTS(emitter_impl->desc, env);
         if (svc_list)
         {
-            svc = AXIS2_ARRAY_LIST_GET(svc_list, env, 0);
+            svc = axis2_array_list_get(svc_list, env, 0);
             if (svc)
             {
                 svc_qname = WODEN_WSDL10_SVC_GET_QNAME(svc, env);
@@ -382,7 +382,7 @@ w2c_emitter_pick_service_name ( w2c_emitter_impl_t *emitter_impl,
             WODEN_DESC_ELEMENT_GET_SVC_ELEMENTS(emitter_impl->desc, env);
         if (svc_list)
         {
-            svc = AXIS2_ARRAY_LIST_GET(svc_list, env, 0);
+            svc = axis2_array_list_get(svc_list, env, 0);
             if (svc)
             {
                 svc_qname = WODEN_SVC_GET_QNAME(svc, env);
@@ -463,12 +463,12 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     svc_list = WODEN_WSDL10_DESC_GET_SVCS(emitter_impl-> desc, env);
     
     /** currently work only for one service */
-    if (AXIS2_ARRAY_LIST_SIZE ( svc_list, env ) < 1 )
+    if (axis2_array_list_size ( svc_list, env ) < 1 )
     {
        /** no need to continue more */
        return AXIS2_FAILURE; 
     }
-    svc = AXIS2_ARRAY_LIST_GET( svc_list, env, 0 );
+    svc = axis2_array_list_get( svc_list, env, 0 );
     svc_qname = WODEN_WSDL10_SVC_GET_QNAME( svc, env);
     ns = AXIS2_QNAME_GET_URI( svc_qname, env);
     w2c_xslt_utils_add_attribute (env, root, "namespace", ns);
@@ -479,12 +479,12 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     endpoint_list = WODEN_WSDL10_SVC_GET_ENDPOINTS (svc, env);
     
     /** currently work only for one endpoint*/
-    if (AXIS2_ARRAY_LIST_SIZE ( endpoint_list, env ) < 1 )
+    if (axis2_array_list_size ( endpoint_list, env ) < 1 )
     {
        return AXIS2_FAILURE; /* no need to continue more */
     }
 
-    endpoint = AXIS2_ARRAY_LIST_GET( endpoint_list, env, 0 );
+    endpoint = axis2_array_list_get( endpoint_list, env, 0 );
     endpoint = woden_wsdl10_endpoint_to_element_extensible(
                             endpoint, env);
 
@@ -493,12 +493,12 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(endpoint,
             env);
     if(ext_elements)
-        size = AXIS2_ARRAY_LIST_SIZE(ext_elements, env);
+        size = axis2_array_list_size(ext_elements, env);
     else
         return AXIS2_FAILURE;
     for(j = 0; j < size; j++)
     {
-        ext_element = AXIS2_ARRAY_LIST_GET(ext_elements, env, j);
+        ext_element = axis2_array_list_get(ext_elements, env, j);
         ext_type = (axis2_qname_t*)WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
         if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
         {
@@ -538,11 +538,11 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     binding_ops_list = 
          WODEN_BINDING_GET_BINDING_OPS( binding, env);
     binding_ops_count = 
-         AXIS2_ARRAY_LIST_SIZE( binding_ops_list, env );
+         axis2_array_list_size( binding_ops_list, env );
 
     for ( i = 0; i < binding_ops_count; i ++ )
     {
-        binding_op = AXIS2_ARRAY_LIST_GET ( binding_ops_list, env, i );
+        binding_op = axis2_array_list_get ( binding_ops_list, env, i );
         /**********************************************************************
          * extract interface ops
          **********************************************************************/
@@ -587,10 +587,10 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
                                 "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
         binding_op = woden_wsdl10_binding_op_to_element_extensible(binding_op, env);
         ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op, env);
-        size = AXIS2_ARRAY_LIST_SIZE( ext_elements, env);
+        size = axis2_array_list_size( ext_elements, env);
         for(j=0; j < size; j++)
         {
-            ext_element = AXIS2_ARRAY_LIST_GET(ext_elements, env, j);
+            ext_element = axis2_array_list_get(ext_elements, env, j);
             ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
             if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
             {
@@ -650,10 +650,10 @@ w2c_emitter_load_operations( w2c_emitter_impl_t *emitter_impl,
     interface_msg_refs = WODEN_INTERFACE_OP_GET_INTERFACE_MSG_REFS(
             interface_op, env);
     if(interface_msg_refs)
-        msg_refs_size = AXIS2_ARRAY_LIST_SIZE(interface_msg_refs, env);
+        msg_refs_size = axis2_array_list_size(interface_msg_refs, env);
     for(j = 0; j < msg_refs_size; j++)
     {
-        interface_msg_ref = AXIS2_ARRAY_LIST_GET(interface_msg_refs, env, j);
+        interface_msg_ref = axis2_array_list_get(interface_msg_refs, env, j);
         if( wsdl_version == 1)
         {
             direction =  WODEN_WSDL10_INTERFACE_MSG_REF_GET_DIRECTION
@@ -762,12 +762,12 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
     svc_list = WODEN_DESC_GET_SVCS(emitter_impl->desc, env);
 
     /** currently work only for one service */
-    if (AXIS2_ARRAY_LIST_SIZE ( svc_list, env ) < 1 )
+    if (axis2_array_list_size ( svc_list, env ) < 1 )
     {
        /** no need to continue more */
        return AXIS2_FAILURE; 
     }
-    svc = AXIS2_ARRAY_LIST_GET( svc_list, env, 0 );
+    svc = axis2_array_list_get( svc_list, env, 0 );
 
     /**********************************************************************
      * extract endpoint(s)
@@ -775,11 +775,11 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
     endpoint_list = WODEN_SVC_GET_ENDPOINTS (svc, env);
     
     /** currently work only for one endpoint*/
-    if (AXIS2_ARRAY_LIST_SIZE ( endpoint_list, env ) < 1 )
+    if (axis2_array_list_size ( endpoint_list, env ) < 1 )
     {
        return AXIS2_FAILURE; /* no need to continue more */
     }
-    endpoint = AXIS2_ARRAY_LIST_GET( endpoint_list, env, 0 );
+    endpoint = axis2_array_list_get( endpoint_list, env, 0 );
     endpoint_uri = WODEN_ENDPOINT_GET_ADDRESS( endpoint, env);
     endpoint_uri_str = AXIS2_URI_TO_STRING ( endpoint_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     endpoint_node = w2c_xslt_utils_add_child_node(env, "endpoint",
@@ -800,11 +800,11 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
     binding_ops_list = 
          WODEN_BINDING_GET_BINDING_OPS( binding, env);
     binding_ops_count = 
-         AXIS2_ARRAY_LIST_SIZE( binding_ops_list, env );
+         axis2_array_list_size( binding_ops_list, env );
 
     for ( i = 0; i < binding_ops_count; i ++ )
     {
-        binding_op = AXIS2_ARRAY_LIST_GET ( binding_ops_list, env, i );
+        binding_op = axis2_array_list_get ( binding_ops_list, env, i );
         /**********************************************************************
          * extract interface ops
          **********************************************************************/
@@ -849,10 +849,10 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
                                 "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
         binding_op = woden_binding_op_to_element_extensible(binding_op, env);
         ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op, env);
-        size = AXIS2_ARRAY_LIST_SIZE( ext_elements, env);
+        size = axis2_array_list_size( ext_elements, env);
         for(j=0; j < size; j++)
         {
-            ext_element = AXIS2_ARRAY_LIST_GET(ext_elements, env, j);
+            ext_element = axis2_array_list_get(ext_elements, env, j);
             ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
             if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
             {

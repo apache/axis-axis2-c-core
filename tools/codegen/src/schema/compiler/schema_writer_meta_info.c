@@ -1589,7 +1589,7 @@ w2c_schema_writer_meta_info_get_qname_array( w2c_schema_writer_meta_info_t *sche
         if (qname_str)
         {
             qname = axis2_qname_create_from_string( env, qname_str);
-            AXIS2_ARRAY_LIST_ADD_AT( arr_list, env, i, qname);
+            axis2_array_list_add_at( arr_list, env, i, qname);
         }
     }
     return arr_list;
@@ -1624,26 +1624,26 @@ w2c_schema_writer_meta_info_get_ordered_qname_array( w2c_schema_writer_meta_info
                 writer_meta_info_impl-> qname_orderlist, index_str, AXIS2_HASH_KEY_STRING );
         if ( qname != NULL )
         {
-            AXIS2_ARRAY_LIST_ADD_AT( arr_list, env, real_index, qname );
+            axis2_array_list_add_at( arr_list, env, real_index, qname );
             real_index ++;
         }
     }
   
     temp_arr_list = w2c_schema_writer_meta_info_get_qname_array( schema_writer_meta_info, env);
 
-    size = AXIS2_ARRAY_LIST_SIZE( temp_arr_list, env);
+    size = axis2_array_list_size( temp_arr_list, env);
     for ( i = 0; i < size; i ++)
     {
-        qname = (axis2_qname_t*) AXIS2_ARRAY_LIST_GET(
+        qname = (axis2_qname_t*) axis2_array_list_get(
                        temp_arr_list, env, i );
         if ( w2c_schema_writer_meta_info_get_any_attri_status4qname( 
                     schema_writer_meta_info, env, qname ) )
         {
-            AXIS2_ARRAY_LIST_ADD_AT( arr_list, env, real_index, qname );
+            axis2_array_list_add_at( arr_list, env, real_index, qname );
             real_index ++;
         } 
     }
-    AXIS2_ARRAY_LIST_FREE( temp_arr_list, env);
+    axis2_array_list_free( temp_arr_list, env);
      
     return arr_list;
 }

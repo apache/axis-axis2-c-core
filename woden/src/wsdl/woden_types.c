@@ -565,13 +565,13 @@ woden_types_free(
 
     if (types_impl->f_schemas)
     {
-        AXIS2_ARRAY_LIST_FREE(types_impl->f_schemas, env);
+        axis2_array_list_free(types_impl->f_schemas, env);
         types_impl->f_schemas = NULL;
     }
 
     if (types_impl->schema_defs)
     {
-        AXIS2_ARRAY_LIST_FREE(types_impl->schema_defs, env);
+        axis2_array_list_free(types_impl->schema_defs, env);
         types_impl->schema_defs = NULL;
     }
 
@@ -772,7 +772,7 @@ woden_types_add_schema(
     types_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(types_impl->f_schemas, env, schema);
+    return axis2_array_list_add(types_impl->f_schemas, env, schema);
 }
 
 axis2_status_t AXIS2_CALL
@@ -792,8 +792,8 @@ woden_types_remove_schema(
     types_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
-    index = AXIS2_ARRAY_LIST_INDEX_OF(types_impl->f_schemas, env, schema);
-    AXIS2_ARRAY_LIST_REMOVE(types_impl->f_schemas, env, index);
+    index = axis2_array_list_index_of(types_impl->f_schemas, env, schema);
+    axis2_array_list_remove(types_impl->f_schemas, env, index);
     code = AXIS2_ERROR_GET_STATUS_CODE(env->error);
     return code;
 }
@@ -831,20 +831,20 @@ woden_types_get_schemas_with_namespace(
 
     if (namespc)
         str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
-    size = AXIS2_ARRAY_LIST_SIZE(types_impl->f_schemas, env);
+    size = axis2_array_list_size(types_impl->f_schemas, env);
     for (i = 0; i < size; i++)
     {
         axis2_char_t *str_namespc_l = NULL;
         woden_schema_t *schema = (woden_schema_t *)
-                AXIS2_ARRAY_LIST_GET(types_impl->f_schemas, env, i);
+                axis2_array_list_get(types_impl->f_schemas, env, i);
         str_namespc_l = WODEN_SCHEMA_GET_NAMESPACE_AS_STRING(schema, env);
         /* get schemas whose namespace is missing */
         if (!str_namespc && !str_namespc_l)
-            AXIS2_ARRAY_LIST_ADD(types_impl->schema_defs, env, schema);
+            axis2_array_list_add(types_impl->schema_defs, env, schema);
         else if (str_namespc && str_namespc_l && 0 == AXIS2_STRCMP(str_namespc,
                 str_namespc_l))
         {
-            AXIS2_ARRAY_LIST_ADD(types_impl->schema_defs , env, schema);
+            axis2_array_list_add(types_impl->schema_defs , env, schema);
         }
     }
     return types_impl->schema_defs;
@@ -864,14 +864,14 @@ woden_types_get_inlined_schemas(
     types_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
-    size = AXIS2_ARRAY_LIST_SIZE(types_impl->f_schemas, env);
+    size = axis2_array_list_size(types_impl->f_schemas, env);
     for (i = 0; i < size; i++)
     {
         woden_schema_t *s = (woden_schema_t *)
-                AXIS2_ARRAY_LIST_GET(types_impl->f_schemas, env, i);
+                axis2_array_list_get(types_impl->f_schemas, env, i);
         if (WODEN_INLINED_SCHEMA == WODEN_SCHEMA_TYPE(s, env))
         {
-            AXIS2_ARRAY_LIST_ADD(types_impl->schema_defs, env, s);
+            axis2_array_list_add(types_impl->schema_defs, env, s);
         }
     }
     return types_impl->schema_defs;
@@ -891,14 +891,14 @@ woden_types_get_imported_schemas(
     types_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
-    size = AXIS2_ARRAY_LIST_SIZE(types_impl->f_schemas, env);
+    size = axis2_array_list_size(types_impl->f_schemas, env);
     for (i = 0; i < size; i++)
     {
         woden_schema_t *s = (woden_schema_t *)
-                AXIS2_ARRAY_LIST_GET(types_impl->f_schemas, env, i);
+                axis2_array_list_get(types_impl->f_schemas, env, i);
         if (WODEN_IMPORTED_SCHEMA == WODEN_SCHEMA_TYPE(s, env))
         {
-            AXIS2_ARRAY_LIST_ADD(types_impl->schema_defs, env, s);
+            axis2_array_list_add(types_impl->schema_defs, env, s);
         }
     }
     return types_impl->schema_defs;
@@ -931,11 +931,11 @@ woden_types_get_element_declaration(
         int i = 0, size = 0;
 
         /* search the schemas with this qname's namespace */
-        size = AXIS2_ARRAY_LIST_SIZE(schemas, env);
+        size = axis2_array_list_size(schemas, env);
         for (i = 0; i < size; i++)
         {
             xml_schema_t *xml_schema = (xml_schema_t *)
-                    AXIS2_ARRAY_LIST_GET(schemas, env, i);
+                    axis2_array_list_get(schemas, env, i);
             xml_schema_el = XML_SCHEMA_GET_ELEMENT_BY_QNAME(xml_schema,
                     env, qname);
             if (xml_schema_el)
@@ -974,11 +974,11 @@ woden_types_get_type_definition(
             int i = 0, size = 0;
 
             /* search the schemas with this qname's namespace */
-            size = AXIS2_ARRAY_LIST_SIZE(schema_refs, env);
+            size = axis2_array_list_size(schema_refs, env);
             for (i = 0; i < size; i++)
             {
                 xml_schema_t *xml_schema = (xml_schema_t *)
-                        AXIS2_ARRAY_LIST_GET(schema_refs, env, i);
+                        axis2_array_list_get(schema_refs, env, i);
                 xml_schema_type = XML_SCHEMA_GET_TYPE_BY_QNAME(xml_schema,
                         env, qname);
                 if (xml_schema_type)
@@ -1008,14 +1008,14 @@ woden_types_get_referenceable_schema_defs(
     if (types_impl->schema_defs)
     {
         int i = 0, size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(types_impl->schema_defs, env);
+        size = axis2_array_list_size(types_impl->schema_defs, env);
         for (i = 0; i < size; i++)
         {
-            woden_schema_t *schema = AXIS2_ARRAY_LIST_GET(
+            woden_schema_t *schema = axis2_array_list_get(
                         types_impl->schema_defs, env, i);
             WODEN_SCHEMA_FREE(schema, env);
         }
-        AXIS2_ARRAY_LIST_FREE(types_impl->schema_defs, env);
+        axis2_array_list_free(types_impl->schema_defs, env);
     }
     types_impl->schema_defs = axis2_array_list_create(env, 0);
     if (!types_impl->schema_defs)
@@ -1023,16 +1023,16 @@ woden_types_get_referenceable_schema_defs(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    size = AXIS2_ARRAY_LIST_SIZE(types_impl->f_schemas, env);
+    size = axis2_array_list_size(types_impl->f_schemas, env);
     for (i = 0; i < size; i++)
     {
-        void *s = AXIS2_ARRAY_LIST_GET(types_impl->f_schemas, env, i);
+        void *s = axis2_array_list_get(types_impl->f_schemas, env, i);
         xml_schema_t *schema_def = WODEN_SCHEMA_GET_SCHEMA_DEF(s,
                 env);
         if (AXIS2_TRUE == WODEN_SCHEMA_IS_REFERENCEABLE(s, env) &&
                 schema_def)
         {
-            AXIS2_ARRAY_LIST_ADD(types_impl->schema_defs, env, schema_def);
+            axis2_array_list_add(types_impl->schema_defs, env, schema_def);
         }
     }
     return types_impl->schema_defs;
@@ -1054,11 +1054,11 @@ woden_types_get_referenceable_schema_defs_with_namespace(
     types_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
-    size = AXIS2_ARRAY_LIST_SIZE(types_impl->f_schemas, env);
+    size = axis2_array_list_size(types_impl->f_schemas, env);
     for (i = 0; i < size; i++)
     {
         woden_schema_t *schema =
-            (woden_schema_t *) AXIS2_ARRAY_LIST_GET(types_impl->f_schemas,
+            (woden_schema_t *) axis2_array_list_get(types_impl->f_schemas,
                     env, i);
         axis2_char_t *namespc_l =
             WODEN_SCHEMA_GET_NAMESPACE_AS_STRING(schema, env);
@@ -1067,7 +1067,7 @@ woden_types_get_referenceable_schema_defs_with_namespace(
         if (AXIS2_TRUE == WODEN_SCHEMA_IS_REFERENCEABLE(schema, env) &&
                 0 == AXIS2_STRCMP(namespc, namespc_l) &&  schema_def)
         {
-            AXIS2_ARRAY_LIST_ADD(types_impl->schema_defs, env, schema_def);
+            axis2_array_list_add(types_impl->schema_defs, env, schema_def);
         }
     }
     return types_impl->schema_defs;
@@ -1133,12 +1133,12 @@ woden_types_is_namespace_in_scope_with_namespace(
     types_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
-    size = AXIS2_ARRAY_LIST_SIZE(types_impl->f_schemas, env);
+    size = axis2_array_list_size(types_impl->f_schemas, env);
     for (i = 0; i < size; i++)
     {
         axis2_char_t *namespc_l = NULL;
 
-        woden_schema_t *s = (woden_schema_t *) AXIS2_ARRAY_LIST_GET(
+        woden_schema_t *s = (woden_schema_t *) axis2_array_list_get(
                     types_impl->f_schemas, env, i);
         if (!s)
         {

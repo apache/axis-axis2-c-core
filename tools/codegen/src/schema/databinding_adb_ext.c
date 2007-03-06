@@ -235,16 +235,16 @@ w2c_databinding_adb_ext_invoke( const axis2_env_t *env,
     list = WODEN_TYPES_ELEMENT_GET_SCHEMAS( types_ele, env);
 
     schema_list = axis2_array_list_create( env, 10);
-    count = AXIS2_ARRAY_LIST_SIZE( list, env);
+    count = axis2_array_list_size( list, env);
     for ( i = 0, non_null_schemas =0; i < count; i ++ )
     {
-        woden_schema = ( woden_schema_t*)AXIS2_ARRAY_LIST_GET( list, env, i);
+        woden_schema = ( woden_schema_t*)axis2_array_list_get( list, env, i);
 
         schema =  WODEN_SCHEMA_GET_SCHEMA_DEF( woden_schema, env);
         if ( schema != NULL)
         {
             non_null_schemas ++;
-            AXIS2_ARRAY_LIST_ADD( schema_list, env, schema);
+            axis2_array_list_add( schema_list, env, schema);
         }
     }
     if( non_null_schemas == 0 )

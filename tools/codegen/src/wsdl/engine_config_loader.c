@@ -362,7 +362,7 @@ w2c_engine_config_loader_load_config(
         if ( w2c_string_indexof_cs 
              ( tmp_key, W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX)== 0 && tmp_array)
         {
-           tmp_string = (char*)AXIS2_ARRAY_LIST_GET (tmp_array, env, 0 );
+           tmp_string = (char*)axis2_array_list_get (tmp_array, env, 0 );
            if ( h == NULL )
            {
                h = axis2_hash_make ( env );   
@@ -370,7 +370,7 @@ w2c_engine_config_loader_load_config(
            len = AXIS2_STRLEN (W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX );
            tmp_key = axis2_string_substring_starting_at ( tmp_key, len);
            axis2_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string );
-           AXIS2_ARRAY_LIST_FREE ( tmp_array, env);
+           axis2_array_list_free ( tmp_array, env);
         }
     }
     W2C_ENGINE_CONFIGURATION_SET_CONFIGURATION_PROPERTIES( conf, env, h );

@@ -525,10 +525,10 @@ w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
      */
     elements = XML_SCHEMA_GET_ELEMENTS( xml_schema, env);
     element_value_list = XML_SCHEMA_OBJ_TABLE_GET_VALUES( elements, env);
-    count = AXIS2_ARRAY_LIST_SIZE( element_value_list, env);
+    count = axis2_array_list_size( element_value_list, env);
     for (i = 0; i < count; i ++ )
     {
-        element = AXIS2_ARRAY_LIST_GET( element_value_list, env, i );
+        element = axis2_array_list_get( element_value_list, env, i );
         /*this is the set of outer elements so we need to generate classes
          *The outermost elements do not contain occurence counts (!) so we do not need
          *to check for arraytypes
@@ -543,7 +543,7 @@ w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
      */
     for (i = 0; i < count; i ++ )
     {
-        element = AXIS2_ARRAY_LIST_GET( element_value_list, env, i );
+        element = axis2_array_list_get( element_value_list, env, i );
         /* this is the set of outer elements so we need to generate classes */
         w2c_schema_compiler_write_element( compiler_impl, env, element);
     }
@@ -979,16 +979,16 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
 
     compiler_impl = W2C_INTF_TO_IMPL(compiler);
 
-    if( AXIS2_ARRAY_LIST_IS_EMPTY( schema_list, env) )
+    if( axis2_array_list_is_empty( schema_list, env) )
     {
         return NULL;
     }
     /*TODO: clear the loaded and available maps */
-    size = AXIS2_ARRAY_LIST_SIZE( schema_list, env);
+    size = axis2_array_list_size( schema_list, env);
     /* first round - populate the avaialble map */
     for( i = 0; i < size; i ++ )
     {
-        schema = (xml_schema_t*) AXIS2_ARRAY_LIST_GET( schema_list, env, i);
+        schema = (xml_schema_t*) axis2_array_list_get( schema_list, env, i);
         ns = XML_SCHEMA_GET_TARGET_NAMESPACE( schema, env);
         axis2_hash_set( compiler_impl-> available_schema_map, ns,
                 AXIS2_HASH_KEY_STRING, schema);
@@ -1006,7 +1006,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
     /*  second round - call the schema compiler one by one */
     for( i = 0; i < size; i ++ )
     {
-        schema = (xml_schema_t*) AXIS2_ARRAY_LIST_GET( schema_list, env, i);
+        schema = (xml_schema_t*) axis2_array_list_get( schema_list, env, i);
         w2c_schema_compiler_compile_inner( compiler, env, schema, AXIS2_TRUE);
     }
 

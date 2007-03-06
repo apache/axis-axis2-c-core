@@ -519,16 +519,16 @@ axis2_dep_engine_free(
         int i = 0;
         int size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->ws_to_deploy, env);
+        size = axis2_array_list_size(dep_engine_impl->ws_to_deploy, env);
         for (i = 0; i < size; i++)
         {
             axis2_arch_file_data_t *file_data = NULL;
 
             file_data = (axis2_arch_file_data_t *)
-                    AXIS2_ARRAY_LIST_GET(dep_engine_impl->ws_to_deploy, env, i);
+                    axis2_array_list_get(dep_engine_impl->ws_to_deploy, env, i);
             AXIS2_ARCH_FILE_DATA_FREE(file_data, env);
         }
-        AXIS2_ARRAY_LIST_FREE(dep_engine_impl->ws_to_deploy, env);
+        axis2_array_list_free(dep_engine_impl->ws_to_deploy, env);
         dep_engine_impl->ws_to_deploy = NULL;
     }
     if (dep_engine_impl->ws_to_undeploy)
@@ -536,16 +536,16 @@ axis2_dep_engine_free(
         int i = 0;
         int size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->ws_to_undeploy, env);
+        size = axis2_array_list_size(dep_engine_impl->ws_to_undeploy, env);
         for (i = 0; i < size; i++)
         {
             axis2_arch_file_data_t *file_data = NULL;
 
             file_data = (axis2_arch_file_data_t *)
-                    AXIS2_ARRAY_LIST_GET(dep_engine_impl->ws_to_undeploy, env, i);
+                    axis2_array_list_get(dep_engine_impl->ws_to_undeploy, env, i);
             AXIS2_ARCH_FILE_DATA_FREE(file_data, env);
         }
-        AXIS2_ARRAY_LIST_FREE(dep_engine_impl->ws_to_undeploy, env);
+        axis2_array_list_free(dep_engine_impl->ws_to_undeploy, env);
         dep_engine_impl->ws_to_undeploy = NULL;
     }
     if (dep_engine_impl->module_list)
@@ -553,18 +553,18 @@ axis2_dep_engine_free(
         int size = 0;
         int i = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
+        size = axis2_array_list_size(dep_engine_impl->module_list, env);
         for (i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
-            qname = AXIS2_ARRAY_LIST_GET(dep_engine_impl->module_list, env, i);
+            qname = axis2_array_list_get(dep_engine_impl->module_list, env, i);
             if (qname)
             {
                 AXIS2_QNAME_FREE(qname, env);
                 qname = NULL;
             }
         }
-        AXIS2_ARRAY_LIST_FREE(dep_engine_impl->module_list, env);
+        axis2_array_list_free(dep_engine_impl->module_list, env);
         dep_engine_impl->module_list = NULL;
     }
     if (dep_engine_impl->folder_name)
@@ -628,7 +628,7 @@ axis2_dep_engine_add_module(
             return AXIS2_FAILURE;
         }
     }
-    return AXIS2_ARRAY_LIST_ADD(dep_engine_impl->module_list, env, qname);
+    return axis2_array_list_add(dep_engine_impl->module_list, env, qname);
 }
 
 struct axis2_module_desc *AXIS2_CALL
@@ -667,7 +667,7 @@ axis2_dep_engine_add_ws_to_deploy(
     AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
 
-    return AXIS2_ARRAY_LIST_ADD(dep_engine_impl->ws_to_deploy, env, file);
+    return axis2_array_list_add(dep_engine_impl->ws_to_deploy, env, file);
 }
 
 axis2_status_t AXIS2_CALL
@@ -684,7 +684,7 @@ axis2_dep_engine_add_ws_to_undeploy(
     {
         dep_engine_impl->ws_to_undeploy = axis2_array_list_create(env, 0);
     }
-    return AXIS2_ARRAY_LIST_ADD(dep_engine_impl->ws_to_undeploy, env, file);
+    return axis2_array_list_add(dep_engine_impl->ws_to_undeploy, env, file);
 }
 
 axis2_phases_info_t *AXIS2_CALL
@@ -833,7 +833,7 @@ axis2_dep_engine_load(
         dep_engine_impl->phases_info, env);
     new_out_fault_phases = axis2_phases_info_copy_flow(env, out_fault_phases); 
     if (out_fault_phases)
-        AXIS2_ARRAY_LIST_FREE(out_fault_phases, env);
+        axis2_array_list_free(out_fault_phases, env);
     AXIS2_CONF_SET_OUT_FAULT_PHASES(dep_engine_impl->conf, env, new_out_fault_phases);
     if (AXIS2_SUCCESS != status)
     {
@@ -1009,11 +1009,11 @@ axis2_dep_engine_engage_modules(
         /* there are no modules */
         return AXIS2_SUCCESS;
     }
-    size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->module_list, env);
+    size = axis2_array_list_size(dep_engine_impl->module_list, env);
     for (i = 0; i < size; i++)
     {
         axis2_qname_t *qname = NULL;
-        qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(
+        qname = (axis2_qname_t *) axis2_array_list_get(
                     dep_engine_impl->module_list, env, i);
         if (qname && dep_engine_impl->conf)
         {
@@ -1046,10 +1046,10 @@ axis2_dep_engine_validate_system_predefined_phases(
     /* TODO condition checking should be otherway since null value can occur */
     if (in_phases)
     {
-        phase0 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 0);
-        phase1 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 1);
-        phase2 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 2);
-        phase3 = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(in_phases, env, 3);
+        phase0 = (axis2_char_t *) axis2_array_list_get(in_phases, env, 0);
+        phase1 = (axis2_char_t *) axis2_array_list_get(in_phases, env, 1);
+        phase2 = (axis2_char_t *) axis2_array_list_get(in_phases, env, 2);
+        phase3 = (axis2_char_t *) axis2_array_list_get(in_phases, env, 3);
     }
     if ((phase0 && 0 != AXIS2_STRCMP(phase0, AXIS2_PHASE_TRANSPORT_IN)) ||
             (phase1 && 0 != AXIS2_STRCMP(phase1, AXIS2_PHASE_PRE_DISPATCH)) ||
@@ -1081,7 +1081,7 @@ axis2_dep_engine_add_new_svc(
     svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(dep_engine_impl->curr_file,
             env);
     if (svcs)
-        sizei = AXIS2_ARRAY_LIST_SIZE(svcs, env);
+        sizei = axis2_array_list_size(svcs, env);
 
     for (i = 0; i < sizei; i++)
     {
@@ -1095,7 +1095,7 @@ axis2_dep_engine_add_new_svc(
         axis2_hash_index_t *index_i = NULL;
         axis2_char_t *file_name = NULL;
 
-        svc = (axis2_svc_t *) AXIS2_ARRAY_LIST_GET(svcs, env, i);
+        svc = (axis2_svc_t *) axis2_array_list_get(svcs, env, i);
 
         /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
         file = AXIS2_ARCH_FILE_DATA_GET_FILE(dep_engine_impl->curr_file, env);
@@ -1105,13 +1105,13 @@ axis2_dep_engine_add_new_svc(
         /* modules from svc group */
         grp_modules = AXIS2_SVC_GRP_GET_ALL_MODULE_QNAMES(svc_metadata, env);
         if (grp_modules)
-            sizej = AXIS2_ARRAY_LIST_SIZE(grp_modules, env);
+            sizej = axis2_array_list_size(grp_modules, env);
         for (j = 0; j < sizej; j++)
         {
             axis2_module_desc_t *module_desc = NULL;
             axis2_qname_t *qmodulename = NULL;
 
-            qmodulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(grp_modules,
+            qmodulename = (axis2_qname_t *) axis2_array_list_get(grp_modules,
                     env, j);
             module_desc = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                     qmodulename);
@@ -1132,13 +1132,13 @@ axis2_dep_engine_add_new_svc(
 
         /* modules from <service> */
         list = AXIS2_SVC_GET_ALL_MODULE_QNAMES(svc, env);
-        sizej = AXIS2_ARRAY_LIST_SIZE(list, env);
+        sizej = axis2_array_list_size(list, env);
         for (j = 0; j < sizej; j++)
         {
             axis2_module_desc_t *module_desc = NULL;
             axis2_qname_t *qmodulename = NULL;
 
-            qmodulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(list,
+            qmodulename = (axis2_qname_t *) axis2_array_list_get(list,
                     env, j);
             module_desc = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                     qmodulename);
@@ -1175,13 +1175,13 @@ axis2_dep_engine_add_new_svc(
 
             modules = AXIS2_OP_GET_ALL_MODULE_QNAMES(op_desc, env);
             if (modules)
-                sizek = AXIS2_ARRAY_LIST_SIZE(modules, env);
+                sizek = axis2_array_list_size(modules, env);
             for (k = 0; k < sizek; k++)
             {
                 axis2_qname_t *module_qname = NULL;
                 axis2_module_desc_t *module = NULL;
 
-                module_qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(modules,
+                module_qname = (axis2_qname_t *) axis2_array_list_get(modules,
                         env, k);
                 module = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                         module_qname);
@@ -1493,7 +1493,7 @@ axis2_dep_engine_do_deploy(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
 
-    size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->ws_to_deploy, env);
+    size = axis2_array_list_size(dep_engine_impl->ws_to_deploy, env);
     if (size > 0)
     {
         int i = 0;
@@ -1506,7 +1506,7 @@ axis2_dep_engine_do_deploy(
             axis2_arch_reader_t *arch_reader = NULL;
 
             dep_engine_impl->curr_file = (axis2_arch_file_data_t *)
-                    AXIS2_ARRAY_LIST_GET(dep_engine_impl->ws_to_deploy, env, i);
+                    axis2_array_list_get(dep_engine_impl->ws_to_deploy, env, i);
 
             type = AXIS2_ARCH_FILE_DATA_GET_TYPE(dep_engine_impl->curr_file, env);
             switch (type)
@@ -1594,7 +1594,7 @@ axis2_dep_engine_undeploy(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
-    size = AXIS2_ARRAY_LIST_SIZE(dep_engine_impl->ws_to_undeploy, env);
+    size = axis2_array_list_size(dep_engine_impl->ws_to_undeploy, env);
 
     if (size > 0)
     {
@@ -1605,7 +1605,7 @@ axis2_dep_engine_undeploy(
             axis2_ws_info_t *ws_info = NULL;
             axis2_hash_t *faulty_svcs = NULL;
 
-            ws_info = (axis2_ws_info_t *) AXIS2_ARRAY_LIST_GET(dep_engine_impl->
+            ws_info = (axis2_ws_info_t *) axis2_array_list_get(dep_engine_impl->
                     ws_to_undeploy, env, i);
             type = AXIS2_WS_INFO_GET_TYPE(ws_info, env);
             if (type == AXIS2_SVC)
@@ -1623,7 +1623,7 @@ axis2_dep_engine_undeploy(
         }
 
     }
-    AXIS2_ARRAY_LIST_FREE(dep_engine_impl->ws_to_undeploy, env);
+    axis2_array_list_free(dep_engine_impl->ws_to_undeploy, env);
     return AXIS2_SUCCESS;
 }
 

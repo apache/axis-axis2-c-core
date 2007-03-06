@@ -75,18 +75,18 @@ rp_supporting_tokens_free(rp_supporting_tokens_t *supporting_tokens,
         if(supporting_tokens->tokens)
         {
             int i = 0;
-            for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(supporting_tokens->tokens,
+            for (i = 0; i < axis2_array_list_size(supporting_tokens->tokens,
                 env); i++)
             {
                 rp_property_t *token = NULL;
                 token = (rp_property_t *)
-                    AXIS2_ARRAY_LIST_GET(supporting_tokens->tokens,env, i);
+                    axis2_array_list_get(supporting_tokens->tokens,env, i);
                 if (token)
                     rp_property_free(token, env);
 
                 token = NULL;
             }
-            AXIS2_ARRAY_LIST_FREE(supporting_tokens->tokens, env);
+            axis2_array_list_free(supporting_tokens->tokens, env);
             supporting_tokens->tokens = NULL;
 
         }
@@ -142,7 +142,7 @@ rp_supporting_tokens_add_token(rp_supporting_tokens_t *supporting_tokens,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,token,AXIS2_FAILURE);
     
-    AXIS2_ARRAY_LIST_ADD(supporting_tokens->tokens,env,token);
+    axis2_array_list_add(supporting_tokens->tokens,env,token);
     return AXIS2_SUCCESS;
 }
 

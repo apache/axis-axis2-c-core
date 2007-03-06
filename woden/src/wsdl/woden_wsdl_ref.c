@@ -382,7 +382,7 @@ woden_wsdl_ref_add_documentation_element(
             return AXIS2_FAILURE;
         }
     }
-    return AXIS2_ARRAY_LIST_ADD(wsdl_ref_impl->f_documentation_elements, env,
+    return axis2_array_list_add(wsdl_ref_impl->f_documentation_elements, env,
             doc_el);
 }
 

@@ -1878,7 +1878,7 @@ axis2_msg_ctx_set_current_handler_index(
     if (msg_ctx->execution_chain)
     {
         axis2_handler_t *handler = (axis2_handler_t *)
-                AXIS2_ARRAY_LIST_GET(msg_ctx->execution_chain,
+                axis2_array_list_get(msg_ctx->execution_chain,
                         env, index);
         if (handler)
         {

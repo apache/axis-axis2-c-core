@@ -185,7 +185,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             /* extract service group context, if available */
             axis2_addr_in_extract_svc_grp_ctx_id(env, soap_header, msg_ctx);
 
-            AXIS2_ARRAY_LIST_FREE(addr_headers, env);
+            axis2_array_list_free(addr_headers, env);
             return status;
         }
     }
@@ -729,8 +729,8 @@ axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
     sub_codes = axis2_array_list_create(env, 2);
     if (sub_codes)
     {
-        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "wsa:InvalidAddressingHeader");
-        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "wsa:InvalidCardinality");
+        axis2_array_list_add(sub_codes, env, "wsa:InvalidAddressingHeader");
+        axis2_array_list_add(sub_codes, env, "wsa:InvalidCardinality");
     }
 
     envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env,

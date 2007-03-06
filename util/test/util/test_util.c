@@ -126,12 +126,12 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
     }
 
 
-    isize = AXIS2_ARRAY_LIST_SIZE(arr_folders, env);
+    isize = axis2_array_list_size(arr_folders, env);
     printf("Folder array size = %d \n", isize);
 
     for (i = 0;i < isize;++i)
     {
-        file = (axis2_file_t*)AXIS2_ARRAY_LIST_GET(arr_folders, env, i);
+        file = (axis2_file_t*)axis2_array_list_get(arr_folders, env, i);
         filename = AXIS2_FILE_GET_NAME(file, env);
         printf("filename = %s \n", filename);
     }
@@ -158,44 +158,44 @@ void test_array_list(const axis2_env_t *env)
     int size;
 
     al = axis2_array_list_create(env, 1);
-    printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE(al, env));
+    printf("list size %d\n", axis2_array_list_size(al, env));
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value1", env);
-    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+    axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value2", env);
-    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+    axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value3", env);
-    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+    axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value4", env);
-    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+    axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value5", env);
-    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+    axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value6", env);
-    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+    axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value7", env);
-    AXIS2_ARRAY_LIST_SET(al, env, 3, (void*)entry);
-    AXIS2_ARRAY_LIST_REMOVE(al, env, 2);
+    axis2_array_list_set(al, env, 3, (void*)entry);
+    axis2_array_list_remove(al, env, 2);
 
-    entry = (a *) AXIS2_ARRAY_LIST_GET(al, env, 0);
+    entry = (a *) axis2_array_list_get(al, env, 0);
     printf("entry->value:%s\n", entry->value);
 
-    entry = (a *) AXIS2_ARRAY_LIST_GET(al, env, 2);
+    entry = (a *) axis2_array_list_get(al, env, 2);
     printf("entry->value:%s\n", entry->value);
-    size = AXIS2_ARRAY_LIST_SIZE(al, env);
-    printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE(al, env));
+    size = axis2_array_list_size(al, env);
+    printf("list size %d\n", axis2_array_list_size(al, env));
 
 }
 

@@ -91,33 +91,33 @@ axis2_svc_skel_interop_test_port_type_doc_service_init(axis2_svc_skeleton_t *svc
 {
     svc_skeleton->func_array = axis2_array_list_create(env, 10);
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoString");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoString");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoStringArray");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoStringArray");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoInteger");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoInteger");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoIntegerArray");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoIntegerArray");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoFloat");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoFloat");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoFloatArray");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoFloatArray");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoStruct");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoStruct");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoStructArray");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoStructArray");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoVoid");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoVoid");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoBase64");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoBase64");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoDate");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoDate");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoHexBinary");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoHexBinary");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoDecimal");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoDecimal");
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoBoolean");
+    axis2_array_list_add(svc_skeleton->func_array, env, "echoBoolean");
 
 
     /* Any initialization stuff of axis2_skel_interop_test_port_type_doc_service goes here */
@@ -130,7 +130,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_free(axis2_svc_skeleton_t *svc
 {
     if (svc_skeleton->func_array)
     {
-        AXIS2_ARRAY_LIST_FREE(svc_skeleton->func_array, env);
+        axis2_array_list_free(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }
 

@@ -108,7 +108,7 @@ w2c_properties_create (const axis2_env_t *env,
                     {
                         *p = '\0';
                         tag = w2c_properties_trunk_and_dup( tag, p, env);
-                        AXIS2_ARRAY_LIST_ADD_AT( arr_list, env, i, tag);
+                        axis2_array_list_add_at( arr_list, env, i, tag);
                         tag = p + 1;
                         i ++;
                     }
@@ -116,7 +116,7 @@ w2c_properties_create (const axis2_env_t *env,
                 if ( p != tag )
                 {
                     tag = w2c_properties_trunk_and_dup( tag, p, env);
-                    AXIS2_ARRAY_LIST_ADD_AT( arr_list, env, i, tag);
+                    axis2_array_list_add_at( arr_list, env, i, tag);
                 }
                 key = AXIS2_STRDUP(key, env);
                 axis2_hash_set( properties_impl-> prop_hash, key, AXIS2_HASH_KEY_STRING, arr_list);
@@ -168,16 +168,16 @@ w2c_properties_free (w2c_properties_t *properties,
             axis2_hash_this(hi, (void*)&key, NULL, (void*)&values_arr);
             if (key && values_arr)
             {
-                size = AXIS2_ARRAY_LIST_SIZE( values_arr, env);
+                size = axis2_array_list_size( values_arr, env);
                 for (i = 0; i < size; i ++)
                 {
-                    value = (axis2_char_t*)AXIS2_ARRAY_LIST_GET( values_arr, env, i);
+                    value = (axis2_char_t*)axis2_array_list_get( values_arr, env, i);
                     if ( value != NULL)
                     {
                         AXIS2_FREE( env-> allocator, value);
                     }
                 }
-                AXIS2_ARRAY_LIST_FREE( values_arr, env);
+                axis2_array_list_free( values_arr, env);
                 AXIS2_FREE(env-> allocator, key);
             }
         }

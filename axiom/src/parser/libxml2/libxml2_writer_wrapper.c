@@ -1569,12 +1569,12 @@ axis2_libxml2_writer_wrapper_pop_context(axiom_xml_writer_t *writer,
     if (!ns_list)
         return AXIS2_FAILURE;
 
-    size = AXIS2_ARRAY_LIST_SIZE(ns_list, env);
+    size = axis2_array_list_size(ns_list, env);
     for (i = 0; i < size; i++)
     {
         uri_prefix_element_t *ele = NULL;
         void *value = NULL;
-        value = AXIS2_ARRAY_LIST_GET(ns_list, env, i);
+        value = axis2_array_list_get(ns_list, env, i);
         if (value)
         {
             ele = (uri_prefix_element_t *)value;
@@ -1593,7 +1593,7 @@ axis2_libxml2_writer_wrapper_pop_context(axiom_xml_writer_t *writer,
             }
         }
     }
-    AXIS2_ARRAY_LIST_FREE(ns_list, env);
+    axis2_array_list_free(ns_list, env);
     ns_list = NULL;
     return AXIS2_SUCCESS;
 }*/
@@ -1631,7 +1631,7 @@ axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
             ele = uri_prefix_element_create(env, uri , temp_prefix, prefix,  key);
             if (ele)
             {
-                AXIS2_ARRAY_LIST_ADD(current_list, env, ele);
+                axis2_array_list_add(current_list, env, ele);
                 axis2_hash_set(writer_impl->uri_prefix_map, ele->key,
                         AXIS2_HASH_KEY_STRING, ele->prefix);
             }
@@ -1850,12 +1850,12 @@ axis2_libxml2_writer_wrapper_find_prefix_in_context(
     int i = 0;
     if (!context)
         return NULL;
-    size = AXIS2_ARRAY_LIST_SIZE(context, env);
+    size = axis2_array_list_size(context, env);
     for (i = 0; i < size; i++)
     {
         uri_prefix_element_t *ele = NULL;
         void *value = NULL;
-        value = AXIS2_ARRAY_LIST_GET(context, env, i);
+        value = axis2_array_list_get(context, env, i);
         if (value)
         {
             ele = (uri_prefix_element_t*)value;

@@ -1282,11 +1282,11 @@ woden_desc_get_element_decl(
 
     if (AXIS2_TRUE != desc_impl->f_component_initialized)
         woden_desc_init_components(desc, env);
-    size = AXIS2_ARRAY_LIST_SIZE(desc_impl->f_all_element_decls, env);
+    size = axis2_array_list_size(desc_impl->f_all_element_decls, env);
     for (i = 0; i < size; i++)
     {
         axis2_qname_t *qname_l = NULL;
-        void *ed = AXIS2_ARRAY_LIST_GET(desc_impl->f_all_element_decls, env, i);
+        void *ed = axis2_array_list_get(desc_impl->f_all_element_decls, env, i);
         qname_l = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
         if (0 == AXIS2_QNAME_EQUALS(qname, env, qname_l))
         {
@@ -1334,11 +1334,11 @@ woden_desc_get_type_def(
 
     if (AXIS2_TRUE != desc_impl->f_component_initialized)
         woden_desc_init_components(desc, env);
-    size = AXIS2_ARRAY_LIST_SIZE(desc_impl->f_all_element_decls, env);
+    size = axis2_array_list_size(desc_impl->f_all_element_decls, env);
     for (i = 0; i < size; i++)
     {
         axis2_qname_t *qname_l = NULL;
-        void *ed = AXIS2_ARRAY_LIST_GET(desc_impl->f_all_element_decls, env, i);
+        void *ed = axis2_array_list_get(desc_impl->f_all_element_decls, env, i);
         qname_l = WODEN_TYPE_DEF_GET_QNAME(ed, env);
         if (0 == AXIS2_QNAME_EQUALS(qname, env, qname_l))
         {
@@ -1545,7 +1545,7 @@ woden_desc_add_import_element(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_import_elements, env, import_el);
+    return axis2_array_list_add(desc_impl->f_import_elements, env, import_el);
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -1579,7 +1579,7 @@ woden_desc_add_include_element(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_include_elements, env, include_el);
+    return axis2_array_list_add(desc_impl->f_include_elements, env, include_el);
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -1652,7 +1652,7 @@ woden_desc_add_interface_element(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_interface_elements, env, intface);
+    return axis2_array_list_add(desc_impl->f_interface_elements, env, intface);
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -1686,7 +1686,7 @@ woden_desc_add_binding_element(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_binding_elements, env, binding);
+    return axis2_array_list_add(desc_impl->f_binding_elements, env, binding);
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -1720,7 +1720,7 @@ woden_desc_add_svc_element(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_svc_elements, env, svc_el);
+    return axis2_array_list_add(desc_impl->f_svc_elements, env, svc_el);
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -1970,7 +1970,7 @@ woden_desc_add_to_all_interfaces(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_all_interfaces, env, interface);
+    return axis2_array_list_add(desc_impl->f_all_interfaces, env, interface);
 }
 
 axis2_status_t AXIS2_CALL
@@ -1988,7 +1988,7 @@ woden_desc_add_to_all_bindings(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_all_bindings, env, binding);
+    return axis2_array_list_add(desc_impl->f_all_bindings, env, binding);
 }
 
 axis2_status_t AXIS2_CALL
@@ -2006,7 +2006,7 @@ woden_desc_add_to_all_svcs(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_all_svcs, env, svc);
+    return axis2_array_list_add(desc_impl->f_all_svcs, env, svc);
 }
 
 axis2_status_t AXIS2_CALL
@@ -2033,7 +2033,7 @@ woden_desc_add_to_all_element_decls(
             return AXIS2_FAILURE;
         }
     }
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_all_element_decls, env, element_decl);
+    return axis2_array_list_add(desc_impl->f_all_element_decls, env, element_decl);
 }
 
 axis2_status_t AXIS2_CALL
@@ -2061,7 +2061,7 @@ woden_desc_add_to_all_type_defs(
         }
     }
 
-    return AXIS2_ARRAY_LIST_ADD(desc_impl->f_all_type_defs, env, type_def);
+    return axis2_array_list_add(desc_impl->f_all_type_defs, env, type_def);
 }
 
 static axis2_status_t AXIS2_CALL

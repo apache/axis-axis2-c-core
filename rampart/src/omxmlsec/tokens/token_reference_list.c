@@ -60,12 +60,12 @@ oxs_token_build_data_reference_list(const axis2_env_t *env, axiom_node_t *parent
     if(!ref_list_node) {return AXIS2_FAILURE;}
 
     /*Build the list*/
-    for(i=0 ; i < AXIS2_ARRAY_LIST_SIZE(id_list, env); i++){ 
+    for(i=0 ; i < axis2_array_list_size(id_list, env); i++){ 
         axiom_node_t *data_ref_node = NULL;
         axis2_char_t *id = NULL;
         
         /*We need to prepend # to the id in the list to create the reference*/
-        id = AXIS2_STRACAT("#",(axis2_char_t*)AXIS2_ARRAY_LIST_GET(id_list, env, i), env);
+        id = AXIS2_STRACAT("#",(axis2_char_t*)axis2_array_list_get(id_list, env, i), env);
         data_ref_node = oxs_token_build_data_reference_element(env, ref_list_node, id);
 
         if(!data_ref_node) {return AXIS2_FAILURE;}
@@ -112,7 +112,7 @@ oxs_token_get_reference_list_data(const axis2_env_t *env, axiom_node_t *ref_list
         dref_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(iter, env);
         dref_val = oxs_token_get_data_reference(env, dref_node);
 
-        AXIS2_ARRAY_LIST_ADD(list, env, dref_val);
+        axis2_array_list_add(list, env, dref_val);
     }
 
     return list;

@@ -246,13 +246,13 @@ rampart_shb_build_message(const axis2_env_t *env,
             string_list = axis2_tokenize(env, items, ' ');
             if (string_list)
             {
-                size = AXIS2_ARRAY_LIST_SIZE(string_list, env);
+                size = axis2_array_list_size(string_list, env);
             }
 
             ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
             for (i = 0; i < size; i++)
             {
-                item = AXIS2_ARRAY_LIST_GET(string_list, env, i);
+                item = axis2_array_list_get(string_list, env, i);
                 if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN ,
                         AXIS2_STRTRIM(env, item, NULL)))
                 {

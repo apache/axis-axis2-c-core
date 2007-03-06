@@ -95,9 +95,9 @@ void test_simple_type_schema_generation(CuTest *tc)
 
     CuAssertPtrNotNull(tc, list);
 
-    for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(list, env); i++)
+    for (i = 0; i < axis2_array_list_size(list, env); i++)
     {
-        ele = AXIS2_ARRAY_LIST_GET(list, env, i);
+        ele = axis2_array_list_get(list, env, i);
 
         CuAssertPtrNotNull(tc, ele);
 
@@ -228,7 +228,7 @@ void test_circular_schema(CuTest *tc)
 
     CuAssertPtrNotNull(tc, schemas);
 
-    CuAssertIntEquals(tc, 2, AXIS2_ARRAY_LIST_SIZE(schemas, env));
+    CuAssertIntEquals(tc, 2, axis2_array_list_size(schemas, env));
 
 
 

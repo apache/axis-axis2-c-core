@@ -108,9 +108,9 @@ xml_schema_severity_type_create(const axis2_env_t *env,
         xml_schema_severity_type_free(&(severity_type_impl->severity_type), env);
         return NULL;
     }
-    AXIS2_ARRAY_LIST_ADD(severity_type_impl->members, env,
+    axis2_array_list_add(severity_type_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_CONST_ERROR, env));
-    AXIS2_ARRAY_LIST_ADD(severity_type_impl->members, env,
+    axis2_array_list_add(severity_type_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_CONST_WARNING, env));
 
     severity_type_impl->schema_enum = xml_schema_enum_create(env, value);
@@ -159,18 +159,18 @@ xml_schema_severity_type_free(void *severity_type,
     {
         int size = 0;
         int i    = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(severity_type_impl->members, env);
+        size = axis2_array_list_size(severity_type_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
-            value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(severity_type_impl->members, env, i);
+            value = (axis2_char_t*) axis2_array_list_get(severity_type_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
-        AXIS2_ARRAY_LIST_FREE(severity_type_impl->members, env);
+        axis2_array_list_free(severity_type_impl->members, env);
         severity_type_impl->members = NULL;
     }
 

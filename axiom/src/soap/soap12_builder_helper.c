@@ -103,7 +103,7 @@ axiom_soap12_builder_helper_free(axiom_soap12_builder_helper_t *builder_helper,
 
     if (builder_helper->detail_element_names)
     {
-        AXIS2_ARRAY_LIST_FREE(builder_helper->detail_element_names, env);
+        axis2_array_list_free(builder_helper->detail_element_names, env);
         builder_helper->detail_element_names = NULL;
     }
 
@@ -507,7 +507,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                 builder_helper->detail_element_names = axis2_array_list_create(env, 20);
             }
 
-            AXIS2_ARRAY_LIST_ADD(builder_helper->detail_element_names, env, ele_localname);
+            axis2_array_list_add(builder_helper->detail_element_names, env, ele_localname);
 
         }
         else
@@ -645,9 +645,9 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             if (!(builder_helper->detail_element_names))
                 return AXIS2_FAILURE;
 
-            for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(builder_helper->detail_element_names, env) ; i++)
+            for (i = 0; i < axis2_array_list_size(builder_helper->detail_element_names, env) ; i++)
             {
-                if (AXIS2_STRCMP(parent_localname, AXIS2_ARRAY_LIST_GET(builder_helper->detail_element_names, env, i)) == 0)
+                if (AXIS2_STRCMP(parent_localname, axis2_array_list_get(builder_helper->detail_element_names, env, i)) == 0)
                 {
                     local_name_exists = AXIS2_TRUE;
                     detail_element_level = i + 1;
@@ -655,7 +655,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             }
             if (local_name_exists)
             {
-                AXIS2_ARRAY_LIST_ADD(builder_helper->detail_element_names, env, ele_localname);
+                axis2_array_list_add(builder_helper->detail_element_names, env, ele_localname);
             }
             else
             {

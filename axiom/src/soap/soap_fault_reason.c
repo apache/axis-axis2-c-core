@@ -121,13 +121,13 @@ axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
     {
         int size = 0;
         int i    = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(fault_reason->fault_texts, env);
+        size = axis2_array_list_size(fault_reason->fault_texts, env);
 
         for (i = 0  ; i < size; i++)
         {
             axiom_soap_fault_text_t *fault_text = NULL;
             void *value = NULL;
-            value = AXIS2_ARRAY_LIST_GET(fault_reason->fault_texts, env, i);
+            value = axis2_array_list_get(fault_reason->fault_texts, env, i);
             if (value)
             {
                 fault_text = (axiom_soap_fault_text_t *)value;
@@ -135,7 +135,7 @@ axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
                 fault_text = NULL;
             }
         }
-        AXIS2_ARRAY_LIST_FREE(fault_reason->fault_texts, env);
+        axis2_array_list_free(fault_reason->fault_texts, env);
         fault_reason->fault_texts = NULL;
     }
 
@@ -181,13 +181,13 @@ axiom_soap_fault_reason_get_soap_fault_text
         return NULL;
 
     /** iterate the array list */
-    size = AXIS2_ARRAY_LIST_SIZE(fault_reason->fault_texts, env);
+    size = axis2_array_list_size(fault_reason->fault_texts, env);
     for (i = 0; i < size; i++)
     {
         axiom_soap_fault_text_t *fault_text = NULL;
         void *value = NULL;
 
-        value = AXIS2_ARRAY_LIST_GET(fault_reason->fault_texts, env, i);
+        value = axis2_array_list_get(fault_reason->fault_texts, env, i);
         if (value)
         {
             axis2_char_t *fault_lang = NULL;
@@ -287,7 +287,7 @@ axiom_soap_fault_reason_get_first_soap_fault_text
     if (fault_reason->fault_texts)
     {
         void *value = NULL;
-        value = AXIS2_ARRAY_LIST_GET(fault_reason->fault_texts, env, 0);
+        value = axis2_array_list_get(fault_reason->fault_texts, env, 0);
         if (value)
             return (axiom_soap_fault_text_t*)value;
     }
@@ -309,7 +309,7 @@ axiom_soap_fault_reason_add_soap_fault_text
         fault_reason->fault_texts = axis2_array_list_create(env, 1);
         if (!fault_reason->fault_texts)
             return AXIS2_FAILURE;
-        AXIS2_ARRAY_LIST_ADD(fault_reason->fault_texts, env, fault_text);
+        axis2_array_list_add(fault_reason->fault_texts, env, fault_text);
     }
     else
     {
@@ -323,7 +323,7 @@ axiom_soap_fault_reason_add_soap_fault_text
                 return AXIS2_FAILURE;
             /** this soap_fault text already exists */
         }
-        AXIS2_ARRAY_LIST_ADD(fault_reason->fault_texts, env, fault_text);
+        axis2_array_list_add(fault_reason->fault_texts, env, fault_text);
     }
     return AXIS2_SUCCESS;
 }
@@ -340,12 +340,12 @@ axiom_soap_fault_reason_lang_exists(axiom_soap_fault_reason_t *fault_reason,
     if (!lang || (AXIS2_STRCMP(lang, "") == 0) || !fault_reason->fault_texts)
         return AXIS2_FALSE;
 
-    size = AXIS2_ARRAY_LIST_SIZE(fault_reason->fault_texts, env);
+    size = axis2_array_list_size(fault_reason->fault_texts, env);
     for (i = 0; i < size; i++)
     {
         axiom_soap_fault_text_t *fault_text = NULL;
         void *value = NULL;
-        value = AXIS2_ARRAY_LIST_GET(fault_reason->fault_texts, env, i);
+        value = axis2_array_list_get(fault_reason->fault_texts, env, i);
         if (value)
         {
             axis2_char_t *text_lang = NULL;

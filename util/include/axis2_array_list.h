@@ -264,69 +264,6 @@ extern "C"
         struct axis2_array_list *array_list,
         const axis2_env_t *env);
 
-
-    /** Frees the axis2 array list.
-        @sa axis2_array_list_ops#free */
-#define AXIS2_ARRAY_LIST_FREE(array_list, env) \
-        axis2_array_list_free(array_list, env)
-
-    /** Size.
-        @sa axis2_array_list_ops#size */
-#define AXIS2_ARRAY_LIST_SIZE(array_list, env) \
-        axis2_array_list_size(array_list, env)
-
-    /** Is empty.
-        @sa axis2_array_list_ops#is_empty */
-#define AXIS2_ARRAY_LIST_IS_EMPTY(array_list, env) \
-        axis2_array_list_is_empty(array_list, env)
-
-    /** Contains.
-        @sa axis2_array_list_ops#contains */
-#define AXIS2_ARRAY_LIST_CONTAINS(array_list, env, e) \
-        axis2_array_list_contains(array_list, env, e)
-
-    /** Index of.
-        @sa axis2_array_list_ops#index_of */
-#define AXIS2_ARRAY_LIST_INDEX_OF(array_list, env, e) \
-        axis2_array_list_index_of(array_list, env, e)
-
-    /** Last index of.
-        @sa axis2_array_list_ops#last_index_of */
-#define AXIS2_ARRAY_LIST_LAST_INDEX_OF(array_list, env, e) \
-        axis2_array_list_last_index_of(array_list, env, e)
-
-    /** To array.
-        @sa axis2_array_list_ops#to_array */
-#define AXIS2_ARRAY_LIST_TO_ARRAY(array_list, env) \
-        axis2_array_list_index_of(array_list, env)
-
-    /** Get.
-        @sa axis2_array_list_ops#get */
-#define AXIS2_ARRAY_LIST_GET(array_list, env, index) \
-        axis2_array_list_get(array_list, env, index)
-
-    /** Set.
-        @sa axis2_array_list_ops#set */
-#define AXIS2_ARRAY_LIST_SET(array_list, env, index, e) \
-        axis2_array_list_set(array_list, env, index, e)
-
-    /** Add.
-        @sa axis2_array_list_ops#add */
-#define AXIS2_ARRAY_LIST_ADD(array_list, env, e) \
-        axis2_array_list_add(array_list, env, e)
-
-    /** Add at.
-        @sa axis2_array_list_ops#add_at */
-#define AXIS2_ARRAY_LIST_ADD_AT(array_list, env, index, e) \
-        axis2_array_list_add_at(array_list, env, index, e)
-
-    /** Remove.
-        @sa axis2_array_list_ops#remove */
-#define AXIS2_ARRAY_LIST_REMOVE(array_list, env, index) \
-        axis2_array_list_remove(array_list, env, index)
-
-    /** @} */
-
 #ifdef __cplusplus
 }
 #endif

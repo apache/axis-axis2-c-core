@@ -86,7 +86,7 @@ axis2_msg_free(
 
     if (msg->flow)
     {
-        AXIS2_ARRAY_LIST_FREE(msg->flow, env);
+        axis2_array_list_free(msg->flow, env);
         msg->flow = NULL;
     }
 
@@ -243,7 +243,7 @@ axis2_msg_set_flow(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (msg->flow)
     {
-        AXIS2_ARRAY_LIST_FREE(msg->flow, env);
+        axis2_array_list_free(msg->flow, env);
         msg->flow = NULL;
     }
     if (flow)
@@ -342,7 +342,7 @@ axis2_msg_get_schema_element(
         xml_schema_t *schema = NULL;
         xml_schema_obj_collection_t *schema_collection = NULL;
 
-        schema = AXIS2_ARRAY_LIST_GET(schemas, env, i);
+        schema = axis2_array_list_get(schemas, env, i);
         schema_collection = XML_SCHEMA_GET_ITEMS(schema, env);
         if (schema_collection)
         {

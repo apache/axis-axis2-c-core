@@ -220,13 +220,13 @@ woden_configurable_free(
 
     if (configurable_impl->f_features)
     {
-        AXIS2_ARRAY_LIST_FREE(configurable_impl->f_features, env);
+        axis2_array_list_free(configurable_impl->f_features, env);
         configurable_impl->f_features = NULL;
     }
 
     if (configurable_impl->f_properties)
     {
-        AXIS2_ARRAY_LIST_FREE(configurable_impl->f_properties, env);
+        axis2_array_list_free(configurable_impl->f_properties, env);
         configurable_impl->f_properties = NULL;
     }
 
@@ -363,7 +363,7 @@ woden_configurable_add_feature_element(
             return AXIS2_FAILURE;
         }
     }
-    return AXIS2_ARRAY_LIST_ADD(configurable_impl->f_features, env,
+    return axis2_array_list_add(configurable_impl->f_features, env,
             feature);
 }
 
@@ -407,7 +407,7 @@ woden_configurable_add_property_element(
             return AXIS2_FAILURE;
         }
     }
-    return AXIS2_ARRAY_LIST_ADD(configurable_impl->f_properties, env,
+    return axis2_array_list_add(configurable_impl->f_properties, env,
             property);
 }
 

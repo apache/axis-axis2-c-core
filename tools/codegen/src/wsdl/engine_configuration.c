@@ -695,7 +695,7 @@ w2c_engine_configuration_free (w2c_engine_configuration_t *engine_configuration,
     
     if ( engine_configuration_impl->filenames)
     {
-        AXIS2_ARRAY_LIST_FREE( engine_configuration_impl->filenames, env);
+        axis2_array_list_free( engine_configuration_impl->filenames, env);
     }
     if ( engine_configuration_impl->base_uri )
     {
@@ -1701,7 +1701,7 @@ w2c_engine_configuration_add_filename(
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    AXIS2_ARRAY_LIST_ADD( engine_configuration_impl->filenames, env, filename);
+    axis2_array_list_add( engine_configuration_impl->filenames, env, filename);
     return AXIS2_SUCCESS;
 }
 

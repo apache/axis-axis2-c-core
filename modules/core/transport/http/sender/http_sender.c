@@ -730,9 +730,9 @@ axis2_http_sender_get_header_info(
     {
         return AXIS2_SUCCESS;
     }
-    for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
+    for (i = 0; i < axis2_array_list_size(headers, env); i++)
     {
-        axis2_http_header_t *header = AXIS2_ARRAY_LIST_GET(headers, env, i);
+        axis2_http_header_t *header = axis2_array_list_get(headers, env, i);
         axis2_char_t *name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
 														header, env);
         if (name)
@@ -1161,17 +1161,17 @@ axis2_http_sender_get_param_string(
 				memset (encoded_value, 0, strlen (value));
 				encoded_value = axis2_url_encode (env, encoded_value, value, strlen (value));
 
-				AXIS2_ARRAY_LIST_ADD(param_list, env, axis2_strcat(env, name, "=",
+				axis2_array_list_add(param_list, env, axis2_strcat(env, name, "=",
 																   encoded_value, NULL));
 			}
 		}
 	}
-    for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(param_list, env); i++)
+    for (i = 0; i < axis2_array_list_size(param_list, env); i++)
     {
         axis2_char_t *tmp_string = NULL;
         axis2_char_t *pair = NULL;
 
-        pair = AXIS2_ARRAY_LIST_GET(param_list, env, i);
+        pair = axis2_array_list_get(param_list, env, i);
 		if(i ==0)
 			tmp_string = AXIS2_STRACAT(param_string, pair, env);
 		else
@@ -1185,7 +1185,7 @@ axis2_http_sender_get_param_string(
         AXIS2_FREE(env->allocator, pair);
         param_string = tmp_string;
     }
-    AXIS2_ARRAY_LIST_FREE(param_list, env);
+    axis2_array_list_free(param_list, env);
     return param_string;
 }
 

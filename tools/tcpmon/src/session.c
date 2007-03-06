@@ -202,12 +202,12 @@ tcpmon_session_free(tcpmon_session_t *session,
 
     session_impl = AXIS2_INTF_TO_IMPL(session);
 
-    for (entries_size = AXIS2_ARRAY_LIST_SIZE(session_impl-> entries, env) - 1;
+    for (entries_size = axis2_array_list_size(session_impl-> entries, env) - 1;
             entries_size >= 0; entries_size --)
     {
         TCPMON_ENTRY_FREE(entry, env);
     }
-    AXIS2_ARRAY_LIST_FREE(session_impl-> entries, env);
+    axis2_array_list_free(session_impl-> entries, env);
 
     if (session->ops)
     {
@@ -542,7 +542,7 @@ tcpmon_session_add_new_entry(tcpmon_session_t* session,
 
     session_impl = AXIS2_INTF_TO_IMPL(session);
 
-    AXIS2_ARRAY_LIST_ADD(session_impl-> entries,
+    axis2_array_list_add(session_impl-> entries,
             env,
             entry);
     return AXIS2_SUCCESS;

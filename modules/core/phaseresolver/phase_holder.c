@@ -157,13 +157,13 @@ axis2_phase_holder_is_phase_exist(
     AXIS2_PARAM_CHECK(env->error, phase_name, AXIS2_FALSE);
     phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
 
-    size = AXIS2_ARRAY_LIST_SIZE(phase_holder_impl->phase_list, env);
+    size = axis2_array_list_size(phase_holder_impl->phase_list, env);
 
     for (i = 0; i < size; i++)
     {
         const axis2_char_t *phase_name_l = NULL;
 
-        phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
+        phase = (axis2_phase_t *) axis2_array_list_get(phase_holder_impl->
                 phase_list, env, i);
         phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
         if (0 == AXIS2_STRCMP(phase_name_l, phase_name))
@@ -226,12 +226,12 @@ axis2_phase_holder_get_phase(
 
     phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
 
-    size = AXIS2_ARRAY_LIST_SIZE(phase_holder_impl->phase_list, env);
+    size = axis2_array_list_size(phase_holder_impl->phase_list, env);
 
     for (i = 0; i < size; i++)
     {
         const axis2_char_t *phase_name_l = NULL;
-        phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
+        phase = (axis2_phase_t *) axis2_array_list_get(phase_holder_impl->
                 phase_list, env, i);
         phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
         if (0 == AXIS2_STRCMP(phase_name_l, phase_name))
@@ -260,11 +260,11 @@ axis2_phase_holder_build_transport_handler_chain(
     AXIS2_PARAM_CHECK(env->error, phase, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, handlers, AXIS2_FAILURE);
 
-    size = AXIS2_ARRAY_LIST_SIZE(handlers, env);
+    size = axis2_array_list_size(handlers, env);
 
     for (i = 0; i < size; i++)
     {
-        handler_desc = (axis2_handler_desc_t *) AXIS2_ARRAY_LIST_GET(
+        handler_desc = (axis2_handler_desc_t *) axis2_array_list_get(
                     handlers, env, i);
         status = AXIS2_HANDLER_INIT(handler, env, handler_desc);
         if (AXIS2_FAILURE == status)

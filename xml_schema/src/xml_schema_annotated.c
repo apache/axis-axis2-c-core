@@ -206,7 +206,7 @@ xml_schema_annotated_free(void *annotated,
     if (annotated_impl->unhandled_attrs)
     {
         /* TODO need to iterate and free attributes */
-        AXIS2_ARRAY_LIST_FREE(annotated_impl->unhandled_attrs, env);
+        axis2_array_list_free(annotated_impl->unhandled_attrs, env);
         annotated_impl->unhandled_attrs = NULL;
     }
 

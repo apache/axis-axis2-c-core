@@ -162,14 +162,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                     function_arr = svc_obj->func_array;
                     if (function_arr)
                     {
-                        size = AXIS2_ARRAY_LIST_SIZE(function_arr, env);
+                        size = axis2_array_list_size(function_arr, env);
                     }
 
                     for (i = 0; i < size; i++)
                     {
                         axis2_char_t *function_name = NULL;
 
-                        function_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(
+                        function_name = (axis2_char_t *) axis2_array_list_get(
                                     function_arr, env, i);
                         if (0 == AXIS2_STRCMP(function_name, local_name))
                         {

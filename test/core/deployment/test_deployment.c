@@ -282,11 +282,11 @@ int axis2_test_default_module_version()
     {
         int list_size = 0;
         int i = 0;
-        list_size = AXIS2_ARRAY_LIST_SIZE(engaged_modules, env);
+        list_size = axis2_array_list_size(engaged_modules, env);
         for (i = 0; i < list_size; i++)
         {
             axis2_qname_t *engaged_mod_qname = NULL;
-            engaged_mod_qname = AXIS2_ARRAY_LIST_GET(engaged_modules, env, i);
+            engaged_mod_qname = axis2_array_list_get(engaged_modules, env, i);
             if (0 == AXIS2_STRCMP("module2-0.92",
                     AXIS2_QNAME_GET_LOCALPART(engaged_mod_qname, env)))
             {

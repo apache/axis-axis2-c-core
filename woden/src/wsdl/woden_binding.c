@@ -624,13 +624,13 @@ woden_binding_free(void *binding,
 
     if (binding_impl->f_faults)
     {
-        AXIS2_ARRAY_LIST_FREE(binding_impl->f_faults, env);
+        axis2_array_list_free(binding_impl->f_faults, env);
         binding_impl->f_faults = NULL;
     }
 
     if (binding_impl->f_ops)
     {
-        AXIS2_ARRAY_LIST_FREE(binding_impl->f_ops, env);
+        axis2_array_list_free(binding_impl->f_ops, env);
         binding_impl->f_ops = NULL;
     }
 
@@ -1016,7 +1016,7 @@ woden_binding_add_binding_fault_element(
             return AXIS2_FAILURE;
         }
     }
-    AXIS2_ARRAY_LIST_ADD(binding_impl->f_faults, env, fault);
+    axis2_array_list_add(binding_impl->f_faults, env, fault);
 
     return AXIS2_SUCCESS;
 }
@@ -1061,7 +1061,7 @@ woden_binding_add_binding_op_element(
             return AXIS2_FAILURE;
         }
     }
-    AXIS2_ARRAY_LIST_ADD(binding_impl->f_ops, env, op);
+    axis2_array_list_add(binding_impl->f_ops, env, op);
 
     return AXIS2_SUCCESS;
 }
@@ -1102,13 +1102,13 @@ woden_binding_get_binding_fault_element(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_BINDING", AXIS2_HASH_KEY_STRING));
 
-    size = AXIS2_ARRAY_LIST_SIZE(binding_impl->f_faults, env);
+    size = axis2_array_list_size(binding_impl->f_faults, env);
     for (i = 0; i < size; i++)
     {
         void *bind_fault = NULL;
         axis2_qname_t *qname_l = NULL;
 
-        bind_fault = AXIS2_ARRAY_LIST_GET(binding_impl->f_faults,
+        bind_fault = axis2_array_list_get(binding_impl->f_faults,
                 env, i);
         qname_l = (axis2_qname_t *) WODEN_BINDING_FAULT_ELEMENT_GET_REF(
                     bind_fault, env);
@@ -1139,13 +1139,13 @@ woden_binding_get_binding_op_element(
     binding_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_BINDING", AXIS2_HASH_KEY_STRING));
 
-    size = AXIS2_ARRAY_LIST_SIZE(binding_impl->f_ops, env);
+    size = axis2_array_list_size(binding_impl->f_ops, env);
     for (i = 0; i < size; i++)
     {
         void *bind_op = NULL;
         axis2_qname_t *qname_l = NULL;
 
-        bind_op = AXIS2_ARRAY_LIST_GET(binding_impl->f_ops,
+        bind_op = axis2_array_list_get(binding_impl->f_ops,
                 env, i);
         qname_l = (axis2_qname_t *) WODEN_BINDING_OP_ELEMENT_GET_REF(
                     bind_op, env);

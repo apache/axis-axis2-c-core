@@ -755,11 +755,11 @@ axis2_engine_invoke_phases(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     if (phases)
-        count = AXIS2_ARRAY_LIST_SIZE(phases, env);
+        count = axis2_array_list_size(phases, env);
     for (i = 0; (i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))); i++)
     {
         axis2_phase_t *phase = (axis2_phase_t *)
-                AXIS2_ARRAY_LIST_GET(phases, env, i);
+                axis2_array_list_get(phases, env, i);
 
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                 "Invoking phase %s", AXIS2_PHASE_GET_NAME(phase, env));
@@ -791,11 +791,11 @@ axis2_engine_resume_invocation_phases(
 
     AXIS2_MSG_CTX_SET_PAUSED(msg_ctx, env, AXIS2_FALSE);
 
-    count = AXIS2_ARRAY_LIST_SIZE(phases, env);
+    count = axis2_array_list_size(phases, env);
 
     for (i = 0; i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)); i++)
     {
-        axis2_phase_t *phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phases,
+        axis2_phase_t *phase = (axis2_phase_t *) axis2_array_list_get(phases,
                 env, i);
         const axis2_char_t *phase_name = AXIS2_PHASE_GET_NAME(phase, env);
         const axis2_char_t *paused_phase_name = AXIS2_MSG_CTX_GET_PAUSED_PHASE_NAME(

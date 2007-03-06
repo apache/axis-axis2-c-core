@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 		  return -1;
 
 	 if (intfaces)
-		  intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
+		  intface = axis2_array_list_get(intfaces, env, 0);
 	 else 
 		  return -1;
 
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
         void *svc = NULL;
         axis2_array_list_t *endpoints = NULL;
         int i = 0, no_of_endpoints = -1;
-        svc = AXIS2_ARRAY_LIST_GET(svc_list, env, 0);
+        svc = axis2_array_list_get(svc_list, env, 0);
         if (svc)
         {
             axis2_qname_t *svc_qname = WODEN_SVC_GET_QNAME(svc, env);
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
             endpoints = WODEN_SVC_GET_ENDPOINTS(svc, env);
             if (endpoints)
             {
-                no_of_endpoints = AXIS2_ARRAY_LIST_SIZE(endpoints, env);
+                no_of_endpoints = axis2_array_list_size(endpoints, env);
             }
             else
             {
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
                 axis2_char_t *ep_ncname = NULL;
                 woden_wsdl10_endpoint_t *endpoint = NULL;
 
-                endpoint = AXIS2_ARRAY_LIST_GET(endpoints, env, i);
+                endpoint = axis2_array_list_get(endpoints, env, i);
                 ncname = WODEN_WSDL10_ENDPOINT_GET_NAME(endpoint, env);
                 if (ncname)
                     ep_ncname = WODEN_NC_NAME_TO_STRING(ncname, env);
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     if (binding_list)
     {
         void *binding = NULL;
-        binding = AXIS2_ARRAY_LIST_GET(binding_list, env, 0);
+        binding = axis2_array_list_get(binding_list, env, 0);
         if (binding)
         {
             axis2_qname_t *binding_qname = WODEN_BINDING_GET_QNAME(binding, env);
@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
     if (ed_list)
     {
 
-        ed = AXIS2_ARRAY_LIST_GET(ed_list, env, 0);
+        ed = axis2_array_list_get(ed_list, env, 0);
         if (ed)
             ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
     }

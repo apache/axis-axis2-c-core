@@ -278,7 +278,7 @@ axis2_msg_info_headers_add_ref_param(struct axis2_msg_info_headers *msg_info_hea
 
     if (ref_param)
     {
-        return AXIS2_ARRAY_LIST_ADD(msg_info_headers->ref_params, env, ref_param);
+        return axis2_array_list_add(msg_info_headers->ref_params, env, ref_param);
     }
 
     return AXIS2_SUCCESS;
@@ -315,7 +315,7 @@ axis2_msg_info_headers_free(
 
     if (msg_info_headers->ref_params)
     {
-        AXIS2_ARRAY_LIST_FREE(msg_info_headers->ref_params, env);
+        axis2_array_list_free(msg_info_headers->ref_params, env);
     }
     if (msg_info_headers->action)
     {

@@ -205,10 +205,10 @@ rampart_get_action_params(const axis2_env_t *env,
         AXIS2_LOG_INFO(env->log, "[rampart][rhu] param list is NULL");
     }
 
-    size = AXIS2_ARRAY_LIST_SIZE(param_list, env);
+    size = axis2_array_list_size(param_list, env);
     for (i = 0; i < size; i = i + 1)
     {
-        param = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(param_list, env, i);
+        param = (axis2_param_t*) axis2_array_list_get(param_list, env, i);
         if (param)
         {
             tmp_key = AXIS2_PARAM_GET_NAME(param, env);
@@ -289,7 +289,7 @@ rampart_create_fault_envelope(const axis2_env_t *env,
     axis2_array_list_t *sub_codes = NULL;
 
     sub_codes = axis2_array_list_create(env, 1);
-    AXIS2_ARRAY_LIST_ADD(sub_codes, env, sub_code);
+    axis2_array_list_add(sub_codes, env, sub_code);
 
     ns1 = axiom_namespace_create(env, RAMPART_WSSE_XMLNS, RAMPART_WSSE);
     text_om_ele = axiom_element_create(env, NULL, "ProblemSecurityHeader", ns1, &text_om_node);
@@ -375,10 +375,10 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
     engaged_modules = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(conf, env);
     if(engaged_modules)
     {
-        size = AXIS2_ARRAY_LIST_SIZE(engaged_modules,env);
+        size = axis2_array_list_size(engaged_modules,env);
         for(i=0; i<size; i++)
         {
-            qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(engaged_modules,env,i);
+            qname = (axis2_qname_t *) axis2_array_list_get(engaged_modules,env,i);
             local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
             if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
                 return AXIS2_TRUE;
@@ -398,10 +398,10 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
     engaged_modules = AXIS2_SVC_GET_ALL_MODULE_QNAMES(svc,env);
     if(engaged_modules)
     {
-        size = AXIS2_ARRAY_LIST_SIZE(engaged_modules,env);
+        size = axis2_array_list_size(engaged_modules,env);
         for(i=0; i<size; i++)
         {
-            qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(engaged_modules,env,i);
+            qname = (axis2_qname_t *) axis2_array_list_get(engaged_modules,env,i);
             local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
             if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
             {                

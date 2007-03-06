@@ -316,7 +316,7 @@ axis2_arch_file_data_free(
     }
     if (file_data_impl->deployable_svcs)
     {
-        AXIS2_ARRAY_LIST_FREE(file_data_impl->deployable_svcs, env);
+        axis2_array_list_free(file_data_impl->deployable_svcs, env);
         file_data_impl->deployable_svcs = NULL;
     }
 

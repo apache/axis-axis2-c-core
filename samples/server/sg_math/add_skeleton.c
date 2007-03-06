@@ -62,7 +62,7 @@ add_init(axis2_svc_skeleton_t *svc_skeleton,
         const axis2_env_t *env)
 {
     svc_skeleton->func_array = axis2_array_list_create(env, 0);
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "add");
+    axis2_array_list_add(svc_skeleton->func_array, env, "add");
 
     /* Any initialization stuff of add goes here */
     return AXIS2_SUCCESS;

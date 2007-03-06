@@ -90,10 +90,10 @@ void test_cmdline_option(CuTest *tc)
     arr_list = W2C_CMDLINE_OPTION_GET_VALUES(option, env);
 
     for (i = 0 , strcpy(actual, W2C_CMDLINE_OPTION_GET_TYPE(option, env));
-            i < AXIS2_ARRAY_LIST_SIZE(arr_list, env); i ++)
+            i < axis2_array_list_size(arr_list, env); i ++)
     {
         sprintf(actual , "%s %s", actual ,
-                (char*)AXIS2_ARRAY_LIST_GET(arr_list, env, i));
+                (char*)axis2_array_list_get(arr_list, env, i));
     }
     expected = "uri a.wsdl b.wsdl";
     CuAssertStrEquals(tc, expected, actual);
@@ -106,10 +106,10 @@ void test_cmdline_option(CuTest *tc)
         arr_list = W2C_CMDLINE_OPTION_GET_VALUES(option, env);
         sprintf(actual, "%s{%s}: ", actual, W2C_CMDLINE_OPTION_GET_TYPE(option, env));
 
-        for (i = 0 ; i < AXIS2_ARRAY_LIST_SIZE(arr_list, env); i ++)
+        for (i = 0 ; i < axis2_array_list_size(arr_list, env); i ++)
         {
             sprintf(actual , "%s%s ", actual ,
-                    (char*)AXIS2_ARRAY_LIST_GET(arr_list, env, i));
+                    (char*)axis2_array_list_get(arr_list, env, i));
         }
     }
 
@@ -119,10 +119,10 @@ void test_cmdline_option(CuTest *tc)
     /* ----------------------------------------------------------------------*/
     arr_list = W2C_CMDLINE_OPTION_PARSER_GET_INVALID_OPTIONS(parser, env);
     for (i = 0, actual[0]  = '\0';
-            i < AXIS2_ARRAY_LIST_SIZE(arr_list, env); i ++)
+            i < axis2_array_list_size(arr_list, env); i ++)
     {
         option = (w2c_cmdline_option_t*)
-                AXIS2_ARRAY_LIST_GET(arr_list, env, i);
+                axis2_array_list_get(arr_list, env, i);
         sprintf(actual , "%s%s ", actual ,
                 W2C_CMDLINE_OPTION_GET_TYPE(option, env));
     }
@@ -178,10 +178,10 @@ void test_config_property_loader(CuTest *tc)
             axis2_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
             sprintf(actual, "%s{%s}: ", actual, key);
 
-            for (i = 0 ; i < AXIS2_ARRAY_LIST_SIZE(arr_list, env); i ++)
+            for (i = 0 ; i < axis2_array_list_size(arr_list, env); i ++)
             {
                 sprintf(actual , "%s%s ", actual ,
-                        (char*)AXIS2_ARRAY_LIST_GET(arr_list, env, i));
+                        (char*)axis2_array_list_get(arr_list, env, i));
             }
         }
     }
@@ -192,10 +192,10 @@ void test_config_property_loader(CuTest *tc)
     /** this part is removed from the config file - check later after it is readd */
     /*
     arr_list = W2C_CONFIG_PROPERTY_LOADER_GET_EXTENSION_CLASS_NAMES ( loader, env );
-    for ( i = 0, actual[0] ='\0'; i < AXIS2_ARRAY_LIST_SIZE ( arr_list, env ); i ++ )
+    for ( i = 0, actual[0] ='\0'; i < axis2_array_list_size ( arr_list, env ); i ++ )
     {
         sprintf ( actual, "%s%s,", actual,
-                         (char*) AXIS2_ARRAY_LIST_GET ( arr_list, env , i ) );
+                         (char*) axis2_array_list_get ( arr_list, env , i ) );
     }
     expected = ARRAYLIST_CONFIG_TEST_EXPECTED;
     CuAssertStrEquals(tc, expected, actual);

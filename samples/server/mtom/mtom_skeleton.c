@@ -71,7 +71,7 @@ mtom_init(axis2_svc_skeleton_t *svc_skeleton,
     /* Add the implemented operation names of the service to
      * the array list of functions 
      */
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "mtomString");
+    axis2_array_list_add(svc_skeleton->func_array, env, "mtomString");
     /* Any initialization stuff of mtom service should go here */
     return AXIS2_SUCCESS;
 }
@@ -120,7 +120,7 @@ mtom_free(axis2_svc_skeleton_t *svc_skeleton,
     /* Free the function array */
     if (svc_skeleton->func_array)
     {
-        AXIS2_ARRAY_LIST_FREE(svc_skeleton->func_array, env);
+        axis2_array_list_free(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }
 

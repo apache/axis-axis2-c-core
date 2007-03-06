@@ -338,7 +338,7 @@ axis2_phase_resolver_build_execution_chains(
     moduleqnames = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(
                 resolver_impl->axis2_config, env);
 
-    size = AXIS2_ARRAY_LIST_SIZE(moduleqnames, env);
+    size = axis2_array_list_size(moduleqnames, env);
     status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
     if (AXIS2_SUCCESS != status)
     {
@@ -350,7 +350,7 @@ axis2_phase_resolver_build_execution_chains(
         axis2_qname_t *modulename = NULL;
         axis2_module_desc_t *module_desc = NULL;
 
-        modulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(moduleqnames, env,
+        modulename = (axis2_qname_t *) axis2_array_list_get(moduleqnames, env,
                 i);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "module name is:%s",
                 AXIS2_QNAME_GET_LOCALPART(modulename, env));
@@ -437,12 +437,12 @@ axis2_phase_resolver_build_execution_chains(
                         if (!all_handlers)
                             return AXIS2_FAILURE;
                     }
-                    status = AXIS2_ARRAY_LIST_ADD(all_handlers, env, metadata);
+                    status = axis2_array_list_add(all_handlers, env, metadata);
                     if (AXIS2_SUCCESS != status)
                     {
                         if (all_handlers)
                         {
-                            AXIS2_ARRAY_LIST_FREE(all_handlers, env);
+                            axis2_array_list_free(all_handlers, env);
                             all_handlers = NULL;
                         }
                         return status;
@@ -515,7 +515,7 @@ axis2_phase_resolver_build_execution_chains(
         {
             if (all_handlers)
             {
-                AXIS2_ARRAY_LIST_FREE(all_handlers, env);
+                axis2_array_list_free(all_handlers, env);
                 all_handlers = NULL;
             }
             return AXIS2_ERROR_GET_STATUS_CODE(env->error);
@@ -548,7 +548,7 @@ axis2_phase_resolver_build_execution_chains(
             {
                 if (all_handlers)
                 {
-                    AXIS2_ARRAY_LIST_FREE(all_handlers, env);
+                    axis2_array_list_free(all_handlers, env);
                     all_handlers = NULL;
                 }
                 AXIS2_ERROR_SET(env->error,
@@ -565,7 +565,7 @@ axis2_phase_resolver_build_execution_chains(
                         return AXIS2_FAILURE;
                 }
 
-                status = AXIS2_ARRAY_LIST_ADD(all_handlers, env, metadata);
+                status = axis2_array_list_add(all_handlers, env, metadata);
 
                 if (AXIS2_SUCCESS != status)
                 {
@@ -573,16 +573,16 @@ axis2_phase_resolver_build_execution_chains(
                     {
                         int size = 0;
                         int i = 0;
-                        size = AXIS2_ARRAY_LIST_SIZE(all_handlers, env);
+                        size = axis2_array_list_size(all_handlers, env);
                         for (i = 0; i < size; i++)
                         {
                             axis2_handler_desc_t *handler_desc = NULL;
 
-                            handler_desc = AXIS2_ARRAY_LIST_GET(all_handlers,
+                            handler_desc = axis2_array_list_get(all_handlers,
                                     env, i);
                             AXIS2_HANDLER_DESC_FREE(handler_desc, env);
                         }
-                        AXIS2_ARRAY_LIST_FREE(all_handlers, env);
+                        axis2_array_list_free(all_handlers, env);
                         all_handlers = NULL;
                     }
                     return status;
@@ -637,7 +637,7 @@ axis2_phase_resolver_build_execution_chains(
         }
     }
 
-    size = AXIS2_ARRAY_LIST_SIZE(all_handlers, env);
+    size = axis2_array_list_size(all_handlers, env);
     if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return AXIS2_ERROR_GET_STATUS_CODE(env->error);
@@ -648,7 +648,7 @@ axis2_phase_resolver_build_execution_chains(
         axis2_handler_desc_t *metadata = NULL;
 
         metadata = (axis2_handler_desc_t *)
-                AXIS2_ARRAY_LIST_GET(all_handlers, env, i);
+                axis2_array_list_get(all_handlers, env, i);
         if (phase_holder)
         {
             status = AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder,
@@ -660,7 +660,7 @@ axis2_phase_resolver_build_execution_chains(
 
     /* Free the locally created all_handlers list */
     if (all_handlers)
-        AXIS2_ARRAY_LIST_FREE(all_handlers, env);
+        axis2_array_list_free(all_handlers, env);
     if(phase_holder)
         AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
 
@@ -794,17 +794,17 @@ axis2_phase_resolver_build_in_transport_chains(
                         int i = 0;
                         int size = 0;
 
-                        size = AXIS2_ARRAY_LIST_SIZE(handlers, env);
+                        size = axis2_array_list_size(handlers, env);
                         for (i = 0; i < size; i++)
                         {
-                            handler_d = AXIS2_ARRAY_LIST_GET(handlers, env, i);
+                            handler_d = axis2_array_list_get(handlers, env, i);
                             AXIS2_HANDLER_DESC_FREE(handler_d, env);
                         }
-                        AXIS2_ARRAY_LIST_FREE(handlers, env);
+                        axis2_array_list_free(handlers, env);
                     }
                     return status;
                 }
-                status = AXIS2_ARRAY_LIST_ADD(handlers, env, metadata);
+                status = axis2_array_list_add(handlers, env, metadata);
                 if (AXIS2_SUCCESS != status)
                 {
                     if (handlers)
@@ -813,13 +813,13 @@ axis2_phase_resolver_build_in_transport_chains(
                         int i = 0;
                         int size = 0;
 
-                        size = AXIS2_ARRAY_LIST_SIZE(handlers, env);
+                        size = axis2_array_list_size(handlers, env);
                         for (i = 0; i < size; i++)
                         {
-                            handler_d = AXIS2_ARRAY_LIST_GET(handlers, env, i);
+                            handler_d = axis2_array_list_get(handlers, env, i);
                             AXIS2_HANDLER_DESC_FREE(handler_d, env);
                         }
-                        AXIS2_ARRAY_LIST_FREE(handlers, env);
+                        axis2_array_list_free(handlers, env);
                     }
                     return status;
                 }
@@ -833,13 +833,13 @@ axis2_phase_resolver_build_in_transport_chains(
                     int i = 0;
                     int size = 0;
 
-                    size = AXIS2_ARRAY_LIST_SIZE(handlers, env);
+                    size = axis2_array_list_size(handlers, env);
                     for (i = 0; i < size; i++)
                     {
-                        handler_d = AXIS2_ARRAY_LIST_GET(handlers, env, i);
+                        handler_d = axis2_array_list_get(handlers, env, i);
                         AXIS2_HANDLER_DESC_FREE(handler_d, env);
                     }
-                    AXIS2_ARRAY_LIST_FREE(handlers, env);
+                    axis2_array_list_free(handlers, env);
                 }
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                         AXIS2_FAILURE);
@@ -860,7 +860,7 @@ axis2_phase_resolver_build_in_transport_chains(
     }
     if (handlers)
     {
-        AXIS2_ARRAY_LIST_FREE(handlers, env);
+        axis2_array_list_free(handlers, env);
     }
     return status;
 }
@@ -932,18 +932,18 @@ axis2_phase_resolver_build_out_transport_chains(
                         int i = 0;
                         int size = 0;
 
-                        size = AXIS2_ARRAY_LIST_SIZE(handlers, env);
+                        size = axis2_array_list_size(handlers, env);
                         for (i = 0; i < size; i++)
                         {
-                            handler_d = AXIS2_ARRAY_LIST_GET(handlers, env, i);
+                            handler_d = axis2_array_list_get(handlers, env, i);
                             AXIS2_HANDLER_DESC_FREE(handler_d, env);
                         }
-                        AXIS2_ARRAY_LIST_FREE(handlers, env);
+                        axis2_array_list_free(handlers, env);
                     }
                     return status;
                 }
 
-                status = AXIS2_ARRAY_LIST_ADD(handlers, env, metadata);
+                status = axis2_array_list_add(handlers, env, metadata);
                 if (AXIS2_FAILURE == status)
                 {
                     if (handlers)
@@ -952,13 +952,13 @@ axis2_phase_resolver_build_out_transport_chains(
                         int i = 0;
                         int size = 0;
 
-                        size = AXIS2_ARRAY_LIST_SIZE(handlers, env);
+                        size = axis2_array_list_size(handlers, env);
                         for (i = 0; i < size; i++)
                         {
-                            handler_d = AXIS2_ARRAY_LIST_GET(handlers, env, i);
+                            handler_d = axis2_array_list_get(handlers, env, i);
                             AXIS2_HANDLER_DESC_FREE(handler_d, env);
                         }
-                        AXIS2_ARRAY_LIST_FREE(handlers, env);
+                        axis2_array_list_free(handlers, env);
                     }
                     return status;
                 }
@@ -972,13 +972,13 @@ axis2_phase_resolver_build_out_transport_chains(
                     int i = 0;
                     int size = 0;
 
-                    size = AXIS2_ARRAY_LIST_SIZE(handlers, env);
+                    size = axis2_array_list_size(handlers, env);
                     for (i = 0; i < size; i++)
                     {
-                        handler_d = AXIS2_ARRAY_LIST_GET(handlers, env, i);
+                        handler_d = axis2_array_list_get(handlers, env, i);
                         AXIS2_HANDLER_DESC_FREE(handler_d, env);
                     }
-                    AXIS2_ARRAY_LIST_FREE(handlers, env);
+                    axis2_array_list_free(handlers, env);
                 }
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -995,7 +995,7 @@ axis2_phase_resolver_build_out_transport_chains(
         }
     }
     if (handlers)
-        AXIS2_ARRAY_LIST_FREE(handlers, env);
+        axis2_array_list_free(handlers, env);
     return status;
 }
 
@@ -1125,14 +1125,14 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
         modules = AXIS2_OP_GET_ALL_MODULES(op_desc, env);
         module_desc_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         if (modules)
-            size = AXIS2_ARRAY_LIST_SIZE(modules, env);
+            size = axis2_array_list_size(modules, env);
         for (j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
             const axis2_qname_t *module_desc_qname_l = NULL;
 
             module_desc_l = (axis2_module_desc_t *)
-                    AXIS2_ARRAY_LIST_GET(modules, env, j);
+                    axis2_array_list_get(modules, env, j);
 
             module_desc_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l ,
                     env);
@@ -1456,13 +1456,13 @@ axis2_phase_resolver_engage_module_to_svc(
         op_desc = (axis2_op_t *) v;
         modules = AXIS2_OP_GET_ALL_MODULES(op_desc, env);
         if (modules)
-            size = AXIS2_ARRAY_LIST_SIZE(modules, env);
+            size = axis2_array_list_size(modules, env);
         for (j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
             const axis2_qname_t *module_d_qname_l = NULL;
 
-            module_desc_l = AXIS2_ARRAY_LIST_GET(modules, env, j);
+            module_desc_l = axis2_array_list_get(modules, env, j);
             module_d_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);
             if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_d_qname, env,
                     module_d_qname_l))

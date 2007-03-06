@@ -126,13 +126,13 @@ xml_schema_form_create(const axis2_env_t *env,
         return NULL;
     }
 
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env,
+    axis2_array_list_add(form_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_FORM_QUALIFIED, env));
 
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env,
+    axis2_array_list_add(form_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_FORM_UNQUALIFIED, env));
 
-    AXIS2_ARRAY_LIST_ADD(form_impl->members, env,
+    axis2_array_list_add(form_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_FORM_NONE, env));
 
     form_impl->schema_enum = xml_schema_enum_create(env, value);
@@ -182,18 +182,18 @@ xml_schema_form_free(void *form,
     {
         int size = 0;
         int i    = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(form_impl->members, env);
+        size = axis2_array_list_size(form_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
-            value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(form_impl->members, env, i);
+            value = (axis2_char_t*) axis2_array_list_get(form_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
-        AXIS2_ARRAY_LIST_FREE(form_impl->members, env);
+        axis2_array_list_free(form_impl->members, env);
         form_impl->members = NULL;
     }
 

@@ -677,10 +677,10 @@ w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
     {
         qnames = W2C_SCHEMA_WRITER_META_INFO_GET_QNAME_ARRAY( meta_info, env);
     }
-    size = AXIS2_ARRAY_LIST_SIZE( qnames, env);
+    size = axis2_array_list_size( qnames, env);
     for( i = 0; i < size; i ++)
     {
-        qname = AXIS2_ARRAY_LIST_GET( qnames, env, i);
+        qname = axis2_array_list_get( qnames, env, i);
         property = w2c_xslt_utils_add_child_node( env, "property", model);
     
         if ( qname2name_maker == NULL)

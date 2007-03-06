@@ -519,10 +519,10 @@ axis2_simple_http_svr_conn_write_response(
 
     if (headers)
     {
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
+        for (i = 0; i < axis2_array_list_size(headers, env); i++)
         {
             axis2_http_header_t *header = NULL;
-            header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(headers, env,
+            header = (axis2_http_header_t *)axis2_array_list_get(headers, env,
                     i);
             if (header)
             {

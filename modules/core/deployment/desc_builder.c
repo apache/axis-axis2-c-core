@@ -702,7 +702,7 @@ set_attrs_and_value(
             }
             AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_DOM_PARAM);
             set_attrs_and_value(param, env, element, node);
-            AXIS2_ARRAY_LIST_ADD(value_list, env, param);
+            axis2_array_list_add(value_list, env, param);
         }
     }
     else
@@ -760,7 +760,7 @@ axis2_desc_builder_process_action_mappings(
     {
         if (mapping_list)
         {
-            AXIS2_ARRAY_LIST_FREE(mapping_list, env);
+            axis2_array_list_free(mapping_list, env);
             mapping_list = NULL;
         }
         return AXIS2_SUCCESS;
@@ -785,7 +785,7 @@ axis2_desc_builder_process_action_mappings(
             input_action_string);
         if(0 != AXIS2_STRCMP("", input_action_string))
         {
-            AXIS2_ARRAY_LIST_ADD(mapping_list, env, input_action_string);
+            axis2_array_list_add(mapping_list, env, input_action_string);
         }
         else
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Zero length " \

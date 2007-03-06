@@ -629,7 +629,7 @@ axis2_conf_builder_get_phase_list(
     AXIS2_QNAME_FREE(qphase, env);
     if (!phases)
     {
-        AXIS2_ARRAY_LIST_FREE(phase_list, env);
+        axis2_array_list_free(phase_list, env);
         return NULL;
     }
 
@@ -661,7 +661,7 @@ axis2_conf_builder_get_phase_list(
         }
         if (att_value)
         {
-            AXIS2_ARRAY_LIST_ADD(phase_list, env, att_value);
+            axis2_array_list_add(phase_list, env, att_value);
         }
 
         AXIS2_QNAME_FREE(qattname, env);

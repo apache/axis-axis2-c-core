@@ -569,7 +569,7 @@ axis2_http_worker_get_headers(
     {
         return NULL;
     }
-    hdr_count = AXIS2_ARRAY_LIST_SIZE(header_list, env);
+    hdr_count = axis2_array_list_size(header_list, env);
     if (0 == hdr_count)
     {
         return NULL;
@@ -578,7 +578,7 @@ axis2_http_worker_get_headers(
     for (i = 0; i < hdr_count; i++)
     {
         axis2_http_header_t *tmp_hdr = NULL;
-        tmp_hdr = AXIS2_ARRAY_LIST_GET(header_list, env, i);
+        tmp_hdr = axis2_array_list_get(header_list, env, i);
         if (NULL == tmp_hdr)
         {
             continue;

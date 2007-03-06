@@ -175,31 +175,31 @@ axis2_endpoint_ref_free(
 
     if (endpoint_ref->ref_param_list)
     {
-        AXIS2_ARRAY_LIST_FREE(endpoint_ref->ref_param_list, env);
+        axis2_array_list_free(endpoint_ref->ref_param_list, env);
         endpoint_ref->ref_param_list = NULL;
     }
 
     if (endpoint_ref->metadata_list)
     {
-        AXIS2_ARRAY_LIST_FREE(endpoint_ref->metadata_list, env);
+        axis2_array_list_free(endpoint_ref->metadata_list, env);
         endpoint_ref->metadata_list = NULL;
     }
 
     if (endpoint_ref->ref_attribute_list)
     {
-        AXIS2_ARRAY_LIST_FREE(endpoint_ref->ref_attribute_list, env);
+        axis2_array_list_free(endpoint_ref->ref_attribute_list, env);
         endpoint_ref->ref_attribute_list = NULL;
     }
 
     if (endpoint_ref->meta_attribute_list)
     {
-        AXIS2_ARRAY_LIST_FREE(endpoint_ref->meta_attribute_list, env);
+        axis2_array_list_free(endpoint_ref->meta_attribute_list, env);
         endpoint_ref->meta_attribute_list = NULL;
     }
 
     if (endpoint_ref->extension_list)
     {
-        AXIS2_ARRAY_LIST_FREE(endpoint_ref->extension_list, env);
+        axis2_array_list_free(endpoint_ref->extension_list, env);
         endpoint_ref->extension_list = NULL;
     }
 
@@ -251,7 +251,7 @@ axis2_endpoint_ref_add_ref_param(
 
     if (endpoint_ref->ref_param_list && ref_param_node)
     {
-        return AXIS2_ARRAY_LIST_ADD(endpoint_ref->ref_param_list, env, ref_param_node);
+        return axis2_array_list_add(endpoint_ref->ref_param_list, env, ref_param_node);
     }
 
     return AXIS2_FAILURE;
@@ -277,7 +277,7 @@ axis2_endpoint_ref_add_metadata(
 
     if (endpoint_ref->metadata_list && meta_data_node)
     {
-        return AXIS2_ARRAY_LIST_ADD(endpoint_ref->metadata_list, env, meta_data_node);
+        return axis2_array_list_add(endpoint_ref->metadata_list, env, meta_data_node);
     }
 
     return AXIS2_FAILURE;
@@ -334,7 +334,7 @@ axis2_endpoint_ref_add_ref_attribute(
 
     if (endpoint_ref->ref_attribute_list && attr)
     {
-        return AXIS2_ARRAY_LIST_ADD(endpoint_ref->ref_attribute_list, env, attr);
+        return axis2_array_list_add(endpoint_ref->ref_attribute_list, env, attr);
     }
 
     return AXIS2_FAILURE;
@@ -360,7 +360,7 @@ axis2_endpoint_ref_add_metadata_attribute(
 
     if (endpoint_ref->meta_attribute_list && attr)
     {
-        return AXIS2_ARRAY_LIST_ADD(endpoint_ref->meta_attribute_list, env, attr);
+        return axis2_array_list_add(endpoint_ref->meta_attribute_list, env, attr);
     }
 
     return AXIS2_FAILURE;
@@ -386,7 +386,7 @@ axis2_endpoint_ref_add_extension(
 
     if (endpoint_ref->extension_list && extension_node)
     {
-        return AXIS2_ARRAY_LIST_ADD(endpoint_ref->extension_list, env, extension_node);
+        return axis2_array_list_add(endpoint_ref->extension_list, env, extension_node);
     }
 
     return AXIS2_FAILURE;

@@ -469,11 +469,11 @@ axis2_conf_create(
                 handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
                 AXIS2_DISP_FREE(uri_dispatch, env);
                 AXIS2_PHASE_ADD_HANDLER_AT(phase, env, 0, handler);
-                AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+                axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
                 handler = NULL;
         }
 
-        status = AXIS2_ARRAY_LIST_ADD(config_impl->
+        status = axis2_array_list_add(config_impl->
                 in_phases_upto_and_including_post_dispatch, env, phase);
         if (AXIS2_FAILURE == status)
         {
@@ -488,7 +488,7 @@ axis2_conf_create(
             axis2_conf_free(&(config_impl->conf), env);
             return NULL;
         }
-        status = AXIS2_ARRAY_LIST_ADD(config_impl->
+        status = axis2_array_list_add(config_impl->
                 in_phases_upto_and_including_post_dispatch, env, phase);
         if (AXIS2_FAILURE == status)
         {
@@ -759,54 +759,54 @@ axis2_conf_free(
     if (config_impl->engaged_modules)
     {
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules,
+        for (i = 0; i < axis2_array_list_size(config_impl->engaged_modules,
                 env); i++)
         {
             axis2_qname_t *module_desc_qname = NULL;
             module_desc_qname = (axis2_qname_t *)
-                    AXIS2_ARRAY_LIST_GET(config_impl->engaged_modules, env, i);
+                    axis2_array_list_get(config_impl->engaged_modules, env, i);
             if (module_desc_qname)
                 AXIS2_QNAME_FREE(module_desc_qname, env);
 
             module_desc_qname = NULL;
         }
-        AXIS2_ARRAY_LIST_FREE(config_impl->engaged_modules, env);
+        axis2_array_list_free(config_impl->engaged_modules, env);
         config_impl->engaged_modules = NULL;
     }
 
     if (config_impl->out_phases)
     {
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->out_phases, env); i++)
+        for (i = 0; i < axis2_array_list_size(config_impl->out_phases, env); i++)
         {
             axis2_phase_t *phase = NULL;
             phase = (axis2_phase_t *)
-                    AXIS2_ARRAY_LIST_GET(config_impl->out_phases, env, i);
+                    axis2_array_list_get(config_impl->out_phases, env, i);
             if (phase)
                 AXIS2_PHASE_FREE(phase, env);
 
             phase = NULL;
 
         }
-        AXIS2_ARRAY_LIST_FREE(config_impl->out_phases, env);
+        axis2_array_list_free(config_impl->out_phases, env);
         config_impl->out_phases = NULL;
     }
 
     if (config_impl->in_fault_phases)
     {
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->in_fault_phases, env); i++)
+        for (i = 0; i < axis2_array_list_size(config_impl->in_fault_phases, env); i++)
         {
             axis2_phase_t *phase = NULL;
             phase = (axis2_phase_t *)
-                    AXIS2_ARRAY_LIST_GET(config_impl->in_fault_phases, env, i);
+                    axis2_array_list_get(config_impl->in_fault_phases, env, i);
             if (phase)
                 AXIS2_PHASE_FREE(phase, env);
 
             phase = NULL;
 
         }
-        AXIS2_ARRAY_LIST_FREE(config_impl->in_fault_phases, env);
+        axis2_array_list_free(config_impl->in_fault_phases, env);
         config_impl->in_fault_phases = NULL;
     }
 
@@ -816,11 +816,11 @@ axis2_conf_free(
          * phase_info 
          */
         /*int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->out_fault_phases, env); i++)
+        for (i = 0; i < axis2_array_list_size(config_impl->out_fault_phases, env); i++)
         {
             axis2_phase_t *phase = NULL;
             phase = (axis2_phase_t *)
-                    AXIS2_ARRAY_LIST_GET(config_impl->out_fault_phases, env, i);
+                    axis2_array_list_get(config_impl->out_fault_phases, env, i);
 
             if (phase)
                 AXIS2_PHASE_FREE(phase, env);
@@ -828,18 +828,18 @@ axis2_conf_free(
             phase = NULL;
 
         }*/
-        AXIS2_ARRAY_LIST_FREE(config_impl->out_fault_phases, env);
+        axis2_array_list_free(config_impl->out_fault_phases, env);
         config_impl->out_fault_phases = NULL;
     }
 
     if (config_impl->in_phases_upto_and_including_post_dispatch)
     {
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->
+        for (i = 0; i < axis2_array_list_size(config_impl->
                 in_phases_upto_and_including_post_dispatch, env); i++)
         {
             axis2_phase_t *phase = NULL;
-            phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(config_impl->
+            phase = (axis2_phase_t *) axis2_array_list_get(config_impl->
                     in_phases_upto_and_including_post_dispatch, env, i);
 
             if (phase)
@@ -847,7 +847,7 @@ axis2_conf_free(
             phase = NULL;
 
         }
-        AXIS2_ARRAY_LIST_FREE(config_impl->
+        axis2_array_list_free(config_impl->
                 in_phases_upto_and_including_post_dispatch, env);
         config_impl->in_phases_upto_and_including_post_dispatch = NULL;
     }
@@ -910,18 +910,18 @@ axis2_conf_free(
     if (config_impl->handlers)
     {
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(config_impl->handlers, env); i++)
+        for (i = 0; i < axis2_array_list_size(config_impl->handlers, env); i++)
         {
             axis2_handler_desc_t *handler_desc = NULL;
             handler_desc = (axis2_handler_desc_t *)
-                    AXIS2_ARRAY_LIST_GET(config_impl->handlers, env, i);
+                    axis2_array_list_get(config_impl->handlers, env, i);
             if (handler_desc)
                 AXIS2_HANDLER_DESC_FREE(handler_desc, env);
 
             handler_desc = NULL;
 
         }
-        AXIS2_ARRAY_LIST_FREE(config_impl->handlers, env);
+        axis2_array_list_free(config_impl->handlers, env);
         config_impl->handlers = NULL;
     }
 
@@ -1469,13 +1469,13 @@ axis2_conf_is_engaged(
     {
         def_mod_qname = AXIS2_MODULE_DESC_GET_QNAME(def_mod, env);
     }
-    size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
+    size = axis2_array_list_size(config_impl->engaged_modules, env);
     for (i = 0; i < size; i++)
     {
         axis2_qname_t *qname = NULL;
 
 
-        qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(config_impl->
+        qname = (axis2_qname_t *) axis2_array_list_get(config_impl->
                 engaged_modules, env, i);
 
         if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_name, env, qname) ||
@@ -1570,7 +1570,7 @@ axis2_conf_set_out_phases(
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     if (config_impl->out_phases)
     {
-        AXIS2_ARRAY_LIST_FREE(config_impl->out_phases, env);
+        axis2_array_list_free(config_impl->out_phases, env);
         config_impl->out_phases = NULL;
     }
     config_impl->out_phases = out_phases;
@@ -1600,7 +1600,7 @@ axis2_conf_set_in_fault_phases(
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     if (config_impl->in_fault_phases)
     {
-        AXIS2_ARRAY_LIST_FREE(config_impl->in_fault_phases, env);
+        axis2_array_list_free(config_impl->in_fault_phases, env);
         config_impl->in_fault_phases = NULL;
     }
     config_impl->in_fault_phases = list;
@@ -1621,7 +1621,7 @@ axis2_conf_set_out_fault_phases(
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     if (config_impl->out_fault_phases)
     {
-        AXIS2_ARRAY_LIST_FREE(config_impl->out_fault_phases, env);
+        axis2_array_list_free(config_impl->out_fault_phases, env);
         config_impl->out_fault_phases = NULL;
     }
     config_impl->out_fault_phases = list;
@@ -1710,7 +1710,7 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_GET_BASE(soap_msg_body_based_dispatch, env);
     AXIS2_DISP_FREE(soap_msg_body_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 0, handler);
-    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
 
@@ -1724,7 +1724,7 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_GET_BASE(add_dispatch, env);
     AXIS2_DISP_FREE(add_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
-    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
     /*uri_dispatch = axis2_req_uri_disp_create(env);
@@ -1736,7 +1736,7 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
     AXIS2_DISP_FREE(uri_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
-    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;*/
 
     soap_action_based_dispatch = axiom_soap_action_disp_create(env);
@@ -1748,10 +1748,10 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_GET_BASE(soap_action_based_dispatch, env);
     AXIS2_DISP_FREE(soap_action_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 2, handler);
-    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
-    status = AXIS2_ARRAY_LIST_ADD(config_impl->
+    status = axis2_array_list_add(config_impl->
             in_phases_upto_and_including_post_dispatch, env, dispatch);
     if (AXIS2_SUCCESS != status)
     {
@@ -1770,14 +1770,14 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_DISP_CHECKER_FREE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
-    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
     handler = axis2_ctx_handler_create(env, NULL);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 1, handler);
-    AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
 
-    status = AXIS2_ARRAY_LIST_ADD(config_impl->
+    status = axis2_array_list_add(config_impl->
             in_phases_upto_and_including_post_dispatch, env, post_dispatch);
     if (AXIS2_SUCCESS != status)
     {
@@ -1804,7 +1804,7 @@ axis2_conf_set_dispatch_phase(
     AXIS2_PARAM_CHECK(env->error, dispatch, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    status = AXIS2_ARRAY_LIST_ADD(config_impl->
+    status = axis2_array_list_add(config_impl->
             in_phases_upto_and_including_post_dispatch, env, dispatch);
     if (AXIS2_FAILURE == status)
     {
@@ -1823,7 +1823,7 @@ axis2_conf_set_dispatch_phase(
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
 
-    status = AXIS2_ARRAY_LIST_ADD(config_impl->
+    status = axis2_array_list_add(config_impl->
             in_phases_upto_and_including_post_dispatch, env, post_dispatch);
     if (AXIS2_FAILURE == status)
     {
@@ -1903,13 +1903,13 @@ axis2_conf_engage_module(
         int i = 0;
         const axis2_qname_t *module_qname = NULL;
 
-        size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
+        size = axis2_array_list_size(config_impl->engaged_modules, env);
         module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         for (i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
 
-            qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(config_impl->
+            qname = (axis2_qname_t *) axis2_array_list_get(config_impl->
                     engaged_modules, env, i);
             if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_qname, env, qname))
             {
@@ -1943,7 +1943,7 @@ axis2_conf_engage_module(
         }
         module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         module_qref_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
-        status = AXIS2_ARRAY_LIST_ADD(config_impl->engaged_modules, env,
+        status = axis2_array_list_add(config_impl->engaged_modules, env,
                 module_qref_l);
     }
     if (is_new_module)

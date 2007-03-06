@@ -459,7 +459,7 @@ woden_ext_registry_get_allowable_exts(
             void *v = NULL;
 
             axis2_hash_this(i, NULL, NULL, &v);
-            AXIS2_ARRAY_LIST_ADD(registry_impl->key_set, env, v);
+            axis2_array_list_add(registry_impl->key_set, env, v);
         }
     }
     return registry_impl->key_set;
@@ -691,7 +691,7 @@ woden_ext_registry_query_component_ext_namespaces(
             const void *key = NULL;
 
             axis2_hash_this(i, &key, NULL, NULL);
-            AXIS2_ARRAY_LIST_ADD(registry_impl->key_set, env, key);
+            axis2_array_list_add(registry_impl->key_set, env, key);
         }
     }
     return registry_impl->key_set;

@@ -266,7 +266,7 @@ axis2_svc_grp_builder_populate_svc_grp(
 
             deployable_svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(file_data,
                     env);
-            AXIS2_ARRAY_LIST_ADD(deployable_svcs, env, axis_svc);
+            axis2_array_list_add(deployable_svcs, env, axis_svc);
             AXIS2_SVC_SET_PARENT(axis_svc, env, svc_grp);
             svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
                     grp_builder->desc_builder->engine, axis_svc);

@@ -169,7 +169,7 @@ axis2_http_simple_request_create(
 
         for (i = 0; i < http_hdr_count; i++)
         {
-            AXIS2_ARRAY_LIST_ADD(simple_request_impl->header_group, env,
+            axis2_array_list_add(simple_request_impl->header_group, env,
                     (void *)http_headers[i]);
         }
     }
@@ -245,15 +245,15 @@ axis2_http_simple_request_free(
     {
         int i = 0;
         axis2_http_header_t *tmp = NULL;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(simple_request_impl->header_group,
+        for (i = 0; i < axis2_array_list_size(simple_request_impl->header_group,
                 env); i++)
         {
-            tmp = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(
+            tmp = (axis2_http_header_t *)axis2_array_list_get(
                         simple_request_impl->header_group, env, i);
             AXIS2_HTTP_HEADER_FREE(tmp, env);
 
         }
-        AXIS2_ARRAY_LIST_FREE(simple_request_impl->header_group, env);
+        axis2_array_list_free(simple_request_impl->header_group, env);
         simple_request_impl->header_group = NULL;
     }
 
@@ -309,7 +309,7 @@ axis2_http_simple_request_contains_header(
         return AXIS2_FALSE;
     }
 
-    count = AXIS2_ARRAY_LIST_SIZE(simple_request_impl->header_group, env);
+    count = axis2_array_list_size(simple_request_impl->header_group, env);
 
     if (0 == count)
     {
@@ -319,7 +319,7 @@ axis2_http_simple_request_contains_header(
     for (i = 0; i < count; i++)
     {
         header_name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
-                AXIS2_ARRAY_LIST_GET(simple_request_impl->header_group,
+                axis2_array_list_get(simple_request_impl->header_group,
                         env, i), env);
         if (0 == AXIS2_STRCASECMP(name, header_name))
             return AXIS2_TRUE;
@@ -361,19 +361,19 @@ axis2_http_simple_request_get_first_header(
     {
         return NULL;
     }
-    if (0 == AXIS2_ARRAY_LIST_SIZE(header_group, env))
+    if (0 == axis2_array_list_size(header_group, env))
     {
         return NULL;
     }
 
 
-    count = AXIS2_ARRAY_LIST_SIZE(header_group, env);
+    count = axis2_array_list_size(header_group, env);
 
 
     for (i = 0; i < count; i++)
     {
 
-        tmp_header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(header_group,
+        tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
         if (0 == AXIS2_STRCASECMP(str, tmp_name))
@@ -411,17 +411,17 @@ axis2_http_simple_request_remove_headers(
         return AXIS2_SUCCESS;
     }
 
-    count = AXIS2_ARRAY_LIST_SIZE(header_group, env);
+    count = axis2_array_list_size(header_group, env);
 
     for (i = 0; i < count; i++)
     {
-        tmp_header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(header_group,
+        tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
         if (0 == AXIS2_STRCASECMP(str, tmp_name))
         {
             AXIS2_HTTP_HEADER_FREE(tmp_header, env);
-            AXIS2_ARRAY_LIST_REMOVE(header_group, env, i);
+            axis2_array_list_remove(header_group, env, i);
             break;
         }
     }
@@ -445,7 +445,7 @@ axis2_http_simple_request_add_header(
     {
         simple_request_impl->header_group = axis2_array_list_create(env, 1);
     }
-    return AXIS2_ARRAY_LIST_ADD(AXIS2_INTF_TO_IMPL(simple_request)->header_group,
+    return axis2_array_list_add(AXIS2_INTF_TO_IMPL(simple_request)->header_group,
             env, header);
 }
 

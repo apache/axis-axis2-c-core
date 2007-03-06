@@ -1404,7 +1404,7 @@ c14n_need_to_declare_ns(
 {
     axis2_bool_t vu = c14n_ns_visibly_utilized(ele, node, ns, ctx);
 
-    if (vu || (ctx->ns_prefixes && AXIS2_ARRAY_LIST_CONTAINS(
+    if (vu || (ctx->ns_prefixes && axis2_array_list_contains(
                 (axis2_array_list_t*)(ctx->ns_prefixes), ctx->env, 
                 (void*)(AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t*)ns,
                         ctx->env)))))

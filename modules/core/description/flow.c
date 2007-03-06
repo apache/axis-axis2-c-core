@@ -63,16 +63,16 @@ axis2_flow_free(
         int i = 0;
         int size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(flow->list, env);
+        size = axis2_array_list_size(flow->list, env);
         for (i = 0; i < size; i++)
         {
             axis2_handler_desc_t *handler_desc = NULL;
 
-            handler_desc = (axis2_handler_desc_t *) AXIS2_ARRAY_LIST_GET(
+            handler_desc = (axis2_handler_desc_t *) axis2_array_list_get(
                         flow->list, env, i);
             AXIS2_HANDLER_DESC_FREE(handler_desc, env);
         }
-        AXIS2_ARRAY_LIST_FREE(flow->list, env);
+        axis2_array_list_free(flow->list, env);
         flow->list = NULL;
     }
 
@@ -116,7 +116,7 @@ axis2_flow_add_handler(
             return AXIS2_FAILURE;
         }
     }
-    return AXIS2_ARRAY_LIST_ADD(flow->list, env, handler);
+    return axis2_array_list_add(flow->list, env, handler);
 }
 
 AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
@@ -127,7 +127,7 @@ axis2_flow_get_handler(
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    return AXIS2_ARRAY_LIST_GET(flow->list, env, index);
+    return axis2_array_list_get(flow->list, env, index);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
@@ -137,6 +137,6 @@ axis2_flow_get_handler_count(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    return AXIS2_ARRAY_LIST_SIZE(flow->list, env);
+    return axis2_array_list_size(flow->list, env);
 }
 

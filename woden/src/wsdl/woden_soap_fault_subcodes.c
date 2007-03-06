@@ -128,15 +128,15 @@ woden_soap_fault_subcodes_free(
     {
         int i = 0, size = 0;
 
-        size = AXIS2_ARRAY_LIST_SIZE(soap_fault_subcodes_impl->f_subcode_qns,
+        size = axis2_array_list_size(soap_fault_subcodes_impl->f_subcode_qns,
                 env);
         for (i = 0; i < size; i++)
         {
-            axis2_qname_t *qname = AXIS2_ARRAY_LIST_GET(soap_fault_subcodes_impl->
+            axis2_qname_t *qname = axis2_array_list_get(soap_fault_subcodes_impl->
                     f_subcode_qns, env, i);
             AXIS2_QNAME_FREE(qname, env);
         }
-        AXIS2_ARRAY_LIST_FREE(soap_fault_subcodes_impl->f_subcode_qns, env);
+        axis2_array_list_free(soap_fault_subcodes_impl->f_subcode_qns, env);
         soap_fault_subcodes_impl->f_subcode_qns = NULL;
     }
 
@@ -178,7 +178,7 @@ woden_soap_fault_subcodes_is_qnames(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_fault_subcodes_impl = INTF_TO_IMPL(soap_fault_subcodes);
 
-    size = AXIS2_ARRAY_LIST_SIZE(soap_fault_subcodes_impl->f_subcode_qns, env);
+    size = axis2_array_list_size(soap_fault_subcodes_impl->f_subcode_qns, env);
     return (size > 0);
 }
 

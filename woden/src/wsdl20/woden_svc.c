@@ -627,7 +627,7 @@ woden_svc_free(void *svc,
 
     if (svc_impl->f_endpoints)
     {
-        AXIS2_ARRAY_LIST_FREE(svc_impl->f_endpoints, env);
+        axis2_array_list_free(svc_impl->f_endpoints, env);
         svc_impl->f_endpoints = NULL;
     }
 
@@ -908,7 +908,7 @@ woden_svc_add_endpoint_element(
         }
     }
 
-    return AXIS2_ARRAY_LIST_ADD(svc_impl->f_endpoints, env, endpoint);
+    return axis2_array_list_add(svc_impl->f_endpoints, env, endpoint);
 }
 
 axis2_array_list_t *AXIS2_CALL

@@ -78,8 +78,8 @@ w2c_validate_cmdline_options(w2c_cmdline_option_parser_t* cmd_opt_parser,
     axis2_char_t* val = NULL;
 
     invalid_arr = W2C_CMDLINE_OPTION_PARSER_GET_INVALID_OPTIONS(cmd_opt_parser, env);
-    size  = AXIS2_ARRAY_LIST_SIZE(invalid_arr, env);
-    AXIS2_ARRAY_LIST_FREE(invalid_arr, env);
+    size  = axis2_array_list_size(invalid_arr, env);
+    axis2_array_list_free(invalid_arr, env);
     if (size > 0)
     {
         w2c_print_usage(env);

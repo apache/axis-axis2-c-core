@@ -590,7 +590,7 @@ woden_wsdl10_soap_module_free(void *module,
 
     if (module_impl->f_documentation_elements)
     {
-        AXIS2_ARRAY_LIST_FREE(module_impl->f_documentation_elements, env);
+        axis2_array_list_free(module_impl->f_documentation_elements, env);
         module_impl->f_documentation_elements = NULL;
     }
 
@@ -887,7 +887,7 @@ woden_wsdl10_soap_module_add_documentation_element(
             return AXIS2_FAILURE;
         }
     }
-    AXIS2_ARRAY_LIST_ADD(module_impl->f_documentation_elements, env, doc_el);
+    axis2_array_list_add(module_impl->f_documentation_elements, env, doc_el);
     return AXIS2_SUCCESS;
 }
 

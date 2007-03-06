@@ -199,7 +199,7 @@ w2c_writer_get_extension( w2c_writer_impl_t *writer_impl,
                                      (key, W2C_WRITER_EXTENSION_SUFFIX );
             if ( index + suf_length == all_length )/* this meen its a suf*/
             {
-                 value = AXIS2_ARRAY_LIST_GET( arr_list, env, 0);
+                 value = axis2_array_list_get( arr_list, env, 0);
                  ext_name = AXIS2_STRDUP (".", env );
                  ext_name = w2c_string_add_string ( ext_name, value, env);
                  break;
@@ -235,12 +235,12 @@ w2c_writer_find_template ( w2c_writer_impl_t *writer_impl,
                                      (key, W2C_WRITER_TEMPLATE_SUFFIX );
             if ( index + suf_length == all_length )/* this meen its a suf*/
             {
-                 value = AXIS2_ARRAY_LIST_GET ( arr_list, env, 0 );
+                 value = axis2_array_list_get ( arr_list, env, 0 );
                  index = w2c_string_indexof_cs
                                       (value, writer_impl-> self_name );
                  if (0 == index) /* prefix matches for the first entry*/
                  {
-                     value = AXIS2_ARRAY_LIST_GET ( arr_list, env, 1);
+                     value = axis2_array_list_get ( arr_list, env, 1);
                      tmpl_name = AXIS2_STRDUP ("", env );
                      tmpl_name = w2c_string_add_string ( tmpl_name, value, env);
                      break;

@@ -386,14 +386,14 @@ axis2_http_client_send(
     headers = AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(request, env);
     if (headers)
     {
-        int header_count = AXIS2_ARRAY_LIST_SIZE(headers, env);
+        int header_count = axis2_array_list_size(headers, env);
         int i = 0;
         char *str_header2 = NULL;
         for (i = 0; i < header_count; i++)
         {
             axis2_char_t *header_ext_form = NULL;
             axis2_http_header_t *tmp_header = (axis2_http_header_t *)
-                    AXIS2_ARRAY_LIST_GET(headers, env, i);
+                    axis2_array_list_get(headers, env, i);
             if (NULL == tmp_header)
             {
                 continue;

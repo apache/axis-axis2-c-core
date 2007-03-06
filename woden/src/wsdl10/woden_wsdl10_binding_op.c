@@ -806,13 +806,13 @@ woden_wsdl10_binding_op_free(void *binding_op,
 
       if (binding_op_impl->f_msg_refs)
       {
-	    AXIS2_ARRAY_LIST_FREE(binding_op_impl->f_msg_refs, env);
+	    axis2_array_list_free(binding_op_impl->f_msg_refs, env);
 	    binding_op_impl->f_msg_refs = NULL;
       }
 
       if (binding_op_impl->f_fault_refs)
       {
-	    AXIS2_ARRAY_LIST_FREE(binding_op_impl->f_fault_refs, env);
+	    axis2_array_list_free(binding_op_impl->f_fault_refs, env);
 	    binding_op_impl->f_fault_refs = NULL;
       }
 
@@ -1106,7 +1106,7 @@ woden_wsdl10_binding_op_add_binding_msg_ref_element(
 		  return AXIS2_FAILURE;
 	    }
       }
-      AXIS2_ARRAY_LIST_ADD(binding_op_impl->f_msg_refs, env, msg_ref);
+      axis2_array_list_add(binding_op_impl->f_msg_refs, env, msg_ref);
 
       return AXIS2_SUCCESS;
 }
@@ -1127,8 +1127,8 @@ woden_wsdl10_binding_op_remove_binding_msg_ref_element(
       binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
 						    "WODEN_WSDL10_BINDING_OP", AXIS2_HASH_KEY_STRING));
 
-      index = AXIS2_ARRAY_LIST_INDEX_OF(binding_op_impl->f_msg_refs, env, msg_ref);
-      AXIS2_ARRAY_LIST_REMOVE(binding_op_impl->f_msg_refs, env, index);
+      index = axis2_array_list_index_of(binding_op_impl->f_msg_refs, env, msg_ref);
+      axis2_array_list_remove(binding_op_impl->f_msg_refs, env, index);
       return AXIS2_SUCCESS;
 }
 
@@ -1173,7 +1173,7 @@ woden_wsdl10_binding_op_add_binding_fault_ref_element(
 		  return AXIS2_FAILURE;
 	    }
       }
-      AXIS2_ARRAY_LIST_ADD(binding_op_impl->f_fault_refs, env, fault_ref);
+      axis2_array_list_add(binding_op_impl->f_fault_refs, env, fault_ref);
 
       return AXIS2_SUCCESS;
 }
@@ -1194,8 +1194,8 @@ woden_wsdl10_binding_op_remove_binding_fault_ref_element(
       binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
 						    "WODEN_WSDL10_BINDING_OP", AXIS2_HASH_KEY_STRING));
 
-      index = AXIS2_ARRAY_LIST_INDEX_OF(binding_op_impl->f_fault_refs, env, fault_ref);
-      AXIS2_ARRAY_LIST_REMOVE(binding_op_impl->f_fault_refs, env, index);
+      index = axis2_array_list_index_of(binding_op_impl->f_fault_refs, env, fault_ref);
+      axis2_array_list_remove(binding_op_impl->f_fault_refs, env, index);
       return AXIS2_SUCCESS;
 }
 

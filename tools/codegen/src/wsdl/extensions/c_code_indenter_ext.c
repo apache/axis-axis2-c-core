@@ -78,10 +78,10 @@ w2c_c_code_indenter_ext_engage(w2c_extension_t *extension,
     /* this executes only with following configuration */
     if ( indent_code && AXIS2_STRCMP( lang, "c") == 0)
     {
-        size = AXIS2_ARRAY_LIST_SIZE( filenames, env);
+        size = axis2_array_list_size( filenames, env);
         for ( i = 0; i < size; i ++ )
         {
-            filename = AXIS2_ARRAY_LIST_GET( filenames, env, i);
+            filename = axis2_array_list_get( filenames, env, i);
             length = AXIS2_STRLEN( filename);
             /* take only .c or .h files */
             if( filename[length-1] == 'c' || filename[length-1] == 'h' ||

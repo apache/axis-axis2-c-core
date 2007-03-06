@@ -145,13 +145,13 @@ w2c_cmdline_option_free (w2c_cmdline_option_t *cmdline_option,
     }
     if( cmdline_option_impl-> values_arr )
     {
-        size = AXIS2_ARRAY_LIST_SIZE ( cmdline_option_impl-> values_arr, env );
+        size = axis2_array_list_size ( cmdline_option_impl-> values_arr, env );
         for (i =0; i < size; i++ )
         {
-            value = AXIS2_ARRAY_LIST_GET ( cmdline_option_impl-> values_arr, env, i );
+            value = axis2_array_list_get ( cmdline_option_impl-> values_arr, env, i );
             AXIS2_FREE ( env-> allocator, value );
         }
-        AXIS2_ARRAY_LIST_FREE ( cmdline_option_impl-> values_arr, env );
+        axis2_array_list_free ( cmdline_option_impl-> values_arr, env );
     }
     if(cmdline_option->ops)
     {
@@ -192,9 +192,9 @@ w2c_cmdline_option_get_value(w2c_cmdline_option_t *cmdline_option,
     cmdline_option_impl = W2C_INTF_TO_IMPL(cmdline_option);
     
    if ( cmdline_option_impl-> values_arr &&
-           AXIS2_ARRAY_LIST_SIZE ( cmdline_option_impl-> values_arr, env) > 0)
+           axis2_array_list_size ( cmdline_option_impl-> values_arr, env) > 0)
    {
-       return AXIS2_ARRAY_LIST_GET (cmdline_option_impl-> values_arr, env, 0);
+       return axis2_array_list_get (cmdline_option_impl-> values_arr, env, 0);
    }
    return NULL;
 }

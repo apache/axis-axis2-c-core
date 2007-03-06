@@ -87,7 +87,7 @@ axis2_param_container_free(axis2_param_container_t *param_container,
          * requested from param_container. Params referenced here are
          * actually contained in params hash table
          */
-        AXIS2_ARRAY_LIST_FREE(param_container->params_list, env);
+        axis2_array_list_free(param_container->params_list, env);
         param_container->params_list = NULL;
     }
 
@@ -173,11 +173,11 @@ axis2_param_container_get_params(axis2_param_container_t *param_container,
             index_i; index_i = axis2_hash_next(env, index_i))
     {
         axis2_hash_this(index_i, NULL, NULL, &value);
-        status = AXIS2_ARRAY_LIST_ADD(param_container->params_list, env,
+        status = axis2_array_list_add(param_container->params_list, env,
                 value);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_ARRAY_LIST_FREE(param_container->params_list , env);
+            axis2_array_list_free(param_container->params_list , env);
             return NULL;
         }
     }

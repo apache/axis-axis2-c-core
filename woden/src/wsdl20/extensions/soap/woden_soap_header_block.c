@@ -622,7 +622,7 @@ woden_soap_header_block_free(void *header_block,
 
     if (header_block_impl->f_documentation_elements)
     {
-        AXIS2_ARRAY_LIST_FREE(header_block_impl->f_documentation_elements, env);
+        axis2_array_list_free(header_block_impl->f_documentation_elements, env);
         header_block_impl->f_documentation_elements = NULL;
     }
 
@@ -1010,7 +1010,7 @@ woden_soap_header_block_add_documentation_element(
             return AXIS2_FAILURE;
         }
     }
-    AXIS2_ARRAY_LIST_ADD(header_block_impl->f_documentation_elements, env, doc_el);
+    axis2_array_list_add(header_block_impl->f_documentation_elements, env, doc_el);
     return AXIS2_SUCCESS;
 }
 

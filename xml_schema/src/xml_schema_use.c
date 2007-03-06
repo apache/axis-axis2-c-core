@@ -108,13 +108,13 @@ xml_schema_use_create(const axis2_env_t *env,
     use_impl->members = axis2_array_list_create(env, 0);
     if (!use_impl->members)
         return NULL;
-    AXIS2_ARRAY_LIST_ADD(use_impl->members, env,
+    axis2_array_list_add(use_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_CONST_NONE, env));
-    AXIS2_ARRAY_LIST_ADD(use_impl->members, env,
+    axis2_array_list_add(use_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_CONST_OPTIONAL, env));
-    AXIS2_ARRAY_LIST_ADD(use_impl->members, env,
+    axis2_array_list_add(use_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_CONST_PROHIBITED, env));
-    AXIS2_ARRAY_LIST_ADD(use_impl->members, env,
+    axis2_array_list_add(use_impl->members, env,
             AXIS2_STRDUP(XML_SCHEMA_CONST_REQUIRED, env));
 
     use_impl->schema_enum = xml_schema_enum_create(env, value);
@@ -157,18 +157,18 @@ xml_schema_use_free(void *use,
     {
         int size = 0;
         int i    = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(use_impl->members, env);
+        size = axis2_array_list_size(use_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
-            value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(use_impl->members, env, i);
+            value = (axis2_char_t*) axis2_array_list_get(use_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
-        AXIS2_ARRAY_LIST_FREE(use_impl->members, env);
+        axis2_array_list_free(use_impl->members, env);
         use_impl->members = NULL;
     }
 

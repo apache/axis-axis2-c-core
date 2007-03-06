@@ -426,7 +426,7 @@ axis2_arch_reader_build_svc_grp(
         {
             return AXIS2_FAILURE;
         }
-        status = AXIS2_ARRAY_LIST_ADD(dep_svcs, env, svc);
+        status = axis2_array_list_add(dep_svcs, env, svc);
         if (AXIS2_SUCCESS != status)
         {
             return AXIS2_FAILURE;

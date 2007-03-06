@@ -66,7 +66,7 @@ rampart_enc_get_nodes_to_encrypt(const axis2_env_t *env,
         body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
         body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
-        AXIS2_ARRAY_LIST_ADD(nodes_to_encrypt, env, body_child_node);
+        axis2_array_list_add(nodes_to_encrypt, env, body_child_node);
         return AXIS2_SUCCESS;
     }else if(0 == AXIS2_STRCMP(encryption_parts, "Header")){
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] We do not encrypt SOAP headers");
@@ -81,15 +81,15 @@ rampart_enc_get_nodes_to_encrypt(const axis2_env_t *env,
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] EncryptionParts specified = %s", encryption_parts);
         envelope_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
         str_list = axis2_tokenize(env, encryption_parts, ' ');
-        size = AXIS2_ARRAY_LIST_SIZE(str_list, env);
+        size = axis2_array_list_size(str_list, env);
         for(i=0 ; i < size ; i++ ){
-            local_name = AXIS2_ARRAY_LIST_GET(str_list, env, i);
+            local_name = axis2_array_list_get(str_list, env, i);
             if(0 == AXIS2_STRCMP(local_name, "Security")){
                 AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] We do not encrypt %s", local_name);
                 continue;
             }
             node = oxs_axiom_get_node_by_local_name(env, envelope_node, local_name);
-            AXIS2_ARRAY_LIST_ADD(nodes_to_encrypt, env, node);
+            axis2_array_list_add(nodes_to_encrypt, env, node);
         }
         return AXIS2_SUCCESS;
     }
@@ -133,7 +133,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
 
     status = rampart_context_get_nodes_to_encrypt(rampart_context,env,soap_envelope,nodes_to_encrypt);
 
-    if((status!=AXIS2_SUCCESS)||(AXIS2_ARRAY_LIST_SIZE(nodes_to_encrypt,env)==0))
+    if((status!=AXIS2_SUCCESS)||(axis2_array_list_size(nodes_to_encrypt,env)==0))
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] No parts specified or specified parts can't be found for encryprion.");
         return AXIS2_SUCCESS;
@@ -174,7 +174,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     id_list = axis2_array_list_create(env, 5);
 
     /*Repeat until all encryption parts are encrypted*/
-    for(i=0 ; i < AXIS2_ARRAY_LIST_SIZE(nodes_to_encrypt, env); i++){
+    for(i=0 ; i < axis2_array_list_size(nodes_to_encrypt, env); i++){
         axiom_node_t *node_to_enc = NULL;
         axiom_node_t *parent_of_node_to_enc = NULL;
         axiom_node_t *enc_data_node = NULL;
@@ -183,7 +183,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
         axis2_status_t enc_status = AXIS2_FAILURE;
         
         /*Get the node to be encrypted*/
-        node_to_enc = (axiom_node_t *)AXIS2_ARRAY_LIST_GET(nodes_to_encrypt, env, i);
+        node_to_enc = (axiom_node_t *)axis2_array_list_get(nodes_to_encrypt, env, i);
         if(!node_to_enc){
             return AXIS2_FAILURE;
         }
@@ -198,7 +198,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
         id = oxs_util_generate_id(env,(axis2_char_t*)OXS_ENCDATA_ID);
         enc_data_node = oxs_token_build_encrypted_data_element(env, parent_of_node_to_enc, OXS_TYPE_ENC_ELEMENT, id );
         enc_status = oxs_xml_enc_encrypt_node(env, enc_ctx, node_to_enc, &enc_data_node);
-        AXIS2_ARRAY_LIST_ADD(id_list, env, id);
+        axis2_array_list_add(id_list, env, id);
         if(AXIS2_FAILURE == enc_status){
             return AXIS2_FAILURE;
         }

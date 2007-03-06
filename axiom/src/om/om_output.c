@@ -134,7 +134,7 @@ axiom_output_free(axiom_output_t *om_output,
 
     if (om_output->binary_node_list)
     {
-        AXIS2_ARRAY_LIST_FREE(om_output->binary_node_list, env);
+        axis2_array_list_free(om_output->binary_node_list, env);
         om_output->binary_node_list = NULL;
     }
 
@@ -312,14 +312,14 @@ axiom_output_write_optimized(axiom_output_t *om_output,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (om_output->binary_node_list)
     {
-        AXIS2_ARRAY_LIST_ADD(om_output->binary_node_list, env, om_text);
+        axis2_array_list_add(om_output->binary_node_list, env, om_text);
     }
     else
     {
         om_output->binary_node_list = axis2_array_list_create(env, 5);
         if (!(om_output->binary_node_list))
             return AXIS2_FAILURE;
-        AXIS2_ARRAY_LIST_ADD(om_output->binary_node_list, env, om_text);
+        axis2_array_list_add(om_output->binary_node_list, env, om_text);
     }
     return AXIS2_SUCCESS;
 }

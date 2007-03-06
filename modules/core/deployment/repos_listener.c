@@ -359,11 +359,11 @@ axis2_repos_listener_search(
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No %s in the folder.", folder_name);
         return AXIS2_SUCCESS;
     }
-    size = AXIS2_ARRAY_LIST_SIZE(current_info_list, env);
+    size = axis2_array_list_size(current_info_list, env);
     for (i = 0; i < size; i++) /* loop until empty */
     {
         axis2_file_t *file = NULL;
-        file = AXIS2_ARRAY_LIST_GET(current_info_list, env, i);
+        file = axis2_array_list_get(current_info_list, env, i);
         status = AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(listener_impl->info_list, env,
                 file, type);
         if (AXIS2_SUCCESS != status)
@@ -371,15 +371,15 @@ axis2_repos_listener_search(
             int size_j = 0;
             int j = 0;
 
-            size_j = AXIS2_ARRAY_LIST_SIZE(current_info_list, env);
+            size_j = axis2_array_list_size(current_info_list, env);
             for (j = 0; j < size_j; j++)
             {
                 axis2_file_t *del_file = NULL;
 
-                del_file = AXIS2_ARRAY_LIST_GET(current_info_list, env, j);
+                del_file = axis2_array_list_get(current_info_list, env, j);
                 AXIS2_FILE_FREE(del_file, env);
             }
-            AXIS2_ARRAY_LIST_FREE(current_info_list, env);
+            axis2_array_list_free(current_info_list, env);
             current_info_list = NULL;
             return status;
         }
@@ -389,10 +389,10 @@ axis2_repos_listener_search(
     {
         axis2_file_t *del_file = NULL;
 
-        del_file = AXIS2_ARRAY_LIST_GET(current_info_list, env, i);
+        del_file = axis2_array_list_get(current_info_list, env, i);
         AXIS2_FILE_FREE(del_file, env);
     }
-    AXIS2_ARRAY_LIST_FREE(current_info_list, env);
+    axis2_array_list_free(current_info_list, env);
     current_info_list = NULL;
     return AXIS2_SUCCESS;
 }

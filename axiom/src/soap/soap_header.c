@@ -171,17 +171,17 @@ axiom_soap_header_free(axiom_soap_header_t *soap_header,
         int size = 0;
         void *val = NULL;
         int i = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(soap_header->header_block_keys, env);
+        size = axis2_array_list_size(soap_header->header_block_keys, env);
         for (i = 0; i < size; i++)
         {
-            val = AXIS2_ARRAY_LIST_GET(soap_header->header_block_keys, env, i);
+            val = axis2_array_list_get(soap_header->header_block_keys, env, i);
             if (val)
             {
                 AXIS2_FREE(env->allocator, (char*)val);
                 val = NULL;
             }
         }
-        AXIS2_ARRAY_LIST_FREE(soap_header->header_block_keys, env);
+        axis2_array_list_free(soap_header->header_block_keys, env);
         soap_header->header_block_keys = NULL;
     }
     AXIS2_FREE(env->allocator, soap_header);
@@ -421,7 +421,7 @@ axiom_soap_header_set_header_block(axiom_soap_header_t *soap_header,
     }
     if (soap_header->header_block_keys)
     {
-        AXIS2_ARRAY_LIST_ADD(soap_header->header_block_keys, env, key);
+        axis2_array_list_add(soap_header->header_block_keys, env, key);
     }
     return AXIS2_SUCCESS;
 
@@ -489,7 +489,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
                         hb_namespace_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
                         if (AXIS2_STRCMP(hb_namespace_uri, ns_uri) == 0)
                         {
-                            AXIS2_ARRAY_LIST_ADD(header_block_list, env, header_block);
+                            axis2_array_list_add(header_block_list, env, header_block);
                             found++;
                         }
                     }
@@ -509,7 +509,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
     }
     else
     {
-        AXIS2_ARRAY_LIST_FREE(header_block_list, env);
+        axis2_array_list_free(header_block_list, env);
     }
     return NULL;
 }

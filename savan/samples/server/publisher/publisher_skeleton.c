@@ -113,7 +113,7 @@ publisher_init(axis2_svc_skeleton_t *svc_skeleton,
      * the array list of functions 
      */
 
-    AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "start");
+    axis2_array_list_add(svc_skeleton->func_array, env, "start");
 
     /* Any initialization stuff of service should go here */
 
@@ -184,7 +184,7 @@ publisher_free(axis2_svc_skeleton_t *svc_skeleton,
     /* Free the function array */
     if(svc_skeleton->func_array)
     {
-        AXIS2_ARRAY_LIST_FREE(svc_skeleton->func_array, env);
+        axis2_array_list_free(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }
     
