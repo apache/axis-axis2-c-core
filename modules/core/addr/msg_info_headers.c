@@ -139,7 +139,7 @@ axis2_msg_info_headers_get_from(const axis2_msg_info_headers_t *msg_info_headers
 axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_from(struct axis2_msg_info_headers *msg_info_headers,
     const axis2_env_t *env,
-    const axis2_endpoint_ref_t *from)
+    axis2_endpoint_ref_t *from)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_info_headers->from = from;
@@ -156,7 +156,7 @@ axis2_msg_info_headers_get_reply_to(const axis2_msg_info_headers_t *msg_info_hea
 axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_reply_to(struct axis2_msg_info_headers *msg_info_headers,
     const axis2_env_t *env,
-    const axis2_endpoint_ref_t *reply_to)
+    axis2_endpoint_ref_t *reply_to)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_info_headers->reply_to = reply_to;
@@ -173,7 +173,7 @@ axis2_msg_info_headers_get_fault_to(const axis2_msg_info_headers_t *msg_info_hea
 axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_fault_to(struct axis2_msg_info_headers *msg_info_headers,
     const axis2_env_t *env,
-    const axis2_endpoint_ref_t *fault_to)
+    axis2_endpoint_ref_t *fault_to)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_info_headers->fault_to = fault_to;
