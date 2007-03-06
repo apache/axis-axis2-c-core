@@ -131,33 +131,6 @@ extern "C"
         void *e);
 
     /**
-     * Returns the highest index at which element appears in this List, or
-     * -1 if it does not appear. This looks for the pointer value equality only, 
-     * does not look into pointer content
-     * @param array_list pointer to array list
-     * @param env pointer to environment struct
-     * @param e the element whose inclusion in the List is being tested
-     * @return the index where e was found
-     */
-    AXIS2_EXTERN int AXIS2_CALL 
-    axis2_array_list_last_index_of(
-        struct axis2_array_list *array_list,
-        const axis2_env_t *env,
-        void *e);
-
-    /**
-     * Returns a void* array containing all of the elements in this array_list.
-     * The array is not independent of this list.
-     * @param array_list pointer to array list
-     * @param env pointer to environment struct
-     * @return array of elements in this list
-     */
-    AXIS2_EXTERN void** AXIS2_CALL 
-    axis2_array_list_to_array(
-        struct axis2_array_list *array_list,
-        const axis2_env_t *env);
-
-    /**
      * Retrieves the element at the user-supplied index.
      * @param array_list pointer to array list
      * @param env pointer to environment struct

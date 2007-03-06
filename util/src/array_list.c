@@ -133,28 +133,6 @@ axis2_array_list_index_of(struct axis2_array_list *array_list,
     return -1;
 }
 
-AXIS2_EXTERN int AXIS2_CALL 
-axis2_array_list_last_index_of(struct axis2_array_list *array_list, 
-    const axis2_env_t *env, 
-    void *e)
-{
-    int i = 0;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    for (i = array_list->size - 1; i >= 0; i--)
-        if (e == array_list->data[i])
-            return i;
-    return -1;
-}
-
-AXIS2_EXTERN void** AXIS2_CALL 
-axis2_array_list_to_array(struct axis2_array_list *array_list, 
-    const axis2_env_t *env)
-{
-    AXIS2_ENV_CHECK(env, NULL);
-    return array_list->data;
-}
-
 AXIS2_EXTERN void* AXIS2_CALL 
 axis2_array_list_get(struct axis2_array_list *array_list, 
     const axis2_env_t *env, 
