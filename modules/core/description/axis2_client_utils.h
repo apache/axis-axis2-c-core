@@ -23,11 +23,6 @@
  * @{
  */
 
-/**
- * @file axis2_client_utils.h
- * @brief Axis2 Client Utils interface
- */
-
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -54,8 +49,7 @@ extern "C"
      * @return axis2_svc pointer to newly created service
      */
     AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-    axis2_client_utils_create_axis2_svc(
-        const axis2_env_t *env,
+    axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
         const axis2_uri_t *wsdl_uri,
         const axis2_qname_t *wsdl_svc_qname,
         const axis2_char_t *ep_name,
@@ -68,3 +62,4 @@ extern "C"
 }
 #endif
 #endif  /* AXIS2_CLIENT_UTILS_H */
+
