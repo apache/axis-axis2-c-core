@@ -165,8 +165,11 @@ axis2_status_t verify(axis2_env_t *env,
             axiom_node_t *x509_node = NULL;
             ki_node = oxs_axiom_get_first_child_node_by_name(env, sig_node, OXS_NODE_KEY_INFO, OXS_DSIG_NS, OXS_DS);
             x509_node = oxs_axiom_get_first_child_node_by_name(env, ki_node, OXS_NODE_X509_DATA, OXS_DSIG_NS, OXS_DS);
-            cert = oxs_xml_key_process_X509Data(env, x509_node);
-            if(!cert){
+           
+            cert = oxs_x509_cert_create(env);
+            printf("No certificate is given. Fetching certificate from the KeyInfo\n");
+            status =  oxs_xml_key_process_X509Data(env, x509_node, cert);
+            if(AXIS2_FAILURE == status){
                 printf("Error reading KeyInfo\n");
                 return AXIS2_FAILURE;
             }
@@ -174,7 +177,12 @@ axis2_status_t verify(axis2_env_t *env,
 
         
         /*Set certificate*/
-        oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
+        if(cert){
+            oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
+        }else{
+            printf("Certificate is NULL\n");
+            return AXIS2_FAILURE;
+        }
         /*Verify*/
         status = oxs_xml_sig_verify(env, sign_ctx, sig_node, tmpl);
         if(AXIS2_SUCCESS != status){

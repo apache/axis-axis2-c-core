@@ -130,10 +130,14 @@ oxs_sig_verify(const axis2_env_t *env,
     in_buf = oxs_buffer_create(env);
     status = OXS_BUFFER_POPULATE(in_buf, env, (unsigned char*)content, axis2_strlen(content));
 
-    /*Get the public key. See.. this method is tricky. It might take the public key from the certificate if
+    /*Get the public key. See.. this method is trickey. It might take the public key from the certificate, only if
      * the public key is not available directly*/
     pubkey = oxs_sign_ctx_get_public_key(sign_ctx, env);
-
+    if(!pubkey){
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot obtain the public key.");
+        return AXIS2_FAILURE;
+    }
+    
     /*Call OpenSSL function to verify the signature*/
     status = openssl_sig_verify(env, pubkey, in_buf, sig_buf);
     if(AXIS2_SUCCESS != status){

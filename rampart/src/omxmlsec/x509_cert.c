@@ -34,6 +34,8 @@ struct oxs_x509_cert_t
     openssl_pkey_t *public_key;
 };
 
+
+
 AXIS2_EXTERN oxs_x509_cert_t *AXIS2_CALL
 oxs_x509_cert_create(const axis2_env_t *env)
 {
@@ -95,6 +97,24 @@ oxs_x509_cert_free(oxs_x509_cert_t *x509_cert,
         AXIS2_FREE(env->allocator, x509_cert->data );
         x509_cert->data =NULL;
     }
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_x509_cert_copy_to(oxs_x509_cert_t *x509_cert,
+    const axis2_env_t *env,
+    oxs_x509_cert_t *to)
+{
+    oxs_x509_cert_set_serial_number(to, env, x509_cert->serial_number);
+    oxs_x509_cert_set_issuer(to, env, x509_cert->issuer);
+    oxs_x509_cert_set_key_identifier(to, env, x509_cert->key_identifier);
+    oxs_x509_cert_set_subject(to, env, x509_cert->subject);
+    oxs_x509_cert_set_fingerprint(to, env, x509_cert->fingerprint);
+    oxs_x509_cert_set_date(to, env, x509_cert->date);
+    oxs_x509_cert_set_hash(to, env, x509_cert->hash);
+    oxs_x509_cert_set_data(to, env, x509_cert->data);
+    oxs_x509_cert_set_public_key(to, env, x509_cert->public_key);
 
     return AXIS2_SUCCESS;
 }

@@ -91,10 +91,13 @@ oxs_sign_ctx_get_public_key(
 {
     /*If the public key is set then use it. Else get the public key from the certificate.*/
     if(sign_ctx->pub_key){
+        AXIS2_LOG_INFO(env->log, "[oxs][sign_ctx] Public key is available directly");
         return sign_ctx->pub_key ;
     }else if(sign_ctx->certificate){
+        AXIS2_LOG_INFO(env->log, "[oxs][sign_ctx] Public key is not available directly. Extracting the certificate");
         return oxs_x509_cert_get_public_key(sign_ctx->certificate, env);
     }else{
+        AXIS2_LOG_INFO(env->log, "[oxs][sign_ctx] Public key is available neither in the ctx nor in the certificate");
         return NULL;
     }
 }
