@@ -53,7 +53,7 @@ axis2_any_content_type_create(const axis2_env_t *env)
     return any_content_type;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env,
     const axis2_qname_t *qname,
@@ -72,7 +72,7 @@ axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
     return AXIS2_SUCCESS;
 }
 
-const axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_any_content_type_get_value(const axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env,
     const axis2_qname_t *qname)
@@ -88,14 +88,14 @@ axis2_any_content_type_get_value(const axis2_any_content_type_t *any_content_typ
     return NULL;
 }
 
-axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_any_content_type_get_value_map(const axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env)
 {
 	return any_content_type->value_map;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_any_content_type_free(axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env)
 {
