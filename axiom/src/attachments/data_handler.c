@@ -229,7 +229,13 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler, const axis2_env
             if (-1 ==  stat(data_handler_impl->file_name, &stat_p))
             {
                 return AXIS2_FAILURE;
-            }
+			}else if(stat_p.st_size == 0){			  				
+				*output_stream = NULL;
+		        *output_stream_size = 0;
+				return AXIS2_SUCCESS;
+			}
+
+
             read_stream_size = stat_p.st_size;
             read_stream = AXIS2_MALLOC(env->allocator, (read_stream_size) * sizeof(axis2_byte_t));
             if (!read_stream)
