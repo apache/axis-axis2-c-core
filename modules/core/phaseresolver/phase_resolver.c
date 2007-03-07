@@ -362,22 +362,22 @@ axis2_phase_resolver_build_execution_chains(
             {
                 case AXIS2_IN_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
+                    flow = axis2_module_desc_get_in_flow(module_desc, env);
                     break;
                 }
                 case AXIS2_OUT_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
+                    flow = axis2_module_desc_get_out_flow(module_desc, env);
                     break;
                 }
                 case AXIS2_FAULT_IN_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
+                    flow = axis2_module_desc_get_fault_in_flow(module_desc, env);
                     break;
                 }
                 case AXIS2_FAULT_OUT_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
+                    flow = axis2_module_desc_get_fault_out_flow(module_desc, env);
                     break;
                 }
             }
@@ -1069,7 +1069,7 @@ axis2_phase_resolver_engage_module_globally(
                 return status;
             }*/
         }
-        mod_name = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+        mod_name = axis2_module_desc_get_qname(module_desc, env);
         status = AXIS2_SVC_GRP_ADD_MODULE_QNAME(svc_grp, env,
                 mod_name);
 
@@ -1123,7 +1123,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s",
                 AXIS2_QNAME_GET_LOCALPART(AXIS2_OP_GET_QNAME(op_desc, env), env));
         modules = AXIS2_OP_GET_ALL_MODULES(op_desc, env);
-        module_desc_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+        module_desc_qname = axis2_module_desc_get_qname(module_desc, env);
         if (modules)
             size = axis2_array_list_size(modules, env);
         for (j = 0; j < size; j++)
@@ -1134,7 +1134,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
             module_desc_l = (axis2_module_desc_t *)
                     axis2_array_list_get(modules, env, j);
 
-            module_desc_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l ,
+            module_desc_qname_l = axis2_module_desc_get_qname(module_desc_l ,
                     env);
             if (AXIS2_QNAME_EQUALS(module_desc_qname_l, env, module_desc_qname))
             {
@@ -1196,22 +1196,22 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
             {
                 case AXIS2_IN_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
+                    flow = axis2_module_desc_get_in_flow(module_desc, env);
                     break;
                 }
                 case AXIS2_OUT_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
+                    flow = axis2_module_desc_get_out_flow(module_desc, env);
                     break;
                 }
                 case AXIS2_FAULT_IN_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
+                    flow = axis2_module_desc_get_fault_in_flow(module_desc, env);
                     break;
                 }
                 case AXIS2_FAULT_OUT_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
+                    flow = axis2_module_desc_get_fault_out_flow(module_desc, env);
                     break;
                 }
             }
@@ -1342,22 +1342,22 @@ axis2_phase_resolver_engage_to_global_chain(
         {
             case AXIS2_IN_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
+                flow = axis2_module_desc_get_in_flow(module_desc, env);
                 break;
             }
             case AXIS2_OUT_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
+                flow = axis2_module_desc_get_out_flow(module_desc, env);
                 break;
             }
             case AXIS2_FAULT_IN_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
+                flow = axis2_module_desc_get_fault_in_flow(module_desc, env);
                 break;
             }
             case AXIS2_FAULT_OUT_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
+                flow = axis2_module_desc_get_fault_out_flow(module_desc, env);
                 break;
             }
         }
@@ -1441,7 +1441,7 @@ axis2_phase_resolver_engage_module_to_svc(
     {
         return status;
     }
-    module_d_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+    module_d_qname = axis2_module_desc_get_qname(module_desc, env);
     for (index_i = axis2_hash_first(ops, env); index_i; index_i =
                 axis2_hash_next(env, index_i))
     {
@@ -1463,7 +1463,7 @@ axis2_phase_resolver_engage_module_to_svc(
             const axis2_qname_t *module_d_qname_l = NULL;
 
             module_desc_l = axis2_array_list_get(modules, env, j);
-            module_d_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);
+            module_d_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
             if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_d_qname, env,
                     module_d_qname_l))
             {
@@ -1546,22 +1546,22 @@ axis2_phase_resolver_engage_module_to_op(
         {
             case AXIS2_IN_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
+                flow = axis2_module_desc_get_in_flow(module_desc, env);
                 break;
             }
             case AXIS2_OUT_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
+                flow = axis2_module_desc_get_out_flow(module_desc, env);
                 break;
             }
             case AXIS2_FAULT_IN_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
+                flow = axis2_module_desc_get_fault_in_flow(module_desc, env);
                 break;
             }
             case AXIS2_FAULT_OUT_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
+                flow = axis2_module_desc_get_fault_out_flow(module_desc, env);
                 break;
             }
         }

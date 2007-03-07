@@ -544,8 +544,8 @@ axis2_op_engage_module(
         {
             return AXIS2_FAILURE;
         }
-        qname1 = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
-        qname2 = AXIS2_MODULE_DESC_GET_QNAME(moduleref, env);
+        qname1 = axis2_module_desc_get_qname(module_desc, env);
+        qname2 = axis2_module_desc_get_qname(moduleref, env);
         if (AXIS2_QNAME_EQUALS(qname1, env, qname2))
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Module already engaged to operation");
@@ -567,7 +567,7 @@ axis2_op_engage_module(
             /* ignore the status */
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
         }
-        module = AXIS2_MODULE_DESC_GET_MODULE(moduleref, env);
+        module = axis2_module_desc_get_module(moduleref, env);
         if (module)
         {
             /* notify module for service engagement */
@@ -610,14 +610,14 @@ axis2_op_add_to_engaged_module_list(
     {
         return AXIS2_ERROR_GET_STATUS_CODE(env->error);
     }
-    module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+    module_qname = axis2_module_desc_get_qname(module_desc, env);
     for (index = 0; index < size; index++)
     {
         const axis2_qname_t *module_qname_l = NULL;
 
         module_desc_l = (axis2_module_desc_t *) axis2_array_list_get(
                     op->engaged_module_list, env, index);
-        module_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);
+        module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
         if (AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
         {
             return AXIS2_SUCCESS;

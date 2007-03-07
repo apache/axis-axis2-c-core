@@ -86,7 +86,7 @@ int axis2_test_svc_add_module_ops()
 
     AXIS2_SVC_FREE(svc, env);
     AXIS2_QNAME_FREE(qname, env);
-    AXIS2_MODULE_DESC_FREE(module_desc, env);
+    axis2_module_desc_free(module_desc, env);
     AXIS2_CONF_FREE(axis2_config, env);
 
     return 0;

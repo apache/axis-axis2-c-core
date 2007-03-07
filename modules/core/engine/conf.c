@@ -723,7 +723,7 @@ axis2_conf_free(
             module_desc = (axis2_module_desc_t *) val;
             if (module_desc)
             {
-                AXIS2_MODULE_DESC_FREE(module_desc, env);
+                axis2_module_desc_free(module_desc, env);
                 module_desc = NULL;
             }
 
@@ -897,7 +897,7 @@ axis2_conf_free(
             axis2_hash_this(hi, NULL, NULL, &val);
             module_desc = (axis2_module_desc_t *) val;
             if (module_desc)
-                AXIS2_MODULE_DESC_FREE(module_desc, env);
+                axis2_module_desc_free(module_desc, env);
 
             val = NULL;
             module_desc = NULL;
@@ -1467,7 +1467,7 @@ axis2_conf_is_engaged(
             AXIS2_QNAME_GET_LOCALPART(module_name, env));
     if (def_mod)
     {
-        def_mod_qname = AXIS2_MODULE_DESC_GET_QNAME(def_mod, env);
+        def_mod_qname = axis2_module_desc_get_qname(def_mod, env);
     }
     size = axis2_array_list_size(config_impl->engaged_modules, env);
     for (i = 0; i < size; i++)
@@ -1653,7 +1653,7 @@ axis2_conf_add_module(
 
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    status = AXIS2_MODULE_DESC_SET_PARENT(module, env, conf);
+    status = axis2_module_desc_set_parent(module, env, conf);
     if (AXIS2_FAILURE == status)
     {
         return status;
@@ -1663,7 +1663,7 @@ axis2_conf_add_module(
     {
         return AXIS2_FAILURE;
     }
-    module_qname = AXIS2_MODULE_DESC_GET_QNAME(module, env);
+    module_qname = axis2_module_desc_get_qname(module, env);
     if (module_qname)
     {
         axis2_char_t *module_name = NULL;
@@ -1904,7 +1904,7 @@ axis2_conf_engage_module(
         const axis2_qname_t *module_qname = NULL;
 
         size = axis2_array_list_size(config_impl->engaged_modules, env);
-        module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+        module_qname = axis2_module_desc_get_qname(module_desc, env);
         for (i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
@@ -1941,7 +1941,7 @@ axis2_conf_engage_module(
         {
             return status;
         }
-        module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+        module_qname = axis2_module_desc_get_qname(module_desc, env);
         module_qref_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
         status = axis2_array_list_add(config_impl->engaged_modules, env,
                 module_qref_l);

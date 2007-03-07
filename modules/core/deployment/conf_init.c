@@ -152,7 +152,7 @@ axis2_init_modules(
                     axis2_module_desc_t *mod_desc = (axis2_module_desc_t*)module;
                     if (mod_desc)
                     {
-                        axis2_module_t *mod = AXIS2_MODULE_DESC_GET_MODULE(mod_desc, env);
+                        axis2_module_t *mod = axis2_module_desc_get_module(mod_desc, env);
                         if (mod)
                             AXIS2_MODULE_INIT(mod, env, conf_ctx, mod_desc);
                     }

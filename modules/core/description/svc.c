@@ -432,7 +432,7 @@ axis2_svc_add_op(
             conf = (axis2_conf_t *) AXIS2_SVC_GRP_GET_PARENT(parent, env);
         }
         if (module_desc)
-            module_impl = AXIS2_MODULE_DESC_GET_MODULE(module_desc, env);
+            module_impl = axis2_module_desc_get_module(module_desc, env);
         if (module_impl)
         {
         }
@@ -676,8 +676,8 @@ axis2_svc_engage_module(
     {
         modu = (axis2_module_desc_t *) axis2_array_list_get(collection_module,
                 env, i);
-        if (axis2_qname_equals(AXIS2_MODULE_DESC_GET_QNAME(modu, env), env,
-                AXIS2_MODULE_DESC_GET_QNAME(module_desc, env)))
+        if (axis2_qname_equals(axis2_module_desc_get_qname(modu, env), env,
+                axis2_module_desc_get_qname(module_desc, env)))
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC, AXIS2_FAILURE);
@@ -697,7 +697,7 @@ axis2_svc_engage_module(
     {
         const axis2_qname_t *qname = NULL;
         status = axis2_array_list_add(svc->engaged_modules, env, module_desc);
-        qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+        qname = axis2_module_desc_get_qname(module_desc, env);
         axis2_svc_add_module_qname(svc, env, qname);
     }
     if (phase_resolver)
@@ -724,7 +724,7 @@ axis2_svc_is_module_engaged(
 
         module_desc_l = (axis2_module_desc_t *) axis2_array_list_get(
             svc->engaged_modules, env, i);
-        module_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);
+        module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
 
         if (axis2_qname_equals(module_qname, env, module_qname_l))
         {
@@ -751,7 +751,7 @@ axis2_svc_add_module_ops(
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
-    map = AXIS2_MODULE_DESC_GET_ALL_OPS(module_desc, env);
+    map = axis2_module_desc_get_all_ops(module_desc, env);
     pr = axis2_phase_resolver_create_with_config_and_svc(env, conf, svc);
 
     if (!pr)
@@ -849,7 +849,7 @@ axis2_svc_add_to_engaged_module_list(
     {
         return AXIS2_FAILURE;
     }
-    module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+    module_qname = axis2_module_desc_get_qname(module_desc, env);
     size = axis2_array_list_size(svc->engaged_modules, env);
     for (i = 0; i < size; i++)
     {
@@ -858,7 +858,7 @@ axis2_svc_add_to_engaged_module_list(
 
         module_desc_l = (axis2_module_desc_t *) axis2_array_list_get(
             svc->engaged_modules, env, i);
-        module_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);
+        module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
 
         if (axis2_qname_equals(module_qname, env, module_qname_l))
         {

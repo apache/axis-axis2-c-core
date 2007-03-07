@@ -1214,7 +1214,7 @@ axis2_msg_ctx_get_module_parameter(
         AXIS2_QNAME_FREE(qname, env);
         if (module_desc) 
         {
-            param = AXIS2_MODULE_DESC_GET_PARAM(module_desc, env, key);
+            param = axis2_module_desc_get_param(module_desc, env, key);
             if (param)
             {
                 return param;
@@ -1236,7 +1236,7 @@ axis2_msg_ctx_get_module_parameter(
         AXIS2_QNAME_FREE(qname, env);
         if (module_desc) 
         {
-            param = AXIS2_MODULE_DESC_GET_PARAM(module_desc, env, key);
+            param = axis2_module_desc_get_param(module_desc, env, key);
             if (param)
             {
                 return param;
@@ -1258,7 +1258,7 @@ axis2_msg_ctx_get_module_parameter(
         AXIS2_QNAME_FREE(qname, env);
         if (module_desc) 
         {
-            param = AXIS2_MODULE_DESC_GET_PARAM(module_desc, env, key);
+            param = axis2_module_desc_get_param(module_desc, env, key);
             if (param)
             {
                 return param;
@@ -1283,7 +1283,7 @@ axis2_msg_ctx_get_module_parameter(
 
     if (module_desc) 
     {
-        param = AXIS2_MODULE_DESC_GET_PARAM(module_desc, env, key);
+        param = axis2_module_desc_get_param(module_desc, env, key);
         if (param)
         {
             return param;
@@ -1306,7 +1306,7 @@ axis2_msg_ctx_get_module_parameter(
 
     if (module_desc) 
     {
-        param = AXIS2_MODULE_DESC_GET_PARAM(module_desc, env, key);
+        param = axis2_module_desc_get_param(module_desc, env, key);
         if (param)
         {
             return param;
