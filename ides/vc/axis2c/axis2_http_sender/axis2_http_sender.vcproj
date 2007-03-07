@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\modules\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\xml_schema\include;.\..\..\..\..\axiom\include;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_HTTP_SENDER_EXPORTS;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_HTTP_SENDER_EXPORTS;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT;AXIS2_LIBCURL_ENABLED"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axis2_util.lib axis2_parser.lib axis2_engine.lib axis2_http_util.lib ssleay32MTd.lib  libeay32MTd.lib"
+				AdditionalDependencies="axis2_util.lib axis2_parser.lib axis2_engine.lib axis2_http_util.lib ssleay32MTd.lib  libeay32MTd.lib  libcurl_imp.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;"
 				GenerateDebugInformation="true"
@@ -211,6 +211,26 @@
 				</File>
 				<File
 					RelativePath="..\..\..\..\modules\core\transport\http\sender\ssl\ssl_utils.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="libcurl"
+				>
+				<File
+					RelativePath="..\..\..\..\modules\core\transport\http\sender\libcurl\axis2_libcurl.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\modules\core\transport\http\sender\libcurl\axis2_libcurl.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\modules\core\transport\http\sender\libcurl\libcurl_stream.c"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\..\modules\core\transport\http\sender\libcurl\libcurl_stream.h"
 					>
 				</File>
 			</Filter>
