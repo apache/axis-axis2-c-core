@@ -344,6 +344,7 @@ typedef enum axis2_wsdl_msg_labels
 
 
 #define AXIS2_RESPONSE_SOAP_ENVELOPE "Axis2ResponseEnvelope"    
+#define AXIS2_HANDLER_ALREADY_VISITED "handler_already_visited"
 
 #ifdef __cplusplus
 }

@@ -318,7 +318,7 @@ axis2_mep_client_prepare_soap_envelope(
         }
     }
 
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
+    axis2_msg_ctx_set_soap_envelope(msg_ctx, env, envelope);
 
     return msg_ctx;
 }
@@ -706,7 +706,7 @@ axis2_mep_client_two_way_send(
  	response_envelope = AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env);
     if(response_envelope)
     {
-        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
+        axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {
@@ -730,7 +730,21 @@ axis2_mep_client_two_way_send(
            else it is a one way message */
         if (response_envelope)
         {
-            AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
+            axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
+            /* There could be a scenaria where the message has already passed
+             * through the incoming phases. eg. Reliable Messaging 1.0 two
+             * way single channel
+             */
+            property = axis2_msg_ctx_get_property(msg_ctx, env, 
+                AXIS2_HANDLER_ALREADY_VISITED, AXIS2_FALSE);
+            if(property)
+            {
+                axis2_char_t *value = axis2_property_get_value(property, env);
+                if(0 == axis2_strcmp(AXIS2_VALUE_TRUE, value))
+                {
+                    return response;
+                }
+            }
             engine = axis2_engine_create(env, conf_ctx);
             if (engine)
             {
@@ -813,7 +827,7 @@ axis2_mep_client_receive(
  	response_envelope = AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env);
     if (response_envelope)
     {
-        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
+        axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
         if (engine)
         {
             AXIS2_ENGINE_FREE(engine, env);
