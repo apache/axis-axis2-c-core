@@ -36,6 +36,9 @@
 #include <oxs_token_binary_security_token.h>
 #include <oxs_token_embedded.h>
 #include <oxs_token_key_identifier.h>
+#include <oxs_token_x509_data.h>
+#include <oxs_token_x509_certificate.h>
+#include <oxs_token_x509_issuer_serial.h>
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_token_build_security_token_reference(const axis2_env_t *env,
@@ -52,10 +55,10 @@ rampart_token_build_security_token_reference(const axis2_env_t *env,
         status = rampart_token_build_embedded(env, stref_node, cert);
     }else if(RTBP_KEY_IDENTIFIER == pattern){
         status = rampart_token_build_key_identifier(env, stref_node, cert);
-    }else if(RTBP_X509DATA_ISSUER_SERIAL == pattern){
-        status = rampart_token_build_x509_data_issuer_serial(env, stref_node, cert);
     }else if(RTBP_X509DATA_X509CERTIFICATE == pattern){
         status = rampart_token_process_x509_data_x509_certificate(env, stref_node, cert);
+    }else if(RTBP_X509DATA_ISSUER_SERIAL == pattern){
+        status = rampart_token_build_x509_data_issuer_serial(env, stref_node, cert);
     }else{
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_ELEMENT_FAILED, "Unsupported pattern %d to build wsse:SecurityTokenReference ", pattern);
         /*We do not support*/
@@ -109,6 +112,19 @@ rampart_token_process_x509_data_x509_certificate(const axis2_env_t *env,
     axiom_node_t *parent,
     oxs_x509_cert_t *cert)
 {
+    axiom_node_t *x509_data_node = NULL;
+    axiom_node_t *x509_cert_node = NULL;
+    axis2_char_t *data = NULL;
+
+
+    data = oxs_x509_cert_get_data(cert, env);
+    if(!data){
+        return AXIS2_FAILURE;
+    }
+
+    x509_data_node = oxs_token_build_x509_data_element(env, parent);
+    x509_cert_node = oxs_token_build_x509_certificate_element(env, x509_data_node, data);
+
     return AXIS2_SUCCESS;
 }
 
@@ -117,6 +133,25 @@ rampart_token_build_x509_data_issuer_serial(const axis2_env_t *env,
      axiom_node_t *parent,
      oxs_x509_cert_t *cert)
 {
+    axiom_node_t *x509_data_node = NULL;
+    axiom_node_t *x509_issuer_serial_node = NULL;
+
+    axis2_char_t *issuer = NULL;
+    axis2_char_t *serial_num = NULL;
+    int serial = -1;
+
+    issuer = oxs_x509_cert_get_issuer(cert, env);
+    serial = oxs_x509_cert_get_serial_number(cert, env);
+
+    if(!issuer){
+        return AXIS2_FAILURE;
+    }
+
+    sprintf(serial_num, "%d", serial);
+    /*Build tokens*/
+    x509_data_node = oxs_token_build_x509_data_element(env, parent);
+    x509_issuer_serial_node = oxs_token_build_x509_issuer_serial_with_data(env, x509_data_node, issuer, serial_num);
+
     return AXIS2_SUCCESS;
 
 }
