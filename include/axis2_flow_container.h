@@ -160,42 +160,6 @@ extern "C"
     axis2_flow_container_create (const axis2_env_t *env);
 
 
-/** Frees flow container. */
-#define AXIS2_FLOW_CONTAINER_FREE(flow_container, env) \
-        axis2_flow_container_free (flow_container, env)
-
-/** Gets in flow. */
-#define AXIS2_FLOW_CONTAINER_GET_IN_FLOW(flow_container, env) \
-        axis2_flow_container_get_in_flow (flow_container, env)
-
-/** Sets in flow. */
-#define AXIS2_FLOW_CONTAINER_SET_IN_FLOW(flow_container, env, in_flow) \
-        axis2_flow_container_set_in_flow (flow_container, env, in_flow)
-
-/** Gets out flow. */
-#define AXIS2_FLOW_CONTAINER_GET_OUT_FLOW(flow_container, env) \
-        axis2_flow_container_get_out_flow (flow_container, env)
-
-/** Sets out flow. */
-#define AXIS2_FLOW_CONTAINER_SET_OUT_FLOW(flow_container, env, out_flow) \
-        axis2_flow_container_set_out_flow (flow_container, env, out_flow)
-
-/** Gets fault in flow. */
-#define AXIS2_FLOW_CONTAINER_GET_FAULT_IN_FLOW(flow_container, env) \
-        axis2_flow_container_get_fault_in_flow (flow_container, env)
-
-/** Sets fault in flow. */
-#define AXIS2_FLOW_CONTAINER_SET_FAULT_IN_FLOW(flow_container, env, fault_in_flow) \
-        axis2_flow_container_set_fault_in_flow (flow_container, env, fault_in_flow)
-
-/** Gets fault out flow. */
-#define AXIS2_FLOW_CONTAINER_GET_FAULT_OUT_FLOW(flow_container, env) \
-        axis2_flow_container_get_fault_out_flow (flow_container, env)
-
-/** Sets fault out flow. */
-#define AXIS2_FLOW_CONTAINER_SET_FAULT_OUT_FLOW(flow_container, env, fault_out_flow) \
-        axis2_flow_container_set_fault_out_flow (flow_container, env, fault_out_flow)
-
 /** @} */
 
 #ifdef __cplusplus

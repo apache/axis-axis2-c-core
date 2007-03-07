@@ -24,19 +24,17 @@ struct axis2_flow_container
     axis2_flow_t *out;
     axis2_flow_t *in_fault;
     axis2_flow_t *out_fault;
-
 };
 
 AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
-axis2_flow_container_create(
-    const axis2_env_t *env)
+axis2_flow_container_create(const axis2_env_t *env)
 {
     axis2_flow_container_t *flow_container = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     flow_container = (axis2_flow_container_t *) AXIS2_MALLOC(env->
-            allocator, sizeof(axis2_flow_container_t));
+        allocator, sizeof(axis2_flow_container_t));
 
 
     if (NULL == flow_container)
@@ -54,8 +52,7 @@ axis2_flow_container_create(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_flow_container_free(
-    axis2_flow_container_t *flow_container,
+axis2_flow_container_free(axis2_flow_container_t *flow_container,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -63,48 +60,40 @@ axis2_flow_container_free(
     if (flow_container->in)
     {
         axis2_flow_free(flow_container->in, env);
-        flow_container->in = NULL;
     }
 
     if (flow_container->out)
     {
         axis2_flow_free(flow_container->out, env);
-        flow_container->out = NULL;
     }
 
     if (flow_container->in_fault)
     {
         axis2_flow_free(flow_container->in_fault, env);
-        flow_container->in_fault = NULL;
     }
 
     if (flow_container->out_fault)
     {
         axis2_flow_free(flow_container->out_fault, env);
-        flow_container->out_fault = NULL;
     }
 
     if (flow_container)
     {
         AXIS2_FREE(env->allocator, flow_container);
-        flow_container = NULL;
     }
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_in_flow(
-    const axis2_flow_container_t *flow_container,
+axis2_flow_container_get_in_flow(const axis2_flow_container_t *flow_container,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return flow_container->in;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_flow_container_set_in_flow(
-    axis2_flow_container_t *flow_container,
+axis2_flow_container_set_in_flow(axis2_flow_container_t *flow_container,
     const axis2_env_t *env,
     axis2_flow_t *in_flow)
 {
@@ -113,24 +102,20 @@ axis2_flow_container_set_in_flow(
     if (flow_container->in)
     {
         axis2_flow_free(flow_container->in, env);
-        flow_container->in = NULL;
     }
     flow_container->in = in_flow;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_out_flow(
-    const axis2_flow_container_t *flow_container,
+axis2_flow_container_get_out_flow(const axis2_flow_container_t *flow_container,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return flow_container->out;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_flow_container_set_out_flow(
-    axis2_flow_container_t *flow_container,
+axis2_flow_container_set_out_flow(axis2_flow_container_t *flow_container,
     const axis2_env_t *env,
     axis2_flow_t *out_flow)
 {
@@ -139,24 +124,20 @@ axis2_flow_container_set_out_flow(
     if (flow_container->out)
     {
         axis2_flow_free(flow_container->out, env);
-        flow_container->out = NULL;
     }
     flow_container->out = out_flow;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_fault_in_flow(
-    const axis2_flow_container_t *flow_container,
+axis2_flow_container_get_fault_in_flow(const axis2_flow_container_t *flow_container,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return flow_container->in_fault;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_flow_container_set_fault_in_flow(
-    axis2_flow_container_t *flow_container,
+axis2_flow_container_set_fault_in_flow(axis2_flow_container_t *flow_container,
     const axis2_env_t *env,
     axis2_flow_t *falut_in_flow)
 {
@@ -164,24 +145,20 @@ axis2_flow_container_set_fault_in_flow(
     if (flow_container->in_fault)
     {
         axis2_flow_free(flow_container->in_fault, env);
-        flow_container->in_fault = NULL;
     }
     flow_container->in_fault = falut_in_flow;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_fault_out_flow(
-    const axis2_flow_container_t *flow_container,
+axis2_flow_container_get_fault_out_flow(const axis2_flow_container_t *flow_container,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return flow_container->out_fault;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_flow_container_set_fault_out_flow(
-    axis2_flow_container_t *flow_container,
+axis2_flow_container_set_fault_out_flow(axis2_flow_container_t *flow_container,
     const axis2_env_t *env,
     axis2_flow_t *fault_out_flow)
 {
@@ -190,7 +167,6 @@ axis2_flow_container_set_fault_out_flow(
     if (flow_container->out_fault)
     {
         axis2_flow_free(flow_container->out_fault, env);
-        flow_container->out_fault = NULL;
     }
     flow_container->out_fault = fault_out_flow;
     return AXIS2_SUCCESS;

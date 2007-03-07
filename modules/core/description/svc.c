@@ -259,7 +259,7 @@ axis2_svc_free(
 
     if (svc->flow_container)
     {
-        AXIS2_FLOW_CONTAINER_FREE(svc->flow_container, env);
+        axis2_flow_container_free(svc->flow_container, env);
         svc->flow_container = NULL;
     }
 
