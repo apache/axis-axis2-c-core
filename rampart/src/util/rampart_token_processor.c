@@ -31,7 +31,7 @@
 #include <oxs_token_reference.h>
 #include <oxs_token_binary_security_token.h>
 #include <oxs_xml_key_processor.h>
-
+#include <rampart_token_processor.h>
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_token_process_security_token_reference(const axis2_env_t *env,
@@ -55,6 +55,7 @@ rampart_token_process_security_token_reference(const axis2_env_t *env,
     }else if(0 == axis2_strcmp(child_name, OXS_NODE_X509_DATA)){
         status = rampart_token_process_x509_data(env, child_node, cert);
     }else{
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_ELEMENT_FAILED, "Unsupported child %s of wsse:SecurityTokenReference ", child_name);
         /*We do not support*/
         return AXIS2_FAILURE;
     }

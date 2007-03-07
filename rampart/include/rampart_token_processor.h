@@ -35,11 +35,16 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_token_process_security_token_reference(const axis2_env_t *env,
+    axiom_node_t *st_ref_node,
+    axiom_node_t *scope_node,/*Can be NULL for all other scenarios but the Direct Reference*/
+    oxs_x509_cert_t *cert);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_token_process_direct_ref(const axis2_env_t *env,
     axiom_node_t *ref_node,
-    axoim_node_t *scope_node,   
+    axiom_node_t *scope_node,   
     oxs_x509_cert_t *cert);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
