@@ -669,7 +669,6 @@ axis2_svc_client_send_robust(
     const axiom_node_t *payload)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
-    axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
@@ -692,23 +691,14 @@ axis2_svc_client_send_robust(
         return AXIS2_FAILURE;
     }
 
-    op_client = axis2_svc_client_create_op_client(&(svc_client_impl->svc_client),
-            env, op_qname);
-    if (!op_client)
+    if(!axis2_svc_client_create_op_client(&(svc_client_impl->svc_client),
+        env, op_qname))
     {
         return AXIS2_FAILURE;
     }
-    if (svc_client_impl->op_client)
-    {
-        /** free op_client of previous message
-            AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client);
-        */
-    }
 
-    svc_client_impl->op_client = op_client;
-
-    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
-    status = AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
+    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(svc_client_impl->op_client, env, msg_ctx);
+    status = AXIS2_OP_CLIENT_EXECUTE(svc_client_impl->op_client, env, AXIS2_TRUE);
     
     if (qname_free_flag)
     {
@@ -750,22 +740,13 @@ axis2_svc_client_fire_and_forget(
         return;
     }
 
-    op_client = axis2_svc_client_create_op_client(&(svc_client_impl->svc_client),
-            env, op_qname);
-    if (!op_client)
+    if(!axis2_svc_client_create_op_client(&(svc_client_impl->svc_client),
+        env, op_qname))
     {
         return;
     }
 
-    if (svc_client_impl->op_client)
-    {
-        /** free previous op_client
-            AXIS2_OP_CLIENT_FREE(op_client, env);
-        */
-    }
-    svc_client_impl->op_client = op_client;
-
-    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
+    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(svc_client_impl->op_client, env, msg_ctx);
     AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
     
     if (qname_free_flag)
@@ -897,7 +878,6 @@ axis2_svc_client_send_receive(
     }
     else
     {
-        axis2_op_client_t *op_client = NULL;
         axis2_msg_ctx_t *res_msg_ctx = NULL;
         axis2_msg_ctx_t *msg_ctx = NULL;
 
@@ -909,22 +889,21 @@ axis2_svc_client_send_receive(
             return NULL;
         }
 
-        op_client = axis2_svc_client_create_op_client(&(svc_client_impl->svc_client), env, op_qname);
-        if (!op_client)
+        if(!axis2_svc_client_create_op_client(&(svc_client_impl->svc_client), 
+            env, op_qname))
         {
             return NULL;
         }
 
-        svc_client_impl->op_client = op_client;
-
-        AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
-        AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
-        res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
-
+        AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client_impl->op_client, env, msg_ctx);
+        AXIS2_OP_CLIENT_EXECUTE(svc_client_impl->op_client, env, AXIS2_TRUE);
+        res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(
+            svc_client_impl->op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
         if (res_msg_ctx)
             soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
         else
-            AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, res_msg_ctx); /* set in msg_ctx to be NULL to reset */
+            AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client_impl->op_client, env, 
+                res_msg_ctx); /* set in msg_ctx to be NULL to reset */
     }
 
     if (qname_free_flag)
@@ -962,7 +941,6 @@ axis2_svc_client_send_receive_non_blocking(
     axis2_callback_t *callback)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
-    axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     AXIS2_TRANSPORT_ENUMS transport_in_protocol;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
@@ -980,22 +958,14 @@ axis2_svc_client_send_receive_non_blocking(
     if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, msg_ctx, payload))
         return;
 
-    op_client = axis2_svc_client_create_op_client(&(svc_client_impl->svc_client),
-            env, op_qname);
-    if (!op_client)
+    if(!axis2_svc_client_create_op_client(&(svc_client_impl->svc_client),
+        env, op_qname))
     {
         return;
     }
-    if (svc_client_impl->op_client)
-    {
-        /** free op_client of previous request
-        AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client, env);
-        */
-    }
-    svc_client_impl->op_client = op_client;
 
-    AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback);
-    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
+    AXIS2_OP_CLIENT_SET_CALLBACK(svc_client_impl->op_client, env, callback);
+    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(svc_client_impl->op_client, env, msg_ctx);
 
     if (AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
     {
@@ -1010,14 +980,14 @@ axis2_svc_client_send_receive_non_blocking(
         AXIS2_USLEEP(1);
 
         op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env,
-                op_qname);
+            op_qname);
         AXIS2_OP_SET_MSG_RECV(op, env,
-                AXIS2_CALLBACK_RECV_GET_BASE(svc_client_impl->callback_recv, env));
-        AXIS2_OP_CLIENT_SET_CALLBACK_RECV(op_client, env,
-                svc_client_impl->callback_recv);
+            AXIS2_CALLBACK_RECV_GET_BASE(svc_client_impl->callback_recv, env));
+        AXIS2_OP_CLIENT_SET_CALLBACK_RECV(svc_client_impl->op_client, env,
+            svc_client_impl->callback_recv);
     }
 
-    AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
+    AXIS2_OP_CLIENT_EXECUTE(svc_client_impl->op_client, env, AXIS2_FALSE);
     
     if (qname_free_flag)
     {
