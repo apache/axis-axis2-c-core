@@ -106,7 +106,7 @@ axis2_desc_free(axis2_desc_t *desc,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_desc_add_param(axis2_desc_t *desc,
     const axis2_env_t *env,
-    const axis2_param_t *param)
+    axis2_param_t *param)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);

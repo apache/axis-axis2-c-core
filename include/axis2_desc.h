@@ -66,7 +66,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_add_param(axis2_desc_t *desc,
         const axis2_env_t *env,
-        const axis2_param_t *param);
+        axis2_param_t *param);
 
     /**
      * Gets named parameter.
