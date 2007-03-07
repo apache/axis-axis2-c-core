@@ -27,8 +27,7 @@ struct axis2_relates_to
 };
 
 axis2_relates_to_t *AXIS2_CALL
-axis2_relates_to_create(
-    const axis2_env_t *env,
+axis2_relates_to_create(const axis2_env_t *env,
     const axis2_char_t *value,
     const axis2_char_t *relationship_type)
 {
@@ -72,17 +71,14 @@ axis2_relates_to_create(
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_relates_to_get_value(
-    const axis2_relates_to_t *relates_to,
+axis2_relates_to_get_value(const axis2_relates_to_t *relates_to,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return relates_to->value;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_relates_to_set_value(
-    struct axis2_relates_to *relates_to,
+axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
     const axis2_env_t *env,
     const axis2_char_t *value)
 {
@@ -91,7 +87,6 @@ axis2_relates_to_set_value(
     if (relates_to->value)
     {
         AXIS2_FREE(env->allocator, relates_to->value);
-        relates_to->value = NULL;
     }
 
     if (value)
@@ -108,17 +103,14 @@ axis2_relates_to_set_value(
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_relates_to_get_relationship_type(
-    const axis2_relates_to_t *relates_to,
+axis2_relates_to_get_relationship_type(const axis2_relates_to_t *relates_to,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return relates_to->relationship_type;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_relates_to_set_relationship_type(
-    struct axis2_relates_to *relates_to,
+axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
     const axis2_env_t *env,
     const axis2_char_t *relationship_type)
 {
@@ -127,7 +119,6 @@ axis2_relates_to_set_relationship_type(
     if (relates_to->relationship_type)
     {
         AXIS2_FREE(env->allocator, relates_to->relationship_type);
-        relates_to->relationship_type = NULL;
     }
 
     if (relationship_type)
@@ -145,8 +136,7 @@ axis2_relates_to_set_relationship_type(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_relates_to_free(
-    struct axis2_relates_to *relates_to,
+axis2_relates_to_free(struct axis2_relates_to *relates_to,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -154,17 +144,14 @@ axis2_relates_to_free(
     if (relates_to->value)
     {
         AXIS2_FREE(env->allocator, relates_to->value);
-        relates_to->value = NULL;
     }
 
     if (relates_to->relationship_type)
     {
         AXIS2_FREE(env->allocator, relates_to->relationship_type);
-        relates_to->relationship_type = NULL;
     }
 
     AXIS2_FREE(env->allocator, relates_to);
-    relates_to = NULL;
 
     return AXIS2_SUCCESS;
 }
