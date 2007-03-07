@@ -34,9 +34,10 @@
 #include <axis2_const.h>
 #include <axis2_util.h>
 #include <axiom_soap.h>
+#include "axis2_http_sender_util.h"
 
 #ifdef AXIS2_LIBCURL_ENABLED
-#include <libcurl/axis2_libcurl.h>
+#include "libcurl/axis2_libcurl.h"
 #endif
 /**
  * @brief SOAP over HTTP sender struct impl
@@ -79,11 +80,7 @@ axis2_http_sender_get_timeout_values(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
-axis2_char_t *AXIS2_CALL
-axis2_http_sender_get_param_string(
-    const axis2_env_t *env,
-    axis2_http_sender_t *sender,
-    axis2_msg_ctx_t *msg_ctx);
+
 
 static axis2_char_t *AXIS2_CALL
 axis2_url_encode (
@@ -426,7 +423,7 @@ axis2_http_sender_send(
 		axis2_char_t *request_params = NULL;
         axis2_char_t *path = NULL;
 
-        request_params = axis2_http_sender_get_param_string(env, sender, msg_ctx);
+        request_params = axis2_http_sender_get_param_string( sender, env, msg_ctx);
         path = axis2_strcat(env, AXIS2_URL_GET_PATH(url, env), "?",
 							request_params, NULL);
         request_line = axis2_http_request_line_create(env, "GET", path,
@@ -1109,8 +1106,8 @@ axis2_libcurl_http_send(
 
 axis2_char_t *AXIS2_CALL
 axis2_http_sender_get_param_string(
-    const axis2_env_t *env,
     axis2_http_sender_t *sender,
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axiom_soap_envelope_t *soap_env = NULL;

@@ -1,4 +1,4 @@
-#include <axis2_libcurl.h>
+#include "axis2_libcurl.h"
 #include <axiom_soap.h>
 #include <axis2_string.h>
 #include <axis2_http_transport.h>
@@ -15,8 +15,9 @@
 #include <axis2_const.h>
 #include <axis2_util.h>
 #include <stdlib.h>
+#include <axis2_http_sender.h>
 #include <axis2_http_transport.h>
-#include <libcurl_stream.h>
+#include "libcurl_stream.h"
 
 typedef struct axis2_libcurl
 {
@@ -256,11 +257,12 @@ axis2_libcurl_send (
 		}
 		else
 			buffer_size = output_stream_size;
-
-		char tmp_buf[10];
-		sprintf (tmp_buf, "%d", buffer_size);
-		headers = curl_slist_append (headers, AXIS2_STRACAT (content_len, tmp_buf, env));
-		headers = curl_slist_append (headers, AXIS2_STRACAT (content,content_type, env));
+		{
+			char tmp_buf[10];
+			sprintf (tmp_buf, "%d", buffer_size);
+			headers = curl_slist_append (headers, AXIS2_STRACAT (content_len, tmp_buf, env));
+			headers = curl_slist_append (headers, AXIS2_STRACAT (content,content_type, env));
+		}
 		if (!doing_mtom)
 		{
 			curl_easy_setopt (handler, CURLOPT_POSTFIELDSIZE, buffer_size);
@@ -277,7 +279,7 @@ axis2_libcurl_send (
 	{
 		axis2_char_t *request_param;
 		axis2_char_t *url_encode;
-		request_param = (axis2_char_t *) axis2_http_sender_get_param_string(env, NULL, msg_ctx);
+		request_param = (axis2_char_t *) axis2_http_sender_get_param_string( NULL, env, msg_ctx);
 		url_encode = axis2_strcat(env, str_url, "?",
 								  request_param, NULL);
 		curl_easy_setopt (handler, CURLOPT_HTTPGET, 1);
