@@ -152,47 +152,6 @@ extern "C"
     axis2_base64_binary_get_decoded_binary_len(axis2_base64_binary_t *base64_binary,
         const axis2_env_t *env);
 
-
-
-    /*************************** Function macros **********************************/
-
-    /** Frees the base64 binary.
-        @sa axis2_base64_binary_ops#free */
-#define AXIS2_BASE64_BINARY_FREE(base64_binary, env) \
-     axis2_base64_binary_free(base64_binary, env)
-
-    /** Sets the plain binary.
-        @sa axis2_base64_binary_ops#set_plain_binary */
-#define AXIS2_BASE64_BINARY_SET_PLAIN_BINARY(base64_binary, env, plain_binary) \
-     axis2_base64_binary_set_plain_binary(base64_binary, env, plain_binary)
-
-    /** Gets the plain binary.
-        @sa axis2_base64_binary_ops#get_plain_binary */
-#define AXIS2_BASE64_BINARY_GET_PLAIN_BINARY(base64_binary, env ) \
-     axis2_base64_binary_get_plain_binary(base64_binary, env)
-
-    /** Sets the encoded binary.
-        @sa axis2_base64_binary_ops#set_encoded_binary */
-#define AXIS2_BASE64_BINARY_SET_ENCODED_BINARY(base64_binary, env, encoded_binary) \
-     axis2_base64_binary_set_encoded_binary(base64_binary, env, encoded_binary)
-
-    /** Gets the encoded binary.
-        @sa axis2_base64_binary_ops#get_encoded_binary */
-#define AXIS2_BASE64_BINARY_GET_ENCODED_BINARY(base64_binary, env ) \
-     axis2_base64_binary_get_encoded_binary(base64_binary, env)
-
-    /** Gets the encoded binary length.
-        @sa axis2_base64_binary_ops#get_encoded_binary_len */
-#define AXIS2_BASE64_BINARY_GET_ENCODED_BINARY_LEN(base64_binary, env ) \
-     axis2_base64_binary_get_encoded_binary_len(base64_binary, env)
-
-    /** Gets the decoded binary length.
-        @sa axis2_base64_binary_ops#get_decoded_binary_len */
-#define AXIS2_BASE64_BINARY_GET_DECODED_BINARY_LEN(base64_binary, env ) \
-     axis2_base64_binary_get_decoded_binary_len(base64_binary, env)
-
-    /** @} */
-
 #ifdef __cplusplus
 }
 #endif

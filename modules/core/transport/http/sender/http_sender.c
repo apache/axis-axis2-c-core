@@ -447,7 +447,9 @@ axis2_http_sender_send(
         }
         else
         {
-			axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_SOAP_ACTION, (const)soap_action);
+			axis2_http_sender_util_add_header (env, request,
+                                               AXIS2_HTTP_HEADER_SOAP_ACTION, 
+                                               (const axis2_char_t *)soap_action);
         }
     }
 
