@@ -175,6 +175,12 @@ extern "C"
         const axis2_env_t *env, 
         axis2_msg_ctx_t *msg_ctx);
 
+	axis2_char_t *AXIS2_CALL
+	axis2_http_sender_get_param_string(
+    axis2_http_sender_t *sender,
+	const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
     /**
      * Axis2 SOAP over HTTP sender
      */
