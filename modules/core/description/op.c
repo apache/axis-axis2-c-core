@@ -194,7 +194,7 @@ axis2_op_free(
 
     if (op->base)
     {
-        AXIS2_DESC_FREE(op->base, env);
+        axis2_desc_free(op->base, env);
         op->base = NULL;
     }
     if (op->param_container)
@@ -714,7 +714,7 @@ axis2_op_get_fault_in_flow(
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op->base, env, AXIS2_MSG_IN_FAULT);
+        msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN_FAULT);
         if (msg)
         {
             return AXIS2_MSG_GET_FLOW(msg, env);
@@ -733,7 +733,7 @@ axis2_op_get_fault_out_flow(
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op->base, env, AXIS2_MSG_OUT_FAULT);
+        msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT_FAULT);
         if (msg)
         {
             return AXIS2_MSG_GET_FLOW(msg, env);
@@ -752,7 +752,7 @@ axis2_op_get_out_flow(
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op->base, env, AXIS2_MSG_OUT);
+        msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT);
         if (msg)
         {
             return AXIS2_MSG_GET_FLOW(msg, env);
@@ -771,7 +771,7 @@ axis2_op_get_in_flow(
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op->base, env, AXIS2_MSG_IN);
+        msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN);
         if (msg)
         {
             return AXIS2_MSG_GET_FLOW(msg, env);
@@ -792,7 +792,7 @@ axis2_op_set_fault_in_flow(
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op->base, env, AXIS2_MSG_IN_FAULT);
+        msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN_FAULT);
         if (msg)
         {
             return AXIS2_MSG_SET_FLOW(msg, env, list);
@@ -812,7 +812,7 @@ axis2_op_set_fault_out_flow(
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op->base, env, AXIS2_MSG_OUT_FAULT);
+        msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT_FAULT);
         if (msg)
         {
             return AXIS2_MSG_SET_FLOW(msg, env, list);
@@ -833,7 +833,7 @@ axis2_op_set_out_flow(
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op->base, env, AXIS2_MSG_OUT);
+        msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT);
         if (msg)
         {
             return AXIS2_MSG_SET_FLOW(msg, env, list);
@@ -855,7 +855,7 @@ axis2_op_set_in_flow(
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op->base, env, AXIS2_MSG_IN);
+        msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN);
         if (msg)
         {
             return AXIS2_MSG_SET_FLOW(msg, env, list);
@@ -1161,7 +1161,7 @@ axis2_op_get_msg(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, label, NULL);
 
-    return (axis2_msg_t *)AXIS2_DESC_GET_CHILD(op->base, env, label);
+    return (axis2_msg_t *)axis2_desc_get_child(op->base, env, label);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -1174,7 +1174,7 @@ axis2_op_add_msg(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, label, AXIS2_FAILURE);
 
-    return AXIS2_DESC_ADD_CHILD(op->base, env, label, msg);
+    return axis2_desc_add_child(op->base, env, label, msg);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

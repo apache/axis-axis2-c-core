@@ -26,10 +26,6 @@
  * @{
  */
 
-/**
-  * @file axis2_desc.h
-  */
-
 #include <axis2_param_container.h>
 #include <axis2_hash.h>
 #include <axis2_description.h>
@@ -41,6 +37,14 @@ extern "C"
 
     /** Type name of struct axis2_desc */
     typedef struct axis2_desc axis2_desc_t;
+
+	/**
+     * Creates a description struct instance.    
+     * @param env pointer to environment struct
+     * @return pointer to newly created description
+     */
+    AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
+    axis2_desc_create (const axis2_env_t *env);
 
     /** 
      * Frees description struct.
@@ -62,7 +66,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_add_param(axis2_desc_t *desc,
         const axis2_env_t *env,
-        axis2_param_t *param);
+        const axis2_param_t *param);
 
     /**
      * Gets named parameter.
@@ -149,51 +153,7 @@ extern "C"
     axis2_desc_remove_child(const axis2_desc_t *desc,
         const axis2_env_t *env,
         const axis2_char_t *key);
-
-    /**
-     * Creates a description struct instance.    
-     * @param env pointer to environment struct
-     * @return pointer to newly created description
-     */
-    AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-    axis2_desc_create (const axis2_env_t *env);
-
-/** Frees the desc. */
-#define AXIS2_DESC_FREE(desc, env) \
-        axis2_desc_free (desc, env)
-
-/** Adds given parameter. */
-#define AXIS2_DESC_ADD_PARAM(desc, env, param) \
-      axis2_desc_add_param (desc, env, param)
-
-/** Gets named parameter. */
-#define AXIS2_DESC_GET_PARAM(desc, env, key) \
-      axis2_desc_get_param (desc, env, key)
-
-/** Gets the map of all parameters. */
-#define AXIS2_DESC_GET_ALL_PARAMS(desc, env) \
-      axis2_desc_get_all_params (desc, env)
-
-/** Checks if named parameter is locked. */
-#define AXIS2_DESC_IS_PARAM_LOCKED(desc, env, param_name) \
-        axis2_desc_is_param_locked(desc, env, param_name)
-
-/** Adds child with given key. */
-#define AXIS2_DESC_ADD_CHILD(desc, env, key, child) \
-    axis2_desc_add_child(desc, env, key, child)
-
-/** Gets the map of all children. */
-#define AXIS2_DESC_GET_ALL_CHILDREN(desc, env) \
-    axis2_desc_get_all_children(desc, env)
-
-/** Gets child with given key. */
-#define AXIS2_DESC_GET_CHILD(desc, env, key) \
-    axis2_desc_get_child(desc, env, key)
-
-/** Removes child with given key. */
-#define AXIS2_DESC_REMOVE_CHILD(desc, env, key) \
-    axis2_desc_remove_child(desc, env, key)
-
+    
 /** @} */
 #ifdef __cplusplus
 }
