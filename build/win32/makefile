@@ -123,6 +123,10 @@ WODEN_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\woden\include \
 !if "$(ENABLE_SSL)" == "1"
 AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
 !endif
+!if "$(ENABLE_LIBCURL)" == "1"
+AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(LIBCURL_BIN_DIR)\include
+!endif
+
 
 #source paths for core modules
 
@@ -175,6 +179,11 @@ AXIS2_HTTP_SENDER_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\*
 AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
 		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\ssl\*.c
 !endif
+!if "$(ENABLE_LIBCURL)" == "1"
+AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
+		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\sender\libcurl\*.c
+!endif
+
 
 AXIS2_HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\receiver\*.c 
 
@@ -192,6 +201,10 @@ CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT"  \
 CFLAGS = $(CFLAGS) /D "AXIS2_SSL_ENABLED"
 !endif
 
+!if "$(ENABLE_LIBCURL)" == "1"
+CFLAGS = $(CFLAGS) /D "AXIS2_LIBCURL_ENABLED"
+!endif
+
 ################### linker options
 
 LD = @link.exe
@@ -204,6 +217,11 @@ LIBS =  Rpcrt4.lib Ws2_32.lib
 !if "$(ENABLE_SSL)" == "1"
 LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_BIN_DIR)\lib\VC
 LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
+!endif
+
+!if "$(ENABLE_LIBCURL)" == "1"
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(LIBCURL_BIN_DIR)
+LIBS = $(LIBS) libcurl_imp.lib
 !endif
 
 !if "$(APACHE_VERSION_IS_2_0_59)" == "1"
@@ -1024,6 +1042,7 @@ mod_rampart:
 
 	copy mod_rampart.dll $(RAMPART_MODULES_DIR)\rampart
 	copy mod_rampart.lib $(AXIS2_BINDIR)\lib
+	copy mod_rampart.dll $(AXIS2_BINDIR)\lib
 	
 	del *.dll
 	del *.lib
@@ -1161,5 +1180,5 @@ all: clean_make_dir clean deploy axis2_core axis2_samples copy_include clean_mak
  
 install: all
 
-dist: all axis2_server_modules savan copy_extra copy_samples mv_dist
+dist: all mod_rampart_all axis2_server_modules savan copy_extra copy_samples mv_dist
 
