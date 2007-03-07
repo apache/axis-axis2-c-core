@@ -46,7 +46,10 @@ BOOL WINAPI GetFilterVersion(PHTTP_FILTER_VERSION pVer)
 		3. All the request coming in secure and none secure ports.
 	*/
 	pVer->dwFlags = (SF_NOTIFY_ORDER_HIGH |                    
-                    SF_NOTIFY_PREPROC_HEADERS 
+                    SF_NOTIFY_PREPROC_HEADERS |
+					SF_NOTIFY_SECURE_PORT |
+					SF_NOTIFY_NONSECURE_PORT |
+					SF_NOTIFY_AUTH_COMPLETE
 					);
 
 	// Give a short discription about the module.
@@ -82,7 +85,8 @@ DWORD WINAPI HttpFilterProc(
 		(struct _HTTP_FILTER_CONTEXT * pfc, LPSTR lpszName,
 		 LPSTR lpszValue);
 
-	if (notificationType == SF_NOTIFY_PREPROC_HEADERS)
+	if (notificationType == SF_NOTIFY_PREPROC_HEADERS || 
+		notificationType == SF_NOTIFY_AUTH_COMPLETE)
 	{
 		GetHeader = ((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->GetHeader;
 		SetHeader = ((PHTTP_FILTER_PREPROC_HEADERS)pvNotification)->SetHeader;
