@@ -595,7 +595,7 @@ axis2_engine_create_fault_msg_ctx(
     fault_to = AXIS2_MSG_CTX_GET_FAULT_TO(processing_context, env);
     if (fault_to)
     {
-        const axis2_char_t *address = AXIS2_ENDPOINT_REF_GET_ADDRESS(fault_to, env);
+        const axis2_char_t *address = axis2_endpoint_ref_get_address(fault_to, env);
         if (!address)
         {
             fault_to = NULL;

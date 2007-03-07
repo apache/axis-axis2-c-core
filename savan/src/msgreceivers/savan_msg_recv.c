@@ -217,7 +217,7 @@ savan_msg_recv_handle_sub_request(
         &addr_node);
     old_info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
     submgr_epr = axis2_msg_info_headers_get_to(old_info_header, env);
-    submgr_addr = AXIS2_ENDPOINT_REF_GET_ADDRESS(submgr_epr, env);
+    submgr_addr = axis2_endpoint_ref_get_address(submgr_epr, env);
     AXIOM_ELEMENT_SET_TEXT(addr_elem, env, submgr_addr, addr_node);
     
     /* Get subscriber id from the msg ctx */

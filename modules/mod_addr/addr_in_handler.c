@@ -537,7 +537,7 @@ axis2_addr_in_extract_epr_information(const axis2_env_t *env,
         child_qn = AXIOM_ELEMENT_GET_QNAME(child_ele, env, child_node);
         if (axis2_addr_in_check_element(env, epr_addr_qn, child_qn))
         {
-            AXIS2_ENDPOINT_REF_SET_ADDRESS(endpoint_ref, env,
+            axis2_endpoint_ref_set_address(endpoint_ref, env,
                     AXIOM_ELEMENT_GET_TEXT(child_ele, env, child_node));
         }
         else if (axis2_addr_in_check_element(env, epr_ref_qn , child_qn))
@@ -668,7 +668,7 @@ axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
                 attr_value = AXIOM_ATTRIBUTE_GET_LOCALNAME(is_ref_param_attr, env);
                 if (AXIS2_STRCMP("true", attr_value) == 0)
                 {
-                    AXIS2_ENDPOINT_REF_ADD_REF_PARAM(to_epr, env, header_block_node);
+                    axis2_endpoint_ref_add_ref_param(to_epr, env, header_block_node);
                 }
             }
         }

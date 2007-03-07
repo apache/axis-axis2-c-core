@@ -249,13 +249,13 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                     axis2_endpoint_ref_t *fault_epr = axis2_msg_info_headers_get_fault_to(msg_info_headers, env);
                     if (fault_epr)
                     {
-                        const axis2_char_t *fault_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(fault_epr, env);
+                        const axis2_char_t *fault_address = axis2_endpoint_ref_get_address(fault_epr, env);
                         if (fault_address)
                         {
                             if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL, fault_address) != 0 &&
                                     AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, fault_address) != 0)
                             {
-                                AXIS2_ENDPOINT_REF_SET_ADDRESS(epr, env, fault_address);
+                                axis2_endpoint_ref_set_address(epr, env, fault_address);
                             }
                         }
                     }
@@ -265,7 +265,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
         if (epr)
         {
-            address = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
+            address = axis2_endpoint_ref_get_address(epr, env);
             if (address && AXIS2_STRCMP(address, "") != 0)
             {
                 axiom_node_t *to_header_block_node = NULL;
@@ -339,7 +339,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
          */
         /*if( epr)
         {
-            AXIS2_ENDPOINT_REF_FREE(epr, env);
+            axis2_endpoint_ref_free(epr, env);
             epr = NULL;
         }*/
 
@@ -555,7 +555,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
         addr_ns_obj = NULL;
     }
 
-    address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
+    address = axis2_endpoint_ref_get_address(endpoint_ref, env);
     if (address && AXIS2_STRCMP("", address) != 0)
     {
         axiom_node_t *hb_node = NULL;
@@ -590,7 +590,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
     axis2_addr_out_handler_add_to_header(env, endpoint_ref,
             &header_block_node, addr_ns);
 
-    ref_param_list = AXIS2_ENDPOINT_REF_GET_REF_PARAM_LIST(endpoint_ref, env);
+    ref_param_list = axis2_endpoint_ref_get_ref_param_list(endpoint_ref, env);
     if (ref_param_list && axis2_array_list_size(ref_param_list, env) > 0)
     {
         axiom_node_t *reference_node = NULL;
@@ -606,7 +606,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
                 addr_ns_obj,
                 &reference_node);
 
-        ref_attribute_list = AXIS2_ENDPOINT_REF_GET_REF_ATTRIBUTE_LIST(endpoint_ref, env);
+        ref_attribute_list = axis2_endpoint_ref_get_ref_attribute_list(endpoint_ref, env);
         if (ref_attribute_list)
         {
             int j = 0;
@@ -631,7 +631,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
 
     }
 
-    meta_data_list = AXIS2_ENDPOINT_REF_GET_METADATA_LIST(endpoint_ref, env);
+    meta_data_list = axis2_endpoint_ref_get_metadata_list(endpoint_ref, env);
     if (meta_data_list && axis2_array_list_size(meta_data_list, env) > 0)
     {
         axiom_node_t *reference_node = NULL;
@@ -650,7 +650,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
                     &reference_node);
         }
 
-        meta_attribute_list = AXIS2_ENDPOINT_REF_GET_META_ATTRIBUTE_LIST(endpoint_ref, env);
+        meta_attribute_list = axis2_endpoint_ref_get_metadata_attribute_list(endpoint_ref, env);
         if (meta_attribute_list)
         {
             int j = 0;
@@ -674,7 +674,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
         }
     }
 
-    extension_list = AXIS2_ENDPOINT_REF_GET_REF_EXTENSION_LIST(endpoint_ref, env);
+    extension_list = axis2_endpoint_ref_get_extension_list(endpoint_ref, env);
     if (extension_list && axis2_array_list_size(extension_list, env) > 0)
     {
         int i = 0;
@@ -712,7 +712,7 @@ axis2_addr_out_handler_add_to_header(const axis2_env_t *env,
     parent_node = *(parent_node_p);
 
 
-    interface_qname = AXIS2_ENDPOINT_REF_GET_INTERFACE_NAME(epr, env);
+    interface_qname = axis2_endpoint_ref_get_interface_qname(epr, env);
 
     if (interface_qname)
     {
@@ -760,7 +760,7 @@ axis2_addr_out_handler_add_to_header(const axis2_env_t *env,
 
     }
 
-    service_name = AXIS2_ENDPOINT_REF_GET_SVC_NAME(epr, env);
+    service_name = axis2_endpoint_ref_get_svc_name(epr, env);
     return AXIS2_SUCCESS;
 }
 

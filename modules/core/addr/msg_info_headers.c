@@ -122,7 +122,7 @@ axis2_msg_info_headers_set_to(
                                        we consider that to be a reset,
                                        so don't free */
     {
-        AXIS2_ENDPOINT_REF_FREE(msg_info_headers->to, env);
+        axis2_endpoint_ref_free(msg_info_headers->to, env);
         msg_info_headers->to = NULL;
     }
     msg_info_headers->to = to;
@@ -293,15 +293,15 @@ axis2_msg_info_headers_free(
 
     if (msg_info_headers->to)
     {
-        AXIS2_ENDPOINT_REF_FREE(msg_info_headers->to, env);
+        axis2_endpoint_ref_free(msg_info_headers->to, env);
     }
     if (msg_info_headers->from)
     {
-        AXIS2_ENDPOINT_REF_FREE(msg_info_headers->from, env);
+        axis2_endpoint_ref_free(msg_info_headers->from, env);
     }
     if (msg_info_headers->reply_to)
     {
-        AXIS2_ENDPOINT_REF_FREE(msg_info_headers->reply_to, env);
+        axis2_endpoint_ref_free(msg_info_headers->reply_to, env);
     }
     if (msg_info_headers->relates_to)
     {
@@ -310,7 +310,7 @@ axis2_msg_info_headers_free(
 
     if (msg_info_headers->fault_to)
     {
-        AXIS2_ENDPOINT_REF_FREE(msg_info_headers->fault_to, env);
+        axis2_endpoint_ref_free(msg_info_headers->fault_to, env);
     }
 
     if (msg_info_headers->ref_params)

@@ -137,7 +137,7 @@ int main(int argc, char** argv)
     }
     /*    if (endpoint_ref)
         {
-            AXIS2_ENDPOINT_REF_FREE(endpoint_ref, env);
+            axis2_endpoint_ref_free(endpoint_ref, env);
             endpoint_ref = NULL;
         }
     */

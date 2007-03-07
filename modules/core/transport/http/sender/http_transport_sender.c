@@ -406,7 +406,7 @@ axis2_http_transport_sender_invoke(
     {
         if (epr)
         {
-            AXIS2_ENDPOINT_REF_FREE(epr, env);
+            axis2_endpoint_ref_free(epr, env);
             epr = NULL;
         }
     }
