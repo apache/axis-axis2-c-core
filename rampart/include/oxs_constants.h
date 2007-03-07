@@ -328,12 +328,13 @@ extern "C"
 #define OXS_ENCODING_BASE64BINARY "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary"
 #define OXS_VALUE_X509V3 "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"
 #define OXS_X509_SUBJ_KI "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509SubjectKeyIdentifier"
+
 /****************************************************************
     ST References
 ****************************************************************/
 #define OXS_STR_DIRECT_REFERENCE "DirectReference"
-#define OXS_STR_KEY_IDENTIFIER "KeyIdentifier"
-#define OXS_STR_EMBEDDED "Embedded"
+#define OXS_STR_KEY_IDENTIFIER  OXS_NODE_KEY_IDENTIFIER
+#define OXS_STR_EMBEDDED        OXS_NODE_EMBEDDED
 #define OXS_STR_ISSUER_SERIAL "IssuerSerial"
 #define OXS_STR_THUMB_PRINT "ThumbPrint"
 #define OXS_STR_EXTERNAL_URI "ExternalUri"

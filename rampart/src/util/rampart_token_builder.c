@@ -56,7 +56,7 @@ rampart_token_build_security_token_reference(const axis2_env_t *env,
     }else if(RTBP_KEY_IDENTIFIER == pattern){
         status = rampart_token_build_key_identifier(env, stref_node, cert);
     }else if(RTBP_X509DATA_X509CERTIFICATE == pattern){
-        status = rampart_token_process_x509_data_x509_certificate(env, stref_node, cert);
+        status = rampart_token_build_x509_data_x509_certificate(env, stref_node, cert);
     }else if(RTBP_X509DATA_ISSUER_SERIAL == pattern){
         status = rampart_token_build_x509_data_issuer_serial(env, stref_node, cert);
     }else{
@@ -108,7 +108,7 @@ rampart_token_build_key_identifier(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_token_process_x509_data_x509_certificate(const axis2_env_t *env,
+rampart_token_build_x509_data_x509_certificate(const axis2_env_t *env,
     axiom_node_t *parent,
     oxs_x509_cert_t *cert)
 {

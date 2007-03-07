@@ -196,7 +196,7 @@ rampart_generate_time(const axis2_env_t *env, int ttl)
     axis2_char_t *dt_str = NULL;
 
     dt = axis2_date_time_create_with_offset(env, ttl);
-    dt_str =  axis2_date_time_seriasize_date_time(dt, env);
+    dt_str =  axis2_date_time_serialize_date_time(dt, env);
     axis2_date_time_free(dt, env);
     return dt_str;
 }

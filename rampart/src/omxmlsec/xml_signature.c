@@ -307,7 +307,7 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     /*At this point we have a complete <SignedInfo> node. Now we need to sign it*/
     oxs_xml_sig_sign_signed_info(env, signature_node, signed_info_node, sign_ctx); 
 
-    /*Now we need to build the KeyInfo node*/    
+    /*Now we need to build the KeyInfo node.*/    
     oxs_xml_sig_build_key_info(env, signature_node, sign_ctx);     
 
     return AXIS2_SUCCESS;
