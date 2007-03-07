@@ -120,26 +120,6 @@ extern "C"
     axis2_svc_name_free(struct axis2_svc_name *svc_name,
         const axis2_env_t *env);
 
-/** Gets qualified name. */
-#define AXIS2_SVC_NAME_GET_QNAME(svc_name, env) \
-      axis2_svc_name_get_qname(svc_name, env)
-
-/** Sets Qname. */
-#define AXIS2_SVC_NAME_SET_QNAME(svc_name, env, qname) \
-      axis2_svc_name_set_qname(svc_name, env, qname)
-
-/** Gets endpoint name. */
-#define AXIS2_SVC_NAME_GET_ENDPOINT_NAME(svc_name, env) \
-      axis2_svc_name_get_endpoint_name(svc_name, env)
-
-/** Sets endpoint name. */
-#define AXIS2_SVC_NAME_SET_ENDPOINT_NAME(svc_name, env, endpoint_name) \
-      axis2_svc_name_set_endpoint_name(svc_name, env, endpoint_name)
-
-/** Frees service name. */
-#define AXIS2_SVC_NAME_FREE(svc_name, env) \
-      axis2_svc_name_free(svc_name, env)
-
 /** @} */
 
 #ifdef __cplusplus
