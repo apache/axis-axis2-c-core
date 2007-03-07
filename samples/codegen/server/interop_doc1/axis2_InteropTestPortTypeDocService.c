@@ -76,7 +76,7 @@ axis2_echoDateResponse_t*axis2_InteropTestPortTypeDocService_echoDate(const axis
 
     echo_date = AXIS2_ECHODATE_GET_ARG_0_10(echo_in, env);
 
-    recieved_date_str = AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(echo_date, env);
+    recieved_date_str =  axis2_date_time_seriasize_date_time(echo_date, env);
     printf("echoing date %s\n", recieved_date_str);
 
     echo_out = axis2_echoDateResponse_create(env);

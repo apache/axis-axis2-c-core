@@ -217,56 +217,6 @@ extern "C"
     axis2_date_time_get_msec(axis2_date_time_t *date_time,
         const axis2_env_t *env);
 
-
-#define AXIS2_DATE_TIME_FREE(date_time, env) \
-        axis2_date_time_free (date_time, env)
-
-#define AXIS2_DATE_TIME_DESERIALIZE_TIME(date_time, env, time) \
-        axis2_date_time_deserialize_time (date_time, env, time)
-
-#define AXIS2_DATE_TIME_DESERIALIZE_DATE(date_time, env, date) \
-        axis2_date_time_deserialize_date (date_time, env, date_str)
-
-#define AXIS2_DATE_TIME_DESERIALIZE_DATE_TIME(date_time, env, date_time_str) \
-        axis2_date_time_deserialize_date_time(date_time, env, date_time_str)
-
-#define AXIS2_DATE_TIME_SET_DATE_TIME(date_time, env, \
-                           year, month, date, hour, min, second, milliseconds) \
-        axis2_date_time_set_date_time (date_time, env, \
-                           year, month, date, hour, min, second, milliseconds)
-
-#define AXIS2_DATE_TIME_SERIALIZE_TIME(date_time, env) \
-        axis2_date_time_serialize_time (date_time, env)
-
-#define AXIS2_DATE_TIME_SERIALIZE_DATE(date_time, env) \
-        axis2_date_time_serialize_date (date_time, env)
-
-#define AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(date_time, env) \
-        axis2_date_time_serialize_date_time (date_time, env)
-
-#define AXIS2_DATE_TIME_GET_YEAR(date_time, env) \
-        axis2_date_time_get_year(date_time, env)
-
-#define AXIS2_DATE_TIME_GET_MONTH(date_time, env) \
-        axis2_date_time_get_month(date_time, env)
-
-#define AXIS2_DATE_TIME_GET_DATE(date_time, env) \
-        axis2_date_time_get_date(date_time, env)
-
-#define AXIS2_DATE_TIME_GET_HOUR(date_time, env) \
-        axis2_date_time_get_hour(date_time, env)
-
-#define AXIS2_DATE_TIME_GET_MINUTE(date_time, env) \
-        axis2_date_time_get_minute(date_time, env)
-
-#define AXIS2_DATE_TIME_GET_SECOND(date_time, env) \
-        axis2_date_time_get_second(date_time, env)
-
-#define AXIS2_DATE_TIME_GET_MSEC(date_time, env) \
-        axis2_date_time_get_msec(date_time, env)
-
-    /** @} */
-
 #ifdef __cplusplus
 }
 #endif

@@ -196,8 +196,8 @@ rampart_generate_time(const axis2_env_t *env, int ttl)
     axis2_char_t *dt_str = NULL;
 
     dt = axis2_date_time_create_with_offset(env, ttl);
-    dt_str = AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(dt, env);
-    AXIS2_DATE_TIME_FREE(dt, env);
+    dt_str =  axis2_date_time_seriasize_date_time(dt, env);
+    axis2_date_time_free(dt, env);
     return dt_str;
 }
 
@@ -215,33 +215,33 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     dt1 = axis2_date_time_create(env);
     dt2 = axis2_date_time_create(env);
 
-    status = AXIS2_DATE_TIME_DESERIALIZE_DATE_TIME(dt1, env, dt1_str);
+    status =  axis2_date_time_deseriasize_date_TIME(dt1, env, dt1_str);
     if (status == AXIS2_FAILURE)
     {
         return AXIS2_FAILURE;
     }
 
-    yyyy1 = AXIS2_DATE_TIME_GET_YEAR(dt1, env);
-    mm1 = AXIS2_DATE_TIME_GET_MONTH(dt1, env);
-    dd1 = AXIS2_DATE_TIME_GET_DATE(dt1, env);
-    hh1 = AXIS2_DATE_TIME_GET_HOUR(dt1, env);
-    mi1 = AXIS2_DATE_TIME_GET_MINUTE(dt1, env);
-    ss1 = AXIS2_DATE_TIME_GET_SECOND(dt1, env);
-    ml1 = AXIS2_DATE_TIME_GET_MSEC(dt1, env);
+    yyyy1 =  axis2_date_time_get_year(dt1, env);
+    mm1 =  axis2_date_time_get_month(dt1, env);
+    dd1 =  axis2_date_time_get_date(dt1, env);
+    hh1 =   axis2_date_time_get_hour(dt1, env);
+    mi1 =  axis2_date_time_get_minute(dt1, env);
+    ss1 =  axis2_date_time_get_second(dt1, env);
+    ml1 =  axis2_date_time_get_msec(dt1, env);
 
-    status = AXIS2_DATE_TIME_DESERIALIZE_DATE_TIME(dt2, env, dt2_str);
+    status =  axis2_date_time_deseriasize_date_TIME(dt2, env, dt2_str);
     if (status == AXIS2_FAILURE)
     {
         return AXIS2_FAILURE;
     }
 
-    yyyy2 = AXIS2_DATE_TIME_GET_YEAR(dt2, env);
-    mm2 = AXIS2_DATE_TIME_GET_MONTH(dt2, env);
-    dd2 = AXIS2_DATE_TIME_GET_DATE(dt2, env);
-    hh2 = AXIS2_DATE_TIME_GET_HOUR(dt2, env);
-    mi2 = AXIS2_DATE_TIME_GET_MINUTE(dt2, env);
-    ss2 = AXIS2_DATE_TIME_GET_SECOND(dt2, env);
-    ml2 = AXIS2_DATE_TIME_GET_MSEC(dt2, env);
+    yyyy2 =  axis2_date_time_get_year(dt2, env);
+    mm2 =  axis2_date_time_get_month(dt2, env);
+    dd2 =  axis2_date_time_get_date(dt2, env);
+    hh2 =   axis2_date_time_get_hour(dt2, env);
+    mi2 =  axis2_date_time_get_minute(dt2, env);
+    ss2 =  axis2_date_time_get_second(dt2, env);
+    ml2 =  axis2_date_time_get_msec(dt2, env);
     /**
     Comparison.
     We expect dt1_str < dt2_str/ Otherwise FAILURE
@@ -308,8 +308,8 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
         return AXIS2_FAILURE;
     }
 
-    /*AXIS2_DATE_TIME_FREE(dt1, env);
-    AXIS2_DATE_TIME_FREE(dt2, env);*/
+    /*axis2_date_time_free(dt1, env);
+    axis2_date_time_free(dt2, env);*/
 
     return AXIS2_SUCCESS;
 }

@@ -52,12 +52,12 @@ axis2_rand_get_seed_value_based_on_time(
     const axis2_env_t *env)
 {
     axis2_date_time_t *date = axis2_date_time_create(env);
-    unsigned int rand_var = AXIS2_DATE_TIME_GET_YEAR(date, env);
-    rand_var += AXIS2_DATE_TIME_GET_MONTH(date, env);
-    rand_var += AXIS2_DATE_TIME_GET_DATE(date, env);
-    rand_var += AXIS2_DATE_TIME_GET_HOUR(date, env);
-    rand_var += AXIS2_DATE_TIME_GET_MINUTE(date, env);
-    rand_var += AXIS2_DATE_TIME_GET_SECOND(date, env);
+    unsigned int rand_var =  axis2_date_time_get_year(date, env);
+    rand_var +=  axis2_date_time_get_month(date, env);
+    rand_var +=  axis2_date_time_get_date(date, env);
+    rand_var +=   axis2_date_time_get_hour(date, env);
+    rand_var +=  axis2_date_time_get_minute(date, env);
+    rand_var +=  axis2_date_time_get_second(date, env);
     return rand_var;
 }
 

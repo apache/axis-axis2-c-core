@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 
     /* create the struct */
     echo_date = axis2_date_time_create(env); /* default to current date */
-    send_date_str = AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(echo_date, env);
+    send_date_str =  axis2_date_time_seriasize_date_time(echo_date, env);
     printf("sending date %s\n", send_date_str);
 
     /* create the input params using databinding */
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     /* return the output params using databinding */
     return_echo_date  = AXIS2_ECHODATERESPONSE_GET_ECHODATERETURN(echo_out, env);
 
-    return_date_str = AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(return_echo_date, env);
+    return_date_str =  axis2_date_time_seriasize_date_time(return_echo_date, env);
     printf("returned date %s\n", return_date_str);
 
     return 0;
