@@ -14,19 +14,10 @@
 #include <axis2_generic_obj.h>
 
 void
-axis2_http_sender_util_add_header (
-	const axis2_env_t *env,
-	axis2_http_simple_request_t *request,
-	axis2_char_t *header_name,
-	axis2_char_t *header_value);
-
-
-
-void
 axis2_http_sender_util_add_header (const axis2_env_t *env,
-								   axis2_http_simple_request_t *request,
-								   axis2_char_t *header_name,
-								   axis2_char_t *header_value)
+				   axis2_http_simple_request_t *request,
+				   axis2_char_t *header_name,
+				   const axis2_char_t *header_value)
 {
 	axis2_http_header_t *http_header;
     http_header = axis2_http_header_create(env, header_name, header_value);

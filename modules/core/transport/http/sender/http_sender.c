@@ -440,15 +440,14 @@ axis2_http_sender_send(
 		if ('\"' != *soap_action)
         {
             axis2_char_t *tmp_soap_action = NULL;
-            tmp_soap_action = AXIS2_MALLOC(env->allocator, (
-											   AXIS2_STRLEN(soap_action) + 5) * sizeof(axis2_char_t));
+            tmp_soap_action = AXIS2_MALLOC(env->allocator, (AXIS2_STRLEN(soap_action) + 5) * sizeof(axis2_char_t));
             sprintf(tmp_soap_action, "\"%s\"", soap_action);
 			axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_SOAP_ACTION, tmp_soap_action);
             AXIS2_FREE(env->allocator, tmp_soap_action);
         }
         else
         {
-			axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_SOAP_ACTION, soap_action);
+			axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_SOAP_ACTION, (const)soap_action);
         }
     }
 
@@ -472,9 +471,8 @@ axis2_http_sender_send(
 		}
 		else
 		{
-			axis2_http_sender_util_add_header (env, request, 
-											   AXIS2_HTTP_HEADER_TRANSFER_ENCODING, 
-											   AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
+			axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_TRANSFER_ENCODING, 
+					AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
 		}
     
 		if (is_soap)
