@@ -215,7 +215,7 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     dt1 = axis2_date_time_create(env);
     dt2 = axis2_date_time_create(env);
 
-    status =  axis2_date_time_deseriasize_date_TIME(dt1, env, dt1_str);
+    status =  axis2_date_time_deserialize_date_TIME(dt1, env, dt1_str);
     if (status == AXIS2_FAILURE)
     {
         return AXIS2_FAILURE;
@@ -229,7 +229,7 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     ss1 =  axis2_date_time_get_second(dt1, env);
     ml1 =  axis2_date_time_get_msec(dt1, env);
 
-    status =  axis2_date_time_deseriasize_date_TIME(dt2, env, dt2_str);
+    status =  axis2_date_time_deserialize_date_TIME(dt2, env, dt2_str);
     if (status == AXIS2_FAILURE)
     {
         return AXIS2_FAILURE;
