@@ -144,7 +144,7 @@ axis2_handler_get_name(
     if (!(AXIS2_INTF_TO_IMPL(handler)->handler_desc))
         return NULL;
 
-    return AXIS2_HANDLER_DESC_GET_NAME(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env);
+    return axis2_handler_desc_get_name(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env);
 }
 
 axis2_status_t AXIS2_CALL
@@ -168,7 +168,7 @@ axis2_handler_get_param(
     if (!(AXIS2_INTF_TO_IMPL(handler)->handler_desc))
         return NULL;
 
-    return AXIS2_HANDLER_DESC_GET_PARAM(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env, name);
+    return axis2_handler_desc_get_param(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env, name);
 }
 
 axis2_status_t AXIS2_CALL
@@ -179,7 +179,7 @@ axis2_handler_init(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(handler)->handler_desc = handler_desc;
-    AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler);
+    axis2_handler_desc_set_handler(handler_desc, env, handler);
 
     return AXIS2_SUCCESS;
 }

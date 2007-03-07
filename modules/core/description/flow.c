@@ -68,7 +68,7 @@ axis2_flow_free(axis2_flow_t *flow,
 
             handler_desc = 
 			    (axis2_handler_desc_t *) axis2_array_list_get(flow->list, env, i);
-            AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+            axis2_handler_desc_free(handler_desc, env);
         }
         axis2_array_list_free(flow->list, env);
     }

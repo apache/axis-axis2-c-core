@@ -1335,12 +1335,12 @@ axis2_dep_engine_add_module_flow_handlers(
         AXIS2_HANDLER_CREATE_FUNC handler_create_func = NULL;
 
         handlermd = axis2_flow_get_handler(flow, env, j);
-        handler_name = AXIS2_HANDLER_DESC_GET_NAME(handlermd, env);
+        handler_name = axis2_handler_desc_get_name(handlermd, env);
         handler_create_func = axis2_hash_get(handler_create_func_map,
                 axis2_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
         handler = handler_create_func(env, handler_name);
         AXIS2_HANDLER_INIT(handler, env, handlermd);
-        AXIS2_HANDLER_DESC_SET_HANDLER(handlermd, env, handler);
+        axis2_handler_desc_set_handler(handlermd, env, handler);
     }
     return AXIS2_SUCCESS;
 }
@@ -1369,7 +1369,7 @@ axis2_dep_engine_add_flow_handlers(
         axis2_param_t *impl_info_param = NULL;
 
         handlermd = axis2_flow_get_handler(flow, env, j);
-        handler_class_name = AXIS2_HANDLER_DESC_GET_CLASS_NAME(handlermd, env);
+        handler_class_name = axis2_handler_desc_get_class_name(handlermd, env);
         dll_desc = axis2_dll_desc_create(env);
         handler_dll_name =
             AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env,
@@ -1382,7 +1382,7 @@ axis2_dep_engine_add_flow_handlers(
         handler = (axis2_handler_t *) axis2_class_loader_create_dll(env,
                 impl_info_param);
         AXIS2_HANDLER_INIT(handler, env, handlermd);
-        AXIS2_HANDLER_DESC_SET_HANDLER(handlermd, env, handler);
+        axis2_handler_desc_set_handler(handlermd, env, handler);
     }
     return AXIS2_SUCCESS;
 }*/

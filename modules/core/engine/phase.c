@@ -429,7 +429,7 @@ _axis2_phase_get_before_after(
         return AXIS2_FAILURE;
     }
 
-    rules = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+    rules = axis2_handler_desc_get_rules(handler_desc, env);
     if (!rules)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -547,7 +547,7 @@ axis2_phase_add_handler_desc(
     }
     else
     {
-        rules = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+        rules = axis2_handler_desc_get_rules(handler_desc, env);
         if (!rules)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -565,7 +565,7 @@ axis2_phase_add_handler_desc(
                 return AXIS2_FAILURE;
             }
 
-            handler = AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env);
+            handler = axis2_handler_desc_get_handler(handler_desc, env);
             if (!handler)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -580,7 +580,7 @@ axis2_phase_add_handler_desc(
         }
         else if (first)
         {
-            handler = AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env);
+            handler = axis2_handler_desc_get_handler(handler_desc, env);
             if (!handler)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -590,7 +590,7 @@ axis2_phase_add_handler_desc(
         }
         else if (last)
         {
-            handler = AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env);
+            handler = axis2_handler_desc_get_handler(handler_desc, env);
             if (!handler)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -600,7 +600,7 @@ axis2_phase_add_handler_desc(
         }
         else
         {
-            handler = AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env);
+            handler = axis2_handler_desc_get_handler(handler_desc, env);
             if (!handler)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -633,7 +633,7 @@ _axis2_phase_is_valid_before(
         if (!handler_desc)
             return AXIS2_TRUE;
 
-        first_handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+        first_handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
 
         if (!first_handler_name)
             return AXIS2_TRUE;
@@ -642,7 +642,7 @@ _axis2_phase_is_valid_before(
         if (!handler_desc)
             return AXIS2_TRUE;
 
-        rules = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+        rules = axis2_handler_desc_get_rules(handler_desc, env);
         if (!rules)
             return AXIS2_TRUE;
 
@@ -680,7 +680,7 @@ _axis2_phase_is_valid_after(
         if (!handler_desc)
             return AXIS2_TRUE;
 
-        last_handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+        last_handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
 
         if (!last_handler_name)
             return AXIS2_TRUE;
@@ -689,7 +689,7 @@ _axis2_phase_is_valid_after(
         if (!handler_desc)
             return AXIS2_TRUE;
 
-        rules = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+        rules = axis2_handler_desc_get_rules(handler_desc, env);
         if (!rules)
             return AXIS2_TRUE;
 
@@ -730,7 +730,7 @@ axis2_phase_insert_before(
         return AXIS2_FAILURE;
     }
 
-    rules = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+    rules = axis2_handler_desc_get_rules(handler_desc, env);
     if (!rules)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -753,7 +753,7 @@ axis2_phase_insert_before(
             return AXIS2_FAILURE;
         }
 
-        handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+        handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
         if (!handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -781,7 +781,7 @@ axis2_phase_insert_before(
                 return AXIS2_FAILURE;
             }
 
-            handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+            handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
             if (!handler_name)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -824,7 +824,7 @@ axis2_phase_insert_after(
         return AXIS2_FAILURE;
     }
 
-    rules = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+    rules = axis2_handler_desc_get_rules(handler_desc, env);
     if (!rules)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -847,7 +847,7 @@ axis2_phase_insert_after(
             return AXIS2_FAILURE;
         }
 
-        handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+        handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
         if (!handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -874,7 +874,7 @@ axis2_phase_insert_after(
                 return AXIS2_FAILURE;
             }
 
-            handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+            handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
             if (!handler_name)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -930,7 +930,7 @@ axis2_phase_insert_before_and_after(
         return AXIS2_FAILURE;
     }
 
-    rules = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+    rules = axis2_handler_desc_get_rules(handler_desc, env);
     if (!rules)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -960,7 +960,7 @@ axis2_phase_insert_before_and_after(
             return AXIS2_FAILURE;
         }
 
-        before_handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+        before_handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
         if (!handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -977,7 +977,7 @@ axis2_phase_insert_before_and_after(
             return AXIS2_FAILURE;
         }
 
-        after_handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+        after_handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
         if (!handler_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -1021,7 +1021,7 @@ axis2_phase_insert_before_and_after(
                 return AXIS2_FAILURE;
             }
 
-            handler_name = axis2_string_get_buffer(AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env), env);
+            handler_name = axis2_string_get_buffer(axis2_handler_desc_get_name(handler_desc, env), env);
             if (!handler_name)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -1075,7 +1075,7 @@ axis2_phase_insert_handler_desc(
 
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
 
-    handler = AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env);
+    handler = axis2_handler_desc_get_handler(handler_desc, env);
 
     if (!handler)
     {

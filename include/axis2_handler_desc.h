@@ -248,58 +248,6 @@ extern "C"
     axis2_handler_desc_create(const axis2_env_t *env, 
         axis2_string_t *name);
 
-/** Gets handler associated with handler description. */
-#define AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env) \
-        axis2_handler_desc_get_handler(handler_desc, env)
-
-/** Sets handler associated with handler description. */
-#define AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler) \
-        axis2_handler_desc_set_handler(handler_desc, env, handler)
-
-/** Gets rules. */
-#define AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env) \
-        axis2_handler_desc_get_rules(handler_desc, env)
-
-/** Sets rules. */
-#define AXIS2_HANDLER_DESC_SET_RULES(handler_desc, env, rules) \
-        axis2_handler_desc_set_rules(handler_desc, env, rules)
-
-/** Gets QName. */
-#define AXIS2_HANDLER_DESC_GET_NAME(handler_desc, env) \
-        axis2_handler_desc_get_name(handler_desc, env)
-
-/** Sets QName. */
-#define AXIS2_HANDLER_DESC_SET_NAME(handler_desc, env, name) \
-        axis2_handler_desc_set_name(handler_desc, env, name)
-
-/** Gets parameter with given name. */
-#define AXIS2_HANDLER_DESC_GET_PARAM(handler_desc, env, name) \
-        axis2_handler_desc_get_param(handler_desc, env, name)
-
-/** Adds parameter to parameter list. */
-#define AXIS2_HANDLER_DESC_ADD_PARAM(handler_desc, env, param) \
-        axis2_handler_desc_add_param(handler_desc, env, param)
-
-/** Gets class name of handler. */
-#define AXIS2_HANDLER_DESC_GET_CLASS_NAME(handler_desc, env) \
-        axis2_handler_desc_get_class_name(handler_desc, env)
-
-/** Sets class name of handler. */
-#define AXIS2_HANDLER_DESC_SET_CLASS_NAME(handler_desc, env, class_name) \
-        axis2_handler_desc_set_class_name(handler_desc, env, class_name)
-
-/** Gets parent. */
-#define AXIS2_HANDLER_DESC_GET_PARENT(handler_desc, env) \
-        axis2_handler_desc_get_parent(handler_desc, env)
-
-/** Sets parent. */
-#define AXIS2_HANDLER_DESC_SET_PARENT(handler_desc, env, parent) \
-        axis2_handler_desc_set_parent(handler_desc, env, parent)
-
-/** Frees handler description. */
-#define AXIS2_HANDLER_DESC_FREE(handler_desc, env) \
-        axis2_handler_desc_free(handler_desc, env)
-
 /** @} */
 
 #ifdef __cplusplus

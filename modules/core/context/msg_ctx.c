@@ -1313,7 +1313,7 @@ axis2_msg_ctx_get_module_parameter(
         }
     }
 
-    param = AXIS2_HANDLER_DESC_GET_PARAM(handler_desc, env, key);
+    param = axis2_handler_desc_get_param(handler_desc, env, key);
 
     return param;
     */

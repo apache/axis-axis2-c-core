@@ -432,7 +432,7 @@ struct axis2_handler_desc *AXIS2_CALL
 
     if (!name_attrib)
     {
-        AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+        axis2_handler_desc_free(handler_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                 AXIS2_FAILURE);
         return NULL;
@@ -444,13 +444,13 @@ struct axis2_handler_desc *AXIS2_CALL
 
         value = AXIOM_ATTRIBUTE_GET_VALUE(name_attrib, env);
         handler_name = axis2_string_create(env, value);
-        status = AXIS2_HANDLER_DESC_SET_NAME(handler_desc, env, handler_name);
+        status = axis2_handler_desc_set_name(handler_desc, env, handler_name);
         if (handler_name)
             axis2_string_free(handler_name, env);
 
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+            axis2_handler_desc_free(handler_desc, env);
             return NULL;
         }
     }
@@ -464,7 +464,7 @@ struct axis2_handler_desc *AXIS2_CALL
 
     if (NULL == class_attrib)
     {
-        AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+        axis2_handler_desc_free(handler_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                 AXIS2_FAILURE);
         return NULL;
@@ -472,10 +472,10 @@ struct axis2_handler_desc *AXIS2_CALL
     else
     {
         attrib_value = AXIOM_ATTRIBUTE_GET_VALUE(class_attrib, env);
-        status = AXIS2_HANDLER_DESC_SET_CLASS_NAME(handler_desc, env, attrib_value);
+        status = axis2_handler_desc_set_class_name(handler_desc, env, attrib_value);
         /*if(AXIS2_FAILURE == status)
         {
-            AXIS2_HANDLER_DESC_FREE(handler, env);
+            axis2_handler_desc_free(handler, env);
             return NULL;
         }*/
     }
@@ -490,7 +490,7 @@ struct axis2_handler_desc *AXIS2_CALL
 
     if (NULL == order_element || NULL == order_node)
     {
-        AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+        axis2_handler_desc_free(handler_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
                 AXIS2_FAILURE);
         return NULL;
@@ -505,7 +505,7 @@ struct axis2_handler_desc *AXIS2_CALL
         order_itr = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(order_element, env);
         if (!order_itr)
         {
-            AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+            axis2_handler_desc_free(handler_desc, env);
             return NULL;
         }
 
@@ -529,33 +529,33 @@ struct axis2_handler_desc *AXIS2_CALL
             {
                 struct axis2_phase_rule *phase_rule = NULL;
 
-                phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+                phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
                 status = AXIS2_PHASE_RULE_SET_AFTER(phase_rule, env, value);
                 if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+                    axis2_handler_desc_free(handler_desc, env);
                     return NULL;
                 }
             }
             if (0 == AXIS2_STRCMP(AXIS2_BEFORE, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
-                phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+                phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
                 status = AXIS2_PHASE_RULE_SET_BEFORE(phase_rule, env, value);
                 if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+                    axis2_handler_desc_free(handler_desc, env);
                     return NULL;
                 }
             }
             if (0 == AXIS2_STRCMP(AXIS2_PHASE, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
-                phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+                phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
                 status = AXIS2_PHASE_RULE_SET_NAME(phase_rule, env, value);
                 if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+                    axis2_handler_desc_free(handler_desc, env);
                     return NULL;
                 }
             }
@@ -568,12 +568,12 @@ struct axis2_handler_desc *AXIS2_CALL
                 if (0 == AXIS2_STRCMP(bool_val, "true"))
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
-                    phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+                    phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
                     status = AXIS2_PHASE_RULE_SET_FIRST(phase_rule, env,
                             AXIS2_TRUE);
                     if (AXIS2_SUCCESS != status)
                     {
-                        AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+                        axis2_handler_desc_free(handler_desc, env);
                         AXIS2_FREE(env->allocator, bool_val);
                         return NULL;
                     }
@@ -581,12 +581,12 @@ struct axis2_handler_desc *AXIS2_CALL
                 else if (0 == AXIS2_STRCMP(bool_val, "false"))
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
-                    phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
+                    phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
                     status = AXIS2_PHASE_RULE_SET_FIRST(phase_rule, env,
                             AXIS2_FALSE);
                     if (AXIS2_SUCCESS != status)
                     {
-                        AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+                        axis2_handler_desc_free(handler_desc, env);
                         AXIS2_FREE(env->allocator, bool_val);
                         return NULL;
                     }
@@ -604,15 +604,15 @@ struct axis2_handler_desc *AXIS2_CALL
                 axis2_handler_desc_get_param_container(handler_desc, env), parent);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+            axis2_handler_desc_free(handler_desc, env);
             return NULL;
         }
     }
 
-    status = AXIS2_HANDLER_DESC_SET_PARENT(handler_desc, env, parent);
+    status = axis2_handler_desc_set_parent(handler_desc, env, parent);
     if (AXIS2_SUCCESS != status)
     {
-        AXIS2_HANDLER_DESC_FREE(handler_desc, env);
+        axis2_handler_desc_free(handler_desc, env);
         return NULL;
     }
 
