@@ -39,7 +39,7 @@
 #include <oxs_transforms_factory.h>
 #include <oxs_sign_ctx.h>
 #include <oxs_sign_part.h>
-
+#include <oxs_xml_signature.h>
 
 /*Public functions*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
