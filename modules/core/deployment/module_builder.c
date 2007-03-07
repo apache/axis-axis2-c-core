@@ -314,7 +314,7 @@ axis2_module_builder_populate_module(
         if (AXIS2_SUCCESS != status)
         {
             if (flow)
-                AXIS2_FLOW_FREE(flow, env);
+                axis2_flow_free(flow, env);
             return status;
         }
     }
@@ -336,7 +336,7 @@ axis2_module_builder_populate_module(
         status = AXIS2_MODULE_DESC_SET_OUT_FLOW(builder_impl->module_desc, env, flow);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_FLOW_FREE(flow, env);
+            axis2_flow_free(flow, env);
             return status;
         }
     }
@@ -358,7 +358,7 @@ axis2_module_builder_populate_module(
         status = AXIS2_MODULE_DESC_SET_FAULT_IN_FLOW(builder_impl->module_desc, env, flow);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_FLOW_FREE(flow, env);
+            axis2_flow_free(flow, env);
             return status;
         }
     }
@@ -381,7 +381,7 @@ axis2_module_builder_populate_module(
                 env, flow);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_FLOW_FREE(flow, env);
+            axis2_flow_free(flow, env);
             return status;
         }
     }

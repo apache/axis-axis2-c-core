@@ -381,10 +381,10 @@ axis2_desc_builder_process_flow(
 
         handler_desc = axis2_desc_builder_process_handler(desc_builder, env,
                 handler_node, parent);
-        status = AXIS2_FLOW_ADD_HANDLER(flow, env, handler_desc);
+        status = axis2_flow_add_handler(flow, env, handler_desc);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_FLOW_FREE(flow, env);
+            axis2_flow_free(flow, env);
             return NULL;
         }
     }

@@ -1325,7 +1325,7 @@ axis2_dep_engine_add_module_flow_handlers(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, flow, AXIS2_FAILURE);
 
-    count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+    count = axis2_flow_get_handler_count(flow, env);
 
     for (j = 0; j < count; j++)
     {
@@ -1334,7 +1334,7 @@ axis2_dep_engine_add_module_flow_handlers(
         const axis2_string_t *handler_name = NULL;
         AXIS2_HANDLER_CREATE_FUNC handler_create_func = NULL;
 
-        handlermd = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+        handlermd = axis2_flow_get_handler(flow, env, j);
         handler_name = AXIS2_HANDLER_DESC_GET_NAME(handlermd, env);
         handler_create_func = axis2_hash_get(handler_create_func_map,
                 axis2_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
@@ -1357,7 +1357,7 @@ axis2_dep_engine_add_flow_handlers(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, flow, AXIS2_FAILURE);
 
-    count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+    count = axis2_flow_get_handler_COUNT(flow, env);
 
     for (j = 0; j < count; j++)
     {
@@ -1368,7 +1368,7 @@ axis2_dep_engine_add_flow_handlers(
         axis2_dll_desc_t *dll_desc = NULL;
         axis2_param_t *impl_info_param = NULL;
 
-        handlermd = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+        handlermd = axis2_flow_get_handler(flow, env, j);
         handler_class_name = AXIS2_HANDLER_DESC_GET_CLASS_NAME(handlermd, env);
         dll_desc = axis2_dll_desc_create(env);
         handler_dll_name =

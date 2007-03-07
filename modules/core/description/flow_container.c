@@ -62,25 +62,25 @@ axis2_flow_container_free(
 
     if (flow_container->in)
     {
-        AXIS2_FLOW_FREE(flow_container->in, env);
+        axis2_flow_free(flow_container->in, env);
         flow_container->in = NULL;
     }
 
     if (flow_container->out)
     {
-        AXIS2_FLOW_FREE(flow_container->out, env);
+        axis2_flow_free(flow_container->out, env);
         flow_container->out = NULL;
     }
 
     if (flow_container->in_fault)
     {
-        AXIS2_FLOW_FREE(flow_container->in_fault, env);
+        axis2_flow_free(flow_container->in_fault, env);
         flow_container->in_fault = NULL;
     }
 
     if (flow_container->out_fault)
     {
-        AXIS2_FLOW_FREE(flow_container->out_fault, env);
+        axis2_flow_free(flow_container->out_fault, env);
         flow_container->out_fault = NULL;
     }
 
@@ -112,7 +112,7 @@ axis2_flow_container_set_in_flow(
 
     if (flow_container->in)
     {
-        AXIS2_FLOW_FREE(flow_container->in, env);
+        axis2_flow_free(flow_container->in, env);
         flow_container->in = NULL;
     }
     flow_container->in = in_flow;
@@ -138,7 +138,7 @@ axis2_flow_container_set_out_flow(
 
     if (flow_container->out)
     {
-        AXIS2_FLOW_FREE(flow_container->out, env);
+        axis2_flow_free(flow_container->out, env);
         flow_container->out = NULL;
     }
     flow_container->out = out_flow;
@@ -163,7 +163,7 @@ axis2_flow_container_set_fault_in_flow(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (flow_container->in_fault)
     {
-        AXIS2_FLOW_FREE(flow_container->in_fault, env);
+        axis2_flow_free(flow_container->in_fault, env);
         flow_container->in_fault = NULL;
     }
     flow_container->in_fault = falut_in_flow;
@@ -189,7 +189,7 @@ axis2_flow_container_set_fault_out_flow(
     AXIS2_PARAM_CHECK(env->error, fault_out_flow, AXIS2_FAILURE);
     if (flow_container->out_fault)
     {
-        AXIS2_FLOW_FREE(flow_container->out_fault, env);
+        axis2_flow_free(flow_container->out_fault, env);
         flow_container->out_fault = NULL;
     }
     flow_container->out_fault = fault_out_flow;

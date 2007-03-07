@@ -26,10 +26,6 @@
  * @{
  */
 
-/**
- * @file axis2_flow.h
- */
-
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -48,6 +44,13 @@ extern "C"
     /** Type name for struct axis2_flow */
     typedef struct axis2_flow axis2_flow_t;
 
+	/**
+     * Creates flow struct.
+     * @param env pointer to environment struct
+     * @return pointer to newly created flow
+     */
+    AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
+    axis2_flow_create (const axis2_env_t *env);
 
     /** 
      * Frees flow struct.
@@ -94,14 +97,6 @@ extern "C"
         const axis2_env_t *env);
 
     /**
-     * Creates flow struct.
-     * @param env pointer to environment struct
-     * @return pointer to newly created flow
-     */
-    AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-    axis2_flow_create (const axis2_env_t *env);
-
-    /**
      * Frees flow passed as void pointer. This method would cast the void 
      * pointer to appropriate type and then call free method.
      * @param flow pointer to flow
@@ -111,22 +106,6 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_flow_free_void_arg (void *flow,
         const axis2_env_t *env);
-
-
-/** Frees flow. */
-#define AXIS2_FLOW_FREE(flow, env) axis2_flow_free (flow, env)
-
-/** Adds handler. */
-#define AXIS2_FLOW_ADD_HANDLER(flow, env, handler) \
-      axis2_flow_add_handler (flow, env, handler)
-
-/** Gets handler at given index. */
-#define AXIS2_FLOW_GET_HANDLER(flow, env, index) \
-      axis2_flow_get_handler (flow, env, index)
-
-/** Gets handler count. */
-#define AXIS2_FLOW_GET_HANDLER_COUNT(flow, env) \
-      axis2_flow_get_handler_count (flow, env)
 
 /** @} */
 

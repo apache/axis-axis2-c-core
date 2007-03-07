@@ -93,13 +93,13 @@ axis2_transport_in_desc_free(
 
     if (transport_in->in_flow)
     {
-        AXIS2_FLOW_FREE(transport_in->in_flow, env);
+        axis2_flow_free(transport_in->in_flow, env);
         transport_in->in_flow = NULL;
     }
 
     if (transport_in->fault_in_flow)
     {
-        AXIS2_FLOW_FREE(transport_in->fault_in_flow, env);
+        axis2_flow_free(transport_in->fault_in_flow, env);
         transport_in->fault_in_flow = NULL;
     }
 
@@ -174,7 +174,7 @@ axis2_transport_in_desc_set_in_flow(
 
     if (transport_in->in_flow)
     {
-        AXIS2_FLOW_FREE(transport_in->in_flow, env);
+        axis2_flow_free(transport_in->in_flow, env);
         transport_in->in_flow = NULL;
     }
     transport_in->in_flow = in_flow;
@@ -200,7 +200,7 @@ axis2_transport_in_desc_set_fault_in_flow(
 
     if (transport_in->fault_in_flow)
     {
-        AXIS2_FLOW_FREE(transport_in->fault_in_flow, env);
+        axis2_flow_free(transport_in->fault_in_flow, env);
         transport_in->fault_in_flow = NULL;
     }
     transport_in->fault_in_flow = fault_in_flow;

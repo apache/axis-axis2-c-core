@@ -406,7 +406,7 @@ axis2_phase_resolver_build_execution_chains(
         {
             int j = 0;
             int count = 0;
-            count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+            count = axis2_flow_get_handler_count(flow, env);
             if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
             {
                 return AXIS2_ERROR_GET_STATUS_CODE(env->error);
@@ -419,7 +419,7 @@ axis2_phase_resolver_build_execution_chains(
                 const axis2_char_t *phase_name = NULL;
                 axis2_phase_rule_t *phase_rule = NULL;
 
-                metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+                metadata = axis2_flow_get_handler(flow, env, j);
                 phase_rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
                 phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
                 if (NULL == phase_name)
@@ -509,7 +509,7 @@ axis2_phase_resolver_build_execution_chains(
     {
         int j = 0;
         int count = 0;
-        count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+        count = axis2_flow_get_handler_count(flow, env);
 
         if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
@@ -526,7 +526,7 @@ axis2_phase_resolver_build_execution_chains(
             const axis2_char_t *phase_name = NULL;
             axis2_phase_rule_t *phase_rule = NULL;
 
-            metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+            metadata = axis2_flow_get_handler(flow, env, j);
             phase_rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
             if (phase_rule)
             {
@@ -772,14 +772,14 @@ axis2_phase_resolver_build_in_transport_chains(
             axis2_phase_holder_t *phase_holder = NULL;
             int size = 0;
 
-            size = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+            size = axis2_flow_get_handler_count(flow, env);
             handlers = axis2_array_list_create(env, 0);
             for (j = 0; j < size; j++)
             {
                 axis2_handler_desc_t *metadata = NULL;
                 axis2_phase_rule_t *rule = NULL;
 
-                metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+                metadata = axis2_flow_get_handler(flow, env, j);
                 rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
                 if (rule)
                 {
@@ -903,7 +903,7 @@ axis2_phase_resolver_build_out_transport_chains(
             axis2_phase_holder_t *phase_holder = NULL;
             int hndlr_count = 0;
             int j = 0;
-            hndlr_count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+            hndlr_count = axis2_flow_get_handler_count(flow, env);
             if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
             {
                 return AXIS2_ERROR_GET_STATUS_CODE(env->error);
@@ -915,7 +915,7 @@ axis2_phase_resolver_build_out_transport_chains(
                 axis2_handler_desc_t *metadata = NULL;
                 axis2_phase_rule_t *rule = NULL;
 
-                metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+                metadata = axis2_flow_get_handler(flow, env, j);
 
 
                 rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
@@ -1219,14 +1219,14 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
             {
                 int handler_count = 0;
 
-                handler_count  = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+                handler_count  = axis2_flow_get_handler_count(flow, env);
                 for (j = 0; j < handler_count; j++)
                 {
                     axis2_handler_desc_t *metadata = NULL;
                     const axis2_char_t *phase_name = NULL;
                     axis2_phase_rule_t *phase_rule = NULL;
 
-                    metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+                    metadata = axis2_flow_get_handler(flow, env, j);
                     phase_rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
                     if (phase_rule)
                     {
@@ -1364,13 +1364,13 @@ axis2_phase_resolver_engage_to_global_chain(
         if (flow)
         {
             int j = 0;
-            for (j = 0; j < AXIS2_FLOW_GET_HANDLER_COUNT(flow, env); j++)
+            for (j = 0; j < axis2_flow_get_handler_count(flow, env); j++)
             {
                 axis2_handler_desc_t *metadata = NULL;
                 const axis2_char_t *phase_name = NULL;
                 axis2_phase_rule_t *phase_rule = NULL;
 
-                metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+                metadata = axis2_flow_get_handler(flow, env, j);
                 phase_rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
                 if (phase_rule)
                 {
@@ -1571,7 +1571,7 @@ axis2_phase_resolver_engage_module_to_op(
             int j = 0;
             int handler_count = 0;
 
-            handler_count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+            handler_count = axis2_flow_get_handler_count(flow, env);
             for (j = 0; j < handler_count; j++)
             {
                 axis2_handler_desc_t *metadata = NULL;
@@ -1579,7 +1579,7 @@ axis2_phase_resolver_engage_module_to_op(
                 axis2_phase_rule_t *phase_rule = NULL;
                 axis2_status_t status = AXIS2_FAILURE;
 
-                metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
+                metadata = axis2_flow_get_handler(flow, env, j);
                 phase_rule = AXIS2_HANDLER_DESC_GET_RULES(metadata, env);
                 phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
                 if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&

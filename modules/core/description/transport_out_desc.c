@@ -87,13 +87,13 @@ axis2_transport_out_desc_free(
 
     if (transport_out->out_flow)
     {
-        AXIS2_FLOW_FREE(transport_out->out_flow, env);
+        axis2_flow_free(transport_out->out_flow, env);
         transport_out->out_flow = NULL;
     }
 
     if (transport_out->fault_out_flow)
     {
-        AXIS2_FLOW_FREE(transport_out->fault_out_flow, env);
+        axis2_flow_free(transport_out->fault_out_flow, env);
         transport_out->fault_out_flow = NULL;
     }
 
@@ -167,7 +167,7 @@ axis2_transport_out_desc_set_out_flow(
 
     if (transport_out->out_flow)
     {
-        AXIS2_FLOW_FREE(transport_out->out_flow, env);
+        axis2_flow_free(transport_out->out_flow, env);
         transport_out->out_flow = NULL;
     }
     transport_out->out_flow = out_flow;
@@ -193,7 +193,7 @@ axis2_transport_out_desc_set_fault_out_flow(
 
     if (transport_out->fault_out_flow)
     {
-        AXIS2_FLOW_FREE(transport_out->fault_out_flow, env);
+        axis2_flow_free(transport_out->fault_out_flow, env);
         transport_out->fault_out_flow = NULL;
     }
     transport_out->fault_out_flow = fault_out_flow;
