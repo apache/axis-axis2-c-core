@@ -272,6 +272,13 @@ extern "C"
             axiom_soap_envelope_t *soap_envelope,
             axis2_array_list_t *nodes_to_encrypt);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_get_nodes_to_sign(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axiom_soap_envelope_t *soap_envelope,
+            axis2_array_list_t *nodes_to_sign);
+    
     AXIS2_EXTERN rp_property_t *AXIS2_CALL 
     rampart_context_get_token(
             rampart_context_t *rampart_context,
@@ -291,6 +298,16 @@ extern "C"
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rampart_context_get_enc_asym_algo(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+            
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_asym_sig_algo(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_digest_mtd(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 

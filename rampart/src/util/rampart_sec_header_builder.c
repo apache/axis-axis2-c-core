@@ -148,9 +148,10 @@ rampart_shb_build_message(const axis2_env_t *env,
             status = rampart_enc_encrypt_message(env, msg_ctx,rampart_context,soap_envelope,sec_node);
             if(!status)            
                 return AXIS2_FAILURE;       
-
-
+            
             /*Then do signature specific things*/
+            /*status = rampart_sig_sign_message(env,msg_ctx,rampart_context,soap_envelope,sec_node);*/
+
             /*Then Handle Supporting token stuff  */
         }  
         else
