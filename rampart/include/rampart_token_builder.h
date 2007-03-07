@@ -63,9 +63,14 @@ rampart_token_build_key_identifier(const axis2_env_t *env,
     oxs_x509_cert_t *cert);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_token_build_x509_data(const axis2_env_t *env,
+rampart_token_process_x509_data_x509_certificate(const axis2_env_t *env,
     axiom_node_t *parent,
     oxs_x509_cert_t *cert);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_token_build_x509_data_issuer_serial(const axis2_env_t *env,
+     axiom_node_t *parent,
+         oxs_x509_cert_t *cert);
 /* @} */
 #ifdef __cplusplus
 }

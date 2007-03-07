@@ -35,6 +35,7 @@
 #include <oxs_token_security_token_reference.h>
 #include <oxs_token_binary_security_token.h>
 #include <oxs_token_embedded.h>
+#include <oxs_token_key_identifier.h>
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_token_build_security_token_reference(const axis2_env_t *env,
@@ -91,14 +92,31 @@ rampart_token_build_key_identifier(const axis2_env_t *env,
     axiom_node_t *parent,
     oxs_x509_cert_t *cert)
 {
-  
+    axiom_node_t *ki_node = NULL;
+    axis2_char_t *ki =  NULL;
+
+    ki = oxs_x509_cert_get_key_identifier(cert, env);
+    if(!ki){
+        return AXIS2_FAILURE;
+    }
+    ki_node = oxs_token_build_key_identifier_element(env, parent, OXS_ENCODING_BASE64BINARY,
+                                OXS_X509_SUBJ_KI, ki);
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_token_build_x509_data(const axis2_env_t *env,
+rampart_token_process_x509_data_x509_certificate(const axis2_env_t *env,
     axiom_node_t *parent,
     oxs_x509_cert_t *cert)
 {
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_token_build_x509_data_issuer_serial(const axis2_env_t *env,
+     axiom_node_t *parent,
+     oxs_x509_cert_t *cert)
+{
+    return AXIS2_SUCCESS;
+
 }
