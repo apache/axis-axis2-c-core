@@ -710,6 +710,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\..\include\axis2_http_sender.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\include\axis2_http_server.h"
 				>
 			</File>
