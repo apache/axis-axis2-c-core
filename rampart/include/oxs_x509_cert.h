@@ -261,7 +261,13 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_x509_cert_set_public_key(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env,
     openssl_pkey_t *public_key);
-
+/**
+ * Copy contents of a certificate to another
+ * @param x509_cert the X509 certificate, the source
+ * @param env pointer to environment struct
+ * @param to, another x509 certificate, the target
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_x509_cert_copy_to(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env,

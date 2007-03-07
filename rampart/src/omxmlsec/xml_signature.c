@@ -332,9 +332,7 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
     oxs_sign_part_set_id(sign_part, env, ref_id);
 
     /*Remove the # from the id*/ 
-    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] XXX1 node= %s ", axiom_node_to_string(scope_node, env) );
     ref_id2 =  axis2_string_substring_starting_at(axis2_strdup(ref_id, env), 1);
-    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] XXX2 node= %s ", axiom_node_to_string(scope_node, env) );
 
     /*Find the node refered by this ref_id2 and set to the sign part*/
     reffed_node = oxs_axiom_get_node_by_id(env, scope_node, "wsu:Id", ref_id2 );

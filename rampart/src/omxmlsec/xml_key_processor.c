@@ -140,8 +140,6 @@ oxs_xml_key_process_X509Certificate(const axis2_env_t *env,
     return status;
 }
 
-
-
 AXIS2_EXTERN  axis2_status_t AXIS2_CALL
 oxs_xml_key_process_X509Data(const axis2_env_t *env,
     axiom_node_t *X509_data_node,
