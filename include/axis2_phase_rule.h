@@ -193,58 +193,6 @@ extern "C"
     axis2_phase_rule_create(const axis2_env_t *env,
         const axis2_char_t *name);
 
-/** Gets name of the handler before which the handler associated with this rule 
-    is to be placed. */
-#define AXIS2_PHASE_RULE_GET_BEFORE(phase_rule, env) \
-      axis2_phase_rule_get_before(phase_rule, env)
-
-/** Sets name of the handler before which the handler associated with this rule 
-    is to be placed. */
-#define AXIS2_PHASE_RULE_SET_BEFORE(phase_rule, env, before) \
-      axis2_phase_rule_set_before(phase_rule, env, before)
-
-/** Gets name of the handler after which the handler associated with this rule 
-    is to be placed. */
-#define AXIS2_PHASE_RULE_GET_AFTER(phase_rule, env) \
-      axis2_phase_rule_get_after(phase_rule, env)
-
-/** Sets name of the handler after which the handler associated with this rule 
-    is to be placed. */
-#define AXIS2_PHASE_RULE_SET_AFTER(phase_rule, env, after) \
-      axis2_phase_rule_set_after(phase_rule, env, after)
-
-/** Gets name. */
-#define AXIS2_PHASE_RULE_GET_NAME(phase_rule, env) \
-      axis2_phase_rule_get_name(phase_rule, env)
-
-/** Sets name. */
-#define AXIS2_PHASE_RULE_SET_NAME(phase_rule, env, name)\
-      axis2_phase_rule_set_name(phase_rule, env, name)
-
-/** Checks if the associated handler is the first in phase. */
-#define AXIS2_PHASE_RULE_IS_FIRST(phase_rule, env) \
-      axis2_phase_rule_is_first(phase_rule, env)
-
-/** Sets the associated handler to be the first in phase. */
-#define AXIS2_PHASE_RULE_SET_FIRST(phase_rule, env, first) \
-      axis2_phase_rule_set_first(phase_rule, env, first)
-
-/** Checks if the associated handler is the last in phase. */
-#define AXIS2_PHASE_RULE_IS_LAST(phase_rule, env) \
-      axis2_phase_rule_is_last(phase_rule, env)
-
-/** Sets the associated handler to be the last in phase. */
-#define AXIS2_PHASE_RULE_SET_LAST(phase_rule, env, last) \
-      axis2_phase_rule_set_last(phase_rule, env, last)
-
-/** Frees phase rule. */
-#define AXIS2_PHASE_RULE_FREE(phase_rule, env) \
-      axis2_phase_rule_free(phase_rule, env)
-
-/** Clones given phase rule. */
-#define AXIS2_PHASE_RULE_CLONE(phase_rule, env) \
-      axis2_phase_rule_clone(phase_rule, env)
-
 /** @} */
 
 #ifdef __cplusplus

@@ -187,7 +187,7 @@ axis2_phase_holder_add_handler(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, handler, AXIS2_FAILURE);
 
-    phase_name = AXIS2_PHASE_RULE_GET_NAME(
+    phase_name = axis2_phase_rule_get_name(
                 axis2_handler_desc_get_rules(handler, env), env);
     if (AXIS2_TRUE == axis2_phase_holder_is_phase_exist(phase_holder, env,
             phase_name))

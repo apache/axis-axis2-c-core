@@ -530,7 +530,7 @@ struct axis2_handler_desc *AXIS2_CALL
                 struct axis2_phase_rule *phase_rule = NULL;
 
                 phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
-                status = AXIS2_PHASE_RULE_SET_AFTER(phase_rule, env, value);
+                status = axis2_phase_rule_set_after(phase_rule, env, value);
                 if (AXIS2_SUCCESS != status)
                 {
                     axis2_handler_desc_free(handler_desc, env);
@@ -541,7 +541,7 @@ struct axis2_handler_desc *AXIS2_CALL
             {
                 struct axis2_phase_rule *phase_rule = NULL;
                 phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
-                status = AXIS2_PHASE_RULE_SET_BEFORE(phase_rule, env, value);
+                status = axis2_phase_rule_set_before(phase_rule, env, value);
                 if (AXIS2_SUCCESS != status)
                 {
                     axis2_handler_desc_free(handler_desc, env);
@@ -552,7 +552,7 @@ struct axis2_handler_desc *AXIS2_CALL
             {
                 struct axis2_phase_rule *phase_rule = NULL;
                 phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
-                status = AXIS2_PHASE_RULE_SET_NAME(phase_rule, env, value);
+                status = axis2_phase_rule_set_name(phase_rule, env, value);
                 if (AXIS2_SUCCESS != status)
                 {
                     axis2_handler_desc_free(handler_desc, env);
@@ -569,7 +569,7 @@ struct axis2_handler_desc *AXIS2_CALL
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
                     phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
-                    status = AXIS2_PHASE_RULE_SET_FIRST(phase_rule, env,
+                    status = axis2_phase_rule_set_first(phase_rule, env,
                             AXIS2_TRUE);
                     if (AXIS2_SUCCESS != status)
                     {
@@ -582,7 +582,7 @@ struct axis2_handler_desc *AXIS2_CALL
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
                     phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
-                    status = AXIS2_PHASE_RULE_SET_FIRST(phase_rule, env,
+                    status = axis2_phase_rule_set_first(phase_rule, env,
                             AXIS2_FALSE);
                     if (AXIS2_SUCCESS != status)
                     {

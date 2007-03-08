@@ -421,7 +421,7 @@ axis2_phase_resolver_build_execution_chains(
 
                 metadata = axis2_flow_get_handler(flow, env, j);
                 phase_rule = axis2_handler_desc_get_rules(metadata, env);
-                phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
+                phase_name = axis2_phase_rule_get_name(phase_rule, env);
                 if (NULL == phase_name)
                 {
                     return AXIS2_FAILURE;
@@ -530,7 +530,7 @@ axis2_phase_resolver_build_execution_chains(
             phase_rule = axis2_handler_desc_get_rules(metadata, env);
             if (phase_rule)
             {
-                phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
+                phase_name = axis2_phase_rule_get_name(phase_rule, env);
             }
 
             /* TODO change this in proper way */
@@ -783,7 +783,7 @@ axis2_phase_resolver_build_in_transport_chains(
                 rule = axis2_handler_desc_get_rules(metadata, env);
                 if (rule)
                 {
-                    status = AXIS2_PHASE_RULE_SET_NAME(rule, env,
+                    status = axis2_phase_rule_set_name(rule, env,
                             AXIS2_TRANSPORT_PHASE);
                 }
                 if (AXIS2_SUCCESS != status)
@@ -921,7 +921,7 @@ axis2_phase_resolver_build_out_transport_chains(
                 rule = axis2_handler_desc_get_rules(metadata, env);
                 if (rule)
                 {
-                    status = AXIS2_PHASE_RULE_SET_NAME(rule, env,
+                    status = axis2_phase_rule_set_name(rule, env,
                             AXIS2_TRANSPORT_PHASE);
                 }
                 if (AXIS2_SUCCESS != status)
@@ -1230,7 +1230,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
                     phase_rule = axis2_handler_desc_get_rules(metadata, env);
                     if (phase_rule)
                     {
-                        phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
+                        phase_name = axis2_phase_rule_get_name(phase_rule, env);
                     }
                     if (!phase_name)
                     {
@@ -1374,7 +1374,7 @@ axis2_phase_resolver_engage_to_global_chain(
                 phase_rule = axis2_handler_desc_get_rules(metadata, env);
                 if (phase_rule)
                 {
-                    phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
+                    phase_name = axis2_phase_rule_get_name(phase_rule, env);
                 }
                 if (!phase_name)
                 {
@@ -1581,7 +1581,7 @@ axis2_phase_resolver_engage_module_to_op(
 
                 metadata = axis2_flow_get_handler(flow, env, j);
                 phase_rule = axis2_handler_desc_get_rules(metadata, env);
-                phase_name = AXIS2_PHASE_RULE_GET_NAME(phase_rule, env);
+                phase_name = axis2_phase_rule_get_name(phase_rule, env);
                 if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
                         (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
                         (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&

@@ -436,8 +436,8 @@ _axis2_phase_get_before_after(
         return AXIS2_FAILURE;
     }
 
-    before = AXIS2_PHASE_RULE_GET_BEFORE(rules, env);
-    after = AXIS2_PHASE_RULE_GET_AFTER(rules, env);
+    before = axis2_phase_rule_get_before(rules, env);
+    after = axis2_phase_rule_get_after(rules, env);
 
     if (before && after)
     {
@@ -554,8 +554,8 @@ axis2_phase_add_handler_desc(
             return AXIS2_FAILURE;
         }
 
-        first = AXIS2_PHASE_RULE_IS_FIRST(rules, env);
-        last = AXIS2_PHASE_RULE_IS_LAST(rules, env);
+        first = axis2_phase_rule_is_first(rules, env);
+        last = axis2_phase_rule_is_last(rules, env);
 
         if (first && last)
         {
@@ -646,7 +646,7 @@ _axis2_phase_is_valid_before(
         if (!rules)
             return AXIS2_TRUE;
 
-        before = AXIS2_PHASE_RULE_GET_BEFORE(rules, env);
+        before = axis2_phase_rule_get_before(rules, env);
         if (!before)
             return AXIS2_TRUE;
 
@@ -693,7 +693,7 @@ _axis2_phase_is_valid_after(
         if (!rules)
             return AXIS2_TRUE;
 
-        after = AXIS2_PHASE_RULE_GET_AFTER(rules, env);
+        after = axis2_phase_rule_get_after(rules, env);
         if (!after)
             return AXIS2_TRUE;
 
@@ -737,7 +737,7 @@ axis2_phase_insert_before(
         return AXIS2_FAILURE;
     }
 
-    before = AXIS2_PHASE_RULE_GET_BEFORE(rules, env);
+    before = axis2_phase_rule_get_before(rules, env);
     if (!before)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -831,7 +831,7 @@ axis2_phase_insert_after(
         return AXIS2_FAILURE;
     }
 
-    after = AXIS2_PHASE_RULE_GET_AFTER(rules, env);
+    after = axis2_phase_rule_get_after(rules, env);
     if (!after)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
@@ -937,14 +937,14 @@ axis2_phase_insert_before_and_after(
         return AXIS2_FAILURE;
     }
 
-    before_name = AXIS2_PHASE_RULE_GET_BEFORE(rules, env);
+    before_name = axis2_phase_rule_get_before(rules, env);
     if (!before_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
-    after_name = AXIS2_PHASE_RULE_GET_AFTER(rules, env);
+    after_name = axis2_phase_rule_get_after(rules, env);
     if (!after_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);

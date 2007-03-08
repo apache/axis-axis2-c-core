@@ -36,8 +36,7 @@ struct axis2_phase_rule
 };
 
 AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
-axis2_phase_rule_create(
-    const axis2_env_t *env,
+axis2_phase_rule_create(const axis2_env_t *env,
     const axis2_char_t *name)
 {
     axis2_phase_rule_t *phase_rule = NULL;
@@ -67,18 +66,14 @@ axis2_phase_rule_create(
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_phase_rule_get_before(
-    const axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_get_before(const axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env)
-
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return phase_rule->before;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_phase_rule_set_before(
-    axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_set_before(axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env,
     const axis2_char_t *before)
 {
@@ -87,7 +82,6 @@ axis2_phase_rule_set_before(
     if (phase_rule->before)
     {
         AXIS2_FREE(env->allocator, phase_rule->before);
-        phase_rule->before = NULL;
     }
 
     if (before)
@@ -105,17 +99,14 @@ axis2_phase_rule_set_before(
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_phase_rule_get_after(
-    const axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_get_after(const axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return phase_rule->after;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_phase_rule_set_after(
-    axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_set_after(axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env,
     const axis2_char_t *after)
 {
@@ -124,7 +115,6 @@ axis2_phase_rule_set_after(
     if (phase_rule->after)
     {
         AXIS2_FREE(env->allocator, phase_rule->after);
-        phase_rule->after = NULL;
     }
 
     if (after)
@@ -142,17 +132,14 @@ axis2_phase_rule_set_after(
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_phase_rule_get_name(
-    const axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_get_name(const axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return phase_rule->name;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_phase_rule_set_name(
-    axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_set_name(axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env,
     const axis2_char_t *name)
 {
@@ -161,7 +148,6 @@ axis2_phase_rule_set_name(
     if (phase_rule->name)
     {
         AXIS2_FREE(env->allocator, phase_rule->name);
-        phase_rule->name = NULL;
     }
 
     if (name)
@@ -176,12 +162,10 @@ axis2_phase_rule_set_name(
     }
 
     return AXIS2_SUCCESS;
-
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_phase_rule_is_first(
-    const axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_is_first(const axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -189,8 +173,7 @@ axis2_phase_rule_is_first(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_phase_rule_set_first(
-    axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_set_first(axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env,
     axis2_bool_t first)
 {
@@ -200,8 +183,7 @@ axis2_phase_rule_set_first(
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_phase_rule_is_last(
-    const axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_is_last(const axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -209,8 +191,7 @@ axis2_phase_rule_is_last(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_phase_rule_set_last(
-    axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_set_last(axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env,
     axis2_bool_t last)
 {
@@ -219,10 +200,8 @@ axis2_phase_rule_set_last(
     return AXIS2_SUCCESS;
 }
 
-
 axis2_status_t AXIS2_CALL
-axis2_phase_rule_free(
-    axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_free(axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -230,30 +209,25 @@ axis2_phase_rule_free(
     if (phase_rule->before)
     {
         AXIS2_FREE(env->allocator, phase_rule->before);
-        phase_rule->before = NULL;
     }
 
     if (phase_rule->after)
     {
         AXIS2_FREE(env->allocator, phase_rule->after);
-        phase_rule->after = NULL;
     }
 
     if (phase_rule->name)
     {
         AXIS2_FREE(env->allocator, phase_rule->name);
-        phase_rule->name = NULL;
     }
 
     AXIS2_FREE(env->allocator, phase_rule);
-    phase_rule = NULL;
 
     return AXIS2_SUCCESS;
 }
 
 axis2_phase_rule_t *AXIS2_CALL
-axis2_phase_rule_clone(
-    axis2_phase_rule_t *phase_rule,
+axis2_phase_rule_clone(axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env)
 {
     axis2_phase_rule_t *phase_rule_new = NULL;
@@ -263,20 +237,22 @@ axis2_phase_rule_clone(
     if (!phase_rule_new)
         return NULL;
 
-    AXIS2_PHASE_RULE_SET_BEFORE(phase_rule_new, env,
-            AXIS2_PHASE_RULE_GET_BEFORE(phase_rule, env));
+    axis2_phase_rule_set_before(phase_rule_new, env,
+        axis2_phase_rule_get_before(phase_rule, env));
 
-    AXIS2_PHASE_RULE_SET_AFTER(phase_rule_new, env,
-            AXIS2_PHASE_RULE_GET_AFTER(phase_rule, env));
+    axis2_phase_rule_set_after(phase_rule_new, env,
+        axis2_phase_rule_get_after(phase_rule, env));
 
-    AXIS2_PHASE_RULE_SET_NAME(phase_rule_new, env,
-            AXIS2_PHASE_RULE_GET_NAME(phase_rule, env));
+    axis2_phase_rule_set_name(phase_rule_new, env,
+        axis2_phase_rule_get_name(phase_rule, env));
 
-    AXIS2_PHASE_RULE_SET_FIRST(phase_rule_new, env,
-            AXIS2_PHASE_RULE_IS_FIRST(phase_rule, env));
+    axis2_phase_rule_set_first(phase_rule_new, env,
+        axis2_phase_rule_is_first(phase_rule, env));
 
-    AXIS2_PHASE_RULE_SET_LAST(phase_rule_new, env,
-            AXIS2_PHASE_RULE_IS_LAST(phase_rule, env));
+    axis2_phase_rule_set_last(phase_rule_new, env,
+        axis2_phase_rule_is_last(phase_rule, env));
 
     return phase_rule_new;
 }
+
+

@@ -127,12 +127,12 @@ axis2_handler_desc_set_rules(axis2_handler_desc_t *handler_desc,
 
     if (handler_desc->rules)
     {
-        AXIS2_PHASE_RULE_FREE(handler_desc->rules, env);
+        axis2_phase_rule_free(handler_desc->rules, env);
     }
 
     if (phase_rule)
     {
-        handler_desc->rules = AXIS2_PHASE_RULE_CLONE(phase_rule, env);
+        handler_desc->rules = axis2_phase_rule_clone(phase_rule, env);
         if (!(handler_desc->rules))
         {
             return AXIS2_FAILURE;
@@ -291,7 +291,7 @@ axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
 
     if (handler_desc->rules)
     {
-        AXIS2_PHASE_RULE_FREE(handler_desc->rules, env);
+        axis2_phase_rule_free(handler_desc->rules, env);
     }
 
     if (handler_desc->handler)
