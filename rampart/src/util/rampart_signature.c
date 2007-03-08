@@ -65,6 +65,8 @@ rampart_sig_sign_message(const axis2_env_t *env,
     openssl_pkey_t *prvkey = NULL;
     rampart_callback_t *password_callback = NULL;
     password_callback_fn password_function = NULL;
+    axiom_node_t *sig_node = NULL;
+
     void *param = NULL;
     void *key_buf = NULL;
     int i = 0;
@@ -209,7 +211,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
     /*All the things are ready for signing.
     So lets try signing*/
 
-    status = oxs_xml_sig_sign(env, sign_ctx,sec_node);
+    status = oxs_xml_sig_sign(env, sign_ctx,sec_node, &sig_node);
     if(status!=AXIS2_FAILURE)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_signature] Message signing failed.");

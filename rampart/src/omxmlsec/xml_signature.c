@@ -48,6 +48,8 @@
 /*Private functions*/
 
 /*parent is ds:Signature*/
+#if 0
+NOTE: We do not build KeyInfo on the fly. Let the user to create it using the Key Info Builder in OXS
 static axis2_status_t
 oxs_xml_sig_build_key_info(const axis2_env_t *env,
     axiom_node_t *parent,
@@ -80,6 +82,7 @@ oxs_xml_sig_build_key_info(const axis2_env_t *env,
 
     return AXIS2_SUCCESS;
 }
+#endif 
 
 /*This method is common for both signing and verification*/
 static axis2_char_t *
@@ -266,7 +269,8 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 oxs_xml_sig_sign(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx,
-    axiom_node_t *parent)
+    axiom_node_t *parent,
+    axiom_node_t **sig_node)
 {
     axiom_node_t *signed_info_node = NULL;
     axiom_node_t *signature_node = NULL;
@@ -308,8 +312,9 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     oxs_xml_sig_sign_signed_info(env, signature_node, signed_info_node, sign_ctx); 
 
     /*Now we need to build the KeyInfo node.*/    
-    oxs_xml_sig_build_key_info(env, signature_node, sign_ctx);     
-
+    /*oxs_xml_sig_build_key_info(env, signature_node, sign_ctx);     */
+    
+    *sig_node = signature_node;
     return AXIS2_SUCCESS;
 }
 

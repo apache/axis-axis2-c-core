@@ -35,6 +35,8 @@
 #include <oxs_sign_ctx.h>
 #include <oxs_sign_part.h>
 #include <oxs_xml_key_processor.h>
+#include <oxs_xml_key_info_builder.h>
+
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 load_sample_xml(const axis2_env_t *env,
         axiom_node_t* tmpl,
@@ -111,6 +113,8 @@ axis2_status_t sign(axis2_env_t *env,
     axis2_array_list_add(sign_parts, env, sign_part);
     sign_ctx = oxs_sign_ctx_create(env);
     if(sign_ctx){
+        axiom_node_t *sig_node = NULL;
+
         oxs_sign_ctx_set_private_key(sign_ctx, env, prvkey);
         oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
         /*Set sig algo*/
@@ -122,7 +126,10 @@ axis2_status_t sign(axis2_env_t *env,
         /*Set the operation*/
         oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_SIGN);
         /*Sign*/
-        oxs_xml_sig_sign(env, sign_ctx, tmpl);
+        oxs_xml_sig_sign(env, sign_ctx, tmpl, &sig_node);
+
+        /*Optional. Build KeyInfo*/
+        oxs_xml_key_info_build(env, sig_node, cert, OXS_KIBP_X509DATA_X509CERTIFICATE);
     }else{
         printf("Sign ctx creation failed");
     }

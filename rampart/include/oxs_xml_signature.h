@@ -43,7 +43,8 @@ extern "C"
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_sign(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx,
-    axiom_node_t *parent);
+    axiom_node_t *parent,
+    axiom_node_t **sig_node);
 
 
 

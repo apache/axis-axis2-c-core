@@ -96,10 +96,10 @@ oxs_xml_key_info_build_x509_data_issuer_serial(const axis2_env_t *env,
     issuer = oxs_x509_cert_get_issuer(cert, env);
     serial = oxs_x509_cert_get_serial_number(cert, env);
 
-    if(!issuer){
+    if(!issuer || (serial_num <0)){
         return AXIS2_FAILURE;
     }
-
+    serial_num = AXIS2_MALLOC(env->allocator, 10);
     sprintf(serial_num, "%d", serial);
     /*Build tokens*/
     x509_data_node = oxs_token_build_x509_data_element(env, parent);

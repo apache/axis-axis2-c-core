@@ -20,7 +20,7 @@
 
 
 /**
-  * @file oxs_xml_key_processor.h
+  * @file oxs_xml_key_info_builder.h
   * @brief Process elements available under ds:KeyInfo  
   */
 
