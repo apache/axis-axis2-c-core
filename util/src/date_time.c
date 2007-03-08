@@ -41,21 +41,19 @@ axis2_date_time_create_with_offset(const axis2_env_t *env, int offset)
     time_t t;
     struct tm* utc_time = NULL;
     /*struct tm* utc_time_ret = NULL;*/
-
     AXIS2_ENV_CHECK(env, NULL);
 
     date_time = (axis2_date_time_t *) AXIS2_MALLOC(env->
             allocator, sizeof(axis2_date_time_t));
 
-    if (NULL == date_time)
+    if (!date_time)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
     t = time(NULL) + offset;
-    /*Temporary fixed the segmentation fault. JIRA AXIS2C-302 */
-    /*utc_time_ret = (struct tm *)axis2_gmtime_r(&t, utc_time);*/
+
     utc_time = gmtime(&t);
 
     date_time->year = utc_time->tm_year;
@@ -88,9 +86,7 @@ axis2_date_time_free(axis2_date_time_t *date_time,
     if (date_time)
     {
         AXIS2_FREE(env->allocator, date_time);
-        date_time = NULL;
     }
-
     return AXIS2_SUCCESS;
 }
 
@@ -100,7 +96,6 @@ axis2_date_time_deserialize_time(axis2_date_time_t *date_time,
         const axis2_char_t* time_str)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     sscanf(time_str, "%d:%d:%d:%dZ" , &date_time->hour, &date_time->min,
             &date_time->sec, &date_time->msec);
     return AXIS2_SUCCESS;
@@ -181,6 +176,7 @@ axis2_date_time_serialize_date(axis2_date_time_t *date_time,
             date_time->day);
     return date_str;
 }
+
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_date_time_serialize_date_time(axis2_date_time_t *date_time,
         const axis2_env_t *env)
@@ -201,7 +197,6 @@ axis2_date_time_get_year(axis2_date_time_t *date_time,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return (date_time->year + 1900);
 }
 
@@ -209,8 +204,6 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_date_time_get_month(axis2_date_time_t *date_time,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return (date_time->mon);
 }
 
@@ -218,8 +211,6 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_date_time_get_date(axis2_date_time_t *date_time,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return (date_time->day);
 }
 
@@ -227,8 +218,6 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_date_time_get_hour(axis2_date_time_t *date_time,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return (date_time->hour);
 }
 
@@ -236,8 +225,6 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_date_time_get_minute(axis2_date_time_t *date_time,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return (date_time->min);
 }
 
@@ -245,8 +232,6 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_date_time_get_second(axis2_date_time_t *date_time,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return (date_time->sec);
 }
 
@@ -254,8 +239,6 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_date_time_get_msec(axis2_date_time_t *date_time,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return (date_time->msec);
 }
 
