@@ -99,9 +99,9 @@ int main(int argc, char** argv)
     if (!svc_client)
     {
         printf("Error creating service client\n");
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+        /*AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axis2_error_get_message(env->error));*/
     }
 
     /* Set service client options */
@@ -124,9 +124,9 @@ int main(int argc, char** argv)
     }
     else
     {
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+        /*AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axis2_error_get_message(env->error));*/
         printf("echo client invoke FAILED!\n");
     }
 
