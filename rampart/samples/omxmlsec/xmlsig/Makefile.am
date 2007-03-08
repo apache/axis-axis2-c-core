@@ -3,7 +3,7 @@ prgbin_PROGRAMS = sign
 
 sign_SOURCES =  sign.c
 
-INCLUDES = -I../../../include \
+INCLUDES = -I $(AXIS2C_HOME)/include \
             -I ../../../include \
             -I ../../../util/include \
             -I ../../../axiom/include
