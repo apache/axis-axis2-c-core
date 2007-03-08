@@ -1331,6 +1331,36 @@ rampart_context_check_whether_to_encrypt(
     return AXIS2_TRUE;
 }        
 
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+rampart_context_check_whether_to_sign(
+    rampart_context_t *rampart_context,
+    const axis2_env_t *env)
+{
+    rp_signed_encrypted_parts_t *signed_parts = NULL;    
+    axis2_array_list_t *parts = NULL;
+
+    signed_parts = rp_secpolicy_get_signed_parts(rampart_context->secpolicy,env);
+    if(!signed_parts)
+        return AXIS2_FALSE;
+    
+    parts = rp_signed_encrypted_parts_get_headers(signed_parts,env);
+    if(!parts || (axis2_array_list_size(parts,env)==0))
+    {
+        if(rp_signed_encrypted_parts_get_body(signed_parts,env))
+            return AXIS2_TRUE;       
+        
+        else
+        {
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_context]No Signed parts specified Nothing to Verify");
+            return AXIS2_FALSE;
+        }
+    }
+    return AXIS2_TRUE;
+}        
+
+
+
 AXIS2_EXTERN rp_property_t *AXIS2_CALL 
 rampart_context_get_token(
         rampart_context_t *rampart_context,

@@ -333,6 +333,11 @@ extern "C"
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rampart_context_check_whether_to_sign(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+    
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rampart_context_set_user_from_file(
             rampart_context_t *rampart_context,

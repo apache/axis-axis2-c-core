@@ -43,6 +43,11 @@
 #include <axis2_utils.h>
 #include <axis2_array_list.h>
 #include <axis2_key_type.h>
+#include <rampart_token_processor.h>
+#include <oxs_sign_ctx.h>
+#include <oxs_xml_signature.h>
+#include <oxs_token_signature_method.h>
+#include <oxs_token_digest_method.h>
 
 /*Private functions*/
 static axis2_bool_t 
@@ -78,7 +83,7 @@ rampart_shp_validate_qnames(const axis2_env_t *env,
         qname = axis2_qname_create(env,local_name,OXS_ENC_NS,OXS_XENC);
 
     else if(AXIS2_STRCMP(local_name,OXS_NODE_SIGNATURE)==0)
-        return AXIS2_FALSE;
+        qname = axis2_qname_create(env,local_name,OXS_DSIG_NS,OXS_DS);
 
     else if(AXIS2_STRCMP(local_name,OXS_NODE_BINARY_SECURITY_TOKEN)==0)
         return AXIS2_FALSE;
@@ -429,6 +434,269 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
 
     return AXIS2_SUCCESS;    
 }
+
+
+static axis2_status_t 
+rampart_shp_process_signature(const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    rampart_context_t *rampart_context,
+    axiom_soap_envelope_t *soap_envelope,
+    axiom_node_t *sec_node,
+    axiom_node_t *sig_node)
+{
+
+    oxs_sign_ctx_t *sign_ctx = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_char_t *digest_mtd_pol = NULL;
+    axis2_char_t *sig_mtd_pol = NULL;
+    axiom_node_t *sign_info_node = NULL;
+    axiom_node_t *cur_node = NULL;    
+    rp_property_t *token = NULL;
+    axis2_bool_t server_side = AXIS2_FALSE;
+    axis2_char_t *eki = NULL;
+    int token_type = 0;
+    axiom_node_t *key_info_node = NULL;    
+    axiom_node_t *str_node = NULL;
+    axiom_node_t *str_child_node = NULL;        
+    axis2_char_t *str_child_name = NULL;
+    oxs_x509_cert_t *cert = NULL;
+    axiom_node_t *key_info_child_node = NULL;
+    axiom_node_t *envelope_node = NULL;
+    server_side = axis2_msg_ctx_get_server_side(msg_ctx,env);
+    sig_mtd_pol = rampart_context_get_asym_sig_algo(rampart_context,env);
+    digest_mtd_pol = rampart_context_get_digest_mtd(rampart_context,env);
+
+    if(!sig_mtd_pol || !digest_mtd_pol)
+    {
+        AXIS2_LOG_INFO(env->log,"[rampart][shp] Error in policy. Specifying signature algorithms.");
+        return AXIS2_FAILURE;  
+    }    
+    
+    sign_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
+                            OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
+
+    if(!sign_info_node)
+    {
+        AXIS2_LOG_INFO(env->log,"[rampart][shp] Sign info cannot be found.Verifycation failed");
+        return AXIS2_FAILURE;
+    }
+
+    cur_node = AXIOM_NODE_GET_FIRST_CHILD(sign_info_node, env);
+    while(cur_node)
+    {
+        axis2_char_t *localname =  NULL;
+        localname  = axiom_util_get_localname(cur_node, env);
+        if(axis2_strcmp(localname, OXS_NODE_SIGNATURE_METHOD)==0)
+        {
+            /*Verify the signature method with policy*/
+            axis2_char_t *sig_mtd = NULL;
+            sig_mtd = oxs_token_get_signature_method(env, cur_node);
+            if(sig_mtd)
+            {
+                if(axis2_strcmp(sig_mtd_pol,sig_mtd)!=0)
+                {
+                    AXIS2_LOG_INFO(env->log,"[rampart][shp] Signature method in the message mismatch with policy.");
+                    return AXIS2_FAILURE;
+                }
+            }
+            else return AXIS2_FAILURE;
+        }
+        else if(axis2_strcmp(localname, OXS_NODE_REFERENCE)==0)
+        {
+            /*Verify each digest method with policy*/    
+            axiom_node_t *digest_mtd_node = NULL;
+            axis2_char_t *digest_mtd = NULL;
+            digest_mtd_node  = oxs_axiom_get_first_child_node_by_name(env,cur_node,
+                           OXS_NODE_DIGEST_METHOD, OXS_DSIG_NS, OXS_DS);
+            if(digest_mtd_node)
+            {
+                digest_mtd = oxs_token_get_digest_method(env, digest_mtd_node);
+                if(digest_mtd)
+                {
+                    if(axis2_strcmp(digest_mtd_pol,digest_mtd)!=0)
+                    {
+                        AXIS2_LOG_INFO(env->log,"[rampart][shp]Digest method is mismatch with policy.");
+                        return AXIS2_FAILURE;                        
+                    }
+                }
+                else return AXIS2_FAILURE;
+            }
+            else return AXIS2_FAILURE;                        
+        }
+        else
+        {
+            /*we do not need to process at this moment*/
+        }
+        cur_node = AXIOM_NODE_GET_NEXT_SIBLING(cur_node, env);
+    }
+
+    /*Get the key identifiers and build the certificate*/
+    /*First we should verify with policy*/
+
+    token = rampart_context_get_token(rampart_context,env,AXIS2_FALSE,server_side);
+
+    if(!token)
+    {
+        AXIS2_LOG_INFO(env->log,"[rampart][shp] Signature Token is not specified");
+        return AXIS2_SUCCESS;
+    }
+    token_type = rp_property_get_type(token,env);
+    if(token_type != RP_TOKEN_X509)
+    {
+        AXIS2_LOG_INFO(env->log,"[rampart][shp] We still only support X509 tokens");
+        return AXIS2_SUCCESS;
+    }
+    if(rampart_context_check_is_derived_keys(env,token))
+    {
+        AXIS2_LOG_INFO(env->log,"[rampart][shp] We still do not support derived keys");
+        return AXIS2_FAILURE;
+    }
+    eki = rampart_context_get_enc_key_identifier(rampart_context,token,server_side,env);
+    if(!eki)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][shp] No way of gettting the token.");
+        return AXIS2_FAILURE;
+    }
+    key_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
+                            OXS_NODE_KEY_INFO,OXS_DSIG_NS, OXS_DS );
+    if(!key_info_node)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][shp]Verify failed. Key Info node is not in the message.");
+        return AXIS2_FAILURE;
+    }
+    str_node = oxs_axiom_get_first_child_node_by_name(env,key_info_node,
+                            OXS_NODE_SECURITY_TOKEN_REFRENCE,OXS_WSSE_XMLNS,OXS_WSSE);
+
+    if(str_node)
+    {
+        str_child_node = AXIOM_NODE_GET_FIRST_CHILD(str_node,env);
+        if(str_child_node)
+        {
+            str_child_name = axiom_util_get_localname(str_child_node, env);
+            if(str_child_name)
+            {
+                if(0 == axis2_strcmp(str_child_name,OXS_NODE_EMBEDDED))
+                {
+                    if(axis2_strcmp(eki,RAMPART_STR_EMBEDDED)!=0)
+                    {
+                        AXIS2_LOG_INFO(env->log,"[Rampart][shp]Key Reference Info is mismatch with policy");
+                        return AXIS2_FAILURE;
+                    }
+                }
+                else if(0 == axis2_strcmp(str_child_name,OXS_NODE_KEY_IDENTIFIER))
+                {
+                    if(axis2_strcmp(eki,RAMPART_STR_KEY_IDENTIFIER)!=0)
+                    {
+                        AXIS2_LOG_INFO(env->log,"[Rampart][shp]Key Reference Info is mismatch with policy");
+                        return AXIS2_FAILURE;
+                    }
+                }
+                else if(0 == axis2_strcmp(str_child_name,OXS_NODE_X509_DATA))
+                {
+                    if(axis2_strcmp(eki,RAMPART_STR_ISSUER_SERIAL)!=0)
+                    {
+                        AXIS2_LOG_INFO(env->log,"[Rampart][shp]Key Reference Info is mismatch with policy");
+                        return AXIS2_FAILURE;
+                    }
+                }
+                else if(0 != axis2_strcmp(str_child_name,OXS_NODE_REFERENCE))
+                {
+                    AXIS2_LOG_INFO(env->log,"[Rampart][shp]Unknown key reference element inside Security Token Reference");
+                    return AXIS2_FAILURE;
+                }
+                status = rampart_token_process_security_token_reference(env,str_node,sec_node,cert);
+                if(status!=AXIS2_SUCCESS || !cert)
+                {
+                    AXIS2_LOG_INFO(env->log,"[Rampart][shp]Cannot load the message to verify the message.");
+                    return AXIS2_FAILURE;
+                }
+            }
+            else
+            {
+                AXIS2_LOG_INFO(env->log,"[Rampart][shp]Cannot get the key Reference Type from the message.");
+                return AXIS2_FAILURE;
+            }
+        }
+        else
+        {
+            AXIS2_LOG_INFO(env->log,"[Rampart][shp]No Child node in the Security Token Reference Element .");
+            return AXIS2_FAILURE;
+        }
+    }
+    /*So there may be scenarios where there is no Security Token Reference Element.*/
+    else
+    {
+        /*In such case policy support only Isssuer Serial scenario.*/
+        if(axis2_strcmp(eki,RAMPART_STR_ISSUER_SERIAL)==0)
+        {
+            key_info_child_node = AXIOM_NODE_GET_FIRST_CHILD(key_info_node,env);
+            if(key_info_child_node)
+            {
+                axis2_char_t *key_info_child_name = NULL;
+                key_info_child_name = axiom_util_get_localname(key_info_child_node, env);
+                if(key_info_child_name)
+                {
+                    if(0 == axis2_strcmp(key_info_child_name,OXS_NODE_X509_DATA))
+                    {
+                        status = rampart_token_process_x509_data(env,key_info_child_node,cert);
+                        if(status!=AXIS2_SUCCESS || !cert)
+                        {
+                            AXIS2_LOG_INFO(env->log,"[Rampart][shp]Cannot load the message to verify the message.");
+                            return AXIS2_FAILURE;
+                        }
+                    }
+                    else
+                    {
+                        AXIS2_LOG_INFO(env->log,"[Rampart][shp]Cannot get the key Reference Type from the message.");
+                        return AXIS2_FAILURE;
+                    }
+                }
+                else
+                {
+                    AXIS2_LOG_INFO(env->log,"[Rampart][shp]Cannot get the key Reference Type from the message.");
+                    return AXIS2_FAILURE;
+                }                        
+            }
+            else
+            {
+                AXIS2_LOG_INFO(env->log,"[Rampart][shp]Cannot get the key Reference Type from the message.");
+                return AXIS2_FAILURE;
+            }                        
+        }
+        else
+        {
+            AXIS2_LOG_INFO(env->log,"[Rampart][shp]Can't be used as a direct child of Key Info");
+            return AXIS2_FAILURE;
+        }
+    }
+    sign_ctx = oxs_sign_ctx_create(env);
+    if(!sign_ctx)
+    {
+        AXIS2_LOG_INFO(env->log,"[Rampart][shp]Sign context creation failed. Out of Memeory.");
+        return AXIS2_FAILURE;
+    }    
+    /*Set the required values in sig_ctx*/
+    oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_VERIFY);
+    oxs_sign_ctx_set_certificate(sign_ctx, env, cert);
+       
+    envelope_node = axiom_soap_envelope_get_base_node(soap_envelope,env);
+    if(!envelope_node)
+    {
+        AXIS2_LOG_INFO(env->log,"[Rampart][shp]Cannot get the node from envelope.");
+        return AXIS2_FAILURE;
+    }
+ 
+    /*Verify the signature*/
+    status = oxs_xml_sig_verify(env, sign_ctx, sig_node,envelope_node);
+    if(status!=AXIS2_SUCCESS)
+    {
+        AXIS2_LOG_INFO(env->log,"[Rampart][shp]Signature Verification failed.");
+        return AXIS2_FAILURE;
+    }
+
+    return status;
+}
+
 /*
 #ifdef PRE_CHECK    
 static axis2_status_t 
@@ -590,7 +858,36 @@ rampart_shp_process_message(const axis2_env_t *env,
     {
         if(rampart_context_is_encrypt_before_sign(rampart_context,env))
         {
-            /*First we should verify signature, When  signature is supported.*/
+            /*First we should verify signature.*/
+            if(rampart_context_check_whether_to_sign(rampart_context,env))
+            {
+                cur_node = oxs_axiom_get_node_by_local_name(env,sec_node,OXS_NODE_SIGNATURE);
+                if(!cur_node)
+                {
+                    AXIS2_LOG_INFO(env->log, "[rampart][shp] No Signature element");
+                    return AXIS2_FAILURE;
+                }
+                if(!rampart_shp_validate_qnames(env,cur_node))             
+                {
+                    AXIS2_LOG_INFO(env->log, "[rampart][shp] Error in the security header");
+                    return AXIS2_FAILURE;
+                }                   
+                AXIS2_LOG_INFO(env->log, "[rampart][shp] Processing Signature element.");
+                status = rampart_shp_process_signature(env,msg_ctx,rampart_context,soap_envelope,sec_node,cur_node);
+                if(status!=AXIS2_SUCCESS)
+                    return status;
+            }
+            else
+            {
+                cur_node = oxs_axiom_get_node_by_local_name(env,sec_node,OXS_NODE_SIGNATURE);
+                if(cur_node)
+                {
+                    AXIS2_LOG_INFO(env->log, "[rampart][shp] policy does not specify signature.");
+                    return AXIS2_FAILURE;
+                }
+                else
+                    status = AXIS2_SUCCESS;
+            }
 
             /*This verification is a quick hack.This should be cganged in the future
               with a proper verification method before message processing */
@@ -623,7 +920,6 @@ rampart_shp_process_message(const axis2_env_t *env,
                 else
                     status = AXIS2_SUCCESS;
             }
-            
         }
         else 
         {
@@ -658,7 +954,37 @@ rampart_shp_process_message(const axis2_env_t *env,
                 else
                     status = AXIS2_SUCCESS;;
             }
+                            
             /*After decrypting we may verify signature stuff.*/
+            if(rampart_context_check_whether_to_sign(rampart_context,env))
+            {
+                cur_node = oxs_axiom_get_node_by_local_name(env,sec_node,OXS_NODE_SIGNATURE);
+                if(!cur_node)
+                {
+                    AXIS2_LOG_INFO(env->log, "[rampart][shp] No Signature element");
+                    return AXIS2_FAILURE;
+                }
+                if(!rampart_shp_validate_qnames(env,cur_node))
+                {
+                    AXIS2_LOG_INFO(env->log, "[rampart][shp] Error in the security header");
+                    return AXIS2_FAILURE;
+                }
+                AXIS2_LOG_INFO(env->log, "[rampart][shp] Processing Signature element.");
+                status = rampart_shp_process_signature(env,msg_ctx,rampart_context,soap_envelope,sec_node,cur_node);
+                if(status!=AXIS2_SUCCESS)
+                    return status;
+            }
+            else
+            {
+                cur_node = oxs_axiom_get_node_by_local_name(env,sec_node,OXS_NODE_SIGNATURE);
+                if(cur_node)
+                {
+                    AXIS2_LOG_INFO(env->log, "[rampart][shp] policy does not specify signature.");
+                    return AXIS2_FAILURE;
+                }
+                else
+                    status = AXIS2_SUCCESS;
+            }
         }
         /*Now we can process timestamp*/   
         status = rampart_shp_process_timestamptoken(env,msg_ctx,rampart_context,sec_node);
