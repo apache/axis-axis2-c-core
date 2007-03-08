@@ -348,7 +348,7 @@ axis2_mep_client_infer_transport(
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_conf_t *conf = NULL;
         axis2_transport_out_desc_t *transport_out_desc = NULL;
-		AXIS2_TRANSPORT_ENUMS transport_enum;
+		AXIS2_TRANSPORT_ENUMS transport_enum = 0;
         
 		if (!axis2_strcmp(transport, "http"))
 		{
