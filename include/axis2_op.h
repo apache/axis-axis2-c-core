@@ -36,10 +36,6 @@
  * @{
  */
 
-/**
- * @file axis2_op.h
- */
-
 #include <axis2_param_container.h>
 #include <axis2_svc.h>
 #include <axis2_msg_recv.h>
@@ -74,6 +70,16 @@ extern "C"
 
 /** SOAP action string constant */
 #define AXIS2_SOAP_ACTION "soapAction"
+
+    
+    /**
+     * Creates operation struct.
+     * @param env pointer to environment struct
+     * @return pointer to newly created operation
+     */
+    AXIS2_EXTERN axis2_op_t *AXIS2_CALL
+    axis2_op_create(const axis2_env_t *env);
+
 
     /**
      * Frees operation.
@@ -475,7 +481,7 @@ extern "C"
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
     axis2_op_find_existing_op_ctx(axis2_op_t *op,
         const axis2_env_t *env,
-        struct axis2_msg_ctx *msg_ctx);
+        const struct axis2_msg_ctx *msg_ctx);
 
     /**
      * Registers given operation context against this operation. Registration
@@ -555,14 +561,6 @@ extern "C"
     AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
     axis2_op_get_param_container(const axis2_op_t *op,
         const axis2_env_t *env);
-
-    /**
-     * Creates operation struct.
-     * @param env pointer to environment struct
-     * @return pointer to newly created operation
-     */
-    AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_op_create(const axis2_env_t *env);
 
     /**
      * Creates operation struct for an operation defined in a module.
