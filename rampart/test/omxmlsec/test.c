@@ -99,7 +99,7 @@ axis2_status_t sign(axis2_env_t *env,
     /*We need C14N transform*/
     tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
     axis2_array_list_add(tr_list, env, tr);
-    /*oxs_sign_part_set_transforms(sign_part, env, tr_list);*/
+    oxs_sign_part_set_transforms(sign_part, env, tr_list);
 
     /*We need to sign this node add an ID to it*/
     node = axiom_node_get_first_element(tmpl, env);

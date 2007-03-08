@@ -88,6 +88,7 @@ AC_CONFIG_FILES([Makefile \
         client/sec_echo/data/Makefile \
         omxmlsec/Makefile \
         omxmlsec/xmlsig/Makefile \
+        omxmlsec/xmlenc/Makefile \
         keys/Makefile \
         keys/ahome/Makefile \
         keys/bhome/Makefile \

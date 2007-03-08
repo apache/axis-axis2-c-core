@@ -242,8 +242,9 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
     /*TODO : Cannonicalize <SignedInfo>*/
     c14n_algo = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env);
     doc = axiom_node_get_document(signed_info_node, env);
-    oxs_c14n_apply(env, doc, AXIS2_FALSE, &c14nized, AXIS2_TRUE, NULL, signed_info_node); 
-   
+    
+    /*oxs_c14n_apply(env, doc, AXIS2_FALSE, &c14nized, AXIS2_TRUE, NULL, signed_info_node); */
+    oxs_c14n_apply_algo(env, doc,  &c14nized, NULL, signed_info_node, c14n_algo);
     AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (sig)= %s ", c14nized );
     
     /*Then serialize <SignedInfo>*/
@@ -624,8 +625,9 @@ oxs_xml_sig_verify(const axis2_env_t *env,
     doc = axiom_node_get_document(signed_info_node, env);
     
     AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (verif1)= %s ", axiom_node_to_string(signed_info_node, env) );
-    oxs_c14n_apply(env, doc, AXIS2_FALSE, &content, AXIS2_TRUE, NULL, signed_info_node);
-
+    /*    oxs_c14n_apply(env, doc, AXIS2_FALSE, &content, AXIS2_TRUE, NULL, signed_info_node);*/
+    oxs_c14n_apply_algo(env, doc, &content, NULL, signed_info_node, c14n_mtd);
+   
     AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (verif2)= %s ", content );
 
     /*In the final step we Verify*/ 
