@@ -61,19 +61,6 @@ extern "C"
 #define AXIS2_AAR_SUFFIX ".aar"
 #define AXIS2_MAR_SUFFIX ".mar"
 
-
-    /***********************Function Macros****************************************/
-
-#define AXIS2_DIR_HANDLER_LIST_SERVICES_OR_MODULES_IN_DIR(env, pathname) \
-        (axis2_dir_handler_list_services_or_modules_in_dir(env, pathname))
-
-#define AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env, pathname) \
-        (axis2_dir_handler_list_service_or_module_dirs(env, pathname))
-
-    /** @} */
-
-
-
 #ifdef __cplusplus
 }
 #endif

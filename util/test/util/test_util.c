@@ -118,7 +118,7 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
 
     axis2_char_t *pathname = AXIS2_STRDUP("/tmp/test/", env);
 
-    axis2_array_list_t *arr_folders = AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env, pathname);
+    axis2_array_list_t *arr_folders = axis2_dir_handler_list_service_or_module_dirs(env, pathname);
     if (arr_folders == NULL)
     {
         printf("List of folders is NULL\n");

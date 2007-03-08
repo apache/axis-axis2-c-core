@@ -345,7 +345,7 @@ axis2_repos_listener_search(
     AXIS2_PARAM_CHECK(env->error, folder_name, AXIS2_FAILURE);
     listener_impl = AXIS2_INTF_TO_IMPL(listener);
 
-    current_info_list = AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env,
+    current_info_list = axis2_dir_handler_list_service_or_module_dirs(env,
             folder_name);
     if (!current_info_list)
     {
