@@ -74,7 +74,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
                 AXIS2_FAILURE);
         return NULL;
     }
-    dl_handler = AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env);
+    dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);
     if (NULL == dl_handler)
     {
         status = axis2_class_loader_load_lib(env, dll_desc);
@@ -84,7 +84,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
                     AXIS2_FAILURE);
             return NULL;
         }
-        dl_handler = AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env);
+        dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);
         if (!dl_handler)
         {
             return NULL;
@@ -96,7 +96,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
         {
             return NULL;
         }
-        status = AXIS2_DLL_DESC_SET_CREATE_FUNCT(dll_desc, env, create_funct);
+        status =  axis2_dll_desc_set_create_funct(dll_desc, env, create_funct);
         if (AXIS2_FAILURE == status)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
@@ -111,7 +111,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
         {
             return NULL;
         }
-        status = AXIS2_DLL_DESC_SET_DELETE_FUNCT(dll_desc, env, delete_funct);
+        status =  axis2_dll_desc_set_delete_funct(dll_desc, env, delete_funct);
         if (AXIS2_FAILURE == status)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
@@ -120,18 +120,18 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
             return NULL;
         }
     }
-    create_funct = AXIS2_DLL_DESC_GET_CREATE_FUNCT(dll_desc, env);
+    create_funct =  axis2_dll_desc_get_create_funct(dll_desc, env);
     if (!create_funct)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_DLL_DESC,
                 AXIS2_FAILURE);
         return NULL;
     }
-    dll_type = AXIS2_DLL_DESC_GET_TYPE(dll_desc, env);
+    dll_type =  axis2_dll_desc_get_type(dll_desc, env);
     /* TODO Following blocks differ only by error message. Try to
      * reduce them into one block
      */
-    error_code = AXIS2_DLL_DESC_GET_ERROR_CODE(dll_desc, env) ;
+    error_code =  axis2_dll_desc_get_error_code(dll_desc, env) ;
     if (AXIS2_SVC_DLL == dll_type)
     {
         create_funct(&svc_skeli, env);
@@ -247,7 +247,7 @@ axis2_class_loader_load_lib(const axis2_env_t *env,
     AXIS2_DLHANDLER dl_handler = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    dll_name = AXIS2_DLL_DESC_GET_NAME(dll_desc, env);
+    dll_name =  axis2_dll_desc_get_name(dll_desc, env);
     dl_handler = AXIS2_PLATFORM_LOADLIB(dll_name);
     if (NULL == dl_handler)
     {
@@ -261,7 +261,7 @@ axis2_class_loader_load_lib(const axis2_env_t *env,
                 AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    status = AXIS2_DLL_DESC_SET_DL_HANDLER(dll_desc, env, dl_handler);
+    status =  axis2_dll_desc_set_dl_handler(dll_desc, env, dl_handler);
 
     if (AXIS2_SUCCESS != status)
     {
@@ -279,7 +279,7 @@ axis2_status_t
 axis2_class_loader_unload_lib(const axis2_env_t *env,
         axis2_dll_desc_t *dll_desc)
 {
-    AXIS2_DLHANDLER dl_handler = AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env);
+    AXIS2_DLHANDLER dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);
     if (dl_handler)
     {
         AXIS2_PLATFORM_UNLOADLIB(dl_handler);

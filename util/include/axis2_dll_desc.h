@@ -171,63 +171,6 @@ extern "C"
         const axis2_env_t *env,
         const axis2_char_t *class_name);
 
-
-#define AXIS2_DLL_DESC_FREE(dll_desc, env) \
-    axis2_dll_desc_free(dll_desc, env)
-
-#define AXIS2_DLL_DESC_GET_NAME(dll_desc, env) \
-    axis2_dll_desc_get_name(dll_desc, env)
-
-#define AXIS2_DLL_DESC_SET_NAME(dll_desc, env, name) \
-    axis2_dll_desc_set_name(dll_desc, env, name)
-
-#define AXIS2_DLL_DESC_GET_TYPE(dll_desc, env) \
-    axis2_dll_desc_get_type(dll_desc, env)
-
-#define AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, type) \
-    axis2_dll_desc_set_type(dll_desc, env, type)
-
-#define AXIS2_DLL_DESC_GET_LOAD_OPTIONS(dll_desc, env) \
-    axis2_dll_desc_get_load_options(dll_desc, env)
-
-#define AXIS2_DLL_DESC_SET_LOAD_OPTIONS(dll_desc, env, load_options) \
-    axis2_dll_desc_set_load_options(dll_desc, env, load_options)
-
-#define AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env) \
-    axis2_dll_desc_get_dl_handler(dll_desc, env)
-
-#define AXIS2_DLL_DESC_SET_DL_HANDLER(dll_desc, env, dl_handler) \
-    axis2_dll_desc_set_dl_handler(dll_desc, env, dl_handler)
-
-#define AXIS2_DLL_DESC_GET_CREATE_FUNCT(dll_desc, env) \
-    axis2_dll_desc_get_create_funct(dll_desc, env)
-
-#define AXIS2_DLL_DESC_SET_CREATE_FUNCT(dll_desc, env, funct) \
-    axis2_dll_desc_set_create_funct(dll_desc, env, funct)
-
-#define AXIS2_DLL_DESC_GET_DELETE_FUNCT(dll_desc, env) \
-    axis2_dll_desc_get_delete_funct((dll_desc, env)
-
-#define AXIS2_DLL_DESC_SET_DELETE_FUNCT(dll_desc, env, funct) \
-    axis2_dll_desc_set_delete_funct(dll_desc, env, funct)
-
-#define AXIS2_DLL_DESC_GET_TIMESTAMP(dll_desc, env) \
-    axis2_dll_desc_get_timestamp(dll_desc, env)
-
-#define AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp) \
-    axis2_dll_desc_set_timestamp(dll_desc, env, timestamp)
-
-#define AXIS2_DLL_DESC_SET_ERROR_CODE(dll_desc, env, error_code) \
-    axis2_dll_desc_set_error_code(dll_desc, env, error_code)
-
-#define AXIS2_DLL_DESC_GET_ERROR_CODE(dll_desc, env) \
-    axis2_dll_desc_get_error_code(dll_desc, env)
-
-#define AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, class_name) \
-    axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env, class_name)
-
-    /** @} */
-
 #ifdef __cplusplus
 }
 #endif

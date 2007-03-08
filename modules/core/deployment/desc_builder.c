@@ -1049,7 +1049,7 @@ axis2_desc_builder_load_msg_recv(
     {
         dll_desc = axis2_dll_desc_create(env);
         msg_recv_dll_name =
-            AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env,
+             axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                     class_name);
         repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(desc_builder->engine, env);
         temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
@@ -1059,9 +1059,9 @@ axis2_desc_builder_load_msg_recv(
         AXIS2_FREE(env->allocator, temp_path);
         AXIS2_FREE(env->allocator, temp_path2);
         AXIS2_FREE(env->allocator, temp_path3);
-        AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
+         axis2_dll_desc_set_name(dll_desc, env, dll_name);
         AXIS2_FREE(env->allocator, dll_name);
-        AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
+         axis2_dll_desc_set_type(dll_desc, env, AXIS2_MSG_RECV_DLL);
         impl_info_param = axis2_param_create(env, class_name, NULL);
         AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
         axis2_param_set_value_free(impl_info_param, env, axis2_dll_desc_free_void_arg);

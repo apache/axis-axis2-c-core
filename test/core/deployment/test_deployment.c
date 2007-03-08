@@ -148,8 +148,8 @@ int axis2_test_transport_receiver_load()
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dll_name = AXIS2_STRACAT(axis2c_home, "/lib/libaxis2_http_receiver.so", env);
     printf("transport receiver name:%s\n", dll_name);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
-    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
+     axis2_dll_desc_set_name(dll_desc, env, dll_name);
+     axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
     axis2_class_loader_init(env);
@@ -182,8 +182,8 @@ int axis2_test_transport_sender_load()
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dll_name = AXIS2_STRACAT(axis2c_home, "/lib/libaxis2_http_sender.so", env);
     printf("transport sender name:%s\n", dll_name);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
-    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
+     axis2_dll_desc_set_name(dll_desc, env, dll_name);
+     axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
     axis2_class_loader_init(env);

@@ -51,7 +51,7 @@ rampart_load_module(const axis2_env_t *env,
     void *ptr = NULL;
 
     dll_desc = axis2_dll_desc_create(env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, module_name);
+     axis2_dll_desc_set_name(dll_desc, env, module_name);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
     axis2_class_loader_init(env);

@@ -1273,21 +1273,21 @@ axis2_dep_engine_load_module_dll(
     read_in_dll = AXIS2_ARCH_FILE_DATA_GET_MODULE_DLL_NAME(dep_engine_impl->
             curr_file, env);
     dll_desc = axis2_dll_desc_create(env);
-    dll_name = AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env,
+    dll_name =  axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
             read_in_dll);
 
     module_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(dep_engine_impl->curr_file, env);
     timestamp = AXIS2_FILE_GET_TIMESTAMP(module_folder, env);
-    AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp);
+     axis2_dll_desc_set_timestamp(dll_desc, env, timestamp);
     module_folder_path = AXIS2_FILE_GET_PATH(module_folder, env);
     temp_path = AXIS2_STRACAT(module_folder_path, AXIS2_PATH_SEP_STR, env);
     dll_path = AXIS2_STRACAT(temp_path, dll_name, env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
             "axis2_dep_engine_load_module_dll; dll path is : %s", dll_path);
-    status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
+    status =  axis2_dll_desc_set_name(dll_desc, env, dll_path);
     if (AXIS2_SUCCESS != status)
     {
-        AXIS2_DLL_DESC_FREE(dll_desc, env);
+        axis2_dll_desc_free(dll_desc, env);
         return AXIS2_FAILURE;
     }
     /* free all temp vars */
@@ -1296,7 +1296,7 @@ axis2_dep_engine_load_module_dll(
     AXIS2_FREE(env->allocator, dll_path);
     dll_path = NULL;
 
-    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MODULE_DLL);
+     axis2_dll_desc_set_type(dll_desc, env, AXIS2_MODULE_DLL);
     impl_info_param = axis2_param_create(env, read_in_dll, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
     axis2_param_set_value_free(impl_info_param, env, axis2_dll_desc_free_void_arg);
@@ -1372,10 +1372,10 @@ axis2_dep_engine_add_flow_handlers(
         handler_class_name = axis2_handler_desc_get_class_name(handlermd, env);
         dll_desc = axis2_dll_desc_create(env);
         handler_dll_name =
-            AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env,
+             axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                     handler_class_name);
-        AXIS2_DLL_DESC_SET_NAME(dll_desc, env, handler_dll_name);
-        AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);
+         axis2_dll_desc_set_name(dll_desc, env, handler_dll_name);
+         axis2_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
         axis2_class_loader_init(env);
         impl_info_param = axis2_param_create(env, NULL, NULL);
         AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
@@ -1403,11 +1403,11 @@ axis2_dep_engine_get_handler_dll(
 
     dll_desc = axis2_dll_desc_create(env);
     dll_name =
-        AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env,
+         axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                 class_name);
     /* TODO set fill dll path here instead of dll lib name only */
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
-    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_HANDLER_DLL);
+     axis2_dll_desc_set_name(dll_desc, env, dll_name);
+     axis2_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
     axis2_class_loader_init(env);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);

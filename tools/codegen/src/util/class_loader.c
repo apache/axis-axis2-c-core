@@ -42,7 +42,7 @@ w2c_class_loader_get_object_from_class_name
     *pdll_desc = dll_desc;
 
     dll_name=
-       AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(
+        axis2_dll_desc_create_platform_specific_dll_name(
                  dll_desc,  env, class_name );
     if ( NULL == dll_name )
     {
@@ -52,8 +52,8 @@ w2c_class_loader_get_object_from_class_name
     file_path = w2c_string_add_string(file_path, inter_path, env );
     file_path = w2c_string_add_string(file_path, dll_name, env );
 
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, file_path);
-    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, -1); /* not a standard type */
+     axis2_dll_desc_set_name(dll_desc, env, file_path);
+     axis2_dll_desc_set_type(dll_desc, env, -1); /* not a standard type */
 
     impl_info_param = axis2_param_create(env, NULL, NULL);
     AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
@@ -74,7 +74,7 @@ w2c_class_loader_free_loaded_class(
     AXIS2_PARAM_CHECK(env->error, dll_desc, AXIS2_FAILURE);
 
     axis2_class_loader_delete_dll(env, dll_desc);
-    /*AXIS2_DLL_DESC_FREE ( dll_desc, env );*/
+    /*axis2_dll_desc_free ( dll_desc, env );*/
 
     return AXIS2_SUCCESS;
 }
