@@ -98,7 +98,7 @@ main(int argc, char **argv)
         printf("Error creating service client\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
                 " %d :: %s", env->error->error_number,
-                AXIS2_ERROR_GET_MESSAGE(env->error));
+                axis2_error_get_message(env->error));
     }
 
     /* Set service client options */
@@ -158,7 +158,7 @@ main(int argc, char **argv)
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                 "Stub invoke FAILED: Error code:" " %d :: %s",
                 env->error->error_number,
-                AXIS2_ERROR_GET_MESSAGE(env->error));
+                axis2_error_get_message(env->error));
         printf("round1 stub invoke FAILED!\n");
         return AXIS2_FAILURE;
     }

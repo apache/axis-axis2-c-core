@@ -266,7 +266,7 @@ axis2_ws_info_list_add_ws_info_item(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
 
-    temp_name = AXIS2_FILE_GET_NAME(file, env);
+    temp_name =  axis2_file_get_name(file, env);
     info_list_name = AXIS2_STRDUP(temp_name, env);
     if (!info_list_name)
     {
@@ -286,7 +286,7 @@ axis2_ws_info_list_add_ws_info_item(
             long last_modified_date = 0;
             axis2_arch_file_data_t *file_data = NULL;
 
-            last_modified_date = AXIS2_FILE_GET_TIMESTAMP(file, env);
+            last_modified_date =  axis2_file_get_timestamp(file, env);
             ws_info =
                 axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
                     env, info_list_name, last_modified_date, AXIS2_SVC);
@@ -319,7 +319,7 @@ axis2_ws_info_list_add_ws_info_item(
             long last_modified_date = 0;
             axis2_arch_file_data_t *file_data = NULL;
 
-            last_modified_date = AXIS2_FILE_GET_TIMESTAMP(file, env);
+            last_modified_date =  axis2_file_get_timestamp(file, env);
             ws_info =
                 axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
                     env, info_list_name, last_modified_date, AXIS2_MODULE);
@@ -391,7 +391,7 @@ axis2_ws_info_list_is_modified(
     AXIS2_PARAM_CHECK(env->error, ws_info, AXIS2_FAILURE);
 
     last_modified_date = AXIS2_WS_INFO_GET_LAST_MODIFIED_DATE(ws_info, env);
-    return (last_modified_date != AXIS2_FILE_GET_TIMESTAMP(file, env));
+    return (last_modified_date !=  axis2_file_get_timestamp(file, env));
 }
 
 axis2_bool_t AXIS2_CALL

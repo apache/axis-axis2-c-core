@@ -1888,7 +1888,7 @@ axis2_conf_engage_module(
         AXIS2_FREE(env->allocator, temp_path1);
         AXIS2_FREE(env->allocator, temp_path2);
         AXIS2_FREE(env->allocator, temp_path3);
-        AXIS2_FILE_SET_PATH(file, env, path);
+         axis2_file_set_path(file, env, path);
         file_data = axis2_arch_file_data_create_with_type_and_file(env,
                 AXIS2_MODULE, file);
 

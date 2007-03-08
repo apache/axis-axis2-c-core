@@ -794,7 +794,7 @@ woden_types_remove_schema(
 
     index = axis2_array_list_index_of(types_impl->f_schemas, env, schema);
     axis2_array_list_remove(types_impl->f_schemas, env, index);
-    code = AXIS2_ERROR_GET_STATUS_CODE(env->error);
+    code = axis2_error_get_status_code(env->error);
     return code;
 }
 

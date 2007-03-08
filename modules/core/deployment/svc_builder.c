@@ -339,9 +339,9 @@ axis2_svc_builder_populate_svc(
     arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(builder_impl->
             svc_builder.desc_builder->engine, env);
     svc_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env);
-    timestamp = AXIS2_FILE_GET_TIMESTAMP(svc_folder, env);
+    timestamp =  axis2_file_get_timestamp(svc_folder, env);
      axis2_dll_desc_set_timestamp(dll_desc, env, timestamp);
-    svc_folder_path = AXIS2_FILE_GET_PATH(svc_folder, env);
+    svc_folder_path =  axis2_file_get_path(svc_folder, env);
     dll_path = axis2_strcat(env, svc_folder_path, AXIS2_PATH_SEP_STR,
             svc_dll_name, NULL);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dll path is : %s", dll_path);

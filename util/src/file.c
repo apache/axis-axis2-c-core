@@ -56,19 +56,16 @@ axis2_file_free(axis2_file_t *file,
     if (file->name)
     {
         AXIS2_FREE(env->allocator, file->name);
-        file->name = NULL;
     }
 
     if (file->path)
     {
         AXIS2_FREE(env->allocator, file->path);
-        file->path = NULL;
     }
 
     if (file)
     {
         AXIS2_FREE(env->allocator, file);
-        file = NULL;
     }
     return AXIS2_SUCCESS;
 }
@@ -84,7 +81,6 @@ axis2_file_set_name(axis2_file_t *file,
     if (file->name)
     {
         AXIS2_FREE(env->allocator, file->name);
-        file->name = NULL;
     }
     file->name = AXIS2_STRDUP(name, env);
     if (!file->name)
@@ -99,15 +95,12 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_file_get_name(axis2_file_t *file,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (!file->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
                 AXIS2_FAILURE);
         return NULL;
     }
-
     return (file->name);
 }
 
@@ -126,7 +119,6 @@ axis2_file_set_path(axis2_file_t *file,
     if (file->path)
     {
         AXIS2_FREE(env->allocator, file->path);
-        file->path = NULL;
     }
     file->path = AXIS2_STRDUP(path, env);
     if (!(file->path))
@@ -141,8 +133,6 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_file_get_path(axis2_file_t *file,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (!(file->path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_FILE_NAME_NOT_SET,
@@ -159,9 +149,7 @@ axis2_file_set_timestamp(axis2_file_t *file,
         AXIS2_TIME_T timestamp)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     file->timestamp = timestamp;
-
     return AXIS2_SUCCESS;
 }
 
@@ -169,7 +157,6 @@ AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
 axis2_file_get_timestamp(axis2_file_t *file,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return file->timestamp;
 }
 
@@ -179,21 +166,19 @@ axis2_file_clone(axis2_file_t *file,
 {
     axis2_file_t *new_file = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-
     AXIS2_ENV_CHECK(env, NULL);
-
     new_file = axis2_file_create(env);
-    status = AXIS2_FILE_SET_NAME(new_file, env, file->name);
+    status =  axis2_file_set_name(new_file, env, file->name);
     if (AXIS2_SUCCESS != status)
     {
         return NULL;
     }
-    status = AXIS2_FILE_SET_PATH(new_file, env, file->path);
+    status =  axis2_file_set_path(new_file, env, file->path);
     if (AXIS2_SUCCESS != status)
     {
         return NULL;
     }
-    AXIS2_FILE_SET_TIMESTAMP(new_file, env, file->timestamp);
+     axis2_file_set_timestamp(new_file, env, file->timestamp);
     return new_file;
 }
 

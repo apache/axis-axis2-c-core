@@ -1099,7 +1099,7 @@ axis2_dep_engine_add_new_svc(
 
         /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
         file = AXIS2_ARCH_FILE_DATA_GET_FILE(dep_engine_impl->curr_file, env);
-        file_name = AXIS2_FILE_GET_NAME(file, env);
+        file_name =  axis2_file_get_name(file, env);
         AXIS2_SVC_SET_FILE_NAME(svc, env, file_name);
 
         /* modules from svc group */
@@ -1277,9 +1277,9 @@ axis2_dep_engine_load_module_dll(
             read_in_dll);
 
     module_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(dep_engine_impl->curr_file, env);
-    timestamp = AXIS2_FILE_GET_TIMESTAMP(module_folder, env);
+    timestamp =  axis2_file_get_timestamp(module_folder, env);
      axis2_dll_desc_set_timestamp(dll_desc, env, timestamp);
-    module_folder_path = AXIS2_FILE_GET_PATH(module_folder, env);
+    module_folder_path =  axis2_file_get_path(module_folder, env);
     temp_path = AXIS2_STRACAT(module_folder_path, AXIS2_PATH_SEP_STR, env);
     dll_path = AXIS2_STRACAT(temp_path, dll_name, env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
@@ -1742,7 +1742,7 @@ axis2_dep_engine_build_module(
                 env, AXIS2_MODULE, module_archive);
     module_desc = axis2_module_desc_create(env);
     arch_reader = axis2_arch_reader_create(env);
-    file_name = AXIS2_FILE_GET_NAME(module_archive, env);
+    file_name =  axis2_file_get_name(module_archive, env);
     status = AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_name,
             dep_engine, module_desc);
     AXIS2_ARCH_READER_FREE(arch_reader, env);

@@ -132,7 +132,7 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
     for (i = 0;i < isize;++i)
     {
         file = (axis2_file_t*)axis2_array_list_get(arr_folders, env, i);
-        filename = AXIS2_FILE_GET_NAME(file, env);
+        filename =  axis2_file_get_name(file, env);
         printf("filename = %s \n", filename);
     }
     printf("----end of test_axis2_dir_handler_list_service_or_module_dirs----\n");

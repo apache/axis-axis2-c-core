@@ -83,32 +83,6 @@ extern "C"
     axis2_file_clone(axis2_file_t *file,
         const axis2_env_t *env);
 
-#define AXIS2_FILE_FREE(file, env) \
-      axis2_file_free (file, env)
-
-#define AXIS2_FILE_GET_NAME(file, env) \
-      axis2_file_get_name (file, env)
-
-#define AXIS2_FILE_SET_NAME(file, env, name) \
-      axis2_file_set_name (file, env, name)
-
-#define AXIS2_FILE_GET_PATH(file, env) \
-      axis2_file_get_path (file, env)
-
-#define AXIS2_FILE_SET_PATH(file, env, path) \
-      axis2_file_set_path (file, env, path)
-
-#define AXIS2_FILE_GET_TIMESTAMP(file, env) \
-      axis2_file_get_timestamp (file, env)
-
-#define AXIS2_FILE_SET_TIMESTAMP(file, env, timestamp) \
-      axis2_file_set_timestamp (file, env, timestamp)
-
-#define AXIS2_FILE_CLONE(file, env) \
-      axis2_file_clone (file, env)
-
-    /** @} */
-
 #ifdef __cplusplus
 }
 #endif

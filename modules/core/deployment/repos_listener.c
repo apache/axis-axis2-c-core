@@ -377,7 +377,7 @@ axis2_repos_listener_search(
                 axis2_file_t *del_file = NULL;
 
                 del_file = axis2_array_list_get(current_info_list, env, j);
-                AXIS2_FILE_FREE(del_file, env);
+                axis2_file_free(del_file, env);
             }
             axis2_array_list_free(current_info_list, env);
             current_info_list = NULL;
@@ -390,7 +390,7 @@ axis2_repos_listener_search(
         axis2_file_t *del_file = NULL;
 
         del_file = axis2_array_list_get(current_info_list, env, i);
-        AXIS2_FILE_FREE(del_file, env);
+        axis2_file_free(del_file, env);
     }
     axis2_array_list_free(current_info_list, env);
     current_info_list = NULL;

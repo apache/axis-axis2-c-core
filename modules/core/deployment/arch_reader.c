@@ -508,6 +508,6 @@ axis2_arch_reader_create_module_arch(
     {
         return NULL;
     }
-    AXIS2_FILE_SET_NAME(file, env, module_name);
+     axis2_file_set_name(file, env, module_name);
     return file;
 }

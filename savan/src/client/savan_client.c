@@ -148,7 +148,7 @@ savan_client_subscribe(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to send subscription "
             "request. Error: %d Reason: %s", env->error->error_number,
-            AXIS2_ERROR_GET_MESSAGE(env->error));
+            axis2_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
 
@@ -225,7 +225,7 @@ savan_client_renew(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to send renew "
             "request. Error: %d Reason: %s", env->error->error_number,
-            AXIS2_ERROR_GET_MESSAGE(env->error));
+            axis2_error_get_message(env->error));
         printf("Failed to send renew request\n");
         return AXIS2_FAILURE;
     }
@@ -272,7 +272,7 @@ savan_client_unsubscribe(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to send unsubscribe "
             "request. Error: %d Reason: %s", env->error->error_number,
-            AXIS2_ERROR_GET_MESSAGE(env->error));
+            axis2_error_get_message(env->error));
         printf("Failed to send unsubscribe request\n");
         return AXIS2_FAILURE;
     }
@@ -327,7 +327,7 @@ savan_client_get_status(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to send get status "
             "request. Error: %d Reason: %s", env->error->error_number,
-            AXIS2_ERROR_GET_MESSAGE(env->error));
+            axis2_error_get_message(env->error));
         printf("Failed to send get status request\n");
         return NULL;
     }

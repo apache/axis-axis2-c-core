@@ -133,7 +133,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
     xml_reader = axiom_xml_reader_create_for_io(env, read_soap, close_soap , NULL, NULL);
     if (!xml_reader)
     {
-        printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("%s \n", axis2_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
 
@@ -142,21 +142,21 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
     if (!om_builder)
     {
         AXIOM_XML_READER_FREE(xml_reader, env);
-        printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("%s \n", axis2_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
 
     soap_builder = axiom_soap_builder_create(env, om_builder, uri);
     if (!soap_builder)
     {
-        printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("%s \n", axis2_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
     soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
     if (!soap_envelope)
     {
         AXIOM_SOAP_BUILDER_FREE(soap_builder, env);
-        printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("%s \n", axis2_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
 
@@ -196,7 +196,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
     }
     else
     {
-        printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("%s \n", axis2_error_get_message(env->error));
         printf("\n\n ERROR soap_body NULL.\n\n");
         return AXIS2_FAILURE;
     }
@@ -215,7 +215,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
             status = AXIOM_SOAP_BUILDER_NEXT(soap_builder, env);
             if (status == AXIS2_FAILURE)
             {
-                printf("failure %s" , AXIS2_ERROR_GET_MESSAGE(env->error));
+                printf("failure %s" , axis2_error_get_message(env->error));
                 return AXIS2_FAILURE;
             }
         }
