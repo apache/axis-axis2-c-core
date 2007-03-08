@@ -781,7 +781,7 @@ axis2_svc_client_send_receive(
     op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env, op_qname);
     if (op)
     {
-        param = AXIS2_OP_GET_PARAM(op, env, AXIS2_SOAP_ACTION);
+        param = axis2_op_get_param(op, env, AXIS2_SOAP_ACTION);
         if (param)
         {
             action_uri = (axis2_uri_t *) AXIS2_PARAM_GET_VALUE(param, env);
@@ -981,7 +981,7 @@ axis2_svc_client_send_receive_non_blocking(
 
         op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env,
             op_qname);
-        AXIS2_OP_SET_MSG_RECV(op, env,
+        axis2_op_set_msg_recv(op, env,
             AXIS2_CALLBACK_RECV_GET_BASE(svc_client_impl->callback_recv, env));
         AXIS2_OP_CLIENT_SET_CALLBACK_RECV(svc_client_impl->op_client, env,
             svc_client_impl->callback_recv);
@@ -1300,23 +1300,23 @@ axis2_svc_client_create_annonymous_svc(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         if (op_out_in)
         {
-            AXIS2_OP_FREE(op_out_in, env);
+            axis2_op_free(op_out_in, env);
         }
         if (op_out_only)
         {
-            AXIS2_OP_FREE(op_out_only, env);
+            axis2_op_free(op_out_only, env);
         }
         if (op_robust_out_only)
         {
-            AXIS2_OP_FREE(op_robust_out_only, env);
+            axis2_op_free(op_robust_out_only, env);
         }
 
         return NULL;
     }
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_out_in, env, AXIS2_MEP_URI_OUT_IN);
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_out_only, env, AXIS2_MEP_URI_OUT_ONLY);
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_robust_out_only, env, AXIS2_MEP_URI_ROBUST_OUT_ONLY);
+    axis2_op_set_msg_exchange_pattern(op_out_in, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op_out_only, env, AXIS2_MEP_URI_OUT_ONLY);
+    axis2_op_set_msg_exchange_pattern(op_robust_out_only, env, AXIS2_MEP_URI_ROBUST_OUT_ONLY);
 
     /* Setting operation phase */
     info = AXIS2_CONF_GET_PHASES_INFO(svc_client_impl->conf, env);

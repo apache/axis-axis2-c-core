@@ -222,7 +222,7 @@ axis2_addr_disp_invoke(
                         axis2_svc_ctx_t *svc_ctx = NULL;
                         AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx);
                         AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
-                        AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, op_ctx);
+                        axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
 
                         svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
                         if (svc_ctx)

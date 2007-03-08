@@ -1173,7 +1173,7 @@ axis2_dep_engine_add_new_svc(
             axis2_hash_this(index_i, NULL, NULL, &v);
             op_desc = (axis2_op_t *)v;
 
-            modules = AXIS2_OP_GET_ALL_MODULE_QNAMES(op_desc, env);
+            modules = axis2_op_get_all_module_qnames(op_desc, env);
             if (modules)
                 sizek = axis2_array_list_size(modules, env);
             for (k = 0; k < sizek; k++)
@@ -1188,7 +1188,7 @@ axis2_dep_engine_add_new_svc(
 
                 if (module)
                 {
-                    AXIS2_OP_ENGAGE_MODULE(op_desc, env, module,
+                    axis2_op_engage_module(op_desc, env, module,
                             dep_engine_impl->conf);
                 }
                 else

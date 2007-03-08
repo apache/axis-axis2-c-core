@@ -599,7 +599,7 @@ axis2_http_transport_sender_write_message(
     if (op)
     {
         /* handle one way case */
-        const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+        const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "OP name axis2_qname_get_localpart = %s",
                 mep);
         if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||

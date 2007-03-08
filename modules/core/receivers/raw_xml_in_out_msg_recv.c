@@ -126,7 +126,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
         op_desc = AXIS2_OP_CTX_GET_OP(op_ctx, env);
 
-        style = AXIS2_OP_GET_STYLE(op_desc, env);
+        style = axis2_op_get_style(op_desc, env);
         if (0 == AXIS2_STRCMP(AXIS2_STYLE_DOC, style))
         {
             axiom_soap_envelope_t *envelope = NULL;

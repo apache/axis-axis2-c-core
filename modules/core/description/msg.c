@@ -221,7 +221,7 @@ axis2_msg_is_param_locked(
     parent_l = axis2_msg_get_parent(msg, env);
     if (parent_l)
     {
-        locked = AXIS2_OP_IS_PARAM_LOCKED(parent_l, env, param_name);
+        locked = axis2_op_is_param_locked(parent_l, env, param_name);
     }
     if (AXIS2_TRUE == locked)
     {
@@ -334,7 +334,7 @@ axis2_msg_get_schema_element(
     AXIS2_ENV_CHECK(env, NULL);
 
     operation = axis2_msg_get_parent(msg, env);
-    svc = AXIS2_OP_GET_PARENT(operation, env);
+    svc = axis2_op_get_parent(operation, env);
     schemas = AXIS2_SVC_GET_ALL_SCHEMAS(svc, env);
     schemas_size = AXIS2_ARRAY_LIST_SIZE(schemas, env);
     for (i = 0; i < schemas_size; i++)

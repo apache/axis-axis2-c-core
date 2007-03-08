@@ -262,7 +262,7 @@ axis2_engine_send(
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
         if (op)
         {
-            phases = AXIS2_OP_GET_OUT_FLOW(op, env);
+            phases = axis2_op_get_out_flow(op, env);
         }
     }
 
@@ -386,7 +386,7 @@ axis2_engine_receive(
         if (op_ctx)
         {
             op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
-            op_specific_phases = AXIS2_OP_GET_IN_FLOW(op, env);
+            op_specific_phases = axis2_op_get_in_flow(op, env);
             axis2_engine_resume_invocation_phases(engine, env, op_specific_phases, msg_ctx);
             if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
             {
@@ -413,7 +413,7 @@ axis2_engine_receive(
         if (op_ctx)
         {
             op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
-            op_specific_phases = AXIS2_OP_GET_IN_FLOW(op, env);
+            op_specific_phases = axis2_op_get_in_flow(op, env);
             status = axis2_engine_invoke_phases(engine, env, op_specific_phases, msg_ctx);
             if (status != AXIS2_SUCCESS)
             {
@@ -438,7 +438,7 @@ axis2_engine_receive(
         /* invoke the message receivers */
         if (!op)
             return AXIS2_FAILURE;
-        receiver = AXIS2_OP_GET_MSG_RECV(op, env);
+        receiver = axis2_op_get_msg_recv(op, env);
         if (!receiver)
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message receiver not set in operation description");
@@ -543,7 +543,7 @@ axis2_engine_receive_fault(
     if (op_ctx)
     {
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
-        axis2_array_list_t *phases = AXIS2_OP_GET_FAULT_IN_FLOW(op, env);
+        axis2_array_list_t *phases = axis2_op_get_fault_in_flow(op, env);
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
         {
             axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
@@ -980,7 +980,7 @@ axis2_engine_resume_receive(
             if (op)
             {
                 axis2_msg_recv_t *receiver = NULL;
-                receiver = AXIS2_OP_GET_MSG_RECV(op, env);
+                receiver = axis2_op_get_msg_recv(op, env);
                 if (!receiver)
                 {
                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message receiver not set in operation description");
@@ -1011,7 +1011,7 @@ axis2_engine_resume_send(
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
         if (op)
         {
-            phases = AXIS2_OP_GET_OUT_FLOW(op, env);
+            phases = axis2_op_get_out_flow(op, env);
         }
     }
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);

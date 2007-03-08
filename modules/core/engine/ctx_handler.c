@@ -123,11 +123,11 @@ axis2_ctx_handler_invoke(
 
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     if (op)
-        op_ctx = AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, msg_ctx);
+        op_ctx = axis2_op_find_existing_op_ctx(op, env, msg_ctx);
 
     if (op_ctx)
     {
-        AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, op_ctx);
+        axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
         svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
         if (svc_ctx)
         {
@@ -155,7 +155,7 @@ axis2_ctx_handler_invoke(
 
         AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx);
 
-        AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, op_ctx);
+        axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
 
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)

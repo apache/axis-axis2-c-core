@@ -791,7 +791,7 @@ axis2_desc_builder_process_action_mappings(
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Zero length " \
                 "input_action_string found. Not added to the mapping list");
     }
-    AXIS2_OP_SET_WSAMAPPING_LIST(op_desc, env, mapping_list); 
+    axis2_op_set_wsamapping_list(op_desc, env, mapping_list); 
     /*qname = axis2_qname_create(env, AXIS2_OUTPUT_ACTION_MAPPING, NULL, NULL);
     child_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(mapping_element, 
         env, qname, mapping_node, &child_node);
@@ -996,7 +996,7 @@ axis2_desc_builder_process_op_module_refs(
             }
             else
             {
-                status = AXIS2_OP_ADD_MODULE_QNAME(op, env, ref_qname);
+                status = axis2_op_add_module_qname(op, env, ref_qname);
                 AXIS2_QNAME_FREE(ref_qname, env);
                 if (AXIS2_SUCCESS != status)
                 {

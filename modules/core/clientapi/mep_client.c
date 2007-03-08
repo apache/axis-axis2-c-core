@@ -216,7 +216,7 @@ axis2_mep_client_prepare_invocation(
     /* make sure operation's MEP is the same as given MEP */
     if (mep_client_impl->mep)
     {
-        if (AXIS2_STRCMP(mep_client_impl->mep, AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env)) != 0)
+        if (AXIS2_STRCMP(mep_client_impl->mep, axis2_op_get_msg_exchange_pattern(op, env)) != 0)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -228,7 +228,7 @@ axis2_mep_client_prepare_invocation(
         return AXIS2_FAILURE;
     }
     /* If operation has a parent service get it */
-    svc = AXIS2_OP_GET_PARENT(op, env);
+    svc = axis2_op_get_parent(op, env);
     if (svc)
     {
         AXIS2_SVC_CTX_SET_SVC(mep_client_impl->svc_ctx, env, svc);
@@ -239,7 +239,7 @@ axis2_mep_client_prepare_invocation(
         if (svc)
         {
             axis2_op_t *temp_op = NULL;
-            const axis2_qname_t *op_qname = AXIS2_OP_GET_QNAME(op, env);
+            const axis2_qname_t *op_qname = axis2_op_get_qname(op, env);
             temp_op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);
             if (!temp_op)
             {
@@ -664,7 +664,7 @@ axis2_mep_client_two_way_send(
     if (op)
     {
         /* handle one way case */
-        const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+        const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
         if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
             AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
         {
@@ -689,7 +689,7 @@ axis2_mep_client_two_way_send(
 
     if (op)
     {
-        AXIS2_OP_REGISTER_OP_CTX(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));
+        axis2_op_register_op_ctx(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));
     }
     AXIS2_MSG_CTX_SET_SERVER_SIDE(response, env, AXIS2_FALSE);
     AXIS2_MSG_CTX_SET_CONF_CTX(response, env, AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env));
@@ -815,7 +815,7 @@ axis2_mep_client_receive(
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     if (op)
     {
-        AXIS2_OP_REGISTER_OP_CTX(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));
+        axis2_op_register_op_ctx(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));
     }
     AXIS2_MSG_CTX_SET_SERVER_SIDE(response, env, AXIS2_FALSE);
     AXIS2_MSG_CTX_SET_CONF_CTX(response, env, AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env));

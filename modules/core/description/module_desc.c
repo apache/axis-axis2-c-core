@@ -149,7 +149,7 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
             axis2_hash_this(hi, NULL, NULL, &val);
             op = (struct axis2_op *) val;
             if (op)
-                AXIS2_OP_FREE(op, env);
+                axis2_op_free(op, env);
             val = NULL;
             op = NULL;
 
@@ -295,7 +295,7 @@ axis2_module_desc_add_op(axis2_module_desc_t *module_desc,
             return AXIS2_FAILURE;
     }
 
-    op_qname = AXIS2_OP_GET_QNAME(op, env);
+    op_qname = axis2_op_get_qname(op, env);
 
     if (NULL == op_qname)
     {

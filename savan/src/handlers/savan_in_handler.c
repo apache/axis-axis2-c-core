@@ -138,7 +138,7 @@ savan_in_handler_invoke(struct axis2_handler *handler,
     {
         axis2_op_t *op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
         axis2_msg_recv_t* msg_recv = savan_msg_recv_create(env);
-        AXIS2_OP_SET_MSG_RECV(op, env, msg_recv);
+        axis2_op_set_msg_recv(op, env, msg_recv);
     }
     
     return AXIS2_SUCCESS;

@@ -243,14 +243,14 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
             }
             axis2_op = axis2_op_create(env);
             op_qname = WODEN_INTERFACE_OP_GET_QNAME(interface_op, env);
-            AXIS2_OP_SET_QNAME(axis2_op, env, op_qname);
+            axis2_op_set_qname(axis2_op, env, op_qname);
             mep_uri = WODEN_INTERFACE_OP_GET_MSG_EXCHANGE_PATTERN(interface_op,
                 env);
             if (mep_uri)
             {
                 mep_str = AXIS2_URI_TO_STRING(mep_uri, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
-                AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(axis2_op, env, mep_str);
+                axis2_op_set_msg_exchange_pattern(axis2_op, env, mep_str);
             }
             binding_op = woden_binding_op_to_element_extensible(binding_op, env);
             ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op,
@@ -456,14 +456,14 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
             }
             axis2_op = axis2_op_create(env);
             op_qname = WODEN_INTERFACE_OP_GET_QNAME(interface_op, env);
-            AXIS2_OP_SET_QNAME(axis2_op, env, op_qname);
+            axis2_op_set_qname(axis2_op, env, op_qname);
             mep_uri = WODEN_INTERFACE_OP_GET_MSG_EXCHANGE_PATTERN(interface_op,
                 env);
             if (mep_uri)
             {
                 mep_str = AXIS2_URI_TO_STRING(mep_uri, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
-                AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(axis2_op, env, mep_str);
+                axis2_op_set_msg_exchange_pattern(axis2_op, env, mep_str);
             }
             binding_op = woden_wsdl10_binding_op_to_element_extensible(
                 binding_op, env);
@@ -494,7 +494,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                     soap_action_uri = WODEN_WSDL10_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION(
                                 soap_binding_op, env);
                     param = axis2_param_create(env, AXIS2_SOAP_ACTION, soap_action_uri);
-                    AXIS2_OP_ADD_PARAM(axis2_op, env, param);
+                    axis2_op_add_param(axis2_op, env, param);
                     break;
                 }
             }

@@ -1153,7 +1153,7 @@ axis2_msg_ctx_get_parameter(
 
     if (msg_ctx->op)
     {
-        param = AXIS2_OP_GET_PARAM(msg_ctx->op, env, key);
+        param = axis2_op_get_param(msg_ctx->op, env, key);
         if (param)
         {
             return param;
@@ -1221,7 +1221,7 @@ axis2_msg_ctx_get_module_parameter(
             } 
             else 
             {
-                param = AXIS2_OP_GET_PARAM(msg_ctx->op, env, key);
+                param = axis2_op_get_param(msg_ctx->op, env, key);
                 if (param)
                 {
                     return param;
@@ -1621,7 +1621,7 @@ axis2_msg_ctx_set_op(
     if (op)
     {
         msg_ctx->op = op;
-        msg_ctx->op_qname = (axis2_qname_t *)AXIS2_OP_GET_QNAME(op, env);
+        msg_ctx->op_qname = (axis2_qname_t *)axis2_op_get_qname(op, env);
     }
 
     return AXIS2_SUCCESS;

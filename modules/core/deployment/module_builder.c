@@ -482,7 +482,7 @@ axis2_module_builder_process_ops(
 
         op_name = AXIOM_ATTRIBUTE_GET_VALUE(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
-        AXIS2_OP_SET_QNAME(op_desc, env, qopname);
+        axis2_op_set_qname(op_desc, env, qopname);
         if (qopname)
             AXIS2_QNAME_FREE(qopname, env);
 
@@ -515,14 +515,14 @@ axis2_module_builder_process_ops(
 
             msg_recv = AXIS2_DESC_BUILDER_LOAD_MSG_RECV(module_builder->
                     desc_builder, env, recv_element);
-            AXIS2_OP_SET_MSG_RECV(op_desc, env, msg_recv);
+            axis2_op_set_msg_recv(op_desc, env, msg_recv);
         }
         else
         {
             axis2_msg_recv_t *msg_recv = NULL;
             /* setting default message reciver */
             msg_recv = axis2_desc_builder_load_default_msg_recv(env);
-            AXIS2_OP_SET_MSG_RECV(op_desc, env, msg_recv);
+            axis2_op_set_msg_recv(op_desc, env, msg_recv);
 
         }
         /* Process Module Refs */

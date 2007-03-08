@@ -189,7 +189,7 @@ axis2_op_client_create(
         return NULL;
     }
 
-    mep_uri = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+    mep_uri = axis2_op_get_msg_exchange_pattern(op, env);
 
     if (!mep_uri)
     {
@@ -514,7 +514,7 @@ axis2_op_client_execute(
                 AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env),
                 op_client_impl->callback);
         /* TODO: set up reply to */
-        AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, AXIS2_OP_FIND_OP_CTX(op, env,
+        AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, axis2_op_find_op_ctx(op, env,
                 msg_ctx, op_client_impl->svc_ctx));
         AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, op_client_impl->svc_ctx);
 
@@ -540,7 +540,7 @@ axis2_op_client_execute(
             response_mc = axis2_mep_client_two_way_send(env, msg_ctx);
             if (!response_mc)
             {
-                const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+                const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
                 if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
                         AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
                 {

@@ -541,7 +541,7 @@ axis2_http_transport_utils_process_http_get_request(
     /*if (op)
     {
         axis2_msg_t *msg = NULL;
-        msg = AXIS2_OP_GET_MSG(op, env, AXIS2_MSG_IN);
+        msg = axis2_op_get_msg(op, env, AXIS2_MSG_IN);
         schema_element = AXIS2_MSG_GET_SCHEMA_ELEMENT(msg, env);
     }*/
     soap_envelope = axis2_http_transport_utils_handle_media_type_url_encoded(
@@ -813,7 +813,7 @@ axis2_http_transport_utils_get_services_html(
                         hi2 = axis2_hash_next(env, hi2))
                 {
                     axis2_hash_this(hi2, NULL, NULL, &op);
-                    oname = AXIS2_QNAME_GET_LOCALPART(AXIS2_OP_GET_QNAME(
+                    oname = AXIS2_QNAME_GET_LOCALPART(axis2_op_get_qname(
                                 ((axis2_op_t *)op), env), env);
                     ret = AXIS2_STRACAT(tmp2, "<li>", env);
                     AXIS2_FREE(env->allocator, tmp2);
@@ -1326,7 +1326,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
         axiom_node_t *body_child_node = NULL;
 
         body_child = axiom_element_create_with_qname(env, NULL,
-                AXIS2_OP_GET_QNAME(AXIS2_MSG_CTX_GET_OP(msg_ctx, env),
+                axis2_op_get_qname(AXIS2_MSG_CTX_GET_OP(msg_ctx, env),
                         env), &body_child_node);
         AXIOM_SOAP_BODY_ADD_CHILD(soap_body, env, body_child_node);
         if (param_map)
@@ -1453,7 +1453,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     }
 
     body_child = axiom_element_create_with_qname(env, NULL,
-            AXIS2_OP_GET_QNAME(AXIS2_MSG_CTX_GET_OP(msg_ctx, env),
+            axis2_op_get_qname(AXIS2_MSG_CTX_GET_OP(msg_ctx, env),
                     env), &body_child_node);
     AXIOM_SOAP_BODY_ADD_CHILD(soap_body, env, body_child_node);
     if (param_map)

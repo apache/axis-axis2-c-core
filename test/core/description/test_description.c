@@ -43,15 +43,15 @@ int axis2_test_op_engage_module()
     moduleref = axis2_module_desc_create(env);
     conf = axis2_conf_create(env);
 
-    status = AXIS2_OP_ENGAGE_MODULE(op, env, moduleref, conf);
+    status = axis2_op_engage_module(op, env, moduleref, conf);
     moduleref = NULL;
     if (status != AXIS2_SUCCESS)
     {
-        AXIS2_OP_FREE(op, env);
+        axis2_op_free(op, env);
         printf("ERROR %d\n", status);
     }
 
-    AXIS2_OP_FREE(op, env);
+    axis2_op_free(op, env);
     axis2_env_free(env);
     return 0;
 }
@@ -183,7 +183,7 @@ int axis2_test_svc_get_op()
             if (op2)
             {
                 const axis2_qname_t *qname = NULL;
-                qname = AXIS2_OP_GET_QNAME((axis2_op_t *)op2, env);
+                qname = axis2_op_get_qname((axis2_op_t *)op2, env);
                 oname = AXIS2_QNAME_GET_LOCALPART(qname, env);
                 printf("op name = %s\n", oname);
             }

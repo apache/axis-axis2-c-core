@@ -476,7 +476,7 @@ axis2_svc_builder_populate_svc(
         int sizej = 0;
 
         op_desc = (axis2_op_t *) axis2_array_list_get(ops, env, i);
-        params = AXIS2_OP_GET_ALL_PARAMS(op_desc, env);
+        params = axis2_op_get_all_params(op_desc, env);
         /* Adding wsa-mapping into service */
         sizej = axis2_array_list_size(params, env);
         for (j = 0; j < sizej; j++)
@@ -585,10 +585,10 @@ axis2_svc_builder_process_ops(
                 op_desc = axis2_op_create(env);*/
             if(mep_url)
             {
-                AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_desc, env, mep_url);
+                axis2_op_set_msg_exchange_pattern(op_desc, env, mep_url);
             }
             /*}*/
-            AXIS2_OP_SET_QNAME(op_desc, env, qopname);
+            axis2_op_set_qname(op_desc, env, qopname);
         /*}
         else
         {
@@ -603,7 +603,7 @@ axis2_svc_builder_process_ops(
             else
             {
                 op_desc = axis2_op_create(env);
-                AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_desc, env, mep);
+                axis2_op_set_msg_exchange_pattern(op_desc, env, mep);
                 AXIS2_OP_SET_WSDL_OP(op_desc, env, wsdl_op);
             }
         }*/
@@ -634,7 +634,7 @@ axis2_svc_builder_process_ops(
             axis2_msg_recv_t *msg_recv = NULL;
             msg_recv = AXIS2_DESC_BUILDER_LOAD_MSG_RECV(svc_builder->desc_builder,
                     env, recv_element);
-            AXIS2_OP_SET_MSG_RECV(op_desc, env, msg_recv);
+            axis2_op_set_msg_recv(op_desc, env, msg_recv);
 
         }
         else
@@ -642,7 +642,7 @@ axis2_svc_builder_process_ops(
             axis2_msg_recv_t *msg_recv = NULL;
             /* setting the default messgae receiver */
             msg_recv = axis2_desc_builder_load_default_msg_recv(env);
-            AXIS2_OP_SET_MSG_RECV(op_desc, env, msg_recv);
+            axis2_op_set_msg_recv(op_desc, env, msg_recv);
         }
         /* process module refs */
         qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);

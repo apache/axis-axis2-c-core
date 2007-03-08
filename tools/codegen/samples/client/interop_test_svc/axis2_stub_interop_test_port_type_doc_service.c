@@ -75,7 +75,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -87,7 +87,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -99,7 +99,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -111,7 +111,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -123,7 +123,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -135,7 +135,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -147,7 +147,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -159,7 +159,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -171,7 +171,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -183,7 +183,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -195,7 +195,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -207,7 +207,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -219,7 +219,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -231,7 +231,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 

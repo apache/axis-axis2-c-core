@@ -105,8 +105,8 @@ axis2_op_ctx_create(const axis2_env_t *env,
 
     if (op_ctx->op)
     {
-        op_ctx->op_qname = (axis2_qname_t *)AXIS2_OP_GET_QNAME(op_ctx->op, env);
-        op_ctx->op_mep = AXIS2_OP_GET_AXIS_SPECIFIC_MEP_CONST(op_ctx->op, env);
+        op_ctx->op_qname = (axis2_qname_t *)axis2_op_get_qname(op_ctx->op, env);
+        op_ctx->op_mep = axis2_op_get_axis_specific_mep_const(op_ctx->op, env);
     }
 
     axis2_op_ctx_set_parent(op_ctx, env, svc_ctx);

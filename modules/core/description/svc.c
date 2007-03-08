@@ -326,8 +326,8 @@ axis2_svc_free(
 
             if (val)
             {
-                if (AXIS2_OP_IS_FROM_MODULE((axis2_op_t *)val, env) == AXIS2_FALSE )
-                    AXIS2_OP_FREE((axis2_op_t *)val, env);
+                if (axis2_op_is_from_module((axis2_op_t *)val, env) == AXIS2_FALSE )
+                    axis2_op_free((axis2_op_t *)val, env);
                 val = NULL;
             }
         }
@@ -410,7 +410,7 @@ axis2_svc_add_op(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
 
-    status = AXIS2_OP_SET_PARENT(op, env, svc);
+    status = axis2_op_set_parent(op, env, svc);
     if (AXIS2_SUCCESS != status)
     {
         return status;
@@ -436,20 +436,20 @@ axis2_svc_add_op(
         if (module_impl)
         {
         }
-        status = AXIS2_OP_ENGAGE_MODULE(op, env, module_desc, conf);
+        status = axis2_op_engage_module(op, env, module_desc, conf);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Module already engaged to operation");
         }
     }*/
-    msg_recv = AXIS2_OP_GET_MSG_RECV(op, env);
+    msg_recv = axis2_op_get_msg_recv(op, env);
     if (msg_recv == NULL)
     {
         msg_recv = axis2_desc_builder_load_default_msg_recv(env);
-        AXIS2_OP_SET_MSG_RECV(op, env, msg_recv);
+        axis2_op_set_msg_recv(op, env, msg_recv);
     }
-    qname = AXIS2_OP_GET_QNAME(op, env);
+    qname = axis2_op_get_qname(op, env);
     if (qname)
         key = AXIS2_QNAME_GET_LOCALPART(qname, env);
     if (key)
@@ -768,7 +768,7 @@ axis2_svc_add_module_ops(
         void *v = NULL;
         axis2_hash_this(index, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
-        mappings_list = AXIS2_OP_GET_WSAMAPPING_LIST(op_desc, env);
+        mappings_list = axis2_op_get_wsamapping_list(op_desc, env);
         /* adding WSA mapping into service */
         size = axis2_array_list_size(mappings_list, env);
 

@@ -75,7 +75,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axis2_env
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -87,7 +87,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axis2_env
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -99,7 +99,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axis2_env
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
@@ -111,7 +111,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axis2_env
             NULL);
     op = axis2_op_create_with_qname(env, op_qname);
 
-    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+    axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
 
     AXIS2_SVC_ADD_OP(svc, env, op);
 
