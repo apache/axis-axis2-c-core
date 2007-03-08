@@ -97,8 +97,8 @@ axis2_op_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    AXIS2_MSG_SET_DIRECTION(msg, env, AXIS2_WSDL_MESSAGE_DIRECTION_IN);
-    AXIS2_MSG_SET_PARENT(msg, env, op);
+    axis2_msg_set_direction(msg, env, AXIS2_WSDL_MESSAGE_DIRECTION_IN);
+    axis2_msg_set_parent(msg, env, op);
     axis2_op_add_msg(op, env, AXIS2_MSG_IN, msg);
 
     msg = axis2_msg_create(env);
@@ -108,8 +108,8 @@ axis2_op_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    AXIS2_MSG_SET_DIRECTION(msg, env, AXIS2_WSDL_MESSAGE_DIRECTION_OUT);
-    AXIS2_MSG_SET_PARENT(msg, env, op);
+    axis2_msg_set_direction(msg, env, AXIS2_WSDL_MESSAGE_DIRECTION_OUT);
+    axis2_msg_set_parent(msg, env, op);
     axis2_op_add_msg(op, env, AXIS2_MSG_OUT, msg);
 
     msg = axis2_msg_create(env);
@@ -119,8 +119,8 @@ axis2_op_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    AXIS2_MSG_SET_PARENT(msg, env, op);
-    AXIS2_MSG_SET_FLOW(msg, env, NULL);
+    axis2_msg_set_parent(msg, env, op);
+    axis2_msg_set_flow(msg, env, NULL);
     axis2_op_add_msg(op, env, AXIS2_MSG_IN_FAULT, msg);
 
     msg = axis2_msg_create(env);
@@ -130,8 +130,8 @@ axis2_op_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    AXIS2_MSG_SET_PARENT(msg, env, op);
-    AXIS2_MSG_SET_FLOW(msg, env, NULL);
+    axis2_msg_set_parent(msg, env, op);
+    axis2_msg_set_flow(msg, env, NULL);
     axis2_op_add_msg(op, env, AXIS2_MSG_OUT_FAULT, msg);
 
     axis2_op_set_msg_exchange_pattern(op, env,
@@ -668,7 +668,7 @@ axis2_op_get_fault_in_flow(const axis2_op_t *op,
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN_FAULT);
         if (msg)
         {
-            return AXIS2_MSG_GET_FLOW(msg, env);
+            return axis2_msg_get_flow(msg, env);
         }
     }
     return NULL;
@@ -685,7 +685,7 @@ axis2_op_get_fault_out_flow(const axis2_op_t *op,
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT_FAULT);
         if (msg)
         {
-            return AXIS2_MSG_GET_FLOW(msg, env);
+            return axis2_msg_get_flow(msg, env);
         }
     }
     return NULL;
@@ -702,7 +702,7 @@ axis2_op_get_out_flow(const axis2_op_t *op,
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT);
         if (msg)
         {
-            return AXIS2_MSG_GET_FLOW(msg, env);
+            return axis2_msg_get_flow(msg, env);
         }
     }
     return NULL;
@@ -719,7 +719,7 @@ axis2_op_get_in_flow(const axis2_op_t *op,
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN);
         if (msg)
         {
-            return AXIS2_MSG_GET_FLOW(msg, env);
+            return axis2_msg_get_flow(msg, env);
         }
     }
     return NULL;
@@ -739,7 +739,7 @@ axis2_op_set_fault_in_flow(axis2_op_t *op,
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN_FAULT);
         if (msg)
         {
-            return AXIS2_MSG_SET_FLOW(msg, env, list);
+            return axis2_msg_set_flow(msg, env, list);
         }
     }
     return AXIS2_FAILURE;
@@ -758,7 +758,7 @@ axis2_op_set_fault_out_flow(axis2_op_t *op,
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT_FAULT);
         if (msg)
         {
-            return AXIS2_MSG_SET_FLOW(msg, env, list);
+            return axis2_msg_set_flow(msg, env, list);
         }
     }
     return AXIS2_FAILURE;
@@ -778,7 +778,7 @@ axis2_op_set_out_flow(axis2_op_t *op,
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_OUT);
         if (msg)
         {
-            return AXIS2_MSG_SET_FLOW(msg, env, list);
+            return axis2_msg_set_flow(msg, env, list);
         }
     }
 
@@ -799,7 +799,7 @@ axis2_op_set_in_flow(axis2_op_t *op,
         msg = axis2_desc_get_child(op->base, env, AXIS2_MSG_IN);
         if (msg)
         {
-            return AXIS2_MSG_SET_FLOW(msg, env, list);
+            return axis2_msg_set_flow(msg, env, list);
         }
     }
     return AXIS2_FAILURE;

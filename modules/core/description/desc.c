@@ -83,7 +83,7 @@ axis2_desc_free(axis2_desc_t *desc,
 
             if (val)
             {
-                AXIS2_MSG_FREE((axis2_msg_t *)val, env);
+                axis2_msg_free((axis2_msg_t *)val, env);
             }
         }
 
