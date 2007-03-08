@@ -29,7 +29,7 @@ struct axis2_op
     axis2_msg_recv_t *msg_recv;
 
     int mep;
-    /* to store deploy time module QNames */
+    /* to store deploy time modules */
     axis2_array_list_t *module_qnames;
     axis2_array_list_t *engaged_module_list;
     axis2_array_list_t *wsamapping_list;
@@ -42,8 +42,7 @@ struct axis2_op
 };
 
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-axis2_op_create(
-    const axis2_env_t *env)
+axis2_op_create(const axis2_env_t *env)
 {
     axis2_op_t *op = NULL;
     axis2_msg_t *msg = NULL;
@@ -51,9 +50,9 @@ axis2_op_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     op = (axis2_op_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_op_t));
+        sizeof(axis2_op_t));
 
-    if (NULL == op)
+    if (!op)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -75,7 +74,7 @@ axis2_op_create(
 
     op->param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
-    if (NULL == op->param_container)
+    if (!op->param_container)
     {
         axis2_op_free(op, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -83,14 +82,14 @@ axis2_op_create(
     }
 
     op->base = axis2_desc_create(env);
-    if (NULL == op->base)
+    if (!op->base)
     {
         axis2_op_free(op, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    /* create and set up children messages */
+    /* Create and set up children messages */
     msg = axis2_msg_create(env);
     if (!msg)
     {
@@ -136,14 +135,13 @@ axis2_op_create(
     axis2_op_add_msg(op, env, AXIS2_MSG_OUT_FAULT, msg);
 
     axis2_op_set_msg_exchange_pattern(op, env,
-            (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
+        (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
 
     return op;
 }
 
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-axis2_op_create_from_module(
-    const axis2_env_t *env)
+axis2_op_create_from_module(const axis2_env_t *env)
 {
     axis2_op_t *op = NULL;
 
@@ -195,12 +193,10 @@ axis2_op_free(
     if (op->base)
     {
         axis2_desc_free(op->base, env);
-        op->base = NULL;
     }
     if (op->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
-        op->param_container = NULL;
     }
 
     op->parent = NULL;
@@ -208,7 +204,6 @@ axis2_op_free(
     if (op->msg_recv)
     {
         AXIS2_MSG_RECV_FREE(op->msg_recv, env);
-        op->msg_recv = NULL;
     }
     if (op->module_qnames)
     {
@@ -221,21 +216,17 @@ axis2_op_free(
             if (module_ref)
             {
                 AXIS2_QNAME_FREE(module_ref, env);
-                module_ref = NULL;
             }
         }
         axis2_array_list_free(op->module_qnames, env);
-        op->module_qnames = NULL;
     }
     if (op->engaged_module_list)
     {
         axis2_array_list_free(op->engaged_module_list, env);
-        op->engaged_module_list = NULL;
     }
     if (op->wsamapping_list)
     {
         axis2_array_list_free(op->wsamapping_list, env);
-        op->wsamapping_list = NULL;
     }
 
     if (op->qname)
@@ -256,15 +247,13 @@ axis2_op_free(
     if (op)
     {
         AXIS2_FREE(env->allocator, op);
-        op = NULL;
     }
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_free_void_arg(
-    void *op,
+axis2_op_free_void_arg(void *op,
     const axis2_env_t *env)
 {
     axis2_op_t *op_l = NULL;
@@ -276,8 +265,7 @@ axis2_op_free_void_arg(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_add_param(
-    axis2_op_t *op,
+axis2_op_add_param(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_param_t *param)
 {
@@ -291,48 +279,44 @@ axis2_op_add_param(
     if (AXIS2_TRUE == axis2_op_is_param_locked(op, env, param_name))
     {
         AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
+            AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     else
     {
         status = AXIS2_PARAM_CONTAINER_ADD_PARAM(op->param_container, env,
-                param);
+            param);
     }
 
     return status;
 }
 
 AXIS2_EXTERN axis2_param_t *AXIS2_CALL
-axis2_op_get_param(
-    const axis2_op_t *op,
+axis2_op_get_param(const axis2_op_t *op,
     const axis2_env_t *env,
     const axis2_char_t *param_name)
 {
     axis2_param_t *param = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param_name, NULL);
 
     param = AXIS2_PARAM_CONTAINER_GET_PARAM(op->param_container, env, param_name);
-    if (param == NULL && op->parent)
+    if (!param && op->parent)
+    {
         param = AXIS2_SVC_GET_PARAM(op->parent, env, param_name);
+    }
     return param;
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
-axis2_op_get_all_params(
-    const axis2_op_t *op,
+axis2_op_get_all_params(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-
     return AXIS2_PARAM_CONTAINER_GET_PARAMS(op->param_container, env);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_op_is_param_locked(
-    axis2_op_t *op,
+axis2_op_is_param_locked(axis2_op_t *op,
     const axis2_env_t *env,
     const axis2_char_t *param_name)
 {
@@ -343,7 +327,7 @@ axis2_op_is_param_locked(
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
-    /* checking the locked value of parent */
+    /* Checking the locked value of parent */
     parent = axis2_op_get_parent(op, env);
     if (parent)
     {
@@ -358,8 +342,7 @@ axis2_op_is_param_locked(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_parent(
-    axis2_op_t *op,
+axis2_op_set_parent(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_svc_t *svc)
 {
@@ -375,18 +358,14 @@ axis2_op_set_parent(
 }
 
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-axis2_op_get_parent(
-    const axis2_op_t *op,
+axis2_op_get_parent(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return op->parent;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_msg_recv(
-    axis2_op_t *op,
+axis2_op_set_msg_recv(axis2_op_t *op,
     const axis2_env_t *env,
     struct axis2_msg_recv *msg_recv)
 {
@@ -400,22 +379,18 @@ axis2_op_set_msg_recv(
     }
 
     op->msg_recv = msg_recv;
-
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN struct axis2_msg_recv *AXIS2_CALL
-            axis2_op_get_msg_recv(
-                const axis2_op_t *op,
-                const axis2_env_t *env)
+axis2_op_get_msg_recv(const axis2_op_t *op,
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return op->msg_recv;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_qname(
-    axis2_op_t *op,
+axis2_op_set_qname(axis2_op_t *op,
     const axis2_env_t *env,
     const axis2_qname_t *qname)
 {
@@ -426,27 +401,24 @@ axis2_op_set_qname(
         axis2_qname_free(op->qname, env);
         op->qname = NULL;
     }
-
-    if (qname)
-    {
+		
+	 if (qname)
+	 {
         op->qname = axis2_qname_clone((axis2_qname_t *)qname, env);
     }
-
+    
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
-axis2_op_get_qname(
-    void *op,
+axis2_op_get_qname(void *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return ((axis2_op_t *)op)->qname;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_msg_exchange_pattern(
-    axis2_op_t *op,
+axis2_op_set_msg_exchange_pattern(axis2_op_t *op,
     const axis2_env_t *env,
     const axis2_char_t *pattern)
 {
@@ -459,35 +431,26 @@ axis2_op_set_msg_exchange_pattern(
         op->msg_exchange_pattern = NULL;
     }
 
-    if (pattern)
-    {
-        op->msg_exchange_pattern = axis2_strdup(pattern, env);
-    }
+    op->msg_exchange_pattern = axis2_strdup(pattern, env);
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axis2_op_get_msg_exchange_pattern(
-    const axis2_op_t *op,
+axis2_op_get_msg_exchange_pattern(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return op->msg_exchange_pattern;
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-axis2_op_get_style(
-    const axis2_op_t *op,
+axis2_op_get_style(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return op->style;
 }
 
 AXIS2_EXTERN axis2_status_t  AXIS2_CALL
-axis2_op_set_style(
-    axis2_op_t *op,
+axis2_op_set_style(axis2_op_t *op,
     const axis2_env_t *env,
     const axis2_char_t *style)
 {
@@ -500,16 +463,12 @@ axis2_op_set_style(
         op->style = NULL;
     }
 
-    if (style)
-    {
-        op->style = axis2_strdup(style, env);
-    }
+    op->style = axis2_strdup(style, env);
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_engage_module(
-    axis2_op_t *op,
+axis2_op_engage_module(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_module_desc_t *moduleref,
     axis2_conf_t *conf)
@@ -527,7 +486,9 @@ axis2_op_engage_module(
 
     collection_module = op->engaged_module_list;
     if (collection_module)
+    {
         size = axis2_array_list_size(collection_module, env);
+    }
     if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return AXIS2_ERROR_GET_STATUS_CODE(env->error);
@@ -538,8 +499,8 @@ axis2_op_engage_module(
         const axis2_qname_t *qname1 = NULL;
         const axis2_qname_t *qname2 = NULL;
 
-        module_desc = (axis2_module_desc_t *) axis2_array_list_get(
-                    collection_module, env, index);
+        module_desc = (axis2_module_desc_t *) axis2_array_list_get(collection_module,
+            env, index);
         if (!module_desc)
         {
             return AXIS2_FAILURE;
@@ -548,7 +509,8 @@ axis2_op_engage_module(
         qname2 = axis2_module_desc_get_qname(moduleref, env);
         if (AXIS2_QNAME_EQUALS(qname1, env, qname2))
         {
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Module already engaged to operation");
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                "Module already engaged to operation");
             need_to_add = AXIS2_FALSE;
             return AXIS2_FAILURE;
         }
@@ -561,18 +523,14 @@ axis2_op_engage_module(
         axis2_status_t status = AXIS2_FAILURE;
 
         status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(pr, env,
-                op, moduleref);
+            op, moduleref);
         if (AXIS2_SUCCESS != status)
         {
             /* ignore the status */
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
         }
         module = axis2_module_desc_get_module(moduleref, env);
-        if (module)
-        {
-            /* notify module for service engagement */
-            /*AXIS2_MODULE_ENGAGE_NOTIFY(module, env, op); */
-        }
+        
         if (AXIS2_TRUE == need_to_add)
         {
             axis2_array_list_add(collection_module, env, moduleref);
@@ -587,8 +545,7 @@ axis2_op_engage_module(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_add_to_engaged_module_list(
-    axis2_op_t *op,
+axis2_op_add_to_engaged_module_list(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_module_desc_t *module_desc)
 {
@@ -615,36 +572,32 @@ axis2_op_add_to_engaged_module_list(
     {
         const axis2_qname_t *module_qname_l = NULL;
 
-        module_desc_l = (axis2_module_desc_t *) axis2_array_list_get(
-                    op->engaged_module_list, env, index);
+        module_desc_l = 
+            (axis2_module_desc_t *) axis2_array_list_get(op->engaged_module_list, env, index);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
+        
         if (AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
         {
             return AXIS2_SUCCESS;
         }
 
     }
+
     return axis2_array_list_add(op->engaged_module_list, env, module_desc);
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
-axis2_op_get_all_modules(
-    const axis2_op_t *op,
+axis2_op_get_all_modules(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return op->engaged_module_list;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_op_get_axis_specific_mep_const(
-    axis2_op_t *op,
+axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
     const axis2_env_t *env)
 {
     int temp = 0;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (op->mep != AXIS2_MEP_CONSTANT_INVALID)
     {
@@ -654,42 +607,42 @@ axis2_op_get_axis_specific_mep_const(
     temp = AXIS2_MEP_CONSTANT_INVALID;
 
     if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_OUT,
-            axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+        axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_OUT;
     }
     else if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_ONLY,
-            axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+        axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_ONLY;
     }
     else if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_OPTIONAL_OUT,
-            axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+        axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT;
     }
     else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_IN,
-            axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+        axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_IN;
     }
     else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_ONLY,
-            axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+        axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_ONLY;
     }
     else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_OPTIONAL_IN,
-            axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+        axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN;
     }
     else if (AXIS2_STRCMP(AXIS2_MEP_URI_ROBUST_IN_ONLY,
-            axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+        axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY;
     }
     else if (AXIS2_STRCMP(AXIS2_MEP_URI_ROBUST_OUT_ONLY,
-            axis2_op_get_msg_exchange_pattern(op, env)) == 0)
+        axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY;
     }
@@ -697,7 +650,7 @@ axis2_op_get_axis_specific_mep_const(
     if (temp == AXIS2_MEP_CONSTANT_INVALID)
     {
         AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT, AXIS2_FAILURE);
+            AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     op->mep = temp;
@@ -706,11 +659,9 @@ axis2_op_get_axis_specific_mep_const(
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
-axis2_op_get_fault_in_flow(
-    const axis2_op_t *op,
+axis2_op_get_fault_in_flow(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
@@ -725,11 +676,9 @@ axis2_op_get_fault_in_flow(
 
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
-axis2_op_get_fault_out_flow(
-    const axis2_op_t *op,
+axis2_op_get_fault_out_flow(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
@@ -744,11 +693,9 @@ axis2_op_get_fault_out_flow(
 
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
-axis2_op_get_out_flow(
-    const axis2_op_t *op,
+axis2_op_get_out_flow(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
@@ -763,11 +710,9 @@ axis2_op_get_out_flow(
 
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
-axis2_op_get_in_flow(
-    const axis2_op_t *op,
+axis2_op_get_in_flow(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     if (op->base)
     {
         axis2_msg_t *msg = NULL;
@@ -781,8 +726,7 @@ axis2_op_get_in_flow(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_fault_in_flow(
-    axis2_op_t *op,
+axis2_op_set_fault_in_flow(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list)
 {
@@ -802,8 +746,7 @@ axis2_op_set_fault_in_flow(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_fault_out_flow(
-    axis2_op_t *op,
+axis2_op_set_fault_out_flow(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list)
 {
@@ -822,8 +765,7 @@ axis2_op_set_fault_out_flow(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_out_flow(
-    axis2_op_t *op,
+axis2_op_set_out_flow(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list)
 {
@@ -844,8 +786,7 @@ axis2_op_set_out_flow(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_in_flow(
-    axis2_op_t *op,
+axis2_op_set_in_flow(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list)
 {
@@ -865,8 +806,7 @@ axis2_op_set_in_flow(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_add_module_qname(
-    axis2_op_t *op,
+axis2_op_add_module_qname(axis2_op_t *op,
     const axis2_env_t *env,
     const axis2_qname_t *module_qname)
 {
@@ -880,17 +820,14 @@ axis2_op_add_module_qname(
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
-axis2_op_get_all_module_qnames(
-    const axis2_op_t *op,
+axis2_op_get_all_module_qnames(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return op->module_qnames;
 }
 
 AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
-axis2_op_find_op_ctx(
-    axis2_op_t *op,
+axis2_op_find_op_ctx(axis2_op_t *op,
     const axis2_env_t *env,
     struct axis2_msg_ctx *msg_ctx,
     struct axis2_svc_ctx *svc_ctx)
@@ -904,7 +841,7 @@ axis2_op_find_op_ctx(
     AXIS2_PARAM_CHECK(env->error, svc_ctx, NULL);
 
     relates_to = AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env);
-    if (NULL == relates_to)
+    if (!relates_to)
     {
         op_ctx = axis2_op_ctx_create(env, op, svc_ctx);
         if (!op_ctx)
@@ -921,10 +858,10 @@ axis2_op_find_op_ctx(
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         value = axis2_relates_to_get_value(relates_to, env);
         op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
-        if (NULL == op_ctx)
+        if (!op_ctx)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG,
-                    AXIS2_FAILURE);
+                AXIS2_FAILURE);
             return NULL;
         }
     }
@@ -936,14 +873,15 @@ axis2_op_find_op_ctx(
         return NULL;
     }
     else
+    {
         return op_ctx;
+    }    
 }
 
 AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
-axis2_op_find_existing_op_ctx(
-    axis2_op_t *op,
+axis2_op_find_existing_op_ctx(axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx)
+    const axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_relates_to_t *relates_to = NULL;
@@ -958,7 +896,7 @@ axis2_op_find_existing_op_ctx(
     }
 
     relates_to = AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env);
-    if (NULL == relates_to)
+    if (!relates_to)
     {
         return NULL;
     }
@@ -969,10 +907,10 @@ axis2_op_find_existing_op_ctx(
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
 
-        if (NULL == op_ctx)
+        if (!op_ctx)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG,
-                    AXIS2_FAILURE);
+                AXIS2_FAILURE);
             return NULL;
         }
     }
@@ -982,8 +920,7 @@ axis2_op_find_existing_op_ctx(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_register_op_ctx(
-    axis2_op_t *op,
+axis2_op_register_op_ctx(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_op_ctx_t *op_ctx)
@@ -1026,8 +963,7 @@ axis2_op_register_op_ctx(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_add_msg_ctx_in_only(
-    axis2_op_t *op,
+axis2_op_add_msg_ctx_in_only(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_op_ctx_t *op_ctx)
@@ -1035,6 +971,7 @@ axis2_op_add_msg_ctx_in_only(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
+    
     if (AXIS2_TRUE != AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
     {
         axis2_msg_ctx_t **msg_ctxs = NULL;
@@ -1045,7 +982,7 @@ axis2_op_add_msg_ctx_in_only(
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-                AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -1053,8 +990,7 @@ axis2_op_add_msg_ctx_in_only(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_add_msg_ctx_out_only(
-    axis2_op_t *op,
+axis2_op_add_msg_ctx_out_only(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_op_ctx_t *op_ctx)
@@ -1073,7 +1009,7 @@ axis2_op_add_msg_ctx_out_only(
     else
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-                AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -1081,8 +1017,7 @@ axis2_op_add_msg_ctx_out_only(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_add_msg_ctx_in_out(
-    axis2_op_t *op,
+axis2_op_add_msg_ctx_in_out(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_op_ctx_t *op_ctx)
@@ -1098,13 +1033,14 @@ axis2_op_add_msg_ctx_in_out(
     mep = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
     in_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_IN];
     out_msg_ctx = mep[AXIS2_WSDL_MESSAGE_LABEL_OUT];
+    
     if (in_msg_ctx && NULL != out_msg_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-                AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    if (NULL == in_msg_ctx)
+    if (!in_msg_ctx)
     {
         mep[AXIS2_WSDL_MESSAGE_LABEL_IN] = msg_ctx;
     }
@@ -1117,8 +1053,7 @@ axis2_op_add_msg_ctx_in_out(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_add_msg_ctx_out_in(
-    axis2_op_t *op,
+axis2_op_add_msg_ctx_out_in(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_op_ctx_t *op_ctx)
@@ -1137,10 +1072,10 @@ axis2_op_add_msg_ctx_out_in(
     if (in_msg_ctx && NULL != out_msg_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
-                AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    if (NULL == out_msg_ctx)
+    if (!out_msg_ctx)
     {
         mep[AXIS2_WSDL_MESSAGE_LABEL_OUT] = msg_ctx;
     }
@@ -1153,20 +1088,17 @@ axis2_op_add_msg_ctx_out_in(
 }
 
 AXIS2_EXTERN axis2_msg_t *AXIS2_CALL
-axis2_op_get_msg(
-    const axis2_op_t *op,
+axis2_op_get_msg(const axis2_op_t *op,
     const axis2_env_t *env,
     const axis2_char_t *label)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, label, NULL);
 
     return (axis2_msg_t *)axis2_desc_get_child(op->base, env, label);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_add_msg(
-    axis2_op_t *op,
+axis2_op_add_msg(axis2_op_t *op,
     const axis2_env_t *env,
     const axis2_char_t *label,
     const axis2_msg_t *msg)
@@ -1178,8 +1110,7 @@ axis2_op_add_msg(
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_op_is_from_module(
-    const axis2_op_t *op,
+axis2_op_is_from_module(const axis2_op_t *op,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1187,8 +1118,7 @@ axis2_op_is_from_module(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_op_set_wsamapping_list(
-    axis2_op_t *op,
+axis2_op_set_wsamapping_list(axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *mapping_list)
 {
@@ -1205,8 +1135,7 @@ axis2_op_set_wsamapping_list(
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
-axis2_op_get_wsamapping_list(
-    axis2_op_t *op,
+axis2_op_get_wsamapping_list(axis2_op_t *op,
     const axis2_env_t *env)
 {
     return op->wsamapping_list;
@@ -1218,3 +1147,4 @@ axis2_op_get_param_container(const axis2_op_t *op,
 {
     return op->param_container;
 }
+
