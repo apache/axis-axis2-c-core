@@ -81,6 +81,7 @@ axis2_file_set_name(axis2_file_t *file,
     if (file->name)
     {
         AXIS2_FREE(env->allocator, file->name);
+        file->name = NULL;
     }
     file->name = AXIS2_STRDUP(name, env);
     if (!file->name)
@@ -110,15 +111,15 @@ axis2_file_set_path(axis2_file_t *file,
         axis2_char_t *path)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (NULL == path)
+    if (!path)
     {
-        /* path is optional */
         return AXIS2_SUCCESS;
     }
 
     if (file->path)
     {
         AXIS2_FREE(env->allocator, file->path);
+        file->path = NULL;
     }
     file->path = AXIS2_STRDUP(path, env);
     if (!(file->path))
@@ -148,7 +149,6 @@ axis2_file_set_timestamp(axis2_file_t *file,
         const axis2_env_t *env,
         AXIS2_TIME_T timestamp)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     file->timestamp = timestamp;
     return AXIS2_SUCCESS;
 }
