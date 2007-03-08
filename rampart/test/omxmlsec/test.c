@@ -99,7 +99,7 @@ axis2_status_t sign(axis2_env_t *env,
     /*We need C14N transform*/
     tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
     axis2_array_list_add(tr_list, env, tr);
-    oxs_sign_part_set_transforms(sign_part, env, tr_list);
+    /*oxs_sign_part_set_transforms(sign_part, env, tr_list);*/
 
     /*We need to sign this node add an ID to it*/
     node = axiom_node_get_first_element(tmpl, env);
@@ -127,8 +127,7 @@ axis2_status_t sign(axis2_env_t *env,
         oxs_sign_ctx_set_operation(sign_ctx, env, OXS_SIGN_OPERATION_SIGN);
         /*Sign*/
         oxs_xml_sig_sign(env, sign_ctx, tmpl, &sig_node);
-
-        /*Optional. Build KeyInfo*/
+        /*Finally build KeyInfo*/
         oxs_xml_key_info_build(env, sig_node, cert, OXS_KIBP_X509DATA_X509CERTIFICATE);
     }else{
         printf("Sign ctx creation failed");

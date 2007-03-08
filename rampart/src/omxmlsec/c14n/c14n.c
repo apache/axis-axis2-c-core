@@ -464,8 +464,8 @@ c14n_get_root_node(
     const c14n_ctx_t *ctx
     )
 {
-    const axiom_node_t *parent;
-    const axiom_node_t *prv_parent;
+    const axiom_node_t *parent = NULL;
+    const axiom_node_t *prv_parent = NULL;
 
     parent = node;
     while (parent)
