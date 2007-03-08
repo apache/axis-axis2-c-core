@@ -93,19 +93,19 @@ axis2_generic_obj_create(const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_GENERIC_OBJ_FREE(generic_obj, env) \
+#define  axis2_generic_obj_free(generic_obj, env) \
       ((generic_obj)->ops->free (generic_obj, env))
 
-#define AXIS2_GENERIC_OBJ_SET_FREE_FUNC(generic_obj, env, free_func) \
+#define axis2_generic_obj_set_free_func(generic_obj, env, free_func) \
       ((generic_obj)->ops->set_free_func (generic_obj, env, free_func))  
 
 #define AXIS2_GENERIC_OBJ_SET_SCOPE(generic_obj, env, scope) \
       ((generic_obj)->ops->set_scope (generic_obj, env, scope)) 
 
-#define AXIS2_GENERIC_OBJ_SET_VALUE(generic_obj, env, value) \
+#define  axis2_generic_obj_set_value(generic_obj, env, value) \
       ((generic_obj)->ops->set_value (generic_obj, env, value))
 
-#define AXIS2_GENERIC_OBJ_GET_VALUE(generic_obj, env) \
+#define  axis2_generic_obj_get_value(generic_obj, env) \
         ((generic_obj)->ops->get_value(generic_obj, env))
                                         
 /*************************** End of function macros ***************************/

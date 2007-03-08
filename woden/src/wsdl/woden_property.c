@@ -889,7 +889,7 @@ woden_property_set_value(
 
     if (property_impl->f_value)
     {
-        AXIS2_GENERIC_OBJ_FREE(property_impl->f_value, env);
+         axis2_generic_obj_free(property_impl->f_value, env);
         property_impl->f_value = NULL;
     }
     property_impl->f_value = value;

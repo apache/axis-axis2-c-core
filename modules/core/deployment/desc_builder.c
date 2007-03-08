@@ -665,8 +665,8 @@ set_attrs_and_value(
                 return AXIS2_FAILURE;
             }
             value = (axiom_attribute_t *) v;
-            AXIS2_GENERIC_OBJ_SET_VALUE(obj, env, value);
-            AXIS2_GENERIC_OBJ_SET_FREE_FUNC(obj, env,
+             axis2_generic_obj_set_value(obj, env, value);
+            axis2_generic_obj_set_free_func(obj, env,
                     axiom_attribute_free_void_arg);
             attr_qname = AXIOM_ATTRIBUTE_GET_QNAME(value, env);
             attr_name = AXIS2_QNAME_TO_STRING(attr_qname, env);

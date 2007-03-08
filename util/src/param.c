@@ -176,7 +176,7 @@ axis2_param_set_attributes(
                 i = axis2_hash_next(env, i))
         {
             axis2_hash_this(i, NULL, NULL, &v);
-            AXIS2_GENERIC_OBJ_FREE(v, env);
+             axis2_generic_obj_free(v, env);
         }
         axis2_hash_free(param->attrs, env);
     }
@@ -267,7 +267,7 @@ axis2_param_free(axis2_param_t *param,
                 i = axis2_hash_next(env, i))
         {
             axis2_hash_this(i, NULL, NULL, &v);
-            AXIS2_GENERIC_OBJ_FREE(v, env);
+             axis2_generic_obj_free(v, env);
         }
         axis2_hash_free(param->attrs, env);
     }

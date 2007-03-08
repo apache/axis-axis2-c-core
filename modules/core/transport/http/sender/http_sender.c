@@ -964,7 +964,7 @@ axis2_http_sender_configure_proxy(
             {
                 return AXIS2_FAILURE;
             }
-            host_attr = (axiom_attribute_t *)AXIS2_GENERIC_OBJ_GET_VALUE(obj,
+            host_attr = (axiom_attribute_t *) axis2_generic_obj_get_value(obj,
 																		 env);
             if (NULL == host_attr)
             {
@@ -980,7 +980,7 @@ axis2_http_sender_configure_proxy(
 
             obj = axis2_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
 								 AXIS2_HASH_KEY_STRING);
-            port_attr = (axiom_attribute_t*)AXIS2_GENERIC_OBJ_GET_VALUE(obj,
+            port_attr = (axiom_attribute_t*) axis2_generic_obj_get_value(obj,
 																		env);
             if (NULL == port_attr)
             {

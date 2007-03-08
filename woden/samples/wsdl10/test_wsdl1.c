@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
         {
             void *value = NULL;
 
-            value = AXIS2_GENERIC_OBJ_GET_VALUE(obj, env);
+            value =  axis2_generic_obj_get_value(obj, env);
             printf("Content is:\n");
         }
     }

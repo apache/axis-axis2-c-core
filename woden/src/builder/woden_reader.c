@@ -3732,8 +3732,8 @@ parse_property(
             /* The property value consists of the child info items of <value> */
             node_list = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(temp_el, env, temp_el_node);
             node_list_obj = axis2_generic_obj_create(env);
-            AXIS2_GENERIC_OBJ_SET_VALUE(node_list_obj, env, node_list);
-            AXIS2_GENERIC_OBJ_SET_FREE_FUNC(node_list_obj, env, node_list->ops->free_fn);
+             axis2_generic_obj_set_value(node_list_obj, env, node_list);
+            axis2_generic_obj_set_free_func(node_list_obj, env, node_list->ops->free_fn);
             property = woden_property_to_property_element(property, env);
             WODEN_PROPERTY_ELEMENT_SET_VALUE(property, env, node_list_obj);
         }

@@ -273,7 +273,7 @@ woden_qname_list_or_token_any_attr_is_qname_list(
 
     content = WODEN_XML_ATTR_GET_CONTENT(list_token_attr_impl->xml_attr,
             env);
-    if (AXIS2_QNAME_LIST == AXIS2_GENERIC_OBJ_GET_TYPE(content, env))
+    if (AXIS2_QNAME_LIST ==  axis2_generic_obj_get_type(content, env))
         return AXIS2_TRUE;
     return AXIS2_FALSE;
 }

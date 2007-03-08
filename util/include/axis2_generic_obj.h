@@ -72,26 +72,6 @@ extern "C"
         const axis2_env_t *env);
 
 
-#define AXIS2_GENERIC_OBJ_FREE(generic_obj, env) \
-      axis2_generic_obj_free (generic_obj, env)
-
-#define AXIS2_GENERIC_OBJ_SET_FREE_FUNC(generic_obj, env, free_func) \
-      axis2_generic_obj_set_free_func (generic_obj, env, free_func)
-
-#define AXIS2_GENERIC_OBJ_SET_VALUE(generic_obj, env, value) \
-      axis2_generic_obj_set_value (generic_obj, env, value)
-
-#define AXIS2_GENERIC_OBJ_GET_VALUE(generic_obj, env) \
-        axis2_generic_obj_get_value(generic_obj, env)
-
-#define AXIS2_GENERIC_OBJ_SET_TYPE(generic_obj, env, type) \
-      axis2_generic_obj_set_type (generic_obj, env, type)
-
-#define AXIS2_GENERIC_OBJ_GET_TYPE(generic_obj, env) \
-        axis2_generic_obj_get_type(generic_obj, env)
-
-    /** @} */
-
 #ifdef __cplusplus
 }
 #endif
