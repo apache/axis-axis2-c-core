@@ -28,10 +28,6 @@
  * @{
  */
 
-/**
-  * @file axis2_msg.h
-  */
-
 #include <axis2_param_container.h>
 #include <axis2_op.h>
 #include <axis2_array_list.h>
@@ -51,6 +47,14 @@ extern "C"
 
     /** Type name for struct axis2_msg */ 
     typedef struct axis2_msg axis2_msg_t;
+
+    /**
+     * Creates message struct instance.
+     * @param env pointer to environment struct
+     * @return pointer to newly created message
+     */
+    AXIS2_EXTERN axis2_msg_t *AXIS2_CALL
+    axis2_msg_create(const axis2_env_t *env);
 
     /** 
      * Frees message.
@@ -225,26 +229,6 @@ extern "C"
     axis2_msg_set_name(axis2_msg_t *msg,
         const axis2_env_t *env,
         const axis2_char_t *name);
-
-    /** 
-     * Gets XML schema element associated with the message.
-     * @param msg pointer to message
-     * @param env pointer to environment struct
-     * @return pointer to XML schema element, returns a reference, not 
-     * a cloned copy
-     */
-    /*xml_schema_element_t *AXIS2_CALL
-    axis2_msg_get_schema_element(const axis2_msg_t *msg,
-        const axis2_env_t *env);*/
-
-    /**
-     * Creates message struct instance.
-     * @param env pointer to environment struct
-     * @return pointer to newly created message
-     */
-    AXIS2_EXTERN axis2_msg_t *AXIS2_CALL
-    axis2_msg_create(const axis2_env_t *env);
-
 
 /** @} */
 #ifdef __cplusplus
