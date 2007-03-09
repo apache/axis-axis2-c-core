@@ -79,8 +79,8 @@ extern "C"
          */
 
         int(AXIS2_CALL *
-                next)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            next)(axiom_xml_reader_t *parser,
+                const axis2_env_t *env);
 
         /**
         * free pull_parser
@@ -90,8 +90,8 @@ extern "C"
         */
 
         axis2_status_t(AXIS2_CALL *
-                free)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            free)(axiom_xml_reader_t *parser,
+                const axis2_env_t *env);
         /**
          * Get the Number of attributes in the current element 
          * @param parser axiom_xml_reader  
@@ -100,8 +100,8 @@ extern "C"
          */
 
         int(AXIS2_CALL *
-                get_attribute_count)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            get_attribute_count)(axiom_xml_reader_t *parser,
+                const axis2_env_t *env);
 
 
         /** This is used to get an attribute's localname using an index relative to
@@ -114,9 +114,9 @@ extern "C"
           *          caller must free the value using AXIOM_XML_READER_XML_FREE macro       
           */
         axis2_char_t*(AXIS2_CALL *
-                get_attribute_name_by_number)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env,
-                        int i);
+            get_attribute_name_by_number)(axiom_xml_reader_t *parser,
+                const axis2_env_t *env,
+                int i);
 
         /** This is used to get an attribute's prefix using an index relative to
           * current element. The iterations are not zero based. 
@@ -129,11 +129,11 @@ extern "C"
           */
 
         axis2_char_t*(AXIS2_CALL *
-                get_attribute_prefix_by_number)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env,
-                        int i);
+            get_attribute_prefix_by_number)(axiom_xml_reader_t *parser,
+                const axis2_env_t *env,
+                int i);
 
-        /** get an attribute's value using an index relative to
+        /** Gets an attribute's value using an index relative to
          * current element. The iterations are not zero based. 
          * To access the first attribute use 1 for parameter i
          * @param parser parser struct 
@@ -144,11 +144,11 @@ extern "C"
          */
 
         axis2_char_t*(AXIS2_CALL *
-                get_attribute_value_by_number)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env,
-                        int i);
+            get_attribute_value_by_number)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env,
+                 int i);
 
-        /** get an attribute's namespace uri using an index relative to
+        /** Gets an attribute's namespace uri using an index relative to
          * current element. The iterations are not zero based. 
          * To access the first attribute use 1 for parameter i
          * @param parser parser struct 
@@ -159,20 +159,19 @@ extern "C"
          */
 
         axis2_char_t*(AXIS2_CALL *
-                get_attribute_namespace_by_number)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env,
-                        int i);
+            get_attribute_namespace_by_number)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env,
+                 int i);
 
-        /** returns the text value of current element
+        /** Returns the text value of current element
           * @param parser pointer to parser
           * @param env environment, MUST not be NULL
           * @returns Text Value, NULL on error 
           *          caller must free the value using AXIOM_XML_READER_XML_FREE macro 
           */
-
         axis2_char_t*(AXIS2_CALL *
-                get_value)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            get_value)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env);
 
         /**
          * Returns the namespace count of current element 
@@ -181,23 +180,23 @@ extern "C"
          * @returns namespace count of current element,
          */
         int(AXIS2_CALL *
-                get_namespace_count)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            get_namespace_count)(axiom_xml_reader_t *parser,
+                const axis2_env_t *env);
         /**
-         * access the namespace uri of the namespaces declared in current element 
+         * Accesses the namespace uri of the namespaces declared in current element 
          * using an index 
          * @param parser parser struct 
          * @param env environment 
          * @param i index
-         * @returns namespace uri of corresponding namespace 
-         *          caller must free the value using AXIOM_XML_READER_XML_FREE macro        
+         * @returns namespace uri of corresponding namespace
+         * caller must free the value using AXIOM_XML_READER_XML_FREE macro        
          */
         axis2_char_t*(AXIS2_CALL *
-                get_namespace_uri_by_number)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env,
-                        int i);
+            get_namespace_uri_by_number)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env,
+                 int i);
         /**
-         * access the namespace prefix of the namespaces declared in current element 
+         * Accesses the namespace prefix of the namespaces declared in current element 
          * using an index 
          * @param parser parser struct 
          * @param env environment 
@@ -206,9 +205,10 @@ extern "C"
          * caller must free the value using AXIOM_XML_READER_XML_FREE macro        
          */
         axis2_char_t*(AXIS2_CALL *
-                get_namespace_prefix_by_number)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env,
-                        int i);
+            get_namespace_prefix_by_number)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env,
+                 int i);
+
         /**
          * Used to obtain the current element prefix
          * @param parser parser struct 
@@ -216,55 +216,54 @@ extern "C"
          * @returns prefix , NULL on error 
          * caller must free the value using AXIOM_XML_READER_XML_FREE macro
          */
-
         axis2_char_t*(AXIS2_CALL *
-                get_prefix)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            get_prefix)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env);
+
         /**
-         *  Used to obtain the current element localname
+         * Used to obtain the current element localname
          * @param parser parser struct 
          * @param env environment struct
          * @returns localname , NULL on error 
          *          caller must free the value using AXIOM_XML_READER_XML_FREE macro
          */
         axis2_char_t*(AXIS2_CALL *
-                get_name)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            get_name)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env);
+
         /**
          * Used to get the processingInstruction target
          * @param parser parser struct
          * @param env environment, MUST NOT be NULL.
          * @returns target value of processingInstruction
-         *          caller must free the value using AXIOM_XML_READER_XML_FREE macro
+         * caller must free the value using AXIOM_XML_READER_XML_FREE macro
          */
-
-
-
         axis2_char_t*(AXIS2_CALL *
-                get_pi_target)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+             get_pi_target)(axiom_xml_reader_t *parser,
+                  const axis2_env_t *env);
+
         /**
-         *  gets the processingInstruction data
-         *@param parser parser struct
-         *@param env environment, MUST NOT be NULL.
-         *@returns data of processingInstruction
-         *          caller must free the value using AXIOM_XML_READER_XML_FREE macro
+         * Gets the processingInstruction data
+         * @param parser parser struct
+         * @param env environment, MUST NOT be NULL.
+         * @returns data of processingInstruction
+         * caller must free the value using AXIOM_XML_READER_XML_FREE macro
          */
-
-
         axis2_char_t*(AXIS2_CALL *
-                get_pi_data)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            get_pi_data)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env);
+
         /**
-         *  used to get the DTD 
+         * Used to get the DTD 
          * @param parser pointer to pull parser struct
          * @param env environment, MUST NOT be NULL.
          * @return text of doctype declaration. NULL is returns of no data 
-         *         exists.
+         * exists.
          */
         axis2_char_t*(AXIS2_CALL *
-                get_dtd)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            get_dtd)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env);
+
         /**
          *  Free function , this function wraps the underlying parser's 
          *  xml free function. For freeing values obatined by calling
@@ -273,34 +272,33 @@ extern "C"
          * @param env environment, MUST NOT be NULL.
          * @param data data values to be destroyed
          * @return status of the op, AXIS2_SUCCESS on success,
-         *                  AXIS2_FAILURE on error.
+         * AXIS2_FAILURE on error.
          */
         axis2_status_t(AXIS2_CALL *
-                xml_free)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env,
-                        void *data);
+            xml_free)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env,
+                 void *data);
 
         /**
-         * get the char set encoding of the parser 
+         * Gets the char set encoding of the parser 
          * @param parser xml parser
          * @param env environment
          * @returns char set encoding string or NULL in failure
          */
 
         axis2_char_t*(AXIS2_CALL *
-                get_char_set_encoding)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
-        /** returns the namespace uri associated with current node */
+            get_char_set_encoding)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env);
+
+        /** Returns the namespace uri associated with current node */
         axis2_char_t*(AXIS2_CALL *
-                get_namespace_uri)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env);
+            get_namespace_uri)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env);
 
         axis2_char_t*(AXIS2_CALL *
-                get_namespace_uri_by_prefix)(axiom_xml_reader_t *parser,
-                        const axis2_env_t *env,
-                        axis2_char_t *prefix);
-
-
+            get_namespace_uri_by_prefix)(axiom_xml_reader_t *parser,
+                 const axis2_env_t *env,
+                 axis2_char_t *prefix);
     };
 
     /**
@@ -313,18 +311,18 @@ extern "C"
     };
 
     /**
-     * create an instance of axiom_xml_reader to parse
+     * Creates an instance of axiom_xml_reader to parse
      * a file using an xml document in a file system
      * @param env environment struct, must not be null
      * @param filename url of an xml document
      * @returns a pointer to xml_pull_parser_t struct
-     *          NULL on error with error code set in the environment's error
+     * NULL on error with error code set in the environment's error
      */
-
-    AXIS2_EXTERN axiom_xml_reader_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
     axiom_xml_reader_create_for_file(const axis2_env_t *env,
-            char *filename,
-            const axis2_char_t *encoding);
+        char *filename,
+        const axis2_char_t *encoding);
+
     /**
      * This create an instance of axiom_xml_reader to
      * parse a xml document in a buffer. It takes a callback
@@ -335,38 +333,36 @@ extern "C"
      * buffer on the fly while parsing.
      * @param env environment MUST NOT be NULL.
      * @param read_input_callback() callback function that fills
-     *         a char buffer with size @size
-     *         @param buffer a character buffer
-     *         @param size size of the buffer to be filled
+     * a char buffer with size @size
+     * @param buffer a character buffer
+     * @param size size of the buffer to be filled
      * @param encoding encoding scheme of the xml stream
      */
-
-    AXIS2_EXTERN axiom_xml_reader_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
     axiom_xml_reader_create_for_io(const axis2_env_t *env,
-            AXIS2_READ_INPUT_CALLBACK,
-            AXIS2_CLOSE_INPUT_CALLBACK,
-            void *ctx,
-            const axis2_char_t *encoding);
+        AXIS2_READ_INPUT_CALLBACK,
+        AXIS2_CLOSE_INPUT_CALLBACK,
+        void *ctx,
+        const axis2_char_t *encoding);
 
     /**
-     * create an axiom_xml_reader_t using a buffer, which is the xml input
+     * Create an axiom_xml_reader_t using a buffer, which is the xml input
      * @param env environment, MUST not be NULL
      * @param buffer xml input string in a char buffer
      * @param size size of the @buffer
      * @param encoding encoding of the xml
      * @return pointer to axiom_xml_reader_t struct on success , NULL otherwise
      */
-    AXIS2_EXTERN axiom_xml_reader_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
     axiom_xml_reader_create_for_memory(const axis2_env_t *env,
-            void *container,
-            int size,
-            const axis2_char_t *encoding,
-            int type);
+        void *container,
+        int size,
+        const axis2_char_t *encoding,
+        int type);
 
     /**
      * init function initializes the parser
      */
-
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_xml_reader_init();
 
