@@ -176,7 +176,7 @@ void init_event_source(axis2_env_t* env, axis2_char_t *home)
         printf("Error creating service client\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Client invoke failed: Error code:"
                   " %d :: %s", env->error->error_number,
-                        axis2_error_get_message(env->error));
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
     }
 
     /* Set service client options */
@@ -201,7 +201,7 @@ void init_event_source(axis2_env_t* env, axis2_char_t *home)
     else
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-            " %d :: %s", env->error->error_number, axis2_error_get_message(env->error));
+            " %d :: %s", env->error->error_number, AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("\nPublisher init failed\n");
     }
 }
