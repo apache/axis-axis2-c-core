@@ -41,7 +41,7 @@
 #include <oxs_token_reference_list.h>
 #include <axis2_utils.h>
 #include <axis2_array_list.h>
-
+#include <rampart_signature.h>
 /*Private functions*/
 axis2_status_t AXIS2_CALL
 rampart_interchange_nodes(const axis2_env_t *env,
