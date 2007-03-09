@@ -43,6 +43,21 @@
 #include <axis2_array_list.h>
 
 /*Private functions*/
+axis2_status_t AXIS2_CALL
+rampart_interchange_nodes(const axis2_env_t *env,
+    axiom_node_t *node_to_move,
+    axiom_node_t *node_before)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+
+    axiom_node_t *temp_node = NULL;
+
+    temp_node = axiom_node_detach(node_to_move,env);
+    status = axiom_node_insert_sibling_before(node_before,env,temp_node);
+
+    return status;
+}
+
 
 
 /*Public functions*/
@@ -63,6 +78,9 @@ rampart_shb_build_message(const axis2_env_t *env,
     axiom_namespace_t *sec_ns_obj = NULL;
     axiom_node_t *sec_node =  NULL;
     axiom_element_t *sec_ele = NULL;
+    axis2_bool_t is_encrypt_before_sign = AXIS2_FALSE;
+    axiom_node_t *sig_node = NULL;        
+    axiom_node_t *enc_key_node = NULL;
 
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);    
     soap_header  = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
@@ -144,27 +162,59 @@ rampart_shb_build_message(const axis2_env_t *env,
         /*Check the encryption and signature order*/
         if(rampart_context_is_encrypt_before_sign(rampart_context,env))
         {
+            is_encrypt_before_sign = AXIS2_TRUE;
             /*Check what are the parts to encrypt and send them to the encrypt method*/
             status = rampart_enc_encrypt_message(env, msg_ctx,rampart_context,soap_envelope,sec_node);
-            if(!status)            
+            if(status != AXIS2_SUCCESS)            
                 return AXIS2_FAILURE;       
             
             /*Then do signature specific things*/
-            /*status = rampart_sig_sign_message(env,msg_ctx,rampart_context,soap_envelope,sec_node);*/
+            status = rampart_sig_sign_message(env,msg_ctx,rampart_context,soap_envelope,sec_node);
+            if(status != AXIS2_SUCCESS)
+                return AXIS2_FAILURE;
 
             /*Then Handle Supporting token stuff  */
         }  
         else
         {
+            is_encrypt_before_sign = AXIS2_FALSE;
             /*First do signature specific stuff*/
+            status = rampart_sig_sign_message(env,msg_ctx,rampart_context,soap_envelope,sec_node);
+            if(status != AXIS2_SUCCESS)
+                return AXIS2_FAILURE;
             
             /*Then Handle Encryption stuff*/
             
             status = rampart_enc_encrypt_message(env, msg_ctx,rampart_context,soap_envelope,sec_node);
-            if(!status)
+            if(status!=AXIS2_SUCCESS )
                 return AXIS2_FAILURE;
         }            
 
+            /*If both encryption and signature is done we should intercgange them.
+             * because the action done last should appear first in the header. */
+        sig_node = oxs_axiom_get_node_by_local_name(env,sec_node,OXS_NODE_SIGNATURE);
+        enc_key_node = oxs_axiom_get_node_by_local_name(env,sec_node,OXS_NODE_ENCRYPTED_KEY);
+        if(sig_node && enc_key_node)
+        {
+            if(is_encrypt_before_sign)
+            {
+                status = rampart_interchange_nodes(env,sig_node,enc_key_node);
+                if(status!=AXIS2_SUCCESS)
+                {
+                    AXIS2_LOG_INFO(env->log,"[rampart][shb]Node interchange failed.");
+                    return status;
+                }
+            }
+            else
+            {
+                status = rampart_interchange_nodes(env,enc_key_node,sig_node);
+                if(status!=AXIS2_SUCCESS)
+                {
+                    AXIS2_LOG_INFO(env->log,"[rampart][shb]Node interchange failed.");
+                    return status;
+                }
+            }
+        }            
         return AXIS2_SUCCESS;        
     }
     else if((rampart_context_get_binding_type(rampart_context,env)) == RP_BINDING_SYMMETRIC)
