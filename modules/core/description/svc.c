@@ -1123,7 +1123,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(
         extensiblity_elements = AXIS2_WSDL_COMPONENT_GET_EXTENSIBILITY_ELEMENTS(
                     binding_op->extensible_component->wsdl_component, env);
 
-        size = AXIS2_LINKED_LIST_SIZE(extensiblity_elements, env);
+        size = axis2_linked_list_size(extensiblity_elements, env);
         status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
         if (AXIS2_SUCCESS != status)
         {
@@ -1133,7 +1133,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(
         {
             axis2_qname_t *type_2 = NULL;
 
-            element = (axis2_wsdl_soap_op_t *) AXIS2_LINKED_LIST_GET(
+            element = (axis2_wsdl_soap_op_t *) axis2_linked_list_get(
                         extensiblity_elements, env, j);
 
             type_2 = AXIS2_WSDL_EXTENSIBLE_ELEMENT_GET_TYPE(element->
