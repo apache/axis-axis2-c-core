@@ -1181,7 +1181,7 @@ parse_schema_inline(
      */
     schema_def = XML_SCHEMA_COLLECTION_READ_ELEMENT_WITH_URI(xsc,
             env, schema_el_node, base_uri_str);
-    if (AXIS2_SUCCESS != axis2_error_get_status_code(env->error))
+    if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return NULL;
     }
@@ -1291,7 +1291,7 @@ parse_schema_import(
     uri = WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env);
     schema_loc = AXIS2_URI_TO_STRING(uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     uri = axis2_uri_parse_relative(env, context_uri, schema_loc);
-    if (AXIS2_SUCCESS != axis2_error_get_status_code(env->error))
+    if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         void *base_schema = NULL;
 
@@ -1323,7 +1323,7 @@ parse_schema_import(
         imported_schema_doc = axiom_document_create(env, NULL, xml_builder);
         schema_def = XML_SCHEMA_COLLECTION_READ_DOCUMENT(schema_col,
                 env, imported_schema_doc);
-        if (AXIS2_SUCCESS != axis2_error_get_status_code(env->error))
+        if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
             void *base_schema = NULL;
 
@@ -3641,7 +3641,7 @@ parse_ext_attributes(
     {
         /* If no error condition occured then this will return
          */
-        if (AXIS2_SUCCESS != axis2_error_get_status_code(env->error))
+        if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
             return AXIS2_FAILURE;
         else
             return AXIS2_SUCCESS;
@@ -3813,7 +3813,7 @@ get_wsdl_from_location(
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
     context_uri = WODEN_WSDL10_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
     location_uri = axis2_uri_parse_relative(env, context_uri, location_uri_str);
-    if (AXIS2_SUCCESS != axis2_error_get_status_code(env->error))
+    if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         /* Can't continue import with a bad URL.*/
         return NULL;
@@ -3837,7 +3837,7 @@ get_wsdl_from_location(
         builder = axiom_stax_builder_create(env, xml_reader);
         doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, env);
         doc_el_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(doc, env);
-        if (AXIS2_SUCCESS != axis2_error_get_status_code(env->error))
+        if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
             /* Cannot contine without the referenced document */
             return NULL;
