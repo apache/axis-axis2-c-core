@@ -35,8 +35,7 @@
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 load_sample_xml(const axis2_env_t *env,
         axiom_node_t* tmpl,
-        axis2_char_t* filename
-               )
+        axis2_char_t* filename)
 {
 
     axiom_document_t *doc = NULL;
@@ -66,7 +65,8 @@ oxs_key_t *create_key(axis2_env_t *env)
     return key;
 }
 
-axis2_status_t decrypt(axis2_env_t *env,  axis2_char_t *filename)
+axis2_status_t 
+decrypt(axis2_env_t *env,  axis2_char_t *filename)
 {
     oxs_ctx_t *ctx = NULL;
     axiom_node_t *tmpl = NULL;
@@ -87,7 +87,7 @@ axis2_status_t decrypt(axis2_env_t *env,  axis2_char_t *filename)
     OXS_CTX_SET_KEY(ctx, env, key);
 
     /*Get the EncryptedData node*/
-    enc_data_node = AXIOM_NODE_GET_FIRST_CHILD(tmpl, env);
+    enc_data_node = axiom_node_get_first_element(tmpl, env);
     temp_status = oxs_xml_enc_decrypt_node(env, ctx, enc_data_node, &decrypted_node);
 
     if (temp_status){
@@ -102,10 +102,9 @@ axis2_status_t decrypt(axis2_env_t *env,  axis2_char_t *filename)
     return AXIS2_SUCCESS;
 }
 
-int main(int argc, char *argv[])
+axis2_status_t 
+encrypt(axis2_env_t *env,  axis2_char_t *filename)
 {
-    axis2_env_t *env = NULL;
-    axis2_char_t *filename = "input.xml";
     oxs_ctx_t *ctx = NULL;
     oxs_key_t *key = NULL;
     axis2_status_t temp_status = AXIS2_FAILURE;
@@ -113,24 +112,9 @@ int main(int argc, char *argv[])
     axis2_char_t *encrypted_result = NULL;
     axis2_char_t *id = NULL;
     FILE *outf;
-
-    env = axis2_env_create_all("enc.log", AXIS2_LOG_LEVEL_TRACE);
-    printf("--Testing started--------------------------------------------\n");
-
-    if (argc > 1)
-        filename = argv[1];
-
+    
     tmpl = load_sample_xml(env , tmpl, filename);
 
-    if (tmpl)
-    {
-        printf("load_sample_xml SUCCESS\n");
-    }
-    else
-    {
-        printf("load_sample_xml FAILED");
-        return -1;
-    }
     /*Create key*/
     key = create_key(env);
    
@@ -142,31 +126,50 @@ int main(int argc, char *argv[])
     OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HREF_DES3_CBC);
 
     /*Get the node to be encrypted*/
-    enc_node = AXIOM_NODE_GET_FIRST_CHILD(tmpl, env);
+    enc_node = axiom_node_get_first_element(tmpl, env);
 
     /*Create a reference to encrypted node*/
     id =  oxs_util_generate_id(env, OXS_ENCDATA_ID);
     enc_data_node =  oxs_token_build_encrypted_data_element(env, tmpl, OXS_TYPE_ENC_ELEMENT, id); 
-    /*Encrypt***************************************************/
 
     temp_status = oxs_xml_enc_encrypt_node(env, ctx,  enc_node, &enc_data_node);
 
-    if (temp_status)
-    {
+    if (temp_status){
         printf("\noxs_enc_encrypt_template SUCCESS\n");
-    }
-    else
-    {
+    }else{
         printf("\noxs_enc_encrypt_template FAILURE\n");
     }
 
     encrypted_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
-    /*printf("Final template is\n %s  ", encrypted_result);*/
 
     outf = fopen("result.xml", "wb");
     fwrite(encrypted_result, 1, AXIS2_STRLEN(encrypted_result), outf);
     fclose(outf);
-    /*Decrypt**********************************************/
-    /*decrypt(env, "result.xml");*/
+    printf("Node encrypted successfully. Result is written to result.xml\n");
+    return temp_status;
+}
+
+int main(int argc, char *argv[])
+{
+    axis2_env_t *env = NULL;
+    axis2_char_t *filename = NULL;
+    axis2_char_t *operation = NULL;
+
+    env = axis2_env_create_all("enc.log", AXIS2_LOG_LEVEL_TRACE);
+
+    if (argc > 2){
+        filename = argv[1];
+        operation = argv[2];
+    }else{
+        printf("Usage ./enc inputfile operation[E/D]\n");
+        return -1;
+    }
+   
+    if( 0 == axis2_strcmp(operation, "D")){
+        decrypt(env, filename);
+    }else{
+        encrypt(env, filename);
+    }
+    
     return 0;
 }
