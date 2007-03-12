@@ -25,8 +25,10 @@ struct rampart_context_t
     axiom_node_t *policy_node;
     void *prv_key;
     axis2_key_type_t prv_key_type;
-    void *pub_key;
-    axis2_key_type_t pub_key_type;
+    void *certificate;
+    axis2_key_type_t certificate_type;
+    void *receiver_certificate;
+    axis2_key_type_t receiver_certificate_type;
     axis2_char_t *user;
     axis2_char_t *password;
     axis2_char_t *prv_key_password;
@@ -123,8 +125,10 @@ rampart_context_create(const axis2_env_t *env)
     rampart_context->policy_node = NULL;
     rampart_context->prv_key = NULL;
     rampart_context->prv_key_type = 0;
-    rampart_context->pub_key = NULL;
-    rampart_context->pub_key_type = 0;
+    rampart_context->certificate = NULL;
+    rampart_context->certificate_type = 0;
+    rampart_context->receiver_certificate = NULL;
+    rampart_context->receiver_certificate_type = 0;
     rampart_context->user = 0;
     rampart_context->password = NULL;
     rampart_context->prv_key_password = NULL;
@@ -203,26 +207,50 @@ rampart_context_set_prv_key_type(rampart_context_t *rampart_context,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_context_set_pub_key(rampart_context_t *rampart_context,
+rampart_context_set_certificate(rampart_context_t *rampart_context,
             const axis2_env_t *env,
-            void *pub_key)
+            void *certificate)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error,pub_key,AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error,certificate,AXIS2_FAILURE);
 
-    rampart_context->pub_key = pub_key;
+    rampart_context->certificate = certificate;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_context_set_pub_key_type(rampart_context_t *rampart_context,
+rampart_context_set_certificate_type(rampart_context_t *rampart_context,
             const axis2_env_t *env,
             axis2_key_type_t type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,type,AXIS2_FAILURE);
 
-    rampart_context->pub_key_type = type;
+    rampart_context->certificate_type = type;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_context_set_receiver_certificate(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            void *receiver_certificate)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error,receiver_certificate,AXIS2_FAILURE);
+
+    rampart_context->receiver_certificate = receiver_certificate;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_context_set_receiver_certificate_type(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axis2_key_type_t type)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error,type,AXIS2_FAILURE);
+
+    rampart_context->receiver_certificate_type = type;
     return AXIS2_SUCCESS;
 }
 
@@ -342,24 +370,47 @@ rampart_context_get_prv_key_type(
 }
 
 AXIS2_EXTERN void *AXIS2_CALL
-rampart_context_get_pub_key(
+rampart_context_get_certificate(
             rampart_context_t *rampart_context,
             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    return rampart_context->pub_key;
+    return rampart_context->certificate;
 }
 
 AXIS2_EXTERN axis2_key_type_t AXIS2_CALL
-rampart_context_get_pub_key_type(
+rampart_context_get_certificate_type(
             rampart_context_t *rampart_context,
             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    return rampart_context->pub_key_type;
+    return rampart_context->certificate_type;
 }
+
+
+AXIS2_EXTERN void *AXIS2_CALL
+rampart_context_get_receiver_certificate(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+
+    return rampart_context->receiver_certificate;
+}
+
+AXIS2_EXTERN axis2_key_type_t AXIS2_CALL
+rampart_context_get_receiver_certificate_type(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    return rampart_context->receiver_certificate_type;
+}
+
+
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rampart_context_get_user(
@@ -1497,8 +1548,6 @@ rampart_context_get_asym_sig_algo(
         return NULL;
 }
 
-
-
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rampart_context_get_digest_mtd(
     rampart_context_t *rampart_context,
@@ -1517,7 +1566,7 @@ rampart_context_get_digest_mtd(
 
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-rampart_context_get_public_key_file(
+rampart_context_get_certificate_file(
     rampart_context_t *rampart_context,
     const axis2_env_t *env)
 {
@@ -1526,11 +1575,28 @@ rampart_context_get_public_key_file(
     rampart_config = rp_secpolicy_get_rampart_config(rampart_context->secpolicy,env);
     if(rampart_config)
     {
-        return rp_rampart_config_get_public_key_file(rampart_config,env);
+        return rp_rampart_config_get_certificate_file(rampart_config,env);
     }
     else
         return NULL;
 }
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rampart_context_get_receiver_certificate_file(
+    rampart_context_t *rampart_context,
+    const axis2_env_t *env)
+{
+    rp_rampart_config_t *rampart_config = NULL;
+
+    rampart_config = rp_secpolicy_get_rampart_config(rampart_context->secpolicy,env);
+    if(rampart_config)
+    {
+        return rp_rampart_config_get_receiver_certificate_file(rampart_config,env);
+    }
+    else
+        return NULL;
+}
+
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rampart_context_get_private_key_file(

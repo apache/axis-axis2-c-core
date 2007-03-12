@@ -146,17 +146,30 @@ rp_rampart_config_builder_populate(
             return AXIS2_FAILURE;
     }
 
-    else if(AXIS2_STRCMP(local_name,RP_PUBLIC_KEY)==0)
+    else if(AXIS2_STRCMP(local_name,RP_CERTIFICATE)==0)
     {
-        if(rp_match_rampart_config_qname(env,RP_PUBLIC_KEY,node,element))
+        if(rp_match_rampart_config_qname(env,RP_CERTIFICATE,node,element))
         {
-            axis2_char_t *public_key_file = NULL;
-            public_key_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
-            return rp_rampart_config_set_public_key_file(rampart_config,env,public_key_file);
+            axis2_char_t *certificate_file = NULL;
+            certificate_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            return rp_rampart_config_set_certificate_file(rampart_config,env,certificate_file);
         }
         else
             return AXIS2_FAILURE;
     }
+
+    else if(AXIS2_STRCMP(local_name,RP_RECEIVER_CERTIFICATE)==0)
+    {
+        if(rp_match_rampart_config_qname(env,RP_RECEIVER_CERTIFICATE,node,element))
+        {
+            axis2_char_t *receiver_certificate_file = NULL;
+            receiver_certificate_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            return rp_rampart_config_set_receiver_certificate_file(rampart_config,env,receiver_certificate_file);
+        }
+        else
+            return AXIS2_FAILURE;
+    }
+
     else if(AXIS2_STRCMP(local_name,RP_PRIVATE_KEY)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_PRIVATE_KEY,node,element))

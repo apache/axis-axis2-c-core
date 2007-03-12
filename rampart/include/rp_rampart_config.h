@@ -99,14 +99,24 @@ extern "C"
             axis2_char_t *private_key_file);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rp_rampart_config_get_public_key_file(
+    rp_rampart_config_get_receiver_certificate_file(
             rp_rampart_config_t *rampart_config,
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rp_rampart_config_set_public_key_file(rp_rampart_config_t *rampart_config,
+    rp_rampart_config_set_receiver_certificate_file(rp_rampart_config_t *rampart_config,
             const axis2_env_t *env,
-            axis2_char_t *public_key_file);
+            axis2_char_t *receiver_certificate_file);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rp_rampart_config_get_certificate_file(
+            rp_rampart_config_t *rampart_config,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rp_rampart_config_set_certificate_file(rp_rampart_config_t *rampart_config,
+            const axis2_env_t *env,
+            axis2_char_t *certificate_file);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rp_rampart_config_get_time_to_live(

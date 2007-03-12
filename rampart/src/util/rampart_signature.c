@@ -56,10 +56,10 @@ rampart_sig_get_cert(const axis2_env_t *env,
     oxs_x509_cert_t *cert = NULL;    
     axis2_char_t *certificate_file = NULL;
 
-    key_buf = rampart_context_get_pub_key(rampart_context,env);
+    key_buf = rampart_context_get_certificate(rampart_context,env);
     if(key_buf)
     {
-        type = rampart_context_get_pub_key_type(rampart_context,env);
+        type = rampart_context_get_certificate_type(rampart_context,env);
         if(type == AXIS2_KEY_TYPE_PEM)
         {
             cert = oxs_key_mgr_load_x509_cert_from_string(env,(axis2_char_t *)key_buf);
@@ -78,7 +78,7 @@ rampart_sig_get_cert(const axis2_env_t *env,
     }
     else
     {
-        certificate_file = rampart_context_get_public_key_file(rampart_context,env);
+        certificate_file = rampart_context_get_certificate_file(rampart_context,env);
         if(certificate_file)
         {
             cert = oxs_key_mgr_load_x509_cert_from_pem_file(env,certificate_file);

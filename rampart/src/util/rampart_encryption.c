@@ -219,11 +219,11 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
 
     /*First check whether the public key is set*/
-    key_buf = rampart_context_get_pub_key(rampart_context,env);
+    key_buf = rampart_context_get_receiver_certificate(rampart_context,env);
     if(key_buf)
     {
         axis2_key_type_t type = 0;
-        type = rampart_context_get_pub_key_type(rampart_context,env);
+        type = rampart_context_get_receiver_certificate_type(rampart_context,env);
         if(type == AXIS2_KEY_TYPE_PEM)
         {
             oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PEM);
@@ -234,7 +234,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     /*Buffer is null load from the file*/
     else
     {
-        certificate_file = rampart_context_get_public_key_file(rampart_context,env);        
+        certificate_file = rampart_context_get_receiver_certificate_file(rampart_context,env);        
         oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
         oxs_asym_ctx_set_format(asym_ctx, env, oxs_util_get_format_by_file_extension(env, certificate_file));
 

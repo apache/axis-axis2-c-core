@@ -82,12 +82,22 @@ extern "C"
             axis2_key_type_t type);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rampart_context_set_pub_key(rampart_context_t *rampart_context,
+    rampart_context_set_certificate(rampart_context_t *rampart_context,
             const axis2_env_t *env,
-            void *pub_key);
+            void *certificate);
     
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    rampart_context_set_pub_key_type(rampart_context_t *rampart_context,
+    rampart_context_set_certificate_type(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            axis2_key_type_t type);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_receiver_certificate(rampart_context_t *rampart_context,
+            const axis2_env_t *env,
+            void *receiver_certificate);
+    
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    rampart_context_set_receiver_certificate_type(rampart_context_t *rampart_context,
             const axis2_env_t *env,
             axis2_key_type_t type);
 
@@ -142,15 +152,25 @@ extern "C"
             const axis2_env_t *env);
 
     AXIS2_EXTERN void *AXIS2_CALL
-    rampart_context_get_pub_key(
+    rampart_context_get_certificate(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_key_type_t AXIS2_CALL
-    rampart_context_get_pub_key_type(
+    rampart_context_get_certificate_type(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+            
+    AXIS2_EXTERN void *AXIS2_CALL
+    rampart_context_get_receiver_certificate(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
+    AXIS2_EXTERN axis2_key_type_t AXIS2_CALL
+    rampart_context_get_receiver_certificate_type(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+    
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rampart_context_get_user(
             rampart_context_t *rampart_context,
@@ -349,7 +369,12 @@ extern "C"
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    rampart_context_get_public_key_file(
+    rampart_context_get_certificate_file(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_receiver_certificate_file(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
