@@ -263,7 +263,7 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
     /*Construct <SignatureValue>*/
     signature_val_node = oxs_token_build_signature_value_element(env, signature_node, signature_val);
 
-    return AXIS2_SUCCESS;
+    return status;
 }
 
 /*Public functions*/
@@ -280,6 +280,7 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     axis2_char_t *sign_algo = NULL;
     axis2_char_t *c14n_algo = NULL;
     axis2_array_list_t *sign_parts = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     int i=0;
 
     /*Construct the <Signature> element*/
@@ -310,13 +311,10 @@ oxs_xml_sig_sign(const axis2_env_t *env,
 
     }
     /*At this point we have a complete <SignedInfo> node. Now we need to sign it*/
-    oxs_xml_sig_sign_signed_info(env, signature_node, signed_info_node, sign_ctx); 
+    status = oxs_xml_sig_sign_signed_info(env, signature_node, signed_info_node, sign_ctx); 
 
-    /*Now we need to build the KeyInfo node.*/    
-    /*oxs_xml_sig_build_key_info(env, signature_node, sign_ctx);     */
-    
     *sig_node = signature_node;
-    return AXIS2_SUCCESS;
+    return status;
 }
 
 /*******************************Verification specific*****************************/
