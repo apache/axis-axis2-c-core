@@ -132,7 +132,7 @@ axis2_svr_callback_handle_result(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
@@ -158,7 +158,7 @@ axis2_svr_callback_handle_fault(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);

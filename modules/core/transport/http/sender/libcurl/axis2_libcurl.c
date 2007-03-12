@@ -93,7 +93,7 @@ axis2_libcurl_send (
 	headers = curl_slist_append (headers, "User-Agent:Axis2/C");
 	headers = curl_slist_append (headers, "Accept:");
 	headers = curl_slist_append (headers, "Expect:");
-    if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
+    if (AXIS2_TRUE ==  axis2_msg_ctx_get_doing_rest(msg_ctx, env))
 		is_soap = AXIS2_FALSE;
 	else
 		is_soap = AXIS2_TRUE;
@@ -117,7 +117,7 @@ axis2_libcurl_send (
         }
         data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
 
-		method = (axis2_property_t *)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+		method = (axis2_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
 																AXIS2_HTTP_METHOD, AXIS2_FALSE);
 		if (method)
 			method_value = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE (method, env);
@@ -146,13 +146,13 @@ axis2_libcurl_send (
 
 		if (is_soap)
 		{
-			doing_mtom = AXIS2_MSG_CTX_GET_DOING_MTOM(msg_ctx, env);
+			doing_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env);
 
 			AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env,
 										 doing_mtom); 
 			AXIOM_SOAP_ENVELOPE_SERIALIZE(out, env, om_output,
 										  AXIS2_FALSE);
-			if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+			if (AXIS2_TRUE ==  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
 			{
 				if ('\"' != *soap_action)
 				{
@@ -177,7 +177,7 @@ axis2_libcurl_send (
 								   &output_stream_size);
 				content_type = (axis2_char_t *)AXIOM_OUTPUT_GET_CONTENT_TYPE(om_output,
 																			 env);
-				if (AXIS2_TRUE != AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+				if (AXIS2_TRUE !=  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
 				{
 					/* handle SOAP action for SOAP 1.2 case */
 					if (axis2_strcmp(soap_action, ""))
@@ -192,7 +192,7 @@ axis2_libcurl_send (
 					}
 				}
 			}
-			else if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+			else if (AXIS2_TRUE ==  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
 			{
 				axis2_char_t *temp_content_type = NULL;
 				content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
@@ -230,7 +230,7 @@ axis2_libcurl_send (
 			axis2_char_t *content_type_value = NULL;
 
 			AXIOM_NODE_SERIALIZE(data_out, env, om_output);
-			content_type_property  = (axis2_property_t *)AXIS2_MSG_CTX_GET_PROPERTY(
+			content_type_property  = (axis2_property_t *) axis2_msg_ctx_get_property(
 				msg_ctx, env,
 				AXIS2_USER_DEFINED_HTTP_HEADER_CONTENT_TYPE, 
 				AXIS2_FALSE);
@@ -301,7 +301,7 @@ axis2_libcurl_send (
     AXIS2_PROPERTY_SET_SCOPE(trans_in_property, env, AXIS2_SCOPE_REQUEST);
     AXIS2_PROPERTY_SET_FREE_FUNC(trans_in_property, env, axis2_stream_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(trans_in_property, env, in_stream);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, trans_in_property,
+     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, trans_in_property,
 							   AXIS2_FALSE);
 	return AXIS2_SUCCESS;
 }

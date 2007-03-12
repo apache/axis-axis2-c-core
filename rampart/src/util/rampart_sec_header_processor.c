@@ -991,7 +991,7 @@ rampart_shp_process_message(const axis2_env_t *env,
         if(status!=AXIS2_SUCCESS)
             return status; 
 
-        if(AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))
+        if( axis2_msg_ctx_get_server_side(msg_ctx, env))
         {            
             status = rampart_shp_process_usernametoken(env,msg_ctx,rampart_context,sec_node);      
             if(status!=AXIS2_SUCCESS)

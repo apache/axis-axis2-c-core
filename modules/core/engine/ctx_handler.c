@@ -105,8 +105,8 @@ axis2_ctx_handler_invoke(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-    svc_ctx = AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    svc_ctx =  axis2_msg_ctx_get_svc_ctx(msg_ctx, env);
 
     if (op_ctx && svc_ctx)
     {
@@ -115,13 +115,13 @@ axis2_ctx_handler_invoke(
         {
             axis2_string_t *svc_grp_ctx_id_str = 
                 axis2_string_create(env, AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
-            AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id_str);
+             axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
             axis2_string_free(svc_grp_ctx_id_str, env);
         }
         return AXIS2_SUCCESS;
     }
 
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    op =  axis2_msg_ctx_get_op(msg_ctx, env);
     if (op)
         op_ctx = axis2_op_find_existing_op_ctx(op, env, msg_ctx);
 
@@ -134,11 +134,11 @@ axis2_ctx_handler_invoke(
             axis2_string_t *svc_grp_ctx_id_str = NULL;
 
             svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
-            AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx);
-            AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx);
+             axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
+             axis2_msg_ctx_set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx);
 
             svc_grp_ctx_id_str = axis2_string_create(env, AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
-            AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id_str);
+             axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
             axis2_string_free(svc_grp_ctx_id_str, env);
         }
         return AXIS2_SUCCESS;
@@ -153,11 +153,11 @@ axis2_ctx_handler_invoke(
             return AXIS2_FAILURE;
         }
 
-        AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx);
+         axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
 
         axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
 
-        conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         if (conf_ctx)
         {
             svc_grp_ctx =  axis2_conf_ctx_fill_ctxs(conf_ctx, env, msg_ctx);

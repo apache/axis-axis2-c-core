@@ -54,9 +54,9 @@ int   axis2_test_engine_send()
 
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, NULL, NULL);
 
-    AXIS2_MSG_CTX_SET_CONF_CTX(msg_ctx, env, conf_ctx);
-    AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx);
-    AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx);
+     axis2_msg_ctx_set_conf_ctx(msg_ctx, env, conf_ctx);
+     axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
+     axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
 
     axis2_engine_t *engine = axis2_engine_create(env, conf_ctx);
     status = AXIS2_ENGINE_SEND(engine, env, msg_ctx);
@@ -68,7 +68,7 @@ int   axis2_test_engine_send()
         printf("axis2_test_engine_send SUCCESS\n");
 
      axis2_conf_ctx_free(conf_ctx, env);
-    AXIS2_MSG_CTX_FREE(msg_ctx, env);
+     axis2_msg_ctx_free(msg_ctx, env);
     AXIS2_QNAME_FREE(qname, env);
     AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, env);
     AXIS2_SVC_CTX_FREE(svc_ctx, env);
@@ -103,7 +103,7 @@ int   axis2_test_engine_receive()
     else
         printf("axis2_test_engine_receive SUCCESS\n");
      axis2_conf_ctx_free(conf_ctx, env);
-    AXIS2_MSG_CTX_FREE(msg_ctx, env);
+     axis2_msg_ctx_free(msg_ctx, env);
     AXIS2_ENGINE_FREE(engine, env);
     return 0;
 }

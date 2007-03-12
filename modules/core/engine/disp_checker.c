@@ -231,62 +231,62 @@ axis2_disp_checker_invoke(
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (!(AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))) /*if is client side, no point in proceeding*/
+    if (!( axis2_msg_ctx_get_server_side(msg_ctx, env))) /*if is client side, no point in proceeding*/
         return AXIS2_SUCCESS;
 
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    op =  axis2_msg_ctx_get_op(msg_ctx, env);
 
     if (!op)
     {
-        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
             axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
             if (op)
-                AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
+                 axis2_msg_ctx_set_op(msg_ctx, env, op);
         }
     }
 
-    svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+    svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
 
     if (!svc)
     {
-        svc_ctx = AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env);
+        svc_ctx =  axis2_msg_ctx_get_svc_ctx(msg_ctx, env);
         if (svc_ctx)
         {
             axis2_svc_t *tsvc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
             if (tsvc)
-                AXIS2_MSG_CTX_SET_SVC(msg_ctx, env, tsvc);
+                 axis2_msg_ctx_set_svc(msg_ctx, env, tsvc);
         }
     }
 
-    endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
+    endpoint_ref =  axis2_msg_ctx_get_to(msg_ctx, env);
     if (endpoint_ref)
         address = axis2_endpoint_ref_get_address(endpoint_ref, env);
 
-    svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+    svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     if (!svc)
     {
         AXIS2_LOG_INFO(env->log, "Service Not found. Endpoint reference is : %s", (address) ? address : "NULL");
-		if (AXIS2_MSG_CTX_GET_IS_SOAP_11 (msg_ctx, env))
+		if ( axis2_msg_ctx_get_is_soap_11 (msg_ctx, env))
 		{
 			soap_version = AXIOM_SOAP11;
 		}
 		soap_envelope = axiom_soap_envelope_create_default_soap_envelope (env, soap_version); 
 		soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
 		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, "Receiver", "Service Not Found", soap_version);
-		AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+		 axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
     }
 
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    op =  axis2_msg_ctx_get_op(msg_ctx, env);
     if (!op)
     {
         AXIS2_LOG_INFO(env->log, "Operation Not found. Endpoint reference is : %s", (address) ? address : "NULL");
 		soap_envelope = axiom_soap_envelope_create_default_soap_envelope (env, soap_version); 
 		soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
 		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, "Receiver", "Operation Not Found", soap_version);
-		AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+		 axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

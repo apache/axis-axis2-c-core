@@ -141,8 +141,8 @@ publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
 
     data = AXIS2_MALLOC(env->allocator, sizeof(publisher_data_t));
     data->env = (axis2_env_t*)env;
-    data->svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
-    data->conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    data->svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
+    data->conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     
     worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
         publisher_worker_func, (void*)data);

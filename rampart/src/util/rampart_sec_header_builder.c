@@ -300,7 +300,7 @@ rampart_shb_build_message(const axis2_env_t *env,
                 size = axis2_array_list_size(string_list, env);
             }
 
-            ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
+            ctx = axis2_msg_ctx_get_base(msg_ctx, env);
             for (i = 0; i < size; i++)
             {
                 item = axis2_array_list_get(string_list, env, i);

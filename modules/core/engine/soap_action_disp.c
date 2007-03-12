@@ -101,7 +101,7 @@ axiom_soap_action_disp_find_op(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    action = axis2_string_get_buffer(AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env), env);
+    action = axis2_string_get_buffer( axis2_msg_ctx_get_soap_action(msg_ctx, env), env);
 
     if (action)
     {

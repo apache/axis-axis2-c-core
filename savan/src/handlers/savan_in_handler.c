@@ -83,7 +83,7 @@ savan_in_handler_invoke(struct axis2_handler *handler,
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     
-    svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+    svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     if (svc)
         svc_name = AXIS2_SVC_GET_NAME(svc, env);
     
@@ -136,7 +136,7 @@ savan_in_handler_invoke(struct axis2_handler *handler,
      
     if (from_client) /* send reply to client */
     {
-        axis2_op_t *op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+        axis2_op_t *op =  axis2_msg_ctx_get_op(msg_ctx, env);
         axis2_msg_recv_t* msg_recv = savan_msg_recv_create(env);
         axis2_op_set_msg_recv(op, env, msg_recv);
     }

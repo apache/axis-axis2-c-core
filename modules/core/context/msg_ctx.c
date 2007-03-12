@@ -1454,7 +1454,7 @@ axis2_msg_ctx_set_paused_phase_name(
 }
 
 axis2_string_t *AXIS2_CALL
-axis2_msg_ctx_get_soap_action(
+  axis2_msg_ctx_get_soap_action(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
 {
@@ -1663,7 +1663,7 @@ axis2_msg_ctx_set_svc(
 }
 
 axis2_svc_grp_t *AXIS2_CALL
-axis2_msg_ctx_get_svc_grp(
+ axis2_msg_ctx_get_svc_grp(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
 {
@@ -1795,7 +1795,7 @@ axis2_msg_ctx_set_options(
 
      axis2_ctx_set_non_persistent_map(msg_ctx->base, env,
             AXIS2_OPTIONS_GET_PROPERTIES(options, env));
-    rest_val = (axis2_property_t *) AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+    rest_val = (axis2_property_t *)  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_ENABLE_REST, AXIS2_FALSE);
     if (rest_val)
     {
@@ -1803,7 +1803,7 @@ axis2_msg_ctx_set_options(
 		if (value)
 		{
 			if (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0)
-				AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, AXIS2_TRUE);
+				 axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
 		}
     }
 

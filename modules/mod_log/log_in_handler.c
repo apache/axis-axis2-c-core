@@ -74,7 +74,7 @@ axis2_log_in_handler_invoke(struct axis2_handler *handler,
     AXIS2_LOG_INFO(env->log, "Starting logging in handler .........");
     printf("\n\nStarting logging in handler .........\n\n");
     
-    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     
     if (soap_envelope)
     {

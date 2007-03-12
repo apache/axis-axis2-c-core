@@ -126,7 +126,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
+    msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
     if (!msg_info_headers)
         return AXIS2_SUCCESS; /* no addressing in use */
 	 wsa_action = axis2_msg_info_headers_get_action (msg_info_headers, env);
@@ -156,11 +156,11 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             addr_ns = AXIS2_WSA_NAMESPACE_SUBMISSION;
         }
     }
-    else if (AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env))
+    else if ( axis2_msg_ctx_get_op_ctx(msg_ctx, env))
     {
         axis2_op_ctx_t *op_ctx = NULL;
         axis2_msg_ctx_t *in_msg_ctx = NULL;
-        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
             in_msg_ctx =
@@ -199,8 +199,8 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
     }
 
     addressing_namespace = axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
-    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
+    soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (!soap_envelope)
     {
         AXIOM_NAMESPACE_FREE(addressing_namespace, env);
@@ -328,7 +328,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
         /* add the service group id as a reference parameter */
         svc_group_context_id = axis2_string_get_buffer(
-            AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env), env);
+             axis2_msg_ctx_get_svc_grp_ctx_id(msg_ctx, env), env);
 
         axis2_addr_out_handler_add_to_soap_header(env, epr,
                 AXIS2_WSA_REPLY_TO,

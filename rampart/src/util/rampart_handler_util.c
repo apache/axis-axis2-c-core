@@ -148,7 +148,7 @@ rampart_get_security_param(const axis2_env_t *env,
 {
     /*parameter can be either RAMPART_OUTFLOW_SECURITY or RAMPART_INFLOW_SECURITY*/
     axis2_param_t *param = NULL;
-    param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, parameter);
+    param =  axis2_msg_ctx_get_parameter(msg_ctx, env, parameter);
     return param;
 }
 
@@ -300,7 +300,7 @@ rampart_create_fault_envelope(const axis2_env_t *env,
             reason_text,
             soap_version, sub_codes, text_om_node);
 
-    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);
+     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, envelope);
     /*free sub codes*/
     return;
 }
@@ -359,7 +359,7 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
     axis2_conf_t *conf = NULL;
     struct axis2_conf_ctx *conf_ctx = NULL;
 
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx,env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx,env);
     if(!conf_ctx)
     {
          AXIS2_LOG_INFO(env->log, "[rampart][rhu] Conf context is NULL ");
@@ -388,7 +388,7 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
  *And If service is not there check whether the rampart is enabled by 
  a previous invocation of a handler.*/
 
-    svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx,env);
+    svc =  axis2_msg_ctx_get_svc(msg_ctx,env);
     if(!svc)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rhu] Service is NULL.");

@@ -94,7 +94,7 @@ axis2_addr_disp_find_svc(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
+    endpoint_ref =  axis2_msg_ctx_get_to(msg_ctx, env);
 
     if (endpoint_ref)
     {
@@ -123,7 +123,7 @@ axis2_addr_disp_find_svc(
                 {
                     axis2_conf_ctx_t *conf_ctx = NULL;
 
-                    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+                    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
                     if (conf_ctx)
                     {
                         axis2_conf_t *conf = NULL;
@@ -167,7 +167,7 @@ axis2_addr_disp_find_op(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    action = AXIS2_MSG_CTX_GET_WSA_ACTION(msg_ctx, env);
+    action =  axis2_msg_ctx_get_wsa_action(msg_ctx, env);
 
     if (action)
     {
@@ -196,7 +196,7 @@ axis2_addr_disp_invoke(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    relates_to = AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env);
+    relates_to =  axis2_msg_ctx_get_relates_to(msg_ctx, env);
 
     /** first check if we can dispatch using the relates_to */
     if (relates_to)
@@ -207,11 +207,11 @@ axis2_addr_disp_invoke(
         {
             axis2_conf_ctx_t *conf_ctx = NULL;
 
-            conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+            conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
             if (conf_ctx)
             {
                 axis2_op_ctx_t *op_ctx = NULL;
-                const axis2_char_t *msg_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
+                const axis2_char_t *msg_id =  axis2_msg_ctx_get_msg_id(msg_ctx, env);
                 op_ctx =  axis2_conf_ctx_get_op_ctx(conf_ctx, env, msg_id);
                 if (op_ctx)
                 {
@@ -220,8 +220,8 @@ axis2_addr_disp_invoke(
                     if (op)
                     {
                         axis2_svc_ctx_t *svc_ctx = NULL;
-                        AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx);
-                        AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
+                         axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
+                         axis2_msg_ctx_set_op(msg_ctx, env, op);
                         axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
 
                         svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
@@ -229,18 +229,18 @@ axis2_addr_disp_invoke(
                         {
                             axis2_svc_t *svc = NULL;
                             axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
-                            AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx);
+                             axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
                             svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
                             if (svc)
                             {
-                                AXIS2_MSG_CTX_SET_SVC(msg_ctx, env, svc);
+                                 axis2_msg_ctx_set_svc(msg_ctx, env, svc);
                             }
                             svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
                             if (svc_grp_ctx)
                             {
                                 axis2_string_t *svc_grp_ctx_id_str = 
                                     axis2_string_create(env, AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
-                                AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id_str);
+                                 axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
                                 axis2_string_free(svc_grp_ctx_id_str, env);
                             }
                             return AXIS2_SUCCESS;

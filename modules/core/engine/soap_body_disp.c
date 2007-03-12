@@ -91,7 +91,7 @@ axiom_soap_body_disp_find_svc(
     axis2_svc_t *svc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (soap_envelope)
     {
         axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
@@ -130,7 +130,7 @@ axiom_soap_body_disp_find_svc(
                                         {
                                             axis2_conf_ctx_t *conf_ctx = NULL;
 
-                                            conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+                                            conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
                                             if (conf_ctx)
                                             {
                                                 axis2_conf_t *conf = NULL;
@@ -173,7 +173,7 @@ axiom_soap_body_disp_find_op(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (soap_envelope)
     {
         axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);

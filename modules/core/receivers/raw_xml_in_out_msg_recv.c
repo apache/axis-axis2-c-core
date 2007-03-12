@@ -103,7 +103,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     if (!svc_obj)
     {
         const axis2_char_t *svc_name = NULL;
-        axis2_svc_t *svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+        axis2_svc_t *svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
 
         if (svc)
         {
@@ -123,7 +123,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     }
     else
     {
-        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         op_desc = AXIS2_OP_CTX_GET_OP(op_ctx, env);
 
         style = axis2_op_get_style(op_desc, env);
@@ -132,7 +132,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             axiom_soap_envelope_t *envelope = NULL;
             axiom_soap_body_t *body = NULL;
 
-            envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+            envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
             om_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
             om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
@@ -145,7 +145,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             axiom_node_t *op_node = NULL;
             axiom_element_t *op_element = NULL;
 
-            envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+            envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
             op_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
             op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
@@ -257,13 +257,13 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         }
     }
 
-    if (msg_ctx && AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+    if (msg_ctx &&  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
     {
         soap_ns = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI; /* default is 1.2 */
         soap_version = AXIOM_SOAP11;
     }
 
-    if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(new_msg_ctx, env))
+    if ( axis2_msg_ctx_get_soap_envelope(new_msg_ctx, env))
     {
         /* service implementation has set the envelope,
            useful when setting a SOAP fault.
@@ -335,11 +335,11 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     if (body_content_node)
     {
         AXIOM_NODE_ADD_CHILD(out_node , env, body_content_node);
-        status = AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+        status =  axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     }
     else if (soap_fault)
     {
-        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+         axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
 		status = AXIS2_SUCCESS;
     }
     else

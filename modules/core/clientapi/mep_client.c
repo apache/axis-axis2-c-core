@@ -250,12 +250,12 @@ axis2_mep_client_prepare_invocation(
 
     if (mep_client_impl->wsa_action)
     {
-        AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, mep_client_impl->wsa_action);
+         axis2_msg_ctx_set_wsa_action(msg_ctx, env, mep_client_impl->wsa_action);
     }
 
     if (mep_client_impl->soap_action)
     {
-        AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, mep_client_impl->soap_action);
+          axis2_msg_ctx_set_soap_action(msg_ctx, env, mep_client_impl->soap_action);
     }
 
     return AXIS2_SUCCESS;
@@ -634,7 +634,7 @@ axis2_mep_client_two_way_send(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
     if (!engine)
         return NULL;
@@ -660,7 +660,7 @@ axis2_mep_client_two_way_send(
     if (status != AXIS2_SUCCESS)
         return NULL;
 
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    op =  axis2_msg_ctx_get_op(msg_ctx, env);
     if (op)
     {
         /* handle one way case */
@@ -674,36 +674,36 @@ axis2_mep_client_two_way_send(
 
     /* create the response */
     response = axis2_msg_ctx_create(env, conf_ctx,
-            AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env),
-            AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env));
+             axis2_msg_ctx_get_transport_in_desc(msg_ctx, env),
+             axis2_msg_ctx_get_transport_out_desc(msg_ctx, env));
     if (!response)
         return NULL;
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,AXIS2_TRANSPORT_IN, AXIS2_FALSE);
+    property =  axis2_msg_ctx_get_property(msg_ctx, env,AXIS2_TRANSPORT_IN, AXIS2_FALSE);
     if (property)
     {
-        AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN, property,
+         axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property,
                 AXIS2_FALSE);
         property = NULL;
     }
 
     if (op)
     {
-        axis2_op_register_op_ctx(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));
+        axis2_op_register_op_ctx(op, env, response,  axis2_msg_ctx_get_op_ctx(msg_ctx, env));
     }
-    AXIS2_MSG_CTX_SET_SERVER_SIDE(response, env, AXIS2_FALSE);
-    AXIS2_MSG_CTX_SET_CONF_CTX(response, env, AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env));
-    AXIS2_MSG_CTX_SET_SVC_GRP_CTX(response, env, AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env));
+     axis2_msg_ctx_set_server_side(response, env, AXIS2_FALSE);
+     axis2_msg_ctx_set_conf_ctx(response, env,  axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
+     axis2_msg_ctx_set_svc_grp_ctx(response, env,  axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
 
     /* If request is REST we assume the response is REST, so set the variable*/
-    AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
+     axis2_msg_ctx_set_doing_rest(response, env,  axis2_msg_ctx_get_doing_rest(msg_ctx, env));
 	/* set response envelope */
     if (engine)
     {
         AXIS2_ENGINE_FREE(engine, env);
         engine = NULL;
     }
- 	response_envelope = AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env);
+ 	response_envelope =  axis2_msg_ctx_get_response_soap_envelope (msg_ctx, env);
     if(response_envelope)
     {
         axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
@@ -763,7 +763,7 @@ axis2_mep_client_two_way_send(
                     AXIS2_ENGINE_FREE(engine, env);
                     engine = NULL;
                 }
-                AXIS2_MSG_CTX_FREE(response, env);
+                 axis2_msg_ctx_free(response, env);
                 return NULL;
             }
         }
@@ -771,7 +771,7 @@ axis2_mep_client_two_way_send(
 
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
     avoid double free of this property */
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
+     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
             AXIS2_FALSE);
 
     if (engine)
@@ -799,32 +799,32 @@ axis2_mep_client_receive(
 
     /* create the response */
     response = axis2_msg_ctx_create(env, conf_ctx,
-            AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env),
-            AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env));
+             axis2_msg_ctx_get_transport_in_desc(msg_ctx, env),
+             axis2_msg_ctx_get_transport_out_desc(msg_ctx, env));
     if (!response)
         return NULL;
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_FALSE);
+    property =  axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_FALSE);
     if (property)
     {
-        AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN, property,
+         axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property,
                 AXIS2_FALSE);
         property = NULL;
     }
 
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    op =  axis2_msg_ctx_get_op(msg_ctx, env);
     if (op)
     {
-        axis2_op_register_op_ctx(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));
+        axis2_op_register_op_ctx(op, env, response,  axis2_msg_ctx_get_op_ctx(msg_ctx, env));
     }
-    AXIS2_MSG_CTX_SET_SERVER_SIDE(response, env, AXIS2_FALSE);
-    AXIS2_MSG_CTX_SET_CONF_CTX(response, env, AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env));
-    AXIS2_MSG_CTX_SET_SVC_GRP_CTX(response, env, AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env));
+     axis2_msg_ctx_set_server_side(response, env, AXIS2_FALSE);
+     axis2_msg_ctx_set_conf_ctx(response, env,  axis2_msg_ctx_get_conf_ctx(msg_ctx, env));
+     axis2_msg_ctx_set_svc_grp_ctx(response, env,  axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env));
 
     /* If request is REST we assume the response is REST, so set the variable*/
-    AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
+     axis2_msg_ctx_set_doing_rest(response, env,  axis2_msg_ctx_get_doing_rest(msg_ctx, env));
 
- 	response_envelope = AXIS2_MSG_CTX_GET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env);
+ 	response_envelope =  axis2_msg_ctx_get_response_soap_envelope (msg_ctx, env);
     if (response_envelope)
     {
         axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
@@ -858,7 +858,7 @@ axis2_mep_client_receive(
 
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
     avoid double free of this property */
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
+     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
             AXIS2_FALSE);
 
     if (engine)

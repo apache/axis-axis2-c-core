@@ -320,10 +320,10 @@ axis2_phase_invoke(
 
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
 
-    AXIS2_MSG_CTX_SET_PAUSED_PHASE_NAME(msg_ctx, env, phase_impl->name);
+     axis2_msg_ctx_set_paused_phase_name(msg_ctx, env, phase_impl->name);
     if (phase_impl->first_handler)
     {
-        if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+        if ( axis2_msg_ctx_is_paused(msg_ctx, env))
         {
             return AXIS2_SUCCESS;
         }
@@ -345,7 +345,7 @@ axis2_phase_invoke(
 
     while (index < size)
     {
-        if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+        if ( axis2_msg_ctx_is_paused(msg_ctx, env))
         {
             break;
         }
@@ -365,7 +365,7 @@ axis2_phase_invoke(
                 /* index increment should be done after the invoke function. If the invocation
                    failed this handler is taken care of and no need to revoke again */
                 index++;
-                AXIS2_MSG_CTX_SET_CURRENT_HANDLER_INDEX(msg_ctx, env, index);
+                 axis2_msg_ctx_set_current_handler_index(msg_ctx, env, index);
             }
         }
     }
@@ -373,7 +373,7 @@ axis2_phase_invoke(
     /* If phase last handler is there invoke it here*/
     if (phase_impl->last_handler)
     {
-        if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+        if ( axis2_msg_ctx_is_paused(msg_ctx, env))
         {
             return AXIS2_SUCCESS;
         }
@@ -1143,7 +1143,7 @@ axis2_phase_invoke_start_from_handler(
 
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
 
-    AXIS2_MSG_CTX_SET_PAUSED_PHASE_NAME(msg_ctx, env, phase_impl->name);
+     axis2_msg_ctx_set_paused_phase_name(msg_ctx, env, phase_impl->name);
 
     size = axis2_array_list_size(phase_impl->handlers, env);
     for (i = paused_handler_index; i < size; i++)
@@ -1162,8 +1162,8 @@ axis2_phase_invoke_start_from_handler(
             }
 
             AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
-            index = AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx, env);
-            AXIS2_MSG_CTX_SET_CURRENT_HANDLER_INDEX(msg_ctx, env, (index + 1));
+            index =  axis2_msg_ctx_get_current_handler_index(msg_ctx, env);
+             axis2_msg_ctx_set_current_handler_index(msg_ctx, env, (index + 1));
         }
     }
     return status;

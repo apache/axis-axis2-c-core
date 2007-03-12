@@ -237,7 +237,7 @@ axis2_iis_worker_process_request(
             AXIS2_TRANSPORT_ENUM_HTTP);
 
 	msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
-    AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
+     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
 
 	axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
@@ -245,7 +245,7 @@ axis2_iis_worker_process_request(
 	if (ctx_uuid)
 	{
         axis2_string_t *uuid_str = axis2_string_create_assume_ownership(env, &ctx_uuid);
-        AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, uuid_str);
+         axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, uuid_str);
         axis2_string_free(uuid_str, env);
 	}
 
@@ -317,13 +317,13 @@ axis2_iis_worker_process_request(
                 body_str_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
             }
             send_status =  HTTP_INTERNAL_SERVER_ERROR;
-            AXIS2_MSG_CTX_FREE(fault_ctx, env);
+             axis2_msg_ctx_free(fault_ctx, env);
         }
     }
 	// Nothing wrong has happen. So proceed with the request
     if (-1 == send_status)
     {
-        axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        axis2_op_ctx_t *op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (axis2_op_ctx_get_response_written(op_ctx, env))
         {
             if (out_stream)

@@ -239,7 +239,7 @@ axis2_http_worker_process_request(
             (http_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
-    AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
+     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
 
 
     if (0 == AXIS2_STRCASECMP(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
@@ -269,7 +269,7 @@ axis2_http_worker_process_request(
     if (svc_grp_uuid)
     {
         axis2_string_t *svc_grp_uuid_str = axis2_string_create_assume_ownership(env, &svc_grp_uuid);
-        AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_uuid_str);
+         axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_uuid_str);
         axis2_string_free(svc_grp_uuid_str, env);
     }
 
@@ -379,7 +379,7 @@ axis2_http_worker_process_request(
         }
     }
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (axis2_op_ctx_get_response_written(op_ctx, env))
     {
         AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env, http_version,
@@ -400,9 +400,9 @@ axis2_http_worker_process_request(
     url_external_form = NULL;
     /* this is freed in the following block of logic, taking it from 
        operation context that holds it
-    AXIS2_MSG_CTX_FREE(msg_ctx, env); */
+     axis2_msg_ctx_free(msg_ctx, env); */
     /* Free message contextx */
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx) 
     {
         axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;
@@ -415,14 +415,14 @@ axis2_http_worker_process_request(
 
         if (out_msg_ctx)
         {
-            AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+             axis2_msg_ctx_free(out_msg_ctx, env);
             out_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
         }
 
         if (in_msg_ctx)
         {
-            AXIS2_MSG_CTX_FREE(in_msg_ctx, env);
+             axis2_msg_ctx_free(in_msg_ctx, env);
             in_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
         }

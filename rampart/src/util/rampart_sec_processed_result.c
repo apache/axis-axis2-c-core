@@ -72,7 +72,7 @@ rampart_set_security_processed_results_property(const axis2_env_t *env,
     sec_processed_results_prop = axis2_property_create(env);
     
     AXIS2_PROPERTY_SET_VALUE(sec_processed_results_prop, env, sec_processed_results);
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, RAMPART_SECURITY_PROCESSED_RESULTS, sec_processed_results_prop, AXIS2_FALSE);
+     axis2_msg_ctx_set_property(msg_ctx, env, RAMPART_SECURITY_PROCESSED_RESULTS, sec_processed_results_prop, AXIS2_FALSE);
 
     return AXIS2_SUCCESS;
 }
@@ -84,7 +84,7 @@ rampart_get_all_security_processed_results(const axis2_env_t *env,
     axis2_property_t *sec_processed_results_prop = NULL;
     axis2_hash_t *sec_processed_results = NULL;
 
-    sec_processed_results_prop = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, RAMPART_SECURITY_PROCESSED_RESULTS, AXIS2_FALSE);
+    sec_processed_results_prop =  axis2_msg_ctx_get_property(msg_ctx, env, RAMPART_SECURITY_PROCESSED_RESULTS, AXIS2_FALSE);
     if(!sec_processed_results_prop){
          AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][spr] Cannot get %s from msg ctx ", RAMPART_SECURITY_PROCESSED_RESULTS);
         return NULL;

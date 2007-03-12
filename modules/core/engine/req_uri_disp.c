@@ -89,7 +89,7 @@ axis2_req_uri_disp_find_svc(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
+    endpoint_ref =  axis2_msg_ctx_get_to(msg_ctx, env);
 
     if (endpoint_ref)
     {
@@ -110,7 +110,7 @@ axis2_req_uri_disp_find_svc(
                 {
                     axis2_conf_ctx_t *conf_ctx = NULL;
 
-                    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+                    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
                     if (conf_ctx)
                     {
                         axis2_conf_t *conf = NULL;
@@ -146,7 +146,7 @@ axis2_req_uri_disp_find_op(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
+    endpoint_ref =  axis2_msg_ctx_get_to(msg_ctx, env);
 
     if (endpoint_ref)
     {

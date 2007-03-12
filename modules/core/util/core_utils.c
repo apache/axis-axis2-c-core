@@ -55,28 +55,28 @@ axis2_core_utils_create_out_msg_ctx(
 
     AXIS2_PARAM_CHECK(env->error, in_msg_ctx, NULL);
 
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(in_msg_ctx, env);
-    transport_in = AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(in_msg_ctx, env);
-    transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(in_msg_ctx, env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(in_msg_ctx, env);
+    transport_in =  axis2_msg_ctx_get_transport_in_desc(in_msg_ctx, env);
+    transport_out =  axis2_msg_ctx_get_transport_out_desc(in_msg_ctx, env);
 
     new_msg_ctx = axis2_msg_ctx_create(env, conf_ctx, transport_in, transport_out);
     if (!new_msg_ctx)
     {
         return NULL;
     }
-    old_msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(in_msg_ctx, env);
+    old_msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(in_msg_ctx, env);
     if (!old_msg_info_headers)
     {
         return NULL;
     }
-    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
+    msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(new_msg_ctx, env);
     if (!msg_info_headers)
     {
         /* if there is no msg info header in ew msg ctx, then create one */
         msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
         if (!msg_info_headers)
             return NULL;
-        AXIS2_MSG_CTX_SET_MSG_INFO_HEADERS(new_msg_ctx, env, msg_info_headers);
+         axis2_msg_ctx_set_msg_info_headers(new_msg_ctx, env, msg_info_headers);
     }
 
     msg_uuid =  axis2_uuid_gen(env);
@@ -116,16 +116,16 @@ axis2_core_utils_create_out_msg_ctx(
     action = axis2_msg_info_headers_get_action(old_msg_info_headers, env);
     axis2_msg_info_headers_set_action(msg_info_headers, env, action);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(in_msg_ctx, env);
-    AXIS2_MSG_CTX_SET_OP_CTX(new_msg_ctx, env, op_ctx);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(in_msg_ctx, env);
+     axis2_msg_ctx_set_op_ctx(new_msg_ctx, env, op_ctx);
 
-    svc_ctx = AXIS2_MSG_CTX_GET_SVC_CTX(in_msg_ctx, env);
-    AXIS2_MSG_CTX_SET_SVC_CTX(new_msg_ctx, env, svc_ctx);
+    svc_ctx =  axis2_msg_ctx_get_svc_ctx(in_msg_ctx, env);
+     axis2_msg_ctx_set_svc_ctx(new_msg_ctx, env, svc_ctx);
 
-    ctx = AXIS2_MSG_CTX_GET_BASE(in_msg_ctx, env);
+    ctx = axis2_msg_ctx_get_base(in_msg_ctx, env);
     if (ctx)
     {
-        axis2_ctx_t *new_ctx = AXIS2_MSG_CTX_GET_BASE(new_msg_ctx, env);
+        axis2_ctx_t *new_ctx = axis2_msg_ctx_get_base(new_msg_ctx, env);
         if (new_ctx)
         {
             axis2_ctx_set_non_persistent_map(new_ctx, env,
@@ -137,62 +137,62 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_msg_ctx_set_transport_out_stream(new_msg_ctx, env, out_stream);
     axis2_msg_ctx_set_http_out_transport_info(new_msg_ctx, env, 
         axis2_msg_ctx_get_http_out_transport_info(in_msg_ctx, env));
-    /*property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
+    /*property =  axis2_msg_ctx_get_property(in_msg_ctx, env,
             AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
     if (property)
     {
-        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_TRANSPORT_OUT, property,
+         axis2_msg_ctx_set_property(new_msg_ctx, env, AXIS2_TRANSPORT_OUT, property,
                 AXIS2_FALSE);
         property = NULL;
     }
 
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
+    property =  axis2_msg_ctx_get_property(in_msg_ctx, env,
             AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
     if (property)
     {
         axis2_char_t *temp = AXIS2_PROPERTY_GET_VALUE(property, env);
-        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
+         axis2_msg_ctx_set_property(new_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
             property, AXIS2_FALSE);
         property = NULL;
     }*/
 
     /* Setting the charater set encoding */
 
-    /*property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
+    /*property =  axis2_msg_ctx_get_property(in_msg_ctx, env,
             AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
     if (property)
     {
-        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env,
+         axis2_msg_ctx_set_property(new_msg_ctx, env,
                 AXIS2_CHARACTER_SET_ENCODING, property, AXIS2_FALSE);
         property = NULL;
     }
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
+    property =  axis2_msg_ctx_get_property(in_msg_ctx, env,
             AXIS2_WSA_VERSION, AXIS2_FALSE);
     if (property)
     {
-        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env,
+         axis2_msg_ctx_set_property(new_msg_ctx, env,
                 AXIS2_WSA_VERSION, property, AXIS2_FALSE);
         property = NULL;
     }*/
 
-    doing_rest = AXIS2_MSG_CTX_GET_DOING_REST(in_msg_ctx, env);
-    AXIS2_MSG_CTX_SET_DOING_REST(new_msg_ctx, env, doing_rest);
+    doing_rest =  axis2_msg_ctx_get_doing_rest(in_msg_ctx, env);
+     axis2_msg_ctx_set_doing_rest(new_msg_ctx, env, doing_rest);
 
-    doing_mtom = AXIS2_MSG_CTX_GET_DOING_MTOM(in_msg_ctx, env);
-    AXIS2_MSG_CTX_SET_DOING_MTOM(new_msg_ctx, env, doing_mtom);
+    doing_mtom =  axis2_msg_ctx_get_doing_mtom(in_msg_ctx, env);
+     axis2_msg_ctx_set_doing_mtom(new_msg_ctx, env, doing_mtom);
 
-    server_side = AXIS2_MSG_CTX_GET_SERVER_SIDE(in_msg_ctx, env);
-    AXIS2_MSG_CTX_SET_SERVER_SIDE(new_msg_ctx, env, server_side);
+    server_side =  axis2_msg_ctx_get_server_side(in_msg_ctx, env);
+     axis2_msg_ctx_set_server_side(new_msg_ctx, env, server_side);
 
-    svc_grp_ctx = AXIS2_MSG_CTX_GET_SVC_GRP_CTX(in_msg_ctx, env);
-    AXIS2_MSG_CTX_SET_SVC_GRP_CTX(new_msg_ctx, env, svc_grp_ctx);
+    svc_grp_ctx =  axis2_msg_ctx_get_svc_grp_ctx(in_msg_ctx, env);
+     axis2_msg_ctx_set_svc_grp_ctx(new_msg_ctx, env, svc_grp_ctx);
 
-    AXIS2_MSG_CTX_SET_IS_SOAP_11(new_msg_ctx, env,
-            AXIS2_MSG_CTX_GET_IS_SOAP_11(in_msg_ctx, env));
-    AXIS2_MSG_CTX_SET_KEEP_ALIVE(new_msg_ctx, env,
-            AXIS2_MSG_CTX_IS_KEEP_ALIVE(in_msg_ctx, env));
+     axis2_msg_ctx_set_is_soap_11(new_msg_ctx, env,
+             axis2_msg_ctx_get_is_soap_11(in_msg_ctx, env));
+     axis2_msg_ctx_set_keep_alive(new_msg_ctx, env,
+             axis2_msg_ctx_is_keep_alive(in_msg_ctx, env));
 
     axis2_msg_ctx_set_charset_encoding(new_msg_ctx, env, 
         axis2_msg_ctx_get_charset_encoding(in_msg_ctx, env));
@@ -208,7 +208,7 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
     if (!out_msg_ctx)
         return;
 
-    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(out_msg_ctx, env);
+    msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(out_msg_ctx, env);
     if (msg_info_headers)
     {
         axis2_msg_info_headers_set_to(msg_info_headers, env, NULL);
@@ -217,20 +217,20 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
         axis2_msg_info_headers_set_reply_to(msg_info_headers, env, NULL);
     }
 
-    AXIS2_MSG_CTX_SET_OP_CTX(out_msg_ctx, env, NULL);
-    AXIS2_MSG_CTX_SET_SVC_CTX(out_msg_ctx, env, NULL);
+     axis2_msg_ctx_set_op_ctx(out_msg_ctx, env, NULL);
+     axis2_msg_ctx_set_svc_ctx(out_msg_ctx, env, NULL);
     axis2_msg_ctx_reset_transport_out_stream(out_msg_ctx, env);
     axis2_msg_ctx_reset_http_out_transport_info(out_msg_ctx, env); 
-    /*AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_TRANSPORT_OUT, NULL,
+    /* axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_TRANSPORT_OUT, NULL,
             AXIS2_FALSE);
-    AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
+     axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
             NULL, AXIS2_FALSE);
-    AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
+     axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
             NULL, AXIS2_FALSE);
-    AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_WSA_VERSION, NULL,
+     axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_WSA_VERSION, NULL,
             AXIS2_FALSE);*/
 
-    AXIS2_MSG_CTX_SET_SVC_GRP_CTX(out_msg_ctx, env, NULL);
+     axis2_msg_ctx_set_svc_grp_ctx(out_msg_ctx, env, NULL);
 
     return;
 }

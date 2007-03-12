@@ -459,7 +459,7 @@ axis2_conf_ctx_fill_ctxs(
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+    svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     if (!svc)
     {
         AXIS2_ERROR_SET(env->error,
@@ -492,7 +492,7 @@ axis2_conf_ctx_fill_ctxs(
     if (!svc_grp_ctx_id)
     {
         svc_grp_ctx_id = (axis2_char_t*)axis2_string_get_buffer(
-            AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env), env);
+             axis2_msg_ctx_get_svc_grp_ctx_id(msg_ctx, env), env);
     }
 
     /* by this time service group context id must have a value,
@@ -521,7 +521,7 @@ axis2_conf_ctx_fill_ctxs(
         {
             axis2_string_t *svc_grp_ctx_id_str = 
                 axis2_string_create_assume_ownership(env, &svc_grp_ctx_id);
-            AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id_str);
+             axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
             axis2_string_free(svc_grp_ctx_id_str, env);
         }
     }
@@ -543,7 +543,7 @@ axis2_conf_ctx_fill_ctxs(
 
     /* when you come here operation context MUST already been assigned
        to the message context */
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (!op_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_MSG_CTX, AXIS2_FAILURE);
@@ -551,7 +551,7 @@ axis2_conf_ctx_fill_ctxs(
     }
 
     AXIS2_OP_CTX_SET_PARENT(op_ctx, env, svc_ctx);
-    AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx);
-    AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx);
+     axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
+     axis2_msg_ctx_set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx);
     return svc_grp_ctx;
 }

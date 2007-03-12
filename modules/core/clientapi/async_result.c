@@ -107,7 +107,7 @@ axis2_async_result_get_envelope(
 
     if (async_result_impl->result)
     {
-        return AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(async_result_impl->result, env);
+        return  axis2_msg_ctx_get_soap_envelope(async_result_impl->result, env);
     }
 
     return NULL;
@@ -142,7 +142,7 @@ axis2_async_result_free(
     /* We have a shallow copy here, so it is not appropriate to free it here.
     if (async_result_impl->result)
     {
-        AXIS2_MSG_CTX_FREE(async_result_impl->result, env);
+         axis2_msg_ctx_free(async_result_impl->result, env);
         async_result_impl->result = NULL;
     }*/
 

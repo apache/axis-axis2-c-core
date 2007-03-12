@@ -202,7 +202,7 @@ axis2_msg_recv_make_new_svc_obj(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
     if (NULL == svc)
@@ -250,7 +250,7 @@ axis2_msg_recv_get_impl_obj(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
     if (NULL == svc)
@@ -312,7 +312,7 @@ axis2_msg_recv_delete_svc_obj(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
     if (NULL == svc)
@@ -364,11 +364,11 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     {
         return AXIS2_FAILURE;
     }
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(out_msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(out_msg_ctx, env);
     if (!op_ctx)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+         axis2_msg_ctx_free(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }
     
@@ -376,7 +376,7 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     if (!status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+         axis2_msg_ctx_free(out_msg_ctx, env);
         return status;
     }
     status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx);
@@ -388,7 +388,7 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     if (AXIS2_SUCCESS != status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+         axis2_msg_ctx_free(out_msg_ctx, env);
         return status;
     }
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
@@ -396,12 +396,12 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     engine = axis2_engine_create(env, conf_ctx);
     if (!engine)
     {
-        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+         axis2_msg_ctx_free(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }
-    if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(out_msg_ctx, env))
+    if ( axis2_msg_ctx_get_soap_envelope(out_msg_ctx, env))
     {
-        axiom_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(
+        axiom_soap_envelope_t *soap_envelope =  axis2_msg_ctx_get_soap_envelope(
                     out_msg_ctx, env);
         if (soap_envelope)
         {
@@ -414,9 +414,9 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
                 if (AXIOM_SOAP_BODY_HAS_FAULT(body, env))
                 {
                     status = AXIS2_FAILURE;
-                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env,
+                     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env,
                             soap_envelope);
-                    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(out_msg_ctx, env, NULL);
+                     axis2_msg_ctx_set_soap_envelope(out_msg_ctx, env, NULL);
                 }
                 else
                 {
@@ -428,14 +428,14 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
         }
     }
     AXIS2_ENGINE_FREE(engine, env);
-    if (!AXIS2_MSG_CTX_IS_PAUSED(out_msg_ctx, env) && 
-            !AXIS2_MSG_CTX_IS_KEEP_ALIVE(out_msg_ctx, env))
+    if (! axis2_msg_ctx_is_paused(out_msg_ctx, env) && 
+            ! axis2_msg_ctx_is_keep_alive(out_msg_ctx, env))
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
     }
     /* this is freed in http worker by resetting the operation context 
        holding this msg context
-    AXIS2_MSG_CTX_FREE(out_msg_ctx, env); */
+     axis2_msg_ctx_free(out_msg_ctx, env); */
     out_msg_ctx = NULL;
     return status;
 }
@@ -468,17 +468,17 @@ axis2_raw_xml_in_out_msg_recv_receive_async(
     {
         return AXIS2_FAILURE;
     }
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(new_msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(new_msg_ctx, env);
     if (!op_ctx)
     {
-        AXIS2_MSG_CTX_FREE(new_msg_ctx, env);
+         axis2_msg_ctx_free(new_msg_ctx, env);
         return AXIS2_FAILURE;
     }
     AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, new_msg_ctx);
     status = AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_ASYNC(msg_recv, env,
             msg_ctx, new_msg_ctx, callback);
     /* end of code that run in a thread */
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     /* get thread pool from conf_ctx and execute the thread task */
     /*messageCtx.getConfigurationContext().getThreadPool().execute(theadedTask);*/
     return status;

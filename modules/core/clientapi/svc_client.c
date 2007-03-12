@@ -832,7 +832,7 @@ axis2_svc_client_send_receive(
                         axis2_mep_client_receive(env, msg_ctx);
                     if (res_msg_ctx)
                     {
-                        soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
+                        soap_envelope =  axis2_msg_ctx_get_soap_envelope(res_msg_ctx, env);
                         if (soap_envelope)
                         {
                             soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
@@ -863,7 +863,7 @@ axis2_svc_client_send_receive(
         msg_ctx = axis2_msg_ctx_create(env,
                         AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
         AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client_impl->op_client, env, msg_ctx);
-        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+         axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
         /* end of hack to get rid of memory leak */
 
         /* process the result of the invocation */
@@ -900,7 +900,7 @@ axis2_svc_client_send_receive(
         res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(
             svc_client_impl->op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
         if (res_msg_ctx)
-            soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
+            soap_envelope =  axis2_msg_ctx_get_soap_envelope(res_msg_ctx, env);
         else
             AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client_impl->op_client, env, 
                 res_msg_ctx); /* set in msg_ctx to be NULL to reset */
@@ -1464,7 +1464,7 @@ axis2_svc_client_fill_soap_envelope(
         }
     }
 
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
+     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, envelope);
 
     return AXIS2_TRUE;
 }

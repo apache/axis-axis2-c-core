@@ -190,7 +190,7 @@ axis2_http_transport_utils_process_http_post_request(
     AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request_uri, AXIS2_FAILURE);
 
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
 
     callback_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_info_t));
     /* Note: the memory created above is freed in xml reader free function
@@ -305,11 +305,11 @@ axis2_http_transport_utils_process_http_post_request(
         AXIS2_FREE(env->allocator, mime_boundary);
     }
 
-    AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
-    AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env,
+      axis2_msg_ctx_set_soap_action(msg_ctx, env, soap_action_header);
+      axis2_msg_ctx_set_to(msg_ctx, env, axis2_endpoint_ref_create(env,
             request_uri));
 
-    AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
+     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
 
     char_set_str = axis2_http_transport_utils_get_charset_enc(env, content_type);
     xml_reader = axiom_xml_reader_create_for_io(env,
@@ -400,7 +400,7 @@ axis2_http_transport_utils_process_http_post_request(
     if (do_rest)
     {
         /* REST support */
-        axis2_param_t *rest_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env
+        axis2_param_t *rest_param =  axis2_msg_ctx_get_parameter(msg_ctx, env
                 , AXIS2_ENABLE_REST);
         if (rest_param && 0 == AXIS2_STRCMP(AXIS2_VALUE_TRUE,
                 AXIS2_PARAM_GET_VALUE(rest_param, env)))
@@ -415,7 +415,7 @@ axis2_http_transport_utils_process_http_post_request(
             om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
             root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
             AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
-            AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, AXIS2_TRUE);
+             axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
         }
     }
 
@@ -449,7 +449,7 @@ axis2_http_transport_utils_process_http_post_request(
      *}
      */
 
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
 
     engine = axis2_engine_create(env, conf_ctx);
 
@@ -470,13 +470,13 @@ axis2_http_transport_utils_process_http_post_request(
     {
         status = AXIS2_ENGINE_RECEIVE(engine, env, msg_ctx);
     }
-    if (NULL == AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env) &&
+    if (NULL ==  axis2_msg_ctx_get_soap_envelope(msg_ctx, env) &&
             AXIS2_FALSE == is_soap11)
     {
         axiom_soap_envelope_t *def_envelope =
             axiom_soap_envelope_create_default_soap_envelope(env,
                     AXIOM_SOAP12);
-        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, def_envelope);
+         axis2_msg_ctx_set_soap_envelope(msg_ctx, env, def_envelope);
     }
 
     if (engine)
@@ -528,16 +528,16 @@ axis2_http_transport_utils_process_http_get_request(
     AXIS2_PARAM_CHECK(env->error, request_params, AXIS2_FALSE);
 
 
-    AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env,
+     axis2_msg_ctx_set_to(msg_ctx, env, axis2_endpoint_ref_create(env,
             request_uri));
 
-    AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
+     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
     if (AXIS2_SUCCESS != axis2_http_transport_utils_dispatch_and_verify(env,
             msg_ctx))
     {
         return AXIS2_FALSE;
     }
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    op =  axis2_msg_ctx_get_op(msg_ctx, env);
     /*if (op)
     {
         axis2_msg_t *msg = NULL;
@@ -552,8 +552,8 @@ axis2_http_transport_utils_process_http_get_request(
     }
     else
     {
-        AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, AXIS2_TRUE);
-        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+         axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
+         axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
         engine = axis2_engine_create(env, conf_ctx);
         AXIS2_ENGINE_RECEIVE(engine, env, msg_ctx);
         return AXIS2_TRUE;
@@ -599,11 +599,11 @@ axis2_http_transport_utils_do_write_mtom(
 
     return (axis2_msg_ctx_get_doing_mtom(msg_ctx, env));
 
-    /*param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, AXIS2_ENABLE_MTOM);
+    /*param =  axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_ENABLE_MTOM);
     if (param)
         value = AXIS2_PARAM_GET_VALUE(param, env);
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+    property =  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_ENABLE_MTOM, AXIS2_FALSE);
     if (property)
         value = (axis2_char_t *)AXIS2_PROPERTY_GET_VALUE(property, env);
@@ -1030,7 +1030,7 @@ axis2_http_transport_utils_create_soap_msg(
     AXIS2_PARAM_CHECK(env->error, soap_ns_uri, NULL);
 
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+    property =  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_TRANSPORT_IN, AXIS2_FALSE);
     if (property)
     {
@@ -1051,7 +1051,7 @@ axis2_http_transport_utils_create_soap_msg(
     callback_ctx->unread_len = -1;
     callback_ctx->chunked_stream = NULL;
 
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+    property =  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_HTTP_HEADER_CONTENT_LENGTH, AXIS2_FALSE);
     if (property)
     {
@@ -1085,7 +1085,7 @@ axis2_http_transport_utils_create_soap_msg(
     }
 
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
         axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
@@ -1115,7 +1115,7 @@ axis2_http_transport_utils_create_soap_msg(
     if (content_type)
     {
         axis2_char_t *mime_boundary = NULL;
-        AXIS2_MSG_CTX_SET_DOING_MTOM(msg_ctx, env, AXIS2_TRUE);
+         axis2_msg_ctx_set_doing_mtom(msg_ctx, env, AXIS2_TRUE);
         /* get mime boundry */
         mime_boundary = axis2_http_transport_utils_get_value_from_content_type(env, content_type, AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
 
@@ -1154,7 +1154,7 @@ axis2_http_transport_utils_create_soap_msg(
         }
     }
 
-    if (AXIS2_TRUE != AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
+    if (AXIS2_TRUE !=  axis2_msg_ctx_get_doing_rest(msg_ctx, env))
     {
         axiom_xml_reader_t *xml_reader = NULL;
         axiom_stax_builder_t *om_builder = NULL;
@@ -1326,7 +1326,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
         axiom_node_t *body_child_node = NULL;
 
         body_child = axiom_element_create_with_qname(env, NULL,
-                axis2_op_get_qname(AXIS2_MSG_CTX_GET_OP(msg_ctx, env),
+                axis2_op_get_qname( axis2_msg_ctx_get_op(msg_ctx, env),
                         env), &body_child_node);
         AXIOM_SOAP_BODY_ADD_CHILD(soap_body, env, body_child_node);
         if (param_map)
@@ -1453,7 +1453,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     }
 
     body_child = axiom_element_create_with_qname(env, NULL,
-            axis2_op_get_qname(AXIS2_MSG_CTX_GET_OP(msg_ctx, env),
+            axis2_op_get_qname( axis2_msg_ctx_get_op(msg_ctx, env),
                     env), &body_child_node);
     AXIOM_SOAP_BODY_ADD_CHILD(soap_body, env, body_child_node);
     if (param_map)
@@ -1493,8 +1493,8 @@ axis2_http_transport_utils_dispatch_and_verify(
     handler = AXIS2_DISP_GET_BASE(req_uri_disp, env);
     AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
 
-    if (NULL == AXIS2_MSG_CTX_GET_SVC(msg_ctx, env) || NULL ==
-            AXIS2_MSG_CTX_GET_OP(msg_ctx, env))
+    if (NULL ==  axis2_msg_ctx_get_svc(msg_ctx, env) || NULL ==
+             axis2_msg_ctx_get_op(msg_ctx, env))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
                 AXIS2_FAILURE);

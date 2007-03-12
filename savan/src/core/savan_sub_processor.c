@@ -118,7 +118,7 @@ savan_sub_processor_subscribe(
 
     /* Set this subscriber inside a subscriber store maintained in the svc */
 
-    svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+    svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     if (!svc)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to extract "
@@ -364,7 +364,7 @@ savan_sub_processor_create_subscriber_from_msg(
     
     /* Get soap envelop and extract relevant elements */
    
-    envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (!envelope)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to extract the "
@@ -461,7 +461,7 @@ savan_sub_processor_set_sub_id_to_msg_ctx(
      * Pass a copy because msg ctx free function frees all properties */
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_VALUE(property, env, (void*)AXIS2_STRDUP(id, env));
-    AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, SAVAN_KEY_SUB_ID, property,
+     axis2_msg_ctx_set_property(msg_ctx, env, SAVAN_KEY_SUB_ID, property,
         AXIS2_FALSE);
 
     return AXIS2_SUCCESS;

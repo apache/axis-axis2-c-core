@@ -228,7 +228,7 @@ axis2_callback_recv_receive(
 
     callback_recv_impl = AXIS2_INTF_TO_IMPL(msg_recv->derived);
 
-    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
+    msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
     if (msg_info_headers)
     {
         relates_to = axis2_msg_info_headers_get_relates_to(msg_info_headers, env);
@@ -246,7 +246,7 @@ axis2_callback_recv_receive(
                 {
                     AXIS2_CALLBACK_INVOKE_ON_COMPLETE(callback, env, result);
                     AXIS2_CALLBACK_SET_COMPLETE(callback, env, AXIS2_TRUE);
-                    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, NULL);
+                     axis2_msg_ctx_set_soap_envelope(msg_ctx, env, NULL);
                 }
 
                 AXIS2_ASYNC_RESULT_FREE(result, env);

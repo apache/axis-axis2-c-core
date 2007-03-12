@@ -94,7 +94,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
  
     serverside = axis2_msg_ctx_get_server_side(msg_ctx,env);
 
-    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if(!soap_envelope)
     {
        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No SOAP envelope found. ERROR");
@@ -171,7 +171,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
 
     if (soap_envelope)
     {
@@ -185,7 +185,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             actions = rampart_actions_create(env);
 
 
-            ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
+            ctx = axis2_msg_ctx_get_base(msg_ctx, env);
             param_in_flow_security = rampart_get_security_param(env, msg_ctx, 
 									RAMPART_INFLOW_SECURITY);
 

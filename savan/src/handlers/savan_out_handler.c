@@ -91,7 +91,7 @@ savan_out_handler_invoke(
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     
-    svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+    svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     if (svc)
         svc_name = AXIS2_SVC_GET_NAME(svc, env);
     
@@ -107,7 +107,7 @@ savan_out_handler_invoke(
     {
         /* Treat unknown msgs as msgs for publishing */
         
-        svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+        svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
         if (!svc)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan][out handler] "
@@ -150,7 +150,7 @@ savan_out_handler_invoke(
             val = NULL;
         }
 
-        AXIS2_MSG_CTX_SET_PAUSED(msg_ctx, env, AXIS2_TRUE);
+         axis2_msg_ctx_set_paused(msg_ctx, env, AXIS2_TRUE);
     }
        
     return AXIS2_SUCCESS;

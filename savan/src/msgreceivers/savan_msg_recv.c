@@ -127,7 +127,7 @@ savan_msg_recv_invoke_business_logic_sync(
         " creation failed");         
     }*/
     
-    /*AXIS2_SVC_SKELETON_SET_USER_DATA(svc_obj, env, (void*)AXIS2_MSG_CTX_GET_SVC(msg_ctx, env));*/
+    /*AXIS2_SVC_SKELETON_SET_USER_DATA(svc_obj, env, (void*) axis2_msg_ctx_get_svc(msg_ctx, env));*/
         
     /* find the msg type and call the appropriate response function */
     msg_type = savan_util_get_message_type(msg_ctx, env);
@@ -189,7 +189,7 @@ savan_msg_recv_handle_sub_request(
         "handle sub request...");
     
     /* set wsa action as SubscribeResponse. */
-    info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
+    info_header =  axis2_msg_ctx_get_msg_info_headers(new_msg_ctx, env);
     axis2_msg_info_headers_set_action(info_header, env, SAVAN_ACTIONS_SUB_RESPONSE);
     
     default_envelope = savan_msg_recv_build_soap_envelope(env, &body_node);
@@ -215,13 +215,13 @@ savan_msg_recv_handle_sub_request(
         &submgr_node);
     addr_elem = axiom_element_create(env, submgr_node, ELEM_NAME_ADDR, addr_ns,
         &addr_node);
-    old_info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
+    old_info_header =  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
     submgr_epr = axis2_msg_info_headers_get_to(old_info_header, env);
     submgr_addr = axis2_endpoint_ref_get_address(submgr_epr, env);
     AXIOM_ELEMENT_SET_TEXT(addr_elem, env, submgr_addr, addr_node);
     
     /* Get subscriber id from the msg ctx */
-    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, SAVAN_KEY_SUB_ID, AXIS2_FALSE);
+    property =  axis2_msg_ctx_get_property(msg_ctx, env, SAVAN_KEY_SUB_ID, AXIS2_FALSE);
     id = (axis2_char_t*)AXIS2_PROPERTY_GET_VALUE(property, env);
     
     /* Set sub id as a ref param */
@@ -239,7 +239,7 @@ savan_msg_recv_handle_sub_request(
     AXIOM_ELEMENT_SET_TEXT(expires_elem, env, expires, expires_node);
     
     AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+     axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     
     return AXIS2_SUCCESS;
 }
@@ -278,7 +278,7 @@ savan_msg_recv_handle_unsub_request(
     }
 
     /* Set wsa action as UnsubscribeResponse. */
-    info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
+    info_header =  axis2_msg_ctx_get_msg_info_headers(new_msg_ctx, env);
     axis2_msg_info_headers_set_action(info_header, env, SAVAN_ACTIONS_UNSUB_RESPONSE);
     
     default_envelope = savan_msg_recv_build_soap_envelope(env, &body_node);
@@ -299,7 +299,7 @@ savan_msg_recv_handle_unsub_request(
         &response_node);
 
     AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+     axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     
     return AXIS2_SUCCESS;
 }
@@ -346,7 +346,7 @@ savan_msg_recv_handle_renew_request(
     }
 
     /* Set wsa action as RenewResponse. */
-    info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
+    info_header =  axis2_msg_ctx_get_msg_info_headers(new_msg_ctx, env);
     axis2_msg_info_headers_set_action(info_header, env, SAVAN_ACTIONS_RENEW_RESPONSE);
     
     default_envelope = savan_msg_recv_build_soap_envelope(env, &body_node);
@@ -374,7 +374,7 @@ savan_msg_recv_handle_renew_request(
     AXIOM_ELEMENT_SET_TEXT(expires_elem, env, expires, expires_node);
     
     AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+     axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     
     return AXIS2_SUCCESS;
 }
@@ -403,7 +403,7 @@ savan_msg_recv_handle_get_status_request(
         "handle get status request...");
 
     /* set wsa action as GetStatusResponse. */
-    info_header = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(new_msg_ctx, env);
+    info_header =  axis2_msg_ctx_get_msg_info_headers(new_msg_ctx, env);
     axis2_msg_info_headers_set_action(info_header, env, SAVAN_ACTIONS_GET_STATUS_RESPONSE);
     
     default_envelope = savan_msg_recv_build_soap_envelope(env, &body_node);
@@ -432,7 +432,7 @@ savan_msg_recv_handle_get_status_request(
     AXIOM_ELEMENT_SET_TEXT(expires_elem, env, expires, expires_node);
     
     AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
+     axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     
     return AXIS2_SUCCESS;
 }

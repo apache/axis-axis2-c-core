@@ -217,25 +217,25 @@ axis2_disp_invoke(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    axis_service = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+    axis_service =  axis2_msg_ctx_get_svc(msg_ctx, env);
 
     if (!axis_service)
     {
-        axis_service = AXIS2_MSG_CTX_FIND_SVC(msg_ctx, env);
+        axis_service =  axis2_msg_ctx_find_svc(msg_ctx, env);
         if (axis_service)
         {
-            AXIS2_MSG_CTX_SET_SVC(msg_ctx, env, axis_service);
+             axis2_msg_ctx_set_svc(msg_ctx, env, axis_service);
             /*TODO Set the Service Group Context to the message Context*/
         }
     }
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    op =  axis2_msg_ctx_get_op(msg_ctx, env);
     if (!op)
     {
-        op = AXIS2_MSG_CTX_FIND_OP(msg_ctx, env, axis_service);
+        op =  axis2_msg_ctx_find_op(msg_ctx, env, axis_service);
 
         if (op)
         {
-            AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
+             axis2_msg_ctx_set_op(msg_ctx, env, op);
         }
     }
 

@@ -129,7 +129,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
 
     AXIS2_LOG_INFO(env->log, "Starting addressing in handler .........");
 
-    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
 
     if (soap_envelope)
     {
@@ -139,7 +139,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             axis2_array_list_t *addr_headers = NULL;
             axis2_ctx_t *ctx = NULL;
             axis2_char_t *addr_ns_str = NULL;
-            axis2_msg_info_headers_t *msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
+            axis2_msg_info_headers_t *msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
 
             addr_headers = AXIOM_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(soap_header, env, AXIS2_WSA_NAMESPACE_SUBMISSION);
             if (addr_headers)
@@ -162,7 +162,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
                             &msg_info_headers,
                             addr_headers,
                             msg_ctx);
-                    axis2_addr_in_extract_ref_params(env, soap_header, AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env));
+                    axis2_addr_in_extract_ref_params(env, soap_header,  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env));
 
                 }
                 else
@@ -220,7 +220,7 @@ axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env,
                 axis2_conf_ctx_t * conf_ctx = NULL;
                 axis2_char_t *grp_id = AXIOM_ELEMENT_GET_TEXT(child_element, env,
                         child_node);
-                conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+                conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
                 if (conf_ctx && grp_id)
                 {
                     axis2_string_t *svc_grp_ctx_id_str = axis2_string_create(env, grp_id);
@@ -230,7 +230,7 @@ axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env,
                         /** TODO, set error */
                         return AXIS2_FAILURE;
                     }
-                    AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id_str);
+                     axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
                     axis2_string_free(svc_grp_ctx_id_str, env);
                     return AXIS2_SUCCESS;
                 }
@@ -716,7 +716,7 @@ axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
     axiom_element_t * text_om_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
 
-    if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
+    if ( axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
     {
         soap_version = AXIOM_SOAP11;
     }
@@ -737,8 +737,8 @@ axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
             "soapenv:Sender",
             "A header representing a Message Addressing Property is not valid and the message cannot be processed",
             soap_version, sub_codes, text_om_node);
-    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);
-    AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env,
+     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, envelope);
+     axis2_msg_ctx_set_wsa_action(msg_ctx, env,
             "http://www.w3.org/2005/08/addressing/fault");
     return;
 }

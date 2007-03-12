@@ -280,10 +280,10 @@ axis2_op_client_add_msg_ctx(
     {
         /* may be this is the second invocation using the same service clinet,
            so reset */
-        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+         axis2_msg_ctx_free(out_msg_ctx, env);
         out_msg_ctx = NULL;
         msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
-        AXIS2_MSG_CTX_FREE(in_msg_ctx, env);
+         axis2_msg_ctx_free(in_msg_ctx, env);
         in_msg_ctx = NULL;
         msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_client_impl->op_ctx, env, AXIS2_FALSE);
@@ -303,9 +303,9 @@ axis2_op_client_add_msg_ctx(
     {
 		axis2_property_t *dump_property;
 		axis2_char_t *dump_value = NULL;
-		if (!AXIS2_MSG_CTX_GET_DOING_REST(out_msg_ctx, env))
+		if (! axis2_msg_ctx_get_doing_rest(out_msg_ctx, env))
 		{
-			dump_property = AXIS2_MSG_CTX_GET_PROPERTY(out_msg_ctx, env,
+			dump_property =  axis2_msg_ctx_get_property(out_msg_ctx, env,
 													   AXIS2_DUMP_INPUT_MSG_TRUE,
 													   AXIS2_FALSE);
 			if (dump_property)
@@ -315,7 +315,7 @@ axis2_op_client_add_msg_ctx(
 		
 		if(AXIS2_STRCMP(dump_value, AXIS2_VALUE_TRUE))
         {
-			AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+			 axis2_msg_ctx_free(out_msg_ctx, env);
 			out_msg_ctx = NULL;
 			msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
         }
@@ -438,7 +438,7 @@ axis2_op_client_execute(
         return AXIS2_FAILURE;
     }
 
-    AXIS2_MSG_CTX_SET_OPTIONS(msg_ctx, env, op_client_impl->options);
+     axis2_msg_ctx_set_options(msg_ctx, env, op_client_impl->options);
 
     /**
      if the transport to use for sending is not specified, try to find it
@@ -457,7 +457,7 @@ axis2_op_client_execute(
          if(!to_epr)
             to_epr = AXIS2_OPTIONS_GET_TO(op_client_impl->options, env);
         if (!to_epr)
-            to_epr = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
+            to_epr =  axis2_msg_ctx_get_to(msg_ctx, env);
         transport_out = AXIS2_MEP_CLIENT_INFER_TRANSPORT(op_client_impl->base, env, to_epr);
     }
 
@@ -466,8 +466,8 @@ axis2_op_client_execute(
         return AXIS2_FAILURE;
     }
 
-    if (!(AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env)))
-        AXIS2_MSG_CTX_SET_TRANSPORT_OUT_DESC(msg_ctx, env, transport_out);
+    if (!( axis2_msg_ctx_get_transport_out_desc(msg_ctx, env)))
+         axis2_msg_ctx_set_transport_out_desc(msg_ctx, env, transport_out);
 
 
     transport_in = AXIS2_OPTIONS_GET_TRANSPORT_IN(op_client_impl->options, env);
@@ -485,9 +485,9 @@ axis2_op_client_execute(
         }
     }
 
-    if (!(AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env)))
+    if (!( axis2_msg_ctx_get_transport_in_desc(msg_ctx, env)))
     {
-        AXIS2_MSG_CTX_SET_TRANSPORT_IN_DESC(msg_ctx, env, transport_in);
+         axis2_msg_ctx_set_transport_in_desc(msg_ctx, env, transport_in);
     }
 
     op = AXIS2_OP_CTX_GET_OP(op_client_impl->op_ctx, env);
@@ -499,7 +499,7 @@ axis2_op_client_execute(
         return AXIS2_FAILURE;
 
     msg_id = (axis2_char_t*)axis2_uuid_gen(env);
-    AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, msg_id);
+     axis2_msg_ctx_set_message_id(msg_ctx, env, msg_id);
     if (msg_id)
     {
         AXIS2_FREE(env->allocator, msg_id);
@@ -511,12 +511,12 @@ axis2_op_client_execute(
         axis2_engine_t *engine = NULL;
 
         AXIS2_CALLBACK_RECV_ADD_CALLBACK(op_client_impl->callback_recv, env,
-                AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env),
+                 axis2_msg_ctx_get_msg_id(msg_ctx, env),
                 op_client_impl->callback);
         /* TODO: set up reply to */
-        AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, axis2_op_find_op_ctx(op, env,
+         axis2_msg_ctx_set_op_ctx(msg_ctx, env, axis2_op_find_op_ctx(op, env,
                 msg_ctx, op_client_impl->svc_ctx));
-        AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, op_client_impl->svc_ctx);
+         axis2_msg_ctx_set_svc_ctx(msg_ctx, env, op_client_impl->svc_ctx);
 
         /* send the message */
         engine = axis2_engine_create(env, conf_ctx);
@@ -531,10 +531,10 @@ axis2_op_client_execute(
         {
             axis2_msg_ctx_t *response_mc = NULL;
             
-            AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, op_client_impl->svc_ctx);
-            AXIS2_MSG_CTX_SET_CONF_CTX(msg_ctx, env,
+             axis2_msg_ctx_set_svc_ctx(msg_ctx, env, op_client_impl->svc_ctx);
+             axis2_msg_ctx_set_conf_ctx(msg_ctx, env,
                     AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env));
-            AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_client_impl->op_ctx);
+             axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_client_impl->op_ctx);
 
             /*Send the SOAP Message and receive a response */
             response_mc = axis2_mep_client_two_way_send(env, msg_ctx);
@@ -636,7 +636,7 @@ axis2_op_client_complete(
 
     op_client_impl = AXIS2_INTF_TO_IMPL(op_client);
 
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(mc, env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(mc, env);
 
     if (!conf_ctx)
         return AXIS2_FAILURE;
@@ -749,8 +749,8 @@ axis2_op_client_worker_func(
     op_ctx = axis2_op_ctx_create(th_env, args_list->op, args_list->op_client_impl->svc_ctx);
     if (!op_ctx)
         return NULL;
-    AXIS2_MSG_CTX_SET_OP_CTX(args_list->msg_ctx, th_env, op_ctx);
-    AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, th_env, args_list->op_client_impl->svc_ctx);
+     axis2_msg_ctx_set_op_ctx(args_list->msg_ctx, th_env, op_ctx);
+     axis2_msg_ctx_set_svc_ctx(args_list->msg_ctx, th_env, args_list->op_client_impl->svc_ctx);
 
     /* send the request and wait for response */
     response = axis2_mep_client_two_way_send(th_env, args_list->msg_ctx);

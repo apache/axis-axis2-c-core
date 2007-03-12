@@ -125,7 +125,7 @@ axis2_add_add(const axis2_env_t *env, axiom_node_t *node, axis2_msg_ctx_t *msg_c
         text1 = axiom_text_create(env, node1, result_str, &node2);
 
         /* Put the result into service group context */
-        svc_grp_ctx = AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env);
+        svc_grp_ctx =  axis2_msg_ctx_get_svc_grp_ctx(msg_ctx, env);
         if (svc_grp_ctx)
         {
             axis2_ctx_t* ctx = NULL;

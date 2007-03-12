@@ -487,7 +487,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     
     /*Set the username to the SPR*/
     rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_USERNAME, username);
-    ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
+    ctx = axis2_msg_ctx_get_base(msg_ctx, env);
 
     /**
      * NOTE: Here we will try two apraoches to get the UT validated

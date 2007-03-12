@@ -177,7 +177,7 @@ axis2_http_transport_sender_invoke(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    /*property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+    /*property =  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
     if (property)
     {
@@ -192,7 +192,7 @@ axis2_http_transport_sender_invoke(
     
     if (!char_set_enc)
     {
-        axis2_op_ctx_t *op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        axis2_op_ctx_t *op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
             axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
@@ -219,9 +219,9 @@ axis2_http_transport_sender_invoke(
 
     do_mtom = axis2_http_transport_utils_do_write_mtom(env,
             msg_ctx);
-    AXIS2_MSG_CTX_SET_DOING_MTOM(msg_ctx, env, do_mtom);
-    /*do_mtom = AXIS2_MSG_CTX_GET_DOING_MTOM(msg_ctx, env);*/
-    /*AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx,
+     axis2_msg_ctx_set_doing_mtom(msg_ctx, env, do_mtom);
+    /*do_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env);*/
+    /* axis2_msg_ctx_set_doing_rest(msg_ctx,
                       env, axis2_http_transport_utils_is_doing_rest(env, 
                       msg_ctx));*/
 
@@ -232,7 +232,7 @@ axis2_http_transport_sender_invoke(
     }
     else
     {
-        axis2_endpoint_ref_t *ctx_epr = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
+        axis2_endpoint_ref_t *ctx_epr =  axis2_msg_ctx_get_to(msg_ctx, env);
         if (ctx_epr && 0 != AXIS2_STRCMP(
                     AXIS2_WSA_ANONYMOUS_URL_SUBMISSION,
                     axis2_endpoint_ref_get_address(ctx_epr, env)) &&
@@ -268,7 +268,7 @@ axis2_http_transport_sender_invoke(
         return AXIS2_FAILURE;
     }
 
-    AXIOM_OUTPUT_SET_SOAP11(om_output, env, AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env));
+    AXIOM_OUTPUT_SET_SOAP11(om_output, env,  axis2_msg_ctx_get_is_soap_11(msg_ctx, env));
     if (epr)
     {
         if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, axis2_endpoint_ref_get_address(epr, env)) == 0 ||
@@ -287,7 +287,7 @@ axis2_http_transport_sender_invoke(
     {
         axis2_stream_t *out_stream = axis2_msg_ctx_get_transport_out_stream(msg_ctx, env);
         
-        if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))
+        if (AXIS2_TRUE ==  axis2_msg_ctx_get_server_side(msg_ctx, env))
         {
             axis2_http_out_transport_info_t *out_info = NULL;
             axis2_bool_t is_soap11 = AXIS2_FALSE;
@@ -304,7 +304,7 @@ axis2_http_transport_sender_invoke(
                 xml_writer = NULL;
                 return AXIS2_FAILURE;
             }
-            is_soap11 = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env);
+            is_soap11 =  axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
             /* AXIOM_OUTPUT_SET_SOAP11(om_output, env, is_soap_11);
              */
             AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_info, env,
@@ -326,7 +326,7 @@ axis2_http_transport_sender_invoke(
              *            AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
              */
 		
-            if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
+            if (AXIS2_TRUE ==  axis2_msg_ctx_get_doing_rest(msg_ctx, env))
             {
                 axiom_node_t *body_node = NULL;
                 axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(
@@ -392,7 +392,7 @@ axis2_http_transport_sender_invoke(
             AXIS2_STREAM_WRITE(out_stream, env, buffer, buffer_size);
             /*AXIS2_FREE(env->allocator, buffer);*/
 
-            op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+            op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
             axis2_op_ctx_set_response_written(op_ctx, env, AXIS2_TRUE);
         }
     }
@@ -557,7 +557,7 @@ axis2_http_transport_sender_write_message(
 
     url = axis2_endpoint_ref_get_address(epr, env);
     
-    soap_action = axis2_string_get_buffer(AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env), env);
+    soap_action = axis2_string_get_buffer( axis2_msg_ctx_get_soap_action(msg_ctx, env), env);
     
     if (NULL == soap_action)
     {
@@ -595,7 +595,7 @@ axis2_http_transport_sender_write_message(
 	AXIS2_HTTP_SENDER_FREE(sender, env);
 	sender = NULL;
 
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    op =  axis2_msg_ctx_get_op(msg_ctx, env);
     if (op)
     {
         /* handle one way case */
@@ -610,12 +610,12 @@ axis2_http_transport_sender_write_message(
         }
 		else
 		{
-			soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
+			soap_ns_uri =  axis2_msg_ctx_get_is_soap_11(msg_ctx, env) ?
 				AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI : AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
 			response_envelope = axis2_http_transport_utils_create_soap_msg(env,
 																		   msg_ctx, soap_ns_uri);
             if (response_envelope)
-    			AXIS2_MSG_CTX_SET_RESPONSE_SOAP_ENVELOPE (msg_ctx, env, response_envelope);
+    			 axis2_msg_ctx_set_response_soap_envelope (msg_ctx, env, response_envelope);
 		}
     }
     /* Free the client */

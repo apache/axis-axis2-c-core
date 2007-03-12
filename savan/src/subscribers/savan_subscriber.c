@@ -230,7 +230,7 @@ savan_subscriber_publish(
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[savan][subscribe] publish...");
 	
     path = AXIS2_GETENV("AXIS2C_HOME");
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
 
     /* Get anonymous service from conf. This will be null for the first time, 

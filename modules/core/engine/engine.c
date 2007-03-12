@@ -256,7 +256,7 @@ axis2_engine_send(
         return status;
 
     /* find and invoke the phases */
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
@@ -266,7 +266,7 @@ axis2_engine_send(
         }
     }
 
-    if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+    if ( axis2_msg_ctx_is_paused(msg_ctx, env))
     {
         /* message has paused, so rerun it from the position it stopped.
            The handler which paused the message will be the first one to resume 
@@ -278,7 +278,7 @@ axis2_engine_send(
             return status;
         }
 
-        conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         if (conf_ctx)
         {
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -301,7 +301,7 @@ axis2_engine_send(
             return status;
         }
 
-        conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         if (conf_ctx)
         {
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -316,11 +316,11 @@ axis2_engine_send(
         }
     }
 
-    if (!(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)))
+    if (!( axis2_msg_ctx_is_paused(msg_ctx, env)))
     {
         /* write the message to wire */
         axis2_transport_sender_t *transport_sender = NULL;
-        axis2_transport_out_desc_t *transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
+        axis2_transport_out_desc_t *transport_out =  axis2_msg_ctx_get_transport_out_desc(msg_ctx, env);
 
         if (transport_out)
         {
@@ -364,31 +364,31 @@ axis2_engine_receive(
 
     engine_impl = AXIS2_INTF_TO_IMPL(engine);
 
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
 
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
 
     pre_calculated_phases =
         AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
 
-    if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+    if ( axis2_msg_ctx_is_paused(msg_ctx, env))
     {
         /* the message has paused, so re-run them from the position they stopped. */
         axis2_engine_resume_invocation_phases(engine, env, pre_calculated_phases, msg_ctx);
-        if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+        if ( axis2_msg_ctx_is_paused(msg_ctx, env))
         {
             return AXIS2_SUCCESS;
         }
 
         axis2_engine_verify_ctx_built(engine, env, msg_ctx);
         /* resume op specific phases */
-        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
             op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
             op_specific_phases = axis2_op_get_in_flow(op, env);
             axis2_engine_resume_invocation_phases(engine, env, op_specific_phases, msg_ctx);
-            if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+            if ( axis2_msg_ctx_is_paused(msg_ctx, env))
             {
                 return AXIS2_SUCCESS;
             }
@@ -399,17 +399,17 @@ axis2_engine_receive(
         status = axis2_engine_invoke_phases(engine, env, pre_calculated_phases, msg_ctx);
         if (status != AXIS2_SUCCESS)
         {
-            if (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))
+            if ( axis2_msg_ctx_get_server_side(msg_ctx, env))
                 return status;
         }
 
-        if (AXIS2_TRUE == AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+        if (AXIS2_TRUE ==  axis2_msg_ctx_is_paused(msg_ctx, env))
         {
             return AXIS2_SUCCESS;
         }
 
         axis2_engine_verify_ctx_built(engine, env, msg_ctx);   /* TODO : Remove me. I'm redundant */
-        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
             op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
@@ -420,14 +420,14 @@ axis2_engine_receive(
                 return status;
             }
 
-            if (AXIS2_TRUE == AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+            if (AXIS2_TRUE ==  axis2_msg_ctx_is_paused(msg_ctx, env))
             {
                 return AXIS2_SUCCESS;
             }
         }
     }
 
-    if ((AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env)) && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)))
+    if (( axis2_msg_ctx_get_server_side(msg_ctx, env)) && !( axis2_msg_ctx_is_paused(msg_ctx, env)))
     {
         axis2_msg_recv_t *receiver = NULL;
 
@@ -466,15 +466,15 @@ axis2_engine_send_fault(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
 
-    if (!(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)))
+    if (!( axis2_msg_ctx_is_paused(msg_ctx, env)))
     {
         /* send the SOAP Fault*/
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_transport_sender_t *transport_sender = NULL;
         axis2_transport_out_desc_t *transport_out  = NULL;
-        conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         if (conf_ctx)
         {
             axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -488,7 +488,7 @@ axis2_engine_send_fault(
             }
         }
 
-        transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
+        transport_out =  axis2_msg_ctx_get_transport_out_desc(msg_ctx, env);
 
         if (transport_out)
             transport_sender = axis2_transport_out_desc_get_sender(transport_out, env);
@@ -509,13 +509,13 @@ axis2_engine_receive_fault(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
 
     if (!op_ctx)
     {
         /* if we do not have an op context that means this may be an incoming
            dual channel response. So try to dispatch the service */
-        axis2_conf_ctx_t *conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+        axis2_conf_ctx_t *conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
         if (conf_ctx)
         {
             axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -524,7 +524,7 @@ axis2_engine_receive_fault(
                 axis2_array_list_t *phases = AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
                 if (phases)
                 {
-                    if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+                    if ( axis2_msg_ctx_is_paused(msg_ctx, env))
                     {
                         axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
                     }
@@ -538,13 +538,13 @@ axis2_engine_receive_fault(
         }
     }
 
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     /* find and execute the fault in flow handlers */
     if (op_ctx)
     {
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
         axis2_array_list_t *phases = axis2_op_get_fault_in_flow(op, env);
-        if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+        if ( axis2_msg_ctx_is_paused(msg_ctx, env))
         {
             axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
         }
@@ -579,7 +579,7 @@ axis2_engine_create_fault_msg_ctx(
 
     engine_impl = AXIS2_INTF_TO_IMPL(engine);
 
-    if (AXIS2_MSG_CTX_GET_PROCESS_FAULT(processing_context, env))
+    if ( axis2_msg_ctx_get_process_fault(processing_context, env))
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_STATE_PROCESSING_FAULT_ALREADY, AXIS2_FAILURE);
@@ -587,12 +587,12 @@ axis2_engine_create_fault_msg_ctx(
     }
 
     fault_ctx = axis2_msg_ctx_create(env, engine_impl->conf_ctx,
-            AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(processing_context, env),
-            AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(processing_context, env));
+             axis2_msg_ctx_get_transport_in_desc(processing_context, env),
+             axis2_msg_ctx_get_transport_out_desc(processing_context, env));
 
-    AXIS2_MSG_CTX_SET_PROCESS_FAULT(fault_ctx, env, AXIS2_TRUE);
+     axis2_msg_ctx_set_process_fault(fault_ctx, env, AXIS2_TRUE);
 
-    fault_to = AXIS2_MSG_CTX_GET_FAULT_TO(processing_context, env);
+    fault_to =  axis2_msg_ctx_get_fault_to(processing_context, env);
     if (fault_to)
     {
         const axis2_char_t *address = axis2_endpoint_ref_get_address(fault_to, env);
@@ -603,19 +603,19 @@ axis2_engine_create_fault_msg_ctx(
         else if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL, address) == 0 ||
                 AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, address) == 0)
         {
-            reply_to = AXIS2_MSG_CTX_GET_REPLY_TO(processing_context, env);
+            reply_to =  axis2_msg_ctx_get_reply_to(processing_context, env);
             if (reply_to)
             {
-                AXIS2_MSG_CTX_SET_FAULT_TO(fault_ctx, env, reply_to);
+                 axis2_msg_ctx_set_fault_to(fault_ctx, env, reply_to);
             }
             else
             {
-                AXIS2_MSG_CTX_SET_FAULT_TO(fault_ctx, env, fault_to);
+                 axis2_msg_ctx_set_fault_to(fault_ctx, env, fault_to);
             }
         }
         else
         {
-            AXIS2_MSG_CTX_SET_FAULT_TO(fault_ctx, env, fault_to);
+             axis2_msg_ctx_set_fault_to(fault_ctx, env, fault_to);
         }
 
     }
@@ -634,41 +634,41 @@ axis2_engine_create_fault_msg_ctx(
     }
 
     /* set WSA action */
-    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(processing_context, env);
+    msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(processing_context, env);
     if (msg_info_headers)
     {
         wsa_action = axis2_msg_info_headers_get_action (msg_info_headers, env);
         if (wsa_action)
         {
             wsa_action = "http://www.w3.org/2005/08/addressing/fault";
-            AXIS2_MSG_CTX_SET_WSA_ACTION(fault_ctx, env, wsa_action);
+             axis2_msg_ctx_set_wsa_action(fault_ctx, env, wsa_action);
         }
     }
 
     /* set relates to */
-    msg_id = AXIS2_MSG_CTX_GET_MSG_ID(processing_context, env);
+    msg_id =  axis2_msg_ctx_get_msg_id(processing_context, env);
     relates_to = axis2_relates_to_create(env, msg_id,
             AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE);
-    AXIS2_MSG_CTX_SET_RELATES_TO(fault_ctx, env, relates_to);
+     axis2_msg_ctx_set_relates_to(fault_ctx, env, relates_to);
 
     /* set msg id */
     msg_uuid =  axis2_uuid_gen(env);
-    AXIS2_MSG_CTX_SET_MESSAGE_ID(fault_ctx, env, msg_uuid);
+     axis2_msg_ctx_set_message_id(fault_ctx, env, msg_uuid);
     if (msg_uuid)
     {
         AXIS2_FREE(env->allocator, msg_uuid);
         msg_uuid = NULL;
     }
 
-    AXIS2_MSG_CTX_SET_OP_CTX(fault_ctx, env, AXIS2_MSG_CTX_GET_OP_CTX(processing_context, env));
-    AXIS2_MSG_CTX_SET_PROCESS_FAULT(fault_ctx, env, AXIS2_TRUE);
-    AXIS2_MSG_CTX_SET_SERVER_SIDE(fault_ctx, env, AXIS2_TRUE);
+     axis2_msg_ctx_set_op_ctx(fault_ctx, env,  axis2_msg_ctx_get_op_ctx(processing_context, env));
+     axis2_msg_ctx_set_process_fault(fault_ctx, env, AXIS2_TRUE);
+     axis2_msg_ctx_set_server_side(fault_ctx, env, AXIS2_TRUE);
 
-    envelope = AXIS2_MSG_CTX_GET_FAULT_SOAP_ENVELOPE(processing_context, env);
+    envelope =  axis2_msg_ctx_get_fault_soap_envelope(processing_context, env);
 
     if (!envelope)
     {
-        if (AXIS2_MSG_CTX_GET_IS_SOAP_11(processing_context, env))
+        if ( axis2_msg_ctx_get_is_soap_11(processing_context, env))
         {
             envelope = axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP11);
 
@@ -694,7 +694,7 @@ axis2_engine_create_fault_msg_ctx(
         }
     }
 
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(fault_ctx, env, envelope);
+     axis2_msg_ctx_set_soap_envelope(fault_ctx, env, envelope);
     axis2_msg_ctx_set_http_out_transport_info(fault_ctx, env, 
         axis2_msg_ctx_get_http_out_transport_info(processing_context, env));
     return fault_ctx;
@@ -723,15 +723,15 @@ axis2_engine_verify_ctx_built(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (!AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env))
+    if (! axis2_msg_ctx_get_conf_ctx(msg_ctx, env))
     {
         return AXIS2_FAILURE;
     }
-    if (!AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env))
+    if (! axis2_msg_ctx_get_op_ctx(msg_ctx, env))
     {
         return AXIS2_FAILURE;
     }
-    if (!AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env))
+    if (! axis2_msg_ctx_get_svc_ctx(msg_ctx, env))
     {
         return AXIS2_FAILURE;
     }
@@ -756,7 +756,7 @@ axis2_engine_invoke_phases(
 
     if (phases)
         count = axis2_array_list_size(phases, env);
-    for (i = 0; (i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))); i++)
+    for (i = 0; (i < count && !( axis2_msg_ctx_is_paused(msg_ctx, env))); i++)
     {
         axis2_phase_t *phase = (axis2_phase_t *)
                 axis2_array_list_get(phases, env, i);
@@ -789,16 +789,16 @@ axis2_engine_resume_invocation_phases(
     AXIS2_PARAM_CHECK(env->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    AXIS2_MSG_CTX_SET_PAUSED(msg_ctx, env, AXIS2_FALSE);
+     axis2_msg_ctx_set_paused(msg_ctx, env, AXIS2_FALSE);
 
     count = axis2_array_list_size(phases, env);
 
-    for (i = 0; i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)); i++)
+    for (i = 0; i < count && !( axis2_msg_ctx_is_paused(msg_ctx, env)); i++)
     {
         axis2_phase_t *phase = (axis2_phase_t *) axis2_array_list_get(phases,
                 env, i);
         const axis2_char_t *phase_name = AXIS2_PHASE_GET_NAME(phase, env);
-        const axis2_char_t *paused_phase_name = AXIS2_MSG_CTX_GET_PAUSED_PHASE_NAME(
+        const axis2_char_t *paused_phase_name =  axis2_msg_ctx_get_paused_phase_name(
                     msg_ctx, env);
         /* skip invoking handlers until we find the paused phase */
         if (phase_name && paused_phase_name && 0 == AXIS2_STRCMP(phase_name,
@@ -807,7 +807,7 @@ axis2_engine_resume_invocation_phases(
             int paused_handler_i = -1;
             found_match = AXIS2_TRUE;
 
-            paused_handler_i = AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx,
+            paused_handler_i =  axis2_msg_ctx_get_current_handler_index(msg_ctx,
                     env);
             /* invoke the paused handler and rest of the handlers of the paused
              * phase */
@@ -868,7 +868,7 @@ axis2_engine_check_must_understand_headers(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (!soap_envelope)
         return AXIS2_FAILURE;
 
@@ -905,7 +905,7 @@ axis2_engine_check_must_understand_headers(
                that role too have been dealt with. */
             role = AXIOM_SOAP_HEADER_BLOCK_GET_ROLE(header_block, env);
 
-            if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) != AXIS2_TRUE)
+            if ( axis2_msg_ctx_get_is_soap_11(msg_ctx, env) != AXIS2_TRUE)
             {
                 /* SOAP 1.2 */
                 if (!role || AXIS2_STRCMP(role, AXIOM_SOAP12_SOAP_ROLE_NEXT) != 0)
@@ -915,8 +915,8 @@ axis2_engine_check_must_understand_headers(
                                 "soapenv:MustUnderstand",
                                 "Header not understood",
                                 AXIOM_SOAP12, NULL, NULL);
-                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, temp_env);
-                    AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env,
+                     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, temp_env);
+                     axis2_msg_ctx_set_wsa_action(msg_ctx, env,
                             "http://www.w3.org/2005/08/addressing/fault");
                     return AXIS2_FAILURE;
                 }
@@ -931,8 +931,8 @@ axis2_engine_check_must_understand_headers(
                                 "soapenv:MustUnderstand",
                                 "Header not understood",
                                 AXIOM_SOAP11, NULL, NULL);
-                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, temp_env);
-                    AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env,
+                     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, temp_env);
+                     axis2_msg_ctx_set_wsa_action(msg_ctx, env,
                             "http://www.w3.org/2005/08/addressing/fault");
                     return AXIS2_FAILURE;
                 }
@@ -957,14 +957,14 @@ axis2_engine_resume_receive(
     axis2_array_list_t *phases = NULL;
 
     /* find and invoke the phases */
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     phases =
         AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
 
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
     /* invoking the message receiver */
-    if (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env) && !AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+    if ( axis2_msg_ctx_get_server_side(msg_ctx, env) && ! axis2_msg_ctx_is_paused(msg_ctx, env))
     {
         /* invoke the message receivers */
         axis2_op_ctx_t *op_ctx = NULL;
@@ -973,7 +973,7 @@ axis2_engine_resume_receive(
         if (status != AXIS2_SUCCESS)
             return status;
 
-        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
             axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
@@ -1005,7 +1005,7 @@ axis2_engine_resume_send(
     axis2_status_t status = AXIS2_FAILURE;
 
     /* invoke the phases */
-    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
@@ -1017,12 +1017,12 @@ axis2_engine_resume_send(
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
 
     /* invoking transport sender */
-    if (!AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+    if (! axis2_msg_ctx_is_paused(msg_ctx, env))
     {
         /* write the message to the wire */
         axis2_transport_out_desc_t *transport_out = NULL;
         axis2_transport_sender_t *sender = NULL;
-        transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
+        transport_out =  axis2_msg_ctx_get_transport_out_desc(msg_ctx, env);
         if (transport_out)
         {
             sender = axis2_transport_out_desc_get_sender(transport_out, env);
