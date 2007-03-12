@@ -188,7 +188,7 @@ axis2_init_transports(
         {
             if (transport_in_map[i])
             {
-                axis2_transport_receiver_t *listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in_map[i], env);
+                axis2_transport_receiver_t *listener = axis2_transport_in_desc_get_recv(transport_in_map[i], env);
                 if (listener)
                 {
                     status = AXIS2_TRANSPORT_RECEIVER_INIT(listener, env, conf_ctx, transport_in_map[i]);

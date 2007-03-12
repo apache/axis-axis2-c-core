@@ -756,14 +756,14 @@ axis2_phase_resolver_build_in_transport_chains(
         {
             case AXIS2_IN_FLOW:
             {
-                flow = AXIS2_TRANSPORT_IN_DESC_GET_IN_FLOW(transport, env);
-                phase = AXIS2_TRANSPORT_IN_DESC_GET_IN_PHASE(transport, env);
+                flow = axis2_transport_in_desc_get_in_flow(transport, env);
+                phase = axis2_transport_in_desc_get_in_phase(transport, env);
                 break;
             }
             case AXIS2_FAULT_IN_FLOW:
             {
-                flow = AXIS2_TRANSPORT_IN_DESC_GET_FAULT_IN_FLOW(transport, env);
-                phase = AXIS2_TRANSPORT_IN_DESC_GET_FAULT_PHASE(transport, env);
+                flow = axis2_transport_in_desc_get_fault_in_flow(transport, env);
+                phase = axis2_transport_in_desc_get_fault_phase(transport, env);
                 break;
             }
         }

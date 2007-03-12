@@ -1054,9 +1054,9 @@ axis2_conf_builder_process_transport_recvs(
                 axis2_class_loader_init(env);
                 recv = (axis2_transport_receiver_t *)
                         axis2_class_loader_create_dll(env, impl_info_param);
-                AXIS2_TRANSPORT_IN_DESC_ADD_PARAM(transport_in, env,
+                axis2_transport_in_desc_add_param(transport_in, env,
                         impl_info_param);
-                stat = AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in, env,
+                stat = axis2_transport_in_desc_set_recv(transport_in, env,
                         recv);
             }
 
@@ -1073,7 +1073,7 @@ axis2_conf_builder_process_transport_recvs(
                     builder_impl->conf->param_container);
             if (AXIS2_SUCCESS != status)
             {
-                AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
+                axis2_transport_in_desc_free(transport_in, env);
                 return status;
             }
             /* process OUT_FLOW */
@@ -1083,7 +1083,7 @@ axis2_conf_builder_process_transport_recvs(
             AXIS2_QNAME_FREE(qoutflowst, env);
             if (out_flow_element)
             {
-                AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
+                axis2_transport_in_desc_free(transport_in, env);
                 AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_OUT_FLOW_NOT_ALLOWED_IN_TRS_IN, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -1100,11 +1100,11 @@ axis2_conf_builder_process_transport_recvs(
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->
                         desc_builder, env, in_flow_element, builder_impl->conf->
                         param_container, in_flow_node);
-                status = AXIS2_TRANSPORT_IN_DESC_SET_IN_FLOW(transport_in, env,
+                status = axis2_transport_in_desc_set_in_flow(transport_in, env,
                         flow);
                 if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
+                    axis2_transport_in_desc_free(transport_in, env);
                     return status;
                 }
             }
@@ -1122,11 +1122,11 @@ axis2_conf_builder_process_transport_recvs(
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
                         env, in_fault_flow_element, builder_impl->conf->
                         param_container, in_fault_flow_node);
-                status = AXIS2_TRANSPORT_IN_DESC_SET_FAULT_IN_FLOW(transport_in,
+                status = axis2_transport_in_desc_set_fault_in_flow(transport_in,
                         env, flow);
                 if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
+                    axis2_transport_in_desc_free(transport_in, env);
                     return status;
                 }
             }
@@ -1148,7 +1148,7 @@ axis2_conf_builder_process_transport_recvs(
                     transport_in, transport_enum);
             if (AXIS2_SUCCESS != status)
             {
-                AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
+                axis2_transport_in_desc_free(transport_in, env);
                 return status;
             }
 

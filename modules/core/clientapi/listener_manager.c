@@ -188,7 +188,7 @@ axis2_listener_manager_make_sure_started(
             transport_in = AXIS2_CONF_GET_TRANSPORT_IN(conf, env, transport);
             if (transport_in)
             {
-                listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in, env);
+                listener = axis2_transport_in_desc_get_recv(transport_in, env);
                 if (listener)
                 {
                     axis2_thread_t *worker_thread = NULL;
