@@ -68,6 +68,14 @@ oxs_key_mgr_load_x509_cert_from_pem_file(const axis2_env_t *env,
 AXIS2_EXTERN oxs_x509_cert_t* AXIS2_CALL
 oxs_key_mgr_load_x509_cert_from_string(const axis2_env_t *env,
     axis2_char_t *pem_buf);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_key_mgr_read_pkcs12_key_store(const axis2_env_t *env,
+    axis2_char_t *pkcs12_file,
+    axis2_char_t *password,
+    oxs_x509_cert_t **cert,
+    openssl_pkey_t **prv_key);
+    
 /** @} */
 #ifdef __cplusplus
 }

@@ -21,6 +21,8 @@
 #include <oxs_key_mgr.h>
 #include <openssl_pem.h>
 
+
+
 /**
  * Loads the key
  * 1. If the key buffer is specified, Take that as the source.
@@ -258,4 +260,34 @@ oxs_key_mgr_load_x509_cert_from_string(const axis2_env_t *env,
     oxs_cert = oxs_key_mgr_convert_to_x509(env, cert);
 
     return oxs_cert; 
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_key_mgr_read_pkcs12_key_store(const axis2_env_t *env,
+    axis2_char_t *filename,
+    axis2_char_t *password,
+    oxs_x509_cert_t **cert,
+    openssl_pkey_t **prv_key)
+{
+    X509 *c = NULL;
+    STACK_OF(X509) *ca = NULL;
+    EVP_PKEY *pkey = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    status = openssl_x509_load_from_pkcs12(env, filename, password, &c, &pkey, &ca);
+    if(AXIS2_FAILURE == status){
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
+                      "Error reading the PKCS12 Key Store");
+        return AXIS2_FAILURE;
+    } 
+    if(pkey){
+        *prv_key = openssl_pkey_create(env);
+        OPENSSL_PKEY_POPULATE(*prv_key, env, pkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
+    }
+    
+    if(c){
+        *cert = oxs_key_mgr_convert_to_x509(env, c);       
+    }
+
+    return AXIS2_SUCCESS;
 }
