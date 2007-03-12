@@ -5,7 +5,7 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- *
+
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -71,14 +71,12 @@ axis2_log_impl_free(axis2_allocator_t *allocator, axis2_log_t *log)
         if (log_impl->mutex)
         {
             axis2_thread_mutex_destroy(log_impl->mutex);
-            log_impl->mutex = NULL;
         }
         if (AXIS2_INTF_TO_IMPL(log)->stream)
         {
             if (log_impl->stream)
             {
                 axis2_file_handler_close(log_impl->stream);
-                log_impl->stream = NULL;
             }
         }
         AXIS2_FREE(allocator, log_impl);
@@ -158,7 +156,7 @@ axis2_log_create(axis2_allocator_t * allocator, axis2_log_ops_t * ops,
 
     axis2_thread_mutex_unlock(log_impl->mutex);
 
-    if (NULL == log_impl->stream)
+    if (!log_impl->stream)
         log_impl->stream = stderr;
 
     /* by default, log is enabled */
@@ -269,12 +267,12 @@ axis2_log_impl_log_debug(axis2_log_t *log, const axis2_char_t *filename,
     if (log && format && log->enabled)
     {
 
-        if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
         {
             fprintf(stderr, "Stream is not found\n");
         }
 
-        if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -303,13 +301,13 @@ axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format, ...)
 
     if (log && format && log->enabled)
     {
-        if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
 
-        if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -340,13 +338,13 @@ axis2_log_impl_log_warning(axis2_log_t *log, const axis2_char_t *filename,
     if (log && format && log->enabled)
     {
 
-        if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
 
-        if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -380,13 +378,13 @@ axis2_log_impl_log_error(axis2_log_t *log, const axis2_char_t *filename,
 
     if (log && format && log->enabled)
     {
-        if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
 
-        if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -417,13 +415,13 @@ axis2_log_impl_log_critical(axis2_log_t *log, const axis2_char_t *filename,
     if (log && format && log->enabled)
     {
 
-        if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
 
-        if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -448,7 +446,7 @@ axis2_log_impl_get_time_str(void)
     char *time_str;
     tp = time(&tp);
     time_str = ctime(&tp);
-    if (NULL == time_str)
+    if (!time_str)
     {
         return NULL;
     }
@@ -505,13 +503,13 @@ axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
 
     if (log && format && log->enabled)
     {
-        if (NULL == (fd = AXIS2_INTF_TO_IMPL(log)->stream))
+        if (!(fd = AXIS2_INTF_TO_IMPL(log)->stream))
         {
             fprintf(stderr, "Stream is not found\n");
 
         }
 
-        if (NULL == (mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
+        if (!(mutex = AXIS2_INTF_TO_IMPL(log)->mutex))
         {
             fprintf(stderr, "Log mutex is not found\n");
 
@@ -538,3 +536,4 @@ AXIS2_EXTERN void AXIS2_CALL axis2_log_impl_log_trace(axis2_log_t *log,
 {
 }
 #endif
+
