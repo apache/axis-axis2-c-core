@@ -1091,14 +1091,14 @@ axis2_http_transport_utils_create_soap_msg(
         axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
         if (ctx)
         {
-            property = AXIS2_CTX_GET_PROPERTY(ctx, env,
+            property =  axis2_ctx_get_property(ctx, env,
                     AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
             if (property)
             {
                 char_set_enc = AXIS2_PROPERTY_GET_VALUE(property, env);
                 property = NULL;
             }
-            property = AXIS2_CTX_GET_PROPERTY(ctx, env,
+            property =  axis2_ctx_get_property(ctx, env,
                     MTOM_RECIVED_CONTENT_TYPE, AXIS2_FALSE);
             if (property)
             {

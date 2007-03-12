@@ -158,48 +158,6 @@ extern "C"
         const axis2_env_t *env,
         axis2_hash_t *map);
 
-
-/** Sets property with given key.
-    @sa axis2_ctx_ops#set_property */
-#define AXIS2_CTX_SET_PROPERTY(ctx, env, key, value, persistent) \
-    axis2_ctx_set_property(ctx, env, key, value, persistent)
-
-/** Gets property with given key.
-    @sa axis2_ctx_ops#get_property */
-#define AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent) \
-    axis2_ctx_get_property(ctx, env, key, persistent)
-
-/** Gets non persistent map of properties.
-    @sa axis2_ctx_ops#get_non_persistent_map */
-#define AXIS2_CTX_GET_NON_PERSISTANT_MAP(ctx, env) \
-    axis2_ctx_get_non_persistent_map(ctx, env)
-
-/** Gets all properties.
-    @sa axis2_ctx_ops#get_all_properties */
-#define AXIS2_CTX_GET_ALL_PROPERTIES(ctx, env) \
-    axis2_ctx_get_all_properties(ctx, env)
-
-/** Gets persistent map of properties.
-    @sa axis2_ctx_ops#get_persistent_map */
-#define AXIS2_CTX_GET_PERSISTANT_MAP(ctx, env) \
-    axis2_ctx_get_persistent_map(ctx, env)
-
-/** Sets non persistent map of properties.
-    @sa axis2_ctx_ops#set_non_persistent_map */
-#define AXIS2_CTX_SET_NON_PERSISTANT_MAP(ctx, env, map) \
-    axis2_ctx_set_non_persistent_map(ctx, env, map)
-
-/** Sets persistent map of properties.
-    @sa axis2_ctx_ops#set_persistent_map */
-#define AXIS2_CTX_SET_PERSISTANT_MAP(ctx, env, map) \
-    axis2_ctx_set_persistent_map(ctx, env, map)
-
-/** Frees the context.
-    @sa axis2_ctx_ops#free */
-#define AXIS2_CTX_FREE(ctx, env) \
-    axis2_ctx_free (ctx, env)
-
-/** @} */
 #ifdef __cplusplus
 }
 #endif

@@ -198,7 +198,7 @@ axis2_http_transport_sender_invoke(
             axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
             if (ctx)
             {
-                property = AXIS2_CTX_GET_PROPERTY(ctx, env,
+                property =  axis2_ctx_get_property(ctx, env,
                         AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
                 if (property)
                 {
@@ -243,7 +243,7 @@ axis2_http_transport_sender_invoke(
         }
     }
 
-    soap_data_out = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_data_out =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (NULL == soap_data_out)
     {
         AXIS2_ERROR_SET(env->error,

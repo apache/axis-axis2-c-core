@@ -364,7 +364,7 @@ axis2_conf_ctx_free(
 
     if (conf_ctx->base)
     {
-        AXIS2_CTX_FREE(conf_ctx->base, env);
+         axis2_ctx_free(conf_ctx->base, env);
     }
 
     if (conf_ctx->op_ctx_map)

@@ -134,7 +134,7 @@ axis2_op_ctx_free(
 
     if (op_ctx->base)
     {
-        AXIS2_CTX_FREE(op_ctx->base, env);
+         axis2_ctx_free(op_ctx->base, env);
         op_ctx->base = NULL;
     }
 
@@ -142,7 +142,7 @@ axis2_op_ctx_free(
     {
         if(op_ctx->msg_ctx_array[i])
         {
-            AXIS2_MSG_CTX_FREE(op_ctx->msg_ctx_array[i], env);
+             axis2_msg_ctx_free(op_ctx->msg_ctx_array[i], env);
             op_ctx->msg_ctx_array[i] = NULL;
         }
     }
@@ -192,7 +192,7 @@ axis2_op_ctx_init(
     {
         if(op_ctx->msg_ctx_array[i])
         {
-            AXIS2_MSG_CTX_INIT(op_ctx->msg_ctx_array[i], env, conf);
+             axis2_msg_ctx_init(op_ctx->msg_ctx_array[i], env, conf);
         }
     }
 
@@ -307,7 +307,7 @@ axis2_op_ctx_cleanup(
     {
         if(op_ctx->msg_ctx_array[i])
         {
-            AXIS2_MSG_CTX_FREE(op_ctx->msg_ctx_array[i], env);
+             axis2_msg_ctx_free(op_ctx->msg_ctx_array[i], env);
             op_ctx->msg_ctx_array[i] = NULL;
         }
     }

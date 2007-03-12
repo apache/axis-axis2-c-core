@@ -134,7 +134,7 @@ axis2_add_add(const axis2_env_t *env, axiom_node_t *node, axis2_msg_ctx_t *msg_c
             {
                 axis2_property_t* prop = NULL;
                 /* get value */
-                prop = AXIS2_CTX_GET_PROPERTY(ctx, env, "ADD_RESULT", AXIS2_FALSE);
+                prop =  axis2_ctx_get_property(ctx, env, "ADD_RESULT", AXIS2_FALSE);
                 if (prop)
                 {
                     axis2_char_t *val = (axis2_char_t*)AXIS2_PROPERTY_GET_VALUE(prop, env);
@@ -145,7 +145,7 @@ axis2_add_add(const axis2_env_t *env, axiom_node_t *node, axis2_msg_ctx_t *msg_c
                 if (prop)
                 {
                     AXIS2_PROPERTY_SET_VALUE(prop, env, AXIS2_STRDUP(result_str, env));
-                    AXIS2_CTX_SET_PROPERTY(ctx, env, "ADD_RESULT", prop, AXIS2_FALSE);
+                    axis2_ctx_set_property(ctx, env, "ADD_RESULT", prop, AXIS2_FALSE);
                 }
             }
         }

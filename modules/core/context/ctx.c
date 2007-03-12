@@ -117,8 +117,6 @@ axis2_ctx_get_property(const axis2_ctx_t *ctx,
 {
     axis2_property_t *ret = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (persistent)
     {
         if (ctx->persistent_map)
@@ -288,5 +286,4 @@ axis2_ctx_set_persistent_map(struct axis2_ctx *ctx,
 
     return AXIS2_SUCCESS;
 }
-
 

@@ -298,7 +298,7 @@ axis2_msg_ctx_free(
     
     if (msg_ctx->base)
     {
-        AXIS2_CTX_FREE(msg_ctx->base, env);
+         axis2_ctx_free(msg_ctx->base, env);
         msg_ctx->base = NULL;
     }
 
@@ -1333,7 +1333,7 @@ axis2_msg_ctx_get_property(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     /* search in message context */
-    obj = AXIS2_CTX_GET_PROPERTY(msg_ctx->base, env, key, persistent);
+    obj =  axis2_ctx_get_property(msg_ctx->base, env, key, persistent);
     if (obj)
     {
         return obj;
@@ -1344,7 +1344,7 @@ axis2_msg_ctx_get_property(
         ctx = AXIS2_OP_CTX_GET_BASE(msg_ctx->op_ctx, env);
         if (ctx)
         {
-            obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
+            obj =  axis2_ctx_get_property(ctx, env, key, persistent);
             if (obj)
             {
                 return obj;
@@ -1357,7 +1357,7 @@ axis2_msg_ctx_get_property(
         ctx = AXIS2_SVC_CTX_GET_BASE(msg_ctx->svc_ctx, env);
         if (ctx)
         {
-            obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
+            obj =  axis2_ctx_get_property(ctx, env, key, persistent);
             if (obj)
             {
                 return obj;
@@ -1370,7 +1370,7 @@ axis2_msg_ctx_get_property(
         ctx = AXIS2_SVC_GRP_CTX_GET_BASE(msg_ctx->svc_grp_ctx, env);
         if (ctx)
         {
-            obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
+            obj =  axis2_ctx_get_property(ctx, env, key, persistent);
             if (obj)
             {
                 return obj;
@@ -1383,7 +1383,7 @@ axis2_msg_ctx_get_property(
         ctx =  axis2_conf_ctx_get_base(msg_ctx->conf_ctx, env);
         if (ctx)
         {
-            obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
+            obj =  axis2_ctx_get_property(ctx, env, key, persistent);
             if (obj)
             {
                 return obj;
@@ -1404,7 +1404,7 @@ axis2_msg_ctx_set_property(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    return AXIS2_CTX_SET_PROPERTY(msg_ctx->base, env, key, value, persistent);
+    return axis2_ctx_set_property(msg_ctx->base, env, key, value, persistent);
 }
 
 const axis2_string_t *AXIS2_CALL
@@ -1762,7 +1762,7 @@ axis2_msg_ctx_get_options(
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_MSG_INFO_HEADERS(options, env, 
         msg_ctx->msg_info_headers);
-    properties = AXIS2_CTX_GET_NON_PERSISTANT_MAP(msg_ctx->base, env);
+    properties =  axis2_ctx_get_non_persistent_map(msg_ctx->base, env);
     AXIS2_OPTIONS_SET_PROPERTIES(options, env, properties);
     return options;
 }
@@ -1793,7 +1793,7 @@ axis2_msg_ctx_set_options(
     
     msg_ctx->doing_mtom = AXIS2_OPTIONS_GET_ENABLE_MTOM(options, env);
 
-    AXIS2_CTX_SET_NON_PERSISTANT_MAP(msg_ctx->base, env,
+     axis2_ctx_set_non_persistent_map(msg_ctx->base, env,
             AXIS2_OPTIONS_GET_PROPERTIES(options, env));
     rest_val = (axis2_property_t *) AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
             AXIS2_ENABLE_REST, AXIS2_FALSE);

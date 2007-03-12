@@ -784,7 +784,7 @@ axis2_http_sender_get_header_info(
             AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
             AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_STRDUP(content_type,
 																 env));
-            AXIS2_CTX_SET_PROPERTY(axis_ctx, env, MTOM_RECIVED_CONTENT_TYPE,
+            axis2_ctx_set_property(axis_ctx, env, MTOM_RECIVED_CONTENT_TYPE,
 								   property, AXIS2_FALSE);
         }
     }
@@ -797,7 +797,7 @@ axis2_http_sender_get_header_info(
             property = axis2_property_create(env);
             AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
             AXIS2_PROPERTY_SET_VALUE(property, env, charset);
-            AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
+            axis2_ctx_set_property(axis_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
 								   property, AXIS2_FALSE);
         }
     }
@@ -850,7 +850,7 @@ axis2_http_sender_process_response(
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, in_stream);
-    /*AXIS2_CTX_SET_PROPERTY(axis_ctx, env, AXIS2_TRANSPORT_IN, property,
+    /*axis2_ctx_set_property(axis_ctx, env, AXIS2_TRANSPORT_IN, property,
 	  AXIS2_FALSE);*/
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
 							   AXIS2_FALSE);
@@ -1122,7 +1122,7 @@ axis2_http_sender_get_param_string(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    soap_env = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    soap_env =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (NULL == soap_env)
     {
         return NULL;

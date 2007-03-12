@@ -121,7 +121,7 @@ axis2_svc_ctx_free(
 
     if (svc_ctx->base)
     {
-        AXIS2_CTX_FREE(svc_ctx->base, env);
+         axis2_ctx_free(svc_ctx->base, env);
         svc_ctx->base = NULL;
     }
 
