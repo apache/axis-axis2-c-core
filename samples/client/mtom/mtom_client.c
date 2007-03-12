@@ -175,7 +175,7 @@ build_om_programatically(const axis2_env_t *env,
 
     data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
     data_text = axiom_text_create_with_data_handler(env, image_om_node, data_handler, &data_om_node);
-    AXIOM_TEXT_SET_OPTIMIZE(data_text, env, optimized);
+    axiom_text_set_optimize(data_text, env, optimized);
     om_str = AXIOM_NODE_TO_STRING(mtom_om_node, env);
     if (om_str)
     {

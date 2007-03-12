@@ -417,7 +417,7 @@ axis2_create_mime_body_part(axiom_text_t *text, const axis2_env_t *env)
     axis2_char_t *temp_content_id = NULL;
     if (!mime_body_part)
         return NULL;
-    data_handler = AXIOM_TEXT_GET_DATA_HANDLER(text, env);
+    data_handler = axiom_text_get_data_handler(text, env);
 
     if (data_handler)
     {
@@ -427,7 +427,7 @@ axis2_create_mime_body_part(axiom_text_t *text, const axis2_env_t *env)
     AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env,
             data_handler);
     content_id = AXIS2_STRACAT(content_id,
-            AXIOM_TEXT_GET_CONTENT_ID(text, env), env);
+            axiom_text_get_content_id(text, env), env);
     temp_content_id = AXIS2_STRACAT(content_id, ">", env);
     
     AXIS2_FREE(env->allocator, content_id);

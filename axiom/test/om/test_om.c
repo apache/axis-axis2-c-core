@@ -155,8 +155,8 @@ test_om_build(const char *filename)
             case AXIOM_TEXT:
 
                 text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(node2, environment);
-                if (text && AXIOM_TEXT_GET_VALUE(text , environment))
-                    printf("\n text value  %s \n", AXIOM_TEXT_GET_VALUE(text, environment));
+                if (text && axiom_text_get_value(text , environment))
+                    printf("\n text value  %s \n", axiom_text_get_value(text, environment));
                 break;
 
             default:

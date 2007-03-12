@@ -55,9 +55,9 @@ axis2_div_div(const axis2_env_t *env, axiom_node_t *node)
     if (AXIOM_NODE_GET_NODE_TYPE(param1_text_node, env) == AXIOM_TEXT)
     {
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param1_text_node, env);
-        if (text && AXIOM_TEXT_GET_VALUE(text , env))
+        if (text && axiom_text_get_value(text , env))
         {
-            param1_str = AXIOM_TEXT_GET_VALUE(text, env);
+            param1_str = axiom_text_get_value(text, env);
         }
     }
     else
@@ -86,9 +86,9 @@ axis2_div_div(const axis2_env_t *env, axiom_node_t *node)
     if (AXIOM_NODE_GET_NODE_TYPE(param2_text_node, env) == AXIOM_TEXT)
     {
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param2_text_node, env);
-        if (text && AXIOM_TEXT_GET_VALUE(text , env))
+        if (text && axiom_text_get_value(text , env))
         {
-            param2_str = AXIOM_TEXT_GET_VALUE(text, env);
+            param2_str = axiom_text_get_value(text, env);
         }
     }
     else

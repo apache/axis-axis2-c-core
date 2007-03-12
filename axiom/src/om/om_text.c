@@ -25,18 +25,18 @@
 #include <axiom_namespace.h>
 #include <axis2_base64.h>
 
-static axis2_char_t* AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
-        const axis2_env_t *env);
+    const axis2_env_t *env);
 
 static axis2_bool_t AXIS2_CALL
 axiom_text_get_is_binary(axiom_text_t *om_text,
-        const axis2_env_t *env);
+    const axis2_env_t *env);
 
 static axis2_status_t AXIS2_CALL
 axiom_text_serialize_start_part(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        axiom_output_t *om_output);
+    const axis2_env_t *env,
+    axiom_output_t *om_output);
 
 struct axiom_text
 {

@@ -3755,7 +3755,7 @@ parse_property(
                 axiom_text_t *text_node = NULL;
 
                 text_node = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-                temp_str = AXIOM_TEXT_GET_VALUE(text_node, env);
+                temp_str = axiom_text_get_value(text_node, env);
                 text_value = AXIS2_STRTRIM(env, temp_str, NULL);
                 len = AXIS2_STRLEN(text_value);
                 if (len > 0)

@@ -705,7 +705,7 @@ c14n_apply_on_text (
     
     if (text)
     {
-        axis2_char_t *textval = AXIOM_TEXT_GET_VALUE(text, ctx->env);
+        axis2_char_t *textval = axiom_text_get_value(text, ctx->env);
         textval = c14n_normalize_text(textval, ctx);
         c14n_output(textval, ctx);
         if (textval)

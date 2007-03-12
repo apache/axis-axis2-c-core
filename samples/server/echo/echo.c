@@ -61,9 +61,9 @@ axis2_echo_echo(const axis2_env_t *env, axiom_node_t *node)
     if (AXIOM_NODE_GET_NODE_TYPE(text_node, env) == AXIOM_TEXT)
     {
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(text_node, env);
-        if (text && AXIOM_TEXT_GET_VALUE(text , env))
+        if (text && axiom_text_get_value(text , env))
         {
-            axis2_char_t *text_str = AXIOM_TEXT_GET_VALUE(text, env);
+            axis2_char_t *text_str = axiom_text_get_value(text, env);
             /*printf("Echoing text value  %s \n", text_str);*/
             ret_node = build_om_programatically(env, text_str);
         }

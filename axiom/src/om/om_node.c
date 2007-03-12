@@ -129,9 +129,9 @@ axiom_node_free(axiom_node_t *om_node,
     else if (om_node->node_type == AXIOM_TEXT)
     {
         if (om_node->data_element)
-            AXIOM_TEXT_FREE((axiom_text_t*)(om_node->data_element), env);
+            axiom_text_free((axiom_text_t*)(om_node->data_element), env);
     }
-    
+
     AXIS2_FREE(env->allocator, om_node);
 
     return AXIS2_SUCCESS;
@@ -369,9 +369,8 @@ axiom_node_serialize(axiom_node_t *om_node,
     {
         if (om_node->data_element)
         {
-            status = AXIOM_TEXT_SERIALIZE(
-                        (axiom_text_t*)(om_node->data_element),
-                        env, om_output);
+            status = axiom_text_serialize((axiom_text_t*)(om_node->data_element),
+                env, om_output);
         }
         if (status != AXIS2_SUCCESS)
             return status;

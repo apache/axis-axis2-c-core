@@ -1078,7 +1078,7 @@ axiom_element_get_text(axiom_element_t *om_element,
             text_node = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(temp_node, env);
             if (text_node)
             {
-                temp_text = AXIOM_TEXT_GET_VALUE(text_node, env);
+                temp_text = axiom_text_get_value(text_node, env);
                 if (dest && temp_text && AXIS2_STRCMP(temp_text, "") != 0)
                 {
                     dest_len = AXIS2_STRLEN(dest);
