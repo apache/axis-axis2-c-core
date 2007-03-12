@@ -260,7 +260,7 @@ axis2_conf_builder_populate_conf(
         }
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
         mep_att = AXIOM_ELEMENT_GET_ATTRIBUTE(msg_recv_element, env, qmep);
-        att_value = AXIOM_ATTRIBUTE_GET_VALUE(mep_att, env);
+        att_value = axiom_attribute_get_value(mep_att, env);
         AXIS2_CONF_ADD_MSG_RECV(builder_impl->conf, env, att_value, msg_recv);
         AXIS2_QNAME_FREE(qmep, env);
     }
@@ -389,7 +389,7 @@ axis2_conf_builder_process_module_refs(
             axis2_qname_t *qrefname = NULL;
             axis2_char_t *ref_name = NULL;
 
-            ref_name = AXIOM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
+            ref_name = axiom_attribute_get_value(module_ref_att, env);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "module %s found in axis2.xml", ref_name);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
             status = AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->
@@ -463,7 +463,7 @@ axis2_conf_builder_process_disp_order(
                     env);
             continue;
         }
-        class_name = AXIOM_ATTRIBUTE_GET_VALUE(disp_att, env);
+        class_name = axiom_attribute_get_value(disp_att, env);
         dll_desc = axis2_dll_desc_create(env);
         dll_name =
              axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
@@ -562,7 +562,7 @@ axis2_conf_builder_process_phase_orders(
 
         if (phase_orders_att)
         {
-            flow_type = AXIOM_ATTRIBUTE_GET_VALUE(phase_orders_att, env);
+            flow_type = axiom_attribute_get_value(phase_orders_att, env);
         }
 
         phase_list = axis2_conf_builder_get_phase_list(conf_builder, env,
@@ -657,7 +657,7 @@ axis2_conf_builder_get_phase_list(
         }
         if (phase_att)
         {
-            att_value = AXIOM_ATTRIBUTE_GET_VALUE(phase_att, env);
+            att_value = axiom_attribute_get_value(phase_att, env);
         }
         if (att_value)
         {
@@ -747,7 +747,7 @@ axis2_conf_builder_process_transport_senders(
             axis2_char_t *temp_path3 = NULL;
             AXIS2_TRANSPORT_ENUMS transport_enum;
 
-            name = AXIOM_ATTRIBUTE_GET_VALUE(trs_name, env);
+            name = axiom_attribute_get_value(trs_name, env);
             if (name)
             {
                 if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
@@ -782,7 +782,7 @@ axis2_conf_builder_process_transport_senders(
                         AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
-            class_name = AXIOM_ATTRIBUTE_GET_VALUE(trs_dll_att, env);
+            class_name = axiom_attribute_get_value(trs_dll_att, env);
             impl_info_param = axis2_param_create(env, class_name, NULL);
             if (!impl_info_param)
             {
@@ -983,7 +983,7 @@ axis2_conf_builder_process_transport_recvs(
             axiom_node_t *out_fault_flow_node = NULL;
             AXIS2_TRANSPORT_ENUMS transport_enum;
 
-            name = AXIOM_ATTRIBUTE_GET_VALUE(trs_name, env);
+            name = axiom_attribute_get_value(trs_name, env);
             if (name)
             {
                 if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
@@ -1027,7 +1027,7 @@ axis2_conf_builder_process_transport_recvs(
                 axis2_char_t *temp_path2 = NULL;
                 axis2_char_t *temp_path3 = NULL;
 
-                class_name = AXIOM_ATTRIBUTE_GET_VALUE(trs_class_name, env);
+                class_name = axiom_attribute_get_value(trs_class_name, env);
                 impl_info_param = axis2_param_create(env, class_name, NULL);
                 dll_desc = axis2_dll_desc_create(env);
                 dll_name =

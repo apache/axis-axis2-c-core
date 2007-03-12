@@ -211,7 +211,7 @@ axiom_children_with_specific_attribute_iterator_has_next(
                     iterator_impl->attr_qname);
             break;
             if (om_attr &&
-                    (AXIS2_STRCMP(AXIOM_ATTRIBUTE_GET_VALUE(om_attr, env),
+                    (AXIS2_STRCMP(axiom_attribute_get_value(om_attr, env),
                             iterator_impl->attr_value) == 0))
             {
                 matching_node_found = AXIS2_TRUE;

@@ -719,10 +719,10 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
                             {
                                 om_attr = (axiom_attribute_t *)val;
                                 om_attr_name =
-                                    AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
+                                    axiom_attribute_get_localname(om_attr, env);
 
                                 om_attr_value =
-                                    AXIOM_ATTRIBUTE_GET_VALUE(om_attr, env);
+                                    axiom_attribute_get_value(om_attr, env);
                                 if (om_attr_name && NULL != om_attr_value &&
                                     AXIS2_STRCMP(om_attr_name, attr_name) == 0 &&
                                     AXIS2_STRCMP(om_attr_value, attr_value) == 0)
@@ -769,10 +769,10 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
                             {
                                 om_attr = (axiom_attribute_t *)val;
                                 om_attr_name =
-                                    AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
+                                    axiom_attribute_get_localname(om_attr, env);
 
                                 om_attr_value =
-                                    AXIOM_ATTRIBUTE_GET_VALUE(om_attr, env);
+                                    axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
                                     AXIS2_STRCMP(om_attr_name, attr_name) == 0 &&
@@ -845,10 +845,10 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
                             {
                                 om_attr = (axiom_attribute_t *)val;
                                 om_attr_name =
-                                    AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
+                                    axiom_attribute_get_localname(om_attr, env);
 
                                 om_attr_value =
-                                    AXIOM_ATTRIBUTE_GET_VALUE(om_attr, env);
+                                    axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
                                     AXIS2_STRCMP(om_attr_name, attr_name) == 0 &&
@@ -920,10 +920,10 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
                             {
                                 om_attr = (axiom_attribute_t *)val;
                                 om_attr_name =
-                                    AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
+                                    axiom_attribute_get_localname(om_attr, env);
 
                                 om_attr_value =
-                                    AXIOM_ATTRIBUTE_GET_VALUE(om_attr, env);
+                                    axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
                                         AXIS2_STRCMP(om_attr_name, attr_name) == 0 &&

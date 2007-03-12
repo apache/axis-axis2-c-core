@@ -684,12 +684,12 @@ parse_desc(
 
         axis2_hash_this(index, NULL, NULL, &v);
         attr = (axiom_attribute_t *) v;
-        namespc = AXIOM_ATTRIBUTE_GET_NAMESPACE(attr, env);
+        namespc = axiom_attribute_get_namespace(attr, env);
         if (!namespc)
             continue;
         namespc_uri = AXIOM_NAMESPACE_GET_URI(namespc, env);
-        local_part = AXIOM_ATTRIBUTE_GET_LOCALNAME(attr, env);
-        value = AXIOM_ATTRIBUTE_GET_VALUE(attr, env);
+        local_part = axiom_attribute_get_localname(attr, env);
+        value = axiom_attribute_get_value(attr, env);
         uri = get_uri(env, value);
         if (0 == AXIS2_STRCMP(WODEN_WSDL10_NS_URI_XMLNS, namespc_uri))
         {
@@ -3657,8 +3657,8 @@ parse_ext_attributes(
         axis2_qname_t *attr_type = NULL;
 
         axis2_hash_this(index, NULL, NULL, &om_attr);
-        localname = AXIOM_ATTRIBUTE_GET_LOCALNAME((axiom_attribute_t *) om_attr, env);
-        namespc = AXIOM_ATTRIBUTE_GET_NAMESPACE((axiom_attribute_t *) om_attr, env);
+        localname = axiom_attribute_get_localname((axiom_attribute_t *) om_attr, env);
+        namespc = axiom_attribute_get_namespace((axiom_attribute_t *) om_attr, env);
         if (namespc)
         {
             namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
@@ -3686,7 +3686,7 @@ parse_ext_attributes(
                         axis2_char_t *attr_value = NULL;
                         void *wsdl_el = NULL;
 
-                        attr_value = AXIOM_ATTRIBUTE_GET_VALUE((axiom_attribute_t *) om_attr, env);
+                        attr_value = axiom_attribute_get_value((axiom_attribute_t *) om_attr, env);
                         WODEN_XML_ATTR_INIT(xml_attr, env, om_el,
                                 om_el_node, attr_type, attr_value);
                         wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);

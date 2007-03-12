@@ -235,7 +235,7 @@ axis2_svc_grp_builder_populate_svc_grp(
             qattname = NULL;
         }
 
-        svc_name = AXIOM_ATTRIBUTE_GET_VALUE(svc_name_att, env);
+        svc_name = axiom_attribute_get_value(svc_name_att, env);
         if (NULL == svc_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_NAME_ERROR,
@@ -312,7 +312,7 @@ axis2_svc_grp_builder_process_module_refs(
             axis2_module_desc_t *module = NULL;
 
 
-            ref_name = AXIOM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
+            ref_name = axiom_attribute_get_value(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
             module = AXIS2_DEP_ENGINE_GET_MODULE(grp_builder->desc_builder->
                     engine, env, qrefname);

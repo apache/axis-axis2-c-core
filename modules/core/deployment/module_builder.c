@@ -206,7 +206,7 @@ axis2_module_builder_populate_module(
     {
         axis2_char_t *module_name = NULL;
         
-        module_name = AXIOM_ATTRIBUTE_GET_VALUE(module_name_att, env);
+        module_name = axiom_attribute_get_value(module_name_att, env);
         if( module_name && (0 != AXIS2_STRCMP("", module_name)))
         {
             axis2_qname_t *qmodule_name = NULL;
@@ -263,7 +263,7 @@ axis2_module_builder_populate_module(
         axis2_char_t *class_name = NULL;
 
 
-        class_name = AXIOM_ATTRIBUTE_GET_VALUE(module_dll_att, env);
+        class_name = axiom_attribute_get_value(module_dll_att, env);
         if (class_name && (0 != AXIS2_STRCMP("", class_name)))
         {
             if (module_builder->desc_builder->engine)
@@ -465,7 +465,7 @@ axis2_module_builder_process_ops(
 
         if (op_mep_att)
         {
-            mep_url = AXIOM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
+            mep_url = axiom_attribute_get_value(op_mep_att, env);
         }
         if (NULL == mep_url)
         {
@@ -480,7 +480,7 @@ axis2_module_builder_process_ops(
             op_desc = axis2_op_create_from_module(env);
         }
 
-        op_name = AXIOM_ATTRIBUTE_GET_VALUE(op_name_att, env);
+        op_name = axiom_attribute_get_value(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
         axis2_op_set_qname(op_desc, env, qopname);
         if (qopname)

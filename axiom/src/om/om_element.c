@@ -526,7 +526,7 @@ axiom_element_add_attribute(axiom_element_t *om_element,
     AXIS2_PARAM_CHECK(env->error, attribute, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, element_node, AXIS2_FAILURE);
 
-    om_namespace = AXIOM_ATTRIBUTE_GET_NAMESPACE(attribute, env);
+    om_namespace = axiom_attribute_get_namespace(attribute, env);
 
     if (om_namespace)
     {
@@ -552,7 +552,7 @@ axiom_element_add_attribute(axiom_element_t *om_element,
             return AXIS2_FAILURE;
     }
 
-    qname = AXIOM_ATTRIBUTE_GET_QNAME(attribute, env);
+    qname = axiom_attribute_get_qname(attribute, env);
     if (qname)
     {
         axis2_char_t *name = AXIS2_QNAME_TO_STRING(qname, env);
@@ -613,7 +613,7 @@ axiom_element_free(axiom_element_t *om_element,
 
             if (val)
             {
-                AXIOM_ATTRIBUTE_FREE((axiom_attribute_t *)val, env);
+                axiom_attribute_free((axiom_attribute_t *)val, env);
             }
             val = NULL;
         }
@@ -718,7 +718,7 @@ axiom_element_serialize_start_part(axiom_element_t *om_element,
 
             if (val)
                 status =
-                    AXIOM_ATTRIBUTE_SERIALIZE((axiom_attribute_t *)val,
+                    axiom_attribute_serialize((axiom_attribute_t *)val,
                             env, om_output);
             else
             {
@@ -1002,7 +1002,7 @@ axiom_element_remove_attribute(axiom_element_t *om_element,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_attribute, AXIS2_FAILURE);
 
-    qname = AXIOM_ATTRIBUTE_GET_QNAME(om_attribute, env);
+    qname = axiom_attribute_get_qname(om_attribute, env);
     if (qname && (om_element->attributes))
     {
         axis2_char_t *name = NULL;
@@ -1349,7 +1349,7 @@ axiom_element_get_attribute_value(axiom_element_t *om_element,
                 name, AXIS2_HASH_KEY_STRING);
         if (attr)
         {
-            return AXIOM_ATTRIBUTE_GET_VALUE(attr, env);
+            return axiom_attribute_get_value(attr, env);
         }
     }
     return NULL;
@@ -1402,15 +1402,15 @@ axiom_element_extract_attributes(axiom_element_t *om_element,
         if (val)
         {
             om_attr = (axiom_attribute_t *)val;
-            cloned_attr = AXIOM_ATTRIBUTE_CLONE(om_attr, env);
+            cloned_attr = axiom_attribute_clone(om_attr, env);
 
-            om_ns = AXIOM_ATTRIBUTE_GET_NAMESPACE(om_attr, env);
+            om_ns = axiom_attribute_get_namespace(om_attr, env);
             if (om_ns)
             {
                 cloned_ns = AXIOM_NAMESPACE_CLONE(om_ns, env);
-                AXIOM_ATTRIBUTE_SET_NAMESPACE(cloned_attr, env, cloned_ns);
+                axiom_attribute_set_namespace(cloned_attr, env, cloned_ns);
             }
-            qn = AXIOM_ATTRIBUTE_GET_QNAME(cloned_attr, env);
+            qn = axiom_attribute_get_qname(cloned_attr, env);
             key = AXIS2_QNAME_TO_STRING(qn, env);
             axis2_hash_set(ht_cloned, key, AXIS2_HASH_KEY_STRING, cloned_attr);
         }
@@ -1451,9 +1451,9 @@ axiom_element_get_attribute_value_by_name(
             axis2_char_t *prefix          = NULL;
 
             om_attr = (axiom_attribute_t*)attr;
-            this_attr_name = AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
-            this_attr_value = AXIOM_ATTRIBUTE_GET_VALUE(om_attr, env);
-            attr_ns = AXIOM_ATTRIBUTE_GET_NAMESPACE(om_attr, env);
+            this_attr_name = axiom_attribute_get_localname(om_attr, env);
+            this_attr_value = axiom_attribute_get_value(om_attr, env);
+            attr_ns = axiom_attribute_get_namespace(om_attr, env);
             if (attr_ns)
             {
                 prefix = AXIOM_NAMESPACE_GET_PREFIX(attr_ns, env);

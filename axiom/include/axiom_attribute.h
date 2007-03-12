@@ -179,38 +179,6 @@ extern "C"
     axiom_attribute_increment_ref(struct axiom_attribute *om_attribute,
             const axis2_env_t *env);
 
-    /** free given attribute */
-#define AXIOM_ATTRIBUTE_FREE(om_attribute, env) \
-        axiom_attribute_free(om_attribute, env)
-
-    /** get qname of given attribute */
-#define AXIOM_ATTRIBUTE_GET_QNAME(om_attribute,env) \
-        axiom_attribute_get_qname(om_attribute, env)
-
-    /** serialize given attribute */
-#define AXIOM_ATTRIBUTE_SERIALIZE(om_attribute, env, om_ouput) \
-        axiom_attribute_serialize(om_attribute, env, om_output)
-    /** get namespace of an the attribute */
-#define AXIOM_ATTRIBUTE_GET_NAMESPACE(om_attribute, env) \
-        axiom_attribute_get_namespace(om_attribute, env)
-    /** get attribute localname */
-#define AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attribute, env) \
-        axiom_attribute_get_localname(om_attribute, env)
-    /** grt value of attribute */
-#define AXIOM_ATTRIBUTE_GET_VALUE(om_attribute, env) \
-        axiom_attribute_get_value(om_attribute, env)
-    /** set namespace for this attribute */
-#define AXIOM_ATTRIBUTE_SET_NAMESPACE(om_attribute, env,ns) \
-        axiom_attribute_set_namespace(om_attribute, env,ns)
-    /** set localname for this attribute */
-#define AXIOM_ATTRIBUTE_SET_LOCALNAME(om_attribute, env,localname) \
-        axiom_attribute_set_localname(om_attribute, env,localname)
-    /** set attribue value */
-#define AXIOM_ATTRIBUTE_SET_VALUE(om_attribute, env,value) \
-        axiom_attribute_set_value(om_attribute, env,value)
-
-#define AXIOM_ATTRIBUTE_CLONE(om_attribute, env) \
-        axiom_attribute_clone(om_attribute, env)
     /** @} */
 
 #ifdef __cplusplus

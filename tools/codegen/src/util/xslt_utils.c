@@ -140,7 +140,7 @@ w2c_xslt_utils_copy_node_tree(
             if(NULL != val)
             {
                 om_attri = (axiom_attribute_t *)val;
-                om_attri = AXIOM_ATTRIBUTE_CLONE ( om_attri, env );
+                om_attri = axiom_attribute_clone( om_attri, env );
                 AXIOM_ELEMENT_ADD_ATTRIBUTE ( to_ele, env, om_attri, to);
             }
         }

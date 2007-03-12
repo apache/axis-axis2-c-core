@@ -154,7 +154,7 @@ axiom_soap_fault_text_set_lang(axiom_soap_fault_text_t *fault_text,
     if (fault_text->lang_attribute)
     {
         axis2_char_t *attr_lang = NULL;
-        attr_lang = AXIOM_ATTRIBUTE_GET_VALUE(fault_text->lang_attribute, env);
+        attr_lang = axiom_attribute_get_value(fault_text->lang_attribute, env);
         if (attr_lang)
         {
             if (AXIS2_STRCMP(attr_lang, lang) == 0)
@@ -163,7 +163,7 @@ axiom_soap_fault_text_set_lang(axiom_soap_fault_text_t *fault_text,
                 return AXIS2_SUCCESS;
             }
         }
-        AXIOM_ATTRIBUTE_SET_VALUE(fault_text->lang_attribute, env, lang);
+        axiom_attribute_set_value(fault_text->lang_attribute, env, lang);
         return AXIS2_SUCCESS;
     }
 
@@ -188,7 +188,7 @@ axiom_soap_fault_text_set_lang(axiom_soap_fault_text_t *fault_text,
         fault_text->lang_ns_used = AXIS2_TRUE;
     else
     {
-        AXIOM_ATTRIBUTE_FREE(fault_text->lang_attribute, env);
+        axiom_attribute_free(fault_text->lang_attribute, env);
         fault_text->lang_attribute = NULL;
     }
     return status;
@@ -225,7 +225,7 @@ axiom_soap_fault_text_get_lang(axiom_soap_fault_text_t *fault_text,
     }
     if (fault_text->lang_attribute)
     {
-        return AXIOM_ATTRIBUTE_GET_VALUE(fault_text->lang_attribute, env);
+        return axiom_attribute_get_value(fault_text->lang_attribute, env);
     }
     else
         return NULL;

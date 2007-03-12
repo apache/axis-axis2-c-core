@@ -943,14 +943,14 @@ attr_compare(
     
     attr1 = (axiom_attribute_t *)a1;
     attr2 = (axiom_attribute_t *)a2;
-    ns1 = AXIOM_ATTRIBUTE_GET_NAMESPACE((axiom_attribute_t *)a1, ctx->env);
-    ns2 = AXIOM_ATTRIBUTE_GET_NAMESPACE((axiom_attribute_t *)a2, ctx->env);
+    ns1 = axiom_attribute_get_namespace((axiom_attribute_t *)a1, ctx->env);
+    ns2 = axiom_attribute_get_namespace((axiom_attribute_t *)a2, ctx->env);
 
     if (ns1 == ns2)
         return AXIS2_STRCMP(
-                (const axis2_char_t *)AXIOM_ATTRIBUTE_GET_LOCALNAME(
+                (const axis2_char_t *)axiom_attribute_get_localname(
                     (axiom_attribute_t *)a1, ctx->env),
-                (const axis2_char_t *)AXIOM_ATTRIBUTE_GET_LOCALNAME(
+                (const axis2_char_t *)axiom_attribute_get_localname(
                     (axiom_attribute_t *)a2, ctx->env));
     
     if (!ns1) return -1;
@@ -962,9 +962,9 @@ attr_compare(
 
     if (res == 0)
         return AXIS2_STRCMP(
-                (const axis2_char_t *)AXIOM_ATTRIBUTE_GET_LOCALNAME(
+                (const axis2_char_t *)axiom_attribute_get_localname(
                     (axiom_attribute_t *)a1, ctx->env),
-                (const axis2_char_t *)AXIOM_ATTRIBUTE_GET_LOCALNAME(
+                (const axis2_char_t *)axiom_attribute_get_localname(
                     (axiom_attribute_t *)a2, ctx->env));
     else
         return res;
@@ -981,7 +981,7 @@ c14n_apply_on_attribute(
 {
     c14n_ctx_t *ctx = (c14n_ctx_t *) context;
     axiom_attribute_t *attr = (axiom_attribute_t *) attribute;
-    axiom_namespace_t *ns = AXIOM_ATTRIBUTE_GET_NAMESPACE(attr, ctx->env);
+    axiom_namespace_t *ns = axiom_attribute_get_namespace(attr, ctx->env);
     axis2_char_t *attvalue = NULL;
 
     c14n_output(" ", ctx);
@@ -995,11 +995,11 @@ c14n_apply_on_attribute(
             c14n_output(":", ctx);
         }
     }
-    c14n_output(AXIOM_ATTRIBUTE_GET_LOCALNAME(attr, ctx->env), ctx);
+    c14n_output(axiom_attribute_get_localname(attr, ctx->env), ctx);
     c14n_output("=\"", ctx);
     
     /* TODO:DONE Normalize the text before output */
-    attvalue = AXIOM_ATTRIBUTE_GET_VALUE(attr, ctx->env);
+    attvalue = axiom_attribute_get_value(attr, ctx->env);
     attvalue = c14n_normalize_attribute(attvalue, (c14n_ctx_t const *)context);
 
     c14n_output(attvalue, ctx);
@@ -1456,7 +1456,7 @@ c14n_ns_visibly_utilized(
                 if (v)
                 {
                     axiom_attribute_t *attr = (axiom_attribute_t*)v;
-                    axiom_namespace_t *ns_attr = AXIOM_ATTRIBUTE_GET_NAMESPACE(
+                    axiom_namespace_t *ns_attr = axiom_attribute_get_namespace(
                             attr, ctx->env);
                     axis2_char_t *attr_pfx = NULL;
                     
@@ -1537,7 +1537,7 @@ c14n_no_output_ancestor_uses_prefix(
                 if (v)
                 {
                     axiom_attribute_t *attr = (axiom_attribute_t*)v;
-                    axiom_namespace_t *attr_ns = AXIOM_ATTRIBUTE_GET_NAMESPACE(
+                    axiom_namespace_t *attr_ns = axiom_attribute_get_namespace(
                             attr, ctx->env);
                     axis2_char_t *attr_pfx = NULL;
                     axis2_char_t *attr_uri = NULL;

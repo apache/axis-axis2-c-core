@@ -315,7 +315,7 @@ axis2_svc_builder_populate_svc(
     /* my logic to get set service name */
     qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
     name_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
-    svc_name = AXIOM_ATTRIBUTE_GET_VALUE(name_attr, env);
+    svc_name = axiom_attribute_get_value(name_attr, env);
     AXIS2_SVC_SET_NAME(builder_impl->svc, env, svc_name);
     AXIS2_QNAME_FREE(qattname, env);
 
@@ -563,14 +563,14 @@ axis2_svc_builder_process_ops(
         qmep = NULL;
         if (op_mep_att)
         {
-            mep_url = AXIOM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
+            mep_url = axiom_attribute_get_value(op_mep_att, env);
             /*
             TODO value has to be validate
             TODO
              op_descrip.setMessageExchangePattern(mep);
             */
         }
-        op_name = AXIOM_ATTRIBUTE_GET_VALUE(op_name_att, env);
+        op_name = axiom_attribute_get_value(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
         /*wsdl_op = AXIS2_SVC_GET_WSDL_OP(builder_impl->svc, env, qopname);*/
         /*if (NULL == wsdl_op)
@@ -738,7 +738,7 @@ axis2_svc_builder_process_module_refs(
             axis2_char_t *ref_name = NULL;
             axis2_qname_t *qrefname = NULL;
 
-            ref_name = AXIOM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
+            ref_name = axiom_attribute_get_value(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
             if (NULL == AXIS2_DEP_ENGINE_GET_MODULE(svc_builder->desc_builder->
                     engine, env, qrefname))

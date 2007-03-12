@@ -455,7 +455,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                         {
                             AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
                             addr_ns_obj = NULL ;
-                            AXIOM_ATTRIBUTE_SET_NAMESPACE(om_attr, env, dec_ns);
+                            axiom_attribute_set_namespace(om_attr, env, dec_ns);
                         }
                     }
                 }

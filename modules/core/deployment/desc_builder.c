@@ -442,7 +442,7 @@ struct axis2_handler_desc *AXIS2_CALL
         axis2_string_t *handler_name = NULL;
         axis2_char_t *value = NULL;
 
-        value = AXIOM_ATTRIBUTE_GET_VALUE(name_attrib, env);
+        value = axiom_attribute_get_value(name_attrib, env);
         handler_name = axis2_string_create(env, value);
         status = axis2_handler_desc_set_name(handler_desc, env, handler_name);
         if (handler_name)
@@ -471,7 +471,7 @@ struct axis2_handler_desc *AXIS2_CALL
     }
     else
     {
-        attrib_value = AXIOM_ATTRIBUTE_GET_VALUE(class_attrib, env);
+        attrib_value = axiom_attribute_get_value(class_attrib, env);
         status = axis2_handler_desc_set_class_name(handler_desc, env, attrib_value);
         /*if(AXIS2_FAILURE == status)
         {
@@ -521,10 +521,10 @@ struct axis2_handler_desc *AXIS2_CALL
 
             axis2_hash_this(index_i, NULL, NULL, &v);
             order_attrib = (axiom_attribute_t *) v;
-            qname = AXIOM_ATTRIBUTE_GET_QNAME(order_attrib, env);
+            qname = axiom_attribute_get_qname(order_attrib, env);
             name = AXIS2_QNAME_GET_LOCALPART(qname, env);
 
-            value = AXIOM_ATTRIBUTE_GET_VALUE(order_attrib, env);
+            value = axiom_attribute_get_value(order_attrib, env);
             if (0 == AXIS2_STRCMP(AXIS2_AFTER, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
@@ -668,7 +668,7 @@ set_attrs_and_value(
              axis2_generic_obj_set_value(obj, env, value);
             axis2_generic_obj_set_free_func(obj, env,
                     axiom_attribute_free_void_arg);
-            attr_qname = AXIOM_ATTRIBUTE_GET_QNAME(value, env);
+            attr_qname = axiom_attribute_get_qname(value, env);
             attr_name = AXIS2_QNAME_TO_STRING(attr_qname, env);
             axis2_hash_set(attrs, attr_name, AXIS2_HASH_KEY_STRING, obj);
         }
@@ -862,7 +862,7 @@ axis2_desc_builder_process_params(
             AXIS2_PARAM_FREE(param, env);
             return AXIS2_FAILURE;
         }
-        pname = AXIOM_ATTRIBUTE_GET_VALUE(para_name, env);
+        pname = axiom_attribute_get_value(para_name, env);
         status = AXIS2_PARAM_SET_NAME(param, env, pname);
         if (AXIS2_SUCCESS != status)
         {
@@ -889,7 +889,7 @@ axis2_desc_builder_process_params(
         if (para_locked)
         {
             axis2_char_t *locked_value = NULL;
-            locked_value = AXIOM_ATTRIBUTE_GET_VALUE(para_locked, env);
+            locked_value = axiom_attribute_get_value(para_locked, env);
             if (0 == AXIS2_STRCMP("true", locked_value))
             {
                 axis2_char_t *param_name = NULL;
@@ -983,7 +983,7 @@ axis2_desc_builder_process_op_module_refs(
             axis2_qname_t *ref_qname = NULL;
             axis2_module_desc_t *module_desc = NULL;
 
-            ref_name = AXIOM_ATTRIBUTE_GET_VALUE(module_ref_attrib, env);
+            ref_name = axiom_attribute_get_value(module_ref_attrib, env);
             ref_qname = axis2_qname_create(env, ref_name, NULL, NULL);
             module_desc = AXIS2_DEP_ENGINE_GET_MODULE(desc_builder->engine, env,
                     ref_qname);
@@ -1036,7 +1036,7 @@ axis2_desc_builder_load_msg_recv(
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     recv_name = AXIOM_ELEMENT_GET_ATTRIBUTE(recv_element, env, class_qname);
     AXIS2_QNAME_FREE(class_qname, env);
-    class_name = AXIOM_ATTRIBUTE_GET_VALUE(recv_name, env);
+    class_name = axiom_attribute_get_value(recv_name, env);
 
     conf = AXIS2_DEP_ENGINE_GET_AXIS2_CONF(desc_builder->engine, env);
     if (!conf)

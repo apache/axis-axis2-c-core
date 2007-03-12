@@ -970,7 +970,7 @@ axis2_http_sender_configure_proxy(
             {
                 return AXIS2_FAILURE;
             }
-            proxy_host = AXIOM_ATTRIBUTE_GET_VALUE(host_attr, env);
+            proxy_host = axiom_attribute_get_value(host_attr, env);
             if (NULL == proxy_host)
             {
                 return AXIS2_FAILURE;
@@ -986,7 +986,7 @@ axis2_http_sender_configure_proxy(
             {
                 return AXIS2_FAILURE;
             }
-            proxy_port = AXIOM_ATTRIBUTE_GET_VALUE(port_attr, env);
+            proxy_port = axiom_attribute_get_value(port_attr, env);
             if (NULL == proxy_port)
             {
                 return AXIS2_FAILURE;

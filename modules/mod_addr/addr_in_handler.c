@@ -476,7 +476,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
             }
             else
             {
-                relationship_type_value = AXIOM_ATTRIBUTE_GET_VALUE(relationship_type, env);
+                relationship_type_value = axiom_attribute_get_value(relationship_type, env);
             }
 
             address = AXIOM_ELEMENT_GET_TEXT(header_block_ele, env, header_block_node);
@@ -607,7 +607,7 @@ axis2_addr_in_extract_ref_params(const axis2_env_t *env,
             om_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(header_block_ele, env, wsa_qname);
             if (om_attr)
             {
-                attr_value = AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attr, env);
+                attr_value = axiom_attribute_get_localname(om_attr, env);
                 if (AXIS2_STRCMP(attr_value, AXIS2_WSA_TYPE_ATTRIBUTE_VALUE) == 0)
                 {
                     axis2_msg_info_headers_add_ref_param(msg_info_headers, env, header_block_node);
@@ -665,7 +665,7 @@ axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
             is_ref_param_attr  = AXIOM_ELEMENT_GET_ATTRIBUTE(header_block_ele, env, is_ref_qn);
             if (is_ref_param_attr)
             {
-                attr_value = AXIOM_ATTRIBUTE_GET_LOCALNAME(is_ref_param_attr, env);
+                attr_value = axiom_attribute_get_localname(is_ref_param_attr, env);
                 if (AXIS2_STRCMP("true", attr_value) == 0)
                 {
                     axis2_endpoint_ref_add_ref_param(to_epr, env, header_block_node);

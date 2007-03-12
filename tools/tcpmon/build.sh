@@ -11,4 +11,3 @@ export AXIS2C_HOME
 
 ./configure --prefix=${AXIS2C_HOME} --enable-tests=no 
 make
-make install

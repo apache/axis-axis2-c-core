@@ -322,7 +322,7 @@ axiom_soap_header_block_set_attribute
     AXIS2_QNAME_FREE(qn, env);
     if (om_attr)
     {
-        return  AXIOM_ATTRIBUTE_SET_VALUE(om_attr, env, attr_value);
+        return  axiom_attribute_set_value(om_attr, env, attr_value);
     }
     else
     {
@@ -387,7 +387,7 @@ axiom_soap_header_block_get_attribute
                 header_block->om_ele_node, env);
     om_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(om_ele, env, qn);
     if (om_attr)
-        attr_value = AXIOM_ATTRIBUTE_GET_VALUE(om_attr, env);
+        attr_value = axiom_attribute_get_value(om_attr, env);
     AXIS2_QNAME_FREE(qn, env);
     return attr_value;
 }
