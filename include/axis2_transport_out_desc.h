@@ -282,69 +282,6 @@ extern "C"
     axis2_transport_out_desc_free_void_arg(void *transport_out,
         const axis2_env_t *env);
 
-/** Frees transport out description. */
-#define AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out_desc, env) \
-      axis2_transport_out_desc_free (transport_out_desc, env)
-
-/** Gets transport enum. */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out_desc, env) \
-      axis2_transport_out_desc_get_enum (transport_out_desc, env)
-
-/** Sets transport enum. */
-#define AXIS2_TRANSPORT_OUT_DESC_SET_ENUM(transport_out_desc, env, trans_enum) \
-      axis2_transport_out_desc_set_enum (transport_out_desc, env, trans_enum)
-
-/** Gets out flow. */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_OUT_FLOW(transport_out_desc, env) \
-      axis2_transport_out_desc_get_out_flow (transport_out_desc, env)
-
-/** Sets out flow. */
-#define AXIS2_TRANSPORT_OUT_DESC_SET_OUT_FLOW(transport_out_desc, env, out_flow) \
-      axis2_transport_out_desc_set_out_flow (transport_out_desc, env, out_flow)
-
-/** Gets fault out flow. */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_FAULT_OUT_FLOW(transport_out_desc, env) \
-      axis2_transport_out_desc_get_fault_out_flow (transport_out_desc, env)
-
-/** Sets fault out flow. */
-#define AXIS2_TRANSPORT_OUT_DESC_SET_FAULT_OUT_FLOW(transport_out_desc, env, fault_out_flow) \
-      axis2_transport_out_desc_set_fault_out_flow (transport_out_desc, env, fault_out_flow)
-
-/** Gets transport sender. */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out_desc, env) \
-      axis2_transport_out_desc_get_sender (transport_out_desc, env)
-
-/** Sets transport sender. */
-#define AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out_desc, env, sender) \
-      axis2_transport_out_desc_set_sender (transport_out_desc, env, sender)
-
-/** Gets out phase. */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_OUT_PHASE(transport_out_desc, env) \
-      axis2_transport_out_desc_get_out_phase (transport_out_desc, env)
-
-/** Sets out phase. */
-#define AXIS2_TRANSPORT_OUT_DESC_SET_OUT_PHASE(transport_out_desc, env, out_phase) \
-      axis2_transport_out_desc_set_out_phase (transport_out_desc, env, out_phase)
-
-/** Gets fault phase. */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_FAULT_PHASE(transport_out_desc, env) \
-      axis2_transport_out_desc_get_fault_phase (transport_out_desc, env)
-
-/** Sets fault phase. */
-#define AXIS2_TRANSPORT_OUT_DESC_SET_FAULT_PHASE(transport_out_desc, env, fault_phase) \
-      axis2_transport_out_desc_set_fault_phase (transport_out_desc, env, fault_phase)
-
-/** Adds given parameter. */
-#define AXIS2_TRANSPORT_OUT_DESC_ADD_PARAM(transport_out_desc, env, param) \
-      axis2_transport_out_desc_add_param (transport_out_desc, env, param)
-
-/** Gets named parameter. */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_PARAM(transport_out_desc, env, param_name) \
-      axis2_transport_out_desc_get_param (transport_out_desc, env, param_name)
-
-/** Checks if the named parameter locked. */
-#define AXIS2_TRANSPORT_OUT_DESC_IS_PARAM_LOCKED(transport_out_desc, env, param_name) \
-      axis2_transport_out_desc_is_param_locked (transport_out_desc, env, param_name)
 
 /** @} */
 

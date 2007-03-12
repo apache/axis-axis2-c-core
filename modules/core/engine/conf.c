@@ -698,7 +698,7 @@ axis2_conf_free(
     {
         if (config_impl->transports_out[i])
         {
-            AXIS2_TRANSPORT_OUT_DESC_FREE(config_impl->transports_out[i], env);
+            axis2_transport_out_desc_free(config_impl->transports_out[i], env);
             config_impl->transports_out[i] = NULL;
         }
     }

@@ -786,7 +786,7 @@ axis2_conf_builder_process_transport_senders(
             impl_info_param = axis2_param_create(env, class_name, NULL);
             if (!impl_info_param)
             {
-                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                axis2_transport_out_desc_free(transport_out, env);
                 return AXIS2_FAILURE;
             }
             dll_desc = axis2_dll_desc_create(env);
@@ -811,13 +811,13 @@ axis2_conf_builder_process_transport_senders(
                 axis2_dll_desc_free_void_arg);
             axis2_class_loader_init(env);
             transport_sender = axis2_class_loader_create_dll(env, impl_info_param);
-            AXIS2_TRANSPORT_OUT_DESC_ADD_PARAM(transport_out, env,
+            axis2_transport_out_desc_add_param(transport_out, env,
                     impl_info_param);
-            status = AXIS2_TRANSPORT_OUT_DESC_SET_SENDER(transport_out, env,
+            status = axis2_transport_out_desc_set_sender(transport_out, env,
                     transport_sender);
             if (AXIS2_SUCCESS != status)
             {
-                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                axis2_transport_out_desc_free(transport_out, env);
                 return status;
             }
 
@@ -833,7 +833,7 @@ axis2_conf_builder_process_transport_senders(
                     param_container);
             if (AXIS2_SUCCESS != status)
             {
-                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                axis2_transport_out_desc_free(transport_out, env);
                 return status;
             }
             /* process IN_FLOW */
@@ -843,7 +843,7 @@ axis2_conf_builder_process_transport_senders(
             AXIS2_QNAME_FREE(qinflowst, env);
             if (in_flow_element)
             {
-                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                axis2_transport_out_desc_free(transport_out, env);
                 AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -859,10 +859,10 @@ axis2_conf_builder_process_transport_senders(
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
                         env, out_flow_element, builder_impl->conf->param_container,
                         out_flow_node);
-                status = AXIS2_TRANSPORT_OUT_DESC_SET_OUT_FLOW(transport_out, env, flow);
+                status = axis2_transport_out_desc_set_out_flow(transport_out, env, flow);
                 if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                    axis2_transport_out_desc_free(transport_out, env);
                     return status;
                 }
             }
@@ -876,7 +876,7 @@ axis2_conf_builder_process_transport_senders(
             AXIS2_QNAME_FREE(qinfaultflowst, env);
             if (in_fault_flow_element)
             {
-                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                axis2_transport_out_desc_free(transport_out, env);
                 AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -895,10 +895,10 @@ axis2_conf_builder_process_transport_senders(
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
                         env, out_fault_flow_element, builder_impl->conf->param_container,
                         out_fault_flow_node);
-                status = AXIS2_TRANSPORT_OUT_DESC_SET_FAULT_OUT_FLOW(transport_out, env, flow);
+                status = axis2_transport_out_desc_set_fault_out_flow(transport_out, env, flow);
                 if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                    axis2_transport_out_desc_free(transport_out, env);
                     return status;
                 }
             }
@@ -908,7 +908,7 @@ axis2_conf_builder_process_transport_senders(
                     transport_out, transport_enum);
             if (AXIS2_SUCCESS != status)
             {
-                AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
+                axis2_transport_out_desc_free(transport_out, env);
                 return status;
             }
         }

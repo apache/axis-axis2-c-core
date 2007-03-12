@@ -480,7 +480,7 @@ axis2_op_client_execute(
             if (conf)
             {
                 transport_in = AXIS2_CONF_GET_TRANSPORT_IN(conf, env,
-                        AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out, env));
+                        axis2_transport_out_desc_get_enum(transport_out, env));
             }
         }
     }

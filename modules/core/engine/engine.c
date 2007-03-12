@@ -324,7 +324,7 @@ axis2_engine_send(
 
         if (transport_out)
         {
-            transport_sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
+            transport_sender = axis2_transport_out_desc_get_sender(transport_out, env);
             if (transport_sender)
             {
                 AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
@@ -491,7 +491,7 @@ axis2_engine_send_fault(
         transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
 
         if (transport_out)
-            transport_sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
+            transport_sender = axis2_transport_out_desc_get_sender(transport_out, env);
         if (transport_sender)
             AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx);
     }
@@ -1025,7 +1025,7 @@ axis2_engine_resume_send(
         transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
         if (transport_out)
         {
-            sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
+            sender = axis2_transport_out_desc_get_sender(transport_out, env);
             if (sender)
             {
                 status = AXIS2_TRANSPORT_SENDER_INVOKE(sender, env, msg_ctx);

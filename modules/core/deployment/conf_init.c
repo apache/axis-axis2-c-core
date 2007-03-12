@@ -203,7 +203,7 @@ axis2_init_transports(
             if (transport_out_map[i])
             {
                 axis2_transport_sender_t *sender = 
-                    AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out_map[i], env);
+                    axis2_transport_out_desc_get_sender(transport_out_map[i], env);
                 if (sender)
                 {
                     status = AXIS2_TRANSPORT_SENDER_INIT(sender, env, conf_ctx, transport_out_map[i]);

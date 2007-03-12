@@ -237,7 +237,7 @@ axis2_msg_ctx_create(
             axis2_transport_in_desc_get_enum(transport_in_desc, env);
     if (msg_ctx->transport_out_desc)
         msg_ctx->transport_out_desc_enum =
-            AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out_desc, env);
+            axis2_transport_out_desc_get_enum(transport_out_desc, env);
 
     msg_ctx->msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
     if (!(msg_ctx->msg_info_headers))
@@ -964,7 +964,7 @@ axis2_msg_ctx_set_transport_out_desc(
     {
         msg_ctx->transport_out_desc = transport_out_desc;
         msg_ctx->transport_out_desc_enum =
-            AXIS2_TRANSPORT_OUT_DESC_GET_ENUM(transport_out_desc, env);
+            axis2_transport_out_desc_get_enum(transport_out_desc, env);
     }
 
     return AXIS2_SUCCESS;
