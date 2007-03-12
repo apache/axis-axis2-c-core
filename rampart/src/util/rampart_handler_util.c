@@ -365,7 +365,7 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
          AXIS2_LOG_INFO(env->log, "[rampart][rhu] Conf context is NULL ");
          return AXIS2_FALSE;
     }    
-    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     if(!conf)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rhu] Cannot get the axis2 conf from conf context. ");

@@ -224,7 +224,7 @@ axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env,
                 if (conf_ctx && grp_id)
                 {
                     axis2_string_t *svc_grp_ctx_id_str = axis2_string_create(env, grp_id);
-                    axis2_svc_grp_ctx_t *svc_ctx_grp_ctx = AXIS2_CONF_CTX_GET_SVC_GRP_CTX(conf_ctx, env, grp_id);
+                    axis2_svc_grp_ctx_t *svc_ctx_grp_ctx =  axis2_conf_ctx_get_svc_grp_ctx(conf_ctx, env, grp_id);
                     if (!svc_ctx_grp_ctx)
                     {
                         /** TODO, set error */

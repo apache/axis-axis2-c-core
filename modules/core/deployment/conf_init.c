@@ -135,7 +135,7 @@ axis2_init_modules(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
-    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     if (conf)
     {
         axis2_hash_t *module_map = AXIS2_CONF_GET_ALL_MODULES(conf, env);
@@ -176,7 +176,7 @@ axis2_init_transports(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
-    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     if (conf)
     {
         axis2_transport_in_desc_t **transport_in_map = NULL;

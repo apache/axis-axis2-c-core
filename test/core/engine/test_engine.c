@@ -67,7 +67,7 @@ int   axis2_test_engine_send()
     else
         printf("axis2_test_engine_send SUCCESS\n");
 
-    AXIS2_CONF_CTX_FREE(conf_ctx, env);
+     axis2_conf_ctx_free(conf_ctx, env);
     AXIS2_MSG_CTX_FREE(msg_ctx, env);
     AXIS2_QNAME_FREE(qname, env);
     AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, env);
@@ -102,7 +102,7 @@ int   axis2_test_engine_receive()
     }
     else
         printf("axis2_test_engine_receive SUCCESS\n");
-    AXIS2_CONF_CTX_FREE(conf_ctx, env);
+     axis2_conf_ctx_free(conf_ctx, env);
     AXIS2_MSG_CTX_FREE(msg_ctx, env);
     AXIS2_ENGINE_FREE(engine, env);
     return 0;

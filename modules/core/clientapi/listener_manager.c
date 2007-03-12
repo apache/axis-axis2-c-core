@@ -182,7 +182,7 @@ axis2_listener_manager_make_sure_started(
         axis2_conf_t *conf = NULL;
         axis2_transport_receiver_t *listener = NULL;
 
-        conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+        conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
         if (conf)
         {
             transport_in = AXIS2_CONF_GET_TRANSPORT_IN(conf, env, transport);

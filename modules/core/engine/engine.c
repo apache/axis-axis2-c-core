@@ -281,7 +281,7 @@ axis2_engine_send(
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
                 axis2_array_list_t *global_out_phase = AXIS2_CONF_GET_OUT_PHASES(conf, env);
@@ -304,7 +304,7 @@ axis2_engine_send(
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
                 axis2_array_list_t *global_out_phase = AXIS2_CONF_GET_OUT_PHASES(conf, env);
@@ -366,7 +366,7 @@ axis2_engine_receive(
 
     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
 
-    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
 
     pre_calculated_phases =
         AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
@@ -477,7 +477,7 @@ axis2_engine_send_fault(
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
                 axis2_array_list_t *phases = AXIS2_CONF_GET_OUT_FAULT_FLOW(conf, env);
@@ -518,7 +518,7 @@ axis2_engine_receive_fault(
         axis2_conf_ctx_t *conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
                 axis2_array_list_t *phases = AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
@@ -958,7 +958,7 @@ axis2_engine_resume_receive(
 
     /* find and invoke the phases */
     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
-    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     phases =
         AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
 

@@ -335,7 +335,7 @@ axis2_op_ctx_set_parent(
         if (conf_ctx)
         {
             op_ctx->op_ctx_map =
-                AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, env);
+                 axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
         }
         op_ctx->svc_qname =
             (axis2_qname_t *)AXIS2_SVC_GET_QNAME(AXIS2_SVC_CTX_GET_SVC(op_ctx->parent, env), env);

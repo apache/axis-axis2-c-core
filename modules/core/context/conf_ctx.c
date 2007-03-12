@@ -67,7 +67,7 @@ axis2_conf_ctx_create(
     conf_ctx->svc_grp_ctx_map = NULL;
     conf_ctx->mutex = axis2_thread_mutex_create(env->allocator,
             AXIS2_THREAD_MUTEX_DEFAULT);
-    if (NULL == conf_ctx->mutex)
+    if (!conf_ctx->mutex)
     {
         axis2_conf_ctx_free(conf_ctx, env);
         return NULL;
@@ -113,7 +113,6 @@ axis2_conf_ctx_set_conf(
     const axis2_env_t *env,
     axis2_conf_t *conf)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     conf_ctx->conf = conf; /* we just maintain a shallow copy here */
     return AXIS2_SUCCESS;
 }
@@ -123,7 +122,6 @@ axis2_conf_ctx_get_base(
     const axis2_conf_ctx_t *conf_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return conf_ctx->base;
 }
 
@@ -132,7 +130,6 @@ axis2_conf_ctx_get_conf(
     const axis2_conf_ctx_t *conf_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return conf_ctx->conf;
 }
 
@@ -141,7 +138,6 @@ axis2_conf_ctx_get_op_ctx_map(
     const axis2_conf_ctx_t *conf_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return conf_ctx->op_ctx_map;
 }
 
@@ -150,7 +146,6 @@ axis2_conf_ctx_get_svc_ctx_map(
     const axis2_conf_ctx_t *conf_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return conf_ctx->svc_ctx_map;
 }
 
@@ -159,7 +154,6 @@ axis2_conf_ctx_get_svc_grp_ctx_map(
     const axis2_conf_ctx_t *conf_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return conf_ctx->svc_grp_ctx_map;
 }
 
@@ -170,8 +164,6 @@ axis2_conf_ctx_register_op_ctx(
     const axis2_char_t *message_id,
     axis2_op_ctx_t *op_ctx)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->op_ctx_map)
     {
@@ -210,8 +202,6 @@ axis2_conf_ctx_register_svc_ctx(
     const axis2_char_t *svc_id,
     axis2_svc_ctx_t *svc_ctx)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_ctx_map)
     {
@@ -230,8 +220,6 @@ axis2_conf_ctx_get_svc_ctx(
 {
     axis2_svc_ctx_t *rv = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_ctx_map)
     {
@@ -249,8 +237,6 @@ axis2_conf_ctx_register_svc_grp_ctx(
     const axis2_char_t *svc_grp_id,
     axis2_svc_grp_ctx_t *svc_grp_ctx)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_grp_ctx_map)
     {
@@ -268,9 +254,6 @@ axis2_conf_ctx_get_svc_grp_ctx(
     const axis2_char_t *svc_grp_id)
 {
     axis2_svc_grp_ctx_t *rv = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_grp_ctx_map)
     {
@@ -287,7 +270,6 @@ axis2_conf_ctx_get_root_dir(
     const axis2_env_t *env)
 {
     axis2_char_t *rv = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
     axis2_thread_mutex_lock(conf_ctx->mutex);
     rv = conf_ctx->root_dir;
     axis2_thread_mutex_unlock(conf_ctx->mutex);
@@ -383,7 +365,6 @@ axis2_conf_ctx_free(
     if (conf_ctx->base)
     {
         AXIS2_CTX_FREE(conf_ctx->base, env);
-        conf_ctx->base = NULL;
     }
 
     if (conf_ctx->op_ctx_map)
@@ -398,13 +379,11 @@ axis2_conf_ctx_free(
             op_ctx = (axis2_op_ctx_t *) val;
             if (op_ctx)
                 AXIS2_OP_CTX_FREE(op_ctx, env);
-
             val = NULL;
             op_ctx = NULL;
 
         }
         axis2_hash_free(conf_ctx->op_ctx_map, env);
-        conf_ctx->op_ctx_map = NULL;
     }
 
     if (conf_ctx->svc_ctx_map)
@@ -425,7 +404,6 @@ axis2_conf_ctx_free(
 
         }
         axis2_hash_free(conf_ctx->svc_ctx_map, env);
-        conf_ctx->svc_ctx_map = NULL;
     }
 
     if (conf_ctx->svc_grp_ctx_map)
@@ -446,21 +424,17 @@ axis2_conf_ctx_free(
 
         }
         axis2_hash_free(conf_ctx->svc_grp_ctx_map, env);
-        conf_ctx->svc_grp_ctx_map = NULL;
     }
     if (conf_ctx->conf)
     {
         AXIS2_CONF_FREE(conf_ctx->conf, env);
-        conf_ctx->conf = NULL;
     }
     if (conf_ctx->mutex)
     {
         axis2_thread_mutex_destroy(conf_ctx->mutex);
-        conf_ctx->mutex = NULL;
     }
 
     AXIS2_FREE(env->allocator, conf_ctx);
-    conf_ctx = NULL;
 
     return AXIS2_SUCCESS;
 }
@@ -581,4 +555,3 @@ axis2_conf_ctx_fill_ctxs(
     AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx);
     return svc_grp_ctx;
 }
-

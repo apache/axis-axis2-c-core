@@ -932,7 +932,7 @@ axis2_http_sender_configure_proxy(
     {
         return AXIS2_FAILURE;
     }
-    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     if (NULL == conf)
     {
         return AXIS2_FAILURE;

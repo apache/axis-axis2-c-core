@@ -232,10 +232,10 @@ axis2_http_worker_process_request(
     }
     request_body = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(simple_request, env);
 
-    out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(AXIS2_CONF_CTX_GET_CONF
+    out_desc = AXIS2_CONF_GET_TRANSPORT_OUT( axis2_conf_ctx_get_conf
             (http_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
-    in_desc = AXIS2_CONF_GET_TRANSPORT_IN(AXIS2_CONF_CTX_GET_CONF
+    in_desc = AXIS2_CONF_GET_TRANSPORT_IN( axis2_conf_ctx_get_conf
             (http_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
@@ -543,7 +543,7 @@ axis2_http_worker_set_transport_out_config(
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, simple_response, AXIS2_FAILURE);
 
-    config = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    config =  axis2_conf_ctx_get_conf(conf_ctx, env);
 
     /*
         TODO implement the method

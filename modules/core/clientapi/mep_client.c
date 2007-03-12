@@ -362,7 +362,7 @@ axis2_mep_client_infer_transport(
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
         if (conf_ctx)
         {
-            conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
                 transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, transport_enum);
@@ -421,7 +421,7 @@ axis2_mep_client_engage_module(
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
         if (conf_ctx)
         {
-            conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
                 /*if it is already engaged do not engage it again*/

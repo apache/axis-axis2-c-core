@@ -160,7 +160,7 @@ axis2_ctx_handler_invoke(
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
-            svc_grp_ctx = AXIS2_CONF_CTX_FILL_CTXS(conf_ctx, env, msg_ctx);
+            svc_grp_ctx =  axis2_conf_ctx_fill_ctxs(conf_ctx, env, msg_ctx);
         }
 
         axis2_allocator_switch_to_local_pool(env->allocator);

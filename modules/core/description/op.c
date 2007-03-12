@@ -857,7 +857,7 @@ axis2_op_find_op_ctx(axis2_op_t *op,
 
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         value = axis2_relates_to_get_value(relates_to, env);
-        op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
+        op_ctx =  axis2_conf_ctx_get_op_ctx(conf_ctx, env, value);
         if (!op_ctx)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG,
@@ -905,7 +905,7 @@ axis2_op_find_existing_op_ctx(axis2_op_t *op,
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_char_t *value = NULL;
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
-        op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
+        op_ctx =  axis2_conf_ctx_get_op_ctx(conf_ctx, env, value);
 
         if (!op_ctx)
         {
@@ -943,7 +943,7 @@ axis2_op_register_op_ctx(axis2_op_t *op,
     {
         return AXIS2_FAILURE;
     }
-    status = AXIS2_CONF_CTX_REGISTER_OP_CTX(conf_ctx, env, msg_id, op_ctx);
+    status =  axis2_conf_ctx_register_op_ctx(conf_ctx, env, msg_id, op_ctx);
     if (AXIS2_FAILURE == status)
     {
         return AXIS2_FAILURE;
@@ -952,7 +952,7 @@ axis2_op_register_op_ctx(axis2_op_t *op,
     if (AXIS2_FAILURE == status)
     {
         axis2_hash_t *op_ctx_map = NULL;
-        op_ctx_map = (axis2_hash_t *) AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, env);
+        op_ctx_map = (axis2_hash_t *)  axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
         axis2_hash_set(op_ctx_map, msg_id, AXIS2_HASH_KEY_STRING, NULL);
     }
     if (AXIS2_TRUE == AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))

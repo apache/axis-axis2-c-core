@@ -120,7 +120,7 @@ axis2_apache2_worker_free(
     worker_impl = AXIS2_INTF_TO_IMPL(apache2_worker);
     if (worker_impl->conf_ctx)
     {
-        AXIS2_CONF_CTX_FREE(worker_impl->conf_ctx, env);
+         axis2_conf_ctx_free(worker_impl->conf_ctx, env);
         worker_impl->conf_ctx = NULL;
     }
 
@@ -197,10 +197,10 @@ axis2_apache2_worker_process_request(
 
     encoding_header_value = (axis2_char_t*)request->content_encoding;
 
-    out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(AXIS2_CONF_CTX_GET_CONF
+    out_desc = AXIS2_CONF_GET_TRANSPORT_OUT( axis2_conf_ctx_get_conf
             (apache2_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
-    in_desc = AXIS2_CONF_GET_TRANSPORT_IN(AXIS2_CONF_CTX_GET_CONF
+    in_desc = AXIS2_CONF_GET_TRANSPORT_IN( axis2_conf_ctx_get_conf
             (apache2_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
 

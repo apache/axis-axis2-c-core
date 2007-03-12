@@ -476,7 +476,7 @@ axis2_op_client_execute(
         axis2_conf_ctx_t *conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env);
         if (conf_ctx)
         {
-            axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+            axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
                 transport_in = AXIS2_CONF_GET_TRANSPORT_IN(conf, env,

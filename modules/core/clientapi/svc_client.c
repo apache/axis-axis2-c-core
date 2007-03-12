@@ -288,7 +288,7 @@ axis2_svc_client_create_for_dynamic_invocation(
         return NULL;
     }
 
-    svc_client_impl->conf = AXIS2_CONF_CTX_GET_CONF(svc_client_impl->conf_ctx, env);
+    svc_client_impl->conf =  axis2_conf_ctx_get_conf(svc_client_impl->conf_ctx, env);
     repos_path = AXIS2_CONF_GET_REPO(svc_client_impl->conf, env);
     wsdl_path = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
 
@@ -340,7 +340,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     if (!svc_grp_name)
         return NULL; /* service group name is mandatory */
 
-    AXIS2_CONF_CTX_REGISTER_SVC_GRP_CTX(svc_client_impl->conf_ctx, env,
+    axis2_conf_ctx_register_svc_grp_ctx(svc_client_impl->conf_ctx, env,
             svc_grp_name, svc_grp_ctx);
 
     svc_client_impl->svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env,
@@ -411,7 +411,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
         return NULL;
     }
 
-    svc_client_impl->conf = AXIS2_CONF_CTX_GET_CONF(svc_client_impl->conf_ctx, env);
+    svc_client_impl->conf =  axis2_conf_ctx_get_conf(svc_client_impl->conf_ctx, env);
 
     if (svc)
     {
@@ -451,7 +451,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     if (!svc_grp_name)
         return NULL; /* service group name is mandatory */
 
-    AXIS2_CONF_CTX_REGISTER_SVC_GRP_CTX(svc_client_impl->conf_ctx, env,
+    axis2_conf_ctx_register_svc_grp_ctx(svc_client_impl->conf_ctx, env,
             svc_grp_name, svc_grp_ctx);
 
     svc_client_impl->svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env,
@@ -1374,7 +1374,7 @@ axis2_svc_client_free(
 
     if (svc_client_impl->conf_ctx)
     {
-        AXIS2_CONF_CTX_FREE(svc_client_impl->conf_ctx, env);
+         axis2_conf_ctx_free(svc_client_impl->conf_ctx, env);
         svc_client_impl->conf_ctx = NULL;
     }
 

@@ -134,7 +134,7 @@ axiom_soap_body_disp_find_svc(
                                             if (conf_ctx)
                                             {
                                                 axis2_conf_t *conf = NULL;
-                                                conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+                                                conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
                                                 if (conf)
                                                 {
                                                     svc = AXIS2_CONF_GET_SVC(conf, env, url_tokens[0]);

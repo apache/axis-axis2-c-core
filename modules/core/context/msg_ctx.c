@@ -1180,7 +1180,7 @@ axis2_msg_ctx_get_parameter(
 
     if (msg_ctx->conf_ctx)
     {
-        axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(msg_ctx->conf_ctx, env);
+        axis2_conf_t *conf =  axis2_conf_ctx_get_conf(msg_ctx->conf_ctx, env);
         param = AXIS2_CONF_GET_PARAM(conf, env, key);
     }
 
@@ -1274,7 +1274,7 @@ axis2_msg_ctx_get_module_parameter(
         }
     }
 
-    conf = AXIS2_CONF_CTX_GET_CONF(msg_ctx->conf_ctx, env);
+    conf =  axis2_conf_ctx_get_conf(msg_ctx->conf_ctx, env);
     if (conf)
     {
         module_desc = AXIS2_CONF_GET_MODULE_DESC(conf, env, qname);
@@ -1380,7 +1380,7 @@ axis2_msg_ctx_get_property(
 
     if (msg_ctx->conf_ctx)
     {
-        ctx = AXIS2_CONF_CTX_GET_BASE(msg_ctx->conf_ctx, env);
+        ctx =  axis2_conf_ctx_get_base(msg_ctx->conf_ctx, env);
         if (ctx)
         {
             obj = AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent);
@@ -1498,7 +1498,7 @@ axis2_msg_ctx_get_doing_mtom(
 
     if (!(msg_ctx->doing_mtom) && msg_ctx->conf_ctx)
     {
-        axis2_conf_t *conf = AXIS2_CONF_CTX_GET_CONF(msg_ctx->conf_ctx, env);
+        axis2_conf_t *conf =  axis2_conf_ctx_get_conf(msg_ctx->conf_ctx, env);
         msg_ctx->doing_mtom  = axis2_conf_get_enable_mtom(conf, env);
     }
 

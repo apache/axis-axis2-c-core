@@ -161,7 +161,7 @@ axis2_http_server_free(
 
     if (server_impl->conf_ctx_private)
     {
-        AXIS2_CONF_CTX_FREE(server_impl->conf_ctx_private, env);
+         axis2_conf_ctx_free(server_impl->conf_ctx_private, env);
         server_impl->conf_ctx_private = NULL;
     }
     /**
