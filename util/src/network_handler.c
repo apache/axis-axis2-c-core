@@ -63,7 +63,8 @@ axis2_network_handler_open_socket(const axis2_env_t *env, char *server, int port
          * server may be a host name
          */
         struct hostent* lphost = NULL;
-        lphost = gethostbyname(server); /*nnn netdb.h*/
+        lphost = gethostbyname(server); 
+        /*nnn netdb.h*/
 
         if (lphost)
         {
@@ -222,11 +223,11 @@ axis2_bool_t axis2_init_socket()
         return 0; //WinSock 2.2 not found
 
 
-    // Confirm that the WinSock DLL supports 2.2.
-    // Note that if the DLL supports versions greater
-    // than 2.2 in addition to 2.2, it will still return
-    // 2.2 in wVersion since that is the version we
-    // requested.
+    /*   Confirm that the WinSock DLL supports 2.2. */
+    /*   Note that if the DLL supports versions greater */
+    /*   than 2.2 in addition to 2.2, it will still return */
+    /*   2.2 in wVersion since that is the version we */
+    /*   requested. */
 
     if (LOBYTE(wsaData.wVersion) != 2 ||
             HIBYTE(wsaData.wVersion) != 2)
