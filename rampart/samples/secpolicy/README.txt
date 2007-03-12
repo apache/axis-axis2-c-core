@@ -12,4 +12,14 @@ These scenarios will only copy the security policy xml files. To run the
 client use the script samples/client/sec_echo/update_n_run.sh or
 samples/client/sec_echo/update_n_run.bat
 
+Following is a summary of scenarios available.
 
+Scenario    Summary
+-------------------
+1.          Timestamp
+2.          UsernameToken+Timestamp
+3.          Client-Encrypt(IssuerSerial)           
+4.          Client-Encrypt(RefKeyIdentifier)       
+5.          Client-Encrypt(Embedded)               
+6.          Client-Encrypt(DirectReference)        
+7.          Both client and server Encrypts
