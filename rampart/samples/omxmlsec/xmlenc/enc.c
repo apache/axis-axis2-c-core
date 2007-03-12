@@ -99,6 +99,7 @@ decrypt(axis2_env_t *env,  axis2_char_t *filename)
     outf = fopen("decrypted-result.xml", "wb");
     fwrite(serialized_data, 1, AXIS2_STRLEN(serialized_data), outf);
     fclose(outf);
+    printf("Node decrypted successfully. Result is written to decrypted-result.xml\n");
     return AXIS2_SUCCESS;
 }
 
