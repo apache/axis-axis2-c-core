@@ -53,11 +53,11 @@ struct axiom_text
     axiom_data_handler_t *data_handler;
 };
 
-AXIS2_EXTERN axiom_text_t* AXIS2_CALL
+AXIS2_EXTERN axiom_text_t *AXIS2_CALL
 axiom_text_create(const axis2_env_t *env,
-        axiom_node_t * parent,
-        const axis2_char_t * value,
-        axiom_node_t **node)
+    axiom_node_t * parent,
+    const axis2_char_t * value,
+    axiom_node_t **node)
 {
 
     axiom_text_t *om_text = NULL;
@@ -72,7 +72,7 @@ axiom_text_create(const axis2_env_t *env,
         return NULL;
     }
     om_text = (axiom_text_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_text_t));
+        sizeof(axiom_text_t));
     if (!om_text)
     {
         AXIS2_FREE(env->allocator, *node);
@@ -94,7 +94,9 @@ axiom_text_create(const axis2_env_t *env,
     om_text->ns = NULL;
 
     if (value)
+    {
         om_text->value = (axis2_char_t *) AXIS2_STRDUP(value, env);
+    }
 
     axiom_node_set_data_element((*node), env, om_text);
     axiom_node_set_node_type((*node), env, AXIOM_TEXT);
@@ -108,11 +110,11 @@ axiom_text_create(const axis2_env_t *env,
     return om_text;
 }
 
-AXIS2_EXTERN axiom_text_t* AXIS2_CALL
+AXIS2_EXTERN axiom_text_t *AXIS2_CALL
 axiom_text_create_with_data_handler(const axis2_env_t *env,
-        axiom_node_t * parent,
-        axiom_data_handler_t* data_handler,
-        axiom_node_t **node)
+    axiom_node_t * parent,
+    axiom_data_handler_t* data_handler,
+    axiom_node_t **node)
 {
 
     axiom_text_t *om_text = NULL;
@@ -121,7 +123,9 @@ axiom_text_create_with_data_handler(const axis2_env_t *env,
 
     om_text = (axiom_text_t*)axiom_text_create(env, parent, NULL, node);
     if (!om_text)
+    {
         return NULL;
+    }
     om_text->optimize = AXIS2_TRUE;
     om_text->is_binary = AXIS2_TRUE;
     om_text->data_handler = data_handler;
@@ -130,38 +134,33 @@ axiom_text_create_with_data_handler(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_free(axiom_text_t * om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (om_text->value)
     {
         AXIS2_FREE(env->allocator, om_text->value);
-        om_text->value = NULL;
     }
 
     if (om_text->ns)
     {
         AXIOM_NAMESPACE_FREE(om_text->ns, env);
-        om_text->ns = NULL;
     }
 
     if (om_text->content_id)
     {
         AXIS2_FREE(env->allocator, om_text->content_id);
-        om_text->content_id = NULL;
     }
 
     if (om_text->om_attribute)
     {
         axiom_attribute_free(om_text->om_attribute, env);
-        om_text->om_attribute = NULL;
     }
 
     if (om_text->data_handler)
     {
         AXIOM_DATA_HANDLER_FREE(om_text->data_handler, env);
-        om_text->data_handler = NULL;
     }
 
     AXIS2_FREE(env->allocator, om_text);
@@ -170,8 +169,8 @@ axiom_text_free(axiom_text_t * om_text,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_serialize(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        axiom_output_t *om_output)
+    const axis2_env_t *env,
+    axiom_output_t *om_output)
 {
     int status = AXIS2_SUCCESS;
     axis2_char_t *attribute_value = NULL;
@@ -184,20 +183,23 @@ axiom_text_serialize(axiom_text_t *om_text,
     if (!axiom_text_get_is_binary(om_text, env))
     {
         if (om_text->value)
+        {
             status = axiom_output_write(om_output, env,
-                    AXIOM_TEXT, 1,
-                    om_text->value);
+                AXIOM_TEXT, 1, om_text->value);
+        }
     }
     else
     {
         om_output_xml_writer = AXIOM_OUTPUT_GET_XML_WRITER(om_output, env);
         if (om_text->optimize)
         {
-            if (axiom_text_get_content_id(om_text, env) == NULL)
+            if (!(axiom_text_get_content_id(om_text, env)))
             {
                 axis2_char_t *content_id = AXIOM_OUTPUT_GET_NEXT_CONTENT_ID(om_output, env);
                 if (content_id)
+                {
                     om_text->content_id = AXIS2_STRDUP(content_id, env);
+                }
             }
 
             attribute_value = AXIS2_STRACAT("cid:", om_text->content_id, env);
@@ -229,18 +231,17 @@ axiom_text_serialize(axiom_text_t *om_text,
     return status;
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_text_get_value(axiom_text_t *om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return om_text->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_value(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        const axis2_char_t *value)
+    const axis2_env_t *env,
+    const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
@@ -255,8 +256,7 @@ axiom_text_set_value(axiom_text_t *om_text,
     if (!om_text->value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
-                AXIS2_FAILURE);
-
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -264,40 +264,39 @@ axiom_text_set_value(axiom_text_t *om_text,
 
 /*Following has been implemented for the MTOM support*/
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_text_get_mime_type(axiom_text_t *om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return om_text->mime_type;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_mime_type(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        const axis2_char_t *mime_type)
+    const axis2_env_t *env,
+    const axis2_char_t *mime_type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
     if (om_text->mime_type)
+    {
         AXIS2_FREE(env->allocator, om_text->mime_type);
+    }
     om_text->mime_type = (axis2_char_t*)AXIS2_STRDUP(mime_type, env);
     return AXIS2_SUCCESS;
 }
 
-
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_text_get_optimize(axiom_text_t *om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return om_text->optimize;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_optimize(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        const axis2_bool_t optimize)
+    const axis2_env_t *env,
+    const axis2_bool_t optimize)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
@@ -305,19 +304,17 @@ axiom_text_set_optimize(axiom_text_t *om_text,
     return AXIS2_SUCCESS;
 }
 
-
 static axis2_bool_t AXIS2_CALL
 axiom_text_get_is_binary(axiom_text_t *om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return om_text->is_binary;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_is_binary(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        const axis2_bool_t is_binary)
+    const axis2_env_t *env,
+    const axis2_bool_t is_binary)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
@@ -325,39 +322,39 @@ axiom_text_set_is_binary(axiom_text_t *om_text,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axiom_text_get_localname(axiom_text_t *om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return om_text->localname;
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_text_get_content_id(axiom_text_t *om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return om_text->content_id;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_content_id(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        const axis2_char_t *content_id)
+    const axis2_env_t *env,
+    const axis2_char_t *content_id)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
     if (om_text->content_id)
+    {
         AXIS2_FREE(env->allocator, om_text->content_id);
+    }
     om_text->content_id = (axis2_char_t*)AXIS2_STRDUP(content_id, env);
     return AXIS2_SUCCESS;
 }
 
 static axis2_status_t AXIS2_CALL
 axiom_text_serialize_start_part(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        axiom_output_t *om_output)
+    const axis2_env_t *env,
+    axiom_output_t *om_output)
 {
     axis2_char_t *namespace_uri = NULL;
     axis2_char_t *prefix = NULL;
@@ -365,7 +362,8 @@ axiom_text_serialize_start_part(axiom_text_t *om_text,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     local_name = axiom_text_get_localname(om_text, env);
 
-    om_text->ns = axiom_namespace_create(env, "http://www.w3.org/2004/08/xop/include", "xop");
+    om_text->ns = axiom_namespace_create(env,
+        "http://www.w3.org/2004/08/xop/include", "xop");
 
     if (om_text->ns)
     {
@@ -377,38 +375,42 @@ axiom_text_serialize_start_part(axiom_text_t *om_text,
             if (prefix)
             {
                 axiom_output_write(om_output, env, AXIOM_ELEMENT, 3,
-                        local_name, namespace_uri, prefix);
+                    local_name, namespace_uri, prefix);
             }
             else
             {
                 axiom_output_write(om_output, env, AXIOM_ELEMENT, 2,
-                        local_name, namespace_uri);
+                    local_name, namespace_uri);
             }
         }
         else
         {
             axiom_output_write(om_output, env, AXIOM_ELEMENT, 1,
-                    local_name);
+                local_name);
         }
     }
     else
     {
         axiom_output_write(om_output, env, AXIOM_TEXT, 1,
-                local_name);
+            local_name);
     }
     if (om_text->om_attribute)
+    {
         axiom_attribute_serialize(om_text->om_attribute, env, om_output);
+    }
     if (om_text->ns)
+    {
         AXIOM_NAMESPACE_SERIALIZE(om_text->ns, env, om_output);
+    }
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_serialize_attribute(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        axiom_output_t *om_output,
-        axiom_attribute_t *om_attribute)
+    const axis2_env_t *env,
+    axiom_output_t *om_output,
+    axiom_attribute_t *om_attribute)
 {
     axiom_xml_writer_t *xml_writer = NULL;
     axiom_namespace_t *om_namespace = NULL;
@@ -421,12 +423,11 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
-            AXIS2_XML_PARSER_TYPE_BUFFER);
+        AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axiom_namespace_create(env, "" , "");
 
     namespace_uri = AXIOM_NAMESPACE_GET_URI(om_text->ns, env);
     attribute_local_name = axiom_attribute_get_localname(om_attribute, env);
-
 
     if (om_namespace)
     {
@@ -438,7 +439,8 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
         }
         else
         {
-            AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(xml_writer, env, attribute_local_name, attribute_value, namespace_uri);
+            AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(xml_writer, env,
+                attribute_local_name, attribute_value, namespace_uri);
         }
     }
     else
@@ -451,9 +453,9 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_serialize_namespace(axiom_text_t *om_text,
-        const axis2_env_t *env,
-        const axiom_namespace_t *om_namespace,
-        axiom_output_t *om_output)
+    const axis2_env_t *env,
+    const axiom_namespace_t *om_namespace,
+    axiom_output_t *om_output)
 {
     axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *namespace_uri = NULL;
@@ -462,7 +464,7 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
-            AXIS2_XML_PARSER_TYPE_BUFFER);
+        AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axiom_namespace_create(env, "" , "");
 
     if (om_namespace)
@@ -475,12 +477,10 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
     return AXIS2_SUCCESS;
 }
 
-static axis2_char_t* AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     if (om_text->value)
     {
         return om_text->value;
@@ -494,7 +494,7 @@ axiom_text_get_text(axiom_text_t *om_text,
             int encoded_len = 0;
             axis2_char_t *encoded_str = NULL;
             AXIOM_DATA_HANDLER_READ_FROM(om_text->data_handler, env,
-                    &data_handler_stream, &data_handler_stream_size);
+                &data_handler_stream, &data_handler_stream_size);
             if (data_handler_stream)
             {
                 encoded_len = axis2_base64_encode_len(data_handler_stream_size);
@@ -502,7 +502,7 @@ axiom_text_get_text(axiom_text_t *om_text,
                 if (encoded_str)
                 {
                     encoded_len = axis2_base64_encode(encoded_str,
-                            data_handler_stream, data_handler_stream_size);
+                        data_handler_stream, data_handler_stream_size);
                     encoded_str[encoded_len] = '\0';
                     return encoded_str;
                 }
@@ -514,8 +514,8 @@ axiom_text_get_text(axiom_text_t *om_text,
 
 AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
 axiom_text_get_data_handler(axiom_text_t *om_text,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return om_text->data_handler;
 }
+
