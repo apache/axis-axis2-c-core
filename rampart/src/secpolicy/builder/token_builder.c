@@ -37,10 +37,10 @@ rp_token_builder_build(
         property = rp_property_create(env);
         if(!property)
             return NULL;
-        policy = AXIOM_NODE_GET_FIRST_CHILD(token,env);
+        policy = axiom_node_get_first_element(token,env);
         if(policy)
         {
-            token_name = AXIOM_NODE_GET_FIRST_CHILD(policy,env);
+            token_name = axiom_node_get_first_element(policy,env);
             if(token_name)
             {
                 if(AXIOM_NODE_GET_NODE_TYPE(token_name,env) == AXIOM_ELEMENT)

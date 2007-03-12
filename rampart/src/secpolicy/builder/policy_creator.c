@@ -91,7 +91,7 @@ rp_policy_create_from_om_node(
     else
         return NULL;
     
-    exat_node = AXIOM_NODE_GET_FIRST_CHILD(root,env);
+    exat_node = axiom_node_get_first_element(root,env);
     if(exat_node)
     {
         if(AXIOM_NODE_GET_NODE_TYPE(exat_node, env) == AXIOM_ELEMENT)
@@ -122,7 +122,7 @@ rp_policy_create_from_om_node(
     else
         return NULL;
 
-    all_node = AXIOM_NODE_GET_FIRST_CHILD(exat_node,env);
+    all_node = axiom_node_get_first_element(exat_node,env);
     if(all_node)
     {
         if(AXIOM_NODE_GET_NODE_TYPE(all_node, env) == AXIOM_ELEMENT)

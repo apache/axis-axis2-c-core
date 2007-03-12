@@ -49,7 +49,7 @@ rp_https_token_builder_build(
         https_token = NULL;
         return NULL;
     }
-    policy = AXIOM_NODE_GET_FIRST_CHILD(https,env);
+    policy = axiom_node_get_first_element(https,env);
     if(!policy)
         return https_token;
 

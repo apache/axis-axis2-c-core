@@ -32,7 +32,7 @@ rp_supporting_tokens_builder_build(const axis2_env_t *env, axiom_node_t *support
 
     if(supporting)
     {
-        policy = AXIOM_NODE_GET_FIRST_CHILD(supporting,env);
+        policy = axiom_node_get_first_element(supporting,env);
 
         if(AXIOM_NODE_GET_NODE_TYPE(policy, env) == AXIOM_ELEMENT)
         {

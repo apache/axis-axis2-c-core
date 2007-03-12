@@ -32,7 +32,7 @@ rp_transport_binding_builder_build(const axis2_env_t *env, axiom_node_t *transpo
 
     if(transport)
     {
-        policy = AXIOM_NODE_GET_FIRST_CHILD(transport,env);
+        policy = axiom_node_get_first_element(transport,env);
 
         if(AXIOM_NODE_GET_NODE_TYPE(policy, env) == AXIOM_ELEMENT)
         {

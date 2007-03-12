@@ -42,7 +42,7 @@ rp_username_token_builder_build(
         username_token = NULL;
         return NULL;
     }
-    policy = AXIOM_NODE_GET_FIRST_CHILD(username,env);
+    policy = axiom_node_get_first_element(username,env);
     if(!policy) 
         return username_token;
 

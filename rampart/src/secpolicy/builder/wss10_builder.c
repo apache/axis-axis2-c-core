@@ -34,7 +34,7 @@ rp_wss10_builder_build(
     if(!wss10)
         return NULL;
 
-    policy = AXIOM_NODE_GET_FIRST_CHILD(wss,env);
+    policy = axiom_node_get_first_element(wss,env);
 
     if(AXIOM_NODE_GET_NODE_TYPE(policy, env) == AXIOM_ELEMENT)
     {

@@ -33,7 +33,7 @@ rp_asymmetric_binding_builder_build(const axis2_env_t *env, axiom_node_t *asymme
 
     if(asymmetric)
     {
-        policy = AXIOM_NODE_GET_FIRST_CHILD(asymmetric,env);
+        policy = axiom_node_get_first_element(asymmetric,env);
 
         if(AXIOM_NODE_GET_NODE_TYPE(policy, env) == AXIOM_ELEMENT)
         {

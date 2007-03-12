@@ -42,7 +42,7 @@ rp_security_context_token_builder_build(
         security_context_token = NULL;
         return NULL;
     }
-    policy = AXIOM_NODE_GET_FIRST_CHILD(security_context,env);
+    policy = axiom_node_get_first_element(security_context,env);
     if(AXIOM_NODE_GET_NODE_TYPE(policy, env) == AXIOM_ELEMENT)
     {
         pol_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(policy, env);

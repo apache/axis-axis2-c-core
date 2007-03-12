@@ -34,10 +34,10 @@ rp_layout_builder_build(
 
     if(layout)
     {
-        policy = AXIOM_NODE_GET_FIRST_CHILD(layout,env);
+        policy = axiom_node_get_first_element(layout,env);
         if(policy)
         {
-            name = AXIOM_NODE_GET_FIRST_CHILD(policy,env);
+            name = axiom_node_get_first_element(policy,env);
             if(name)
             {
                 if(AXIOM_NODE_GET_NODE_TYPE(name,env) == AXIOM_ELEMENT)

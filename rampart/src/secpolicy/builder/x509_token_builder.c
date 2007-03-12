@@ -43,7 +43,7 @@ rp_x509_token_builder_build(
         x509_token = NULL;
         return NULL;
     }
-    policy = AXIOM_NODE_GET_FIRST_CHILD(x509,env);
+    policy = axiom_node_get_first_element(x509,env);
     if(AXIOM_NODE_GET_NODE_TYPE(policy, env) == AXIOM_ELEMENT)
     {
         pol_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(policy, env);
