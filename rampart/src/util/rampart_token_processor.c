@@ -43,7 +43,7 @@ rampart_token_process_security_token_reference(const axis2_env_t *env,
     axiom_node_t *child_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    child_node = AXIOM_NODE_GET_FIRST_CHILD(st_ref_node, env);
+    child_node = axiom_node_get_first_element(st_ref_node, env);
     child_name = axiom_util_get_localname(child_node, env);
 
     if(0 == axis2_strcmp(child_name, OXS_NODE_REFERENCE)){

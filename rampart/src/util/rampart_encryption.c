@@ -65,7 +65,7 @@ rampart_enc_get_nodes_to_encrypt(const axis2_env_t *env,
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] No encryption parts specified. Using the body as default");
         body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-        body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+        body_child_node = axiom_node_get_first_element(body_node, env);
         axis2_array_list_add(nodes_to_encrypt, env, body_child_node);
         return AXIS2_SUCCESS;
     }else if(0 == AXIS2_STRCMP(encryption_parts, "Header")){

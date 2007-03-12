@@ -222,7 +222,7 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     }
 
     /*First child MUST be the Created element*/
-    created_node = AXIOM_NODE_GET_FIRST_CHILD(ts_node, env);
+    created_node = axiom_node_get_first_element(ts_node, env);
     created_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(created_node, env);
     if (AXIS2_STRCMP(RAMPART_SECURITY_TIMESTAMP_CREATED ,
             AXIOM_ELEMENT_GET_LOCALNAME(created_ele, env)) != 0)

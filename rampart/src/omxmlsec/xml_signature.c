@@ -350,7 +350,7 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
     }
 
     /*First child is optional Transforms element*/
-    child_node = AXIOM_NODE_GET_FIRST_CHILD(ref_node, env);
+    child_node = axiom_node_get_first_element(ref_node, env);
     child_node_name = axiom_util_get_localname(child_node, env);
     if(0 == axis2_strcmp(child_node_name, OXS_NODE_TRANSFORMS)){
         /*Transforms found*/
@@ -360,7 +360,7 @@ oxs_xml_sig_process_ref_node(const axis2_env_t *env,
 
         /*Create a list to hold transforms*/
         tr_list = axis2_array_list_create(env, 1);
-        tr_node = AXIOM_NODE_GET_FIRST_CHILD(child_node, env);
+        tr_node = axiom_node_get_first_element(child_node, env);
         /*Iterate thru all the <ds:Transform> nodes in <ds:Transforms>*/
         while(tr_node)
         {
@@ -461,7 +461,7 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
     sign_part_list = axis2_array_list_create(env,5);
 
     /*Process signed info element*/
-    cur_node = AXIOM_NODE_GET_FIRST_CHILD(signed_info_node, env);
+    cur_node = axiom_node_get_first_element(signed_info_node, env);
     /*Iterate thru children of <SignedInfo>*/
     while(cur_node){
         axis2_char_t *localname =  NULL;

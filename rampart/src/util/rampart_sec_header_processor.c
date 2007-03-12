@@ -481,7 +481,7 @@ rampart_shp_process_signature(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
 
-    cur_node = AXIOM_NODE_GET_FIRST_CHILD(sign_info_node, env);
+    cur_node = axiom_node_get_first_element(sign_info_node, env);
     while(cur_node)
     {
         axis2_char_t *localname =  NULL;
@@ -569,7 +569,7 @@ rampart_shp_process_signature(const axis2_env_t *env,
 
     if(str_node)
     {
-        str_child_node = AXIOM_NODE_GET_FIRST_CHILD(str_node,env);
+        str_child_node = axiom_node_get_first_element(str_node,env);
         if(str_child_node)
         {
             str_child_name = axiom_util_get_localname(str_child_node, env);
@@ -629,7 +629,7 @@ rampart_shp_process_signature(const axis2_env_t *env,
         /*In such case policy support only Isssuer Serial scenario.*/
         if(axis2_strcmp(eki,RAMPART_STR_ISSUER_SERIAL)==0)
         {
-            key_info_child_node = AXIOM_NODE_GET_FIRST_CHILD(key_info_node,env);
+            key_info_child_node = axiom_node_get_first_element(key_info_node,env);
             if(key_info_child_node)
             {
                 axis2_char_t *key_info_child_name = NULL;

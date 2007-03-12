@@ -109,7 +109,7 @@ oxs_axiom_get_node_by_local_name(const axis2_env_t *env,
         /*Doesn't match? Get the first child*/    
         axiom_node_t *temp_node = NULL;
 
-        temp_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
+        temp_node = axiom_node_get_first_element(node, env);
         while (temp_node)
         {
             axiom_node_t *res_node = NULL;       
@@ -151,7 +151,7 @@ oxs_axiom_get_node_by_id(const axis2_env_t *env,
         /*Doesn't match? Get the first child*/    
         axiom_node_t *temp_node = NULL;
 
-        temp_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
+        temp_node = axiom_node_get_first_element(node, env);
         while (temp_node)
         {
             axiom_node_t *res_node = NULL;       

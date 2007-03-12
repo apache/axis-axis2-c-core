@@ -53,7 +53,7 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
 
     /*Binary security token must be added as the first child of the paretn*/
     binary_security_token_node = AXIOM_NODE_DETACH(binary_security_token_node, env);
-    first_child_of_parent = AXIOM_NODE_GET_FIRST_CHILD(parent, env);
+    first_child_of_parent = axiom_node_get_first_element(parent, env);
     if(first_child_of_parent){
         /*If there is a child add bst before it*/
         AXIOM_NODE_INSERT_SIBLING_BEFORE(first_child_of_parent, env, binary_security_token_node);

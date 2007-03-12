@@ -1203,7 +1203,7 @@ rampart_context_get_nodes_to_encrypt(
             AXIS2_LOG_INFO(env->log, "[rampart][rampart_context] No encryption parts specified. Using the body.");
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
             body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-            body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+            body_child_node = axiom_node_get_first_element(body_node, env);
             axis2_array_list_add(nodes_to_encrypt, env, body_child_node);
             return AXIS2_SUCCESS;
         }
@@ -1237,7 +1237,7 @@ rampart_context_get_nodes_to_encrypt(
             AXIS2_LOG_INFO(env->log, "[rampart][rampart_context] Including the body the body.");
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
             body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-            body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+            body_child_node = axiom_node_get_first_element(body_node, env);
             axis2_array_list_add(nodes_to_encrypt, env, body_child_node);
             return AXIS2_SUCCESS;
         }
@@ -1307,7 +1307,7 @@ rampart_context_get_nodes_to_protect(
 
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
             body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-            body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+            body_child_node = axiom_node_get_first_element(body_node, env);
             axis2_array_list_add(nodes_to_sign_or_encrypt, env, body_child_node);
             return AXIS2_SUCCESS;
         }
@@ -1345,7 +1345,7 @@ rampart_context_get_nodes_to_protect(
             AXIS2_LOG_INFO(env->log, "[rampart][rampart_context] Including the body.");
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
             body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-            body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+            body_child_node = axiom_node_get_first_element(body_node, env);
             axis2_array_list_add(nodes_to_sign_or_encrypt, env, body_child_node);
             return AXIS2_SUCCESS;
         }

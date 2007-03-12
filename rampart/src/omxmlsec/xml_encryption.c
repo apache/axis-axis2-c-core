@@ -218,7 +218,7 @@ oxs_xml_enc_process_key_info(const axis2_env_t *env,
      * Implementation of these are not important for Encryption.
      * Might've to relocate to another file as this processing is essential in Signature
      */
-    cur_node = AXIOM_NODE_GET_FIRST_CHILD(st_ref_node, env);
+    cur_node = axiom_node_get_first_element(st_ref_node, env);
     node_name = axiom_util_get_localname(cur_node, env);
     if(0 == AXIS2_STRCMP(OXS_NODE_REFERENCE, node_name)){
 
