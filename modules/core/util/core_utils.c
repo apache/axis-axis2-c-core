@@ -49,7 +49,6 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_bool_t doing_mtom = AXIS2_FALSE;
     axis2_bool_t server_side = AXIS2_FALSE;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
-    /*axis2_property_t *property = NULL;*/
     axis2_char_t *msg_uuid = NULL;
     axis2_stream_t *out_stream = NULL;
 
@@ -88,19 +87,6 @@ axis2_core_utils_create_out_msg_ctx(
     }
     reply_to = axis2_msg_info_headers_get_reply_to(old_msg_info_headers, env);
     axis2_msg_info_headers_set_to(msg_info_headers, env, reply_to);
-    /*if (reply_to)
-    {
-        axis2_endpoint_ref_t *epr = NULL;
-        axis2_char_t *address = NULL;
-
-        address = axis2_endpoint_ref_get_address(endpoint_ref, env);
-        if (address)
-        {
-            epr = axis2_endpoint_ref_create (env, address);
-            axis2_msg_info_headers_set_reply_to(msg_info_headers, env, epr);
-        }
-    }*/
-
 
     fault_to = axis2_msg_info_headers_get_fault_to(old_msg_info_headers, env);
     axis2_msg_info_headers_set_fault_to(msg_info_headers, env, fault_to);
@@ -137,57 +123,19 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_msg_ctx_set_transport_out_stream(new_msg_ctx, env, out_stream);
     axis2_msg_ctx_set_http_out_transport_info(new_msg_ctx, env, 
         axis2_msg_ctx_get_http_out_transport_info(in_msg_ctx, env));
-    /*property =  axis2_msg_ctx_get_property(in_msg_ctx, env,
-            AXIS2_TRANSPORT_OUT, AXIS2_FALSE);
-    if (property)
-    {
-         axis2_msg_ctx_set_property(new_msg_ctx, env, AXIS2_TRANSPORT_OUT, property,
-                AXIS2_FALSE);
-        property = NULL;
-    }
-
-
-    property =  axis2_msg_ctx_get_property(in_msg_ctx, env,
-            AXIS2_HTTP_OUT_TRANSPORT_INFO, AXIS2_FALSE);
-    if (property)
-    {
-        axis2_char_t *temp = AXIS2_PROPERTY_GET_VALUE(property, env);
-         axis2_msg_ctx_set_property(new_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-            property, AXIS2_FALSE);
-        property = NULL;
-    }*/
 
     /* Setting the charater set encoding */
-
-    /*property =  axis2_msg_ctx_get_property(in_msg_ctx, env,
-            AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
-    if (property)
-    {
-         axis2_msg_ctx_set_property(new_msg_ctx, env,
-                AXIS2_CHARACTER_SET_ENCODING, property, AXIS2_FALSE);
-        property = NULL;
-    }
-
-    property =  axis2_msg_ctx_get_property(in_msg_ctx, env,
-            AXIS2_WSA_VERSION, AXIS2_FALSE);
-    if (property)
-    {
-         axis2_msg_ctx_set_property(new_msg_ctx, env,
-                AXIS2_WSA_VERSION, property, AXIS2_FALSE);
-        property = NULL;
-    }*/
-
     doing_rest =  axis2_msg_ctx_get_doing_rest(in_msg_ctx, env);
-     axis2_msg_ctx_set_doing_rest(new_msg_ctx, env, doing_rest);
+    axis2_msg_ctx_set_doing_rest(new_msg_ctx, env, doing_rest);
 
     doing_mtom =  axis2_msg_ctx_get_doing_mtom(in_msg_ctx, env);
-     axis2_msg_ctx_set_doing_mtom(new_msg_ctx, env, doing_mtom);
+    axis2_msg_ctx_set_doing_mtom(new_msg_ctx, env, doing_mtom);
 
     server_side =  axis2_msg_ctx_get_server_side(in_msg_ctx, env);
-     axis2_msg_ctx_set_server_side(new_msg_ctx, env, server_side);
+    axis2_msg_ctx_set_server_side(new_msg_ctx, env, server_side);
 
     svc_grp_ctx =  axis2_msg_ctx_get_svc_grp_ctx(in_msg_ctx, env);
-     axis2_msg_ctx_set_svc_grp_ctx(new_msg_ctx, env, svc_grp_ctx);
+    axis2_msg_ctx_set_svc_grp_ctx(new_msg_ctx, env, svc_grp_ctx);
 
      axis2_msg_ctx_set_is_soap_11(new_msg_ctx, env,
              axis2_msg_ctx_get_is_soap_11(in_msg_ctx, env));
@@ -217,20 +165,11 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
         axis2_msg_info_headers_set_reply_to(msg_info_headers, env, NULL);
     }
 
-     axis2_msg_ctx_set_op_ctx(out_msg_ctx, env, NULL);
-     axis2_msg_ctx_set_svc_ctx(out_msg_ctx, env, NULL);
+    axis2_msg_ctx_set_op_ctx(out_msg_ctx, env, NULL);
+    axis2_msg_ctx_set_svc_ctx(out_msg_ctx, env, NULL);
     axis2_msg_ctx_reset_transport_out_stream(out_msg_ctx, env);
     axis2_msg_ctx_reset_http_out_transport_info(out_msg_ctx, env); 
-    /* axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_TRANSPORT_OUT, NULL,
-            AXIS2_FALSE);
-     axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
-            NULL, AXIS2_FALSE);
-     axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
-            NULL, AXIS2_FALSE);
-     axis2_msg_ctx_set_property(out_msg_ctx, env, AXIS2_WSA_VERSION, NULL,
-            AXIS2_FALSE);*/
-
-     axis2_msg_ctx_set_svc_grp_ctx(out_msg_ctx, env, NULL);
+    axis2_msg_ctx_set_svc_grp_ctx(out_msg_ctx, env, NULL);
 
     return;
 }
@@ -249,12 +188,12 @@ axis2_core_utils_get_module_qname(const axis2_env_t *env,
         axis2_char_t * mod_name1 = NULL;
         axis2_char_t * mod_name = NULL;
         mod_name1 = AXIS2_STRACAT(name, "-", env);
-        if (NULL == mod_name1)
+        if (!mod_name1)
         {
             return NULL;
         }
         mod_name = AXIS2_STRACAT(mod_name1, version, env);
-        if (NULL == mod_name)
+        if (!mod_name)
         {
             AXIS2_FREE(env->allocator, mod_name1);
             mod_name1 = NULL;
@@ -282,7 +221,7 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
     AXIS2_PARAM_CHECK(env->error, axis_conf, AXIS2_FAILURE);
 
     default_modules = axis2_hash_make(env);
-    if (NULL == default_modules)
+    if (!default_modules)
     {
         return AXIS2_FAILURE;
     }
@@ -309,7 +248,7 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
 
                     module_name_str = axis2_core_utils_get_module_name(env,
                             mod_name_with_ver);
-                    if (NULL == module_name_str)
+                    if (!module_name_str)
                     {
                         return AXIS2_FAILURE;
                     }
@@ -331,12 +270,10 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
                             if (module_name_str)
                             {
                                 AXIS2_FREE(env->allocator, module_name_str);
-                                module_name_str = NULL;
                             }
                             if (module_ver_str)
                             {
                                 AXIS2_FREE(env->allocator, module_ver_str);
-                                module_ver_str = NULL;
                             }
                         }
                     }
@@ -349,7 +286,6 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
                     if  (module_name_str)
                     {
                         AXIS2_FREE(env->allocator, module_name_str);
-                        module_name_str = NULL;
                     }
                 }
             }
@@ -394,7 +330,7 @@ axis2_core_utils_get_module_name(const axis2_env_t *env, axis2_char_t *module_na
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     name = AXIS2_STRDUP(module_name, env);
-    if (NULL == name)
+    if (!name)
     {
         return NULL;
     }
@@ -432,10 +368,8 @@ axis2_core_utils_is_latest_mod_ver(const axis2_env_t *env,
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, module_ver, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, current_def_ver, AXIS2_FALSE);
-
     cur_ver = atof(current_def_ver);
     mod_ver = atof(module_ver);
-
     if (mod_ver > cur_ver)
     {
         return AXIS2_TRUE;
