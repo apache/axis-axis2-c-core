@@ -686,7 +686,6 @@ axiom_stax_builder_next(axiom_stax_builder_t *om_builder,
 
             case AXIOM_XML_READER_EMPTY_ELEMENT:
                 node = axiom_stax_builder_create_om_element(om_builder, env);
-                break;
 
             case AXIOM_XML_READER_END_ELEMENT:
                 axiom_stax_builder_end_element(om_builder, env);
