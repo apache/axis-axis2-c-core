@@ -32,57 +32,9 @@
 #include <oxs_signature.h>
 #include <oxs_transform.h>
 #include <oxs_transforms_factory.h>
-#include <oxs_token_ds_reference.h>
-#include <oxs_token_digest_method.h>
-#include <oxs_token_digest_value.h>
-#include <oxs_token_transforms.h>
-#include <oxs_token_transform.h>
-#include <oxs_token_c14n_method.h>
-#include <oxs_token_signature.h>
-#include <oxs_token_signature_method.h>
-#include <oxs_token_signature_value.h>
-#include <oxs_token_signed_info.h>
-#include <oxs_token_x509_certificate.h>
-#include <oxs_token_x509_data.h>
-#include <oxs_token_key_info.h>
+#include <oxs_tokens.h>
 /*Private functions*/
 
-/*parent is ds:Signature*/
-#if 0
-NOTE: We do not build KeyInfo on the fly. Let the user to create it using the Key Info Builder in OXS
-static axis2_status_t
-oxs_xml_sig_build_key_info(const axis2_env_t *env,
-    axiom_node_t *parent,
-    oxs_sign_ctx_t *sign_ctx)
-{
-    axiom_node_t *key_info_node = NULL;
-    axiom_node_t *x509_data_node = NULL;
-    axiom_node_t *x509_certificate_node = NULL;
-    axis2_char_t *cert_data = NULL;
-    oxs_x509_cert_t *cert = NULL;
-    
-    /*Build the KeyInfo node*/
-    key_info_node = oxs_token_build_key_info_element(env, parent);
-
-    /*Right now we support only X509Data. But should support other patterns as well*/
-    cert = oxs_sign_ctx_get_certificate(sign_ctx, env);
-    if(!cert){
-        oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIGN_FAILED,"Cannot get the certificate to build <ds:KeyInfo> element" );        
-        return AXIS2_FAILURE;
-    }
-
-    /*Get certificate data*/
-    cert_data = oxs_x509_cert_get_data(cert, env);
-
-    /*Build the X509Data node*/
-    x509_data_node = oxs_token_build_x509_data_element(env, key_info_node);
-
-    /*Now build the X509Certificate node*/
-    x509_certificate_node = oxs_token_build_x509_certificate_element(env, x509_data_node, cert_data); 
-
-    return AXIS2_SUCCESS;
-}
-#endif 
 
 /*This method is common for both signing and verification*/
 static axis2_char_t *

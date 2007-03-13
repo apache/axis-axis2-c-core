@@ -32,8 +32,6 @@
 
 #define BUFSIZE 64
 
-
-
 AXIS2_EXTERN int AXIS2_CALL
 openssl_sig_sign(const axis2_env_t *env,
         openssl_pkey_t *prvkey,
