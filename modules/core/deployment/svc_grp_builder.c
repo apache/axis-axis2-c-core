@@ -187,7 +187,7 @@ axis2_svc_grp_builder_populate_svc_grp(
         qparamst = NULL;
     }
 
-    parent = AXIS2_SVC_GRP_GET_PARENT(svc_grp, env);
+    parent =  axis2_svc_grp_get_parent(svc_grp, env);
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(grp_builder_impl->svc_grp_builder.
             desc_builder, env, itr, 
             axis2_svc_grp_get_param_container(svc_grp, env), parent->param_container);
@@ -324,7 +324,7 @@ axis2_svc_grp_builder_process_module_refs(
             }
             else
             {
-                AXIS2_SVC_GRP_ADD_MODULE_REF(svc_grp, env, qrefname);
+                 axis2_svc_grp_add_module_ref(svc_grp, env, qrefname);
             }
             AXIS2_QNAME_FREE(qrefname, env);
         }

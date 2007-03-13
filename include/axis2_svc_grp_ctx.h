@@ -175,47 +175,6 @@ extern "C"
     axis2_svc_grp_ctx_get_svc_ctx_map(const axis2_svc_grp_ctx_t *svc_grp_ctx,
         const axis2_env_t *env);
 
-/** Gets base context. */
-#define AXIS2_SVC_GRP_CTX_GET_BASE(svc_grp_ctx, env) \
-      axis2_svc_grp_ctx_get_base(svc_grp_ctx, env)
-
-/** Gets parent configuration context. */
-#define AXIS2_SVC_GRP_CTX_GET_PARENT(svc_grp_ctx, env) \
-      axis2_svc_grp_ctx_get_parent(svc_grp_ctx, env)
-
-/** Frees service group context. */
-#define AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, env)\
-      axis2_svc_grp_ctx_free(svc_grp_ctx, env)
-
-/** Initializes service group context. */
-#define AXIS2_SVC_GRP_CTX_INIT(svc_grp_ctx, env, conf)\
-      axis2_svc_grp_ctx_init(svc_grp_ctx, env, conf)
-
-/** Gets ID. */
-#define AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env) \
-      axis2_svc_grp_ctx_get_id(svc_grp_ctx, env)
-
-/** Sets ID. */
-#define AXIS2_SVC_GRP_CTX_SET_ID(svc_grp_ctx, env, id) \
-      axis2_svc_grp_ctx_set_id(svc_grp_ctx, env, id)
-
-/** Gets named service context. */
-#define AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_name) \
-      axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_name)
-
-/** Gets service context map. */
-#define AXIS2_SVC_GRP_CTX_FILL_SVC_CTX_MAP(svc_grp_ctx, env) \
-      axis2_svc_grp_ctx_fill_svc_ctx_map(svc_grp_ctx, env)
-
-/** Gets service group related to service group context. */
-#define AXIS2_SVC_GRP_GET_SVC_GRP(svc_grp_ctx, env) \
-      axis2_svc_grp_ctx_get_svc_grp(svc_grp_ctx, env)
-
-/** Gets service context map. */
-#define AXIS2_SVC_GRP_GET_SVC_CTX_MAP(svc_grp_ctx, env) \
-      axis2_svc_grp_ctx_get_svc_ctx_map(svc_grp_ctx, env)
-
-/** @} */
 #ifdef __cplusplus
 }
 #endif

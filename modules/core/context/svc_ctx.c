@@ -184,7 +184,7 @@ struct axis2_conf_ctx *AXIS2_CALL
                 const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_SVC_GRP_CTX_GET_PARENT(svc_ctx->parent, env);
+    return  axis2_svc_grp_ctx_get_parent(svc_ctx->parent, env);
 }
 
 axis2_op_ctx_t *AXIS2_CALL

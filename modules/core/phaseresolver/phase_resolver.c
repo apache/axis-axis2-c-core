@@ -1036,7 +1036,7 @@ axis2_phase_resolver_engage_module_globally(
 
         axis2_hash_this(index_i, NULL, NULL, &v);
         svc_grp = (axis2_svc_grp_t *) v;
-        svcs = AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp, env);
+        svcs =  axis2_svc_grp_get_all_svcs(svc_grp, env);
 
         for (index_j = axis2_hash_first(svcs, env); index_j; index_j =
                     axis2_hash_next(env, index_j))
@@ -1070,7 +1070,7 @@ axis2_phase_resolver_engage_module_globally(
             }*/
         }
         mod_name = axis2_module_desc_get_qname(module_desc, env);
-        status = AXIS2_SVC_GRP_ADD_MODULE_QNAME(svc_grp, env,
+        status =  axis2_svc_grp_add_module_qname(svc_grp, env,
                 mod_name);
 
         if (AXIS2_SUCCESS != status)

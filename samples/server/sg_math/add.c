@@ -129,7 +129,7 @@ axis2_add_add(const axis2_env_t *env, axiom_node_t *node, axis2_msg_ctx_t *msg_c
         if (svc_grp_ctx)
         {
             axis2_ctx_t* ctx = NULL;
-            ctx = AXIS2_SVC_GRP_CTX_GET_BASE(svc_grp_ctx, env);
+            ctx =  axis2_svc_grp_ctx_get_base(svc_grp_ctx, env);
             if (ctx)
             {
                 axis2_property_t* prop = NULL;

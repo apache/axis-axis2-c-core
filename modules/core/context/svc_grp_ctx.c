@@ -71,7 +71,7 @@ axis2_svc_grp_ctx_create(
     if (svc_grp)
     {
         svc_grp_ctx->svc_grp = svc_grp;
-        svc_grp_ctx->svc_grp_name = (axis2_char_t *)AXIS2_SVC_GRP_GET_NAME(svc_grp_ctx->svc_grp, env);
+        svc_grp_ctx->svc_grp_name = (axis2_char_t *) axis2_svc_grp_get_name(svc_grp_ctx->svc_grp, env);
     }
 
     if (conf_ctx)
@@ -96,7 +96,6 @@ axis2_svc_grp_ctx_get_base(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc_grp_ctx->base;
 }
 
@@ -105,7 +104,6 @@ AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
                 const axis2_svc_grp_ctx_t *svc_grp_ctx,
                 const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc_grp_ctx->parent;
 }
 
@@ -119,13 +117,11 @@ axis2_svc_grp_ctx_free(
     if (svc_grp_ctx->id)
     {
         AXIS2_FREE(env->allocator, svc_grp_ctx->id);
-        svc_grp_ctx->id = NULL;
     }
 
     if (svc_grp_ctx->base)
     {
          axis2_ctx_free(svc_grp_ctx->base, env);
-        svc_grp_ctx->base = NULL;
     }
 
     if (svc_grp_ctx->svc_ctx_map)
@@ -149,7 +145,6 @@ axis2_svc_grp_ctx_free(
     }
 
     AXIS2_FREE(env->allocator, svc_grp_ctx);
-    svc_grp_ctx = NULL;
 
     return AXIS2_SUCCESS;
 }
@@ -176,7 +171,6 @@ axis2_svc_grp_ctx_get_id(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc_grp_ctx->id;
 }
 
@@ -208,8 +202,6 @@ axis2_svc_grp_ctx_get_svc_ctx(
     const axis2_env_t *env,
     const axis2_char_t *svc_name)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return (axis2_svc_ctx_t *) axis2_hash_get(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING);
 }
 
@@ -225,7 +217,7 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
 
     if (svc_grp_ctx->svc_grp)
     {
-        axis2_hash_t *service_map = AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp_ctx->svc_grp, env);
+        axis2_hash_t *service_map =  axis2_svc_grp_get_all_svcs(svc_grp_ctx->svc_grp, env);
         if (service_map)
         {
             for (hi = axis2_hash_first(service_map, env);
@@ -254,7 +246,6 @@ axis2_svc_grp_ctx_get_svc_grp(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc_grp_ctx->svc_grp;
 }
 
@@ -263,6 +254,5 @@ axis2_svc_grp_ctx_get_svc_ctx_map(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc_grp_ctx->svc_ctx_map;
 }

@@ -348,7 +348,7 @@ axis2_conf_ctx_init(
         if (ctx)
         {
             axis2_svc_grp_ctx_t *svc_grp_ctx = (axis2_svc_grp_ctx_t*) ctx;
-            AXIS2_SVC_GRP_CTX_INIT(svc_grp_ctx, env, conf);
+             axis2_svc_grp_ctx_init(svc_grp_ctx, env, conf);
         }
     }
     axis2_thread_mutex_unlock(conf_ctx->mutex);
@@ -417,7 +417,7 @@ axis2_conf_ctx_free(
             axis2_hash_this(hi, NULL, NULL, &val);
             svc_grp_ctx = (axis2_svc_grp_ctx_t *) val;
             if (svc_grp_ctx)
-                AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, env);
+                 axis2_svc_grp_ctx_free(svc_grp_ctx, env);
 
             val = NULL;
             svc_grp_ctx = NULL;
@@ -486,7 +486,7 @@ axis2_conf_ctx_fill_ctxs(
     svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
     if (svc_grp)
     {
-        svc_grp_ctx_id = (axis2_char_t*)AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+        svc_grp_ctx_id = (axis2_char_t*) axis2_svc_grp_get_name(svc_grp, env);
     }
 
     if (!svc_grp_ctx_id)
@@ -504,7 +504,7 @@ axis2_conf_ctx_fill_ctxs(
                         svc_grp_ctx_id, AXIS2_HASH_KEY_STRING);
         if (svc_grp_ctx)
         {
-            svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_id);
+            svc_ctx =  axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id);
             if (!svc_ctx)
             {
                 AXIS2_ERROR_SET(env->error,
@@ -530,14 +530,14 @@ axis2_conf_ctx_fill_ctxs(
     {
         axis2_svc_grp_t *svc_grp = NULL;
         svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
-        svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, conf_ctx);
-        svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_id);
+        svc_grp_ctx =  axis2_svc_grp_get_svc_grp_ctx(svc_grp, env, conf_ctx);
+        svc_ctx =  axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id);
         if (!svc_ctx)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC_GRP, AXIS2_FAILURE);
             return NULL;
         }
-        AXIS2_SVC_GRP_CTX_SET_ID(svc_grp_ctx, env, svc_grp_ctx_id);
+         axis2_svc_grp_ctx_set_id(svc_grp_ctx, env, svc_grp_ctx_id);
         axis2_conf_ctx_register_svc_grp_ctx(conf_ctx, env, svc_grp_ctx_id, svc_grp_ctx);
     }
 

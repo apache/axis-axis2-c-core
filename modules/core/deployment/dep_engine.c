@@ -1103,7 +1103,7 @@ axis2_dep_engine_add_new_svc(
         AXIS2_SVC_SET_FILE_NAME(svc, env, file_name);
 
         /* modules from svc group */
-        grp_modules = AXIS2_SVC_GRP_GET_ALL_MODULE_QNAMES(svc_metadata, env);
+        grp_modules =  axis2_svc_grp_get_all_module_qnames(svc_metadata, env);
         if (grp_modules)
             sizej = axis2_array_list_size(grp_modules, env);
         for (j = 0; j < sizej; j++)
@@ -1199,7 +1199,7 @@ axis2_dep_engine_add_new_svc(
                 }
             }
         }
-        AXIS2_SVC_GRP_ADD_SVC(svc_metadata, env, svc);
+         axis2_svc_grp_add_svc(svc_metadata, env, svc);
     }
     return AXIS2_CONF_ADD_SVC_GRP(dep_engine_impl->conf, env, svc_metadata);
 }

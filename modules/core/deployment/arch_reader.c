@@ -327,7 +327,7 @@ axis2_arch_reader_process_svc_grp(
         }
         arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
         svc_name = AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(arch_file_data, env);
-        AXIS2_SVC_GRP_SET_NAME(svc_grp, env, svc_name);
+         axis2_svc_grp_set_name(svc_grp, env, svc_name);
     }
     else
     {

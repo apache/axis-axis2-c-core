@@ -57,7 +57,7 @@ axis2_svc_grp_create(
     svc_grp->module_list = NULL;
 
     svc_grp->param_container =  axis2_param_container_create(env);
-    if (NULL == svc_grp->param_container)
+    if (!svc_grp->param_container)
     {
         axis2_svc_grp_free(svc_grp, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -65,7 +65,7 @@ axis2_svc_grp_create(
     }
 
     svc_grp->module_qnames = axis2_array_list_create(env, 20);
-    if (NULL == svc_grp->module_qnames)
+    if (!svc_grp->module_qnames)
     {
         axis2_svc_grp_free(svc_grp, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -73,7 +73,7 @@ axis2_svc_grp_create(
     }
 
     svc_grp->module_list = axis2_array_list_create(env, 0);
-    if (NULL == svc_grp->module_list)
+    if (!svc_grp->module_list)
     {
         axis2_svc_grp_free(svc_grp, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -81,7 +81,7 @@ axis2_svc_grp_create(
     }
 
     svc_grp->svcs = axis2_hash_make(env);
-    if (NULL == svc_grp->svcs)
+    if (!svc_grp->svcs)
     {
         axis2_svc_grp_free(svc_grp, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -120,38 +120,32 @@ axis2_svc_grp_free(
     {
         AXIS2_PARAM_CONTAINER_FREE(svc_grp->param_container,
                 env);
-        svc_grp->param_container = NULL;
     }
 
     if (svc_grp->svc_grp_name)
     {
         AXIS2_FREE(env->allocator, svc_grp->svc_grp_name);
-        svc_grp->svc_grp_name = NULL;
     }
 
     if (svc_grp->svcs)
     {
         /* services are freed by arch_file_data */
         axis2_hash_free(svc_grp->svcs, env);
-        svc_grp->svcs = NULL;
     }
 
     if (svc_grp->module_qnames)
     {
         axis2_array_list_free(svc_grp->module_qnames, env);
-        svc_grp->module_qnames = NULL;
     }
 
     if (svc_grp->module_list)
     {
         axis2_array_list_free(svc_grp->module_list, env);
-        svc_grp->module_list = NULL;
     }
 
     if (svc_grp)
     {
         AXIS2_FREE(env->allocator, svc_grp);
-        svc_grp = NULL;
     }
     return AXIS2_SUCCESS;
 }
@@ -181,8 +175,6 @@ axis2_svc_grp_get_name(
     const axis2_svc_grp_t *svc_grp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return svc_grp->svc_grp_name;
 }
 
@@ -213,7 +205,7 @@ axis2_svc_grp_add_svc(
     handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env,
             svc_grp->parent, svc);
 
-    if (NULL == handler_resolver)
+    if (!handler_resolver)
     {
         /* remove the previously added service */
         axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING,
@@ -274,7 +266,6 @@ axis2_svc_grp_get_all_svcs(
     const axis2_svc_grp_t *svc_grp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc_grp->svcs;
 }
 
@@ -404,8 +395,6 @@ axis2_svc_grp_get_parent(
     const axis2_svc_grp_t *svc_grp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return svc_grp->parent;
 }
 
@@ -463,7 +452,7 @@ axis2_svc_grp_engage_module(
     }
 
     svc_map = axis2_svc_grp_get_all_svcs(svc_grp, env);
-    if (NULL == svc_map)
+    if (!svc_map)
     {
         return AXIS2_FAILURE;
     }
@@ -471,7 +460,7 @@ axis2_svc_grp_engage_module(
     phase_resolver = axis2_phase_resolver_create_with_config(env, svc_grp->
             parent);
 
-    if (NULL == phase_resolver)
+    if (!phase_resolver)
     {
         return AXIS2_FAILURE;
     }
@@ -515,8 +504,6 @@ axis2_svc_grp_get_all_module_qnames(
     const axis2_svc_grp_t *svc_grp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return svc_grp->module_qnames;
 }
 
@@ -543,8 +530,6 @@ axis2_svc_grp_get_all_module_refs(
     const axis2_svc_grp_t *svc_grp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return svc_grp->module_list;
 }
 

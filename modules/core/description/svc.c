@@ -429,7 +429,7 @@ axis2_svc_add_op(
         parent = (axis2_svc_grp_t *) axis2_svc_get_parent(svc, env);
         if (parent)
         {
-            conf = (axis2_conf_t *) AXIS2_SVC_GRP_GET_PARENT(parent, env);
+            conf = (axis2_conf_t *)  axis2_svc_grp_get_parent(parent, env);
         }
         if (module_desc)
             module_impl = axis2_module_desc_get_module(module_desc, env);
@@ -591,7 +591,7 @@ axis2_svc_get_param(
     param = AXIS2_PARAM_CONTAINER_GET_PARAM(svc->param_container, env, name);
     if (param == NULL && svc->parent)
     {
-        param = AXIS2_SVC_GRP_GET_PARAM(svc->parent, env, name);
+        param =  axis2_svc_grp_get_param(svc->parent, env, name);
     }
     return param;
 }
@@ -624,7 +624,7 @@ axis2_svc_is_param_locked(
 
     parent = axis2_svc_get_parent(svc, env);
     if (parent)
-        locked = AXIS2_SVC_GRP_IS_PARAM_LOCKED(parent, env, param_name);
+        locked =  axis2_svc_grp_is_param_locked(parent, env, param_name);
     if (parent && AXIS2_TRUE == locked)
     {
         return AXIS2_TRUE;

@@ -1123,7 +1123,7 @@ axis2_msg_ctx_get_parameter(
 
     if (msg_ctx->svc_grp)
     {
-        param = AXIS2_SVC_GRP_GET_PARAM(msg_ctx->svc_grp, env, key);
+        param =  axis2_svc_grp_get_param(msg_ctx->svc_grp, env, key);
         if (param)
         {
             return param;
@@ -1186,7 +1186,7 @@ axis2_msg_ctx_get_property(
 
     if (msg_ctx->svc_grp_ctx)
     {
-        ctx = AXIS2_SVC_GRP_CTX_GET_BASE(msg_ctx->svc_grp_ctx, env);
+        ctx =  axis2_svc_grp_ctx_get_base(msg_ctx->svc_grp_ctx, env);
         if (ctx)
         {
             obj =  axis2_ctx_get_property(ctx, env, key, persistent);
@@ -1441,7 +1441,7 @@ axis2_msg_ctx_set_svc(
         {
             msg_ctx->svc_grp = svc_grp;
             msg_ctx->svc_grp_id =
-                (axis2_char_t *)AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+                (axis2_char_t *) axis2_svc_grp_get_name(svc_grp, env);
         }
     }
 
@@ -1468,7 +1468,7 @@ axis2_msg_ctx_set_svc_grp(
     {
         msg_ctx->svc_grp = svc_grp;
         msg_ctx->svc_grp_id =
-            (axis2_char_t *)AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+            (axis2_char_t *) axis2_svc_grp_get_name(svc_grp, env);
     }
 
     return AXIS2_SUCCESS;

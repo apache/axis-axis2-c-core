@@ -331,19 +331,19 @@ axis2_svc_client_create_for_dynamic_invocation(
     if (!svc_grp)
         return NULL;
 
-    svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env,
+    svc_grp_ctx =  axis2_svc_grp_get_svc_grp_ctx(svc_grp, env,
             svc_client_impl->conf_ctx);
     if (!svc_grp_ctx)
         return NULL;
 
-    svc_grp_name = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+    svc_grp_name =  axis2_svc_grp_get_name(svc_grp, env);
     if (!svc_grp_name)
         return NULL; /* service group name is mandatory */
 
     axis2_conf_ctx_register_svc_grp_ctx(svc_client_impl->conf_ctx, env,
             svc_grp_name, svc_grp_ctx);
 
-    svc_client_impl->svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env,
+    svc_client_impl->svc_ctx =  axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env,
             AXIS2_SVC_GET_NAME(svc_client_impl->svc, env));
 
     /* create ops */
@@ -442,19 +442,19 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     if (!svc_grp)
         return NULL;
 
-    svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env,
+    svc_grp_ctx =  axis2_svc_grp_get_svc_grp_ctx(svc_grp, env,
             svc_client_impl->conf_ctx);
     if (!svc_grp_ctx)
         return NULL;
 
-    svc_grp_name = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+    svc_grp_name =  axis2_svc_grp_get_name(svc_grp, env);
     if (!svc_grp_name)
         return NULL; /* service group name is mandatory */
 
     axis2_conf_ctx_register_svc_grp_ctx(svc_client_impl->conf_ctx, env,
             svc_grp_name, svc_grp_ctx);
 
-    svc_client_impl->svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env,
+    svc_client_impl->svc_ctx =  axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env,
             AXIS2_SVC_GET_NAME(svc_client_impl->svc, env));
 
     /* create ops */
