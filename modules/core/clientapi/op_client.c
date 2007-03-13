@@ -271,7 +271,7 @@ axis2_op_client_add_msg_ctx(
 
     op_client_impl = AXIS2_INTF_TO_IMPL(op_client);
 
-    msg_ctx_map = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_client_impl->op_ctx, env);
+    msg_ctx_map =  axis2_op_ctx_get_msg_ctx_map(op_client_impl->op_ctx, env);
 
     out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
     in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];
@@ -286,7 +286,7 @@ axis2_op_client_add_msg_ctx(
          axis2_msg_ctx_free(in_msg_ctx, env);
         in_msg_ctx = NULL;
         msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
-        AXIS2_OP_CTX_SET_IS_COMPLETE(op_client_impl->op_ctx, env, AXIS2_FALSE);
+         axis2_op_ctx_set_complete(op_client_impl->op_ctx, env, AXIS2_FALSE);
     }
 
     if (!out_msg_ctx)
@@ -296,7 +296,7 @@ axis2_op_client_add_msg_ctx(
     else
     {
         msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = mc;
-        AXIS2_OP_CTX_SET_IS_COMPLETE(op_client_impl->op_ctx, env, AXIS2_TRUE);
+         axis2_op_ctx_set_complete(op_client_impl->op_ctx, env, AXIS2_TRUE);
     }
 
     if (out_msg_ctx && !mc)
@@ -336,7 +336,7 @@ axis2_op_client_add_out_msg_ctx(
 
     op_client_impl = AXIS2_INTF_TO_IMPL(op_client);
 
-    msg_ctx_map = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_client_impl->op_ctx, env);
+    msg_ctx_map =  axis2_op_ctx_get_msg_ctx_map(op_client_impl->op_ctx, env);
 
     msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = mc;
 
@@ -363,7 +363,7 @@ axis2_op_client_get_msg_ctx(
         return NULL;
     }
     */
-    return AXIS2_OP_CTX_GET_MSG_CTX(op_client_impl->op_ctx, env, message_label);
+    return  axis2_op_ctx_get_msg_ctx(op_client_impl->op_ctx, env, message_label);
 }
 
 axis2_status_t AXIS2_CALL
@@ -490,7 +490,7 @@ axis2_op_client_execute(
          axis2_msg_ctx_set_transport_in_desc(msg_ctx, env, transport_in);
     }
 
-    op = AXIS2_OP_CTX_GET_OP(op_client_impl->op_ctx, env);
+    op =  axis2_op_ctx_get_op(op_client_impl->op_ctx, env);
     if (!op)
         return AXIS2_FAILURE;
 
@@ -614,7 +614,7 @@ axis2_op_client_reset(
 
     /*TODO:check
     if (op_client_impl->op_ctx)
-       AXIS2_OP_CTX_FREE(op_client_impl->op_ctx, env);
+        axis2_op_ctx_free(op_client_impl->op_ctx, env);
     */
     op_client_impl->op_ctx = NULL;
 
@@ -693,7 +693,7 @@ axis2_op_client_free(
 
     if (op_client_impl->op_ctx)
     {
-        AXIS2_OP_CTX_FREE(op_client_impl->op_ctx, env);
+         axis2_op_ctx_free(op_client_impl->op_ctx, env);
         op_client_impl->op_ctx = NULL;
     }
 
@@ -764,7 +764,7 @@ axis2_op_client_worker_func(
     /* clean up memory */
     AXIS2_ASYNC_RESULT_FREE(args_list->op_client_impl->async_result, th_env);
     
-    AXIS2_OP_CTX_FREE(op_ctx, th_env);
+     axis2_op_ctx_free(op_ctx, th_env);
         
     th_pool = th_env->thread_pool;
     

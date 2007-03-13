@@ -259,7 +259,7 @@ axis2_engine_send(
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
-        axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+        axis2_op_t *op =  axis2_op_ctx_get_op(op_ctx, env);
         if (op)
         {
             phases = axis2_op_get_out_flow(op, env);
@@ -385,7 +385,7 @@ axis2_engine_receive(
         op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
-            op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+            op =  axis2_op_ctx_get_op(op_ctx, env);
             op_specific_phases = axis2_op_get_in_flow(op, env);
             axis2_engine_resume_invocation_phases(engine, env, op_specific_phases, msg_ctx);
             if ( axis2_msg_ctx_is_paused(msg_ctx, env))
@@ -412,7 +412,7 @@ axis2_engine_receive(
         op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
-            op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+            op =  axis2_op_ctx_get_op(op_ctx, env);
             op_specific_phases = axis2_op_get_in_flow(op, env);
             status = axis2_engine_invoke_phases(engine, env, op_specific_phases, msg_ctx);
             if (status != AXIS2_SUCCESS)
@@ -542,7 +542,7 @@ axis2_engine_receive_fault(
     /* find and execute the fault in flow handlers */
     if (op_ctx)
     {
-        axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+        axis2_op_t *op =  axis2_op_ctx_get_op(op_ctx, env);
         axis2_array_list_t *phases = axis2_op_get_fault_in_flow(op, env);
         if ( axis2_msg_ctx_is_paused(msg_ctx, env))
         {
@@ -976,7 +976,7 @@ axis2_engine_resume_receive(
         op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
         if (op_ctx)
         {
-            axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+            axis2_op_t *op =  axis2_op_ctx_get_op(op_ctx, env);
             if (op)
             {
                 axis2_msg_recv_t *receiver = NULL;
@@ -1008,7 +1008,7 @@ axis2_engine_resume_send(
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
-        axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+        axis2_op_t *op =  axis2_op_ctx_get_op(op_ctx, env);
         if (op)
         {
             phases = axis2_op_get_out_flow(op, env);

@@ -124,7 +124,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     else
     {
         op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-        op_desc = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+        op_desc =  axis2_op_ctx_get_op(op_ctx, env);
 
         style = axis2_op_get_style(op_desc, env);
         if (0 == AXIS2_STRCMP(AXIS2_STYLE_DOC, style))

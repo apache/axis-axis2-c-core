@@ -326,7 +326,7 @@ axis2_conf_ctx_init(
         if (ctx)
         {
             axis2_op_ctx_t *op_ctx = (axis2_op_ctx_t*) ctx;
-            AXIS2_OP_CTX_INIT(op_ctx, env, conf);
+             axis2_op_ctx_init(op_ctx, env, conf);
         }
     }
 
@@ -378,7 +378,7 @@ axis2_conf_ctx_free(
             axis2_hash_this(hi, NULL, NULL, &val);
             op_ctx = (axis2_op_ctx_t *) val;
             if (op_ctx)
-                AXIS2_OP_CTX_FREE(op_ctx, env);
+                 axis2_op_ctx_free(op_ctx, env);
             val = NULL;
             op_ctx = NULL;
 
@@ -550,7 +550,7 @@ axis2_conf_ctx_fill_ctxs(
         return NULL;
     }
 
-    AXIS2_OP_CTX_SET_PARENT(op_ctx, env, svc_ctx);
+     axis2_op_ctx_set_parent(op_ctx, env, svc_ctx);
      axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
      axis2_msg_ctx_set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx);
     return svc_grp_ctx;

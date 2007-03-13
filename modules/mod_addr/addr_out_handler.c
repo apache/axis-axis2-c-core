@@ -164,7 +164,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         if (op_ctx)
         {
             in_msg_ctx =
-                AXIS2_OP_CTX_GET_MSG_CTX(op_ctx, env,
+                 axis2_op_ctx_get_msg_ctx(op_ctx, env,
                         AXIS2_WSDL_MESSAGE_LABEL_IN);
         }
 

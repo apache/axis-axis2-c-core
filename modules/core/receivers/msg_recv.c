@@ -203,7 +203,7 @@ axis2_msg_recv_make_new_svc_obj(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+    svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
     svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
     if (NULL == svc)
     {
@@ -251,7 +251,7 @@ axis2_msg_recv_get_impl_obj(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+    svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
     svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
     if (NULL == svc)
     {
@@ -313,7 +313,7 @@ axis2_msg_recv_delete_svc_obj(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+    svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
     svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
     if (NULL == svc)
     {
@@ -372,14 +372,14 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
         return AXIS2_FAILURE;
     }
     
-    status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, out_msg_ctx);
+    status =  axis2_op_ctx_add_msg_ctx(op_ctx, env, out_msg_ctx);
     if (!status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
          axis2_msg_ctx_free(out_msg_ctx, env);
         return status;
     }
-    status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx);
+    status =  axis2_op_ctx_add_msg_ctx(op_ctx, env, msg_ctx);
     if(!status)
         return status;
 
@@ -391,7 +391,7 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
          axis2_msg_ctx_free(out_msg_ctx, env);
         return status;
     }
-    svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+    svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
     if (!engine)
@@ -474,7 +474,7 @@ axis2_raw_xml_in_out_msg_recv_receive_async(
          axis2_msg_ctx_free(new_msg_ctx, env);
         return AXIS2_FAILURE;
     }
-    AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, new_msg_ctx);
+     axis2_op_ctx_add_msg_ctx(op_ctx, env, new_msg_ctx);
     status = AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_ASYNC(msg_recv, env,
             msg_ctx, new_msg_ctx, callback);
     /* end of code that run in a thread */

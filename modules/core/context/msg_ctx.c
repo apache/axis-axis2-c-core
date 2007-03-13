@@ -400,9 +400,6 @@ axis2_msg_ctx_init(
     return AXIS2_SUCCESS;
 }
 
-/**
- * @return
- */
 axis2_endpoint_ref_t *AXIS2_CALL
 axis2_msg_ctx_get_fault_to(
     const axis2_msg_ctx_t *msg_ctx,
@@ -492,8 +489,8 @@ axis2_msg_ctx_set_msg_id(
 
     if (msg_ctx->msg_info_headers)
     {
-        return axis2_msg_info_headers_set_message_id(
-            msg_ctx->msg_info_headers, env, msg_id);
+        return axis2_msg_info_headers_set_message_id(msg_ctx->msg_info_headers,
+                                                     env, msg_id);
     }
 
     return AXIS2_SUCCESS;
@@ -955,14 +952,14 @@ axis2_msg_ctx_set_op_ctx(
 
         if (msg_ctx->svc_ctx)
         {
-            if (!(AXIS2_OP_CTX_GET_PARENT(msg_ctx->op_ctx, env)))
+            if (!( axis2_op_ctx_get_parent(msg_ctx->op_ctx, env)))
             {
-                AXIS2_OP_CTX_SET_PARENT(msg_ctx->op_ctx, env,
+                 axis2_op_ctx_set_parent(msg_ctx->op_ctx, env,
                         msg_ctx->svc_ctx);
             }
         }
         axis2_msg_ctx_set_parent(msg_ctx, env, op_ctx);
-        axis2_msg_ctx_set_op(msg_ctx, env, AXIS2_OP_CTX_GET_OP(op_ctx, env));
+        axis2_msg_ctx_set_op(msg_ctx, env,  axis2_op_ctx_get_op(op_ctx, env));
     }
     return AXIS2_SUCCESS;
 }
@@ -1063,8 +1060,8 @@ axis2_msg_ctx_set_svc_ctx(
 
         if (msg_ctx->op_ctx)
         {
-            if (!AXIS2_OP_CTX_GET_PARENT(msg_ctx->op_ctx, env))
-                AXIS2_OP_CTX_SET_PARENT(msg_ctx->op_ctx, env, svc_ctx);
+            if (! axis2_op_ctx_get_parent(msg_ctx->op_ctx, env))
+                 axis2_op_ctx_set_parent(msg_ctx->op_ctx, env, svc_ctx);
         }
         axis2_msg_ctx_set_svc(msg_ctx, env, AXIS2_SVC_CTX_GET_SVC(svc_ctx, env));
     }
@@ -1163,7 +1160,7 @@ axis2_msg_ctx_get_property(
 
     if (msg_ctx->op_ctx)
     {
-        ctx = AXIS2_OP_CTX_GET_BASE(msg_ctx->op_ctx, env);
+        ctx = axis2_op_ctx_get_base(msg_ctx->op_ctx, env);
         if (ctx)
         {
             obj =  axis2_ctx_get_property(ctx, env, key, persistent);

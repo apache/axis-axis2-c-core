@@ -1088,7 +1088,7 @@ axis2_http_transport_utils_create_soap_msg(
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx)
     {
-        axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(op_ctx, env);
+        axis2_ctx_t *ctx = axis2_op_ctx_get_base(op_ctx, env);
         if (ctx)
         {
             property =  axis2_ctx_get_property(ctx, env,

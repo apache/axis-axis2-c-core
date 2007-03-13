@@ -229,56 +229,6 @@ extern "C"
     axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
         const axis2_env_t *env);
 
-
-/** Gets base context struct. */
-#define AXIS2_OP_CTX_GET_BASE(op_ctx, env) \
-      axis2_op_ctx_get_base(op_ctx, env)
-
-/** Frees operation context. */
-#define AXIS2_OP_CTX_FREE(op_ctx, env)\
-      axis2_op_ctx_free(op_ctx, env)
-
-/** Initializes operation context. */
-#define AXIS2_OP_CTX_INIT(op_ctx, env, conf) \
-      axis2_op_ctx_init(op_ctx, env, conf)
-
-/** Gets operating related to operation context. */
-#define AXIS2_OP_CTX_GET_OP(op_ctx, env)\
-      axis2_op_ctx_get_op(op_ctx, env)
-
-/** Gets parent which is of type service context. */
-#define AXIS2_OP_CTX_GET_PARENT(op_ctx, env) \
-      axis2_op_ctx_get_parent(op_ctx, env)
-
-/** Adds message context. */
-#define AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx) \
-      axis2_op_ctx_add_msg_ctx(op_ctx, env, msg_ctx)
-
-/** Gets message context with given message ID. */
-#define AXIS2_OP_CTX_GET_MSG_CTX(op_ctx, env, message_id) \
-      axis2_op_ctx_get_msg_ctx(op_ctx, env, message_id)
-
-/** Gets bool value indicating the complete status. */
-#define AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env) \
-      axis2_op_ctx_get_is_complete(op_ctx, env)
-
-/** Sets bool value indicating the complete status. */
-#define AXIS2_OP_CTX_SET_IS_COMPLETE(op_ctx, env, is_complete) \
-      axis2_op_ctx_set_complete(op_ctx, env, is_complete)
-
-/** Cleans up operation context. */
-#define AXIS2_OP_CTX_CLEANUP(op_ctx, env) \
-      axis2_op_ctx_cleanup(op_ctx, env)
-
-/** Sets parent service context. */
-#define AXIS2_OP_CTX_SET_PARENT(op_ctx, env, svc_ctx) \
-      axis2_op_ctx_set_parent(op_ctx, env, svc_ctx)
-
-/** Gets message context map. */
-#define AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env) \
-      axis2_op_ctx_get_msg_ctx_map(op_ctx, env)
-
-/** @} */
 #ifdef __cplusplus
 }
 #endif

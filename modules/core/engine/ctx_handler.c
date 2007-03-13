@@ -128,7 +128,7 @@ axis2_ctx_handler_invoke(
     if (op_ctx)
     {
         axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
-        svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+        svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
         if (svc_ctx)
         {
             axis2_string_t *svc_grp_ctx_id_str = NULL;

@@ -408,7 +408,7 @@ axis2_http_worker_process_request(
         axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;
         axis2_msg_ctx_t **msg_ctx_map = NULL;
 
-        msg_ctx_map = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
+        msg_ctx_map =  axis2_op_ctx_get_msg_ctx_map(op_ctx, env);
 
         out_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT];
         in_msg_ctx = msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN];

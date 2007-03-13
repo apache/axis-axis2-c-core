@@ -216,7 +216,7 @@ axis2_addr_disp_invoke(
                 if (op_ctx)
                 {
                     axis2_op_t *op = NULL;
-                    op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+                    op =  axis2_op_ctx_get_op(op_ctx, env);
                     if (op)
                     {
                         axis2_svc_ctx_t *svc_ctx = NULL;
@@ -224,7 +224,7 @@ axis2_addr_disp_invoke(
                          axis2_msg_ctx_set_op(msg_ctx, env, op);
                         axis2_op_register_op_ctx(op, env, msg_ctx, op_ctx);
 
-                        svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
+                        svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
                         if (svc_ctx)
                         {
                             axis2_svc_t *svc = NULL;
