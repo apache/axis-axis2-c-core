@@ -29,16 +29,8 @@
 #include <oxs_key_mgr.h>
 #include <oxs_axiom.h>
 #include <oxs_x509_cert.h>
-#include <oxs_token_reference.h>
-#include <oxs_token_binary_security_token.h>
 #include <oxs_xml_key_processor.h>
-#include <oxs_token_security_token_reference.h>
-#include <oxs_token_binary_security_token.h>
-#include <oxs_token_embedded.h>
-#include <oxs_token_key_identifier.h>
-#include <oxs_token_x509_data.h>
-#include <oxs_token_x509_certificate.h>
-#include <oxs_token_x509_issuer_serial.h>
+#include <oxs_tokens.h>
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_token_build_security_token_reference(const axis2_env_t *env,

@@ -28,26 +28,16 @@
 #include <oxs_ctx.h>
 #include <oxs_error.h>
 #include <oxs_utility.h>
-#include <oxs_token_encrypted_data.h>
-#include <oxs_token_encrypted_key.h>
-#include <oxs_token_encryption_method.h>
-#include <oxs_token_data_reference.h>
-#include <oxs_token_cipher_data.h>
-#include <oxs_token_cipher_value.h>
-#include <oxs_token_key_info.h>
-#include <oxs_token_key_name.h>
 #include <oxs_key.h>
 #include <oxs_axiom.h>
 #include <oxs_asym_ctx.h>
-#include <oxs_token_reference_list.h>
+#include <oxs_tokens.h>
 #include <axis2_utils.h>
 #include <axis2_array_list.h>
 #include <axis2_key_type.h>
 #include <rampart_token_processor.h>
 #include <oxs_sign_ctx.h>
 #include <oxs_xml_signature.h>
-#include <oxs_token_signature_method.h>
-#include <oxs_token_digest_method.h>
 
 /*Private functions*/
 static axis2_bool_t 

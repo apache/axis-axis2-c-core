@@ -21,13 +21,8 @@
 #include <oxs_ctx.h>
 #include <oxs_error.h>
 #include <oxs_utility.h>
-#include <oxs_token_data_reference.h>
-#include <oxs_token_cipher_data.h>
-#include <oxs_token_cipher_value.h>
-#include <oxs_token_key_info.h>
-#include <oxs_token_key_name.h>
 #include <rampart_constants.h>
-#include <oxs_token_reference_list.h>
+#include <oxs_tokens.h>
 #include <axis2_array_list.h>
 #include <oxs_axiom.h>
 #include <axis2_key_type.h>
@@ -42,9 +37,6 @@
 #include <oxs_xml_signature.h>
 #include <axis2_key_type.h>
 #include <rampart_token_builder.h>
-#include <oxs_token_binary_security_token.h>
-#include <oxs_token_security_token_reference.h>
-#include <oxs_token_reference.h>
 /*Public functions*/
 
 oxs_x509_cert_t *AXIS2_CALL 

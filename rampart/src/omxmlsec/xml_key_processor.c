@@ -27,11 +27,7 @@
 #include <openssl_rsa.h>
 #include <openssl_digest.h>
 #include <oxs_key_mgr.h>
-#include <oxs_token_x509_data.h>
-#include <oxs_token_x509_certificate.h>
-#include <oxs_token_key_info.h>
-#include <oxs_token_x509_issuer_name.h>
-#include <oxs_token_x509_serial_number.h>
+#include <oxs_tokens.h>
 #include <oxs_xml_key_processor.h>
 /*Private functions*/
 
