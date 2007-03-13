@@ -80,7 +80,7 @@ axis2_op_ctx_create(const axis2_env_t *env,
     op_ctx->mutex = axis2_thread_mutex_create(env->allocator,
             AXIS2_THREAD_MUTEX_DEFAULT);
 
-    if (NULL == op_ctx->mutex)
+    if (!op_ctx->mutex)
     {
         axis2_op_ctx_free(op_ctx, env);
         return NULL;
@@ -119,7 +119,6 @@ axis2_op_ctx_get_base(
     const axis2_op_ctx_t *op_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return op_ctx->base;
 }
 
@@ -135,7 +134,6 @@ axis2_op_ctx_free(
     if (op_ctx->base)
     {
          axis2_ctx_free(op_ctx->base, env);
-        op_ctx->base = NULL;
     }
 
     for (i = 0; i < AXIS2_WSDL_MESSAGE_LABEL_MAX; i ++)
@@ -150,11 +148,9 @@ axis2_op_ctx_free(
     if (op_ctx->mutex)
     {
         axis2_thread_mutex_destroy(op_ctx->mutex);
-        op_ctx->mutex = NULL;
     }
 
     AXIS2_FREE(env->allocator, op_ctx);
-    op_ctx = NULL;
 
     return AXIS2_SUCCESS;
 }
@@ -204,7 +200,6 @@ axis2_op_ctx_get_op(
     const axis2_op_ctx_t *op_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return op_ctx->op;
 }
 
@@ -213,7 +208,6 @@ AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
                 const axis2_op_ctx_t *op_ctx,
                 const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return op_ctx->parent;
 }
 
@@ -228,8 +222,6 @@ axis2_op_ctx_add_msg_ctx(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     axis2_thread_mutex_lock(op_ctx->mutex);
-
-
 
     out_msg_ctx = op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_OUT];
     in_msg_ctx = op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_IN];
@@ -260,8 +252,6 @@ axis2_op_ctx_get_msg_ctx(
     const axis2_env_t *env,
     const axis2_wsdl_msg_labels_t message_id)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     axis2_thread_mutex_lock(op_ctx->mutex);
     if (op_ctx->msg_ctx_array)
     {
@@ -279,7 +269,6 @@ axis2_op_ctx_get_is_complete(
     const axis2_op_ctx_t *op_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return op_ctx->is_complete;
 }
 
@@ -289,7 +278,6 @@ axis2_op_ctx_set_complete(
     const axis2_env_t *env,
     axis2_bool_t is_complete)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     op_ctx->is_complete = is_complete;
     return AXIS2_SUCCESS;
 }
@@ -349,7 +337,6 @@ axis2_op_ctx_get_msg_ctx_map(
     const axis2_op_ctx_t *op_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return (axis2_msg_ctx_t **)(op_ctx->msg_ctx_array);
 }
 
