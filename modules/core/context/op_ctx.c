@@ -319,14 +319,14 @@ axis2_op_ctx_set_parent(
     if (op_ctx->parent) /* that is if there is a service context associated */
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
-        conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(op_ctx->parent, env);
+        conf_ctx =  axis2_svc_ctx_get_conf_ctx(op_ctx->parent, env);
         if (conf_ctx)
         {
             op_ctx->op_ctx_map =
                  axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
         }
         op_ctx->svc_qname =
-            (axis2_qname_t *)AXIS2_SVC_GET_QNAME(AXIS2_SVC_CTX_GET_SVC(op_ctx->parent, env), env);
+            (axis2_qname_t *)AXIS2_SVC_GET_QNAME( axis2_svc_ctx_get_svc(op_ctx->parent, env), env);
     }
 
     return AXIS2_SUCCESS;

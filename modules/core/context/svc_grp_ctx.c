@@ -140,7 +140,7 @@ axis2_svc_grp_ctx_free(
             {
                 axis2_svc_ctx_t *svc_ctx = NULL;
                 svc_ctx = (axis2_svc_ctx_t *)val;
-                AXIS2_SVC_CTX_FREE(svc_ctx, env);
+                 axis2_svc_ctx_free(svc_ctx, env);
             }
         }
 

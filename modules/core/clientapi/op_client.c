@@ -428,7 +428,7 @@ axis2_op_client_execute(
         return AXIS2_FAILURE;
     }
 
-    conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env);
+    conf_ctx =  axis2_svc_ctx_get_conf_ctx(op_client_impl->svc_ctx, env);
     msg_ctx = (axis2_msg_ctx_t *)axis2_op_client_get_msg_ctx(op_client, env,
             AXIS2_WSDL_MESSAGE_LABEL_OUT);
 
@@ -473,7 +473,7 @@ axis2_op_client_execute(
     transport_in = AXIS2_OPTIONS_GET_TRANSPORT_IN(op_client_impl->options, env);
     if (!transport_in)
     {
-        axis2_conf_ctx_t *conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env);
+        axis2_conf_ctx_t *conf_ctx =  axis2_svc_ctx_get_conf_ctx(op_client_impl->svc_ctx, env);
         if (conf_ctx)
         {
             axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -533,7 +533,7 @@ axis2_op_client_execute(
             
              axis2_msg_ctx_set_svc_ctx(msg_ctx, env, op_client_impl->svc_ctx);
              axis2_msg_ctx_set_conf_ctx(msg_ctx, env,
-                    AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env));
+                     axis2_svc_ctx_get_conf_ctx(op_client_impl->svc_ctx, env));
              axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_client_impl->op_ctx);
 
             /*Send the SOAP Message and receive a response */

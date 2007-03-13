@@ -347,7 +347,7 @@ axis2_stub_get_svc_ctx_id(
 
     svc_ctx = AXIS2_SVC_CLIENT_GET_SVC_CTX(stub_impl->svc_client,
             env);
-    svc_ctx_id = AXIS2_SVC_CTX_GET_SVC_ID(svc_ctx, env);
+    svc_ctx_id =  axis2_svc_ctx_get_svc_id(svc_ctx, env);
     return svc_ctx_id;
 }
 

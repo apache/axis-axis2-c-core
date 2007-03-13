@@ -231,11 +231,11 @@ axis2_mep_client_prepare_invocation(
     svc = axis2_op_get_parent(op, env);
     if (svc)
     {
-        AXIS2_SVC_CTX_SET_SVC(mep_client_impl->svc_ctx, env, svc);
+         axis2_svc_ctx_set_svc(mep_client_impl->svc_ctx, env, svc);
     }
     else
     {
-        svc = AXIS2_SVC_CTX_GET_SVC(mep_client_impl->svc_ctx, env);
+        svc =  axis2_svc_ctx_get_svc(mep_client_impl->svc_ctx, env);
         if (svc)
         {
             axis2_op_t *temp_op = NULL;
@@ -279,7 +279,7 @@ axis2_mep_client_prepare_soap_envelope(
     if (mep_client_impl->svc_ctx)
     {
         msg_ctx = axis2_msg_ctx_create(env,
-                AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env),
+                 axis2_svc_ctx_get_conf_ctx(mep_client_impl->svc_ctx, env),
                 NULL, NULL);
     }
 
@@ -359,7 +359,7 @@ axis2_mep_client_infer_transport(
 			transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
 		}
 
-        conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
+        conf_ctx =  axis2_svc_ctx_get_conf_ctx(mep_client_impl->svc_ctx, env);
         if (conf_ctx)
         {
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
@@ -418,7 +418,7 @@ axis2_mep_client_engage_module(
 
     if (mep_client_impl->svc_ctx)
     {
-        conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
+        conf_ctx =  axis2_svc_ctx_get_conf_ctx(mep_client_impl->svc_ctx, env);
         if (conf_ctx)
         {
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);

@@ -230,12 +230,12 @@ axis2_addr_disp_invoke(
                             axis2_svc_t *svc = NULL;
                             axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
                              axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
-                            svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
+                            svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
                             if (svc)
                             {
                                  axis2_msg_ctx_set_svc(msg_ctx, env, svc);
                             }
-                            svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
+                            svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
                             if (svc_grp_ctx)
                             {
                                 axis2_string_t *svc_grp_ctx_id_str = 

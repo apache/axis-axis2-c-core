@@ -204,7 +204,7 @@ axis2_msg_recv_make_new_svc_obj(
 
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
-    svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
+    svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
     if (NULL == svc)
     {
         return NULL;
@@ -252,7 +252,7 @@ axis2_msg_recv_get_impl_obj(
 
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
-    svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
+    svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
     if (NULL == svc)
     {
         return NULL;
@@ -314,7 +314,7 @@ axis2_msg_recv_delete_svc_obj(
 
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
-    svc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
+    svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
     if (NULL == svc)
     {
         return AXIS2_FAILURE;
@@ -392,7 +392,7 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
         return status;
     }
     svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
-    conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
+    conf_ctx =  axis2_svc_ctx_get_conf_ctx(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
     if (!engine)
     {

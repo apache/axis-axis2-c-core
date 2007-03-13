@@ -110,7 +110,7 @@ axis2_ctx_handler_invoke(
 
     if (op_ctx && svc_ctx)
     {
-        svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
+        svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
         if (svc_grp_ctx)
         {
             axis2_string_t *svc_grp_ctx_id_str = 
@@ -133,7 +133,7 @@ axis2_ctx_handler_invoke(
         {
             axis2_string_t *svc_grp_ctx_id_str = NULL;
 
-            svc_grp_ctx = AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env);
+            svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
              axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
              axis2_msg_ctx_set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx);
 

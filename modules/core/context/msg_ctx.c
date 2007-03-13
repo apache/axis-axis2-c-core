@@ -1063,7 +1063,7 @@ axis2_msg_ctx_set_svc_ctx(
             if (! axis2_op_ctx_get_parent(msg_ctx->op_ctx, env))
                  axis2_op_ctx_set_parent(msg_ctx->op_ctx, env, svc_ctx);
         }
-        axis2_msg_ctx_set_svc(msg_ctx, env, AXIS2_SVC_CTX_GET_SVC(svc_ctx, env));
+        axis2_msg_ctx_set_svc(msg_ctx, env,  axis2_svc_ctx_get_svc(svc_ctx, env));
     }
 
     return AXIS2_SUCCESS;
@@ -1173,7 +1173,7 @@ axis2_msg_ctx_get_property(
 
     if (msg_ctx->svc_ctx)
     {
-        ctx = AXIS2_SVC_CTX_GET_BASE(msg_ctx->svc_ctx, env);
+        ctx = axis2_svc_ctx_get_base(msg_ctx->svc_ctx, env);
         if (ctx)
         {
             obj =  axis2_ctx_get_property(ctx, env, key, persistent);

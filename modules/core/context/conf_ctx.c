@@ -337,7 +337,7 @@ axis2_conf_ctx_init(
         if (ctx)
         {
             axis2_svc_ctx_t *svc_ctx = (axis2_svc_ctx_t*) ctx;
-            AXIS2_SVC_CTX_INIT(svc_ctx, env, conf);
+             axis2_svc_ctx_init(svc_ctx, env, conf);
         }
     }
 
@@ -397,7 +397,7 @@ axis2_conf_ctx_free(
             axis2_hash_this(hi, NULL, NULL, &val);
             svc_ctx = (axis2_svc_ctx_t *) val;
             if (svc_ctx)
-                AXIS2_SVC_CTX_FREE(svc_ctx, env);
+                 axis2_svc_ctx_free(svc_ctx, env);
 
             val = NULL;
             svc_ctx = NULL;

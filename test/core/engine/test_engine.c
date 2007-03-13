@@ -71,7 +71,7 @@ int   axis2_test_engine_send()
      axis2_msg_ctx_free(msg_ctx, env);
     AXIS2_QNAME_FREE(qname, env);
     AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, env);
-    AXIS2_SVC_CTX_FREE(svc_ctx, env);
+     axis2_svc_ctx_free(svc_ctx, env);
     AXIS2_SVC_FREE(svc, env);
      axis2_op_ctx_free(op_ctx, env);
     axis2_op_free(op, env);

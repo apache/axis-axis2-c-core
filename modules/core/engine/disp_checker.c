@@ -254,7 +254,7 @@ axis2_disp_checker_invoke(
         svc_ctx =  axis2_msg_ctx_get_svc_ctx(msg_ctx, env);
         if (svc_ctx)
         {
-            axis2_svc_t *tsvc = AXIS2_SVC_CTX_GET_SVC(svc_ctx, env);
+            axis2_svc_t *tsvc =  axis2_svc_ctx_get_svc(svc_ctx, env);
             if (tsvc)
                  axis2_msg_ctx_set_svc(msg_ctx, env, tsvc);
         }

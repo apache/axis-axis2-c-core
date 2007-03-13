@@ -684,7 +684,7 @@ axis2_svc_client_send_robust(
     }
 
     msg_ctx = axis2_msg_ctx_create(env,
-            AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+             axis2_svc_ctx_get_conf_ctx(svc_client_impl->svc_ctx, env), NULL, NULL);
     if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, msg_ctx,
             payload))
     {
@@ -733,7 +733,7 @@ axis2_svc_client_fire_and_forget(
     }
 
     msg_ctx = axis2_msg_ctx_create(env,
-            AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+             axis2_svc_ctx_get_conf_ctx(svc_client_impl->svc_ctx, env), NULL, NULL);
     if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, msg_ctx,
             payload))
     {
@@ -861,7 +861,7 @@ axis2_svc_client_send_receive(
 
         /* start of hack to get rid of memory leak */
         msg_ctx = axis2_msg_ctx_create(env,
-                        AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+                         axis2_svc_ctx_get_conf_ctx(svc_client_impl->svc_ctx, env), NULL, NULL);
         AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client_impl->op_client, env, msg_ctx);
          axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
         /* end of hack to get rid of memory leak */
@@ -882,7 +882,7 @@ axis2_svc_client_send_receive(
         axis2_msg_ctx_t *msg_ctx = NULL;
 
         msg_ctx = axis2_msg_ctx_create(env,
-                AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+                 axis2_svc_ctx_get_conf_ctx(svc_client_impl->svc_ctx, env), NULL, NULL);
         if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, msg_ctx,
                 payload))
         {
@@ -954,7 +954,7 @@ axis2_svc_client_send_receive_non_blocking(
     }
 
     msg_ctx = axis2_msg_ctx_create(env,
-            AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+             axis2_svc_ctx_get_conf_ctx(svc_client_impl->svc_ctx, env), NULL, NULL);
     if (!axis2_svc_client_fill_soap_envelope(env, svc_client_impl, msg_ctx, payload))
         return;
 

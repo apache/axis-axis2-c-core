@@ -181,47 +181,6 @@ extern "C"
         const axis2_env_t *env,
         const axis2_qname_t *qname);
 
-/** Gets base which is of type context. */
-#define AXIS2_SVC_CTX_GET_BASE(svc_ctx, env) \
-      axis2_svc_ctx_get_base(svc_ctx, env)
-
-/** Gets parent which is of type service group context. */
-#define AXIS2_SVC_CTX_GET_PARENT(svc_ctx, env) \
-      axis2_svc_ctx_get_parent(svc_ctx, env)
-
-/** Gets parent which is of type service group context.*/
-#define AXIS2_SVC_CTX_SET_PARENT(svc_ctx, env, parent) \
-      axis2_svc_ctx_set_parent(svc_ctx, env, parent)
-
-/** Frees service context. */
-#define AXIS2_SVC_CTX_FREE(svc_ctx, env) \
-      axis2_svc_ctx_free(svc_ctx, env)
-
-/** Initializes service context. */
-#define AXIS2_SVC_CTX_INIT(svc_ctx, env, conf) \
-      axis2_svc_ctx_init(svc_ctx, env, conf)
-
-/** Gets service id of the related service. */
-#define AXIS2_SVC_CTX_GET_SVC_ID(svc_ctx, env) \
-      axis2_svc_ctx_get_svc_id(svc_ctx, env)
-
-/** Gets service that this service context is an instance of. */
-#define AXIS2_SVC_CTX_GET_SVC(svc_ctx, env) \
-      axis2_svc_ctx_get_svc(svc_ctx, env)
-
-/** Sets service that this service context is an instance of. */
-#define AXIS2_SVC_CTX_SET_SVC(svc_ctx, env, svc) \
-        axis2_svc_ctx_set_svc(svc_ctx, env, svc)
-
-/** Gets configuration context. */
-#define AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env) \
-      axis2_svc_ctx_get_conf_ctx(svc_ctx, env)
-
-/** Creates operation context for the named service. */
-#define AXIS2_SVC_CTX_CREATE_OP_CTX(svc_ctx, env, qname) \
-      axis2_svc_ctx_create_op_ctx(svc_ctx, env, qname)
-
-/** @} */
 #ifdef __cplusplus
 }
 #endif
