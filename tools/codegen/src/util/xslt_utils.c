@@ -109,9 +109,9 @@ w2c_xslt_utils_copy_node_tree(
     from_ele = AXIOM_NODE_GET_DATA_ELEMENT ( from, env );
 
     it = AXIOM_ELEMENT_GET_CHILDREN ( from_ele, env, from );
-    AXIOM_CHILDREN_ITERATOR_RESET( it, env);
+    axiom_children_iterator_reset( it, env);
 
-    while ( (from_child = AXIOM_CHILDREN_ITERATOR_NEXT( it, env )) != NULL )
+    while ( (from_child = axiom_children_iterator_next( it, env )) != NULL )
     {
         if ( AXIOM_NODE_GET_NODE_TYPE ( from_child, env ) == AXIOM_TEXT )
         {

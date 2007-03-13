@@ -840,7 +840,7 @@ c14n_apply_on_element(
         while(axiom_children_iterator_has_next(child_itr, ctx->env))
         {
             axiom_node_t *child_node = NULL;
-            child_node = AXIOM_CHILDREN_ITERATOR_NEXT(child_itr, ctx->env);
+            child_node = axiom_children_iterator_next(child_itr, ctx->env);
             
             if (child_node)
             {

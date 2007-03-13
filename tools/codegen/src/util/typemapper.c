@@ -196,7 +196,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
     typemapper_impl-> mapper_name = 
         AXIS2_STRDUP( typemapper_impl-> mapper_name, env);
     it = AXIOM_ELEMENT_GET_CHILDREN(root_ele, env, root);
-    while ( (child = AXIOM_CHILDREN_ITERATOR_NEXT(it, env )) != NULL )
+    while ( (child = axiom_children_iterator_next(it, env )) != NULL )
     {
         if(AXIOM_NODE_GET_NODE_TYPE(child, env) != AXIOM_ELEMENT)
         {
@@ -214,7 +214,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
         it2 = AXIOM_ELEMENT_GET_CHILDREN( child_ele, env, child);
 
         /** here on ward child referes to the childs of child */
-        while ( (child = AXIOM_CHILDREN_ITERATOR_NEXT(it2, env )) != NULL )
+        while ( (child = axiom_children_iterator_next(it2, env )) != NULL )
         {
             if( AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT )
             {
@@ -233,7 +233,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
         qname2str = w2c_string_add_string( qname2str, "|", env);
         qname2str = w2c_string_add_string( qname2str, uri, env);
 
-        while ( (child = AXIOM_CHILDREN_ITERATOR_NEXT(it2, env )) != NULL )
+        while ( (child = axiom_children_iterator_next(it2, env )) != NULL )
         {
             if( AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT )
             {

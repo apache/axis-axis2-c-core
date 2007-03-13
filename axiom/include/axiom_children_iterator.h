@@ -99,14 +99,6 @@ extern "C"
 
     /************ Macros *********************************************/
 
-#define AXIOM_CHILDREN_ITERATOR_HAS_NEXT(iterator, env) \
-        axiom_children_iterator_has_next(iterator, env)
-
-#define AXIOM_CHILDREN_ITERATOR_NEXT(iterator, env) \
-        axiom_children_iterator_next(iterator, env)
-
-#define AXIOM_CHILDREN_ITERATOR_RESET(iterator, env) \
-        axiom_children_iterator_reset(iterator, env)
     /** @} */
 
 #ifdef __cplusplus

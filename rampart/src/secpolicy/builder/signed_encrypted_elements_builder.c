@@ -49,7 +49,7 @@ rp_signed_encrypted_elements_builder_build(
                     axiom_node_t *node = NULL;
                     axiom_element_t *ele = NULL;
                     axis2_char_t *local_name = NULL;
-                    node = AXIOM_CHILDREN_ITERATOR_NEXT(children_iter, env);
+                    node = axiom_children_iterator_next(children_iter, env);
                     if(node)
                     {
                         if(AXIOM_NODE_GET_NODE_TYPE(node, env) == AXIOM_ELEMENT)
