@@ -4005,7 +4005,7 @@ get_wsdl_from_location(
         schema_col = xml_schema_collection_create(env);
         xml_reader = axiom_xml_reader_create_for_file(env, location_str, NULL);
         builder = axiom_stax_builder_create(env, xml_reader);
-        doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, env);
+        doc = axiom_stax_builder_get_document(builder, env);
         doc_el_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(doc, env);
         if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {

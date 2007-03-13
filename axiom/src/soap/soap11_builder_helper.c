@@ -303,7 +303,7 @@ axiom_soap11_builder_helper_process_text(axiom_soap11_builder_helper_t *builder_
 {
     int token = 0;
 
-    token = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(builder_helper->om_builder, env);
+    token = axiom_stax_builder_next_with_token(builder_helper->om_builder, env);
 
     if (token == -1)
         return AXIS2_FAILURE;
@@ -317,7 +317,7 @@ axiom_soap11_builder_helper_process_text(axiom_soap11_builder_helper_t *builder_
             return AXIS2_FAILURE;
 
         }
-        token = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(builder_helper->om_builder, env);
+        token = axiom_stax_builder_next_with_token(builder_helper->om_builder, env);
         if (token == -1)
             return AXIS2_FAILURE;
     }

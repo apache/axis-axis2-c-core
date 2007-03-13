@@ -455,7 +455,7 @@ axiom_node_get_first_child(axiom_node_t *om_node,
     while (!(om_node->first_child) && !(om_node->done)
             && om_node->builder)
     {
-        token = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node->builder, env);
+        token = axiom_stax_builder_next_with_token(om_node->builder, env);
         if (token == -1)
             return NULL;
     }
@@ -477,7 +477,7 @@ axiom_node_get_first_element(axiom_node_t *om_node,
     while (!(om_node->first_child) && !(om_node->done)
             && om_node->builder)
     {
-        token = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node->builder, env);
+        token = axiom_stax_builder_next_with_token(om_node->builder, env);
         if (token == -1)
             return NULL;
     }
@@ -520,7 +520,7 @@ axiom_node_get_next_sibling(axiom_node_t *om_node,
     while (!(om_node->next_sibling) && om_node->parent &&
             om_node->builder && !(AXIOM_NODE_IS_COMPLETE(om_node->parent, env)))
     {
-        token = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node->builder, env);
+        token = axiom_stax_builder_next_with_token(om_node->builder, env);
         if (token == -1)
             return NULL;
     }

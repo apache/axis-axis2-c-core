@@ -262,7 +262,7 @@ axis2_desc_builder_free(
 
     if (desc_builder_impl->builder)
     {
-        AXIOM_STAX_BUILDER_FREE(desc_builder_impl->builder, env);
+        axiom_stax_builder_free(desc_builder_impl->builder, env);
         desc_builder_impl->builder = NULL;
     }
 
@@ -323,7 +323,7 @@ axis2_build_OM(
         get the om document form builder 
         document is the container of om model created using builder
     */
-    document = AXIOM_STAX_BUILDER_GET_DOCUMENT(desc_builder_impl->builder, env);
+    document = axiom_stax_builder_get_document(desc_builder_impl->builder, env);
     /**
      * In description building we don't want defferred building. So build
      * the whole tree at once

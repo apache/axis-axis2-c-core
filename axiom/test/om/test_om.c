@@ -99,7 +99,7 @@ test_om_build(const char *filename)
         document is the container of om model created using builder 
     */
 
-    document = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, environment);
+    document = axiom_stax_builder_get_document(builder, environment);
     /**
         get root element , building starts hear 
      */
@@ -110,7 +110,7 @@ test_om_build(const char *filename)
     if (!node1)
     {
         printf(" root element null ");
-        AXIOM_STAX_BUILDER_FREE(builder, environment);
+        axiom_stax_builder_free(builder, environment);
         return -1;
     }
     if (node1)
@@ -183,7 +183,7 @@ test_om_build(const char *filename)
 
     AXIOM_OUTPUT_FREE(om_output, environment);
 
-    AXIOM_STAX_BUILDER_FREE(builder, environment);
+    axiom_stax_builder_free(builder, environment);
 /*     if (buffer) */
 /*         AXIS2_FREE(environment->allocator, buffer); */
     printf("\nend test_om_build\n");

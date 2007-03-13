@@ -30,17 +30,17 @@ rp_policy_create_from_file(
         AXIOM_XML_READER_FREE(reader, env);
         return NULL;
     }
-    document = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, env);
+    document = axiom_stax_builder_get_document(builder, env);
     if(!document)
     {
-        AXIOM_STAX_BUILDER_FREE(builder, env);
+        axiom_stax_builder_free(builder, env);
         return NULL;
     }
 
     root = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document, env);
     if(!root)
     {
-        AXIOM_STAX_BUILDER_FREE(builder, env);
+        axiom_stax_builder_free(builder, env);
         AXIS2_LOG_INFO(env->log,"[rp][policy_creator] Root element is NULL");
         return NULL;
     }

@@ -340,7 +340,7 @@ axis2_http_transport_utils_process_http_post_request(
         {
             /* We should not be freeing om_builder here as it is done by
                axiom_soap_builder_create in case of error - Samisa*/
-            /*AXIOM_STAX_BUILDER_FREE(om_builder, env);*/
+            /*axiom_stax_builder_free(om_builder, env);*/
             om_builder = NULL;
             xml_reader = NULL;
             return AXIS2_FAILURE;
@@ -350,7 +350,7 @@ axis2_http_transport_utils_process_http_post_request(
                 env);
         if (NULL == soap_envelope)
         {
-            AXIOM_STAX_BUILDER_FREE(om_builder, env);
+            axiom_stax_builder_free(om_builder, env);
             om_builder = NULL;
             xml_reader = NULL;
             AXIOM_SOAP_BUILDER_FREE(soap_builder, env);
@@ -369,7 +369,7 @@ axis2_http_transport_utils_process_http_post_request(
             {
                 /* We should not be freeing om_builder here as it is done by
                    axiom_soap_builder_create in case of error - Samisa*/
-                /*AXIOM_STAX_BUILDER_FREE(om_builder, env);*/
+                /*axiom_stax_builder_free(om_builder, env);*/
                 om_builder = NULL;
                 xml_reader = NULL;
                 return AXIS2_FAILURE;
@@ -412,7 +412,7 @@ axis2_http_transport_utils_process_http_post_request(
             soap_envelope = axiom_soap_envelope_create_default_soap_envelope
                     (env, AXIOM_SOAP11);
             def_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-            om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+            om_doc = axiom_stax_builder_get_document(om_builder, env);
             root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
             AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
              axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
@@ -427,7 +427,7 @@ axis2_http_transport_utils_process_http_post_request(
     }
 
     /* xml_char_set = AXIOM_DOCUMENT_GET_CHARSET_ENC(
-     *               AXIOM_STAX_BUILDER_GET_DOCUMENT(env om_builder),
+     *               axiom_stax_builder_get_document(env om_builder),
      *               env);
      *
      *if(0 != AXIS2_STRCMP(char_set, xml_char_set))
@@ -438,7 +438,7 @@ axis2_http_transport_utils_process_http_post_request(
      *   envelope = NULL;
      *   AXIOM_XML_READER_FREE(xml_reader, env);
      *   xml_reader = NULL;
-     *   AXIOM_STAX_BUILDER_FREE(om_builder, env);
+     *   axiom_stax_builder_free(om_builder, env);
      *   om_builder = NULL;
      *   if( soap_builder)
      *   {
@@ -1181,7 +1181,7 @@ axis2_http_transport_utils_create_soap_msg(
         {
             /* We should not be freeing om_builder here as it is done by
                axiom_soap_builder_create in case of error - Samisa*/
-            /*AXIOM_STAX_BUILDER_FREE(om_builder, env);*/
+            /*axiom_stax_builder_free(om_builder, env);*/
             om_builder = NULL;
             xml_reader = NULL;
             return NULL;
@@ -1235,7 +1235,7 @@ axis2_http_transport_utils_create_soap_msg(
         soap_envelope = axiom_soap_envelope_create_default_soap_envelope
                 (env, AXIOM_SOAP11);
         def_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-        om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+        om_doc = axiom_stax_builder_get_document(om_builder, env);
         root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
         AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
 

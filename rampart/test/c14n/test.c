@@ -82,7 +82,7 @@ int test(int argc, char **argv)
     om_builder = axiom_stax_builder_create(env, xml_reader);
     if (!om_builder) { p_fail(); return 1; }
 
-    doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+    doc = axiom_stax_builder_get_document(om_builder, env);
     AXIOM_DOCUMENT_BUILD_ALL (doc, env); 
     if (!doc) { p_fail(); return 1; }
     axis2_char_t *txt = NULL;
@@ -129,7 +129,7 @@ int test(int argc, char **argv)
 
     if (om_builder)
     {
-        AXIOM_STAX_BUILDER_FREE(om_builder, env);
+        axiom_stax_builder_free(om_builder, env);
         om_builder = NULL;
     }
 

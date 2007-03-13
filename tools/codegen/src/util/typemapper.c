@@ -263,7 +263,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
                         AXIS2_HASH_KEY_STRING, (void*)1);
     }
 
-    AXIOM_STAX_BUILDER_FREE(om_builder, env);
+    axiom_stax_builder_free(om_builder, env);
     axiom_xml_reader_cleanup();
 
    return &(typemapper_impl->typemapper);

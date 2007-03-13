@@ -649,7 +649,7 @@ get_document_from_filename(const axis2_env_t *env,
     axiom_document_t *doc   = NULL;
     reader = axiom_xml_reader_create_for_file(env, filename, NULL);
     om_builder = axiom_stax_builder_create(env, reader);
-    doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+    doc = axiom_stax_builder_get_document(om_builder, env);
     AXIOM_DOCUMENT_BUILD_ALL(doc, env);
     return doc;
 }

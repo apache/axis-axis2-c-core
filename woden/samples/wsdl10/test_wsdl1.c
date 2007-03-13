@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
         }
     }
     om_builder = AXIOM_DOCUMENT_GET_BUILDER(om_doc, env);
-    AXIOM_STAX_BUILDER_FREE(om_builder, env);
+    axiom_stax_builder_free(om_builder, env);
     WODEN_WSDL10_DESC_FREE(desc, env);
     axis2_env_free(env);
     return 0;
@@ -203,7 +203,7 @@ get_root_element_from_filename(
 
     reader = axiom_xml_reader_create_for_file(env, filename, NULL);
     om_builder = axiom_stax_builder_create(env, reader);
-    doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+    doc = axiom_stax_builder_get_document(om_builder, env);
     AXIOM_DOCUMENT_BUILD_ALL(doc, env);
 
     return doc;

@@ -1078,7 +1078,7 @@ axiom_util_new_document(const axis2_env_t *env,
     }
     if (om_builder)
     {
-        doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+        doc = axiom_stax_builder_get_document(om_builder, env);
     }
     else
     {

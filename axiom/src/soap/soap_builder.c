@@ -172,7 +172,7 @@ axiom_soap_builder_free(axiom_soap_builder_t *soap_builder,
     
     if ( soap_builder->om_builder)
     {
-        AXIOM_STAX_BUILDER_FREE(soap_builder->om_builder, env);
+        axiom_stax_builder_free(soap_builder->om_builder, env);
         soap_builder->om_builder = NULL;
     }
     
@@ -224,7 +224,7 @@ axiom_soap_builder_get_soap_envelope
         return NULL;
 
     while (!(soap_builder->soap_envelope) &&
-            !AXIOM_STAX_BUILDER_IS_COMPLETE(soap_builder->om_builder, env))
+            !axiom_stax_builder_is_complete(soap_builder->om_builder, env))
     {
         status = axiom_soap_builder_next(soap_builder, env);
         if (status == AXIS2_FAILURE)
@@ -244,7 +244,7 @@ axiom_soap_builder_get_document
         return NULL;
     if (soap_builder->om_builder)
     {
-        return AXIOM_STAX_BUILDER_GET_DOCUMENT(soap_builder->om_builder, env);
+        return axiom_stax_builder_get_document(soap_builder->om_builder, env);
     }
     else
         return NULL;
@@ -278,7 +278,7 @@ axiom_soap_builder_next(axiom_soap_builder_t *soap_builder,
     {
         soap_builder->last_node_status = AXIS2_BUILDER_LAST_NODE_NOT_NULL;
     }
-    current_event = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(soap_builder->om_builder, env);
+    current_event = axiom_stax_builder_next_with_token(soap_builder->om_builder, env);
     if (current_event == -1)
     {
         soap_builder->done = AXIS2_TRUE;

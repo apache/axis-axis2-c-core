@@ -1207,10 +1207,10 @@ axiom_element_build(axiom_element_t *om_element,
     if (!builder)
         return AXIS2_FAILURE;
     while (!AXIOM_NODE_IS_COMPLETE(om_ele_node, env) &&
-            !AXIOM_STAX_BUILDER_IS_COMPLETE(builder, env))
+            !axiom_stax_builder_is_complete(builder, env))
     {
         void *value  = NULL;
-        value   = AXIOM_STAX_BUILDER_NEXT(builder, env);
+        value = axiom_stax_builder_next(builder, env);
         if (!value)
             return AXIS2_FAILURE;
     }

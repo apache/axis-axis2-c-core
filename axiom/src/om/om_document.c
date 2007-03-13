@@ -96,7 +96,7 @@ axiom_document_build_next(axiom_document_t *document,
 
     if (!(document->root_element))
     {
-        last_child = AXIOM_STAX_BUILDER_NEXT(document->builder, env);
+        last_child = axiom_stax_builder_next(document->builder, env);
         if (last_child)
         {
             document->last_child = last_child;
@@ -108,7 +108,7 @@ axiom_document_build_next(axiom_document_t *document,
             (AXIOM_NODE_IS_COMPLETE(document->root_element, env) == AXIS2_TRUE))
         return NULL;            /* Nothing wrong but done with pulling */
 
-    last_child = AXIOM_STAX_BUILDER_NEXT(document->builder, env);
+    last_child = axiom_stax_builder_next(document->builder, env);
     if (last_child)
         document->last_child = last_child;
     return last_child;

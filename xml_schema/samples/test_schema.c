@@ -38,7 +38,7 @@ xml_schema_test(
 
     om_builder = axiom_stax_builder_create(env, xml_reader);
 
-    om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+    om_doc = axiom_stax_builder_get_document(om_builder, env);
 
     AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     schema_collection = xml_schema_collection_create(env);
@@ -59,7 +59,7 @@ xml_schema_test(
     {
         XML_SCHEMA_COLLECTION_FREE(schema_collection, env);
     }
-    AXIOM_STAX_BUILDER_FREE(om_builder, env);
+    axiom_stax_builder_free(om_builder, env);
     axiom_xml_reader_cleanup();
 
     return AXIS2_SUCCESS;
