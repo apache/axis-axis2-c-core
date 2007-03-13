@@ -123,7 +123,7 @@ axiom_node_free(axiom_node_t *om_node,
     else if (om_node->node_type == AXIOM_PROCESSING_INSTRUCTION)
     {
         if (om_node->data_element)
-            AXIOM_PROCESSING_INSTRUCTION_FREE(
+            axiom_processing_instruction_free(
                 (axiom_processing_instruction_t*)(om_node->data_element), env);
     }
     else if (om_node->node_type == AXIOM_TEXT)
@@ -401,7 +401,7 @@ axiom_node_serialize(axiom_node_t *om_node,
     {
         if (om_node->data_element)
         {
-            status = AXIOM_PROCESSING_INSTRUCTION_SERIALIZE(
+            status = axiom_processing_instruction_serialize(
                         (axiom_processing_instruction_t*)(om_node->data_element),
                         env, om_output);
         }

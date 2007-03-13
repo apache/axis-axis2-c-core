@@ -29,17 +29,18 @@ struct axiom_processing_instruction
 
 AXIS2_EXTERN axiom_processing_instruction_t *AXIS2_CALL
 axiom_processing_instruction_create(const axis2_env_t *env,
-        axiom_node_t * parent,
-        const axis2_char_t * target,
-        const axis2_char_t * value,
-        axiom_node_t ** node)
+    axiom_node_t * parent,
+    const axis2_char_t * target,
+    const axis2_char_t * value,
+    axiom_node_t ** node)
 {
     axiom_processing_instruction_t *processing_instruction = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     if (!node || !target || !value)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM,
+            AXIS2_FAILURE);
         return NULL;
     }
 
@@ -51,8 +52,9 @@ axiom_processing_instruction_create(const axis2_env_t *env,
         return NULL;
     }
 
-    processing_instruction = (axiom_processing_instruction_t *) AXIS2_MALLOC(
-                env->allocator, sizeof(axiom_processing_instruction_t));
+    processing_instruction = 
+        (axiom_processing_instruction_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axiom_processing_instruction_t));
 
     if (!processing_instruction)
     {
@@ -100,7 +102,7 @@ axiom_processing_instruction_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -122,8 +124,8 @@ axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_processing_instruction_set_value(axiom_processing_instruction_t *om_pi,
-        const axis2_env_t *env,
-        const axis2_char_t *value)
+    const axis2_env_t *env,
+    const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
@@ -134,50 +136,49 @@ axiom_processing_instruction_set_value(axiom_processing_instruction_t *om_pi,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_processing_instruction_set_target(axiom_processing_instruction_t *om_pi,
-        const axis2_env_t *env,
-        const axis2_char_t *target)
+    const axis2_env_t *env,
+    const axis2_char_t *target)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, target, AXIS2_FAILURE);
     om_pi->target = (axis2_char_t*)AXIS2_STRDUP(target, env);
     return AXIS2_SUCCESS;
-
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_processing_instruction_get_value(axiom_processing_instruction_t *om_pi,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return om_pi->value;
 }
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_processing_instruction_get_target(axiom_processing_instruction_t *om_pi,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return om_pi->target;
 }
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axiom_processing_instruction_serialize
-(axiom_processing_instruction_t *om_pi,
-        const axis2_env_t *env,
-        axiom_output_t *om_output)
+axiom_processing_instruction_serialize(axiom_processing_instruction_t *om_pi,
+    const axis2_env_t *env,
+    axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     if (om_pi->target && om_pi->value)
+    {
         return axiom_output_write(om_output, env,
-                AXIOM_PROCESSING_INSTRUCTION,
-                2, om_pi->target, om_pi->value);
-
+            AXIOM_PROCESSING_INSTRUCTION,
+            2, om_pi->target, om_pi->value);
+    }
     else if (om_pi->target)
+    {
         return axiom_output_write(om_output, env,
-                AXIOM_PROCESSING_INSTRUCTION,
-                2, om_pi->target, om_pi->value);
+            AXIOM_PROCESSING_INSTRUCTION,
+            2, om_pi->target, om_pi->value);
+    }
     return AXIS2_FAILURE;
 }
 
