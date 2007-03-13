@@ -645,7 +645,7 @@ axiom_element_free(axiom_element_t *om_element,
     }
     if (om_element->children_iter)
     {
-        AXIOM_CHILDREN_ITERATOR_FREE(om_element->children_iter, env);
+        axiom_children_iterator_free(om_element->children_iter, env);
         om_element->children_iter = NULL;
     }
     if (om_element->child_ele_iter)

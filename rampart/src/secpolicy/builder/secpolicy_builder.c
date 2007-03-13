@@ -43,7 +43,7 @@ rp_secpolicy_builder_build(const axis2_env_t *env, axiom_node_t *all)
                 children_iter = AXIOM_ELEMENT_GET_CHILDREN(all_ele, env, all);
                 if(children_iter )
                 {
-                    while(AXIOM_CHILDREN_ITERATOR_HAS_NEXT(children_iter, env))
+                    while(axiom_children_iterator_has_next(children_iter, env))
                     {
                         axiom_node_t *node = NULL;
                         axiom_element_t *ele = NULL;

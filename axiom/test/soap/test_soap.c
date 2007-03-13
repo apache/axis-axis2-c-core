@@ -176,7 +176,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
         children_iter = AXIOM_SOAP_HEADER_EXAMINE_ALL_HEADER_BLOCKS(soap_header, env);
         if (children_iter)
         {
-            while (AXIOM_CHILDREN_ITERATOR_HAS_NEXT(children_iter, env))
+            while (axiom_children_iterator_has_next(children_iter, env))
             {
                 om_node = AXIOM_CHILDREN_ITERATOR_NEXT(children_iter, env);
                 if (om_node)
