@@ -95,7 +95,7 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
     axis2_char_t *digest = NULL; 
     int i = 0;
     
-    printf("oxs_xml_sig_transform_n_digest\n %s", axiom_node_to_string(node, env));
+ /* printf("oxs_xml_sig_transform_n_digest\n %s", axiom_node_to_string(node, env));*/
     if((transforms) && (0 < axis2_array_list_size(transforms, env))){
         oxs_tr_dtype_t output_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;/*This will always be the current dtype*/
         void *tr_output = NULL;

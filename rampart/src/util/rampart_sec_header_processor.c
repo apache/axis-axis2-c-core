@@ -604,6 +604,7 @@ rampart_shp_process_signature(const axis2_env_t *env,
                     AXIS2_LOG_INFO(env->log,"[Rampart][shp]Unknown key reference element inside Security Token Reference");
                     return AXIS2_FAILURE;
                 }
+                cert = oxs_x509_cert_create(env);
                 status = rampart_token_process_security_token_reference(env,str_node,sec_node,cert);
                 if(status!=AXIS2_SUCCESS || !cert)
                 {

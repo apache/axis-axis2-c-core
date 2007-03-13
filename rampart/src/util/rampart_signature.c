@@ -314,7 +314,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
     So lets try signing*/
 
     status = oxs_xml_sig_sign(env, sign_ctx,sec_node, &sig_node);
-    if(status!=AXIS2_FAILURE)
+    if(status!=AXIS2_SUCCESS)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_signature] Message signing failed.");
         return AXIS2_FAILURE;
