@@ -33,62 +33,6 @@
 #include <axis2_key_type.h>
 
 /*Private functions*/
-/*
- * Get encryption parts. Get node list to be encrypted. If nothing is found use the body.
- * If body is specified in the encryption parts encrypt the immediate child of <body>
- **/
-
-/*Private function implementations*/
-/*
-static axis2_status_t  
-rampart_enc_get_nodes_to_encrypt(const axis2_env_t *env,
-    rampart_actions_t *actions,
-    axiom_soap_envelope_t *soap_envelope,
-    axis2_array_list_t *nodes_to_encrypt)
-{
-    axis2_char_t *encryption_parts = NULL;
-
-    encryption_parts =  AXIS2_STRDUP(RAMPART_ACTIONS_GET_ENCRYPTION_PARTS(actions, env), env);
-    if((!encryption_parts) || (0 == AXIS2_STRCMP(encryption_parts, "") || (0 == AXIS2_STRCMP(encryption_parts, "Body")))){
-        axiom_soap_body_t *body = NULL;
-        axiom_node_t *body_node = NULL;
-        axiom_node_t *body_child_node = NULL;
-
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] No encryption parts specified. Using the body as default");
-        body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-        body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-        body_child_node = axiom_node_get_first_element(body_node, env);
-        axis2_array_list_add(nodes_to_encrypt, env, body_child_node);
-        return AXIS2_SUCCESS;
-    }else if(0 == AXIS2_STRCMP(encryption_parts, "Header")){
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] We do not encrypt SOAP headers");
-        return AXIS2_SUCCESS;
-    }else{
-        axis2_array_list_t *str_list =  NULL;
-        axiom_node_t *envelope_node = NULL;
-        axiom_node_t *node = NULL;
-        axis2_char_t *local_name = NULL;
-        int size, i = 0;
-
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] EncryptionParts specified = %s", encryption_parts);
-        envelope_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
-        str_list = axis2_tokenize(env, encryption_parts, ' ');
-        size = axis2_array_list_size(str_list, env);
-        for(i=0 ; i < size ; i++ ){
-            local_name = axis2_array_list_get(str_list, env, i);
-            if(0 == AXIS2_STRCMP(local_name, "Security")){
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] We do not encrypt %s", local_name);
-                continue;
-            }
-            node = oxs_axiom_get_node_by_local_name(env, envelope_node, local_name);
-            axis2_array_list_add(nodes_to_encrypt, env, node);
-        }
-        return AXIS2_SUCCESS;
-    }
-
-    return AXIS2_SUCCESS;
-}
-*/
 
 
 
