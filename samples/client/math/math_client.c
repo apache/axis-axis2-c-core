@@ -106,7 +106,7 @@ int main(int argc, char** argv)
             }
             if (om_output)
             {
-                AXIOM_OUTPUT_FREE(om_output, env);
+                axiom_output_free(om_output, env);
                 om_output = NULL;
             }
             AXIOM_XML_WRITER_FREE(writer, env);
@@ -170,7 +170,7 @@ build_om_programatically(const axis2_env_t *env,
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer);
     if (om_output)
     {
-        AXIOM_OUTPUT_FREE(om_output, env);
+        axiom_output_free(om_output, env);
         om_output = NULL;
     }
 

@@ -1256,7 +1256,7 @@ xml_schema_serialize(
 
         AXIOM_NODE_SERIALIZE(sch_impl->schema_root_node, env, output);
         xml_str = AXIOM_XML_WRITER_GET_XML(writer, env);
-        AXIOM_OUTPUT_FREE(output, env);
+        axiom_output_free(output, env);
 
     }
     return xml_str;

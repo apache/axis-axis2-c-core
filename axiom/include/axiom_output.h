@@ -18,11 +18,6 @@
 #ifndef AXIOM_OUTPUT_H
 #define AXIOM_OUTPUT_H
 
-/**
- * @file axiom_output.h
- * @brief interface of om xml writer
- */
-
 #include <axis2_utils_defines.h>
 #include <axis2_utils.h>
 #include <axis2_env.h>
@@ -41,22 +36,21 @@ extern "C"
      */
 
     /**
-      * \brief output struct
-      * The XML writer interface struct of om
-      */
+     * \brief output struct
+     * The XML writer interface struct of om
+     */
     typedef struct axiom_output axiom_output_t;
     struct axiom_text;
 
     /**
-      * creates AXIOM output struct 
-      * @param env Environment. MUST NOT be NULL, .
-      * @param xml_writer XML writer. 
-      * @return a pointer to newly created output struct.
-      */
-
-    AXIS2_EXTERN axiom_output_t* AXIS2_CALL
+     * Creates AXIOM output struct 
+     * @param env Environment. MUST NOT be NULL, .
+     * @param xml_writer XML writer. 
+     * @return a pointer to newly created output struct.
+     */
+    AXIS2_EXTERN axiom_output_t *AXIS2_CALL
     axiom_output_create(const axis2_env_t *env,
-            axiom_xml_writer_t *xml_writer);
+        axiom_xml_writer_t *xml_writer);
 
     /**
      *  Performs xml writing.
@@ -67,204 +61,156 @@ extern "C"
      *  @param no_of_args number of arguments passed in the variable parameter list
      *  @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
      */
-
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_write(axiom_output_t * om_output,
-            const axis2_env_t *env,
-            axiom_types_t type,
-            int no_of_args, ...);
+        const axis2_env_t *env,
+        axiom_types_t type,
+        int no_of_args, ...);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_write_optimized(axiom_output_t *om_output,
-            const axis2_env_t *env,
-            struct axiom_text *om_text);
+        const axis2_env_t *env,
+        struct axiom_text *om_text);
 
     /**
-    * free om_output 
-    * @param om_output om_output struct
-    * @param env environment
-    * @return status code AXIS2_SUCCESS on success,
-    *  AXIS2_FAILURE otherwise 
-    */
+     * Free om_output 
+     * @param om_output om_output struct
+     * @param env environment
+     * @return status code AXIS2_SUCCESS on success,
+     *  AXIS2_FAILURE otherwise 
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_free(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
-      * If the xml to be serialized is soap 11, this property is set to true
-      * @param om_output pointer to om_output struct
-      * @param env environment must not be NULL
-      * @returns the output soap version 
-      */
+     * If the xml to be serialized is soap 11, this property is set to true
+     * @param om_output pointer to om_output struct
+     * @param env environment must not be NULL
+     * @returns the output soap version 
+     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_output_is_soap11(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
+
     /**
      * @returns true if the ignore_xml_declaration property is true   
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_output_is_ignore_xml_declaration(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
-     * sets the ignore_xml_declaration property is true
+     * Sets the ignore_xml_declaration property is true
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_ignore_xml_declaration(axiom_output_t *om_output,
-            const axis2_env_t *env,
-            axis2_bool_t ignore_xml_dec);
+        const axis2_env_t *env,
+        axis2_bool_t ignore_xml_dec);
+
     /**
-     * sets the soap11  property to true
+     * Sets the soap11  property to true
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_soap11(axiom_output_t *om_output,
-            const axis2_env_t *env,
-            axis2_bool_t soap11);
+        const axis2_env_t *env,
+        axis2_bool_t soap11);
 
     /**
-      * set xml_version property
-      */
+     * Sets xml_version property
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_xml_version(axiom_output_t *om_output,
-            const axis2_env_t *env,
-            axis2_char_t *xml_version);
+        const axis2_env_t *env,
+        axis2_char_t *xml_version);
+
     /**
-      * @returns xml version property
-      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+     * @returns xml version property
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_xml_version(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
+
     /**
-      * set the char set encoding property
-      */
+     * Sets the char set encoding property
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_char_set_encoding(axiom_output_t *om_output,
-            const axis2_env_t *env,
-            axis2_char_t *char_set_encoding);
+        const axis2_env_t *env,
+        axis2_char_t *char_set_encoding);
+
     /**
-      * @returns the char set encoding property
-      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+     * @returns the char set encoding property
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_char_set_encoding(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
+
     /**
-      * set the do optimize property true
-      */
+     * Sets the do optimize property true
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_do_optimize(axiom_output_t *om_output,
-            const axis2_env_t *env,
-            axis2_bool_t optimize);
+        const axis2_env_t *env,
+        axis2_bool_t optimize);
 
     /**
-      * returns the xml writer
-      */
-    AXIS2_EXTERN axiom_xml_writer_t* AXIS2_CALL
+     * Returns the xml writer
+     */
+    AXIS2_EXTERN axiom_xml_writer_t *AXIS2_CALL
     axiom_output_get_xml_writer(axiom_output_t *om_output,
-            const axis2_env_t *env);                                                                                                                                                  /**
-         *  returns the content type
-         *  for soap11 'text/xml' etc..
-         *  @param om_output
-         *  @param env environemnt
-         *  @returns content id
-         */
-    AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
-    axiom_output_get_content_type(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
-      * writes the xml versio encoding 
-      */
+     *  Returns the content type
+     *  for soap11 'text/xml' etc..
+     *  @param om_output
+     *  @param env environemnt
+     *  @returns content id
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axiom_output_get_content_type(axiom_output_t *om_output,
+        const axis2_env_t *env);
+
+    /**
+     * Writes the xml versio encoding 
+     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_write_xml_version_encoding(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
      * @returns whether the output is to be optimized 
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_output_is_optimized(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
-    /** returns the next content id
+    /** 
+     * Returns the next content id
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_next_content_id(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
      * root content id
      */
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_root_content_id(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
 
-    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_mime_boundry(axiom_output_t *om_output,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_byte_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
     axiom_output_flush(axiom_output_t *om_output,
-            const axis2_env_t *env,
-            axis2_byte_t **output_stream,
-            int *output_stream_size);
+        const axis2_env_t *env,
+        axis2_byte_t **output_stream,
+        int *output_stream_size);
 
-
-    /************** Macros ********************************************************/
-
-#define AXIOM_OUTPUT_FREE(output, env) \
-        axiom_output_free(output, env)
-
-#define AXIOM_OUTPUT_IS_SOAP11(output, env) \
-        axiom_output_is_soap11(output, env)
-
-#define AXIOM_OUTPUT_IS_IGNORE_XML_DECLARATION(output, env) \
-        axiom_output_is_ignore_xml_version(output, env)
-
-#define AXIOM_OUTPUT_SET_IGNORE_XML_DECLARATION(output, env, xml_dec) \
-        axiom_output_set_ignore_xml_version(output, env, xml_dec)
-
-#define AXIOM_OUTPUT_SET_SOAP11(output, env, soap11) \
-        axiom_output_set_soap11(output, env, soap11)
-
-#define AXIOM_OUTPUT_SET_XML_VERSION(output, env, xml_version) \
-        axiom_output_set_xml_version(output, env, xml_version)
-
-#define AXIOM_OUTPUT_GET_XML_VERSION(output, env) \
-        axiom_output_get_xml_version(output, env)
-
-#define AXIOM_OUTPUT_SET_CHAR_SET_ENCODING(output, env, char_set) \
-        axiom_output_set_char_set_encoding(output, env, char_set)
-
-#define AXIOM_OUTPUT_GET_CHAR_SET_ENCODING(output, env) \
-        axiom_output_get_char_set_encoding(output, env)
-
-#define AXIOM_OUTPUT_SET_DO_OPTIMIZE(output, env, optimize) \
-        axiom_output_set_do_optimize(output, env, optimize)
-
-#define AXIOM_OUTPUT_GET_XML_WRITER(output, env) \
-        axiom_output_get_xml_writer(output, env)
-
-#define AXIOM_OUTPUT_GET_CONTENT_TYPE(output, env) \
-        axiom_output_get_content_type(output, env)
-
-#define AXIOM_OUTPUT_WRITE_XML_VERSION_ENCODING(output, env) \
-        axiom_output_write_xml_version_encoding(output, env)
-
-#define AXIOM_OUTPUT_IS_OPTIMIZED(output, env) \
-        axiom_output_is_optimized(output, env)
-
-#define AXIOM_OUTPUT_GET_NEXT_CONTENT_ID(om_output, env) \
-        axiom_output_get_next_content_id(om_output, env)
-
-#define AXIOM_OUTPUT_GET_ROOT_CONTENT_ID(om_output, env) \
-        axiom_output_get_root_content_id(om_output, env)
-
-#define AXIOM_OUTPUT_GET_MIME_BOUNDRY(om_output, env) \
-        axiom_output_get_mime_boundry(om_output, env)
-
-#define AXIOM_OUTPUT_FLUSH(om_output, env, output_stream, output_stream_size) \
-        axiom_output_flush(om_output, env, output_stream, output_stream_size)
     /** @} */
 
 #ifdef __cplusplus

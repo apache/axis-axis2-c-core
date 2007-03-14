@@ -736,6 +736,6 @@ axiom_node_to_string(axiom_node_t *om_node,
     {
         xml = axis2_strdup((axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env), env);
     }
-    AXIOM_OUTPUT_FREE(om_output, env);
+    axiom_output_free(om_output, env);
     return xml;
 }

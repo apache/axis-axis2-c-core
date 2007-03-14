@@ -361,7 +361,7 @@ axis2_http_sender_send(
 							AXIS2_FAILURE);
 			return AXIS2_FAILURE;
 		}
-		xml_writer = AXIOM_OUTPUT_GET_XML_WRITER(sender_impl->om_output, env);
+		xml_writer = axiom_output_get_xml_writer(sender_impl->om_output, env);
     
 		char_set_enc_str = axis2_msg_ctx_get_charset_encoding(msg_ctx, env);
 		if (!char_set_enc_str)
@@ -386,7 +386,7 @@ axis2_http_sender_send(
 				}
 			}
 
-			AXIOM_OUTPUT_SET_DO_OPTIMIZE(sender_impl->om_output, env,
+			axiom_output_set_do_optimize(sender_impl->om_output, env,
 										 doing_mtom); 
 			AXIOM_SOAP_ENVELOPE_SERIALIZE(out, env, sender_impl->om_output,
 										  AXIS2_FALSE);
@@ -399,7 +399,7 @@ axis2_http_sender_send(
 
 		if (doing_mtom)
 		{
-			AXIOM_OUTPUT_FLUSH(sender_impl->om_output, env, &output_stream,
+			axiom_output_flush(sender_impl->om_output, env, &output_stream,
 							   &output_stream_size);
 		}
 		else
@@ -481,7 +481,7 @@ axis2_http_sender_send(
 		{
 			if (doing_mtom)
 			{
-				content_type = (axis2_char_t *)AXIOM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output,
+				content_type = (axis2_char_t *)axiom_output_get_content_type(sender_impl->om_output,
 																			 env);
 				if (AXIS2_TRUE !=  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
 				{

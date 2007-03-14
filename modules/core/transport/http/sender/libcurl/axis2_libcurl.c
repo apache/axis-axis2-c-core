@@ -131,7 +131,7 @@ axis2_libcurl_send (
 
 	if (!send_via_get)
 	{
-		xml_writer = AXIOM_OUTPUT_GET_XML_WRITER(om_output, env);
+		xml_writer = axiom_output_get_xml_writer(om_output, env);
 
 		char_set_enc_str = axis2_msg_ctx_get_charset_encoding(msg_ctx, env);
 
@@ -148,7 +148,7 @@ axis2_libcurl_send (
 		{
 			doing_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env);
 
-			AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env,
+			axiom_output_set_do_optimize(om_output, env,
 										 doing_mtom); 
 			AXIOM_SOAP_ENVELOPE_SERIALIZE(out, env, om_output,
 										  AXIS2_FALSE);
@@ -173,9 +173,9 @@ axis2_libcurl_send (
 
 			if (doing_mtom)
 			{
-				AXIOM_OUTPUT_FLUSH(om_output, env, &output_stream,
+				axiom_output_flush(om_output, env, &output_stream,
 								   &output_stream_size);
-				content_type = (axis2_char_t *)AXIOM_OUTPUT_GET_CONTENT_TYPE(om_output,
+				content_type = (axis2_char_t *)axiom_output_get_content_type(om_output,
 																			 env);
 				if (AXIS2_TRUE !=  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
 				{

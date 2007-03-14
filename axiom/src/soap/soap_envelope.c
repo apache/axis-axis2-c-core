@@ -462,7 +462,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
        These should be set to om output before calling the serialize function
        Otherwise default values will be written
     */
-    AXIOM_OUTPUT_WRITE_XML_VERSION_ENCODING(om_output, env);
+    axiom_output_get_content_type(om_output, env);
     return AXIOM_NODE_SERIALIZE(soap_envelope->om_ele_node, env, om_output);
 }
 

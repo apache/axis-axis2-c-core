@@ -190,12 +190,12 @@ axiom_text_serialize(axiom_text_t *om_text,
     }
     else
     {
-        om_output_xml_writer = AXIOM_OUTPUT_GET_XML_WRITER(om_output, env);
+        om_output_xml_writer = axiom_output_get_xml_writer(om_output, env);
         if (om_text->optimize)
         {
             if (!(axiom_text_get_content_id(om_text, env)))
             {
-                axis2_char_t *content_id = AXIOM_OUTPUT_GET_NEXT_CONTENT_ID(om_output, env);
+                axis2_char_t *content_id = axiom_output_get_next_content_id(om_output, env);
                 if (content_id)
                 {
                     om_text->content_id = AXIS2_STRDUP(content_id, env);

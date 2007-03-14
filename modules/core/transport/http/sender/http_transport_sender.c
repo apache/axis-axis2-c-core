@@ -268,7 +268,7 @@ axis2_http_transport_sender_invoke(
         return AXIS2_FAILURE;
     }
 
-    AXIOM_OUTPUT_SET_SOAP11(om_output, env,  axis2_msg_ctx_get_is_soap_11(msg_ctx, env));
+    axiom_output_set_soap11(om_output, env,  axis2_msg_ctx_get_is_soap_11(msg_ctx, env));
     if (epr)
     {
         if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, axis2_endpoint_ref_get_address(epr, env)) == 0 ||
@@ -299,13 +299,13 @@ axis2_http_transport_sender_invoke(
             {
                 AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL, AXIS2_FAILURE);
-                AXIOM_OUTPUT_FREE(om_output, env);
+                axiom_output_free(om_output, env);
                 om_output = NULL;
                 xml_writer = NULL;
                 return AXIS2_FAILURE;
             }
             is_soap11 =  axis2_msg_ctx_get_is_soap_11(msg_ctx, env);
-            /* AXIOM_OUTPUT_SET_SOAP11(om_output, env, is_soap_11);
+            /* axiom_output_set_soap11(om_output, env, is_soap_11);
              */
             AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_info, env,
                     char_set_enc);
@@ -321,8 +321,8 @@ axis2_http_transport_sender_invoke(
             }
             /*
             AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env, 
-                     AXIOM_OUTPUT_GET_CONTENT_TYPE(om_output, env));*/
-            /* AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env,
+                     axiom_output_get_content_type(om_output, env));*/
+            /* axiom_output_set_do_optimize(om_output, env,
              *            AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
              */
 		
@@ -339,7 +339,7 @@ axis2_http_transport_sender_invoke(
                             AXIS2_FAILURE);
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s",
                             AXIS2_ERROR_GET_MESSAGE(env->error));
-                    AXIOM_OUTPUT_FREE(om_output, env);
+                    axiom_output_free(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
@@ -347,7 +347,7 @@ axis2_http_transport_sender_invoke(
                 body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
                 if (NULL == body_node)
                 {
-                    AXIOM_OUTPUT_FREE(om_output, env);
+                    axiom_output_free(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
@@ -356,7 +356,7 @@ axis2_http_transport_sender_invoke(
                 if (NULL == data_out || AXIOM_NODE_GET_NODE_TYPE(data_out, env)
                         != AXIOM_ELEMENT)
                 {
-                    AXIOM_OUTPUT_FREE(om_output, env);
+                    axiom_output_free(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
@@ -367,16 +367,16 @@ axis2_http_transport_sender_invoke(
             }
             else
             {
-                AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env,
+                axiom_output_set_do_optimize(om_output, env,
                         do_mtom);
                 AXIOM_SOAP_ENVELOPE_SERIALIZE(soap_data_out, env, om_output,
                         AXIS2_FALSE);
                 if (do_mtom)
                 {
                     axis2_char_t *content_type = NULL;
-                    AXIOM_OUTPUT_FLUSH(om_output, env, &output_stream,
+                    axiom_output_flush(om_output, env, &output_stream,
                             &buffer_size);
-                    content_type = (axis2_char_t *)AXIOM_OUTPUT_GET_CONTENT_TYPE(
+                    content_type = (axis2_char_t *)axiom_output_get_content_type(
                                 om_output,
                                 env);
                     AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info,
@@ -398,7 +398,7 @@ axis2_http_transport_sender_invoke(
     }
 
 	
-    AXIOM_OUTPUT_FREE(om_output, env);
+    axiom_output_free(om_output, env);
     om_output = NULL;
     xml_writer = NULL;
 

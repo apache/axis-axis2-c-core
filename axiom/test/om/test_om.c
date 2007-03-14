@@ -181,7 +181,7 @@ test_om_build(const char *filename)
     if (buffer)
         printf("%s", buffer);
 
-    AXIOM_OUTPUT_FREE(om_output, environment);
+    axiom_output_free(om_output, environment);
 
     axiom_stax_builder_free(builder, environment);
 /*     if (buffer) */
@@ -283,7 +283,7 @@ test_om_serialize()
     AXIOM_NODE_FREE_TREE(node1, environment);
     output_buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, environment);
 
-    AXIOM_OUTPUT_FREE(om_output, environment);
+    axiom_output_free(om_output, environment);
 	/*    if (output_buffer) */
 	/*     { */
 	/*         printf("%s", output_buffer); */

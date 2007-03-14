@@ -249,7 +249,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
 
     AXIOM_SOAP_ENVELOPE_FREE(soap_envelope, env);
 
-    AXIOM_OUTPUT_FREE(om_output, env);
+    axiom_output_free(om_output, env);
 
     printf(" \n __________ END TEST SOAP BUILD ____________ \n");
 
@@ -330,7 +330,7 @@ int build_soap_programatically(const axis2_env_t *env)
 
     buffer = NULL;
 
-    AXIOM_OUTPUT_FREE(om_output, env);
+    axiom_output_free(om_output, env);
 
     printf("\n __________ END BUILD SOAP PROGRAMATICALLY ____________\n");
 
@@ -363,7 +363,7 @@ int create_soap_fault(const axis2_env_t *env)
     printf("%s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
     AXIOM_SOAP_ENVELOPE_FREE(soap_envelope, env);
-    AXIOM_OUTPUT_FREE(om_output, env);
+    axiom_output_free(om_output, env);
     return 0;
 }
 
