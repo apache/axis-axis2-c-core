@@ -34,10 +34,10 @@ struct axiom_data_source
     axis2_stream_t *stream;
 };
 
-AXIS2_EXTERN axiom_data_source_t* AXIS2_CALL
+AXIS2_EXTERN axiom_data_source_t *AXIS2_CALL
 axiom_data_source_create(const axis2_env_t *env,
-        axiom_node_t * parent,
-        axiom_node_t **node)
+    axiom_node_t * parent,
+    axiom_node_t **node)
 {
 
     axiom_data_source_t *data_source = NULL;
@@ -52,7 +52,7 @@ axiom_data_source_create(const axis2_env_t *env,
         return NULL;
     }
     data_source = (axiom_data_source_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_data_source_t));
+        sizeof(axiom_data_source_t));
     if (!data_source)
     {
         AXIS2_FREE(env->allocator, *node);
@@ -63,7 +63,6 @@ axiom_data_source_create(const axis2_env_t *env,
     axiom_node_set_data_element((*node), env, data_source);
     axiom_node_set_node_type((*node), env, AXIOM_DATA_SOURCE);
     axiom_node_set_complete((*node), env, AXIS2_FALSE);
-
 
     data_source->stream = NULL;
     
@@ -86,14 +85,13 @@ axiom_data_source_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_source_free(axiom_data_source_t * data_source,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (data_source->stream)
     {
         AXIS2_STREAM_FREE(data_source->stream, env);
-        data_source->stream = NULL;
     }
 
     AXIS2_FREE(env->allocator, data_source);
@@ -103,8 +101,8 @@ axiom_data_source_free(axiom_data_source_t * data_source,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_source_serialize(axiom_data_source_t *data_source,
-        const axis2_env_t *env,
-        axiom_output_t *om_output)
+    const axis2_env_t *env,
+    axiom_output_t *om_output)
 {
     int status = AXIS2_SUCCESS;
     axis2_char_t *data = NULL;
@@ -120,15 +118,17 @@ axiom_data_source_serialize(axiom_data_source_t *data_source,
     {
         data[data_len] = '\0';
         status = axiom_output_write(om_output, env,
-                AXIOM_DATA_SOURCE, 1, data);
+            AXIOM_DATA_SOURCE, 1, data);
     }
     return status;
 }
 
-AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
+AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
 axiom_data_source_get_stream(axiom_data_source_t *data_source,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return data_source->stream;
 }
+
+
