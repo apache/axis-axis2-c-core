@@ -20,37 +20,11 @@
 #include <axis2_utils.h>
 #include <axis2_property.h>
 
-/**
-* This struct is to convert OM->ServiceDescrption , where it first create OM
-* from services.xml and then populate service description by using OM
-*/
-typedef struct axis2_svc_builder_impl
+struct axis2_svc_builder
 {
-    axis2_svc_builder_t svc_builder;
-
     axis2_svc_t *svc;
-
-}
-axis2_svc_builder_impl_t;
-
-#define AXIS2_INTF_TO_IMPL(svc_builder) \
-    ((axis2_svc_builder_impl_t *) svc_builder)
-
-/************************* Function prototypes ********************************/
-
-axis2_status_t AXIS2_CALL
-axis2_svc_builder_free(
-    axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env);
-
-/**
- * top most method that is used to populate service from corresponding OM
- */
-axis2_status_t AXIS2_CALL
-axis2_svc_builder_populate_svc(
-    axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env,
-    axiom_node_t *svc_node);
+    struct axis2_desc_builder *desc_builder;
+};
 
 static axis2_array_list_t *
 axis2_svc_builder_process_ops(
@@ -58,169 +32,119 @@ axis2_svc_builder_process_ops(
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *op_itr);
 
-axis2_status_t AXIS2_CALL
-axis2_svc_builder_process_svc_module_conf(
-    axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env,
-    axiom_children_qname_iterator_t *module_confs,
-    axis2_param_container_t *parent,
-    axis2_svc_t *svc);
-
-/**
- * To get the list og modules that is requird to be engage globally
- */
-axis2_status_t AXIS2_CALL
-axis2_svc_builder_process_module_refs(
-    axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env,
-    axiom_children_qname_iterator_t *module_refs);
-
-/************************** End of function prototypes ************************/
-
-axis2_svc_builder_t *AXIS2_CALL
+AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
 axis2_svc_builder_create(
     const axis2_env_t *env)
 {
-    axis2_svc_builder_impl_t *svc_builder_impl = NULL;
+    axis2_svc_builder_t *svc_builder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    svc_builder_impl = (axis2_svc_builder_impl_t *) AXIS2_MALLOC(env->
-            allocator, sizeof(axis2_svc_builder_impl_t));
+    svc_builder = (axis2_svc_builder_t *) AXIS2_MALLOC(env->
+            allocator, sizeof(axis2_svc_builder_t));
 
 
-    if (NULL == svc_builder_impl)
+    if (NULL == svc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    svc_builder_impl->svc_builder.desc_builder = NULL;
-    svc_builder_impl->svc = NULL;
-    svc_builder_impl->svc_builder.ops = NULL;
+    svc_builder->desc_builder = NULL;
+    svc_builder->svc = NULL;
 
-    svc_builder_impl->svc_builder.ops =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_builder_ops_t));
-    if (NULL == svc_builder_impl->svc_builder.ops)
-    {
-        axis2_svc_builder_free(&(svc_builder_impl->svc_builder), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    svc_builder_impl->svc_builder.ops->free = axis2_svc_builder_free;
-    svc_builder_impl->svc_builder.ops->populate_svc =
-        axis2_svc_builder_populate_svc;
-    svc_builder_impl->svc_builder.ops->process_module_refs =
-        axis2_svc_builder_process_module_refs;
-
-    return &(svc_builder_impl->svc_builder);
+    return svc_builder;
 }
 
-axis2_svc_builder_t *AXIS2_CALL
+AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
 axis2_svc_builder_create_with_file_and_dep_engine_and_svc(
     const axis2_env_t *env,
     axis2_char_t *file_name,
     struct axis2_dep_engine *dep_engine,
     axis2_svc_t *svc)
 {
-    axis2_svc_builder_impl_t *builder_impl = NULL;
+    axis2_svc_builder_t *svc_builder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
     AXIS2_PARAM_CHECK(env->error, dep_engine, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
-    builder_impl = (axis2_svc_builder_impl_t *) axis2_svc_builder_create(env);
-    if (NULL == builder_impl)
+    svc_builder = (axis2_svc_builder_t *) axis2_svc_builder_create(env);
+    if (NULL == svc_builder)
     {
         return NULL;
     }
-    builder_impl->svc_builder.desc_builder =
+    svc_builder->desc_builder =
         axis2_desc_builder_create_with_file_and_dep_engine(env, file_name,
                 dep_engine);
-    if (!builder_impl->svc_builder.desc_builder)
+    if (!svc_builder->desc_builder)
     {
-        axis2_svc_builder_free(&(builder_impl->svc_builder), env);
+        axis2_svc_builder_free(svc_builder, env);
         return NULL;
     }
-    builder_impl->svc = svc;
-    return &(builder_impl->svc_builder);
+    svc_builder->svc = svc;
+    return svc_builder;
 }
 
-axis2_svc_builder_t *AXIS2_CALL
+AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
 axis2_svc_builder_create_with_dep_engine_and_svc(
     const axis2_env_t *env,
     axis2_dep_engine_t *dep_engine,
     axis2_svc_t *svc)
 {
-    axis2_svc_builder_impl_t *builder_impl = NULL;
+    axis2_svc_builder_t *svc_builder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, dep_engine, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
-    builder_impl = (axis2_svc_builder_impl_t *) axis2_svc_builder_create(env);
-    if (NULL == builder_impl)
+    svc_builder = (axis2_svc_builder_t *) axis2_svc_builder_create(env);
+    if (NULL == svc_builder)
     {
         return NULL;
     }
-    builder_impl->svc_builder.desc_builder =
+    svc_builder->desc_builder =
         axis2_desc_builder_create_with_dep_engine(env, dep_engine);
-    if (!builder_impl->svc_builder.desc_builder)
+    if (!svc_builder->desc_builder)
     {
-        axis2_svc_builder_free(&(builder_impl->svc_builder), env);
+        axis2_svc_builder_free(svc_builder, env);
         return NULL;
     }
-    builder_impl->svc = svc;
-    return &(builder_impl->svc_builder);
+    svc_builder->svc = svc;
+    return svc_builder;
 }
 
-/***************************Function implementation****************************/
-
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_builder_free(
     axis2_svc_builder_t *svc_builder,
     const axis2_env_t *env)
 {
-    axis2_svc_builder_impl_t *svc_builder_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    svc_builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
 
     if (svc_builder->desc_builder)
     {
         AXIS2_DESC_BUILDER_FREE(svc_builder->desc_builder, env);
-        svc_builder->desc_builder = NULL;
     }
 
-    svc_builder_impl->svc = NULL;
+    svc_builder->svc = NULL;
 
-    if (svc_builder->ops)
+    if (svc_builder)
     {
-        AXIS2_FREE(env->allocator, svc_builder->ops);
-        svc_builder->ops = NULL;
-    }
-
-    if (svc_builder_impl)
-    {
-        AXIS2_FREE(env->allocator, svc_builder_impl);
-        svc_builder_impl = NULL;
+        AXIS2_FREE(env->allocator, svc_builder);
     }
 
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_builder_populate_svc(
     axis2_svc_builder_t *svc_builder,
     const axis2_env_t *env,
     axiom_node_t *svc_node)
 {
-    axis2_svc_builder_impl_t *builder_impl = NULL;
     axiom_element_t *svc_element = NULL;
     axiom_children_qname_iterator_t *itr = NULL;
     axiom_children_qname_iterator_t *operation_itr = NULL;
-    /*axiom_children_qname_iterator_t *module_configs_itr = NULL; */
     axis2_qname_t *qparamst = NULL;
     axis2_qname_t *qdesc = NULL;
     axis2_qname_t *qmodulest = NULL;
@@ -230,7 +154,6 @@ axis2_svc_builder_populate_svc(
     axis2_qname_t *qout_faultflowst = NULL;
     axis2_qname_t *qopst = NULL;
     axis2_qname_t *qattname = NULL;
-    /*axis2_qname_t *qmodule_config = NULL; */
     axis2_status_t status = AXIS2_FAILURE;
     axis2_svc_grp_t *parent = NULL;
     axiom_element_t *desc_element = NULL;
@@ -261,7 +184,6 @@ axis2_svc_builder_populate_svc(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_node, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
 
     svc_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_node, env);
     /* Processing service level paramters */
@@ -275,11 +197,11 @@ axis2_svc_builder_populate_svc(
             svc_node);
     AXIS2_QNAME_FREE(qparamst, env);
     qparamst = NULL;
-    parent = AXIS2_SVC_GET_PARENT(builder_impl->svc, env);
+    parent = AXIS2_SVC_GET_PARENT(svc_builder->svc, env);
 
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder, env,
             itr, 
-            axis2_svc_get_param_container(builder_impl->svc, env), 
+            axis2_svc_get_param_container(svc_builder->svc, env), 
             axis2_svc_grp_get_param_container(parent, env));
     if (AXIS2_SUCCESS != status)
     {
@@ -308,7 +230,7 @@ axis2_svc_builder_populate_svc(
 		  description_text = AXIOM_ELEMENT_GET_TEXT (desc_element, env, desc_node);
 		  if (description_text)
 			 {
-				  AXIS2_SVC_SET_SVC_DESC (builder_impl->svc, env, description_text);
+				  AXIS2_SVC_SET_SVC_DESC (svc_builder->svc, env, description_text);
 			 }
     }
 	 /* --------------------services description end -------------------- */
@@ -316,7 +238,7 @@ axis2_svc_builder_populate_svc(
     qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
     name_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
     svc_name = axiom_attribute_get_value(name_attr, env);
-    AXIS2_SVC_SET_NAME(builder_impl->svc, env, svc_name);
+    AXIS2_SVC_SET_NAME(svc_builder->svc, env, svc_name);
     AXIS2_QNAME_FREE(qattname, env);
 
     /* create dll_desc and set it in a parameter. then set that param in param
@@ -324,7 +246,7 @@ axis2_svc_builder_populate_svc(
      */
     dll_desc = axis2_dll_desc_create(env);
     impl_info_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
-                axis2_svc_get_param_container(builder_impl->svc, env),
+                axis2_svc_get_param_container(svc_builder->svc, env),
                 env,
                 AXIS2_SERVICE_CLASS);
     if (!impl_info_param)
@@ -336,8 +258,9 @@ axis2_svc_builder_populate_svc(
     svc_dll_name =
          axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                 class_name);
-    arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(builder_impl->
-            svc_builder.desc_builder->engine, env);
+    arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
+        axis2_desc_builder_get_dep_engine(svc_builder->desc_builder, env), 
+            env);
     svc_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env);
     timestamp =  axis2_file_get_timestamp(svc_folder, env);
      axis2_dll_desc_set_timestamp(dll_desc, env, timestamp);
@@ -387,8 +310,8 @@ axis2_svc_builder_populate_svc(
         axis2_flow_t *flow = NULL;
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
-                in_flow_element, builder_impl->svc->param_container, in_flow_node);
-        status = AXIS2_SVC_SET_IN_FLOW(builder_impl->svc, env, flow);
+                in_flow_element, svc_builder->svc->param_container, in_flow_node);
+        status = AXIS2_SVC_SET_IN_FLOW(svc_builder->svc, env, flow);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
@@ -406,8 +329,8 @@ axis2_svc_builder_populate_svc(
         axis2_flow_t *flow = NULL;
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
-                out_flow_element, builder_impl->svc->param_container, out_flow_node);
-        status = AXIS2_SVC_SET_OUT_FLOW(builder_impl->svc, env, flow);
+                out_flow_element, svc_builder->svc->param_container, out_flow_node);
+        status = AXIS2_SVC_SET_OUT_FLOW(svc_builder->svc, env, flow);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
@@ -426,9 +349,9 @@ axis2_svc_builder_populate_svc(
         axis2_flow_t *flow = NULL;
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
-                in_faultflow_element, builder_impl->svc->param_container,
+                in_faultflow_element, svc_builder->svc->param_container,
                 in_faultflow_node);
-        status = AXIS2_SVC_SET_FAULT_IN_FLOW(builder_impl->svc, env, flow);
+        status = AXIS2_SVC_SET_FAULT_IN_FLOW(svc_builder->svc, env, flow);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
@@ -446,9 +369,9 @@ axis2_svc_builder_populate_svc(
         axis2_flow_t *flow = NULL;
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
-                out_faultflow_element, builder_impl->svc->param_container,
+                out_faultflow_element, svc_builder->svc->param_container,
                 out_faultflow_node);
-        status = AXIS2_SVC_SET_FAULT_OUT_FLOW(builder_impl->svc, env, flow);
+        status = AXIS2_SVC_SET_FAULT_OUT_FLOW(svc_builder->svc, env, flow);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
@@ -491,10 +414,10 @@ axis2_svc_builder_populate_svc(
                 axis2_char_t *key = NULL;
 
                 key = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(param, env);
-                AXIS2_SVC_ADD_MAPPING(builder_impl->svc, env, key, op_desc);
+                AXIS2_SVC_ADD_MAPPING(svc_builder->svc, env, key, op_desc);
             }
         }
-        AXIS2_SVC_ADD_OP(builder_impl->svc, env, op_desc);
+        AXIS2_SVC_ADD_OP(svc_builder->svc, env, op_desc);
     }
     axis2_array_list_free(ops, env);
     /*
@@ -503,7 +426,7 @@ axis2_svc_builder_populate_svc(
         env, qmodule_config, svc_node);
     AXIS2_QNAME_FREE(qmodule_config, env) ;
     status = axis2_svc_builder_process_svc_module_conf(svc_builder, env, 
-        module_configs_itr, builder_impl->svc->param_container, builder_impl->svc);
+        module_configs_itr, svc_builder->svc->param_container, svc_builder->svc);
     */
     return AXIS2_SUCCESS;
 }
@@ -514,12 +437,10 @@ axis2_svc_builder_process_ops(
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *op_itr)
 {
-    axis2_svc_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *ops = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, op_itr, NULL);
-    builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
 
     ops = axis2_array_list_create(env, 0);
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(op_itr, env))
@@ -542,6 +463,7 @@ axis2_svc_builder_process_ops(
         axiom_element_t *recv_element = NULL;
         axiom_node_t *recv_node = NULL;
         axis2_status_t status = AXIS2_FAILURE;
+        struct axis2_dep_engine *dep_engine = NULL;
 
         op_node = axiom_children_qname_iterator_next(op_itr, env);
         /* getting operation name */
@@ -572,7 +494,7 @@ axis2_svc_builder_process_ops(
         }
         op_name = axiom_attribute_get_value(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
-        /*wsdl_op = AXIS2_SVC_GET_WSDL_OP(builder_impl->svc, env, qopname);*/
+        /*wsdl_op = AXIS2_SVC_GET_WSDL_OP(svc_builder->svc, env, qopname);*/
         /*if (NULL == wsdl_op)
         {*/
             /*if (NULL == mep_url)
@@ -618,7 +540,7 @@ axis2_svc_builder_process_ops(
         status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder,
                 env, params_itr, 
                 axis2_op_get_param_container(op_desc, env), 
-                axis2_svc_get_param_container(builder_impl->svc, env));
+                axis2_svc_get_param_container(svc_builder->svc, env));
         /* To process wsamapping */
         AXIS2_DESC_BUILDER_PROCESS_ACTION_MAPPINGS(svc_builder->desc_builder, 
             env, op_node, op_desc);
@@ -657,10 +579,12 @@ axis2_svc_builder_process_ops(
             return AXIS2_FAILURE;
         }
         /* setting operation phase */
-        if (svc_builder->desc_builder->engine)
+        dep_engine = 
+            axis2_desc_builder_get_dep_engine(svc_builder->desc_builder, env);
+        if (dep_engine)
         {
             axis2_phases_info_t *info = AXIS2_DEP_ENGINE_GET_PHASES_INFO(
-                        svc_builder->desc_builder->engine, env);
+                        dep_engine, env);
             AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_desc);
         }
 
@@ -672,7 +596,7 @@ axis2_svc_builder_process_ops(
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_svc_module_conf(
     axis2_svc_builder_t *svc_builder,
     const axis2_env_t *env,
@@ -706,18 +630,15 @@ axis2_svc_builder_process_svc_module_conf(
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_module_refs(
     axis2_svc_builder_t *svc_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *
     module_refs)
 {
-    axis2_svc_builder_impl_t *builder_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
 
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(module_refs, env))
     {
@@ -740,8 +661,9 @@ axis2_svc_builder_process_module_refs(
 
             ref_name = axiom_attribute_get_value(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
-            if (NULL == AXIS2_DEP_ENGINE_GET_MODULE(svc_builder->desc_builder->
-                    engine, env, qrefname))
+            if (NULL == AXIS2_DEP_ENGINE_GET_MODULE(
+                axis2_desc_builder_get_dep_engine(svc_builder->desc_builder, env), 
+                env, qrefname))
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
                         AXIS2_FAILURE);
@@ -749,11 +671,18 @@ axis2_svc_builder_process_module_refs(
             }
             else
             {
-                AXIS2_SVC_ADD_MODULE_QNAME(builder_impl->svc, env, qrefname);
+                AXIS2_SVC_ADD_MODULE_QNAME(svc_builder->svc, env, qrefname);
             }
             AXIS2_QNAME_FREE(qrefname, env);
         }
     }
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN struct axis2_desc_builder *AXIS2_CALL
+axis2_svc_builder_get_desc_builder(const axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env)
+{
+    return svc_builder->desc_builder;
 }
 

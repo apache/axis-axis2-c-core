@@ -101,7 +101,7 @@ axis2_iis_worker_create(
         return NULL;
     }
     iis_worker_impl->iis_worker.ops = NULL;
-    iis_worker_impl->conf_ctx = build_conf_ctx(env, repo_path);
+    iis_worker_impl->conf_ctx = axis2_build_conf_ctx(env, repo_path);
 
     if (NULL == iis_worker_impl->conf_ctx)
     {

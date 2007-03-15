@@ -45,96 +45,75 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_listener_manager_ops */
-    typedef struct axis2_listener_manager_ops axis2_listener_manager_ops_t;
     /** Type name for struct axis2_listener_manager */
     typedef struct axis2_listener_manager axis2_listener_manager_t;
 
 
     /**
-     * listener manager ops struct.
-     * Encapsulator struct for ops of axis2_listener_manager.
+     * Ensures that the named transport's listener is started. Starts a listener 
+     * if it is not already started. Only one listener would be started for a given 
+     * transport.
+     * @param listener_manager pointer to listener manager struct
+     * @param env pointer to environment struct         
+     * @param transport name of the transport
+     * @param conf_ctx configuration context to pick transport info for the 
+     * named transport
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_listener_manager_ops
-    {
-        /**
-         * Ensures that the named transport's listener is started. Starts a listener 
-         * if it is not already started. Only one listener would be started for a given 
-         * transport.
-         * @param listener_manager pointer to listener manager struct
-         * @param env pointer to environment struct         
-         * @param transport name of the transport
-         * @param conf_ctx configuration context to pick transport info for the 
-         * named transport
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                make_sure_started)(
-                    axis2_listener_manager_t *listener_manager,
-                    const axis2_env_t *env,
-                    const AXIS2_TRANSPORT_ENUMS transport,
-                    axis2_conf_ctx_t *conf_ctx);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_listener_manager_make_sure_started(axis2_listener_manager_t *listener_manager,
+        const axis2_env_t *env,
+        const AXIS2_TRANSPORT_ENUMS transport,
+        axis2_conf_ctx_t *conf_ctx);
 
-       /**
-         * Stops the named listener transport.
-         * @param listener_manager pointer to listener manager struct
-         * @param env pointer to environment struct         
-         * @param transport name of the transport whose listener is to be stopped
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                stop)(
-                    axis2_listener_manager_t *listener_manager,
-                    const axis2_env_t *env,
-                    const AXIS2_TRANSPORT_ENUMS transport);
-        /**
-         * Gets reply to end point reference. The engine will direct the 
-         * response for the message to this reply to address.
-         * @param listener_manager pointer to listener manager struct
-         * @param env pointer to environment struct         
-         * @param svc_name name of the service for which the epr is to be returned
-         * @param transport name of the transport corresponding to the endpoint
-         * @return a pointer to endpoint reference struct representing the reply 
-         * endpoint
-         */
-        axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_reply_to_epr)(
-                const axis2_listener_manager_t *listener_manager,
-                const axis2_env_t *env,
-                const axis2_char_t *svc_name,
-                const AXIS2_TRANSPORT_ENUMS transport);
-
-        /**
-         * Gets the configuration context that holds information on the transports 
-         * managed by the listener manager.
-         * @param listener_manager pointer to listener manager struct
-         * @param env pointer to environment struct         
-         */
-        axis2_conf_ctx_t *(AXIS2_CALL *
-                get_conf_ctx)(
-                    const axis2_listener_manager_t *listener_manager,
-                    const axis2_env_t *env);
-       /**
-         * Frees listener manager struct.
-         * @param listener_manager pointer to listener manager struct
-         * @param env pointer to environment struct         
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_listener_manager_t *listener_manager,
-                    const axis2_env_t *env);
-
-    };
+   /**
+     * Stops the named listener transport.
+     * @param listener_manager pointer to listener manager struct
+     * @param env pointer to environment struct         
+     * @param transport name of the transport whose listener is to be stopped
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_listener_manager_stop(axis2_listener_manager_t *listener_manager,
+        const axis2_env_t *env,
+        const AXIS2_TRANSPORT_ENUMS transport);
 
     /**
-     * listener manager struct.
+     * Gets reply to end point reference. The engine will direct the 
+     * response for the message to this reply to address.
+     * @param listener_manager pointer to listener manager struct
+     * @param env pointer to environment struct         
+     * @param svc_name name of the service for which the epr is to be returned
+     * @param transport name of the transport corresponding to the endpoint
+     * @return a pointer to endpoint reference struct representing the reply 
+     * endpoint
      */
-    struct axis2_listener_manager
-    {
-        /** operations of listener manager */
-        axis2_listener_manager_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL
+    axis2_listener_manager_get_reply_to_epr(const axis2_listener_manager_t *listener_manager,
+        const axis2_env_t *env,
+        const axis2_char_t *svc_name,
+        const AXIS2_TRANSPORT_ENUMS transport);
+
+    /**
+     * Gets the configuration context that holds information on the transports 
+     * managed by the listener manager.
+     * @param listener_manager pointer to listener manager struct
+     * @param env pointer to environment struct         
+     */
+    AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
+    axis2_listener_manager_get_conf_ctx(const axis2_listener_manager_t *listener_manager,
+        const axis2_env_t *env);
+
+   /**
+     * Frees listener manager struct.
+     * @param listener_manager pointer to listener manager struct
+     * @param env pointer to environment struct         
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_listener_manager_free(axis2_listener_manager_t *listener_manager,
+        const axis2_env_t *env);
+
 
     /**
      * Creates a listener manager struct instance.
@@ -143,33 +122,27 @@ extern "C"
      *         or NULL on error with error code set in environment's error
      */
     AXIS2_EXTERN axis2_listener_manager_t *AXIS2_CALL
-    axis2_listener_manager_create(
-        const axis2_env_t *env);
+    axis2_listener_manager_create(const axis2_env_t *env);
 
-/** Makes sure the named transport is started. 
-    @sa axis2_listener_manager_ops#make_sure_started */
+/** Makes sure the named transport is started. */
 #define AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(listener_manager, env, transport, conf_ctx)\
-        ((listener_manager)->ops->make_sure_started(listener_manager, env, transport, conf_ctx))
+        axis2_listener_manager_make_sure_started(listener_manager, env, transport, conf_ctx)
 
-/** Stops the named transport.
-    @sa axis2_listener_manager_ops#stop */
+/** Stops the named transport. */
 #define AXIS2_LISTENER_MANAGER_STOP(listener_manager, env, transport)\
-        ((listener_manager)->ops->stop(listener_manager, env, transport))
+        axis2_listener_manager_stop(listener_manager, env, transport)
 
-/** Gets reply to endpoint reference.
-    @sa axis2_listener_manager_ops#get_reply_to_epr */
+/** Gets reply to endpoint reference. */
 #define AXIS2_LISTNER_MANAGER_GET_REPLY_TO_EPR(listener_manager, env, svc_name, transport) \
-        ((listener_manager)->ops->get_reply_to_epr(listener_manager, env, svc_name, transport))
+        axis2_listener_manager_get_reply_to_epr(listener_manager, env, svc_name, transport)
 
-/** Gets configuration context.
-    @sa axis2_listener_manager_ops#get_conf_ctx */
+/** Gets configuration context. */
 #define AXIS2_LISTNER_MANAGER_GET_CONF_CTX(listener_manager, env) \
-        ((listener_manager)->ops->get_conf_ctx(listener_manager, env))
+        axis2_listener_manager_get_conf_ctx(listener_manager, env)
 
-/** Frees listener manager.
-    @sa axis2_listener_manager_ops#free */
+/** Frees listener manager. */
 #define AXIS2_LISTNER_MANAGER_FREE(listener_manager, env) \
-        ((listener_manager)->ops->free(listener_manager, env))
+        axis2_listener_manager_free(listener_manager, env)
 
     /** @} */
 #ifdef __cplusplus

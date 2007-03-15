@@ -46,105 +46,78 @@ extern "C"
     struct axis2_dep_engine;
     /** Type name for struct axis2_repos_listener */
     typedef struct axis2_repos_listener axis2_repos_listener_t;
-    /** Type name for struct axis2_repos_listener_ops */
-    typedef struct axis2_repos_listener_ops axis2_repos_listener_ops_t;
+
+    /** 
+     * De-allocate memory
+     * @param repos_listener pointer to repos listener
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
+        const axis2_env_t *env);
 
     /**
-     * Repos Listener ops struct
-     * Encapsulator struct for ops of axis2_repos_listener
+     * this method ask serachWS to serch for the folder to caheck
+     * for updates
+     * @param repos_listener pointer to repos listener
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_repos_listener_ops
-    {
-        /** 
-         * De-allocate memory
-         * @param repos_listener pointer to repos listener
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_repos_listener_t *repos_listener,
-                    const axis2_env_t *env);
-
-        /**
-         * this method ask serachWS to serch for the folder to caheck
-         * for updates
-         * @param repos_listener pointer to repos listener
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                check_modules)(
-                    axis2_repos_listener_t *listener,
-                    const axis2_env_t *env);
-
-        /**
-         * this method ask serachWS to serch for the folder to caheck
-         * for updates
-         * @param repos_listener pointer to repos listener
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                check_svcs)(
-                    axis2_repos_listener_t *listener,
-                    const axis2_env_t *env);
-
-        /**
-         * call to update method of WSInfoList object
-         * @param repos_listener pointer to repos listener
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                update)(
-                    axis2_repos_listener_t *listener,
-                    const axis2_env_t *env);
-
-        /**
-         * First it call to initalize method of WSInfoList to initilizat that.
-         * then it call to checkModules to load all the module.jar s
-         * and then it call to update() method inorder to update the Deployment engine and
-         * engine regsitry
-         * @param repos_listener pointer to repos listener
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                init)(
-                    axis2_repos_listener_t *listener,
-                    const axis2_env_t *env);
-
-        /**
-         * this is the actual method that is call from scheduler
-         * @param repos_listener pointer to repos listener
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                start_listen)(
-                    axis2_repos_listener_t *listener,
-                    const axis2_env_t *env);
-
-
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_repos_listener_check_modules(axis2_repos_listener_t *listener,
+        const axis2_env_t *env);
 
     /**
-     * Repos Listener struct 
+     * this method ask serachWS to serch for the folder to caheck
+     * for updates
+     * @param repos_listener pointer to repos listener
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_repos_listener
-    {
-        /** Operations of repos listener */
-        axis2_repos_listener_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_repos_listener_check_svcs(axis2_repos_listener_t *listener,
+        const axis2_env_t *env);
+
+    /**
+     * call to update method of WSInfoList object
+     * @param repos_listener pointer to repos listener
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_repos_listener_update(axis2_repos_listener_t *listener,
+        const axis2_env_t *env);
+
+    /**
+     * First it call to initalize method of WSInfoList to initilizat that.
+     * then it call to checkModules to load all the module.jar s
+     * and then it call to update() method inorder to update the Deployment engine and
+     * engine regsitry
+     * @param repos_listener pointer to repos listener
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_repos_listener_init(axis2_repos_listener_t *listener,
+        const axis2_env_t *env);
+
+    /**
+     * this is the actual method that is call from scheduler
+     * @param repos_listener pointer to repos listener
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_repos_listener_start_listen(axis2_repos_listener_t *listener,
+        const axis2_env_t *env);
 
     /**
      * @param env pointer to environment struct
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_repos_listener_t *AXIS2_CALL
-    axis2_repos_listener_create(
-        const axis2_env_t *env);
+    axis2_repos_listener_create(const axis2_env_t *env);
 
     /**
      * @param env pointer to environment struct
@@ -153,46 +126,33 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_repos_listener_t *AXIS2_CALL
-    axis2_repos_listener_create_with_folder_name_and_dep_engine(
-        const axis2_env_t *env,
+    axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *env,
         axis2_char_t *folder_name,
         struct axis2_dep_engine *dep_engine);
 
-/*************************** Function macros **********************************/
-
-/** Frees the repos listener.
-    @sa axis2_repos_listener_ops#free */
+/** Frees the repos listener. */
 #define AXIS2_REPOS_LISTENER_FREE(repos_listener, env) \
-      ((repos_listener)->ops->free (repos_listener, env))
+      axis2_repos_listener_free (repos_listener, env)
 
-/** Check modules.
-    @sa axis2_repos_listener_ops#check_modules */
+/** Check modules. */
 #define AXIS2_REPOS_LISTENER_CHECK_MODULES(repos_listener, env) \
-      ((repos_listener)->ops->check_modules (repos_listener, env))
+      axis2_repos_listener_check_modules (repos_listener, env)
 
-/** Check the services.
-    @sa axis2_repos_listener_ops#check_svcs */
+/** Check the services. */
 #define AXIS2_REPOS_LISTENER_CHECK_SVCS(repos_listener, env) \
-      ((repos_listener)->ops->check_svcs (repos_listener, env))
+      axis2_repos_listener_check_svcs (repos_listener, env)
 
-/** Update.
-    @sa axis2_repos_listener_ops#update */
+/** Update. */
 #define AXIS2_REPOS_LISTENER_UPDATE(repos_listener, env) \
-      ((repos_listener)->ops->update (repos_listener, env))
+      axis2_repos_listener_update (repos_listener, env)
 
-/** Initialize the repos listener.
-    @sa axis2_repos_listener_ops#init */
+/** Initialize the repos listener. */
 #define AXIS2_REPOS_LISTENER_INIT(repos_listener, env) \
-      ((repos_listener)->ops->init (repos_listener, env))
+      axis2_repos_listener_init (repos_listener, env)
 
-/** Start listen.
-    @sa axis2_repos_listener_ops#start_listen */
+/** Start listen. */
 #define AXIS2_REPOS_LISTENER_START_LISTEN(repos_listener, env) \
-      ((repos_listener)->ops->start_listen (repos_listener, env))
-
-
-
-/*************************** End of function macros ***************************/
+      axis2_repos_listener_start_listen (repos_listener, env)
 
 /** @} */
 

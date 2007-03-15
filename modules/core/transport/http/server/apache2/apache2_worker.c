@@ -84,7 +84,7 @@ axis2_apache2_worker_create(
         return NULL;
     }
     apache2_worker_impl->apache2_worker.ops = NULL;
-    apache2_worker_impl->conf_ctx = build_conf_ctx(env, repo_path);
+    apache2_worker_impl->conf_ctx = axis2_build_conf_ctx(env, repo_path);
 
     if (NULL == apache2_worker_impl->conf_ctx)
     {

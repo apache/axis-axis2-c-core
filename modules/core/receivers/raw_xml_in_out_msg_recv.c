@@ -24,16 +24,12 @@
 #include <axiom_soap_fault.h>
 #include <axiom_soap.h>
 
-/************************* Function prototypes ********************************/
-
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx);
-
-/************************** End of function prototypes ************************/
 
 AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_create(
@@ -55,15 +51,13 @@ axis2_raw_xml_in_out_msg_recv_create(
         AXIS2_MSG_RECV_FREE(msg_recv, env);
         return NULL;
     }
-    msg_recv->ops->invoke_in_out_business_logic_sync =
-        axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync;
-    msg_recv->ops->receive = msg_recv->ops->receive_sync;
+
+    axis2_msg_recv_set_invoke_business_logic(msg_recv, env, 
+        axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync);
     return msg_recv;
 }
 
-/***************************Function implementation****************************/
-
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env,
@@ -220,8 +214,6 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             */
         }
 
-
-
         if (result_node)
         {
             if (0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
@@ -241,7 +233,6 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                             ns, &body_content_node);
                     AXIOM_NODE_ADD_CHILD(body_content_node, env, result_node);
                 }
-
             }
             else
             {
@@ -353,11 +344,6 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     return status;
 }
 
-/**
- * Following block distinguish the exposed part of the dll.
- */
-
-
 AXIS2_EXPORT int axis2_get_instance(
     struct axis2_msg_recv **inst,
     const axis2_env_t *env)
@@ -382,3 +368,5 @@ AXIS2_EXPORT int axis2_remove_instance(
     }
     return status;
 }
+
+

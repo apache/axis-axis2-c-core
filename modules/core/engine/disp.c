@@ -25,10 +25,8 @@
 
 const axis2_char_t *AXIS2_DISP_NAME = "abstract_dispatcher";
 
-typedef struct axis2_disp_impl
+struct axis2_disp
 {
-    /** phase */
-    axis2_disp_t disp;
     /** base class, inherits from handler */
     axis2_handler_t *base;
     /** phase name */
@@ -36,127 +34,67 @@ typedef struct axis2_disp_impl
     /** derived struct */
     void* derived; /* deep copy */
     int derived_type;
-}
-axis2_disp_impl_t;
-
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(disp) ((axis2_disp_impl_t *)disp)
-
-axis2_handler_t *AXIS2_CALL
-axis2_disp_get_base(
-    const axis2_disp_t *disp,
-    const axis2_env_t *env);
-
-axis2_string_t *AXIS2_CALL
-axis2_disp_get_name(
-    const axis2_disp_t *disp,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_disp_set_name(
-    struct axis2_disp *disp,
-    const axis2_env_t *env,
-    axis2_string_t *name);
-
-
-axis2_status_t AXIS2_CALL
-axis2_disp_free(
-    struct axis2_disp *disp,
-    const axis2_env_t *env);
-
-axis2_svc_t *AXIS2_CALL
-axis2_disp_find_svc(
-    axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env);
-
-axis2_op_t *AXIS2_CALL
-axis2_disp_find_op(
-    axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
-    const axis2_svc_t *svc);
-
-
+};
 
 axis2_disp_t *AXIS2_CALL
 axis2_disp_create(
     const axis2_env_t *env,
     const axis2_string_t *name)
 {
-    axis2_disp_impl_t *disp_impl = NULL;
+    axis2_disp_t *disp = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    disp_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_impl_t));
-    if (!disp_impl)
+    disp = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_t));
+    if (!disp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    disp_impl->name = NULL;
-    disp_impl->base = NULL;
+    disp->name = NULL;
+    disp->base = NULL;
 
     if (name)
     {
-        disp_impl->name = axis2_string_clone((axis2_string_t *)name, env);
-        if (!(disp_impl->name))
+        disp->name = axis2_string_clone((axis2_string_t *)name, env);
+        if (!(disp->name))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            axis2_disp_free(&(disp_impl->disp), env);
+            axis2_disp_free(disp, env);
             return NULL;
         }
     }
     else
     {
         /* create default name */
-        disp_impl->name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_DISP_NAME);
-        if (!(disp_impl->name))
+        disp->name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_DISP_NAME);
+        if (!(disp->name))
         {
-            axis2_disp_free(&(disp_impl->disp), env);
+            axis2_disp_free(disp, env);
             return NULL;
         }
     }
 
-    disp_impl->base = axis2_handler_create(env);
-    if (!disp_impl->base)
+    disp->base = axis2_handler_create(env);
+    if (!disp->base)
     {
-        axis2_disp_free(&(disp_impl->disp), env);
+        axis2_disp_free(disp, env);
         return NULL;
     }
 
     /* handler desc of base handler */
-    handler_desc = axis2_handler_desc_create(env, disp_impl->name);
+    handler_desc = axis2_handler_desc_create(env, disp->name);
     if (!handler_desc)
     {
-        axis2_disp_free(&(disp_impl->disp), env);
+        axis2_disp_free(disp, env);
         return NULL;
     }
 
-    AXIS2_HANDLER_INIT(disp_impl->base, env, handler_desc);
+    AXIS2_HANDLER_INIT(disp->base, env, handler_desc);
 
-    /* set the base struct's invoke op */
-    if (disp_impl->base->ops)
-        disp_impl->base->ops->invoke = axis2_disp_invoke;
-
-    /* initialize ops */
-    disp_impl->disp.ops = NULL;
-    disp_impl->disp.ops  = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_ops_t));
-    if (!disp_impl->disp.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_disp_free(&(disp_impl->disp), env);
-        return NULL;
-    }
-
-    disp_impl->disp.ops->get_base = axis2_disp_get_base;
-    disp_impl->disp.ops->get_name = axis2_disp_get_name;
-    disp_impl->disp.ops->set_name = axis2_disp_set_name;
-    disp_impl->disp.ops->free = axis2_disp_free;
-    disp_impl->disp.ops->find_svc = axis2_disp_find_svc;
-    disp_impl->disp.ops->find_op = axis2_disp_find_op;
-
-    return &(disp_impl->disp);
+    return disp;
 }
 
 axis2_handler_t *AXIS2_CALL
@@ -164,8 +102,7 @@ axis2_disp_get_base(
     const axis2_disp_t *disp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(disp)->base;
+    return disp->base;
 }
 
 axis2_string_t *AXIS2_CALL
@@ -173,8 +110,7 @@ axis2_disp_get_name(
     const axis2_disp_t *disp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(disp)->name;
+    return disp->name;
 }
 
 axis2_status_t AXIS2_CALL
@@ -183,22 +119,18 @@ axis2_disp_set_name(
     const axis2_env_t *env,
     axis2_string_t *name)
 {
-    axis2_disp_impl_t *disp_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    disp_impl = AXIS2_INTF_TO_IMPL(disp);
-
-    if (disp_impl->name)
+    if (disp->name)
     {
-        axis2_string_free(disp_impl->name, env);
-        disp_impl->name = NULL;
+        axis2_string_free(disp->name, env);
+        disp->name = NULL;
     }
 
     if (name)
     {
-        disp_impl->name = axis2_string_clone(name, env);
-        if (!(disp_impl->name))
+        disp->name = axis2_string_clone(name, env);
+        if (!(disp->name))
             return AXIS2_FAILURE;
     }
 
@@ -206,7 +138,7 @@ axis2_disp_set_name(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_disp_invoke(
+axis2_disp_find_svc_and_op(
     struct axis2_handler *handler,
     const axis2_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
@@ -225,7 +157,6 @@ axis2_disp_invoke(
         if (axis_service)
         {
              axis2_msg_ctx_set_svc(msg_ctx, env, axis_service);
-            /*TODO Set the Service Group Context to the message Context*/
         }
     }
     op =  axis2_msg_ctx_get_op(msg_ctx, env);
@@ -247,43 +178,15 @@ axis2_disp_free(
     struct axis2_disp *disp,
     const axis2_env_t *env)
 {
-    axis2_disp_impl_t *disp_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    disp_impl = AXIS2_INTF_TO_IMPL(disp);
 
-    if (disp_impl->name)
+    if (disp->name)
     {
-        axis2_string_free(disp_impl->name, env);
-        disp_impl->name = NULL;
+        axis2_string_free(disp->name, env);
     }
 
-    disp_impl->base = NULL;
-
-    if (disp_impl->disp.ops)
-    {
-        AXIS2_FREE(env->allocator, disp_impl->disp.ops);
-        disp_impl->disp.ops = NULL;
-    }
-
-    AXIS2_FREE(env->allocator, disp_impl);
-    disp_impl = NULL;
+    AXIS2_FREE(env->allocator, disp);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_svc_t *AXIS2_CALL
-axis2_disp_find_svc(
-    axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env)
-{
-    return NULL;
-}
-
-axis2_op_t *AXIS2_CALL
-axis2_disp_find_op(
-    axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
-    const axis2_svc_t *svc)
-{
-    return NULL;
-}

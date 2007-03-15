@@ -38,76 +38,52 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_disp_checker_ops  */
-    typedef struct axis2_disp_checker_ops axis2_disp_checker_ops_t;
     /** Type name for struct axis2_disp_checker  */
     typedef struct axis2_disp_checker axis2_disp_checker_t;
 
     /**
-     * dispatcher checker ops struct.
-     * Encapsulator struct for operations of axis2_disp_checker.
+     * Gets the base handler.
+     * @param disp_checker pointer to dispatcher checker
+     * @param env pointer to environment struct
+     * @return pointer to base handler, returns a reference not a cloned copy
      */
-     struct axis2_disp_checker_ops
-    {
-        /**
-         * Gets the base handler.
-         * @param disp_checker pointer to dispatcher checker
-         * @param env pointer to environment struct
-         * @return pointer to base handler, returns a reference not a cloned copy
-         */
-        axis2_handler_t *(AXIS2_CALL *
-                get_base)(
-                    const axis2_disp_checker_t *disp_checker,
-                    const axis2_env_t *env);
+    AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
+    axis2_disp_checker_get_base(const axis2_disp_checker_t *disp_checker,
+        const axis2_env_t *env);
 
-
-        /**
-         * Gets QName.
-         * @param disp_checker pointer to dispatcher checker
-         * @param env pointer to environment struct
-         * @return returns a pointer to the QName, returns a reference not a 
-         * cloned copy
-         */
-        axis2_string_t *(AXIS2_CALL *
-                get_name)(
-                    const axis2_disp_checker_t *disp_checker,
-                    const axis2_env_t *env);
-
-        /**
-         * Sets QName.
-         * @param disp_checker pointer to dispatcher checker
-         * @param env pointer to environment struct
-         * @param name pointer to QName. A clone would be created within the method
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_name)(
-                    axis2_disp_checker_t *disp_checker,
-                    const axis2_env_t *env,
-                    const axis2_string_t *name);
-
-        /**
-         * Frees dispatcher checker.
-         * @param disp_checker pointer to dispatcher checker
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_disp_checker_t *disp_checker,
-                    const axis2_env_t *env);
-
-    };
 
     /**
-     * dispatcher checker struct.
+     * Gets QName.
+     * @param disp_checker pointer to dispatcher checker
+     * @param env pointer to environment struct
+     * @return returns a pointer to the QName, returns a reference not a 
+     * cloned copy
      */
-    struct axis2_disp_checker
-    {
-        /** operations of dispatcher checker */
-        axis2_disp_checker_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    axis2_disp_checker_get_name(const axis2_disp_checker_t *disp_checker,
+        const axis2_env_t *env);
 
+    /**
+     * Sets QName.
+     * @param disp_checker pointer to dispatcher checker
+     * @param env pointer to environment struct
+     * @param name pointer to QName. A clone would be created within the method
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_disp_checker_set_name(axis2_disp_checker_t *disp_checker,
+        const axis2_env_t *env,
+        const axis2_string_t *name);
+
+    /**
+     * Frees dispatcher checker.
+     * @param disp_checker pointer to dispatcher checker
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_disp_checker_free(axis2_disp_checker_t *disp_checker,
+        const axis2_env_t *env);
 
     /**
      * Creates a dispatcher checker struct instance.
@@ -115,29 +91,24 @@ extern "C"
      * @return pointer to newly created dispatcher checker struct
      */
     AXIS2_EXTERN axis2_disp_checker_t *AXIS2_CALL
-    axis2_disp_checker_create(
-        const axis2_env_t *env);
+    axis2_disp_checker_create(const axis2_env_t *env);
     
 
-/** Gets base handler.
-    @sa axis2_disp_checker_ops#get_base */
+/** Gets base handler. */
 #define AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env) \
-      ((disp_checker)->ops->get_base(disp_checker, env))
+      axis2_disp_checker_get_base(disp_checker, env)
 
-/** Gets QName.
-    @sa axis2_disp_checker_ops#get_name */
+/** Gets QName. */
 #define AXIS2_DISP_CHECKER_GET_NAME(disp_checker, env) \
-      ((disp_checker)->ops->get_name(disp_checker, env))
+      axis2_disp_checker_get_name(disp_checker, env)
 
-/** Sets the name.
-    @sa axis2_disp_checker_ops#set_name */
+/** Sets the name. */
 #define AXIS2_DISP_CHECKER_SET_NAME(disp_checker, env, name) \
-      ((disp_checker)->ops->set_name(disp_checker, env, name))
+      axis2_disp_checker_set_name(disp_checker, env, name)
 
-/** Frees dispatcher checker.
-    @sa axis2_disp_checker_ops#free */
+/** Frees dispatcher checker. */
 #define AXIS2_DISP_CHECKER_FREE(disp_checker, env) \
-      ((disp_checker)->ops->free(disp_checker, env))
+      axis2_disp_checker_free(disp_checker, env)
 
 
 /** @} */

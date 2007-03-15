@@ -24,16 +24,8 @@
 #include <axis2_arch_reader.h>
 #include <axis2_core_utils.h>
 
-
-typedef struct axis2_conf_impl axis2_conf_impl_t;
-
-/**
- * @brief Engine configuration struct impl
- * Axis2 Engine Configuration impl
- */
-struct axis2_conf_impl
+struct axis2_conf
 {
-    axis2_conf_t conf;
     axis2_hash_t *svc_grps;
     axis2_transport_in_desc_t *transports_in[AXIS2_TRANSPORT_ENUM_MAX];
     axis2_transport_out_desc_t *transports_out[AXIS2_TRANSPORT_ENUM_MAX];
@@ -41,10 +33,6 @@ struct axis2_conf_impl
      * Field modules
      */
     axis2_array_list_t *engaged_modules;
-    /**
-     * Field modules
-     */
-    /*axis2_hash_t *modules;*/
     /*to store all the available modules (including version)*/
     axis2_hash_t *all_modules;
     /*to store mapping between default version to module name*/
@@ -63,390 +51,100 @@ struct axis2_conf_impl
     axis2_dep_engine_t *dep_engine;
     axis2_array_list_t *handlers;
     axis2_bool_t enable_mtom;
-
     /*This is used in rampart*/    
     axis2_bool_t enable_security;
+    /** configuration parameter container */
+    axis2_param_container_t *param_container;
 };
 
-#define AXIS2_INTF_TO_IMPL(conf) ((axis2_conf_impl_t *)conf)
-
-/***************************** Function prototypes ****************************/
-
-axis2_status_t AXIS2_CALL
-axis2_conf_free(
-    axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_add_svc_grp(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_svc_grp_t *svc_grp);
-
-axis2_svc_grp_t *AXIS2_CALL
-axis2_conf_get_svc_grp(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *svc_grp_name);
-
-axis2_hash_t *AXIS2_CALL
-axis2_conf_get_all_svc_grps(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_add_svc(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_svc_t *svc);
-
-axis2_svc_t *AXIS2_CALL
-axis2_conf_get_svc(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *svc_name);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_remove_svc(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *name);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_add_param(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_param_t *param);
-
-axis2_param_t *AXIS2_CALL
-axis2_conf_get_param(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *name);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_conf_get_all_params(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_bool_t AXIS2_CALL
-axis2_conf_is_param_locked(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *param_name);
-
-/**
- * To split a given svc name into it's svc grp name and svc name.
- * if the svc name is foo:bar then svc grp name is "foo" and
- * svc name is "bar" but if the svc name is only the "foo" we assume
- * svc grp name is "foo" and svc name is "foo"
- * meaning foo := foo:foo
- * @param svc_name
- * @return svc name and grp name
- */
-axis2_status_t
-split_svc_name(
-    const axis2_env_t *env,
-    axis2_char_t *svc_name,
-    axis2_char_t **svc_name_st);
-
-axis2_transport_in_desc_t *AXIS2_CALL
-axis2_conf_get_transport_in(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const AXIS2_TRANSPORT_ENUMS qname);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_add_transport_in(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_transport_in_desc_t *transport,
-    const AXIS2_TRANSPORT_ENUMS trans_enum);
-
-axis2_transport_out_desc_t *AXIS2_CALL
-axis2_conf_get_transport_out(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const AXIS2_TRANSPORT_ENUMS trans_enum);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_add_transport_out(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_transport_out_desc_t *transport,
-    const AXIS2_TRANSPORT_ENUMS trans_enum);
-
-axis2_transport_in_desc_t **AXIS2_CALL
-axis2_conf_get_all_in_transports(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_transport_out_desc_t **AXIS2_CALL
-axis2_conf_get_all_out_transports(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_module_desc_t *AXIS2_CALL
-axis2_conf_get_module(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_qname_t *qname);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_conf_get_all_engaged_modules(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_conf_get_in_phases_upto_and_including_post_dispatch(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_conf_get_out_flow(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_conf_get_in_fault_flow(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_conf_get_out_fault_flow(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_hash_t *AXIS2_CALL
-axis2_conf_get_all_faulty_svcs(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_hash_t *AXIS2_CALL
-axis2_conf_get_all_faulty_modules(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-/*to get all the services in the system */
-axis2_hash_t *AXIS2_CALL
-axis2_conf_get_all_svcs(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_bool_t AXIS2_CALL
-axis2_conf_is_engaged(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_qname_t *module_name);
-
-axis2_phases_info_t *AXIS2_CALL
-axis2_conf_get_phases_info(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_set_phases_info(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_phases_info_t *phases_info);
-axis2_status_t AXIS2_CALL
-
-axis2_conf_add_msg_recv(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *key,
-    axis2_msg_recv_t *msg_recv);
-
-axis2_msg_recv_t *AXIS2_CALL
-axis2_conf_get_msg_recv(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_char_t *key);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_set_out_phases(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_array_list_t *out_phases);
-
-axis2_array_list_t *AXIS2_CALL
-axis2_conf_get_out_phases(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_set_in_fault_phases(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_array_list_t *list);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_set_out_fault_phases(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_array_list_t *list);
-
-axis2_hash_t *AXIS2_CALL
-axis2_conf_get_all_modules(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_add_module(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_module_desc_t *module);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_set_default_dispatchers(
-    axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_set_dispatch_phase(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_phase_t *dispatch);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_set_dep_engine(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_dep_engine_t *dep_engine);
-
-
-axis2_status_t AXIS2_CALL
-axis2_conf_engage_module(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_qname_t *module_ref);
-
-const axis2_char_t *AXIS2_CALL
-axis2_conf_get_repo(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_set_repo(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    axis2_char_t *repo_path);
-
-const axis2_char_t *AXIS2_CALL
-axis2_conf_get_default_module_version(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *module_name);
-
-axis2_module_desc_t *AXIS2_CALL
-axis2_conf_get_default_module(
-    const axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *module_name);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_add_default_module_version(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *module_name,
-    const axis2_char_t *module_version);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_engage_module_with_version(
-    axis2_conf_t *conf,
-    const axis2_env_t *env,
-    const axis2_char_t *module_name,
-    const axis2_char_t *version_id);
-
-axis2_conf_t *AXIS2_CALL
+AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
 axis2_conf_create(
     const axis2_env_t *env)
 {
-    axis2_conf_impl_t *config_impl = NULL;
+    axis2_conf_t *conf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_phase_t *phase = NULL;
     int i = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    config_impl = (axis2_conf_impl_t *) AXIS2_MALLOC(env->allocator
-            , sizeof(axis2_conf_impl_t));
+    conf = (axis2_conf_t *) AXIS2_MALLOC(env->allocator
+            , sizeof(axis2_conf_t));
 
-    if (NULL == config_impl)
+    if (NULL == conf)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->conf.param_container = NULL;
-    config_impl->svc_grps = NULL;
-    config_impl->engaged_modules = NULL;
-    config_impl->in_phases_upto_and_including_post_dispatch = NULL;
-    config_impl->out_phases = NULL;
-    config_impl->in_fault_phases = NULL;
-    config_impl->out_fault_phases = NULL;
-    config_impl->phases_info = NULL;
-    config_impl->all_svcs = NULL;
-    config_impl->msg_recvs = NULL;
-    config_impl->faulty_svcs = NULL;
-    config_impl->faulty_modules = NULL;
-    config_impl->axis2_repo = NULL;
-    config_impl->dep_engine = NULL;
-    config_impl->all_modules = NULL;
-    config_impl->name_to_version_map = NULL;
-    config_impl->handlers = NULL;
-    config_impl->conf.ops = NULL;
-    config_impl->enable_mtom = AXIS2_FALSE;
-    config_impl->enable_security = AXIS2_FALSE;
+    conf->param_container = NULL;
+    conf->svc_grps = NULL;
+    conf->engaged_modules = NULL;
+    conf->in_phases_upto_and_including_post_dispatch = NULL;
+    conf->out_phases = NULL;
+    conf->in_fault_phases = NULL;
+    conf->out_fault_phases = NULL;
+    conf->phases_info = NULL;
+    conf->all_svcs = NULL;
+    conf->msg_recvs = NULL;
+    conf->faulty_svcs = NULL;
+    conf->faulty_modules = NULL;
+    conf->axis2_repo = NULL;
+    conf->dep_engine = NULL;
+    conf->all_modules = NULL;
+    conf->name_to_version_map = NULL;
+    conf->handlers = NULL;
+    conf->enable_mtom = AXIS2_FALSE;
+    conf->enable_security = AXIS2_FALSE;
 
-    config_impl->conf.param_container = (axis2_param_container_t *)
+    conf->param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
-    if (NULL == config_impl->conf.param_container)
+    if (NULL == conf->param_container)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->svc_grps = axis2_hash_make(env);
-    if (NULL == config_impl->svc_grps)
+    conf->svc_grps = axis2_hash_make(env);
+    if (NULL == conf->svc_grps)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        config_impl->transports_in[i] = NULL;
+        conf->transports_in[i] = NULL;
     }
 
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        config_impl->transports_out[i] = NULL;
+        conf->transports_out[i] = NULL;
     }
 
-    config_impl->engaged_modules = axis2_array_list_create(env, 0);
-    if (NULL == config_impl->engaged_modules)
+    conf->engaged_modules = axis2_array_list_create(env, 0);
+    if (NULL == conf->engaged_modules)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->handlers = axis2_array_list_create(env, 0);
-    if (NULL == config_impl->handlers)
+    conf->handlers = axis2_array_list_create(env, 0);
+    if (NULL == conf->handlers)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->in_phases_upto_and_including_post_dispatch =
+    conf->in_phases_upto_and_including_post_dispatch =
         axis2_array_list_create(env, 0);
-    if (NULL == config_impl->in_phases_upto_and_including_post_dispatch)
+    if (NULL == conf->in_phases_upto_and_including_post_dispatch)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -457,7 +155,7 @@ axis2_conf_create(
         phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORT_IN);
         if (NULL == phase)
         {
-            axis2_conf_free(&(config_impl->conf), env);
+            axis2_conf_free(conf, env);
             return NULL;
         }
         /*Incase of using security we need to find the service/operation parameters before the dispatch phase.
@@ -469,15 +167,15 @@ axis2_conf_create(
                 handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
                 AXIS2_DISP_FREE(uri_dispatch, env);
                 AXIS2_PHASE_ADD_HANDLER_AT(phase, env, 0, handler);
-                axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+                axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
                 handler = NULL;
         }
 
-        status = axis2_array_list_add(config_impl->
+        status = axis2_array_list_add(conf->
                 in_phases_upto_and_including_post_dispatch, env, phase);
         if (AXIS2_FAILURE == status)
         {
-            axis2_conf_free(&(config_impl->conf), env);
+            axis2_conf_free(conf, env);
             AXIS2_PHASE_FREE(phase, env);
             return NULL;
 
@@ -485,190 +183,91 @@ axis2_conf_create(
         phase = axis2_phase_create(env, AXIS2_PHASE_PRE_DISPATCH);
         if (NULL == phase)
         {
-            axis2_conf_free(&(config_impl->conf), env);
+            axis2_conf_free(conf, env);
             return NULL;
         }
-        status = axis2_array_list_add(config_impl->
+        status = axis2_array_list_add(conf->
                 in_phases_upto_and_including_post_dispatch, env, phase);
         if (AXIS2_FAILURE == status)
         {
-            axis2_conf_free(&(config_impl->conf), env);
+            axis2_conf_free(conf, env);
             AXIS2_PHASE_FREE(phase, env);
             return NULL;
         }
     }
 
 
-    config_impl->all_svcs = axis2_hash_make(env);
-    if (NULL == config_impl->all_svcs)
+    conf->all_svcs = axis2_hash_make(env);
+    if (NULL == conf->all_svcs)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->msg_recvs = axis2_hash_make(env);
-    if (NULL == config_impl->msg_recvs)
+    conf->msg_recvs = axis2_hash_make(env);
+    if (NULL == conf->msg_recvs)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->faulty_svcs = axis2_hash_make(env);
-    if (NULL == config_impl->faulty_svcs)
+    conf->faulty_svcs = axis2_hash_make(env);
+    if (NULL == conf->faulty_svcs)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->faulty_modules = axis2_hash_make(env);
-    if (NULL == config_impl->faulty_modules)
+    conf->faulty_modules = axis2_hash_make(env);
+    if (NULL == conf->faulty_modules)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->all_modules = axis2_hash_make(env);
-    if (NULL == config_impl->all_modules)
+    conf->all_modules = axis2_hash_make(env);
+    if (NULL == conf->all_modules)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->name_to_version_map = axis2_hash_make(env);
-    if (NULL == config_impl->name_to_version_map)
+    conf->name_to_version_map = axis2_hash_make(env);
+    if (NULL == conf->name_to_version_map)
     {
-        axis2_conf_free(&(config_impl->conf), env);
+        axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    config_impl->conf.ops = AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_conf_ops_t));
-    if (NULL == config_impl->conf.ops)
-    {
-        axis2_conf_free(&(config_impl->conf), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    config_impl->conf.ops->free = axis2_conf_free;
-    config_impl->conf.ops->add_svc_grp =
-        axis2_conf_add_svc_grp;
-    config_impl->conf.ops->get_svc_grp =
-        axis2_conf_get_svc_grp;
-    config_impl->conf.ops->get_all_svc_grps =
-        axis2_conf_get_all_svc_grps;
-    config_impl->conf.ops->add_svc = axis2_conf_add_svc;
-    config_impl->conf.ops->get_svc = axis2_conf_get_svc;
-    config_impl->conf.ops->remove_svc =
-        axis2_conf_remove_svc;
-    config_impl->conf.ops->add_param =
-        axis2_conf_add_param;
-    config_impl->conf.ops->get_param =
-        axis2_conf_get_param;
-    config_impl->conf.ops->get_all_params =
-        axis2_conf_get_all_params;
-    config_impl->conf.ops->is_param_locked =
-        axis2_conf_is_param_locked;
-    config_impl->conf.ops->get_transport_in =
-        axis2_conf_get_transport_in;
-    config_impl->conf.ops->add_transport_in =
-        axis2_conf_add_transport_in;
-    config_impl->conf.ops->get_transport_out =
-        axis2_conf_get_transport_out;
-    config_impl->conf.ops->add_transport_out =
-        axis2_conf_add_transport_out;
-    config_impl->conf.ops->get_all_in_transports =
-        axis2_conf_get_all_in_transports;
-    config_impl->conf.ops->get_all_out_transports =
-        axis2_conf_get_all_out_transports;
-    config_impl->conf.ops->get_module =
-        axis2_conf_get_module;
-    config_impl->conf.ops->get_all_engaged_modules =
-        axis2_conf_get_all_engaged_modules;
-    config_impl->conf.ops->get_in_phases_upto_and_including_post_dispatch =
-        axis2_conf_get_in_phases_upto_and_including_post_dispatch;
-    config_impl->conf.ops->get_out_flow =
-        axis2_conf_get_out_flow;
-    config_impl->conf.ops->get_in_fault_flow =
-        axis2_conf_get_in_fault_flow;
-    config_impl->conf.ops->get_out_fault_flow =
-        axis2_conf_get_out_fault_flow;
-    config_impl->conf.ops->get_all_faulty_svcs =
-        axis2_conf_get_all_faulty_svcs;
-    config_impl->conf.ops->get_all_faulty_modules =
-        axis2_conf_get_all_faulty_modules;
-    config_impl->conf.ops->get_all_svcs =
-        axis2_conf_get_all_svcs;
-    config_impl->conf.ops->is_engaged =
-        axis2_conf_is_engaged;
-    config_impl->conf.ops->get_phases_info =
-        axis2_conf_get_phases_info;
-    config_impl->conf.ops->set_phases_info =
-        axis2_conf_set_phases_info;
-    config_impl->conf.ops->add_msg_recv =
-        axis2_conf_add_msg_recv;
-    config_impl->conf.ops->get_msg_recv =
-        axis2_conf_get_msg_recv;
-    config_impl->conf.ops->set_out_phases =
-        axis2_conf_set_out_phases;
-    config_impl->conf.ops->get_out_phases =
-        axis2_conf_get_out_phases;
-    config_impl->conf.ops->set_in_fault_phases =
-        axis2_conf_set_in_fault_phases;
-    config_impl->conf.ops->set_out_fault_phases =
-        axis2_conf_set_out_fault_phases;
-    config_impl->conf.ops->get_all_modules =
-        axis2_conf_get_all_modules;
-    config_impl->conf.ops->add_module =
-        axis2_conf_add_module;
-    config_impl->conf.ops->set_default_dispatchers =
-        axis2_conf_set_default_dispatchers;
-    config_impl->conf.ops->set_dispatch_phase = axis2_conf_set_dispatch_phase;
-    config_impl->conf.ops->get_repo = axis2_conf_get_repo;
-    config_impl->conf.ops->set_repo = axis2_conf_set_repo;
-    config_impl->conf.ops->engage_module = axis2_conf_engage_module;
-    config_impl->conf.ops->set_dep_engine = axis2_conf_set_dep_engine;
-
-    config_impl->conf.ops->get_default_module_version =
-        axis2_conf_get_default_module_version;
-    config_impl->conf.ops->get_default_module = axis2_conf_get_default_module;
-    config_impl->conf.ops->add_default_module_version =
-        axis2_conf_add_default_module_version;
-    config_impl->conf.ops->engage_module_with_version =
-        axis2_conf_engage_module_with_version;
-
-    return &(config_impl->conf);
+    return conf;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_free(
     axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     int i = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
 
     if (conf->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(conf->param_container, env);
-        conf->param_container = NULL;
     }
 
-    if (config_impl->svc_grps)
+    if (conf->svc_grps)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(config_impl->svc_grps, env); hi;
+        for (hi = axis2_hash_first(conf->svc_grps, env); hi;
                 hi = axis2_hash_next(env, hi))
         {
             axis2_svc_grp_t * svc_grp = NULL;
@@ -676,45 +275,36 @@ axis2_conf_free(
             svc_grp = (axis2_svc_grp_t *) val;
             if (svc_grp)
                  axis2_svc_grp_free(svc_grp, env);
-
-            val = NULL;
-            svc_grp = NULL;
-
         }
-        axis2_hash_free(config_impl->svc_grps, env);
-        config_impl->svc_grps = NULL;
+        axis2_hash_free(conf->svc_grps, env);
     }
 
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        if (config_impl->transports_in[i])
+        if (conf->transports_in[i])
         {
-            axis2_transport_in_desc_free(config_impl->transports_in[i], env);
-            config_impl->transports_in[i] = NULL;
+            axis2_transport_in_desc_free(conf->transports_in[i], env);
         }
     }
     
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        if (config_impl->transports_out[i])
+        if (conf->transports_out[i])
         {
-            axis2_transport_out_desc_free(config_impl->transports_out[i], env);
-            config_impl->transports_out[i] = NULL;
+            axis2_transport_out_desc_free(conf->transports_out[i], env);
         }
     }
 
-    if (config_impl->dep_engine)
+    if (conf->dep_engine)
     {
-        AXIS2_DEP_ENGINE_FREE(config_impl->dep_engine, env);
-        config_impl->dep_engine = NULL;
+        AXIS2_DEP_ENGINE_FREE(conf->dep_engine, env);
     }
 
-
-    if (config_impl->all_modules)
+    if (conf->all_modules)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(config_impl->all_modules, env); hi;
+        for (hi = axis2_hash_first(conf->all_modules, env); hi;
                 hi = axis2_hash_next(env, hi))
         {
             axis2_module_desc_t * module_desc = NULL;
@@ -724,20 +314,16 @@ axis2_conf_free(
             if (module_desc)
             {
                 axis2_module_desc_free(module_desc, env);
-                module_desc = NULL;
             }
-
-            val = NULL;
         }
-        axis2_hash_free(config_impl->all_modules, env);
-        config_impl->all_modules = NULL;
+        axis2_hash_free(conf->all_modules, env);
     }
 
-    if (config_impl->name_to_version_map)
+    if (conf->name_to_version_map)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(config_impl->name_to_version_map, env); hi;
+        for (hi = axis2_hash_first(conf->name_to_version_map, env); hi;
                 hi = axis2_hash_next(env, hi))
         {
             axis2_char_t * module_ver = NULL;
@@ -747,122 +333,89 @@ axis2_conf_free(
             if (module_ver)
             {
                 AXIS2_FREE(env->allocator, module_ver);
-                module_ver = NULL;
             }
-
-            val = NULL;
         }
-        axis2_hash_free(config_impl->name_to_version_map, env);
-        config_impl->name_to_version_map = NULL;
+        axis2_hash_free(conf->name_to_version_map, env);
     }
 
-    if (config_impl->engaged_modules)
+    if (conf->engaged_modules)
     {
         int i = 0;
-        for (i = 0; i < axis2_array_list_size(config_impl->engaged_modules,
+        for (i = 0; i < axis2_array_list_size(conf->engaged_modules,
                 env); i++)
         {
             axis2_qname_t *module_desc_qname = NULL;
             module_desc_qname = (axis2_qname_t *)
-                    axis2_array_list_get(config_impl->engaged_modules, env, i);
+                    axis2_array_list_get(conf->engaged_modules, env, i);
             if (module_desc_qname)
                 AXIS2_QNAME_FREE(module_desc_qname, env);
-
-            module_desc_qname = NULL;
         }
-        axis2_array_list_free(config_impl->engaged_modules, env);
-        config_impl->engaged_modules = NULL;
+        axis2_array_list_free(conf->engaged_modules, env);
     }
 
-    if (config_impl->out_phases)
+    if (conf->out_phases)
     {
         int i = 0;
-        for (i = 0; i < axis2_array_list_size(config_impl->out_phases, env); i++)
+        for (i = 0; i < axis2_array_list_size(conf->out_phases, env); i++)
         {
             axis2_phase_t *phase = NULL;
             phase = (axis2_phase_t *)
-                    axis2_array_list_get(config_impl->out_phases, env, i);
+                    axis2_array_list_get(conf->out_phases, env, i);
             if (phase)
                 AXIS2_PHASE_FREE(phase, env);
-
-            phase = NULL;
-
         }
-        axis2_array_list_free(config_impl->out_phases, env);
-        config_impl->out_phases = NULL;
+        axis2_array_list_free(conf->out_phases, env);
     }
 
-    if (config_impl->in_fault_phases)
+    if (conf->in_fault_phases)
     {
         int i = 0;
-        for (i = 0; i < axis2_array_list_size(config_impl->in_fault_phases, env); i++)
+        for (i = 0; i < axis2_array_list_size(conf->in_fault_phases, env); i++)
         {
             axis2_phase_t *phase = NULL;
             phase = (axis2_phase_t *)
-                    axis2_array_list_get(config_impl->in_fault_phases, env, i);
+                    axis2_array_list_get(conf->in_fault_phases, env, i);
             if (phase)
                 AXIS2_PHASE_FREE(phase, env);
-
-            phase = NULL;
-
         }
-        axis2_array_list_free(config_impl->in_fault_phases, env);
-        config_impl->in_fault_phases = NULL;
+        axis2_array_list_free(conf->in_fault_phases, env);
     }
 
-    if (config_impl->out_fault_phases)
+    if (conf->out_fault_phases)
     {
         /* No need of the following commented lines. Phases are freed in 
          * phase_info 
          */
-        /*int i = 0;
-        for (i = 0; i < axis2_array_list_size(config_impl->out_fault_phases, env); i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = (axis2_phase_t *)
-                    axis2_array_list_get(config_impl->out_fault_phases, env, i);
-
-            if (phase)
-                AXIS2_PHASE_FREE(phase, env);
-
-            phase = NULL;
-
-        }*/
-        axis2_array_list_free(config_impl->out_fault_phases, env);
-        config_impl->out_fault_phases = NULL;
+        axis2_array_list_free(conf->out_fault_phases, env);
     }
 
-    if (config_impl->in_phases_upto_and_including_post_dispatch)
+    if (conf->in_phases_upto_and_including_post_dispatch)
     {
         int i = 0;
-        for (i = 0; i < axis2_array_list_size(config_impl->
+        for (i = 0; i < axis2_array_list_size(conf->
                 in_phases_upto_and_including_post_dispatch, env); i++)
         {
             axis2_phase_t *phase = NULL;
-            phase = (axis2_phase_t *) axis2_array_list_get(config_impl->
+            phase = (axis2_phase_t *) axis2_array_list_get(conf->
                     in_phases_upto_and_including_post_dispatch, env, i);
 
             if (phase)
                 AXIS2_PHASE_FREE(phase, env);
-            phase = NULL;
-
         }
-        axis2_array_list_free(config_impl->
+        axis2_array_list_free(conf->
                 in_phases_upto_and_including_post_dispatch, env);
-        config_impl->in_phases_upto_and_including_post_dispatch = NULL;
     }
 
-    if (config_impl->all_svcs)
+    if (conf->all_svcs)
     {
-        axis2_hash_free(config_impl->all_svcs, env);
-        config_impl->all_svcs = NULL;
+        axis2_hash_free(conf->all_svcs, env);
     }
 
-    if (config_impl->msg_recvs)
+    if (conf->msg_recvs)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(config_impl->msg_recvs, env); hi;
+        for (hi = axis2_hash_first(conf->msg_recvs, env); hi;
                 hi = axis2_hash_next(env, hi))
         {
             axis2_msg_recv_t * msg_recv = NULL;
@@ -873,24 +426,20 @@ axis2_conf_free(
                 AXIS2_MSG_RECV_FREE(msg_recv, env);
                 msg_recv = NULL;
             }
-
-            val = NULL;
         }
-        axis2_hash_free(config_impl->msg_recvs, env);
-        config_impl->msg_recvs = NULL;
+        axis2_hash_free(conf->msg_recvs, env);
     }
 
-    if (config_impl->faulty_svcs)
+    if (conf->faulty_svcs)
     {
-        axis2_hash_free(config_impl->faulty_svcs, env);
-        config_impl->faulty_svcs = NULL;
+        axis2_hash_free(conf->faulty_svcs, env);
     }
 
-    if (config_impl->faulty_modules)
+    if (conf->faulty_modules)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(config_impl->faulty_modules, env); hi;
+        for (hi = axis2_hash_first(conf->faulty_modules, env); hi;
                 hi = axis2_hash_next(env, hi))
         {
             axis2_module_desc_t * module_desc = NULL;
@@ -898,61 +447,44 @@ axis2_conf_free(
             module_desc = (axis2_module_desc_t *) val;
             if (module_desc)
                 axis2_module_desc_free(module_desc, env);
-
-            val = NULL;
-            module_desc = NULL;
-
         }
-        axis2_hash_free(config_impl->faulty_modules, env);
-        config_impl->faulty_modules = NULL;
+        axis2_hash_free(conf->faulty_modules, env);
     }
 
-    if (config_impl->handlers)
+    if (conf->handlers)
     {
         int i = 0;
-        for (i = 0; i < axis2_array_list_size(config_impl->handlers, env); i++)
+        for (i = 0; i < axis2_array_list_size(conf->handlers, env); i++)
         {
             axis2_handler_desc_t *handler_desc = NULL;
             handler_desc = (axis2_handler_desc_t *)
-                    axis2_array_list_get(config_impl->handlers, env, i);
+            axis2_array_list_get(conf->handlers, env, i);
+
             if (handler_desc)
                 axis2_handler_desc_free(handler_desc, env);
-
-            handler_desc = NULL;
-
         }
-        axis2_array_list_free(config_impl->handlers, env);
-        config_impl->handlers = NULL;
+        axis2_array_list_free(conf->handlers, env);
     }
 
-    if (config_impl->axis2_repo)
+    if (conf->axis2_repo)
     {
-        AXIS2_FREE(env->allocator, config_impl->axis2_repo);
-        config_impl->axis2_repo = NULL;
+        AXIS2_FREE(env->allocator, conf->axis2_repo);
     }
 
-    if (conf->ops)
+    if (conf)
     {
-        AXIS2_FREE(env->allocator, conf->ops);
-        conf->ops = NULL;
-    }
-
-    if (config_impl)
-    {
-        AXIS2_FREE(env->allocator, config_impl);
-        config_impl = NULL;
+        AXIS2_FREE(env->allocator, conf);
     }
 
     return status;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_add_svc_grp(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_svc_grp_t *svc_grp)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     axis2_hash_t *svcs = NULL;
     axis2_hash_index_t *index_i = NULL;
     axis2_char_t *svc_name = NULL;
@@ -962,12 +494,11 @@ axis2_conf_add_svc_grp(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
     svcs =  axis2_svc_grp_get_all_svcs(svc_grp, env);
-    if (!config_impl->all_svcs)
+    if (!conf->all_svcs)
     {
-        config_impl->all_svcs = axis2_hash_make(env);
-        if (!config_impl->all_svcs)
+        conf->all_svcs = axis2_hash_make(env);
+        if (!conf->all_svcs)
             return AXIS2_FAILURE;
     }
     k = axis2_hash_count(svcs);
@@ -984,7 +515,7 @@ axis2_conf_add_svc_grp(
         svc_qname = AXIS2_SVC_GET_QNAME(desc, env);
         svc_name = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
 
-        svc_name2 = axis2_hash_get(config_impl->all_svcs, svc_name,
+        svc_name2 = axis2_hash_get(conf->all_svcs, svc_name,
                 AXIS2_HASH_KEY_STRING);
         /* no two service names deployed in the engine can be same */
         if (svc_name2)
@@ -1006,55 +537,52 @@ axis2_conf_add_svc_grp(
         axis2_hash_this(index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
         svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(desc, env), env);
-        axis2_hash_set(config_impl->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
+        axis2_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
                 desc);
         index_i = axis2_hash_next(env, index_i);
     }
 
     svc_grp_name =  axis2_svc_grp_get_name(svc_grp, env);
-    if (!config_impl->svc_grps)
+    if (!conf->svc_grps)
     {
-        config_impl->svc_grps = axis2_hash_make(env);
-        if (!config_impl->svc_grps)
+        conf->svc_grps = axis2_hash_make(env);
+        if (!conf->svc_grps)
             return AXIS2_FAILURE;
     }
-    axis2_hash_set(config_impl->svc_grps, svc_grp_name,
+    axis2_hash_set(conf->svc_grps, svc_grp_name,
             AXIS2_HASH_KEY_STRING, svc_grp);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_svc_grp_t *AXIS2_CALL
+AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
 axis2_conf_get_svc_grp(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
     const axis2_char_t *svc_grp_name)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc_grp_name, NULL);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-    if (!config_impl->svc_grps)
+    if (!conf->svc_grps)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_CONF,
                 AXIS2_FAILURE);
         return NULL;
     }
-    return (axis2_svc_grp_t *)(axis2_hash_get(config_impl->svc_grps,
+    return (axis2_svc_grp_t *)(axis2_hash_get(conf->svc_grps,
             svc_grp_name, AXIS2_HASH_KEY_STRING));
 }
 
-axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_conf_get_all_svc_grps(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->svc_grps;
+    return conf->svc_grps;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_add_svc(
     axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -1108,7 +636,7 @@ axis2_conf_add_svc(
     return status;
 }
 
-axis2_svc_t *AXIS2_CALL
+AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
 axis2_conf_get_svc(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -1117,27 +645,25 @@ axis2_conf_get_svc(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
-    return axis2_hash_get(AXIS2_INTF_TO_IMPL(conf)->all_svcs, svc_name,
+    return axis2_hash_get(conf->all_svcs, svc_name,
             AXIS2_HASH_KEY_STRING);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_remove_svc(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     const axis2_char_t *svc_name)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_name, AXIS2_FAILURE);
 
-    axis2_hash_set(config_impl->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
             NULL);
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_add_param(
     axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -1163,7 +689,7 @@ axis2_conf_add_param(
     return status;
 }
 
-axis2_param_t *AXIS2_CALL
+AXIS2_EXTERN axis2_param_t *AXIS2_CALL
 axis2_conf_get_param(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -1184,7 +710,7 @@ axis2_conf_get_param(
 
 }
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_all_params(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
@@ -1194,7 +720,7 @@ axis2_conf_get_all_params(
 
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_conf_is_param_locked(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -1209,89 +735,68 @@ axis2_conf_is_param_locked(
     return (param && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
 }
 
-axis2_transport_in_desc_t *AXIS2_CALL
+AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
 axis2_conf_get_transport_in(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
     const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-
-    return (axis2_transport_in_desc_t *) config_impl->transports_in[trans_enum];
+    return (axis2_transport_in_desc_t *) conf->transports_in[trans_enum];
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_in(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_transport_in_desc_t *transport,
     const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, transport, AXIS2_FAILURE);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-
-    config_impl->transports_in[trans_enum] = transport;
+    conf->transports_in[trans_enum] = transport;
 
     return AXIS2_SUCCESS;
 
 }
 
-axis2_transport_out_desc_t *AXIS2_CALL
+AXIS2_EXTERN axis2_transport_out_desc_t *AXIS2_CALL
 axis2_conf_get_transport_out(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
     const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-
-    return config_impl->transports_out[trans_enum];
+    return conf->transports_out[trans_enum];
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_add_transport_out(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_transport_out_desc_t *transport,
     const AXIS2_TRANSPORT_ENUMS trans_enum)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, transport, AXIS2_FAILURE);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-
-    config_impl->transports_out[trans_enum] = transport;
+    conf->transports_out[trans_enum] = transport;
 
     return AXIS2_SUCCESS;
 }
 
-axis2_transport_in_desc_t ** AXIS2_CALL
+AXIS2_EXTERN axis2_transport_in_desc_t ** AXIS2_CALL
 axis2_conf_get_all_in_transports(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->transports_in;
+    return conf->transports_in;
 }
 
-axis2_module_desc_t *AXIS2_CALL
+AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_module(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
     const axis2_qname_t *qname)
 {
-    axis2_conf_impl_t *conf_impl = NULL;
     axis2_char_t *name = NULL;
     axis2_module_desc_t *ret = NULL;
     axis2_char_t *module_name = NULL;
@@ -1300,10 +805,9 @@ axis2_conf_get_module(
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
-    conf_impl = AXIS2_INTF_TO_IMPL(conf);
 
     name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
-    ret = (axis2_module_desc_t *) axis2_hash_get(conf_impl->all_modules,
+    ret = (axis2_module_desc_t *) axis2_hash_get(conf->all_modules,
             name, AXIS2_HASH_KEY_STRING);
     if (ret)
     {
@@ -1321,96 +825,82 @@ axis2_conf_get_module(
         return NULL;
     }
     name = AXIS2_QNAME_TO_STRING(mod_qname, env);
-    ret = (axis2_module_desc_t *) axis2_hash_get(conf_impl->all_modules,
+    ret = (axis2_module_desc_t *) axis2_hash_get(conf->all_modules,
             name, AXIS2_HASH_KEY_STRING);
     AXIS2_QNAME_FREE(mod_qname, env);
     mod_qname = NULL;
     return ret;
 }
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_all_engaged_modules(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    axis2_conf_impl_t *conf_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    conf_impl = AXIS2_INTF_TO_IMPL(conf);
-
-    return conf_impl->engaged_modules;
+    return conf->engaged_modules;
 }
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_in_phases_upto_and_including_post_dispatch(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->
-            in_phases_upto_and_including_post_dispatch;
+    return conf->in_phases_upto_and_including_post_dispatch;
 }
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_out_flow(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->out_phases;
+    return conf->out_phases;
 }
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_in_fault_flow(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->in_fault_phases;
+    return conf->in_fault_phases;
 }
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_out_fault_flow(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->out_fault_phases;
+    return conf->out_fault_phases;
 }
 
-axis2_transport_out_desc_t **AXIS2_CALL
+AXIS2_EXTERN axis2_transport_out_desc_t **AXIS2_CALL
 axis2_conf_get_all_out_transports(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->transports_out;
+    return conf->transports_out;
 }
 
-axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_conf_get_all_faulty_svcs(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    return AXIS2_INTF_TO_IMPL(conf)->faulty_svcs;
+    return conf->faulty_svcs;
 }
 
-axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_conf_get_all_faulty_modules(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->faulty_modules;
+    return conf->faulty_modules;
 }
 
-axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_conf_get_all_svcs(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     axis2_hash_t *sgs = NULL;
     axis2_hash_index_t *index_i = NULL;
     axis2_hash_index_t *index_j = NULL;
@@ -1423,7 +913,6 @@ axis2_conf_get_all_svcs(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
     sgs = axis2_conf_get_all_svc_grps(conf, env);
     index_i = axis2_hash_first(sgs, env);
     while (index_i)
@@ -1437,7 +926,7 @@ axis2_conf_get_all_svcs(
             axis2_hash_this(index_j, NULL, NULL, &value2);
             svc = (axis2_svc_t *) value2;
             svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(svc, env), env);
-            axis2_hash_set(config_impl->all_svcs, svc_name,
+            axis2_hash_set(conf->all_svcs, svc_name,
                     AXIS2_HASH_KEY_STRING, svc);
 
             index_j = axis2_hash_next(env, index_j);
@@ -1445,23 +934,21 @@ axis2_conf_get_all_svcs(
 
         index_i = axis2_hash_next(env, index_i);
     }
-    return config_impl->all_svcs;
+    return conf->all_svcs;
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_conf_is_engaged(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     const axis2_qname_t *module_name)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     const axis2_qname_t *def_mod_qname = NULL;
     axis2_module_desc_t *def_mod = NULL;
     int i = 0;
     int size = 0;
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FALSE);
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
 
     def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(conf, env,
             AXIS2_QNAME_GET_LOCALPART(module_name, env));
@@ -1469,13 +956,13 @@ axis2_conf_is_engaged(
     {
         def_mod_qname = axis2_module_desc_get_qname(def_mod, env);
     }
-    size = axis2_array_list_size(config_impl->engaged_modules, env);
+    size = axis2_array_list_size(conf->engaged_modules, env);
+
     for (i = 0; i < size; i++)
     {
         axis2_qname_t *qname = NULL;
 
-
-        qname = (axis2_qname_t *) axis2_array_list_get(config_impl->
+        qname = (axis2_qname_t *) axis2_array_list_get(conf->
                 engaged_modules, env, i);
 
         if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_name, env, qname) ||
@@ -1488,170 +975,143 @@ axis2_conf_is_engaged(
     return AXIS2_FALSE;
 }
 
-axis2_phases_info_t *AXIS2_CALL
+AXIS2_EXTERN axis2_phases_info_t *AXIS2_CALL
 axis2_conf_get_phases_info(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    return (AXIS2_INTF_TO_IMPL(conf))->phases_info;
+    return conf->phases_info;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_phases_info(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_phases_info_t *phases_info)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    if (config_impl->phases_info)
+    if (conf->phases_info)
     {
         AXIS2_PHASES_INFO_FREE(phases_info, env);
-        config_impl->phases_info = NULL;
+        conf->phases_info = NULL;
     }
-    config_impl->phases_info = phases_info;
+    conf->phases_info = phases_info;
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_add_msg_recv(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     const axis2_char_t *key,
     axis2_msg_recv_t *msg_recv)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-
-    if (!config_impl->msg_recvs)
+    if (!conf->msg_recvs)
     {
-        config_impl->msg_recvs = axis2_hash_make(env);
-        if (!config_impl->msg_recvs)
+        conf->msg_recvs = axis2_hash_make(env);
+        if (!conf->msg_recvs)
             return AXIS2_FAILURE;
     }
-    axis2_hash_set(config_impl->msg_recvs, key, AXIS2_HASH_KEY_STRING, msg_recv);
+    axis2_hash_set(conf->msg_recvs, key, AXIS2_HASH_KEY_STRING, msg_recv);
     return AXIS2_SUCCESS;
 }
 
-axis2_msg_recv_t *AXIS2_CALL
+AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
 axis2_conf_get_msg_recv(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_char_t *key)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    return (axis2_msg_recv_t *) axis2_hash_get(AXIS2_INTF_TO_IMPL(
-                conf)->msg_recvs, key, AXIS2_HASH_KEY_STRING);
+    return (axis2_msg_recv_t *) axis2_hash_get(conf->msg_recvs, key, AXIS2_HASH_KEY_STRING);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_out_phases(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_array_list_t *out_phases)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, out_phases, AXIS2_FAILURE);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-    if (config_impl->out_phases)
+    if (conf->out_phases)
     {
-        axis2_array_list_free(config_impl->out_phases, env);
-        config_impl->out_phases = NULL;
+        axis2_array_list_free(conf->out_phases, env);
+        conf->out_phases = NULL;
     }
-    config_impl->out_phases = out_phases;
+    conf->out_phases = out_phases;
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_out_phases(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->out_phases;
+    return conf->out_phases;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_in_fault_phases(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_array_list_t *list)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-    if (config_impl->in_fault_phases)
+    if (conf->in_fault_phases)
     {
-        axis2_array_list_free(config_impl->in_fault_phases, env);
-        config_impl->in_fault_phases = NULL;
+        axis2_array_list_free(conf->in_fault_phases, env);
+        conf->in_fault_phases = NULL;
     }
-    config_impl->in_fault_phases = list;
+    conf->in_fault_phases = list;
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_out_fault_phases(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_array_list_t *list)
 {
-    axis2_conf_impl_t *config_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
 
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
-    if (config_impl->out_fault_phases)
+    if (conf->out_fault_phases)
     {
-        axis2_array_list_free(config_impl->out_fault_phases, env);
-        config_impl->out_fault_phases = NULL;
+        axis2_array_list_free(conf->out_fault_phases, env);
+        conf->out_fault_phases = NULL;
     }
-    config_impl->out_fault_phases = list;
+    conf->out_fault_phases = list;
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_conf_get_all_modules(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    return AXIS2_INTF_TO_IMPL(conf)->all_modules;
+    return conf->all_modules;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_add_module(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_module_desc_t *module)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     const axis2_qname_t *module_qname = NULL;
 
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module, AXIS2_FAILURE);
-
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
 
     status = axis2_module_desc_set_parent(module, env, conf);
     if (AXIS2_FAILURE == status)
@@ -1659,7 +1119,7 @@ axis2_conf_add_module(
         return status;
     }
 
-    if (!config_impl->all_modules)
+    if (!conf->all_modules)
     {
         return AXIS2_FAILURE;
     }
@@ -1669,19 +1129,18 @@ axis2_conf_add_module(
         axis2_char_t *module_name = NULL;
 
         module_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)module_qname, env);
-        axis2_hash_set(config_impl->all_modules, module_name,
+        axis2_hash_set(conf->all_modules, module_name,
                 AXIS2_HASH_KEY_STRING, module);
     }
 
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_default_dispatchers(
     axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     axis2_phase_t *dispatch = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_disp_t *add_dispatch = NULL;
@@ -1693,7 +1152,6 @@ axis2_conf_set_default_dispatchers(
     axis2_disp_checker_t *disp_checker = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
 
     dispatch = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);
     if (!dispatch)
@@ -1710,9 +1168,8 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_GET_BASE(soap_msg_body_based_dispatch, env);
     AXIS2_DISP_FREE(soap_msg_body_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 0, handler);
-    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
-
 
     add_dispatch = axis2_addr_disp_create(env);
     if (!add_dispatch)
@@ -1724,7 +1181,7 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_GET_BASE(add_dispatch, env);
     AXIS2_DISP_FREE(add_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
-    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
     /*uri_dispatch = axis2_req_uri_disp_create(env);
@@ -1736,7 +1193,7 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
     AXIS2_DISP_FREE(uri_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
-    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;*/
 
     soap_action_based_dispatch = axiom_soap_action_disp_create(env);
@@ -1748,11 +1205,11 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_GET_BASE(soap_action_based_dispatch, env);
     AXIS2_DISP_FREE(soap_action_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 2, handler);
-    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
-    status = axis2_array_list_add(config_impl->
-            in_phases_upto_and_including_post_dispatch, env, dispatch);
+    status = axis2_array_list_add(conf->
+           in_phases_upto_and_including_post_dispatch, env, dispatch);
     if (AXIS2_SUCCESS != status)
     {
         AXIS2_PHASE_FREE(dispatch, env);
@@ -1770,14 +1227,14 @@ axis2_conf_set_default_dispatchers(
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_DISP_CHECKER_FREE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
-    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
     handler = axis2_ctx_handler_create(env, NULL);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 1, handler);
-    axis2_array_list_add(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
+    axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
 
-    status = axis2_array_list_add(config_impl->
+    status = axis2_array_list_add(conf->
             in_phases_upto_and_including_post_dispatch, env, post_dispatch);
     if (AXIS2_SUCCESS != status)
     {
@@ -1788,13 +1245,12 @@ axis2_conf_set_default_dispatchers(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_dispatch_phase(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_phase_t *dispatch)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_handler_t *handler = NULL;
     axis2_phase_t *post_dispatch = NULL;
@@ -1802,9 +1258,8 @@ axis2_conf_set_dispatch_phase(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dispatch, AXIS2_FAILURE);
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    status = axis2_array_list_add(config_impl->
+    status = axis2_array_list_add(conf->
             in_phases_upto_and_including_post_dispatch, env, dispatch);
     if (AXIS2_FAILURE == status)
     {
@@ -1823,7 +1278,7 @@ axis2_conf_set_dispatch_phase(
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
 
-    status = axis2_array_list_add(config_impl->
+    status = axis2_array_list_add(conf->
             in_phases_upto_and_including_post_dispatch, env, post_dispatch);
     if (AXIS2_FAILURE == status)
     {
@@ -1842,13 +1297,12 @@ axis2_conf_set_dispatch_phase(
  * calling phase_resolvers engage_module_globally function. Modules is added
  * to axis2_conf's engaged module list.
  */
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_engage_module(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     const axis2_qname_t *module_ref)
 {
-    axis2_conf_impl_t *config_impl = NULL;
     axis2_module_desc_t *module_desc = NULL;
     axis2_bool_t is_new_module = AXIS2_FALSE;
     axis2_bool_t to_be_engaged = AXIS2_TRUE;
@@ -1857,7 +1311,6 @@ axis2_conf_engage_module(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_ref, AXIS2_FAILURE);
-    config_impl = AXIS2_INTF_TO_IMPL(conf);
 
     module_desc = axis2_conf_get_module(conf, env, module_ref);
     if (NULL == module_desc)
@@ -1903,13 +1356,13 @@ axis2_conf_engage_module(
         int i = 0;
         const axis2_qname_t *module_qname = NULL;
 
-        size = axis2_array_list_size(config_impl->engaged_modules, env);
+        size = axis2_array_list_size(conf->engaged_modules, env);
         module_qname = axis2_module_desc_get_qname(module_desc, env);
         for (i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
 
-            qname = (axis2_qname_t *) axis2_array_list_get(config_impl->
+            qname = (axis2_qname_t *) axis2_array_list_get(conf->
                     engaged_modules, env, i);
             if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_qname, env, qname))
             {
@@ -1943,7 +1396,7 @@ axis2_conf_engage_module(
         }
         module_qname = axis2_module_desc_get_qname(module_desc, env);
         module_qref_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
-        status = axis2_array_list_add(config_impl->engaged_modules, env,
+        status = axis2_array_list_add(conf->engaged_modules, env,
                 module_qref_l);
     }
     if (is_new_module)
@@ -1953,52 +1406,43 @@ axis2_conf_engage_module(
     return status;
 }
 
-const axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_conf_get_repo(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    axis2_conf_impl_t *conf_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    conf_impl = AXIS2_INTF_TO_IMPL(conf);
-
-    return conf_impl->axis2_repo;
+    return conf->axis2_repo;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_repo(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_char_t *repos_path)
 {
-    axis2_conf_impl_t *conf_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    conf_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    if (conf_impl->axis2_repo)
+    if (conf->axis2_repo)
     {
-        AXIS2_FREE(env->allocator, conf_impl->axis2_repo);
-        conf_impl->axis2_repo = NULL;
+        AXIS2_FREE(env->allocator, conf->axis2_repo);
+        conf->axis2_repo = NULL;
     }
-    conf_impl->axis2_repo = AXIS2_STRDUP(repos_path, env);
+    conf->axis2_repo = AXIS2_STRDUP(repos_path, env);
     return AXIS2_SUCCESS;
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_dep_engine(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_dep_engine_t *dep_engine)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(conf)->dep_engine = dep_engine;
+    conf->dep_engine = dep_engine;
     return AXIS2_SUCCESS;
 }
 
-const axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_conf_get_default_module_version(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -2008,7 +1452,7 @@ axis2_conf_get_default_module_version(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
-    def_ver_map = AXIS2_INTF_TO_IMPL(conf)->name_to_version_map;
+    def_ver_map = conf->name_to_version_map;
     if (NULL == def_ver_map)
     {
         return NULL;
@@ -2016,7 +1460,7 @@ axis2_conf_get_default_module_version(
     return axis2_hash_get(def_ver_map, module_name, AXIS2_HASH_KEY_STRING);
 }
 
-axis2_module_desc_t *AXIS2_CALL
+AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_default_module(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -2031,7 +1475,7 @@ axis2_conf_get_default_module(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
-    all_modules = AXIS2_INTF_TO_IMPL(conf)->all_modules;
+    all_modules = conf->all_modules;
     mod_ver = AXIS2_CONF_GET_DEFAULT_MODULE_VERSION(conf, env, module_name);
 
     if (NULL == mod_ver)
@@ -2061,7 +1505,7 @@ axis2_conf_get_default_module(
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_add_default_module_version(
     axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -2077,7 +1521,7 @@ axis2_conf_add_default_module_version(
      * If we already have a default module version we don't put
      * it again
      */
-    name_to_ver_map = AXIS2_INTF_TO_IMPL(conf)->name_to_version_map;
+    name_to_ver_map = conf->name_to_version_map;
 
     if (NULL == axis2_hash_get(name_to_ver_map, module_name,
             AXIS2_HASH_KEY_STRING))
@@ -2094,7 +1538,7 @@ axis2_conf_add_default_module_version(
     return AXIS2_FAILURE;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_engage_module_with_version(
     axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -2118,43 +1562,34 @@ axis2_conf_engage_module_with_version(
     return status;
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_conf_get_enable_mtom(
     axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
-
-    return AXIS2_INTF_TO_IMPL(conf)->enable_mtom;
+    return conf->enable_mtom;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_enable_mtom(
     axis2_conf_t *conf,
     const axis2_env_t *env,
     axis2_bool_t enable_mtom)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
-
-    AXIS2_INTF_TO_IMPL(conf)->enable_mtom = enable_mtom;
+    conf->enable_mtom = enable_mtom;
     return AXIS2_SUCCESS;
 }
 
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_conf_get_enable_security(
     axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
-
-    return AXIS2_INTF_TO_IMPL(conf)->enable_security;
+    return conf->enable_security;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_set_enable_security(
     axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -2163,7 +1598,14 @@ axis2_conf_set_enable_security(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
-    AXIS2_INTF_TO_IMPL(conf)->enable_security = enable_security;
+    conf->enable_security = enable_security;
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+axis2_conf_get_param_container(const axis2_conf_t *conf,
+    const axis2_env_t *env)
+{
+    return conf->param_container;
 }
 

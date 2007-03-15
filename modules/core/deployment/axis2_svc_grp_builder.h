@@ -43,63 +43,44 @@ extern "C"
 
     /** Type name for struct axis2_svc_grp_builder */
     typedef struct axis2_svc_grp_builder axis2_svc_grp_builder_t;
-    /** Type name for struct axis2_svc_grp_builder_ops  */
-    typedef struct axis2_svc_grp_builder_ops axis2_svc_grp_builder_ops_t;
+
+    /** 
+     * De-allocate memory
+     * @param svc_grp_builder pointer to service group builder
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
+        const axis2_env_t *env);
+    
+    /** 
+     * @param grp_builder pointer to group builder
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
+        const axis2_env_t *env,
+        axis2_svc_grp_t *svc_grp);
 
     /**
-     * Service Group Builder ops struct
-     * Encapsulator struct for ops of axis2_svc_grp_builder
+     * To get the list og modules that is requird to be engage globally
+     * @param grp_builder pointer to group builder
+     * @param env pointer to environment struct
+     * @param module_refs  <code>axiom_children_qname_iterator_t</code>
+     * @param svc_group pointer to service group
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_svc_grp_builder_ops
-    {
-        /** 
-         * De-allocate memory
-         * @param svc_grp_builder pointer to service group builder
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_svc_grp_builder_t *svc_grp_builder,
-                    const axis2_env_t *env);
-        
-        /** 
-         * @param grp_builder pointer to group builder
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                populate_svc_grp)(
-                    axis2_svc_grp_builder_t *grp_builder,
-                    const axis2_env_t *env,
-                    axis2_svc_grp_t *svc_grp);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
+        const axis2_env_t *env,
+        axiom_children_qname_iterator_t *module_refs ,
+                axis2_svc_grp_t *svc_grp);
 
-        /**
-         * To get the list og modules that is requird to be engage globally
-         * @param grp_builder pointer to group builder
-         * @param env pointer to environment struct
-         * @param module_refs  <code>axiom_children_qname_iterator_t</code>
-         * @param svc_group pointer to service group
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                process_module_refs)(
-                    axis2_svc_grp_builder_t *grp_builder,
-                    const axis2_env_t *env,
-                    axiom_children_qname_iterator_t *module_refs ,
-                    axis2_svc_grp_t *svc_grp);
-
-    };
-
-    /**
-     * Service Group Builder struct 
-     */
-    struct axis2_svc_grp_builder
-    {
-        /** Operations of Service Group Builder */
-        axis2_svc_grp_builder_ops_t *ops;
-        axis2_desc_builder_t *desc_builder;
-    };
+    AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
+    axis2_svc_grp_builder_get_desc_builder(const axis2_svc_grp_builder_t *svc_grp_builder,
+        const axis2_env_t *env);
 
     /**
      * Creates svc_grp builder struct
@@ -107,8 +88,7 @@ extern "C"
      * @return pointer to newly created service group builder
      */
     AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-    axis2_svc_grp_builder_create (
-        const axis2_env_t *env);
+    axis2_svc_grp_builder_create (const axis2_env_t *env);
 
     /**
      * Creates svc_grp builder struct
@@ -118,31 +98,23 @@ extern "C"
      * @return pointer to newly created service group builder
      */
     AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-    axis2_svc_grp_builder_create_with_svc_and_dep_engine(
-        const axis2_env_t *env,
+    axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axis2_env_t *env,
         axiom_node_t *svc,
         axis2_dep_engine_t *dep_engine);
 
-/*************************** Function macros **********************************/
-
-/** Frees the service group builder.
-    @sa axis2_svc_grp_builder_ops#free */
+/** Frees the service group builder. */
 #define AXIS2_SVC_GRP_BUILDER_FREE(svc_grp_builder, env) \
-      ((svc_grp_builder)->ops->free (svc_grp_builder, env))
+      axis2_svc_grp_builder_free (svc_grp_builder, env)
 
-/** Populates the service group.
-    @sa axis2_svc_grp_builder_ops#populate_svc_grp */
+/** Populates the service group. */
 #define AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(svc_grp_builder, env, svc_grp) \
-      ((svc_grp_builder)->ops->populate_svc_grp (svc_grp_builder, env, svc_grp))
+      axis2_svc_grp_builder_populate_svc_grp (svc_grp_builder, env, svc_grp)
 
-/** Process module refs.
-    @sa axis2_svc_grp_builder_ops#process_module_refs */
+/** Process module refs. */
 #define AXIS2_SVC_GRP_BUILDER_PROCESS_MODULE_REFS(svc_grp_builder, env, \
         module_refs, svc_grp) \
-      ((svc_grp_builder)->ops->process_module_refs (svc_grp_builder, env, \
-            module_refs, svc_grp))
-
-/*************************** End of function macros ***************************/
+      axis2_svc_grp_builder_process_module_refs (svc_grp_builder, env, \
+            module_refs, svc_grp)
 
 /** @} */
 

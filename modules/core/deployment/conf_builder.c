@@ -24,56 +24,29 @@
 #include <axis2_utils.h>
 #include <axis2_transport_receiver.h>
 
-typedef struct axis2_conf_builder_impl
+struct axis2_conf_builder
 {
-    axis2_conf_builder_t conf_builder;
     axis2_conf_t *conf;
-
-}
-axis2_conf_builder_impl_t;
-
-#define AXIS2_INTF_TO_IMPL(conf_builder) \
-    ((axis2_conf_builder_impl_t *) conf_builder)
-
-/************************* Function prototypes ********************************/
-
-axis2_status_t AXIS2_CALL
-axis2_conf_builder_free(
-    axis2_conf_builder_t *conf_builder,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_builder_populate_conf(
-    axis2_conf_builder_t *conf_builder,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_conf_builder_process_module_refs(
-    axis2_conf_builder_t *conf_builder,
-    const axis2_env_t *env,
-    axiom_children_qname_iterator_t *module_refs);
+    struct axis2_desc_builder *desc_builder;
+};
 
 static axis2_status_t
-axis2_conf_builder_process_disp_order(
-    axis2_conf_builder_t *conf_builder,
+axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
-    axiom_node_t *disp_order);
+    axiom_node_t *disp_order_node);
 
 static axis2_status_t
-axis2_conf_builder_process_phase_orders(
-    axis2_conf_builder_t *conf_builder,
+axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *phase_orders);
 
 static axis2_array_list_t *
-axis2_conf_builder_get_phase_list(
-    axis2_conf_builder_t *conf_builder,
+axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
-    axiom_node_t *phase_orders);
+    axiom_node_t *phase_orders_node);
 
 static axis2_status_t
-axis2_conf_builder_process_transport_senders(
-    axis2_conf_builder_t *conf_builder,
+axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *trs_senders);
 
@@ -83,51 +56,34 @@ axis2_conf_builder_process_transport_recvs(
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *trs_recvs);
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 axis2_conf_builder_process_default_module_versions(
     axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *module_versions);
 
-/************************** End of function prototypes ************************/
 
 AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
 axis2_conf_builder_create(
     const axis2_env_t *env)
 {
-    axis2_conf_builder_impl_t *conf_builder_impl = NULL;
+    axis2_conf_builder_t *conf_builder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    conf_builder_impl = (axis2_conf_builder_impl_t *) AXIS2_MALLOC(env->
-            allocator, sizeof(axis2_conf_builder_impl_t));
+    conf_builder = (axis2_conf_builder_t *) AXIS2_MALLOC(env->
+            allocator, sizeof(axis2_conf_builder_t));
 
 
-    if (NULL == conf_builder_impl)
+    if (NULL == conf_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    conf_builder_impl->conf = NULL;
-    conf_builder_impl->conf_builder.ops = NULL;
+    conf_builder->conf = NULL;
 
-    conf_builder_impl->conf_builder.ops =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_conf_builder_ops_t));
-    if (NULL == conf_builder_impl->conf_builder.ops)
-    {
-        axis2_conf_builder_free(&(conf_builder_impl->conf_builder), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    conf_builder_impl->conf_builder.ops->free = axis2_conf_builder_free;
-    conf_builder_impl->conf_builder.ops->populate_conf =
-        axis2_conf_builder_populate_conf;
-    conf_builder_impl->conf_builder.ops->process_module_refs =
-        axis2_conf_builder_process_module_refs;
-
-    return &(conf_builder_impl->conf_builder);
+    return conf_builder;
 }
 
 AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
@@ -137,64 +93,50 @@ axis2_conf_builder_create_with_file_and_dep_engine_and_conf(
     axis2_dep_engine_t *engine,
     axis2_conf_t *conf)
 {
-    axis2_conf_builder_impl_t *builder_impl = NULL;
+    axis2_conf_builder_t *conf_builder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    builder_impl = (axis2_conf_builder_impl_t *) axis2_conf_builder_create(
+    conf_builder = (axis2_conf_builder_t *) axis2_conf_builder_create(
                 env);
-    if (NULL == builder_impl)
+    if (NULL == conf_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    builder_impl->conf_builder.desc_builder =
+    conf_builder->desc_builder =
         axis2_desc_builder_create_with_file_and_dep_engine(env, file, engine);
-    builder_impl->conf = conf;
+    conf_builder->conf = conf;
 
-    return &(builder_impl->conf_builder);
+    return conf_builder;
 }
 
-/***************************Function implementation****************************/
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_builder_free(
     axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env)
 {
-    axis2_conf_builder_impl_t *conf_builder_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    conf_builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
     if (conf_builder->desc_builder)
     {
         AXIS2_DESC_BUILDER_FREE(conf_builder->desc_builder, env);
-        conf_builder->desc_builder = NULL;
     }
 
-    if (conf_builder->ops)
+    if (conf_builder)
     {
-        AXIS2_FREE(env->allocator, conf_builder->ops);
-        conf_builder->ops = NULL;
-    }
-
-    if (conf_builder_impl)
-    {
-        AXIS2_FREE(env->allocator, conf_builder_impl);
-        conf_builder_impl = NULL;
+        AXIS2_FREE(env->allocator, conf_builder);
     }
 
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_builder_populate_conf(
     axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env)
 {
-    axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_qname_t *qparamst = NULL;
     axis2_qname_t *qmsgrecv = NULL;
     axis2_qname_t *qdisporder = NULL;
@@ -218,7 +160,6 @@ axis2_conf_builder_populate_conf(
     axis2_param_t *param = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
     conf_node  = AXIS2_DESC_BUILDER_BUILD_OM(conf_builder->desc_builder, env);
     if (!conf_node)
@@ -233,7 +174,8 @@ axis2_conf_builder_populate_conf(
             conf_node);
     AXIS2_QNAME_FREE(qparamst, env);
     AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env, itr,
-            builder_impl->conf->param_container, builder_impl->conf->param_container);
+            axis2_conf_get_param_container(conf_builder->conf, env),
+            axis2_conf_get_param_container(conf_builder->conf, env));
     /* process Message Reciver */
     qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
     msg_recvs = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
@@ -261,7 +203,7 @@ axis2_conf_builder_populate_conf(
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
         mep_att = AXIOM_ELEMENT_GET_ATTRIBUTE(msg_recv_element, env, qmep);
         att_value = axiom_attribute_get_value(mep_att, env);
-        AXIS2_CONF_ADD_MSG_RECV(builder_impl->conf, env, att_value, msg_recv);
+        AXIS2_CONF_ADD_MSG_RECV(conf_builder->conf, env, att_value, msg_recv);
         AXIS2_QNAME_FREE(qmep, env);
     }
 
@@ -278,7 +220,7 @@ axis2_conf_builder_populate_conf(
     }
     else
     {
-        status = AXIS2_CONF_SET_DEFAULT_DISPATCHERS(builder_impl->conf, env);
+        status = AXIS2_CONF_SET_DEFAULT_DISPATCHERS(conf_builder->conf, env);
         if (AXIS2_SUCCESS != status)
         {
             return AXIS2_FAILURE;
@@ -335,7 +277,8 @@ axis2_conf_builder_populate_conf(
     }
     /* TODO processing Axis Storages */
 
-    param = axis2_param_container_get_param(builder_impl->conf->param_container, 
+    param = axis2_param_container_get_param(
+        axis2_conf_get_param_container(conf_builder->conf, env), 
         env, AXIS2_ENABLE_MTOM);
     if (param)
     {
@@ -343,7 +286,7 @@ axis2_conf_builder_populate_conf(
         value = AXIS2_PARAM_GET_VALUE(param, env);
         if (value)
         {
-            axis2_conf_set_enable_mtom(builder_impl->conf, env, 
+            axis2_conf_set_enable_mtom(conf_builder->conf, env, 
                 (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0));
         }
     }
@@ -351,18 +294,16 @@ axis2_conf_builder_populate_conf(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_builder_process_module_refs(
     axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *module_refs)
 {
-    axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(module_refs,
             env))
@@ -392,8 +333,9 @@ axis2_conf_builder_process_module_refs(
             ref_name = axiom_attribute_get_value(module_ref_att, env);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "module %s found in axis2.xml", ref_name);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
-            status = AXIS2_DEP_ENGINE_ADD_MODULE(conf_builder->desc_builder->
-                    engine, env, qrefname);
+            status = AXIS2_DEP_ENGINE_ADD_MODULE(
+                axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
+                env, qrefname);
             if (qrefname)
                 AXIS2_QNAME_FREE(qrefname, env);
         }
@@ -407,7 +349,6 @@ axis2_conf_builder_process_disp_order(
     const axis2_env_t *env,
     axiom_node_t *disp_order_node)
 {
-    axis2_conf_builder_impl_t *builder_impl = NULL;
     axiom_element_t *disp_order_element = NULL;
     axiom_children_qname_iterator_t *disps = NULL;
     axis2_qname_t *qdisp = NULL;
@@ -419,7 +360,6 @@ axis2_conf_builder_process_disp_order(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, disp_order_node, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
     disp_order_element = AXIOM_NODE_GET_DATA_ELEMENT(
                 disp_order_node, env);
@@ -506,7 +446,7 @@ axis2_conf_builder_process_disp_order(
     }
     else
     {
-        status = AXIS2_CONF_SET_DISPATCH_PHASE(builder_impl->conf, env, disp_phase);
+        status = AXIS2_CONF_SET_DISPATCH_PHASE(conf_builder->conf, env, disp_phase);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_PHASE_FREE(disp_phase, env);
@@ -526,15 +466,14 @@ axis2_conf_builder_process_phase_orders(
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *phase_orders)
 {
-    axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_phases_info_t *info = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phase_orders, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
-    info = AXIS2_DEP_ENGINE_GET_PHASES_INFO(conf_builder->desc_builder->engine,
-            env);
+    info = AXIS2_DEP_ENGINE_GET_PHASES_INFO(
+           axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
+           env);
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(phase_orders, env))
     {
         axiom_node_t *phase_orders_node = NULL;
@@ -604,7 +543,6 @@ axis2_conf_builder_get_phase_list(
     const axis2_env_t *env,
     axiom_node_t *phase_orders_node)
 {
-    axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *phase_list = NULL;
     axiom_children_qname_iterator_t *phases = NULL;
     axis2_qname_t *qphase = NULL;
@@ -612,7 +550,6 @@ axis2_conf_builder_get_phase_list(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phase_orders_node, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
     phase_orders_element = AXIOM_NODE_GET_DATA_ELEMENT(phase_orders_node,
             env);
@@ -675,12 +612,10 @@ axis2_conf_builder_process_transport_senders(
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *trs_senders)
 {
-    axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, trs_senders, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(trs_senders,
             env))
@@ -794,8 +729,9 @@ axis2_conf_builder_process_transport_senders(
                  axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                         class_name);
 
-            repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(conf_builder->
-                    desc_builder->engine, env);
+            repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(
+                axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
+                env);
             temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
             temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
             temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
@@ -829,8 +765,8 @@ axis2_conf_builder_process_transport_senders(
             AXIS2_QNAME_FREE(qparamst, env);
             status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
                     itr, 
-                    axis2_transport_out_desc_param_container(transport_out, env), builder_impl->conf->
-                    param_container);
+                    axis2_transport_out_desc_param_container(transport_out, env), 
+                    axis2_conf_get_param_container(conf_builder->conf, env));
             if (AXIS2_SUCCESS != status)
             {
                 axis2_transport_out_desc_free(transport_out, env);
@@ -857,7 +793,8 @@ axis2_conf_builder_process_transport_senders(
                 axis2_flow_t *flow = NULL;
 
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
-                        env, out_flow_element, builder_impl->conf->param_container,
+                        env, out_flow_element, 
+                        axis2_conf_get_param_container(conf_builder->conf, env),
                         out_flow_node);
                 status = axis2_transport_out_desc_set_out_flow(transport_out, env, flow);
                 if (AXIS2_SUCCESS != status)
@@ -893,7 +830,8 @@ axis2_conf_builder_process_transport_senders(
                 axis2_flow_t *flow = NULL;
 
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
-                        env, out_fault_flow_element, builder_impl->conf->param_container,
+                        env, out_fault_flow_element, 
+                        axis2_conf_get_param_container(conf_builder->conf, env),
                         out_fault_flow_node);
                 status = axis2_transport_out_desc_set_fault_out_flow(transport_out, env, flow);
                 if (AXIS2_SUCCESS != status)
@@ -904,7 +842,7 @@ axis2_conf_builder_process_transport_senders(
             }
 
             /* adding to axis config */
-            status = AXIS2_CONF_ADD_TRANSPORT_OUT(builder_impl->conf, env,
+            status = AXIS2_CONF_ADD_TRANSPORT_OUT(conf_builder->conf, env,
                     transport_out, transport_enum);
             if (AXIS2_SUCCESS != status)
             {
@@ -924,12 +862,10 @@ axis2_conf_builder_process_transport_recvs(
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *trs_recvs)
 {
-    axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, trs_recvs, AXIS2_FAILURE);
-    builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(trs_recvs,
             env))
@@ -1034,8 +970,9 @@ axis2_conf_builder_process_transport_recvs(
                      axis2_dll_desc_create_platform_specific_dll_name(dll_desc,
                             env, class_name);
 
-                repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(conf_builder->
-                        desc_builder->engine, env);
+                repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(
+                    axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
+                    env);
                 temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
                 temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
                 temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
@@ -1070,7 +1007,7 @@ axis2_conf_builder_process_transport_recvs(
             status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env,
                     itr, 
                     axis2_transport_in_desc_param_container(transport_in, env),
-                    builder_impl->conf->param_container);
+                    axis2_conf_get_param_container(conf_builder->conf, env));
             if (AXIS2_SUCCESS != status)
             {
                 axis2_transport_in_desc_free(transport_in, env);
@@ -1098,8 +1035,9 @@ axis2_conf_builder_process_transport_recvs(
                 axis2_flow_t *flow = NULL;
 
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->
-                        desc_builder, env, in_flow_element, builder_impl->conf->
-                        param_container, in_flow_node);
+                        desc_builder, env, in_flow_element, 
+                        axis2_conf_get_param_container(conf_builder->conf, env),
+                        in_flow_node);
                 status = axis2_transport_in_desc_set_in_flow(transport_in, env,
                         flow);
                 if (AXIS2_SUCCESS != status)
@@ -1120,8 +1058,9 @@ axis2_conf_builder_process_transport_recvs(
                 axis2_flow_t *flow = NULL;
 
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
-                        env, in_fault_flow_element, builder_impl->conf->
-                        param_container, in_fault_flow_node);
+                        env, in_fault_flow_element, 
+                        axis2_conf_get_param_container(conf_builder->conf, env),
+                        in_fault_flow_node);
                 status = axis2_transport_in_desc_set_fault_in_flow(transport_in,
                         env, flow);
                 if (AXIS2_SUCCESS != status)
@@ -1144,7 +1083,7 @@ axis2_conf_builder_process_transport_recvs(
             }
 
             /* adding to axis config */
-            status = AXIS2_CONF_ADD_TRANSPORT_IN(builder_impl->conf, env,
+            status = AXIS2_CONF_ADD_TRANSPORT_IN(conf_builder->conf, env,
                     transport_in, transport_enum);
             if (AXIS2_SUCCESS != status)
             {
@@ -1159,7 +1098,7 @@ axis2_conf_builder_process_transport_recvs(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 axis2_conf_builder_process_default_module_versions(
     axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
@@ -1209,7 +1148,7 @@ axis2_conf_builder_process_default_module_versions(
             return AXIS2_FAILURE;
         }
         AXIS2_CONF_ADD_DEFAULT_MODULE_VERSION(
-            AXIS2_INTF_TO_IMPL(conf_builder)->conf, env, name,
+            conf_builder->conf, env, name,
             default_version);
     }
     return AXIS2_SUCCESS;

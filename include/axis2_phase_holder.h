@@ -50,98 +50,75 @@ extern "C"
 
     /** Type name for struct axis2_phase_holder */
     typedef struct axis2_phase_holder axis2_phase_holder_t;
-    /** Type name for struct axis2_phase_holder_ops  */
-    typedef struct axis2_phase_holder_ops axis2_phase_holder_ops_t;
 
     struct axis2_phase;
     struct axis2_handler_desc;
     struct axis2_handler;
     struct axis2_phase_rule;
 
-    /**
-     * phase holder ops struct.
-     * Encapsulator struct for ops of axis2_phase_holder.
+    /** 
+     * Frees phase holder.
+     * @param phase_holder pointer to phase holder
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_phase_holder_ops
-    {
-        /** 
-         * Frees phase holder.
-         * @param phase_holder pointer to phase holder
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_phase_holder_t *phase_holder,
-                    const axis2_env_t *env);
-
-        /**
-         * Checks if the named phase exist.
-         * @param phase_holder pointer to phase holder
-         * @param env pointer to environment struct
-         * @param phase_name phase name string
-         * @return AXIS2_TRUE if the named phase exist, else AXIS2_FALSE
-         */
-        axis2_bool_t (AXIS2_CALL *
-                is_phase_exist)(
-                    axis2_phase_holder_t *phase_holder,
-                    const axis2_env_t *env,
-                    const axis2_char_t *phase_name);
-
-        /**
-         * Adds given handler to phase holder.
-         * @param phase_holder pointer to phase holder
-         * @param env pointer to environment struct
-         * @para handler pointer to handler
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_handler)(
-                    axis2_phase_holder_t *phase_holder,
-                    const axis2_env_t *env,
-                    struct axis2_handler_desc *handler);
-
-        /**
-         * Gets the named phase from phase array list.
-         * @param phase_holder pointer to phase holder
-         * @param env pointer to environment struct
-         * @param phase_name pointer to phase name
-         * @return pointer to named phase if it exists, else NULL. Returns a 
-         * reference, not a cloned copy 
-         */
-        struct axis2_phase *(AXIS2_CALL *
-                get_phase)(
-                    const axis2_phase_holder_t *phase_holder,
-                    const axis2_env_t *env,
-                    const axis2_char_t *phase_name);
-
-        /**
-         * Builds the transport phase. This method loads the corresponding 
-         * handlers and added them into correct phase. 
-         * @param phase_holder pointer to phase holder
-         * @param env pointer to environment struct
-         * @param phase pointer to phase, phase holder does not assume the 
-         * ownership the phase
-         * @param handlers pointer to array list of handlers, phase holder does 
-         * not assume the ownership of the list
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                build_transport_handler_chain)(
-                    axis2_phase_holder_t *phase_holder,
-                    const axis2_env_t *env,
-                    struct axis2_phase *phase,
-                    axis2_array_list_t *handlers);
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_holder_free(axis2_phase_holder_t *phase_holder,
+        const axis2_env_t *env);
 
     /**
-     * phase holder struct.
+     * Checks if the named phase exist.
+     * @param phase_holder pointer to phase holder
+     * @param env pointer to environment struct
+     * @param phase_name phase name string
+     * @return AXIS2_TRUE if the named phase exist, else AXIS2_FALSE
      */
-    struct axis2_phase_holder
-    {
-        /** operations of phase holder struct */
-        axis2_phase_holder_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
+        const axis2_env_t *env,
+        const axis2_char_t *phase_name);
+
+    /**
+     * Adds given handler to phase holder.
+     * @param phase_holder pointer to phase holder
+     * @param env pointer to environment struct
+     * @para handler pointer to handler
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
+        const axis2_env_t *env,
+        struct axis2_handler_desc *handler);
+
+    /**
+     * Gets the named phase from phase array list.
+     * @param phase_holder pointer to phase holder
+     * @param env pointer to environment struct
+     * @param phase_name pointer to phase name
+     * @return pointer to named phase if it exists, else NULL. Returns a 
+     * reference, not a cloned copy 
+     */
+    AXIS2_EXTERN struct axis2_phase *AXIS2_CALL
+    axis2_phase_holder_get_phase(const axis2_phase_holder_t *phase_holder,
+        const axis2_env_t *env,
+        const axis2_char_t *phase_name);
+
+    /**
+     * Builds the transport phase. This method loads the corresponding 
+     * handlers and added them into correct phase. 
+     * @param phase_holder pointer to phase holder
+     * @param env pointer to environment struct
+     * @param phase pointer to phase, phase holder does not assume the 
+     * ownership the phase
+     * @param handlers pointer to array list of handlers, phase holder does 
+     * not assume the ownership of the list
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder,
+        const axis2_env_t *env,
+        struct axis2_phase *phase,
+        axis2_array_list_t *handlers);
 
     /**
      * Creates phase holder struct.
@@ -149,8 +126,7 @@ extern "C"
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
-    axis2_phase_holder_create (
-        const axis2_env_t *env);
+    axis2_phase_holder_create (const axis2_env_t *env);
 
     /**
      * Creates phase holder struct with given list of phases.
@@ -159,34 +135,28 @@ extern "C"
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
-    axis2_phase_holder_create_with_phases (
-        const axis2_env_t *env,
+    axis2_phase_holder_create_with_phases(const axis2_env_t *env,
         axis2_array_list_t *phases);
 
-/** Frees phase holder.
-    @sa axis2_phase_holder_ops#free */
+/** Frees phase holder. */
 #define AXIS2_PHASE_HOLDER_FREE(phase_holder, env) \
-      ((phase_holder)->ops->free (phase_holder, env))
+      axis2_phase_holder_free (phase_holder, env)
 
-/** Checks of a named phase exist.
-    @sa axis2_phase_holder_ops#is_phase_exist */
+/** Checks of a named phase exist. */
 #define AXIS2_PHASE_HOLDER_IS_PHASE_EXIST(phase_holder, env, phase_name) \
-      ((phase_holder)->ops->is_phase_exist (phase_holder, env, phase_name))
+      axis2_phase_holder_is_phase_exist (phase_holder, env, phase_name)
 
-/** Adds handler.
-    @sa axis2_phase_holder_ops#add_handler */
+/** Adds handler. */
 #define AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder, env, handler) \
-      ((phase_holder)->ops->add_handler (phase_holder, env, handler))
+      axis2_phase_holder_add_handler (phase_holder, env, handler)
 
-/** Gets named phase.
-    @sa axis2_phase_holder_ops#get_phase */
+/** Gets named phase. */
 #define AXIS2_PHASE_HOLDER_GET_PHASE(phase_holder, env, phase_name) \
-      ((phase_holder)->ops->get_phase (phase_holder, env, phase_name))
+      axis2_phase_holder_get_phase (phase_holder, env, phase_name)
 
-/** Builds transport handler chain.
-    @sa axis2_phase_holder_ops#build_transport_handler_chain */
+/** Builds transport handler chain. */
 #define AXIS2_PHASE_HOLDER_BUILD_TRANSPORT_HANDLER_CHAIN(phase_holder, env, phase, handlers) \
-      ((phase_holder)->ops->build_transport_handler_chain (phase_holder, env, phase, handlers))
+      axis2_phase_holder_build_transport_handler_chain (phase_holder, env, phase, handlers)
 
 /** @} */
 

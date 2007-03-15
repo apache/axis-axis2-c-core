@@ -41,62 +41,39 @@ extern "C"
 {
 #endif
 
-
-    /** Type name for struct axis2_async_result_ops */
-    typedef struct axis2_async_result_ops axis2_async_result_ops_t;
     /** Type name for struct axis2_async_result */
     typedef struct axis2_async_result axis2_async_result_t;
 
+    /**
+     * Gets the SOAP envelope stored inside the resulting message context.        
+     * @param async_result pointer to async result struct
+     * @param env pointer to environment struct
+     * @return pointer to the result SOAP envelope in the message context.
+     */
+    AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+    axis2_async_result_get_envelope(axis2_async_result_t *async_result,
+        const axis2_env_t *env);
+
 
     /**
-     * async_result ops struct.
-     * Encapsulator struct for ops of axis2_async_result.
+     * Gets the result in the form of message context.
+     * @param async_result pointer to async result struct
+     * @param env pointer to environment struct
+     * @return pointer to result message context
      */
-    struct axis2_async_result_ops
-    {
-        /**
-         * Gets the SOAP envelope stored inside the resulting message context.        
-         * @param async_result pointer to async result struct
-         * @param env pointer to environment struct
-         * @return pointer to the result SOAP envelope in the message context.
-         */
-        axiom_soap_envelope_t *(AXIS2_CALL *
-                get_envelope)(
-                    axis2_async_result_t *async_result,
-                    const axis2_env_t *env);
-
-
-        /**
-         * Gets the result in the form of message context.
-         * @param async_result pointer to async result struct
-         * @param env pointer to environment struct
-         * @return pointer to result message context
-         */
-        axis2_msg_ctx_t *(AXIS2_CALL *
-                get_result)(
-                    axis2_async_result_t *async_result,
-                    const axis2_env_t *env);
-
-        /**
-         * Frees the async result.
-         * @param async_result pointer to async result struct
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_async_result_t *async_result,
-                    const axis2_env_t *env);
-    };
+    AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
+    axis2_async_result_get_result(axis2_async_result_t *async_result,
+        const axis2_env_t *env);
 
     /**
-     *  async result struct.
+     * Frees the async result.
+     * @param async_result pointer to async result struct
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_async_result
-    {
-        /** operations of async result */
-        axis2_async_result_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_async_result_free(axis2_async_result_t *async_result,
+        const axis2_env_t *env);
 
     /** Creates an async result struct to help deal with results of asynchronous
      * invocations.
@@ -106,24 +83,20 @@ extern "C"
      * @return newly created async_result struct
      */
     AXIS2_EXTERN axis2_async_result_t *AXIS2_CALL
-    axis2_async_result_create(
-        const axis2_env_t *env,
+    axis2_async_result_create(const axis2_env_t *env,
         axis2_msg_ctx_t *result);
 
-/** Gets the envelope.
-    @sa axis2_async_result_ops#get_envelope*/
+/** Gets the envelope. */
 #define AXIS2_ASYNC_RESULT_GET_ENVELOPE(async_result, env) \
-      ((async_result)->ops->get_envelope(async_result, env))
+      axis2_async_result_get_envelope(async_result, env)
 
-/** Gets the result.
-    @sa axis2_async_result_ops#get_result*/
+/** Gets the result. */
 #define AXIS2_ASYNC_RESULT_GET_RESULT(async_result, env) \
-      ((async_result)->ops->get_result(async_result, env))
+      axis2_async_result_get_result(async_result, env)
 
-/** Free.
-    @sa axis2_async_result_ops#free*/
+/** Free. */
 #define AXIS2_ASYNC_RESULT_FREE(async_result, env) \
-      ((async_result)->ops->free (async_result, env))
+      axis2_async_result_free (async_result, env)
 
 /** @} */
 #ifdef __cplusplus

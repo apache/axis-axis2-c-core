@@ -17,85 +17,31 @@
 
 #include <axis2_phase_holder.h>
 
-typedef struct axis2_phase_holder_impl
+struct axis2_phase_holder
 {
-    axis2_phase_holder_t phase_holder;
     axis2_array_list_t *phase_list;
-}
-axis2_phase_holder_impl_t;
-
-#define AXIS2_INTF_TO_IMPL(phase_holder) ((axis2_phase_holder_impl_t *)phase_holder)
-
-axis2_status_t AXIS2_CALL
-axis2_phase_holder_free(
-    axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env);
-
-axis2_bool_t AXIS2_CALL
-axis2_phase_holder_is_phase_exist(
-    axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env,
-    const axis2_char_t *phase_name);
-
-axis2_status_t AXIS2_CALL
-axis2_phase_holder_add_handler(
-    axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env,
-    axis2_handler_desc_t *handler);
-
-axis2_phase_t *AXIS2_CALL
-axis2_phase_holder_get_phase(
-    const axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env,
-    const axis2_char_t *phase_name);
-
-axis2_status_t AXIS2_CALL
-axis2_phase_holder_build_transport_handler_chain(
-    axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env,
-    axis2_phase_t *phase,
-    axis2_array_list_t *handlers);
+};
 
 AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
 axis2_phase_holder_create(
     const axis2_env_t *env)
 {
-    axis2_phase_holder_impl_t *phase_holder_impl = NULL;
+    axis2_phase_holder_t *phase_holder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    phase_holder_impl = (axis2_phase_holder_impl_t *) AXIS2_MALLOC(env->
-            allocator, sizeof(axis2_phase_holder_impl_t));
+    phase_holder = (axis2_phase_holder_t *) AXIS2_MALLOC(env->
+            allocator, sizeof(axis2_phase_holder_t));
 
-    if (NULL == phase_holder_impl)
+    if (NULL == phase_holder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    phase_holder_impl->phase_list = NULL;
-    phase_holder_impl->phase_holder.ops = NULL;
+    phase_holder->phase_list = NULL;
 
-    phase_holder_impl->phase_holder.ops =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_phase_holder_ops_t));
-    if (NULL == phase_holder_impl->phase_holder.ops)
-    {
-        axis2_phase_holder_free(&(phase_holder_impl->phase_holder), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    phase_holder_impl->phase_holder.ops->free = axis2_phase_holder_free;
-    phase_holder_impl->phase_holder.ops->is_phase_exist =
-        axis2_phase_holder_is_phase_exist;
-    phase_holder_impl->phase_holder.ops->add_handler =
-        axis2_phase_holder_add_handler;
-    phase_holder_impl->phase_holder.ops->get_phase =
-        axis2_phase_holder_get_phase;
-    phase_holder_impl->phase_holder.ops->build_transport_handler_chain =
-        axis2_phase_holder_build_transport_handler_chain;
-
-    return &(phase_holder_impl->phase_holder);
+    return phase_holder;
 }
 
 AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
@@ -103,46 +49,35 @@ axis2_phase_holder_create_with_phases(
     const axis2_env_t *env,
     axis2_array_list_t *phases)
 {
-    axis2_phase_holder_impl_t *phase_holder_impl = NULL;
+    axis2_phase_holder_t *phase_holder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     if (!phases)
         return NULL;
 
-    phase_holder_impl = (axis2_phase_holder_impl_t *)axis2_phase_holder_create(env);
-    phase_holder_impl->phase_list = phases;
+    phase_holder = (axis2_phase_holder_t *)axis2_phase_holder_create(env);
+    phase_holder->phase_list = phases;
 
-    return &(phase_holder_impl->phase_holder);
+    return phase_holder;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_holder_free(
     axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env)
 {
-    axis2_phase_holder_impl_t *phase_holder_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
-
-    if (phase_holder->ops)
+    if (phase_holder)
     {
-        AXIS2_FREE(env->allocator, phase_holder->ops);
-        phase_holder->ops = NULL;
-    }
-
-    if (phase_holder_impl)
-    {
-        AXIS2_FREE(env->allocator, phase_holder_impl);
-        phase_holder_impl = NULL;
+        AXIS2_FREE(env->allocator, phase_holder);
     }
 
     return AXIS2_SUCCESS;
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_phase_holder_is_phase_exist(
     axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,
@@ -151,19 +86,17 @@ axis2_phase_holder_is_phase_exist(
     int size = 0;
     int i = 0;
     axis2_phase_t *phase = NULL;
-    axis2_phase_holder_impl_t *phase_holder_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, phase_name, AXIS2_FALSE);
-    phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
 
-    size = axis2_array_list_size(phase_holder_impl->phase_list, env);
+    size = axis2_array_list_size(phase_holder->phase_list, env);
 
     for (i = 0; i < size; i++)
     {
         const axis2_char_t *phase_name_l = NULL;
 
-        phase = (axis2_phase_t *) axis2_array_list_get(phase_holder_impl->
+        phase = (axis2_phase_t *) axis2_array_list_get(phase_holder->
                 phase_list, env, i);
         phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
         if (0 == AXIS2_STRCMP(phase_name_l, phase_name))
@@ -174,7 +107,7 @@ axis2_phase_holder_is_phase_exist(
     return AXIS2_FALSE;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_holder_add_handler(
     axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,
@@ -210,7 +143,7 @@ axis2_phase_holder_add_handler(
     return status;
 }
 
-axis2_phase_t *AXIS2_CALL
+AXIS2_EXTERN axis2_phase_t *AXIS2_CALL
 axis2_phase_holder_get_phase(
     const axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,
@@ -218,20 +151,17 @@ axis2_phase_holder_get_phase(
 {
     int size = 0;
     int i = 0;
-    axis2_phase_holder_impl_t *phase_holder_impl = NULL;
     axis2_phase_t *phase = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, phase_name, NULL);
 
-    phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
-
-    size = axis2_array_list_size(phase_holder_impl->phase_list, env);
+    size = axis2_array_list_size(phase_holder->phase_list, env);
 
     for (i = 0; i < size; i++)
     {
         const axis2_char_t *phase_name_l = NULL;
-        phase = (axis2_phase_t *) axis2_array_list_get(phase_holder_impl->
+        phase = (axis2_phase_t *) axis2_array_list_get(phase_holder->
                 phase_list, env, i);
         phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
         if (0 == AXIS2_STRCMP(phase_name_l, phase_name))
@@ -243,7 +173,7 @@ axis2_phase_holder_get_phase(
     return NULL;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(
     axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,

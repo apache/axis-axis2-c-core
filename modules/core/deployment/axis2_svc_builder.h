@@ -47,75 +47,55 @@ extern "C"
     struct axis2_dep_engine;
     /** Type name for struct axis2_svc_builder */
     typedef struct axis2_svc_builder axis2_svc_builder_t;
-    /** Type name for struct axis2_svc_builder_ops */
-    typedef struct axis2_svc_builder_ops axis2_svc_builder_ops_t;
+
+    /** 
+     * De-allocate memory
+     * @param svc_builder pointer to service builder
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_builder_free(axis2_svc_builder_t *svc_builder,
+        const axis2_env_t *env);
 
     /**
-     * Service Builder ops struct
-     * Encapsulator struct for ops of axis2_svc_builder
+     * top most method that is used to populate service from corresponding OM
+     * @param svc_builder pointer to service builder
+     * @param env pointer to environment struct
+     * @param svc_node pointer to service node
      */
-    struct axis2_svc_builder_ops
-    {
-        /** 
-         * De-allocate memory
-         * @param svc_builder pointer to service builder
-         * @param env pointer to environment struct
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_svc_builder_t *svc_builder,
-                    const axis2_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
+        const axis2_env_t *env,
+        axiom_node_t *svc_node);
 
-        /**
-         * top most method that is used to populate service from corresponding OM
-         * @param svc_builder pointer to service builder
-         * @param env pointer to environment struct
-         * @param svc_node pointer to service node
-         */
-        axis2_status_t (AXIS2_CALL *
-                populate_svc)(
-                    axis2_svc_builder_t *svc_builder,
-                    const axis2_env_t *env,
-                    axiom_node_t *svc_node);
-
-        /** 
-         * @param svc_builder pointer to service builder
-         * @param env pointer to environment struct
-         * @param module_confs pointer to module configurations
-         * @param parent pointer to parent
-         * @param svc pointer to service
-         */
-        axis2_status_t (AXIS2_CALL *
-                process_svc_module_conf)(
-                    axis2_svc_builder_t *svc_builder,
-                    const axis2_env_t *env,
-                    axiom_children_qname_iterator_t *module_confs,
-                    axis2_param_container_t *parent,
-                    axis2_svc_t *svc);
-
-        /**
-         * To get the list og modules that is requird to be engage globally
-         * @param svc_builder pointer to service builder
-         * @param env pointer to environment struct
-         * @param module_refs pointer to module refs
-         */
-        axis2_status_t (AXIS2_CALL *
-                process_module_refs)(
-                    axis2_svc_builder_t *svc_builder,
-                    const axis2_env_t *env,
-                    axiom_children_qname_iterator_t *module_refs);
-
-    };
+    /** 
+     * @param svc_builder pointer to service builder
+     * @param env pointer to environment struct
+     * @param module_confs pointer to module configurations
+     * @param parent pointer to parent
+     * @param svc pointer to service
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
+        const axis2_env_t *env,
+        axiom_children_qname_iterator_t *module_confs,
+        axis2_param_container_t *parent,
+        axis2_svc_t *svc);
 
     /**
-     * Service Builder struct 
+     * To get the list og modules that is requird to be engage globally
+     * @param svc_builder pointer to service builder
+     * @param env pointer to environment struct
+     * @param module_refs pointer to module refs
      */
-    struct axis2_svc_builder
-    {
-        /** Operations of service builder */
-        axis2_svc_builder_ops_t *ops;
-        struct axis2_desc_builder *desc_builder;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
+        const axis2_env_t *env,
+        axiom_children_qname_iterator_t *module_refs);
+
+    AXIS2_EXTERN struct axis2_desc_builder *AXIS2_CALL
+    axis2_svc_builder_get_desc_builder(const axis2_svc_builder_t *svc_builder,
+        const axis2_env_t *env);
 
     /**
      * Creates svc builder struct
@@ -123,8 +103,7 @@ extern "C"
      * @return pointer to newly created service builder
      */
     AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-    axis2_svc_builder_create(
-        const axis2_env_t *env);
+    axis2_svc_builder_create(const axis2_env_t *env);
 
     /**
      * Creates svc builder struct
@@ -135,8 +114,7 @@ extern "C"
      * @return pointer to newly created service builder
      */
     AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-    axis2_svc_builder_create_with_file_and_dep_engine_and_svc(
-        const axis2_env_t *env,
+    axis2_svc_builder_create_with_file_and_dep_engine_and_svc(const axis2_env_t *env,
         axis2_char_t *file_name,
         struct axis2_dep_engine *dep_engine,
         axis2_svc_t *svc);
@@ -149,30 +127,21 @@ extern "C"
      * @return pointer to newly created service builder
      */
     AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-    axis2_svc_builder_create_with_dep_engine_and_svc(
-        const axis2_env_t *env,
+    axis2_svc_builder_create_with_dep_engine_and_svc(const axis2_env_t *env,
         struct axis2_dep_engine *dep_engine,
         axis2_svc_t *svc);
 
-/*************************** Function macros **********************************/
-
-/** Frees the service builder.
-    @sa axis2_svc_builder_ops#free */
+/** Frees the service builder. */
 #define AXIS2_SVC_BUILDER_FREE(svc_builder, env) \
-      ((svc_builder)->ops->free (svc_builder, env))
+      axis2_svc_builder_free (svc_builder, env)
 
-/** Populates the service.
-    @sa axis2_svc_builder_ops#populate_svc */
+/** Populates the service. */
 #define AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svc_node) \
-      ((svc_builder)->ops->populate_svc (svc_builder, env, svc_node))
+      axis2_svc_builder_populate_svc (svc_builder, env, svc_node)
 
-/** Process module refs.
-    @sa axis2_svc_builder_ops#process_module_refs */
+/** Process module refs. */
 #define AXIS2_SVC_BUILDER_PROCESS_MODULE_REFS(svc_builder, env, module_refs) \
-      ((svc_builder)->ops->process_module_refs (svc_builder, env, module_refs))
-
-
-/*************************** End of function macros ***************************/
+      axis2_svc_builder_process_module_refs (svc_builder, env, module_refs)
 
 /** @} */
 

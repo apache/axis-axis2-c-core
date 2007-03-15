@@ -22,271 +22,67 @@
 #include <axis2_module_builder.h>
 #include <axis2_svc.h>
 
-/**
- * To do the common tasks for all Builder
- */
-typedef struct axis2_arch_reader_impl
+struct axis2_arch_reader
 {
-    axis2_arch_reader_t arch_reader;
     axis2_desc_builder_t *desc_builder;
 
-}
-axis2_arch_reader_impl_t;
-
-#define AXIS2_INTF_TO_IMPL(arch_reader) \
-    ((axis2_arch_reader_impl_t *) arch_reader)
-
-/************************* Function prototypes ********************************/
-
-axis2_status_t AXIS2_CALL
-axis2_arch_reader_free(
-    axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env);
-
-struct axis2_svc *AXIS2_CALL
-            axis2_arch_reader_create_svc(
-                axis2_arch_reader_t *arch_reader,
-                const axis2_env_t *env,
-                struct axis2_arch_file_data *file);
-
-axis2_status_t AXIS2_CALL
-axis2_arch_reader_process_svc_grp(
-    axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
-    axis2_char_t *file_path,
-    struct axis2_dep_engine *dep_engine,
-    axis2_svc_grp_t *svc_grp);
-
-axis2_status_t AXIS2_CALL
-axis2_arch_reader_build_svc_grp(
-    axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
-    axis2_char_t *file_path,
-    struct axis2_dep_engine *dep_engine,
-    struct axis2_svc_grp *svc_grp);
-
-axis2_status_t AXIS2_CALL
-axis2_arch_reader_read_module_arch(
-    axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
-    axis2_char_t *file_path,
-    struct axis2_dep_engine *dep_engine,
-    axis2_module_desc_t *module);
-
-axis2_file_t *AXIS2_CALL
-axis2_arch_reader_create_module_arch(
-    axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
-    axis2_char_t *module_name);
-
-/************************** End of function prototypes ************************/
+};
 
 AXIS2_EXTERN axis2_arch_reader_t *AXIS2_CALL
 axis2_arch_reader_create(
     const axis2_env_t *env)
 {
-    axis2_arch_reader_impl_t *arch_reader_impl = NULL;
+    axis2_arch_reader_t *arch_reader = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    arch_reader_impl = (axis2_arch_reader_impl_t *) AXIS2_MALLOC(env->
-            allocator, sizeof(axis2_arch_reader_impl_t));
+    arch_reader = (axis2_arch_reader_t *) AXIS2_MALLOC(env->
+            allocator, sizeof(axis2_arch_reader_t));
 
 
-    if (NULL == arch_reader_impl)
+    if (NULL == arch_reader)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    arch_reader_impl->desc_builder = NULL;
-    arch_reader_impl->arch_reader.ops = NULL;
+    arch_reader->desc_builder = NULL;
 
-    arch_reader_impl->arch_reader.ops =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_arch_reader_ops_t));
-    if (NULL == arch_reader_impl->arch_reader.ops)
-    {
-        axis2_arch_reader_free(&(arch_reader_impl->arch_reader), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    arch_reader_impl->arch_reader.ops->free = axis2_arch_reader_free;
-    arch_reader_impl->arch_reader.ops->create_svc = axis2_arch_reader_create_svc;
-    arch_reader_impl->arch_reader.ops->process_svc_grp =
-        axis2_arch_reader_process_svc_grp;
-    arch_reader_impl->arch_reader.ops->build_svc_grp =
-        axis2_arch_reader_build_svc_grp;
-    arch_reader_impl->arch_reader.ops->read_module_arch =
-        axis2_arch_reader_read_module_arch;
-    arch_reader_impl->arch_reader.ops->create_module_arch =
-        axis2_arch_reader_create_module_arch;
-
-    return &(arch_reader_impl->arch_reader);
+    return arch_reader;
 }
 
-/***************************Function implementation****************************/
-
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_arch_reader_free(
     axis2_arch_reader_t *arch_reader,
     const axis2_env_t *env)
 {
-    axis2_arch_reader_impl_t *arch_reader_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
 
-    if (arch_reader->ops)
-        AXIS2_FREE(env->allocator, arch_reader->ops);
-
-    if (arch_reader_impl->desc_builder)
+    if (arch_reader->desc_builder)
     {
-        AXIS2_DESC_BUILDER_FREE(arch_reader_impl->desc_builder, env);
-        arch_reader_impl->desc_builder = NULL;
+        AXIS2_DESC_BUILDER_FREE(arch_reader->desc_builder, env);
     }
 
-    if (arch_reader_impl)
+    if (arch_reader)
     {
-        AXIS2_FREE(env->allocator, arch_reader_impl);
-        arch_reader_impl = NULL;
+        AXIS2_FREE(env->allocator, arch_reader);
     }
 
     return AXIS2_SUCCESS;
 }
 
-struct axis2_svc *AXIS2_CALL
+AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
             axis2_arch_reader_create_svc(
                 axis2_arch_reader_t *arch_reader,
                 const axis2_env_t *env,
                 struct axis2_arch_file_data *file)
 {
     axis2_svc_t *svc = NULL;
-    /* TODO comment this until WODEN implementation is done */
-    /*
-    axis2_char_t *doc_base_uri = NULL;
-    axiom_document_t *doc = NULL;
-    axis2_hash_t *svcs = NULL;
-    axis2_hash_index_t *index = NULL;
-    axis2_bool_t *found_svc = AXIS2_FALSE;
-    if(// Check for wsdl file)
-    {
-        doc = get_root_element_from_filename(env, filename);
-        doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
-        reader = woden_reader_create(env); 
-        desc = (void *)WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
-        svcs = WODEN_DESC_GET_SVCS(desc, env);
-        if(svcs)
-        {
-            void *key = NULL;
-            axis2_hash_index_t *index = NULL;
-        
-            axis2_hash_this (index, *key, NULL, NULL);
-            if(!key) 
-            {
-                svc = axis2_svc_create(env, wsdl_svc);
-            }
-            else
-            { 
-                wsdl_svc = axis2_hash_get(svcs, key, AXIS2_HASH_KEY_STRING);
-                // remove <wsdl:service> and <wsdl:binding> elements from the service
-                // description we read in as we will be replacing them anyway.
-                svc = axis2_svc_create(env, wsdl_svc);
-                qname = AXIS2_WSDL_SVC_GET_QNAME(wsdl_svc, env);
-                AXIS2_SVC_SET_QNAME(svc, env, qname);
-                AXIS2_SVC_SET_WSDL_DEF(svc, env, desc);
-                curr_file_item = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
-                AXIS2_ARCH_FILE_DATA_ADD_SVC(curr_file_item, env, svc);
-            }
-        }
-    }
-    else 
-    {
-    */
     svc = axis2_svc_create(env);
-    /*TODO log */
-    /*WSDL_FILE_NOT_FOUND, filename);
-    */
-    /*
-    }
-    */
     return svc;
 }
 
-/* TODO comment this until WOM implementation is done */
-/*
-axis2_status_t *AXIS2_CALL
-axis2_arch_reader_process_wsdl_file(
-    axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
-    axis2_char_t *filename,
-    axis2_dep_engine_t *dep_engine)
-{
-    axis2_char_t *doc_base_uri = NULL;
-    axiom_document_t *doc = NULL;
-    axis2_hash_t *bindings = NULL;
-    axis2_hash_t *svcs = NULL;
-    axis2_hash_index_t *index = NULL;
-
-    doc = get_root_element_from_filename(env, filename);
-    doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
-    reader = woden_reader_create(env);
-    desc = (void *)WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
-    // Remove binding
-    bindings = WODEN_DESC_GET_BINDINGS(desc, env);
-    for (index = axis2_hash_first (bindings, env); index; index =
-            axis2_hash_next (env, index))
-    {
-        void *key = NULL;
-
-        axis2_hash_this (index, *key, NULL, NULL);
-        axis2_hash_set(bindings, key, AXIS2_HASH_KEY_STRING, NULL)
-    }
-    svcs = WODEN_DESC_GET_BINDINGS(desc, env);
-    for (index = axis2_hash_first (svcs, env); index; index =
-            axis2_hash_next (env, index))
-    {
-        void *key = NULL;
-        void *wsdl_svc = NULL;
-        axiss2_svc_desc_t *svc = NULL;
-
-        axis2_hash_this (index, *key, NULL, NULL);
-        wsdl_svc = axis2_hash_get(svcs, key, AXIS2_HASH_KEY_STRING);
-        svc = axis2_svc_create(env, wsdl_svc);
-        qname = AXIS2_WSDL_SVC_GET_QNAME(wsdl_svc, env);
-        AXIS2_SVC_SET_QNAME(svc, env, qname);
-        AXIS2_SVC_SET_WSDL_DEF(svc, env, desc);
-        curr_file_item = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
-        AXIS2_ARCH_FILE_DATA_ADD_SVC(curr_file_item, env, svc);
-    }
-}
-*/
-
-/**
- * To create service objects out form wsdls file inside a service archive file
- * @param file <code>arch_file_data</code>
- * @param dep_engine <code>dep_engine</code>
- */
-/* TODO comment this until WOM implementation is done */
-/*axis2_status_t AXIS2_CALL
-axis2_arch_reader_process_wsdls(
-    axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
-    axis2_arch_file_data_t *file,
-    axis2_dep_engine_t *dep_engine)
-{
-    axis2_file_t *svc_file = NULL;
-
-    // List the wsdl files in a wsdl directory.
-     // Calculate the path for each wsdl and call
-     // process_wsdl method
-     //
-    process_wsdl_file(arch_reader, env, wsdl_file, dep_engine);
-    return AXIS2_SUCCESS;
-}
-*/
-
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_arch_reader_process_svc_grp(
     axis2_arch_reader_t *arch_reader,
     const axis2_env_t *env,
@@ -339,7 +135,7 @@ axis2_arch_reader_process_svc_grp(
     return status;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_arch_reader_build_svc_grp(
     axis2_arch_reader_t *arch_reader,
     const axis2_env_t *env,
@@ -347,7 +143,6 @@ axis2_arch_reader_build_svc_grp(
     axis2_dep_engine_t *dep_engine,
     axis2_svc_grp_t *svc_grp)
 {
-    axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     axis2_char_t *root_element_name = NULL;
     axiom_node_t *svcs = NULL;
     axiom_element_t *svcs_element = NULL;
@@ -357,22 +152,21 @@ axis2_arch_reader_build_svc_grp(
     AXIS2_PARAM_CHECK(env->error, svc_xml, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
-    arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
 
-    if (arch_reader_impl->desc_builder)
+    if (arch_reader->desc_builder)
     {
-        AXIS2_DESC_BUILDER_FREE(arch_reader_impl->desc_builder, env);
-        arch_reader_impl->desc_builder = NULL;
+        AXIS2_DESC_BUILDER_FREE(arch_reader->desc_builder, env);
+        arch_reader->desc_builder = NULL;
     }
-    arch_reader_impl->desc_builder =
+    arch_reader->desc_builder =
         axis2_desc_builder_create_with_file_and_dep_engine(env, svc_xml,
                 dep_engine);
-    if (!arch_reader_impl->desc_builder)
+    if (!arch_reader->desc_builder)
     {
         return AXIS2_FAILURE;
     }
     
-    svcs = AXIS2_DESC_BUILDER_BUILD_OM(arch_reader_impl->desc_builder, env);
+    svcs = AXIS2_DESC_BUILDER_BUILD_OM(arch_reader->desc_builder, env);
     
     if (svcs)
     {
@@ -444,7 +238,7 @@ axis2_arch_reader_build_svc_grp(
     return status;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_arch_reader_read_module_arch(
     axis2_arch_reader_t *arch_reader,
     const axis2_env_t *env,
@@ -452,7 +246,6 @@ axis2_arch_reader_read_module_arch(
     axis2_dep_engine_t *dep_engine,
     axis2_module_desc_t *module_desc)
 {
-    axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *module_xml = NULL;
     axis2_char_t *repos_path = NULL;
@@ -461,7 +254,6 @@ axis2_arch_reader_read_module_arch(
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
-    arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
 
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
     module_xml = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
@@ -493,7 +285,7 @@ axis2_arch_reader_read_module_arch(
     return status;
 }
 
-axis2_file_t *AXIS2_CALL
+AXIS2_EXTERN axis2_file_t *AXIS2_CALL
 axis2_arch_reader_create_module_arch(
     axis2_arch_reader_t *arch_reader,
     const axis2_env_t *env,
@@ -511,3 +303,5 @@ axis2_arch_reader_create_module_arch(
      axis2_file_set_name(file, env, module_name);
     return file;
 }
+
+

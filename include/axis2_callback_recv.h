@@ -39,70 +39,46 @@ extern "C"
 {
 #endif
 
-/** Callback receiver service name */
-#define AXIS2_CALLBACK_RECV_SVC_NAME "ClientService"
-
-    /** Type name for struct axis2_callback_recv_ops */
-    typedef struct axis2_callback_recv_ops axis2_callback_recv_ops_t;
     /** Type name for struct axis2_callback_recv */
     typedef struct axis2_callback_recv axis2_callback_recv_t;
 
 
     /**
-     * callback receiver ops struct.
-     * Encapsulator struct for ops of axis2_callback_recv.
+     * Gets the base struct which is of type message receiver.
+     * @param callback_recv pointer to callback receiver struct
+     * @param env pointer to environment struct
+     * @return pointer to base message receiver struct
      */
-    struct axis2_callback_recv_ops
-    {
-        /**
-         * Gets the base struct which is of type message receiver.
-         * @param callback_recv pointer to callback receiver struct
-         * @param env pointer to environment struct
-         * @return pointer to base message receiver struct
-         */
-        axis2_msg_recv_t *(AXIS2_CALL *
-                get_base)(
-                    const axis2_callback_recv_t *callback_recv,
-                    const axis2_env_t *env);
-
-        /**
-         * Frees the callback receiver struct.
-         * @param callback_recv pointer to callback receiver struct
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_callback_recv_t *callback_recv,
-                    const axis2_env_t *env);
-
-        /**
-         * Adds a callback corresponding to given WSA message ID to message
-         * receiver.
-         * @param callback_recv pointer to callback receiver struct
-         * @param env pointer to environment struct
-         * @param msg_id message ID indicating which message the callback is
-         * supposed to deal with
-         * @param callback callback to be added. callback receiver assumes 
-         * ownership of the callback
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_callback)(
-                    struct axis2_callback_recv *callback_recv,
-                    const axis2_env_t *env,
-                    const axis2_char_t *msg_id,
-                    axis2_callback_t *callback);
-    };
+    AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
+    axis2_callback_recv_get_base(axis2_callback_recv_t *callback_recv,
+        const axis2_env_t *env);
 
     /**
-     * callback receiver struct.
+     * Frees the callback receiver struct.
+     * @param callback_recv pointer to callback receiver struct
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_callback_recv
-    {
-        /** operations of callback receiver */
-        axis2_callback_recv_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_callback_recv_free(axis2_callback_recv_t *callback_recv,
+        const axis2_env_t *env);
+
+    /**
+     * Adds a callback corresponding to given WSA message ID to message
+     * receiver.
+     * @param callback_recv pointer to callback receiver struct
+     * @param env pointer to environment struct
+     * @param msg_id message ID indicating which message the callback is
+     * supposed to deal with
+     * @param callback callback to be added. callback receiver assumes 
+     * ownership of the callback
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv,
+        const axis2_env_t *env,
+        const axis2_char_t *msg_id,
+        axis2_callback_t *callback);
 
     /**
      * Creates a callback receiver struct.
@@ -111,23 +87,19 @@ extern "C"
      *         or NULL on error with error code set in environment's error
      */
     AXIS2_EXTERN axis2_callback_recv_t *AXIS2_CALL
-    axis2_callback_recv_create(
-        const axis2_env_t *env);
+    axis2_callback_recv_create(const axis2_env_t *env);
 
-/** Gets the base message receiver. 
-    @sa axis2_callback_recv_ops#get_base */
+/** Gets the base message receiver. */
 #define AXIS2_CALLBACK_RECV_GET_BASE(callback_recv, env) \
-        ((callback_recv)->ops->get_base(callback_recv, env))
+        axis2_callback_recv_get_base(callback_recv, env)
 
-/** Frees callback message receiver. 
-    @sa axis2_callback_recv_ops#free */
+/** Frees callback message receiver. */
 #define AXIS2_CALLBACK_RECV_FREE(callback_recv, env) \
-        ((callback_recv)->ops->free(callback_recv, env))
+        axis2_callback_recv_free(callback_recv, env)
 
-/** Adds callback to callback message receiver. 
-    @sa axis2_callback_recv_ops#free */
+/** Adds callback to callback message receiver. */
 #define AXIS2_CALLBACK_RECV_ADD_CALLBACK(callback_recv, env, msg_id, callback)\
-        ((callback_recv)->ops->add_callback(callback_recv, env, msg_id, callback))
+        axis2_callback_recv_add_callback(callback_recv, env, msg_id, callback)
 
 
     /** @} */

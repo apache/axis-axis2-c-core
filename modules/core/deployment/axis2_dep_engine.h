@@ -52,249 +52,211 @@ extern "C"
 
     /** Type name for struct axis2_dep_engine */
     typedef struct axis2_dep_engine axis2_dep_engine_t;
-    /** Type name for struct axis2_dep_engine_ops */
-    typedef struct axis2_dep_engine_ops axis2_dep_engine_ops_t;
+
+    /** 
+     * De-allocate memory
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
+
 
     /**
-     * Deployment Engine ops struct
-     * Encapsulator struct for ops of axis2_dep_engine
+     * while parsing the axis2.xml the module refferences have to be stored some 
+     * where , since at that time none of module availble (they load after parsing 
+     * the document)
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param module_qname <code>QName</code>
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_dep_engine_ops
-    {
-        /** 
-         * De-allocate memory
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        axis2_qname_t *module_qname);
 
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param module_name pointer to module name
+     */
+    AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
+    axis2_dep_engine_get_module(const axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        axis2_qname_t *module_name);
 
-        /**
-         * while parsing the axis2.xml the module refferences have to be stored some 
-         * where , since at that time none of module availble (they load after parsing 
-         * the document)
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param module_qname <code>QName</code>
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_module)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    axis2_qname_t *module_qname);
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN struct axis2_arch_file_data *AXIS2_CALL
+    axis2_dep_engine_get_current_file_item(const axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
 
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param module_name pointer to module name
-         */
-        struct axis2_module_desc *(AXIS2_CALL *
-                get_module)(
-                    const axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    axis2_qname_t *module_name);
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param file pointer to file
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_add_ws_to_deploy(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_arch_file_data *file);
 
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         */
-        struct axis2_arch_file_data *(AXIS2_CALL *
-                get_current_file_item)(
-                    const axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param file pointer to file
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_add_ws_to_undeploy(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_ws_info *file);
 
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param file pointer to file
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_ws_to_deploy)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    struct axis2_arch_file_data *file);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param file pointer to file
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_ws_to_undeploy)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    struct axis2_ws_info *file);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         */
-        struct axis2_phases_info *(AXIS2_CALL *
-                get_phases_info)(
-                    const axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
-
-        /**
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @return AxisConfiguration <code>AxisConfiguration</code>
-         */
-        struct axis2_conf *(AXIS2_CALL *
-                get_axis_conf)(
-                    const axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         */
-        struct axis2_conf *(AXIS2_CALL *
-                load)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         */
-        struct axis2_conf *(AXIS2_CALL *
-                load_client)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    const axis2_char_t *client_home);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param dll_name pointer to dll_name
-         */
-        void *(AXIS2_CALL *
-                get_handler_dll)(
-                    const axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    axis2_char_t *dll_name);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                do_deploy)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                undeploy)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         */
-        axis2_bool_t (AXIS2_CALL *
-                is_hot_update)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param phases_info pointer to phases info
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_phases_info)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    struct axis2_phases_info *phases_info);
-
-        /**
-         * This method is used to fill a axisservice object using services.xml , first it should create
-         * an axisservice object using WSDL and then fill that using given servic.xml and load all the requed
-         * class and build the chains , finally add the  servicecontext to EngineContext and axisservice into
-         * EngineConfiguration
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param svc pointer to service
-         * @param file_name pointer to file name
-         */
-        struct axis2_svc *(AXIS2_CALL *
-                build_svc)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    struct axis2_svc *svc,
-                    axis2_char_t *file_name);
-
-        /**
-         * This method can be used to build ModuleDescription for a given module archiev file
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param module_archive pointer to module archive
-         * @param conf pointer to conf
-         */
-        struct axis2_module_desc *(AXIS2_CALL *
-                build_module)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    axis2_file_t *module_archive,
-                    struct axis2_conf *conf);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_repos_path)(
-                    const axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param file_data pointer to file data
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_current_file_item)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    struct axis2_arch_file_data *file_data);
-
-        /** 
-         * @param dep_engine pointer to deployment engine
-         * @param env pointer to environment struct
-         * @param arch_reader pointer to arch reader
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_arch_reader)(
-                    axis2_dep_engine_t *dep_engine,
-                    const axis2_env_t *env,
-                    struct axis2_arch_reader *arch_reader);
-    };
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN struct axis2_phases_info *AXIS2_CALL
+    axis2_dep_engine_get_phases_info(const axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
 
     /**
-     * Deployment Engine struct 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @return AxisConfiguration <code>AxisConfiguration</code>
      */
-    struct axis2_dep_engine
-    {
-        /** Operations of deployment engine */
-        axis2_dep_engine_ops_t *ops;
-    };
+    AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
+    axis2_dep_engine_get_axis_conf(const axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
+    axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
+    axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        const axis2_char_t *client_home);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param dll_name pointer to dll_name
+     */
+    AXIS2_EXTERN void *AXIS2_CALL
+    axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        axis2_char_t *dll_name);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_dep_engine_is_hot_update(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param phases_info pointer to phases info
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_phases_info *phases_info);
+
+    /**
+     * This method is used to fill a axisservice object using services.xml , first it should create
+     * an axisservice object using WSDL and then fill that using given servic.xml and load all the requed
+     * class and build the chains , finally add the  servicecontext to EngineContext and axisservice into
+     * EngineConfiguration
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param svc pointer to service
+     * @param file_name pointer to file name
+     */
+    AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
+    axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_svc *svc,
+        axis2_char_t *file_name);
+
+    /**
+     * This method can be used to build ModuleDescription for a given module archiev file
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param module_archive pointer to module archive
+     * @param conf pointer to conf
+     */
+    AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
+    axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        axis2_file_t *module_archive,
+        struct axis2_conf *conf);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_dep_engine_get_repos_path(const axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param file_data pointer to file data
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_set_current_file_item(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_arch_file_data *file_data);
+
+    /** 
+     * @param dep_engine pointer to deployment engine
+     * @param env pointer to environment struct
+     * @param arch_reader pointer to arch reader
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_set_arch_reader(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_arch_reader *arch_reader);
 
     /**
      * No param constructor is need to deploye module and service programatically
@@ -302,8 +264,7 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-    axis2_dep_engine_create(
-        const axis2_env_t *env);
+    axis2_dep_engine_create(const axis2_env_t *env);
 
     /**
      * Creates description builder struct
@@ -314,8 +275,7 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-    axis2_dep_engine_create_with_repos_name(
-        const axis2_env_t *env,
+    axis2_dep_engine_create_with_repos_name(const axis2_env_t *env,
         const axis2_char_t *repos_path);
 
     /**
@@ -326,114 +286,89 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-    axis2_dep_engine_create_with_repos_name_and_svr_xml_file(
-        const axis2_env_t *env,
+    axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
         const axis2_char_t *repos_path,
         const axis2_char_t *svr_xml_file);
 
-/*************************** Function macros **********************************/
-
-/** Frees the deployment engine.
-    @sa axis2_dep_engine_ops#free */
+/** Frees the deployment engine. */
 #define AXIS2_DEP_ENGINE_FREE(dep_engine, env) \
-      ((dep_engine)->ops->free (dep_engine, env))
+      axis2_dep_engine_free (dep_engine, env)
 
-/** Adds the module.
-    @sa axis2_dep_engine_ops#add_module */
+/** Adds the module. */
 #define AXIS2_DEP_ENGINE_ADD_MODULE(dep_engine, env, module_qname) \
-      ((dep_engine)->ops->add_module (dep_engine, env, module_qname))
+      axis2_dep_engine_add_module (dep_engine, env, module_qname)
 
-/** Get module.
-    @sa axis2_dep_engine_ops#get_module */
+/** Get module. */
 #define AXIS2_DEP_ENGINE_GET_MODULE(dep_engine, env, module_qname) \
-      ((dep_engine)->ops->get_module (dep_engine, env, module_qname))
+      axis2_dep_engine_get_module (dep_engine, env, module_qname)
 
-/** Gets the current file item.
-    @sa axis2_dep_engine_ops#get_current_file_item */
+/** Gets the current file item. */
 #define AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env) \
-      ((dep_engine)->ops->get_current_file_item (dep_engine, env))
+      axis2_dep_engine_get_current_file_item (dep_engine, env)
 
-/** Adds web service to deploy.
-    @sa axis2_dep_engine_ops#add_ws_to_deploy */
+/** Adds web service to deploy. */
 #define AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(dep_engine, env, file) \
-      ((dep_engine)->ops->add_ws_to_deploy (dep_engine, env, file))
+      axis2_dep_engine_add_ws_to_deploy (dep_engine, env, file)
 
-/** Adds web service to undelploy
-    @sa axis2_dep_engine_ops#add_ws_to_undeploy */
+/** Adds web service to undelploy */
 #define AXIS2_DEP_ENGINE_ADD_WS_TO_UNDEPLOY(dep_engine, env, file) \
-      ((dep_engine)->ops->add_ws_to_undeploy (dep_engine, env, file))
+      axis2_dep_engine_add_ws_to_undeploy (dep_engine, env, file)
 
-/** Do deploy.
-    @sa axis2_dep_engine_ops#do_deploy */
+/** Do deploy. */
 #define AXIS2_DEP_ENGINE_DO_DEPLOY(dep_engine, env) \
-      ((dep_engine)->ops->do_deploy (dep_engine, env))
+      axis2_dep_engine_do_deploy (dep_engine, env)
 
-/** Undeploy.
-    @sa axis2_dep_engine_ops#undeploy */
+/** Undeploy. */
 #define AXIS2_DEP_ENGINE_UNDEPLOY(dep_engine, env) \
-      ((dep_engine)->ops->undeploy (dep_engine, env))
+      axis2_dep_engine_undeploy (dep_engine, env)
 
-/** Gets the phases infomation..
-    @sa axis2_dep_engine_ops#get_phases_info */
+/** Gets the phases infomation. */
 #define AXIS2_DEP_ENGINE_GET_PHASES_INFO(dep_engine, env) \
-      ((dep_engine)->ops->get_phases_info (dep_engine, env))
+      axis2_dep_engine_get_phases_info (dep_engine, env)
 
-/** Gets the axis2 configuration.
-    @sa axis2_dep_engine_ops#get_axis2_conf */
+/** Gets the axis2 configuration. */
 #define AXIS2_DEP_ENGINE_GET_AXIS2_CONF(dep_engine, env) \
-      ((dep_engine)->ops->get_axis_conf (dep_engine, env))
+      axis2_dep_engine_get_axis_conf (dep_engine, env)
 
-/** Load.
-    @sa axis2_dep_engine_ops#load */
+/** Load.*/
 #define AXIS2_DEP_ENGINE_LOAD(dep_engine, env) \
-      ((dep_engine)->ops->load (dep_engine, env))
+      axis2_dep_engine_load (dep_engine, env)
 
-/** Loads the client.
-    @sa axis2_dep_engine_ops#load_client */
+/** Loads the client. */
 #define AXIS2_DEP_ENGINE_LOAD_CLIENT(dep_engine, env, client_home) \
-      ((dep_engine)->ops->load_client (dep_engine, env, client_home))
+      axis2_dep_engine_load_client (dep_engine, env, client_home)
 
-/** Gets the handler dll.
-    @sa axis2_dep_engine_ops#get_handler_dll */
+/** Gets the handler dll. */
 #define AXIS2_DEP_ENGINE_GET_HANDLER_DLL(dep_engine, env, dll_name) \
-      ((dep_engine)->ops->get_handler_dll (dep_engine, env, dll_name))
+      axis2_dep_engine_get_handler_dll (dep_engine, env, dll_name)
 
-/** Is hot update.
-    @sa axis2_dep_engine_ops#is_hot_update */
+/** Is hot update. */
 #define AXIS2_DEP_ENGINE_IS_HOT_UPDATE(dep_engine, env) \
-      ((dep_engine)->ops->is_hot_update (dep_engine, env))
+      axis2_dep_engine_is_hot_update (dep_engine, env)
 
-/** Sets phases info.
-    @sa axis2_dep_engine_ops#set_phases_info */
+/** Sets phases info. */
 #define AXIS2_DEP_ENGINE_SET_PHASES_INFO(dep_engine, env, phases_info) \
-      ((dep_engine)->ops->set_phases_info (dep_engine, env, phases_info))
+      axis2_dep_engine_set_phases_info (dep_engine, env, phases_info)
 
-/** Build the service.
-    @sa axis2_dep_engine_ops#build_svc */
+/** Build the service. */
 #define AXIS2_DEP_ENGINE_BUILD_SVC(dep_engine, env, svc, file_name) \
-      ((dep_engine)->ops->build_svc (dep_engine, env, svc, file_name))
+      axis2_dep_engine_build_svc (dep_engine, env, svc, file_name)
 
-/** Builds the module.
-    @sa axis2_dep_engine_ops#build_module */
+/** Builds the module. */
 #define AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, module_archive, conf) \
-      ((dep_engine)->ops->build_module (dep_engine, env, module_archive, conf))
+      axis2_dep_engine_build_module (dep_engine, env, module_archive, conf)
 
-/** Gets the repos path.
-    @sa axis2_dep_engine_ops#get_repos_path */
+/** Gets the repos path. */
 #define AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env) \
-      ((dep_engine)->ops->get_repos_path (dep_engine, env))
+      axis2_dep_engine_get_repos_path (dep_engine, env)
 
-/** Sets the current file item.
-    @sa axis2_dep_engine_ops#set_current_file_item */
+/** Sets the current file item. */
 #define AXIS2_DEP_ENGINE_SET_CURRENT_FILE_ITEM(dep_engine, env, file_data) \
-      ((dep_engine)->ops->set_current_file_item (dep_engine, env, file_data))
+      axis2_dep_engine_set_current_file_item (dep_engine, env, file_data)
 
-/** Sets the arch reader.
-    @sa axis2_dep_engine_ops#set_arch_reader */
+/** Sets the arch reader. */
 #define AXIS2_DEP_ENGINE_SET_ARCH_READER(dep_engine, env, arch_reader) \
-      ((dep_engine)->ops->set_arch_reader (dep_engine, env, arch_reader))
-
-/*************************** End of function macros ***************************/
+      axis2_dep_engine_set_arch_reader (dep_engine, env, arch_reader)
 
 /** @} */
 

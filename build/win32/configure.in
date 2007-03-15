@@ -1,7 +1,7 @@
 ENABLE_SSL = 0
 ENABLE_LIBCURL= 0
-LIBXML2_BIN_DIR = E:\libxml2-2.6.27.win32
-ICONV_BIN_DIR = E:\iconv-1.9.2.win32
+LIBXML2_BIN_DIR = E:\libxml2-2.6.23.win32
+ICONV_BIN_DIR = E:\iconv-1.9.1.win32
 ZLIB_BIN_DIR=E:\zlib-1.2.3.win32
 APACHE_BIN_DIR = E:\Apache22
 LIBXSLT_BIN_DIR = E:\libxslt-1.1.17.win32

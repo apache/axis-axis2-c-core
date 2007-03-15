@@ -29,138 +29,72 @@ typedef struct axis2_transport_listener_state
 
     axis2_transport_receiver_t *listener;
 
-}
-axis2_transport_listener_state_t;
+}axis2_transport_listener_state_t;
 
 
-typedef struct axis2_listener_manager_impl
+struct axis2_listener_manager
 {
-    /** context base struct */
-    axis2_listener_manager_t listener_manager;
     /** hash map of listeners */
     axis2_transport_listener_state_t *listener_map[AXIS2_TRANSPORT_ENUM_MAX];
     /** configuration context */
     axis2_conf_ctx_t *conf_ctx;
-}
-axis2_listener_manager_impl_t;
-
+};
 
 typedef struct axis2_listener_manager_worker_func_args
 {
     const axis2_env_t *env;
-    axis2_listener_manager_impl_t *listner_manager;
+    axis2_listener_manager_t *listner_manager;
     axis2_transport_receiver_t *listener;
-}
-axis2_listener_manager_worker_func_args_t;
+}axis2_listener_manager_worker_func_args_t;
 
 void *AXIS2_THREAD_FUNC
 axis2_listener_manager_worker_func(
     axis2_thread_t *thd,
     void *data);
 
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(listener_manager) ((axis2_listener_manager_impl_t *)listener_manager)
-
-
-axis2_status_t AXIS2_CALL
-axis2_listener_manager_make_sure_started(
-    axis2_listener_manager_t *listener_manager,
-    const axis2_env_t *env,
-    const AXIS2_TRANSPORT_ENUMS transport,
-    axis2_conf_ctx_t *conf_ctx);
-
-axis2_status_t AXIS2_CALL
-axis2_listener_manager_stop(
-    axis2_listener_manager_t *listener_manager,
-    const axis2_env_t *env,
-    const AXIS2_TRANSPORT_ENUMS transport);
-
-axis2_endpoint_ref_t *AXIS2_CALL
-axis2_listener_manager_get_reply_to_epr(
-    const axis2_listener_manager_t *listener_manager,
-    const axis2_env_t *env,
-    const axis2_char_t *svc_name,
-    const AXIS2_TRANSPORT_ENUMS transport);
-
-axis2_status_t AXIS2_CALL
-axis2_listener_manager_free(
-    axis2_listener_manager_t *listener_manager,
-    const axis2_env_t *env);
-
-axis2_conf_ctx_t *AXIS2_CALL
-axis2_listener_manager_get_conf_ctx(
-    const axis2_listener_manager_t *listener_manager,
-    const axis2_env_t *env);
-
-axis2_listener_manager_t *AXIS2_CALL
+AXIS2_EXTERN axis2_listener_manager_t *AXIS2_CALL
 axis2_listener_manager_create(
     const axis2_env_t *env)
 {
-    axis2_listener_manager_impl_t *listener_manager_impl = NULL;
+    axis2_listener_manager_t *listener_manager = NULL;
     int i = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    listener_manager_impl =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_listener_manager_impl_t));
+    listener_manager =
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_listener_manager_t));
 
-    if (!listener_manager_impl)
+    if (!listener_manager)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    listener_manager_impl->listener_manager.ops = NULL;
-    listener_manager_impl->conf_ctx = NULL;
+    listener_manager->conf_ctx = NULL;
     
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        listener_manager_impl->listener_map[i] = NULL;
+        listener_manager->listener_map[i] = NULL;
     }
 
-    /* initialize ops */
-    listener_manager_impl->listener_manager.ops =
-        AXIS2_MALLOC(env->allocator, sizeof(axis2_listener_manager_ops_t));
-
-    if (!listener_manager_impl->listener_manager.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_listener_manager_free(&(listener_manager_impl->listener_manager), env);
-        return NULL;
-    }
-
-    listener_manager_impl->listener_manager.ops->make_sure_started =
-        axis2_listener_manager_make_sure_started;
-    listener_manager_impl->listener_manager.ops->stop =
-        axis2_listener_manager_stop;
-    listener_manager_impl->listener_manager.ops->get_reply_to_epr =
-        axis2_listener_manager_get_reply_to_epr;
-    listener_manager_impl->listener_manager.ops->get_conf_ctx =
-        axis2_listener_manager_get_conf_ctx;
-    listener_manager_impl->listener_manager.ops->free =
-        axis2_listener_manager_free;
-
-    return &(listener_manager_impl->listener_manager);
+    return listener_manager;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_listener_manager_make_sure_started(
     axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env,
     const AXIS2_TRANSPORT_ENUMS transport,
     axis2_conf_ctx_t *conf_ctx)
 {
-    axis2_listener_manager_impl_t *listener_manager_impl = NULL;
     axis2_transport_listener_state_t *tl_state = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
 
-    listener_manager_impl = AXIS2_INTF_TO_IMPL(listener_manager);
-
-    if (listener_manager_impl->conf_ctx)
+    if (listener_manager->conf_ctx)
     {
-        if (conf_ctx != listener_manager_impl->conf_ctx)
+        if (conf_ctx != listener_manager->conf_ctx)
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_CLIENT_SIDE_SUPPORT_ONLY_ONE_CONF_CTX, AXIS2_FAILURE);
@@ -169,11 +103,11 @@ axis2_listener_manager_make_sure_started(
     }
     else
     {
-        listener_manager_impl->conf_ctx = conf_ctx;
+        listener_manager->conf_ctx = conf_ctx;
     }
 
 
-    tl_state = listener_manager_impl->listener_map[transport];
+    tl_state = listener_manager->listener_map[transport];
 
     if (!tl_state)
     {
@@ -200,7 +134,7 @@ axis2_listener_manager_make_sure_started(
                         return AXIS2_FAILURE;
                     }
                     arg_list->env = env;
-                    arg_list->listner_manager = listener_manager_impl;
+                    arg_list->listner_manager = listener_manager;
                     arg_list->listener = listener;
 #ifdef AXIS2_SVR_MULTI_THREADED
                     if (env->thread_pool)
@@ -239,7 +173,7 @@ axis2_listener_manager_make_sure_started(
                     {
                         tl_state->listener = listener;
                         tl_state->waiting_calls = 0;
-                        listener_manager_impl->listener_map[transport] = tl_state;
+                        listener_manager->listener_map[transport] = tl_state;
                     }
                 }
             }
@@ -255,21 +189,18 @@ axis2_listener_manager_make_sure_started(
         return AXIS2_FAILURE;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_listener_manager_stop(
     axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env,
     const AXIS2_TRANSPORT_ENUMS transport)
 {
-    axis2_listener_manager_impl_t *listener_manager_impl = NULL;
     axis2_transport_listener_state_t *tl_state = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    listener_manager_impl = AXIS2_INTF_TO_IMPL(listener_manager);
-
-    tl_state = listener_manager_impl->listener_map[transport];
+    tl_state = listener_manager->listener_map[transport];
 
     if (tl_state)
     {
@@ -280,28 +211,25 @@ axis2_listener_manager_stop(
             if (status != AXIS2_SUCCESS)
                 return status;
 
-            listener_manager_impl->listener_map[transport] = NULL;
+            listener_manager->listener_map[transport] = NULL;
         }
     }
 
     return status;
 }
 
-axis2_endpoint_ref_t *AXIS2_CALL
+AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
 axis2_listener_manager_get_reply_to_epr(
     const axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env,
     const axis2_char_t *svc_name,
     const AXIS2_TRANSPORT_ENUMS transport)
 {
-    axis2_listener_manager_impl_t *listener_manager_impl = NULL;
     axis2_transport_listener_state_t *tl_state = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    listener_manager_impl = AXIS2_INTF_TO_IMPL(listener_manager);
-
-    tl_state = listener_manager_impl->listener_map[transport];
+    tl_state = listener_manager->listener_map[transport];
     if (tl_state)
     {
         return AXIS2_TRANSPORT_RECEIVER_GET_REPLY_TO_EPR(tl_state->listener, env, svc_name);
@@ -309,43 +237,32 @@ axis2_listener_manager_get_reply_to_epr(
     return NULL;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_listener_manager_free(
     axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env)
 {
-    axis2_listener_manager_impl_t *listener_manager_impl = NULL;
     int i = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    listener_manager_impl = AXIS2_INTF_TO_IMPL(listener_manager);
-
-    if (listener_manager_impl->listener_manager.ops)
-    {
-        AXIS2_FREE(env->allocator, listener_manager_impl->listener_manager.ops);
-        listener_manager_impl->listener_manager.ops = NULL;
-    }
-
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
-        if (listener_manager_impl->listener_map[i])
-            AXIS2_FREE(env->allocator, listener_manager_impl->listener_map[i]);
+        if (listener_manager->listener_map[i])
+            AXIS2_FREE(env->allocator, listener_manager->listener_map[i]);
     }
 
-    AXIS2_FREE(env->allocator, listener_manager_impl);
-    listener_manager_impl = NULL;
+    AXIS2_FREE(env->allocator, listener_manager);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_conf_ctx_t *AXIS2_CALL
+AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
 axis2_listener_manager_get_conf_ctx(
     const axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(listener_manager)->conf_ctx;
+    return listener_manager->conf_ctx;
 }
 
 void *AXIS2_THREAD_FUNC
@@ -368,3 +285,5 @@ axis2_listener_manager_worker_func(
     }
     return NULL;
 }
+
+

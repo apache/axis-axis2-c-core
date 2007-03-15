@@ -18,107 +18,47 @@
 #include <axis2_svr_callback.h>
 #include <axis2_engine.h>
 
-/**
- * @brief Message Receiver struct impl
- * Axis2 Message Receiver impl
- */
-typedef struct axis2_svr_callback_impl
+struct axis2_svr_callback
 {
-    axis2_svr_callback_t svr_callback;
     axis2_char_t *scope;
-}
-axis2_svr_callback_impl_t;
+};
 
-#define AXIS2_INTF_TO_IMPL(svr_callback) ((axis2_svr_callback_impl_t *) svr_callback)
-
-/*************************** Function headers *********************************/
-
-axis2_status_t AXIS2_CALL
-axis2_svr_callback_free(
-    axis2_svr_callback_t *svr_callback,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_svr_callback_handle_result(
-    axis2_svr_callback_t *svr_callback,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx);
-
-axis2_status_t AXIS2_CALL
-axis2_svr_callback_handle_fault(
-    axis2_svr_callback_t *svr_callback,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx);
-
-/************************* End of function headers ****************************/
-
-axis2_svr_callback_t *AXIS2_CALL
+AXIS2_EXPORT axis2_svr_callback_t *AXIS2_CALL
 axis2_svr_callback_create(
     const axis2_env_t *env)
 {
-    axis2_svr_callback_impl_t *svr_callback_impl = NULL;
+    axis2_svr_callback_t *svr_callback = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    svr_callback_impl = (axis2_svr_callback_impl_t *)
-            AXIS2_MALLOC(env->allocator, sizeof(axis2_svr_callback_impl_t));
+    svr_callback = (axis2_svr_callback_t *)
+            AXIS2_MALLOC(env->allocator, sizeof(axis2_svr_callback_t));
 
-    if (NULL == svr_callback_impl)
+    if (NULL == svr_callback)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    svr_callback_impl->svr_callback.ops = NULL;
-
-    svr_callback_impl->svr_callback.ops = (axis2_svr_callback_ops_t *)
-            AXIS2_MALLOC(env->allocator, sizeof(axis2_svr_callback_ops_t));
-
-    if (NULL == svr_callback_impl->svr_callback.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_svr_callback_free(&(svr_callback_impl->svr_callback), env);
-
-        return NULL;
-    }
-
-    svr_callback_impl->svr_callback.ops->free = axis2_svr_callback_free;
-    svr_callback_impl->svr_callback.ops->handle_result =
-        axis2_svr_callback_handle_result;
-    svr_callback_impl->svr_callback.ops->handle_fault =
-        axis2_svr_callback_handle_fault;
-
-    return &(svr_callback_impl->svr_callback);
+    return svr_callback;
 }
 
-/******************************************************************************/
-
-axis2_status_t AXIS2_CALL
+AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_svr_callback_free(
     axis2_svr_callback_t *svr_callback,
     const axis2_env_t *env)
 {
-    axis2_svr_callback_impl_t *svr_callback_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    svr_callback_impl = AXIS2_INTF_TO_IMPL(svr_callback);
 
-    if (svr_callback->ops)
+    if (svr_callback)
     {
-        AXIS2_FREE(env->allocator, svr_callback->ops);
-        svr_callback->ops = NULL;
-    }
-
-    if (svr_callback_impl)
-    {
-        AXIS2_FREE(env->allocator, svr_callback_impl);
-        svr_callback_impl = NULL;
+        AXIS2_FREE(env->allocator, svr_callback);
     }
 
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_svr_callback_handle_result(
     axis2_svr_callback_t *svr_callback,
     const axis2_env_t *env,
@@ -143,7 +83,7 @@ axis2_svr_callback_handle_result(
     return AXIS2_ENGINE_SEND(engine, env, msg_ctx);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_svr_callback_handle_fault(
     axis2_svr_callback_t *svr_callback,
     const axis2_env_t *env,
@@ -170,3 +110,5 @@ axis2_svr_callback_handle_fault(
     fault_ctx = AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx);
     return AXIS2_ENGINE_SEND_FAULT(engine, env, fault_ctx);
 }
+
+

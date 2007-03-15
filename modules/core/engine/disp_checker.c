@@ -30,111 +30,59 @@
 
 const axis2_char_t *AXIS2_DISP_CHECKER_NAME = "dispatch_post_conditions_evaluator";
 
-typedef struct axis2_disp_checker_impl
+struct axis2_disp_checker
 {
-    /** phase */
-    axis2_disp_checker_t disp_checker;
     /** base class, inherits from handler */
     axis2_handler_t *base;
     /** phase name */
     axis2_string_t *name;
-}
-axis2_disp_checker_impl_t;
-
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(disp_checker) ((axis2_disp_checker_impl_t *)disp_checker)
-
-axis2_status_t AXIS2_CALL
-axis2_disp_checker_invoke(
-    struct axis2_handler *handler,
-    const axis2_env_t *env,
-    struct axis2_msg_ctx *msg_ctx);
-
-axis2_handler_t *AXIS2_CALL
-axis2_disp_checker_get_base(
-    const axis2_disp_checker_t *disp_checker,
-    const axis2_env_t *env);
-
-axis2_string_t *AXIS2_CALL
-axis2_disp_checker_get_name(
-    const axis2_disp_checker_t *disp_checker,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_disp_checker_set_name(
-    axis2_disp_checker_t *disp_checker,
-    const axis2_env_t *env,
-    const axis2_string_t *name);
-
-axis2_status_t AXIS2_CALL
-axis2_disp_checker_free(
-    axis2_disp_checker_t *disp_checker,
-    const axis2_env_t *env);
+};
 
 axis2_disp_checker_t *AXIS2_CALL
 axis2_disp_checker_create(
     const axis2_env_t *env)
 {
-    axis2_disp_checker_impl_t *disp_checker_impl = NULL;
+    axis2_disp_checker_t *disp_checker = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    disp_checker_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_checker_impl_t));
-    if (!disp_checker_impl)
+    disp_checker = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_checker_t));
+    if (!disp_checker)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    disp_checker_impl->disp_checker.ops = NULL;
-    disp_checker_impl->name = NULL;
-    disp_checker_impl->base = NULL;
+    disp_checker->name = NULL;
+    disp_checker->base = NULL;
 
     /* create default name */
-    disp_checker_impl->name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_DISP_CHECKER_NAME);
-    if (!(disp_checker_impl->name))
+    disp_checker->name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_DISP_CHECKER_NAME);
+    if (!(disp_checker->name))
     {
-        axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
+        axis2_disp_checker_free(disp_checker, env);
         return NULL;
     }
 
-    disp_checker_impl->base = axis2_handler_create(env);
-    if (!disp_checker_impl->base)
+    disp_checker->base = axis2_handler_create(env);
+    if (!disp_checker->base)
     {
-        axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
+        axis2_disp_checker_free(disp_checker, env);
         return NULL;
     }
 
     /* handler desc of base handler */
-    handler_desc = axis2_handler_desc_create(env, disp_checker_impl->name);
+    handler_desc = axis2_handler_desc_create(env, disp_checker->name);
     if (!handler_desc)
     {
-        axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
+        axis2_disp_checker_free(disp_checker, env);
         return NULL;
     }
 
-    AXIS2_HANDLER_INIT(disp_checker_impl->base, env, handler_desc);
+    AXIS2_HANDLER_INIT(disp_checker->base, env, handler_desc);
 
-    /* set the base struct's invoke op */
-    if (disp_checker_impl->base->ops)
-        disp_checker_impl->base->ops->invoke = axis2_disp_checker_invoke;
-
-    /* initialize ops */
-    disp_checker_impl->disp_checker.ops  = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_checker_ops_t));
-    if (!disp_checker_impl->disp_checker.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
-        return NULL;
-    }
-
-    disp_checker_impl->disp_checker.ops->get_base = axis2_disp_checker_get_base;
-    disp_checker_impl->disp_checker.ops->get_name = axis2_disp_checker_get_name;
-    disp_checker_impl->disp_checker.ops->set_name = axis2_disp_checker_set_name;
-    disp_checker_impl->disp_checker.ops->free = axis2_disp_checker_free;
-
-    return &(disp_checker_impl->disp_checker);
+    return disp_checker;
 }
 
 axis2_handler_t *AXIS2_CALL
@@ -142,8 +90,7 @@ axis2_disp_checker_get_base(
     const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(disp_checker)->base;
+    return disp_checker->base;
 }
 
 axis2_string_t *AXIS2_CALL
@@ -151,8 +98,7 @@ axis2_disp_checker_get_name(
     const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(disp_checker)->name;
+    return disp_checker->name;
 }
 
 axis2_status_t AXIS2_CALL
@@ -161,22 +107,18 @@ axis2_disp_checker_set_name(
     const axis2_env_t *env,
     const axis2_string_t *name)
 {
-    axis2_disp_checker_impl_t *disp_checker_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    disp_checker_impl = AXIS2_INTF_TO_IMPL(disp_checker);
-
-    if (disp_checker_impl->name)
+    if (disp_checker->name)
     {
-        axis2_string_free(disp_checker_impl->name, env);
-        disp_checker_impl->name = NULL;
+        axis2_string_free(disp_checker->name, env);
+        disp_checker->name = NULL;
     }
 
     if (name)
     {
-        disp_checker_impl->name = axis2_string_clone((axis2_string_t *)name, env);
-        if (!(disp_checker_impl->name))
+        disp_checker->name = axis2_string_clone((axis2_string_t *)name, env);
+        if (!(disp_checker->name))
             return AXIS2_FAILURE;
     }
 
@@ -188,24 +130,14 @@ axis2_disp_checker_free(
     axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env)
 {
-    axis2_disp_checker_impl_t *disp_checker_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    disp_checker_impl = AXIS2_INTF_TO_IMPL(disp_checker);
 
-    if (disp_checker_impl->name)
+    if (disp_checker->name)
     {
-        axis2_string_free(disp_checker_impl->name, env);
-        disp_checker_impl->name = NULL;
+        axis2_string_free(disp_checker->name, env);
     }
 
-    if (disp_checker_impl->disp_checker.ops)
-    {
-        AXIS2_FREE(env->allocator, disp_checker_impl->disp_checker.ops);
-        disp_checker_impl->disp_checker.ops = NULL;
-    }
-
-    AXIS2_FREE(env->allocator, disp_checker_impl);
-    disp_checker_impl = NULL;
+    AXIS2_FREE(env->allocator, disp_checker);
 
     return AXIS2_SUCCESS;
 }

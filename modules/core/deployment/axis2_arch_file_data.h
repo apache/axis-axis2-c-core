@@ -49,188 +49,153 @@ extern "C"
     
     /** Type name for struct axis2_arch_fila_data */
     typedef struct axis2_arch_file_data axis2_arch_file_data_t;
-    /** Type name for struct axis2_arch_fila_data_ops */
-    typedef struct axis2_arch_file_data_ops axis2_arch_file_data_ops_t;
+
+    /** 
+     * De-allocate memory
+     * @param arch_file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_arch_file_data_get_msg_recv(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     * @param msg_recv pointer to message receiver
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_arch_file_data_set_msg_recv(axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env,
+        axis2_char_t *msg_recv);
 
     /**
-     * Arch File Data ops struct
-     * Encapsulator struct for ops of axis2_arch_file_data
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     * @return the name of the contained file.
      */
-    struct axis2_arch_file_data_ops
-    {
-        /** 
-         * De-allocate memory
-         * @param arch_file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_arch_file_data_t *arch_file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_msg_recv)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         * @param msg_recv pointer to message receiver
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_msg_recv)(
-                    axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env,
-                    axis2_char_t *msg_recv);
-
-        /**
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         * @return the name of the contained file.
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_name)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-        /**
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         * @return the service name. if contained file is not null this is the
-         * file name. else this is the name property
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_svc_name)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         */
-        int (AXIS2_CALL *
-                get_type)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         */
-        axis2_file_t *(AXIS2_CALL *
-                get_file)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_module_name)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         * @param module_name pointer to module_name
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_module_name)(
-                    axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env,
-                    axis2_char_t *module_name);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_module_dll_name)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_module_dll_name)(
-                    axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env,
-                    axis2_char_t *module_dll_name);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                add_svc)(
-                    axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env,
-                    struct axis2_svc *svc_desc);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         */
-        struct axis2_svc *(AXIS2_CALL *
-                get_svc)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env,
-                    axis2_char_t *svc_name);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         */
-        axis2_hash_t *(AXIS2_CALL *
-                get_svc_map)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         */
-        axis2_array_list_t *(AXIS2_CALL *
-                get_deployable_svcs)(
-                    const axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param file_data pointer to arch_file_data
-         * @param env pointer to environment struct
-         * @param deployable_svcs pointer to deployable services
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_deployable_svcs)(
-                    axis2_arch_file_data_t *file_data,
-                    const axis2_env_t *env,
-                    axis2_array_list_t *deployable_svcs);
-
-
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_arch_file_data_get_name(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
 
     /**
-     * Arch File Data struct 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     * @return the service name. if contained file is not null this is the
+     * file name. else this is the name property
      */
-    struct axis2_arch_file_data
-    {
-        /** Ops of Arch File Data */
-        axis2_arch_file_data_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_arch_file_data_get_svc_name(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_arch_file_data_get_type(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_file_t *AXIS2_CALL
+    axis2_arch_file_data_get_file(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_arch_file_data_get_module_name(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     * @param module_name pointer to module_name
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_arch_file_data_set_module_name(axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env,
+        axis2_char_t *module_name);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_arch_file_data_get_module_dll_name(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env,
+        axis2_char_t *module_dll_name);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env,
+        struct axis2_svc *svc_desc);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
+    axis2_arch_file_data_get_svc(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env,
+        axis2_char_t *svc_name);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    axis2_arch_file_data_get_svc_map(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    axis2_arch_file_data_get_deployable_svcs(const axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env);
+
+    /** 
+     * @param file_data pointer to arch_file_data
+     * @param env pointer to environment struct
+     * @param deployable_svcs pointer to deployable services
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
+        const axis2_env_t *env,
+        axis2_array_list_t *deployable_svcs);
 
     /**
      * Creates arch file data struct
@@ -238,8 +203,7 @@ extern "C"
      * @return pointer to newly created arch file data
      */
     AXIS2_EXTERN axis2_arch_file_data_t *AXIS2_CALL
-    axis2_arch_file_data_create(
-        const axis2_env_t *env);
+    axis2_arch_file_data_create(const axis2_env_t *env);
 
     /**
      * Creates arch file data struct
@@ -249,8 +213,7 @@ extern "C"
      * @return pointer to newly created arch file data
      */
     AXIS2_EXTERN axis2_arch_file_data_t *AXIS2_CALL
-    axis2_arch_file_data_create_with_type_and_file(
-        const axis2_env_t *env,
+    axis2_arch_file_data_create_with_type_and_file(const axis2_env_t *env,
         int type,
         axis2_file_t *file);
 
@@ -262,94 +225,73 @@ extern "C"
      * @return pointer to newly created arch file data
      */
     AXIS2_EXTERN axis2_arch_file_data_t *AXIS2_CALL
-    axis2_arch_file_data_create_with_type_and_name(
-        const axis2_env_t *env,
+    axis2_arch_file_data_create_with_type_and_name(const axis2_env_t *env,
         int type,
         const axis2_char_t *name);
 
-/*************************** Function macros **********************************/
-
-/** Frees the arch file data struct.
-    @sa axis2_arch_file_data_ops#free */
+/** Frees the arch file data struct. */
 #define AXIS2_ARCH_FILE_DATA_FREE(arch_file_data, env) \
-      ((arch_file_data)->ops->free (arch_file_data, env))
+      axis2_arch_file_data_free (arch_file_data, env)
 
-/** Gets the message receiver.
-    @sa axis2_arch_file_data_ops#get_msg_recv */
+/** Gets the message receiver. */
 #define AXIS2_ARCH_FILE_DATA_GET_MSG_RECV(arch_file_data, env) \
-      ((arch_file_data)->ops->get_msg_recv (arch_file_data, env))
+      axis2_arch_file_data_get_msg_recv (arch_file_data, env)
 
-/** Sets the message receiver.
-    @sa axis2_arch_file_data_ops#set_msg_recv */
+/** Sets the message receiver. */
 #define AXIS2_ARCH_FILE_DATA_SET_MSG_RECV(arch_file_data, env, msg_recv) \
-      ((arch_file_data)->ops->set_msg_recv (arch_file_data, env, msg_recv))
+      axis2_arch_file_data_set_msg_recv (arch_file_data, env, msg_recv)
 
-/** Gets the name.
-    @sa axis2_arch_file_data_ops#get_name */
+/** Gets the name. */
 #define AXIS2_ARCH_FILE_DATA_GET_NAME(arch_file_data, env) \
-      ((arch_file_data)->ops->get_name (arch_file_data, env))
+      axis2_arch_file_data_get_name (arch_file_data, env)
 
-/** Gets the service name.
-    @sa axis2_arch_file_data_ops#get_svc_name */
+/** Gets the service name. */
 #define AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(arch_file_data, env) \
-      ((arch_file_data)->ops->get_svc_name (arch_file_data, env))
+      axis2_arch_file_data_get_svc_name (arch_file_data, env)
 
-/** Gets the type.
-    @sa axis2_arch_file_data_ops#get_type */
+/** Gets the type. */
 #define AXIS2_ARCH_FILE_DATA_GET_TYPE(arch_file_data, env) \
-      ((arch_file_data)->ops->get_type (arch_file_data, env))
+      axis2_arch_file_data_get_type (arch_file_data, env)
 
-/** Gets the file.
-    @sa axis2_arch_file_data_ops#get_file */
+/** Gets the file. */
 #define AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env) \
-      ((arch_file_data)->ops->get_file (arch_file_data, env))
+      axis2_arch_file_data_get_file (arch_file_data, env)
 
-/** Gets the module name.
-    @sa axis2_arch_file_data_ops#get_module */
+/** Gets the module name. */
 #define AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(arch_file_data, env) \
-      ((arch_file_data)->ops->get_module_name (arch_file_data, env))
+      axis2_arch_file_data_get_module_name (arch_file_data, env)
 
-/** Sets the module name.
-    @sa axis2_arch_file_data_ops#set_module_name */
+/** Sets the module name. */
 #define AXIS2_ARCH_FILE_DATA_SET_MODULE_NAME(arch_file_data, env, module_name) \
-      ((arch_file_data)->ops->set_module_name (arch_file_data, env, module_name))
+      axis2_arch_file_data_set_module_name (arch_file_data, env, module_name)
 
-/** Gets the module dll name.
-    @sa axis2_arch_file_data_ops#get_module_dll_name */
+/** Gets the module dll name. */
 #define AXIS2_ARCH_FILE_DATA_GET_MODULE_DLL_NAME(arch_file_data, env) \
-      ((arch_file_data)->ops->get_module_dll_name (arch_file_data, env))
+      axis2_arch_file_data_get_module_dll_name (arch_file_data, env)
 
-/** Sets the module dll name.
-    @sa axis2_arch_file_data_ops#set_module_dll_name */
+/** Sets the module dll name. */
 #define AXIS2_ARCH_FILE_DATA_SET_MODULE_DLL_NAME(arch_file_data, env, class_name) \
-      ((arch_file_data)->ops->set_module_dll_name (arch_file_data, env, class_name))
+      axis2_arch_file_data_set_module_dll_name (arch_file_data, env, class_name)
 
-/** Adds the service.
-    @sa axis2_arch_file_data_ops#add_svc */
+/** Adds the service. */
 #define AXIS2_ARCH_FILE_DATA_ADD_SVC(arch_file_data, env, svc_desc) \
-      ((arch_file_data)->ops->add_svc (arch_file_data, env, svc_desc))
+      axis2_arch_file_data_add_svc (arch_file_data, env, svc_desc)
 
-/** Gets the service.
-    @sa axis2_arch_file_data_ops#get_svc */
+/** Gets the service. */
 #define AXIS2_ARCH_FILE_DATA_GET_SVC(arch_file_data, env, svc_name) \
-      ((arch_file_data)->ops->get_svc (arch_file_data, env, svc_name))
+      axis2_arch_file_data_get_svc (arch_file_data, env, svc_name)
 
-/** Gets the service map.
-    @sa axis2_arch_file_data_ops#get_svc_map */
+/** Gets the service map. */
 #define AXIS2_ARCH_FILE_DATA_GET_SVC_MAP(arch_file_data, env) \
-      ((arch_file_data)->ops->get_svc_map (arch_file_data, env))
+      axis2_arch_file_data_get_svc_map (arch_file_data, env)
 
-/** Gets the deployable services.
-    @sa axis2_arch_file_data_ops#get_deployable_svcs */
+/** Gets the deployable services. */
 #define AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(arch_file_data, env) \
-      ((arch_file_data)->ops->get_deployable_svcs (arch_file_data, env))
+      axis2_arch_file_data_get_deployable_svcs (arch_file_data, env)
 
-/** Sets the deployable services.
-    @sa axis2_arch_file_data_ops#set_deployable_svcs */
+/** Sets the deployable services. */
 #define AXIS2_ARCH_FILE_DATA_SET_DEPLOYABLE_SVCS(arch_file_data, env, deployable_svcs) \
-      ((arch_file_data)->ops->set_deployable_svcs (arch_file_data, env, deployable_svcs))
-
-/*************************** End of function macros ***************************/
+      axis2_arch_file_data_set_deployable_svcs (arch_file_data, env, deployable_svcs)
 
 /** @} */
 

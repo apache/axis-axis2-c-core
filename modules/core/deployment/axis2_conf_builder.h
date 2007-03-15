@@ -49,59 +49,37 @@ extern "C"
     struct axis2_dep_engine;
     /** Type name for struct axis2_conf_builder */
     typedef struct axis2_conf_builder axis2_conf_builder_t;
-    /** Type name for struct axis2_conf_builder_ops */
-    typedef struct axis2_conf_builder_ops axis2_conf_builder_ops_t;
+
+    /** 
+     * De-allocate memory
+     * @param conf_builder pointer to configuration builder
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_builder_free(axis2_conf_builder_t *conf_builder,
+        const axis2_env_t *env);
+
+    /** 
+     * @param conf_builder pointer to configuration builder
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
+        const axis2_env_t *env);
 
     /**
-     * Conf Builder ops struct
-     * Encapsulator struct for ops of axis2_conf_builder
+     * To get the list og modules that is requird to be engage globally
+     * @param conf_builder pointer to configuration builder
+     * @param env pointer to environment struct
+     * @param module_refs pointer to module refs
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_conf_builder_ops
-    {
-        /** 
-         * De-allocate memory
-         * @param conf_builder pointer to configuration builder
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_conf_builder_t *conf_builder,
-                    const axis2_env_t *env);
-
-        /** 
-         * @param conf_builder pointer to configuration builder
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                populate_conf)(
-                    axis2_conf_builder_t *conf_builder,
-                    const axis2_env_t *env);
-
-        /**
-         * To get the list og modules that is requird to be engage globally
-         * @param conf_builder pointer to configuration builder
-         * @param env pointer to environment struct
-         * @param module_refs pointer to module refs
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                process_module_refs)(
-                    axis2_conf_builder_t *conf_builder,
-                    const axis2_env_t *env,
-                    axiom_children_qname_iterator_t *module_refs);
-    };
-
-    /**
-     * Conf Builder struct 
-     */
-    struct axis2_conf_builder
-    {
-        /** Operations of conf builder */
-        axis2_conf_builder_ops_t *ops;
-        struct axis2_desc_builder *desc_builder;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
+        const axis2_env_t *env,
+        axiom_children_qname_iterator_t *module_refs);
 
     /**
      * Creates conf builder struct
@@ -109,8 +87,7 @@ extern "C"
      * @return pointer to newly created conf builder
      */
     AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
-    axis2_conf_builder_create (
-        const axis2_env_t *env);
+    axis2_conf_builder_create (const axis2_env_t *env);
 
     /**
      * Creates conf builder struct
@@ -122,31 +99,23 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
-    axis2_conf_builder_create_with_file_and_dep_engine_and_conf(
-        const axis2_env_t *env,
+    axis2_conf_builder_create_with_file_and_dep_engine_and_conf(const axis2_env_t *env,
         axis2_char_t *file,
         struct axis2_dep_engine *dep_engine,
         axis2_conf_t *conf);
 
-/*************************** Function macros **********************************/
-
-/** Frees the conf builder
-    @sa axis2_conf_builder_ops#free */
+/** Frees the conf builder */
 #define AXIS2_CONF_BUILDER_FREE(conf_builder, env) \
-      ((conf_builder)->ops->free (conf_builder, env))
+      axis2_conf_builder_free (conf_builder, env)
 
-/** Populate conf.
-    @sa axis2_conf_builder_ops#populate_conf */
+/** Populate conf. */
 #define AXIS2_CONF_BUILDER_POPULATE_CONF(conf_builder, env) \
-      ((conf_builder)->ops->populate_conf (conf_builder, env))
+      axis2_conf_builder_populate_conf (conf_builder, env)
 
-/** Process module refs.
-    @sa axis2_conf_builder_ops#process_module_refs */
+/** Process module refs. */
 #define AXIS2_CONF_BUILDER_PROCESS_MODULE_REFS(conf_builder, env, module_refs) \
-      ((conf_builder)->ops->process_module_refs (conf_builder, env, module_refs))
+      axis2_conf_builder_process_module_refs (conf_builder, env, module_refs)
 
-
-/*************************** End of function macros ***************************/
 
 /** @} */
 

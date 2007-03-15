@@ -55,210 +55,129 @@ extern "C"
 #define AXIS2_FAILURE 0
 
     struct axis2_msg_ctx;
-    /** Type name for struct axis2_msg_recv ops */
-    typedef struct axis2_msg_recv_ops axis2_msg_recv_ops_t;
     /** Type name for struct axis2_msg_recv*/
     typedef struct axis2_msg_recv axis2_msg_recv_t;
 
     /**
-     * Message Receiver ops struct.
-     * Encapsulator struct for ops of axis2_msg_recv
+     * Deallocate memory
+     * @param msg_recv pinter to message receiver
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_msg_recv_ops
-    {
-        /**
-         * Deallocate memory
-         * @param msg_recv pinter to message receiver
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free_fn)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env);
-
-        /**
-         * This method is called from axis2_engine_receive method. This method's
-         * actual implementation is decided from the create method of the 
-         * extended message receiver object. There depending on the synchronous or
-         * asynchronous type, receive metho is assigned with the synchronous or
-         * asynchronous implementation of receive.
-         * @see raw_xml_in_out_msg_recv_create method where receive is assigned
-         * to receive_sync
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param in_msg_ctx pointer to in message context
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                receive)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *in_msg_ctx,
-                    void *callback_recv_param);
-        /**
-         * This contain synchronous receiving logic.
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param in_msg_ctx pointer to in message context
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                receive_sync)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *in_msg_ctx,
-                    void *callback_recv_param);
-
-        /**
-         * This contain asynchronous receiving logic.
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param in_msg_ctx pointer to in message 
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                receive_async)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *in_msg_ctx,
-                    void *callback_recv_param);
-
-        /**
-         * This contain in only synchronous business invoke logic
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param in_msg_ctx pointer to in message context
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                invoke_in_business_logic_sync)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *in_msg_ctx);
-
-        /**
-         * This contain in only asynchronous business invoke logic
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param in_msg_ctx pointer to in message context
-         * @param svr_callback pointer to server callback
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                invoke_in_business_logic_async)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *in_msg_ctx,
-                    struct axis2_svr_callback *svr_callback);
-
-        /**
-         * This contain in out synchronous business invoke logic
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param in_msg_ctx pointer to in message context
-         * @param out_msg_ctx pointer to out message context
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                invoke_in_out_business_logic_sync)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *in_msg_ctx,
-                    struct axis2_msg_ctx *out_msg_ctx);
-
-        /**
-         * This contain in out asynchronous business invoke logic
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param in_msg_ctx pinter to in message context
-         * @param out_msg_ctx pointer to out message context
-         * @param callback pointer to callback
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                invoke_in_out_business_logic_async)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *in_msg_ctx,
-                    struct axis2_msg_ctx *out_msg_ctx,
-                    struct axis2_svr_callback *callback);
-
-
-        /**
-         * this will create a new service skeleton object
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to enviornment struct
-         * @param msg_ctx pointer to message context
-         * @return service skeleton object
-         */
-        axis2_svc_skeleton_t *(AXIS2_CALL *
-                make_new_svc_obj)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *msg_ctx);
-
-        /**
-         * This will return the service skeleton object
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param msg_ctx pointer to message context
-         * @return service skeleton object
-         */
-        axis2_svc_skeleton_t *(AXIS2_CALL *
-                get_impl_obj)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    struct axis2_msg_ctx *msg_ctx);
-
-        /**
-         * Set the application scope
-         * @param msg_recv pointer to message receiver
-         * @param env pointer to environment struct
-         * @param scope ointer to scope
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_scope)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    const axis2_char_t *scope);
-
-
-        /**
-         * Get the application scope
-         * @param msg_recv pointer to message receiver
-         * @env pointer to enviornment struct
-         * @return scope
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_scope)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env);
-
-        /**
-         * Delete the service skeleton object created by make_new_svc_obj
-         * @param msg_recv pointer to message receiver
-         * @env pointer to environment struct
-         * @param msg_ctx pointer to message context
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                delete_svc_obj)(
-                    axis2_msg_recv_t *msg_recv,
-                    const axis2_env_t *env,
-                    axis2_msg_ctx_t *msg_ctx);
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env);
 
     /**
-     * message receiver struct
+     * This method is called from axis2_engine_receive method. This method's
+     * actual implementation is decided from the create method of the 
+     * extended message receiver object. There depending on the synchronous or
+     * asynchronous type, receive metho is assigned with the synchronous or
+     * asynchronous implementation of receive.
+     * @see raw_xml_in_out_msg_recv_create method where receive is assigned
+     * to receive_sync
+     * @param msg_recv pointer to message receiver
+     * @param env pointer to environment struct
+     * @param in_msg_ctx pointer to in message context
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_msg_recv
-    {
-        /** operations of message receiver */
-        axis2_msg_recv_ops_t *ops;
-        void* derived;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_recv_receive(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env,
+        struct axis2_msg_ctx *in_msg_ctx,
+        void *callback_recv_param);
+
+    /**
+     * This contain in out synchronous business invoke logic
+     * @param msg_recv pointer to message receiver
+     * @param env pointer to environment struct
+     * @param in_msg_ctx pointer to in message context
+     * @param out_msg_ctx pointer to out message context
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env,
+        struct axis2_msg_ctx *in_msg_ctx,
+        struct axis2_msg_ctx *out_msg_ctx);
+
+    /**
+     * this will create a new service skeleton object
+     * @param msg_recv pointer to message receiver
+     * @param env pointer to enviornment struct
+     * @param msg_ctx pointer to message context
+     * @return service skeleton object
+     */
+    AXIS2_EXTERN axis2_svc_skeleton_t *AXIS2_CALL
+    axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env,
+        struct axis2_msg_ctx *msg_ctx);
+
+    /**
+     * This will return the service skeleton object
+     * @param msg_recv pointer to message receiver
+     * @param env pointer to environment struct
+     * @param msg_ctx pointer to message context
+     * @return service skeleton object
+     */
+    AXIS2_EXTERN axis2_svc_skeleton_t *AXIS2_CALL
+    axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env,
+        struct axis2_msg_ctx *msg_ctx);
+
+    /**
+     * Set the application scope
+     * @param msg_recv pointer to message receiver
+     * @param env pointer to environment struct
+     * @param scope ointer to scope
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env,
+        const axis2_char_t *scope);
+
+
+    /**
+     * Get the application scope
+     * @param msg_recv pointer to message receiver
+     * @env pointer to enviornment struct
+     * @return scope
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_msg_recv_get_scope(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env);
+
+    /**
+     * Delete the service skeleton object created by make_new_svc_obj
+     * @param msg_recv pointer to message receiver
+     * @env pointer to environment struct
+     * @param msg_ctx pointer to message context
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env,
+        axis2_msg_ctx_t *msg_ctx);
+
+    AXIS2_EXPORT axis2_status_t AXIS2_CALL
+    axis2_msg_recv_set_invoke_business_logic(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env,
+        void *func);
+
+    AXIS2_EXPORT axis2_status_t AXIS2_CALL
+    axis2_msg_recv_set_derived(axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env,
+        void *derived);
+
+    AXIS2_EXPORT void *AXIS2_CALL
+    axis2_msg_recv_get_derived(const axis2_msg_recv_t *msg_recv,
+        const axis2_env_t *env);
+
+	AXIS2_EXPORT axis2_status_t AXIS2_CALL
+	axis2_msg_recv_set_receive(axis2_msg_recv_t *msg_recv,
+		const axis2_env_t *env,
+		void *func);
 
     /**
      * Create new message receiver object. usually this will be called from the
@@ -268,82 +187,40 @@ extern "C"
      * @return newly created message receiver object
      **/
     AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
-    axis2_msg_recv_create (
-        const axis2_env_t *env);
+    axis2_msg_recv_create (const axis2_env_t *env);
 
-/************************** Start of function macros **************************/
+/** Frees the message receiver. */
+#define AXIS2_MSG_RECV_FREE(msg_recv, env) axis2_msg_recv_free (msg_recv, env)
 
-/** Frees the message receiver.
-    @sa axis2_msg_recv_ops#free */
-#define AXIS2_MSG_RECV_FREE(msg_recv, env) ((msg_recv)->ops->free_fn (msg_recv, env))
-
-/** Receive.
-    @sa axis2_msg_recv_ops#receive */
+/** Receive. */
 #define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, callback_recv_param) \
-      ((msg_recv)->ops->receive (msg_recv, env, msg_ctx, callback_recv_param))
+      axis2_msg_recv_receive (msg_recv, env, msg_ctx, callback_recv_param)
 
-/** Receive sync.
-    @sa axis2_msg_recv_ops#sync */
-#define AXIS2_MSG_RECV_RECEIVE_SYNC(msg_recv, env, msg_ctx, callback_recv_param) \
-      ((msg_recv)->ops->receive_sync (msg_recv, env, msg_ctx, callback_recv_param))
-
-/** Receive async.
-    @sa axis2_msg_recv_ops#receive_async */
-#define AXIS2_MSG_RECV_RECEIVE_ASYNC(msg_recv, env, msg_ctx, callback_recv_param) \
-      ((msg_recv)->ops->receive_async (msg_recv, env, msg_ctx, callback_recv_param))
-
-/** Invoke in business logic sync.
-    @sa axis2_msg_recv_ops#invoke_in_business_logic_sync */
-#define AXIS2_MSG_RECV_INVOKE_IN_BUSINESS_LOGIC_SYNC(msg_recv, env, in_msg_ctx) \
-        ((msg_recv)->ops->invoke_in_business_logic_sync(msg_recv, env, in_msg_ctx))
-
-/** Invoke in business logic async.
-    @sa axis2_msg_recv_ops#invoke_in_business_logic_async */
-#define AXIS2_MSG_RECV_INVOKE_IN_BUSINESS_LOGIC_ASYNC(msg_recv, env, \
-            in_msg_ctx, callback) \
-        ((msg_recv)->ops->invoke_in_business_logic_async(msg_recv, env, \
-            in_msg_ctx, callback))
-
-/** Invoke in out business logic sync.
-    @sa axis2_msg_recv_ops#invoke_in_out_business_logic_sync */
+/** Invoke in out business logic sync. */
 #define AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_SYNC(msg_recv, env, \
             in_msg_ctx, out_msg_ctx) \
-        ((msg_recv)->ops->invoke_in_out_business_logic_sync (msg_recv, env, \
-            in_msg_ctx, out_msg_ctx))
+        axis2_msg_recv_invoke_business_logic (msg_recv, env, \
+            in_msg_ctx, out_msg_ctx)
 
-/** Invoke in out business logic async.
-    @sa axis2_msg_recv_ops#invoke_in_out_business_logic_async */
-#define AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_ASYNC(msg_recv, env, \
-            in_msg_ctx, out_msg_ctx, callback) \
-        ((msg_recv)->ops->invoke_in_out_business_logic_async(msg_recv, env, \
-            in_msg_ctx, out_msg_ctx, callback))
-
-/** Make new svc obj.
-    @sa axis2_msg_recv_ops#make_new_svc_obj */
+/** Make new svc obj. */
 #define AXIS2_MSG_RECV_MAKE_NEW_SVC_OBJ(msg_recv, env, msg_ctx) \
-        ((msg_recv)->ops->make_new_svc_obj(msg_recv, env, msg_ctx))
+        axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx)
 
-/** Get impl obj.
-    @sa axis2_msg_recv_ops#get_impl_obj */
+/** Get impl obj. */
 #define AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx) \
-      ((msg_recv)->ops->get_impl_obj(msg_recv, env, msg_ctx))
+      axis2_msg_recv_get_impl_obj(msg_recv, env, msg_ctx)
 
-/** Set scope.
-    @sa axis2_msg_recv_ops#set_scope */
+/** Set scope. */
 #define AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, scope) \
-      ((msg_recv)->ops->set_scope(msg_recv, env, scope))
+      axis2_msg_recv_set_scope(msg_recv, env, scope)
 
-/** Get scope.
-    @sa axis2_msg_recv_ops#get_scope */
+/** Get scope. */
 #define AXIS2_MSG_RECV_GET_SCOPE(msg_recv, env) \
-        ((msg_recv)->ops->get_scope(msg_recv, env))
+        axis2_msg_recv_get_scope(msg_recv, env)
 
-/** Delete svc obj.
-    @sa axis2_msg_recv_ops#delete_svc_obj */
+/** Delete svc obj. */
 #define AXIS2_MSG_RECV_DELETE_SVC_OBJ(msg_recv, env, msg_ctx) \
-        ((msg_recv)->ops->delete_svc_obj(msg_recv, env, msg_ctx))
-
-/************************** End of function macros ****************************/
+        axis2_msg_recv_delete_svc_obj(msg_recv, env, msg_ctx)
 
 /** @} */
 #ifdef __cplusplus

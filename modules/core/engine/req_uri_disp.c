@@ -196,5 +196,5 @@ axis2_req_uri_disp_invoke(
     axis2_msg_ctx_set_find_svc(msg_ctx, env, axis2_req_uri_disp_find_svc);
     axis2_msg_ctx_set_find_op(msg_ctx, env, axis2_req_uri_disp_find_op);
 
-    return axis2_disp_invoke(handler, env, msg_ctx);
+    return axis2_disp_find_svc_and_op(handler, env, msg_ctx);
 }

@@ -62,8 +62,6 @@ extern "C"
 
     /** Type name for axis2_phase_resolver */
     typedef struct axis2_phase_resolver axis2_phase_resolver_t;
-    /** Type name for axis2_phase_resolver_ops */
-    typedef struct axis2_phase_resolver_ops axis2_phase_resolver_ops_t;
 
     struct axis2_phase;
     struct axis2_handler_desc;
@@ -75,135 +73,110 @@ extern "C"
     struct axis2_op;
     struct axis2_phase_holder;
 
-    /**
-     * phase resolver ops struct.
-     * Encapsulator struct for ops of axis2_phase_resolver.
+    /** 
+     * Frees phase resolver.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_phase_resolver_ops
-    {
-        /** 
-         * Frees phase resolver.
-         * @param phase_resolver pointer to phase resolver
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_phase_resolver_t *phase_resolver,
-                    const axis2_env_t *env);
-
-        /**
-         * Builds the execution chains. Execution chains are collection of 
-         * phases that are invoked in the execution path.
-         * @param phase_resolver pointer to phase resolver
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                build_chains)(
-                    axis2_phase_resolver_t *phase_resolver,
-                    const axis2_env_t *env);
-
-        /**
-         * Builds execution chains for given operation.
-         * @param phase_resolver pointer to phase resolver
-         * @param env pointer to environment struct
-         * @param op pointer to operation
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                build_module_op)(
-                    axis2_phase_resolver_t *phase_resolver,
-                    const axis2_env_t *env,
-                    struct axis2_op *op);
-
-        /**
-         * Builds transport chains.
-         * @param phase_resolver pointer to phase resolver
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                build_transport_chains)(
-                    axis2_phase_resolver_t *phase_resolver,
-                    const axis2_env_t *env);
-
-
-        /**
-         * Engages the given module globally. Engaging a module globally means 
-         * that the given module would be engaged to all operations in all 
-         * services.
-         * @param phase_resolver pointer to phase resolver
-         * @param env pointer to environment struct
-         * @param module pointer to module
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                engage_module_globally)(
-                    axis2_phase_resolver_t *phase_resolver,
-                    const axis2_env_t *env,
-                    struct axis2_module_desc *module);
-
-        /**
-         * Engages the given global module to the given service. This means 
-         * the given module would be engaged to all operations of the given 
-         * service. 
-         * @param phase_resolver pointer to phase resolver
-         * @param env pointer to environment struct
-         * @param svc pointer to service
-         * @param module_desc pointer to module description
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                engage_module_to_svc_from_global)(
-                    axis2_phase_resolver_t *phase_resolver,
-                    const axis2_env_t *env,
-                    struct axis2_svc *svc,
-                    struct axis2_module_desc *module_desc);
-
-        /**
-         * Engages the given module to the given service. This means 
-         * the given module would be engaged to all operations of the given 
-         * service. 
-         * @param phase_resolver pointer to phase resolver
-         * @param env pointer to environment struct
-         * @param svc pointer to service
-         * @param module_desc pointer to module description
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                engage_module_to_svc)(
-                    axis2_phase_resolver_t *phase_resolver,
-                    const axis2_env_t *env,
-                    struct axis2_svc *svc,
-                    struct axis2_module_desc *module_desc);
-
-        /**
-         * Engages the given module to the given operation.
-         * @param phase_resolver pointer to phase resolver
-         * @param env pointer to environment struct
-         * @param axis_op pointer to axis operation
-         * @param pointer to module description
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                engage_module_to_op)(
-                    axis2_phase_resolver_t *phase_resolver,
-                    const axis2_env_t *env,
-                    struct axis2_op *axis_op,
-                    struct axis2_module_desc *module_desc);
-
-
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_free(axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env);
 
     /**
-     * phase resolver struct.
+     * Builds the execution chains. Execution chains are collection of 
+     * phases that are invoked in the execution path.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_phase_resolver
-    {
-        /** operations of phase resolver */
-        axis2_phase_resolver_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env);
+
+    /**
+     * Builds execution chains for given operation.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param op pointer to operation
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env,
+        struct axis2_op *op);
+
+    /**
+     * Builds transport chains.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env);
+
+
+    /**
+     * Engages the given module globally. Engaging a module globally means 
+     * that the given module would be engaged to all operations in all 
+     * services.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param module pointer to module
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env,
+        struct axis2_module_desc *module);
+
+    /**
+     * Engages the given global module to the given service. This means 
+     * the given module would be engaged to all operations of the given 
+     * service. 
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param svc pointer to service
+     * @param module_desc pointer to module description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env,
+        struct axis2_svc *svc,
+        struct axis2_module_desc *module_desc);
+
+    /**
+     * Engages the given module to the given service. This means 
+     * the given module would be engaged to all operations of the given 
+     * service. 
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param svc pointer to service
+     * @param module_desc pointer to module description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env,
+        struct axis2_svc *svc,
+        struct axis2_module_desc *module_desc);
+
+    /**
+     * Engages the given module to the given operation.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param axis_op pointer to axis operation
+     * @param pointer to module description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env,
+        struct axis2_op *axis_op,
+        struct axis2_module_desc *module_desc);
+
 
     /**
      * Creates phase resolver struct.
@@ -211,8 +184,7 @@ extern "C"
      * @return pointer to newly created phase resolver
      */
     AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
-    axis2_phase_resolver_create (
-        const axis2_env_t *env);
+    axis2_phase_resolver_create (const axis2_env_t *env);
 
     /**
      * Creates phase resolver struct with given configuration.
@@ -222,8 +194,7 @@ extern "C"
      * @return pointer to newly created phase resolver
      */
     AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
-    axis2_phase_resolver_create_with_config (
-        const axis2_env_t *env,
+    axis2_phase_resolver_create_with_config (const axis2_env_t *env,
         struct axis2_conf *axis2_config);
 
     /**
@@ -236,51 +207,41 @@ extern "C"
      * @return pointer to newly created phase resolver
      */
     AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
-    axis2_phase_resolver_create_with_config_and_svc (
-        const axis2_env_t *env,
+    axis2_phase_resolver_create_with_config_and_svc(const axis2_env_t *env,
         struct axis2_conf *axis2_config,
         struct axis2_svc *svc);
 
-/** Frees phase resolver.
-    @sa axis2_phase_resolver_ops#free */
+/** Frees phase resolver. */
 #define AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env) \
-      ((phase_resolver)->ops->free (phase_resolver, env))
+      axis2_phase_resolver_free (phase_resolver, env)
 
-/** Builds execution chains.
-    @sa axis2_phase_resolver_ops#build_chains */
+/** Builds execution chains. */
 #define AXIS2_PHASE_RESOLVER_BUILD_CHAINS(phase_resolver, env) \
-      ((phase_resolver)->ops->build_chains (phase_resolver, env))
+      axis2_phase_resolver_build_chains (phase_resolver, env)
 
-/** Builds module operations.
-    @sa axis2_phase_resolver_ops#build_module_op */
+/** Builds module operations. */
 #define AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(phase_resolver, env, op) \
-      ((phase_resolver)->ops->build_module_op (phase_resolver, env, op))
+      axis2_phase_resolver_build_module_op (phase_resolver, env, op)
 
-/** Builds transport chains.
-    @sa axis2_phase_resolver_ops#build_transport_chains */
+/** Builds transport chains. */
 #define AXIS2_PHASE_RESOLVER_BUILD_TRANSPORT_CHAINS(phase_resolver, env) \
-      ((phase_resolver)->ops->build_transport_chains (phase_resolver, env))
+      axis2_phase_resolver_build_transport_chains (phase_resolver, env)
 
-/** Engages module globally.
-    @sa axis2_phase_resolver_ops#engage_module_globally */
+/** Engages module globally. */
 #define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_GLOBALLY(phase_resolver, env, module) \
-      ((phase_resolver)->ops->engage_module_globally (phase_resolver, env, module))
+      axis2_phase_resolver_engage_module_globally (phase_resolver, env, module)
 
-/** Engages module to service from global module.
-    @sa axis2_phase_resolver_ops#engage_module_to_svc_from_global */
+/** Engages module to service from global module. */
 #define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC_FROM_GLOBAL(phase_resolver, env, svc, module_desc) \
-      ((phase_resolver)->ops->engage_module_to_svc_from_global (phase_resolver, env, svc, module_desc))
+      axis2_phase_resolver_engage_module_to_svc_from_global (phase_resolver, env, svc, module_desc)
 
-/** Engage module to service.
-    @sa axis2_phase_resolver_ops#engage_module_to_svc */
+/** Engage module to service. */
 #define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver, env, svc, module_desc) \
-      ((phase_resolver)->ops->engage_module_to_svc (phase_resolver, env, svc, module_desc))
+      axis2_phase_resolver_engage_module_to_svc (phase_resolver, env, svc, module_desc)
 
-/** Engage module to operation.
-    @sa axis2_phase_resolver_ops#engage_module_to_op */
+/** Engage module to operation. */
 #define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(phase_resolver, env, axis_op, module_desc) \
-      ((phase_resolver)->ops->engage_module_to_op (phase_resolver, env, axis_op, module_desc))
-
+      axis2_phase_resolver_engage_module_to_op (phase_resolver, env, axis_op, module_desc)
 
 /** @} */
 

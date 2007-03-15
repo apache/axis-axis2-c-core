@@ -124,7 +124,7 @@ axis2_http_server_create(
          * server_impl->conf_ctx because it may own to any other object which
          * may lead to double free
          */
-        server_impl->conf_ctx_private = build_conf_ctx(env, repo);
+        server_impl->conf_ctx_private = axis2_build_conf_ctx(env, repo);
         if (NULL == server_impl->conf_ctx_private)
         {
             axis2_http_server_free((axis2_transport_receiver_t *) server_impl, env);
