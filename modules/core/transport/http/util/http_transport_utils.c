@@ -902,7 +902,11 @@ axis2_http_transport_utils_get_charset_enc(
     if (tmp)
     {
         tmp = strchr(tmp, '=');
-        tmp2 = strchr(tmp, ';');
+		if (tmp)
+		{
+			tmp2 = strchr(tmp, ';');
+		}
+
         if (tmp2)
         {
             if ('\'' == *(tmp2 - sizeof(axis2_char_t)) ||
