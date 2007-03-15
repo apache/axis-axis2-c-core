@@ -182,7 +182,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
         }            
         
         bst_node = oxs_token_build_binary_security_token_element(env,sec_node, 
-                cert_id , OXS_VALUE_X509V3, OXS_ENCODING_BASE64BINARY, bst_data); 
+                cert_id , OXS_ENCODING_BASE64BINARY, OXS_VALUE_X509V3, bst_data); 
         if(!bst_node)
         {
             AXIS2_LOG_INFO(env->log,"[rampart][rampart_signature] Binary Security Token creation failed.");
@@ -217,7 +217,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
             tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
             axis2_array_list_add(tr_list, env, tr);
             oxs_sign_part_set_transforms(sign_part, env, tr_list);                                    
-            oxs_axiom_add_attribute(env, node_to_sign, OXS_WSU, OXS_WSSE_XMLNS,OXS_ATTR_ID,id);
+            oxs_axiom_add_attribute(env, node_to_sign, OXS_WSU,RAMPART_WSU_XMLNS,OXS_ATTR_ID,id);
             oxs_sign_part_set_node(sign_part, env,node_to_sign);
             oxs_sign_part_set_digest_mtd(sign_part, env, digest_method);
             axis2_array_list_add(sign_parts, env, sign_part);

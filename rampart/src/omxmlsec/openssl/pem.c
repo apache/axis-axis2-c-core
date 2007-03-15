@@ -91,7 +91,7 @@ openssl_pem_read_pkey(const axis2_env_t *env,
     BIO *bio;
     int ret; 
 
-    bio = BIO_new_file(filename, "rb");
+    bio = BIO_new_file(filename, "r");
 
     if(type == OPENSSL_PEM_PKEY_TYPE_PRIVATE_KEY){
         *pkey = PEM_read_bio_PrivateKey(bio, NULL, 0 , password);

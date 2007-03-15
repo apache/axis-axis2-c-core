@@ -39,20 +39,31 @@ openssl_x509_load_from_buffer(const axis2_env_t *env,
     int ilen = 0;
 
     /*First we need to base64 decode*/
-    EVP_ENCODE_CTX ctx;
-    int len = 0;
-    int ret = 0;
+/*  EVP_ENCODE_CTX ctx;*/
+/*  int len = 0;*/
+/*  int ret = 0;*/
     int decode_len = 0;
+    int decoded_len = -1;
 
     decode_len = axis2_base64_decode_len(b64_encoded_buf);
-    buff = AXIS2_MALLOC(env->allocator, decode_len + 1000);
+    buff = AXIS2_MALLOC(env->allocator, decode_len);
 
     ilen = axis2_strlen(b64_encoded_buf);
-    EVP_DecodeInit(&ctx);
+
+    decoded_len = axis2_base64_decode_binary(buff,b64_encoded_buf);
+    if (decoded_len < 0)
+    {
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+                    "axis2_base64_decode_binary failed");
+            return AXIS2_FAILURE;
+    }
+    
+/*  EVP_DecodeInit(&ctx);
     EVP_DecodeUpdate(&ctx, (unsigned char*)buff, &len,
                    (unsigned char*)b64_encoded_buf, ilen);
     EVP_DecodeFinal(&ctx, (unsigned char*)buff, &ret);
     ret += len;
+*/    
     if ((mem = BIO_new_mem_buf(buff, ilen)) == NULL)
     {
         /*oxs_error(env, ERROR_LOCATION, OXS_ERROR_DEFAULT,
@@ -187,13 +198,33 @@ openssl_x509_get_cert_data(const axis2_env_t *env,
     axis2_char_t *core_tail = NULL;
     axis2_char_t *core = NULL;
     axis2_char_t *res = NULL;
+    axis2_char_t *buffer = NULL;
+    int i = 0;
+    int j = 0;
     
     unformatted = openssl_x509_get_info(env, OPENSSL_X509_INFO_DATA_CERT, cert);
     core_tail = axis2_strstr(unformatted, "\n");
+    core_tail = core_tail+1;
     res = axis2_strstr(core_tail,"-----END");
+    res = res-1;
     res[0] = '\0';
-    core = (axis2_char_t*)AXIS2_STRDUP(core_tail,env); 
-    return core;
+    core = (axis2_char_t*)AXIS2_STRDUP(core_tail,env);
+    buffer = (axis2_char_t*)AXIS2_STRDUP(core,env);
+
+    while(core[i]!='\0')
+    {
+        if(core[i]!='\n')
+        {
+            buffer[j] = core[i];
+            j++;
+        }
+        i++;
+    }        
+    buffer[j]='\0';
+
+    AXIS2_FREE(env->allocator,core);
+    core = NULL;
+    return buffer;
 }
 
 

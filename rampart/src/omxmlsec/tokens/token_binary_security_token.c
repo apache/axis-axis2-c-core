@@ -21,7 +21,7 @@
 #include <oxs_utility.h>
 #include <axiom_attribute.h>
 #include <axiom_element.h>
-
+#include <rampart_constants.h>
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_binary_security_token_element(const axis2_env_t *env,
@@ -39,9 +39,12 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
     axiom_attribute_t *id_attr = NULL;
     int ret;
     axiom_namespace_t *ns_obj = NULL;
+    axiom_namespace_t *ns = NULL;
 
     ns_obj = axiom_namespace_create(env, OXS_WSSE_NS,
             OXS_WSSE);
+
+    ns = axiom_namespace_create(env,RAMPART_WSU_XMLNS,OXS_WSU);
 
     binary_security_token_ele = axiom_element_create(env, parent, OXS_NODE_BINARY_SECURITY_TOKEN, ns_obj, &binary_security_token_node);
     if (!binary_security_token_ele)
@@ -67,7 +70,7 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
     }
 
     
-    id_attr = axiom_attribute_create(env, OXS_ATTR_ID, id, NULL);
+    id_attr = axiom_attribute_create(env, OXS_ATTR_ID, id,ns);
     encoding_type_att =  axiom_attribute_create(env, OXS_ATTR_ENCODING_TYPE, encoding_type, NULL);
     value_type_att =  axiom_attribute_create(env, OXS_ATTR_VALUE_TYPE, value_type, NULL);
 

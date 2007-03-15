@@ -81,7 +81,7 @@ rampart_token_process_direct_ref(const axis2_env_t *env,
     ref_id = axis2_string_substring_starting_at(axis2_strdup(ref, env), 1);
 
     /*Find the token with the id=ref_id within the scope of scope_node*/
-    bst_node = oxs_axiom_get_node_by_id(env, scope_node, OXS_ATTR_ID, ref_id);
+    bst_node = oxs_axiom_get_node_by_id(env, scope_node,"wsu:Id",ref_id);
     if(!bst_node){
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_ELEMENT_FAILED, "Error retrieving element with ID=%s", ref_id);
         return AXIS2_FAILURE;
