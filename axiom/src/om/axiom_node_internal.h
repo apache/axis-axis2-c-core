@@ -39,8 +39,8 @@ extern "C"
  * @{
  */
 struct axiom_document;
-struct axiom_stax_builder;    
-    
+struct axiom_stax_builder;
+
 /**
  * Sets a parent node to a given node, if a parent already exist for this node
  * then it is detached before seting the parent internal function;
@@ -49,106 +49,109 @@ struct axiom_stax_builder;
  * @param parent_node the node that will be set as parent. , cannot be NULL.
  * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
  */
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_node_set_parent (axiom_node_t * om_node,
-                          const axis2_env_t *env,
-                          axiom_node_t * parent);
+    const axis2_env_t *env,
+    axiom_node_t * parent);
 
 /**
-*   sets a node as first child of om_node
-* @param om_node om_node
-* @param env environment, MUST NOT be NULL.
-* @param first_child child to be set as first child
-*/  
+ * Sets a node as first child of om_node
+ * @param om_node om_node
+ * @param env environment, MUST NOT be NULL.
+ * @param first_child child to be set as first child
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_node_set_first_child(axiom_node_t *om_node,
-                              const axis2_env_t *env,
-                              axiom_node_t *first_child); 
+    const axis2_env_t *env,
+    axiom_node_t *first_child);
+
 /**
-* set previous sibling
-* @param om_node 
-* @param env environment, MUST NOT be NULL.
-* @param prev_sibling 
-* @return status of the op, AXIS2_SUCCESS on success
-*               AXIS2_FAILURE on error
-*/
-    
-     
+ * Sets previous sibling
+ * @param om_node 
+ * @param env environment, MUST NOT be NULL.
+ * @param prev_sibling 
+ * @return status of the op, AXIS2_SUCCESS on success
+ *     AXIS2_FAILURE on error
+ */
+
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  
-axiom_node_set_previous_sibling(axiom_node_t *om_node,                                  
-                                   const axis2_env_t *env,
-                                   axiom_node_t *prev_sibling); 
+axiom_node_set_previous_sibling(axiom_node_t *om_node,
+    const axis2_env_t *env,
+    axiom_node_t *prev_sibling); 
+
 /**
-* set next sibling
-* @param om_node 
-* @param env environment, MUST NOT be NULL.
-* @param last_sibling 
-* @return status of the op, AXIS2_SUCCESS on success,
-*                   AXIS2_FAILURE on error
-*/                                                  
- 
+ * Sets next sibling
+ * @param om_node 
+ * @param env environment, MUST NOT be NULL.
+ * @param last_sibling 
+ * @return status of the op, AXIS2_SUCCESS on success,
+ *     AXIS2_FAILURE on error
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_node_set_next_sibling(axiom_node_t *om_node,
-                               const axis2_env_t *env,
-                               axiom_node_t *next_sibling);
+    const axis2_env_t *env,
+    axiom_node_t *next_sibling);
+
 /**
-*   set node type
-* @param om_node    
-* @param env environment, MUST NOT be NULL.
-* @param type type of the node
-* @return status code of the op AXIS2_SUCCESS on success,
-*                       AXIS2_FAILURE on error
-*/
+ * Sets node type
+ * @param om_node    
+ * @param env environment, MUST NOT be NULL.
+ * @param type type of the node
+ * @return status code of the op AXIS2_SUCCESS on success,
+ *     AXIS2_FAILURE on error
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_node_set_node_type(axiom_node_t *om_node,
-                            const axis2_env_t *env,
-                            axiom_types_t type);
+    const axis2_env_t *env,
+    axiom_types_t type);
 
 /**
-* set data element
-* @param om_node  node struct  
-* @param env environment, MUST NOT be NULL.
-* @param data_element 
-* @return status code of the op AXIS2_SUCCESS on success,
-*                       AXIS2_FAILURE on error
-*/
+ * Sets data element
+ * @param om_node  node struct  
+ * @param env environment, MUST NOT be NULL.
+ * @param data_element 
+ * @return status code of the op AXIS2_SUCCESS on success,
+ *     AXIS2_FAILURE on error
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_node_set_data_element(axiom_node_t *om_node,
-                               const axis2_env_t *env,
-                               void* data_element);
+    const axis2_env_t *env,
+    void* data_element);
+
 /**
-* sets the build status , if the node if completety build, this attribute  is
-* set to AXIS2_TRUE , otherwise AXIS2_FALSE  
-* @param om_node 
-* @param env environment, MUST NOT be NULL.
-* @param done                   
-*/                                    
+ * Sets the build status , if the node if completety build, this attribute  is
+ * set to AXIS2_TRUE , otherwise AXIS2_FALSE  
+ * @param om_node 
+ * @param env environment, MUST NOT be NULL.
+ * @param done
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_node_set_complete(axiom_node_t *om_node,
-                               const axis2_env_t *env,
-                               axis2_bool_t done);  
-  
+    const axis2_env_t *env,
+    axis2_bool_t done);
+
 /**
-* This functions is only to be used by builder
-* do not use this function
-*/  
+ * This functions is only to be used by builder
+ * do not use this function
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_node_set_document(axiom_node_t *om_node,
-                           const axis2_env_t *env,
-                           struct axiom_document *om_doc);
+    const axis2_env_t *env,
+    struct axiom_document *om_doc);
+
 /**
-*    sets the builder 
-*
-*/                           
+ * Sets the builder
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_node_set_builder(axiom_node_t *om_node,
-                          const axis2_env_t *env,
-                          struct axiom_stax_builder *builder);                           
+    const axis2_env_t *env,
+    struct axiom_stax_builder *builder);
 
-AXIS2_EXTERN struct axiom_stax_builder * AXIS2_CALL
+AXIS2_EXTERN struct axiom_stax_builder *AXIS2_CALL
 axiom_node_get_builder(axiom_node_t *om_node,
-                          const axis2_env_t *env);                                
+    const axis2_env_t *env);
+
 /** @} */
     
 #ifdef __cplusplus
