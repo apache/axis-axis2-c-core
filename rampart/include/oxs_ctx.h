@@ -40,11 +40,12 @@ extern "C"
  * @{
  */
 
+/*TODO We need to change the name oxs_ctx -> oxs_sym_ctx.
+ * The name is sounds too generic as there is another oxs_asym_ctx.
+ * */
 
     typedef enum  {
         OXS_CTX_OPERATION_NONE = 0,
-        OXS_CTX_OPERATION_SIGN,
-        OXS_CTX_OPERATION_VERIFY,
         OXS_CTX_OPERATION_ENCRYPT,
         OXS_CTX_OPERATION_DECRYPT
     } oxs_ctx_operation_t;

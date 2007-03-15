@@ -161,6 +161,7 @@ oxs_sign_part_create(const axis2_env_t *env)
 
     sign_part->id= NULL;
     sign_part->digest_mtd = NULL;
+    sign_part->digest_val = NULL;
     sign_part->node = NULL;
     sign_part->transforms = NULL;
 
@@ -185,6 +186,12 @@ oxs_sign_part_free(oxs_sign_part_t *sign_part,
     {
         AXIS2_FREE(env->allocator, sign_part->digest_mtd);
         sign_part->digest_mtd = NULL;
+    }
+
+    if (sign_part->digest_val)
+    {
+        AXIS2_FREE(env->allocator, sign_part->digest_val);
+        sign_part->digest_val = NULL;
     }
 
     sign_part->node = NULL;

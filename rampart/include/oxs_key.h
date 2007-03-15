@@ -21,7 +21,7 @@
 
 /**
   * @file oxs_key.h
-  * @brief 
+  * @brief represents a Key in OMXMLSecurity 
   */
 
 #include <axis2_defines.h>
