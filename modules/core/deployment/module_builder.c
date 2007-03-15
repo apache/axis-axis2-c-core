@@ -422,7 +422,7 @@ axis2_module_builder_process_ops(
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
 
     ops = axis2_array_list_create(env, 0);
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(op_itr, env))
     {
         axiom_element_t *op_element = NULL;
         axiom_node_t *op_node = NULL;
@@ -443,7 +443,7 @@ axis2_module_builder_process_ops(
         axis2_phases_info_t *info = NULL;
         axis2_op_t *op_desc = NULL;
 
-        op_node = (axiom_node_t *) AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(
+        op_node = (axiom_node_t *) axiom_children_qname_iterator_next(
                     op_itr, env);
         op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
         /* getting operation name */

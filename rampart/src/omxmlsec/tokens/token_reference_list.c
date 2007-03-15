@@ -104,12 +104,12 @@ oxs_token_get_reference_list_data(const axis2_env_t *env, axiom_node_t *ref_list
     list = axis2_array_list_create(env, 0);
 
     /*Insert UIDs of nodes to the list*/
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(iter, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(iter, env))
     {
         axiom_node_t *dref_node = NULL;
         axis2_char_t *dref_val = NULL;
 
-        dref_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(iter, env);
+        dref_node = axiom_children_qname_iterator_next(iter, env);
         dref_val = oxs_token_get_data_reference(env, dref_node);
 
         axis2_array_list_add(list, env, dref_val);

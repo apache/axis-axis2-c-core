@@ -75,11 +75,11 @@ oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
     }
 
     qname_iter = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(parent_ele, env, qname, parent);
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(qname_iter , env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(qname_iter , env))
     {
 
         counter++;
-        temp_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(qname_iter, env);
+        temp_node = axiom_children_qname_iterator_next(qname_iter, env);
     }
 
     return counter;

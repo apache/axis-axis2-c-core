@@ -69,7 +69,7 @@ axiom_children_qname_iterator_create(const axis2_env_t *env,
         iterator->given_qname = AXIS2_QNAME_CLONE(given_qname, env);
         if (!(iterator->given_qname))
         {
-            AXIOM_CHILDREN_QNAME_ITERATOR_FREE(iterator, env);
+            axiom_children_qname_iterator_free(iterator, env);
             return NULL;
         }
     }

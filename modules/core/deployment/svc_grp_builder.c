@@ -215,7 +215,7 @@ axis2_svc_grp_builder_populate_svc_grp(
         qsvc_element = NULL;
     }
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(svc_itr, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(svc_itr, env))
     {
         axiom_node_t *svc_node = NULL;
         axiom_element_t *svc_element = NULL;
@@ -223,7 +223,7 @@ axis2_svc_grp_builder_populate_svc_grp(
         axis2_char_t *svc_name = NULL;
         axis2_qname_t *qattname = NULL;
 
-        svc_node = (axiom_node_t *) AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(
+        svc_node = (axiom_node_t *) axiom_children_qname_iterator_next(
                     svc_itr, env);
         svc_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_node, env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
@@ -292,14 +292,14 @@ axis2_svc_grp_builder_process_module_refs(
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
     grp_builder_impl = AXIS2_INTF_TO_IMPL(grp_builder);
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(module_refs, env))
     {
         axiom_node_t *module_ref_node = NULL;
         axiom_element_t *module_ref_element = NULL;
         axiom_attribute_t *module_ref_att = NULL;
         axis2_qname_t *qref = NULL;
 
-        module_ref_node = (axiom_node_t *) AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(
+        module_ref_node = (axiom_node_t *) axiom_children_qname_iterator_next(
                     module_refs, env);
         module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);

@@ -522,7 +522,7 @@ axis2_svc_builder_process_ops(
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
 
     ops = axis2_array_list_create(env, 0);
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(op_itr, env))
     {
         axiom_element_t *op_element = NULL;
         axiom_node_t *op_node = NULL;
@@ -543,7 +543,7 @@ axis2_svc_builder_process_ops(
         axiom_node_t *recv_node = NULL;
         axis2_status_t status = AXIS2_FAILURE;
 
-        op_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(op_itr, env);
+        op_node = axiom_children_qname_iterator_next(op_itr, env);
         /* getting operation name */
         op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
@@ -680,14 +680,14 @@ axis2_svc_builder_process_svc_module_conf(
     axis2_param_container_t *parent,
     axis2_svc_t *svc)
 {
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_confs, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(module_confs, env))
     {
         axiom_element_t *module_conf_element = NULL;
         axiom_node_t *module_conf_node = NULL;
         axiom_attribute_t *module_name_att = NULL;
         axis2_qname_t *qattname = NULL;
 
-        module_conf_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(module_confs, env);
+        module_conf_node = axiom_children_qname_iterator_next(module_confs, env);
         module_conf_element = AXIOM_NODE_GET_DATA_ELEMENT(module_conf_node,
                 env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
@@ -719,14 +719,14 @@ axis2_svc_builder_process_module_refs(
     AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(module_refs, env))
     {
         axiom_element_t *module_ref_element = NULL;
         axiom_node_t *module_ref_node = NULL;
         axiom_attribute_t *module_ref_att = NULL;
         axis2_qname_t *qref = NULL;
 
-        module_ref_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(module_refs, env);
+        module_ref_node = axiom_children_qname_iterator_next(module_refs, env);
         module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node,
                 env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);

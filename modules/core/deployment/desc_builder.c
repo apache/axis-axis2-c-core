@@ -370,14 +370,14 @@ axis2_desc_builder_process_flow(
     if (qchild)
         AXIS2_QNAME_FREE(qchild, env);
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(handlers , env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(handlers , env))
     {
         axiom_node_t *handler_node = NULL;
         axis2_handler_desc_t *handler_desc = NULL;
         axis2_status_t status = AXIS2_FAILURE;
 
         handler_node = (axiom_node_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(handlers, env);
+                axiom_children_qname_iterator_next(handlers, env);
 
         handler_desc = axis2_desc_builder_process_handler(desc_builder, env,
                 handler_node, parent);
@@ -765,7 +765,7 @@ axis2_desc_builder_process_action_mappings(
         }
         return AXIS2_SUCCESS;
     }
-    while (AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(action_mappings, env))
+    while (axiom_children_qname_iterator_has_next(action_mappings, env))
     {
         axiom_element_t *mapping_element = NULL;
         axiom_node_t *mapping_node = NULL;
@@ -776,7 +776,7 @@ axis2_desc_builder_process_action_mappings(
          * level
          */
         mapping_node = (axiom_node_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(action_mappings, env);
+                axiom_children_qname_iterator_next(action_mappings, env);
         mapping_element = AXIOM_NODE_GET_DATA_ELEMENT(mapping_node, env);
         temp_str = AXIOM_ELEMENT_GET_TEXT(mapping_element, env, 
             mapping_node);
@@ -823,7 +823,7 @@ axis2_desc_builder_process_params(
     AXIS2_PARAM_CHECK(env->error, param_container, AXIS2_FAILURE);
     /*AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);*/
 
-    while (AXIS2_FALSE != AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(params, env))
+    while (AXIS2_FALSE != axiom_children_qname_iterator_has_next(params, env))
     {
         axiom_element_t *param_element = NULL;
         axiom_node_t *param_node = NULL;
@@ -839,7 +839,7 @@ axis2_desc_builder_process_params(
          * level
          */
         param_node = (axiom_node_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(params, env);
+                axiom_children_qname_iterator_next(params, env);
         param_element = AXIOM_NODE_GET_DATA_ELEMENT(param_node, env);
         param = axis2_param_create(env, NULL, NULL);
         /* TODO Setting param_element. Do not set element like following.
@@ -969,11 +969,11 @@ axis2_desc_builder_process_op_module_refs(
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
 
-    while (module_refs && AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs,
+    while (module_refs && AXIS2_TRUE == axiom_children_qname_iterator_has_next(module_refs,
             env))
     {
         moduleref = (axiom_element_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(module_refs, env);
+                axiom_children_qname_iterator_next(module_refs, env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_attrib = AXIOM_ELEMENT_GET_ATTRIBUTE(moduleref, env, qref);
         AXIS2_QNAME_FREE(qref, env);

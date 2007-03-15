@@ -655,7 +655,7 @@ axiom_element_free(axiom_element_t *om_element,
     }
     if (om_element->children_qname_iter)
     {
-        AXIOM_CHILDREN_QNAME_ITERATOR_FREE(om_element->children_qname_iter, env);
+        axiom_children_qname_iterator_free(om_element->children_qname_iter, env);
         om_element->children_qname_iter = NULL;
     }
     if (om_element->text_value)
@@ -942,7 +942,7 @@ axiom_element_get_children_with_qname(axiom_element_t *om_element,
     AXIS2_PARAM_CHECK(env->error, element_node, NULL);
     if (om_element->children_qname_iter)
     {
-        AXIOM_CHILDREN_QNAME_ITERATOR_FREE(om_element->children_qname_iter, env);
+        axiom_children_qname_iterator_free(om_element->children_qname_iter, env);
         om_element->children_qname_iter = NULL;
     }
     om_element->children_qname_iter =  axiom_children_qname_iterator_create(env,
@@ -970,14 +970,14 @@ axiom_element_get_first_child_with_qname(axiom_element_t *om_element,
     if (!children_iterator)
         return NULL;
 
-    if (AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(children_iterator, env))
+    if (axiom_children_qname_iterator_has_next(children_iterator, env))
     {
-        om_node =   AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(children_iterator, env);
+        om_node = axiom_children_qname_iterator_next(children_iterator, env);
 
     }
     if (om_node && (AXIOM_NODE_GET_NODE_TYPE(om_node, env) == AXIOM_ELEMENT))
     {
-        AXIOM_CHILDREN_QNAME_ITERATOR_FREE(children_iterator, env);
+        axiom_children_qname_iterator_free(children_iterator, env);
 
         if (child_node)
         {
@@ -987,7 +987,7 @@ axiom_element_get_first_child_with_qname(axiom_element_t *om_element,
     }
     else
     {
-        AXIOM_CHILDREN_QNAME_ITERATOR_FREE(children_iterator, env);
+        axiom_children_qname_iterator_free(children_iterator, env);
         return NULL;
     }
     return NULL;

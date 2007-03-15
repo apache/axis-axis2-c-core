@@ -81,19 +81,6 @@ extern "C"
     axiom_children_qname_iterator_next(axiom_children_qname_iterator_t *iterator,
             const axis2_env_t *env);
 
-
-#define AXIOM_CHILDREN_QNAME_ITERATOR_FREE(iterator, env) \
-        axiom_children_qname_iterator_free(iterator, env)
-
-#define AXIOM_CHILDREN_QNAME_ITERATOR_REMOVE(iterator, env) \
-        axiom_children_qname_iterator_remove(iterator, env)
-
-#define AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(iterator, env) \
-        axiom_children_qname_iterator_has_next(iterator, env)
-
-#define AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(iterator, env) \
-        axiom_children_qname_iterator_next(iterator, env)
-
     /** @} */
 
 #ifdef __cplusplus

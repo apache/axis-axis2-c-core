@@ -239,7 +239,7 @@ axis2_conf_builder_populate_conf(
     msg_recvs = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
             qmsgrecv, conf_node);
     AXIS2_QNAME_FREE(qmsgrecv, env);
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(msg_recvs, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(msg_recvs, env))
     {
         axiom_node_t *msg_recv_node = NULL;
         axiom_element_t *msg_recv_element = NULL;
@@ -249,7 +249,7 @@ axis2_conf_builder_populate_conf(
         axis2_char_t *att_value = NULL;
 
         msg_recv_node = (axiom_node_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(msg_recvs, env);
+                axiom_children_qname_iterator_next(msg_recvs, env);
         msg_recv_element = (axiom_element_t *)
                 AXIOM_NODE_GET_DATA_ELEMENT(msg_recv_node, env);
         msg_recv = AXIS2_DESC_BUILDER_LOAD_MSG_RECV(conf_builder->desc_builder,
@@ -364,7 +364,7 @@ axis2_conf_builder_process_module_refs(
     AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs,
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(module_refs,
             env))
     {
         axiom_node_t *module_ref_node = NULL;
@@ -373,7 +373,7 @@ axis2_conf_builder_process_module_refs(
 
         axiom_attribute_t *module_ref_att = NULL;
         module_ref_node = (axiom_node_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(module_refs, env);
+                axiom_children_qname_iterator_next(module_refs, env);
         if (!module_ref_node)
         {
             return AXIS2_FAILURE;
@@ -434,7 +434,7 @@ axis2_conf_builder_process_disp_order(
     }
     if (disps)
     {
-        qname_itr_has_next = AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(disps,
+        qname_itr_has_next = axiom_children_qname_iterator_has_next(disps,
                 env);
     }
     while (AXIS2_TRUE == qname_itr_has_next)
@@ -453,13 +453,13 @@ axis2_conf_builder_process_disp_order(
 
         found_disp = AXIS2_TRUE;
         disp_node = (axiom_node_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(disps, env);
+                axiom_children_qname_iterator_next(disps, env);
         class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
         disp_att = AXIOM_ELEMENT_GET_ATTRIBUTE(disp_element, env, class_qname);
         AXIS2_QNAME_FREE(class_qname, env);
         if (!disp_att)
         {
-            qname_itr_has_next = AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(disps,
+            qname_itr_has_next = axiom_children_qname_iterator_has_next(disps,
                     env);
             continue;
         }
@@ -492,7 +492,7 @@ axis2_conf_builder_process_disp_order(
         /*disptachClas.getHandlerDesc().setParent(axisConfiguration); */
         AXIS2_PHASE_ADD_HANDLER_AT(disp_phase, env, count, handler);
         count ++;
-        qname_itr_has_next = AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(disps,
+        qname_itr_has_next = axiom_children_qname_iterator_has_next(disps,
                 env);
 
     }
@@ -535,7 +535,7 @@ axis2_conf_builder_process_phase_orders(
 
     info = AXIS2_DEP_ENGINE_GET_PHASES_INFO(conf_builder->desc_builder->engine,
             env);
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(phase_orders, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(phase_orders, env))
     {
         axiom_node_t *phase_orders_node = NULL;
         axiom_element_t *phase_orders_element = NULL;
@@ -544,7 +544,7 @@ axis2_conf_builder_process_phase_orders(
         axis2_char_t *flow_type = NULL;
         axis2_array_list_t *phase_list = NULL;
 
-        phase_orders_node = (axiom_node_t *) AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(
+        phase_orders_node = (axiom_node_t *) axiom_children_qname_iterator_next(
                     phase_orders, env);
         if (phase_orders_node)
         {
@@ -633,7 +633,7 @@ axis2_conf_builder_get_phase_list(
         return NULL;
     }
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(phases, env))
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(phases, env))
     {
         axiom_node_t *phase_node = NULL;
         axiom_element_t *phase_element = NULL;
@@ -641,7 +641,7 @@ axis2_conf_builder_get_phase_list(
         axis2_qname_t *qattname = NULL;
         axis2_char_t *att_value = NULL;
 
-        phase_node = (axiom_node_t *) AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(
+        phase_node = (axiom_node_t *) axiom_children_qname_iterator_next(
                     phases, env);
         if (phase_node)
         {
@@ -682,7 +682,7 @@ axis2_conf_builder_process_transport_senders(
     AXIS2_PARAM_CHECK(env->error, trs_senders, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(trs_senders,
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(trs_senders,
             env))
     {
         axis2_transport_out_desc_t *transport_out = NULL;
@@ -692,7 +692,7 @@ axis2_conf_builder_process_transport_senders(
         axis2_qname_t *qattname = NULL;
 
         transport_node = (axiom_node_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(trs_senders, env);
+                axiom_children_qname_iterator_next(trs_senders, env);
 
         if (transport_node)
         {
@@ -931,7 +931,7 @@ axis2_conf_builder_process_transport_recvs(
     AXIS2_PARAM_CHECK(env->error, trs_recvs, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(conf_builder);
 
-    while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(trs_recvs,
+    while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(trs_recvs,
             env))
     {
         axis2_transport_in_desc_t *transport_in = NULL;
@@ -941,7 +941,7 @@ axis2_conf_builder_process_transport_recvs(
         axis2_qname_t *qattname = NULL;
 
         transport_node = (axiom_node_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(trs_recvs, env);
+                axiom_children_qname_iterator_next(trs_recvs, env);
         if (transport_node)
         {
             transport_element = AXIOM_NODE_GET_DATA_ELEMENT(transport_node,
@@ -1168,7 +1168,7 @@ axis2_conf_builder_process_default_module_versions(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_versions, AXIS2_FAILURE);
 
-    while (AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_versions, env))
+    while (axiom_children_qname_iterator_has_next(module_versions, env))
     {
         axiom_element_t *om_element = NULL;
         axis2_char_t *name = NULL;
@@ -1176,7 +1176,7 @@ axis2_conf_builder_process_default_module_versions(
         axis2_qname_t *attribute_qname = NULL;
 
         om_element = (axiom_element_t *)
-                AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(module_versions, env);
+                axiom_children_qname_iterator_next(module_versions, env);
         if (NULL == om_element)
         {
             continue;
