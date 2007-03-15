@@ -115,7 +115,7 @@ axiom_soap_body_disp_find_svc(
                                 AXIOM_ELEMENT_GET_NAMESPACE(element, env, body_first_child_node);
                             if (ns)
                             {
-                                axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+                                axis2_char_t *uri = axiom_namespace_get_uri(ns, env);
                                 if (uri)
                                 {
                                     axis2_char_t **url_tokens = NULL;

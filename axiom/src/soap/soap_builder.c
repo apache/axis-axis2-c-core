@@ -397,7 +397,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         ns = AXIOM_ELEMENT_GET_NAMESPACE(om_element, env, om_element_node);
         if (ns)
         {
-            axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+            axis2_char_t *uri = axiom_namespace_get_uri(ns, env);
             if (uri)
             {
                 if (AXIS2_STRCMP(uri, AXIS2_XOP_NAMESPACE_URI) == 0)
@@ -599,14 +599,14 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         soap_builder->processing_mandatory_fault_elements = AXIS2_TRUE;
 
         if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
-                AXIOM_NAMESPACE_GET_URI(env_ns , env)) == 0)
+                axiom_namespace_get_uri(env_ns , env)) == 0)
         {
             soap_builder->builder_helper = axiom_soap12_builder_helper_create(env, soap_builder);
             if (!(soap_builder->builder_helper))
                 return AXIS2_FAILURE;
         }
         else if (AXIS2_STRCMP(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
-                AXIOM_NAMESPACE_GET_URI(env_ns , env)) == 0)
+                axiom_namespace_get_uri(env_ns , env)) == 0)
         {
             soap_builder->builder_helper = axiom_soap11_builder_helper_create(env, soap_builder, soap_builder->om_builder);
             if (!(soap_builder->builder_helper))
@@ -661,7 +661,7 @@ axiom_soap_builder_process_namespace_data
             om_ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
             if (om_ns)
             {
-                ns_uri = AXIOM_NAMESPACE_GET_URI(om_ns, env);
+                ns_uri = axiom_namespace_get_uri(om_ns, env);
                 if (ns_uri &&
                         (AXIS2_STRCMP(ns_uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) != 0) &&
                         (AXIS2_STRCMP(ns_uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) != 0))
@@ -715,7 +715,7 @@ axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
     if (!om_ns)
         return AXIS2_FAILURE;
 
-    ns_uri = AXIOM_NAMESPACE_GET_URI(om_ns, env);
+    ns_uri = axiom_namespace_get_uri(om_ns, env);
 
     if (ns_uri)
     {

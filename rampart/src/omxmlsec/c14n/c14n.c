@@ -212,12 +212,12 @@ c14n_ns_stack_find_with_prefix_uri(
     {
         for (i = ns_stack->head-1; i>=0; i--)
         {
-            axis2_char_t *prefix_i = AXIOM_NAMESPACE_GET_PREFIX(
+            axis2_char_t *prefix_i = axiom_namespace_get_prefix(
                     (ns_stack->stack)[i], ctx->env);
 
             if (AXIS2_STRCMP(prefix_i, prefix) == 0)
             {
-                axis2_char_t *uri_i = AXIOM_NAMESPACE_GET_URI((ns_stack->stack)[i],
+                axis2_char_t *uri_i = axiom_namespace_get_uri((ns_stack->stack)[i],
                         ctx->env);
                 if (AXIS2_STRCMP(uri_i, uri) == 0)
                     return AXIS2_SUCCESS;
@@ -239,8 +239,8 @@ c14n_ns_stack_find(
     )
 { 
     return (c14n_ns_stack_find_with_prefix_uri(
-            AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t *)ns, ctx->env),
-            AXIOM_NAMESPACE_GET_URI((axiom_namespace_t *)ns, ctx->env), ctx)
+            axiom_namespace_get_prefix((axiom_namespace_t *)ns, ctx->env),
+            axiom_namespace_get_uri((axiom_namespace_t *)ns, ctx->env), ctx)
             );
 }
 
@@ -613,8 +613,8 @@ oxs_c14n_apply_stream(
         for (i=0; i<ctx->ns_stack->head; i++)
         {
             ns1 = ctx->ns_stack->stack[i];
-            printf("%s:%s\n", AXIOM_NAMESPACE_GET_PREFIX(ns1, env), 
-                    AXIOM_NAMESPACE_GET_URI(ns1, env));
+            printf("%s:%s\n", axiom_namespace_get_prefix(ns1, env), 
+                    axiom_namespace_get_uri(ns1, env));
         }
         printf("%d\n", ctx->ns_stack->size);
         
@@ -789,7 +789,7 @@ c14n_apply_on_element(
     
     if (ns)
     {
-        axis2_char_t *prefix = AXIOM_NAMESPACE_GET_PREFIX(ns, ctx->env);
+        axis2_char_t *prefix = axiom_namespace_get_prefix(ns, ctx->env);
 
         if (AXIS2_STRLEN(prefix) > 0)
         {
@@ -855,7 +855,7 @@ c14n_apply_on_element(
     
     if (ns)
     {
-        axis2_char_t *prefix = AXIOM_NAMESPACE_GET_PREFIX(ns, ctx->env);
+        axis2_char_t *prefix = axiom_namespace_get_prefix(ns, ctx->env);
 
         if (AXIS2_STRLEN(prefix) > 0)
         {
@@ -897,9 +897,9 @@ ns_uri_compare(
     if (!ns2) return 1;
 
     return (AXIS2_STRCMP(
-            (const axis2_char_t *)AXIOM_NAMESPACE_GET_URI(
+            (const axis2_char_t *)axiom_namespace_get_uri(
                 (axiom_namespace_t *)ns1, ctx->env),
-            (const axis2_char_t *)AXIOM_NAMESPACE_GET_URI(
+            (const axis2_char_t *)axiom_namespace_get_uri(
                 (axiom_namespace_t *)ns2, ctx->env)));
 }
 
@@ -917,9 +917,9 @@ ns_prefix_compare(
     if (!ns2) return 1;
 
     return (AXIS2_STRCMP(
-            (const axis2_char_t *)AXIOM_NAMESPACE_GET_PREFIX(
+            (const axis2_char_t *)axiom_namespace_get_prefix(
                 (axiom_namespace_t *)ns1, ctx->env),
-            (const axis2_char_t *)AXIOM_NAMESPACE_GET_PREFIX(
+            (const axis2_char_t *)axiom_namespace_get_prefix(
                 (axiom_namespace_t *)ns2, ctx->env)));
 }
 
@@ -957,8 +957,8 @@ attr_compare(
     if (!ns2) return 1;
 
     res = AXIS2_STRCMP(
-            AXIOM_NAMESPACE_GET_URI(ns1, ctx->env),
-            AXIOM_NAMESPACE_GET_URI(ns2, ctx->env));
+            axiom_namespace_get_uri(ns1, ctx->env),
+            axiom_namespace_get_uri(ns2, ctx->env));
 
     if (res == 0)
         return AXIS2_STRCMP(
@@ -987,7 +987,7 @@ c14n_apply_on_attribute(
     c14n_output(" ", ctx);
     if (ns)
     {
-        axis2_char_t *prefix = AXIOM_NAMESPACE_GET_PREFIX(ns, ctx->env);
+        axis2_char_t *prefix = axiom_namespace_get_prefix(ns, ctx->env);
 
         if (AXIS2_STRLEN(prefix) > 0)
         {
@@ -1200,8 +1200,8 @@ c14n_apply_on_namespace_axis(
             {
                 axiom_namespace_t *ns = (axiom_namespace_t *) v;
                  
-                axis2_char_t *pfx = AXIOM_NAMESPACE_GET_PREFIX(ns, ctx->env);
-                axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI(ns, ctx->env);
+                axis2_char_t *pfx = axiom_namespace_get_prefix(ns, ctx->env);
+                axis2_char_t *uri = axiom_namespace_get_uri(ns, ctx->env);
                 
                 if (AXIS2_STRLEN(pfx) == 0)
                 {
@@ -1225,7 +1225,7 @@ c14n_apply_on_namespace_axis(
                             c14n_ns_stack_get_default(ctx);
 
                         axis2_char_t *prev_def_uri = ((prev_def) ? 
-                            AXIOM_NAMESPACE_GET_URI(prev_def, ctx->env) : NULL);
+                            axiom_namespace_get_uri(prev_def, ctx->env) : NULL);
                         
 
                         if (!prev_def_uri || AXIS2_STRCMP(prev_def_uri, uri) != 0)
@@ -1278,11 +1278,11 @@ c14n_apply_on_namespace_axis_exclusive(
 
     if (ns)
     {
-        if (AXIS2_STRLEN(AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t *)ns,
+        if (AXIS2_STRLEN(axiom_namespace_get_prefix((axiom_namespace_t *)ns,
                         ctx->env)) == 0)
         {
             axiom_namespace_t *def_ns = c14n_ns_stack_get_default(ctx);
-            if (def_ns || AXIS2_STRLEN(AXIOM_NAMESPACE_GET_URI(
+            if (def_ns || AXIS2_STRLEN(axiom_namespace_get_uri(
                             (axiom_namespace_t *)ns, ctx->env)) != 0)
             {
                 if (ns_uri_compare(ns, def_ns, ctx) != 0)
@@ -1313,8 +1313,8 @@ c14n_apply_on_namespace_axis_exclusive(
                     axis2_char_t *pfx = NULL;
                     ns = (axiom_namespace_t *) v;
                      
-                    pfx = AXIOM_NAMESPACE_GET_PREFIX(ns, ctx->env);
-                    /*axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI(ns, ctx->env);*/
+                    pfx = axiom_namespace_get_prefix(ns, ctx->env);
+                    /*axis2_char_t *uri = axiom_namespace_get_uri(ns, ctx->env);*/
                     
                     if (AXIS2_STRLEN(pfx) == 0)
                     {
@@ -1354,11 +1354,11 @@ c14n_apply_on_namespace(
     axiom_namespace_t *ns = (axiom_namespace_t *)namespace;
     c14n_ctx_t *ctx = (c14n_ctx_t *)context;
  
-    axis2_char_t *pfx = AXIOM_NAMESPACE_GET_PREFIX(ns, ctx->env);
-    axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI(ns, ctx->env);
+    axis2_char_t *pfx = axiom_namespace_get_prefix(ns, ctx->env);
+    axis2_char_t *uri = axiom_namespace_get_uri(ns, ctx->env);
     
     /*c14n_output(" *", ctx);
-    c14n_output(AXIOM_NAMESPACE_TO_STRING(ns, ctx->env), ctx);
+    c14n_output(axiom_namespace_to_string(ns, ctx->env), ctx);
     c14n_output("*", ctx);*/
 
     if (AXIS2_STRLEN(pfx) > 0)
@@ -1406,7 +1406,7 @@ c14n_need_to_declare_ns(
 
     if (vu || (ctx->ns_prefixes && axis2_array_list_contains(
                 (axis2_array_list_t*)(ctx->ns_prefixes), ctx->env, 
-                (void*)(AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t*)ns,
+                (void*)(axiom_namespace_get_prefix((axiom_namespace_t*)ns,
                         ctx->env)))))
         return c14n_no_output_ancestor_uses_prefix(ele, node, ns, ctx);
 
@@ -1424,9 +1424,9 @@ c14n_ns_visibly_utilized(
     axis2_bool_t vu = AXIS2_FALSE;
     axiom_namespace_t *ns_ele = NULL;
 
-    axis2_char_t *pfx = AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t*)ns, 
+    axis2_char_t *pfx = axiom_namespace_get_prefix((axiom_namespace_t*)ns, 
             ctx->env);
-    axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI((axiom_namespace_t *)ns, 
+    axis2_char_t *uri = axiom_namespace_get_uri((axiom_namespace_t *)ns, 
             ctx->env);
     axis2_char_t *pfx_ele = NULL;
     axis2_char_t *uri_ele = NULL;
@@ -1435,8 +1435,8 @@ c14n_ns_visibly_utilized(
     
     if (ns_ele)  /* return AXIS2_FALSE; TODO:check */
     {
-        pfx_ele = AXIOM_NAMESPACE_GET_PREFIX(ns_ele, ctx->env);
-        uri_ele = AXIOM_NAMESPACE_GET_URI(ns_ele, ctx->env);
+        pfx_ele = axiom_namespace_get_prefix(ns_ele, ctx->env);
+        uri_ele = axiom_namespace_get_uri(ns_ele, ctx->env);
     }
     if ((AXIS2_STRCMP(pfx, pfx_ele) == 0) && (AXIS2_STRCMP(uri, uri_ele) == 0))
         vu = AXIS2_TRUE;
@@ -1462,7 +1462,7 @@ c14n_ns_visibly_utilized(
                     
                     /*if in_nodelist(attr) {*/
                     if (ns_attr)
-                        attr_pfx = AXIOM_NAMESPACE_GET_PREFIX(
+                        attr_pfx = axiom_namespace_get_prefix(
                                 ns_attr, ctx->env);
 
                     if (AXIS2_STRCMP(attr_pfx, pfx) == 0)
@@ -1488,9 +1488,9 @@ c14n_no_output_ancestor_uses_prefix(
     const c14n_ctx_t *ctx
     )
 {
-    axis2_char_t *pfx = AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t*)ns, 
+    axis2_char_t *pfx = axiom_namespace_get_prefix((axiom_namespace_t*)ns, 
             ctx->env);
-    axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI((axiom_namespace_t *)ns, 
+    axis2_char_t *uri = axiom_namespace_get_uri((axiom_namespace_t *)ns, 
             ctx->env);
     
     axiom_node_t *parent_node = AXIOM_NODE_GET_PARENT((axiom_node_t *)node, 
@@ -1514,11 +1514,11 @@ c14n_no_output_ancestor_uses_prefix(
         
         if (parent_ns)  
         {    
-            parent_pfx = AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t *)parent_ns,
+            parent_pfx = axiom_namespace_get_prefix((axiom_namespace_t *)parent_ns,
                     ctx->env);
             if (AXIS2_STRCMP(pfx, parent_pfx) == 0)
             {
-                parent_uri = AXIOM_NAMESPACE_GET_URI((axiom_namespace_t*)parent_ns,
+                parent_uri = axiom_namespace_get_uri((axiom_namespace_t*)parent_ns,
                         ctx->env);
                 return (!(AXIS2_STRCMP(uri, parent_uri) == 0));
             }
@@ -1544,9 +1544,9 @@ c14n_no_output_ancestor_uses_prefix(
 
                     if (attr_ns)
                     {
-                        attr_pfx = AXIOM_NAMESPACE_GET_PREFIX(
+                        attr_pfx = axiom_namespace_get_prefix(
                                 attr_ns, ctx->env);
-                        attr_uri = AXIOM_NAMESPACE_GET_URI(attr_ns, 
+                        attr_uri = axiom_namespace_get_uri(attr_ns, 
                                 ctx->env);
 
                         if (AXIS2_STRCMP(attr_pfx, pfx) == 0)

@@ -51,7 +51,7 @@ axiom_util_get_first_child_element_with_uri(axiom_node_t *ele_node,
             if (ns)
             {
                 axis2_char_t *child_uri = NULL;
-                child_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+                child_uri = axiom_namespace_get_uri(ns, env);
                 if (child_uri && AXIS2_STRCMP(child_uri, uri) == 0)
                 {
                     (*child) = child_node;
@@ -92,7 +92,7 @@ axiom_util_get_next_sibling_element_with_uri(axiom_node_t *ele_node,
             if (ns)
             {
                 axis2_char_t *sib_uri = NULL;
-                sib_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+                sib_uri = axiom_namespace_get_uri(ns, env);
                 if (sib_uri && AXIS2_STRCMP(sib_uri, uri) == 0)
                 {
                     (*next_node) = next_sib_node;
@@ -340,7 +340,7 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
             ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, child);
             if (ns)
             {
-                ns_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+                ns_uri = axiom_namespace_get_uri(ns, env);
             }
 
             if ((child_localname) &&
@@ -369,7 +369,7 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
                 ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, next_sibling);
                 if (ns)
                 {
-                    ns_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+                    ns_uri = axiom_namespace_get_uri(ns, env);
                 }
 
                 if ((child_localname) &&
@@ -420,7 +420,7 @@ axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
                 ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, ele_node);
                 if (ns)
                 {
-                    ns_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+                    ns_uri = axiom_namespace_get_uri(ns, env);
                 }
                 child_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
                 if (child_localname &&
@@ -468,7 +468,7 @@ axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
                 ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, next_sibling);
                 if (ns)
                 {
-                    ns_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+                    ns_uri = axiom_namespace_get_uri(ns, env);
                 }
                 ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
                 if (ele_localname &&
@@ -1015,7 +1015,7 @@ axiom_util_get_node_namespace_uri(axiom_node_t *om_node,
         om_ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
         if (om_ns)
         {
-            return AXIOM_NAMESPACE_GET_URI(om_ns, env);
+            return axiom_namespace_get_uri(om_ns, env);
         }
     }
     return NULL;

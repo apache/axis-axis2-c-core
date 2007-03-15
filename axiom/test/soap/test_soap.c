@@ -93,8 +93,8 @@ int printnode(axiom_node_t *om_node, const axis2_env_t *env)
 
         if (om_ns)
         {
-            prefix = AXIOM_NAMESPACE_GET_PREFIX(om_ns, env);
-            uri    = AXIOM_NAMESPACE_GET_URI(om_ns, env);
+            prefix = axiom_namespace_get_prefix(om_ns, env);
+            uri    = axiom_namespace_get_uri(om_ns, env);
 
             printf("\n uri %s \n prefix %s \n", uri, prefix);
         }

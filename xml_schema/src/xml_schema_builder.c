@@ -985,9 +985,9 @@ set_namespace_attributes(
             {
                 axis2_char_t *uri = NULL;
                 axis2_char_t *prefix = NULL;
-                uri = AXIOM_NAMESPACE_GET_URI((axiom_namespace_t*)val, env);
+                uri = axiom_namespace_get_uri((axiom_namespace_t*)val, env);
                 prefix =
-                    AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t*)val, env);
+                    axiom_namespace_get_prefix((axiom_namespace_t*)val, env);
     
                 if (prefix && AXIS2_STRCMP(prefix, "") != 0)
                 {
@@ -2908,7 +2908,7 @@ handle_attribute(
                 ns = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
                 if (ns)
                 {
-                    namesp = AXIOM_NAMESPACE_GET_URI(ns, env);
+                    namesp = axiom_namespace_get_uri(ns, env);
                 }
             }
             else
@@ -3217,7 +3217,7 @@ handle_element(
             {
                 ns = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
                 if (ns)
-                    namesp = AXIOM_NAMESPACE_GET_URI(ns, env);
+                    namesp = axiom_namespace_get_uri(ns, env);
             }
             if (NULL == namesp)
             {       /** namespace not found */
@@ -3489,8 +3489,8 @@ populate_element_namespaces(
                 axis2_char_t *uri = NULL;
                 axis2_char_t *prefix = NULL;
                 ns = (axiom_namespace_t*)val;
-                uri = AXIOM_NAMESPACE_GET_URI(ns, env);
-                prefix = AXIOM_NAMESPACE_GET_PREFIX(ns, env);
+                uri = axiom_namespace_get_uri(ns, env);
+                prefix = axiom_namespace_get_prefix(ns, env);
 
                 axis2_hash_set(ele_to_ns_map, AXIS2_STRDUP(prefix, env),
                     AXIS2_HASH_KEY_STRING, AXIS2_STRDUP(uri, env));

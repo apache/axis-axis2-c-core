@@ -32,12 +32,12 @@
 extern "C"
 {
 #endif
-   
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_namespace_set_uri(axiom_namespace_t *ns,
-                          const axis2_env_t *env,
-                          const axis2_char_t *ns_uri);
-                          
+    const axis2_env_t *env,
+    const axis2_char_t *ns_uri);
+
 #ifdef __cplusplus
 }
 #endif

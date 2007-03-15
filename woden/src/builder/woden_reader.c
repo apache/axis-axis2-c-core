@@ -694,7 +694,7 @@ parse_desc(
         namespc = axiom_attribute_get_namespace(attr, env);
         if (!namespc)
             continue;
-        namespc_uri = AXIOM_NAMESPACE_GET_URI(namespc, env);
+        namespc_uri = axiom_namespace_get_uri(namespc, env);
         local_part = axiom_attribute_get_localname(attr, env);
         value = axiom_attribute_get_value(attr, env);
         uri = get_uri(env, value);
@@ -3837,8 +3837,8 @@ parse_ext_attributes(
         namespc = axiom_attribute_get_namespace((axiom_attribute_t *) om_attr, env);
         if (namespc)
         {
-            namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
-            prefix = AXIOM_NAMESPACE_GET_PREFIX(namespc, env);
+            namespc_uri_str = axiom_namespace_get_uri(namespc, env);
+            prefix = axiom_namespace_get_prefix(namespc, env);
         }
         if (!prefix) prefix = "";
         attr_type = axis2_qname_create(env, localname, namespc_uri_str, prefix);
@@ -3910,7 +3910,7 @@ parse_ext_element(
 
     el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
     namespc = AXIOM_ELEMENT_GET_NAMESPACE(el, env, el_node);
-    namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
+    namespc_uri_str = axiom_namespace_get_uri(namespc, env);
     if (NULL == namespc_uri_str || (0 == AXIS2_STRCMP(namespc_uri_str, WODEN_NS_URI_WSDL20)))
     {
         /* TODO Set error message */

@@ -49,7 +49,7 @@ woden_om_util_get_qname(
 
     namespc_uri = AXIOM_ELEMENT_FIND_NAMESPACE_URI(context_el,
             env, prefix, context_el_node);
-    namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc_uri, env);
+    namespc_uri_str = axiom_namespace_get_uri(namespc_uri, env);
     if (namespc_uri_str)
     {
         woden_om_util_register_unique_prefix(env, prefix, namespc_uri_str, namespcs);

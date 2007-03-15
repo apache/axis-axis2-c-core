@@ -207,7 +207,7 @@ axiom_soap_header_add_header_block(axiom_soap_header_t* soap_header,
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
     AXIS2_PARAM_CHECK(env->error, ns, NULL);
 
-    cloned_ns = AXIOM_NAMESPACE_CLONE(ns, env);
+    cloned_ns = axiom_namespace_clone(ns, env);
     if (!cloned_ns)
         return NULL;
 
@@ -232,14 +232,14 @@ axiom_soap_header_add_header_block(axiom_soap_header_t* soap_header,
         if (hb_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
-            uri = AXIOM_NAMESPACE_GET_URI(cloned_ns, env);
-            prefix = AXIOM_NAMESPACE_GET_PREFIX(cloned_ns, env);
+            uri = axiom_namespace_get_uri(cloned_ns, env);
+            prefix = axiom_namespace_get_prefix(cloned_ns, env);
 
             dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(hb_ele, env, uri, prefix);
             if (!dec_ns)
             {
                 /** this namespace it not in hb_ele list so free it */
-                AXIOM_NAMESPACE_FREE(cloned_ns, env);
+                axiom_namespace_free(cloned_ns, env);
                 cloned_ns = NULL;
             }
 
@@ -486,7 +486,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
                             header_block_om_node);
                     if (ns)
                     {
-                        hb_namespace_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+                        hb_namespace_uri = axiom_namespace_get_uri(ns, env);
                         if (AXIS2_STRCMP(hb_namespace_uri, ns_uri) == 0)
                         {
                             axis2_array_list_add(header_block_list, env, header_block);

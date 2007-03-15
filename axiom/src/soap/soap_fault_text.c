@@ -132,7 +132,7 @@ axiom_soap_fault_text_free(axiom_soap_fault_text_t *fault_text,
 
     if (fault_text->lang_ns_used == AXIS2_FALSE && fault_text->lang_namespace)
     {
-        AXIOM_NAMESPACE_FREE(fault_text->lang_namespace, env);
+        axiom_namespace_free(fault_text->lang_namespace, env);
         fault_text->lang_namespace = NULL;
     }
     AXIS2_FREE(env->allocator, fault_text);

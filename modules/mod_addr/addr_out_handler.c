@@ -203,14 +203,14 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
     soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (!soap_envelope)
     {
-        AXIOM_NAMESPACE_FREE(addressing_namespace, env);
+        axiom_namespace_free(addressing_namespace, env);
         return AXIS2_SUCCESS; /* can happen in case of one way services/clients */
     }
     soap_header  = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
 
     if (!soap_header)
     {
-        AXIOM_NAMESPACE_FREE(addressing_namespace, env);
+        axiom_namespace_free(addressing_namespace, env);
         return AXIS2_SUCCESS; /*No SOAP header, so no point proceeding*/
     }
 
@@ -453,7 +453,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                                 relates_to_header_node, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
                         if (dec_ns)
                         {
-                            AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
+                            axiom_namespace_free(addr_ns_obj, env);
                             addr_ns_obj = NULL ;
                             axiom_attribute_set_namespace(om_attr, env, dec_ns);
                         }
@@ -511,7 +511,7 @@ axis2_addr_out_handler_process_string_info(const axis2_env_t *env,
                     addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
             if (! dec_ns)
             {
-                AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
+                axiom_namespace_free(addr_ns_obj, env);
                 addr_ns_obj = NULL;
             }
         }
@@ -551,7 +551,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
 
     if (addr_ns_obj)
     {
-        AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
+        axiom_namespace_free(addr_ns_obj, env);
         addr_ns_obj = NULL;
     }
 
@@ -579,7 +579,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
                     addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
             if (! dec_ns)
             {
-                AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
+                axiom_namespace_free(addr_ns_obj, env);
                 addr_ns_obj = NULL;
             }
         }
@@ -753,7 +753,7 @@ axis2_addr_out_handler_add_to_header(const axis2_env_t *env,
                     addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
             if (! dec_ns)
             {
-                AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
+                axiom_namespace_free(addr_ns_obj, env);
                 addr_ns_obj = NULL;
             }
         }

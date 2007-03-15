@@ -54,7 +54,7 @@ axis2_qname_util_new_qname(
 
         element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
         namespc = AXIOM_ELEMENT_GET_NAMESPACE(element, env, node);
-        uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
+        uri_str = axiom_namespace_get_uri(namespc, env);
         localname = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
         return axis2_qname_create(env, localname, uri_str, NULL);
     }

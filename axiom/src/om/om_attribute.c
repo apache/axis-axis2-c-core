@@ -135,8 +135,8 @@ axiom_attribute_get_qname(axiom_attribute_t *attribute,
         {
             qname = axis2_qname_create(env,
                 attribute->localname,
-                AXIOM_NAMESPACE_GET_URI(attribute->ns, env),
-                AXIOM_NAMESPACE_GET_PREFIX(attribute->ns, env));
+                axiom_namespace_get_uri(attribute->ns, env),
+                axiom_namespace_get_prefix(attribute->ns, env));
         }
         else
         {
@@ -164,8 +164,8 @@ axiom_attribute_serialize(axiom_attribute_t *attribute,
         axis2_char_t *uri = NULL;
         axis2_char_t *prefix = NULL;
 
-        uri = AXIOM_NAMESPACE_GET_URI(attribute->ns, env);
-        prefix = AXIOM_NAMESPACE_GET_PREFIX(attribute->ns, env);
+        uri = axiom_namespace_get_uri(attribute->ns, env);
+        prefix = axiom_namespace_get_prefix(attribute->ns, env);
 
         if ((uri) && (NULL != prefix) && (AXIS2_STRCMP(prefix, "") != 0))
         {

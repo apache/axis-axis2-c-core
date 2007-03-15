@@ -145,7 +145,7 @@ axiom_text_free(axiom_text_t * om_text,
 
     if (om_text->ns)
     {
-        AXIOM_NAMESPACE_FREE(om_text->ns, env);
+        axiom_namespace_free(om_text->ns, env);
     }
 
     if (om_text->content_id)
@@ -367,10 +367,10 @@ axiom_text_serialize_start_part(axiom_text_t *om_text,
 
     if (om_text->ns)
     {
-        namespace_uri = AXIOM_NAMESPACE_GET_URI(om_text->ns, env);
+        namespace_uri = axiom_namespace_get_uri(om_text->ns, env);
         if (namespace_uri)
         {
-            prefix = AXIOM_NAMESPACE_GET_PREFIX(om_text->ns, env);
+            prefix = axiom_namespace_get_prefix(om_text->ns, env);
 
             if (prefix)
             {
@@ -400,7 +400,7 @@ axiom_text_serialize_start_part(axiom_text_t *om_text,
     }
     if (om_text->ns)
     {
-        AXIOM_NAMESPACE_SERIALIZE(om_text->ns, env, om_output);
+        axiom_namespace_serialize(om_text->ns, env, om_output);
     }
 
     return AXIS2_SUCCESS;
@@ -426,12 +426,12 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
         AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axiom_namespace_create(env, "" , "");
 
-    namespace_uri = AXIOM_NAMESPACE_GET_URI(om_text->ns, env);
+    namespace_uri = axiom_namespace_get_uri(om_text->ns, env);
     attribute_local_name = axiom_attribute_get_localname(om_attribute, env);
 
     if (om_namespace)
     {
-        prefix = AXIOM_NAMESPACE_GET_PREFIX(om_text->ns, env);
+        prefix = axiom_namespace_get_prefix(om_text->ns, env);
         attribute_value = axiom_attribute_get_value(om_attribute, env);
         if (prefix)
         {
@@ -447,7 +447,7 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
     {
         AXIOM_XML_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
     }
-    AXIOM_NAMESPACE_FREE(om_namespace, env);
+    axiom_namespace_free(om_namespace, env);
     return AXIS2_SUCCESS;
 }
 
@@ -469,8 +469,8 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
 
     if (om_namespace)
     {
-        namespace_uri = AXIOM_NAMESPACE_GET_URI(om_text->ns, env);
-        namespace_prefix = AXIOM_NAMESPACE_GET_PREFIX(om_text->ns, env);
+        namespace_uri = axiom_namespace_get_uri(om_text->ns, env);
+        namespace_prefix = axiom_namespace_get_prefix(om_text->ns, env);
         AXIOM_XML_WRITER_WRITE_NAMESPACE(xml_writer, env, namespace_prefix, namespace_uri);
         AXIOM_XML_WRITER_SET_PREFIX(xml_writer, env, namespace_prefix, namespace_uri);
     }

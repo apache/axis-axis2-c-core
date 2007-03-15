@@ -664,7 +664,7 @@ check_and_set_soap_version(axiom_soap_envelope_t *soap_envelope,
     if (!ns)
         return AXIS2_FAILURE;
 
-    uri = AXIOM_NAMESPACE_GET_URI(ns, env);
+    uri = axiom_namespace_get_uri(ns, env);
     if (!uri)
         return AXIS2_FAILURE;
 

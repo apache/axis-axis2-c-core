@@ -316,7 +316,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
 
             if (!status)
             {
-                AXIOM_NAMESPACE_FREE(om_ns, env);
+                axiom_namespace_free(om_ns, env);
                 om_ns = NULL;
             }
         }
@@ -334,7 +334,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
 
             status = axiom_element_declare_namespace_assume_param_ownership(om_ele,
                 env, om_ns);
-            prefix = AXIOM_NAMESPACE_GET_PREFIX(om_ns, env);
+            prefix = axiom_namespace_get_prefix(om_ns, env);
             axis2_hash_set(om_builder->declared_namespaces,
                 prefix, AXIS2_HASH_KEY_STRING, om_ns);
         }

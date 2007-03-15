@@ -302,7 +302,7 @@ axiom_soap_header_block_set_attribute
         header_ns = AXIOM_ELEMENT_GET_NAMESPACE(header_ele, env, header_node);
         if (!header_ns)
             return AXIS2_FAILURE;
-        prefix = AXIOM_NAMESPACE_GET_PREFIX(header_ns, env);
+        prefix = axiom_namespace_get_prefix(header_ns, env);
     }
 
     qn = axis2_qname_create(env, attr_name, soap_envelope_namespace_uri, prefix);
@@ -334,7 +334,7 @@ axiom_soap_header_block_set_attribute
         om_attr = axiom_attribute_create(env, attr_name, attr_value, om_ns);
         if (!om_attr && om_ns)
         {
-            AXIOM_NAMESPACE_FREE(om_ns, env);
+            axiom_namespace_free(om_ns, env);
             return AXIS2_FAILURE;
         }
 
@@ -378,7 +378,7 @@ axiom_soap_header_block_get_attribute
         header_ns = AXIOM_ELEMENT_GET_NAMESPACE(header_ele, env, header_node);
         if (!header_ns)
             return NULL;
-        prefix = AXIOM_NAMESPACE_GET_PREFIX(header_ns, env);
+        prefix = axiom_namespace_get_prefix(header_ns, env);
     }
     qn = axis2_qname_create(env, attr_name, soap_envelope_namespace_uri, prefix);
     if (!qn)

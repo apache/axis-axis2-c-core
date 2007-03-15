@@ -127,8 +127,8 @@ test_om_build(const char *filename)
 
         if (ns)
         {
-            printf("root ns prefix %s\n", AXIOM_NAMESPACE_GET_PREFIX(ns, environment));
-            printf("root ns uri %s\n", AXIOM_NAMESPACE_GET_URI(ns, environment));
+            printf("root ns prefix %s\n", axiom_namespace_get_prefix(ns, environment));
+            printf("root ns uri %s\n", axiom_namespace_get_uri(ns, environment));
 
         }
     }

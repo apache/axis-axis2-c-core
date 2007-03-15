@@ -302,7 +302,7 @@ axiom_soap_body_get_soap_version(axiom_soap_body_t *soap_body,
     om_ns = AXIOM_ELEMENT_GET_NAMESPACE(body_ele, env, soap_body->om_ele_node);
     if (!om_ns)
         return AXIS2_FAILURE;
-    uri = AXIOM_NAMESPACE_GET_URI(om_ns, env);
+    uri = axiom_namespace_get_uri(om_ns, env);
     if (uri)
     {
         if (AXIS2_STRCMP(uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)

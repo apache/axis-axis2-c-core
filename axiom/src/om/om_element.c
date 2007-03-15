@@ -113,8 +113,8 @@ axiom_element_create(const axis2_env_t *env,
         axis2_char_t *uri = NULL;
         axis2_char_t *prefix = NULL;
 
-        uri = AXIOM_NAMESPACE_GET_URI(ns, env);
-        prefix = AXIOM_NAMESPACE_GET_PREFIX(ns, env);
+        uri = axiom_namespace_get_uri(ns, env);
+        prefix = axiom_namespace_get_prefix(ns, env);
 
         element->ns = axiom_element_find_namespace(element,
                 env, *node, uri, prefix);
@@ -193,7 +193,7 @@ axiom_element_create_with_qname(const axis2_env_t *env,
             }
             else
             {
-                AXIOM_NAMESPACE_FREE(ns, env);
+                axiom_namespace_free(ns, env);
                 AXIOM_ELEMENT_FREE(om_element, env);
                 AXIS2_FREE(env->allocator, *node);
                 return NULL;
@@ -242,7 +242,7 @@ axiom_element_find_namespace(axiom_element_t *om_element,
             if (default_ns && NULL != uri)
             {
                 axis2_char_t *default_uri = NULL;
-                default_uri = AXIOM_NAMESPACE_GET_URI(default_ns, env);
+                default_uri = axiom_namespace_get_uri(default_ns, env);
 
                 if (default_uri && AXIS2_STRCMP(uri, default_uri) == 0)
                 {
@@ -259,7 +259,7 @@ axiom_element_find_namespace(axiom_element_t *om_element,
                     axiom_namespace_t *temp_ns = NULL;
                     axis2_char_t *temp_nsuri = NULL;
                     temp_ns = (axiom_namespace_t *)ns;
-                    temp_nsuri = AXIOM_NAMESPACE_GET_URI(temp_ns, env);
+                    temp_nsuri = axiom_namespace_get_uri(temp_ns, env);
 
                     if (temp_nsuri && (AXIS2_STRCMP(temp_nsuri, uri) == 0))
                     {
@@ -285,7 +285,7 @@ axiom_element_find_namespace(axiom_element_t *om_element,
                 axis2_char_t *found_uri         = NULL;
                 found_ns = (axiom_namespace_t*)ns;
 
-                found_uri = AXIOM_NAMESPACE_GET_URI(found_ns, env);
+                found_uri = axiom_namespace_get_uri(found_ns, env);
 
                 /* TODO fix this
                 if( ( found_uri) && AXIS2_STRCMP(found_uri, uri) == 0)
@@ -337,8 +337,8 @@ axiom_element_declare_namespace_assume_param_ownership(axiom_element_t *om_eleme
         return AXIS2_FAILURE;
     }
 
-    uri = AXIOM_NAMESPACE_GET_URI(ns, env);
-    prefix = AXIOM_NAMESPACE_GET_PREFIX(ns, env);
+    uri = axiom_namespace_get_uri(ns, env);
+    prefix = axiom_namespace_get_prefix(ns, env);
 
     if (!(om_element->namespaces))
     {
@@ -386,15 +386,15 @@ axiom_element_declare_namespace(axiom_element_t *om_element,
         return AXIS2_FAILURE;
     }
 
-    uri = AXIOM_NAMESPACE_GET_URI(ns, env);
-    prefix = AXIOM_NAMESPACE_GET_PREFIX(ns, env);
+    uri = axiom_namespace_get_uri(ns, env);
+    prefix = axiom_namespace_get_prefix(ns, env);
 
     declared_ns = axiom_element_find_namespace(om_element,
             env, node, uri, prefix);
 
     if (declared_ns)
     {
-        if (AXIOM_NAMESPACE_EQUALS(ns, env, declared_ns) == AXIS2_TRUE)
+        if (axiom_namespace_equals(ns, env, declared_ns) == AXIS2_TRUE)
         {/*Namespace already declared, so return */
             return AXIS2_SUCCESS;
         }
@@ -454,7 +454,7 @@ axiom_element_find_declared_namespace(axiom_element_t *om_element,
                 axiom_namespace_t *temp_ns = NULL;
                 axis2_char_t *temp_nsuri = NULL;
                 temp_ns = (axiom_namespace_t *)(ns);
-                temp_nsuri = AXIOM_NAMESPACE_GET_URI(temp_ns, env);
+                temp_nsuri = axiom_namespace_get_uri(temp_ns, env);
 
                 if (temp_nsuri && AXIS2_STRCMP(temp_nsuri, uri) == 0)
                 {
@@ -476,7 +476,7 @@ axiom_element_find_declared_namespace(axiom_element_t *om_element,
         {
             axis2_char_t *found_uri = NULL;
             found_ns = (axiom_namespace_t *) ns;
-            found_uri = AXIOM_NAMESPACE_GET_URI(found_ns, env);
+            found_uri = axiom_namespace_get_uri(found_ns, env);
             if (found_uri && AXIS2_STRCMP(found_uri, uri) == 0)
             {
                 return found_ns;
@@ -533,8 +533,8 @@ axiom_element_add_attribute(axiom_element_t *om_element,
         temp_ns = AXIOM_ELEMENT_FIND_NAMESPACE
                 (om_element, env,
                         element_node,
-                        AXIOM_NAMESPACE_GET_URI(om_namespace, env),
-                        AXIOM_NAMESPACE_GET_PREFIX(om_namespace, env));
+                        axiom_namespace_get_uri(om_namespace, env),
+                        axiom_namespace_get_prefix(om_namespace, env));
         if (!temp_ns)
         {
             axis2_status_t status = AXIS2_SUCCESS;
@@ -631,7 +631,7 @@ axiom_element_free(axiom_element_t *om_element,
             axis2_hash_this(hi, NULL, NULL, &val);
             if (val)
             {
-                AXIOM_NAMESPACE_FREE((axiom_namespace_t *)val, env);
+                axiom_namespace_free((axiom_namespace_t *)val, env);
                 val = NULL;
             }
         }
@@ -685,8 +685,8 @@ axiom_element_serialize_start_part(axiom_element_t *om_element,
         axis2_char_t *uri = NULL;
         axis2_char_t *prefix = NULL;
 
-        uri = AXIOM_NAMESPACE_GET_URI(om_element->ns, env);
-        prefix = AXIOM_NAMESPACE_GET_PREFIX(om_element->ns, env);
+        uri = axiom_namespace_get_uri(om_element->ns, env);
+        prefix = axiom_namespace_get_prefix(om_element->ns, env);
 
         if ((uri) && (NULL != prefix) && (AXIS2_STRCMP(prefix, "") != 0))
         {
@@ -739,7 +739,7 @@ axiom_element_serialize_start_part(axiom_element_t *om_element,
 
             if (val)
                 status =
-                    AXIOM_NAMESPACE_SERIALIZE((axiom_namespace_t *)val,
+                    axiom_namespace_serialize((axiom_namespace_t *)val,
                             env, om_output);
             else
             {
@@ -825,8 +825,8 @@ axiom_element_set_namespace(axiom_element_t *om_element,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns , AXIS2_FAILURE);
     om_ns = axiom_element_find_namespace(om_element, env, node,
-            AXIOM_NAMESPACE_GET_URI(ns, env),
-            AXIOM_NAMESPACE_GET_PREFIX(ns , env));
+            axiom_namespace_get_uri(ns, env),
+            axiom_namespace_get_prefix(ns , env));
     if (!om_ns)
     {
         status = axiom_element_declare_namespace(om_element, env, node, ns);
@@ -886,18 +886,18 @@ axiom_element_get_qname(axiom_element_t *om_element,
         ns = AXIOM_ELEMENT_GET_NAMESPACE(om_element, env, ele_node);
         if (ns)
         {
-            if (AXIOM_NAMESPACE_GET_PREFIX(ns, env))
+            if (axiom_namespace_get_prefix(ns, env))
             {
                 om_element->qname = axis2_qname_create(env ,
                         om_element->localname,
-                        AXIOM_NAMESPACE_GET_URI(ns, env),
-                        AXIOM_NAMESPACE_GET_PREFIX(ns, env));
+                        axiom_namespace_get_uri(ns, env),
+                        axiom_namespace_get_prefix(ns, env));
             }
             else
             {
                 om_element->qname = axis2_qname_create(env,
                         om_element->localname,
-                        AXIOM_NAMESPACE_GET_URI(ns, env),
+                        axiom_namespace_get_uri(ns, env),
                         NULL);
             }
 
@@ -1407,7 +1407,7 @@ axiom_element_extract_attributes(axiom_element_t *om_element,
             om_ns = axiom_attribute_get_namespace(om_attr, env);
             if (om_ns)
             {
-                cloned_ns = AXIOM_NAMESPACE_CLONE(om_ns, env);
+                cloned_ns = axiom_namespace_clone(om_ns, env);
                 axiom_attribute_set_namespace(cloned_attr, env, cloned_ns);
             }
             qn = axiom_attribute_get_qname(cloned_attr, env);
@@ -1456,7 +1456,7 @@ axiom_element_get_attribute_value_by_name(
             attr_ns = axiom_attribute_get_namespace(om_attr, env);
             if (attr_ns)
             {
-                prefix = AXIOM_NAMESPACE_GET_PREFIX(attr_ns, env);
+                prefix = axiom_namespace_get_prefix(attr_ns, env);
                 if (prefix)
                 {
                     axis2_char_t *tmp_val = NULL;
