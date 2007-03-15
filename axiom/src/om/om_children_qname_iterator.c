@@ -20,8 +20,7 @@
 
 static axis2_bool_t AXIS2_CALL
 axiom_children_qname_iterator_qname_matches(const axis2_env_t *env,
-        axis2_qname_t *element_qname,
-                axis2_qname_t *qname_to_match);
+    axis2_qname_t *element_qname, axis2_qname_t *qname_to_match);
 
 struct axiom_children_qname_iterator
 {
@@ -35,19 +34,17 @@ struct axiom_children_qname_iterator
 
 };
 
-AXIS2_EXTERN axiom_children_qname_iterator_t * AXIS2_CALL
+AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
 axiom_children_qname_iterator_create(const axis2_env_t *env,
-        axiom_node_t *current_child,
-        axis2_qname_t *given_qname)
+    axiom_node_t *current_child, axis2_qname_t *given_qname)
 {
     axiom_children_qname_iterator_t *iterator = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, current_child, NULL);
 
-    iterator = (axiom_children_qname_iterator_t*)AXIS2_MALLOC(
-                env->allocator,
-                sizeof(axiom_children_qname_iterator_t));
+    iterator = (axiom_children_qname_iterator_t*)AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_children_qname_iterator_t));
 
     if (!iterator)
     {
@@ -79,14 +76,13 @@ axiom_children_qname_iterator_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_children_qname_iterator_free(axiom_children_qname_iterator_t *iterator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (iterator->given_qname)
     {
         AXIS2_QNAME_FREE(iterator->given_qname, env);
-        iterator->given_qname = NULL;
     }
     AXIS2_FREE(env->allocator, iterator);
     return AXIS2_SUCCESS;
@@ -94,21 +90,21 @@ axiom_children_qname_iterator_free(axiom_children_qname_iterator_t *iterator,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_children_qname_iterator_remove(axiom_children_qname_iterator_t *iterator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     axiom_node_t *last_child = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (!(iterator->next_called))
     {
-        AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, 
+            AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     if (iterator->remove_called)
     {
         AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED, AXIS2_FAILURE);
+            AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     iterator->remove_called = AXIS2_TRUE;
@@ -119,15 +115,13 @@ axiom_children_qname_iterator_remove(axiom_children_qname_iterator_t *iterator,
     if (last_child)
     {
         AXIOM_NODE_FREE_TREE(last_child, env);
-        last_child = NULL;
     }
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axiom_children_qname_iterator_has_next
-(axiom_children_qname_iterator_t *iterator,
-        const axis2_env_t *env)
+axiom_children_qname_iterator_has_next(axiom_children_qname_iterator_t *iterator,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
@@ -139,17 +133,16 @@ axiom_children_qname_iterator_has_next
             if (AXIOM_NODE_GET_NODE_TYPE(iterator->current_child, env) == AXIOM_ELEMENT)
             {
                 om_element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
-                            iterator->current_child, env);
+                    iterator->current_child, env);
             }
 
             if (om_element &&
-                    axiom_children_qname_iterator_qname_matches(env,
-                            AXIOM_ELEMENT_GET_QNAME(om_element, env, iterator->current_child),
-                            iterator->given_qname))
+                axiom_children_qname_iterator_qname_matches(env,
+                AXIOM_ELEMENT_GET_QNAME(om_element, env, iterator->current_child),
+                iterator->given_qname))
             {
                 iterator->matching_node_found = AXIS2_TRUE;
                 iterator->need_to_move_forward = AXIS2_FALSE;
-
             }
             else
             {
@@ -175,9 +168,9 @@ axiom_children_qname_iterator_has_next
 
 }
 
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_children_qname_iterator_next(axiom_children_qname_iterator_t *iterator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -197,8 +190,8 @@ axiom_children_qname_iterator_next(axiom_children_qname_iterator_t *iterator,
 
 static axis2_bool_t AXIS2_CALL
 axiom_children_qname_iterator_qname_matches(const axis2_env_t *env,
-        axis2_qname_t *element_qname,
-        axis2_qname_t *qname_to_match)
+    axis2_qname_t *element_qname,
+    axis2_qname_t *qname_to_match)
 {
     int lparts_match =  0;
     int uris_match = 0;
@@ -221,12 +214,12 @@ axiom_children_qname_iterator_qname_matches(const axis2_env_t *env,
     }
 
     lparts_match = (!match_lpart ||
-            (AXIS2_STRCMP(match_lpart, "") == 0) ||
-            (element_qname && (AXIS2_STRCMP(ele_lpart, match_lpart) == 0)));
+        (AXIS2_STRCMP(match_lpart, "") == 0) ||
+        (element_qname && (AXIS2_STRCMP(ele_lpart, match_lpart) == 0)));
 
 
     uris_match = (!match_nsuri || (AXIS2_STRCMP(match_nsuri, "") == 0) ||
-            (element_qname && (AXIS2_STRCMP(ele_nsuri, match_nsuri) == 0)));
+        (element_qname && (AXIS2_STRCMP(ele_nsuri, match_nsuri) == 0)));
 
     return lparts_match && uris_match;
 }
