@@ -18,11 +18,6 @@
 #ifndef AXIOM_NAVIGATOR_H
 #define AXIOM_NAVIGATOR_H
 
-/**
- * @file axiom_navigator.h
- * @brief defines axiom_navigator struct and its ops
- */
-
 #include <axis2_utils.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
@@ -40,17 +35,16 @@ extern "C"
 
     typedef struct axiom_navigator axiom_navigator_t;
 
-    /** create an axiom_navigator
+    /** Creates an axiom_navigator
      * @param env environment MUST not be NULL
      * @param node a pointer to axiom_node_t struct 
      * which is to be navigated
      * @returns a pointer to axiom_navigator_t struct
      * or returns NULL on error
      */
-
-    AXIS2_EXTERN axiom_navigator_t * AXIS2_CALL
+    AXIS2_EXTERN axiom_navigator_t *AXIS2_CALL
     axiom_navigator_create(const axis2_env_t *env,
-            axiom_node_t *node);
+        axiom_node_t *node);
 
     /**
      * free function , free the axiom_navigator struct
@@ -58,25 +52,23 @@ extern "C"
      * @param env environment MUST not be NULL
      * @returns AXIS2_SUCCESS 
      */
-
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_navigator_free(axiom_navigator_t *om_navigator,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
-     *  returns the navigable status 
+     * Returns the navigable status 
      * @param  om_navigator axiom_navigator_struct
      * @param env environment MUST not be NULL
      * @returns AXIS2_TRUE if the om is navigable 
      * otherwise returns AXIS2_FALSE
      */
-
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
-     * returns the build status of this node 
+     * Returns the build status of this node 
      * if the node is completly build returns AXIS2_TRUE
      * otherwise AXIS2_FALSE
      * @param om_navigator axiom_navigator struct
@@ -84,10 +76,9 @@ extern "C"
      * @return AXIS2_TRUE if this node is completly built
      * otherwise return AXIS2_FALSE
      */
-
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
      * gets the next node 
@@ -101,7 +92,7 @@ extern "C"
 
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_navigator_next(axiom_navigator_t *om_navigator,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     /**
      * method visited 
@@ -112,25 +103,24 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_navigator_visited(axiom_navigator_t *om_navigator,
-            const axis2_env_t *env);
-
+        const axis2_env_t *env);
 
     /** Macros ********************************************************************/
 
-#define AXIOM_NAVIGATOR_FREE(navigator, env) \
-        axiom_navigator_free(navigator, env)
+/*#define AXIOM_NAVIGATOR_FREE(navigator, env) \
+        axiom_navigator_free(navigator, env)*/
 
-#define AXIOM_NAVIGATOR_IS_NAVIGABLE(navigator, env) \
-        axiom_navigator_is_navigable(navigator, env)
+/*#define AXIOM_NAVIGATOR_IS_NAVIGABLE(navigator, env) \
+        axiom_navigator_is_navigable(navigator, env)*/
 
-#define AXIOM_NAVIGATOR_IS_COMPLETED(navigator, env) \
-        axiom_navigator_is_completed(navigator, env)
+/*#define AXIOM_NAVIGATOR_IS_COMPLETED(navigator, env) \
+        axiom_navigator_is_completed(navigator, env)*/
 
-#define AXIOM_NAVIGATOR_VISITED(navigator, env) \
-        axiom_navigator_visited(navigator, env)
+/*#define AXIOM_NAVIGATOR_VISITED(navigator, env) \
+        axiom_navigator_visited(navigator, env)*/
 
-#define AXIOM_NAVIGATOR_NEXT(navigator, env) \
-        axiom_navigator_next(navigator, env)
+/*#define AXIOM_NAVIGATOR_NEXT(navigator, env) \
+        axiom_navigator_next(navigator, env)*/
 
     /** @} */
 

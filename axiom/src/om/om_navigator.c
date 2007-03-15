@@ -19,7 +19,7 @@
 
 static void
 axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
+    const axis2_env_t *env);
 
 struct axiom_navigator
 {
@@ -39,16 +39,16 @@ struct axiom_navigator
 
 };
 
-AXIS2_EXTERN axiom_navigator_t * AXIS2_CALL
+AXIS2_EXTERN axiom_navigator_t *AXIS2_CALL
 axiom_navigator_create(const axis2_env_t *env,
-        axiom_node_t *om_node)
+    axiom_node_t *om_node)
 {
     axiom_navigator_t *om_navigator = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, om_node, NULL);
 
-    om_navigator = (axiom_navigator_t *)
-            AXIS2_MALLOC(env->allocator, sizeof(axiom_navigator_t));
+    om_navigator =
+        (axiom_navigator_t *)AXIS2_MALLOC(env->allocator, sizeof(axiom_navigator_t));
     if (!om_navigator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -72,65 +72,62 @@ axiom_navigator_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_navigator_free(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env , AXIS2_FAILURE);
-
     AXIS2_FREE(env->allocator, om_navigator);
-    om_navigator = NULL;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-
     if (AXIS2_TRUE == om_navigator->end)
+    {
         return AXIS2_FALSE;
+    }
     else
     {
         if (om_navigator->next)
+        {
             return AXIS2_TRUE;
+        }
     }
     return AXIS2_FALSE;
 }
 
-
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return om_navigator->end;
 }
 
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_visited(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return om_navigator->visited;
 }
 
-
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_navigator_next(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
     if (NULL == om_navigator->next)
+    {
         return NULL;
+    }
 
     om_navigator->node = om_navigator->next;
     om_navigator->visited = om_navigator->backtracked;
     om_navigator->backtracked = AXIS2_FALSE;
 
     axiom_navigator_update_next_node(om_navigator, env);
-
 
     /** set the starting and ending flags */
     if (om_navigator->root == om_navigator->next)
@@ -147,24 +144,27 @@ axiom_navigator_next(axiom_navigator_t *om_navigator,
     return om_navigator->node;
 }
 
-
 /** this method encapsulate searching logic */
 static void
 axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     if (!om_navigator)
+    {
         return;
+    }
 
     if (!om_navigator->next)
+    {
         return;
+    }
 
     if ((AXIOM_ELEMENT == AXIOM_NODE_GET_NODE_TYPE(om_navigator->next, env)) &&
-            !(om_navigator->visited))
+        !(om_navigator->visited))
     {
         if (AXIOM_NODE_GET_FIRST_CHILD(om_navigator->next, env))
         {
-            om_navigator->next =    AXIOM_NODE_GET_FIRST_CHILD(om_navigator->next, env);
+            om_navigator->next = AXIOM_NODE_GET_FIRST_CHILD(om_navigator->next, env);
         }
         else if (AXIS2_TRUE == AXIOM_NODE_IS_COMPLETE(om_navigator->next, env))
         {
@@ -199,3 +199,4 @@ axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
         }
     }
 }
+
