@@ -118,7 +118,7 @@ axiom_node_free(axiom_node_t *om_node,
     }
     else if (om_node->node_type == AXIOM_DOCTYPE)
     {
-        /*AXIOM_DOCTYPE_FREE((axiom_doctype_t*)(om_node->data_element), env);*/
+        /*axiom_doctype_free((axiom_doctype_t*)(om_node->data_element), env);*/
     }
     else if (om_node->node_type == AXIOM_PROCESSING_INSTRUCTION)
     {
@@ -390,7 +390,7 @@ axiom_node_serialize(axiom_node_t *om_node,
     {
         if (om_node->data_element)
         {
-            status = AXIOM_DOCTYPE_SERIALIZE(
+            status = axiom_doctype_serialize(
                         (axiom_doctype_t*)(om_node->data_element),
                         env, om_output);
         }

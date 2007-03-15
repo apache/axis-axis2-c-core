@@ -101,19 +101,6 @@ extern "C"
             const axis2_env_t *env,
             axiom_output_t *om_output);
 
-    /** free given doctype */
-#define AXIOM_DOCTYPE_FREE(doctype, env) \
-        axiom_doctype_free(doctype, env)
-    /** returns the value of doctype */
-#define AXIOM_DOCTYPE_GET_VALUE(doctype, env) \
-        axiom_doctype_get_value(doctype, env)
-    /** set the doctype value */
-#define AXIOM_DOCTYPE_SET_VALUE(doctype, env, value) \
-        axiom_doctype_set_value(doctype, env, value)
-    /** serialize op */
-#define AXIOM_DOCTYPE_SERIALIZE(doctype, env, om_output) \
-        axiom_doctype_serialize(doctype, env, om_output)
-
     /** @} */
 
 #ifdef __cplusplus
