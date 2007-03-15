@@ -185,7 +185,7 @@ woden_resolver_read(
 
     /* TODO add WSDL locator for resolving URIs */
     resolver_impl->om_doc = om_doc;
-    resolver_impl->root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);
+    resolver_impl->root_node = axiom_document_get_root_element(om_doc, env);
     if (!resolver_impl->root_node)
         return NULL;
     return yomu(resolver, env, resolver_impl->root_node, doc_base_uri);

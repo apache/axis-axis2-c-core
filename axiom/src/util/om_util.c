@@ -1086,7 +1086,7 @@ axiom_util_new_document(const axis2_env_t *env,
     }
     if (doc)
     {
-        AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+        axiom_document_build_all(doc, env);
     }
     else
     {

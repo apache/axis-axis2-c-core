@@ -466,7 +466,7 @@ xml_schema_collection_read_with_reader(
         axiom_stax_builder_free(om_builder, env);
         return NULL;
     }
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
 
     sch_builder = xml_schema_builder_create(env, collection);
     if (!sch_builder)

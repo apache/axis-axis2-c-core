@@ -108,7 +108,7 @@ void test_simple_type_schema_generation(CuTest *tc)
         ele = NULL;
         sch_type = NULL;
     }
-    AXIOM_DOCUMENT_FREE(om_doc, env);
+    axiom_document_free(om_doc, env);
 }
 
 void test_any_attribute(CuTest *tc)
@@ -215,7 +215,7 @@ void test_circular_schema(CuTest *tc)
 
     om_doc = get_document_from_filename(env, filename);
 
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
 
     CuAssertPtrNotNull(tc, om_doc);
 
@@ -249,7 +249,7 @@ void test_schema_import1(CuTest *tc)
 
     om_doc = get_document_from_filename(env, filename);
 
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
 
     CuAssertPtrNotNull(tc, om_doc);
 
@@ -522,7 +522,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
 
     om_doc = axiom_document_create(env, NULL, builder);
 
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
 
     sch_collection = xml_schema_collection_create(env);
 
@@ -548,7 +548,7 @@ void test_simple_restriction(CuTest *tc)
     om_doc = get_document_from_filename(env,
             "./../test-resources/SimpleContentRestriction.xsd");
 
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
 
     sch_collection = xml_schema_collection_create(env);
 
@@ -597,7 +597,7 @@ void test_unqualified_schemas(CuTest *tc)
     om_doc = get_document_from_filename(env,
             "./../test-resources/unqualifiedTypes.xsd");
 
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
 
     sch_collection = xml_schema_collection_create(env);
 
@@ -650,7 +650,7 @@ get_document_from_filename(const axis2_env_t *env,
     reader = axiom_xml_reader_create_for_file(env, filename, NULL);
     om_builder = axiom_stax_builder_create(env, reader);
     doc = axiom_stax_builder_get_document(om_builder, env);
-    AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+    axiom_document_build_all(doc, env);
     return doc;
 }
 

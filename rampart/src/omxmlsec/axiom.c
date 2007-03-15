@@ -274,7 +274,7 @@ oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
                 "axiom_document is NULL");
         return NULL;
     }
-    node = AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+    node = axiom_document_build_all(doc, env);
     if (!node)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,

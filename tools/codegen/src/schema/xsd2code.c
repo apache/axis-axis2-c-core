@@ -87,7 +87,7 @@ w2c_schema_compile( const axis2_env_t *env, axis2_char_t *schema_name,
     }
     om_builder = axiom_stax_builder_create(env, reader);
     doc = axiom_document_create(env, NULL, om_builder);
-    AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+    axiom_document_build_all(doc, env);
 
     collection = xml_schema_collection_create( env);
     current_schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT( collection, env, doc);

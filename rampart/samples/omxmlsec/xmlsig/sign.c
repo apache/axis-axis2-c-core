@@ -55,9 +55,9 @@ load_sample_xml(const axis2_env_t *env,
     if (!builder) printf("\n builder is NULL");
     doc = axiom_document_create(env, NULL, builder);
     if (!doc) printf("\n doc is NULL");
-    tmpl = AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+    tmpl = axiom_document_build_all(doc, env);
 
-    /*    tmpl = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(doc, env);*/
+    /*    tmpl = axiom_document_get_root_element(doc, env);*/
     if (!tmpl) printf("\n tmpl is NULL");
     return tmpl;
 }

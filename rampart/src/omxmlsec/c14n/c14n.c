@@ -52,7 +52,7 @@
         ((ctx)->ns_stack->def_ns)
 
 #define C14N_GET_ROOT_NODE_FROM_DOC_OR_NODE(doc, node, ctx) \
-    ((doc) ? AXIOM_DOCUMENT_GET_ROOT_ELEMENT((axiom_document_t *)(doc), \
+    ((doc) ? axiom_document_get_root_element((axiom_document_t *)(doc), \
         (ctx)->env) : c14n_get_root_node((node), (ctx))) 
 
 typedef enum {
@@ -580,7 +580,7 @@ oxs_c14n_apply_stream(
     if (ctx && ctx->outstream)
     {
         root_node = C14N_GET_ROOT_NODE_FROM_DOC_OR_NODE(doc, node, ctx);
-        /*root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT((axiom_document_t *)doc,
+        /*root_node = axiom_document_get_root_element((axiom_document_t *)doc,
                 ctx->env); */
 
         /* shouldn't the called method's document be const?*/

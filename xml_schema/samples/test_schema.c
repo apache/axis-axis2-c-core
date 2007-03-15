@@ -40,7 +40,7 @@ xml_schema_test(
 
     om_doc = axiom_stax_builder_get_document(om_builder, env);
 
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
     schema_collection = xml_schema_collection_create(env);
 
     schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(

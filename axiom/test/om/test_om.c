@@ -106,7 +106,7 @@ test_om_build(const char *filename)
     if (!document)
         return -1;
 
-    node1 = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document, environment);
+    node1 = axiom_document_get_root_element(document, environment);
     if (!node1)
     {
         printf(" root element null ");
@@ -135,7 +135,7 @@ test_om_build(const char *filename)
     /** build the document continuously untill all the xml file is built in to a om model */
 
 
-    node2 = AXIOM_DOCUMENT_BUILD_NEXT(document , environment);
+    node2 = axiom_document_build_next(document , environment);
     do
     {
 
@@ -163,7 +163,7 @@ test_om_build(const char *filename)
                 break;
         }
 
-        node2 = AXIOM_DOCUMENT_BUILD_NEXT(document , environment);
+        node2 = axiom_document_build_next(document , environment);
     }
     while (node2);
     printf("END: pull document\n");

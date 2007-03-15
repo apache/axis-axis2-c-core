@@ -328,11 +328,11 @@ axis2_build_OM(
      * In description building we don't want defferred building. So build
      * the whole tree at once
      */
-    AXIOM_DOCUMENT_BUILD_ALL(document, env);
+    axiom_document_build_all(document, env);
     /**
         get root element , building starts hear 
      */
-    root = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document, env);
+    root = axiom_document_get_root_element(document, env);
     return root;
 }
 

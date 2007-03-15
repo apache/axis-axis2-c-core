@@ -348,7 +348,7 @@ get_root_element_from_filename(
     }
     om_builder = axiom_stax_builder_create(env, reader);
     doc = axiom_document_create(env, NULL, om_builder);
-    AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+    axiom_document_build_all(doc, env);
 
     return doc;
 }

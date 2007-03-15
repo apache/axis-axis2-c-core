@@ -37,7 +37,7 @@ rp_policy_create_from_file(
         return NULL;
     }
 
-    root = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document, env);
+    root = axiom_document_get_root_element(document, env);
     if(!root)
     {
         axiom_stax_builder_free(builder, env);

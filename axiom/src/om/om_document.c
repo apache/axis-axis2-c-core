@@ -188,7 +188,7 @@ axiom_document_build_all(struct axiom_document *document,
         do
         {
             axiom_node_t *ret_val = NULL;
-            ret_val = AXIOM_DOCUMENT_BUILD_NEXT(document, env);
+            ret_val = axiom_document_build_next(document, env);
             if (!ret_val)
             {
                 if (AXIOM_NODE_IS_COMPLETE(document->root_element, env)

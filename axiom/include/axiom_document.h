@@ -127,32 +127,6 @@ extern "C"
             const axis2_env_t *env,
             axiom_output_t *om_output);
 
-    /** frees given document */
-#define AXIOM_DOCUMENT_FREE(document,env) \
-        axiom_document_free(document,env)
-
-    /** builds next node of document */
-#define AXIOM_DOCUMENT_BUILD_NEXT(document,env) \
-        axiom_document_build_next(document,env)
-
-    /** gets the root eleemnt of given document */
-#define AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document,env) \
-        axiom_document_get_root_element(document,env)
-    /** sets the root node */
-#define AXIOM_DOCUMENT_SET_ROOT_ELEMENT(document,env,om_node) \
-        axiom_document_set_root_element(document,env,om_node)
-
-    /** build till the root node is complete */
-#define AXIOM_DOCUMENT_BUILD_ALL(document,env) \
-        axiom_document_build_all(document,env)
-
-    /** returns the builder */
-#define AXIOM_DOCUMENT_GET_BUILDER(document, env) \
-        axiom_document_get_builder(document, env)
-
-    /** serialize opertation */
-#define AXIOM_DOCUMENT_SERIALIZE(document, env, om_output) \
-        axiom_document_serialize(document, env, om_output)
 
     /** @} */
 

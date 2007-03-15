@@ -413,7 +413,7 @@ axis2_http_transport_utils_process_http_post_request(
                     (env, AXIOM_SOAP11);
             def_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
             om_doc = axiom_stax_builder_get_document(om_builder, env);
-            root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+            root_node = axiom_document_build_all(om_doc, env);
             AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
              axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
         }
@@ -1236,7 +1236,7 @@ axis2_http_transport_utils_create_soap_msg(
                 (env, AXIOM_SOAP11);
         def_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         om_doc = axiom_stax_builder_get_document(om_builder, env);
-        root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+        root_node = axiom_document_build_all(om_doc, env);
         AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
 
         return soap_envelope;

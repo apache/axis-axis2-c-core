@@ -184,12 +184,12 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
 		return NULL;
     om_builder = axiom_stax_builder_create(env, xml_reader);
     om_doc = axiom_document_create(env, NULL, om_builder);
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
 
     typemapper_impl-> qname2name = axis2_hash_make ( env);
     typemapper_impl-> qname2prefix = axis2_hash_make ( env);
     typemapper_impl-> primitive_map = axis2_hash_make ( env);
-    root = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);
+    root = axiom_document_get_root_element(om_doc, env);
     root_ele = AXIOM_NODE_GET_DATA_ELEMENT(root, env);
     typemapper_impl-> mapper_name =
         AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(root_ele, env, "dbf");

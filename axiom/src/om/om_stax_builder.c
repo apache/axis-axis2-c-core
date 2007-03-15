@@ -413,7 +413,7 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
         if (om_builder->document)
         {
             axiom_node_set_document(element_node, env, om_builder->document);
-            AXIOM_DOCUMENT_SET_ROOT_ELEMENT(om_builder->document,
+            axiom_document_set_root_element(om_builder->document,
                 env, element_node);
         }
     }
@@ -539,7 +539,7 @@ axiom_stax_builder_create_om_doctype(axiom_stax_builder_t * om_builder,
         axiom_doctype_create(env, NULL, doc_value, &doctype_node);
         if (om_builder->document)
         {
-            AXIOM_DOCUMENT_SET_ROOT_ELEMENT(om_builder->document,
+            axiom_document_set_root_element(om_builder->document,
                 env, doctype_node);
         }
     }
@@ -756,7 +756,7 @@ AXIS2_CALL axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
 
     if (om_builder->document)
     {
-        AXIOM_DOCUMENT_FREE(om_builder->document, env);
+        axiom_document_free(om_builder->document, env);
         om_builder->document = NULL;
     }
     else

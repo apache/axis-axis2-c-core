@@ -425,7 +425,7 @@ xml_schema_builder_build(
 
     axis2_array_list_add(builder_impl->document_list, env, om_doc);
 
-    root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);
+    root_node = axiom_document_get_root_element(om_doc, env);
 
     if (!root_node)
         return NULL;
@@ -4098,7 +4098,7 @@ resolve_xml_schema_with_uri(
 
     om_doc = axiom_document_create(env, NULL, om_builder);
 
-    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
+    axiom_document_build_all(om_doc, env);
 
     return XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(
                 sch_builder_impl->collection , env, om_doc, base_uri);

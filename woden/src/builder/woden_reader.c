@@ -4006,7 +4006,7 @@ get_wsdl_from_location(
         xml_reader = axiom_xml_reader_create_for_file(env, location_str, NULL);
         builder = axiom_stax_builder_create(env, xml_reader);
         doc = axiom_stax_builder_get_document(builder, env);
-        doc_el_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(doc, env);
+        doc_el_node = axiom_document_get_root_element(doc, env);
         if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
             /* Cannot contine without the referenced document */

@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
             printf("Content is:\n");
         }
     }
-    om_builder = AXIOM_DOCUMENT_GET_BUILDER(om_doc, env);
+    om_builder = axiom_document_get_builder(om_doc, env);
     axiom_stax_builder_free(om_builder, env);
     WODEN_DESC_FREE(desc, env);
     axis2_env_free(env);
@@ -195,7 +195,7 @@ get_root_element_from_filename(
     reader = axiom_xml_reader_create_for_file(env, filename, NULL);
     om_builder = axiom_stax_builder_create(env, reader);
     doc = axiom_stax_builder_get_document(om_builder, env);
-    AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+    axiom_document_build_all(doc, env);
 
     return doc;
 }

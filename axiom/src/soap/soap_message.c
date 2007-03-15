@@ -58,7 +58,7 @@ axiom_soap_message_free(axiom_soap_message_t *soap_message,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (soap_message->om_doc)
     {
-        AXIOM_DOCUMENT_FREE(soap_message->om_doc, env);
+        axiom_document_free(soap_message->om_doc, env);
         soap_message->om_doc = NULL;
     }
     if (soap_message->soap_envelope)
@@ -94,6 +94,6 @@ axiom_soap_message_serialize(axiom_soap_message_t *soap_message,
         axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIOM_DOCUMENT_SERIALIZE(soap_message->om_doc, env, om_output);
+    return axiom_document_serialize(soap_message->om_doc, env, om_output);
 }
 
