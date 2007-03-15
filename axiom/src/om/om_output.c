@@ -264,7 +264,7 @@ axiom_output_get_content_type(axiom_output_t *om_output,
             soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }
 
-        return AXIOM_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(om_output->mime_output,
+        return axiom_mime_output_get_content_type_for_mime(om_output->mime_output,
             env, om_output->mime_boundry,
             om_output->root_content_id, om_output->char_set_encoding,
             soap_content_type);
