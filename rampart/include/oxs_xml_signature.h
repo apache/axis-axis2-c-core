@@ -51,7 +51,19 @@ oxs_xml_sig_sign(const axis2_env_t *env,
     axiom_node_t *parent,
     axiom_node_t **sig_node);
 
-
+/**
+ * Verify a complete xml document
+ * @env pointer to environment struct
+ * @sign_ctx the signature context
+ * @signature_node the ds:Signature node
+ * @scope_node the root node in which the referenced are found
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+ */
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_xml_sig_verify(const axis2_env_t *env,
+    oxs_sign_ctx_t *sign_ctx,
+    axiom_node_t *signature_node,
+    axiom_node_t *scope_node);
 
 /**
  * Verify a single signature part @sign_part.
@@ -74,19 +86,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_sig_verify_digests(const axis2_env_t *env,
     oxs_sign_ctx_t *sign_ctx);
 
-/**
- * Verify a complete xml document
- * @env pointer to environment struct
- * @sign_ctx the signature context
- * @signature_node the ds:Signature node
- * @scope_node the root node in which the referenced are found
- * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_xml_sig_verify(const axis2_env_t *env,
-    oxs_sign_ctx_t *sign_ctx,
-    axiom_node_t *signature_node,
-    axiom_node_t *scope_node);
 
 /**
  * Process the ds:Reference node. Populate a signature part

@@ -182,7 +182,7 @@ oxs_key_mgr_load_private_key_from_string(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN openssl_pkey_t* AXIS2_CALL
-oxs_key_mgr_load_private_key_from_file(const axis2_env_t *env, 
+oxs_key_mgr_load_private_key_from_pem_file(const axis2_env_t *env, 
     axis2_char_t *filename,
     axis2_char_t *password)
 {

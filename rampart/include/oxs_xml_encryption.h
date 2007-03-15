@@ -20,7 +20,7 @@
 
 
 /**
-  * @file oxs_xml_enc.h
+  * @file oxs_xml_encryption.h
   * @brief Does the XML encryption for OMXMLSecurity  
   */
 

@@ -288,7 +288,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
                 }
             }
         }
-        prvkey = oxs_key_mgr_load_private_key_from_file(env, prv_key_file,password);
+        prvkey = oxs_key_mgr_load_private_key_from_pem_file(env, prv_key_file,password);
         if(!prvkey)
         {
             AXIS2_LOG_INFO(env->log, "[rampart][rampart_signature] Cannot load the private key from file.");

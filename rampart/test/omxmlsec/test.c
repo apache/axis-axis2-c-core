@@ -226,7 +226,7 @@ int main(int argc, char *argv[])
     printf("--Testing started--------------------------------------------\n");
     
     /*Load private key*/
-    prvkey = oxs_key_mgr_load_private_key_from_file(env, prvkeyfile, "");
+    prvkey = oxs_key_mgr_load_private_key_from_pem_file(env, prvkeyfile, "");
     if(!prvkey){
             printf("Cannot load private key");
     }

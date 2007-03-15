@@ -98,6 +98,7 @@ extern "C"
       ((credentials)->ops->rampart_credentials_username_get(credentials, env, msg_ctx, username, password))
 
 
+
     /** @} */
 #ifdef __cplusplus
 }
