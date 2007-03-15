@@ -25,11 +25,11 @@ struct axiom_comment
     axis2_char_t *value;
 };
 
-AXIS2_EXTERN axiom_comment_t* AXIS2_CALL
+AXIS2_EXTERN axiom_comment_t *AXIS2_CALL
 axiom_comment_create(const axis2_env_t *env,
-        axiom_node_t *parent,
-        const axis2_char_t * value,
-        axiom_node_t ** node)
+    axiom_node_t *parent,
+    const axis2_char_t *value,
+    axiom_node_t **node)
 {
     axiom_comment_t *comment = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -44,7 +44,7 @@ axiom_comment_create(const axis2_env_t *env,
     }
 
     comment = (axiom_comment_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_comment_t));
+        sizeof(axiom_comment_t));
     if (!comment)
     {
         AXIS2_FREE(env->allocator, (*node));
@@ -77,64 +77,64 @@ axiom_comment_create(const axis2_env_t *env,
     return comment;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_comment_free(axiom_comment_t *comment,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (comment->value)
     {
         AXIS2_FREE(env->allocator, comment->value);
-        comment->value = NULL;
     }
     AXIS2_FREE(env->allocator, comment);
     return AXIS2_SUCCESS;
 }
 
-
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_comment_get_value(axiom_comment_t *comment,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return comment->value;
 }
 
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_comment_set_value(axiom_comment_t *comment,
-        const axis2_env_t *env,
-        const axis2_char_t *value)
+    const axis2_env_t *env,
+    const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
     if (comment->value)
     {
         AXIS2_FREE(env->allocator, comment->value);
-        comment->value = NULL;
     }
 
     comment->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
 
     if (!comment->value)
+    {
         return AXIS2_FAILURE;
+    }
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_comment_serialize(axiom_comment_t *comment,
-        const axis2_env_t *env,
-        axiom_output_t *om_output)
+    const axis2_env_t *env,
+    axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     if (comment->value)
+    {
         return  axiom_output_write(om_output, env,
-                AXIOM_COMMENT , 1 , comment->value);
+            AXIOM_COMMENT , 1 , comment->value);
+    }
     return AXIS2_FAILURE;
 }
+
 

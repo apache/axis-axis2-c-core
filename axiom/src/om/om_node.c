@@ -114,7 +114,7 @@ axiom_node_free(axiom_node_t *om_node,
     else if (om_node->node_type == AXIOM_COMMENT)
     {
         if (om_node->data_element)
-            AXIOM_COMMENT_FREE((axiom_comment_t*)(om_node->data_element), env);
+            axiom_comment_free((axiom_comment_t*)(om_node->data_element), env);
     }
     else if (om_node->node_type == AXIOM_DOCTYPE)
     {
@@ -379,7 +379,7 @@ axiom_node_serialize(axiom_node_t *om_node,
     {
         if (om_node->data_element)
         {
-            status = AXIOM_COMMENT_SERIALIZE(
+            status = axiom_comment_serialize(
                         (axiom_comment_t*)(om_node->data_element),
                         env, om_output);
         }

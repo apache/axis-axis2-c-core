@@ -99,19 +99,6 @@ extern "C"
             const axis2_env_t *env,
             axiom_output_t *om_output);
 
-    /** free given comment */
-#define AXIOM_COMMENT_FREE(om_comment, env) \
-        axiom_comment_free(om_comment, env)
-    /** get comment text */
-#define AXIOM_COMMENT_GET_VALUE(om_comment, env) \
-        axiom_comment_get_value(om_comment, env)
-    /** set comment text */
-#define AXIOM_COMMENT_SET_VALUE(om_comment, env, value) \
-        axiom_comment_set_value(om_comment, env, value)
-    /** serialize */
-#define AXIOM_COMMENT_SERIALIZE(om_comment, env, om_output) \
-        axiom_comment_serialize(om_comment, env, om_output)
-
     /** @} */
 
 #ifdef __cplusplus

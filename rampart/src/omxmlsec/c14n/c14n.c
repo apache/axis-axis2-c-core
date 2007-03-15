@@ -755,7 +755,7 @@ c14n_apply_on_comment (
 {
     /*TODO: HACK*/
     c14n_output("<!--", ctx);
-    c14n_output(AXIOM_COMMENT_GET_VALUE(
+    c14n_output(axiom_comment_get_value(
                         (axiom_comment_t*)AXIOM_NODE_GET_DATA_ELEMENT(
                         (axiom_node_t*)node, ctx->env),ctx->env), ctx);
     c14n_output("-->", ctx);
