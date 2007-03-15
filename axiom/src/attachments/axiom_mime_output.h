@@ -100,6 +100,15 @@ struct axiom_mime_output
 AXIS2_EXTERN axiom_mime_output_t * AXIS2_CALL 
 axiom_mime_output_create (const axis2_env_t *env);
 
+AXIS2_EXTERN const axis2_char_t * AXIS2_CALL
+axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output,
+        const axis2_env_t *env,
+        axis2_char_t *boundary,
+        axis2_char_t *content_id,
+        axis2_char_t *char_set_encoding,
+        const axis2_char_t *soap_content_type);
+
+
 /*************************** Function macros **********************************/
 
 #define AXIOM_MIME_OUTPUT_FREE(mime_output, env) ((mime_output)->ops->free (mime_output, env))

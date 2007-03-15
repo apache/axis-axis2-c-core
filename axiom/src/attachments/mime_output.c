@@ -94,13 +94,6 @@ axis2_status_t AXIS2_CALL
 axis2_write_finish_writing_mime(axiom_mime_output_t *mime_output, const axis2_env_t *env,
         axis2_byte_t **output_stream, int *output_stream_size, axis2_char_t *boundary);
 
-const axis2_char_t * AXIS2_CALL
-axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output,
-        const axis2_env_t *env,
-        axis2_char_t *boundary,
-        axis2_char_t *content_id,
-        axis2_char_t *char_set_encoding,
-        const axis2_char_t *soap_content_type);
 
 /************************** End of Function headers ************************/
 
@@ -526,7 +519,7 @@ axis2_write_finish_writing_mime(axiom_mime_output_t *mime_output, const axis2_en
 
 }
 
-const axis2_char_t * AXIS2_CALL
+AXIS2_EXTERN const axis2_char_t * AXIS2_CALL
 axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output,
         const axis2_env_t *env,
         axis2_char_t *boundary,
