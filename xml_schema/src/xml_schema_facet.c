@@ -341,12 +341,12 @@ xml_schema_facet_construct(const axis2_env_t *env,
     else
         return NULL;
 
-    attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, fixed_value);
+    attr_value = axiom_element_get_attriute_value_by_name(om_ele, env, fixed_value);
     if (attr_value && AXIS2_STRCMP(attr_value, "fixed") == 0)
         is_fixed = AXIS2_TRUE;
 
     attr_value = NULL;
-    attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, value_v);
+    attr_value = axiom_element_get_attriute_value_by_name(om_ele, env, value_v);
     if (attr_value)
         value = attr_value;
     else

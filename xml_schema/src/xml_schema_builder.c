@@ -1010,7 +1010,7 @@ set_namespace_attributes(
     /** note: targetNamespace may availabe even though namespace declarations not available */ 
     target_ns_qn = axis2_qname_create(env, "targetNamespace", NULL, NULL);
 
-    contain = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE(om_ele, env, target_ns_qn);
+    contain = axiom_element_get_attribute_value(om_ele, env, target_ns_qn);
 
     if (target_ns_qn)
         AXIS2_QNAME_FREE(target_ns_qn, env);
