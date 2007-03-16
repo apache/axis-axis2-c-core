@@ -184,7 +184,7 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
     axiom_node_t *signed_info_node,
     oxs_sign_ctx_t *sign_ctx)
 {
-    axis2_char_t *signature_val = "FAKE_SIG_VAL(734dwe93721fd8y2==";
+    axis2_char_t *signature_val = NULL;
     axis2_char_t *serialized_signed_info = NULL;
     axis2_char_t *c14n_algo = NULL;
     axis2_char_t *c14nized = NULL;
