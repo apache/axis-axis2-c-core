@@ -36,6 +36,7 @@
 #define N_C14N_DEBUG
 
 #define DEFAULT_STACK_SIZE 16 
+#define INIT_BUFFER_SIZE 256 
 
 #define c14n_ns_stack_push(save_stack, ctx) \
         (save_stack)->head = (ctx)->ns_stack->head; \
@@ -166,11 +167,14 @@ c14n_ns_stack_add(
                 ctx->env->allocator, sizeof(axiom_namespace_t*) * size));
         if (tmp_stack)
         {
-            int i = 0;
+            /*int i = 0;*/
+            /* TODO:DONE use memcpy for this.*/
+            /*for (i=0; i<ns_stack->size; i++)
+                tmp_stack[i] = (ns_stack->stack)[i];*/
+            memcpy(tmp_stack, ns_stack, 
+                    sizeof(axiom_namespace_t*) * ns_stack->size);
+
             ns_stack->size = size;
-            /* TODO: use memcpy for this.*/
-            for (i=0; i<ns_stack->size; i++)
-                tmp_stack[i] = (ns_stack->stack)[i];
 
             AXIS2_FREE(ctx->env->allocator, ns_stack->stack);
             ns_stack->stack = tmp_stack;
@@ -1057,18 +1061,53 @@ c14n_normalize_text(
     axis2_char_t *text,
     const c14n_ctx_t *ctx
     )
-{   
+{
     axis2_char_t *buf = NULL;
+    axis2_char_t *endpivot = NULL;
     axis2_char_t *p = NULL;
     axis2_char_t *old = NULL;
+    int bufsz = INIT_BUFFER_SIZE;
+
     /* TODO: a better buffer implementation */
     buf = (axis2_char_t *)(AXIS2_MALLOC(ctx->env->allocator, 
-                sizeof(axis2_char_t)*256));
+                (sizeof(axis2_char_t) * bufsz) + 10));
+    if (!buf)
+    {
+        AXIS2_ERROR_SET(ctx->env->error, AXIS2_ERROR_NO_MEMORY, 
+                AXIS2_FAILURE);
+        return buf;
+    }
+
     p = buf;
+    endpivot = p + bufsz;
+   
     old = text;
 
     while (*old !='\0')
     {
+        if (p > endpivot)
+        {
+            int size = bufsz * 2;
+            axis2_char_t *temp_buf = (axis2_char_t *)(AXIS2_MALLOC(
+                        ctx->env->allocator, sizeof(axis2_char_t) * size + 10));
+            
+            if (!temp_buf)
+            {
+                AXIS2_ERROR_SET(ctx->env->error, AXIS2_ERROR_NO_MEMORY, 
+                        AXIS2_FAILURE);
+                return buf;
+            }
+
+            memcpy(temp_buf, buf, sizeof(axis2_char_t) * bufsz + 10);
+            
+            p = temp_buf + (p - buf);
+            
+            AXIS2_FREE(ctx->env->allocator, buf);
+            buf = temp_buf;
+            bufsz = size;
+            endpivot = buf + bufsz;
+        }
+        
         switch (*old)
         {
             case '&':
@@ -1105,7 +1144,7 @@ c14n_normalize_text(
     *p++ = '\0';
     return buf;
 }
-
+ 
 static axis2_char_t*
 c14n_normalize_attribute(
     axis2_char_t *attval,
@@ -1113,16 +1152,51 @@ c14n_normalize_attribute(
     )
 {   
     axis2_char_t *buf = NULL;
+    axis2_char_t *endpivot = NULL;
     axis2_char_t *p = NULL;
     axis2_char_t *old = NULL;
+    int bufsz = INIT_BUFFER_SIZE;
+
     /* TODO: a better buffer implementation */
     buf = (axis2_char_t *)(AXIS2_MALLOC(ctx->env->allocator, 
-                sizeof(axis2_char_t)*1024));
+                sizeof(axis2_char_t) * INIT_BUFFER_SIZE + 10));
+    if (!buf)
+    {
+        AXIS2_ERROR_SET(ctx->env->error, AXIS2_ERROR_NO_MEMORY, 
+                AXIS2_FAILURE);
+        return buf;
+    }
+
     p = buf;
+    endpivot = buf + bufsz;
+
     old = attval;
 
     while (*old !='\0')
     {
+        if (p > endpivot)
+        {
+            int size = bufsz * 2;
+            axis2_char_t *temp_buf = (axis2_char_t *)(AXIS2_MALLOC(
+                        ctx->env->allocator, sizeof(axis2_char_t) * size + 10));
+            
+            if (!temp_buf)
+            {
+                AXIS2_ERROR_SET(ctx->env->error, AXIS2_ERROR_NO_MEMORY, 
+                        AXIS2_FAILURE);
+                return buf;
+            }
+
+            memcpy(temp_buf, buf, sizeof(axis2_char_t) * bufsz + 10);
+            
+            p = temp_buf + (p - buf);
+            
+            AXIS2_FREE(ctx->env->allocator, buf);
+            buf = temp_buf;
+            bufsz = size;
+            endpivot = buf + bufsz;
+        }
+
         switch (*old)
         {
             case '&':
@@ -1161,7 +1235,11 @@ c14n_normalize_attribute(
                 *p++ = ';'; 
                 break;
             case '\x0D':
-                *p++ = '&'; *p++ = '#'; *p++ = 'x'; *p++ = 'D'; *p++ = ';'; 
+                *p++ = '&'; 
+                *p++ = '#'; 
+                *p++ = 'x'; 
+                *p++ = 'D'; 
+                *p++ = ';'; 
                 break;
             default:
                 *p++ = *old;
@@ -1481,6 +1559,24 @@ c14n_ns_visibly_utilized(
 }
 
 static axis2_bool_t
+in_nodeset(
+    const axiom_node_t *node,
+    const c14n_ctx_t *ctx
+    )
+{
+    axiom_node_t *pnode = NULL;
+    pnode = AXIOM_NODE_GET_PARENT((axiom_node_t *)node, ctx->env);
+    
+    while (pnode)
+    {
+        if (ctx->node == pnode) return AXIS2_TRUE;
+        pnode = AXIOM_NODE_GET_PARENT((axiom_node_t *)pnode, ctx->env);
+    }
+
+    return AXIS2_FALSE;
+}
+
+static axis2_bool_t
 c14n_no_output_ancestor_uses_prefix(
     const axiom_element_t *ele,
     const axiom_node_t *node,
@@ -1505,6 +1601,18 @@ c14n_no_output_ancestor_uses_prefix(
     {
         axis2_hash_index_t *hi = NULL;
         axis2_hash_t *attr_ht = NULL;
+       
+        /* TODO:
+         * HACK: since we only use a single node as the subset
+         * the following hack should work instead of a more
+         * general in_nodest()*/
+
+        if (!in_nodeset(node, ctx))
+        {
+            /*we reached a node beyond the nodeset,
+             * so the prefix is not used*/
+            return AXIS2_TRUE;
+        }
         
         /* if (in_nodeset(parent)){*/
         parent_element = AXIOM_NODE_GET_DATA_ELEMENT(
@@ -1513,7 +1621,7 @@ c14n_no_output_ancestor_uses_prefix(
                 parent_element, ctx->env, (axiom_node_t *)parent_node);
         
         if (parent_ns)  
-        {    
+        {
             parent_pfx = axiom_namespace_get_prefix((axiom_namespace_t *)parent_ns,
                     ctx->env);
             if (AXIS2_STRCMP(pfx, parent_pfx) == 0)
