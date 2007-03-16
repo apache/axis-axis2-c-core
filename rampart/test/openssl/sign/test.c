@@ -29,6 +29,75 @@
 #include <oxs_axis2_utils.h>
 #include <oxs_x509_cert.h>
 
+#include <oxs_utility.h>
+#include <oxs_axiom.h>
+#include <axiom.h>
+#include <axiom_xml_reader.h>
+#include <axis2_env.h>
+#include <oxs_ctx.h>
+#include <oxs_key.h>
+#include <oxs_key_mgr.h>
+#include <openssl_pkey.h>
+#include <oxs_error.h>
+#include <oxs_transform.h>
+#include <oxs_transforms_factory.h>
+#include <oxs_xml_signature.h>
+#include <oxs_sign_ctx.h>
+#include <oxs_sign_part.h>
+#include <oxs_xml_key_processor.h>
+#include <oxs_xml_key_info_builder.h>
+
+axiom_node_t* 
+load_sample_xml(const axis2_env_t *env,
+        axis2_char_t* filename
+               )
+{
+
+    axiom_document_t *doc = NULL;
+    axiom_stax_builder_t *builder = NULL;
+    axiom_xml_reader_t *reader = NULL;
+    /*axiom_xml_writer_t *writer = NULL;*/
+    axiom_node_t *tmpl = NULL;
+
+    reader = axiom_xml_reader_create_for_file(env, filename, NULL);
+    if (!reader) printf("\n Reader is NULL");
+    builder = axiom_stax_builder_create(env, reader);
+    if (!builder) printf("\n builder is NULL");
+    doc = axiom_document_create(env, NULL, builder);
+    if (!doc) printf("\n doc is NULL");
+    tmpl = axiom_document_build_all(doc, env);
+
+    /*    tmpl = axiom_document_get_root_element(doc, env);*/
+    if (!tmpl) printf("\n tmpl is NULL");
+    return tmpl;
+}
+
+void c14n(axis2_env_t *env, axis2_char_t* filename)
+{
+    axiom_document_t *doc = NULL;
+    axis2_char_t *algo = NULL;
+    axis2_char_t *c14nized = NULL;
+    axiom_node_t *input = NULL;
+    FILE *outf = NULL;
+
+    input = load_sample_xml(env, filename); 
+    doc = axiom_node_get_document(input, env);
+    algo = OXS_HREF_TRANSFORM_XML_EXC_C14N; 
+    oxs_c14n_apply_algo(env, doc, &c14nized, NULL, (axiom_node_t*)input, algo);
+    outf = fopen("c14n.txt", "w");
+    fwrite(c14nized, 1, strlen(c14nized), outf);
+
+}
+
+void digest(axis2_env_t *env, axis2_char_t *in){
+    axis2_char_t *dg = NULL;
+    FILE *outf = NULL;
+
+    dg = openssl_sha1(env, in, strlen(in));
+    outf = fopen("digest.txt", "w");
+    fwrite(dg, 1, strlen(dg), outf);
+    printf("DIGEST = %s", dg);
+}
 
 int main()
 {
@@ -43,7 +112,13 @@ int main()
     int len = -1;
 
     env = axis2_env_create_all("./openssl.log", AXIS2_LOG_LEVEL_TRACE);
-    
+
+    /*new code*/
+     c14n(env, "input.xml");
+     digest(env, "ABCDABCDABCDABCD");
+     return 0;
+    /*eof new code*/
+
     /*Load private key*/
     prvkey = oxs_key_mgr_load_private_key_from_pem_file(env, "key.pem", "");
     if(!prvkey){

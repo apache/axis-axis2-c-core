@@ -41,9 +41,10 @@ oxs_transforms_exc_c14n(const axis2_env_t *env,
        oxs_error(env, ERROR_LOCATION, OXS_ERROR_TRANSFORM_FAILED,"Transform expects a NODE.");
        return OXS_TRANSFORM_TYPE_UNKNOWN;
     }
-    
+   
+    doc = axiom_node_get_document(input, env);
     algo = OXS_HREF_TRANSFORM_XML_EXC_C14N;
-    oxs_c14n_apply_algo(env, doc, &c14nized, NULL, (axiom_node_t*)input, algo);
+    oxs_c14n_apply_algo(env, doc, &c14nized, NULL, input, algo);
     /*oxs_c14n_apply(env, doc, AXIS2_FALSE, &c14nized, AXIS2_TRUE, NULL, (axiom_node_t*)input);*/
 
     *output= c14nized;

@@ -29,6 +29,7 @@ openssl_sha1(const axis2_env_t *env,
             axis2_char_t *input,
             int length)
 {
+    printf("SHA1-input =%s",input);
     SHA_CTX c ;
     unsigned char md[SHA_DIGEST_LENGTH];
     axis2_char_t* encoded_str = NULL;
@@ -40,6 +41,7 @@ openssl_sha1(const axis2_env_t *env,
     encoded_str = AXIS2_MALLOC(env->allocator, axis2_base64_encode_len(SIZE_HASH));
     axis2_base64_encode(encoded_str, (char*)md, SHA_DIGEST_LENGTH);
 
+    printf("SHA1-output =%s",encoded_str);
     return encoded_str;
 }
 

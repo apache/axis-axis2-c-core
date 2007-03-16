@@ -73,10 +73,12 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
             /*If the required input type is CHAR and what we have is a NODE*/
             if((input_dtype == OXS_TRANSFORM_TYPE_CHAR) && (output_dtype == OXS_TRANSFORM_TYPE_NODE)){
                 /*Serialize*/
+                printf("Serialize before the transformation\n");
                 tr_input = axiom_node_to_string((axiom_node_t*)tr_output, env);
             /*If the required input type is NODE and what we have is a CHAR*/
             }else if((input_dtype == OXS_TRANSFORM_TYPE_NODE) && (output_dtype == OXS_TRANSFORM_TYPE_CHAR)){
                 /*De-serialize*/
+                printf("De-serialize before the transformation\n");
                 tr_input =  oxs_axiom_deserialize_node(env, (axis2_char_t *)tr_output);
             }else{
                 /*Let it go as it is. */
@@ -108,6 +110,7 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
         /*No transforms defined. Thus we simply direct the node, to make the digest*/
         serialized_node = AXIOM_NODE_TO_STRING(node, env);
     }
+
     if(0 == axis2_strcmp( OXS_HREF_SHA1 , digest_mtd)){
         digest = openssl_sha1(env, serialized_node, axis2_strlen(serialized_node));
     }else{
