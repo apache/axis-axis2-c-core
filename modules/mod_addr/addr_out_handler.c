@@ -232,7 +232,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         soap_header_ele =
             (axiom_element_t *)
             AXIOM_NODE_GET_DATA_ELEMENT(soap_header_node, env);
-        AXIOM_ELEMENT_DECLARE_NAMESPACE(soap_header_ele, env,
+        axiom_element_declare_namespace(soap_header_ele, env,
                 soap_header_node, addressing_namespace);
 
         epr = axis2_msg_info_headers_get_to(msg_info_headers, env);
@@ -283,7 +283,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                     to_header_block_element = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(to_header_block_node, env);
                     if (to_header_block_element)
                     {
-                        AXIOM_ELEMENT_SET_TEXT(to_header_block_element, env, address, to_header_block_node);
+                        axiom_element_set_text(to_header_block_element, env, address, to_header_block_node);
                     }
                 }
             }
@@ -423,7 +423,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                             env);
                 if (relates_to_header_ele)
                 {
-                    dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(relates_to_header_ele, env,
+                    dec_ns = axiom_element_find_declared_namespace(relates_to_header_ele, env,
                             addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
                     if (dec_ns)
                     {
@@ -439,17 +439,17 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                             AXIS2_WSA_RELATES_TO_RELATIONSHIP_TYPE_DEFAULT_VALUE,
                             addr_ns_obj);
 
-                    AXIOM_ELEMENT_ADD_ATTRIBUTE(relates_to_header_ele, env,
+                    axiom_element_add_attribute(relates_to_header_ele, env,
                             om_attr, relates_to_header_node);
 
                 }
                 if (relates_to_header_ele)
                 {
-                    dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(relates_to_header_ele, env,
+                    dec_ns = axiom_element_find_declared_namespace(relates_to_header_ele, env,
                             addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
                     if (NULL == dec_ns)
                     {
-                        dec_ns = AXIOM_ELEMENT_FIND_NAMESPACE(relates_to_header_ele, env,
+                        dec_ns = axiom_element_find_namespace(relates_to_header_ele, env,
                                 relates_to_header_node, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
                         if (dec_ns)
                         {
@@ -505,9 +505,9 @@ axis2_addr_out_handler_process_string_info(const axis2_env_t *env,
         if (header_block_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
-            AXIOM_ELEMENT_SET_TEXT(header_block_ele, env, value,
+            axiom_element_set_text(header_block_ele, env, value,
                     header_block_node);
-            dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(header_block_ele, env,
+            dec_ns = axiom_element_find_declared_namespace(header_block_ele, env,
                     addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
             if (! dec_ns)
             {
@@ -574,8 +574,8 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
         if (address_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
-            AXIOM_ELEMENT_SET_TEXT(address_ele, env, address, address_node);
-            dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(address_ele, env,
+            axiom_element_set_text(address_ele, env, address, address_node);
+            dec_ns = axiom_element_find_declared_namespace(address_ele, env,
                     addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
             if (! dec_ns)
             {
@@ -615,7 +615,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
                 axiom_attribute_t *attr = (axiom_attribute_t *)axis2_array_list_get(ref_attribute_list, env, j);
                 if (attr)
                 {
-                    AXIOM_ELEMENT_ADD_ATTRIBUTE(reference_ele, env, attr, reference_node);
+                    axiom_element_add_attribute(reference_ele, env, attr, reference_node);
                 }
             }
         }
@@ -659,7 +659,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
                 axiom_attribute_t *attr = (axiom_attribute_t *)axis2_array_list_get(meta_attribute_list, env, j);
                 if (attr)
                 {
-                    AXIOM_ELEMENT_ADD_ATTRIBUTE(reference_ele, env, attr, reference_node);
+                    axiom_element_add_attribute(reference_ele, env, attr, reference_node);
                 }
             }
         }
@@ -744,12 +744,12 @@ axis2_addr_out_handler_add_to_header(const axis2_env_t *env,
                     (AXIS2_STRLEN(qname_prefix) +
                             AXIS2_STRLEN(qname_localpart) + 2));
         sprintf(text, "%s:%s", qname_prefix, qname_localpart);
-        AXIOM_ELEMENT_SET_TEXT(interface_ele, env, text, interface_node);
+        axiom_element_set_text(interface_ele, env, text, interface_node);
         AXIS2_FREE(env->allocator, text);
         if (interface_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
-            dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(interface_ele , env,
+            dec_ns = axiom_element_find_declared_namespace(interface_ele , env,
                     addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
             if (! dec_ns)
             {
@@ -814,7 +814,7 @@ axis2_addr_out_handler_process_any_content_type(const axis2_env_t *env,
                                     AXIS2_WSA_TYPE_ATTRIBUTE_VALUE,
                                     addr_ns_obj);
                     }
-                    AXIOM_ELEMENT_SET_TEXT(ele, env, v, node);
+                    axiom_element_set_text(ele, env, v, node);
                 }
             }
         }

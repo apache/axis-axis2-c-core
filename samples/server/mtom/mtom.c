@@ -138,7 +138,7 @@ build_om_programatically(const axis2_env_t *env, axis2_char_t *text)
 
     mtom_om_ele = axiom_element_create(env, NULL, "response", ns1, &mtom_om_node);
 
-    AXIOM_ELEMENT_SET_TEXT(mtom_om_ele, env, "Image Saved", mtom_om_node);
+    axiom_element_set_text(mtom_om_ele, env, "Image Saved", mtom_om_node);
 
     return mtom_om_node;
 }

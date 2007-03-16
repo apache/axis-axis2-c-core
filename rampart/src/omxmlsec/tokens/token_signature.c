@@ -50,7 +50,7 @@ oxs_token_build_signature_element(const axis2_env_t *env,
     if (id)
     {
         id_attr = axiom_attribute_create(env, OXS_ATTR_ID, id, NULL);
-        ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(signature_ele, env, id_attr, signature_node);
+        ret = axiom_element_add_attribute(signature_ele, env, id_attr, signature_node);
     }
 
     return signature_node;

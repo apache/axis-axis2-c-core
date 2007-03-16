@@ -193,7 +193,7 @@ axis2_svc_builder_populate_svc(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env, qparamst,
+    itr = axiom_element_get_children_with_qname(svc_element, env, qparamst,
             svc_node);
     AXIS2_QNAME_FREE(qparamst, env);
     qparamst = NULL;
@@ -215,7 +215,7 @@ axis2_svc_builder_populate_svc(
      */
 	 /* -------------------------service description-------------------- */
     qdesc = axis2_qname_create(env, AXIS2_DESCRIPTION, NULL, NULL);
-    desc_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, env,
+    desc_element = axiom_element_get_first_child_with_qname(svc_element, env,
         qdesc, svc_node, &desc_node);
     AXIS2_QNAME_FREE(qdesc, env) ;
     qdesc = NULL;
@@ -225,9 +225,9 @@ axis2_svc_builder_populate_svc(
         axiom_node_t *desc_value_node = NULL;
         axis2_char_t *description_text = NULL;
 
-        desc_value_element = AXIOM_ELEMENT_GET_FIRST_ELEMENT(desc_element, 
+        desc_value_element = axiom_element_get_first_element(desc_element, 
             env, desc_node, &desc_value_node);
-		  description_text = AXIOM_ELEMENT_GET_TEXT (desc_element, env, desc_node);
+		  description_text = axiom_element_get_text (desc_element, env, desc_node);
 		  if (description_text)
 			 {
 				  AXIS2_SVC_SET_SVC_DESC (svc_builder->svc, env, description_text);
@@ -236,7 +236,7 @@ axis2_svc_builder_populate_svc(
 	 /* --------------------services description end -------------------- */
     /* my logic to get set service name */
     qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-    name_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
+    name_attr = axiom_element_get_attribute(svc_element, env, qattname);
     svc_name = axiom_attribute_get_value(name_attr, env);
     AXIS2_SVC_SET_NAME(svc_builder->svc, env, svc_name);
     AXIS2_QNAME_FREE(qattname, env);
@@ -289,7 +289,7 @@ axis2_svc_builder_populate_svc(
     /* end of my logic */
     /* processing service wide modules which required to engage globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
-    module_refs = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
+    module_refs = axiom_element_get_children_with_qname(svc_element, env,
             qmodulest, svc_node);
     AXIS2_QNAME_FREE(qmodulest, env) ;
     qmodulest = NULL;
@@ -301,7 +301,7 @@ axis2_svc_builder_populate_svc(
 
     /* process IN_FLOW */
     qinflowst = axis2_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
-    in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
+    in_flow_element = axiom_element_get_first_child_with_qname(svc_element,
             env, qinflowst, svc_node, &in_flow_node);
     AXIS2_QNAME_FREE(qinflowst, env) ;
     qinflowst = NULL;
@@ -320,7 +320,7 @@ axis2_svc_builder_populate_svc(
     }*/
 
     qoutflowst = axis2_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
-    out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
+    out_flow_element = axiom_element_get_first_child_with_qname(svc_element,
             env, qoutflowst, svc_node, &out_flow_node);
     AXIS2_QNAME_FREE(qoutflowst, env) ;
     qoutflowst = NULL;
@@ -339,7 +339,7 @@ axis2_svc_builder_populate_svc(
     }*/
 
     qin_faultflowst = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
-    in_faultflow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
+    in_faultflow_element = axiom_element_get_first_child_with_qname(svc_element,
             env, qin_faultflowst, svc_node, &in_faultflow_node);
     AXIS2_QNAME_FREE(qin_faultflowst, env) ;
     qin_faultflowst = NULL;
@@ -360,7 +360,7 @@ axis2_svc_builder_populate_svc(
     }*/
 
     qout_faultflowst = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
-    out_faultflow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
+    out_faultflow_element = axiom_element_get_first_child_with_qname(svc_element,
             env, qoutflowst, svc_node, &out_faultflow_node);
     AXIS2_QNAME_FREE(qout_faultflowst, env) ;
     qout_faultflowst = NULL;
@@ -382,7 +382,7 @@ axis2_svc_builder_populate_svc(
 
     /* processing operations */
     qopst = axis2_qname_create(env, AXIS2_OPERATIONST, NULL, NULL);
-    operation_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
+    operation_itr = axiom_element_get_children_with_qname(svc_element, env,
             qopst, svc_node);
     AXIS2_QNAME_FREE(qopst, env) ;
     qopst = NULL;
@@ -422,7 +422,7 @@ axis2_svc_builder_populate_svc(
     axis2_array_list_free(ops, env);
     /*
     qmodule_config = axis2_qname_create(env, AXIS2_MODULECONFIG, NULL, NULL);
-    module_configs_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element,
+    module_configs_itr = axiom_element_get_children_with_qname(svc_element,
         env, qmodule_config, svc_node);
     AXIS2_QNAME_FREE(qmodule_config, env) ;
     status = axis2_svc_builder_process_svc_module_conf(svc_builder, env, 
@@ -469,7 +469,7 @@ axis2_svc_builder_process_ops(
         /* getting operation name */
         op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        op_name_att = AXIOM_ELEMENT_GET_ATTRIBUTE(op_element, env, qattname);
+        op_name_att = axiom_element_get_attribute(op_element, env, qattname);
         AXIS2_QNAME_FREE(qattname, env);
         qattname = NULL;
         if (NULL == op_name_att)
@@ -480,7 +480,7 @@ axis2_svc_builder_process_ops(
         }
         /* set the mep of the operation */
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
-        op_mep_att = AXIOM_ELEMENT_GET_ATTRIBUTE(op_element, env, qmep);
+        op_mep_att = axiom_element_get_attribute(op_element, env, qmep);
         AXIS2_QNAME_FREE(qmep, env);
         qmep = NULL;
         if (op_mep_att)
@@ -533,7 +533,7 @@ axis2_svc_builder_process_ops(
         qopname = NULL;
         /* operation parameters */
         qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
-        params_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env,
+        params_itr = axiom_element_get_children_with_qname(op_element, env,
                 qparamst, op_node);
         AXIS2_QNAME_FREE(qparamst, env);
         qparamst = NULL;
@@ -547,7 +547,7 @@ axis2_svc_builder_process_ops(
 
         /* loading the message receivers */
         qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
-        recv_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(op_element,
+        recv_element = axiom_element_get_first_child_with_qname(op_element,
                 env, qmsgrecv, op_node, &recv_node);
         AXIS2_QNAME_FREE(qmsgrecv, env);
         qmsgrecv = NULL;
@@ -568,7 +568,7 @@ axis2_svc_builder_process_ops(
         }
         /* process module refs */
         qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
-        module_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env,
+        module_itr = axiom_element_get_children_with_qname(op_element, env,
                 qmodulest, op_node);
         AXIS2_QNAME_FREE(qmodulest, env);
         qmodulest = NULL;
@@ -615,7 +615,7 @@ axis2_svc_builder_process_svc_module_conf(
         module_conf_element = AXIOM_NODE_GET_DATA_ELEMENT(module_conf_node,
                 env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        module_name_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_conf_element,
+        module_name_att = axiom_element_get_attribute(module_conf_element,
                 env, qattname);
         AXIS2_QNAME_FREE(qattname, env);
         qattname = NULL;
@@ -651,7 +651,7 @@ axis2_svc_builder_process_module_refs(
         module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node,
                 env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
-        module_ref_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_ref_element,
+        module_ref_att = axiom_element_get_attribute(module_ref_element,
                 env, qref);
         AXIS2_QNAME_FREE(qref, env);
         if (module_ref_att)

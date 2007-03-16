@@ -114,7 +114,7 @@ axis2_svc_grp_builder_populate_svc_grp(
     svc_grp_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_grp_builder->svc_grp, env);
     qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
 
-    itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_grp_element, env, qparamst,
+    itr = axiom_element_get_children_with_qname(svc_grp_element, env, qparamst,
             svc_grp_builder->svc_grp);
     
     if (qparamst)
@@ -130,7 +130,7 @@ axis2_svc_grp_builder_populate_svc_grp(
 
     /* Processing service modules required to be engaged globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
-    module_ref_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_grp_element, env,
+    module_ref_itr = axiom_element_get_children_with_qname(svc_grp_element, env,
             qmodulest, svc_grp_builder->svc_grp);
 
     if (qmodulest)
@@ -142,7 +142,7 @@ axis2_svc_grp_builder_populate_svc_grp(
     axis2_svc_grp_builder_process_module_refs(svc_grp_builder, env, module_ref_itr,
             svc_grp);
     qsvc_element = axis2_qname_create(env, AXIS2_SVC_ELEMENT, NULL, NULL);
-    svc_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_grp_element, env,
+    svc_itr = axiom_element_get_children_with_qname(svc_grp_element, env,
             qsvc_element, svc_grp_builder->svc_grp);
 
     if (qsvc_element)
@@ -163,7 +163,7 @@ axis2_svc_grp_builder_populate_svc_grp(
                     svc_itr, env);
         svc_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_node, env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        svc_name_att = AXIOM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
+        svc_name_att = axiom_element_get_attribute(svc_element, env, qattname);
 
         if (qattname)
         {
@@ -238,7 +238,7 @@ axis2_svc_grp_builder_process_module_refs(
                     module_refs, env);
         module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
-        module_ref_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_ref_element, env,
+        module_ref_att = axiom_element_get_attribute(module_ref_element, env,
                 qref);
         if (module_ref_att)
         {

@@ -64,7 +64,7 @@ void axis2_test_svc_client_blocking()
         {
             ret_node = AXIOM_NODE_GET_FIRST_CHILD(ret_node, env);
             result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
-            result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node);
+            result = axiom_element_get_text(result_ele, env, ret_node);
             if (!strcmp(result, echo_text))
                 printf("axis2_test SVC_CLIENT_SEND_RECEIVE SUCCESS\n");
             else
@@ -88,7 +88,7 @@ build_om_payload_for_echo_svc(const axis2_env_t *env,
     ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples", "ns1");
     echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
     text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, echo_text, text_om_node);
+    axiom_element_set_text(text_om_ele, env, echo_text, text_om_node);
 
     return echo_om_node;
 }

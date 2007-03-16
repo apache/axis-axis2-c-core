@@ -41,7 +41,7 @@ rp_signed_encrypted_elements_builder_build(
         {
             axiom_children_iterator_t *children_iter = NULL;
             rp_signed_encrypted_elements_builder_set_xpath_version(elements_ele,signed_encrypted_elements,env);
-            children_iter = AXIOM_ELEMENT_GET_CHILDREN(elements_ele, env, elements);
+            children_iter = axiom_element_get_children(elements_ele, env, elements);
             if(children_iter )
             {
                 while(axiom_children_iterator_has_next(children_iter, env))
@@ -57,7 +57,7 @@ rp_signed_encrypted_elements_builder_build(
                             ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
                             if(ele)
                             {
-                                local_name = AXIOM_ELEMENT_GET_LOCALNAME(ele,env);
+                                local_name = axiom_element_get_localname(ele,env);
                                 if(local_name)
                                 {
                                     status = rp_signed_encrypted_elements_builder_set_properties(node,ele,local_name,signed_encrypted_elements,env);
@@ -94,7 +94,7 @@ rp_signed_encrypted_elements_builder_set_properties(
         if(rp_match_secpolicy_qname(env,RP_XPATH,node,element))
         {
             axis2_char_t *xpath = NULL;
-            xpath = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            xpath = axiom_element_get_text(element,env,node);
             if(!xpath)
                 return AXIS2_FAILURE;
 
@@ -117,7 +117,7 @@ rp_signed_encrypted_elements_builder_set_xpath_version(
 
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
 
-    xpath_version = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(element,env,RP_XPATH_VERSION);
+    xpath_version = axiom_element_get_attribute_value_by_name(element,env,RP_XPATH_VERSION);
     
     if(xpath_version)
         rp_signed_encrypted_elements_set_xpath_version(signed_encrypted_elements,env,RP_XPATH_VERSION); 

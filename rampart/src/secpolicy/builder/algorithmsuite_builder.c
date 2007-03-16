@@ -57,7 +57,7 @@ rp_algorithmsuite_builder_build(
                     name_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(name, env);
                     if(name_ele)
                     {
-                        algosuite_string = AXIOM_ELEMENT_GET_LOCALNAME(name_ele, env);
+                        algosuite_string = axiom_element_get_localname(name_ele, env);
                         if(algosuite_string)
                         {   
                             algorithm_suite = rp_algorithmsuite_create(env);

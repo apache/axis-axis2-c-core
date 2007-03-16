@@ -145,7 +145,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
             if (op_element)
             {
-                local_name = AXIOM_ELEMENT_GET_LOCALNAME(op_element, env);
+                local_name = axiom_element_get_localname(op_element, env);
                 if (local_name)
                 {
                     axis2_array_list_t *function_arr = NULL;

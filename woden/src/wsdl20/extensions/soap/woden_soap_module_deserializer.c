@@ -340,7 +340,7 @@ woden_soap_module_deserializer_unmarshall(
     WODEN_SOAP_MODULE_ELEMENT_SET_PARENT_ELEMENT(soap_mod, env, parent);
 
     el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
-    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env,
+    ref = axiom_element_get_attribute_value_by_name(el, env,
             WODEN_ATTR_REF);
     if (ref)
     {
@@ -349,7 +349,7 @@ woden_soap_module_deserializer_unmarshall(
         soap_mod = woden_soap_module_to_soap_module_element(soap_mod, env);
         WODEN_SOAP_MODULE_ELEMENT_SET_REF(soap_mod, env, uri);
     }
-    req = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env,
+    req = axiom_element_get_attribute_value_by_name(el, env,
             WODEN_ATTR_REQUIRED);
     if (req && 0 == AXIS2_STRCMP(WODEN_VALUE_TRUE, req))
         required = AXIS2_TRUE;

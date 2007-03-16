@@ -109,7 +109,7 @@ axiom_node_free(axiom_node_t *om_node,
     {
         if (om_node->data_element)
         {
-            AXIOM_ELEMENT_FREE((axiom_element_t*)(om_node->data_element), env);
+            axiom_element_free((axiom_element_t*)(om_node->data_element), env);
         }
     }
     else if (om_node->node_type == AXIOM_COMMENT)
@@ -355,7 +355,7 @@ axiom_node_serialize(axiom_node_t *om_node,
     {
         if (om_node->data_element)
         {
-            status = AXIOM_ELEMENT_SERIALIZE_START_PART((axiom_element_t *)(om_node->data_element),
+            status = axiom_element_serialize_start_part((axiom_element_t *)(om_node->data_element),
                 env,
                 om_output,
                 om_node);
@@ -441,7 +441,7 @@ axiom_node_serialize(axiom_node_t *om_node,
     {
         if (om_node->data_element)
         {
-            status = AXIOM_ELEMENT_SERIALIZE_END_PART((axiom_element_t *)(om_node->data_element),
+            status = axiom_element_serialize_end_part((axiom_element_t *)(om_node->data_element),
                 env, om_output);
         }
         if (status != AXIS2_SUCCESS)

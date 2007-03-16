@@ -91,7 +91,7 @@ oxs_token_get_reference_list_data(const axis2_env_t *env, axiom_node_t *ref_list
 
     /*Get children*/
     qname = axis2_qname_create(env, OXS_NODE_DATA_REFERENCE, NULL, NULL);
-    iter = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(ref_list_ele, env, qname, ref_list_node);
+    iter = axiom_element_get_children_with_qname(ref_list_ele, env, qname, ref_list_node);
     AXIS2_QNAME_FREE(qname, env);
     qname = NULL;
     

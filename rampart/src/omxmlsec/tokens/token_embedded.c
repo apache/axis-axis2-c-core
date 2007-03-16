@@ -54,7 +54,7 @@ oxs_token_build_embedded_element(const axis2_env_t *env,
 
     id_attr =  axiom_attribute_create(env, OXS_ATTR_ID, id, NULL);
 
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(embedded_ele, env, id_attr, embedded_node);
+    ret = axiom_element_add_attribute(embedded_ele, env, id_attr, embedded_node);
 
     return embedded_node;
 
@@ -76,7 +76,7 @@ oxs_token_get_embedded_id(const axis2_env_t *env, axiom_node_t *embedded_node)
         return NULL;
     }
 
-    embedded = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(embedded_ele, env, OXS_ATTR_ID);
+    embedded = axiom_element_get_attribute_value_by_name(embedded_ele, env, OXS_ATTR_ID);
     return embedded;
 
 }

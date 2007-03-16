@@ -40,7 +40,7 @@ rp_secpolicy_builder_build(const axis2_env_t *env, axiom_node_t *all)
             if(all_ele)
             {
                 axiom_children_iterator_t *children_iter = NULL;
-                children_iter = AXIOM_ELEMENT_GET_CHILDREN(all_ele, env, all);
+                children_iter = axiom_element_get_children(all_ele, env, all);
                 if(children_iter )
                 {
                     while(axiom_children_iterator_has_next(children_iter, env))
@@ -56,7 +56,7 @@ rp_secpolicy_builder_build(const axis2_env_t *env, axiom_node_t *all)
                                 ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (node, env);
                                 if(ele)
                                 {
-                                    local_name = AXIOM_ELEMENT_GET_LOCALNAME(ele, env);
+                                    local_name = axiom_element_get_localname(ele, env);
                                     if(local_name)
                                         rp_secpolicy_builder_set_properties(env,secpolicy,node,ele,local_name);                                            
                                 }

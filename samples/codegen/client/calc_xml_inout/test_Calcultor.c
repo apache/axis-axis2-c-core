@@ -72,11 +72,11 @@ axiom_node_t* generate_request_xml(const  axis2_env_t* env)
 
     value_ele = axiom_element_create(env, op_node, "in1", NULL, &value_node);
     sprintf(value_str, "%d", value1);
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, value_str , value_node);
+    axiom_element_set_text(value_ele, env, value_str , value_node);
 
     value_ele = axiom_element_create(env, op_node, "in2", NULL, &value_node);
     sprintf(value_str, "%d", value1);
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, value_str , value_node);
+    axiom_element_set_text(value_ele, env, value_str , value_node);
 
     printf("requesting %d  + %d \n", value1, value2);
     om_str = AXIOM_NODE_TO_STRING(op_node, env);
@@ -102,7 +102,7 @@ void handle_respone_xml(const  axis2_env_t* env, axiom_node_t* res)
     if (node)
     {
         ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-        text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+        text = axiom_element_get_text(ele, env, node);
 
         printf("answer = %s\n", text);
     }

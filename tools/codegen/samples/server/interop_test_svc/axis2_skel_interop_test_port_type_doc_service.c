@@ -54,7 +54,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string(const ax
     }
     node = AXIOM_NODE_GET_FIRST_CHILD(req, env);
     ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-    text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+    text = axiom_element_get_text(ele, env, node);
 
     printf("echoing string: %s\n", text);
 
@@ -62,7 +62,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string(const ax
     op_ele = axiom_element_create(env, NULL, "echoStringResponse", ns1, &op_node);
 
     value_ele = axiom_element_create(env, op_node, "arg", NULL, &value_node);
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, text, value_node);
+    axiom_element_set_text(value_ele, env, text, value_node);
 
     return op_node;
 }
@@ -106,7 +106,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer(const a
     }
     node = AXIOM_NODE_GET_FIRST_CHILD(req, env);
     ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-    text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+    text = axiom_element_get_text(ele, env, node);
 
     printf("echoing integer: %s\n", text);
 
@@ -114,7 +114,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer(const a
     op_ele = axiom_element_create(env, NULL, "echoIntegerResponse", ns1, &op_node);
 
     value_ele = axiom_element_create(env, op_node, "arg", NULL, &value_node);
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, text, value_node);
+    axiom_element_set_text(value_ele, env, text, value_node);
 
     return op_node;
 }
@@ -158,7 +158,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float(const axi
     }
     node = AXIOM_NODE_GET_FIRST_CHILD(req, env);
     ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-    text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+    text = axiom_element_get_text(ele, env, node);
 
     printf("echoing float: %s\n", text);
 
@@ -166,7 +166,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float(const axi
     op_ele = axiom_element_create(env, NULL, "echoFloatResponse", ns1, &op_node);
 
     value_ele = axiom_element_create(env, op_node, "arg", NULL, &value_node);
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, text, value_node);
+    axiom_element_set_text(value_ele, env, text, value_node);
 
     return op_node;
 }

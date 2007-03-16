@@ -59,7 +59,7 @@ rp_https_token_builder_build(
         if(pol_ele)
         {
             axiom_children_iterator_t *children_iter = NULL;
-            children_iter = AXIOM_ELEMENT_GET_CHILDREN(pol_ele, env, policy);
+            children_iter = axiom_element_get_children(pol_ele, env, policy);
             if(children_iter )
             {
                 while(axiom_children_iterator_has_next(children_iter, env))
@@ -75,7 +75,7 @@ rp_https_token_builder_build(
                             ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
                             if(ele)
                             {
-                                local_name = AXIOM_ELEMENT_GET_LOCALNAME(ele,env);
+                                local_name = axiom_element_get_localname(ele,env);
                                 if(local_name)
                                 {
                                     status = rp_https_token_builder_set_properties(node,ele,local_name,https_token,env);
@@ -112,7 +112,7 @@ rp_https_token_builder_set_inclusion_value(
     if(!qname)
         return AXIS2_FAILURE;
     
-    inclusion_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE(element,env,qname);
+    inclusion_value = axiom_element_get_attribute_value(element,env,qname);
                 
     AXIS2_QNAME_FREE(qname,env);
     qname = NULL;         
@@ -130,7 +130,7 @@ rp_https_token_builder_set_req_client_cert(
 
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
    
-    value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(element,env,RP_REQUIRE_CLIENT_CERTIFICATE);
+    value = axiom_element_get_attribute_value_by_name(element,env,RP_REQUIRE_CLIENT_CERTIFICATE);
 
     if(value)
     {   

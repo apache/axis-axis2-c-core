@@ -52,7 +52,7 @@ oxs_token_build_data_reference_element(const axis2_env_t *env,
 
     data_ref_attr =  axiom_attribute_create(env, OXS_ATTR_URI , data_ref, NULL);
 
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(data_reference_ele, env, data_ref_attr, data_reference_node);
+    ret = axiom_element_add_attribute(data_reference_ele, env, data_ref_attr, data_reference_node);
 
     return data_reference_node;
 }
@@ -71,7 +71,7 @@ oxs_token_get_data_reference(const axis2_env_t *env, axiom_node_t *data_ref_node
         return NULL;
     }
 
-    data_ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(data_reference_ele, env, OXS_ATTR_URI);
+    data_ref = axiom_element_get_attribute_value_by_name(data_reference_ele, env, OXS_ATTR_URI);
     return data_ref;
 
 }

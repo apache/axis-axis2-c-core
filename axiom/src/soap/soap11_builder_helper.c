@@ -105,7 +105,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
 
     om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(om_element_node, env);
 
-    ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
+    ele_localname = axiom_element_get_localname(om_ele, env);
     if (!ele_localname)
     {
         return AXIS2_FAILURE;
@@ -158,7 +158,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
 
             axiom_soap_fault_code_set_builder(fault_code, env, builder_helper->soap_builder);
 
-            AXIOM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIOM_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME);
+            axiom_element_set_localname(om_ele, env, AXIOM_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME);
 
             fault_value = axiom_soap_fault_value_create_with_code(env, fault_code);
             if (!fault_value)
@@ -200,7 +200,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
                     builder_helper->soap_builder, env, AXIS2_FALSE);
             }
 
-            AXIOM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME);
+            axiom_element_set_localname(om_ele, env, AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME);
 
             fault_reason = axiom_soap_fault_reason_create(env);
             if (!fault_reason)
@@ -242,7 +242,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             if (!fault_role)
                 return AXIS2_FAILURE;
 
-            AXIOM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
+            axiom_element_set_localname(om_ele, env, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
 
             axiom_soap_fault_role_set_base_node(fault_role, env, om_element_node);
 
@@ -261,7 +261,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             if (!fault_detail)
                 return AXIS2_FAILURE;
 
-            AXIOM_ELEMENT_SET_LOCALNAME(om_ele, env, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
+            axiom_element_set_localname(om_ele, env, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
 
             axiom_soap_fault_detail_set_base_node(fault_detail, env, om_element_node);
 
@@ -283,7 +283,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             return AXIS2_FAILURE;
         parent_element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                     om_element_node, env);
-        parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_element, env);
+        parent_localname = axiom_element_get_localname(parent_element, env);
 
         if (!parent_localname)
             return AXIS2_FAILURE;

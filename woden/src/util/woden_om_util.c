@@ -47,7 +47,7 @@ woden_om_util_get_qname(
 
     context_el = AXIOM_NODE_GET_DATA_ELEMENT(context_el_node, env);
 
-    namespc_uri = AXIOM_ELEMENT_FIND_NAMESPACE_URI(context_el,
+    namespc_uri = axiom_element_find_namespace_uri(context_el,
             env, prefix, context_el_node);
     namespc_uri_str = axiom_namespace_get_uri(namespc_uri, env);
     if (namespc_uri_str)

@@ -45,7 +45,7 @@ oxs_token_build_key_name_element(const axis2_env_t *env,
         return NULL;
     }
 
-    ret  = AXIOM_ELEMENT_SET_TEXT(key_name_ele, env, key_name_val, key_name_node);
+    ret  = axiom_element_set_text(key_name_ele, env, key_name_val, key_name_node);
 
     return key_name_node;
 

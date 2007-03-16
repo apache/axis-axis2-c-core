@@ -77,7 +77,7 @@ axiom_soap_fault_detail_create_with_parent
     soap_version = axiom_soap_fault_get_soap_version(fault, env);
     if (soap_version == AXIOM_SOAP12)
     {
-        parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+        parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
     this_ele = axiom_element_create(env,
             parent_node,
@@ -135,7 +135,7 @@ axiom_soap_fault_detail_get_all_detail_entries
     {
         om_ele = (axiom_element_t *)
                 AXIOM_NODE_GET_DATA_ELEMENT(fault_detail->om_ele_node, env);
-        return AXIOM_ELEMENT_GET_CHILDREN(om_ele,  env,
+        return axiom_element_get_children(om_ele,  env,
                 fault_detail->om_ele_node);
     }
     return NULL;

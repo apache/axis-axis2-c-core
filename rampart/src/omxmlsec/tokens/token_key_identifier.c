@@ -51,12 +51,12 @@ oxs_token_build_key_identifier_element(const axis2_env_t *env,
     encoding_type_att =  axiom_attribute_create(env, OXS_ATTR_ENCODING_TYPE, encoding_type, NULL);
     value_type_att =  axiom_attribute_create(env, OXS_ATTR_VALUE_TYPE, value_type, NULL);
 
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(ki_ele, env, encoding_type_att, ki_node);
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(ki_ele, env, value_type_att, ki_node);
+    ret = axiom_element_add_attribute(ki_ele, env, encoding_type_att, ki_node);
+    ret = axiom_element_add_attribute(ki_ele, env, value_type_att, ki_node);
 
     if (value)
     {
-        ret  = AXIOM_ELEMENT_SET_TEXT(ki_ele, env, value, ki_node);
+        ret  = axiom_element_set_text(ki_ele, env, value, ki_node);
     }
 
     

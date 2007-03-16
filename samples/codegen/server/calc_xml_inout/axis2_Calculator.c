@@ -64,12 +64,12 @@ axis2_Calculator_add(const axis2_env_t * env, axiom_node_t* param0)
     {
         node = AXIOM_NODE_GET_FIRST_CHILD(req, env);
         ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-        text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+        text = axiom_element_get_text(ele, env, node);
         value1 = atoi(text);
 
         node = AXIOM_NODE_GET_NEXT_SIBLING(node, env);
         ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-        text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+        text = axiom_element_get_text(ele, env, node);
         value2 = atoi(text);
 
     }
@@ -82,7 +82,7 @@ axis2_Calculator_add(const axis2_env_t * env, axiom_node_t* param0)
 
     value_ele = axiom_element_create(env, op_node, "in1", NULL, &value_node);
     sprintf(value_str, "%d", result);
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, value_str , value_node);
+    axiom_element_set_text(value_ele, env, value_str , value_node);
 
     return op_node;
 

@@ -84,7 +84,7 @@ int main(int argc, char** argv)
             axis2_char_t *result = NULL;
             axiom_element_t *result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
 
-            result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node);
+            result = axiom_element_get_text(result_ele, env, ret_node);
             printf("\nResult = %s\n", result);
         }
         else
@@ -156,10 +156,10 @@ build_om_programatically(const axis2_env_t *env,
     math_om_ele = axiom_element_create(env, NULL, operation, ns1, &math_om_node);
 
     text_om_ele = axiom_element_create(env, math_om_node, "param1", NULL, &text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, param1, text_om_node);
+    axiom_element_set_text(text_om_ele, env, param1, text_om_node);
 
     text_om_ele = axiom_element_create(env, math_om_node, "param2", NULL, &text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, param2, text_om_node);
+    axiom_element_set_text(text_om_ele, env, param2, text_om_node);
 
     xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE,
             AXIS2_XML_PARSER_TYPE_BUFFER);

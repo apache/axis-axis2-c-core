@@ -46,7 +46,7 @@ oxs_axiom_add_attribute(const axis2_env_t *env,
 
     ele =  AXIOM_NODE_GET_DATA_ELEMENT(node, env);
     attr =  axiom_attribute_create(env, attribute , value, ns);
-    status = AXIOM_ELEMENT_ADD_ATTRIBUTE(ele, env, attr, node);
+    status = axiom_element_add_attribute(ele, env, attr, node);
     
     return status;
 }
@@ -74,7 +74,7 @@ oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
         return -1;
     }
 
-    qname_iter = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(parent_ele, env, qname, parent);
+    qname_iter = axiom_element_get_children_with_qname(parent_ele, env, qname, parent);
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(qname_iter , env))
     {
 
@@ -176,7 +176,7 @@ oxs_axiom_get_attribute_value_of_node_by_name(const axis2_env_t *env,
     axiom_element_t *ele = NULL;
     
     ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-    attribute_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, attribute_name);
+    attribute_value = axiom_element_get_attribute_value_by_name(ele, env, attribute_name);
     
     return attribute_value;
 }
@@ -203,7 +203,7 @@ oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env,
         return NULL;
     }
     /*Get the child*/
-    ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(parent_ele, env, qname, parent, &node);
+    ele = axiom_element_get_first_child_with_qname(parent_ele, env, qname, parent, &node);
 
     AXIS2_QNAME_FREE(qname, env);
     qname = NULL;
@@ -228,7 +228,7 @@ oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node)
     ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
     if (!ele) return NULL;
 
-    content = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+    content = axiom_element_get_text(ele, env, node);
     if (!content) return NULL;
 
     return content;
@@ -295,7 +295,7 @@ oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char
     axis2_qname_t* qname = NULL;
 
     ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-    qname = AXIOM_ELEMENT_GET_QNAME(ele, env, node);
+    qname = axiom_element_get_qname(ele, env, node);
 
     namestr = AXIS2_QNAME_GET_LOCALPART(qname, env);
     ret_name =  AXIS2_STRCMP(namestr, name) ;

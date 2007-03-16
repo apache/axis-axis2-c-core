@@ -104,7 +104,7 @@ axiom_soap_fault_text_create_with_parent(const axis2_env_t *env,
     soap_version = axiom_soap_fault_reason_get_soap_version(parent, env);
     if (soap_version == AXIOM_SOAP12)
     {
-        parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+        parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
     this_ele = axiom_element_create(env,
             parent_node, AXIOM_SOAP12_SOAP_FAULT_TEXT_LOCAL_NAME,
@@ -181,7 +181,7 @@ axiom_soap_fault_text_set_lang(axiom_soap_fault_text_t *fault_text,
     if (!om_ele)
         return AXIS2_FAILURE;
 
-    status = AXIOM_ELEMENT_ADD_ATTRIBUTE(om_ele, env, fault_text->lang_attribute,
+    status = axiom_element_add_attribute(om_ele, env, fault_text->lang_attribute,
             fault_text->om_ele_node);
 
     if (status == AXIS2_SUCCESS)
@@ -220,7 +220,7 @@ axiom_soap_fault_text_get_lang(axiom_soap_fault_text_t *fault_text,
                 AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
 
         fault_text->lang_attribute =
-            AXIOM_ELEMENT_GET_ATTRIBUTE(om_ele, env, tmp_qname);
+            axiom_element_get_attribute(om_ele, env, tmp_qname);
         AXIS2_QNAME_FREE(tmp_qname, env);
     }
     if (fault_text->lang_attribute)
@@ -273,7 +273,7 @@ axiom_soap_fault_text_set_text(axiom_soap_fault_text_t *fault_text,
                 AXIOM_NODE_GET_DATA_ELEMENT(fault_text->om_ele_node, env);
         if (text_ele)
         {
-            AXIOM_ELEMENT_SET_TEXT(text_ele, env, value, fault_text->om_ele_node);
+            axiom_element_set_text(text_ele, env, value, fault_text->om_ele_node);
             if (lang)
             {
                 axiom_soap_fault_text_set_lang(fault_text, env, lang);
@@ -298,7 +298,7 @@ axiom_soap_fault_text_get_text(axiom_soap_fault_text_t *fault_text,
                 AXIOM_NODE_GET_DATA_ELEMENT(fault_text->om_ele_node, env);
         if (text_ele)
         {
-            text = AXIOM_ELEMENT_GET_TEXT(text_ele, env,
+            text = axiom_element_get_text(text_ele, env,
                     fault_text->om_ele_node);
             return text;
         }

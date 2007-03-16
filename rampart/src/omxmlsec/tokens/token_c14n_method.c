@@ -53,7 +53,7 @@ oxs_token_build_c14n_method_element(const axis2_env_t *env,
 
     algo_attr =  axiom_attribute_create(env, OXS_ATTR_ALGORITHM, algorithm, NULL);
 
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(c14n_method_ele, env, algo_attr, c14n_method_node);
+    ret = axiom_element_add_attribute(c14n_method_ele, env, algo_attr, c14n_method_node);
 
     return c14n_method_node;
 
@@ -79,7 +79,7 @@ oxs_token_get_c14n_method(const axis2_env_t *env, axiom_node_t *c14n_mtd_node)
         return NULL;
     }
 
-    c14n_mtd = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(c14n_mtd_ele, env, OXS_ATTR_ALGORITHM);
+    c14n_mtd = axiom_element_get_attribute_value_by_name(c14n_mtd_ele, env, OXS_ATTR_ALGORITHM);
     if((!c14n_mtd) ||(0 == AXIS2_STRCMP("", c14n_mtd))){
         return NULL;
     }

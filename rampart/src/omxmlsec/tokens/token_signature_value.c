@@ -58,7 +58,7 @@ oxs_token_build_signature_value_element(const axis2_env_t *env,
 
     if (signature_val)
     {
-        ret  = AXIOM_ELEMENT_SET_TEXT(signature_value_ele, env, signature_val, signature_value_node);
+        ret  = axiom_element_set_text(signature_value_ele, env, signature_val, signature_value_node);
     }
 
     return signature_value_node;

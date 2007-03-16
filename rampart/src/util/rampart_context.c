@@ -838,7 +838,7 @@ axis2_status_t rampart_context_set_nodes_to_encrypt(
                 {
                     axiom_namespace_t *ns = NULL;
                     axis2_char_t *namespace_uri = NULL;
-                    ns = AXIOM_ELEMENT_GET_NAMESPACE(ret_node_ele, env,ret_node);
+                    ns = axiom_element_get_namespace(ret_node_ele, env,ret_node);
                     if(ns)
                     {
                         namespace_uri = axiom_namespace_get_uri(ns, env);
@@ -931,7 +931,7 @@ axis2_status_t rampart_context_set_nodes_to_encrypt_or_sign(
                 {
                     axiom_namespace_t *ns = NULL;
                     axis2_char_t *namespace_uri = NULL;
-                    ns = AXIOM_ELEMENT_GET_NAMESPACE(ret_node_ele, env,ret_node);
+                    ns = axiom_element_get_namespace(ret_node_ele, env,ret_node);
                     if(ns)
                     {
                         namespace_uri = axiom_namespace_get_uri(ns, env);

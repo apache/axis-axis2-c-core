@@ -169,7 +169,7 @@ build_om_programatically(const axis2_env_t *env,
     mtom_om_ele = axiom_element_create(env, NULL, "mtomSample", ns1, &mtom_om_node);
 
     file_om_ele = axiom_element_create(env, mtom_om_node, "fileName", ns1, &file_om_node);
-    AXIOM_ELEMENT_SET_TEXT(file_om_ele, env, to_save_name, file_om_node);
+    axiom_element_set_text(file_om_ele, env, to_save_name, file_om_node);
 
     image_om_ele = axiom_element_create(env, mtom_om_node, "image", ns1, &image_om_node);
 

@@ -112,7 +112,7 @@ axiom_soap_body_disp_find_svc(
                         if (element)
                         {
                             axiom_namespace_t *ns =
-                                AXIOM_ELEMENT_GET_NAMESPACE(element, env, body_first_child_node);
+                                axiom_element_get_namespace(element, env, body_first_child_node);
                             if (ns)
                             {
                                 axis2_char_t *uri = axiom_namespace_get_uri(ns, env);
@@ -196,7 +196,7 @@ axiom_soap_body_disp_find_op(
                         element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(body_first_child_node, env);
                         if (element)
                         {
-                            axis2_char_t *element_name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
+                            axis2_char_t *element_name = axiom_element_get_localname(element, env);
                             if (element_name)
                             {
                                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,

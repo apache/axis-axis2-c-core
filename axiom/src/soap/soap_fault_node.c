@@ -78,7 +78,7 @@ axiom_soap_fault_node_create_with_parent(const axis2_env_t *env,
         return NULL;
     }
 
-    parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
 
     this_ele = axiom_element_create(env,
             parent_node,
@@ -126,7 +126,7 @@ axiom_soap_fault_node_set_value(axiom_soap_fault_node_t *fault_node,
 
         if (om_ele)
         {
-            return AXIOM_ELEMENT_SET_TEXT(om_ele, env, uri,
+            return axiom_element_set_text(om_ele, env, uri,
                     fault_node->om_ele_node);
         }
     }
@@ -147,7 +147,7 @@ axiom_soap_fault_node_get_value(axiom_soap_fault_node_t *fault_node,
                     fault_node->om_ele_node, env);
         if (om_ele)
         {
-            return AXIOM_ELEMENT_GET_TEXT(om_ele,
+            return axiom_element_get_text(om_ele,
                     env, fault_node->om_ele_node);
         }
 

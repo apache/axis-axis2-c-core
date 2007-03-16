@@ -46,7 +46,7 @@ rp_signed_encrypted_parts_builder_build(
         if(parts_ele)
         {
             axiom_children_iterator_t *children_iter = NULL;
-            children_iter = AXIOM_ELEMENT_GET_CHILDREN(parts_ele, env, parts);
+            children_iter = axiom_element_get_children(parts_ele, env, parts);
             if(children_iter )
             {
                 while(axiom_children_iterator_has_next(children_iter, env))
@@ -62,7 +62,7 @@ rp_signed_encrypted_parts_builder_build(
                             ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
                             if(ele)
                             {
-                                local_name = AXIOM_ELEMENT_GET_LOCALNAME(ele,env);
+                                local_name = axiom_element_get_localname(ele,env);
                                 if(local_name)
                                 {
                                     status = rp_signed_encrypted_parts_builder_set_properties(node,ele,local_name,signed_encrypted_parts,env);
@@ -137,8 +137,8 @@ rp_signed_encrypted_parts_builder_build_header(
     if(!header)
         return NULL;
 
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(element,env,RP_NAME);
-    namespace = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(element,env,RP_NAMESPACE);
+    name = axiom_element_get_attribute_value_by_name(element,env,RP_NAME);
+    namespace = axiom_element_get_attribute_value_by_name(element,env,RP_NAMESPACE);
     if(!namespace)
     {
         rp_header_free(header,env);

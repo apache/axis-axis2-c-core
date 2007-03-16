@@ -58,7 +58,7 @@ oxs_token_build_serial_number_element(const axis2_env_t *env,
 
     if (value)
     {
-        ret  = AXIOM_ELEMENT_SET_TEXT(serial_number_ele, env, value, serial_number_node);
+        ret  = axiom_element_set_text(serial_number_ele, env, value, serial_number_node);
     }
 
     return serial_number_node;

@@ -288,7 +288,7 @@ xml_schema_facet_construct(const axis2_env_t *env,
     value_v = AXIS2_STRDUP("value", env);
 
     om_ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-    localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
+    localname = axiom_element_get_localname(om_ele, env);
 
     if (AXIS2_STRCMP(localname, "enumeration") == 0)
     {

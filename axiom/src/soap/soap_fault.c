@@ -110,7 +110,7 @@ axiom_soap_fault_create_with_parent(const axis2_env_t *env,
         AXIS2_FREE(env->allocator, soap_fault);
         return NULL;
     }
-    parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
 
     this_ele = axiom_element_create(env,
             parent_node,
@@ -457,12 +457,12 @@ axiom_soap_fault_get_exception(axiom_soap_fault_t *soap_fault,
                 AXIOM_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, NULL, NULL);
         if (qn)
         {
-            exception_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
+            exception_ele = axiom_element_get_first_child_with_qname(
                         detail_ele, env,
                         qn, detail_node, &exception_node);
             AXIS2_QNAME_FREE(qn, env);
             if (exception_ele &&
-                    (excep = AXIOM_ELEMENT_GET_TEXT(exception_ele, env, exception_node)))
+                    (excep = axiom_element_get_text(exception_ele, env, exception_node)))
             {
                 return excep;
             }
@@ -502,7 +502,7 @@ axiom_soap_fault_set_exception(axiom_soap_fault_t *soap_fault,
         return AXIS2_FAILURE;
     }
     /** set the exception string as a text node of newly created om element */
-    AXIOM_ELEMENT_SET_TEXT(fault_detail_ele,
+    axiom_element_set_text(fault_detail_ele,
             env, exception, fault_detail_entry_node);
     /** now add this om element as a child of soap soap_fault detail om element node */
     return AXIOM_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(detail, env, fault_detail_entry_node);
@@ -584,7 +584,7 @@ axiom_soap_fault_create_default_fault(const axis2_env_t *env,
     }
     value_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(value_node, env);
 
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, code_value, value_node);
+    axiom_element_set_text(value_ele, env, code_value, value_node);
 
     soap_fault_text = axiom_soap_fault_text_create_with_parent(env, soap_fault_reason);
     if (!soap_fault_text)
@@ -602,7 +602,7 @@ axiom_soap_fault_create_default_fault(const axis2_env_t *env,
     }
     text_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(text_node, env);
 
-    AXIOM_ELEMENT_SET_TEXT(text_ele, env, reason_text, text_node);
+    axiom_element_set_text(text_ele, env, reason_text, text_node);
 
     return soap_fault;
 }

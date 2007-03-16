@@ -73,8 +73,6 @@ axiom_node_set_first_child(axiom_node_t *om_node,
  * @return status of the op, AXIS2_SUCCESS on success
  *     AXIS2_FAILURE on error
  */
-
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  
 axiom_node_set_previous_sibling(axiom_node_t *om_node,
     const axis2_env_t *env,

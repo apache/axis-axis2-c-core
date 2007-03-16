@@ -58,7 +58,7 @@ oxs_token_build_issuer_name_element(const axis2_env_t *env,
 
     if (value)
     {
-        ret  = AXIOM_ELEMENT_SET_TEXT(issuer_name_ele, env, value, issuer_name_node);
+        ret  = axiom_element_set_text(issuer_name_ele, env, value, issuer_name_node);
     }
 
     return issuer_name_node;

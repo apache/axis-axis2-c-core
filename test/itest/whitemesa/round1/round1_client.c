@@ -124,10 +124,10 @@ main(int argc, char **argv)
                 (axiom_element_t *)
                 AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
             if (AXIS2_STRCMP
-                    (AXIOM_ELEMENT_GET_LOCALNAME(ret_ele, env),
+                    (axiom_element_get_localname(ret_ele, env),
                             echo_response_buff) != 0)
             {
-                printf("%s != %s\n", AXIOM_ELEMENT_GET_LOCALNAME(ret_ele, env), echo_response_buff);
+                printf("%s != %s\n", axiom_element_get_localname(ret_ele, env), echo_response_buff);
                 printf("\nFAIL\n\n");
                 return AXIS2_FAILURE;
             }
@@ -136,7 +136,7 @@ main(int argc, char **argv)
             ret_ele =
                 (axiom_element_t *)
                 AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
-            result = AXIOM_ELEMENT_GET_TEXT(ret_ele, env, ret_node);
+            result = axiom_element_get_text(ret_ele, env, ret_node);
             if (!strcmp(word_to_echo, result))
             {
                 printf("\nSUCCESS\n\n");
@@ -217,17 +217,17 @@ build_soap_body_content(const axis2_env_t *env,
     operation_om_ele = axiom_element_create(env, NULL, echo_operation_buff,
             ns4, &operation_om_node);
 
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+    axiom_element_declare_namespace(operation_om_ele, env,
             operation_om_node, ns0);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+    axiom_element_declare_namespace(operation_om_ele, env,
             operation_om_node, ns1);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+    axiom_element_declare_namespace(operation_om_ele, env,
             operation_om_node, ns2);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+    axiom_element_declare_namespace(operation_om_ele, env,
             operation_om_node, ns3);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+    axiom_element_declare_namespace(operation_om_ele, env,
             operation_om_node, ns4);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+    axiom_element_declare_namespace(operation_om_ele, env,
             operation_om_node, ns5);
 
     attri1 =
@@ -236,15 +236,15 @@ build_soap_body_content(const axis2_env_t *env,
                 ns0);
 
     operation_om_ele = AXIOM_NODE_GET_DATA_ELEMENT(operation_om_node, env);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(operation_om_ele, env, attri1, operation_om_node);
+    axiom_element_add_attribute(operation_om_ele, env, attri1, operation_om_node);
 
 
     text_om_ele =
         axiom_element_create(env, operation_om_node, input_type_buff, NULL,
                 &text_om_node);
     attri1 = axiom_attribute_create(env, "type", xsd_type_buff, ns1);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(text_om_ele, env, attri1, text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_echo, text_om_node);
+    axiom_element_add_attribute(text_om_ele, env, attri1, text_om_node);
+    axiom_element_set_text(text_om_ele, env, word_to_echo, text_om_node);
 
     om_str = AXIOM_NODE_TO_STRING(operation_om_node, env);
     if (om_str)

@@ -1138,7 +1138,7 @@ axis2_http_sender_get_param_string(
 
 	data_element = AXIOM_NODE_GET_DATA_ELEMENT(data_node, env);
 
-	iterator = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(data_element, env, data_node);
+	iterator = axiom_element_get_child_elements(data_element, env, data_node);
 
 	if(iterator){
 		while (AXIS2_TRUE == AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(iterator, env))
@@ -1151,8 +1151,8 @@ axis2_http_sender_get_param_string(
 	 
 			node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env);
 			element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-			name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
-			value = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+			name = axiom_element_get_localname(element, env);
+			value = axiom_element_get_text(element, env, node);
 			if(value){
 				encoded_value = (axis2_char_t *) AXIS2_MALLOC (env->allocator, strlen (value));
 				memset (encoded_value, 0, strlen (value));

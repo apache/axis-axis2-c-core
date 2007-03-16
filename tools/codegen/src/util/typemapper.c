@@ -192,10 +192,10 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
     root = axiom_document_get_root_element(om_doc, env);
     root_ele = AXIOM_NODE_GET_DATA_ELEMENT(root, env);
     typemapper_impl-> mapper_name =
-        AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(root_ele, env, "dbf");
+        axiom_element_get_attribute_value_by_name(root_ele, env, "dbf");
     typemapper_impl-> mapper_name = 
         AXIS2_STRDUP( typemapper_impl-> mapper_name, env);
-    it = AXIOM_ELEMENT_GET_CHILDREN(root_ele, env, root);
+    it = axiom_element_get_children(root_ele, env, root);
     while ( (child = axiom_children_iterator_next(it, env )) != NULL )
     {
         if(AXIOM_NODE_GET_NODE_TYPE(child, env) != AXIOM_ELEMENT)
@@ -205,13 +205,13 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
 
         child_ele = AXIOM_NODE_GET_DATA_ELEMENT( child, env);
         is_default = AXIS2_FALSE;
-        if ( (attri_val = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME
+        if ( (attri_val = axiom_element_get_attribute_value_by_name
                     (child_ele, env, "default") ) != NULL )
         {
             is_default = AXIS2_TRUE;
         }
         /** next get the 2nd child iterator to the child */
-        it2 = AXIOM_ELEMENT_GET_CHILDREN( child_ele, env, child);
+        it2 = axiom_element_get_children( child_ele, env, child);
 
         /** here on ward child referes to the childs of child */
         while ( (child = axiom_children_iterator_next(it2, env )) != NULL )
@@ -223,12 +223,12 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
         }
 
         child_ele = AXIOM_NODE_GET_DATA_ELEMENT( child, env);
-        uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME
+        uri = axiom_element_get_attribute_value_by_name
                     (child_ele, env, "namespace");
-        prefix = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME
+        prefix = axiom_element_get_attribute_value_by_name
                                 (child_ele, env, "prefix");
         prefix = AXIS2_STRDUP( prefix, env);
-        local_name = AXIOM_ELEMENT_GET_TEXT(child_ele, env, child);
+        local_name = axiom_element_get_text(child_ele, env, child);
         qname2str = AXIS2_STRDUP( local_name, env);
         qname2str = w2c_string_add_string( qname2str, "|", env);
         qname2str = w2c_string_add_string( qname2str, uri, env);
@@ -242,7 +242,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
         }
         /* child = AXIOM_NODE_GET_NEXT_SIBLING( child, env ); */
         child_ele = AXIOM_NODE_GET_DATA_ELEMENT( child, env);
-        type_val = AXIOM_ELEMENT_GET_TEXT( child_ele, env, child);
+        type_val = axiom_element_get_text( child_ele, env, child);
         type_val = AXIS2_STRDUP( type_val, env);
         if ( is_default )
         {

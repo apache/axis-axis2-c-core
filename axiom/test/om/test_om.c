@@ -121,9 +121,9 @@ test_om_build(const char *filename)
         ele1 = AXIOM_NODE_GET_DATA_ELEMENT(node1, environment);
         if (ele1)
 
-            printf("root localname %s\n", AXIOM_ELEMENT_GET_LOCALNAME(ele1, environment));
+            printf("root localname %s\n", axiom_element_get_localname(ele1, environment));
 
-        ns = AXIOM_ELEMENT_GET_NAMESPACE(ele1, environment, node1);
+        ns = axiom_element_get_namespace(ele1, environment, node1);
 
         if (ns)
         {
@@ -146,9 +146,9 @@ test_om_build(const char *filename)
         {
             case AXIOM_ELEMENT:
                 ele2 = (axiom_element_t*) AXIOM_NODE_GET_DATA_ELEMENT(node2, environment);
-                if (ele2 && AXIOM_ELEMENT_GET_LOCALNAME(ele2, environment))
+                if (ele2 && axiom_element_get_localname(ele2, environment))
                 {
-                    printf("\n localname %s\n" , AXIOM_ELEMENT_GET_LOCALNAME(ele2, environment));
+                    printf("\n localname %s\n" , axiom_element_get_localname(ele2, environment));
                 }
 
                 break;
@@ -233,12 +233,12 @@ test_om_serialize()
         axiom_namespace_create(environment, "urn:ISBN:0-395-74341-6",
                 "isbn");
     ele1 = axiom_element_create(environment, NULL, "book", ns1, &node1);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(ele1, environment, node1, ns2);
+    axiom_element_declare_namespace(ele1, environment, node1, ns2);
 
     ele2 = axiom_element_create(environment, node1, "title", ns1, &node2);
     attr1 = axiom_attribute_create(environment, "title22", NULL, NULL);
 
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(ele2, environment, attr1, node2);
+    axiom_element_add_attribute(ele2, environment, attr1, node2);
 
     text1 = axiom_text_create(environment, node2, "Axis2/C OM HOWTO", &node3);
 
@@ -250,11 +250,11 @@ test_om_serialize()
 
     attr1 = axiom_attribute_create(environment, "title", "Mr", ns1);
 
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(ele4, environment, attr1, node6);
+    axiom_element_add_attribute(ele4, environment, attr1, node6);
 
     attr2 = axiom_attribute_create(environment, "name", "Axitoc Oman", ns1);
 
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(ele4, environment, attr2, node6);
+    axiom_element_add_attribute(ele4, environment, attr2, node6);
 
     data_source = axiom_data_source_create(environment, node1, &node6);
     stream = axiom_data_source_get_stream(data_source, environment);

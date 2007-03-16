@@ -131,7 +131,7 @@ build_om_programatically(const axis2_env_t *env)
 
     ns1 = axiom_namespace_create(env, "http://example.org/notify", "m");
     notify_om_ele = axiom_element_create(env, NULL, "notify", ns1, &notify_om_node);
-    AXIOM_ELEMENT_SET_TEXT(notify_om_ele, env, "notify5", notify_om_node);
+    axiom_element_set_text(notify_om_ele, env, "notify5", notify_om_node);
 
     buffer = AXIOM_NODE_TO_STRING(notify_om_node, env);
     if (buffer)

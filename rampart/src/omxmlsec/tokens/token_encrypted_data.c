@@ -52,19 +52,19 @@ oxs_token_build_encrypted_data_element(const axis2_env_t *env,
     if (type_attribute)
     {
         type_attr =  axiom_attribute_create(env, OXS_ATTR_TYPE, type_attribute, NULL);
-        ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_data_ele, env, type_attr, encrypted_data_node);
+        ret = axiom_element_add_attribute(encrypted_data_ele, env, type_attr, encrypted_data_node);
     }
 
     if (id)
     {
         id_attr = axiom_attribute_create(env, OXS_ATTR_ID, id, NULL);
-        ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_data_ele, env, id_attr, encrypted_data_node);
+        ret = axiom_element_add_attribute(encrypted_data_ele, env, id_attr, encrypted_data_node);
     }
     else
     {
         /*TODO Get a unique value for this*/
         id_attr = axiom_attribute_create(env, OXS_ATTR_ID, "EncDataId-54321", NULL);
-        ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_data_ele, env, id_attr, encrypted_data_node);
+        ret = axiom_element_add_attribute(encrypted_data_ele, env, id_attr, encrypted_data_node);
     }
 
     return encrypted_data_node;

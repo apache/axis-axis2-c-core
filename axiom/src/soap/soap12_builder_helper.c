@@ -132,7 +132,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
     if (!om_ele)
         return AXIS2_FAILURE;
 
-    ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
+    ele_localname = axiom_element_get_localname(om_ele, env);
     if (!ele_localname)
         return AXIS2_FAILURE;
 
@@ -378,7 +378,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         if (!parent_ele)
             return AXIS2_FAILURE;
 
-        parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_ele, env);
+        parent_localname = axiom_element_get_localname(parent_ele, env);
         if (!parent_localname)
             return AXIS2_FAILURE;
 
@@ -531,7 +531,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         if (!parent_ele)
             return AXIS2_FAILURE;
 
-        parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_ele, env);
+        parent_localname = axiom_element_get_localname(parent_ele, env);
         if (!parent_localname)
             return AXIS2_FAILURE;
 

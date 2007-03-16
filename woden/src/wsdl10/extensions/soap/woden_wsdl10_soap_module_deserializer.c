@@ -346,7 +346,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
 
     el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
 
-    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env,
+    ref = axiom_element_get_attribute_value_by_name(el, env,
             WODEN_WSDL10_ATTR_REF);
     if (ref)
     {
@@ -355,7 +355,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         soap_mod = woden_wsdl10_soap_module_to_soap_module_element(soap_mod, env);
         WODEN_WSDL10_SOAP_MODULE_ELEMENT_SET_REF(soap_mod, env, uri);
     }
-    req = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env,
+    req = axiom_element_get_attribute_value_by_name(el, env,
             WODEN_WSDL10_ATTR_REQUIRED);
     if (req && 0 == AXIS2_STRCMP(WODEN_WSDL10_VALUE_TRUE, req))
         required = AXIS2_TRUE;
@@ -372,7 +372,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         axis2_uri_t *soap_action = NULL;
         void *binding_op_exts = NULL;
 
-        action_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env,
+        action_str = axiom_element_get_attribute_value_by_name(el, env,
                 WODEN_WSDL10_ATTR_ACTION);
         soap_action = axis2_uri_parse_string(env, action_str);
         binding_op_exts = woden_wsdl10_soap_binding_op_exts_create(env);
@@ -398,7 +398,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         axis2_uri_t *soap_address = NULL;
         void *address_exts = NULL;
 
-        address_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env,
+        address_str = axiom_element_get_attribute_value_by_name(el, env,
                 WODEN_WSDL10_ATTR_LOCATION);
         soap_address = axis2_uri_parse_string(env, address_str);
         address_exts = woden_wsdl10_soap_address_exts_create(env);

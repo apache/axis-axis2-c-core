@@ -119,7 +119,7 @@ savan_client_subscribe(
     /* EndTo element */
     endto_elem = axiom_element_create(env, sub_node, ELEM_NAME_ENDTO, ns,
         &endto_node);
-    AXIOM_ELEMENT_SET_TEXT(endto_elem, env, endto, endto_node);
+    axiom_element_set_text(endto_elem, env, endto, endto_node);
     
     /* Delivery element */
     delivery_elem = axiom_element_create(env, sub_node, ELEM_NAME_DELIVERY, ns,
@@ -127,16 +127,16 @@ savan_client_subscribe(
         
     notify_elem = axiom_element_create(env, delivery_node, ELEM_NAME_NOTIFYTO, ns,
         &notify_node);
-    AXIOM_ELEMENT_SET_TEXT(notify_elem, env, notify, notify_node);
+    axiom_element_set_text(notify_elem, env, notify, notify_node);
     
     /* Expires element */
     expires_elem = axiom_element_create(env, sub_node, ELEM_NAME_EXPIRES, ns,
         &expires_node);
-    AXIOM_ELEMENT_SET_TEXT(expires_elem, env, expires, expires_node);
+    axiom_element_set_text(expires_elem, env, expires, expires_node);
     /* Filter element */
     filter_elem = axiom_element_create(env, sub_node, ELEM_NAME_FILTER, ns,
         &endto_node);
-    AXIOM_ELEMENT_SET_TEXT(filter_elem, env, filter, filter_node);
+    axiom_element_set_text(filter_elem, env, filter, filter_node);
     
     /* send the Subscription and wait for the response */
     reply = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, sub_node);
@@ -159,7 +159,7 @@ savan_client_subscribe(
     body_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(reply, env);
     
     /* Check whether we have received a SubscribeResponse */
-    sub_elem_local_name = AXIOM_ELEMENT_GET_LOCALNAME(body_elem, env);
+    sub_elem_local_name = axiom_element_get_localname(body_elem, env);
 
     if (AXIS2_STRCMP(ELEM_NAME_SUB_RESPONSE, sub_elem_local_name) != 0)
     {
@@ -211,7 +211,7 @@ savan_client_renew(
     /* Expires element */
     expires_elem = axiom_element_create(env, renew_node, ELEM_NAME_EXPIRES, ns,
         &expires_node);
-    AXIOM_ELEMENT_SET_TEXT(expires_elem, env, expires, expires_node);
+    axiom_element_set_text(expires_elem, env, expires, expires_node);
     
     savan_client_add_sub_id_to_soap_header(client, env, svc_client);
 
@@ -339,7 +339,7 @@ savan_client_get_status(
     
     /* Get Subscribe element from Body */
     qname = axis2_qname_create(env, ELEM_NAME_GETSTATUS_RESPONSE, EVENTING_NAMESPACE, NULL);
-    response_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(body_elem, env, qname,
+    response_elem = axiom_element_get_first_child_with_qname(body_elem, env, qname,
         body_node, &response_node);
     AXIS2_QNAME_FREE(qname, env);
     
@@ -347,11 +347,11 @@ savan_client_get_status(
         
     /* Expires */
     qname = axis2_qname_create(env, ELEM_NAME_EXPIRES, EVENTING_NAMESPACE, NULL);
-    expires_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(response_elem, env, qname,
+    expires_elem = axiom_element_get_first_child_with_qname(response_elem, env, qname,
         response_node, &expires_node);
     AXIS2_QNAME_FREE(qname, env);
     
-    expires = AXIOM_ELEMENT_GET_TEXT(expires_elem, env, expires_node);
+    expires = axiom_element_get_text(expires_elem, env, expires_node);
     
     return expires;
 }
@@ -390,7 +390,7 @@ savan_client_add_sub_id_to_soap_header(
         return AXIS2_FAILURE;
     }
 
-    AXIOM_ELEMENT_SET_TEXT(id_elem, env, client->sub_id, id_node);
+    axiom_element_set_text(id_elem, env, client->sub_id, id_node);
 
     AXIS2_SVC_CLIENT_ADD_HEADER(svc_client, env, id_node);
 
@@ -424,24 +424,24 @@ savan_client_get_sub_id_from_response(
 
     /* Get Sub Mgr sub element */
     qname = axis2_qname_create(env, ELEM_NAME_SUB_MGR, EVENTING_NAMESPACE, NULL);
-    submgr_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(response_elem, env, qname,
+    submgr_elem = axiom_element_get_first_child_with_qname(response_elem, env, qname,
         response_node, &submgr_node);
     AXIS2_QNAME_FREE(qname, env);
     
     /* Get Ref Param sub element */
     qname = axis2_qname_create(env, ELEM_NAME_REF_PARAM,
         AXIS2_WSA_NAMESPACE_SUBMISSION, NULL);
-    refparam_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(submgr_elem, env, qname,
+    refparam_elem = axiom_element_get_first_child_with_qname(submgr_elem, env, qname,
         submgr_node, &refparam_node);
     AXIS2_QNAME_FREE(qname, env);
 
     /* Get Identifier sub element */
     qname = axis2_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);
-    id_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(refparam_elem, env, qname,
+    id_elem = axiom_element_get_first_child_with_qname(refparam_elem, env, qname,
         refparam_node, &id_node);
     AXIS2_QNAME_FREE(qname, env);
 
-    sub_id = AXIOM_ELEMENT_GET_TEXT(id_elem, env, id_node);
+    sub_id = axiom_element_get_text(id_elem, env, id_node);
 
     return sub_id;
 }

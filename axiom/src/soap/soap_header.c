@@ -123,7 +123,7 @@ axiom_soap_header_create_with_parent(const axis2_env_t *env,
         AXIOM_NODE_DETACH(body_node, env);
     }
 
-    parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     this_ele = axiom_element_create(env, parent_node,
             AXIOM_SOAP_HEADER_LOCAL_NAME, parent_ns, &this_node);
     if (!this_ele)
@@ -235,7 +235,7 @@ axiom_soap_header_add_header_block(axiom_soap_header_t* soap_header,
             uri = axiom_namespace_get_uri(cloned_ns, env);
             prefix = axiom_namespace_get_prefix(cloned_ns, env);
 
-            dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(hb_ele, env, uri, prefix);
+            dec_ns = axiom_element_find_declared_namespace(hb_ele, env, uri, prefix);
             if (!dec_ns)
             {
                 /** this namespace it not in hb_ele list so free it */
@@ -279,7 +279,7 @@ axiom_soap_header_examine_all_header_blocks
 
     if (om_ele)
     {
-        return AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(om_ele,
+        return axiom_element_get_children_with_qname(om_ele,
                 env, NULL, soap_header->om_ele_node);
     }
     else
@@ -327,7 +327,7 @@ AXIS2_CALL axiom_soap_header_extract_header_blocks
 
     if (header_om_ele)
     {
-        first_ele = AXIOM_ELEMENT_GET_FIRST_ELEMENT(header_om_ele, env,
+        first_ele = axiom_element_get_first_element(header_om_ele, env,
                 soap_header->om_ele_node, &first_node);
         if (first_node)
         {
@@ -482,7 +482,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
                         AXIOM_NODE_GET_DATA_ELEMENT(header_block_om_node, env);
                 if (header_block_om_ele)
                 {
-                    ns = AXIOM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env,
+                    ns = axiom_element_get_namespace(header_block_om_ele, env,
                             header_block_om_node);
                     if (ns)
                     {
@@ -561,7 +561,7 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
                 axis2_qname_t *element_qname = NULL;
 
                 ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-                element_qname = AXIOM_ELEMENT_GET_QNAME(ele, env, node);
+                element_qname = axiom_element_get_qname(ele, env, node);
                 if (axiom_soap_header_qname_matches(env, element_qname, qname) == AXIS2_TRUE)
                 {
                     AXIOM_NODE_DETACH(node, env);

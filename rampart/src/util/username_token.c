@@ -225,7 +225,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
 
     wsu_ns_obj = axiom_namespace_create(env, RAMPART_WSU_XMLNS,
             RAMPART_WSU);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(ut_ele, env,
+    axiom_element_declare_namespace(ut_ele, env,
             ut_node, wsu_ns_obj);
 
     if (ut_ele)
@@ -236,13 +236,13 @@ rampart_username_token_build(rampart_username_token_t *username_token,
         if (un_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
-            AXIOM_ELEMENT_SET_TEXT(un_ele, env, username, un_node);
-            dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(un_ele, env,
+            axiom_element_set_text(un_ele, env, username, un_node);
+            dec_ns = axiom_element_find_declared_namespace(un_ele, env,
                     RAMPART_WSSE_XMLNS,
                     RAMPART_WSSE);
 
 
-            AXIOM_ELEMENT_SET_NAMESPACE(un_ele, env, sec_ns_obj, un_node);
+            axiom_element_set_namespace(un_ele, env, sec_ns_obj, un_node);
         }
         
         password_type = rampart_context_get_password_type(rampart_context,env);
@@ -264,8 +264,8 @@ rampart_username_token_build(rampart_username_token_t *username_token,
             if (pw_ele)
             {
 
-                AXIOM_ELEMENT_SET_TEXT(pw_ele, env, digest_val, pw_node);
-                dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(pw_ele, env,
+                axiom_element_set_text(pw_ele, env, digest_val, pw_node);
+                dec_ns = axiom_element_find_declared_namespace(pw_ele, env,
                         RAMPART_WSSE_XMLNS,
                         RAMPART_WSSE);
 
@@ -275,7 +275,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                         RAMPART_PASSWORD_DIGEST_URI,
                         NULL);
 
-                AXIOM_ELEMENT_ADD_ATTRIBUTE(pw_ele, env,
+                axiom_element_add_attribute(pw_ele, env,
                         om_attr, pw_node);
 
             }
@@ -284,8 +284,8 @@ rampart_username_token_build(rampart_username_token_t *username_token,
             if (nonce_ele)
             {
                 axiom_namespace_t *dec_ns = NULL;
-                AXIOM_ELEMENT_SET_TEXT(nonce_ele, env, nonce_val , nonce_node);
-                dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(nonce_ele, env,
+                axiom_element_set_text(nonce_ele, env, nonce_val , nonce_node);
+                dec_ns = axiom_element_find_declared_namespace(nonce_ele, env,
                         RAMPART_WSSE_XMLNS,
                         RAMPART_WSSE);
             }
@@ -294,12 +294,12 @@ rampart_username_token_build(rampart_username_token_t *username_token,
             if (created_ele)
             {
                 axiom_namespace_t *dec_ns = NULL;
-                AXIOM_ELEMENT_SET_TEXT(created_ele, env, created_val, created_node);
-                dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(created_ele, env,
+                axiom_element_set_text(created_ele, env, created_val, created_node);
+                dec_ns = axiom_element_find_declared_namespace(created_ele, env,
                         RAMPART_WSSE_XMLNS,
                         RAMPART_WSSE);
 
-                AXIOM_ELEMENT_SET_NAMESPACE(created_ele, env, wsu_ns_obj, created_node);
+                axiom_element_set_namespace(created_ele, env, wsu_ns_obj, created_node);
 
             }
             
@@ -323,8 +323,8 @@ rampart_username_token_build(rampart_username_token_t *username_token,
             if (pw_ele)
             {
                 axiom_namespace_t *dec_ns = NULL;
-                AXIOM_ELEMENT_SET_TEXT(pw_ele, env, password, pw_node);
-                dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(pw_ele, env,
+                axiom_element_set_text(pw_ele, env, password, pw_node);
+                dec_ns = axiom_element_find_declared_namespace(pw_ele, env,
                         RAMPART_WSSE_XMLNS,
                         RAMPART_WSSE);
 
@@ -333,7 +333,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                         RAMPART_PASSWORD_TEXT_URI,
                         NULL);
 
-                AXIOM_ELEMENT_ADD_ATTRIBUTE(pw_ele, env,
+                axiom_element_add_attribute(pw_ele, env,
                         om_attr, pw_node);
             }
         } /*End if passwordType == passwordText*/
@@ -397,7 +397,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     }
 
     /*Get thru children of UsernameToken element*/
-    children = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(ut_ele, env, ut_node);
+    children = axiom_element_get_child_elements(ut_ele, env, ut_node);
     if (children)
     {
         /*Go thru children and find username token parameters*/
@@ -409,16 +409,16 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
 
             node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(children, env);
             element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-            localname =  AXIOM_ELEMENT_GET_LOCALNAME(element, env);
+            localname =  axiom_element_get_localname(element, env);
 
             if (0 == AXIS2_STRCMP(localname, RAMPART_SECURITY_USERNAMETOKEN_USERNAME))
             {
-                username = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+                username = axiom_element_get_text(element, env, node);
 
             }
             else if (0 == AXIS2_STRCMP(localname , RAMPART_SECURITY_USERNAMETOKEN_PASSWORD))
             {
-                password_type = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(element,
+                password_type = axiom_element_get_attribute_value_by_name(element,
                         env,
                         RAMPART_SECURITY_USERNAMETOKEN_PASSWORD_ATTR_TYPE);
 
@@ -449,24 +449,24 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
                         return AXIS2_FAILURE;
                     }            
                 }
-                password = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+                password = axiom_element_get_text(element, env, node);
 
             }
             else if (0 == AXIS2_STRCMP(localname,  RAMPART_SECURITY_USERNAMETOKEN_NONCE))
             {
-                nonce = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+                nonce = axiom_element_get_text(element, env, node);
                 rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_NONCE, nonce);
 
             }
             else if (0 == AXIS2_STRCMP(localname ,  RAMPART_SECURITY_USERNAMETOKEN_CREATED))
             {
-                created = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+                created = axiom_element_get_text(element, env, node);
                 rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_CREATED, created);
 
             }
             else
             {
-                AXIS2_LOG_INFO(env->log, "\n[rampart][rampart_usernametoken] Unknown element found %s -> %s", localname, AXIOM_ELEMENT_GET_TEXT(element, env, node));
+                AXIS2_LOG_INFO(env->log, "\n[rampart][rampart_usernametoken] Unknown element found %s -> %s", localname, axiom_element_get_text(element, env, node));
             }
 
 

@@ -31,7 +31,7 @@ w2c_xslt_utils_add_attribute(
 
     om_ele = AXIOM_NODE_GET_DATA_ELEMENT ( om_node, env );
     attri = axiom_attribute_create ( env, attribute, attrib_value, NULL );
-    AXIOM_ELEMENT_ADD_ATTRIBUTE ( om_ele, env, attri, om_node );
+    axiom_element_add_attribute ( om_ele, env, attri, om_node );
     
     return AXIS2_SUCCESS;
 }
@@ -81,7 +81,7 @@ w2c_xslt_utils_add_text(
    axiom_element_t *ele = NULL;
    
    ele = AXIOM_NODE_GET_DATA_ELEMENT ( node, env);
-   AXIOM_ELEMENT_SET_TEXT( ele, env, text, node);
+   axiom_element_set_text( ele, env, text, node);
    return node;
 }
 
@@ -108,21 +108,21 @@ w2c_xslt_utils_copy_node_tree(
     to_ele = AXIOM_NODE_GET_DATA_ELEMENT ( to, env );
     from_ele = AXIOM_NODE_GET_DATA_ELEMENT ( from, env );
 
-    it = AXIOM_ELEMENT_GET_CHILDREN ( from_ele, env, from );
+    it = axiom_element_get_children ( from_ele, env, from );
     axiom_children_iterator_reset( it, env);
 
     while ( (from_child = axiom_children_iterator_next( it, env )) != NULL )
     {
         if ( AXIOM_NODE_GET_NODE_TYPE ( from_child, env ) == AXIOM_TEXT )
         {
-            text = AXIOM_ELEMENT_GET_TEXT ( from_ele, env, from );
+            text = axiom_element_get_text ( from_ele, env, from );
             text = AXIS2_STRDUP ( text, env);
-            AXIOM_ELEMENT_SET_TEXT ( to_ele, env, text, to);
+            axiom_element_set_text ( to_ele, env, text, to);
         }
         else if ( AXIOM_NODE_GET_NODE_TYPE ( from_child, env ) == AXIOM_ELEMENT )
         {
             from_child_ele = AXIOM_NODE_GET_DATA_ELEMENT ( from_child, env );
-            qname = AXIOM_ELEMENT_GET_QNAME ( from_child_ele, env, from_child );
+            qname = axiom_element_get_qname ( from_child_ele, env, from_child );
             qname = AXIS2_QNAME_CLONE ( qname, env );
     
             axiom_element_create_with_qname ( env, to, qname, &to_child );
@@ -130,7 +130,7 @@ w2c_xslt_utils_copy_node_tree(
         }
     }
 
-    attr_ht = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(from_ele, env);
+    attr_ht = axiom_element_get_all_attributes(from_ele, env);
     if(NULL != attr_ht)
     {
         for( hi = axis2_hash_first(attr_ht, env);  hi;
@@ -141,7 +141,7 @@ w2c_xslt_utils_copy_node_tree(
             {
                 om_attri = (axiom_attribute_t *)val;
                 om_attri = axiom_attribute_clone( om_attri, env );
-                AXIOM_ELEMENT_ADD_ATTRIBUTE ( to_ele, env, om_attri, to);
+                axiom_element_add_attribute ( to_ele, env, om_attri, to);
             }
         }
     }

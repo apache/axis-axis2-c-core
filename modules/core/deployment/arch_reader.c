@@ -173,7 +173,7 @@ axis2_arch_reader_build_svc_grp(
         svcs_element = AXIOM_NODE_GET_DATA_ELEMENT(svcs, env);
         if (svcs_element)
         {
-            root_element_name = AXIOM_ELEMENT_GET_LOCALNAME(svcs_element, env);
+            root_element_name = axiom_element_get_localname(svcs_element, env);
         }
     }
     

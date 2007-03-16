@@ -53,7 +53,7 @@ oxs_token_build_encryption_method_element(const axis2_env_t *env,
 
     algo_attr =  axiom_attribute_create(env, OXS_ATTR_ALGORITHM, algorithm, NULL);
 
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encryption_method_ele, env, algo_attr, encryption_method_node);
+    ret = axiom_element_add_attribute(encryption_method_ele, env, algo_attr, encryption_method_node);
 
     return encryption_method_node;
 
@@ -79,7 +79,7 @@ oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_no
         return NULL;
     }
 
-    enc_mtd = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(enc_mtd_ele, env, OXS_ATTR_ALGORITHM);
+    enc_mtd = axiom_element_get_attribute_value_by_name(enc_mtd_ele, env, OXS_ATTR_ALGORITHM);
     if((!enc_mtd) ||(0 == AXIS2_STRCMP("", enc_mtd))){
         return NULL;
     }

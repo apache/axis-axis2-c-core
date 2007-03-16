@@ -138,7 +138,7 @@ axiom_children_qname_iterator_has_next(axiom_children_qname_iterator_t *iterator
 
             if (om_element &&
                 axiom_children_qname_iterator_qname_matches(env,
-                AXIOM_ELEMENT_GET_QNAME(om_element, env, iterator->current_child),
+                axiom_element_get_qname(om_element, env, iterator->current_child),
                 iterator->given_qname))
             {
                 iterator->matching_node_found = AXIS2_TRUE;

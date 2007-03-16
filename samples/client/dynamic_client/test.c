@@ -82,13 +82,13 @@ build_om_programatically(axis2_env_t *env)
     attr_name_arg0 = axiom_attribute_create(env, "name", "arg_0_0", ns1);
     attr_name_arg1 = axiom_attribute_create(env, "name", "arg_1_0", ns1);
     arg0_om_ele = axiom_element_create(env, seq_om_node, "arg_0_0", ns1, &arg0_om_node);
-    AXIOM_ELEMENT_SET_TEXT(arg0_om_ele, env, "5", arg0_om_node);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(arg0_om_ele, env, attr, arg0_om_node);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(arg0_om_ele, env, attr_name_arg0, arg0_om_node);
+    axiom_element_set_text(arg0_om_ele, env, "5", arg0_om_node);
+    axiom_element_add_attribute(arg0_om_ele, env, attr, arg0_om_node);
+    axiom_element_add_attribute(arg0_om_ele, env, attr_name_arg0, arg0_om_node);
     arg1_om_ele = axiom_element_create(env, seq_om_node, "arg_1_0", ns1, &arg1_om_node);
-    AXIOM_ELEMENT_SET_TEXT(arg1_om_ele, env, "10", arg1_om_node);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr_name_arg1, arg1_om_node);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr, arg1_om_node);
+    axiom_element_set_text(arg1_om_ele, env, "10", arg1_om_node);
+    axiom_element_add_attribute(arg1_om_ele, env, attr_name_arg1, arg1_om_node);
+    axiom_element_add_attribute(arg1_om_ele, env, attr, arg1_om_node);
 
     xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE,
             AXIS2_FALSE, AXIS2_XML_PARSER_TYPE_BUFFER);

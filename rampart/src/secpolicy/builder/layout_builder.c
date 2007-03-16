@@ -45,7 +45,7 @@ rp_layout_builder_build(
                     name_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(name, env);
                     if(name_ele)
                     {
-                        value = AXIOM_ELEMENT_GET_LOCALNAME(name_ele, env);
+                        value = axiom_element_get_localname(name_ele, env);
                         if(value)
                         {
                             lay_out = rp_layout_create(env);

@@ -51,7 +51,7 @@ build_om_programatically(const axis2_env_t *env, axis2_char_t *text)
 
     text_om_ele = axiom_element_create(env, echo_om_node, "LocalName", NULL, &text_om_node);
 
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, text, text_om_node);
+    axiom_element_set_text(text_om_ele, env, text, text_om_node);
 
     return echo_om_node;
 }

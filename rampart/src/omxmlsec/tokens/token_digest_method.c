@@ -53,7 +53,7 @@ oxs_token_build_digest_method_element(const axis2_env_t *env,
 
     algo_attr =  axiom_attribute_create(env, OXS_ATTR_ALGORITHM, algorithm, NULL);
 
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(digest_method_ele, env, algo_attr, digest_method_node);
+    ret = axiom_element_add_attribute(digest_method_ele, env, algo_attr, digest_method_node);
 
     return digest_method_node;
 
@@ -79,7 +79,7 @@ oxs_token_get_digest_method(const axis2_env_t *env, axiom_node_t *digest_mtd_nod
         return NULL;
     }
 
-    digest_mtd = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(digest_mtd_ele, env, OXS_ATTR_ALGORITHM);
+    digest_mtd = axiom_element_get_attribute_value_by_name(digest_mtd_ele, env, OXS_ATTR_ALGORITHM);
     if((!digest_mtd) ||(0 == AXIS2_STRCMP("", digest_mtd))){
         return NULL;
     }

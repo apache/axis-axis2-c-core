@@ -48,7 +48,7 @@ rp_token_builder_build(
                     token_name_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(token_name, env);
                     if(token_name_ele)
                     {
-                        token_value = AXIOM_ELEMENT_GET_LOCALNAME(token_name_ele, env);
+                        token_value = axiom_element_get_localname(token_name_ele, env);
                         if(token_value)
                         {
                             status = rp_token_builder_set_token(token_name,token_name_ele,token_value,property,env);

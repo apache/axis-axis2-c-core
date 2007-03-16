@@ -106,7 +106,7 @@ sub_invoke(axis2_svc_skeleton_t *svc_skeleton,
             element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
             if (element)
             {
-                axis2_char_t *op_name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
+                axis2_char_t *op_name = axiom_element_get_localname(element, env);
                 if (op_name)
                 {
                     if (AXIS2_STRCMP(op_name, "sub") == 0)

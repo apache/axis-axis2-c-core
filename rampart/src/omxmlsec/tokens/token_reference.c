@@ -55,8 +55,8 @@ oxs_token_build_reference_element(const axis2_env_t *env,
     ref_attr =  axiom_attribute_create(env, OXS_ATTR_URI , ref, NULL);
     value_type_attr =  axiom_attribute_create(env, OXS_ATTR_VALUE_TYPE , value_type, NULL);
 
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(reference_ele, env, ref_attr, reference_node);
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(reference_ele, env, value_type_attr, reference_node);
+    ret = axiom_element_add_attribute(reference_ele, env, ref_attr, reference_node);
+    ret = axiom_element_add_attribute(reference_ele, env, value_type_attr, reference_node);
 
     return reference_node;
 }
@@ -75,7 +75,7 @@ oxs_token_get_reference(const axis2_env_t *env, axiom_node_t *ref_node)
         return NULL;
     }
 
-    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(reference_ele, env, OXS_ATTR_URI);
+    ref = axiom_element_get_attribute_value_by_name(reference_ele, env, OXS_ATTR_URI);
     return ref;
 
 }
@@ -94,6 +94,6 @@ oxs_token_get_reference_value_type(const axis2_env_t *env, axiom_node_t *ref_nod
         return NULL;
     }
 
-    val_type = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(reference_ele, env, OXS_ATTR_VALUE_TYPE);
+    val_type = axiom_element_get_attribute_value_by_name(reference_ele, env, OXS_ATTR_VALUE_TYPE);
     return val_type;
 }

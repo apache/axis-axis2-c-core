@@ -259,7 +259,7 @@ rampart_get_security_token(const axis2_env_t *env,
             header_block = (axiom_soap_header_block_t *)hb;
             header_block_node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
             header_block_ele  = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
-            ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(header_block_ele, env);
+            ele_localname = axiom_element_get_localname(header_block_ele, env);
 
             if (AXIS2_STRCMP(ele_localname, RAMPART_SECURITY) == 0)
             {
@@ -293,7 +293,7 @@ rampart_create_fault_envelope(const axis2_env_t *env,
 
     ns1 = axiom_namespace_create(env, RAMPART_WSSE_XMLNS, RAMPART_WSSE);
     text_om_ele = axiom_element_create(env, NULL, "ProblemSecurityHeader", ns1, &text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, detail_node_text, text_om_node);
+    axiom_element_set_text(text_om_ele, env, detail_node_text, text_om_node);
 
     envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env,
             "soapenv:Sender",

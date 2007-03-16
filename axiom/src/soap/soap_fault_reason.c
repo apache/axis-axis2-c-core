@@ -92,7 +92,7 @@ axiom_soap_fault_reason_create_with_parent(const axis2_env_t *env,
         axiom_soap_fault_get_soap_version(fault, env);
     if (fault_reason->soap_version == AXIOM_SOAP12)
     {
-        parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+        parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
     this_ele = axiom_element_create(env,
             parent_node,

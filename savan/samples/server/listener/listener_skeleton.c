@@ -130,7 +130,7 @@ listener_on_fault(axis2_svc_skeleton_t *svc_skeli,
     axiom_element_t *error_ele = NULL;
     error_ele = axiom_element_create(env, node, "TestServiceError", NULL, 
         &error_node);
-    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "Test service failed ", 
+    axiom_element_set_text(error_ele, env, "Test service failed ", 
         text_node);
     return error_node;
 }

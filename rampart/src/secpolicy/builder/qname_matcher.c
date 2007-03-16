@@ -35,7 +35,7 @@ rp_match_secpolicy_qname(
     if(!qname)
         return AXIS2_FALSE;
 
-    node_qname = AXIOM_ELEMENT_GET_QNAME(element,env,node);
+    node_qname = axiom_element_get_qname(element,env,node);
 
     if(!node_qname)
     {
@@ -67,7 +67,7 @@ rp_match_policy_qname(
     if(!qname)
         return AXIS2_FALSE;
 
-    node_qname = AXIOM_ELEMENT_GET_QNAME(element,env,node);
+    node_qname = axiom_element_get_qname(element,env,node);
 
     if(!node_qname)
     {
@@ -104,7 +104,7 @@ rp_match_rampart_config_qname(
     if(!qname)
         return AXIS2_FALSE;
 
-    node_qname = AXIOM_ELEMENT_GET_QNAME(element,env,node);
+    node_qname = axiom_element_get_qname(element,env,node);
 
     if(!node_qname)
     {

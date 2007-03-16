@@ -86,10 +86,10 @@ int printnode(axiom_node_t *om_node, const axis2_env_t *env)
         if (!om_ele)
             return AXIS2_FAILURE;
 
-        localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
+        localname = axiom_element_get_localname(om_ele, env);
         if (localname)
             printf("\n %s \n", localname);
-        om_ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
+        om_ns = axiom_element_get_namespace(om_ele, env, om_node);
 
         if (om_ns)
         {
@@ -304,7 +304,7 @@ int build_soap_programatically(const axis2_env_t *env)
 
     hb_ele = AXIOM_NODE_GET_DATA_ELEMENT(hb_node, env);
 
-    AXIOM_ELEMENT_SET_NAMESPACE(hb_ele, env, test_ns, hb_node);
+    axiom_element_set_namespace(hb_ele, env, test_ns, hb_node);
 
     soap_body = axiom_soap_body_create_with_parent(env, soap_envelope);
 

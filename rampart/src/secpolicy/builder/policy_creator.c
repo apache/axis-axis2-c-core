@@ -71,7 +71,7 @@ rp_policy_create_from_om_node(
         root_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (root, env);
         if(root_ele)
         {
-            local_name = AXIOM_ELEMENT_GET_LOCALNAME(root_ele,env);
+            local_name = axiom_element_get_localname(root_ele,env);
             if(local_name)
             {
                 if(AXIS2_STRCMP(local_name,RP_POLICY)==0)
@@ -99,7 +99,7 @@ rp_policy_create_from_om_node(
             exat_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (exat_node, env);
             if(exat_ele)
             {
-                local_name = AXIOM_ELEMENT_GET_LOCALNAME(exat_ele,env);
+                local_name = axiom_element_get_localname(exat_ele,env);
                 if(local_name)
                 {
                     if(AXIS2_STRCMP(local_name,RP_EXACTLY_ONE)==0)
@@ -130,7 +130,7 @@ rp_policy_create_from_om_node(
             all_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(all_node, env);
             if(all_ele)
             {
-                local_name = AXIOM_ELEMENT_GET_LOCALNAME(all_ele,env);
+                local_name = axiom_element_get_localname(all_ele,env);
                 if(local_name)
                 {
                     if(AXIS2_STRCMP(local_name,RP_ALL)==0)

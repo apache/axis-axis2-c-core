@@ -112,12 +112,12 @@ savan_util_get_subscription_id_from_msg(
     
     /* Get Identifier element from header */
     qname = axis2_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);
-    id_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(header_elem, env, qname,
+    id_elem = axiom_element_get_first_child_with_qname(header_elem, env, qname,
         header_node, &id_node);
     AXIS2_QNAME_FREE(qname, env);
     
     /* Now read the id */
-    sub_id = AXIOM_ELEMENT_GET_TEXT(id_elem, env, id_node);
+    sub_id = axiom_element_get_text(id_elem, env, id_node);
     
     return sub_id;    
 }

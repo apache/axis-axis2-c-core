@@ -207,7 +207,7 @@ axiom_children_with_specific_attribute_iterator_has_next(
             axiom_element_t *om_ele = NULL;
             om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                         iterator_impl->current_child, env);
-            om_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(om_ele, env,
+            om_attr = axiom_element_get_attribute(om_ele, env,
                     iterator_impl->attr_qname);
             break;
             if (om_attr &&

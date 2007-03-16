@@ -90,7 +90,7 @@ axiom_soap_fault_value_create_with_subcode(const axis2_env_t *env,
         axiom_soap_fault_sub_code_get_soap_version(parent, env);
     if (soap_version == AXIOM_SOAP12)
     {
-        parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+        parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
 
     this_ele = axiom_element_create(env,
@@ -149,7 +149,7 @@ axiom_soap_fault_value_create_with_code(const axis2_env_t *env,
     soap_version = axiom_soap_fault_code_get_soap_version(parent, env);
     if (soap_version == AXIOM_SOAP12)
     {
-        parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+        parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
     this_ele = axiom_element_create(env,
             parent_node, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME,
@@ -221,7 +221,7 @@ axiom_soap_fault_value_get_text(axiom_soap_fault_value_t *fault_value,
     if (!value_element)
         return NULL;
 
-    return AXIOM_ELEMENT_GET_TEXT(value_element, env, value_node);
+    return axiom_element_get_text(value_element, env, value_node);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -237,7 +237,7 @@ axiom_soap_fault_value_set_text(axiom_soap_fault_value_t *fault_value,
         axiom_element_t *om_ele = NULL;
         om_ele = (axiom_element_t *)
                 AXIOM_NODE_GET_DATA_ELEMENT(fault_value->om_ele_node, env);
-        return AXIOM_ELEMENT_SET_TEXT(om_ele, env, text, fault_value->om_ele_node);
+        return axiom_element_set_text(om_ele, env, text, fault_value->om_ele_node);
     }
     return AXIS2_FAILURE;
 }

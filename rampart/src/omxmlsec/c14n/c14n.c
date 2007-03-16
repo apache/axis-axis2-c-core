@@ -779,7 +779,7 @@ c14n_apply_on_element(
 
     if (!ele) return AXIS2_FAILURE; /*should it be failure?*/
     
-    ns = AXIOM_ELEMENT_GET_NAMESPACE(ele, ctx->env, (axiom_node_t *)node);
+    ns = axiom_element_get_namespace(ele, ctx->env, (axiom_node_t *)node);
     
     save_stack = c14n_ns_stack_create(ctx);
     c14n_ns_stack_push(save_stack, ctx); /*save current ns stack*/
@@ -797,7 +797,7 @@ c14n_apply_on_element(
             c14n_output(":", ctx);
         }
     }
-    c14n_output(AXIOM_ELEMENT_GET_LOCALNAME(ele, ctx->env), ctx);
+    c14n_output(axiom_element_get_localname(ele, ctx->env), ctx);
 
     if (ctx->exclusive)
         res = c14n_apply_on_namespace_axis_exclusive(ele, node, ctx);
@@ -863,7 +863,7 @@ c14n_apply_on_element(
             c14n_output(":", ctx);
         }
     }
-    c14n_output(AXIOM_ELEMENT_GET_LOCALNAME(ele, ctx->env), ctx);
+    c14n_output(axiom_element_get_localname(ele, ctx->env), ctx);
 
     c14n_output(">", ctx);
 
@@ -1023,7 +1023,7 @@ c14n_apply_on_attribute_axis(
     axis2_hash_index_t *hi = NULL;
     c14n_sorted_list_t *attr_list = c14n_sorted_list_create(ctx->env);
  
-    attr_ht = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES((axiom_element_t *)ele, 
+    attr_ht = axiom_element_get_all_attributes((axiom_element_t *)ele, 
             ctx->env);
     
     if(attr_ht)
@@ -1186,7 +1186,7 @@ c14n_apply_on_namespace_axis(
     c14n_sorted_list_t *out_list = c14n_sorted_list_create(ctx->env);
 
 
-    ns_ht = AXIOM_ELEMENT_GET_NAMESPACES((axiom_element_t *)ele, ctx->env);
+    ns_ht = axiom_element_get_namespaces((axiom_element_t *)ele, ctx->env);
     
     if(ns_ht)
     {
@@ -1273,7 +1273,7 @@ c14n_apply_on_namespace_axis_exclusive(
 
     /*treat the default namespace specially*/
 
-    ns = AXIOM_ELEMENT_GET_NAMESPACE(pele, ctx->env,
+    ns = axiom_element_get_namespace(pele, ctx->env,
             pnode);
 
     if (ns)
@@ -1298,7 +1298,7 @@ c14n_apply_on_namespace_axis_exclusive(
     while (pnode)
     {
         pele = AXIOM_NODE_GET_DATA_ELEMENT((axiom_node_t *)pnode, ctx->env);
-        ns_ht = AXIOM_ELEMENT_GET_NAMESPACES((axiom_element_t *)pele, ctx->env);
+        ns_ht = axiom_element_get_namespaces((axiom_element_t *)pele, ctx->env);
         
         if (ns_ht)
         {
@@ -1430,7 +1430,7 @@ c14n_ns_visibly_utilized(
             ctx->env);
     axis2_char_t *pfx_ele = NULL;
     axis2_char_t *uri_ele = NULL;
-    ns_ele = AXIOM_ELEMENT_GET_NAMESPACE((axiom_element_t*)ele, ctx->env,
+    ns_ele = axiom_element_get_namespace((axiom_element_t*)ele, ctx->env,
             (axiom_node_t *)node);
     
     if (ns_ele)  /* return AXIS2_FALSE; TODO:check */
@@ -1442,7 +1442,7 @@ c14n_ns_visibly_utilized(
         vu = AXIS2_TRUE;
     else
     {
-        axis2_hash_t *attr_ht = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(
+        axis2_hash_t *attr_ht = axiom_element_get_all_attributes(
                 (axiom_element_t *)ele, ctx->env);
         axis2_hash_index_t *hi = NULL;
         if (attr_ht)
@@ -1509,7 +1509,7 @@ c14n_no_output_ancestor_uses_prefix(
         /* if (in_nodeset(parent)){*/
         parent_element = AXIOM_NODE_GET_DATA_ELEMENT(
                 (axiom_node_t *)parent_node, ctx->env);
-        parent_ns = AXIOM_ELEMENT_GET_NAMESPACE((axiom_element_t *) 
+        parent_ns = axiom_element_get_namespace((axiom_element_t *) 
                 parent_element, ctx->env, (axiom_node_t *)parent_node);
         
         if (parent_ns)  
@@ -1524,7 +1524,7 @@ c14n_no_output_ancestor_uses_prefix(
             }
         }
 
-        attr_ht = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(
+        attr_ht = axiom_element_get_all_attributes(
                 (axiom_element_t *)parent_element, ctx->env);
         if (attr_ht)
         {

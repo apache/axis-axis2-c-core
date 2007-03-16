@@ -658,7 +658,7 @@ parse_desc(
     uri = NULL;
 
     desc_el = AXIOM_NODE_GET_DATA_ELEMENT(desc_el_node, env);
-    target_namespc = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(desc_el,
+    target_namespc = axiom_element_get_attribute_value_by_name(desc_el,
             env, WODEN_WSDL10_ATTR_TARGET_NAMESPACE);
 
     if (target_namespc)
@@ -671,7 +671,7 @@ parse_desc(
     }
 
     /* parse the namespace declarations */
-    attrs = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(desc_el, env);
+    attrs = axiom_element_get_all_attributes(desc_el, env);
     for (index = axis2_hash_first(attrs, env); index; index = axis2_hash_next(
                 env, index))
     {
@@ -873,8 +873,8 @@ parse_desc(
             "http://www.w3.org/2001/XMLSchema", NULL);
     attr_loc = axiom_attribute_create(env, "schemaLocation",
             "http://www.w3.org/2001/XMLSchema.xsd", NULL);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(schema_elem, env, attr_ns, schema_elem_node);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(schema_elem, env, attr_loc, schema_elem_node);
+    axiom_element_add_attribute(schema_elem, env, attr_ns, schema_elem_node);
+    axiom_element_add_attribute(schema_elem, env, attr_loc, schema_elem_node);
 
     schema = parse_schema_import(reader, env, schema_elem_node, desc);
     if (schema)
@@ -956,9 +956,9 @@ parse_import(
     imp = WODEN_WSDL10_DESC_ELEMENT_CREATE_IMPORT_ELEMENT(desc, env);
     import_el = AXIOM_NODE_GET_DATA_ELEMENT(import_el_node, env);
 
-    namespc_uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env,
+    namespc_uri = axiom_element_get_attribute_value_by_name(import_el, env,
             WODEN_WSDL10_ATTR_NAMESPACE);
-    location_uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env,
+    location_uri = axiom_element_get_attribute_value_by_name(import_el, env,
             WODEN_WSDL10_ATTR_LOCATION);
 
     imp = woden_import_to_attr_extensible(imp, env);
@@ -1011,7 +1011,7 @@ parse_include(
     include = WODEN_WSDL10_DESC_ELEMENT_CREATE_INCLUDE_ELEMENT(desc, env);
     include_el = AXIOM_NODE_GET_DATA_ELEMENT(include_el_node, env);
 
-    location_uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(include_el, env,
+    location_uri = axiom_element_get_attribute_value_by_name(include_el, env,
             WODEN_WSDL10_ATTR_LOCATION);
 
     include = woden_include_to_attr_extensible(include, env);
@@ -1156,10 +1156,10 @@ parse_schema_inline(
 
     schema = woden_inlined_schema_create(env);
     schema_el = AXIOM_NODE_GET_DATA_ELEMENT(schema_el_node, env);
-    attr_id = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(schema_el, env,
+    attr_id = axiom_element_get_attribute_value_by_name(schema_el, env,
             WODEN_WSDL10_ATTR_ID);
     WODEN_INLINED_SCHEMA_SET_ID(schema, env, attr_id);
-    tns = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(schema_el, env,
+    tns = axiom_element_get_attribute_value_by_name(schema_el, env,
             WODEN_WSDL10_ATTR_TARGET_NAMESPACE);
 
     if (tns)
@@ -1245,7 +1245,7 @@ parse_schema_import(
     if (!schema)
         return NULL;
     import_el = AXIOM_NODE_GET_DATA_ELEMENT(import_el_node, env);
-    ns = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env,
+    ns = axiom_element_get_attribute_value_by_name(import_el, env,
             WODEN_WSDL10_ATTR_NAMESPACE);
     if (ns)
     {
@@ -1254,7 +1254,7 @@ parse_schema_import(
         AXIS2_URI_FREE(uri, env);
         uri = NULL;
     }
-    sloc = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env,
+    sloc = axiom_element_get_attribute_value_by_name(import_el, env,
             WODEN_ATTR_SCHEMA_LOCATION);
     if (sloc)
     {
@@ -1372,7 +1372,7 @@ parse_msg_ref(
     msg = WODEN_WSDL10_DESC_ELEMENT_CREATE_MSG_ELEMENT(desc, env);
 
     msg_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_el_node, env);
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(msg_el, env, WODEN_WSDL10_ATTR_NAME);
 
     if (name)
     {
@@ -1490,13 +1490,13 @@ parse_part(
     WODEN_WSDL10_PART_SET_TYPES(part, env, types);
 
     part_el = AXIOM_NODE_GET_DATA_ELEMENT(part_el_node, env);
-    localname = AXIOM_ELEMENT_GET_LOCALNAME(part_el, env);
+    localname = axiom_element_get_localname(part_el, env);
     if (0 != AXIS2_STRCMP(WODEN_WSDL10_ELEM_PART, localname))
     {
         /* TODO Set No element error */
         return NULL;
     }
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(part_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(part_el, env, WODEN_WSDL10_ATTR_NAME);
 
     if (name)
     {
@@ -1510,7 +1510,7 @@ parse_part(
         part = woden_wsdl10_part_to_part_element(part, env);
         WODEN_WSDL10_PART_ELEMENT_SET_QNAME(part, env, qname);
     }
-    element = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(part_el, env, WODEN_WSDL10_ATTR_ELEMENT);
+    element = axiom_element_get_attribute_value_by_name(part_el, env, WODEN_WSDL10_ATTR_ELEMENT);
 
     if (element)
     {
@@ -1598,7 +1598,7 @@ parse_interface(
     intface = WODEN_WSDL10_DESC_ELEMENT_CREATE_INTERFACE_ELEMENT(desc, env);
 
     interface_el = AXIOM_NODE_GET_DATA_ELEMENT(interface_el_node, env);
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(interface_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(interface_el, env, WODEN_WSDL10_ATTR_NAME);
 
     if (name)
     {
@@ -1613,7 +1613,7 @@ parse_interface(
         WODEN_INTERFACE_ELEMENT_SET_QNAME(intface, env, qname);
     }
 
-    style_default = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(interface_el,
+    style_default = axiom_element_get_attribute_value_by_name(interface_el,
             env, WODEN_WSDL10_ATTR_STYLE_DEFAULT);
 
     if (style_default)
@@ -1758,7 +1758,7 @@ parse_interface_op(
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent);
 
     op_el = AXIOM_NODE_GET_DATA_ELEMENT(op_el_node, env);
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(op_el, env, WODEN_WSDL10_ATTR_NAME);
 
     if (name)
     {
@@ -1773,7 +1773,7 @@ parse_interface_op(
         WODEN_INTERFACE_OP_ELEMENT_SET_QNAME(op, env, qname);
     }
 
-    style = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_WSDL10_ATTR_STYLE);
+    style = axiom_element_get_attribute_value_by_name(op_el, env, WODEN_WSDL10_ATTR_STYLE);
 
     if (style)
     {
@@ -1794,7 +1794,7 @@ parse_interface_op(
         }
     }
 
-    pat = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_WSDL10_ATTR_PATTERN);
+    pat = axiom_element_get_attribute_value_by_name(op_el, env, WODEN_WSDL10_ATTR_PATTERN);
 
     if (pat)
     {
@@ -1963,7 +1963,7 @@ parse_interface_fault_ref(
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent);
 
     fault_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_ref_el_node, env);
-    localname = AXIOM_ELEMENT_GET_LOCALNAME(fault_ref_el, env);
+    localname = axiom_element_get_localname(fault_ref_el, env);
     if (0 == AXIS2_STRCMP(WODEN_WSDL10_ELEM_INFAULT, localname))
     {
         woden_direction_t *direction_in = NULL;
@@ -1981,7 +1981,7 @@ parse_interface_fault_ref(
         WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_SET_DIRECTION(fault_ref, env, direction_out);
     }
 
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(fault_ref_el, env, WODEN_WSDL10_ATTR_NAME);
     if (name)
     {
         axis2_qname_t *qname = NULL;
@@ -1997,7 +1997,7 @@ parse_interface_fault_ref(
         WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_SET_QNAME(fault_ref, env, qname);
     }
 
-    msg = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_WSDL10_ATTR_MSG);
+    msg = axiom_element_get_attribute_value_by_name(fault_ref_el, env, WODEN_WSDL10_ATTR_MSG);
     if (msg)
     {
         axis2_qname_t *qname = NULL;
@@ -2093,7 +2093,7 @@ parse_interface_msg_ref(
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent);
 
     msg_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_ref_el_node, env);
-    localname = AXIOM_ELEMENT_GET_LOCALNAME(msg_ref_el, env);
+    localname = axiom_element_get_localname(msg_ref_el, env);
     if (0 == AXIS2_STRCMP(WODEN_WSDL10_ELEM_INPUT, localname))
     {
         woden_direction_t *direction_in = NULL;
@@ -2113,7 +2113,7 @@ parse_interface_msg_ref(
         WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
     }
 
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(msg_ref_el, env, WODEN_WSDL10_ATTR_NAME);
     if (name)
     {
         axis2_qname_t *qname = NULL;
@@ -2128,7 +2128,7 @@ parse_interface_msg_ref(
         WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_QNAME(msg_ref, env, qname);
     }
 
-    msg = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, WODEN_WSDL10_ATTR_MSG);
+    msg = axiom_element_get_attribute_value_by_name(msg_ref_el, env, WODEN_WSDL10_ATTR_MSG);
     if (msg)
     {
         axis2_qname_t *qname = NULL;
@@ -2257,7 +2257,7 @@ parse_binding(
     binding = WODEN_WSDL10_DESC_ELEMENT_CREATE_BINDING_ELEMENT(desc, env);
 
     binding_el = AXIOM_NODE_GET_DATA_ELEMENT(binding_el_node, env);
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(binding_el, env, WODEN_WSDL10_ATTR_NAME);
 
     if (name)
     {
@@ -2272,7 +2272,7 @@ parse_binding(
         WODEN_BINDING_ELEMENT_SET_QNAME(binding, env, qname);
     }
 
-    intface = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_WSDL10_ATTR_INTERFACE);
+    intface = axiom_element_get_attribute_value_by_name(binding_el, env, WODEN_WSDL10_ATTR_INTERFACE);
     if (intface)
     {
         axis2_hash_t *namespcs = NULL;
@@ -2307,7 +2307,7 @@ parse_binding(
         }
     }
 
-    type = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_WSDL10_ATTR_TYPE);
+    type = axiom_element_get_attribute_value_by_name(binding_el, env, WODEN_WSDL10_ATTR_TYPE);
 
     if (type)
     {
@@ -2438,7 +2438,7 @@ parse_binding_op(
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent);
 
     op_el = AXIOM_NODE_GET_DATA_ELEMENT(op_el_node, env);
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(op_el, env, WODEN_WSDL10_ATTR_NAME);
 
     if (name)
     {
@@ -2634,7 +2634,7 @@ parse_binding_fault_ref(
 
     fault_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_ref_el_node, env);
     attr_ref = axis2_qname_create_from_string(env, WODEN_WSDL10_ATTR_REF);
-    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_WSDL10_ATTR_REF);
+    ref = axiom_element_get_attribute_value_by_name(fault_ref_el, env, WODEN_WSDL10_ATTR_REF);
 
     if (ref)
     {
@@ -2648,7 +2648,7 @@ parse_binding_fault_ref(
         WODEN_BINDING_FAULT_REF_ELEMENT_SET_REF(fault_ref, env, ref_qn);
     }
 
-    msg_label_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env,
+    msg_label_str = axiom_element_get_attribute_value_by_name(fault_ref_el, env,
             WODEN_WSDL10_ATTR_MESSAGE_LABEL);
 
     if (msg_label_str)
@@ -2857,7 +2857,7 @@ parse_binding_msg_ref(
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent);
 
     msg_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_ref_el_node, env);
-    localname = AXIOM_ELEMENT_GET_LOCALNAME(msg_ref_el, env);
+    localname = axiom_element_get_localname(msg_ref_el, env);
     if (0 == AXIS2_STRCMP(WODEN_WSDL10_ELEM_INPUT, localname))
     {
         woden_direction_t *direction_in = NULL;
@@ -2875,7 +2875,7 @@ parse_binding_msg_ref(
         WODEN_WSDL10_BINDING_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
     }
 
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env,
+    name = axiom_element_get_attribute_value_by_name(msg_ref_el, env,
             WODEN_WSDL10_ATTR_NAME);
 
     if (name)
@@ -3040,7 +3040,7 @@ parse_svc(
     svc = WODEN_WSDL10_DESC_ELEMENT_CREATE_SVC_ELEMENT(desc, env);
 
     svc_el = AXIOM_NODE_GET_DATA_ELEMENT(svc_el_node, env);
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(svc_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(svc_el, env, WODEN_WSDL10_ATTR_NAME);
 
     if (name)
     {
@@ -3055,7 +3055,7 @@ parse_svc(
         WODEN_WSDL10_SVC_ELEMENT_SET_QNAME(svc, env, qname);
     }
 
-    intface = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(svc_el, env, WODEN_WSDL10_ATTR_INTERFACE);
+    intface = axiom_element_get_attribute_value_by_name(svc_el, env, WODEN_WSDL10_ATTR_INTERFACE);
     if (intface)
     {
         axis2_hash_t *namespcs = NULL;
@@ -3213,7 +3213,7 @@ parse_endpoint(
 
 
     endpoint_el = AXIOM_NODE_GET_DATA_ELEMENT(endpoint_el_node, env);
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_WSDL10_ATTR_NAME);
+    name = axiom_element_get_attribute_value_by_name(endpoint_el, env, WODEN_WSDL10_ATTR_NAME);
 
     if (name)
     {
@@ -3223,7 +3223,7 @@ parse_endpoint(
     }
 
     attr_binding = axis2_qname_create_from_string(env, WODEN_WSDL10_ATTR_BINDING);
-    binding = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_WSDL10_ATTR_BINDING);
+    binding = axiom_element_get_attribute_value_by_name(endpoint_el, env, WODEN_WSDL10_ATTR_BINDING);
     if (binding)
     {
         axis2_hash_t *namespcs = NULL;
@@ -3261,7 +3261,7 @@ parse_endpoint(
 
     attr_address = axis2_qname_create_from_string(env, WODEN_WSDL10_ATTR_ADDRESS);
     endpoint_el = AXIOM_NODE_GET_DATA_ELEMENT(endpoint_el_node, env);
-    address = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_WSDL10_ATTR_ADDRESS);
+    address = axiom_element_get_attribute_value_by_name(endpoint_el, env, WODEN_WSDL10_ATTR_ADDRESS);
 
     if (address)
     {
@@ -3371,7 +3371,7 @@ parse_feature(
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_WSDL10_ATTR_REF);
     feature_el = AXIOM_NODE_GET_DATA_ELEMENT(feature_el_node, env);
-    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(feature_el, env, WODEN_WSDL10_ATTR_REF);
+    ref = axiom_element_get_attribute_value_by_name(feature_el, env, WODEN_WSDL10_ATTR_REF);
 
     if (ref)
     {
@@ -3383,7 +3383,7 @@ parse_feature(
 
     attr_req = axis2_qname_create_from_string(env, WODEN_WSDL10_ATTR_REQUIRED);
 
-    req = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(feature_el, env, WODEN_WSDL10_ATTR_REQUIRED);
+    req = axiom_element_get_attribute_value_by_name(feature_el, env, WODEN_WSDL10_ATTR_REQUIRED);
     if (req && 0 == AXIS2_STRCMP(WODEN_WSDL10_VALUE_TRUE, req))
         required = AXIS2_TRUE;
     else
@@ -3499,7 +3499,7 @@ parse_property(
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_WSDL10_ATTR_REF);
     property_el = AXIOM_NODE_GET_DATA_ELEMENT(property_el_node, env);
-    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(property_el, env, WODEN_WSDL10_ATTR_REF);
+    ref = axiom_element_get_attribute_value_by_name(property_el, env, WODEN_WSDL10_ATTR_REF);
 
     if (ref)
     {
@@ -3547,7 +3547,7 @@ parse_property(
             axis2_generic_obj_t *node_list_obj = NULL;
 
             /* The property value consists of the child info items of <value> */
-            node_list = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(temp_el, env, temp_el_node);
+            node_list = axiom_element_get_child_elements(temp_el, env, temp_el_node);
             node_list_obj = axis2_generic_obj_create(env);
              axis2_generic_obj_set_value(node_list_obj, env, node_list);
             axis2_generic_obj_set_free_func(node_list_obj, env, node_list->ops->free_fn);
@@ -3636,7 +3636,7 @@ parse_ext_attributes(
     axis2_hash_index_t *index = NULL;
 
     om_el = AXIOM_NODE_GET_DATA_ELEMENT(om_el_node, env);
-    node_map = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(om_el, env);
+    node_map = axiom_element_get_all_attributes(om_el, env);
     if (!node_map)
     {
         /* If no error condition occured then this will return
@@ -3735,7 +3735,7 @@ parse_ext_element(
     element_type = axis2_qname_util_new_qname(env, el_node);
 
     el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
-    namespc = AXIOM_ELEMENT_GET_NAMESPACE(el, env, el_node);
+    namespc = axiom_element_get_namespace(el, env, el_node);
     namespc_uri_str = axiom_namespace_get_uri(namespc, env);
     if (!namespc_uri_str || (0 == AXIS2_STRCMP(namespc_uri_str,
             WODEN_WSDL10_NS_URI_WSDL20)))

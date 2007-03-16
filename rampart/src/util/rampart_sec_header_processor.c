@@ -56,7 +56,7 @@ rampart_shp_validate_qnames(const axis2_env_t *env,
     if(!node_ele)
         return AXIS2_FALSE;
 
-    local_name = AXIOM_ELEMENT_GET_LOCALNAME(node_ele,env);
+    local_name = axiom_element_get_localname(node_ele,env);
     if(!local_name)
         return AXIS2_FALSE;
 
@@ -86,7 +86,7 @@ rampart_shp_validate_qnames(const axis2_env_t *env,
     if(!qname)
         return AXIS2_FALSE;
 
-    node_qname = AXIOM_ELEMENT_GET_QNAME(node_ele,env,node);
+    node_qname = axiom_element_get_qname(node_ele,env,node);
 
     if(!node_qname)
     {

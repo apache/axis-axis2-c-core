@@ -41,7 +41,7 @@ rp_rampart_config_builder_build(const axis2_env_t *env, axiom_node_t *config)
             if(config_ele)
             {
                 axiom_children_iterator_t *children_iter = NULL;
-                children_iter = AXIOM_ELEMENT_GET_CHILDREN(config_ele, env, config);
+                children_iter = axiom_element_get_children(config_ele, env, config);
                 if(children_iter )
                 {
                     while(axiom_children_iterator_has_next(children_iter, env))
@@ -57,7 +57,7 @@ rp_rampart_config_builder_build(const axis2_env_t *env, axiom_node_t *config)
                                 ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
                                 if(ele)
                                 {
-                                    local_name = AXIOM_ELEMENT_GET_LOCALNAME(ele,env);
+                                    local_name = axiom_element_get_localname(ele,env);
                                     if(local_name)
                                     {
                                         {
@@ -94,7 +94,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_USER,node,element))
         {
             axis2_char_t *user = NULL;
-            user = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            user = axiom_element_get_text(element,env,node);
 
             return rp_rampart_config_set_user(rampart_config,env,user);
         }
@@ -106,7 +106,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_ENCRYPTION_USER,node,element))
         {
             axis2_char_t *encryption_user = NULL;
-            encryption_user = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            encryption_user = axiom_element_get_text(element,env,node);
             return rp_rampart_config_set_encryption_user(rampart_config,env,encryption_user);
         }
         else
@@ -117,7 +117,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_PASSWORD_CALLBACK_CLASS,node,element))
         {
             axis2_char_t *password_callback_class = NULL;
-            password_callback_class = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            password_callback_class = axiom_element_get_text(element,env,node);
             return rp_rampart_config_set_password_callback_class(rampart_config,env,password_callback_class);
         }
         else
@@ -128,7 +128,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_AUTHN_MODULE_NAME,node,element))
         {
             axis2_char_t *authenticate_module = NULL;
-            authenticate_module = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            authenticate_module = axiom_element_get_text(element,env,node);
             return rp_rampart_config_set_authenticate_module(rampart_config,env,authenticate_module);
         }
         else
@@ -139,7 +139,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_PASSWORD_TYPE,node,element))
         {
             axis2_char_t *password_type = NULL;
-            password_type = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            password_type = axiom_element_get_text(element,env,node);
             return rp_rampart_config_set_password_type(rampart_config,env,password_type);
         }
         else
@@ -151,7 +151,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_CERTIFICATE,node,element))
         {
             axis2_char_t *certificate_file = NULL;
-            certificate_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            certificate_file = axiom_element_get_text(element,env,node);
             return rp_rampart_config_set_certificate_file(rampart_config,env,certificate_file);
         }
         else
@@ -163,7 +163,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_RECEIVER_CERTIFICATE,node,element))
         {
             axis2_char_t *receiver_certificate_file = NULL;
-            receiver_certificate_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            receiver_certificate_file = axiom_element_get_text(element,env,node);
             return rp_rampart_config_set_receiver_certificate_file(rampart_config,env,receiver_certificate_file);
         }
         else
@@ -175,7 +175,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_PRIVATE_KEY,node,element))
         {
             axis2_char_t *private_key_file = NULL;
-            private_key_file = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            private_key_file = axiom_element_get_text(element,env,node);
             return rp_rampart_config_set_private_key_file(rampart_config,env,private_key_file);
         }
         else
@@ -186,7 +186,7 @@ rp_rampart_config_builder_populate(
         if(rp_match_rampart_config_qname(env,RP_TIME_TO_LIVE,node,element))
         {
             axis2_char_t *time_to_live = NULL;
-            time_to_live = AXIOM_ELEMENT_GET_TEXT(element,env,node);
+            time_to_live = axiom_element_get_text(element,env,node);
             return rp_rampart_config_set_time_to_live(rampart_config,env,time_to_live);
         }
         else

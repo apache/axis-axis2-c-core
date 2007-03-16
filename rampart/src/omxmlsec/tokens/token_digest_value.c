@@ -58,7 +58,7 @@ oxs_token_build_digest_value_element(const axis2_env_t *env,
 
     if (digest_val)
     {
-        ret  = AXIOM_ELEMENT_SET_TEXT(digest_value_ele, env, digest_val, digest_value_node);
+        ret  = axiom_element_set_text(digest_value_ele, env, digest_val, digest_value_node);
     }
 
     return digest_value_node;

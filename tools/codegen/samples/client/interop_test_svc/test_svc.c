@@ -104,7 +104,7 @@ axiom_node_t* generate_request_xml(const  axis2_env_t* env,
     /** here according to wsdl schema definite name should be provided anyway
      * we used "arg" for all the tests */
     value_ele = axiom_element_create(env, op_node, "arg", NULL, &value_node);
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, value, value_node);
+    axiom_element_set_text(value_ele, env, value, value_node);
 
 
     printf("requesting %s\n" , value);
@@ -135,7 +135,7 @@ void handle_respone_xml(const  axis2_env_t* env, axiom_node_t* res)
     if (node)
     {
         ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-        text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+        text = axiom_element_get_text(ele, env, node);
 
         printf("response= %s\n", text);
     }

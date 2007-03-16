@@ -386,7 +386,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
     if (!om_element)
         return AXIS2_FAILURE;
     /* get element localname */
-    ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_element, env);
+    ele_localname = axiom_element_get_localname(om_element, env);
     if (!ele_localname)
         return AXIS2_FAILURE;
 
@@ -394,7 +394,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
     if (AXIS2_STRCMP(ele_localname, AXIS2_XOP_INCLUDE) == 0)
     {
         axiom_namespace_t *ns = NULL;
-        ns = AXIOM_ELEMENT_GET_NAMESPACE(om_element, env, om_element_node);
+        ns = axiom_element_get_namespace(om_element, env, om_element_node);
         if (ns)
         {
             axis2_char_t *uri = axiom_namespace_get_uri(ns, env);
@@ -407,7 +407,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
                     if (qname)
                     {
                         axis2_char_t *id = NULL;
-                        id = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, qname);
+                        id = axiom_element_get_attribute_value(om_element, env, qname);
                         if (id)
                         {
                             axis2_char_t *pos = NULL;
@@ -445,7 +445,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         /** a parent node exist , so not soap envelope element */
         parent_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(parent, env);
         if (parent_ele)
-            parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_ele, env);
+            parent_localname = axiom_element_get_localname(parent_ele, env);
     }
     if (!parent && is_soap_envelope)
     {
@@ -658,7 +658,7 @@ axiom_soap_builder_process_namespace_data
         om_ele = (axiom_element_t *) AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
         if (om_ele)
         {
-            om_ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
+            om_ns = axiom_element_get_namespace(om_ele, env, om_node);
             if (om_ns)
             {
                 ns_uri = axiom_namespace_get_uri(om_ns, env);
@@ -711,7 +711,7 @@ axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
     if (!om_ele)
         return AXIS2_FAILURE;
 
-    om_ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, envelope_node);
+    om_ns = axiom_element_get_namespace(om_ele, env, envelope_node);
     if (!om_ns)
         return AXIS2_FAILURE;
 
@@ -874,7 +874,7 @@ axiom_soap_builder_construct_node_for_empty_element
     if (!om_element)
         return AXIS2_FAILURE;
 
-    ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_element, env);
+    ele_localname = axiom_element_get_localname(om_element, env);
     if (!ele_localname)
         return AXIS2_FAILURE;
 
@@ -886,7 +886,7 @@ axiom_soap_builder_construct_node_for_empty_element
     if (!parent_ele)
         return AXIS2_FAILURE;
 
-    parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_ele, env);
+    parent_localname = axiom_element_get_localname(parent_ele, env);
     if (!parent_localname)
         return AXIS2_FAILURE;
 

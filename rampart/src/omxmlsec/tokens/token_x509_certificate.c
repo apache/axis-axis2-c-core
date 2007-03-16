@@ -57,7 +57,7 @@ oxs_token_build_x509_certificate_element(const axis2_env_t *env,
 
     if (cert_data)
     {
-        ret  = AXIOM_ELEMENT_SET_TEXT(x509_certificate_ele, env, cert_data, x509_certificate_node);
+        ret  = axiom_element_set_text(x509_certificate_ele, env, cert_data, x509_certificate_node);
     }
 
     return x509_certificate_node;

@@ -271,9 +271,9 @@ w2c_emitter_write_class(w2c_emitter_impl_t *emitter_impl,
     }
     root_ele = AXIOM_NODE_GET_DATA_ELEMENT( root, env);
     
-    package_name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME 
+    package_name = axiom_element_get_attribute_value_by_name 
                             ( root_ele, env, "package");
-    file_name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME 
+    file_name = axiom_element_get_attribute_value_by_name 
                             ( root_ele, env, "name");
     full_path = W2C_WRITER_CREATE_OUT_FILE ( writer, env, package_name, file_name);
     if ( NULL == full_path )

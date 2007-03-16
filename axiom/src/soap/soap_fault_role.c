@@ -85,7 +85,7 @@ axiom_soap_fault_role_create_with_parent(const axis2_env_t *env,
     soap_version = axiom_soap_fault_get_soap_version(fault, env);
     if (soap_version == AXIOM_SOAP12)
     {
-        parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+        parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
     }
     this_ele = axiom_element_create(env,
             parent_node, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME,
@@ -132,7 +132,7 @@ axiom_soap_fault_role_set_role_value
 
     if (role_ele)
     {
-        return AXIOM_ELEMENT_SET_TEXT(role_ele,  env, uri,
+        return axiom_element_set_text(role_ele,  env, uri,
                 fault_role->om_ele_node);
     }
     return AXIS2_FAILURE;
@@ -154,7 +154,7 @@ axiom_soap_fault_role_get_role_value
 
     if (role_ele)
     {
-        return AXIOM_ELEMENT_GET_TEXT(role_ele,  env,
+        return axiom_element_get_text(role_ele,  env,
                 fault_role->om_ele_node);
     }
     return NULL;

@@ -218,7 +218,7 @@ savan_msg_recv_handle_sub_request(
     old_info_header =  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
     submgr_epr = axis2_msg_info_headers_get_to(old_info_header, env);
     submgr_addr = axis2_endpoint_ref_get_address(submgr_epr, env);
-    AXIOM_ELEMENT_SET_TEXT(addr_elem, env, submgr_addr, addr_node);
+    axiom_element_set_text(addr_elem, env, submgr_addr, addr_node);
     
     /* Get subscriber id from the msg ctx */
     property =  axis2_msg_ctx_get_property(msg_ctx, env, SAVAN_KEY_SUB_ID, AXIS2_FALSE);
@@ -228,7 +228,7 @@ savan_msg_recv_handle_sub_request(
     refparam_elem = axiom_element_create(env, submgr_node, ELEM_NAME_REF_PARAM,
         addr_ns, &refparam_node);
     id_elem = axiom_element_create(env, refparam_node, ELEM_NAME_ID, ns, &id_node);
-    AXIOM_ELEMENT_SET_TEXT(id_elem, env, id, id_node);
+    axiom_element_set_text(id_elem, env, id, id_node);
     
     /* Expires element. Get expiry time from subscriber and set */
     subscriber = savan_util_get_subscriber_from_msg(env, msg_ctx, id);
@@ -236,7 +236,7 @@ savan_msg_recv_handle_sub_request(
     
     expires_elem = axiom_element_create(env, response_node, ELEM_NAME_EXPIRES, ns,
         &expires_node);
-    AXIOM_ELEMENT_SET_TEXT(expires_elem, env, expires, expires_node);
+    axiom_element_set_text(expires_elem, env, expires, expires_node);
     
     AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
      axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
@@ -371,7 +371,7 @@ savan_msg_recv_handle_renew_request(
     
     expires_elem = axiom_element_create(env, response_node, ELEM_NAME_EXPIRES, ns,
         &expires_node);
-    AXIOM_ELEMENT_SET_TEXT(expires_elem, env, expires, expires_node);
+    axiom_element_set_text(expires_elem, env, expires, expires_node);
     
     AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
      axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
@@ -429,7 +429,7 @@ savan_msg_recv_handle_get_status_request(
 
     expires_elem = axiom_element_create(env, response_node, ELEM_NAME_EXPIRES, ns,
         &expires_node);
-    AXIOM_ELEMENT_SET_TEXT(expires_elem, env, expires, expires_node);
+    axiom_element_set_text(expires_elem, env, expires, expires_node);
     
     AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
      axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);

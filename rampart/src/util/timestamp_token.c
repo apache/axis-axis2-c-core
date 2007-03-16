@@ -160,7 +160,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
         if (created_ele)
         {
             created_val = rampart_generate_time(env, 0);   /*Current time*/
-            AXIOM_ELEMENT_SET_TEXT(created_ele, env, created_val, created_node);
+            axiom_element_set_text(created_ele, env, created_val, created_node);
         }
         /*Then we build Expires element*/
         /*If ttl<0 then we dont build the expires element.*/
@@ -174,7 +174,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
         if (expires_ele)
         {
             expires_val = rampart_generate_time(env, ttl);
-            AXIOM_ELEMENT_SET_TEXT(expires_ele, env, expires_val, expires_node);
+            axiom_element_set_text(expires_ele, env, expires_val, expires_node);
 
         }
     }
@@ -225,13 +225,13 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     created_node = axiom_node_get_first_element(ts_node, env);
     created_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(created_node, env);
     if (AXIS2_STRCMP(RAMPART_SECURITY_TIMESTAMP_CREATED ,
-            AXIOM_ELEMENT_GET_LOCALNAME(created_ele, env)) != 0)
+            axiom_element_get_localname(created_ele, env)) != 0)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][ts]Timestamp not valid: Cannot find created  in timestamp element. The first element MUST be CREATED");
         return AXIS2_FAILURE;
     }
 
-    created_val = AXIOM_ELEMENT_GET_TEXT(created_ele, env, created_node);
+    created_val = axiom_element_get_text(created_ele, env, created_node);
     rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_TS_CREATED, created_val);
     /*Check whether created is less than current time or not*/
     current_val = rampart_generate_time(env, 0);
@@ -252,7 +252,7 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     }
     expires_ele  = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(expires_node, env);
     if (AXIS2_STRCMP(RAMPART_SECURITY_TIMESTAMP_EXPIRES ,
-            AXIOM_ELEMENT_GET_LOCALNAME(expires_ele, env)) != 0)
+            axiom_element_get_localname(expires_ele, env)) != 0)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][ts] Timestamp not valid: The second element of timestamp token (if any) MUST be EXPIRES");
         return AXIS2_FAILURE;
@@ -260,7 +260,7 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
 
     /*Now the expires element is present. So check whether this has a valid timestamp.
       If not it's a failure*/
-    expires_val = AXIOM_ELEMENT_GET_TEXT(expires_ele, env, expires_node);
+    expires_val = axiom_element_get_text(expires_ele, env, expires_node);
     rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_TS_EXPIRES, expires_val);
 
     /*Check whether time has expired or not*/

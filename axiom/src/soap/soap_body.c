@@ -94,7 +94,7 @@ axiom_soap_body_create_with_parent(const axis2_env_t *env,
         return NULL;
     }
 
-    om_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    om_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
 
     ele = axiom_element_create(env, parent_node,
             AXIOM_SOAP_BODY_LOCAL_NAME, om_ns,
@@ -299,7 +299,7 @@ axiom_soap_body_get_soap_version(axiom_soap_body_t *soap_body,
     body_ele = AXIOM_NODE_GET_DATA_ELEMENT(soap_body->om_ele_node, env);
     if (!body_ele)
         return AXIS2_FAILURE;
-    om_ns = AXIOM_ELEMENT_GET_NAMESPACE(body_ele, env, soap_body->om_ele_node);
+    om_ns = axiom_element_get_namespace(body_ele, env, soap_body->om_ele_node);
     if (!om_ns)
         return AXIS2_FAILURE;
     uri = axiom_namespace_get_uri(om_ns, env);

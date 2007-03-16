@@ -134,12 +134,12 @@ build_yahoo_rest_payload (const axis2_env_t *env, axis2_char_t *string)
 	query_node = axiom_node_create (env);
 	root_element = axiom_element_create (env, NULL, "yahoo_rest_search", NULL, &root_node);
 	appid_element = axiom_element_create (env, root_node, "appid", NULL, &appid_node);
-	AXIOM_ELEMENT_SET_TEXT (appid_element, env, "YahooDemo",  appid_node); 
+	axiom_element_set_text (appid_element, env, "YahooDemo",  appid_node); 
 	query_element = axiom_element_create (env, root_node, "query", NULL, &query_node);
 	if (string)
-		AXIOM_ELEMENT_SET_TEXT (query_element, env, string,  query_node); 
+		axiom_element_set_text (query_element, env, string,  query_node); 
 	else
-		AXIOM_ELEMENT_SET_TEXT (query_element, env, "finance",  query_node); 
+		axiom_element_set_text (query_element, env, "finance",  query_node); 
 	return root_node;
 }
 

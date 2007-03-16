@@ -58,7 +58,7 @@ oxs_token_build_cipher_value_element(const axis2_env_t *env,
 
     if (cipher_val)
     {
-        ret  = AXIOM_ELEMENT_SET_TEXT(cipher_value_ele, env, cipher_val, cipher_value_node);
+        ret  = axiom_element_set_text(cipher_value_ele, env, cipher_val, cipher_value_node);
     }
 
     return cipher_value_node;

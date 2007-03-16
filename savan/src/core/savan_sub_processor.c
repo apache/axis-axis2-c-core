@@ -386,7 +386,7 @@ savan_sub_processor_create_subscriber_from_msg(
     
     /* Get Subscribe element from Body */
     qname = axis2_qname_create(env, ELEM_NAME_SUBSCRIBE, EVENTING_NAMESPACE, NULL);
-    sub_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(body_elem, env, qname,
+    sub_elem = axiom_element_get_first_child_with_qname(body_elem, env, qname,
         body_node, &sub_node);
     AXIS2_QNAME_FREE(qname, env);
     
@@ -394,11 +394,11 @@ savan_sub_processor_create_subscriber_from_msg(
         
     /* EndTo */
     qname = axis2_qname_create(env, ELEM_NAME_ENDTO, EVENTING_NAMESPACE, NULL);
-    endto_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(sub_elem, env, qname,
+    endto_elem = axiom_element_get_first_child_with_qname(sub_elem, env, qname,
         sub_node, &endto_node);
     AXIS2_QNAME_FREE(qname, env);
     
-    endto = AXIOM_ELEMENT_GET_TEXT(endto_elem, env, endto_node);
+    endto = axiom_element_get_text(endto_elem, env, endto_node);
     
     endto_epr = axis2_endpoint_ref_create(env, endto);
     
@@ -406,16 +406,16 @@ savan_sub_processor_create_subscriber_from_msg(
     
     /* Get Delivery element and read NotifyTo */
     qname = axis2_qname_create(env, ELEM_NAME_DELIVERY, EVENTING_NAMESPACE, NULL);
-    delivery_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(sub_elem, env, qname,
+    delivery_elem = axiom_element_get_first_child_with_qname(sub_elem, env, qname,
         sub_node, &delivery_node);
     AXIS2_QNAME_FREE(qname, env);
     
     qname = axis2_qname_create(env, ELEM_NAME_NOTIFYTO, EVENTING_NAMESPACE, NULL);
-    notify_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(delivery_elem, env, qname,
+    notify_elem = axiom_element_get_first_child_with_qname(delivery_elem, env, qname,
         delivery_node, &notify_node);
     AXIS2_QNAME_FREE(qname, env);
     
-    notify = AXIOM_ELEMENT_GET_TEXT(notify_elem, env, notify_node);
+    notify = axiom_element_get_text(notify_elem, env, notify_node);
     
     notify_epr = axis2_endpoint_ref_create(env, notify);
     
@@ -423,21 +423,21 @@ savan_sub_processor_create_subscriber_from_msg(
     
     /* Expires */
     qname = axis2_qname_create(env, ELEM_NAME_EXPIRES, EVENTING_NAMESPACE, NULL);
-    expires_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(sub_elem, env, qname,
+    expires_elem = axiom_element_get_first_child_with_qname(sub_elem, env, qname,
         sub_node, &expires_node);
     AXIS2_QNAME_FREE(qname, env);
     
-    expires = AXIOM_ELEMENT_GET_TEXT(expires_elem, env, expires_node);
+    expires = axiom_element_get_text(expires_elem, env, expires_node);
     
     savan_subscriber_set_expires(subscriber, env, expires);
     
     /* Filter */
     qname = axis2_qname_create(env, ELEM_NAME_FILTER, EVENTING_NAMESPACE, NULL);
-    filter_elem = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(sub_elem, env, qname,
+    filter_elem = axiom_element_get_first_child_with_qname(sub_elem, env, qname,
         sub_node, &filter_node);
     AXIS2_QNAME_FREE(qname, env);
     
-    filter = AXIOM_ELEMENT_GET_TEXT(filter_elem, env, filter_node);
+    filter = axiom_element_get_text(filter_elem, env, filter_node);
     
     savan_subscriber_set_filter(subscriber, env, filter);
     

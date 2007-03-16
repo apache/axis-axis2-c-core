@@ -128,7 +128,7 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
                 om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(element_node, env);
                 if (om_ele)
                 {
-                    ns = AXIOM_ELEMENT_FIND_NAMESPACE(om_ele ,
+                    ns = axiom_element_find_namespace(om_ele ,
                         env , element_node, uri, prefix);
 
                     /* newly added to handle "xml:*" attributes" (AXIS2_STRCMP(prefix, "xml") == 0) && */
@@ -156,7 +156,7 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
             temp_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(element_node, env);
             if (temp_ele)
             {
-                status = AXIOM_ELEMENT_ADD_ATTRIBUTE(temp_ele,
+                status = axiom_element_add_attribute(temp_ele,
                     env, attribute, element_node);
             }
         }
@@ -312,7 +312,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
                 return AXIS2_FAILURE;
             }
 
-            status = AXIOM_ELEMENT_DECLARE_NAMESPACE(om_ele, env, node, om_ns);
+            status = axiom_element_declare_namespace(om_ele, env, node, om_ns);
 
             if (!status)
             {

@@ -171,7 +171,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
             element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(content_node, env);
             if (element)
             {
-                axis2_char_t *op_name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
+                axis2_char_t *op_name = axiom_element_get_localname(element, env);
                 if (op_name)
                 {
 
@@ -318,7 +318,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_on_fault(axis2_svc_skeleton_t 
     axiom_element_t *error_ele = NULL;
     error_ele = axiom_element_create(env, node, "axis2_svc_skel_interop_test_port_type_doc_serviceError", NULL,
             &error_node);
-    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "axis2_svc_skel_interop_test_port_type_doc_servicefailed",
+    axiom_element_set_text(error_ele, env, "axis2_svc_skel_interop_test_port_type_doc_servicefailed",
             text_node);
     return error_node;
 }

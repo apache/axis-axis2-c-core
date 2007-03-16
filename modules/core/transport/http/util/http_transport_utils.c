@@ -1347,7 +1347,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
                 axis2_hash_this(hi, (const void **)&name, NULL, (void **)&value);
                 element = axiom_element_create(env, NULL, (axis2_char_t *)name,
                         NULL, &node);
-                AXIOM_ELEMENT_SET_TEXT(element, env, (axis2_char_t *)value, node);
+                axiom_element_set_text(element, env, (axis2_char_t *)value, node);
                 AXIOM_NODE_ADD_CHILD(body_child_node, env, node);
             }
         }
@@ -1413,7 +1413,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
                         }
                         om_element = axiom_element_create(env, body_child_node,
                                 element_name, NULL, &om_node);
-                        AXIOM_ELEMENT_SET_TEXT(om_element, env, param_val,
+                        axiom_element_set_text(om_element, env, param_val,
                                 om_node);
                     }
                 }
@@ -1474,7 +1474,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
             axis2_hash_this(hi, (const void **)&name, NULL, (void **)&value);
             element = axiom_element_create(env, NULL, (axis2_char_t *)name,
                     NULL, &node);
-            AXIOM_ELEMENT_SET_TEXT(element, env, (axis2_char_t *)value, node);
+            axiom_element_set_text(element, env, (axis2_char_t *)value, node);
             AXIOM_NODE_ADD_CHILD(body_child_node, env, node);
         }
     }

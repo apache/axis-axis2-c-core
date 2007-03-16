@@ -116,7 +116,7 @@ int main(int argc, char** argv)
             axiom_node_t *ret_node1 = NULL;
 
             result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
-            if (AXIS2_STRCMP(AXIOM_ELEMENT_GET_LOCALNAME(result_ele, env), "doSpellingSuggestionResponse") != 0)
+            if (AXIS2_STRCMP(axiom_element_get_localname(result_ele, env), "doSpellingSuggestionResponse") != 0)
             {
                 print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
@@ -129,7 +129,7 @@ int main(int argc, char** argv)
                 return AXIS2_FAILURE;
             }
             result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node1, env);
-            result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node1);
+            result = axiom_element_get_text(result_ele, env, ret_node1);
             printf("\nResult = %s\n", result);
         }
         else
@@ -178,18 +178,18 @@ build_soap_body_content(const axis2_env_t *env,
             "http://schemas.xmlsoap.org/soap/encoding/", ns0);
 
     google_om_ele = axiom_element_create(env, NULL, operation, ns1, &google_om_node);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(google_om_ele, env, attri1, google_om_node);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(google_om_ele, env, google_om_node, ns2);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(google_om_ele, env, google_om_node, ns3);
+    axiom_element_add_attribute(google_om_ele, env, attri1, google_om_node);
+    axiom_element_declare_namespace(google_om_ele, env, google_om_node, ns2);
+    axiom_element_declare_namespace(google_om_ele, env, google_om_node, ns3);
 
     text_om_ele = axiom_element_create(env, google_om_node, "key", NULL, &text_om_node);
     attri1 = axiom_attribute_create(env, "type", "xsd:string", ns2);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(text_om_ele, env, attri1, text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, google_key, text_om_node);
+    axiom_element_add_attribute(text_om_ele, env, attri1, text_om_node);
+    axiom_element_set_text(text_om_ele, env, google_key, text_om_node);
 
     text_om_ele = axiom_element_create(env, google_om_node, "phrase", NULL, &text_om_node);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(text_om_ele, env, attri1, text_om_node);
-    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_spell, text_om_node);
+    axiom_element_add_attribute(text_om_ele, env, attri1, text_om_node);
+    axiom_element_set_text(text_om_ele, env, word_to_spell, text_om_node);
 
     buffer = AXIOM_NODE_TO_STRING(google_om_node, env);
     printf("%s\n", buffer);

@@ -169,7 +169,7 @@ publisher_on_fault(axis2_svc_skeleton_t *svc_skeli,
     axiom_element_t *error_ele = NULL;
     error_ele = axiom_element_create(env, node, "TestServiceError", NULL, 
         &error_node);
-    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "Test service failed ", 
+    axiom_element_set_text(error_ele, env, "Test service failed ", 
         text_node);
     return error_node;
 }
@@ -234,7 +234,7 @@ publisher_worker_func(
     test_ns = axiom_namespace_create (env, "http://www.wso2.com/savan/c/publisher", "test");
     test_elem = axiom_element_create(env, NULL, "notify", test_ns, &test_node);
     
-    AXIOM_ELEMENT_SET_TEXT(test_elem, env, "test data", test_node);
+    axiom_element_set_text(test_elem, env, "test data", test_node);
 
     pub_client = savan_publishing_client_create(env, conf_ctx, svc);
     

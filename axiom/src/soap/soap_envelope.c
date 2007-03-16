@@ -342,7 +342,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                                     AXIOM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
                             if (fault_code_om_ele)
                             {
-                                AXIOM_ELEMENT_SET_LOCALNAME(fault_code_om_ele,
+                                axiom_element_set_localname(fault_code_om_ele,
                                         env, AXIOM_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME);
 
                                 fault_value = AXIOM_SOAP_FAULT_CODE_GET_VALUE(fault_code, env);
@@ -357,10 +357,10 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                                                 AXIOM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
                                         if (fault_value_om_ele)
                                         {
-                                            text = AXIOM_ELEMENT_GET_TEXT(fault_value_om_ele, env, fault_value_om_node);
+                                            text = axiom_element_get_text(fault_value_om_ele, env, fault_value_om_node);
                                             if (text)
                                             {
-                                                AXIOM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
+                                                axiom_element_set_text(fault_code_om_ele, env, text, fault_code_om_node);
                                             }
                                             AXIOM_NODE_FREE_TREE(fault_value_om_node, env);
                                         }
@@ -389,7 +389,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                             if (fault_reason_om_ele)
                             {
 
-                                AXIOM_ELEMENT_SET_LOCALNAME(fault_reason_om_ele,
+                                axiom_element_set_localname(fault_reason_om_ele,
                                         env, AXIOM_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME);
 
                                 fault_text =
@@ -404,10 +404,10 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                                                 AXIOM_NODE_GET_DATA_ELEMENT(fault_text_om_node, env);
                                         if (fault_text_om_ele)
                                         {
-                                            text = AXIOM_ELEMENT_GET_TEXT(fault_text_om_ele, env, fault_text_om_node);
+                                            text = axiom_element_get_text(fault_text_om_ele, env, fault_text_om_node);
                                             if (text)
                                             {
-                                                AXIOM_ELEMENT_SET_TEXT(fault_reason_om_ele,
+                                                axiom_element_set_text(fault_reason_om_ele,
                                                         env, text, fault_reason_om_node);
                                             }
                                         }
@@ -431,7 +431,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                                     AXIOM_NODE_GET_DATA_ELEMENT(fault_role_om_node, env);
                             if (fault_role_om_ele)
                             {
-                                AXIOM_ELEMENT_SET_LOCALNAME(fault_role_om_ele, env,
+                                axiom_element_set_localname(fault_role_om_ele, env,
                                         AXIOM_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME);
                             }
                         }
@@ -449,7 +449,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                                     AXIOM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
                             if (fault_detail_om_ele)
                             {
-                                AXIOM_ELEMENT_SET_LOCALNAME(fault_detail_om_ele,
+                                axiom_element_set_localname(fault_detail_om_ele,
                                         env, AXIOM_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
                             }
                         }
@@ -518,7 +518,7 @@ axiom_soap_envelope_get_namespace(axiom_soap_envelope_t *soap_envelope,
             ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(soap_envelope->om_ele_node, env);
             if (ele)
             {
-                return AXIOM_ELEMENT_GET_NAMESPACE(ele, env, soap_envelope->om_ele_node);
+                return axiom_element_get_namespace(ele, env, soap_envelope->om_ele_node);
             }
         }
     }
@@ -718,7 +718,7 @@ axiom_soap_envelope_set_soap_version(axiom_soap_envelope_t *soap_envelope,
         return AXIS2_FAILURE;
     }
 
-    env_ns = AXIOM_ELEMENT_GET_NAMESPACE(env_ele, env, soap_envelope->om_ele_node);
+    env_ns = axiom_element_get_namespace(env_ele, env, soap_envelope->om_ele_node);
     if (!env_ns)
         return AXIS2_FAILURE;
 
