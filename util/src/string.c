@@ -400,6 +400,8 @@ axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, const axis2_env_t 
 {
     axis2_char_t *ret = NULL;
     int alloc_len = -1;
+	int len1 = 0;
+	int len2 = 0;
 
     if (NULL == s1 && NULL == s2)
     {
@@ -413,13 +415,16 @@ axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, const axis2_env_t 
     {
         return (axis2_char_t*)AXIS2_STRDUP(s1, env);
     }
-    alloc_len = axis2_strlen(s1) + axis2_strlen(s2) + 1;
+
+	len1 = axis2_strlen(s1);
+	len2 = axis2_strlen(s2);
+    alloc_len = len1 + len2 + 1;
     ret = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
             alloc_len * sizeof(axis2_char_t));
-    memcpy(ret, s1, axis2_strlen(s1)*sizeof(axis2_char_t));
-    memcpy((ret + axis2_strlen(s1)*sizeof(axis2_char_t)), s2,
-            axis2_strlen(s2)*sizeof(axis2_char_t));
-    ret[alloc_len*sizeof(axis2_char_t) - sizeof(axis2_char_t)] = '\0';
+    memcpy(ret, s1, len1 * sizeof(axis2_char_t));
+    memcpy((ret + len1 * sizeof(axis2_char_t)), s2,
+            len2 * sizeof(axis2_char_t));
+    ret[alloc_len * sizeof(axis2_char_t) - sizeof(axis2_char_t)] = '\0';
     return ret;
 }
 
