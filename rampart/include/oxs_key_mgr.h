@@ -50,25 +50,64 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_key_mgr_load_key(const axis2_env_t *env,
     oxs_asym_ctx_t *ctx,
     axis2_char_t *password);
-
+/**
+ * Loads a private key from a string buffer @pem_buf which of PEM format.
+ * -----BEGIN RSA PRIVATE KEY-----
+ *  @pem_buf
+ *  -----END RSA PRIVATE KEY-----
+ * @env pointer to environment struct
+ * @pem_buf the string buffer which of PEM format
+ * @password the password for the key file
+ * @return the generated key
+ */
 AXIS2_EXTERN openssl_pkey_t* AXIS2_CALL
 oxs_key_mgr_load_private_key_from_string(const axis2_env_t *env,
     axis2_char_t *pem_buf, /*in PEM format*/
     axis2_char_t *password);
-
+/**
+ * Loads a private key from a file (in PEM format)
+ *  @env pointer to environment struct
+ *  @file_name the name of the file
+ *  @password the passowrd for the file
+ *  @return the generated key
+ */
 AXIS2_EXTERN openssl_pkey_t* AXIS2_CALL
 oxs_key_mgr_load_private_key_from_pem_file(const axis2_env_t *env,
     axis2_char_t *file_name,
     axis2_char_t *password);
 
-AXIS2_EXTERN oxs_x509_cert_t* AXIS2_CALL
-oxs_key_mgr_load_x509_cert_from_pem_file(const axis2_env_t *env,
-    axis2_char_t *filename);
-
+/**
+ * Loads an X509 certificate from a string buffer @pem_buf 
+ * -----BEGIN CERTIFICATE-----
+ *  @pem_buf
+ * -----END CERTIFICATE-----
+ * @env pointer to environment struct
+ * @pem_buf PEM formatted string buffer
+ * @return the generated X509 certificate
+ */
 AXIS2_EXTERN oxs_x509_cert_t* AXIS2_CALL
 oxs_key_mgr_load_x509_cert_from_string(const axis2_env_t *env,
     axis2_char_t *pem_buf);
 
+/**
+ * Loads an X509 certificate from a file
+ * @env pointer to environment struct
+ * @file_name the name of the file
+ * @return the generated X509 certificate
+ */
+AXIS2_EXTERN oxs_x509_cert_t* AXIS2_CALL
+oxs_key_mgr_load_x509_cert_from_pem_file(const axis2_env_t *env,
+    axis2_char_t *filename);
+
+/**
+ * Read a PKCS12 key store and populate a key and a certificate.
+ * @env pointer to environment struct
+ * @pkcs12_file name of the pkcs12 file
+ * @password password for the key/certificate pair in the key store
+ * @cert the certificate
+ * @prv_key the private key
+ * @return the generated X509 certificate
+ */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_key_mgr_read_pkcs12_key_store(const axis2_env_t *env,
     axis2_char_t *pkcs12_file,
