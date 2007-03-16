@@ -788,7 +788,7 @@ axis2_conf_get_all_in_transports(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    return conf->transports_in;
+    return (axis2_transport_in_desc_t **)conf->transports_in;
 }
 
 AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
@@ -877,7 +877,7 @@ axis2_conf_get_all_out_transports(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    return conf->transports_out;
+    return (axis2_transport_out_desc_t **)conf->transports_out;
 }
 
 AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
