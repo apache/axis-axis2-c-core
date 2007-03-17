@@ -435,8 +435,8 @@ axis2_engine_create_fault_msg_ctx(
         {
             fault_to = NULL;
         }
-        else if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL, address) == 0 ||
-                AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, address) == 0)
+        else if (axis2_strcmp(AXIS2_WSA_NONE_URL, address) == 0 ||
+                axis2_strcmp(AXIS2_WSA_NONE_URL_SUBMISSION, address) == 0)
         {
             reply_to =  axis2_msg_ctx_get_reply_to(processing_context, env);
             if (reply_to)
@@ -488,7 +488,7 @@ axis2_engine_create_fault_msg_ctx(
 
     /* set msg id */
     msg_uuid =  axis2_uuid_gen(env);
-     axis2_msg_ctx_set_message_id(fault_ctx, env, msg_uuid);
+    axis2_msg_ctx_set_message_id(fault_ctx, env, msg_uuid);
     if (msg_uuid)
     {
         AXIS2_FREE(env->allocator, msg_uuid);
@@ -636,7 +636,7 @@ axis2_engine_resume_invocation_phases(
         const axis2_char_t *paused_phase_name =  axis2_msg_ctx_get_paused_phase_name(
                     msg_ctx, env);
         /* skip invoking handlers until we find the paused phase */
-        if (phase_name && paused_phase_name && 0 == AXIS2_STRCMP(phase_name,
+        if (phase_name && paused_phase_name && 0 == axis2_strcmp(phase_name,
                 paused_phase_name))
         {
             int paused_handler_i = -1;
@@ -683,7 +683,7 @@ axis2_engine_get_receiver_fault_code(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_namespace, AXIS2_FAILURE);
 
-    if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
+    if (axis2_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
         return AXIOM_SOAP12_FAULT_CODE_RECEIVER;
     else
         return AXIOM_SOAP11_FAULT_CODE_RECEIVER;
@@ -743,7 +743,7 @@ axis2_engine_check_must_understand_headers(
             if ( axis2_msg_ctx_get_is_soap_11(msg_ctx, env) != AXIS2_TRUE)
             {
                 /* SOAP 1.2 */
-                if (!role || AXIS2_STRCMP(role, AXIOM_SOAP12_SOAP_ROLE_NEXT) != 0)
+                if (!role || axis2_strcmp(role, AXIOM_SOAP12_SOAP_ROLE_NEXT) != 0)
                 {
                     axiom_soap_envelope_t *temp_env =
                         axiom_soap_envelope_create_default_soap_fault_envelope(env,
@@ -759,7 +759,7 @@ axis2_engine_check_must_understand_headers(
             else
             {
                 /* SOAP 1.1 */
-                if (!role || AXIS2_STRCMP(role, AXIOM_SOAP11_SOAP_ACTOR_NEXT) != 0)
+                if (!role || axis2_strcmp(role, AXIOM_SOAP11_SOAP_ACTOR_NEXT) != 0)
                 {
                     axiom_soap_envelope_t *temp_env =
                         axiom_soap_envelope_create_default_soap_fault_envelope(env,

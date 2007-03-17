@@ -89,7 +89,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(
     {
         return NULL;
     }
-    repos_listener->folder_name = AXIS2_STRDUP(folder_name, env);
+    repos_listener->folder_name = axis2_strdup(folder_name, env);
     if (!repos_listener->folder_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -145,9 +145,9 @@ axis2_repos_listener_check_modules(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    temp_path = AXIS2_STRACAT(repos_listener->folder_name, AXIS2_PATH_SEP_STR,
+    temp_path = axis2_stracat(repos_listener->folder_name, AXIS2_PATH_SEP_STR,
             env);
-    module_path = AXIS2_STRACAT(temp_path, AXIS2_MODULE_PATH, env);
+    module_path = axis2_stracat(temp_path, AXIS2_MODULE_PATH, env);
     AXIS2_FREE(env->allocator, temp_path);
     status = axis2_repos_listener_search(repos_listener, env, module_path, AXIS2_MODULE);
     AXIS2_FREE(env->allocator, module_path);
@@ -165,9 +165,9 @@ axis2_repos_listener_check_svcs(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    temp_path = AXIS2_STRACAT(repos_listener->folder_name, AXIS2_PATH_SEP_STR,
+    temp_path = axis2_stracat(repos_listener->folder_name, AXIS2_PATH_SEP_STR,
             env);
-    svc_path = AXIS2_STRACAT(temp_path, AXIS2_SVC_PATH, env);
+    svc_path = axis2_stracat(temp_path, AXIS2_SVC_PATH, env);
     AXIS2_FREE(env->allocator, temp_path);
     status = axis2_repos_listener_search(repos_listener, env, svc_path, AXIS2_SVC);
     AXIS2_FREE(env->allocator, svc_path);

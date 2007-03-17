@@ -99,7 +99,7 @@ axis2_phase_holder_is_phase_exist(
         phase = (axis2_phase_t *) axis2_array_list_get(phase_holder->
                 phase_list, env, i);
         phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
-        if (0 == AXIS2_STRCMP(phase_name_l, phase_name))
+        if (0 == axis2_strcmp(phase_name_l, phase_name))
         {
             return AXIS2_TRUE;
         }
@@ -164,7 +164,7 @@ axis2_phase_holder_get_phase(
         phase = (axis2_phase_t *) axis2_array_list_get(phase_holder->
                 phase_list, env, i);
         phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
-        if (0 == AXIS2_STRCMP(phase_name_l, phase_name))
+        if (0 == axis2_strcmp(phase_name_l, phase_name))
         {
             return phase;
         }

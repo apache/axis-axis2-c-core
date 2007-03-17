@@ -92,7 +92,7 @@ axis2_msg_free(axis2_msg_t *msg,
 
     if (msg->element_qname)
     {
-        AXIS2_QNAME_FREE(msg->element_qname, env);
+        axis2_qname_free(msg->element_qname, env);
     }
 
     if (msg->direction)
@@ -102,7 +102,7 @@ axis2_msg_free(axis2_msg_t *msg,
 
     if (msg->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(msg->param_container, env);
+        axis2_param_container_free(msg->param_container, env);
     }
 
     msg->parent = NULL;
@@ -125,7 +125,7 @@ axis2_msg_add_param(axis2_msg_t *msg,
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
 
-    param_name = AXIS2_PARAM_GET_NAME(param, env);
+    param_name = axis2_param_get_name(param, env);
     if (AXIS2_TRUE == axis2_msg_is_param_locked(msg, env, param_name))
     {
         AXIS2_ERROR_SET(env->error,
@@ -134,7 +134,7 @@ axis2_msg_add_param(axis2_msg_t *msg,
     }
     else
     {
-        return AXIS2_PARAM_CONTAINER_ADD_PARAM(msg->param_container, env,
+        return axis2_param_container_add_param(msg->param_container, env,
             param);
     }
 
@@ -148,7 +148,7 @@ axis2_msg_get_param(const axis2_msg_t *msg,
 {
     AXIS2_PARAM_CHECK(env->error, param_name, NULL);
 
-    return AXIS2_PARAM_CONTAINER_GET_PARAM(msg->param_container, env, param_name);
+    return axis2_param_container_get_param(msg->param_container, env, param_name);
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
@@ -157,7 +157,7 @@ axis2_msg_get_all_params(const axis2_msg_t *msg,
 {
     AXIS2_PARAM_CHECK(env->error, msg->param_container, AXIS2_FALSE);
 
-    return AXIS2_PARAM_CONTAINER_GET_PARAMS(msg->param_container, env);
+    return axis2_param_container_get_params(msg->param_container, env);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -210,7 +210,7 @@ axis2_msg_is_param_locked(axis2_msg_t *msg,
     {
         param_l = axis2_msg_get_param(msg, env, param_name);
     }
-    return (param_l  && AXIS2_PARAM_IS_LOCKED(param_l, env));
+    return (param_l  && axis2_param_is_locked(param_l, env));
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -254,7 +254,7 @@ axis2_msg_set_direction(axis2_msg_t *msg,
 
     if (direction)
     {
-        msg->direction = AXIS2_STRDUP(direction, env);
+        msg->direction = axis2_strdup(direction, env);
         if (!(msg->direction))
         {
             return AXIS2_FAILURE;
@@ -280,13 +280,13 @@ axis2_msg_set_element_qname(axis2_msg_t *msg,
 
     if (msg->element_qname)
     {
-        AXIS2_QNAME_FREE(msg->element_qname, env);
+        axis2_qname_free(msg->element_qname, env);
         msg->element_qname = NULL;
     }
 
     if (element_qname)
     {
-        msg->element_qname = AXIS2_QNAME_CLONE((axis2_qname_t *)element_qname, env);
+        msg->element_qname = axis2_qname_clone((axis2_qname_t *)element_qname, env);
         if (!(msg->element_qname))
         {
             return AXIS2_FAILURE;
@@ -318,7 +318,7 @@ axis2_msg_set_name(axis2_msg_t *msg,
 
     if (name)
     {
-        msg->name = AXIS2_STRDUP(name, env);
+        msg->name = axis2_strdup(name, env);
         if (!(msg->name))
         {
             return AXIS2_FAILURE;

@@ -180,7 +180,7 @@ axis2_phase_resolver_build_module_op(
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s",
-            AXIS2_QNAME_GET_LOCALPART(axis2_op_get_qname(op, env),
+            axis2_qname_get_localpart(axis2_op_get_qname(op, env),
                     env));
     for (i = 1; i < 5; i++)
     {
@@ -228,7 +228,7 @@ axis2_phase_resolver_build_execution_chains(
         modulename = (axis2_qname_t *) axis2_array_list_get(moduleqnames, env,
                 i);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "module name is:%s",
-                AXIS2_QNAME_GET_LOCALPART(modulename, env));
+                axis2_qname_get_localpart(modulename, env));
         module_desc = AXIS2_CONF_GET_MODULE(phase_resolver->axis2_config, env,
                 modulename);
         if (module_desc)
@@ -301,10 +301,10 @@ axis2_phase_resolver_build_execution_chains(
                 {
                     return AXIS2_FAILURE;
                 }
-                if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
-                        (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                        (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                        (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 != axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
+                        (0 != axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                        (0 != axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                        (0 != axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     if (!all_handlers)
                     {
@@ -348,7 +348,7 @@ axis2_phase_resolver_build_execution_chains(
                     AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(phase_resolver->
                             svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FLOW_KEY);
             if (property)
-                flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+                flow = (axis2_flow_t *) axis2_property_get_value(property, env);
             break;
         }
         case AXIS2_OUT_FLOW:
@@ -357,7 +357,7 @@ axis2_phase_resolver_build_execution_chains(
                     AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(phase_resolver->
                             svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FLOW_KEY);
             if (property)
-                flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+                flow = (axis2_flow_t *) axis2_property_get_value(property, env);
             break;
         }
         case AXIS2_FAULT_IN_FLOW:
@@ -366,7 +366,7 @@ axis2_phase_resolver_build_execution_chains(
                     AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(phase_resolver->
                             svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FAULTFLOW_KEY);
             if (property)
-                flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+                flow = (axis2_flow_t *) axis2_property_get_value(property, env);
             break;
         }
         case AXIS2_FAULT_OUT_FLOW:
@@ -375,7 +375,7 @@ axis2_phase_resolver_build_execution_chains(
                     AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(phase_resolver->
                             svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FAULTFLOW_KEY);
             if (property)
-                flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+                flow = (axis2_flow_t *) axis2_property_get_value(property, env);
             break;
         }
     }*/
@@ -409,17 +409,17 @@ axis2_phase_resolver_build_execution_chains(
             }
 
             /* TODO change this in proper way */
-            if (!phase_name || (0 == AXIS2_STRCMP(phase_name, "")))
+            if (!phase_name || (0 == axis2_strcmp(phase_name, "")))
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
                         AXIS2_FAILURE);
                 return AXIS2_FAILURE;
 
             }
-            else if ((0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
-                    (0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) ||
-                    (0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
-                    (0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+            else if ((0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
+                    (0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                    (0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                    (0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
             {
                 if (all_handlers)
                 {
@@ -990,7 +990,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
         axis2_hash_this(index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s",
-                AXIS2_QNAME_GET_LOCALPART(axis2_op_get_qname(op_desc, env), env));
+                axis2_qname_get_localpart(axis2_op_get_qname(op_desc, env), env));
         modules = axis2_op_get_all_modules(op_desc, env);
         module_desc_qname = axis2_module_desc_get_qname(module_desc, env);
         if (modules)
@@ -1005,7 +1005,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
 
             module_desc_qname_l = axis2_module_desc_get_qname(module_desc_l ,
                     env);
-            if (AXIS2_QNAME_EQUALS(module_desc_qname_l, env, module_desc_qname))
+            if (axis2_qname_equals(module_desc_qname_l, env, module_desc_qname))
             {
                 engaged = AXIS2_TRUE;
                 break;
@@ -1105,10 +1105,10 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
                     {
                         return AXIS2_FAILURE;
                     }
-                    if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
-                            (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                            (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                            (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                    if ((0 != axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
+                            (0 != axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                            (0 != axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                            (0 != axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                     {
                         if (phase_holder)
                         {
@@ -1247,10 +1247,10 @@ axis2_phase_resolver_engage_to_global_chain(
                 {
                     return AXIS2_FAILURE;
                 }
-                if ((0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
-                        (0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) ||
-                        (0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
-                        (0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
+                        (0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                        (0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                        (0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     status = AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder, env, 
                             metadata);
@@ -1329,7 +1329,7 @@ axis2_phase_resolver_engage_module_to_svc(
 
             module_desc_l = axis2_array_list_get(modules, env, j);
             module_d_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_d_qname, env,
+            if (AXIS2_TRUE == axis2_qname_equals(module_d_qname, env,
                     module_d_qname_l))
             {
                 engaged = AXIS2_TRUE;
@@ -1445,10 +1445,10 @@ axis2_phase_resolver_engage_module_to_op(
                 metadata = axis2_flow_get_handler(flow, env, j);
                 phase_rule = axis2_handler_desc_get_rules(metadata, env);
                 phase_name = axis2_phase_rule_get_name(phase_rule, env);
-                if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
-                        (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                        (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                        (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 != axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
+                        (0 != axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                        (0 != axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                        (0 != axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     status = AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder,
                             env, metadata);
@@ -1461,10 +1461,10 @@ axis2_phase_resolver_engage_module_to_op(
                     }
 
                 }
-                if ((0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
-                        (0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) ||
-                        (0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
-                        (0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
+                        (0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                        (0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                        (0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     axis2_array_list_t *phase_list = NULL;
                     axis2_phase_holder_t *phase_holder = NULL;

@@ -123,7 +123,7 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
 
     if (module_desc->params)
     {
-        AXIS2_PARAM_CONTAINER_FREE(module_desc->params, env);
+        axis2_param_container_free(module_desc->params, env);
     }
 
     if (module_desc->flow_container)
@@ -135,7 +135,7 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
 
     if (module_desc->qname)
     {
-        AXIS2_QNAME_FREE(module_desc->qname, env);
+        axis2_qname_free(module_desc->qname, env);
     }
 
     if (module_desc->ops)
@@ -269,10 +269,10 @@ axis2_module_desc_set_qname(axis2_module_desc_t *module_desc,
 
     if (module_desc->qname)
     {
-        AXIS2_QNAME_FREE(module_desc->qname, env);
+        axis2_qname_free(module_desc->qname, env);
     }
 
-    module_desc->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
+    module_desc->qname = axis2_qname_clone((axis2_qname_t *)qname, env);
 
     return AXIS2_SUCCESS;
 }
@@ -301,7 +301,7 @@ axis2_module_desc_add_op(axis2_module_desc_t *module_desc,
     {
         return AXIS2_FAILURE;
     }
-    op_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)op_qname, env);
+    op_name = axis2_qname_to_string((axis2_qname_t *)op_qname, env);
     axis2_hash_set(module_desc->ops, op_name, AXIS2_HASH_KEY_STRING, op);
 
     return AXIS2_SUCCESS;
@@ -343,7 +343,7 @@ axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    param_name_l = AXIS2_PARAM_GET_NAME(param, env);
+    param_name_l = axis2_param_get_name(param, env);
     if (NULL == param_name_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM,
@@ -359,7 +359,7 @@ axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
     }
     else
     {
-        ret_status = AXIS2_PARAM_CONTAINER_ADD_PARAM(module_desc->params, env, param);
+        ret_status = axis2_param_container_add_param(module_desc->params, env, param);
     }
     return ret_status;
 }
@@ -371,14 +371,14 @@ axis2_module_desc_get_param(const axis2_module_desc_t *module_desc,
 {
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
-    return AXIS2_PARAM_CONTAINER_GET_PARAM(module_desc->params, env, name);
+    return axis2_param_container_get_param(module_desc->params, env, name);
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_module_desc_get_all_params(const axis2_module_desc_t *module_desc,
     const axis2_env_t *env)
 {
-    return AXIS2_PARAM_CONTAINER_GET_PARAMS(module_desc->params, env);
+    return axis2_param_container_get_params(module_desc->params, env);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -409,7 +409,7 @@ axis2_module_desc_is_param_locked(const axis2_module_desc_t *module_desc,
     {
         param_l = axis2_module_desc_get_param(module_desc, env,
             param_name);
-        if (param_l && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param_l, env))
+        if (param_l && AXIS2_TRUE == axis2_param_is_locked(param_l, env))
             ret_state = AXIS2_TRUE;
         else
             ret_state = AXIS2_FALSE;

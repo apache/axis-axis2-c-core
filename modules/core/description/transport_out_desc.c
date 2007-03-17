@@ -78,7 +78,7 @@ axis2_transport_out_desc_free(axis2_transport_out_desc_t *transport_out,
 
     if (transport_out->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(transport_out->param_container, env);
+        axis2_param_container_free(transport_out->param_container, env);
     }
 
     if (transport_out->out_flow)
@@ -267,7 +267,7 @@ axis2_transport_out_desc_add_param(axis2_transport_out_desc_t *transport_out_des
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
-    return AXIS2_PARAM_CONTAINER_ADD_PARAM(transport_out_desc->
+    return axis2_param_container_add_param(transport_out_desc->
         param_container, env, param);
 }
 
@@ -278,7 +278,7 @@ axis2_transport_out_desc_get_param(const axis2_transport_out_desc_t *transport_o
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    return AXIS2_PARAM_CONTAINER_GET_PARAM(transport_out_desc->param_container,
+    return axis2_param_container_get_param(transport_out_desc->param_container,
         env, param_name);
 }
 
@@ -291,7 +291,7 @@ axis2_transport_out_desc_is_param_locked(axis2_transport_out_desc_t *
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FAILURE);
 
-    return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(transport_out_desc->
+    return axis2_param_container_is_param_locked(transport_out_desc->
         param_container, env, param_name);
 }
 

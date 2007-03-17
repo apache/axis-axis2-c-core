@@ -350,8 +350,8 @@ axis2_simple_http_svr_conn_read_request(
     
     if (str_line)
     {
-        if (0 != AXIS2_STRNCASECMP(str_line, "GET", 3) && 0 !=
-                AXIS2_STRNCASECMP(str_line, "POST", 4))
+        if (0 != axis2_strncasecmp(str_line, "GET", 3) && 0 !=
+                axis2_strncasecmp(str_line, "POST", 4))
         {
             char write_buf[512];
             sprintf(write_buf, "%s %s\r\n%s: close\r\n\r\n",
@@ -359,7 +359,7 @@ axis2_simple_http_svr_conn_read_request(
                     AXIS2_HTTP_RESPONSE_BAD_REQUEST,
                     AXIS2_HTTP_HEADER_CONNECTION);
             AXIS2_STREAM_WRITE(svr_conn_impl->stream, env, write_buf,
-                    AXIS2_STRLEN(write_buf) + 1);
+                    axis2_strlen(write_buf) + 1);
             return NULL;
         }
     }
@@ -423,7 +423,7 @@ axis2_simple_http_svr_conn_read_request(
         }*/
         if (AXIS2_TRUE == end_of_line)
         {
-            if (0 == AXIS2_STRCMP(str_line, AXIS2_HTTP_CRLF))
+            if (0 == axis2_strcmp(str_line, AXIS2_HTTP_CRLF))
             {
                 end_of_headers = AXIS2_TRUE;
             }
@@ -490,7 +490,7 @@ axis2_simple_http_svr_conn_write_response(
         axis2_char_t *enc_value = AXIS2_HTTP_HEADER_GET_VALUE(enc_header, env);
         if (enc_value)
         {
-            if (0 == AXIS2_STRCMP(enc_value,
+            if (0 == axis2_strcmp(enc_value,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 chuked_encoding = AXIS2_TRUE;

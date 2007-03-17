@@ -92,7 +92,7 @@ axis2_desc_free(axis2_desc_t *desc,
 
     if (desc->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(desc->param_container, env);
+        axis2_param_container_free(desc->param_container, env);
     }
 
     if (desc)
@@ -111,7 +111,7 @@ axis2_desc_add_param(axis2_desc_t *desc,
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
 
-    return AXIS2_PARAM_CONTAINER_ADD_PARAM(desc->param_container, env, param);
+    return axis2_param_container_add_param(desc->param_container, env, param);
 }
 
 AXIS2_EXTERN axis2_param_t *AXIS2_CALL
@@ -120,7 +120,7 @@ axis2_desc_get_param(const axis2_desc_t *desc,
     const axis2_char_t *param_name)
 {
     AXIS2_PARAM_CHECK(env->error, param_name, NULL);
-    return AXIS2_PARAM_CONTAINER_GET_PARAM(desc->param_container, env,
+    return axis2_param_container_get_param(desc->param_container, env,
 	    param_name);
 }
 
@@ -130,7 +130,7 @@ axis2_desc_get_all_params(const axis2_desc_t *desc,
 {
     AXIS2_PARAM_CHECK(env->error, desc->param_container, AXIS2_FALSE);
 
-    return AXIS2_PARAM_CONTAINER_GET_PARAMS(desc->param_container, env);
+    return axis2_param_container_get_params(desc->param_container, env);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -145,7 +145,7 @@ axis2_desc_is_param_locked(const axis2_desc_t *desc,
 
     param_l = axis2_desc_get_param(desc, env, param_name);
 
-    return (param_l  && AXIS2_PARAM_IS_LOCKED(param_l, env));
+    return (param_l  && axis2_param_is_locked(param_l, env));
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

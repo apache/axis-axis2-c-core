@@ -108,7 +108,7 @@ axis2_arch_file_data_create_with_type_and_name(
         return NULL;
     }
     arch_file_data->type = type;
-    arch_file_data->name = AXIS2_STRDUP(name, env);
+    arch_file_data->name = axis2_strdup(name, env);
     return arch_file_data;
 }
 
@@ -193,7 +193,7 @@ axis2_arch_file_data_set_msg_recv(
         AXIS2_FREE(env->allocator, arch_file_data->msg_recv);
         arch_file_data->msg_recv = NULL;
     }
-    arch_file_data->msg_recv = AXIS2_STRDUP(msg_recv, env);
+    arch_file_data->msg_recv = axis2_strdup(msg_recv, env);
     return AXIS2_SUCCESS;
 }
 
@@ -276,7 +276,7 @@ axis2_arch_file_data_set_module_name(
         AXIS2_FREE(env->allocator, arch_file_data->module_name);
         arch_file_data->module_name = NULL;
     }
-    arch_file_data->module_name = AXIS2_STRDUP(module_name, env);
+    arch_file_data->module_name = axis2_strdup(module_name, env);
     return AXIS2_SUCCESS;
 }
 
@@ -302,7 +302,7 @@ axis2_arch_file_data_set_module_dll_name(
         AXIS2_FREE(env->allocator, arch_file_data->module_dll_name);
         arch_file_data->module_dll_name = NULL;
     }
-    arch_file_data->module_dll_name = AXIS2_STRDUP(module_dll_name, env);
+    arch_file_data->module_dll_name = axis2_strdup(module_dll_name, env);
     return AXIS2_SUCCESS;
 }
 
@@ -318,7 +318,7 @@ axis2_arch_file_data_add_svc(
     AXIS2_PARAM_CHECK(env->error, svc_desc, AXIS2_FAILURE);
 
     svc_qname = AXIS2_SVC_GET_QNAME(svc_desc, env);
-    svc_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)svc_qname, env);
+    svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
     if (!arch_file_data->svc_map)
     {
         arch_file_data->svc_map = axis2_hash_make(env);

@@ -120,10 +120,10 @@ axis2_libcurl_send (
 		method = (axis2_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
 																AXIS2_HTTP_METHOD, AXIS2_FALSE);
 		if (method)
-			method_value = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE (method, env);
+			method_value = (axis2_char_t *) axis2_property_get_value (method, env);
 
 		/* The default is POST */
-		if (method_value && 0 == AXIS2_STRCMP(method_value, AXIS2_HTTP_HEADER_GET))
+		if (method_value && 0 == axis2_strcmp(method_value, AXIS2_HTTP_HEADER_GET))
 		{
 			send_via_get = AXIS2_TRUE;
 		}
@@ -158,16 +158,16 @@ axis2_libcurl_send (
 				{
 					axis2_char_t *tmp_soap_action = NULL;
 					tmp_soap_action = AXIS2_MALLOC(env->allocator, (
-													   AXIS2_STRLEN(soap_action) + 5) * sizeof(axis2_char_t));
+													   axis2_strlen(soap_action) + 5) * sizeof(axis2_char_t));
 					sprintf(tmp_soap_action, "\"%s\"", soap_action);
 					headers = curl_slist_append (headers, 
-												 AXIS2_STRACAT (soap_action_header, tmp_soap_action,env));
+												 axis2_stracat (soap_action_header, tmp_soap_action,env));
 					AXIS2_FREE(env->allocator, tmp_soap_action);
 				}
 				else
 				{
 					headers = curl_slist_append (headers, 
-												 AXIS2_STRACAT (soap_action_header, soap_action,env));
+												 axis2_stracat (soap_action_header, soap_action,env));
 				}
 			}
 
@@ -183,10 +183,10 @@ axis2_libcurl_send (
 					if (axis2_strcmp(soap_action, ""))
 					{
 						axis2_char_t *temp_content_type = NULL;
-						temp_content_type = AXIS2_STRACAT(content_type, ";action=", env);
+						temp_content_type = axis2_stracat(content_type, ";action=", env);
 						AXIS2_FREE(env->allocator, content_type);
 						content_type = temp_content_type;
-						temp_content_type = AXIS2_STRACAT(content_type, soap_action, env);
+						temp_content_type = axis2_stracat(content_type, soap_action, env);
 						AXIS2_FREE(env->allocator, content_type);
 						content_type = temp_content_type;
 					}
@@ -196,8 +196,8 @@ axis2_libcurl_send (
 			{
 				axis2_char_t *temp_content_type = NULL;
 				content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
-				content_type = AXIS2_STRACAT(content_type, ";charset=", env);
-				temp_content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
+				content_type = axis2_stracat(content_type, ";charset=", env);
+				temp_content_type = axis2_stracat(content_type, char_set_enc, env);
 				AXIS2_FREE(env->allocator, content_type);
 				content_type = temp_content_type;
 			}
@@ -205,20 +205,20 @@ axis2_libcurl_send (
 			{
 				axis2_char_t *temp_content_type = NULL;
 				content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
-				content_type = AXIS2_STRACAT(content_type, ";charset=", env);
-				temp_content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
+				content_type = axis2_stracat(content_type, ";charset=", env);
+				temp_content_type = axis2_stracat(content_type, char_set_enc, env);
 				AXIS2_FREE(env->allocator, content_type);
 				content_type = temp_content_type;
 				if (axis2_strcmp(soap_action, ""))
 				{
-					temp_content_type = AXIS2_STRACAT(content_type, ";action=", env);
+					temp_content_type = axis2_stracat(content_type, ";action=", env);
 					AXIS2_FREE(env->allocator, content_type);
 					content_type = temp_content_type;
-					temp_content_type = AXIS2_STRACAT(content_type, soap_action, env);
+					temp_content_type = axis2_stracat(content_type, soap_action, env);
 					AXIS2_FREE(env->allocator, content_type);
 					content_type = temp_content_type;
 				}
-				temp_content_type = AXIS2_STRACAT(content_type, ";", env);
+				temp_content_type = axis2_stracat(content_type, ";", env);
 				AXIS2_FREE(env->allocator, content_type);
 				content_type = temp_content_type;
 			}
@@ -237,7 +237,7 @@ axis2_libcurl_send (
 		
 			if (content_type_property)
 			{
-				content_type_hash = (axis2_hash_t *) AXIS2_PROPERTY_GET_VALUE (content_type_property, env);
+				content_type_hash = (axis2_hash_t *) axis2_property_get_value (content_type_property, env);
 				if (content_type_hash)
 					content_type_value = (char *) axis2_hash_get (content_type_hash, 
 																  AXIS2_HTTP_HEADER_CONTENT_TYPE, 
@@ -260,8 +260,8 @@ axis2_libcurl_send (
 		{
 			char tmp_buf[10];
 			sprintf (tmp_buf, "%d", buffer_size);
-			headers = curl_slist_append (headers, AXIS2_STRACAT (content_len, tmp_buf, env));
-			headers = curl_slist_append (headers, AXIS2_STRACAT (content,content_type, env));
+			headers = curl_slist_append (headers, axis2_stracat (content_len, tmp_buf, env));
+			headers = curl_slist_append (headers, axis2_stracat (content,content_type, env));
 		}
 		if (!doing_mtom)
 		{
@@ -298,9 +298,9 @@ axis2_libcurl_send (
 
 	in_stream = axis2_stream_create_libcurl (env, data->memory, data->size);
     trans_in_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(trans_in_property, env, AXIS2_SCOPE_REQUEST);
-    AXIS2_PROPERTY_SET_FREE_FUNC(trans_in_property, env, axis2_stream_free_void_arg);
-    AXIS2_PROPERTY_SET_VALUE(trans_in_property, env, in_stream);
+    axis2_property_set_scope(trans_in_property, env, AXIS2_SCOPE_REQUEST);
+    axis2_property_set_free_func(trans_in_property, env, axis2_stream_free_void_arg);
+    axis2_property_set_value(trans_in_property, env, in_stream);
      axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, trans_in_property,
 							   AXIS2_FALSE);
 	return AXIS2_SUCCESS;
@@ -337,7 +337,7 @@ axis2_libcurl_header_callback(void *ptr, size_t size, size_t nmemb, void *data)
 		memcpy(&(mem->memory[mem->size]), ptr, realsize);
 		mem->size += realsize;
 		mem->memory[mem->size] = 0;
-		axis2_array_list_add (mem->alist, mem->env, AXIS2_STRDUP (mem->memory, mem->env));
+		axis2_array_list_add (mem->alist, mem->env, axis2_strdup (mem->memory, mem->env));
 	}
 	return realsize;
 }

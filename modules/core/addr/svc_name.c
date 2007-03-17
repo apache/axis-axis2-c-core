@@ -49,7 +49,7 @@ axis2_svc_name_create(const axis2_env_t *env,
 
     if (qname)
     {
-        svc_name->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
+        svc_name->qname = axis2_qname_clone((axis2_qname_t *)qname, env);
         if (!(svc_name->qname))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -60,7 +60,7 @@ axis2_svc_name_create(const axis2_env_t *env,
 
     if (endpoint_name)
     {
-        svc_name->endpoint_name = AXIS2_STRDUP(endpoint_name, env);
+        svc_name->endpoint_name = axis2_strdup(endpoint_name, env);
         if (!(svc_name->endpoint_name))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -88,12 +88,12 @@ axis2_svc_name_set_qname(struct axis2_svc_name *svc_name,
 
     if (svc_name->qname)
     {
-        AXIS2_QNAME_FREE(svc_name->qname, env);
+        axis2_qname_free(svc_name->qname, env);
     }
 
     if (qname)
     {
-        svc_name->qname = AXIS2_QNAME_CLONE((axis2_qname_t *)qname, env);
+        svc_name->qname = axis2_qname_clone((axis2_qname_t *)qname, env);
         if (!(svc_name->qname))
             return AXIS2_FAILURE;
     }
@@ -122,7 +122,7 @@ axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name,
 
     if (endpoint_name)
     {
-        svc_name->endpoint_name = AXIS2_STRDUP(endpoint_name, env);
+        svc_name->endpoint_name = axis2_strdup(endpoint_name, env);
         if (!(svc_name->endpoint_name))
             return AXIS2_FAILURE;
     }
@@ -138,7 +138,7 @@ axis2_svc_name_free(struct axis2_svc_name *svc_name,
 
     if (svc_name->qname)
     {
-        AXIS2_QNAME_FREE(svc_name->qname, env);
+        axis2_qname_free(svc_name->qname, env);
     }
 
     if (svc_name->endpoint_name)

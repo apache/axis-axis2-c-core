@@ -70,7 +70,7 @@ axis2_svc_ctx_create(
         svc_ctx->svc_qname = (axis2_qname_t *)AXIS2_SVC_GET_QNAME(svc, env);
         if (svc_ctx->svc_qname)
         {
-            svc_ctx->svc_id = AXIS2_QNAME_GET_LOCALPART(svc_ctx->svc_qname, env);
+            svc_ctx->svc_id = axis2_qname_get_localpart(svc_ctx->svc_qname, env);
         }
     }
 
@@ -135,7 +135,7 @@ axis2_svc_ctx_init(
 
     if (svc_ctx->svc_qname)
     {
-        axis2_char_t *svc_name = AXIS2_QNAME_GET_LOCALPART(svc_ctx->svc_qname, env);
+        axis2_char_t *svc_name = axis2_qname_get_localpart(svc_ctx->svc_qname, env);
         svc_ctx->svc = AXIS2_CONF_GET_SVC(conf, env, svc_name);
     }
 
@@ -172,7 +172,7 @@ axis2_svc_ctx_set_svc(
     svc_ctx->svc_qname = (axis2_qname_t *)AXIS2_SVC_GET_QNAME(svc, env);
     if (svc_ctx->svc_qname)
     {
-        svc_ctx->svc_id = AXIS2_QNAME_GET_LOCALPART(svc_ctx->
+        svc_ctx->svc_id = axis2_qname_get_localpart(svc_ctx->
                 svc_qname, env);
     }
     return AXIS2_SUCCESS;

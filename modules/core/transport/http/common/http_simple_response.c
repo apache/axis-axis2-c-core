@@ -309,7 +309,7 @@ axis2_http_simple_response_set_status_line(
     AXIS2_PARAM_CHECK(env->error, phrase, AXIS2_FAILURE);
 
     tmp_status_line_str = AXIS2_MALLOC(env->allocator,
-            (AXIS2_STRLEN(http_ver) + AXIS2_STRLEN(phrase) + 8) *
+            (axis2_strlen(http_ver) + axis2_strlen(phrase) + 8) *
             sizeof(axis2_char_t *));
     sprintf(tmp_status_line_str, "%s %3d %s%s", http_ver, status_code, phrase,
             AXIS2_HTTP_CRLF);
@@ -434,7 +434,7 @@ axis2_http_simple_response_get_first_header(
         tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
-        if (0 == AXIS2_STRCASECMP(str, tmp_name))
+        if (0 == axis2_strcasecmp(str, tmp_name))
         {
             return tmp_header;
         }
@@ -478,7 +478,7 @@ axis2_http_simple_response_remove_headers(
         tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
-        if (0 == AXIS2_STRCASECMP(str, tmp_name))
+        if (0 == axis2_strcasecmp(str, tmp_name))
         {
             AXIS2_HTTP_HEADER_FREE(tmp_header, env);
             axis2_array_list_remove(header_group, env, i);
@@ -525,7 +525,7 @@ axis2_http_simple_response_set_header(
         tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
-        if (0 == AXIS2_STRCASECMP(AXIS2_HTTP_HEADER_GET_NAME(header, env),
+        if (0 == axis2_strcasecmp(AXIS2_HTTP_HEADER_GET_NAME(header, env),
                 tmp_name))
         {
             AXIS2_HTTP_HEADER_FREE(tmp_header, env);
@@ -617,7 +617,7 @@ axis2_http_simple_response_set_body_string(
         }
         AXIS2_INTF_TO_IMPL(simple_response)->stream = body_stream;
     }
-    AXIS2_STREAM_WRITE(body_stream, env, str, AXIS2_STRLEN(str));
+    AXIS2_STREAM_WRITE(body_stream, env, str, axis2_strlen(str));
     return AXIS2_SUCCESS;
 }
 
@@ -727,7 +727,7 @@ axis2_http_simple_response_contains_header(
         header_name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
                 axis2_array_list_get(simple_response_impl->header_group,
                         env, i), env);
-        if (0 == AXIS2_STRCASECMP(name, header_name))
+        if (0 == axis2_strcasecmp(name, header_name))
             return AXIS2_TRUE;
     }
     return AXIS2_FALSE;

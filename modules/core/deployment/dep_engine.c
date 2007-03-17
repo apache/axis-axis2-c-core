@@ -202,7 +202,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, repos_path, NULL);
     AXIS2_PARAM_CHECK(env->error, svr_xml_file, NULL);
-    if (0 == AXIS2_STRCMP("", repos_path))
+    if (0 == axis2_strcmp("", repos_path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPO_CAN_NOT_BE_NULL,
                 AXIS2_FAILURE);
@@ -226,7 +226,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(
         return NULL;
     }
 
-    dep_engine->folder_name = AXIS2_STRDUP(repos_path, env);
+    dep_engine->folder_name = axis2_strdup(repos_path, env);
     if (NULL == dep_engine->folder_name)
     {
         axis2_dep_engine_free(dep_engine, env);
@@ -234,7 +234,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(
         return NULL;
     }
 
-    dep_engine->axis2_repos = AXIS2_STRDUP(repos_path, env);
+    dep_engine->axis2_repos = axis2_strdup(repos_path, env);
     if (NULL == dep_engine->axis2_repos)
     {
         axis2_dep_engine_free(dep_engine, env);
@@ -242,8 +242,8 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(
         return NULL;
     }
 
-    conf_file_l = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
-    dep_engine->conf_name = AXIS2_STRACAT(conf_file_l, svr_xml_file, env);
+    conf_file_l = axis2_stracat(repos_path, AXIS2_PATH_SEP_STR, env);
+    dep_engine->conf_name = axis2_stracat(conf_file_l, svr_xml_file, env);
     AXIS2_FREE(env->allocator, conf_file_l);
     if (!dep_engine->conf_name)
     {
@@ -345,7 +345,7 @@ axis2_dep_engine_free(
             qname = axis2_array_list_get(dep_engine->module_list, env, i);
             if (qname)
             {
-                AXIS2_QNAME_FREE(qname, env);
+                axis2_qname_free(qname, env);
             }
         }
         axis2_array_list_free(dep_engine->module_list, env);
@@ -388,13 +388,13 @@ axis2_dep_engine_add_module(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
 
-    qname = AXIS2_QNAME_CLONE(module_qname, env);
+    qname = axis2_qname_clone(module_qname, env);
     if (!dep_engine->module_list)
     {
         dep_engine->module_list = axis2_array_list_create(env, 0);
         if (!dep_engine->module_list)
         {
-            AXIS2_QNAME_FREE(qname, env);
+            axis2_qname_free(qname, env);
             return AXIS2_FAILURE;
         }
     }
@@ -488,16 +488,16 @@ axis2_dep_engine_set_dep_features(
 
     if (para_hot_dep)
     {
-        value = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(para_hot_dep, env);
-        if (0 == AXIS2_STRCASECMP("false", value))
+        value = (axis2_char_t *) axis2_param_get_value(para_hot_dep, env);
+        if (0 == axis2_strcasecmp("false", value))
         {
             dep_engine->hot_dep = AXIS2_FALSE;
         }
     }
     if (para_hot_update)
     {
-        value = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(para_hot_update, env);
-        if (0 == AXIS2_STRCASECMP("false", value))
+        value = (axis2_char_t *) axis2_param_get_value(para_hot_update, env);
+        if (0 == axis2_strcasecmp("false", value))
         {
             dep_engine->hot_update = AXIS2_FALSE;
         }
@@ -625,13 +625,13 @@ axis2_dep_engine_load_client(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, client_home, NULL);
 
-    dep_engine->axis2_repos = AXIS2_STRDUP(client_home, env);
+    dep_engine->axis2_repos = axis2_strdup(client_home, env);
     if (!dep_engine->axis2_repos)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    if (client_home && 0 != AXIS2_STRCMP("", client_home))
+    if (client_home && 0 != axis2_strcmp("", client_home))
     {
         status = axis2_dep_engine_check_client_home(dep_engine, env, client_home);
         if (AXIS2_SUCCESS == status)
@@ -641,7 +641,7 @@ axis2_dep_engine_load_client(
     }
     else
     {
-        dep_engine->conf_name = AXIS2_STRDUP(AXIS2_CONFIGURATION_RESOURCE,
+        dep_engine->conf_name = axis2_strdup(AXIS2_CONFIGURATION_RESOURCE,
                 env);
         if (!dep_engine->conf_name)
         {
@@ -712,18 +712,18 @@ axis2_dep_engine_check_client_home(
     axis2_char_t *path_l = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    dep_engine->folder_name = AXIS2_STRDUP(client_home, env);
+    dep_engine->folder_name = axis2_strdup(client_home, env);
     if (!dep_engine->folder_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    path_l = AXIS2_STRACAT(client_home, AXIS2_PATH_SEP_STR, env);
-    dep_engine->conf_name = AXIS2_STRACAT(path_l, AXIS2_SERVER_XML_FILE, env);
+    path_l = axis2_stracat(client_home, AXIS2_PATH_SEP_STR, env);
+    dep_engine->conf_name = axis2_stracat(path_l, AXIS2_SERVER_XML_FILE, env);
     AXIS2_FREE(env->allocator, path_l);
     if (!dep_engine->conf_name)
     {
-        dep_engine->conf_name = AXIS2_STRDUP(AXIS2_CONFIGURATION_RESOURCE, env);
+        dep_engine->conf_name = axis2_strdup(AXIS2_CONFIGURATION_RESOURCE, env);
         if (!dep_engine->conf_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CONFIG_NOT_FOUND,
@@ -799,10 +799,10 @@ axis2_dep_engine_validate_system_predefined_phases(
         phase2 = (axis2_char_t *) axis2_array_list_get(in_phases, env, 2);
         phase3 = (axis2_char_t *) axis2_array_list_get(in_phases, env, 3);
     }
-    if ((phase0 && 0 != AXIS2_STRCMP(phase0, AXIS2_PHASE_TRANSPORT_IN)) ||
-            (phase1 && 0 != AXIS2_STRCMP(phase1, AXIS2_PHASE_PRE_DISPATCH)) ||
-            (phase2 && 0 != AXIS2_STRCMP(phase2, AXIS2_PHASE_DISPATCH)) ||
-            (phase3 && 0 != AXIS2_STRCMP(phase3, AXIS2_PHASE_POST_DISPATCH)))
+    if ((phase0 && 0 != axis2_strcmp(phase0, AXIS2_PHASE_TRANSPORT_IN)) ||
+            (phase1 && 0 != axis2_strcmp(phase1, AXIS2_PHASE_PRE_DISPATCH)) ||
+            (phase2 && 0 != axis2_strcmp(phase2, AXIS2_PHASE_DISPATCH)) ||
+            (phase3 && 0 != axis2_strcmp(phase3, AXIS2_PHASE_POST_DISPATCH)))
     {
         AXIS2_ERROR_SET(env->error, AXI2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
         return AXIS2_SUCCESS;
@@ -981,8 +981,8 @@ axis2_dep_engine_load_module_dll(
     timestamp =  axis2_file_get_timestamp(module_folder, env);
      axis2_dll_desc_set_timestamp(dll_desc, env, timestamp);
     module_folder_path =  axis2_file_get_path(module_folder, env);
-    temp_path = AXIS2_STRACAT(module_folder_path, AXIS2_PATH_SEP_STR, env);
-    dll_path = AXIS2_STRACAT(temp_path, dll_name, env);
+    temp_path = axis2_stracat(module_folder_path, AXIS2_PATH_SEP_STR, env);
+    dll_path = axis2_stracat(temp_path, dll_name, env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
             "axis2_dep_engine_load_module_dll; dll path is : %s", dll_path);
     status =  axis2_dll_desc_set_name(dll_desc, env, dll_path);
@@ -999,7 +999,7 @@ axis2_dep_engine_load_module_dll(
 
      axis2_dll_desc_set_type(dll_desc, env, AXIS2_MODULE_DLL);
     impl_info_param = axis2_param_create(env, read_in_dll, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_param_set_value(impl_info_param, env, dll_desc);
     axis2_param_set_value_free(impl_info_param, env, axis2_dll_desc_free_void_arg);
     axis2_class_loader_init(env);
     module = (axis2_module_t *) axis2_class_loader_create_dll(env,
@@ -1079,7 +1079,7 @@ axis2_dep_engine_add_flow_handlers(
          axis2_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
         axis2_class_loader_init(env);
         impl_info_param = axis2_param_create(env, NULL, NULL);
-        AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+        axis2_param_set_value(impl_info_param, env, dll_desc);
         handler = (axis2_handler_t *) axis2_class_loader_create_dll(env,
                 impl_info_param);
         AXIS2_HANDLER_INIT(handler, env, handlermd);
@@ -1111,7 +1111,7 @@ axis2_dep_engine_get_handler_dll(
      axis2_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
     axis2_class_loader_init(env);
     impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_param_set_value(impl_info_param, env, dll_desc);
     handler = (axis2_handler_t *) axis2_class_loader_create_dll(env,
             impl_info_param);
 
@@ -1347,7 +1347,7 @@ axis2_dep_engine_get_axis_svc_name(
     axis2_char_t *svc_name = NULL;
     int len = 0;
 
-    file_name_l = AXIS2_STRDUP(file_name, env);
+    file_name_l = axis2_strdup(file_name, env);
     ptr = AXIS2_STRRCHR(file_name_l, AXIS2_PATH_SEP_CHAR);
 
     temp_name = ptr + 1;

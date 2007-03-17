@@ -382,7 +382,7 @@ axis2_svc_client_engage_module(
     {
         module = AXIS2_CONF_GET_MODULE(svc_client->conf, env, mod_qname);
 
-        AXIS2_QNAME_FREE(mod_qname, env);
+        axis2_qname_free(mod_qname, env);
         mod_qname = NULL;
     }
     else
@@ -511,7 +511,7 @@ axis2_svc_client_send_robust_with_op_qname(
     
     if (qname_free_flag)
     {
-        AXIS2_QNAME_FREE((axis2_qname_t *) op_qname, env);
+        axis2_qname_free((axis2_qname_t *) op_qname, env);
         op_qname = NULL;
     }
 
@@ -565,7 +565,7 @@ axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
     
     if (qname_free_flag)
     {
-        AXIS2_QNAME_FREE((axis2_qname_t *) op_qname, env);
+        axis2_qname_free((axis2_qname_t *) op_qname, env);
         op_qname = NULL;
     }
 
@@ -604,8 +604,8 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         param = axis2_op_get_param(op, env, AXIS2_SOAP_ACTION);
         if (param)
         {
-            action_uri = (axis2_uri_t *) AXIS2_PARAM_GET_VALUE(param, env);
-            action_str = AXIS2_URI_TO_STRING(action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+            action_uri = (axis2_uri_t *) axis2_param_get_value(param, env);
+            action_str = axis2_uri_to_string(action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
             AXIS2_OPTIONS_SET_ACTION(svc_client->options, env, action_str);
         }
     }
@@ -730,7 +730,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
 
     if (qname_free_flag)
     {
-        AXIS2_QNAME_FREE((axis2_qname_t *) op_qname, env);
+        axis2_qname_free((axis2_qname_t *) op_qname, env);
         op_qname = NULL;
     }
 
@@ -817,7 +817,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc
     
     if (qname_free_flag)
     {
-        AXIS2_QNAME_FREE((axis2_qname_t *) op_qname, env);
+        axis2_qname_free((axis2_qname_t *) op_qname, env);
         op_qname = NULL;
     }
 
@@ -1046,7 +1046,7 @@ axis2_svc_client_create_annonymous_svc(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    AXIS2_QNAME_FREE(tmp_qname, env);
+    axis2_qname_free(tmp_qname, env);
 
     tmp_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
 
@@ -1056,7 +1056,7 @@ axis2_svc_client_create_annonymous_svc(
         return NULL;
     }
     op_out_in = axis2_op_create_with_qname(env, tmp_qname);
-    AXIS2_QNAME_FREE(tmp_qname, env);
+    axis2_qname_free(tmp_qname, env);
 
 
     tmp_qname = axis2_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
@@ -1067,7 +1067,7 @@ axis2_svc_client_create_annonymous_svc(
         return NULL;
     }
     op_out_only = axis2_op_create_with_qname(env, tmp_qname);
-    AXIS2_QNAME_FREE(tmp_qname, env);
+    axis2_qname_free(tmp_qname, env);
 
     tmp_qname = axis2_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
 
@@ -1077,7 +1077,7 @@ axis2_svc_client_create_annonymous_svc(
         return NULL;
     }
     op_robust_out_only = axis2_op_create_with_qname(env, tmp_qname);
-    AXIS2_QNAME_FREE(tmp_qname, env);
+    axis2_qname_free(tmp_qname, env);
 
     if (!op_out_in || !op_out_only || !op_robust_out_only)
     {
@@ -1173,7 +1173,7 @@ axis2_svc_client_fill_soap_envelope(
         return AXIS2_FALSE;
     }
 
-    if (AXIS2_STRCMP(soap_version_uri,
+    if (axis2_strcmp(soap_version_uri,
             AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
         soap_version = AXIOM_SOAP11;
     else

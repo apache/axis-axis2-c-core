@@ -168,7 +168,7 @@ axis2_http_out_transport_info_set_char_encoding(
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);
     }
-    info_impl->encoding = AXIS2_STRDUP(encoding, env);
+    info_impl->encoding = axis2_strdup(encoding, env);
 
     return AXIS2_SUCCESS;
 }

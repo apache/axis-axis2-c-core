@@ -59,7 +59,7 @@ axis2_phase_rule_create(const axis2_env_t *env,
 
     if (name)
     {
-        phase_rule->name = AXIS2_STRDUP(name, env);
+        phase_rule->name = axis2_strdup(name, env);
     }
 
     return phase_rule;
@@ -86,7 +86,7 @@ axis2_phase_rule_set_before(axis2_phase_rule_t *phase_rule,
 
     if (before)
     {
-        phase_rule->before = AXIS2_STRDUP(before, env);
+        phase_rule->before = axis2_strdup(before, env);
         if (!phase_rule->before)
         {
             AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
@@ -119,7 +119,7 @@ axis2_phase_rule_set_after(axis2_phase_rule_t *phase_rule,
 
     if (after)
     {
-        phase_rule->after = AXIS2_STRDUP(after, env);
+        phase_rule->after = axis2_strdup(after, env);
         if (!phase_rule->after)
         {
             AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
@@ -152,7 +152,7 @@ axis2_phase_rule_set_name(axis2_phase_rule_t *phase_rule,
 
     if (name)
     {
-        phase_rule->name = AXIS2_STRDUP(name, env);
+        phase_rule->name = axis2_strdup(name, env);
         if (!phase_rule->name)
         {
             AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);

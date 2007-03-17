@@ -174,7 +174,7 @@ axis2_ws_info_list_add_ws_info_item(
     AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
 
     temp_name =  axis2_file_get_name(file, env);
-    info_list_name = AXIS2_STRDUP(temp_name, env);
+    info_list_name = axis2_strdup(temp_name, env);
     if (!info_list_name)
     {
         return AXIS2_FAILURE;
@@ -276,7 +276,7 @@ axis2_ws_info_list_get_file_item(
                 ws_info_list, env, i);
 
         file_name_l = AXIS2_WS_INFO_GET_FILE_NAME(ws_info, env);
-        if (0 == AXIS2_STRCMP(file_name_l, file_name))
+        if (0 == axis2_strcmp(file_name_l, file_name))
         {
             return ws_info;
         }
@@ -353,7 +353,7 @@ axis2_ws_info_list_check_for_undeploy(
             axis2_char_t *file_name = NULL;
             file_name = (axis2_char_t *) axis2_array_list_get(ws_info_list->
                     current_info_lists, env, j);
-            if (0 == AXIS2_STRCMP(file_name, file_item_name))
+            if (0 == axis2_strcmp(file_name, file_item_name))
             {
                 exist = AXIS2_TRUE;
                 break;

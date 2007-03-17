@@ -83,7 +83,7 @@ axis2_desc_builder_create_with_file_and_dep_engine(
         return NULL;
     }
 
-    desc_builder->file_name = AXIS2_STRDUP(file_name, env);
+    desc_builder->file_name = axis2_strdup(file_name, env);
     if (!desc_builder->file_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -231,7 +231,7 @@ axis2_desc_builder_process_flow(
     handlers = axiom_element_get_children_with_qname(flow_element, env,
             qchild, flow_node);
     if (qchild)
-        AXIS2_QNAME_FREE(qchild, env);
+        axis2_qname_free(qchild, env);
 
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(handlers , env))
     {
@@ -290,7 +290,7 @@ struct axis2_handler_desc *AXIS2_CALL
             attr_qname);
     if (attr_qname)
     {
-        AXIS2_QNAME_FREE(attr_qname, env);
+        axis2_qname_free(attr_qname, env);
     }
 
     if (!name_attrib)
@@ -323,7 +323,7 @@ struct axis2_handler_desc *AXIS2_CALL
     class_attrib = axiom_element_get_attribute(handler_element, env,
             class_qname);
     if (class_qname)
-        AXIS2_QNAME_FREE(class_qname, env);
+        axis2_qname_free(class_qname, env);
 
     if (NULL == class_attrib)
     {
@@ -349,7 +349,7 @@ struct axis2_handler_desc *AXIS2_CALL
     order_element = axiom_element_get_first_child_with_qname(handler_element,
             env, order_qname, handler_node, &order_node);
     if (order_qname)
-        AXIS2_QNAME_FREE(order_qname, env);
+        axis2_qname_free(order_qname, env);
 
     if (NULL == order_element || NULL == order_node)
     {
@@ -385,10 +385,10 @@ struct axis2_handler_desc *AXIS2_CALL
             axis2_hash_this(index_i, NULL, NULL, &v);
             order_attrib = (axiom_attribute_t *) v;
             qname = axiom_attribute_get_qname(order_attrib, env);
-            name = AXIS2_QNAME_GET_LOCALPART(qname, env);
+            name = axis2_qname_get_localpart(qname, env);
 
             value = axiom_attribute_get_value(order_attrib, env);
-            if (0 == AXIS2_STRCMP(AXIS2_AFTER, name))
+            if (0 == axis2_strcmp(AXIS2_AFTER, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
 
@@ -400,7 +400,7 @@ struct axis2_handler_desc *AXIS2_CALL
                     return NULL;
                 }
             }
-            if (0 == AXIS2_STRCMP(AXIS2_BEFORE, name))
+            if (0 == axis2_strcmp(AXIS2_BEFORE, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
                 phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
@@ -411,7 +411,7 @@ struct axis2_handler_desc *AXIS2_CALL
                     return NULL;
                 }
             }
-            if (0 == AXIS2_STRCMP(AXIS2_PHASE, name))
+            if (0 == axis2_strcmp(AXIS2_PHASE, name))
             {
                 struct axis2_phase_rule *phase_rule = NULL;
                 phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
@@ -422,13 +422,13 @@ struct axis2_handler_desc *AXIS2_CALL
                     return NULL;
                 }
             }
-            if (0 == AXIS2_STRCMP(AXIS2_PHASEFIRST, name))
+            if (0 == axis2_strcmp(AXIS2_PHASEFIRST, name))
             {
                 axis2_char_t *bool_val = NULL;
 
                 bool_val = axis2_desc_builder_get_value(desc_builder, env,
                         value);
-                if (0 == AXIS2_STRCMP(bool_val, "true"))
+                if (0 == axis2_strcmp(bool_val, "true"))
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
                     phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
@@ -441,7 +441,7 @@ struct axis2_handler_desc *AXIS2_CALL
                         return NULL;
                     }
                 }
-                else if (0 == AXIS2_STRCMP(bool_val, "false"))
+                else if (0 == axis2_strcmp(bool_val, "false"))
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
                     phase_rule = axis2_handler_desc_get_rules(handler_desc, env);
@@ -462,7 +462,7 @@ struct axis2_handler_desc *AXIS2_CALL
         param_qname = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
         params = axiom_element_get_children_with_qname(handler_element,
                 env, param_qname, handler_node);
-        AXIS2_QNAME_FREE(param_qname, env);
+        axis2_qname_free(param_qname, env);
         status = axis2_desc_builder_process_params(desc_builder, env, params,
                 axis2_handler_desc_get_param_container(handler_desc, env), parent);
         if (AXIS2_SUCCESS != status)
@@ -516,13 +516,13 @@ set_attrs_and_value(
             axis2_hash_this(i, NULL, NULL, &v);
             if (!v)
             {
-                AXIS2_PARAM_FREE(param, env);
+                axis2_param_free(param, env);
                 return AXIS2_FAILURE;
             }
             obj = axis2_generic_obj_create(env);
             if (!obj)
             {
-                AXIS2_PARAM_FREE(param, env);
+                axis2_param_free(param, env);
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                         AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -532,10 +532,10 @@ set_attrs_and_value(
             axis2_generic_obj_set_free_func(obj, env,
                     axiom_attribute_free_void_arg);
             attr_qname = axiom_attribute_get_qname(value, env);
-            attr_name = AXIS2_QNAME_TO_STRING(attr_qname, env);
+            attr_name = axis2_qname_to_string(attr_qname, env);
             axis2_hash_set(attrs, attr_name, AXIS2_HASH_KEY_STRING, obj);
         }
-        AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs);
+        axis2_param_set_attributes(param, env, attrs);
     }
 
     childs = axiom_element_get_child_elements(param_element, env, param_node);
@@ -544,7 +544,7 @@ set_attrs_and_value(
         axis2_array_list_t *value_list = NULL;
 
         value_list = axis2_array_list_create(env, 0);
-        AXIS2_PARAM_SET_VALUE_LIST(param, env, value_list);
+        axis2_param_set_value_list(param, env, value_list);
 
         while (AXIS2_TRUE == AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(childs, env))
         {
@@ -557,13 +557,13 @@ set_attrs_and_value(
             element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
             param = axis2_param_create(env, NULL, NULL);
             pname = axiom_element_get_localname(element, env);
-            status = AXIS2_PARAM_SET_NAME(param, env, pname);
+            status = axis2_param_set_name(param, env, pname);
             if (AXIS2_SUCCESS != status)
             {
-                AXIS2_PARAM_FREE(param, env);
+                axis2_param_free(param, env);
                 return status;
             }
-            AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_DOM_PARAM);
+            axis2_param_set_param_type(param, env, AXIS2_DOM_PARAM);
             set_attrs_and_value(param, env, element, node);
             axis2_array_list_add(value_list, env, param);
         }
@@ -575,15 +575,15 @@ set_attrs_and_value(
 
         temp = axiom_element_get_text(
                     param_element, env, param_node);
-        para_test_value = AXIS2_STRDUP(temp, env);
-        status = AXIS2_PARAM_SET_VALUE(param, env, para_test_value);
+        para_test_value = axis2_strdup(temp, env);
+        status = axis2_param_set_value(param, env, para_test_value);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_PARAM_FREE(param, env);
+            axis2_param_free(param, env);
             AXIS2_FREE(env->allocator, para_test_value);
             return status;
         }
-        AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_TEXT_PARAM);
+        axis2_param_set_param_type(param, env, AXIS2_TEXT_PARAM);
     }
     return AXIS2_SUCCESS;
 }
@@ -617,7 +617,7 @@ axis2_desc_builder_process_action_mappings(
         action_mappings = axiom_element_get_children_with_qname(op_element, env, 
             qname,op_node);
             
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     qname = NULL;
     if(!action_mappings)
     {
@@ -643,10 +643,10 @@ axis2_desc_builder_process_action_mappings(
         mapping_element = AXIOM_NODE_GET_DATA_ELEMENT(mapping_node, env);
         temp_str = axiom_element_get_text(mapping_element, env, 
             mapping_node);
-        input_action_string = AXIS2_STRTRIM(env, temp_str, NULL);
+        input_action_string = axis2_strtrim(env, temp_str, NULL);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Input action mapping found %s", 
             input_action_string);
-        if(0 != AXIS2_STRCMP("", input_action_string))
+        if(0 != axis2_strcmp("", input_action_string))
         {
             axis2_array_list_add(mapping_list, env, input_action_string);
         }
@@ -659,7 +659,7 @@ axis2_desc_builder_process_action_mappings(
     child_element = axiom_element_get_first_child_with_qname(mapping_element, 
         env, qname, mapping_node, &child_node);
     temp_str = axiom_element_get_text(child_element, env, child_node);
-    output_action_string = AXIS2_STRTRIM(env, temp_str, NULL);
+    output_action_string = axis2_strtrim(env, temp_str, NULL);
     if(child_element && output_action_string)
     {
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Output action mapping found %s", 
@@ -711,7 +711,7 @@ axis2_desc_builder_process_params(
         /*status = AXIS2_PARAM_SET_ELEMENT(param, env, param_node);
         if(AXIS2_SUCCESS != status)
         {
-            AXIS2_PARAM_FREE(param, env);
+            axis2_param_free(param, env);
             return status;
         }*/
 
@@ -719,17 +719,17 @@ axis2_desc_builder_process_params(
         att_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         para_name = axiom_element_get_attribute(param_element, env,
                 att_qname);
-        AXIS2_QNAME_FREE(att_qname, env);
+        axis2_qname_free(att_qname, env);
         if (!para_name)
         {
-            AXIS2_PARAM_FREE(param, env);
+            axis2_param_free(param, env);
             return AXIS2_FAILURE;
         }
         pname = axiom_attribute_get_value(para_name, env);
-        status = AXIS2_PARAM_SET_NAME(param, env, pname);
+        status = axis2_param_set_name(param, env, pname);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_PARAM_FREE(param, env);
+            axis2_param_free(param, env);
             return status;
         }
 
@@ -740,44 +740,44 @@ axis2_desc_builder_process_params(
         att_locked = axis2_qname_create(env, AXIS2_ATTLOCKED, NULL, NULL);
         para_locked = axiom_element_get_attribute(param_element, env,
                 att_locked);
-        AXIS2_QNAME_FREE(att_locked, env);
+        axis2_qname_free(att_locked, env);
         if (parent)
         {
             axis2_char_t *param_name = NULL;
 
-            param_name = AXIS2_PARAM_GET_NAME(param, env);
-            parent_para = AXIS2_PARAM_CONTAINER_GET_PARAM(parent, env,
+            param_name = axis2_param_get_name(param, env);
+            parent_para = axis2_param_container_get_param(parent, env,
                     param_name);
         }
         if (para_locked)
         {
             axis2_char_t *locked_value = NULL;
             locked_value = axiom_attribute_get_value(para_locked, env);
-            if (0 == AXIS2_STRCMP("true", locked_value))
+            if (0 == axis2_strcmp("true", locked_value))
             {
                 axis2_char_t *param_name = NULL;
                 axis2_bool_t is_param_locked = AXIS2_FALSE;
                 /*if the parameter is locked at some levle paramer value replace
                  * by that   
                  */
-                param_name = AXIS2_PARAM_GET_NAME(param, env);
-                is_param_locked = AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(parent,
+                param_name = axis2_param_get_name(param, env);
+                is_param_locked = axis2_param_container_is_param_locked(parent,
                         env, param_name);
                 if (parent && AXIS2_TRUE == is_param_locked)
                 {
-                    AXIS2_PARAM_FREE(param, env);
+                    axis2_param_free(param, env);
                     AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_CONFIG_NOT_FOUND, AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
                 else
                 {
-                    AXIS2_PARAM_SET_LOCKED(param, env, AXIS2_TRUE);
+                    axis2_param_set_locked(param, env, AXIS2_TRUE);
                 }
             }
             else
             {
-                AXIS2_PARAM_SET_LOCKED(param, env, AXIS2_FALSE);
+                axis2_param_set_locked(param, env, AXIS2_FALSE);
             }
         }
 
@@ -787,26 +787,26 @@ axis2_desc_builder_process_params(
             axis2_char_t *name = NULL;
             axis2_bool_t bvalue = AXIS2_FALSE;
 
-            name = AXIS2_PARAM_GET_NAME(param, env);
-            bvalue = AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(parent, env, name);
+            name = axis2_param_get_name(param, env);
+            bvalue = axis2_param_container_is_param_locked(parent, env, name);
             if (parent_para || AXIS2_FALSE == bvalue)
             {
-                status = AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env,
+                status = axis2_param_container_add_param(param_container, env,
                         param);
                 if (AXIS2_SUCCESS != status)
                 {
-                    AXIS2_PARAM_FREE(param, env);
+                    axis2_param_free(param, env);
                     return status;
                 }
             }
         }
         else
         {
-            status = AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env,
+            status = axis2_param_container_add_param(param_container, env,
                     param);
             if (AXIS2_SUCCESS != status)
             {
-                AXIS2_PARAM_FREE(param, env);
+                axis2_param_free(param, env);
                 return status;
             }
         }
@@ -837,7 +837,7 @@ axis2_desc_builder_process_op_module_refs(
                 axiom_children_qname_iterator_next(module_refs, env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_attrib = axiom_element_get_attribute(moduleref, env, qref);
-        AXIS2_QNAME_FREE(qref, env);
+        axis2_qname_free(qref, env);
         if (module_ref_attrib)
         {
             axis2_char_t *ref_name = NULL;
@@ -850,7 +850,7 @@ axis2_desc_builder_process_op_module_refs(
                     ref_qname);
             if (NULL == module_desc)
             {
-                AXIS2_QNAME_FREE(ref_qname, env);
+                axis2_qname_free(ref_qname, env);
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
                         AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -858,7 +858,7 @@ axis2_desc_builder_process_op_module_refs(
             else
             {
                 status = axis2_op_add_module_qname(op, env, ref_qname);
-                AXIS2_QNAME_FREE(ref_qname, env);
+                axis2_qname_free(ref_qname, env);
                 if (AXIS2_SUCCESS != status)
                 {
                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
@@ -896,7 +896,7 @@ axis2_desc_builder_load_msg_recv(
 
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     recv_name = axiom_element_get_attribute(recv_element, env, class_qname);
-    AXIS2_QNAME_FREE(class_qname, env);
+    axis2_qname_free(class_qname, env);
     class_name = axiom_attribute_get_value(recv_name, env);
 
     conf = AXIS2_DEP_ENGINE_GET_AXIS2_CONF(desc_builder->engine, env);
@@ -913,10 +913,10 @@ axis2_desc_builder_load_msg_recv(
              axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                     class_name);
         repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(desc_builder->engine, env);
-        temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
-        temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
-        temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
-        dll_name = AXIS2_STRACAT(temp_path3, msg_recv_dll_name, env);
+        temp_path = axis2_stracat(repos_name, AXIS2_PATH_SEP_STR, env);
+        temp_path2 = axis2_stracat(temp_path, AXIS2_LIB_FOLDER, env);
+        temp_path3 = axis2_stracat(temp_path2, AXIS2_PATH_SEP_STR, env);
+        dll_name = axis2_stracat(temp_path3, msg_recv_dll_name, env);
         AXIS2_FREE(env->allocator, temp_path);
         AXIS2_FREE(env->allocator, temp_path2);
         AXIS2_FREE(env->allocator, temp_path3);
@@ -924,7 +924,7 @@ axis2_desc_builder_load_msg_recv(
         AXIS2_FREE(env->allocator, dll_name);
          axis2_dll_desc_set_type(dll_desc, env, AXIS2_MSG_RECV_DLL);
         impl_info_param = axis2_param_create(env, class_name, NULL);
-        AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+        axis2_param_set_value(impl_info_param, env, dll_desc);
         axis2_param_set_value_free(impl_info_param, env, axis2_dll_desc_free_void_arg);
         /* set the impl_info_param(which contain dll_desc as value) so that
          * loaded msg_recv loader lib can be re-used in future
@@ -962,7 +962,7 @@ axis2_desc_builder_get_short_file_name(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
-    file_name_l = AXIS2_STRDUP(file_name, env);
+    file_name_l = axis2_strdup(file_name, env);
     if (!file_name_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -970,7 +970,7 @@ axis2_desc_builder_get_short_file_name(
     }
     separator = ".";
 
-    value = AXIS2_STRSTR(file_name_l, separator);
+    value = axis2_strstr(file_name_l, separator);
 
     value[0] = AXIS2_EOLN;
     short_name = file_name_l;
@@ -989,13 +989,13 @@ axis2_desc_builder_get_file_name_without_prefix(
     int len = 0;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, short_file_name, NULL);
-    file_name_l = AXIS2_STRDUP(short_file_name, env);
+    file_name_l = axis2_strdup(short_file_name, env);
     if (!file_name_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    len = AXIS2_STRLEN(AXIS2_LIB_PREFIX);
+    len = axis2_strlen(AXIS2_LIB_PREFIX);
     short_name = &file_name_l[len];
     return short_name;
 
@@ -1014,13 +1014,13 @@ axis2_desc_builder_get_value(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, in, NULL);
 
-    in_l = AXIS2_STRDUP(in, env);
+    in_l = axis2_strdup(in, env);
     if (!in_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    value = AXIS2_STRSTR(in_l, separator);
+    value = axis2_strstr(in_l, separator);
     value = value + 1;
 
     return value;

@@ -119,7 +119,7 @@ axis2_svc_grp_builder_populate_svc_grp(
     
     if (qparamst)
     {
-        AXIS2_QNAME_FREE(qparamst, env);
+        axis2_qname_free(qparamst, env);
         qparamst = NULL;
     }
 
@@ -135,7 +135,7 @@ axis2_svc_grp_builder_populate_svc_grp(
 
     if (qmodulest)
     {
-        AXIS2_QNAME_FREE(qmodulest, env);
+        axis2_qname_free(qmodulest, env);
         qmodulest = NULL;
     }
 
@@ -147,7 +147,7 @@ axis2_svc_grp_builder_populate_svc_grp(
 
     if (qsvc_element)
     {
-        AXIS2_QNAME_FREE(qsvc_element, env);
+        axis2_qname_free(qsvc_element, env);
         qsvc_element = NULL;
     }
 
@@ -167,7 +167,7 @@ axis2_svc_grp_builder_populate_svc_grp(
 
         if (qattname)
         {
-            AXIS2_QNAME_FREE(qattname, env);
+            axis2_qname_free(qattname, env);
             qattname = NULL;
         }
 
@@ -195,7 +195,7 @@ axis2_svc_grp_builder_populate_svc_grp(
 
                 qsvc_name = axis2_qname_create(env, svc_name, NULL, NULL);
                 axis_svc = axis2_svc_create_with_qname(env, qsvc_name);
-                AXIS2_QNAME_FREE(qsvc_name, env);
+                axis2_qname_free(qsvc_name, env);
                 AXIS2_ARCH_FILE_DATA_ADD_SVC(file_data, env, axis_svc);
 
             }
@@ -262,9 +262,9 @@ axis2_svc_grp_builder_process_module_refs(
             {
                  axis2_svc_grp_add_module_ref(svc_grp, env, qrefname);
             }
-            AXIS2_QNAME_FREE(qrefname, env);
+            axis2_qname_free(qrefname, env);
         }
-        AXIS2_QNAME_FREE(qref, env);
+        axis2_qname_free(qref, env);
     }
 
     return AXIS2_SUCCESS;

@@ -219,7 +219,7 @@ axis2_http_chunked_stream_write(
         return -1;
     }
     sprintf(tmp_buf, "%x%s", (unsigned int)count, AXIS2_HTTP_CRLF);
-    len = AXIS2_STREAM_WRITE(stream, env, tmp_buf, AXIS2_STRLEN(tmp_buf));
+    len = AXIS2_STREAM_WRITE(stream, env, tmp_buf, axis2_strlen(tmp_buf));
     len = AXIS2_STREAM_WRITE(stream, env, buffer, count);
     AXIS2_STREAM_WRITE(stream, env, AXIS2_HTTP_CRLF, 2);
     return len;

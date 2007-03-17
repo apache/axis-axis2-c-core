@@ -321,7 +321,7 @@ axis2_http_simple_request_contains_header(
         header_name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
                 axis2_array_list_get(simple_request_impl->header_group,
                         env, i), env);
-        if (0 == AXIS2_STRCASECMP(name, header_name))
+        if (0 == axis2_strcasecmp(name, header_name))
             return AXIS2_TRUE;
     }
     return AXIS2_FALSE;
@@ -376,7 +376,7 @@ axis2_http_simple_request_get_first_header(
         tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
-        if (0 == AXIS2_STRCASECMP(str, tmp_name))
+        if (0 == axis2_strcasecmp(str, tmp_name))
         {
             return tmp_header;
         }
@@ -418,7 +418,7 @@ axis2_http_simple_request_remove_headers(
         tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
-        if (0 == AXIS2_STRCASECMP(str, tmp_name))
+        if (0 == axis2_strcasecmp(str, tmp_name))
         {
             AXIS2_HTTP_HEADER_FREE(tmp_header, env);
             axis2_array_list_remove(header_group, env, i);
@@ -550,7 +550,7 @@ axis2_http_simple_request_get_body_bytes(
     tmp_buf2 = AXIS2_MALLOC(env->allocator, 128 * sizeof(char));
     while (AXIS2_STREAM_READ(body, env, tmp_buf2, 128) > 0)
     {
-        tmp_buf3 = AXIS2_STRACAT(tmp_buf, tmp_buf2, env);
+        tmp_buf3 = axis2_stracat(tmp_buf, tmp_buf2, env);
         if (tmp_buf)
         {
             AXIS2_FREE(env->allocator, tmp_buf);
@@ -565,7 +565,7 @@ axis2_http_simple_request_get_body_bytes(
     if (tmp_buf)
     {
         *buf = tmp_buf;
-        return AXIS2_STRLEN(tmp_buf);
+        return axis2_strlen(tmp_buf);
     }
     return -1;
 }

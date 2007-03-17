@@ -107,8 +107,8 @@ axis2_addr_disp_find_svc(
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Checking for service using WSA enpoint address : %s", address);
 
-            if ((AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL, address) == 0) ||
-                    (AXIS2_STRCMP(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0))
+            if ((axis2_strcmp(AXIS2_WSA_ANONYMOUS_URL, address) == 0) ||
+                    (axis2_strcmp(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0))
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
                     "Endpoint address cannot be the same as WSA namespace : %s", address);
@@ -203,7 +203,7 @@ axis2_addr_disp_invoke(
     {
         const axis2_char_t *relates_to_value = NULL;
         relates_to_value = axis2_relates_to_get_value(relates_to, env);
-        if (relates_to_value && AXIS2_STRCMP(relates_to_value, "") != 0)
+        if (relates_to_value && axis2_strcmp(relates_to_value, "") != 0)
         {
             axis2_conf_ctx_t *conf_ctx = NULL;
 

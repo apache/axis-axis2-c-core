@@ -167,7 +167,7 @@ axis2_req_uri_disp_find_op(
                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                             "Checking for operation using target endpoint uri fragment : %s", url_tokens[1]);
                     op_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
-                    op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, AXIS2_QNAME_GET_LOCALPART(op_qname, env));
+                    op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, axis2_qname_get_localpart(op_qname, env));
                     axis2_qname_free(op_qname, env);
                     if (op)
                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,

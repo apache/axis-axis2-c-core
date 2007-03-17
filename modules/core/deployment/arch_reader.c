@@ -177,7 +177,7 @@ axis2_arch_reader_build_svc_grp(
         }
     }
     
-    if (root_element_name && 0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
+    if (root_element_name && 0 == axis2_strcmp(AXIS2_SVC_ELEMENT, root_element_name))
     {
         axis2_svc_t *svc = NULL;
         axis2_svc_builder_t *svc_builder = NULL;
@@ -195,7 +195,7 @@ axis2_arch_reader_build_svc_grp(
             svc_qname = axis2_qname_create(env, svc_name, NULL, NULL);
             svc = axis2_svc_create_with_qname(env, svc_qname);
             status = AXIS2_ARCH_FILE_DATA_ADD_SVC(file_data, env, svc);
-            AXIS2_QNAME_FREE(svc_qname, env);
+            axis2_qname_free(svc_qname, env);
             if (AXIS2_SUCCESS != status)
             {
                 AXIS2_SVC_FREE(svc, env);
@@ -227,7 +227,7 @@ axis2_arch_reader_build_svc_grp(
         }
 
     }
-    else if (root_element_name && 0 == AXIS2_STRCMP(AXIS2_SVC_GRP_ELEMENT, root_element_name))
+    else if (root_element_name && 0 == axis2_strcmp(AXIS2_SVC_GRP_ELEMENT, root_element_name))
     {
         axis2_svc_grp_builder_t *grp_builder = NULL;
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env,

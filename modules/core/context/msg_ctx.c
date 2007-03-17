@@ -387,7 +387,7 @@ axis2_msg_ctx_init(
     if (msg_ctx->svc_qname)
     {
         msg_ctx->svc = AXIS2_CONF_GET_SVC(conf, env,
-                AXIS2_QNAME_GET_LOCALPART(msg_ctx->svc_qname, env));
+                axis2_qname_get_localpart(msg_ctx->svc_qname, env));
     }
 
     if (msg_ctx->op_qname)
@@ -1006,7 +1006,7 @@ axis2_msg_ctx_set_svc_ctx_id(
 
     if (svc_ctx_id)
     {
-        msg_ctx->svc_ctx_id = AXIS2_STRDUP(svc_ctx_id, env);
+        msg_ctx->svc_ctx_id = axis2_strdup(svc_ctx_id, env);
         if (!(msg_ctx->svc_ctx_id))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1579,10 +1579,10 @@ axis2_msg_ctx_set_options(
             AXIS2_ENABLE_REST, AXIS2_FALSE);
     if (rest_val)
     {
-		value = (axis2_char_t *)AXIS2_PROPERTY_GET_VALUE(rest_val, env);
+		value = (axis2_char_t *)axis2_property_get_value(rest_val, env);
 		if (value)
 		{
-			if (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0)
+			if (axis2_strcmp(value, AXIS2_VALUE_TRUE) == 0)
 				 axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
 		}
     }

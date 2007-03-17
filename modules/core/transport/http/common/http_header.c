@@ -80,8 +80,8 @@ axis2_http_header_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    http_header_impl->name = (axis2_char_t *)AXIS2_STRDUP(name, env);
-    http_header_impl->value = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    http_header_impl->name = (axis2_char_t *)axis2_strdup(name, env);
+    http_header_impl->value = (axis2_char_t *)axis2_strdup(value, env);
 
     http_header_impl->http_header.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_header_ops_t));
@@ -114,15 +114,15 @@ axis2_http_header_create_by_str(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_ENV_CHECK(env, NULL);
 
-    tmp_str = AXIS2_STRDUP(str, env);
+    tmp_str = axis2_strdup(str, env);
     if (NULL == tmp_str)
     {
         return NULL;
     }
     /* remove trailing \r\n */
-    if ('\r' == tmp_str[AXIS2_STRLEN(tmp_str)-2])
+    if ('\r' == tmp_str[axis2_strlen(tmp_str)-2])
     {
-        tmp_str[AXIS2_STRLEN(tmp_str)-2] = '\0';
+        tmp_str[axis2_strlen(tmp_str)-2] = '\0';
     }
 
     ch = strchr((const char *)tmp_str, ':');
@@ -182,8 +182,8 @@ axis2_http_header_to_external_form(
     axis2_char_t *external_form = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     http_header_impl = AXIS2_INTF_TO_IMPL(header);
-    len = AXIS2_STRLEN(http_header_impl->name) +
-            AXIS2_STRLEN(http_header_impl->value) + 8;
+    len = axis2_strlen(http_header_impl->name) +
+            axis2_strlen(http_header_impl->value) + 8;
     external_form = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
             len);
     sprintf(external_form, "%s: %s%s", http_header_impl->name,

@@ -92,11 +92,11 @@ axis2_ctx_set_property(struct axis2_ctx *ctx,
                 AXIS2_HASH_KEY_STRING);
 			if (temp_value)
 			{
-				void *temp_value_value =  AXIS2_PROPERTY_GET_VALUE (temp_value, env);
-				void *value_value =  AXIS2_PROPERTY_GET_VALUE (value, env);
+				void *temp_value_value =  axis2_property_get_value (temp_value, env);
+				void *value_value =  axis2_property_get_value (value, env);
 				if (temp_value_value != value_value)
 				{
-					AXIS2_PROPERTY_FREE(temp_value, env);
+					axis2_property_free(temp_value, env);
 				}
 			}
         }
@@ -185,7 +185,7 @@ axis2_ctx_free(struct axis2_ctx *ctx,
 
             if (property)
             {
-                AXIS2_PROPERTY_FREE(property, env);
+                axis2_property_free(property, env);
             }
         }
         axis2_hash_free(ctx->non_persistent_map, env);
@@ -206,7 +206,7 @@ axis2_ctx_free(struct axis2_ctx *ctx,
 
             if (property)
             {
-                AXIS2_PROPERTY_FREE(property, env);
+                axis2_property_free(property, env);
             }
         }
         axis2_hash_free(ctx->persistent_map, env);
@@ -239,7 +239,7 @@ axis2_ctx_set_non_persistent_map(struct axis2_ctx *ctx,
 
             if (property)
             {
-                AXIS2_PROPERTY_FREE(property, env);
+                axis2_property_free(property, env);
             }
         }
         if (ctx->non_persistent_map != map) /* handle repeated invocation case */
@@ -276,7 +276,7 @@ axis2_ctx_set_persistent_map(struct axis2_ctx *ctx,
 
             if (property)
             {
-                AXIS2_PROPERTY_FREE(property, env);
+                axis2_property_free(property, env);
             }
         }
         axis2_hash_free(ctx->persistent_map, env);

@@ -118,7 +118,7 @@ axis2_svc_grp_free(
 
     if (svc_grp->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(svc_grp->param_container,
+        axis2_param_container_free(svc_grp->param_container,
                 env);
     }
 
@@ -160,7 +160,7 @@ axis2_svc_grp_set_name(
 
     if (svc_grp->svc_grp_name)
         AXIS2_FREE(env->allocator, svc_grp->svc_grp_name);
-    svc_grp->svc_grp_name = AXIS2_STRDUP(name, env);
+    svc_grp->svc_grp_name = axis2_strdup(name, env);
     if (!svc_grp->svc_grp_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -199,7 +199,7 @@ axis2_svc_grp_add_svc(
             return AXIS2_FAILURE;
     }
     svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
-    svc_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)svc_qname, env);
+    svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
     axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
 
     handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env,
@@ -256,7 +256,7 @@ axis2_svc_grp_get_svc(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
-    name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
+    name = axis2_qname_to_string((axis2_qname_t *)qname, env);
     return (axis2_svc_t *) axis2_hash_get(svc_grp->svcs, name,
             AXIS2_HASH_KEY_STRING);
 }
@@ -283,7 +283,7 @@ axis2_svc_grp_remove_svc(
 
     svc = axis2_svc_grp_get_svc(svc_grp, env, svc_qname);
 
-    svc_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)svc_qname, env);
+    svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
     axis2_hash_set(svc_grp->svcs, svc_name,
             AXIS2_HASH_KEY_STRING, NULL);
 
@@ -300,7 +300,7 @@ axis2_svc_grp_add_param(
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
     if (AXIS2_TRUE == axis2_svc_grp_is_param_locked(svc_grp, env,
-            AXIS2_PARAM_GET_NAME(param, env)))
+            axis2_param_get_name(param, env)))
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
@@ -308,7 +308,7 @@ axis2_svc_grp_add_param(
     }
     else
     {
-        return AXIS2_PARAM_CONTAINER_ADD_PARAM(svc_grp->param_container, env, param);
+        return axis2_param_container_add_param(svc_grp->param_container, env, param);
     }
 
     return AXIS2_FAILURE;
@@ -324,7 +324,7 @@ axis2_svc_grp_get_param(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
-    param = AXIS2_PARAM_CONTAINER_GET_PARAM(svc_grp->param_container, env, name);
+    param = axis2_param_container_get_param(svc_grp->param_container, env, name);
     if (param == NULL && svc_grp->parent)
     {
         param = AXIS2_CONF_GET_PARAM(svc_grp->parent, env, name);
@@ -339,7 +339,7 @@ axis2_svc_grp_get_all_params(
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    return AXIS2_PARAM_CONTAINER_GET_PARAMS(svc_grp->param_container, env);
+    return axis2_param_container_get_params(svc_grp->param_container, env);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -367,7 +367,7 @@ axis2_svc_grp_is_param_locked(
         ret = AXIS2_TRUE;
     }
     param = axis2_svc_grp_get_param(svc_grp, env, param_name);
-    if (param && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env))
+    if (param && AXIS2_TRUE == axis2_param_is_locked(param, env))
     {
         ret = AXIS2_TRUE;
     }
@@ -441,9 +441,9 @@ axis2_svc_grp_engage_module(
     for (i = 0; size; i++)
     {
         modu = axis2_array_list_get(svc_grp->module_qnames, env, i);
-        modu_local = AXIS2_QNAME_GET_LOCALPART(modu, env);
-        module_name_local = AXIS2_QNAME_GET_LOCALPART(module_name, env);
-        if (0 == AXIS2_STRCMP(modu_local, module_name_local))
+        modu_local = axis2_qname_get_localpart(modu, env);
+        module_name_local = axis2_qname_get_localpart(module_name, env);
+        if (0 == axis2_strcmp(modu_local, module_name_local))
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP, AXIS2_FAILURE);

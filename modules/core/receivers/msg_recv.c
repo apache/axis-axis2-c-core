@@ -87,7 +87,7 @@ axis2_msg_recv_create(
         return NULL;
     }
 
-    msg_recv->scope = AXIS2_STRDUP("app*", env);
+    msg_recv->scope = axis2_strdup ("app*", env);
     msg_recv->derived = NULL;
     msg_recv->receive = axis2_msg_recv_receive_impl;
 
@@ -202,7 +202,7 @@ axis2_msg_recv_set_scope(
         AXIS2_FREE(env->allocator, msg_recv->scope);
         msg_recv->scope = NULL;
     }
-    msg_recv->scope = AXIS2_STRDUP(scope, env);
+    msg_recv->scope = axis2_strdup(scope, env);
     if (!msg_recv->scope)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -247,9 +247,9 @@ axis2_msg_recv_delete_svc_obj(
     scope_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SCOPE);
     if (scope_param)
     {
-        param_value = AXIS2_PARAM_GET_VALUE(scope_param, env);
+        param_value = axis2_param_get_value(scope_param, env);
     }
-    if (param_value && (0 == AXIS2_STRCMP(AXIS2_APPLICATION_SCOPE,
+    if (param_value && (0 == axis2_strcmp(AXIS2_APPLICATION_SCOPE,
             param_value)))
     {
         return AXIS2_SUCCESS;
@@ -262,7 +262,7 @@ axis2_msg_recv_delete_svc_obj(
                 AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    dll_desc = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
+    dll_desc = axis2_param_get_value(impl_info_param, env);
     return axis2_class_loader_delete_dll(env, dll_desc);
 }
 

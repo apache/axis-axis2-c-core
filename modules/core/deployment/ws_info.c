@@ -53,7 +53,7 @@ axis2_ws_info_create_with_file_name_and_last_modified_date(
     ws_info->last_modified_date = 0;
     ws_info->type = 0;
 
-    ws_info->file_name = AXIS2_STRDUP(file_name, env);
+    ws_info->file_name = axis2_strdup(file_name, env);
     if (!ws_info->file_name)
     {
         axis2_ws_info_free(ws_info, env);

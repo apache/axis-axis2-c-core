@@ -128,15 +128,15 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
             axis2_char_t *localname = NULL;
             axis2_qname_t *temp_svc_qname = NULL;
 
-            temp1 = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+            temp1 = axis2_qname_get_localpart(svc_qname, env);
             localname = axis2_strcat(env, "dii_", temp1, NULL);
-            ns = AXIS2_QNAME_GET_URI(svc_qname, env);
-            prefix = AXIS2_QNAME_GET_PREFIX(svc_qname, env);
+            ns = axis2_qname_get_uri(svc_qname, env);
+            prefix = axis2_qname_get_prefix(svc_qname, env);
             temp_svc_qname = axis2_qname_create(env, localname, ns, prefix);
             AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
             AXIS2_SVC_SET_QNAME(axis2_svc, env, temp_svc_qname);
             AXIS2_FREE(env->allocator, localname);
-            AXIS2_QNAME_FREE(temp_svc_qname, env);
+            axis2_qname_free(temp_svc_qname, env);
         }
         endpoints = WODEN_SVC_GET_ENDPOINTS(wsdl_svc, env);
         if (endpoints)
@@ -155,7 +155,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 endpoint_found = AXIS2_TRUE;
                 break;
             }
-            if (0 == AXIS2_STRCMP(ep_name, WODEN_NC_NAME_TO_STRING(ep_ncname, env)))
+            if (0 == axis2_strcmp(ep_name, WODEN_NC_NAME_TO_STRING(ep_ncname, env)))
             {
                 endpoint_found = AXIS2_TRUE;
                 break;
@@ -170,7 +170,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
             soap_address = WODEN_ENDPOINT_GET_ADDRESS(endpoint, env);
             if (soap_address)
             {
-                address = AXIS2_URI_TO_STRING(soap_address, env,
+                address = axis2_uri_to_string(soap_address, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
                 endpoint_ref = axis2_endpoint_ref_create(env, address);
                 if (options)
@@ -232,11 +232,11 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 direction = WODEN_INTERFACE_MSG_REF_GET_DIRECTION(interface_msg_ref,
 				    env);
                 str_direction = WODEN_DIRECTION_TO_STRING(direction, env);
-                if (0 == AXIS2_STRCMP(str_direction, "in"))
+                if (0 == axis2_strcmp(str_direction, "in"))
                 {
                     in = AXIS2_TRUE;
                 }
-                if (0 == AXIS2_STRCMP(str_direction, "out"))
+                if (0 == axis2_strcmp(str_direction, "out"))
                 {
                     out = AXIS2_TRUE;
                 }
@@ -248,7 +248,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 env);
             if (mep_uri)
             {
-                mep_str = AXIS2_URI_TO_STRING(mep_uri, env,
+                mep_str = axis2_uri_to_string(mep_uri, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
                 axis2_op_set_msg_exchange_pattern(axis2_op, env, mep_str);
             }
@@ -292,7 +292,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 svc_found = AXIS2_TRUE;
                 break;
             }
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(svc_qname, env,
+            if (AXIS2_TRUE == axis2_qname_equals(svc_qname, env,
                 (axis2_qname_t *) wsdl_svc_qname))
             {
                 svc_found = AXIS2_TRUE;
@@ -307,15 +307,15 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
             axis2_char_t *localname = NULL;
             axis2_qname_t *temp_svc_qname = NULL;
 
-            temp1 = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+            temp1 = axis2_qname_get_localpart(svc_qname, env);
             localname = axis2_strcat(env, "dii_", temp1, NULL);
-            ns = AXIS2_QNAME_GET_URI(svc_qname, env);
-            prefix = AXIS2_QNAME_GET_PREFIX(svc_qname, env);
+            ns = axis2_qname_get_uri(svc_qname, env);
+            prefix = axis2_qname_get_prefix(svc_qname, env);
             temp_svc_qname = axis2_qname_create(env, localname, ns, prefix);
             AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
             AXIS2_SVC_SET_QNAME(axis2_svc, env, temp_svc_qname);
             AXIS2_FREE(env->allocator, localname);
-            AXIS2_QNAME_FREE(temp_svc_qname, env);
+            axis2_qname_free(temp_svc_qname, env);
         }
         if(wsdl_svc)
 		{
@@ -337,7 +337,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 endpoint_found = AXIS2_TRUE;
                 break;
             }
-            if (0 == AXIS2_STRCMP(ep_name, WODEN_NC_NAME_TO_STRING(ep_ncname, env)))
+            if (0 == axis2_strcmp(ep_name, WODEN_NC_NAME_TO_STRING(ep_ncname, env)))
             {
                 endpoint_found = AXIS2_TRUE;
                 break;
@@ -369,7 +369,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
 
                 ext_element = axis2_array_list_get(ext_elements, env, j);
                 ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-                if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
+                if (AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
                 {
                     void *soap_address = NULL;
 
@@ -386,7 +386,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
 
             if (soap_address_uri)
             {
-                address = AXIS2_URI_TO_STRING(soap_address_uri, env,
+                address = axis2_uri_to_string(soap_address_uri, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
                 endpoint_ref = axis2_endpoint_ref_create(env, address);
                 if (options)
@@ -445,11 +445,11 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 direction = 
 					WODEN_WSDL10_INTERFACE_MSG_REF_GET_DIRECTION(interface_msg_ref, env);
                 str_direction = WODEN_DIRECTION_TO_STRING(direction, env);
-                if (0 == AXIS2_STRCMP(str_direction, "in"))
+                if (0 == axis2_strcmp(str_direction, "in"))
                 {
                     in = AXIS2_TRUE;
                 }
-                if (0 == AXIS2_STRCMP(str_direction, "out"))
+                if (0 == axis2_strcmp(str_direction, "out"))
                 {
                     out = AXIS2_TRUE;
                 }
@@ -461,7 +461,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 env);
             if (mep_uri)
             {
-                mep_str = AXIS2_URI_TO_STRING(mep_uri, env,
+                mep_str = axis2_uri_to_string(mep_uri, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
                 axis2_op_set_msg_exchange_pattern(axis2_op, env, mep_str);
             }
@@ -481,7 +481,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
 
                 ext_element = axis2_array_list_get(ext_elements, env, j);
                 ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-                if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
+                if (AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
                 {
                     void *soap_binding_op = NULL;
                     axis2_uri_t *soap_action_uri = NULL;

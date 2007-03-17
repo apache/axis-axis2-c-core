@@ -193,12 +193,12 @@ axis2_http_server_init(
     server_impl = AXIS2_INTF_TO_IMPL(server);
 
     server_impl->conf_ctx = conf_ctx;
-    param = (axis2_param_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
+    param = (axis2_param_t *)axis2_param_container_get_param(
                 axis2_transport_in_desc_param_container(in_desc, env), 
                 env, "port");
     if (param)
     {
-        port_str = AXIS2_PARAM_GET_VALUE(param, env);
+        port_str = axis2_param_get_value(param, env);
     }
     if (port_str)
     {
@@ -280,7 +280,7 @@ axis2_http_server_get_reply_to_epr(
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
     host_address = "127.0.0.1"; /* TODO : get from axis2.xml */
-    svc_path = AXIS2_STRACAT("/axis2/services/", svc_name, env);
+    svc_path = axis2_stracat("/axis2/services/", svc_name, env);
     url = axis2_url_create(env, "http", host_address,
             AXIS2_INTF_TO_IMPL(server)->port, svc_path);
     AXIS2_FREE(env->allocator, svc_path);
@@ -288,8 +288,8 @@ axis2_http_server_get_reply_to_epr(
     {
         return NULL;
     }
-    epr = axis2_endpoint_ref_create(env, AXIS2_URL_TO_EXTERNAL_FORM(url, env));
-    AXIS2_URL_FREE(url, env);
+    epr = axis2_endpoint_ref_create(env, axis2_url_to_external_form(url, env));
+    axis2_url_free(url, env);
     return epr;
 }
 

@@ -197,21 +197,21 @@ axis2_svc_create(
         AXIS2_FREE(env->allocator, svc->schema_target_ns_prefix);
         svc->schema_target_ns_prefix = NULL;
     }
-    svc->schema_target_ns_prefix = AXIS2_STRDUP("ns", env);
+    svc->schema_target_ns_prefix = axis2_strdup("ns", env);
 
     if (svc->target_ns)
     {
         AXIS2_FREE(env->allocator, svc->target_ns);
         svc->target_ns = NULL;
     }
-    svc->target_ns = AXIS2_STRDUP("http://ws.apache.org/axis2", env);
+    svc->target_ns = axis2_strdup("http://ws.apache.org/axis2", env);
 
     if (svc->target_ns_prefix)
     {
         AXIS2_FREE(env->allocator, svc->target_ns_prefix);
         svc->target_ns_prefix = NULL;
     }
-    svc->target_ns_prefix = AXIS2_STRDUP("tns", env);
+    svc->target_ns_prefix = axis2_strdup("tns", env);
     svc->sc_calc_count = 0;
 
     return svc;
@@ -253,7 +253,7 @@ axis2_svc_free(
 
     if (svc->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(svc->param_container, env);
+        axis2_param_container_free(svc->param_container, env);
         svc->param_container = NULL;
     }
 
@@ -289,7 +289,7 @@ axis2_svc_free(
             qname = axis2_array_list_get(svc->module_list, env, i);
             if (qname)
             {
-                AXIS2_QNAME_FREE(qname, env);
+                axis2_qname_free(qname, env);
                 qname = NULL;
             }
         }
@@ -451,7 +451,7 @@ axis2_svc_add_op(
     }
     qname = axis2_op_get_qname(op, env);
     if (qname)
-        key = AXIS2_QNAME_GET_LOCALPART(qname, env);
+        key = axis2_qname_get_localpart(qname, env);
     if (key)
         axis2_hash_set(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
     return AXIS2_SUCCESS;
@@ -469,7 +469,7 @@ axis2_svc_get_op_with_qname(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, op_qname, NULL);
 
-    key = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
+    key = axis2_qname_get_localpart(op_qname, env);
     op = axis2_hash_get(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING);
     if (NULL == op)
         op = axis2_hash_get(svc->op_action_map, key, AXIS2_HASH_KEY_STRING);
@@ -565,7 +565,7 @@ axis2_svc_add_param(
 
 
     if (AXIS2_TRUE == axis2_svc_is_param_locked(svc, env,
-            AXIS2_PARAM_GET_NAME(param, env)))
+            axis2_param_get_name(param, env)))
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
@@ -573,7 +573,7 @@ axis2_svc_add_param(
     }
     else
     {
-        return AXIS2_PARAM_CONTAINER_ADD_PARAM(svc->param_container, env, param);
+        return axis2_param_container_add_param(svc->param_container, env, param);
     }
     return AXIS2_FAILURE;
 }
@@ -588,7 +588,7 @@ axis2_svc_get_param(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
-    param = AXIS2_PARAM_CONTAINER_GET_PARAM(svc->param_container, env, name);
+    param = axis2_param_container_get_param(svc->param_container, env, name);
     if (param == NULL && svc->parent)
     {
         param =  axis2_svc_grp_get_param(svc->parent, env, name);
@@ -603,7 +603,7 @@ axis2_svc_get_all_params(
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    return AXIS2_PARAM_CONTAINER_GET_PARAMS(svc->param_container, env);
+    return axis2_param_container_get_params(svc->param_container, env);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -632,7 +632,7 @@ axis2_svc_is_param_locked(
     param = axis2_svc_get_param(svc, env, param_name);
     if (param)
     {
-        ret = AXIS2_PARAM_IS_LOCKED(param, env);
+        ret = axis2_param_is_locked(param, env);
     }
     return ret;
 }
@@ -662,7 +662,7 @@ axis2_svc_engage_module(
                     env, AXIS2_MODULEREF_KEY);
     if (property)
         collection_module = (axis2_array_list_t *)
-                AXIS2_PROPERTY_GET_VALUE(property, env);
+                axis2_property_get_value(property, env);
     if (!collection_module)
     {
         return AXIS2_FAILURE;
@@ -895,7 +895,7 @@ axis2_svc_set_style(
         svc->style = NULL;
     }
 
-    svc->style = AXIS2_STRDUP(style, env);
+    svc->style = axis2_strdup(style, env);
     return AXIS2_SUCCESS;
 }
 
@@ -921,7 +921,7 @@ axis2_svc_get_in_flow(
             AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
                 svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FLOW_KEY);
     if (property)
-        return (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+        return (axis2_flow_t *) axis2_property_get_value(property, env);
     return NULL;
 }
 
@@ -937,8 +937,8 @@ axis2_svc_set_in_flow(
     AXIS2_PARAM_CHECK(env->error, in_flow, AXIS2_FAILURE);
 
     property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(property, env, in_flow);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_flow_free_void_arg);
+    axis2_property_set_value(property, env, in_flow);
+    axis2_property_set_free_func(property, env, axis2_flow_free_void_arg);
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
             wsdl_component, env, AXIS2_IN_FLOW_KEY, property);
 }
@@ -956,7 +956,7 @@ axis2_svc_get_out_flow(
             AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
                 svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FLOW_KEY);
     if (property)
-        return (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+        return (axis2_flow_t *) axis2_property_get_value(property, env);
     return NULL;
 }
 
@@ -972,8 +972,8 @@ axis2_svc_set_out_flow(
     AXIS2_PARAM_CHECK(env->error, out_flow, AXIS2_FAILURE);
 
     property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(property, env, out_flow);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_flow_free_void_arg);
+    axis2_property_set_value(property, env, out_flow);
+    axis2_property_set_free_func(property, env, axis2_flow_free_void_arg);
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
             wsdl_component, env, AXIS2_OUT_FLOW_KEY, property);
 }
@@ -991,7 +991,7 @@ axis2_svc_get_fault_in_flow(
             AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
                 svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FAULTFLOW_KEY);
     if (property)
-        return (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+        return (axis2_flow_t *) axis2_property_get_value(property, env);
     return NULL;
 }
 
@@ -1007,8 +1007,8 @@ axis2_svc_set_fault_in_flow(
     AXIS2_PARAM_CHECK(env->error, fault_flow, AXIS2_FAILURE);
 
     property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(property, env, fault_flow);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_flow_free_void_arg);
+    axis2_property_set_value(property, env, fault_flow);
+    axis2_property_set_free_func(property, env, axis2_flow_free_void_arg);
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
             wsdl_component, env, AXIS2_IN_FAULTFLOW_KEY, property);
 }
@@ -1025,7 +1025,7 @@ axis2_svc_get_fault_out_flow(
             AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
                 svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FAULTFLOW_KEY);
     if (property)
-        return (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
+        return (axis2_flow_t *) axis2_property_get_value(property, env);
     return NULL;
 }
 
@@ -1041,8 +1041,8 @@ axis2_svc_set_fault_out_flow(
     AXIS2_PARAM_CHECK(env->error, fault_flow, AXIS2_FAILURE);
 
     property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(property, env, fault_flow);
-    AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_flow_free_void_arg);
+    axis2_property_set_value(property, env, fault_flow);
+    axis2_property_set_free_func(property, env, axis2_flow_free_void_arg);
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
             wsdl_component, env, AXIS2_OUT_FAULTFLOW_KEY, property);
 }
@@ -1061,7 +1061,7 @@ axis2_svc_get_op_by_soap_action(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, soap_action, NULL);
 
-    if (0 == AXIS2_STRCMP(soap_action, ""))
+    if (0 == axis2_strcmp(soap_action, ""))
         return NULL;
 
     endpoints = axis2_svc_get_all_endpoints(svc, env);
@@ -1140,7 +1140,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(
                     extensible_element, env);
             if (axis2_qname_equals(type_2, env, type_1))
             {
-                if (0 == AXIS2_STRCMP(AXIS2_WSDL_SOAP_OP_GET_SOAP_ACTION(
+                if (0 == axis2_strcmp(AXIS2_WSDL_SOAP_OP_GET_SOAP_ACTION(
                             element, env), soap_action))
                 {
                     op = (axis2_op_t *)
@@ -1150,7 +1150,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(
                 }
 
             }
-            AXIS2_QNAME_FREE(type_2, env);
+            axis2_qname_free(type_2, env);
             type_2 = NULL;
             j++;
         }
@@ -1160,7 +1160,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(
     {
         return op;
     }
-    AXIS2_QNAME_FREE(type_1, env);
+    axis2_qname_free(type_1, env);
     type_1 = NULL;
     return NULL;
 } */
@@ -1174,7 +1174,7 @@ axis2_svc_get_name(
 
     if (svc->qname)
     {
-        return AXIS2_QNAME_GET_LOCALPART(svc->qname, env);
+        return axis2_qname_get_localpart(svc->qname, env);
     }
 
     return NULL;
@@ -1194,7 +1194,7 @@ axis2_svc_set_name(
         AXIS2_FREE(env->allocator, svc->axis_svc_name);
         svc->axis_svc_name = NULL;
     }
-    svc->axis_svc_name = AXIS2_STRDUP(axis_svc_name, env);
+    svc->axis_svc_name = axis2_strdup(axis_svc_name, env);
     if (!svc->axis_svc_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1242,7 +1242,7 @@ axis2_svc_set_file_name(
         AXIS2_FREE(env->allocator, svc->filename);
         svc->filename = NULL;
     }
-    svc->filename = (axis2_char_t *) AXIS2_STRDUP(filename, env);
+    svc->filename = (axis2_char_t *) axis2_strdup(filename, env);
     if (!svc->filename)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1273,7 +1273,7 @@ axis2_svc_set_svc_desc(
         AXIS2_FREE(env->allocator, svc->svc_desc);
         svc->svc_desc = NULL;
     }
-    svc->svc_desc = (axis2_char_t *) AXIS2_STRDUP(svc_desc, env);
+    svc->svc_desc = (axis2_char_t *) axis2_strdup(svc_desc, env);
     if (!svc->svc_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1337,7 +1337,7 @@ axis2_svc_add_mapping(
     AXIS2_PARAM_CHECK(env->error, mapping_key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
-    axis2_hash_set(svc->op_action_map, AXIS2_STRDUP(mapping_key, env),
+    axis2_hash_set(svc->op_action_map, axis2_strdup(mapping_key, env),
             AXIS2_HASH_KEY_STRING, op_desc);
     return AXIS2_SUCCESS;
 }
@@ -1353,7 +1353,7 @@ axis2_svc_add_module_qname(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
 
-    qmodule_qname_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
+    qmodule_qname_l = axis2_qname_clone((axis2_qname_t *)module_qname, env);
     return axis2_array_list_add(svc->module_list, env,
             qmodule_qname_l);
 }
@@ -1438,7 +1438,7 @@ axis2_svc_set_custom_schema_prefix(
         AXIS2_FREE(env->allocator, svc->custom_schema_name_prefix);
         svc->custom_schema_name_prefix = NULL;
     }
-    svc->custom_schema_name_prefix = AXIS2_STRDUP(prefix, env);
+    svc->custom_schema_name_prefix = axis2_strdup(prefix, env);
     if (NULL == svc->custom_schema_name_prefix)
     {
         return AXIS2_FAILURE;
@@ -1469,7 +1469,7 @@ axis2_svc_set_custom_schema_suffix(
         AXIS2_FREE(env->allocator, svc->custom_schema_name_suffix);
         svc->custom_schema_name_suffix = NULL;
     }
-    svc->custom_schema_name_suffix = AXIS2_STRDUP(suffix, env);
+    svc->custom_schema_name_suffix = axis2_strdup(suffix, env);
     if (NULL == svc->custom_schema_name_suffix)
     {
         return AXIS2_FAILURE;
@@ -1503,7 +1503,7 @@ axis2_svc_print_schema(
         buffer = XML_SCHEMA_SERIALIZE(schema, env);
         if (buffer)
         {
-            AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));
+            AXIS2_STREAM_WRITE(out_stream, env, buffer, axis2_strlen(buffer));
         }
         AXIS2_FREE(env->allocator, buffer);
     }
@@ -1628,7 +1628,7 @@ axis2_svc_set_schema_target_ns(
         AXIS2_FREE(env->allocator, svc->schema_target_ns);
         svc->schema_target_ns = NULL;
     }
-    svc->schema_target_ns = AXIS2_STRDUP(ns, env);
+    svc->schema_target_ns = axis2_strdup(ns, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1655,7 +1655,7 @@ axis2_svc_set_schema_target_ns_prefix(
         AXIS2_FREE(env->allocator, svc->schema_target_ns_prefix);
         svc->schema_target_ns_prefix = NULL;
     }
-    svc->schema_target_ns_prefix = AXIS2_STRDUP(prefix, env);
+    svc->schema_target_ns_prefix = axis2_strdup(prefix, env);
     return AXIS2_SUCCESS;
 }*/
 
@@ -1682,7 +1682,7 @@ axis2_svc_set_target_ns(
         AXIS2_FREE(env->allocator, svc->target_ns);
         svc->target_ns = NULL;
     }
-    svc->target_ns = AXIS2_STRDUP(ns, env);
+    svc->target_ns = axis2_strdup(ns, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1709,7 +1709,7 @@ axis2_svc_set_target_ns_prefix(
         AXIS2_FREE(env->allocator, svc->target_ns_prefix);
         svc->target_ns_prefix = NULL;
     }
-    svc->target_ns_prefix = AXIS2_STRDUP(prefix, env);
+    svc->target_ns_prefix = axis2_strdup(prefix, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1810,7 +1810,7 @@ axis2_svc_add_schema_ns(
             void *key = NULL;
             axis2_hash_this(hi, (const void **)&key, NULL,
                     (void **)&value);
-            if (0 == AXIS2_STRCMP((axis2_char_t *)value, ns))
+            if (0 == axis2_strcmp((axis2_char_t *)value, ns))
             {
                 found = AXIS2_TRUE;
                 break;
@@ -1828,9 +1828,9 @@ axis2_svc_add_schema_ns(
         axis2_char_t *tmp_val = NULL;
         axis2_char_t *key = NULL;
 
-        tmp_val = AXIS2_STRDUP(ns, env);
+        tmp_val = axis2_strdup(ns, env);
         sprintf(str_count, "%d", svc->ns_count);
-        key = AXIS2_STRACAT("ns", str_count, env);
+        key = axis2_stracat("ns", str_count, env);
         axis2_hash_set(svc->ns_map, key, AXIS2_HASH_KEY_STRING, tmp_val);
         svc->ns_count++;
     }

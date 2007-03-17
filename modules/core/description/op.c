@@ -70,7 +70,7 @@ axis2_op_create(const axis2_env_t *env)
     op->qname = NULL;
     op->msg_exchange_pattern = NULL;
     op->style = NULL;
-    op->style = AXIS2_STRDUP(AXIS2_STYLE_DOC, env);
+    op->style = axis2_strdup(AXIS2_STYLE_DOC, env);
 
     op->param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
@@ -196,7 +196,7 @@ axis2_op_free(
     }
     if (op->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
+        axis2_param_container_free(op->param_container, env);
     }
 
     op->parent = NULL;
@@ -215,7 +215,7 @@ axis2_op_free(
 
             if (module_ref)
             {
-                AXIS2_QNAME_FREE(module_ref, env);
+                axis2_qname_free(module_ref, env);
             }
         }
         axis2_array_list_free(op->module_qnames, env);
@@ -275,7 +275,7 @@ axis2_op_add_param(axis2_op_t *op,
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
 
-    param_name = AXIS2_PARAM_GET_NAME(param, env);
+    param_name = axis2_param_get_name(param, env);
     if (AXIS2_TRUE == axis2_op_is_param_locked(op, env, param_name))
     {
         AXIS2_ERROR_SET(env->error,
@@ -284,7 +284,7 @@ axis2_op_add_param(axis2_op_t *op,
     }
     else
     {
-        status = AXIS2_PARAM_CONTAINER_ADD_PARAM(op->param_container, env,
+        status = axis2_param_container_add_param(op->param_container, env,
             param);
     }
 
@@ -300,7 +300,7 @@ axis2_op_get_param(const axis2_op_t *op,
 
     AXIS2_PARAM_CHECK(env->error, param_name, NULL);
 
-    param = AXIS2_PARAM_CONTAINER_GET_PARAM(op->param_container, env, param_name);
+    param = axis2_param_container_get_param(op->param_container, env, param_name);
     if (!param && op->parent)
     {
         param = AXIS2_SVC_GET_PARAM(op->parent, env, param_name);
@@ -312,7 +312,7 @@ AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
 axis2_op_get_all_params(const axis2_op_t *op,
     const axis2_env_t *env)
 {
-    return AXIS2_PARAM_CONTAINER_GET_PARAMS(op->param_container, env);
+    return axis2_param_container_get_params(op->param_container, env);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -338,7 +338,7 @@ axis2_op_is_param_locked(axis2_op_t *op,
         return AXIS2_TRUE;
     }
     param = axis2_op_get_param(op, env, param_name);
-    return (param  && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
+    return (param  && AXIS2_TRUE == axis2_param_is_locked(param, env));
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -507,7 +507,7 @@ axis2_op_engage_module(axis2_op_t *op,
         }
         qname1 = axis2_module_desc_get_qname(module_desc, env);
         qname2 = axis2_module_desc_get_qname(moduleref, env);
-        if (AXIS2_QNAME_EQUALS(qname1, env, qname2))
+        if (axis2_qname_equals(qname1, env, qname2))
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                 "Module already engaged to operation");
@@ -576,7 +576,7 @@ axis2_op_add_to_engaged_module_list(axis2_op_t *op,
             (axis2_module_desc_t *) axis2_array_list_get(op->engaged_module_list, env, index);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
         
-        if (AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
+        if (axis2_qname_equals(module_qname, env, module_qname_l))
         {
             return AXIS2_SUCCESS;
         }
@@ -606,42 +606,42 @@ axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
 
     temp = AXIS2_MEP_CONSTANT_INVALID;
 
-    if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_OUT,
+    if (axis2_strcmp(AXIS2_MEP_URI_IN_OUT,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_OUT;
     }
-    else if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_ONLY,
+    else if (axis2_strcmp(AXIS2_MEP_URI_IN_ONLY,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_ONLY;
     }
-    else if (AXIS2_STRCMP(AXIS2_MEP_URI_IN_OPTIONAL_OUT,
+    else if (axis2_strcmp(AXIS2_MEP_URI_IN_OPTIONAL_OUT,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT;
     }
-    else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_IN,
+    else if (axis2_strcmp(AXIS2_MEP_URI_OUT_IN,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_IN;
     }
-    else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_ONLY,
+    else if (axis2_strcmp(AXIS2_MEP_URI_OUT_ONLY,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_ONLY;
     }
-    else if (AXIS2_STRCMP(AXIS2_MEP_URI_OUT_OPTIONAL_IN,
+    else if (axis2_strcmp(AXIS2_MEP_URI_OUT_OPTIONAL_IN,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN;
     }
-    else if (AXIS2_STRCMP(AXIS2_MEP_URI_ROBUST_IN_ONLY,
+    else if (axis2_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY;
     }
-    else if (AXIS2_STRCMP(AXIS2_MEP_URI_ROBUST_OUT_ONLY,
+    else if (axis2_strcmp(AXIS2_MEP_URI_ROBUST_OUT_ONLY,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY;
@@ -814,7 +814,7 @@ axis2_op_add_module_qname(axis2_op_t *op,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
-    module_qname_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
+    module_qname_l = axis2_qname_clone((axis2_qname_t *)module_qname, env);
 
     return axis2_array_list_add(op->module_qnames, env, module_qname_l);
 }

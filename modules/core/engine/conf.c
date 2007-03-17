@@ -260,7 +260,7 @@ axis2_conf_free(
 
     if (conf->param_container)
     {
-        AXIS2_PARAM_CONTAINER_FREE(conf->param_container, env);
+        axis2_param_container_free(conf->param_container, env);
     }
 
     if (conf->svc_grps)
@@ -348,7 +348,7 @@ axis2_conf_free(
             module_desc_qname = (axis2_qname_t *)
                     axis2_array_list_get(conf->engaged_modules, env, i);
             if (module_desc_qname)
-                AXIS2_QNAME_FREE(module_desc_qname, env);
+                axis2_qname_free(module_desc_qname, env);
         }
         axis2_array_list_free(conf->engaged_modules, env);
     }
@@ -513,7 +513,7 @@ axis2_conf_add_svc_grp(
         axis2_hash_this(index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
         svc_qname = AXIS2_SVC_GET_QNAME(desc, env);
-        svc_name = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+        svc_name = axis2_qname_get_localpart(svc_qname, env);
 
         svc_name2 = axis2_hash_get(conf->all_svcs, svc_name,
                 AXIS2_HASH_KEY_STRING);
@@ -536,7 +536,7 @@ axis2_conf_add_svc_grp(
 
         axis2_hash_this(index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
-        svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(desc, env), env);
+        svc_name = axis2_qname_get_localpart(AXIS2_SVC_GET_QNAME(desc, env), env);
         axis2_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
                 desc);
         index_i = axis2_hash_next(env, index_i);
@@ -611,7 +611,7 @@ axis2_conf_add_svc(
         return AXIS2_FAILURE;
     }
 
-    svc_grp_name = AXIS2_QNAME_GET_LOCALPART(svc_grp_qname, env);
+    svc_grp_name = axis2_qname_get_localpart(svc_grp_qname, env);
     if (!svc_grp_name)
     {
         return AXIS2_FAILURE;
@@ -675,7 +675,7 @@ axis2_conf_add_param(
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
 
     if (AXIS2_TRUE == axis2_conf_is_param_locked(conf, env,
-            AXIS2_PARAM_GET_NAME(param, env)))
+            axis2_param_get_name(param, env)))
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
@@ -683,7 +683,7 @@ axis2_conf_add_param(
     }
     else
     {
-        status = AXIS2_PARAM_CONTAINER_ADD_PARAM(conf->param_container, env,
+        status = axis2_param_container_add_param(conf->param_container, env,
                 param);
     }
     return status;
@@ -705,7 +705,7 @@ axis2_conf_get_param(
         return NULL;
     }
 
-    return AXIS2_PARAM_CONTAINER_GET_PARAM(conf->param_container, env,
+    return axis2_param_container_get_param(conf->param_container, env,
             name);
 
 }
@@ -716,7 +716,7 @@ axis2_conf_get_all_params(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_PARAM_CONTAINER_GET_PARAMS(conf->param_container, env);
+    return axis2_param_container_get_params(conf->param_container, env);
 
 }
 
@@ -732,7 +732,7 @@ axis2_conf_is_param_locked(
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
     param = axis2_conf_get_param(conf, env, param_name);
-    return (param && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
+    return (param && AXIS2_TRUE == axis2_param_is_locked(param, env));
 }
 
 AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
@@ -806,14 +806,14 @@ axis2_conf_get_module(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
-    name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
+    name = axis2_qname_to_string((axis2_qname_t *)qname, env);
     ret = (axis2_module_desc_t *) axis2_hash_get(conf->all_modules,
             name, AXIS2_HASH_KEY_STRING);
     if (ret)
     {
         return ret;
     }
-    module_name = AXIS2_QNAME_GET_LOCALPART(qname, env);
+    module_name = axis2_qname_get_localpart(qname, env);
     if (NULL == module_name)
     {
         return NULL;
@@ -824,10 +824,10 @@ axis2_conf_get_module(
     {
         return NULL;
     }
-    name = AXIS2_QNAME_TO_STRING(mod_qname, env);
+    name = axis2_qname_to_string(mod_qname, env);
     ret = (axis2_module_desc_t *) axis2_hash_get(conf->all_modules,
             name, AXIS2_HASH_KEY_STRING);
-    AXIS2_QNAME_FREE(mod_qname, env);
+    axis2_qname_free(mod_qname, env);
     mod_qname = NULL;
     return ret;
 }
@@ -925,7 +925,7 @@ axis2_conf_get_all_svcs(
         {
             axis2_hash_this(index_j, NULL, NULL, &value2);
             svc = (axis2_svc_t *) value2;
-            svc_name = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(svc, env), env);
+            svc_name = axis2_qname_get_localpart(AXIS2_SVC_GET_QNAME(svc, env), env);
             axis2_hash_set(conf->all_svcs, svc_name,
                     AXIS2_HASH_KEY_STRING, svc);
 
@@ -951,7 +951,7 @@ axis2_conf_is_engaged(
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FALSE);
 
     def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(conf, env,
-            AXIS2_QNAME_GET_LOCALPART(module_name, env));
+            axis2_qname_get_localpart(module_name, env));
     if (def_mod)
     {
         def_mod_qname = axis2_module_desc_get_qname(def_mod, env);
@@ -965,8 +965,8 @@ axis2_conf_is_engaged(
         qname = (axis2_qname_t *) axis2_array_list_get(conf->
                 engaged_modules, env, i);
 
-        if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_name, env, qname) ||
-                (def_mod_qname && AXIS2_TRUE == AXIS2_QNAME_EQUALS(
+        if (AXIS2_TRUE == axis2_qname_equals(module_name, env, qname) ||
+                (def_mod_qname && AXIS2_TRUE == axis2_qname_equals(
                             def_mod_qname, env, qname)))
         {
             return AXIS2_TRUE;
@@ -1128,7 +1128,7 @@ axis2_conf_add_module(
     {
         axis2_char_t *module_name = NULL;
 
-        module_name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)module_qname, env);
+        module_name = axis2_qname_to_string((axis2_qname_t *)module_qname, env);
         axis2_hash_set(conf->all_modules, module_name,
                 AXIS2_HASH_KEY_STRING, module);
     }
@@ -1330,14 +1330,14 @@ axis2_conf_engage_module(
         {
             return AXIS2_FAILURE;
         }
-        file_name = AXIS2_QNAME_GET_LOCALPART(module_ref, env);
+        file_name = axis2_qname_get_localpart(module_ref, env);
         file = (axis2_file_t *) AXIS2_ARCH_READER_CREATE_MODULE_ARCH(
                     arch_reader, env, file_name) ;
         repos_path = AXIS2_CONF_GET_REPO(conf, env);
-        temp_path1 = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
-        temp_path2 = AXIS2_STRACAT(temp_path1, AXIS2_MODULE_FOLDER, env);
-        temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
-        path = AXIS2_STRACAT(temp_path3, file_name, env);
+        temp_path1 = axis2_stracat(repos_path, AXIS2_PATH_SEP_STR, env);
+        temp_path2 = axis2_stracat(temp_path1, AXIS2_MODULE_FOLDER, env);
+        temp_path3 = axis2_stracat(temp_path2, AXIS2_PATH_SEP_STR, env);
+        path = axis2_stracat(temp_path3, file_name, env);
         AXIS2_FREE(env->allocator, temp_path1);
         AXIS2_FREE(env->allocator, temp_path2);
         AXIS2_FREE(env->allocator, temp_path3);
@@ -1364,7 +1364,7 @@ axis2_conf_engage_module(
 
             qname = (axis2_qname_t *) axis2_array_list_get(conf->
                     engaged_modules, env, i);
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_qname, env, qname))
+            if (AXIS2_TRUE == axis2_qname_equals(module_qname, env, qname))
             {
                 to_be_engaged = AXIS2_FALSE;
             }
@@ -1395,7 +1395,7 @@ axis2_conf_engage_module(
             return status;
         }
         module_qname = axis2_module_desc_get_qname(module_desc, env);
-        module_qref_l = AXIS2_QNAME_CLONE((axis2_qname_t *)module_qname, env);
+        module_qref_l = axis2_qname_clone((axis2_qname_t *)module_qname, env);
         status = axis2_array_list_add(conf->engaged_modules, env,
                 module_qref_l);
     }
@@ -1427,7 +1427,7 @@ axis2_conf_set_repo(
         AXIS2_FREE(env->allocator, conf->axis2_repo);
         conf->axis2_repo = NULL;
     }
-    conf->axis2_repo = AXIS2_STRDUP(repos_path, env);
+    conf->axis2_repo = axis2_strdup(repos_path, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1480,13 +1480,13 @@ axis2_conf_get_default_module(
 
     if (NULL == mod_ver)
     {
-        mod_name = AXIS2_STRDUP(module_name, env);
+        mod_name = axis2_strdup(module_name, env);
     }
     else
     {
         axis2_char_t *tmp_name = NULL;
-        tmp_name = AXIS2_STRACAT(module_name, "-", env);
-        mod_name = AXIS2_STRACAT(tmp_name, mod_ver, env);
+        tmp_name = axis2_stracat(module_name, "-", env);
+        mod_name = axis2_stracat(tmp_name, mod_ver, env);
         AXIS2_FREE(env->allocator, tmp_name);
     }
     mod_qname = axis2_qname_create(env, mod_name, NULL, NULL);
@@ -1498,7 +1498,7 @@ axis2_conf_get_default_module(
         return NULL;
     }
     ret_mod = (axis2_module_desc_t *)axis2_hash_get(all_modules,
-            AXIS2_QNAME_TO_STRING(mod_qname, env),
+            axis2_qname_to_string(mod_qname, env),
             AXIS2_HASH_KEY_STRING);
 
     return ret_mod;
@@ -1526,7 +1526,7 @@ axis2_conf_add_default_module_version(
     if (NULL == axis2_hash_get(name_to_ver_map, module_name,
             AXIS2_HASH_KEY_STRING))
     {
-        axis2_char_t *new_entry = AXIS2_STRDUP(module_version, env);
+        axis2_char_t *new_entry = axis2_strdup(module_version, env);
         if (NULL == new_entry)
         {
             return AXIS2_FAILURE;
@@ -1558,7 +1558,7 @@ axis2_conf_engage_module_with_version(
         return AXIS2_FAILURE;
     }
     status = AXIS2_CONF_ENGAGE_MODULE(conf, env, module_qname);
-    AXIS2_QNAME_FREE(module_qname, env);
+    axis2_qname_free(module_qname, env);
     return status;
 }
 

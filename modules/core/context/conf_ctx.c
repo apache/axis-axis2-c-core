@@ -293,7 +293,7 @@ axis2_conf_ctx_set_root_dir(
 
     if (path)
     {
-        conf_ctx->root_dir = AXIS2_STRDUP(path, env);
+        conf_ctx->root_dir = axis2_strdup(path, env);
         if (!(conf_ctx->root_dir))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -475,7 +475,7 @@ axis2_conf_ctx_fill_ctxs(
         return NULL;
     }
 
-    svc_id = AXIS2_QNAME_GET_LOCALPART(qname, env);
+    svc_id = axis2_qname_get_localpart(qname, env);
     if (!svc_id)
     {
         AXIS2_ERROR_SET(env->error,

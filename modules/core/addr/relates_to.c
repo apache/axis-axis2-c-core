@@ -47,7 +47,7 @@ axis2_relates_to_create(const axis2_env_t *env,
 
     if (value)
     {
-        relates_to->value = AXIS2_STRDUP(value, env);
+        relates_to->value = axis2_strdup(value, env);
         if (!(relates_to->value))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -58,7 +58,7 @@ axis2_relates_to_create(const axis2_env_t *env,
 
     if (relationship_type)
     {
-        relates_to->relationship_type = AXIS2_STRDUP(relationship_type, env);
+        relates_to->relationship_type = axis2_strdup(relationship_type, env);
         if (!(relates_to->relationship_type))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -91,7 +91,7 @@ axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
 
     if (value)
     {
-        relates_to->value = (axis2_char_t *)AXIS2_STRDUP(value, env);
+        relates_to->value = (axis2_char_t *)axis2_strdup(value, env);
         if (!(relates_to->value))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -124,7 +124,7 @@ axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
     if (relationship_type)
     {
         relates_to->relationship_type =
-            (axis2_char_t *)AXIS2_STRDUP(relationship_type, env);
+            (axis2_char_t *)axis2_strdup(relationship_type, env);
         if (!(relates_to->relationship_type))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

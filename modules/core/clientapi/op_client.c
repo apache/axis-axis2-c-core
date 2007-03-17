@@ -199,11 +199,11 @@ axis2_op_client_add_msg_ctx(
 													   AXIS2_DUMP_INPUT_MSG_TRUE,
 													   AXIS2_FALSE);
 			if (dump_property)
-				dump_value = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE (
+				dump_value = (axis2_char_t *) axis2_property_get_value (
 					dump_property, env);
 		}
 		
-		if(AXIS2_STRCMP(dump_value, AXIS2_VALUE_TRUE))
+		if(axis2_strcmp(dump_value, AXIS2_VALUE_TRUE))
         {
 			 axis2_msg_ctx_free(out_msg_ctx, env);
 			out_msg_ctx = NULL;
@@ -317,7 +317,7 @@ axis2_op_client_execute(
          property = AXIS2_OPTIONS_GET_PROPERTY(op_client->options, env, 
                  AXIS2_TARGET_EPR);
          if(property)
-            to_epr = AXIS2_PROPERTY_GET_VALUE(property, env);
+            to_epr = axis2_property_get_value(property, env);
          if(!to_epr)
             to_epr = AXIS2_OPTIONS_GET_TO(op_client->options, env);
         if (!to_epr)
@@ -408,8 +408,8 @@ axis2_op_client_execute(
             if (!response_mc)
             {
                 const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
-                if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-                        AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+                if (axis2_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+                        axis2_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
                 {
                     if (env->error)
                         return env->error->status_code;

@@ -170,7 +170,7 @@ axis2_op_ctx_init(
         axis2_svc_t *svc = NULL;
         axis2_char_t *svc_name = NULL;
 
-        svc_name = AXIS2_QNAME_GET_LOCALPART(op_ctx->svc_qname, env);
+        svc_name = axis2_qname_get_localpart(op_ctx->svc_qname, env);
 
         if (svc_name)
         {

@@ -605,7 +605,7 @@ axis2_options_set_soap_version_uri(
 
     if (soap_version_uri)
     {
-        options->soap_version_uri = AXIS2_STRDUP(soap_version_uri, env);
+        options->soap_version_uri = axis2_strdup(soap_version_uri, env);
     }
 
     return AXIS2_SUCCESS;
@@ -750,7 +750,7 @@ axis2_options_free(
 
             if (property)
             {
-                AXIS2_PROPERTY_FREE(property, env);
+                axis2_property_free(property, env);
             }
         }
         axis2_hash_free(options->properties, env);
@@ -821,8 +821,8 @@ axis2_options_set_enable_mtom(
         axis2_property_t *property = axis2_property_create(env);
         if (property)
         {
-            AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-            AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_STRDUP(AXIS2_VALUE_TRUE, env));
+            axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
+            axis2_property_set_value(property, env, axis2_strdup(AXIS2_VALUE_TRUE, env));
             axis2_options_set_property(options, env, AXIS2_ENABLE_MTOM, property);
         }
     }

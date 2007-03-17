@@ -174,7 +174,7 @@ axis2_apache2_worker_process_request(
     }
     content_length = request->remaining;
     http_version = request->protocol;
-    /*req_url = AXIS2_URL_TO_EXTERNAL_FORM(url, env);*/
+    /*req_url = axis2_url_to_external_form(url, env);*/
     req_url = request->unparsed_uri;
 
     content_type = (axis2_char_t *)apr_table_get(request->headers_in,
@@ -308,7 +308,7 @@ axis2_apache2_worker_process_request(
     
     /*if (url)
     {
-        AXIS2_URL_FREE(url, env);
+        axis2_url_free(url, env);
         url = NULL;
     }
     if (req_url)

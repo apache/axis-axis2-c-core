@@ -97,7 +97,7 @@ axis2_http_status_line_create(
         return NULL;
     }
     status_line_impl->status_line.ops = NULL;
-    status_line_impl->line = (axis2_char_t *)AXIS2_STRDUP(str, env);
+    status_line_impl->line = (axis2_char_t *)axis2_strdup(str, env);
     status_line_impl->http_version = NULL;
     status_line_impl->reason_phrase = NULL;
     status_line_impl->status_code = NULL;
@@ -154,11 +154,11 @@ axis2_http_status_line_create(
     *tmp++ = '\0';
     reason_phrase = tmp;
     status_line_impl->http_version = (axis2_char_t *)
-            AXIS2_STRDUP(http_version, env);
+            axis2_strdup(http_version, env);
     status_line_impl->status_code = (axis2_char_t *)
-            AXIS2_STRDUP(status_code, env);
+            axis2_strdup(status_code, env);
     status_line_impl->reason_phrase = (axis2_char_t *)
-            AXIS2_STRDUP(reason_phrase, env);
+            axis2_strdup(reason_phrase, env);
 
     if (NULL == status_line_impl->http_version ||
             NULL == status_line_impl->reason_phrase)
@@ -274,7 +274,7 @@ axis2_http_status_line_starts_with_http(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (0 == AXIS2_STRNCASECMP(AXIS2_INTF_TO_IMPL(status_line)->line, "HTTP", 4))
+    if (0 == axis2_strncasecmp(AXIS2_INTF_TO_IMPL(status_line)->line, "HTTP", 4))
     {
         return AXIS2_TRUE;
     }

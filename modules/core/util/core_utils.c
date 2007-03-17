@@ -183,16 +183,16 @@ axis2_core_utils_get_module_qname(const axis2_env_t *env,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
-    if (version  && 0 != AXIS2_STRLEN(version))
+    if (version  && 0 != axis2_strlen(version))
     {
         axis2_char_t * mod_name1 = NULL;
         axis2_char_t * mod_name = NULL;
-        mod_name1 = AXIS2_STRACAT(name, "-", env);
+        mod_name1 = axis2_stracat(name, "-", env);
         if (!mod_name1)
         {
             return NULL;
         }
-        mod_name = AXIS2_STRACAT(mod_name1, version, env);
+        mod_name = axis2_stracat(mod_name1, version, env);
         if (!mod_name)
         {
             AXIS2_FREE(env->allocator, mod_name1);
@@ -239,7 +239,7 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
             if (module_qname)
             {
                 axis2_char_t *mod_name_with_ver = NULL;
-                mod_name_with_ver = AXIS2_QNAME_GET_LOCALPART(module_qname, env);
+                mod_name_with_ver = axis2_qname_get_localpart(module_qname, env);
                 if (mod_name_with_ver)
                 {
                     axis2_char_t *module_name_str = NULL;
@@ -329,12 +329,12 @@ axis2_core_utils_get_module_name(const axis2_env_t *env, axis2_char_t *module_na
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
-    name = AXIS2_STRDUP(module_name, env);
+    name = axis2_strdup(module_name, env);
     if (!name)
     {
         return NULL;
     }
-    version_sep_loc = AXIS2_RINDEX(name, version_seperator);
+    version_sep_loc = axis2_rindex(name, version_seperator);
     if (version_sep_loc)
     {
         *version_sep_loc = '\0';
@@ -351,10 +351,10 @@ axis2_core_utils_get_module_version(const axis2_env_t *env, axis2_char_t *module
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
-    version_sep_loc = AXIS2_RINDEX(module_name, version_seperator);
+    version_sep_loc = axis2_rindex(module_name, version_seperator);
     if (version_sep_loc)
     {
-        return AXIS2_STRDUP(version_sep_loc + sizeof(axis2_char_t), env);
+        return axis2_strdup(version_sep_loc + sizeof(axis2_char_t), env);
     }
     return NULL;
 }

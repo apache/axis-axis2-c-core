@@ -121,7 +121,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         op_desc =  axis2_op_ctx_get_op(op_ctx, env);
 
         style = axis2_op_get_style(op_desc, env);
-        if (0 == AXIS2_STRCMP(AXIS2_STYLE_DOC, style))
+        if (0 == axis2_strcmp(AXIS2_STYLE_DOC, style))
         {
             axiom_soap_envelope_t *envelope = NULL;
             axiom_soap_body_t *body = NULL;
@@ -132,7 +132,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
             om_node = AXIOM_NODE_GET_FIRST_ELEMENT(om_node, env);
          }
-        else if (0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
+        else if (0 == axis2_strcmp(AXIS2_STYLE_RPC, style))
         {
             axiom_soap_envelope_t *envelope = NULL;
             axiom_soap_body_t *body = NULL;
@@ -165,7 +165,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 
                         function_name = (axis2_char_t *) axis2_array_list_get(
                                     function_arr, env, i);
-                        if (0 == AXIS2_STRCMP(function_name, local_name))
+                        if (0 == axis2_strcmp(function_name, local_name))
                         {
                             matches = AXIS2_TRUE;
 
@@ -216,12 +216,12 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 
         if (result_node)
         {
-            if (0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
+            if (0 == axis2_strcmp(style, AXIS2_STYLE_RPC))
             {
                 axiom_namespace_t *ns = NULL;
                 axis2_char_t *res_name = NULL;
 
-                res_name = AXIS2_STRACAT(local_name, "Response", env);
+                res_name = axis2_stracat(local_name, "Response", env);
                 ns = axiom_namespace_create(env, "http://soapenc/", "res");
                 if (!ns)
                 {
