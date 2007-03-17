@@ -156,7 +156,7 @@ axis2_svc_skel_calculator_invoke(axis2_svc_skeleton_t *svc_skeleton,
                 {
 
 
-                    if (AXIS2_STRCMP(op_name, "add") == 0)
+                    if (axis2_strcmp(op_name, "add") == 0)
                     {
                         return  axis2_skel_calculator_add(env  ,
                                 content_node);
@@ -165,7 +165,7 @@ axis2_svc_skel_calculator_invoke(axis2_svc_skeleton_t *svc_skeleton,
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "sub") == 0)
+                    if (axis2_strcmp(op_name, "sub") == 0)
                     {
                         return  axis2_skel_calculator_sub(env  ,
                                 content_node);
@@ -174,7 +174,7 @@ axis2_svc_skel_calculator_invoke(axis2_svc_skeleton_t *svc_skeleton,
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "mul") == 0)
+                    if (axis2_strcmp(op_name, "mul") == 0)
                     {
                         return  axis2_skel_calculator_mul(env  ,
                                 content_node);
@@ -183,7 +183,7 @@ axis2_svc_skel_calculator_invoke(axis2_svc_skeleton_t *svc_skeleton,
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "div") == 0)
+                    if (axis2_strcmp(op_name, "div") == 0)
                     {
                         return  axis2_skel_calculator_div(env  ,
                                 content_node);

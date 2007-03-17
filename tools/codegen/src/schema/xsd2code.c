@@ -113,7 +113,7 @@ w2c_schema_print_usage( const axis2_env_t *env )
     w2c_schema_print_message ( env, props,"schema2code.arg2");
     w2c_schema_print_message ( env, props,"schema2code.arg3");
     
-    AXIS2_PROPERTIES_FREE( props, env);
+    axis2_properties_free( props, env);
 }
 
 static void
@@ -122,6 +122,6 @@ w2c_schema_print_message( const axis2_env_t *env,
 {
    axis2_char_t *message = NULL;
    message = (axis2_char_t *)
-                AXIS2_PROPERTIES_GET_PROPERTY(messagep, env, key); 
+                axis2_properties_get_property(messagep, env, key); 
    printf ( "%s\n", message );
 }

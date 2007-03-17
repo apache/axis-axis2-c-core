@@ -115,25 +115,7 @@ extern "C"
     axis2_properties_store(axis2_properties_t *properites,
         const axis2_env_t *env,
         FILE *output);
-
-#define AXIS2_PROPERTIES_FREE(properties, env) \
-      axis2_properties_free (properties, env)
-
-#define AXIS2_PROPERTIES_GET_PROPERTY(properties, env, key) \
-      axis2_properties_get_property(properties, env, key)
-
-#define AXIS2_PROPERTIES_SET_PROPERTY(properties, env, key, value) \
-      axis2_properties_set_property(properties, env, key, value)
-
-#define AXIS2_PROPERTIES_GET_ALL(properties, env) \
-      axis2_properties_get_all(properties, env)
-
-#define AXIS2_PROPERTIES_LOAD(properties, env, input) \
-      axis2_properties_load(properties, env, input)
-
-#define AXIS2_PROPERTIES_STORE(properties, env, output) \
-      axis2_properties_store(properties, env, output)
-
+    
     /*************************** End of function macros ***************************/
 
 

@@ -90,7 +90,7 @@ void test_engine_config_loader(CuTest *tc)
         axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
         sprintf(actual, "%s%s=%s,", actual, key, value);
     }
-    actual_len = AXIS2_STRLEN(actual);
+    actual_len = axis2_strlen(actual);
     actual[actual_len -1 ] = '\0'; /* remove the last comma */
     expected = (char*)w2c_config_test_input2[1];
 
@@ -115,7 +115,7 @@ void test_engine_config_loader(CuTest *tc)
         axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
         sprintf(actual, "%s%s=%s,", actual, key, value);
     }
-    actual_len = AXIS2_STRLEN(actual);
+    actual_len = axis2_strlen(actual);
     actual[actual_len -1 ] = '\0'; /* remove the last comma */
     expected = (char*)w2c_config_test_input2[1];
     CuAssertStrEquals(tc, expected, actual);

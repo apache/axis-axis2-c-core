@@ -189,7 +189,7 @@ oxs_key_set_name(
         AXIS2_FREE(env->allocator, oxs_key_impl->name);
         oxs_key_impl->name = NULL;
     }
-    oxs_key_impl->name = AXIS2_STRDUP(name, env);
+    oxs_key_impl->name = axis2_strdup(name, env);
     return AXIS2_SUCCESS;
 
 }

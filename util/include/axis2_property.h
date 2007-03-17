@@ -103,23 +103,6 @@ extern "C"
     axis2_property_clone(axis2_property_t *property,
         const axis2_env_t *env);
 
-#define AXIS2_PROPERTY_FREE(property, env) \
-      axis2_property_free (property, env)
-
-#define AXIS2_PROPERTY_SET_FREE_FUNC(property, env, free_func) \
-      axis2_property_set_free_func (property, env, free_func)
-
-#define AXIS2_PROPERTY_SET_SCOPE(property, env, scope) \
-      axis2_property_set_scope (property, env, scope)
-
-#define AXIS2_PROPERTY_SET_VALUE(property, env, value) \
-      axis2_property_set_value (property, env, value)
-
-#define AXIS2_PROPERTY_GET_VALUE(property, env) \
-        axis2_property_get_value(property, env)
-
-#define AXIS2_PROPERTY_CLONE(property, env) \
-        axis2_property_clone(property, env)
 
 /*************************** End of function macros ***************************/
 

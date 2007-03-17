@@ -45,14 +45,14 @@ w2c_messages_get_message_properties(
     inter_path = W2C_MESSAGES_INTER_PATH;
     filename = W2C_MESSAGES_FILENAME;
     
-    path_len = AXIS2_STRLEN ( filename ) + AXIS2_STRLEN (axis2c_home )
-               + AXIS2_STRLEN ( inter_path ) 
+    path_len = axis2_strlen ( filename ) + axis2_strlen (axis2c_home )
+               + axis2_strlen ( inter_path ) 
                + 2; /* for seperator and null char */
     filepath = AXIS2_MALLOC ( env-> allocator, path_len* sizeof(axis2_char_t) );
     sprintf ( filepath, "%s%s%s", axis2c_home, inter_path, filename );
   
     props = axis2_properties_create(env);
-	AXIS2_PROPERTIES_LOAD( props, env, filepath); 
+	axis2_properties_load( props, env, filepath); 
 
     return props;
 }
@@ -64,12 +64,12 @@ w2c_messages_get_message( const axis2_env_t *env, axis2_char_t *key )
      axis2_char_t *message = NULL;
      
      props = w2c_messages_get_message_properties( env);
-     message = AXIS2_PROPERTIES_GET_PROPERTY( props, env, key);
+     message = axis2_properties_get_property( props, env, key);
      if ( message )
      {
-         message = AXIS2_STRDUP ( message, env );
+         message = axis2_strdup ( message, env );
      }
-     AXIS2_PROPERTIES_FREE( props, env);
+     axis2_properties_free( props, env);
 
      return  message;
 }
@@ -94,7 +94,7 @@ w2c_messages_print_n_log_error_from_properties( const axis2_env_t *env,
                                           axis2_char_t *key )
 {
      axis2_char_t *msg = NULL;
-     msg = AXIS2_PROPERTIES_GET_PROPERTY( props, env, key);
+     msg = axis2_properties_get_property( props, env, key);
      if ( msg )
      {
          fprintf ( stderr, "%s\n", msg );

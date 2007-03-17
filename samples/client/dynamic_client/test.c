@@ -72,7 +72,7 @@ build_om_programatically(axis2_env_t *env)
     axis2_char_t *buffer = NULL;
     axis2_char_t *ns = NULL;
 
-    ns = AXIS2_STRDUP("http://localhost/axis/Calculator", env);
+    ns = axis2_strdup("http://localhost/axis/Calculator", env);
     ns1 = axiom_namespace_create(env, ns, "tns0");
 
     add_om_ele = axiom_element_create(env, NULL, "add", ns1, &add_om_node);

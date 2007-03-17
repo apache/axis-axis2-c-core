@@ -298,55 +298,6 @@ extern "C"
     axis2_strcasestr(const axis2_char_t *heystack,
         const axis2_char_t *needle);
 
-
-#define AXIS2_STRDUP(pts, env) \
-        axis2_strdup(pts, env)
-
-#define AXIS2_STRNDUP(pts, n, env) \
-        axis2_strndup(pts, n, env)
-
-#define AXIS2_STRMEMDUP(pts, n, env) \
-        axis2_strmemdup(pts, n, env)
-
-#define AXIS2_MEMCHR(pts, c, n) \
-        axis2_memchr(pts, c, n)
-
-#define AXIS2_STRCMP(s1, s2) \
-        axis2_strcmp(s1, s2)
-
-#define AXIS2_STRNCMP(s1, s2, n) \
-        axis2_strncmp(s1, s2, n)
-
-#define AXIS2_STRLEN(s) \
-        axis2_strlen(s)
-
-#define AXIS2_STRCASECMP(s1,s2) \
-        axis2_strcasecmp(s1,s2)
-
-#define AXIS2_STRNCASECMP(s1,s2,n) \
-        axis2_strncasecmp(s1,s2,n)
-
-#define AXIS2_STRACAT(s1, s2, env) \
-        axis2_stracat(s1, s2, env)
-
-#define AXIS2_STRSTR(s1, s2) \
-        axis2_strstr(s1, s2)
-
-#define AXIS2_RINDEX(s, c) \
-        axis2_rindex(s, c)
-
-#define AXIS2_REPLACE(env, str, s1, s2) \
-        axis2_replace(env, str, s1, s2)
-
-#define AXIS2_STRLTRIM(env, s, trim) \
-      axis2_strltrim(env, s, trim)
-
-#define AXIS2_STRRTRIM(env, s, trim) \
-      axis2_strrtrim(env, s, trim)
-
-#define AXIS2_STRTRIM(env, s, trim) \
-      axis2_strtrim(env, s, trim)
-
     /** @} */
 
 #ifdef __cplusplus

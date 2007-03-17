@@ -73,7 +73,7 @@ oxs_transform_set_id(
         AXIS2_FREE(env->allocator, transform->id);
         transform->id = NULL;
     }
-    transform->id = AXIS2_STRDUP(id, env);
+    transform->id = axis2_strdup(id, env);
     return AXIS2_SUCCESS;
 }
 

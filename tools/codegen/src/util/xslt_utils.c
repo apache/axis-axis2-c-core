@@ -116,14 +116,14 @@ w2c_xslt_utils_copy_node_tree(
         if ( AXIOM_NODE_GET_NODE_TYPE ( from_child, env ) == AXIOM_TEXT )
         {
             text = axiom_element_get_text ( from_ele, env, from );
-            text = AXIS2_STRDUP ( text, env);
+            text = axis2_strdup ( text, env);
             axiom_element_set_text ( to_ele, env, text, to);
         }
         else if ( AXIOM_NODE_GET_NODE_TYPE ( from_child, env ) == AXIOM_ELEMENT )
         {
             from_child_ele = AXIOM_NODE_GET_DATA_ELEMENT ( from_child, env );
             qname = axiom_element_get_qname ( from_child_ele, env, from_child );
-            qname = AXIS2_QNAME_CLONE ( qname, env );
+            qname = axis2_qname_clone ( qname, env );
     
             axiom_element_create_with_qname ( env, to, qname, &to_child );
             w2c_xslt_utils_copy_node_tree ( env, to_child, from_child );

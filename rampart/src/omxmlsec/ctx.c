@@ -700,7 +700,7 @@ oxs_ctx_set_id(
         AXIS2_FREE(env->allocator, ctx_impl->id);
         ctx_impl->id = NULL;
     }
-    ctx_impl->id = AXIS2_STRDUP(id, env);
+    ctx_impl->id = axis2_strdup(id, env);
 
     return AXIS2_SUCCESS;
 }
@@ -722,7 +722,7 @@ oxs_ctx_set_type(
         AXIS2_FREE(env->allocator, ctx_impl->type);
         ctx_impl->type = NULL;
     }
-    ctx_impl->type = AXIS2_STRDUP(type, env);
+    ctx_impl->type = axis2_strdup(type, env);
 
     return AXIS2_SUCCESS;
 }
@@ -744,7 +744,7 @@ oxs_ctx_set_mime_type(
         AXIS2_FREE(env->allocator, ctx_impl->mime_type);
         ctx_impl->mime_type = NULL;
     }
-    ctx_impl->mime_type = AXIS2_STRDUP(mime_type, env);
+    ctx_impl->mime_type = axis2_strdup(mime_type, env);
 
     return AXIS2_SUCCESS;
 }
@@ -766,7 +766,7 @@ oxs_ctx_set_encoding(
         AXIS2_FREE(env->allocator, ctx_impl->encoding);
         ctx_impl->encoding = NULL;
     }
-    ctx_impl->encoding = AXIS2_STRDUP(encoding, env);
+    ctx_impl->encoding = axis2_strdup(encoding, env);
 
     return AXIS2_SUCCESS;
 }
@@ -788,7 +788,7 @@ oxs_ctx_set_recipient(
         AXIS2_FREE(env->allocator, ctx_impl->recipient);
         ctx_impl->recipient = NULL;
     }
-    ctx_impl->recipient = AXIS2_STRDUP(recipient, env);
+    ctx_impl->recipient = axis2_strdup(recipient, env);
 
     return AXIS2_SUCCESS;
 }
@@ -810,7 +810,7 @@ oxs_ctx_set_carried_key_name(
         AXIS2_FREE(env->allocator, ctx_impl->carried_key_name);
         ctx_impl->carried_key_name = NULL;
     }
-    ctx_impl->carried_key_name = AXIS2_STRDUP(carried_key_name, env);
+    ctx_impl->carried_key_name = axis2_strdup(carried_key_name, env);
 
     return AXIS2_SUCCESS;
 }
@@ -832,7 +832,7 @@ oxs_ctx_set_enc_mtd_algorithm(
         AXIS2_FREE(env->allocator, ctx_impl->enc_mtd_algorithm);
         ctx_impl->enc_mtd_algorithm = NULL;
     }
-    ctx_impl->enc_mtd_algorithm = AXIS2_STRDUP(enc_mtd_algorithm, env);
+    ctx_impl->enc_mtd_algorithm = axis2_strdup(enc_mtd_algorithm, env);
 
     return AXIS2_SUCCESS;
 }
@@ -854,7 +854,7 @@ oxs_ctx_set_input_data(
         AXIS2_FREE(env->allocator, ctx_impl->input_data);
         ctx_impl->input_data = NULL;
     }
-    ctx_impl->input_data = AXIS2_STRDUP(input_data, env) ;
+    ctx_impl->input_data = axis2_strdup(input_data, env) ;
 
     return AXIS2_SUCCESS;
 }

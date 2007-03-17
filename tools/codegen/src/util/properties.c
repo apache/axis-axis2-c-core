@@ -81,9 +81,9 @@ w2c_properties_create (const axis2_env_t *env,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-	AXIS2_PROPERTIES_LOAD( main_props, env, filename );
+	axis2_properties_load( main_props, env, filename );
 
-    tmp_hash = AXIS2_PROPERTIES_GET_ALL( main_props, env);
+    tmp_hash = axis2_properties_get_all( main_props, env);
     
     properties_impl-> prop_hash = axis2_hash_make (env);
     if(NULL == properties_impl-> prop_hash)
@@ -118,12 +118,12 @@ w2c_properties_create (const axis2_env_t *env,
                     tag = w2c_properties_trunk_and_dup( tag, p, env);
                     axis2_array_list_add_at( arr_list, env, i, tag);
                 }
-                key = AXIS2_STRDUP(key, env);
+                key = axis2_strdup(key, env);
                 axis2_hash_set( properties_impl-> prop_hash, key, AXIS2_HASH_KEY_STRING, arr_list);
             }
         }
     }
-    AXIS2_PROPERTIES_FREE( main_props, env);
+    axis2_properties_free( main_props, env);
 
 
     properties_impl->properties.ops = 
@@ -218,7 +218,7 @@ w2c_properties_trunk_and_dup( axis2_char_t* start, axis2_char_t* end,
     for ( ; *start == ' '; start ++ ); /* remove front spaces */
     for ( end --; *end == ' '; end -- ); /* remove rear spaces */
     *(++end ) = '\0';
-    start = (axis2_char_t*)AXIS2_STRDUP ( start, env );
+    start = (axis2_char_t*)axis2_strdup ( start, env );
     return start;
 }
 

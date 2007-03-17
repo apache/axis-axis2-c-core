@@ -47,21 +47,21 @@ savan_util_get_message_type(
         return SAVAN_MSG_TYPE_UNKNOWN;
     }
     
-    if (AXIS2_STRCMP(action, SAVAN_ACTIONS_SUB) == 0)
+    if (axis2_strcmp(action, SAVAN_ACTIONS_SUB) == 0)
         return SAVAN_MSG_TYPE_SUB;
-    else if (AXIS2_STRCMP(action, SAVAN_ACTIONS_SUB_RESPONSE) == 0)
+    else if (axis2_strcmp(action, SAVAN_ACTIONS_SUB_RESPONSE) == 0)
         return SAVAN_MSG_TYPE_SUB_RESPONSE;
-    else if (AXIS2_STRCMP(action, SAVAN_ACTIONS_UNSUB) == 0)
+    else if (axis2_strcmp(action, SAVAN_ACTIONS_UNSUB) == 0)
         return SAVAN_MSG_TYPE_UNSUB;
-    else if (AXIS2_STRCMP(action, SAVAN_ACTIONS_UNSUB_RESPONSE) == 0)
+    else if (axis2_strcmp(action, SAVAN_ACTIONS_UNSUB_RESPONSE) == 0)
         return SAVAN_MSG_TYPE_UNSUB_RESPONSE;
-    else if (AXIS2_STRCMP(action, SAVAN_ACTIONS_GET_STATUS) == 0)
+    else if (axis2_strcmp(action, SAVAN_ACTIONS_GET_STATUS) == 0)
         return SAVAN_MSG_TYPE_GET_STATUS;
-    else if (AXIS2_STRCMP(action, SAVAN_ACTIONS_GET_STATUS_RESPONSE) == 0)
+    else if (axis2_strcmp(action, SAVAN_ACTIONS_GET_STATUS_RESPONSE) == 0)
         return SAVAN_MSG_TYPE_GET_STATUS_RESPONSE;
-    else if (AXIS2_STRCMP(action, SAVAN_ACTIONS_RENEW) == 0)
+    else if (axis2_strcmp(action, SAVAN_ACTIONS_RENEW) == 0)
         return SAVAN_MSG_TYPE_RENEW;
-    else if (AXIS2_STRCMP(action, SAVAN_ACTIONS_RENEW_RESPONSE) == 0)
+    else if (axis2_strcmp(action, SAVAN_ACTIONS_RENEW_RESPONSE) == 0)
         return SAVAN_MSG_TYPE_RENEW_RESPONSE;
     
     return SAVAN_MSG_TYPE_UNKNOWN;
@@ -114,7 +114,7 @@ savan_util_get_subscription_id_from_msg(
     qname = axis2_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);
     id_elem = axiom_element_get_first_child_with_qname(header_elem, env, qname,
         header_node, &id_node);
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     
     /* Now read the id */
     sub_id = axiom_element_get_text(id_elem, env, id_node);
@@ -187,7 +187,7 @@ savan_util_get_subscriber_store(
         return NULL;
     }
 
-    store = (axis2_hash_t*)AXIS2_PARAM_GET_VALUE(param, env);
+    store = (axis2_hash_t*)axis2_param_get_value(param, env);
 
     return store;
 }

@@ -135,7 +135,7 @@ w2c_engine_create_with_parser (const axis2_env_t *env,
         output_lang=
             W2C_CONFIG_PROPERTY_LOADER_GET_DEFAULT_LANGUAGE
                      (engine_impl->prop_loader, env);
-        output_lang = AXIS2_STRDUP( output_lang, env);
+        output_lang = axis2_strdup( output_lang, env);
         W2C_ENGINE_CONFIGURATION_SET_OUTPUT_LANGUAGE
                      ( engine_impl-> conf, env, output_lang );
         if ( NULL == output_lang )
@@ -389,15 +389,15 @@ w2c_engine_get_base_uri ( axis2_char_t *current_uri, const axis2_env_t *env)
     {
         /** uri should be a file */
         /**TODO: this doesnt work always */
-        base_uri = AXIS2_STRDUP("file:/", env);
+        base_uri = axis2_strdup("file:/", env);
         base_uri = w2c_string_add_string ( base_uri, current_uri, env );
     }
     else
     {
-        base_uri = AXIS2_STRDUP( current_uri, env );
+        base_uri = axis2_strdup( current_uri, env );
     }
     /* retrieve the base uri */
-    len = AXIS2_STRLEN ( current_uri);
+    len = axis2_strlen ( current_uri);
     for ( c = base_uri + len-1 ; c !=base_uri && *c != '/' ; c -- );
     if (c != base_uri )
     {

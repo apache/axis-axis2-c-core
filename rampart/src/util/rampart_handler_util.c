@@ -133,7 +133,7 @@ rampart_get_property_from_ctx(const axis2_env_t *env,
     property =  axis2_ctx_get_property(ctx, env, key, AXIS2_FALSE);
     if (property)
     {
-        str_property = AXIS2_PROPERTY_GET_VALUE(property, env);
+        str_property = axis2_property_get_value(property, env);
         property = NULL;
     }
 
@@ -167,9 +167,9 @@ rampart_get_actions(const axis2_env_t *env,
     }
 
     /*ERROR HERE param returns TEXT even for DOM*/
-    param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_x_flow_security, env);
+    param_type = axis2_param_get_param_type(param_x_flow_security, env);
 
-    action_list = AXIS2_PARAM_GET_VALUE_LIST(param_x_flow_security, env);
+    action_list = axis2_param_get_value_list(param_x_flow_security, env);
     if (!action_list)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rhu] action_list is NULL ... ERROR ");
@@ -196,10 +196,10 @@ rampart_get_action_params(const axis2_env_t *env,
         AXIS2_LOG_INFO(env->log, "[rampart][rhu] param_action is NULL");
     }
 
-    param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_action, env);
-    param_name = AXIS2_PARAM_GET_NAME(param_action, env);
+    param_type = axis2_param_get_param_type(param_action, env);
+    param_name = axis2_param_get_name(param_action, env);
 
-    param_list = AXIS2_PARAM_GET_VALUE_LIST(param_action, env);
+    param_list = axis2_param_get_value_list(param_action, env);
     if (!param_list)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rhu] param list is NULL");
@@ -211,11 +211,11 @@ rampart_get_action_params(const axis2_env_t *env,
         param = (axis2_param_t*) axis2_array_list_get(param_list, env, i);
         if (param)
         {
-            tmp_key = AXIS2_PARAM_GET_NAME(param, env);
+            tmp_key = axis2_param_get_name(param, env);
 
-            if (0 == AXIS2_STRCMP(tmp_key , key))
+            if (0 == axis2_strcmp(tmp_key , key))
             {
-                value = AXIS2_PARAM_GET_VALUE(param, env);
+                value = axis2_param_get_value(param, env);
                 return value;
             }
         }
@@ -240,7 +240,7 @@ rampart_get_security_token(const axis2_env_t *env,
     sec_headers = AXIOM_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(soap_header, env, RAMPART_WSSE_XMLNS);
     if (sec_headers)
     {
-        sec_ns_str = AXIS2_STRDUP(RAMPART_WSSE_XMLNS, env);
+        sec_ns_str = axis2_strdup(RAMPART_WSSE_XMLNS, env);
 
         header_block_ht = AXIOM_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(soap_header, env);
         if (!header_block_ht)
@@ -261,7 +261,7 @@ rampart_get_security_token(const axis2_env_t *env,
             header_block_ele  = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
             ele_localname = axiom_element_get_localname(header_block_ele, env);
 
-            if (AXIS2_STRCMP(ele_localname, RAMPART_SECURITY) == 0)
+            if (axis2_strcmp(ele_localname, RAMPART_SECURITY) == 0)
             {
                 /*Set mustUnderstand = 0*/
                 AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_BOOL(header_block, env, AXIS2_FALSE);
@@ -340,7 +340,7 @@ rampart_get_rampart_configuration(const axis2_env_t *env,
             "[rampart][rampart_handler_utils] %s parameter is not set.",param_x_flow_security);
         return NULL;
     }
-    value = AXIS2_PARAM_GET_VALUE(param_x_flow_security, env);
+    value = axis2_param_get_value(param_x_flow_security, env);
     return value;
 }
 
@@ -379,8 +379,8 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
         for(i=0; i<size; i++)
         {
             qname = (axis2_qname_t *) axis2_array_list_get(engaged_modules,env,i);
-            local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
-            if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
+            local_name = axis2_qname_get_localpart(qname,env);
+            if(axis2_strcmp(local_name,RAMPART_RAMPART)==0)
                 return AXIS2_TRUE;
         }
     }            
@@ -402,8 +402,8 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
         for(i=0; i<size; i++)
         {
             qname = (axis2_qname_t *) axis2_array_list_get(engaged_modules,env,i);
-            local_name = AXIS2_QNAME_GET_LOCALPART(qname,env);
-            if(AXIS2_STRCMP(local_name,RAMPART_RAMPART)==0)
+            local_name = axis2_qname_get_localpart(qname,env);
+            if(axis2_strcmp(local_name,RAMPART_RAMPART)==0)
             {                
                 axis2_conf_set_enable_security(conf,env,AXIS2_TRUE);
                 return AXIS2_TRUE;

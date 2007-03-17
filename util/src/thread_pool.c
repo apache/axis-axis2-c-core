@@ -32,7 +32,7 @@ struct axis2_thread_pool_impl
 };
 
 #define AXIS2_INTF_TO_IMPL(thread_pool) \
-                  ((axis2_thread_pool_impl_t *)(thread_pool))
+    ((axis2_thread_pool_impl_t *)(thread_pool))
 
 /********************************Function headers******************************/
 axis2_status_t AXIS2_CALL
@@ -40,19 +40,19 @@ axis2_thread_pool_free(axis2_thread_pool_t *pool);
 
 axis2_thread_t* AXIS2_CALL
 axis2_thread_pool_get_thread(axis2_thread_pool_t *pool,
-        axis2_thread_start_t func, void *data);
+    axis2_thread_start_t func, void *data);
 
 axis2_status_t AXIS2_CALL
 axis2_thread_pool_join_thread(axis2_thread_pool_t *pool,
-        axis2_thread_t *thd);
+    axis2_thread_t *thd);
 
 axis2_status_t AXIS2_CALL
 axis2_thread_pool_exit_thread(axis2_thread_pool_t *pool,
-        axis2_thread_t *thd);
+    axis2_thread_t *thd);
 
 axis2_status_t AXIS2_CALL
 axis2_thread_pool_thread_detach(axis2_thread_pool_t *pool,
-        axis2_thread_t *thd);
+    axis2_thread_t *thd);
 
 /************************* End of function headers ****************************/
 AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL
@@ -61,16 +61,16 @@ axis2_thread_pool_init(axis2_allocator_t *allocator)
     axis2_thread_pool_impl_t *pool_impl = NULL;
 
     pool_impl = (axis2_thread_pool_impl_t *)AXIS2_MALLOC(allocator,
-            sizeof(axis2_thread_pool_impl_t));
+        sizeof(axis2_thread_pool_impl_t));
 
-    if (NULL == pool_impl)
+    if (!pool_impl)
     {
         return NULL;
     }
     pool_impl->allocator = allocator;
     pool_impl->thread_pool.ops = (axis2_thread_pool_ops_t *) AXIS2_MALLOC(
-                allocator, sizeof(axis2_thread_pool_ops_t));
-    if (NULL == pool_impl->thread_pool.ops)
+        allocator, sizeof(axis2_thread_pool_ops_t));
+    if (!pool_impl->thread_pool.ops)
     {
         axis2_thread_pool_free(&(pool_impl->thread_pool));
         return NULL;
@@ -88,11 +88,11 @@ axis2_status_t AXIS2_CALL
 axis2_thread_pool_free(axis2_thread_pool_t *pool)
 {
     axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
-    if (NULL == pool)
+    if (!pool)
     {
         return AXIS2_FAILURE;
     }
-    if (NULL == pool_impl->allocator)
+    if (!pool_impl->allocator)
     {
         return AXIS2_FAILURE;
     }
@@ -107,14 +107,14 @@ axis2_thread_pool_free(axis2_thread_pool_t *pool)
 
 axis2_thread_t* AXIS2_CALL
 axis2_thread_pool_get_thread(axis2_thread_pool_t *pool,
-        axis2_thread_start_t func, void *data)
+    axis2_thread_start_t func, void *data)
 {
     axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
-    if (NULL == pool)
+    if (!pool)
     {
         return NULL;
     }
-    if (NULL == pool_impl->allocator)
+    if (!pool_impl->allocator)
     {
         return NULL;
     }
@@ -124,9 +124,9 @@ axis2_thread_pool_get_thread(axis2_thread_pool_t *pool,
 
 axis2_status_t AXIS2_CALL
 axis2_thread_pool_join_thread(axis2_thread_pool_t *pool,
-        axis2_thread_t *thd)
+    axis2_thread_t *thd)
 {
-    if (NULL == pool || NULL == thd)
+    if (!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
@@ -135,10 +135,10 @@ axis2_thread_pool_join_thread(axis2_thread_pool_t *pool,
 
 axis2_status_t AXIS2_CALL
 axis2_thread_pool_exit_thread(axis2_thread_pool_t *pool,
-        axis2_thread_t *thd)
+    axis2_thread_t *thd)
 {
     axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
-    if (NULL == pool || NULL == thd)
+    if (!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
@@ -148,9 +148,9 @@ axis2_thread_pool_exit_thread(axis2_thread_pool_t *pool,
 
 axis2_status_t AXIS2_CALL
 axis2_thread_pool_thread_detach(axis2_thread_pool_t *pool,
-        axis2_thread_t *thd)
+    axis2_thread_t *thd)
 {
-    if (NULL == pool || NULL == thd)
+    if (!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
@@ -162,21 +162,22 @@ axis2_init_thread_env(const axis2_env_t *system_env)
 {
     axis2_error_t *error = axis2_error_create(system_env->allocator);
     return axis2_env_create_with_error_log_thread_pool(system_env->allocator, error,
-            system_env->log, system_env->thread_pool);
+        system_env->log, system_env->thread_pool);
 }
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_free_thread_env(struct axis2_env *thread_env)
 {
     if (!thread_env)
+    {
         return;
+    }
     /* log, thread_pool and allocator are shared, so do not free them */
     thread_env->log = NULL;
     thread_env->thread_pool = NULL;
     if (thread_env->error)
     {
         AXIS2_ERROR_FREE(thread_env->error);
-        thread_env->error = NULL;
     }
     AXIS2_FREE(thread_env->allocator, thread_env);
 }

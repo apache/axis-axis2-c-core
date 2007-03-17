@@ -107,39 +107,6 @@ extern "C"
     axis2_url_free(axis2_url_t *url,
         const axis2_env_t *env);
 
-#define AXIS2_URL_TO_EXTERNAL_FORM(url, env) \
-      axis2_url_to_external_form(url, env)
-
-#define AXIS2_URL_SET_PROTOCOL(url, env, protocol) \
-        axis2_url_set_prtocol(url, env, protocol)
-
-#define AXIS2_URL_GET_PROTOCOL(url, env) \
-        axis2_url_get_protocol(url, env)
-
-#define AXIS2_URL_SET_SERVER(url, env, server) \
-        axis2_url_set_server(url, env, server)
-
-#define AXIS2_URL_GET_SERVER(url, env) \
-        axis2_url_get_server(url, env)
-
-#define AXIS2_URL_SET_PORT(url, env, port) \
-        axis2_url_set_port(url, env, port)
-
-#define AXIS2_URL_GET_PORT(url, env) \
-        axis2_url_get_port(url, env)
-
-#define AXIS2_URL_SET_PATH(url, env, path) \
-        axis2_url_set_path(url, env, path)
-
-#define AXIS2_URL_GET_PATH(url, env) \
-        axis2_url_get_path(url, env)
-
-#define AXIS2_URL_CLONE(url, env) \
-        axis2_url_clone(url, env)
-
-#define AXIS2_URL_FREE(url, env) \
-        axis2_url_free(url, env)
-
     /** @} */
 #ifdef __cplusplus
 }

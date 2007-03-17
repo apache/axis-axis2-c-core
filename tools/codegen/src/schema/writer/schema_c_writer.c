@@ -47,9 +47,9 @@ w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer
     writer_impl = W2C_INTF_TO_IMPL(writer);
    
     /** verify unique names */ 
-    temp_name = AXIS2_QNAME_GET_LOCALPART( qname, env);
-    temp_uri = AXIS2_QNAME_GET_URI( qname, env);
-    temp_prefix = AXIS2_QNAME_GET_PREFIX( qname, env);
+    temp_name = axis2_qname_get_localpart( qname, env);
+    temp_uri = axis2_qname_get_uri( qname, env);
+    temp_prefix = axis2_qname_get_prefix( qname, env);
     temp_name = w2c_schema_writer_make_unique_class_name( writer_impl, env,
                                  writer_impl-> names_list, temp_name);
     temp_qname = axis2_qname_create( env, temp_name, temp_uri, temp_prefix);
@@ -58,7 +58,7 @@ w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer
         W2C_SCHEMA_COMPILER_OPTIONS_GET_QNAME2NAME_MAKER( writer_impl-> options, env);
     if ( qname2name_maker == NULL)
     {
-        fully_qualified_class_name = AXIS2_QNAME_GET_LOCALPART( temp_qname, env);
+        fully_qualified_class_name = axis2_qname_get_localpart( temp_qname, env);
     }
     else
     {
@@ -66,7 +66,7 @@ w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer
             W2C_QNAME2NAME_MAKER_SUGGEST_NAME( qname2name_maker, env, temp_qname);
     }
 
-    fully_qualified_class_name = AXIS2_STRDUP( fully_qualified_class_name, env);
+    fully_qualified_class_name = axis2_strdup( fully_qualified_class_name, env);
     
     name_maker = W2C_SCHEMA_COMPILER_OPTIONS_GET_NAME_MAKER_FUNC
                                             ( writer_impl-> options, env);
@@ -124,8 +124,8 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
     axis2_char_t *model_name = NULL;
     axis2_char_t *namespace_uri = NULL;
 
-    original_name = AXIS2_QNAME_GET_LOCALPART( qname, env);
-    original_name = AXIS2_STRDUP( original_name, env);
+    original_name = axis2_qname_get_localpart( qname, env);
+    original_name = axis2_strdup( original_name, env);
     class_name = W2C_SCHEMA_WRITER_META_INFO_GET_OWN_CLASSNAME( meta_info, env);
     if( NULL == class_name )
     {
@@ -165,7 +165,7 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
             w2c_schema_writer_parse( writer_impl, env,
                           model_source_node, out, header_template);
         }
-        namespace_uri = AXIS2_QNAME_GET_URI( qname, env);
+        namespace_uri = axis2_qname_get_uri( qname, env);
         model_name = axis2_stracat( class_name, "|", env);
         model_name = w2c_string_add_string( model_name, namespace_uri, env);
         axis2_hash_set( writer_impl-> model_map,  model_name, AXIS2_HASH_KEY_STRING, model_source_node);
@@ -196,7 +196,7 @@ w2c_schema_c_writer_is_default_class( w2c_schema_writer_impl_t *writer_impl,
                         const axis2_env_t *env,
                         axis2_char_t *c_class_name4element)
 {
-    return !(AXIS2_STRCMP( c_class_name4element, W2C_SCHEMA_C_DEFAULT_CLASS));
+    return !(axis2_strcmp( c_class_name4element, W2C_SCHEMA_C_DEFAULT_CLASS));
 }
 
 /****************** standard create and delete for DLL ************************/

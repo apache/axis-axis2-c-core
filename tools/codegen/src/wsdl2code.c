@@ -123,7 +123,7 @@ w2c_print_usage(const axis2_env_t* env)
     w2c_print_message(env, props, "wsdl2code.arg9");
     w2c_print_message(env, props, "wsdl2code.arg10");
 
-    AXIS2_PROPERTIES_FREE(props, env);
+    axis2_properties_free(props, env);
 }
 
 static void
@@ -131,6 +131,6 @@ w2c_print_message(const axis2_env_t* env, axis2_properties_t* messageh, axis2_ch
 {
     axis2_char_t* message = NULL;
     message = (axis2_char_t*)
-            AXIS2_PROPERTIES_GET_PROPERTY(messageh, env, key);
+            axis2_properties_get_property(messageh, env, key);
     printf("%s\n", message);
 }

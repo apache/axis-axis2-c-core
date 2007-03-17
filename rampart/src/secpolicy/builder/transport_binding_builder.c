@@ -95,7 +95,7 @@ rp_transport_binding_builder_set_token_type(
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     
-    if(AXIS2_STRCMP(local_name,RP_TRANSPORT_TOKEN)==0)
+    if(axis2_strcmp(local_name,RP_TRANSPORT_TOKEN)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_TRANSPORT_TOKEN,node,element))
         {
@@ -120,7 +120,7 @@ rp_transport_binding_builder_istoken(
 {
     AXIS2_ENV_CHECK(env,AXIS2_FALSE);
 
-    if(AXIS2_STRCMP(local_name,RP_TRANSPORT_TOKEN)==0)
+    if(axis2_strcmp(local_name,RP_TRANSPORT_TOKEN)==0)
         return AXIS2_TRUE;
     
     else

@@ -107,7 +107,7 @@ w2c_c_qname2name_ext_engage(w2c_extension_t *extension,
     lang = W2C_ENGINE_CONFIGURATION_GET_OUTPUT_LANGUAGE( conf, env);
 
     /* this executes only with following configuration */
-    if ( AXIS2_STRCMP( lang, "c") == 0)
+    if ( axis2_strcmp( lang, "c") == 0)
     {
         W2C_ENGINE_CONFIGURATION_SET_QNAME2NAME( conf, env, 
                    qname2name_maker);
@@ -135,7 +135,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
     
     impl = W2C_QNAME2NAME_MAKER_INTF_TO_IMPL(qname2name_maker);
 
-    key = AXIS2_QNAME_TO_STRING(qname, env);
+    key = axis2_qname_to_string(qname, env);
     local = (axis2_char_t*)axis2_hash_get( impl-> qname2name, key,
                          AXIS2_HASH_KEY_STRING );
     if( local != NULL) /* key has been there somewhere */
@@ -143,7 +143,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
         return local;
     }
     /* otherwise */
-    local = AXIS2_QNAME_GET_LOCALPART( qname, env);
+    local = axis2_qname_get_localpart( qname, env);
     counter = (int)axis2_hash_get( impl-> name2number, local,
                          AXIS2_HASH_KEY_STRING );
     if ( counter == 0 ) /** this means name doesnt exist */

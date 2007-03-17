@@ -80,7 +80,7 @@ oxs_token_get_c14n_method(const axis2_env_t *env, axiom_node_t *c14n_mtd_node)
     }
 
     c14n_mtd = axiom_element_get_attribute_value_by_name(c14n_mtd_ele, env, OXS_ATTR_ALGORITHM);
-    if((!c14n_mtd) ||(0 == AXIS2_STRCMP("", c14n_mtd))){
+    if((!c14n_mtd) ||(0 == axis2_strcmp("", c14n_mtd))){
         return NULL;
     }
     

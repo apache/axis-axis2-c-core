@@ -595,7 +595,7 @@ rampart_actions_set_encryption_user(
         actions_impl->encryption_user = NULL;
     }
 
-    actions_impl->encryption_user = AXIS2_STRDUP(encryption_user, env);
+    actions_impl->encryption_user = axis2_strdup(encryption_user, env);
     if(!actions_impl->encryption_user){
         return AXIS2_FAILURE;
     }
@@ -620,7 +620,7 @@ rampart_actions_set_encryption_sym_algorithm(
         AXIS2_FREE(env->allocator, actions_impl->encryption_sym_algorithm);
         actions_impl->encryption_sym_algorithm = NULL;
     }
-    actions_impl->encryption_sym_algorithm = AXIS2_STRDUP(encryption_sym_algorithm, env);
+    actions_impl->encryption_sym_algorithm = axis2_strdup(encryption_sym_algorithm, env);
     if(!actions_impl->encryption_sym_algorithm  ){
         return AXIS2_FAILURE;
     }
@@ -645,7 +645,7 @@ rampart_actions_set_encryption_key_transport_algorithm(
         actions_impl->encryption_key_transport_algorithm = NULL;
     }
     actions_impl->encryption_key_transport_algorithm = 
-					AXIS2_STRDUP(encryption_key_transport_algorithm, env);
+					axis2_strdup(encryption_key_transport_algorithm, env);
     if(!actions_impl->encryption_key_transport_algorithm  ){
         return AXIS2_FAILURE;
     }
@@ -670,7 +670,7 @@ rampart_actions_set_items(
         AXIS2_FREE(env->allocator, actions_impl->items);
         actions_impl->items = NULL;
     }
-    actions_impl->items = AXIS2_STRDUP(items, env) ;
+    actions_impl->items = axis2_strdup(items, env) ;
     if(!actions_impl->items ){
         return AXIS2_FAILURE;
     }
@@ -695,7 +695,7 @@ rampart_actions_set_password_type(
         AXIS2_FREE(env->allocator, actions_impl->password_type);
         actions_impl->password_type = NULL;
     }
-    actions_impl->password_type = AXIS2_STRDUP(password_type, env) ;
+    actions_impl->password_type = axis2_strdup(password_type, env) ;
     if(!actions_impl->password_type  ){
         return AXIS2_FAILURE;
     }
@@ -720,7 +720,7 @@ rampart_actions_set_user(
         AXIS2_FREE(env->allocator, actions_impl->user);
         actions_impl->user = NULL;
     }
-    actions_impl->user = AXIS2_STRDUP(user, env) ;
+    actions_impl->user = axis2_strdup(user, env) ;
     if(!actions_impl->user  ){
         return AXIS2_FAILURE;
     }
@@ -745,7 +745,7 @@ rampart_actions_set_password_callback_class(
         AXIS2_FREE(env->allocator, actions_impl->password_callback_class);
         actions_impl->password_callback_class = NULL;
     }
-    actions_impl->password_callback_class = AXIS2_STRDUP(password_callback_class, env) ;
+    actions_impl->password_callback_class = axis2_strdup(password_callback_class, env) ;
     if(!actions_impl->password_callback_class  ){
         return AXIS2_FAILURE;
     }
@@ -770,7 +770,7 @@ rampart_actions_set_authn_module_name(
         AXIS2_FREE(env->allocator, actions_impl->authn_module_name);
         actions_impl->authn_module_name = NULL;
     }
-    actions_impl->authn_module_name = AXIS2_STRDUP(authn_module_name, env) ;
+    actions_impl->authn_module_name = axis2_strdup(authn_module_name, env) ;
     if(!actions_impl->authn_module_name  ){
         return AXIS2_FAILURE;
     }
@@ -795,7 +795,7 @@ rampart_actions_set_encryption_key_file(
         AXIS2_FREE(env->allocator, actions_impl->encryption_key_file);
         actions_impl->encryption_key_file = NULL;
     }
-    actions_impl->encryption_key_file = AXIS2_STRDUP(encryption_key_file, env) ;
+    actions_impl->encryption_key_file = axis2_strdup(encryption_key_file, env) ;
     if(!actions_impl->encryption_key_file  ){
         return AXIS2_FAILURE;
     }
@@ -820,7 +820,7 @@ rampart_actions_set_decryption_key_file(
         AXIS2_FREE(env->allocator, actions_impl->decryption_key_file);
         actions_impl->decryption_key_file = NULL;
     }
-    actions_impl->decryption_key_file = AXIS2_STRDUP(decryption_key_file, env) ;
+    actions_impl->decryption_key_file = axis2_strdup(decryption_key_file, env) ;
     if(!actions_impl->decryption_key_file  ){
         return AXIS2_FAILURE;
     }
@@ -845,7 +845,7 @@ rampart_actions_set_signature_prop_file(
         AXIS2_FREE(env->allocator, actions_impl->signature_prop_file);
         actions_impl->signature_prop_file = NULL;
     }
-    actions_impl->signature_prop_file = AXIS2_STRDUP(signature_prop_file, env) ;
+    actions_impl->signature_prop_file = axis2_strdup(signature_prop_file, env) ;
     if(!actions_impl->signature_prop_file  ){
         return AXIS2_FAILURE;
     }
@@ -869,7 +869,7 @@ rampart_actions_set_signature_key_identifier(
         AXIS2_FREE(env->allocator, actions_impl->signature_key_identifier);
         actions_impl->signature_key_identifier = NULL;
     }
-    actions_impl->signature_key_identifier = AXIS2_STRDUP(signature_key_identifier, env);
+    actions_impl->signature_key_identifier = axis2_strdup(signature_key_identifier, env);
     if(!actions_impl->signature_key_identifier  ){
         return AXIS2_FAILURE;
     }
@@ -893,7 +893,7 @@ rampart_actions_set_encryption_key_identifier(
         AXIS2_FREE(env->allocator, actions_impl->encryption_key_identifier);
         actions_impl->encryption_key_identifier = NULL;
     }
-    actions_impl-> encryption_key_identifier = AXIS2_STRDUP(encryption_key_identifier, env) ;
+    actions_impl-> encryption_key_identifier = axis2_strdup(encryption_key_identifier, env) ;
     if(!actions_impl->encryption_key_identifier ){
         return AXIS2_FAILURE;
     }
@@ -917,7 +917,7 @@ rampart_actions_set_signature_parts(
         AXIS2_FREE(env->allocator, actions_impl->signature_parts);
         actions_impl->signature_parts = NULL;
     }
-    actions_impl->signature_parts = AXIS2_STRDUP(signature_parts, env);
+    actions_impl->signature_parts = axis2_strdup(signature_parts, env);
     if(!actions_impl->signature_parts ){
         return AXIS2_FAILURE;
     }
@@ -941,7 +941,7 @@ rampart_actions_set_encryption_parts(
         AXIS2_FREE(env->allocator, actions_impl->encryption_parts);
         actions_impl->encryption_parts = NULL;
     }
-    actions_impl->encryption_parts = AXIS2_STRDUP(encryption_parts, env) ;
+    actions_impl->encryption_parts = axis2_strdup(encryption_parts, env) ;
     if(!actions_impl->encryption_parts ){
         return AXIS2_FAILURE;
     }
@@ -966,7 +966,7 @@ rampart_actions_set_time_to_live(
         AXIS2_FREE(env->allocator, actions_impl->time_to_live);
         actions_impl->time_to_live = NULL;
     }
-    actions_impl->time_to_live = AXIS2_STRDUP(time_to_live, env) ;
+    actions_impl->time_to_live = axis2_strdup(time_to_live, env) ;
     if(!actions_impl->time_to_live ){
         return AXIS2_FAILURE;
     }
@@ -991,7 +991,7 @@ rampart_actions_set_key_buf(
         AXIS2_FREE(env->allocator, actions_impl->key_buf);
         actions_impl->key_buf = NULL;
     }
-    actions_impl->key_buf = AXIS2_STRDUP(key_buf, env) ;
+    actions_impl->key_buf = axis2_strdup(key_buf, env) ;
     if(!actions_impl->key_buf ){
         return AXIS2_FAILURE;
     }

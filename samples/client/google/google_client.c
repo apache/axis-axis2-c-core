@@ -54,7 +54,7 @@ int main(int argc, char** argv)
     /* Set end point reference of google service */
     address = "http://api.google.com/search/beta2";
 
-    if ((argc > 1) && (AXIS2_STRCMP("-h", argv[1]) == 0))
+    if ((argc > 1) && (axis2_strcmp("-h", argv[1]) == 0))
     {
         printf("\nUsage : %s [google_key] [word_to_spell] \n", argv[0]);
         printf("\tgoogle_key Your Google license key. Default value won't work. You must use your key here.\n");
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
             axiom_node_t *ret_node1 = NULL;
 
             result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
-            if (AXIS2_STRCMP(axiom_element_get_localname(result_ele, env), "doSpellingSuggestionResponse") != 0)
+            if (axis2_strcmp(axiom_element_get_localname(result_ele, env), "doSpellingSuggestionResponse") != 0)
             {
                 print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;

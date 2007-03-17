@@ -115,21 +115,6 @@ extern "C"
         const axis2_env_t *env,
         const axis2_char_t *param_name) ;
 
-#define AXIS2_PARAM_CONTAINER_FREE(param_container, env) \
-      axis2_param_container_free (param_container, env)
-
-#define AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container, env, param) \
-      axis2_param_container_add_param (param_container, env, param)
-
-#define AXIS2_PARAM_CONTAINER_GET_PARAM(param_container, env, name) \
-      axis2_param_container_get_param (param_container, env, name)
-
-#define AXIS2_PARAM_CONTAINER_GET_PARAMS(param_container, env) \
-      axis2_param_container_get_params (param_container, env)
-
-#define AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(param_container, env, param_name) \
-      axis2_param_container_is_param_locked (param_container, env, \
-      param_name)
 
     /** @} */
 

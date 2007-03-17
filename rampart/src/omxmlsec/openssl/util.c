@@ -114,22 +114,22 @@ openssl_get_evp_cipher_by_name(const axis2_env_t *env, axis2_char_t *cipher_name
 {
     EVP_CIPHER* cipher = NULL;
 
-    if (0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc))
+    if (0 == axis2_strcmp((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc))
     {
         cipher = (EVP_CIPHER*) EVP_des_ede3_cbc();
 
     }
-    else if (0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc))
+    else if (0 == axis2_strcmp((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc))
     {
         cipher = (EVP_CIPHER*)EVP_aes_128_cbc();
 
     }
-    else if (0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_192_cbc))
+    else if (0 == axis2_strcmp((char*)cipher_name, (char*)OPENSSL_EVP_aes_192_cbc))
     {
         cipher = (EVP_CIPHER*)EVP_aes_192_cbc();
 
     }
-    else if (0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_256_cbc))
+    else if (0 == axis2_strcmp((char*)cipher_name, (char*)OPENSSL_EVP_aes_256_cbc))
     {
         cipher = (EVP_CIPHER*)EVP_aes_256_cbc();
 

@@ -109,7 +109,7 @@ div_invoke(axis2_svc_skeleton_t *svc_skeleton,
                 axis2_char_t *op_name = axiom_element_get_localname(element, env);
                 if (op_name)
                 {
-                    if (AXIS2_STRCMP(op_name, "div") == 0)
+                    if (axis2_strcmp(op_name, "div") == 0)
                         return axis2_div_div(env, node);
                 }
             }

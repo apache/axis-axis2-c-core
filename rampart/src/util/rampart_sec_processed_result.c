@@ -71,7 +71,7 @@ rampart_set_security_processed_results_property(const axis2_env_t *env,
     sec_processed_results = axis2_hash_make(env);
     sec_processed_results_prop = axis2_property_create(env);
     
-    AXIS2_PROPERTY_SET_VALUE(sec_processed_results_prop, env, sec_processed_results);
+    axis2_property_set_value(sec_processed_results_prop, env, sec_processed_results);
      axis2_msg_ctx_set_property(msg_ctx, env, RAMPART_SECURITY_PROCESSED_RESULTS, sec_processed_results_prop, AXIS2_FALSE);
 
     return AXIS2_SUCCESS;
@@ -90,7 +90,7 @@ rampart_get_all_security_processed_results(const axis2_env_t *env,
         return NULL;
     }
 
-    sec_processed_results = (axis2_hash_t*)AXIS2_PROPERTY_GET_VALUE(sec_processed_results_prop, env);
+    sec_processed_results = (axis2_hash_t*)axis2_property_get_value(sec_processed_results_prop, env);
     if(!sec_processed_results){
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][spr] Cannot get Security Processed Results Hash table from the property");
         return NULL;

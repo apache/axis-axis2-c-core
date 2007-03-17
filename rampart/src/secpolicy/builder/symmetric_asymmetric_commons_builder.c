@@ -30,7 +30,7 @@ rp_symmetric_asymmetric_commons_builder_build(
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
 
-    if(AXIS2_STRCMP(local_name,RP_ENCRYPT_BEFORE_SIGNING)==0)
+    if(axis2_strcmp(local_name,RP_ENCRYPT_BEFORE_SIGNING)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ENCRYPT_BEFORE_SIGNING,node,element))
         {            
@@ -40,7 +40,7 @@ rp_symmetric_asymmetric_commons_builder_build(
         return AXIS2_FAILURE;
     }        
     
-    else if(AXIS2_STRCMP(local_name,RP_ENCRYPT_SIGNATURE)==0)
+    else if(axis2_strcmp(local_name,RP_ENCRYPT_SIGNATURE)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ENCRYPT_SIGNATURE,node,element))
         {
@@ -50,7 +50,7 @@ rp_symmetric_asymmetric_commons_builder_build(
         return AXIS2_FAILURE;
     }
     
-    else if(AXIS2_STRCMP(local_name,RP_PROTECT_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_PROTECT_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_PROTECT_TOKENS,node,element))
         {
@@ -60,7 +60,7 @@ rp_symmetric_asymmetric_commons_builder_build(
         return AXIS2_FAILURE;
     }
 
-    else if(AXIS2_STRCMP(local_name,RP_ONLY_SIGN_ENTIRE_HEADERS_AND_BODY)==0)
+    else if(axis2_strcmp(local_name,RP_ONLY_SIGN_ENTIRE_HEADERS_AND_BODY)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ONLY_SIGN_ENTIRE_HEADERS_AND_BODY,node,element))
         {

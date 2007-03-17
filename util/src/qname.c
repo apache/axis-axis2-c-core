@@ -68,7 +68,7 @@ axis2_qname_create(const axis2_env_t *env,
     qname->ref = 1;
 
 
-    qname->localpart = (axis2_char_t *)AXIS2_STRDUP(localpart, env);
+    qname->localpart = (axis2_char_t *)axis2_strdup(localpart, env);
     if (!(qname->localpart))
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
@@ -77,15 +77,9 @@ axis2_qname_create(const axis2_env_t *env,
         return NULL;
     }
     
-    /** if prefix is null it is set to "" */
-    /*if (!prefix)
-    {
-        qname->prefix = (axis2_char_t*)AXIS2_STRDUP("", env);
-    }
-    else*/
     if (prefix)
     {
-        qname->prefix = (axis2_char_t*)AXIS2_STRDUP(prefix, env);
+        qname->prefix = (axis2_char_t*)axis2_strdup(prefix, env);
     }
     
     if (prefix && !(qname->prefix))
@@ -96,15 +90,9 @@ axis2_qname_create(const axis2_env_t *env,
         return NULL;
     }
     
-    /** if uri is null it is set to ""*/
-    /*if (!namespace_uri)
-    {
-        qname->namespace_uri = (axis2_char_t*)AXIS2_STRDUP("", env);
-    }
-    else*/
     if (namespace_uri)
     {
-        qname->namespace_uri = (axis2_char_t*)AXIS2_STRDUP(namespace_uri, env);
+        qname->namespace_uri = (axis2_char_t*)axis2_strdup(namespace_uri, env);
     }
 
     if (namespace_uri && !(qname->namespace_uri))
@@ -128,27 +116,25 @@ axis2_qname_free(axis2_qname_t * qname,
     qname->ref--;
 
     if (qname->ref > 0)
+    {
         return AXIS2_SUCCESS;
+    }
 
     if (qname->localpart)
     {
         AXIS2_FREE(env->allocator, qname->localpart);
-        qname->localpart = NULL;
     }
     if (qname->namespace_uri)
     {
         AXIS2_FREE(env->allocator, qname->namespace_uri);
-        qname->namespace_uri = NULL;
     }
     if (qname->prefix)
     {
         AXIS2_FREE(env->allocator, qname->prefix);
-        qname->prefix = NULL;
     }
     if (qname->qname_string)
     {
         AXIS2_FREE(env->allocator, qname->qname_string);
-        qname->qname_string = NULL;
     }
 
     AXIS2_FREE(env->allocator, qname);
@@ -178,7 +164,7 @@ axis2_qname_equals(const axis2_qname_t *qname,
     {
         localparts_differ =
             axis2_strcmp(qname->localpart,
-                    qname2->localpart);
+                qname2->localpart);
     }
     else
     {
@@ -189,7 +175,7 @@ axis2_qname_equals(const axis2_qname_t *qname,
     {
         uris_differ =
             axis2_strcmp(qname->namespace_uri,
-                    qname2->namespace_uri);
+                qname2->namespace_uri);
     }
     else
     {
@@ -207,14 +193,12 @@ axis2_qname_clone(axis2_qname_t *qname,
     AXIS2_ENV_CHECK(env, NULL);
     
     if (!qname)
+    {
         return NULL;
+    }
 
     qname->ref++;
     
-    /*return axis2_qname_create(env, qname->localpart,
-            qname->namespace_uri,
-            qname->prefix);*/
-
     return qname;
 }
 
@@ -222,7 +206,6 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_qname_get_uri(const axis2_qname_t *qname,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return qname->namespace_uri;
 }
 
@@ -230,7 +213,6 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_qname_get_prefix(const axis2_qname_t *qname,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return qname->prefix;
 }
 
@@ -239,7 +221,6 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_qname_get_localpart(const axis2_qname_t *qname,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return qname->localpart;
 }
 
@@ -253,20 +234,19 @@ axis2_qname_to_string(axis2_qname_t *qname,
         return qname->qname_string;
     }
 
-    if (!(qname->namespace_uri) || AXIS2_STRCMP(qname->namespace_uri, "") == 0)
+    if (!(qname->namespace_uri) || axis2_strcmp(qname->namespace_uri, "") == 0)
     {
-        qname->qname_string = AXIS2_STRDUP(qname->localpart, env);
+        qname->qname_string = axis2_strdup(qname->localpart, env);
     }
-    else if (!(qname->prefix) || AXIS2_STRCMP(qname->prefix, "") == 0)
+    else if (!(qname->prefix) || axis2_strcmp(qname->prefix, "") == 0)
     {
 
         axis2_char_t *temp_string1 = NULL;
-        temp_string1 = AXIS2_STRACAT(qname->localpart, "|", env);
-        qname->qname_string = AXIS2_STRACAT(temp_string1, qname->namespace_uri, env);
+        temp_string1 = axis2_stracat(qname->localpart, "|", env);
+        qname->qname_string = axis2_stracat(temp_string1, qname->namespace_uri, env);
         if (temp_string1)
         {
             AXIS2_FREE(env->allocator, temp_string1);
-            temp_string1 = NULL;
         }
     }
     else
@@ -275,25 +255,22 @@ axis2_qname_to_string(axis2_qname_t *qname,
         axis2_char_t *temp_string2 = NULL;
         axis2_char_t *temp_string3 = NULL;
 
-        temp_string1 = AXIS2_STRACAT(qname->localpart, "|", env);
-        temp_string2 = AXIS2_STRACAT(temp_string1, qname->namespace_uri, env);
-        temp_string3 = AXIS2_STRACAT(temp_string2, "|", env);
-        qname->qname_string = AXIS2_STRACAT(temp_string3, qname->prefix, env);
+        temp_string1 = axis2_stracat(qname->localpart, "|", env);
+        temp_string2 = axis2_stracat(temp_string1, qname->namespace_uri, env);
+        temp_string3 = axis2_stracat(temp_string2, "|", env);
+        qname->qname_string = axis2_stracat(temp_string3, qname->prefix, env);
 
         if (temp_string1)
         {
             AXIS2_FREE(env->allocator, temp_string1);
-            temp_string1 = NULL;
         }
         if (temp_string2)
         {
             AXIS2_FREE(env->allocator, temp_string2);
-            temp_string2 = NULL;
         }
         if (temp_string3)
         {
             AXIS2_FREE(env->allocator, temp_string3);
-            temp_string3 = NULL;
         }
     }
     return qname->qname_string;
@@ -310,10 +287,10 @@ axis2_qname_create_from_string(const axis2_env_t *env,
     axis2_char_t *next = NULL;
     axis2_char_t *temp_string = NULL;
     axis2_qname_t *qname = NULL;
-    if (!qstring || AXIS2_STRCMP(qstring, "") == 0)
+    if (!qstring || axis2_strcmp(qstring, "") == 0)
         return NULL;
 
-    temp_string = AXIS2_STRDUP(qstring, env);
+    temp_string = axis2_strdup(qstring, env);
 
     index = strchr(temp_string, '|');
     if (index)
@@ -347,7 +324,6 @@ axis2_qname_create_from_string(const axis2_env_t *env,
     if (temp_string)
     {
         AXIS2_FREE(env->allocator, temp_string);
-        temp_string = NULL;
     }
     return qname;
 }

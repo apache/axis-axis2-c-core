@@ -143,7 +143,7 @@ oxs_xml_sig_build_reference(const axis2_env_t *env,
     /*Get the reference ID from the node and hence to the ds:Reference node*/
     id = oxs_axiom_get_attribute_value_of_node_by_name(env, node, "wsu:Id"); 
     
-    ref_id = AXIS2_STRACAT("#", id, env);/* <ds:Reference URI="#id">*/
+    ref_id = axis2_stracat("#", id, env);/* <ds:Reference URI="#id">*/
     reference_node = oxs_token_build_ds_reference_element(env, parent ,NULL, ref_id, NULL);
 
     /*Get transforms if any*/

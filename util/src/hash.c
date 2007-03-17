@@ -521,7 +521,7 @@ axis2_hash_contains_key(
 
         axis2_hash_this(i, &v, NULL, NULL);
         key_l = (const axis2_char_t *) v;
-        if (0 == AXIS2_STRCMP(key, key_l))
+        if (0 == axis2_strcmp(key, key_l))
             return AXIS2_TRUE;
     }
 

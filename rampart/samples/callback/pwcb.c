@@ -47,14 +47,14 @@ callback_get_sample_password_from_file(rampart_callback_t *rcb,
 
        while ( fgets ( line, sizeof line, file ) != NULL )
        {
-          res = AXIS2_STRSTR(line, ":");
+          res = axis2_strstr(line, ":");
           ch = res[0];
           res[0] = '\0';
-          un = (axis2_char_t *) AXIS2_STRDUP(line, env);
+          un = (axis2_char_t *) axis2_strdup(line, env);
           res[0] = ch;
-          if(0 == AXIS2_STRCMP(un, username)){
-             pw = (axis2_char_t *) AXIS2_STRDUP(&(res[1]), env);
-             password = AXIS2_STRNDUP(pw, AXIS2_STRLEN(pw)-1, env); /*We need to remove the end of line character*/
+          if(0 == axis2_strcmp(un, username)){
+             pw = (axis2_char_t *) axis2_strdup(&(res[1]), env);
+             password = axis2_strndup(pw, axis2_strlen(pw)-1, env); /*We need to remove the end of line character*/
 
              break;
           }
@@ -79,36 +79,36 @@ get_sample_password(rampart_callback_t *rcb,
 {
     /*First set pf password are for sample usernames*/
     axis2_char_t * pw = NULL;
-    if (0 == AXIS2_STRCMP(username, "Raigama"))
+    if (0 == axis2_strcmp(username, "Raigama"))
     {
         pw = "RaigamaPW" ;
     }
-    else if (0 == AXIS2_STRCMP(username, "Gampola"))
+    else if (0 == axis2_strcmp(username, "Gampola"))
     {
         pw = "GampolaPW";
     }
-    else if (0 == AXIS2_STRCMP(username, "alice"))
+    else if (0 == axis2_strcmp(username, "alice"))
     {
         pw = "password";
     }
-    else if (0 == AXIS2_STRCMP(username, "bob"))
+    else if (0 == axis2_strcmp(username, "bob"))
     {
         pw = "bobPW";
     }
     /*These are for sample keystores*/
-    else if (0 == AXIS2_STRCMP(username, "a"))
+    else if (0 == axis2_strcmp(username, "a"))
     {
         pw = "a12345";
     }
-    else if (0 == AXIS2_STRCMP(username, "b"))
+    else if (0 == axis2_strcmp(username, "b"))
     {
         pw = "b12345";
     }
-    else if (0 == AXIS2_STRCMP(username, "x"))
+    else if (0 == axis2_strcmp(username, "x"))
     {
         pw = "x12345";
     }
-    else if (0 == AXIS2_STRCMP(username, "y"))
+    else if (0 == axis2_strcmp(username, "y"))
     {
         pw = "y12345";
     }

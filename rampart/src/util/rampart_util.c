@@ -53,7 +53,7 @@ rampart_load_module(const axis2_env_t *env,
     dll_desc = axis2_dll_desc_create(env);
      axis2_dll_desc_set_name(dll_desc, env, module_name);
     impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_param_set_value(impl_info_param, env, dll_desc);
     axis2_class_loader_init(env);
     ptr = axis2_class_loader_create_dll(env, impl_info_param);
 
@@ -128,7 +128,7 @@ rampart_authenticate_un_pw(const axis2_env_t *env,
         return RAMPART_AUTHN_PROVIDER_GENERAL_ERROR;
     }
     /*If password digest*/
-    if(0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST_URI)){
+    if(0 == axis2_strcmp(password_type, RAMPART_PASSWORD_DIGEST_URI)){
         auth_status = RAMPART_AUTHN_PROVIDER_CHECK_PASSWORD_DIGEST(authp, env, msg_ctx, username, nonce, created, password);
     }else{
         auth_status = RAMPART_AUTHN_PROVIDER_CHECK_PASSWORD(authp, env, msg_ctx, username, password);

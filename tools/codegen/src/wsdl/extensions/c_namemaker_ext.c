@@ -68,7 +68,7 @@ w2c_c_namemaker_ext_engage(w2c_extension_t *extension,
     lang = W2C_ENGINE_CONFIGURATION_GET_OUTPUT_LANGUAGE( conf, env);
 
     /* this executes only with following configuration */
-    if ( convert_names && AXIS2_STRCMP( lang, "c") == 0)
+    if ( convert_names && axis2_strcmp( lang, "c") == 0)
     {
         W2C_ENGINE_CONFIGURATION_SET_NAMEMAKER_FUNC( conf, env, 
                (W2C_ENGINE_CONFIGURATION_NAMEMAKER) w2c_string_make_c_simple_name);

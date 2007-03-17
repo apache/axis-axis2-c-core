@@ -23,7 +23,7 @@
 
 AXIS2_EXTERN axis2_char_t** AXIS2_CALL
 axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
-        const axis2_char_t *request)
+    const axis2_char_t *request)
 
 {
     axis2_char_t **ret = NULL;
@@ -32,7 +32,7 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
     int i = 0;
     AXIS2_ENV_CHECK(env, NULL);
     ret  = AXIS2_MALLOC(env->allocator,
-            2 * (sizeof(axis2_char_t *)));
+        2 * (sizeof(axis2_char_t *)));
     memset(ret, 0, 2*sizeof(axis2_char_t*));
     tmp = (axis2_char_t *)request;
 
@@ -40,17 +40,19 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
     while (1)
     {
         tmp = strstr(tmp, AXIS2_REQUEST_URL_PREFIX);
-        if (NULL == tmp)
+        if (!tmp)
+	{
             break;
+	}
         else
         {
             service_str = tmp;
-            tmp += AXIS2_STRLEN(AXIS2_REQUEST_URL_PREFIX);
+            tmp += axis2_strlen(AXIS2_REQUEST_URL_PREFIX);
         }
     }
     if (service_str)
     {
-        service_str += AXIS2_STRLEN(AXIS2_REQUEST_URL_PREFIX);
+        service_str += axis2_strlen(AXIS2_REQUEST_URL_PREFIX);
         if ('\0' != *service_str)
         {
             service_str++; /*to remove the leading '/' */
@@ -72,19 +74,19 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
                     {
                         i = tmp - service_str;
                         ret[1] = AXIS2_MALLOC(env->allocator,
-                                i * sizeof(char) + 1);
+                            i * sizeof(char) + 1);
                         strncpy(ret[1], service_str, i);
                         ret[1][i] = '\0';
                     }
                     else
                     {
-                        ret[1] = AXIS2_STRDUP(service_str, env);
+                        ret[1] = axis2_strdup(service_str, env);
                     }
                 }
             }
             else
             {
-                ret[0] = AXIS2_STRDUP(service_str, env);
+                ret[0] = axis2_strdup(service_str, env);
             }
         }
     }

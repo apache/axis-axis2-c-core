@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     address = "http://localhost:9090/axis2/services/echo";
     if (argc > 1)
         address = argv[1];
-    if (AXIS2_STRCMP(address, "-h") == 0)
+    if (axis2_strcmp(address, "-h") == 0)
     {
         printf("Usage : %s [endpoint_url]\n", argv[0]);
         printf("use -h for help\n");

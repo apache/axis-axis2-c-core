@@ -55,14 +55,14 @@ get_ht_password(rampart_callback_t *rcb,
 
        while ( fgets ( line, sizeof line, file ) != NULL ) 
        {
-          res = AXIS2_STRSTR(line, ":");
+          res = axis2_strstr(line, ":");
           ch = res[0];
           res[0] = '\0';
-          un = (axis2_char_t *) AXIS2_STRDUP(line, env);
+          un = (axis2_char_t *) axis2_strdup(line, env);
           res[0] = ch;
-          if(0 == AXIS2_STRCMP(un, username)){
-             pw = (axis2_char_t *) AXIS2_STRDUP(&(res[1]), env);
-             password = AXIS2_STRNDUP(pw, AXIS2_STRLEN(pw)-1, env); /*We need to remove the end of line character*/
+          if(0 == axis2_strcmp(un, username)){
+             pw = (axis2_char_t *) axis2_strdup(&(res[1]), env);
+             password = axis2_strndup(pw, axis2_strlen(pw)-1, env); /*We need to remove the end of line character*/
 
              break;
           }

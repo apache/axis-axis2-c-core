@@ -127,7 +127,7 @@ guththila_token_char_ref(axis2_env_t * environment,
     int ix = 0;
     guththila_char_t *ref_buffer = NULL;
 
-    len = AXIS2_STRLEN(buffer);
+    len = axis2_strlen(buffer);
     ref_buffer = (guththila_char_t *) AXIS2_MALLOC(
                 environment->allocator, len + 1);
 
@@ -353,11 +353,11 @@ guththila_relocate_tokens(axis2_env_t *environment,
 {
     guththila_token_t *el = NULL;
     int isize = 0;
-    isize = AXIS2_STACK_SIZE(stack, environment);
-    /*   el = (guththila_token_t *) AXIS2_STACK_GET_AT (stack, environment, isize-1); */
+    isize = axis2_stack_size(stack, environment);
+    /*   el = (guththila_token_t *) axis2_stack_get_at (stack, environment, isize-1); */
     for (; isize > 0; isize--)
     {
-        el = (guththila_token_t *) AXIS2_STACK_GET_AT(stack, 
+        el = (guththila_token_t *) axis2_stack_get_at(stack, 
 													  environment, 
 													  isize - 1);
         guththila_token_relocate(environment, el, offset);

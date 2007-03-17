@@ -159,46 +159,6 @@ extern "C"
         const axis2_env_t *env,
         void *free_fn);
 
-
-#define AXIS2_PARAM_FREE(param, env) \
-    axis2_param_free (param, env)
-
-#define AXIS2_PARAM_SET_NAME(param, env, name) \
-    axis2_param_set_name (param, env, name)
-
-#define AXIS2_PARAM_GET_NAME(param, env) \
-    axis2_param_get_name (param, env)
-
-#define AXIS2_PARAM_SET_VALUE(param, env, value) \
-    axis2_param_set_value (param , env, value)
-
-#define AXIS2_PARAM_GET_VALUE(param, env) \
-    axis2_param_get_value (param, env)
-
-#define AXIS2_PARAM_IS_LOCKED(param, env) \
-    axis2_param_is_locked (param, env)
-
-#define AXIS2_PARAM_SET_LOCKED(param, env, locked) \
-    axis2_param_set_locked (param, env, locked)
-
-#define AXIS2_PARAM_SET_PARAM_TYPE(param, env, type) \
-    axis2_param_set_param_type (param, env, type)
-
-#define AXIS2_PARAM_GET_PARAM_TYPE(param, env) \
-    axis2_param_get_param_type (param, env)
-
-#define AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs) \
-    axis2_param_set_attributes (param , env, attrs)
-
-#define AXIS2_PARAM_GET_ATTRIBUTES(param, env) \
-    axis2_param_get_attributes (param, env)
-
-#define AXIS2_PARAM_SET_VALUE_LIST(param, env, value_list) \
-    axis2_param_set_value_list (param , env, value_list)
-
-#define AXIS2_PARAM_GET_VALUE_LIST(param, env) \
-    axis2_param_get_value_list (param, env)
-
     /** @} */
 
 #ifdef __cplusplus

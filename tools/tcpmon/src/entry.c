@@ -649,7 +649,7 @@ read_current_stream(axis2_stream_t *stream,
 				{
 					 header_found = 1;
 					 *(buffer + read_size - 3) = '\0';
-					 header_ptr = (axis2_char_t*)AXIS2_STRDUP(buffer, env);
+					 header_ptr = (axis2_char_t*)axis2_strdup(buffer, env);
 					 header_just_finished = 1;
 					 *(buffer + read_size - 3) = '\r';
 				}
@@ -662,7 +662,7 @@ read_current_stream(axis2_stream_t *stream,
 					 chunked_encoded = 1;
 					 header_found = 1;
 					 *(buffer + read_size - 3) = '\0';
-					 header_ptr = (axis2_char_t*)AXIS2_STRDUP(buffer, env);
+					 header_ptr = (axis2_char_t*)axis2_strdup(buffer, env);
 					 header_just_finished = 1;
 					 *(buffer + read_size - 3) = '\r';
 				}
@@ -672,12 +672,12 @@ read_current_stream(axis2_stream_t *stream,
 	 if (header_width != 0)
 		{
 			 body_ptr = buffer + header_width;
-			 *data = (axis2_char_t*) AXIS2_STRDUP(body_ptr, env);
+			 *data = (axis2_char_t*) axis2_strdup(body_ptr, env);
 		}
 	 else
 		{
 			 *(buffer + read_size) = '\0';
-			 header_ptr = (axis2_char_t*)AXIS2_STRDUP(buffer, env);
+			 header_ptr = (axis2_char_t*)axis2_strdup(buffer, env);
 						  /** soap body part is unavailable */
 			 *data = NULL;
 		}

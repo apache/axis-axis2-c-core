@@ -89,7 +89,7 @@ rp_rampart_config_builder_populate(
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     
-    if(AXIS2_STRCMP(local_name,RP_USER)==0)
+    if(axis2_strcmp(local_name,RP_USER)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_USER,node,element))
         {
@@ -101,7 +101,7 @@ rp_rampart_config_builder_populate(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_ENCRYPTION_USER)==0)
+    else if(axis2_strcmp(local_name,RP_ENCRYPTION_USER)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_ENCRYPTION_USER,node,element))
         {
@@ -112,7 +112,7 @@ rp_rampart_config_builder_populate(
         else
             return AXIS2_FAILURE;
     }    
-    else if(AXIS2_STRCMP(local_name,RP_PASSWORD_CALLBACK_CLASS)==0)
+    else if(axis2_strcmp(local_name,RP_PASSWORD_CALLBACK_CLASS)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_PASSWORD_CALLBACK_CLASS,node,element))
         {
@@ -123,7 +123,7 @@ rp_rampart_config_builder_populate(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_AUTHN_MODULE_NAME)==0)
+    else if(axis2_strcmp(local_name,RP_AUTHN_MODULE_NAME)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_AUTHN_MODULE_NAME,node,element))
         {
@@ -134,7 +134,7 @@ rp_rampart_config_builder_populate(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_PASSWORD_TYPE)==0)
+    else if(axis2_strcmp(local_name,RP_PASSWORD_TYPE)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_PASSWORD_TYPE,node,element))
         {
@@ -146,7 +146,7 @@ rp_rampart_config_builder_populate(
             return AXIS2_FAILURE;
     }
 
-    else if(AXIS2_STRCMP(local_name,RP_CERTIFICATE)==0)
+    else if(axis2_strcmp(local_name,RP_CERTIFICATE)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_CERTIFICATE,node,element))
         {
@@ -158,7 +158,7 @@ rp_rampart_config_builder_populate(
             return AXIS2_FAILURE;
     }
 
-    else if(AXIS2_STRCMP(local_name,RP_RECEIVER_CERTIFICATE)==0)
+    else if(axis2_strcmp(local_name,RP_RECEIVER_CERTIFICATE)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_RECEIVER_CERTIFICATE,node,element))
         {
@@ -170,7 +170,7 @@ rp_rampart_config_builder_populate(
             return AXIS2_FAILURE;
     }
 
-    else if(AXIS2_STRCMP(local_name,RP_PRIVATE_KEY)==0)
+    else if(axis2_strcmp(local_name,RP_PRIVATE_KEY)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_PRIVATE_KEY,node,element))
         {
@@ -181,7 +181,7 @@ rp_rampart_config_builder_populate(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_TIME_TO_LIVE)==0)
+    else if(axis2_strcmp(local_name,RP_TIME_TO_LIVE)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_TIME_TO_LIVE,node,element))
         {

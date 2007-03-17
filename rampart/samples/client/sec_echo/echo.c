@@ -50,7 +50,7 @@ int main(int argc, char** argv)
         printf("Using client_home : %s\n", client_home);
     }
 
-    if (AXIS2_STRCMP(address, "-h") == 0)
+    if (axis2_strcmp(address, "-h") == 0)
     {
         printf("Usage : %s [endpoint_url] [client_home]\n", argv[0]);
         printf("use -h for help\n");

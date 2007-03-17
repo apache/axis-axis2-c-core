@@ -297,7 +297,7 @@ w2c_schema_compiler_options_set_output_location( w2c_schema_compiler_options_t *
 
     compiler_options_impl = W2C_INTF_TO_IMPL(compiler_options);
 
-    compiler_options_impl-> output_location = AXIS2_STRDUP(output_location, env);
+    compiler_options_impl-> output_location = axis2_strdup(output_location, env);
 
     return AXIS2_SUCCESS;
 }
@@ -327,7 +327,7 @@ w2c_schema_compiler_options_set_mapper_class_package( w2c_schema_compiler_option
 
     compiler_options_impl = W2C_INTF_TO_IMPL(compiler_options);
 
-    compiler_options_impl-> mapper_class_package = AXIS2_STRDUP(mapper_class_package, env);
+    compiler_options_impl-> mapper_class_package = axis2_strdup(mapper_class_package, env);
 
     return AXIS2_SUCCESS;
 }
@@ -359,7 +359,7 @@ w2c_schema_compiler_options_set_package_name( w2c_schema_compiler_options_t *com
 
     compiler_options_impl = W2C_INTF_TO_IMPL(compiler_options);
 
-    compiler_options_impl-> package_name = AXIS2_STRDUP(package_name, env);
+    compiler_options_impl-> package_name = axis2_strdup(package_name, env);
 
     return AXIS2_SUCCESS;
 }
@@ -512,7 +512,7 @@ w2c_schema_compiler_options_set_language( w2c_schema_compiler_options_t *compile
 
     compiler_options_impl = W2C_INTF_TO_IMPL(compiler_options);
 
-    compiler_options_impl-> language = AXIS2_STRDUP(language, env);
+    compiler_options_impl-> language = axis2_strdup(language, env);
 
     return AXIS2_SUCCESS;
 }
@@ -584,6 +584,6 @@ axis2_char_t*
 w2c_schema_compiler_options_default_name_maker( axis2_char_t *name,
                                      const axis2_env_t *env)
 {
-        return AXIS2_STRDUP( name, env);
+        return axis2_strdup( name, env);
 }
 

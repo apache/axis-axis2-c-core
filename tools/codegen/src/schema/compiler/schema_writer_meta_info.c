@@ -682,15 +682,15 @@ w2c_schema_writer_meta_info_free (w2c_schema_writer_meta_info_t *schema_writer_m
     
     if (schema_writer_meta_info_impl->extension_basetype)
     {
-        AXIS2_QNAME_FREE(schema_writer_meta_info_impl->extension_basetype, env);
+        axis2_qname_free(schema_writer_meta_info_impl->extension_basetype, env);
     }
     if (schema_writer_meta_info_impl->restriction_basetype)
     {
-        AXIS2_QNAME_FREE(schema_writer_meta_info_impl->restriction_basetype, env);
+        axis2_qname_free(schema_writer_meta_info_impl->restriction_basetype, env);
     }
     if (schema_writer_meta_info_impl->ownqname)
     {
-        AXIS2_QNAME_FREE(schema_writer_meta_info_impl->ownqname, env);
+        axis2_qname_free(schema_writer_meta_info_impl->ownqname, env);
     }
     if (schema_writer_meta_info_impl->nillable_qnamelist)
     {
@@ -893,7 +893,7 @@ w2c_schema_writer_meta_info_set_enum_facet( w2c_schema_writer_meta_info_t *schem
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     writer_meta_info_impl = W2C_INTF_TO_IMPL(schema_writer_meta_info);
-    writer_meta_info_impl-> enum_facet = AXIS2_STRDUP(enum_facet,env);
+    writer_meta_info_impl-> enum_facet = axis2_strdup(enum_facet,env);
     return AXIS2_SUCCESS;
 }
 axis2_char_t *AXIS2_CALL
@@ -1273,7 +1273,7 @@ w2c_schema_writer_meta_info_is_restriction_base_type(
                              axis2_qname_t *restriction_base_type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-    return AXIS2_QNAME_EQUALS( W2C_INTF_TO_IMPL(schema_writer_meta_info)-> restriction_basetype,
+    return axis2_qname_equals( W2C_INTF_TO_IMPL(schema_writer_meta_info)-> restriction_basetype,
                     env,
                     restriction_base_type );
 }

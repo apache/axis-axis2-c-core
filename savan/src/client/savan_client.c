@@ -161,14 +161,14 @@ savan_client_subscribe(
     /* Check whether we have received a SubscribeResponse */
     sub_elem_local_name = axiom_element_get_localname(body_elem, env);
 
-    if (AXIS2_STRCMP(ELEM_NAME_SUB_RESPONSE, sub_elem_local_name) != 0)
+    if (axis2_strcmp(ELEM_NAME_SUB_RESPONSE, sub_elem_local_name) != 0)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Subscription failed");
         return AXIS2_FAILURE;
     }
 
     sub_id = savan_client_get_sub_id_from_response(body_elem, reply, env);
-    client->sub_id = AXIS2_STRDUP(sub_id, env);
+    client->sub_id = axis2_strdup(sub_id, env);
 
     return AXIS2_SUCCESS;
 }
@@ -341,7 +341,7 @@ savan_client_get_status(
     qname = axis2_qname_create(env, ELEM_NAME_GETSTATUS_RESPONSE, EVENTING_NAMESPACE, NULL);
     response_elem = axiom_element_get_first_child_with_qname(body_elem, env, qname,
         body_node, &response_node);
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     
     /* Now read Expires sub element */
         
@@ -349,7 +349,7 @@ savan_client_get_status(
     qname = axis2_qname_create(env, ELEM_NAME_EXPIRES, EVENTING_NAMESPACE, NULL);
     expires_elem = axiom_element_get_first_child_with_qname(response_elem, env, qname,
         response_node, &expires_node);
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     
     expires = axiom_element_get_text(expires_elem, env, expires_node);
     
@@ -426,20 +426,20 @@ savan_client_get_sub_id_from_response(
     qname = axis2_qname_create(env, ELEM_NAME_SUB_MGR, EVENTING_NAMESPACE, NULL);
     submgr_elem = axiom_element_get_first_child_with_qname(response_elem, env, qname,
         response_node, &submgr_node);
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     
     /* Get Ref Param sub element */
     qname = axis2_qname_create(env, ELEM_NAME_REF_PARAM,
         AXIS2_WSA_NAMESPACE_SUBMISSION, NULL);
     refparam_elem = axiom_element_get_first_child_with_qname(submgr_elem, env, qname,
         submgr_node, &refparam_node);
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
 
     /* Get Identifier sub element */
     qname = axis2_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);
     id_elem = axiom_element_get_first_child_with_qname(refparam_elem, env, qname,
         refparam_node, &id_node);
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
 
     sub_id = axiom_element_get_text(id_elem, env, id_node);
 

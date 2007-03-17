@@ -102,7 +102,7 @@ oxs_axiom_get_node_by_local_name(const axis2_env_t *env,
     temp_name = axiom_util_get_localname(node, env);
     AXIS2_LOG_INFO(env->log, "[rampart][axiom] Checking node %s for %s", temp_name, local_name );
 
-    if(0 == AXIS2_STRCMP(temp_name, local_name) ){
+    if(0 == axis2_strcmp(temp_name, local_name) ){
         /*Gottcha.. return this node*/
         return node;
     }else{
@@ -144,7 +144,7 @@ oxs_axiom_get_node_by_id(const axis2_env_t *env,
     /*AXIS2_LOG_INFO(env->log, "[rampart][axiom] Checking node %s for the attribute %s with value = %s", localname, attr, val);*/
 
     attribute_value = oxs_axiom_get_attribute_value_of_node_by_name(env, node, attr);
-    if(0 == AXIS2_STRCMP(val, attribute_value) ){
+    if(0 == axis2_strcmp(val, attribute_value) ){
         /*Gottcha.. return this node*/
         return node;
     }else{
@@ -205,7 +205,7 @@ oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env,
     /*Get the child*/
     ele = axiom_element_get_first_child_with_qname(parent_ele, env, qname, parent, &node);
 
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     qname = NULL;
 
     parent_name = AXIOM_NODE_TO_STRING(parent, env);
@@ -250,7 +250,7 @@ oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
         return NULL;
     }
     reader = axiom_xml_reader_create_for_memory(env,
-            (void*)buffer, AXIS2_STRLEN(buffer), "utf-8", AXIS2_XML_PARSER_TYPE_BUFFER);
+            (void*)buffer, axis2_strlen(buffer), "utf-8", AXIS2_XML_PARSER_TYPE_BUFFER);
 
     if (!reader)
     {
@@ -297,16 +297,16 @@ oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char
     ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
     qname = axiom_element_get_qname(ele, env, node);
 
-    namestr = AXIS2_QNAME_GET_LOCALPART(qname, env);
-    ret_name =  AXIS2_STRCMP(namestr, name) ;
+    namestr = axis2_qname_get_localpart(qname, env);
+    ret_name =  axis2_strcmp(namestr, name) ;
 
 
     if (ret_name < 0) return 0;
 
     if (ns)
     {
-        ns_str = AXIS2_QNAME_GET_URI(qname, env);
-        ret_ns =  AXIS2_STRCMP(ns_str, ns) ;
+        ns_str = axis2_qname_get_uri(qname, env);
+        ret_ns =  axis2_strcmp(ns_str, ns) ;
         if (ret_ns < 0) return AXIS2_FAILURE;
         else   return AXIS2_SUCCESS;
 

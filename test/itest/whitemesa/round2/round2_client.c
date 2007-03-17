@@ -52,7 +52,7 @@ main(int argc, char **argv)
     word_to_echo = "helloworld";
     echo_type = "string";
 
-    if ((argc > 1) && (AXIS2_STRCMP("-h", argv[1]) == 0))
+    if ((argc > 1) && (axis2_strcmp("-h", argv[1]) == 0))
     {
         printf("\nUsage : %s [echo_operation] [echo_value] [XSD_type]\n",
                 argv[0]);
@@ -123,7 +123,7 @@ main(int argc, char **argv)
             ret_ele =
                 (axiom_element_t *)
                 AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
-            if (AXIS2_STRCMP
+            if (axis2_strcmp
                     (axiom_element_get_localname(ret_ele, env),
                             echo_response_buff) != 0)
             {

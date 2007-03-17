@@ -322,11 +322,11 @@
                    </xsl:when>
 
                    <xsl:when test="$nativePropertyType='axis2_qname_t*'">
-                    AXIS2_QNAME_FREE( <xsl:value-of select="$attriName"/>, env );
+                    axis2_qname_free( <xsl:value-of select="$attriName"/>, env );
                    </xsl:when>
 
                    <xsl:when test="$nativePropertyType='axis2_uri_t*'">
-                    AXIS2_URI_FREE( <xsl:value-of select="$attriName"/>, env );
+                    axis2_uri_free( <xsl:value-of select="$attriName"/>, env );
                    </xsl:when>
 
                    <xsl:when test="$nativePropertyType='axis2_date_time_t*'">
@@ -357,7 +357,7 @@
             <xsl:if test="not(@type)">
               if(<xsl:value-of select="$name"/>_impl->qname )
               {
-                  AXIS2_QNAME_FREE (<xsl:value-of select="$name"/>_impl->qname, env);
+                  axis2_qname_free (<xsl:value-of select="$name"/>_impl->qname, env);
                   <xsl:value-of select="$name"/>_impl->qname = NULL;
               }
             </xsl:if>
@@ -472,7 +472,7 @@
                  <xsl:if test="position()=1">
                     current_element = AXIOM_NODE_GET_DATA_ELEMENT( parent, env);
                     qname = AXIOM_ELEMENT_GET_QNAME( current_element, env, parent);
-                    if ( AXIS2_QNAME_EQUALS( qname, env, <xsl:value-of select="$name"/>_impl-> qname ) )
+                    if ( axis2_qname_equals( qname, env, <xsl:value-of select="$name"/>_impl-> qname ) )
                     {
                         first_node = AXIOM_NODE_GET_FIRST_CHILD( parent, env);
                     }
@@ -598,7 +598,7 @@
                         <!-- add axis2_char_t s -->
                         <xsl:when test="$nativePropertyType='axis2_char_t*'">
                            <xsl:value-of select="$axis2_capsname"/>_SET_<xsl:value-of select="$CapsCName"/>( <xsl:value-of select="$name"/>,
-                                                          env, AXIS2_STRDUP( attrib_text, env));
+                                                          env, axis2_strdup( attrib_text, env));
                         </xsl:when>
 
                         <!-- add axis2_qname_t s -->
@@ -614,7 +614,7 @@
                         </xsl:when>
                         <!-- add axis2_bool_t s -->
                         <xsl:when test="$nativePropertyType='axis2_bool_t'">
-                           if ( !AXIS2_STRCMP( attrib_text, "TRUE") || !AXIS2_STRCMP( attrib_text, "true") )
+                           if ( !axis2_strcmp( attrib_text, "TRUE") || !axis2_strcmp( attrib_text, "true") )
                            {
                                <xsl:value-of select="$axis2_capsname"/>_SET_<xsl:value-of select="$CapsCName"/>( <xsl:value-of select="$name"/>,
                                                           env, AXIS2_TRUE);
@@ -707,7 +707,7 @@
                                   element_qname = axis2_qname_create( env, "<xsl:value-of select="$propertyName"/>", "<xsl:value-of select="@nsuri"/>", "<xsl:choose>
                                                                    <xsl:when test="@prefix!=''"><xsl:value-of select="@prefix"/></xsl:when>
                                                                    <xsl:when test="@nsuri=../@nsuri"><xsl:value-of select="../@nsprefix"/></xsl:when></xsl:choose>");
-                                  if ( AXIS2_QNAME_EQUALS( element_qname, env, qname))
+                                  if ( axis2_qname_equals( element_qname, env, qname))
                                   {
                                        /** found the requried element */
                                        break;
@@ -931,7 +931,7 @@
                                   element_qname = axis2_qname_create( env, "<xsl:value-of select="$propertyName"/>", "<xsl:value-of select="@nsuri"/>","<xsl:choose>
                                                                    <xsl:when test="@prefix!=''"><xsl:value-of select="@prefix"/></xsl:when>
                                                                    <xsl:when test="@nsuri=../@nsuri"><xsl:value-of select="../@nsprefix"/></xsl:when></xsl:choose>");
-                                  if ( AXIS2_QNAME_EQUALS( element_qname, env, qname) )
+                                  if ( axis2_qname_equals( element_qname, env, qname) )
                                   {
                                       if( sequence_broken)
                                       {
@@ -1093,7 +1093,7 @@
                                   element_qname = axis2_qname_create( env, "<xsl:value-of select="$propertyName"/>", "<xsl:value-of select="@nsuri"/>","<xsl:choose>
                                                                    <xsl:when test="@prefix!=''"><xsl:value-of select="@prefix"/></xsl:when>
                                                                    <xsl:when test="@nsuri=../@nsuri"><xsl:value-of select="../@nsprefix"/></xsl:when></xsl:choose>");
-                                  if ( AXIS2_QNAME_EQUALS( element_qname, env, qname)
+                                  if ( axis2_qname_equals( element_qname, env, qname)
                                   {
                                        /** found the requried element */
                                        element_found = 1;
@@ -1421,14 +1421,14 @@
 
                         <!-- add axis2_uri_t s -->
                         <xsl:when test="$nativePropertyType='axis2_uri_t*'">
-                           text_value = AXIS2_URI_TO_STRING(<xsl:value-of select="$attriName"/>, env, AXIS2_URI_UNP_OMITUSERINFO);
+                           text_value = axis2_uri_to_string(<xsl:value-of select="$attriName"/>, env, AXIS2_URI_UNP_OMITUSERINFO);
                            text_attri = axiom_attribute_create (env, "<xsl:value-of select="$propertyName"/>", text_value, ns1);
                            AXIOM_ELEMENT_ADD_ATTRIBUTE (parent_element, env, text_attri, parent);
                         </xsl:when>
 
                         <!-- add axis2_qname_t s -->
                         <xsl:when test="$nativePropertyType='axis2_qname_t*'">
-                           text_value = AXIS2_QNAME_TO_STRING(<xsl:value-of select="$attriName"/>, env);
+                           text_value = axis2_qname_to_string(<xsl:value-of select="$attriName"/>, env);
                            text_attri = axiom_attribute_create (env, "<xsl:value-of select="$propertyName"/>", text_value, ns1);
                            AXIOM_ELEMENT_ADD_ATTRIBUTE (parent_element, env, text_attri, parent);
                         </xsl:when>
@@ -1587,13 +1587,13 @@
 
                         <!-- add axis2_uri_t s -->
                         <xsl:when test="$nativePropertyType='axis2_uri_t*'">
-                           text_value = AXIS2_URI_TO_STRING(<xsl:value-of select="$attriName"/>, env, AXIS2_URI_UNP_OMITUSERINFO);
+                           text_value = axis2_uri_to_string(<xsl:value-of select="$attriName"/>, env, AXIS2_URI_UNP_OMITUSERINFO);
                            AXIOM_ELEMENT_SET_TEXT(current_element, env, text_value, current_node);
                         </xsl:when>
 
                         <!-- add axis2_qname_t s -->
                         <xsl:when test="$nativePropertyType='axis2_qname_t*'">
-                           text_value = AXIS2_QNAME_TO_STRING(<xsl:value-of select="$attriName"/>, env);
+                           text_value = axis2_qname_to_string(<xsl:value-of select="$attriName"/>, env);
                            AXIOM_ELEMENT_SET_TEXT(current_element, env, text_value, current_node);
                         </xsl:when>
 

@@ -67,7 +67,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     axis2_dll_type_t dll_type = AXIS2_SVC_DLL;
     axis2_error_codes_t error_code = AXIS2_ERROR_NONE;
 
-    dll_desc = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
+    dll_desc = axis2_param_get_value(impl_info_param, env);
     if (!dll_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,

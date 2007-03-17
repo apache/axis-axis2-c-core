@@ -195,7 +195,7 @@ oxs_x509_cert_set_subject(oxs_x509_cert_t *x509_cert,
         AXIS2_FREE(env->allocator, x509_cert->subject);
         x509_cert->subject = NULL;
     }
-    x509_cert->subject = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    x509_cert->subject = (axis2_char_t *)axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -208,7 +208,7 @@ oxs_x509_cert_set_issuer(oxs_x509_cert_t *x509_cert,
         AXIS2_FREE(env->allocator, x509_cert->issuer);
         x509_cert->issuer = NULL;
     }
-    x509_cert->issuer = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    x509_cert->issuer = (axis2_char_t *)axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -221,7 +221,7 @@ oxs_x509_cert_set_key_identifier(oxs_x509_cert_t *x509_cert,
         AXIS2_FREE(env->allocator, x509_cert->key_identifier);
         x509_cert->key_identifier = NULL;
     }
-    x509_cert->key_identifier = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    x509_cert->key_identifier = (axis2_char_t *)axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 
@@ -235,7 +235,7 @@ oxs_x509_cert_set_fingerprint(oxs_x509_cert_t *x509_cert,
         AXIS2_FREE(env->allocator, x509_cert->fingerprint);
         x509_cert->fingerprint = NULL;
     }
-    x509_cert->fingerprint = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    x509_cert->fingerprint = (axis2_char_t *)axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -248,7 +248,7 @@ oxs_x509_cert_set_date(oxs_x509_cert_t *x509_cert,
         AXIS2_FREE(env->allocator, x509_cert->date);
         x509_cert->date = NULL;
     }
-    x509_cert->date = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    x509_cert->date = (axis2_char_t *)axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -261,7 +261,7 @@ oxs_x509_cert_set_hash(oxs_x509_cert_t *x509_cert,
         AXIS2_FREE(env->allocator, x509_cert->hash);
         x509_cert->hash = NULL;
     }
-    x509_cert->hash = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    x509_cert->hash = (axis2_char_t *)axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -274,7 +274,7 @@ oxs_x509_cert_set_data(oxs_x509_cert_t *x509_cert,
         AXIS2_FREE(env->allocator, x509_cert->data);
         x509_cert->data = NULL;
     }
-    x509_cert->data = (axis2_char_t *)AXIS2_STRDUP(value, env);
+    x509_cert->data = (axis2_char_t *)axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -39,12 +39,12 @@ rp_match_secpolicy_qname(
 
     if(!node_qname)
     {
-        AXIS2_QNAME_FREE(qname,env);
+        axis2_qname_free(qname,env);
         qname = NULL;
         return AXIS2_FALSE;
     }
 
-    if(AXIS2_QNAME_EQUALS(qname,env,node_qname))
+    if(axis2_qname_equals(qname,env,node_qname))
         return AXIS2_TRUE;
     
     return AXIS2_FALSE;
@@ -71,14 +71,14 @@ rp_match_policy_qname(
 
     if(!node_qname)
     {
-        AXIS2_QNAME_FREE(qname,env);
+        axis2_qname_free(qname,env);
         qname = NULL;
         return AXIS2_FALSE;
     }
 
-    if(AXIS2_QNAME_EQUALS(qname,env,node_qname))
+    if(axis2_qname_equals(qname,env,node_qname))
     {        
-        AXIS2_QNAME_FREE(qname,env);
+        axis2_qname_free(qname,env);
         qname = NULL;
         return AXIS2_TRUE;
     }
@@ -108,12 +108,12 @@ rp_match_rampart_config_qname(
 
     if(!node_qname)
     {
-        AXIS2_QNAME_FREE(qname,env);
+        axis2_qname_free(qname,env);
         qname = NULL;
         return AXIS2_FALSE;
     }
 
-    if(AXIS2_QNAME_EQUALS(qname,env,node_qname))
+    if(axis2_qname_equals(qname,env,node_qname))
         return AXIS2_TRUE;
     
     return AXIS2_FALSE;

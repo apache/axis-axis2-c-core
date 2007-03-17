@@ -171,9 +171,9 @@ openssl_rsa_pub_encrypt(
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
 
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
-    if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
+    if(0 == axis2_strcmp(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
         pad = RSA_PKCS1_OAEP_PADDING;
-    }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
+    }else if(0 == axis2_strcmp(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
         pad = RSA_PKCS1_PADDING;
     }
 
@@ -213,9 +213,9 @@ openssl_rsa_pub_decrypt(
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
 
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
-    if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
+    if(0 == axis2_strcmp(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
         pad = RSA_PKCS1_OAEP_PADDING;
-    }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
+    }else if(0 == axis2_strcmp(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
         pad = RSA_PKCS1_PADDING;
     }
 
@@ -258,9 +258,9 @@ openssl_rsa_prv_decrypt(
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
 
     /*Set padding. This is the only diff btwn RSA-v1.5 and RSA-OAEP*/
-    if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
+    if(0 == axis2_strcmp(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
         pad = RSA_PKCS1_OAEP_PADDING;
-    }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
+    }else if(0 == axis2_strcmp(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
         pad = RSA_PKCS1_PADDING;
     }
 
@@ -303,9 +303,9 @@ openssl_rsa_prv_encrypt(
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
 
     /*Set padding. This is the only diff btwn RSA-v1.5 and RSA-OAEP*/
-    if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
+    if(0 == axis2_strcmp(padding, OPENSSL_RSA_PKCS1_OAEP_PADDING  ) ){
         pad = RSA_PKCS1_OAEP_PADDING;
-    }else if(0 == AXIS2_STRCMP(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
+    }else if(0 == axis2_strcmp(padding, OPENSSL_RSA_PKCS1_PADDING  ) ){
         pad = RSA_PKCS1_PADDING;
     }
 

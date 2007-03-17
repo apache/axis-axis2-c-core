@@ -84,8 +84,8 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
             return NULL;
         }
          axis2_file_set_name(arch_file, env, fname);
-        temp_path = AXIS2_STRACAT(pathname, AXIS2_PATH_SEP_STR, env);
-        path = AXIS2_STRACAT(temp_path, fname, env);
+        temp_path = axis2_stracat(pathname, AXIS2_PATH_SEP_STR, env);
+        path = axis2_stracat(temp_path, fname, env);
         AXIS2_FREE(env->allocator, temp_path);
         if (!path)
         {
@@ -219,8 +219,8 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
             return NULL;
         }
          axis2_file_set_name(arch_file, env, fname);
-        temp_path = AXIS2_STRACAT(pathname, AXIS2_PATH_SEP_STR, env);
-        path = AXIS2_STRACAT(temp_path, fname, env);
+        temp_path = axis2_stracat(pathname, AXIS2_PATH_SEP_STR, env);
+        path = axis2_stracat(temp_path, fname, env);
         if (!path)
         {
             int size = 0;
@@ -304,7 +304,7 @@ int file_select(struct dirent *entry)
         return (AXIS2_FALSE);
 
     /* Check for filename extensions */
-    ptr = AXIS2_RINDEX(entry->d_name, '.');
+    ptr = axis2_rindex(entry->d_name, '.');
     if ((ptr) &&
             ((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0)))
     {

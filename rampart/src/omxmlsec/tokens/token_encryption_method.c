@@ -80,7 +80,7 @@ oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_no
     }
 
     enc_mtd = axiom_element_get_attribute_value_by_name(enc_mtd_ele, env, OXS_ATTR_ALGORITHM);
-    if((!enc_mtd) ||(0 == AXIS2_STRCMP("", enc_mtd))){
+    if((!enc_mtd) ||(0 == axis2_strcmp("", enc_mtd))){
         return NULL;
     }
     return enc_mtd;

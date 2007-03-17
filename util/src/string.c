@@ -45,7 +45,7 @@ axis2_string_create(const axis2_env_t *env,
     }
 
     string = (axis2_string_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_string_t));
+        sizeof(axis2_string_t));
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -67,7 +67,7 @@ axis2_string_create(const axis2_env_t *env,
     }
     
     string->buffer = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_char_t) * (string->length + 1));
+        sizeof(axis2_char_t) * (string->length + 1));
     if (!(string->buffer))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -134,7 +134,7 @@ axis2_string_create_const(const axis2_env_t *env,
     }
 
     string = (axis2_string_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_string_t));
+        sizeof(axis2_string_t));
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -164,17 +164,20 @@ axis2_string_free(struct axis2_string *string,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     if (!string)
+    {
         return AXIS2_FAILURE;
+    }
     
     string->ref_count--;
 
     if (string->ref_count > 0)
+    {
         return AXIS2_SUCCESS;
+    }
     
     if (string->owns_buffer && string->buffer)
     {
         AXIS2_FREE(env->allocator, string->buffer);
-        string->buffer = NULL;
     }
     
     AXIS2_FREE(env->allocator, string);
@@ -189,7 +192,9 @@ axis2_string_equals(const struct axis2_string *string,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     if (!string || !string1)
+    {
         return AXIS2_FALSE;
+    }
     
     return (string->buffer == string1->buffer);
 }
@@ -201,7 +206,9 @@ axis2_string_clone(struct axis2_string *string,
     AXIS2_ENV_CHECK(env, NULL);
     
     if (!string)
+    {
         return NULL;
+    }
 
     string->ref_count++;
     
@@ -212,10 +219,10 @@ AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
 axis2_string_get_buffer(const struct axis2_string *string,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    
     if (!string)
+    {
         return NULL;
+    }
 
     return string->buffer;
 }
@@ -224,10 +231,10 @@ AXIS2_EXTERN unsigned int AXIS2_CALL
 axis2_string_get_length(const struct axis2_string *string,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    
     if (!string)
+    {
         return -1;
+    }
 
     return string->length;
 }
@@ -239,14 +246,15 @@ axis2_string_get_length(const struct axis2_string *string,
 #define MAX_SAVED_LENGTHS  6
 
 AXIS2_EXTERN void* AXIS2_CALL
-axis2_strdup(const void *ptr, const axis2_env_t *env)
+axis2_strdup(const void *ptr, 
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     if (ptr)
     {
         int len = axis2_strlen(ptr);
         axis2_char_t * str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-                sizeof(axis2_char_t) * (len + 1));
+            sizeof(axis2_char_t) * (len + 1));
         if (!str)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -263,8 +271,8 @@ axis2_strdup(const void *ptr, const axis2_env_t *env)
 
 AXIS2_EXTERN void * AXIS2_CALL
 axis2_strmemdup(const void *ptr,
-        size_t n,
-        const axis2_env_t *env)
+    size_t n,
+    const axis2_env_t *env)
 {
     axis2_char_t *str;
 
@@ -272,7 +280,7 @@ axis2_strmemdup(const void *ptr,
     AXIS2_PARAM_CHECK(env->error, ptr, NULL);
 
     str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_char_t) * (n + 1));
+        sizeof(axis2_char_t) * (n + 1));
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -285,8 +293,7 @@ axis2_strmemdup(const void *ptr,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_memchr(
-    const void *ptr,
+axis2_memchr(const void *ptr,
     int c,
     size_t n)
 {
@@ -302,8 +309,7 @@ axis2_memchr(
 }
 
 AXIS2_EXTERN void* AXIS2_CALL
-axis2_strndup(
-    const void *ptr,
+axis2_strndup(const void *ptr,
     int n,
     const axis2_env_t *env)
 {
@@ -317,7 +323,7 @@ axis2_strndup(
     if (end)
         n = end - (axis2_char_t *) ptr;
     str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_char_t) * (n + 1));
+        sizeof(axis2_char_t) * (n + 1));
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -330,8 +336,7 @@ axis2_strndup(
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_strcat(
-    const axis2_env_t *env, ...)
+axis2_strcat(const axis2_env_t *env, ...)
 {
     axis2_char_t *cp, *argp, *str;
     size_t saved_lengths[MAX_SAVED_LENGTHS];
@@ -396,31 +401,33 @@ axis2_strcat(
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, const axis2_env_t *env)
+axis2_stracat(const axis2_char_t *s1, 
+    const axis2_char_t *s2, 
+    const axis2_env_t *env)
 {
     axis2_char_t *ret = NULL;
     int alloc_len = -1;
 	int len1 = 0;
 	int len2 = 0;
 
-    if (NULL == s1 && NULL == s2)
+    if (!s1 && !s2)
     {
         return NULL;
     }
-    if (NULL == s1)
+    if (!s1)
     {
-        return (axis2_char_t*)AXIS2_STRDUP(s2, env);
+        return (axis2_char_t*)axis2_strdup(s2, env);
     }
-    if (NULL == s2)
+    if (!s2)
     {
-        return (axis2_char_t*)AXIS2_STRDUP(s1, env);
+        return (axis2_char_t*)axis2_strdup(s1, env);
     }
 
 	len1 = axis2_strlen(s1);
 	len2 = axis2_strlen(s2);
     alloc_len = len1 + len2 + 1;
     ret = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
-            alloc_len * sizeof(axis2_char_t));
+        alloc_len * sizeof(axis2_char_t));
     memcpy(ret, s1, len1 * sizeof(axis2_char_t));
     memcpy((ret + len1 * sizeof(axis2_char_t)), s2,
             len2 * sizeof(axis2_char_t));
@@ -429,22 +436,33 @@ axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, const axis2_env_t 
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_strcmp(const axis2_char_t * s1, const axis2_char_t * s2)
+axis2_strcmp(const axis2_char_t * s1, 
+    const axis2_char_t * s2)
 {
     if (s1 && s2)
+    {
         return strcmp(s1, s2);
+    }
     else
+    {
         return -1;
+    }
 }
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_strncmp(const axis2_char_t * s1, const axis2_char_t * s2, int n)
+axis2_strncmp(const axis2_char_t * s1, 
+    const axis2_char_t * s2, 
+    int n)
 {
     if (s1 && s2)
+    {
         return strncmp(s1, s2, n);
+    }
     else
+    {
         return -1;
+    }
 }
 
 
@@ -452,80 +470,104 @@ AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 axis2_strlen(const axis2_char_t * s)
 {
     if (s)
+    {
         return strlen(s);
+    }
     else
+    {
         return -1;
+    }
 }
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_strcasecmp(const axis2_char_t *s1, const axis2_char_t *s2)
+axis2_strcasecmp(const axis2_char_t *s1, 
+    const axis2_char_t *s2)
 {
-	while (*s1 != '\0' && *s2 != '\0'){
-		if(*s1 >= 'A' && *s1 <= 'Z' && *s2 >= 'a' && *s2 <= 'z'){
+	while (*s1 != '\0' && *s2 != '\0')
+	{
+		if(*s1 >= 'A' && *s1 <= 'Z' && *s2 >= 'a' && *s2 <= 'z')
+		{
 			if (*s2 - *s1 - (char)32 != 0){ return 1;} 
 		}
-		else if(*s1 >= 'a' && *s1 <= 'z' && *s2 >= 'A' && *s2 <= 'Z'){
+		else if(*s1 >= 'a' && *s1 <= 'z' && *s2 >= 'A' && *s2 <= 'Z')
+		{
 			if (*s1 - *s2 - 32 != 0) {return 1;}	
 		}
 		else if (*s1 - *s2 != 0)
+		{
 			return 1;
-
+		}
 		s1++; s2++;
 	}
 	if (*s1 != *s2)
+	{
 		return 1;
+	}
 
 	return 0;
 }
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_strncasecmp(const axis2_char_t *s1, const axis2_char_t *s2, const int n)
+axis2_strncasecmp(const axis2_char_t *s1, 
+    const axis2_char_t *s2, 
+    const int n)
 {
     axis2_char_t *str1 = (axis2_char_t *)s1, *str2 = (axis2_char_t *)s2;
     int i = (int)n;
 
     while (--i >= 0 && toupper(*str1) == toupper(*str2++))
+    {
         if (toupper(*str1++) == '\0')
+	{
             return(0);
+	}
+    }
     return(i < 0 ? 0 : toupper(*str1) - toupper(*--str2));
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_strstr(const axis2_char_t *heystack,
-        const axis2_char_t *needle)
+    const axis2_char_t *needle)
 {
     return strstr(heystack, needle);
 }
 
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_rindex(const axis2_char_t *_s, axis2_char_t _ch)
+axis2_rindex(const axis2_char_t *_s, 
+    axis2_char_t _ch)
 {
     int i, ilen = axis2_strlen(_s);
     if (ilen < 1)
+    {
         return NULL;
+    }
     for (i = ilen - 1;i >= 0;i--)
     {
         if (_s[i] == _ch)
+	{
             return (axis2_char_t *)(_s + i);
+	}
     }
     return NULL;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_replace(const axis2_env_t *env,
-        axis2_char_t *str,
-        int s1,
-        int s2)
+    axis2_char_t *str,
+    int s1,
+    int s2)
 {
     axis2_char_t *newstr = NULL;
     axis2_char_t *index = NULL;
     if (!str)
+    {
         return NULL;
+    }
 
-    newstr = AXIS2_STRDUP(str, env);
+    newstr = axis2_strdup(str, env);
 
     index = strchr(newstr, s1);
     while (index)
@@ -537,8 +579,7 @@ axis2_replace(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strltrim(
-    const axis2_env_t *env,
+axis2_strltrim(const axis2_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {
@@ -546,16 +587,20 @@ axis2_strltrim(
     axis2_char_t *ret = NULL;
 
     if (!_s)
+    {
         return NULL;
+    }
     _p = (axis2_char_t *) _s;
     if (!_trim)
+    {
         _trim = " \t\r\n";
+    }
 
     while (*_p)
     {
         if (!strchr(_trim, *_p))
         {
-            ret = (axis2_char_t *) AXIS2_STRDUP(_p, env);
+            ret = (axis2_char_t *) axis2_strdup(_p, env);
             break;
         }
         ++_p;
@@ -564,8 +609,7 @@ axis2_strltrim(
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strrtrim(
-    const axis2_env_t *env,
+axis2_strrtrim(const axis2_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {
@@ -573,15 +617,19 @@ axis2_strrtrim(
     axis2_char_t *ret = NULL;
 
     if (!_s)
+    {
         return NULL;
+    }
     __tail = ((axis2_char_t *) _s) + axis2_strlen(_s);
     if (!_trim)
+    {
         _trim = " \t\n\r";
+    }
     while (_s < __tail--)
     {
         if (!strchr(_trim, *__tail))
         {
-            ret = (axis2_char_t *) AXIS2_STRDUP(_s, env);
+            ret = (axis2_char_t *) axis2_strdup(_s, env);
             break;
         }
         *__tail = 0;
@@ -590,8 +638,7 @@ axis2_strrtrim(
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strtrim(
-    const axis2_env_t *env,
+axis2_strtrim(const axis2_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {
@@ -601,12 +648,16 @@ axis2_strtrim(
     _p = axis2_strltrim(env, _s, _trim);
     _q = axis2_strrtrim(env, _p, _trim);
     if (_p)
+    {
         AXIS2_FREE(env->allocator, _p);
+    }
     return _q;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_string_replace(axis2_char_t* str, axis2_char_t old, axis2_char_t new)
+axis2_string_replace(axis2_char_t* str, 
+    axis2_char_t old, 
+    axis2_char_t new)
 {
     axis2_char_t* str_returns = str;
     for (; *str != '\0' ; str ++)
@@ -620,7 +671,8 @@ axis2_string_replace(axis2_char_t* str, axis2_char_t old, axis2_char_t new)
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_string_substring_starting_at(axis2_char_t* str, int s)
+axis2_string_substring_starting_at(axis2_char_t* str, 
+    int s)
 {
     int len;
     int pos_to_shift;
@@ -638,7 +690,8 @@ axis2_string_substring_starting_at(axis2_char_t* str, int s)
 
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_string_substring_ending_at(axis2_char_t* str, int e)
+axis2_string_substring_ending_at(axis2_char_t* str, 
+    int e)
 {
     axis2_char_t* ptr = NULL;
     int length = 0;
@@ -678,13 +731,16 @@ axis2_string_toupper(axis2_char_t* str)
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_strcasestr(const axis2_char_t *heystack, const axis2_char_t *needle)
+axis2_strcasestr(const axis2_char_t *heystack, 
+    const axis2_char_t *needle)
 {
     axis2_char_t start, current;
     size_t len;
 
     if (!heystack || !needle)
+    {
         return NULL;
+    }
 
     if ((start = *needle++))
     {
@@ -694,7 +750,9 @@ axis2_strcasestr(const axis2_char_t *heystack, const axis2_char_t *needle)
             do
             {
                 if (!(current = *heystack++))
+		{
                     return NULL;
+		}
             } while (toupper(current) != toupper(start));
         } while (axis2_strncasecmp(heystack, needle, len));
         heystack--;

@@ -174,7 +174,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
         return NULL;  
     }
     file_path = getenv("AXIS2C_HOME");
-    file_path = AXIS2_STRDUP( file_path, env);
+    file_path = axis2_strdup( file_path, env);
     file_path = w2c_string_add_string(file_path, W2C_TYPEMAPPER_MAPPING_PATH, env );
     file_path = w2c_string_add_string(file_path, filename, env );
 
@@ -194,7 +194,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
     typemapper_impl-> mapper_name =
         axiom_element_get_attribute_value_by_name(root_ele, env, "dbf");
     typemapper_impl-> mapper_name = 
-        AXIS2_STRDUP( typemapper_impl-> mapper_name, env);
+        axis2_strdup( typemapper_impl-> mapper_name, env);
     it = axiom_element_get_children(root_ele, env, root);
     while ( (child = axiom_children_iterator_next(it, env )) != NULL )
     {
@@ -227,9 +227,9 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
                     (child_ele, env, "namespace");
         prefix = axiom_element_get_attribute_value_by_name
                                 (child_ele, env, "prefix");
-        prefix = AXIS2_STRDUP( prefix, env);
+        prefix = axis2_strdup( prefix, env);
         local_name = axiom_element_get_text(child_ele, env, child);
-        qname2str = AXIS2_STRDUP( local_name, env);
+        qname2str = axis2_strdup( local_name, env);
         qname2str = w2c_string_add_string( qname2str, "|", env);
         qname2str = w2c_string_add_string( qname2str, uri, env);
 
@@ -243,22 +243,22 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
         /* child = AXIOM_NODE_GET_NEXT_SIBLING( child, env ); */
         child_ele = AXIOM_NODE_GET_DATA_ELEMENT( child, env);
         type_val = axiom_element_get_text( child_ele, env, child);
-        type_val = AXIS2_STRDUP( type_val, env);
+        type_val = axis2_strdup( type_val, env);
         if ( is_default )
         {
-            uri = AXIS2_STRDUP( uri, env);
-            local_name = AXIS2_STRDUP( local_name, env);
-            prefix = AXIS2_STRDUP( prefix, env);
+            uri = axis2_strdup( uri, env);
+            local_name = axis2_strdup( local_name, env);
+            prefix = axis2_strdup( prefix, env);
             typemapper_impl-> default_qname = 
                 axis2_qname_create( env, local_name, uri, prefix);
-            typemapper_impl-> default_type = AXIS2_STRDUP( type_val, env);
+            typemapper_impl-> default_type = axis2_strdup( type_val, env);
         }
         axis2_hash_set( typemapper_impl-> qname2name, qname2str,
                         AXIS2_HASH_KEY_STRING, type_val );
-        qname2str = AXIS2_STRDUP( qname2str, env);
+        qname2str = axis2_strdup( qname2str, env);
         axis2_hash_set( typemapper_impl-> qname2prefix, qname2str,
                         AXIS2_HASH_KEY_STRING, prefix );
-        qname2str = AXIS2_STRDUP( qname2str, env);
+        qname2str = axis2_strdup( qname2str, env);
         axis2_hash_set( typemapper_impl-> primitive_map, qname2str,
                         AXIS2_HASH_KEY_STRING, (void*)1);
     }
@@ -331,7 +331,7 @@ w2c_typemapper_free (w2c_typemapper_t *typemapper,
     }
     if (typemapper_impl-> default_qname)
     {
-        AXIS2_QNAME_FREE( typemapper_impl-> default_qname, env);
+        axis2_qname_free( typemapper_impl-> default_qname, env);
     }
     if(typemapper->ops)
     {
@@ -361,7 +361,7 @@ w2c_typemapper_get_parameter_name(w2c_typemapper_t *typemapper,
 	AXIS2_ENV_CHECK(env, NULL);
     
 
-    local = AXIS2_STRDUP( "param", env);
+    local = axis2_strdup( "param", env);
 
     if (counter == W2C_TYPEMAPPER_UPPER_PARAM_LIMIT)
     {
@@ -421,16 +421,16 @@ w2c_typemapper_add_typemapping_name(w2c_typemapper_t *typemapper,
     
     typemapper_impl = W2C_INTF_TO_IMPL(typemapper);
 
-    prefix = AXIS2_QNAME_GET_PREFIX( qname, env);
+    prefix = axis2_qname_get_prefix( qname, env);
     key = w2c_string_make_key_from_qname( qname, env);
-    key = AXIS2_STRDUP( key, env);
-    name = AXIS2_STRDUP( name, env);
+    key = axis2_strdup( key, env);
+    name = axis2_strdup( name, env);
 
     axis2_hash_set( typemapper_impl-> qname2name, key,
                         AXIS2_HASH_KEY_STRING, name);
-    if ( prefix && AXIS2_STRLEN( prefix) > 0 )
+    if ( prefix && axis2_strlen( prefix) > 0 )
     {
-        key = AXIS2_STRDUP( key, env);
+        key = axis2_strdup( key, env);
         axis2_hash_set( typemapper_impl-> qname2prefix , key,
                         AXIS2_HASH_KEY_STRING, prefix);
     }

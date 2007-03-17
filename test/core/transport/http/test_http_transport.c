@@ -103,10 +103,10 @@ void test_url(const axis2_env_t *env)
     }
     printf("Starting URL Test ....\n");
     printf("Parsed URL : \n Protocol :%s|\n Server :%s|\n Port :%d|\n Path : %s|\n",
-            AXIS2_URL_GET_PROTOCOL(url, env), AXIS2_URL_GET_SERVER(url, env),
-            AXIS2_URL_GET_PORT(url, env), AXIS2_URL_GET_PATH(url, env));
+            axis2_url_get_protocol(url, env), axis2_url_get_server(url, env),
+            axis2_url_get_port(url, env), axis2_url_get_path(url, env));
     printf("End of URL Test ... \n");
-    AXIS2_URL_FREE(url, env);
+    axis2_url_free(url, env);
 }
 
 void test_http_client(const axis2_env_t *env)
@@ -130,7 +130,7 @@ void test_http_client(const axis2_env_t *env)
             NULL, 0, NULL);
     url = axis2_url_create(env, "http", "localhost", 80,
             NULL);
-    header = axis2_http_header_create(env, "Host", AXIS2_URL_GET_SERVER(url, env));
+    header = axis2_http_header_create(env, "Host", axis2_url_get_server(url, env));
     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, header);
     client = axis2_http_client_create(env, url);
 
@@ -193,7 +193,7 @@ void test_https_client(const axis2_env_t *env)
             NULL);
     /* Add an ssl certificate variable */
     /*setenv("AXIS2_SSL_CA_FILE", "cert.pem", 1);*/
-    header = axis2_http_header_create(env, "Host", AXIS2_URL_GET_SERVER(url, env));
+    header = axis2_http_header_create(env, "Host", axis2_url_get_server(url, env));
     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, header);
     client = axis2_http_client_create(env, url);
 

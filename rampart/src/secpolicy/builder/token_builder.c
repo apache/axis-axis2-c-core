@@ -77,7 +77,7 @@ rp_token_builder_set_token(
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     
-    if(AXIS2_STRCMP(value,RP_USERNAME_TOKEN)==0)
+    if(axis2_strcmp(value,RP_USERNAME_TOKEN)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_USERNAME_TOKEN,node,element))
         {
@@ -91,7 +91,7 @@ rp_token_builder_set_token(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(value,RP_X509_TOKEN)==0)
+    else if(axis2_strcmp(value,RP_X509_TOKEN)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_X509_TOKEN,node,element))
         {
@@ -105,7 +105,7 @@ rp_token_builder_set_token(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(value,RP_SECURITY_CONTEXT_TOKEN)==0)
+    else if(axis2_strcmp(value,RP_SECURITY_CONTEXT_TOKEN)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SECURITY_CONTEXT_TOKEN,node,element))
         {
@@ -119,7 +119,7 @@ rp_token_builder_set_token(
         else
             return AXIS2_FAILURE;
     }        
-    else if(AXIS2_STRCMP(value,RP_HTTPS_TOKEN)==0)
+    else if(axis2_strcmp(value,RP_HTTPS_TOKEN)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_HTTPS_TOKEN,node,element))
         {

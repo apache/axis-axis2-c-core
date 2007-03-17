@@ -46,8 +46,7 @@ extern "C"
  * @return int <code>int<code>
  */
 AXIS2_EXTERN int AXIS2_CALL
-axis2_rand(
-    unsigned int *seedp);
+axis2_rand(unsigned int *seedp);
 
 /**
  * This is reentrant and thread safe simple random number generator
@@ -60,8 +59,7 @@ axis2_rand(
  * @return int If invalid range is entered -1 is returned <code>int<code>
  */
 AXIS2_EXTERN int AXIS2_CALL
-axis2_rand_with_range(
-    unsigned int *seedp,
+axis2_rand_with_range(unsigned int *seedp,
     int start,
     int end);
 

@@ -135,7 +135,7 @@ axis2_status_t sign(axis2_env_t *env,
     signed_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
 
     outf = fopen(signed_filename, "wb");
-    fwrite(signed_result, 1, AXIS2_STRLEN(signed_result), outf);
+    fwrite(signed_result, 1, axis2_strlen(signed_result), outf);
 
     return AXIS2_SUCCESS;
 

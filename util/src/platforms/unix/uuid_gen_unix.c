@@ -83,8 +83,8 @@ axis2_uuid_gen_v1()
 
     /* check whether system time changed since last retrieve */
     if (!(time_now.tv_sec  == axis2_uuid_static.time_last.tv_sec
-            && time_now.tv_usec ==
-            axis2_uuid_static.time_last.tv_usec))
+        && time_now.tv_usec ==
+        axis2_uuid_static.time_last.tv_usec))
     {
         /* reset time sequence counter and continue */
         axis2_uuid_static.time_seq = 0;
@@ -138,9 +138,8 @@ axis2_uuid_gen_v1()
     /* generate new random clock sequence (initially or if the
        time has stepped backwards) or else just increase it */
     if (clck == 0 || (time_now.tv_sec < axis2_uuid_static.time_last.tv_sec ||
-            (time_now.tv_sec == axis2_uuid_static.time_last.tv_sec
-                    && time_now.tv_usec <
-                    axis2_uuid_static.time_last.tv_usec)))
+        (time_now.tv_sec == axis2_uuid_static.time_last.tv_sec
+        && time_now.tv_usec < axis2_uuid_static.time_last.tv_usec)))
     {
         srand(time_now.tv_usec);
         clck = rand();
@@ -198,10 +197,10 @@ axis2_platform_uuid_gen(char *s)
     }
     memcpy(mac, uuid_struct->mac_addr, 6);
     sprintf(mac_hex, "%02x%02x%02x%02x%02x%02x", mac[0], mac[1], mac[2], mac[3]
-            , mac[4], mac[5]);
+        , mac[4], mac[5]);
     sprintf(uuid_str, "%08x-%04x-%04x-%04x-%s", uuid_struct->time_low,
-            uuid_struct->time_mid, uuid_struct->time_high_version,
-            uuid_struct->clock_variant, mac_hex);
+        uuid_struct->time_mid, uuid_struct->time_high_version,
+        uuid_struct->clock_variant, mac_hex);
     free(uuid_struct);
     uuid_struct = NULL;
     return uuid_str;

@@ -68,11 +68,11 @@ int main (int argc, char *argv[])
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
 
     rest_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(rest_property, env, axis2_strdup (AXIS2_VALUE_TRUE, env));
+    axis2_property_set_value(rest_property, env, axis2_strdup (AXIS2_VALUE_TRUE, env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_ENABLE_REST,
             rest_property);
 	get_property = axis2_property_create(env);
-	AXIS2_PROPERTY_SET_VALUE(get_property, env, axis2_strdup(AXIS2_HTTP_HEADER_GET, env));
+	axis2_property_set_value(get_property, env, axis2_strdup(AXIS2_HTTP_HEADER_GET, env));
 	AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_HTTP_METHOD, get_property);
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");

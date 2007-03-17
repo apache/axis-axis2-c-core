@@ -114,7 +114,7 @@ rp_https_token_builder_set_inclusion_value(
     
     inclusion_value = axiom_element_get_attribute_value(element,env,qname);
                 
-    AXIS2_QNAME_FREE(qname,env);
+    axis2_qname_free(qname,env);
     qname = NULL;         
 
     return rp_https_token_set_inclusion(token,env,inclusion_value);    
@@ -134,9 +134,9 @@ rp_https_token_builder_set_req_client_cert(
 
     if(value)
     {   
-        if(AXIS2_STRCMP(value,"true")==0)
+        if(axis2_strcmp(value,"true")==0)
             return rp_https_token_set_require_client_certificate(token,env,AXIS2_TRUE);
-        else if(AXIS2_STRCMP(value,"false")==0)
+        else if(axis2_strcmp(value,"false")==0)
             return rp_https_token_set_require_client_certificate(token,env,AXIS2_FALSE);
         else
             return AXIS2_FAILURE;

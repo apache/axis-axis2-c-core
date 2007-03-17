@@ -471,7 +471,7 @@ w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
      * So when importing check the target namespace here and ignore it.
      */
     target_ns = XML_SCHEMA_GET_TARGET_NAMESPACE( xml_schema, env);
-    if ( !AXIS2_STRCMP(target_ns, AXIS2_URI_2001_SCHEMA_XSD) )
+    if ( !axis2_strcmp(target_ns, AXIS2_URI_2001_SCHEMA_XSD) )
     {
         return AXIS2_SUCCESS;
     }
@@ -818,7 +818,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
                 generated_type_qname = w2c_schema_compiler_generate_type_qname( compiler_impl, env, qname, parent_schema);
                 if ( XML_SCHEMA_COMPLEX_TYPE == XML_SCHEMA_TYPE_GET_TYPE( schema_type, env) )
                 {
-                    local_part = AXIS2_QNAME_GET_LOCALPART( generated_type_qname, env);
+                    local_part = axis2_qname_get_localpart( generated_type_qname, env);
                     XML_SCHEMA_TYPE_SET_NAME( schema_type, env, local_part);
                     qname_str  = w2c_string_make_key_from_qname( qname, env);
                     meta_inf = axis2_hash_get(compiler_impl-> processed_anonymous_complex_typemap,
@@ -861,7 +861,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
         type_qname = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE_QNAME( ref_ele, env);
         if ( type_qname != NULL)
         {
-           type_name = AXIS2_QNAME_GET_LOCALPART( type_qname, env);
+           type_name = axis2_qname_get_localpart( type_qname, env);
         }
         if( NULL != type_name )
         {
@@ -877,7 +877,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
             ref_schema_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE( ref_ele, env);
             if ( XML_SCHEMA_COMPLEX_TYPE == XML_SCHEMA_TYPE_GET_TYPE( ref_schema_type, env) )
             {
-                local_part = AXIS2_QNAME_GET_LOCALPART( generated_type_qname, env);
+                local_part = axis2_qname_get_localpart( generated_type_qname, env);
                 XML_SCHEMA_TYPE_SET_NAME( ref_schema_type, env, local_part);
                 meta_inf = axis2_hash_get(compiler_impl-> processed_anonymous_complex_typemap,
                                                              qname_str, AXIS2_HASH_KEY_STRING);
@@ -1021,7 +1021,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
          qname = axis2_qname_create_from_string( env, key);
          W2C_TYPEMAPPER_ADD_TYPEMAPPING_NAME( compiler_impl-> base_schema_type_mapper,
                  env, qname, value);
-         AXIS2_QNAME_FREE( qname, env);
+         axis2_qname_free( qname, env);
     }
 
     for (hi = axis2_hash_first( compiler_impl-> all_processed_anon_type, env);
@@ -1031,7 +1031,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
          qname = axis2_qname_create_from_string( env, key);
          W2C_TYPEMAPPER_ADD_TYPEMAPPING_NAME( compiler_impl-> base_schema_type_mapper,
                  env, qname, value);
-         AXIS2_QNAME_FREE( qname, env);
+         axis2_qname_free( qname, env);
     }
 
     for (hi = axis2_hash_first( compiler_impl-> processed_type_map, env);
@@ -1041,7 +1041,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
          qname = axis2_qname_create_from_string( env, key);
          W2C_TYPEMAPPER_ADD_TYPEMAPPING_NAME( compiler_impl-> base_schema_type_mapper,
                  env, qname, value);
-         AXIS2_QNAME_FREE( qname, env);
+         axis2_qname_free( qname, env);
     }
 
     /** the processed element set which is useful  */ 
@@ -1052,7 +1052,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
          qname = axis2_qname_create_from_string( env, key);
          W2C_TYPEMAPPER_ADD_TYPEMAPPING_NAME( compiler_impl-> base_schema_type_mapper,
                  env, qname, value);
-         AXIS2_QNAME_FREE( qname, env);
+         axis2_qname_free( qname, env);
     }
     return compiler_impl-> base_schema_type_mapper;
 }
@@ -1067,7 +1067,7 @@ w2c_schema_compiler_resolve_parent_schema( w2c_schema_compiler_impl_t *compiler_
     xml_schema_t *loaded_schema = NULL;
     xml_schema_t *schema = NULL;
     
-    target_ns = AXIS2_QNAME_GET_URI( schema_type_qname, env);
+    target_ns = axis2_qname_get_uri( schema_type_qname, env);
     loaded_schema = (xml_schema_t*)axis2_hash_get( compiler_impl-> loaded_schema_map,
             target_ns, AXIS2_HASH_KEY_STRING );
     if ( loaded_schema != NULL )
@@ -1098,8 +1098,8 @@ w2c_schema_compiler_generate_type_qname(  w2c_schema_compiler_impl_t *compiler_i
     axis2_char_t counter_str[32];
     axis2_qname_t *qname = NULL;
 
-    ns_uri = AXIS2_QNAME_GET_URI( ref_ele_qname, env);
-    local_part = AXIS2_QNAME_GET_LOCALPART( ref_ele_qname, env);
+    ns_uri = axis2_qname_get_uri( ref_ele_qname, env);
+    local_part = axis2_qname_get_localpart( ref_ele_qname, env);
 
     while( AXIS2_TRUE)
     {
@@ -1112,7 +1112,7 @@ w2c_schema_compiler_generate_type_qname(  w2c_schema_compiler_impl_t *compiler_i
             return qname;
         }
         /* else */
-        AXIS2_QNAME_FREE( qname, env);
+        axis2_qname_free( qname, env);
     }
 }
 
@@ -2198,7 +2198,7 @@ w2c_schema_compiler_is_binary(  w2c_schema_compiler_impl_t *compiler_impl,
     {
         qname = XML_SCHEMA_TYPE_GET_QNAME( schema_type, env);
         qname_str = w2c_string_make_key_from_qname( qname, env);
-        if ( 0 == AXIS2_STRCMP(qname_str, W2C_SCHEMA_XSD_BASE64) )
+        if ( 0 == axis2_strcmp(qname_str, W2C_SCHEMA_XSD_BASE64) )
         {
             return AXIS2_TRUE;
         }
@@ -2248,7 +2248,7 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
             if( base_type_qname != NULL)
             {
                 qname_str = w2c_string_make_key_from_qname( base_type_qname, env);
-                nsuri = AXIS2_QNAME_GET_URI( base_type_qname, env);
+                nsuri = axis2_qname_get_uri( base_type_qname, env);
                 if ( NULL == nsuri || '\0' == *nsuri)
                 {
                     /** the blank namespace should be taken */

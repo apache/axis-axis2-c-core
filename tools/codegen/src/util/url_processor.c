@@ -55,10 +55,10 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     url = axis2_url_parse_string (env, namespace );
     if ( NULL == url )
     {
-        return AXIS2_STRDUP( namespace, env);
+        return axis2_strdup( namespace, env);
     }
-    host_name = AXIS2_URL_GET_SERVER ( url, env );
-    path = AXIS2_URL_GET_PATH ( url, env );
+    host_name = axis2_url_get_server ( url, env );
+    path = axis2_url_get_path ( url, env );
 
     if ( NULL == host_name )
     {
@@ -86,7 +86,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
         return NULL;
     }
 
-    long_path = (axis2_char_t* )AXIS2_STRDUP ( host_name,env );
+    long_path = (axis2_char_t* )axis2_strdup ( host_name,env );
 
     /** make path_name legal */    
 
@@ -130,7 +130,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
             path ++;
         }
         
-        long_path = ( axis2_char_t* )AXIS2_STRDUP( path, env );
+        long_path = ( axis2_char_t* )axis2_strdup( path, env );
         long_path = axis2_string_replace ( long_path, '-', '_' );
         long_path = axis2_string_replace ( long_path, ':', '_' );
 

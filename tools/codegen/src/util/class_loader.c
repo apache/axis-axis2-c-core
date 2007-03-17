@@ -37,7 +37,7 @@ w2c_class_loader_get_object_from_class_name
 	AXIS2_PARAM_CHECK(env->error, class_name, NULL);
 
     file_path = getenv("AXIS2C_HOME");
-    file_path = AXIS2_STRDUP( file_path, env);
+    file_path = axis2_strdup( file_path, env);
     dll_desc = axis2_dll_desc_create(env);
     *pdll_desc = dll_desc;
 
@@ -56,7 +56,7 @@ w2c_class_loader_get_object_from_class_name
      axis2_dll_desc_set_type(dll_desc, env, -1); /* not a standard type */
 
     impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_param_set_value(impl_info_param, env, dll_desc);
 
     axis2_class_loader_init(env);
 	obj = axis2_class_loader_create_dll(env, impl_info_param);

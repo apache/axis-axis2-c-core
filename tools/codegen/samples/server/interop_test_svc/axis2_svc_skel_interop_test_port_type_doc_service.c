@@ -176,7 +176,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                 {
 
 
-                    if (AXIS2_STRCMP(op_name, "echoString") == 0)
+                    if (axis2_strcmp(op_name, "echoString") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_string(env  ,
                                 content_node);
@@ -185,7 +185,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoStringArray") == 0)
+                    if (axis2_strcmp(op_name, "echoStringArray") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_string_array(env  ,
                                 content_node);
@@ -194,7 +194,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoInteger") == 0)
+                    if (axis2_strcmp(op_name, "echoInteger") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_integer(env  ,
                                 content_node);
@@ -203,7 +203,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoIntegerArray") == 0)
+                    if (axis2_strcmp(op_name, "echoIntegerArray") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_integer_array(env  ,
                                 content_node);
@@ -212,7 +212,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoFloat") == 0)
+                    if (axis2_strcmp(op_name, "echoFloat") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_float(env  ,
                                 content_node);
@@ -221,7 +221,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoFloatArray") == 0)
+                    if (axis2_strcmp(op_name, "echoFloatArray") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_float_array(env  ,
                                 content_node);
@@ -230,7 +230,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoStruct") == 0)
+                    if (axis2_strcmp(op_name, "echoStruct") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_struct(env  ,
                                 content_node);
@@ -239,7 +239,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoStructArray") == 0)
+                    if (axis2_strcmp(op_name, "echoStructArray") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_struct_array(env  ,
                                 content_node);
@@ -248,7 +248,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoVoid") == 0)
+                    if (axis2_strcmp(op_name, "echoVoid") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_void(env  ,
                                 content_node);
@@ -257,7 +257,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoBase64") == 0)
+                    if (axis2_strcmp(op_name, "echoBase64") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_base64(env  ,
                                 content_node);
@@ -266,7 +266,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoDate") == 0)
+                    if (axis2_strcmp(op_name, "echoDate") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_date(env  ,
                                 content_node);
@@ -275,7 +275,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoHexBinary") == 0)
+                    if (axis2_strcmp(op_name, "echoHexBinary") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_hex_binary(env  ,
                                 content_node);
@@ -284,7 +284,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoDecimal") == 0)
+                    if (axis2_strcmp(op_name, "echoDecimal") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_decimal(env  ,
                                 content_node);
@@ -293,7 +293,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
                     }
 
 
-                    if (AXIS2_STRCMP(op_name, "echoBoolean") == 0)
+                    if (axis2_strcmp(op_name, "echoBoolean") == 0)
                     {
                         return  axis2_skel_interop_test_port_type_doc_service_echo_boolean(env  ,
                                 content_node);

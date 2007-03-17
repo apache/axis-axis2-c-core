@@ -38,11 +38,11 @@ w2c_file_writer_create_classfile_name (
         
     if ( NULL == root_location )
     {
-        full_path= AXIS2_STRDUP ( ".", env);
+        full_path= axis2_strdup ( ".", env);
     }
     else
     {
-        full_path = AXIS2_STRDUP ( root_location,env );
+        full_path = axis2_strdup ( root_location,env );
         for ( end = AXIS2_FALSE, cp = full_path; 1; cp ++)
         {
             if ( *cp == '\0' )
@@ -76,7 +76,7 @@ w2c_file_writer_create_classfile_name (
     /* this is related to adding folder hiearchy corrosponding to the package */
     if ( package_name && *package_name != '\0')
     {
-        length = AXIS2_STRLEN ( full_path );
+        length = axis2_strlen ( full_path );
         full_path = w2c_string_add_string ( full_path, package_name, env);
 
         /* the loop wil start from the package name */

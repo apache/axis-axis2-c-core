@@ -85,7 +85,7 @@ int axis2_test_svc_add_module_ops()
         printf("axis2_test_add_module_ops SUCCESS\n");
 
     AXIS2_SVC_FREE(svc, env);
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     axis2_module_desc_free(module_desc, env);
     AXIS2_CONF_FREE(axis2_config, env);
 
@@ -122,7 +122,7 @@ int axis2_test_svc_engage_module()
         printf("axis2_test_svc_engage_module SUCCESS\n");
 
     AXIS2_SVC_FREE(svc, env);
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     AXIS2_CONF_FREE(axis2_config, env);
 
     return 0;
@@ -184,7 +184,7 @@ int axis2_test_svc_get_op()
             {
                 const axis2_qname_t *qname = NULL;
                 qname = axis2_op_get_qname((axis2_op_t *)op2, env);
-                oname = AXIS2_QNAME_GET_LOCALPART(qname, env);
+                oname = axis2_qname_get_localpart(qname, env);
                 printf("op name = %s\n", oname);
             }
         }

@@ -156,7 +156,7 @@ void test_config_property_loader(CuTest *tc)
     sprintf(file_path, "%s/codegen/util/codegen-config.properties",
             axis2c_home);
 
-    /* file_path = AXIS2_STRDUP
+    /* file_path = axis2_strdup
                       ("../../resources/codegen-config.properties", env); */
     /*W2C_CONFIG_PROPERTY_LOADER_W2C_CONFIG_PROPERTY_LOADER_SET_FILENAME( loader,
               env, file_path );*/
@@ -212,7 +212,7 @@ void test_messages(CuTest *tc)
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
-    key = AXIS2_STRDUP("wsdl2code.arg1", env);
+    key = axis2_strdup("wsdl2code.arg1", env);
     expected = "Usage WSDL2Code -uri <Location of WSDL> : WSDL file location";
     actual = w2c_messages_get_message(env, key);
     CuAssertStrEquals(tc, expected, actual);

@@ -193,14 +193,14 @@ w2c_writer_get_extension( w2c_writer_impl_t *writer_impl,
         axis2_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
         if ( key && arr_list)
         {
-            suf_length = AXIS2_STRLEN( W2C_WRITER_EXTENSION_SUFFIX );
-            all_length = AXIS2_STRLEN( key);
+            suf_length = axis2_strlen( W2C_WRITER_EXTENSION_SUFFIX );
+            all_length = axis2_strlen( key);
             index = w2c_string_indexof_cs
                                      (key, W2C_WRITER_EXTENSION_SUFFIX );
             if ( index + suf_length == all_length )/* this meen its a suf*/
             {
                  value = axis2_array_list_get( arr_list, env, 0);
-                 ext_name = AXIS2_STRDUP (".", env );
+                 ext_name = axis2_strdup (".", env );
                  ext_name = w2c_string_add_string ( ext_name, value, env);
                  break;
             }
@@ -229,8 +229,8 @@ w2c_writer_find_template ( w2c_writer_impl_t *writer_impl,
         axis2_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
         if ( key && arr_list)
         {
-            suf_length = AXIS2_STRLEN( W2C_WRITER_TEMPLATE_SUFFIX );
-            all_length = AXIS2_STRLEN(key );
+            suf_length = axis2_strlen( W2C_WRITER_TEMPLATE_SUFFIX );
+            all_length = axis2_strlen(key );
             index = w2c_string_indexof_cs
                                      (key, W2C_WRITER_TEMPLATE_SUFFIX );
             if ( index + suf_length == all_length )/* this meen its a suf*/
@@ -241,7 +241,7 @@ w2c_writer_find_template ( w2c_writer_impl_t *writer_impl,
                  if (0 == index) /* prefix matches for the first entry*/
                  {
                      value = axis2_array_list_get ( arr_list, env, 1);
-                     tmpl_name = AXIS2_STRDUP ("", env );
+                     tmpl_name = axis2_strdup ("", env );
                      tmpl_name = w2c_string_add_string ( tmpl_name, value, env);
                      break;
                  }
@@ -256,7 +256,7 @@ w2c_writer_set_self_name( w2c_writer_impl_t* writer_impl,
              const axis2_env_t* env,
              axis2_char_t* self_name)
 {
-    writer_impl -> self_name = AXIS2_STRDUP(self_name, env);
+    writer_impl -> self_name = axis2_strdup(self_name, env);
     return AXIS2_SUCCESS;
 }
 
@@ -276,7 +276,7 @@ w2c_writer_set_language(w2c_writer_impl_t *writer_impl,
         if ( NULL == lang )
             return AXIS2_FAILURE;
     }
-    writer_impl-> language = AXIS2_STRDUP(lang, env);
+    writer_impl-> language = axis2_strdup(lang, env);
     return AXIS2_SUCCESS;
 }
 
@@ -296,7 +296,7 @@ w2c_writer_load_template(w2c_writer_impl_t *writer_impl,
 
 
     file_path = getenv("AXIS2C_HOME");
-    file_path = AXIS2_STRDUP ( file_path, env);
+    file_path = axis2_strdup ( file_path, env);
     if ( NULL == file_path)
     {
         return AXIS2_FAILURE;

@@ -100,7 +100,7 @@ w2c_databinding_adb_ext_engage(w2c_extension_t *extension,
     db_type = W2C_ENGINE_CONFIGURATION_GET_DATABINDING_TYPE( conf, env);
 
     /* this executes only with following configuration */
-    if ( !AXIS2_STRCMP( db_type, "adb" ) )
+    if ( !axis2_strcmp( db_type, "adb" ) )
     {
         current_typemapper = W2C_ENGINE_CONFIGURATION_GET_TYPEMAPPER( conf, env);
         status = w2c_databinding_adb_ext_invoke( env, conf);

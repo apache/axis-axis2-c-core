@@ -19,16 +19,21 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 
+
+#define MAX_SIZE 1024
+#define MAX_ALLOC (MAX_SIZE * 64)
+
 axis2_char_t*
 axis2_properties_read(FILE* input,
-        const axis2_env_t* env);
+    const axis2_env_t* env);
 
 axis2_char_t*
 axis2_properties_read_next(axis2_char_t* cur);
 
 axis2_char_t*
-axis2_properties_trunk_and_dup(axis2_char_t* start, axis2_char_t* end,
-        const axis2_env_t* env);
+axis2_properties_trunk_and_dup(axis2_char_t* start, 
+    axis2_char_t* end,
+    const axis2_env_t* env);
 
 struct axis2_properties
 {
@@ -43,9 +48,9 @@ axis2_properties_create(const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
 
     properties= (axis2_properties_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_properties_t));
+        sizeof(axis2_properties_t));
 
-    if (NULL == properties)
+    if (!properties)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -57,7 +62,7 @@ axis2_properties_create(const axis2_env_t *env)
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_properties_free(axis2_properties_t *properties,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
@@ -68,13 +73,17 @@ axis2_properties_free(axis2_properties_t *properties,
     if (properties->prop_hash)
     {
         for (hi = axis2_hash_first(properties->prop_hash, env);
-                hi; hi = axis2_hash_next(env, hi))
+            hi; hi = axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
             if (key)
+	    {
                 AXIS2_FREE(env-> allocator, key);
+	    }
             if (value)
+	    {
                 AXIS2_FREE(env-> allocator, value);
+	    }
         }
         axis2_hash_free(properties->prop_hash, env);
     }
@@ -82,50 +91,46 @@ axis2_properties_free(axis2_properties_t *properties,
     if (properties)
     {
         AXIS2_FREE(env->allocator, properties);
-        properties = NULL;
     }
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_properties_get_property(axis2_properties_t *properties,
-        const axis2_env_t *env,
-        axis2_char_t *key)
+    const axis2_env_t *env,
+    axis2_char_t *key)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env-> error, key, NULL);
 
     return axis2_hash_get(properties-> prop_hash,
-            key, AXIS2_HASH_KEY_STRING);
+        key, AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_properties_set_property(axis2_properties_t *properties,
-        const axis2_env_t *env,
-        axis2_char_t *key,
-        axis2_char_t *value)
+    const axis2_env_t *env,
+    axis2_char_t *key,
+    axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env-> error, key, AXIS2_FAILURE);
 
     axis2_hash_set(properties-> prop_hash, key,
-            AXIS2_HASH_KEY_STRING, value);
+        AXIS2_HASH_KEY_STRING, value);
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_properties_get_all(axis2_properties_t *properties,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return properties-> prop_hash;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_properties_store(axis2_properties_t *properties,
-        const axis2_env_t *env,
-        FILE *output)
+    const axis2_env_t *env,
+    FILE *output)
 {
     axis2_hash_index_t *hi = NULL;
     axis2_char_t *key = NULL;
@@ -137,14 +142,14 @@ axis2_properties_store(axis2_properties_t *properties,
     if (properties->prop_hash)
     {
         for (hi = axis2_hash_first(properties->prop_hash, env);
-                hi; hi = axis2_hash_next(env, hi))
+            hi; hi = axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
             if (key)
             {
-                if (NULL == value)
+                if (!value)
                 {
-                    value = AXIS2_STRDUP("", env);
+                    value = axis2_strdup("", env);
                 }
                 fprintf(output, "%s=%s\n", key, value);
             }
@@ -155,10 +160,10 @@ axis2_properties_store(axis2_properties_t *properties,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_properties_load(axis2_properties_t *properties,
-        const axis2_env_t *env,
-        axis2_char_t *input_filename)
+    const axis2_env_t *env,
+    axis2_char_t *input_filename)
 {
-	FILE *input = NULL;
+    FILE *input = NULL;
     axis2_char_t *cur = NULL;
     axis2_char_t *tag = NULL;
     const int LINE_STARTED = -1;
@@ -177,16 +182,18 @@ axis2_properties_load(axis2_properties_t *properties,
 
     prop_hash = properties-> prop_hash;
 
-	input = fopen(input_filename, "r+");
-		if(!input)
-			return AXIS2_FAILURE;
+    input = fopen(input_filename, "r+");
+    if(!input)
+    {
+        return AXIS2_FAILURE;
+    }
     buffer = axis2_properties_read(input, env);
 
-    if (buffer == NULL)
+    if (!buffer)
     {
         sprintf(loginfo, "error in reading file\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                loginfo);
+            loginfo);
         AXIS2_FREE(env-> allocator, buffer);
         return AXIS2_FAILURE;
     }
@@ -194,7 +201,7 @@ axis2_properties_load(axis2_properties_t *properties,
 
 
     for (cur = axis2_properties_read_next(buffer); *cur ;
-            cur = axis2_properties_read_next(++cur))
+        cur = axis2_properties_read_next(++cur))
     {
         if (*cur == '\r')
         {
@@ -213,7 +220,7 @@ axis2_properties_load(axis2_properties_t *properties,
             {
                 sprintf(loginfo, "equal apear in wrong place around %s\n", tag);
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                        loginfo);
+                    loginfo);
                 AXIS2_FREE(env-> allocator, buffer);
                 return AXIS2_FAILURE;
             }
@@ -234,7 +241,7 @@ axis2_properties_load(axis2_properties_t *properties,
             {
                 tag =  axis2_properties_trunk_and_dup(tag, cur, env);
                 axis2_hash_set(prop_hash,
-                        key, AXIS2_HASH_KEY_STRING, tag);
+                    key, AXIS2_HASH_KEY_STRING, tag);
             }
             status = LINE_STARTED;
         }
@@ -244,19 +251,21 @@ axis2_properties_load(axis2_properties_t *properties,
         *cur = '\0';
         tag =  axis2_properties_trunk_and_dup(tag, cur, env);
         axis2_hash_set(prop_hash,
-                key, AXIS2_HASH_KEY_STRING, tag);
+            key, AXIS2_HASH_KEY_STRING, tag);
         status = LINE_STARTED;
     }
     if (status != LINE_STARTED)
     {
         sprintf(loginfo, "error parsing properties\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                loginfo);
+            loginfo);
         AXIS2_FREE(env-> allocator, buffer);
         return AXIS2_FAILURE;
     }
 	if(input)
-		fclose(input);			
+	{
+	    fclose(input);			
+	}
     AXIS2_FREE(env-> allocator, buffer);
     return AXIS2_SUCCESS;
 }
@@ -281,22 +290,20 @@ axis2_properties_read_next(axis2_char_t* cur)
 }
 
 axis2_char_t*
-axis2_properties_trunk_and_dup(axis2_char_t* start, axis2_char_t* end,
-        const axis2_env_t* env)
+axis2_properties_trunk_and_dup(axis2_char_t* start, 
+    axis2_char_t* end,
+    const axis2_env_t* env)
 {
     for (; *start == ' '; start ++); /* remove front spaces */
     for (end --; *end == ' '; end --); /* remove rear spaces */
     *(++end) = '\0';
-    start = (axis2_char_t*)AXIS2_STRDUP(start, env);
+    start = (axis2_char_t*)axis2_strdup(start, env);
     return start;
 }
 
-#define MAX_SIZE 1024
-#define MAX_ALLOC (MAX_SIZE * 64)
-
 axis2_char_t*
 axis2_properties_read(FILE* input,
-        const axis2_env_t* env)
+    const axis2_env_t* env)
 {
     int nread = 0;
     axis2_char_t* out_stream = NULL;
@@ -305,8 +312,8 @@ axis2_properties_read(FILE* input,
     size_t total_alloc = curr_alloc;
 
     out_stream = (axis2_char_t*) AXIS2_MALLOC(env-> allocator,
-            sizeof(axis2_char_t) * curr_alloc);
-    if (out_stream == NULL)
+        sizeof(axis2_char_t) * curr_alloc);
+    if (!out_stream)
     {
         return NULL;
     }
@@ -314,7 +321,7 @@ axis2_properties_read(FILE* input,
     do
     {
         nread = fread(out_stream + ncount, sizeof(axis2_char_t), MAX_SIZE,
-                      input);
+            input);
         ncount += nread;
 
         if (ncount + MAX_SIZE > total_alloc)
@@ -327,8 +334,8 @@ axis2_properties_read(FILE* input,
 
             total_alloc += curr_alloc;
             new_stream = AXIS2_MALLOC(env->allocator,
-                                           sizeof(axis2_char_t) * total_alloc);
-            if (new_stream == NULL)
+                sizeof(axis2_char_t) * total_alloc);
+            if (!new_stream)
             {
                 return NULL;
             }

@@ -208,8 +208,8 @@ openssl_x509_get_cert_data(const axis2_env_t *env,
     res = axis2_strstr(core_tail,"-----END");
     res = res-1;
     res[0] = '\0';
-    core = (axis2_char_t*)AXIS2_STRDUP(core_tail,env);
-    buffer = (axis2_char_t*)AXIS2_STRDUP(core,env);
+    core = (axis2_char_t*)axis2_strdup(core_tail,env);
+    buffer = (axis2_char_t*)axis2_strdup(core,env);
 
     while(core[i]!='\0')
     {
@@ -301,7 +301,7 @@ openssl_x509_get_subject_key_identifier(const axis2_env_t *env,
     EVP_EncodeFinal(&ctx, (unsigned char*)(output+len), &ret);
 
     ret += len;
-    ski = AXIS2_STRDUP(output, env); 
+    ski = axis2_strdup(output, env); 
     return ski; 
 }
 

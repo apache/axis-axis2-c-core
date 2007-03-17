@@ -25,7 +25,7 @@ axis2_threadattr_create(axis2_allocator_t* allocator)
     axis2_threadattr_t *new = NULL;
 
     new = AXIS2_MALLOC(allocator, sizeof(axis2_threadattr_t));
-    if (NULL == new)
+    if (!new)
     {
         return NULL;
     }
@@ -87,7 +87,7 @@ static void *dummy_worker(void *opaque)
 
 AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
 axis2_thread_create(axis2_allocator_t* allocator, axis2_threadattr_t *attr,
-        axis2_thread_start_t func, void *data)
+    axis2_thread_start_t func, void *data)
 {
     axis2_status_t stat;
     pthread_attr_t *temp = NULL;
@@ -95,12 +95,12 @@ axis2_thread_create(axis2_allocator_t* allocator, axis2_threadattr_t *attr,
 
     new = (axis2_thread_t *)AXIS2_MALLOC(allocator, sizeof(axis2_thread_t));
 
-    if (NULL == new)
+    if (!new)
     {
         return NULL;
     }
     new->td = (pthread_t *)AXIS2_MALLOC(allocator, sizeof(pthread_t));
-    if (NULL == new->td)
+    if (!new->td)
     {
         return NULL;
     }
@@ -144,10 +144,8 @@ axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator)
         if (thd->td)
         {
             AXIS2_FREE(allocator, thd->td);
-            thd->td = NULL;
         }
         AXIS2_FREE(allocator, thd);
-        thd = NULL;
     }
     pthread_exit(NULL);
     return AXIS2_SUCCESS;
@@ -234,7 +232,7 @@ axis2_thread_setspecific(
 AXIS2_EXTERN axis2_os_thread_t* AXIS2_CALL
 axis2_os_thread_get(axis2_thread_t *thd)
 {
-    if (NULL == thd)
+    if (!thd)
     {
         return NULL;
     }
@@ -247,7 +245,7 @@ axis2_thread_once_init(axis2_allocator_t* allocator)
     static const pthread_once_t once_init = PTHREAD_ONCE_INIT;
     axis2_thread_once_t *control = AXIS2_MALLOC(allocator,
             sizeof(axis2_thread_once_t));
-    if (NULL == control)
+    if (!control)
     {
         return NULL;
         ;

@@ -186,26 +186,6 @@ extern "C"
     axis2_uri_clone(const axis2_uri_t *uri,
             const axis2_env_t *env);
 
-#define AXIS2_URI_FREE(uri, env) \
-      axis2_uri_free(uri, env)
-
-#define AXIS2_URI_TO_STRING(uri, env, flags) \
-      axis2_uri_to_string(uri, env, flags)
-
-#define AXIS2_URI_GET_PROTOCOL(uri, env) \
-      axis2_uri_get_protocol(uri, env)
-
-#define AXIS2_URI_GET_SERVER(uri, env) \
-      axis2_uri_get_server(uri, env)
-
-#define AXIS2_URI_GET_PORT(uri, env) \
-      axis2_uri_get_port(uri, env)
-
-#define AXIS2_URI_GET_PATH(uri, env) \
-      axis2_uri_get_path(uri, env)
-
-#define AXIS2_URI_CLONE(uri, env) \
-      axis2_uri_clone(uri, env)
 
     /** @} */
 #ifdef __cplusplus

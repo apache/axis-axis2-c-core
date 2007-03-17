@@ -155,11 +155,11 @@ w2c_schema_property_loader_create (const axis2_env_t *env,
     schema_property_loader_impl->writer_instance = NULL;
     schema_property_loader_impl->typemapper_name = NULL;
     schema_property_loader_impl->prop_filename = NULL;
-    schema_property_loader_impl->language = AXIS2_STRDUP(language, env);
+    schema_property_loader_impl->language = axis2_strdup(language, env);
      
     axis2c_home = getenv ( "AXIS2C_HOME" );
-    path_len = AXIS2_STRLEN (axis2c_home ) + 
-             AXIS2_STRLEN (W2C_SCHEMA_PROPERTY_LOADER_DEFAULT_PROPERTIES) +
+    path_len = axis2_strlen (axis2c_home ) + 
+             axis2_strlen (W2C_SCHEMA_PROPERTY_LOADER_DEFAULT_PROPERTIES) +
              2;
     schema_property_loader_impl-> prop_filename = AXIS2_MALLOC ( env->allocator,
                                         sizeof(axis2_char_t)*path_len );
@@ -176,7 +176,7 @@ w2c_schema_property_loader_create (const axis2_env_t *env,
     }
 	*/
     schema_property_loader_impl-> prop_set =  axis2_properties_create( env);
-	AXIS2_PROPERTIES_LOAD( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
+	axis2_properties_load( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
 
     if ( schema_property_loader_impl-> prop_set != NULL )
     {
@@ -236,7 +236,7 @@ w2c_schema_property_loader_free (w2c_schema_property_loader_t *schema_property_l
 
     if (schema_property_loader_impl-> prop_set)
     {
-        AXIS2_PROPERTIES_FREE( schema_property_loader_impl-> prop_set, env);
+        axis2_properties_free( schema_property_loader_impl-> prop_set, env);
     }
 
     if (schema_property_loader_impl-> prop_filename)
@@ -320,7 +320,7 @@ w2c_schema_property_loader_reload (
     
     if (schema_property_loader_impl-> prop_set)
     {
-         AXIS2_PROPERTIES_FREE ( schema_property_loader_impl->prop_set, env );
+         axis2_properties_free ( schema_property_loader_impl->prop_set, env );
     }
 	/*
     f = fopen ( schema_property_loader_impl-> prop_filename, "r+");
@@ -332,7 +332,7 @@ w2c_schema_property_loader_reload (
     }
 	*/
     schema_property_loader_impl-> prop_set =  axis2_properties_create( env);
-	AXIS2_PROPERTIES_LOAD( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
+	axis2_properties_load( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
 
     if ( schema_property_loader_impl-> prop_set != NULL )
     {
@@ -434,7 +434,7 @@ w2c_schema_property_loader_load_values(
      w2c_schema_writer_t *writer = NULL;
      axis2_dll_desc_t *dll_desc = NULL;
 
-     prop_hash = AXIS2_PROPERTIES_GET_ALL( obj_impl-> prop_set, env);
+     prop_hash = axis2_properties_get_all( obj_impl-> prop_set, env);
      language = obj_impl-> language;
 
      /**
@@ -448,7 +448,7 @@ w2c_schema_property_loader_load_values(
          {
             axis2_hash_this(hi, (void*)&key, NULL, (void*)&val);
             if ( w2c_string_indexof_cs ( key, language) == 0 && 
-                         (index = w2c_string_indexof ( key, '.')) == AXIS2_STRLEN(language))
+                         (index = w2c_string_indexof ( key, '.')) == axis2_strlen(language))
             {
                 if (w2c_string_indexof_cs( key,
                      W2C_SCHEMA_PROPERTY_LOADER_WRITER_CLASS) == index + 1)
@@ -466,22 +466,22 @@ w2c_schema_property_loader_load_values(
                 if (w2c_string_indexof_cs( key,
                      W2C_SCHEMA_PROPERTY_LOADER_WRITER_TEMPLATE) == index + 1)
                 {
-                    obj_impl-> template_name = AXIS2_STRDUP( val, env);
+                    obj_impl-> template_name = axis2_strdup( val, env);
                 }
                 if (w2c_string_indexof_cs( key, 
                      W2C_SCHEMA_PROPERTY_LOADER_TYPEMAP) == index + 1)
                 {
-                    obj_impl-> typemapper_name = AXIS2_STRDUP( val, env);
+                    obj_impl-> typemapper_name = axis2_strdup( val, env);
                 }
                 if (w2c_string_indexof_cs( key, 
                      W2C_SCHEMA_PROPERTY_LOADER_CLASS) == index + 1)
                 {
-                    obj_impl-> default_class = AXIS2_STRDUP( val, env);
+                    obj_impl-> default_class = axis2_strdup( val, env);
                 }
                 if (w2c_string_indexof_cs( key, 
                      W2C_SCHEMA_PROPERTY_LOADER_ARRAY) == index + 1)
                 {
-                    obj_impl-> default_array = AXIS2_STRDUP( val, env);
+                    obj_impl-> default_array = axis2_strdup( val, env);
                 }
             }
          }

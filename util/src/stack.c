@@ -41,7 +41,7 @@ axis2_stack_create(const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
 
     stack = (axis2_stack_t*)AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_stack_t));
+        sizeof(axis2_stack_t));
 
     if (!stack)
     {
@@ -55,8 +55,8 @@ axis2_stack_create(const axis2_env_t *env)
     stack->is_empty_stack = AXIS2_TRUE;
 
     stack->data = AXIS2_MALLOC(env->allocator, sizeof(void*) *
-            AXIS2_STACK_DEFAULT_CAPACITY);
-    if (NULL == stack->data)
+        AXIS2_STACK_DEFAULT_CAPACITY);
+    if (!stack->data)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_stack_free(stack , env);
@@ -68,29 +68,27 @@ axis2_stack_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 axis2_stack_free(axis2_stack_t *stack,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (stack->data)
     {
         AXIS2_FREE(env->allocator, stack->data);
-        stack->data = NULL;
     }
     AXIS2_FREE(env->allocator, stack);
-    stack = NULL;
     return AXIS2_SUCCESS;
 }
 
 void* AXIS2_CALL
 axis2_stack_pop(axis2_stack_t *stack,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     void *value = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     if (stack->is_empty_stack == AXIS2_TRUE ||
-            stack->size == 0)
+        stack->size == 0)
     {
         return NULL;
     }
@@ -109,8 +107,8 @@ axis2_stack_pop(axis2_stack_t *stack,
 
 axis2_status_t AXIS2_CALL
 axis2_stack_push(axis2_stack_t *stack,
-        const axis2_env_t *env,
-        void* value)
+    const axis2_env_t *env,
+    void* value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
@@ -136,7 +134,6 @@ axis2_stack_push(axis2_stack_t *stack,
         stack->capacity = new_capacity;
 
         AXIS2_FREE(env->allocator, stack->data);
-        stack->data = NULL;
         stack->data = new_data;
 
         stack->data[stack->size++] = value;
@@ -147,7 +144,7 @@ axis2_stack_push(axis2_stack_t *stack,
 
 int AXIS2_CALL
 axis2_stack_size(axis2_stack_t *stack,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return stack->size;
@@ -155,9 +152,8 @@ axis2_stack_size(axis2_stack_t *stack,
 
 void * AXIS2_CALL
 axis2_stack_get(axis2_stack_t *stack,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     if (stack->size > 0)
     {
         return stack->data[stack->size-1];
@@ -167,8 +163,8 @@ axis2_stack_get(axis2_stack_t *stack,
 
 void* AXIS2_CALL
 axis2_stack_get_at(axis2_stack_t *stack,
-        const axis2_env_t *env,
-        int i)
+    const axis2_env_t *env,
+    int i)
 {
     if ((stack->size == 0) || (i < 0) || (i >= stack->size))
     {

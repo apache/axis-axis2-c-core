@@ -60,7 +60,7 @@ void test_namespace_to_package_name(CuTest *tc)
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
-    input = (char*)AXIS2_STRDUP("http://ws.apache.org/axis2/c/w2c", env);
+    input = (char*)axis2_strdup("http://ws.apache.org/axis2/c/w2c", env);
     actual =
         (char*)w2c_url_processor_make_package_name(env, input);
     expected = "org.apache.ws.axis2.c.w2c";
@@ -68,7 +68,7 @@ void test_namespace_to_package_name(CuTest *tc)
     free(input);
     free(actual);
 
-    input = (char*)AXIS2_STRDUP("http://while.234who.for/switch/case/2sixa", env);
+    input = (char*)axis2_strdup("http://while.234who.for/switch/case/2sixa", env);
     actual =
         (char*)w2c_url_processor_make_package_name(env, input);
     expected = "_for._234who._while._switch._case._2sixa";
@@ -101,7 +101,7 @@ void test_template_parse(CuTest *tc)
     out_content = read_file("../../resources/xml/result1.xml");
     cmp_out_content = read_file("../../resources/xml/style1_result.xml");
     /* just ignore the last new line char for avoid warning */
-    len = AXIS2_STRLEN(out_content);
+    len = axis2_strlen(out_content);
     out_content[len -1] = '\0';
 
     CuAssertStrEquals(tc, out_content, cmp_out_content);
@@ -116,7 +116,7 @@ void test_template_parse(CuTest *tc)
     out_content = read_file("../../resources/xml/result2.xml");
     cmp_out_content = read_file("../../resources/xml/style2_result.xml");
     /* just ignore the last new line char for avoid warning */
-    len = AXIS2_STRLEN(out_content);
+    len = axis2_strlen(out_content);
     out_content[len -1] = '\0';
 
     CuAssertStrEquals(tc, out_content, cmp_out_content);

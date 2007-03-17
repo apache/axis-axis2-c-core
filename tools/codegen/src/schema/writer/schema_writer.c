@@ -197,7 +197,7 @@ w2c_schema_writer_init( w2c_schema_writer_t *writer,
 
     writer_impl = W2C_INTF_TO_IMPL(writer);
 
-    writer_impl-> template_name = AXIS2_STRDUP( template_name, env);
+    writer_impl-> template_name = axis2_strdup( template_name, env);
     writer_impl-> base_type_map = base_type_map;
 
     output = W2C_SCHEMA_COMPILER_OPTIONS_GET_OUTPUT_LOCATION( options, env);
@@ -226,7 +226,7 @@ w2c_schema_writer_init( w2c_schema_writer_t *writer,
                 "name", W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME);
         if ( writer_impl-> package_name != NULL)
         {
-            length = AXIS2_STRLEN( writer_impl-> package_name);
+            length = axis2_strlen( writer_impl-> package_name);
             if ( writer_impl-> package_name[length-1] == '.' )
             {
                 writer_impl-> package_name[length-1] = '\0';
@@ -356,7 +356,7 @@ w2c_schema_writer_init_with_file( w2c_schema_writer_impl_t *writer_impl,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if( root_dir == NULL )
     {
-        root_dir = AXIS2_STRDUP(".", env);
+        root_dir = axis2_strdup(".", env);
     }
 
     writer_impl-> root_dir = root_dir;
@@ -385,14 +385,14 @@ w2c_schema_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
 	AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = W2C_INTF_TO_IMPL(writer);
-    ns_uri = AXIS2_QNAME_GET_URI( qname, env);
+    ns_uri = axis2_qname_get_uri( qname, env);
 
     qname2name_maker =
         W2C_SCHEMA_COMPILER_OPTIONS_GET_QNAME2NAME_MAKER( writer_impl-> options, env);
 
     if ( qname2name_maker == NULL)
     {
-        original_name = AXIS2_QNAME_GET_LOCALPART( qname, env);
+        original_name = axis2_qname_get_localpart( qname, env);
     }
     else
     {
@@ -411,7 +411,7 @@ w2c_schema_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
         package_prefix = 
             (writer_impl-> package_name == NULL)? 
                         (W2C_SCHEMA_WRITER_DEFAULT_PACKAGE "."):writer_impl-> package_name;
-        package_prefix = AXIS2_STRDUP( package_prefix, env);
+        package_prefix = axis2_strdup( package_prefix, env);
         package_prefix = w2c_string_add_string( package_prefix, 
                         W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME, env);
     }
@@ -421,7 +421,7 @@ w2c_schema_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
     }
     if( package_prefix != NULL)
     {
-        length = AXIS2_STRLEN( fully_qualified_class_name);
+        length = axis2_strlen( fully_qualified_class_name);
         fully_qualified_class_name = axis2_stracat(package_prefix,
                 (package_prefix[length-1]=='.')?"":".", env);
         fully_qualified_class_name = w2c_string_add_string(fully_qualified_class_name,
@@ -454,7 +454,7 @@ w2c_schema_writer_get_package( w2c_schema_writer_impl_t *writer_impl,
     }
     if( NULL == writer_impl-> package_name)
     {
-        package_name = AXIS2_STRDUP( base_package_name, env);
+        package_name = axis2_strdup( base_package_name, env);
     }
     else
     {
@@ -488,7 +488,7 @@ w2c_schema_writer_process( w2c_schema_writer_impl_t *writer_impl,
         fully_qualified_class_name =
             W2C_SCHEMA_WRITER_MAKE_FULLY_QUALIFIED_CLASS_NAME( &(writer_impl->writer), env, qname);
     }
-    length = AXIS2_STRLEN( fully_qualified_class_name);
+    length = axis2_strlen( fully_qualified_class_name);
     for ( ; length>=0 && fully_qualified_class_name[length]!= '.'; length -- );
     class_name = fully_qualified_class_name+length;
 
@@ -518,7 +518,7 @@ w2c_schema_writer_process( w2c_schema_writer_impl_t *writer_impl,
             w2c_schema_writer_parse( writer_impl, env,
                           model_source_node, out, source_template);
         }
-        namespace_uri = AXIS2_QNAME_GET_URI( qname, env);
+        namespace_uri = axis2_qname_get_uri( qname, env);
         model_name = axis2_stracat( class_name, "|", env);
         model_name = w2c_string_add_string( model_name, namespace_uri, env);
         axis2_hash_set( writer_impl-> model_map,  model_name, AXIS2_HASH_KEY_STRING, model_source_node);
@@ -558,15 +558,15 @@ w2c_schema_writer_make_element( w2c_schema_writer_impl_t *writer_impl,
     {
        model =  w2c_xslt_utils_add_child_node( env, "class", NULL);
     }
-    ns_uri = AXIS2_QNAME_GET_URI( qname, env);
-    prefix = AXIS2_QNAME_GET_PREFIX( qname, env);
+    ns_uri = axis2_qname_get_uri( qname, env);
+    prefix = axis2_qname_get_prefix( qname, env);
 
     prefix = w2c_schema_writer_get_prefix4uri( writer_impl, env, ns_uri, prefix);
 
     /** class_name is already name maken */
     w2c_xslt_utils_add_attribute( env, model, "name", class_name);
 
-    caps_name = AXIS2_STRDUP( class_name, env); 
+    caps_name = axis2_strdup( class_name, env); 
     caps_name = axis2_string_toupper( caps_name);
     w2c_xslt_utils_add_attribute( env, model, "caps-name", caps_name);
     AXIS2_FREE( env-> allocator, caps_name);
@@ -685,16 +685,16 @@ w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
     
         if ( qname2name_maker == NULL)
         {
-            localpart = AXIS2_QNAME_GET_LOCALPART( qname, env);
+            localpart = axis2_qname_get_localpart( qname, env);
         }
         else
         {
             localpart = 
                 W2C_QNAME2NAME_MAKER_SUGGEST_NAME( qname2name_maker, env, qname);
         }
-        prefix = AXIS2_QNAME_GET_PREFIX( qname, env);
-        original_name = AXIS2_QNAME_GET_LOCALPART( qname, env);
-        nsuri = AXIS2_QNAME_GET_URI( qname, env);
+        prefix = axis2_qname_get_prefix( qname, env);
+        original_name = axis2_qname_get_localpart( qname, env);
+        nsuri = axis2_qname_get_uri( qname, env);
         unique_name = w2c_schema_writer_make_unique_class_name( 
                 writer_impl, env, property_names, localpart);
         parent_meta_info = W2C_SCHEMA_WRITER_META_INFO_GET_PARENT( meta_info, env);
@@ -711,14 +711,14 @@ w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
         if( NULL != classname )
         {
             w2c_xslt_utils_add_attribute( env, property, "type", classname);
-            caps_type = AXIS2_STRDUP( classname, env);
+            caps_type = axis2_strdup( classname, env);
             caps_type = axis2_string_toupper( caps_type);
             w2c_xslt_utils_add_attribute( env, property, "caps-type", caps_type);
             AXIS2_FREE( env-> allocator, caps_type);
         }
 
              
-        caps_name = AXIS2_STRDUP( unique_name, env);
+        caps_name = axis2_strdup( unique_name, env);
 
         caps_name = axis2_string_toupper( caps_name);
         w2c_xslt_utils_add_attribute( env, property, "caps-cname", caps_name);
@@ -761,7 +761,7 @@ w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
         }
         if ( schema_qname != NULL && schema_type != NULL)
         {
-            short_type_name = AXIS2_QNAME_GET_LOCALPART( schema_qname, env);
+            short_type_name = axis2_qname_get_localpart( schema_qname, env);
         }
         else
         {
@@ -808,8 +808,8 @@ w2c_schema_writer_is_default_class( w2c_schema_writer_impl_t *writer_impl,
                         const axis2_env_t *env,
                         axis2_char_t *java_class_name4element)
 {
-    return !(AXIS2_STRCMP( java_class_name4element, "DEFAULT_CLASS_NAME")) ||
-           !(AXIS2_STRCMP( java_class_name4element, "DEFAULT_CLASS_ARRAY_NAME"));
+    return !(axis2_strcmp( java_class_name4element, "DEFAULT_CLASS_NAME")) ||
+           !(axis2_strcmp( java_class_name4element, "DEFAULT_CLASS_ARRAY_NAME"));
 }
 
 axis2_char_t*
@@ -823,7 +823,7 @@ w2c_schema_writer_make_unique_class_name( w2c_schema_writer_impl_t *writer_impl,
     axis2_char_t count_str[32];
     static int count = 0;
 
-    class_name = AXIS2_STRDUP( xml_name, env);
+    class_name = axis2_strdup( xml_name, env);
     present = (int)axis2_hash_get( list_of_names, xml_name, AXIS2_HASH_KEY_STRING);
     if ( present)
     {
@@ -874,7 +874,7 @@ w2c_schema_writer_parse( w2c_schema_writer_impl_t *writer_impl,
     /*printf("%s\n", buffer);*/
 
     full_path = getenv("AXIS2C_HOME");
-    full_path = AXIS2_STRDUP ( full_path, env);
+    full_path = axis2_strdup ( full_path, env);
     full_path = w2c_string_add_string(full_path, W2C_SCHEMA_WRITER_XSLT_PATH, env );
     full_path = w2c_string_add_string(full_path, template_name, env );
 
@@ -901,28 +901,28 @@ w2c_schema_writer_get_prefix4uri( w2c_schema_writer_impl_t *writer_impl,
     axis2_char_t count_str[32];
     axis2_char_t *prefix = NULL;
 
-    if ( uri == NULL || AXIS2_STRLEN( uri) ==0 )
+    if ( uri == NULL || axis2_strlen( uri) ==0 )
     {
         return NULL;
     }
     prefix = axis2_hash_get( writer_impl-> uri2prefix_map, uri, AXIS2_HASH_KEY_STRING);
     if( prefix == NULL)
     {
-        if ( default_prefix == NULL || 0 == AXIS2_STRLEN( default_prefix) )
+        if ( default_prefix == NULL || 0 == axis2_strlen( default_prefix) )
         {
             sprintf( count_str, "%d", writer_impl->last_prefix_index ++ );
             prefix = axis2_stracat( "ns", count_str, env);
         }
         else
         {
-            prefix = AXIS2_STRDUP( default_prefix, env);
+            prefix = axis2_strdup( default_prefix, env);
         }
         axis2_hash_set(writer_impl-> prefix2uri_map, prefix, AXIS2_HASH_KEY_STRING, uri);
         axis2_hash_set(writer_impl-> uri2prefix_map, uri, AXIS2_HASH_KEY_STRING, prefix);
     }
     else
     {
-        prefix = AXIS2_STRDUP( prefix, env);
+        prefix = axis2_strdup( prefix, env);
     }
     return prefix;
 }
@@ -935,7 +935,7 @@ w2c_schema_writer_register_extension_mapper_packagename(w2c_schema_writer_t *wri
     w2c_schema_writer_impl_t *writer_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     writer_impl = W2C_INTF_TO_IMPL(writer);
-    writer_impl-> mapping_class_package = AXIS2_STRDUP( packagename, env);
+    writer_impl-> mapping_class_package = axis2_strdup( packagename, env);
     return AXIS2_SUCCESS;
 }
 

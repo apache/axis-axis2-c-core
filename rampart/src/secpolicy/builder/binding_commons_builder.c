@@ -34,7 +34,7 @@ rp_binding_commons_builder_build(
     AXIS2_PARAM_CHECK(env->error,local_name,AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error,commons,AXIS2_FAILURE);
 
-    if(AXIS2_STRCMP(local_name,RP_ALGORITHM_SUITE)==0)
+    if(axis2_strcmp(local_name,RP_ALGORITHM_SUITE)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ALGORITHM_SUITE,node,element))
         {            
@@ -49,7 +49,7 @@ rp_binding_commons_builder_build(
         }
         return AXIS2_FAILURE;
     }        
-    else if(AXIS2_STRCMP(local_name,RP_LAYOUT)==0)
+    else if(axis2_strcmp(local_name,RP_LAYOUT)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_LAYOUT,node,element))
         {            
@@ -64,7 +64,7 @@ rp_binding_commons_builder_build(
         }
         return AXIS2_FAILURE;
     }        
-    else if(AXIS2_STRCMP(local_name,RP_INCLUDE_TIMESTAMP)==0)
+    else if(axis2_strcmp(local_name,RP_INCLUDE_TIMESTAMP)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_INCLUDE_TIMESTAMP,node,element))
         {
@@ -73,7 +73,7 @@ rp_binding_commons_builder_build(
         } 
         return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_SIGNED_SUPPORTING_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_SIGNED_SUPPORTING_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SIGNED_SUPPORTING_TOKENS,node,element))
         {
@@ -91,7 +91,7 @@ rp_binding_commons_builder_build(
             return AXIS2_FAILURE;
 
     }
-    else if(AXIS2_STRCMP(local_name,RP_SIGNED_ENDORSING_SUPPORTING_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_SIGNED_ENDORSING_SUPPORTING_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SIGNED_ENDORSING_SUPPORTING_TOKENS,node,element))
         {
@@ -108,7 +108,7 @@ rp_binding_commons_builder_build(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_ENDORSING_SUPPORTING_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_ENDORSING_SUPPORTING_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ENDORSING_SUPPORTING_TOKENS,node,element))
         {
@@ -125,7 +125,7 @@ rp_binding_commons_builder_build(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_SUPPORTING_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_SUPPORTING_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SUPPORTING_TOKENS,node,element))
         {

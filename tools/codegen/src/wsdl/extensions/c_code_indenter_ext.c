@@ -76,13 +76,13 @@ w2c_c_code_indenter_ext_engage(w2c_extension_t *extension,
     filenames = W2C_ENGINE_CONFIGURATION_GET_FILENAMES( conf, env);
 
     /* this executes only with following configuration */
-    if ( indent_code && AXIS2_STRCMP( lang, "c") == 0)
+    if ( indent_code && axis2_strcmp( lang, "c") == 0)
     {
         size = axis2_array_list_size( filenames, env);
         for ( i = 0; i < size; i ++ )
         {
             filename = axis2_array_list_get( filenames, env, i);
-            length = AXIS2_STRLEN( filename);
+            length = axis2_strlen( filename);
             /* take only .c or .h files */
             if( filename[length-1] == 'c' || filename[length-1] == 'h' ||
                     filename[length-2] == '.' )
@@ -423,7 +423,7 @@ void add_string( const axis2_env_t* env,
     void* src = NULL;
     int count = 0;
 
-    additional_len = AXIS2_STRLEN ( string ) +1;
+    additional_len = axis2_strlen ( string ) +1;
     if ( allocator-> index + additional_len  >= allocator-> allocated )
     {
         if ( allocator-> allocated == 0 )

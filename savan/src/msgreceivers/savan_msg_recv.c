@@ -222,7 +222,7 @@ savan_msg_recv_handle_sub_request(
     
     /* Get subscriber id from the msg ctx */
     property =  axis2_msg_ctx_get_property(msg_ctx, env, SAVAN_KEY_SUB_ID, AXIS2_FALSE);
-    id = (axis2_char_t*)AXIS2_PROPERTY_GET_VALUE(property, env);
+    id = (axis2_char_t*)axis2_property_get_value(property, env);
     
     /* Set sub id as a ref param */
     refparam_elem = axiom_element_create(env, submgr_node, ELEM_NAME_REF_PARAM,

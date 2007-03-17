@@ -80,7 +80,7 @@ rp_secpolicy_builder_set_properties(
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     
-    if(AXIS2_STRCMP(local_name,RP_SYMMETRIC_BINDING)==0)
+    if(axis2_strcmp(local_name,RP_SYMMETRIC_BINDING)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SYMMETRIC_BINDING,node,element))
         {
@@ -108,7 +108,7 @@ rp_secpolicy_builder_set_properties(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_ASYMMETRIC_BINDING)==0)
+    else if(axis2_strcmp(local_name,RP_ASYMMETRIC_BINDING)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ASYMMETRIC_BINDING,node,element))
         {
@@ -137,7 +137,7 @@ rp_secpolicy_builder_set_properties(
             return AXIS2_FAILURE;
   
     }
-    else if(AXIS2_STRCMP(local_name,RP_TRANSPORT_BINDING)==0)
+    else if(axis2_strcmp(local_name,RP_TRANSPORT_BINDING)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_TRANSPORT_BINDING,node,element))
         {
@@ -165,7 +165,7 @@ rp_secpolicy_builder_set_properties(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_SIGNED_SUPPORTING_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_SIGNED_SUPPORTING_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SIGNED_SUPPORTING_TOKENS,node,element))
         {
@@ -183,7 +183,7 @@ rp_secpolicy_builder_set_properties(
             return AXIS2_FAILURE;
 
     }
-    else if(AXIS2_STRCMP(local_name,RP_SIGNED_ENDORSING_SUPPORTING_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_SIGNED_ENDORSING_SUPPORTING_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SIGNED_ENDORSING_SUPPORTING_TOKENS,node,element))
         {
@@ -200,7 +200,7 @@ rp_secpolicy_builder_set_properties(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_SUPPORTING_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_SUPPORTING_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SUPPORTING_TOKENS,node,element))
         {
@@ -217,7 +217,7 @@ rp_secpolicy_builder_set_properties(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_ENDORSING_SUPPORTING_TOKENS)==0)
+    else if(axis2_strcmp(local_name,RP_ENDORSING_SUPPORTING_TOKENS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ENDORSING_SUPPORTING_TOKENS,node,element))
         {
@@ -234,7 +234,7 @@ rp_secpolicy_builder_set_properties(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_SIGNED_PARTS)==0)
+    else if(axis2_strcmp(local_name,RP_SIGNED_PARTS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SIGNED_PARTS,node,element))
         {
@@ -251,7 +251,7 @@ rp_secpolicy_builder_set_properties(
             return AXIS2_FAILURE;
     }
     
-    else if(AXIS2_STRCMP(local_name,RP_ENCRYPTED_PARTS)==0)
+    else if(axis2_strcmp(local_name,RP_ENCRYPTED_PARTS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ENCRYPTED_PARTS,node,element))
         {
@@ -267,7 +267,7 @@ rp_secpolicy_builder_set_properties(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_SIGNED_ELEMENTS)==0)
+    else if(axis2_strcmp(local_name,RP_SIGNED_ELEMENTS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_SIGNED_ELEMENTS,node,element))
         {
@@ -284,7 +284,7 @@ rp_secpolicy_builder_set_properties(
             return AXIS2_FAILURE;
     }
     
-    else if(AXIS2_STRCMP(local_name,RP_ENCRYPTED_ELEMENTS)==0)
+    else if(axis2_strcmp(local_name,RP_ENCRYPTED_ELEMENTS)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_ENCRYPTED_ELEMENTS,node,element))
         {
@@ -301,7 +301,7 @@ rp_secpolicy_builder_set_properties(
             return AXIS2_FAILURE;
     }        
 
-    else if(AXIS2_STRCMP(local_name,RP_WSS10)==0)
+    else if(axis2_strcmp(local_name,RP_WSS10)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_WSS10,node,element)) 
         {           
@@ -329,7 +329,7 @@ rp_secpolicy_builder_set_properties(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_WSS11)==0)
+    else if(axis2_strcmp(local_name,RP_WSS11)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_WSS11,node,element)) 
         {           
@@ -357,7 +357,7 @@ rp_secpolicy_builder_set_properties(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_RAMPART_CONFIG)==0)
+    else if(axis2_strcmp(local_name,RP_RAMPART_CONFIG)==0)
     {
         if(rp_match_rampart_config_qname(env,RP_RAMPART_CONFIG,node,element))
         {

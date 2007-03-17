@@ -97,7 +97,7 @@ decrypt(axis2_env_t *env,  axis2_char_t *filename)
     }
     serialized_data = AXIOM_NODE_TO_STRING(tmpl, env);
     outf = fopen("decrypted-result.xml", "wb");
-    fwrite(serialized_data, 1, AXIS2_STRLEN(serialized_data), outf);
+    fwrite(serialized_data, 1, axis2_strlen(serialized_data), outf);
     fclose(outf);
     printf("Node decrypted successfully. Result is written to decrypted-result.xml\n");
     return AXIS2_SUCCESS;
@@ -144,7 +144,7 @@ encrypt(axis2_env_t *env,  axis2_char_t *filename)
     encrypted_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
 
     outf = fopen("result.xml", "wb");
-    fwrite(encrypted_result, 1, AXIS2_STRLEN(encrypted_result), outf);
+    fwrite(encrypted_result, 1, axis2_strlen(encrypted_result), outf);
     fclose(outf);
     printf("Node encrypted successfully. Result is written to result.xml\n");
     return temp_status;

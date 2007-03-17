@@ -258,7 +258,7 @@ openssl_pkey_set_name(
         pkey_impl->name = NULL;
     }
 
-    pkey_impl->name = AXIS2_STRDUP(name, env);
+    pkey_impl->name = axis2_strdup(name, env);
 
     return AXIS2_SUCCESS;
 }

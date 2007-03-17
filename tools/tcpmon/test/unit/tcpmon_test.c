@@ -34,7 +34,7 @@ void test_format_xml(CuTest *tc)
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
-    input = (char*)AXIS2_STRDUP(
+    input = (char*)axis2_strdup(
                 "<input>check for one step</input>",
                 env);
     actual =
@@ -47,7 +47,7 @@ void test_format_xml(CuTest *tc)
     free(input);
 
 
-    input = (char*)AXIS2_STRDUP(
+    input = (char*)axis2_strdup(
                 "<input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>",
                 env);
     actual =
@@ -65,7 +65,7 @@ void test_format_xml(CuTest *tc)
     free(actual);
     free(input);
 
-    input = (char*)AXIS2_STRDUP(
+    input = (char*)axis2_strdup(
                 "<?processing inc?><input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>",
                 env);
     actual =

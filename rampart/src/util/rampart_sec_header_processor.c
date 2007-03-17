@@ -60,25 +60,25 @@ rampart_shp_validate_qnames(const axis2_env_t *env,
     if(!local_name)
         return AXIS2_FALSE;
 
-    if(AXIS2_STRCMP(local_name,RAMPART_SECURITY_TIMESTAMP)==0)
+    if(axis2_strcmp(local_name,RAMPART_SECURITY_TIMESTAMP)==0)
         qname = axis2_qname_create(env,local_name,RAMPART_WSU_XMLNS,RAMPART_WSU);
 
-    else if(AXIS2_STRCMP(local_name,RAMPART_SECURITY_USERNAMETOKEN)==0)
+    else if(axis2_strcmp(local_name,RAMPART_SECURITY_USERNAMETOKEN)==0)
         qname = axis2_qname_create(env,local_name,RAMPART_WSSE_XMLNS,RAMPART_WSSE);    
 
-    else if(AXIS2_STRCMP(local_name,OXS_NODE_ENCRYPTED_KEY)==0)
+    else if(axis2_strcmp(local_name,OXS_NODE_ENCRYPTED_KEY)==0)
         qname = axis2_qname_create(env,local_name,OXS_ENC_NS,OXS_XENC);
 
-    else if(AXIS2_STRCMP(local_name,OXS_NODE_ENCRYPTED_DATA)==0)
+    else if(axis2_strcmp(local_name,OXS_NODE_ENCRYPTED_DATA)==0)
         qname = axis2_qname_create(env,local_name,OXS_ENC_NS,OXS_XENC);
 
-    else if(AXIS2_STRCMP(local_name,OXS_NODE_SIGNATURE)==0)
+    else if(axis2_strcmp(local_name,OXS_NODE_SIGNATURE)==0)
         qname = axis2_qname_create(env,local_name,OXS_DSIG_NS,OXS_DS);
 
-    else if(AXIS2_STRCMP(local_name,OXS_NODE_BINARY_SECURITY_TOKEN)==0)
+    else if(axis2_strcmp(local_name,OXS_NODE_BINARY_SECURITY_TOKEN)==0)
         return AXIS2_FALSE;
     
-    else if(AXIS2_STRCMP(local_name,OXS_NODE_REFERENCE_LIST)==0)
+    else if(axis2_strcmp(local_name,OXS_NODE_REFERENCE_LIST)==0)
         return AXIS2_FALSE;
     
     else return AXIS2_FALSE;
@@ -90,14 +90,14 @@ rampart_shp_validate_qnames(const axis2_env_t *env,
 
     if(!node_qname)
     {
-        AXIS2_QNAME_FREE(qname,env);
+        axis2_qname_free(qname,env);
         qname = NULL;
         return AXIS2_FALSE;
     }
 
-    if(AXIS2_QNAME_EQUALS(qname,env,node_qname))
+    if(axis2_qname_equals(qname,env,node_qname))
     {
-        AXIS2_QNAME_FREE(qname,env);
+        axis2_qname_free(qname,env);
         qname = NULL;
         return AXIS2_TRUE;
     }
@@ -254,7 +254,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     if(!enc_asym_algo_in_pol)
         return AXIS2_FAILURE;
 
-    if(AXIS2_STRCMP(enc_asym_algo_in_pol,enc_asym_algo)!=0)
+    if(axis2_strcmp(enc_asym_algo_in_pol,enc_asym_algo)!=0)
     {
         AXIS2_LOG_INFO(env->log, "The key is encrypted with the wrong algorithm");
         return AXIS2_FAILURE;
@@ -390,7 +390,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         if(!sym_algo)
             return AXIS2_FAILURE;        
 
-        if(AXIS2_STRCMP(sym_algo, enc_sym_algo_in_pol)!=0)
+        if(axis2_strcmp(sym_algo, enc_sym_algo_in_pol)!=0)
         {
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Sym algorithm is mismathced with policy.");
             return AXIS2_FAILURE;
@@ -719,7 +719,7 @@ rampart_shp_pre_security_check(const axis2_env_t *env,
         axis2_char_t *item = NULL;
         item = axis2_array_list_get(items_list, env, i);    
         
-        if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL))){
+        if (0 == axis2_strcmp(RAMPART_ACTION_ITEMS_USERNAMETOKEN, axis2_strtrim(env, item, NULL))){
   
             int num_of_ut = 0;
             num_of_ut = oxs_axiom_get_number_of_children_with_qname(env, sec_node, 
@@ -730,7 +730,7 @@ rampart_shp_pre_security_check(const axis2_env_t *env,
                         "UsernameToken is not available", RAMPART_FAULT_IN_USERNAMETOKEN, msg_ctx);
                 return AXIS2_FAILURE;
             }
-        }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL))){
+        }else if(0 == axis2_strcmp(RAMPART_ACTION_ITEMS_TIMESTAMP, axis2_strtrim(env, item, NULL))){
         
             int num_of_ts = 0;
             num_of_ts = oxs_axiom_get_number_of_children_with_qname(env, sec_node,
@@ -779,37 +779,37 @@ rampart_shp_post_security_check(const axis2_env_t *env,
         axis2_char_t *result = NULL;
         item = axis2_array_list_get(items_list, env, i);
 
-        if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL))){
+        if (0 == axis2_strcmp(RAMPART_ACTION_ITEMS_USERNAMETOKEN, axis2_strtrim(env, item, NULL))){
 
             result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_CHECKED);   
-            if(!result || (0 != AXIS2_STRCMP(result, RAMPART_YES)) ){
+            if(!result || (0 != axis2_strcmp(result, RAMPART_YES)) ){
                 AXIS2_LOG_INFO(env->log, "[rampart][shp] UsernameToken is required. But not available");
                 rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
                         "UsernameToken is not available", RAMPART_FAULT_IN_USERNAMETOKEN, msg_ctx);
                 return AXIS2_FAILURE;
             }
             result = NULL;
-        }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL))){
+        }else if(0 == axis2_strcmp(RAMPART_ACTION_ITEMS_TIMESTAMP, axis2_strtrim(env, item, NULL))){
 
             result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_TS_CHECKED);
-            if(!result || (0 != AXIS2_STRCMP(result, RAMPART_YES)) ){
+            if(!result || (0 != axis2_strcmp(result, RAMPART_YES)) ){
                 AXIS2_LOG_INFO(env->log, "[rampart][shp] Timestamp is required. But not available");
                 rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
                         "Timestamp is not available", RAMPART_FAULT_IN_TIMESTAMP, msg_ctx);
                 return AXIS2_FAILURE;
             }
             result = NULL;
-        }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL))){
+        }else if(0 == axis2_strcmp(RAMPART_ACTION_ITEMS_ENCRYPT, axis2_strtrim(env, item, NULL))){
 
             result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_ENC_CHECKED);
-            if(!result || (0 != AXIS2_STRCMP(result, RAMPART_YES)) ){
+            if(!result || (0 != axis2_strcmp(result, RAMPART_YES)) ){
                 AXIS2_LOG_INFO(env->log, "[rampart][shp] Encryption is required. But not available");
                 rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
                         "Data are not encrypted", RAMPART_FAULT_IN_ENCRYPTED_KEY, msg_ctx);
                 return AXIS2_FAILURE;
             }
             result = NULL;
-        }else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL))){
+        }else if (0 == axis2_strcmp(RAMPART_ACTION_ITEMS_SIGNATURE, axis2_strtrim(env, item, NULL))){
 
         }
 

@@ -104,7 +104,7 @@ int axis2_test_dep_engine_load()
                     {
                         const axis2_qname_t *qname = NULL;
                         qname = axis2_op_get_qname((axis2_op_t *)op, env);
-                        oname = AXIS2_QNAME_GET_LOCALPART(qname, env);
+                        oname = axis2_qname_get_localpart(qname, env);
                         printf("op name = %s\n", oname);
                     }
                 }
@@ -146,12 +146,12 @@ int axis2_test_transport_receiver_load()
     dll_desc = axis2_dll_desc_create(env);
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    dll_name = AXIS2_STRACAT(axis2c_home, "/lib/libaxis2_http_receiver.so", env);
+    dll_name = axis2_stracat(axis2c_home, "/lib/libaxis2_http_receiver.so", env);
     printf("transport receiver name:%s\n", dll_name);
      axis2_dll_desc_set_name(dll_desc, env, dll_name);
      axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
     impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_param_set_value(impl_info_param, env, dll_desc);
     axis2_class_loader_init(env);
     transport_recv = (axis2_transport_receiver_t *) axis2_class_loader_create_dll(env,
             impl_info_param);
@@ -180,12 +180,12 @@ int axis2_test_transport_sender_load()
     dll_desc = axis2_dll_desc_create(env);
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    dll_name = AXIS2_STRACAT(axis2c_home, "/lib/libaxis2_http_sender.so", env);
+    dll_name = axis2_stracat(axis2c_home, "/lib/libaxis2_http_sender.so", env);
     printf("transport sender name:%s\n", dll_name);
      axis2_dll_desc_set_name(dll_desc, env, dll_name);
      axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
     impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_param_set_value(impl_info_param, env, dll_desc);
     axis2_class_loader_init(env);
     transport_sender = (axis2_transport_sender_t *) axis2_class_loader_create_dll(env,
             impl_info_param);
@@ -266,12 +266,12 @@ int axis2_test_default_module_version()
     }
     engage_qname = axis2_qname_create(env, "module2", NULL, NULL);
     AXIS2_CONF_ENGAGE_MODULE(axis_conf, env, engage_qname);
-    AXIS2_QNAME_FREE(engage_qname, env);
+    axis2_qname_free(engage_qname, env);
     engage_qname = NULL;
 
     engage_qname = axis2_qname_create(env, "module1", NULL, NULL);
     AXIS2_CONF_ENGAGE_MODULE(axis_conf, env, engage_qname);
-    AXIS2_QNAME_FREE(engage_qname, env);
+    axis2_qname_free(engage_qname, env);
     engage_qname = NULL;
 
     AXIS2_CONF_ENGAGE_MODULE_WITH_VERSION(axis_conf, env, "test_module", "1.92");
@@ -287,18 +287,18 @@ int axis2_test_default_module_version()
         {
             axis2_qname_t *engaged_mod_qname = NULL;
             engaged_mod_qname = axis2_array_list_get(engaged_modules, env, i);
-            if (0 == AXIS2_STRCMP("module2-0.92",
-                    AXIS2_QNAME_GET_LOCALPART(engaged_mod_qname, env)))
+            if (0 == axis2_strcmp("module2-0.92",
+                    axis2_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found1 = AXIS2_TRUE;
             }
-            if (0 == AXIS2_STRCMP("module1",
-                    AXIS2_QNAME_GET_LOCALPART(engaged_mod_qname, env)))
+            if (0 == axis2_strcmp("module1",
+                    axis2_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found2 = AXIS2_TRUE;
             }
-            if (0 == AXIS2_STRCMP("test_module-1.92",
-                    AXIS2_QNAME_GET_LOCALPART(engaged_mod_qname, env)))
+            if (0 == axis2_strcmp("test_module-1.92",
+                    axis2_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found3 = AXIS2_TRUE;
             }

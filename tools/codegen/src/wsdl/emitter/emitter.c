@@ -307,7 +307,7 @@ w2c_emitter_parse_wsdl( w2c_emitter_impl_t *emitter_impl,
         return AXIS2_FAILURE;
     }
     /*axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden/", env);*/
+    doc_base_uri = axis2_stracat (axis2c_home, "/woden/", env);*/
     doc_base_uri = W2C_ENGINE_CONFIGURATION_GET_BASE_URI ( emitter_impl-> config, env);
     
     desc = (void *)WODEN_RESOLVER_READ(emitter_impl-> resolver , env, om_doc,
@@ -470,7 +470,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     }
     svc = axis2_array_list_get( svc_list, env, 0 );
     svc_qname = WODEN_WSDL10_SVC_GET_QNAME( svc, env);
-    ns = AXIS2_QNAME_GET_URI( svc_qname, env);
+    ns = axis2_qname_get_uri( svc_qname, env);
     w2c_xslt_utils_add_attribute (env, root, "namespace", ns);
 
     /**********************************************************************
@@ -500,7 +500,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     {
         ext_element = axis2_array_list_get(ext_elements, env, j);
         ext_type = (axis2_qname_t*)WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-        if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
+        if(AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
         {
             ext_element =
                woden_wsdl10_soap_module_to_soap_module_element (
@@ -517,7 +517,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
 
     if(soap_address_uri)
     {
-        address = AXIS2_URI_TO_STRING(soap_address_uri, env,
+        address = axis2_uri_to_string(soap_address_uri, env,
                 AXIS2_URI_UNP_OMITUSERINFO);
         endpoint_node = w2c_xslt_utils_add_child_node(env, "endpoint",
                                                         root);
@@ -554,10 +554,10 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
         {
             method = w2c_xslt_utils_add_child_node(env, "method",
                                                root);
-            local_part= AXIS2_QNAME_GET_LOCALPART(op_qname, env);
+            local_part= axis2_qname_get_localpart(op_qname, env);
             given_name = W2C_QNAME2NAME_MAKER_SUGGEST_NAME( 
                     emitter_impl-> qname2name_maker, env, op_qname);
-            qname_str = AXIS2_QNAME_TO_STRING(op_qname, env);
+            qname_str = axis2_qname_to_string(op_qname, env);
             w2c_xslt_utils_add_attribute (env, method, "localpart",
                                                 local_part);
             given_name = emitter_impl-> name_maker_func(given_name, env);
@@ -566,7 +566,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
             w2c_xslt_utils_add_attribute(env, method, "qname",
                                                 qname_str); 
             AXIS2_FREE( env-> allocator, local_part);
-            ns = AXIS2_QNAME_GET_URI(op_qname, env);
+            ns = axis2_qname_get_uri(op_qname, env);
             w2c_xslt_utils_add_attribute (env, method, "namespace",
                                                 ns);
             /** todos */
@@ -592,7 +592,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
         {
             ext_element = axis2_array_list_get(ext_elements, env, j);
             ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-            if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
+            if(AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
             {
                 ext_element = woden_wsdl10_soap_module_to_soap_module_element (
                                                                ext_element, env);
@@ -602,7 +602,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
                 soap_action_uri = 
                         WODEN_WSDL10_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION
                                                            (soap_binding_op, env);
-                soap_action_str = AXIS2_URI_TO_STRING 
+                soap_action_str = axis2_uri_to_string 
                                   ( soap_action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
                 w2c_xslt_utils_add_attribute (env, method, "soapaction", soap_action_str);
             }
@@ -681,7 +681,7 @@ w2c_emitter_load_operations( w2c_emitter_impl_t *emitter_impl,
             msg_qname = WODEN_INTERFACE_MSG_REF_ELEMENT_GET_ELEMENT_QNAME( if_msg_ref_ele, env);
         }
         str_direction = WODEN_DIRECTION_TO_STRING(direction, env);
-        if(0 == AXIS2_STRCMP(str_direction, "in"))
+        if(0 == axis2_strcmp(str_direction, "in"))
         {
             if (!in) /* for the first in iteration */
             {
@@ -690,7 +690,7 @@ w2c_emitter_load_operations( w2c_emitter_impl_t *emitter_impl,
             }
             w2c_emitter_add_param( emitter_impl, env, input_param, msg_qname);
         }
-        if(0 == AXIS2_STRCMP(str_direction, "out"))
+        if(0 == axis2_strcmp(str_direction, "out"))
         {
             if (!out)
             {
@@ -781,7 +781,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
     }
     endpoint = axis2_array_list_get( endpoint_list, env, 0 );
     endpoint_uri = WODEN_ENDPOINT_GET_ADDRESS( endpoint, env);
-    endpoint_uri_str = AXIS2_URI_TO_STRING ( endpoint_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+    endpoint_uri_str = axis2_uri_to_string ( endpoint_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     endpoint_node = w2c_xslt_utils_add_child_node(env, "endpoint",
                                                     root);
     /** here the endpoint adding */
@@ -816,10 +816,10 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
         {
             method = w2c_xslt_utils_add_child_node(env, "method",
                                                root);
-            local_part= AXIS2_QNAME_GET_LOCALPART(op_qname, env);
+            local_part= axis2_qname_get_localpart(op_qname, env);
             given_name = W2C_QNAME2NAME_MAKER_SUGGEST_NAME( 
                     emitter_impl-> qname2name_maker, env, op_qname);
-            qname_str = AXIS2_QNAME_TO_STRING(op_qname, env);
+            qname_str = axis2_qname_to_string(op_qname, env);
             w2c_xslt_utils_add_attribute (env, method, "localpart",
                                                 local_part);
             given_name = emitter_impl-> name_maker_func(given_name, env);
@@ -827,7 +827,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
                                                 given_name);
             w2c_xslt_utils_add_attribute (env, method, "qname",
                                                 qname_str);
-            ns = AXIS2_QNAME_GET_URI(op_qname, env);
+            ns = axis2_qname_get_uri(op_qname, env);
             w2c_xslt_utils_add_attribute (env, method, "namespace",
                                                 ns);
             /** todos */
@@ -854,7 +854,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
         {
             ext_element = axis2_array_list_get(ext_elements, env, j);
             ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-            if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
+            if(AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
             {
                 /*ext_element = woden_soap_module_to_soap_module_element (
                                                                ext_element, env);
@@ -864,7 +864,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
                 soap_action_uri = 
                         WODEN_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION
                                                            (soap_binding_op, env); */
-                soap_action_str = AXIS2_URI_TO_STRING 
+                soap_action_str = axis2_uri_to_string 
                                   ( soap_action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
                 w2c_xslt_utils_add_attribute (env, method, "soapaction", soap_action_str);
             }
@@ -905,7 +905,7 @@ w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
     {
         w2c_xslt_utils_add_attribute (env, param, "ours", "yes");
     }
-    type = AXIS2_STRDUP( type, env);
+    type = axis2_strdup( type, env);
     w2c_xslt_utils_add_attribute (env, param, "type", type);
     type = axis2_string_toupper( type);
     w2c_xslt_utils_add_attribute (env, param, "caps-type", type);
@@ -920,11 +920,11 @@ w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
 axis2_char_t* w2c_emitter_default_namemaker( axis2_char_t *name, 
                              const axis2_env_t *env)
 {
-    return AXIS2_STRDUP( name, env);
+    return axis2_strdup( name, env);
 }
 
 axis2_char_t* w2c_emitter_default_qname2name( axis2_qname_t *qname,
                              const axis2_env_t *env)
 {
-    return AXIS2_QNAME_GET_LOCALPART( qname, env);
+    return axis2_qname_get_localpart( qname, env);
 }

@@ -41,7 +41,7 @@ int md5(){
     env = test_init();
     plaintxt = (unsigned char *)"We will we will rock ya...";
 
-    openssl_md5(env, plaintxt , AXIS2_STRLEN(plaintxt));    
+    openssl_md5(env, plaintxt , axis2_strlen(plaintxt));    
     printf("Finish  md5() \n");
     return 0;
 }

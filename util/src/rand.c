@@ -22,16 +22,14 @@
 #define AXIS2_RAND_MAX 32768
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_rand(
-    unsigned int *seedp)
+axis2_rand(unsigned int *seedp)
 {
     *seedp = *seedp * 1103515245 + 12345;
     return((unsigned)(*seedp/(2 * AXIS2_RAND_MAX)) % AXIS2_RAND_MAX);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_rand_with_range(
-    unsigned int *seedp,
+axis2_rand_with_range(unsigned int *seedp,
     int start,
     int end)
 {
@@ -48,8 +46,7 @@ axis2_rand_with_range(
 }
 
 AXIS2_EXTERN unsigned int AXIS2_CALL
-axis2_rand_get_seed_value_based_on_time(
-    const axis2_env_t *env)
+axis2_rand_get_seed_value_based_on_time(const axis2_env_t *env)
 {
     axis2_date_time_t *date = axis2_date_time_create(env);
     unsigned int rand_var =  axis2_date_time_get_year(date, env);

@@ -137,14 +137,14 @@ axis2_add_add(const axis2_env_t *env, axiom_node_t *node, axis2_msg_ctx_t *msg_c
                 prop =  axis2_ctx_get_property(ctx, env, "ADD_RESULT", AXIS2_FALSE);
                 if (prop)
                 {
-                    axis2_char_t *val = (axis2_char_t*)AXIS2_PROPERTY_GET_VALUE(prop, env);
+                    axis2_char_t *val = (axis2_char_t*)axis2_property_get_value(prop, env);
                     printf("Previous result = %s\n", val);
                 }
                 /* set value */
                 prop = axis2_property_create(env);
                 if (prop)
                 {
-                    AXIS2_PROPERTY_SET_VALUE(prop, env, AXIS2_STRDUP(result_str, env));
+                    axis2_property_set_value(prop, env, axis2_strdup(result_str, env));
                     axis2_ctx_set_property(ctx, env, "ADD_RESULT", prop, AXIS2_FALSE);
                 }
             }

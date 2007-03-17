@@ -45,14 +45,14 @@ ramaprt_get_sample_password_from_file(const axis2_env_t *env,
 
        while ( fgets ( line, sizeof line, file ) != NULL )
        {
-          res = AXIS2_STRSTR(line, ":");
+          res = axis2_strstr(line, ":");
           ch = res[0];
           res[0] = '\0';
-          un = (axis2_char_t *) AXIS2_STRDUP(line, env);
+          un = (axis2_char_t *) axis2_strdup(line, env);
           res[0] = ch;
-          if(0 == AXIS2_STRCMP(un, username)){
-             pw = (axis2_char_t *) AXIS2_STRDUP(&(res[1]), env);
-             password = AXIS2_STRNDUP(pw, AXIS2_STRLEN(pw)-1, env); /*We need to remove the end of line character*/
+          if(0 == axis2_strcmp(un, username)){
+             pw = (axis2_char_t *) axis2_strdup(&(res[1]), env);
+             password = axis2_strndup(pw, axis2_strlen(pw)-1, env); /*We need to remove the end of line character*/
 
              break;
           }
@@ -73,36 +73,36 @@ ramaprt_get_sample_password(const axis2_env_t *env,
 {
     /*First set pf password are for sample usernames*/
     axis2_char_t * pw = NULL;
-    if (0 == AXIS2_STRCMP(username, "Raigama"))
+    if (0 == axis2_strcmp(username, "Raigama"))
     {
         pw = "RaigamaPW" ;
     }
-    else if (0 == AXIS2_STRCMP(username, "Gampola"))
+    else if (0 == axis2_strcmp(username, "Gampola"))
     {
         pw = "GampolaPW";
     }
-    else if (0 == AXIS2_STRCMP(username, "alice"))
+    else if (0 == axis2_strcmp(username, "alice"))
     {
         pw = "password";
     }
-    else if (0 == AXIS2_STRCMP(username, "bob"))
+    else if (0 == axis2_strcmp(username, "bob"))
     {
         pw = "bobPW";
     }
     /*These are for sample keystores*/
-    else if (0 == AXIS2_STRCMP(username, "a"))
+    else if (0 == axis2_strcmp(username, "a"))
     {
         pw = "a12345";
     }
-    else if (0 == AXIS2_STRCMP(username, "b"))
+    else if (0 == axis2_strcmp(username, "b"))
     {
         pw = "b12345";
     }
-    else if (0 == AXIS2_STRCMP(username, "x"))
+    else if (0 == axis2_strcmp(username, "x"))
     {
         pw = "x12345";
     }
-    else if (0 == AXIS2_STRCMP(username, "y"))
+    else if (0 == axis2_strcmp(username, "y"))
     {
         pw = "y12345";
     }
@@ -129,7 +129,7 @@ rampart_sample_authn_provider_check_password(rampart_authn_provider_t *authn_pro
     local_pw = ramaprt_get_sample_password_from_file(env, username);
     if(local_pw){
         /*Compare passwords*/
-        if(0 == AXIS2_STRCMP(password, local_pw)){
+        if(0 == axis2_strcmp(password, local_pw)){
             return RAMPART_AUTHN_PROVIDER_GRANTED;
         }else{
             return RAMPART_AUTHN_PROVIDER_DENIED;
@@ -158,7 +158,7 @@ rampart_sample_authn_provider_check_password_digest(rampart_authn_provider_t *au
         /*Generate the digest*/
         local_digest = rampart_crypto_sha1(env, nonce, created, local_pw);
         /*Compare digest*/
-        if(0 == AXIS2_STRCMP(digest, local_digest)){
+        if(0 == axis2_strcmp(digest, local_digest)){
             return RAMPART_AUTHN_PROVIDER_GRANTED;
         }else{
             return RAMPART_AUTHN_PROVIDER_DENIED;

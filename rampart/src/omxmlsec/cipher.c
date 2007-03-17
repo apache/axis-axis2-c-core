@@ -35,7 +35,7 @@ oxs_get_cipher_property_for_url(const axis2_env_t *env,
     ret = OPENSSL_CIPHER_PROPERTY_SET_URL(cprop, env , url);
 
     cipher_name = oxs_get_cipher_name_for_url(env, url);
-    if((!cipher_name) || (0 == AXIS2_STRCMP(cipher_name, ""))){
+    if((!cipher_name) || (0 == axis2_strcmp(cipher_name, ""))){
         oxs_error(env, ERROR_LOCATION,
                         OXS_ERROR_INVALID_DATA, "Cannot populate cipher property");
         return NULL;
@@ -60,22 +60,22 @@ oxs_get_cipher_name_for_url(const axis2_env_t *env,
 
     axis2_char_t *cipher_name = NULL;
 
-    if (0 == AXIS2_STRCMP(url, (axis2_char_t*)OXS_HREF_DES3_CBC))
+    if (0 == axis2_strcmp(url, (axis2_char_t*)OXS_HREF_DES3_CBC))
     {
         cipher_name = OPENSSL_EVP_des_ede3_cbc;
 
     }
-    else if (0 == AXIS2_STRCMP(url, (axis2_char_t*)OXS_HREF_AES_128_CBC))
+    else if (0 == axis2_strcmp(url, (axis2_char_t*)OXS_HREF_AES_128_CBC))
     {
         cipher_name = OPENSSL_EVP_aes_128_cbc;
 
     }
-    else if (0 == AXIS2_STRCMP(url, (axis2_char_t*)OXS_HREF_AES_192_CBC))
+    else if (0 == axis2_strcmp(url, (axis2_char_t*)OXS_HREF_AES_192_CBC))
     {
         cipher_name = OPENSSL_EVP_aes_192_cbc;
 
     }
-    else if (0 == AXIS2_STRCMP(url, (axis2_char_t*)OXS_HREF_AES_256_CBC))
+    else if (0 == axis2_strcmp(url, (axis2_char_t*)OXS_HREF_AES_256_CBC))
     {
         cipher_name = OPENSSL_EVP_aes_256_cbc;
 
@@ -97,22 +97,22 @@ oxs_get_cipher_url_for_name(const axis2_env_t *env,
 
     axis2_char_t *cipher_url = NULL;
 
-    if (0 == AXIS2_STRCMP(name, (axis2_char_t*)OPENSSL_EVP_des_ede3_cbc))
+    if (0 == axis2_strcmp(name, (axis2_char_t*)OPENSSL_EVP_des_ede3_cbc))
     {
         cipher_url = OXS_HREF_DES3_CBC;
 
     }
-    else if (0 == AXIS2_STRCMP(name, (axis2_char_t*)OPENSSL_EVP_aes_128_cbc))
+    else if (0 == axis2_strcmp(name, (axis2_char_t*)OPENSSL_EVP_aes_128_cbc))
     {
         cipher_url = OXS_HREF_AES_128_CBC;
 
     }
-    else if (0 == AXIS2_STRCMP(name, (axis2_char_t*)OPENSSL_EVP_aes_192_cbc))
+    else if (0 == axis2_strcmp(name, (axis2_char_t*)OPENSSL_EVP_aes_192_cbc))
     {
         cipher_url = OXS_HREF_AES_192_CBC;
 
     }
-    else if (0 == AXIS2_STRCMP(name, (axis2_char_t*)OPENSSL_EVP_aes_256_cbc))
+    else if (0 == axis2_strcmp(name, (axis2_char_t*)OPENSSL_EVP_aes_256_cbc))
     {
         cipher_url = OXS_HREF_AES_256_CBC;
 

@@ -67,7 +67,7 @@ w2c_engine_config_loader_load_config(
     }
     else
     {
-         tmp_string = AXIS2_STRDUP(W2C_ENGINE_CONFIG_LOADER_OUTPUT_DEFAULT, env );
+         tmp_string = axis2_strdup(W2C_ENGINE_CONFIG_LOADER_OUTPUT_DEFAULT, env );
     }
     /*TODO:  should check for the vaildity of the output location */
     W2C_ENGINE_CONFIGURATION_SET_OUTPUT_LOCATION( conf, env,
@@ -295,7 +295,7 @@ w2c_engine_config_loader_load_config(
                         break;
                     }
                     *cp ='\0';
-                    tmp_key = AXIS2_STRDUP ( tag, env );
+                    tmp_key = axis2_strdup ( tag, env );
                     loop_state = 1;
                }
                else if ( *cp ==',' || *cp=='\0' )
@@ -321,7 +321,7 @@ w2c_engine_config_loader_load_config(
                         loop_state = 0;
                     *cp = '\0';
                     axis2_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING,
-                                    AXIS2_STRDUP ( tag, env ) );
+                                    axis2_strdup ( tag, env ) );
                }
            }
            if (loop_state == -1)
@@ -341,8 +341,8 @@ w2c_engine_config_loader_load_config(
                                hi; hi = axis2_hash_next(env, hi))
                    {
                        axis2_hash_this(hi, (void*)&tmp_key, NULL, (void*)&tmp_string);
-                       tmp_key = AXIS2_STRDUP( tmp_key, env);
-                       tmp_string = AXIS2_STRDUP ( tmp_string, env );
+                       tmp_key = axis2_strdup( tmp_key, env);
+                       tmp_string = axis2_strdup ( tmp_string, env );
                        axis2_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string);
                    }
                }
@@ -367,7 +367,7 @@ w2c_engine_config_loader_load_config(
            {
                h = axis2_hash_make ( env );   
            }
-           len = AXIS2_STRLEN (W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX );
+           len = axis2_strlen (W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX );
            tmp_key = axis2_string_substring_starting_at ( tmp_key, len);
            axis2_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string );
            axis2_array_list_free ( tmp_array, env);

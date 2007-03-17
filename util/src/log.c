@@ -122,7 +122,7 @@ axis2_log_create(axis2_allocator_t * allocator, axis2_log_ops_t * ops,
     /* we write all logs to AXIS2C_HOME/logs if it is set otherwise
      * to the working dir
      */
-    if (stream_name && !(AXIS2_RINDEX(stream_name, AXIS2_PATH_SEP_CHAR)))
+    if (stream_name && !(axis2_rindex(stream_name, AXIS2_PATH_SEP_CHAR)))
     {
         if ((path_home = AXIS2_GETENV("AXIS2C_HOME")))
         {

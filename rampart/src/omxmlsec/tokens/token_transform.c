@@ -80,7 +80,7 @@ oxs_token_get_transform(const axis2_env_t *env, axiom_node_t *transform_node)
     }
 
     transform = axiom_element_get_attribute_value_by_name(transform_ele, env, OXS_ATTR_ALGORITHM);
-    if((!transform) ||(0 == AXIS2_STRCMP("", transform))){
+    if((!transform) ||(0 == axis2_strcmp("", transform))){
         return NULL;
     }
     

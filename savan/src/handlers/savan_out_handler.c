@@ -123,7 +123,7 @@ savan_out_handler_invoke(
             return AXIS2_SUCCESS; /* returning FAILURE will break handler chain */
         }
         
-        store = (axis2_hash_t*)AXIS2_PARAM_GET_VALUE(param, env);
+        store = (axis2_hash_t*)axis2_param_get_value(param, env);
         if (!store)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan][out handler] "

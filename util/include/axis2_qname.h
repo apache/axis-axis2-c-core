@@ -123,27 +123,6 @@ extern "C"
     axis2_qname_to_string(struct axis2_qname *qname,
         const axis2_env_t *env);
 
-
-#define AXIS2_QNAME_FREE(qname, env) \
-        axis2_qname_free(qname,env)
-
-#define AXIS2_QNAME_EQUALS(qname, env, qname1) \
-        axis2_qname_equals(qname, env, qname1)
-
-#define AXIS2_QNAME_CLONE(qname, env) \
-        axis2_qname_clone(qname, env)
-
-#define AXIS2_QNAME_GET_URI(qname, env) \
-        axis2_qname_get_uri(qname, env)
-
-#define AXIS2_QNAME_GET_PREFIX(qname, env) \
-        axis2_qname_get_prefix(qname, env)
-
-#define AXIS2_QNAME_GET_LOCALPART(qname, env) \
-        axis2_qname_get_localpart(qname, env)
-
-#define AXIS2_QNAME_TO_STRING(qname, env) \
-        axis2_qname_to_string(qname, env)
     /** @} */
 
 #ifdef __cplusplus

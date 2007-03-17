@@ -34,7 +34,7 @@ struct axis2_param
     axis2_array_list_t *value_list;
     axis2_status_t (AXIS2_CALL *
     value_free) (void *param_value,
-                     const axis2_env_t *env);
+        const axis2_env_t *env);
 };
 
 AXIS2_EXTERN axis2_param_t* AXIS2_CALL
@@ -54,7 +54,7 @@ axis2_param_create(const axis2_env_t *env,
         return NULL;
     }
 
-    param->name = AXIS2_STRDUP(name, env);
+    param->name = axis2_strdup(name, env);
     param->value = value; /* shallow copy.*/
     param->locked = AXIS2_FALSE;
     param->type = AXIS2_TEXT_PARAM;
@@ -69,8 +69,6 @@ axis2_char_t* AXIS2_CALL
 axis2_param_get_name(axis2_param_t *param,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return param->name;
 }
 
@@ -78,8 +76,6 @@ void* AXIS2_CALL
 axis2_param_get_value(axis2_param_t *param,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return param->value;
 }
 
@@ -90,7 +86,7 @@ axis2_param_set_name(axis2_param_t *param,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    param->name = AXIS2_STRDUP(name, env);
+    param->name = axis2_strdup(name, env);
     return AXIS2_SUCCESS;
 }
 
@@ -141,8 +137,6 @@ int AXIS2_CALL
 axis2_param_get_param_type(axis2_param_t *param,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     return param->type;
 }
 
@@ -155,12 +149,10 @@ axis2_param_set_param_type(axis2_param_t *param,
 
     param->type = type;
     return AXIS2_SUCCESS;
-
 }
 
 axis2_status_t AXIS2_CALL
-axis2_param_set_attributes(
-    axis2_param_t *param,
+axis2_param_set_attributes(axis2_param_t *param,
     const axis2_env_t *env,
     axis2_hash_t *attrs)
 {
@@ -173,33 +165,27 @@ axis2_param_set_attributes(
         void *v = NULL;
 
         for (i = axis2_hash_first(param->attrs, env); i;
-                i = axis2_hash_next(env, i))
+            i = axis2_hash_next(env, i))
         {
             axis2_hash_this(i, NULL, NULL, &v);
-             axis2_generic_obj_free(v, env);
+            axis2_generic_obj_free(v, env);
         }
         axis2_hash_free(param->attrs, env);
     }
 
     param->attrs = attrs;
     return AXIS2_SUCCESS;
-
-
 }
 
 axis2_hash_t* AXIS2_CALL
-axis2_param_get_attributes(
-    axis2_param_t *param,
+axis2_param_get_attributes(axis2_param_t *param,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return param->attrs;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_param_set_value_list(
-    axis2_param_t *param,
+axis2_param_set_value_list(axis2_param_t *param,
     const axis2_env_t *env,
     axis2_array_list_t *value_list)
 {
@@ -216,8 +202,8 @@ axis2_param_set_value_list(
             axis2_param_t *param = NULL;
 
             param = (axis2_param_t *) axis2_array_list_get(
-                        param->value_list, env, i);
-            AXIS2_PARAM_FREE(param, env);
+                param->value_list, env, i);
+            axis2_param_free(param, env);
         }
         axis2_array_list_free(param->value_list, env);
     }
@@ -227,12 +213,9 @@ axis2_param_set_value_list(
 }
 
 axis2_array_list_t* AXIS2_CALL
-axis2_param_get_value_list(
-    axis2_param_t *param,
+axis2_param_get_value_list(axis2_param_t *param,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     return param->value_list;
 }
 
@@ -264,10 +247,10 @@ axis2_param_free(axis2_param_t *param,
         void *v = NULL;
 
         for (i = axis2_hash_first(param->attrs, env); i;
-                i = axis2_hash_next(env, i))
+            i = axis2_hash_next(env, i))
         {
             axis2_hash_this(i, NULL, NULL, &v);
-             axis2_generic_obj_free(v, env);
+            axis2_generic_obj_free(v, env);
         }
         axis2_hash_free(param->attrs, env);
     }
@@ -282,10 +265,10 @@ axis2_param_free(axis2_param_t *param,
             axis2_param_t *param_l = NULL;
 
             param_l = (axis2_param_t *) axis2_array_list_get(
-                        param->value_list, env, i);
+                param->value_list, env, i);
             if (param_l)
             {
-                AXIS2_PARAM_FREE(param_l, env);
+                axis2_param_free(param_l, env);
             }
         }
         axis2_array_list_free(param->value_list, env);

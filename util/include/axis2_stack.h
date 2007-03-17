@@ -77,24 +77,6 @@ extern "C"
         const axis2_env_t *env,
         int i);
 
-#define AXIS2_STACK_FREE( stack, env) \
-        axis2_stack_free( stack, env)
-
-#define AXIS2_STACK_POP( stack, env) \
-        axis2_stack_pop( stack, env)
-
-#define AXIS2_STACK_PUSH( stack, env, value) \
-        axis2_stack_push( stack, env, value)
-
-#define AXIS2_STACK_SIZE( stack, env) \
-        axis2_stack_size( stack, env)
-
-#define AXIS2_STACK_GET( stack, env) \
-        axis2_stack_get( stack, env)
-
-#define AXIS2_STACK_GET_AT( stack, env, i) \
-        axis2_stack_get_at( stack, env, i)
-
     /** @} */
 
 #ifdef __cplusplus

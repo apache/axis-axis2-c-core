@@ -101,7 +101,7 @@ rp_asymmetric_binding_builder_set_token_type(
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     
-    if(AXIS2_STRCMP(local_name,RP_INITIATOR_TOKEN)==0)
+    if(axis2_strcmp(local_name,RP_INITIATOR_TOKEN)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_INITIATOR_TOKEN,node,element))
         {
@@ -115,7 +115,7 @@ rp_asymmetric_binding_builder_set_token_type(
         else
             return AXIS2_FAILURE;
     }
-    else if(AXIS2_STRCMP(local_name,RP_RECIPIENT_TOKEN)==0)
+    else if(axis2_strcmp(local_name,RP_RECIPIENT_TOKEN)==0)
     {
         if(rp_match_secpolicy_qname(env,RP_RECIPIENT_TOKEN,node,element))
         {
@@ -140,10 +140,10 @@ rp_asymmetric_binding_builder_istoken(
 {
     AXIS2_ENV_CHECK(env,AXIS2_FALSE);
 
-    if(AXIS2_STRCMP(local_name,RP_INITIATOR_TOKEN)==0)
+    if(axis2_strcmp(local_name,RP_INITIATOR_TOKEN)==0)
         return AXIS2_TRUE;
     
-    else if(AXIS2_STRCMP(local_name,RP_RECIPIENT_TOKEN)==0)
+    else if(axis2_strcmp(local_name,RP_RECIPIENT_TOKEN)==0)
         return AXIS2_TRUE;
     
     else

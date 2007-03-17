@@ -107,7 +107,7 @@ rp_username_token_builder_set_inclusion_value(
     
     inclusion_value = axiom_element_get_attribute_value(element,env,qname);
             
-    AXIS2_QNAME_FREE(qname,env);
+    axis2_qname_free(qname,env);
     qname = NULL;         
 
     return rp_username_token_set_inclusion(token,env,inclusion_value);    
