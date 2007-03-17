@@ -95,7 +95,7 @@ axiom_text_create(const axis2_env_t *env,
 
     if (value)
     {
-        om_text->value = (axis2_char_t *) AXIS2_STRDUP(value, env);
+        om_text->value = (axis2_char_t *) axis2_strdup(value, env);
     }
 
     axiom_node_set_data_element((*node), env, om_text);
@@ -198,11 +198,11 @@ axiom_text_serialize(axiom_text_t *om_text,
                 axis2_char_t *content_id = axiom_output_get_next_content_id(om_output, env);
                 if (content_id)
                 {
-                    om_text->content_id = AXIS2_STRDUP(content_id, env);
+                    om_text->content_id = axis2_strdup(content_id, env);
                 }
             }
 
-            attribute_value = AXIS2_STRACAT("cid:", om_text->content_id, env);
+            attribute_value = axis2_stracat("cid:", om_text->content_id, env);
 
             /*send binary as MTOM optimised*/
             if (om_text->om_attribute)
@@ -252,7 +252,7 @@ axiom_text_set_value(axiom_text_t *om_text,
         om_text->value = NULL;
     }
 
-    om_text->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
+    om_text->value = (axis2_char_t*)axis2_strdup(value, env);
     if (!om_text->value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
@@ -282,7 +282,7 @@ axiom_text_set_mime_type(axiom_text_t *om_text,
     {
         AXIS2_FREE(env->allocator, om_text->mime_type);
     }
-    om_text->mime_type = (axis2_char_t*)AXIS2_STRDUP(mime_type, env);
+    om_text->mime_type = (axis2_char_t*)axis2_strdup(mime_type, env);
     return AXIS2_SUCCESS;
 }
 
@@ -347,7 +347,7 @@ axiom_text_set_content_id(axiom_text_t *om_text,
     {
         AXIS2_FREE(env->allocator, om_text->content_id);
     }
-    om_text->content_id = (axis2_char_t*)AXIS2_STRDUP(content_id, env);
+    om_text->content_id = (axis2_char_t*)axis2_strdup(content_id, env);
     return AXIS2_SUCCESS;
 }
 

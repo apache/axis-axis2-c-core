@@ -209,10 +209,10 @@ axiom_soap_header_block_set_must_understand_with_string
         attr_nsuri     = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
 
-    if (AXIS2_STRCMP(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE, must_understand) == 0 ||
-            AXIS2_STRCMP(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_FALSE, must_understand) == 0 ||
-            AXIS2_STRCMP(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_0, must_understand) == 0 ||
-            AXIS2_STRCMP(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1, must_understand) == 0)
+    if (axis2_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE, must_understand) == 0 ||
+            axis2_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_FALSE, must_understand) == 0 ||
+            axis2_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_0, must_understand) == 0 ||
+            axis2_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1, must_understand) == 0)
     {
 
         axiom_soap_header_block_set_attribute(header_block, env,
@@ -252,13 +252,13 @@ axiom_soap_header_block_get_must_understand
         return AXIS2_FALSE;
 
 
-    if (AXIS2_STRCMP(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1) == 0 ||
-            AXIS2_STRCMP(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE) == 0)
+    if (axis2_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1) == 0 ||
+            axis2_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE) == 0)
     {
         return AXIS2_TRUE;
     }
-    else if (AXIS2_STRCMP(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_0) == 0 ||
-            AXIS2_STRCMP(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_FALSE) == 0)
+    else if (axis2_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_0) == 0 ||
+            axis2_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_FALSE) == 0)
     {
         return AXIS2_FALSE;
     }
@@ -319,7 +319,7 @@ axiom_soap_header_block_set_attribute
 
     om_attr = axiom_element_get_attribute(om_ele, env, qn);
 
-    AXIS2_QNAME_FREE(qn, env);
+    axis2_qname_free(qn, env);
     if (om_attr)
     {
         return  axiom_attribute_set_value(om_attr, env, attr_value);
@@ -388,7 +388,7 @@ axiom_soap_header_block_get_attribute
     om_attr = axiom_element_get_attribute(om_ele, env, qn);
     if (om_attr)
         attr_value = axiom_attribute_get_value(om_attr, env);
-    AXIS2_QNAME_FREE(qn, env);
+    axis2_qname_free(qn, env);
     return attr_value;
 }
 

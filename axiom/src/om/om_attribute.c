@@ -57,7 +57,7 @@ axiom_attribute_create(const axis2_env_t *env,
     attribute->ns        = NULL;
     attribute->qname = NULL;
 
-    attribute->localname = (axis2_char_t*) AXIS2_STRDUP(localname, env);
+    attribute->localname = (axis2_char_t*) axis2_strdup(localname, env);
     if (!(attribute->localname))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -66,7 +66,7 @@ axiom_attribute_create(const axis2_env_t *env,
     }
     if (value)
     {
-        attribute->value = (axis2_char_t*) AXIS2_STRDUP(value, env);
+        attribute->value = (axis2_char_t*) axis2_strdup(value, env);
         if (!(attribute->value))
         {
             AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -104,7 +104,7 @@ axiom_attribute_free(axiom_attribute_t *attribute,
     }
     if (attribute->qname)
     {
-        AXIS2_QNAME_FREE(attribute->qname, env);
+        axis2_qname_free(attribute->qname, env);
     }
     
     AXIS2_FREE(env->allocator, attribute);
@@ -167,7 +167,7 @@ axiom_attribute_serialize(axiom_attribute_t *attribute,
         uri = axiom_namespace_get_uri(attribute->ns, env);
         prefix = axiom_namespace_get_prefix(attribute->ns, env);
 
-        if ((uri) && (NULL != prefix) && (AXIS2_STRCMP(prefix, "") != 0))
+        if ((uri) && (NULL != prefix) && (axis2_strcmp(prefix, "") != 0))
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 4,
                 attribute->localname,
@@ -225,7 +225,7 @@ axiom_attribute_set_localname(axiom_attribute_t *attribute,
         AXIS2_FREE(env->allocator, attribute->localname);
     }
 
-    attribute->localname = (axis2_char_t*)AXIS2_STRDUP(localname, env);
+    attribute->localname = (axis2_char_t*)axis2_strdup(localname, env);
 
     if (!(attribute->localname))
     {
@@ -249,7 +249,7 @@ axiom_attribute_set_value(axiom_attribute_t *attribute,
         AXIS2_FREE(env->allocator, attribute->value);
     }
 
-    attribute->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
+    attribute->value = (axis2_char_t*)axis2_strdup(value, env);
     if (!(attribute->value))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

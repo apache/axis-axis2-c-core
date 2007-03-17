@@ -192,7 +192,7 @@ axiom_output_set_xml_version(axiom_output_t *om_output,
         om_output->xml_version = NULL;
     }
 
-    om_output->xml_version = AXIS2_STRDUP(xml_version, env);
+    om_output->xml_version = axis2_strdup(xml_version, env);
     if (!om_output->xml_version)
     {
         return AXIS2_FAILURE;
@@ -330,9 +330,9 @@ axiom_output_get_next_content_id(axiom_output_t *om_output,
 
     sprintf(id, "%d", om_output->next_id);
 
-    temp_str = AXIS2_STRACAT(id, ".", env);
-    temp_str1 = AXIS2_STRACAT(temp_str, uuid, env);
-    om_output->next_content_id = AXIS2_STRACAT(temp_str1, "@apache.org", env);
+    temp_str = axis2_stracat(id, ".", env);
+    temp_str1 = axis2_stracat(temp_str, uuid, env);
+    om_output->next_content_id = axis2_stracat(temp_str1, "@apache.org", env);
     if (temp_str)
     {
         AXIS2_FREE(env->allocator, temp_str);
@@ -362,10 +362,10 @@ axiom_output_get_root_content_id(axiom_output_t *om_output,
     {
         uuid = axis2_uuid_gen(env);
 
-        temp_str = AXIS2_STRACAT("0.", uuid, env);
+        temp_str = axis2_stracat("0.", uuid, env);
 
         om_output->root_content_id =
-            AXIS2_STRACAT(temp_str, "@apache.org", env);
+            axis2_stracat(temp_str, "@apache.org", env);
 
         if (temp_str)
         {
@@ -391,7 +391,7 @@ axiom_output_get_mime_boundry(axiom_output_t *om_output,
     {
         uuid = axis2_uuid_gen(env);
 
-        om_output->mime_boundary = AXIS2_STRACAT("MIMEBoundary", uuid, env);
+        om_output->mime_boundary = axis2_stracat("MIMEBoundary", uuid, env);
         if (uuid)
         {
             AXIS2_FREE(env->allocator, uuid);

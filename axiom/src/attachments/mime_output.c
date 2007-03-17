@@ -44,7 +44,7 @@ axis2_char_2_byte(const axis2_env_t *env, axis2_char_t *char_buffer, axis2_byte_
     axis2_byte_t *bytes;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    length = AXIS2_STRLEN(char_buffer);
+    length = axis2_strlen(char_buffer);
     bytes = AXIS2_MALLOC(env->allocator, length * sizeof(axis2_byte_t));
 
     for (i = 0; i < length; i++)
@@ -197,17 +197,17 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
     root_mime_body_part = axiom_mime_body_part_create(env);
 
     /* content-type */
-    header_value = AXIS2_STRDUP("application/xop+xml; charset=", env);
-    temp_header_value = AXIS2_STRACAT(header_value, char_set_encoding, env);
+    header_value = axis2_strdup("application/xop+xml; charset=", env);
+    temp_header_value = axis2_stracat(header_value, char_set_encoding, env);
     AXIS2_FREE(env->allocator, header_value);
     header_value = temp_header_value;
-    temp_header_value = AXIS2_STRACAT(header_value, "; type=\"", env);
+    temp_header_value = axis2_stracat(header_value, "; type=\"", env);
     AXIS2_FREE(env->allocator, header_value);
     header_value = temp_header_value;
-    temp_header_value = AXIS2_STRACAT(header_value, soap_content_type, env);
+    temp_header_value = axis2_stracat(header_value, soap_content_type, env);
     AXIS2_FREE(env->allocator, header_value);
     header_value = temp_header_value;
-    temp_header_value = AXIS2_STRACAT(header_value, "\";", env);
+    temp_header_value = axis2_stracat(header_value, "\";", env);
     AXIS2_FREE(env->allocator, header_value);
     header_value = temp_header_value;
     AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-type", header_value);
@@ -217,8 +217,8 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
 
     /* content-id */
     content_id_string = (axis2_char_t *)"<";
-    content_id_string = AXIS2_STRACAT(content_id_string, content_id, env);
-    temp_content_id_string = AXIS2_STRACAT(content_id_string, ">", env);
+    content_id_string = axis2_stracat(content_id_string, content_id, env);
+    temp_content_id_string = axis2_stracat(content_id_string, ">", env);
     AXIS2_FREE(env->allocator, content_id_string);
     content_id_string = temp_content_id_string;
     AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-id", content_id_string);
@@ -292,12 +292,12 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
 
     if (soap_body_buffer)
     {
-        temp_soap_body_buffer = AXIS2_STRACAT(soap_body_buffer, "\r\n", env);
+        temp_soap_body_buffer = axis2_stracat(soap_body_buffer, "\r\n", env);
         
         /*AXIS2_FREE(env->allocator, soap_body_buffer);*/
         soap_body_buffer = temp_soap_body_buffer;
         
-        soap_body_buffer_size = AXIS2_STRLEN(soap_body_buffer);
+        soap_body_buffer_size = axis2_strlen(soap_body_buffer);
     }
 
     stream_buffer_size = output_stream_start_size + output_stream_body_size +
@@ -419,9 +419,9 @@ axis2_create_mime_body_part(axiom_text_t *text, const axis2_env_t *env)
 
     AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env,
             data_handler);
-    content_id = AXIS2_STRACAT(content_id,
+    content_id = axis2_stracat(content_id,
             axiom_text_get_content_id(text, env), env);
-    temp_content_id = AXIS2_STRACAT(content_id, ">", env);
+    temp_content_id = axis2_stracat(content_id, ">", env);
     
     AXIS2_FREE(env->allocator, content_id);
     content_id = temp_content_id;
@@ -532,64 +532,64 @@ axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output,
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    content_type_string = AXIS2_STRDUP("multipart/related", env);
-    temp_content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+    content_type_string = axis2_strdup("multipart/related", env);
+    temp_content_type_string = axis2_stracat(content_type_string, "; ", env);
     AXIS2_FREE(env->allocator, content_type_string);
     content_type_string = temp_content_type_string;
     if (boundary)
     {
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, "boundary=", env);
+        temp_content_type_string = axis2_stracat(content_type_string, "boundary=", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, boundary, env);
+        temp_content_type_string = axis2_stracat(content_type_string, boundary, env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+        temp_content_type_string = axis2_stracat(content_type_string, "; ", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
     }
-    temp_content_type_string = AXIS2_STRACAT(content_type_string, "type=\"application/xop+xml\"", env);
+    temp_content_type_string = axis2_stracat(content_type_string, "type=\"application/xop+xml\"", env);
     AXIS2_FREE(env->allocator, content_type_string);
     content_type_string = temp_content_type_string;
-    temp_content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+    temp_content_type_string = axis2_stracat(content_type_string, "; ", env);
     AXIS2_FREE(env->allocator, content_type_string);
     content_type_string = temp_content_type_string;
     if (content_id)
     {
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, "start=\"<", env);
+        temp_content_type_string = axis2_stracat(content_type_string, "start=\"<", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, content_id , env);
+        temp_content_type_string = axis2_stracat(content_type_string, content_id , env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, ">\"", env);
+        temp_content_type_string = axis2_stracat(content_type_string, ">\"", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+        temp_content_type_string = axis2_stracat(content_type_string, "; ", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
     }
     if (soap_content_type)
     {
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, "start-info=\"", env);
+        temp_content_type_string = axis2_stracat(content_type_string, "start-info=\"", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, soap_content_type, env);
+        temp_content_type_string = axis2_stracat(content_type_string, soap_content_type, env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, "\"; ", env);
+        temp_content_type_string = axis2_stracat(content_type_string, "\"; ", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
     }
     if (char_set_encoding)
     {
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, "charset=\"", env);
+        temp_content_type_string = axis2_stracat(content_type_string, "charset=\"", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, char_set_encoding, env);
+        temp_content_type_string = axis2_stracat(content_type_string, char_set_encoding, env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
-        temp_content_type_string = AXIS2_STRACAT(content_type_string, "\"", env);
+        temp_content_type_string = axis2_stracat(content_type_string, "\"", env);
         AXIS2_FREE(env->allocator, content_type_string);
         content_type_string = temp_content_type_string;
     }

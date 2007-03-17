@@ -131,7 +131,7 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
                     ns = axiom_element_find_namespace(om_ele ,
                         env , element_node, uri, prefix);
 
-                    /* newly added to handle "xml:*" attributes" (AXIS2_STRCMP(prefix, "xml") == 0) && */
+                    /* newly added to handle "xml:*" attributes" (axis2_strcmp(prefix, "xml") == 0) && */
                     if (!ns)
                     {
                         ns = axiom_namespace_create(env, uri, prefix);
@@ -299,7 +299,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
         temp_ns_uri = AXIOM_XML_READER_GET_NAMESPACE_URI_BY_NUMBER(
             om_builder->parser, env , i);
 
-        if (!temp_ns_prefix || AXIS2_STRCMP(temp_ns_prefix, "xmlns") == 0)
+        if (!temp_ns_prefix || axis2_strcmp(temp_ns_prefix, "xmlns") == 0)
         {
             /** default namespace case */
             /** !temp_ns_prefix is for guththila */

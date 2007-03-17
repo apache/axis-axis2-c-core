@@ -460,7 +460,7 @@ axiom_soap_fault_get_exception(axiom_soap_fault_t *soap_fault,
             exception_ele = axiom_element_get_first_child_with_qname(
                         detail_ele, env,
                         qn, detail_node, &exception_node);
-            AXIS2_QNAME_FREE(qn, env);
+            axis2_qname_free(qn, env);
             if (exception_ele &&
                     (excep = axiom_element_get_text(exception_ele, env, exception_node)))
             {

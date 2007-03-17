@@ -157,7 +157,7 @@ axiom_soap_fault_text_set_lang(axiom_soap_fault_text_t *fault_text,
         attr_lang = axiom_attribute_get_value(fault_text->lang_attribute, env);
         if (attr_lang)
         {
-            if (AXIS2_STRCMP(attr_lang, lang) == 0)
+            if (axis2_strcmp(attr_lang, lang) == 0)
             {
                 /** this attribute already exists */
                 return AXIS2_SUCCESS;
@@ -221,7 +221,7 @@ axiom_soap_fault_text_get_lang(axiom_soap_fault_text_t *fault_text,
 
         fault_text->lang_attribute =
             axiom_element_get_attribute(om_ele, env, tmp_qname);
-        AXIS2_QNAME_FREE(tmp_qname, env);
+        axis2_qname_free(tmp_qname, env);
     }
     if (fault_text->lang_attribute)
     {

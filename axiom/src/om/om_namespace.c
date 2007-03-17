@@ -57,7 +57,7 @@ axiom_namespace_create(const axis2_env_t *env,
     om_namespace->uri = NULL;
     om_namespace->key = NULL;
 
-    om_namespace->uri = (axis2_char_t *) AXIS2_STRDUP(uri, env);
+    om_namespace->uri = (axis2_char_t *) axis2_strdup(uri, env);
     if (!om_namespace->uri)
     {
         AXIS2_FREE(env->allocator, om_namespace);
@@ -67,7 +67,7 @@ axiom_namespace_create(const axis2_env_t *env,
 
     if (prefix)
     {
-        om_namespace->prefix = (axis2_char_t *) AXIS2_STRDUP(prefix, env);
+        om_namespace->prefix = (axis2_char_t *) axis2_strdup(prefix, env);
         if (!om_namespace->prefix)
         {
             AXIS2_FREE(env->allocator, om_namespace);
@@ -165,7 +165,7 @@ axiom_namespace_serialize(axiom_namespace_t *om_namespace,
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     if (om_namespace->uri && NULL != om_namespace->prefix &&
-        AXIS2_STRCMP(om_namespace->prefix, "") != 0)
+        axis2_strcmp(om_namespace->prefix, "") != 0)
     {
         status = axiom_output_write(om_output, env, AXIOM_NAMESPACE,
             2, om_namespace->prefix,
@@ -224,8 +224,8 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     }
     if ((om_namespace->uri) && (NULL != om_namespace->prefix))
     {
-        temp_str = AXIS2_STRACAT(om_namespace->uri, "|", env);
-        om_namespace->key = AXIS2_STRACAT(temp_str, om_namespace->prefix, env);
+        temp_str = axis2_stracat(om_namespace->uri, "|", env);
+        om_namespace->key = axis2_stracat(temp_str, om_namespace->prefix, env);
         if (temp_str)
         {
             AXIS2_FREE(env->allocator, temp_str);
@@ -234,7 +234,7 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     }
     else if ((om_namespace->uri) && !(om_namespace->prefix))
     {
-        om_namespace->key = AXIS2_STRDUP(om_namespace->uri, env);
+        om_namespace->key = axis2_strdup (om_namespace->uri, env);
         if (!(om_namespace->key))
         {
             return NULL;
@@ -258,7 +258,7 @@ axiom_namespace_set_uri(axiom_namespace_t *om_namespace,
         om_namespace->uri = NULL;
     }
 
-    om_namespace->uri = AXIS2_STRDUP(uri, env);
+    om_namespace->uri = axis2_strdup(uri, env);
     if (!(om_namespace->uri))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

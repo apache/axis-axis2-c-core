@@ -158,7 +158,7 @@ axiom_soap_fault_reason_get_soap_fault_text
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, fault_reason, NULL);
-    if (!lang || (AXIS2_STRCMP(lang, "") == 0))
+    if (!lang || (axis2_strcmp(lang, "") == 0))
         return NULL;
 
     /** Here we have to build the soap fault reason element completly */
@@ -193,7 +193,7 @@ axiom_soap_fault_reason_get_soap_fault_text
             axis2_char_t *fault_lang = NULL;
             fault_text = (axiom_soap_fault_text_t *)value;
             fault_lang = AXIOM_SOAP_FAULT_TEXT_GET_LANG(fault_text, env);
-            if (fault_lang && AXIS2_STRCMP(lang, fault_lang) == 0)
+            if (fault_lang && axis2_strcmp(lang, fault_lang) == 0)
             {
                 return fault_text;
             }
@@ -337,7 +337,7 @@ axiom_soap_fault_reason_lang_exists(axiom_soap_fault_reason_t *fault_reason,
     int i    = 0;
 
 
-    if (!lang || (AXIS2_STRCMP(lang, "") == 0) || !fault_reason->fault_texts)
+    if (!lang || (axis2_strcmp(lang, "") == 0) || !fault_reason->fault_texts)
         return AXIS2_FALSE;
 
     size = axis2_array_list_size(fault_reason->fault_texts, env);
@@ -352,7 +352,7 @@ axiom_soap_fault_reason_lang_exists(axiom_soap_fault_reason_t *fault_reason,
             fault_text = (axiom_soap_fault_text_t *)value;
 
             text_lang = AXIOM_SOAP_FAULT_TEXT_GET_LANG(fault_text, env);
-            if (text_lang && (AXIS2_STRCMP(lang, text_lang) == 0))
+            if (text_lang && (axis2_strcmp(lang, text_lang) == 0))
             {
                 return AXIS2_TRUE;
             }

@@ -66,7 +66,7 @@ axiom_processing_instruction_create(const axis2_env_t *env,
 
     if (value)
     {
-        processing_instruction->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
+        processing_instruction->value = (axis2_char_t*)axis2_strdup(value, env);
         if (!processing_instruction->value)
         {
             AXIS2_FREE(env->allocator, processing_instruction);
@@ -80,7 +80,7 @@ axiom_processing_instruction_create(const axis2_env_t *env,
 
     if (target)
     {
-        processing_instruction->target = (axis2_char_t*) AXIS2_STRDUP(target, env);
+        processing_instruction->target = (axis2_char_t*) axis2_strdup(target, env);
         if (!processing_instruction->target)
         {
             AXIS2_FREE(env->allocator, processing_instruction->value);
@@ -129,7 +129,7 @@ axiom_processing_instruction_set_value(axiom_processing_instruction_t *om_pi,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
-    om_pi->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
+    om_pi->value = (axis2_char_t*)axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 
@@ -141,7 +141,7 @@ axiom_processing_instruction_set_target(axiom_processing_instruction_t *om_pi,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, target, AXIS2_FAILURE);
-    om_pi->target = (axis2_char_t*)AXIS2_STRDUP(target, env);
+    om_pi->target = (axis2_char_t*)axis2_strdup(target, env);
     return AXIS2_SUCCESS;
 }
 

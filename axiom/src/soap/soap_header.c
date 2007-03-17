@@ -336,7 +336,7 @@ AXIS2_CALL axiom_soap_header_extract_header_blocks
         }
     }
 
-    AXIS2_QNAME_FREE(qn, env);
+    axis2_qname_free(qn, env);
 
     return iter;
 
@@ -487,7 +487,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
                     if (ns)
                     {
                         hb_namespace_uri = axiom_namespace_get_uri(ns, env);
-                        if (AXIS2_STRCMP(hb_namespace_uri, ns_uri) == 0)
+                        if (axis2_strcmp(hb_namespace_uri, ns_uri) == 0)
                         {
                             axis2_array_list_add(header_block_list, env, header_block);
                             found++;
@@ -533,9 +533,9 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
 
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
 
-    qn_localname = AXIS2_QNAME_GET_LOCALPART(qname, env);
-    qname_ns  = AXIS2_QNAME_GET_URI(qname, env);
-    qname_prefix = AXIS2_QNAME_GET_PREFIX(qname, env);
+    qn_localname = axis2_qname_get_localpart(qname, env);
+    qname_ns  = axis2_qname_get_uri(qname, env);
+    qname_prefix = axis2_qname_get_prefix(qname, env);
 
     if (!soap_header->header_blocks)
         return AXIS2_FAILURE;
@@ -593,22 +593,22 @@ axiom_soap_header_qname_matches(const axis2_env_t *env,
         return AXIS2_TRUE;
     if (qname_to_match)
     {
-        match_lpart = AXIS2_QNAME_GET_LOCALPART(qname_to_match, env);
-        match_nsuri = AXIS2_QNAME_GET_URI(qname_to_match, env);
+        match_lpart = axis2_qname_get_localpart(qname_to_match, env);
+        match_nsuri = axis2_qname_get_uri(qname_to_match, env);
     }
     if (element_qname)
     {
-        ele_lpart = AXIS2_QNAME_GET_LOCALPART(element_qname, env);
-        ele_nsuri = AXIS2_QNAME_GET_URI(element_qname, env);
+        ele_lpart = axis2_qname_get_localpart(element_qname, env);
+        ele_nsuri = axis2_qname_get_uri(element_qname, env);
     }
 
     lparts_match = (!match_lpart ||
-            (AXIS2_STRCMP(match_lpart, "") == 0) ||
-            (element_qname && (AXIS2_STRCMP(ele_lpart, match_lpart) == 0)));
+            (axis2_strcmp(match_lpart, "") == 0) ||
+            (element_qname && (axis2_strcmp(ele_lpart, match_lpart) == 0)));
 
 
-    uris_match = (!match_nsuri || (AXIS2_STRCMP(match_nsuri, "") == 0) ||
-            (element_qname && (AXIS2_STRCMP(ele_nsuri, match_nsuri) == 0)));
+    uris_match = (!match_nsuri || (axis2_strcmp(match_nsuri, "") == 0) ||
+            (element_qname && (axis2_strcmp(ele_nsuri, match_nsuri) == 0)));
 
     return lparts_match && uris_match;
 }

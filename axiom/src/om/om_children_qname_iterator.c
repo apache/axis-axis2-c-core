@@ -63,7 +63,7 @@ axiom_children_qname_iterator_create(const axis2_env_t *env,
     iterator->current_child = current_child;
     if (given_qname)
     {
-        iterator->given_qname = AXIS2_QNAME_CLONE(given_qname, env);
+        iterator->given_qname = axis2_qname_clone(given_qname, env);
         if (!(iterator->given_qname))
         {
             axiom_children_qname_iterator_free(iterator, env);
@@ -82,7 +82,7 @@ axiom_children_qname_iterator_free(axiom_children_qname_iterator_t *iterator,
 
     if (iterator->given_qname)
     {
-        AXIS2_QNAME_FREE(iterator->given_qname, env);
+        axis2_qname_free(iterator->given_qname, env);
     }
     AXIS2_FREE(env->allocator, iterator);
     return AXIS2_SUCCESS;
@@ -204,22 +204,22 @@ axiom_children_qname_iterator_qname_matches(const axis2_env_t *env,
         return AXIS2_TRUE;
     if (qname_to_match)
     {
-        match_lpart = AXIS2_QNAME_GET_LOCALPART(qname_to_match, env);
-        match_nsuri = AXIS2_QNAME_GET_URI(qname_to_match, env);
+        match_lpart = axis2_qname_get_localpart(qname_to_match, env);
+        match_nsuri = axis2_qname_get_uri(qname_to_match, env);
     }
     if (element_qname)
     {
-        ele_lpart = AXIS2_QNAME_GET_LOCALPART(element_qname, env);
-        ele_nsuri = AXIS2_QNAME_GET_URI(element_qname, env);
+        ele_lpart = axis2_qname_get_localpart(element_qname, env);
+        ele_nsuri = axis2_qname_get_localpart(element_qname, env);
     }
 
     lparts_match = (!match_lpart ||
-        (AXIS2_STRCMP(match_lpart, "") == 0) ||
-        (element_qname && (AXIS2_STRCMP(ele_lpart, match_lpart) == 0)));
+        (axis2_strcmp(match_lpart, "") == 0) ||
+        (element_qname && (axis2_strcmp(ele_lpart, match_lpart) == 0)));
 
 
-    uris_match = (!match_nsuri || (AXIS2_STRCMP(match_nsuri, "") == 0) ||
-        (element_qname && (AXIS2_STRCMP(ele_nsuri, match_nsuri) == 0)));
+    uris_match = (!match_nsuri || (axis2_strcmp(match_nsuri, "") == 0) ||
+        (element_qname && (axis2_strcmp(ele_nsuri, match_nsuri) == 0)));
 
     return lparts_match && uris_match;
 }

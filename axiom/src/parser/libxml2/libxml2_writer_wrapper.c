@@ -345,11 +345,11 @@ axiom_xml_writer_create(const axis2_env_t *env,
 
     if (encoding)
     {
-        writer_impl->encoding = AXIS2_STRDUP(encoding , env);
+        writer_impl->encoding = axis2_strdup(encoding , env);
     }
     else
     {
-        writer_impl->encoding = AXIS2_STRDUP(ENCODING, env);
+        writer_impl->encoding = axis2_strdup(ENCODING, env);
     }
 
     writer_impl->uri_prefix_map = axis2_hash_make(env);
@@ -438,11 +438,11 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
 
     if (encoding)
     {
-        writer_impl->encoding = AXIS2_STRDUP(encoding , env);
+        writer_impl->encoding = axis2_strdup(encoding , env);
     }
     else
     {
-        writer_impl->encoding = AXIS2_STRDUP(ENCODING, env);
+        writer_impl->encoding = axis2_strdup(ENCODING, env);
     }
 
     writer_impl->uri_prefix_map = axis2_hash_make(env);
@@ -578,7 +578,7 @@ axis2_libxml2_writer_wrapper_free(axiom_xml_writer_t *writer,
     }
     if (writer_impl->stack)
     {
-        AXIS2_STACK_FREE(writer_impl->stack, env);
+        axis2_stack_free(writer_impl->stack, env);
         writer_impl->stack = NULL;
     }
     if (writer_impl->default_lang_namespace)
@@ -930,15 +930,15 @@ axis2_libxml2_writer_wrapper_write_namespace(axiom_xml_writer_t *writer,
 
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
 
-    if (prefix && (AXIS2_STRCMP(prefix, "") != 0))
+    if (prefix && (axis2_strcmp(prefix, "") != 0))
     {
         xmlnsprefix = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
-            (sizeof(char) * (AXIS2_STRLEN(prefix) + 7)));
+            (sizeof(char) * (axis2_strlen(prefix) + 7)));
         sprintf(xmlnsprefix, "xmlns:%s", prefix);
     }
     else
     {
-        xmlnsprefix = AXIS2_STRDUP("xmlns", env);
+        xmlnsprefix = axis2_strdup("xmlns", env);
     }
 
     status = xmlTextWriterWriteAttribute(writer_impl->xml_writer,
@@ -1203,7 +1203,7 @@ axis2_libxml2_writer_wrapper_get_prefix(axiom_xml_writer_t *writer,
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
-    if (!uri || AXIS2_STRCMP(uri, "") == 0)
+    if (!uri || axis2_strcmp(uri, "") == 0)
     {
         return NULL;
     }
@@ -1225,7 +1225,7 @@ axis2_libxml2_writer_wrapper_set_prefix(axiom_xml_writer_t *writer,
     AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
-    if (AXIS2_STRCMP(uri, "") == 0)
+    if (axis2_strcmp(uri, "") == 0)
     {
         return AXIS2_FAILURE;
     }
@@ -1248,7 +1248,7 @@ axis2_libxml2_writer_wrapper_set_default_prefix(axiom_xml_writer_t *writer,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
-    if (AXIS2_STRCMP(uri, "") == 0)
+    if (axis2_strcmp(uri, "") == 0)
     {
         return AXIS2_FAILURE;
     }
@@ -1336,7 +1336,7 @@ axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
     axis2_char_t key[1024];
     const axis2_char_t *temp_prefix = NULL;
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
-    if (!prefix || AXIS2_STRCMP(prefix, "") == 0)
+    if (!prefix || axis2_strcmp(prefix, "") == 0)
     {
         temp_prefix = "default";
     }
@@ -1348,7 +1348,7 @@ axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
     if (writer_impl->stack)
     {
         current_list = (axis2_array_list_t *)
-            AXIS2_STACK_GET(writer_impl->stack, env);
+            axis2_stack_get(writer_impl->stack, env);
 
         if (current_list)
         {
@@ -1447,28 +1447,28 @@ uri_prefix_element_create(const axis2_env_t *env,
     up_element->uri = NULL;
     up_element->real_prefix = NULL;
 
-    up_element->uri = AXIS2_STRDUP(uri, env);
+    up_element->uri = axis2_strdup(uri, env);
     if (!up_element->uri)
     {
         uri_prefix_element_free(up_element, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    up_element->prefix = AXIS2_STRDUP(prefix, env);
+    up_element->prefix = axis2_strdup(prefix, env);
     if (prefix && !up_element->prefix)
     {
         uri_prefix_element_free(up_element, env);
         AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    up_element->key = AXIS2_STRDUP(key, env);
+    up_element->key = axis2_strdup(key, env);
     if (key  && !up_element->key)
     {
         uri_prefix_element_free(up_element, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    up_element->real_prefix = AXIS2_STRDUP(real_prefix, env);
+    up_element->real_prefix = axis2_strdup(real_prefix, env);
 
     return up_element;
 }
@@ -1501,7 +1501,7 @@ axis2_libxml2_writer_wrapper_find_prefix(axiom_xml_writer_t *writer,
     {
         return NULL;
     }
-    size = AXIS2_STACK_SIZE(writer_impl->stack, env);
+    size = axis2_stack_size(writer_impl->stack, env);
     if (size <= 0)
     {
         return NULL;
@@ -1511,7 +1511,7 @@ axis2_libxml2_writer_wrapper_find_prefix(axiom_xml_writer_t *writer,
     {
         axis2_array_list_t *context = NULL;
         void *value = NULL;
-        value = AXIS2_STACK_GET_AT(writer_impl->stack, env, i);
+        value = axis2_stack_get_at(writer_impl->stack, env, i);
         if (value)
         {
             uri_prefix_element_t *up_ele = NULL;
@@ -1548,7 +1548,7 @@ axis2_libxml2_writer_wrapper_find_prefix_in_context(axis2_array_list_t  *context
         if (value)
         {
             ele = (uri_prefix_element_t*)value;
-            if (ele->uri && AXIS2_STRCMP(uri, ele->uri))
+            if (ele->uri && axis2_strcmp(uri, ele->uri))
             {
                 return ele;
             }

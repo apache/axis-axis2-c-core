@@ -94,7 +94,7 @@ axiom_children_with_specific_attribute_iterator_create(
     iterator_impl->next_called = AXIS2_FALSE;
     iterator_impl->remove_called = AXIS2_FALSE;
 
-    iterator_impl->attr_qname = AXIS2_QNAME_CLONE(attr_qname, env);
+    iterator_impl->attr_qname = axis2_qname_clone(attr_qname, env);
     iterator_impl->attr_value = attr_value;
     iterator_impl->detach = detach;
 
@@ -135,7 +135,7 @@ axiom_children_with_specific_attribute_iterator_free(
     qname_iter_impl = AXIS2_INTF_TO_IMPL(iterator);
     if (qname_iter_impl->attr_qname)
     {
-        AXIS2_QNAME_FREE(qname_iter_impl->attr_qname, env);
+        axis2_qname_free(qname_iter_impl->attr_qname, env);
         qname_iter_impl->attr_qname = NULL;
     }
     if (iterator->ops)
@@ -211,7 +211,7 @@ axiom_children_with_specific_attribute_iterator_has_next(
                     iterator_impl->attr_qname);
             break;
             if (om_attr &&
-                    (AXIS2_STRCMP(axiom_attribute_get_value(om_attr, env),
+                    (axis2_strcmp(axiom_attribute_get_value(om_attr, env),
                             iterator_impl->attr_value) == 0))
             {
                 matching_node_found = AXIS2_TRUE;
