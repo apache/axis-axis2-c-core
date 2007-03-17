@@ -360,7 +360,7 @@ woden_element_extensible_get_ext_elements_of_type(void *extensible,
         ext_elem = (woden_ext_element_t *)axis2_array_list_get(
                     extensible_impl->f_ext_elements, env, i);
         ext_type_l = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_elem, env);
-        if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
+        if (AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
         {
             axis2_array_list_add(extensible_impl->temp_elems, env, ext_elem);
         }
@@ -387,7 +387,7 @@ woden_element_extensible_has_ext_elements_for_namespace(
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_ELEMENT_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    ext_ns = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    ext_ns = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     size = axis2_array_list_size(extensible_impl->f_ext_elements, env);
     for (i = 0; i < size; i++)
     {
@@ -398,8 +398,8 @@ woden_element_extensible_has_ext_elements_for_namespace(
         ext_elem = (woden_ext_element_t *) axis2_array_list_get(
                     extensible_impl->f_ext_elements, env, i);
         ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_elem, env);
-        uri = AXIS2_QNAME_GET_URI(ext_type, env);
-        if (0 == AXIS2_STRCMP(uri, ext_ns))
+        uri = axis2_qname_get_uri(ext_type, env);
+        if (0 == axis2_strcmp(uri, ext_ns))
         {
             result = AXIS2_TRUE;
             break;

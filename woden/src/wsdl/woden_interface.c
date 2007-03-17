@@ -522,7 +522,7 @@ woden_interface_free(void *interface,
 
     if (interface_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(interface_impl->f_qname, env);
+        axis2_qname_free(interface_impl->f_qname, env);
         interface_impl->f_qname = NULL;
     }
 
@@ -759,7 +759,7 @@ woden_interface_get_interface_fault(
         flt = axis2_array_list_get(interface_impl->f_interface_fault_elements,
                 env, i);
         qname_l = (axis2_qname_t *) WODEN_INTERFACE_FAULT_GET_QNAME(flt, env);
-        if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+        if (AXIS2_TRUE == axis2_qname_equals(qname, env, qname_l))
         {
             fault = flt;
             break;
@@ -821,9 +821,9 @@ woden_interface_set_qname(
 
     if (interface_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(interface_impl->f_qname, env);
+        axis2_qname_free(interface_impl->f_qname, env);
     }
-    interface_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+    interface_impl->f_qname = axis2_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
@@ -851,7 +851,7 @@ woden_interface_add_style_default_uri(
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_impl->f_style_default, env, AXIS2_URI_CLONE(
+    axis2_array_list_add(interface_impl->f_style_default, env, axis2_uri_clone(
                 uri, env));
 
     return AXIS2_SUCCESS;

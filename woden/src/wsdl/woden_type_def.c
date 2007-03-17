@@ -347,10 +347,10 @@ woden_type_def_set_qname(
 
     if (type_def_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(type_def_impl->f_qname, env);
+        axis2_qname_free(type_def_impl->f_qname, env);
         type_def_impl->f_qname = NULL;
     }
-    type_def_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+    type_def_impl->f_qname = axis2_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 

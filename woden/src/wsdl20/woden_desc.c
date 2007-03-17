@@ -1005,12 +1005,12 @@ woden_desc_free(
     /* TODO free f_parent */
     if (desc_impl->f_target_namespc)
     {
-        AXIS2_URI_FREE(desc_impl->f_target_namespc, env);
+        axis2_uri_free(desc_impl->f_target_namespc, env);
         desc_impl->f_target_namespc = NULL;
     }
     if (desc_impl->f_doc_base_uri)
     {
-        AXIS2_URI_FREE(desc_impl->f_doc_base_uri, env);
+        axis2_uri_free(desc_impl->f_doc_base_uri, env);
         desc_impl->f_doc_base_uri = NULL;
     }
     /* TODO free f_namespcs */
@@ -1288,7 +1288,7 @@ woden_desc_get_element_decl(
         axis2_qname_t *qname_l = NULL;
         void *ed = axis2_array_list_get(desc_impl->f_all_element_decls, env, i);
         qname_l = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
-        if (0 == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+        if (0 == axis2_qname_equals(qname, env, qname_l))
         {
             el_decl = ed;
             break;
@@ -1340,7 +1340,7 @@ woden_desc_get_type_def(
         axis2_qname_t *qname_l = NULL;
         void *ed = axis2_array_list_get(desc_impl->f_all_element_decls, env, i);
         qname_l = WODEN_TYPE_DEF_GET_QNAME(ed, env);
-        if (0 == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+        if (0 == axis2_qname_equals(qname, env, qname_l))
         {
             type_def = ed;
             break;
@@ -1385,11 +1385,11 @@ woden_desc_set_document_base_uri(
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
     if (desc_impl->f_doc_base_uri)
     {
-        AXIS2_URI_FREE(desc_impl->f_doc_base_uri, env);
+        axis2_uri_free(desc_impl->f_doc_base_uri, env);
         desc_impl->f_doc_base_uri = NULL;
     }
 
-    desc_impl->f_doc_base_uri = AXIS2_URI_CLONE(doc_base_uri, env);
+    desc_impl->f_doc_base_uri = axis2_uri_clone(doc_base_uri, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1426,11 +1426,11 @@ woden_desc_set_target_namespace(
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
     if (desc_impl->f_target_namespc)
     {
-        AXIS2_URI_FREE(desc_impl->f_target_namespc, env);
+        axis2_uri_free(desc_impl->f_target_namespc, env);
         desc_impl->f_target_namespc = NULL;
     }
 
-    desc_impl->f_target_namespc = AXIS2_URI_CLONE(namespc, env);
+    desc_impl->f_target_namespc = axis2_uri_clone(namespc, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1469,7 +1469,7 @@ woden_desc_add_namespace(
     pfx = (prefix) ? prefix : "";
     if (namespc)
         axis2_hash_set(desc_impl->f_namespcs, pfx, AXIS2_HASH_KEY_STRING,
-                AXIS2_URI_CLONE(namespc, env));
+                axis2_uri_clone(namespc, env));
     else
         axis2_hash_set(desc_impl->f_namespcs, pfx, AXIS2_HASH_KEY_STRING, NULL);
     return AXIS2_SUCCESS;

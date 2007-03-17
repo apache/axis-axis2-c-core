@@ -697,7 +697,7 @@ woden_interface_msg_ref_free(void *interface_msg_ref,
 
     if (interface_msg_ref_impl->f_element_qname)
     {
-        AXIS2_QNAME_FREE(interface_msg_ref_impl->f_element_qname, env);
+        axis2_qname_free(interface_msg_ref_impl->f_element_qname, env);
         interface_msg_ref_impl->f_element_qname = NULL;
     }
 
@@ -1004,7 +1004,7 @@ woden_interface_msg_ref_set_msg_content_model(
     {
         AXIS2_FREE(env->allocator, interface_msg_ref_impl->f_msg_content_model);
     }
-    interface_msg_ref_impl->f_msg_content_model = AXIS2_STRDUP(nm_token, env);
+    interface_msg_ref_impl->f_msg_content_model = axis2_strdup(nm_token, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1025,9 +1025,9 @@ woden_interface_msg_ref_set_element_qname(
 
     if (interface_msg_ref_impl->f_element_qname)
     {
-        AXIS2_QNAME_FREE(interface_msg_ref_impl->f_element_qname, env);
+        axis2_qname_free(interface_msg_ref_impl->f_element_qname, env);
     }
-    interface_msg_ref_impl->f_element_qname = AXIS2_QNAME_CLONE(element, env);
+    interface_msg_ref_impl->f_element_qname = axis2_qname_clone(element, env);
     return AXIS2_SUCCESS;
 }
 

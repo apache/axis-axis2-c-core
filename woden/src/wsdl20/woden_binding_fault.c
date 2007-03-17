@@ -684,7 +684,7 @@ woden_binding_fault_free(
 
     if (binding_fault_impl->f_ref)
     {
-        AXIS2_QNAME_FREE(binding_fault_impl->f_ref, env);
+        axis2_qname_free(binding_fault_impl->f_ref, env);
         binding_fault_impl->f_ref = NULL;
     }
 
@@ -865,9 +865,9 @@ woden_binding_fault_set_ref(
 
     if (binding_fault_impl->f_ref)
     {
-        AXIS2_QNAME_FREE(binding_fault_impl->f_ref, env);
+        axis2_qname_free(binding_fault_impl->f_ref, env);
     }
-    binding_fault_impl->f_ref = AXIS2_QNAME_CLONE(qname, env);
+    binding_fault_impl->f_ref = axis2_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 

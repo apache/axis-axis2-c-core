@@ -102,7 +102,7 @@ woden_soap_fault_subcodes_create(
     AXIS2_ENV_CHECK(env, NULL);
     soap_fault_subcodes_impl = (woden_soap_fault_subcodes_impl_t *) create(env);
 
-    soap_fault_subcodes_impl->f_token = AXIS2_STRDUP(token, env);
+    soap_fault_subcodes_impl->f_token = axis2_strdup(token, env);
     soap_fault_subcodes_impl->f_subcode_qns = subcode_qns;
 
     return &(soap_fault_subcodes_impl->soap_fault_subcodes);
@@ -134,7 +134,7 @@ woden_soap_fault_subcodes_free(
         {
             axis2_qname_t *qname = axis2_array_list_get(soap_fault_subcodes_impl->
                     f_subcode_qns, env, i);
-            AXIS2_QNAME_FREE(qname, env);
+            axis2_qname_free(qname, env);
         }
         axis2_array_list_free(soap_fault_subcodes_impl->f_subcode_qns, env);
         soap_fault_subcodes_impl->f_subcode_qns = NULL;

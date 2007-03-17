@@ -103,7 +103,7 @@ woden_component_exts_free(
 
     if (component_exts_impl->f_namespc)
     {
-        AXIS2_URI_FREE(component_exts_impl->f_namespc, env);
+        axis2_uri_free(component_exts_impl->f_namespc, env);
         component_exts_impl->f_namespc = NULL;
     }
 

@@ -77,7 +77,7 @@ woden_direction_create(
     AXIS2_ENV_CHECK(env, NULL);
     direction_impl = (woden_direction_impl_t *) create(env);
 
-    direction_impl->f_value = AXIS2_STRDUP(value, env);
+    direction_impl->f_value = axis2_strdup(value, env);
 
     return &(direction_impl->direction);
 }

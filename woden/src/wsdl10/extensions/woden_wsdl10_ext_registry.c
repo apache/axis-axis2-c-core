@@ -339,7 +339,7 @@ woden_wsdl10_ext_registry_register_deserializer(
         axis2_hash_set(registry_impl->deserializer_reg, parent_type,
                 AXIS2_HASH_KEY_STRING, inner_deserializer_reg);
     }
-    element_type = AXIS2_QNAME_TO_STRING(element_qtype, env);
+    element_type = axis2_qname_to_string(element_qtype, env);
     axis2_hash_set(inner_deserializer_reg, element_type, AXIS2_HASH_KEY_STRING,
             ed);
     return AXIS2_SUCCESS;
@@ -379,13 +379,13 @@ woden_wsdl10_ext_registry_query_deserializer(
 
     inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
-    /*elem_name = AXIS2_QNAME_TO_STRING(element_type, env); */
+    /*elem_name = axis2_qname_to_string(element_type, env); */
     if (inner_deserializer_reg)
     {
 
         element_qtype = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
-        elem_name = AXIS2_QNAME_TO_STRING(element_qtype, env);
+        elem_name = axis2_qname_to_string(element_qtype, env);
         ed = axis2_hash_get(inner_deserializer_reg, elem_name,
                 AXIS2_HASH_KEY_STRING);
     }
@@ -424,7 +424,7 @@ woden_wsdl10_ext_registry_query_ext_element_type(
 
     inner_ext_element_reg = axis2_hash_get(registry_impl->ext_element_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    /*elem_name = AXIS2_QNAME_TO_STRING(elem_qn, env);*/
+    /*elem_name = axis2_qname_to_string(elem_qn, env);*/
     if (inner_ext_element_reg)
     {
         element = axis2_hash_get(inner_ext_element_reg,
@@ -511,7 +511,7 @@ woden_wsdl10_ext_registry_register_ext_element_type(
         axis2_hash_set(registry_impl->ext_element_reg, parent_type,
                 AXIS2_HASH_KEY_STRING, inner_ext_type_reg);
     }
-    element_type = AXIS2_QNAME_TO_STRING(element_qtype, env);
+    element_type = axis2_qname_to_string(element_qtype, env);
     axis2_hash_set(inner_ext_type_reg, element_type, AXIS2_HASH_KEY_STRING,
             element);
     return AXIS2_SUCCESS;
@@ -554,7 +554,7 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
         axis2_hash_set(registry_impl->ext_attr_reg, owner_class,
                 AXIS2_HASH_KEY_STRING, inner_ext_attr_reg);
     }
-    attr_name = AXIS2_QNAME_TO_STRING(attr_qname, env);
+    attr_name = axis2_qname_to_string(attr_qname, env);
     axis2_hash_set(inner_ext_attr_reg, attr_name, AXIS2_HASH_KEY_STRING, attr);
     return AXIS2_SUCCESS;
 }
@@ -588,7 +588,7 @@ woden_wsdl10_ext_registry_query_ext_attr_type(
 
     inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    attr_name = AXIS2_QNAME_TO_STRING(attr_qn, env);
+    attr_name = axis2_qname_to_string(attr_qn, env);
     if (inner_ext_attr_reg)
     {
         attr = axis2_hash_get(inner_ext_attr_reg, attr_name,
@@ -628,7 +628,7 @@ woden_wsdl10_ext_registry_register_component_ext(
         axis2_hash_set(registry_impl->comp_ext_reg, parent_class,
                 AXIS2_HASH_KEY_STRING, inner_comp_ext_reg);
     }
-    namespc = AXIS2_URI_TO_STRING(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    namespc = axis2_uri_to_string(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     axis2_hash_set(inner_comp_ext_reg, namespc, AXIS2_HASH_KEY_STRING, comp_ext);
     return AXIS2_SUCCESS;
 }
@@ -658,7 +658,7 @@ woden_wsdl10_ext_registry_query_component_ext(
 
     inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    namespc = AXIS2_URI_TO_STRING(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    namespc = axis2_uri_to_string(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (inner_comp_ext_reg)
     {
         comp_ext = axis2_hash_get(inner_comp_ext_reg, namespc,

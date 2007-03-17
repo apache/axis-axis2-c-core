@@ -228,7 +228,7 @@ woden_wsdl10_soap_binding_fault_ref_exts_free(void *binding_fault_ref_exts,
 
     if (binding_fault_ref_exts_impl->qname)
     {
-        AXIS2_QNAME_FREE(binding_fault_ref_exts_impl->qname, env);
+        axis2_qname_free(binding_fault_ref_exts_impl->qname, env);
         binding_fault_ref_exts_impl->qname = NULL;
     }
     woden_wsdl10_soap_binding_fault_ref_exts_free_ops(binding_fault_ref_exts, env);

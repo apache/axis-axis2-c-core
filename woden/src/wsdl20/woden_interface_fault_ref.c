@@ -643,7 +643,7 @@ woden_interface_fault_ref_free(
 
     if (interface_fault_ref_impl->f_ref)
     {
-        AXIS2_QNAME_FREE(interface_fault_ref_impl->f_ref, env);
+        axis2_qname_free(interface_fault_ref_impl->f_ref, env);
         interface_fault_ref_impl->f_ref = NULL;
     }
 
@@ -854,9 +854,9 @@ woden_interface_fault_ref_set_ref(
 
     if (interface_fault_ref_impl->f_ref)
     {
-        AXIS2_QNAME_FREE(interface_fault_ref_impl->f_ref, env);
+        axis2_qname_free(interface_fault_ref_impl->f_ref, env);
     }
-    interface_fault_ref_impl->f_ref = AXIS2_QNAME_CLONE(fault_qname, env);
+    interface_fault_ref_impl->f_ref = axis2_qname_clone(fault_qname, env);
     return AXIS2_SUCCESS;
 }
 

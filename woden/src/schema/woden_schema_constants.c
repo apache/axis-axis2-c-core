@@ -40,18 +40,18 @@ woden_schema_constants_compare_schema(
     q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_XSD_2000);
     q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_XSD_2001);
 
-    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(schema, env, q1999) ||
-            AXIS2_TRUE == AXIS2_QNAME_EQUALS(schema, env, q2000) ||
-            AXIS2_TRUE == AXIS2_QNAME_EQUALS(schema, env, q2001))
+    if (AXIS2_TRUE == axis2_qname_equals(schema, env, q1999) ||
+            AXIS2_TRUE == axis2_qname_equals(schema, env, q2000) ||
+            AXIS2_TRUE == axis2_qname_equals(schema, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
     if (q1999)
-        AXIS2_QNAME_FREE(q1999, env);
+        axis2_qname_free(q1999, env);
     if (q2000)
-        AXIS2_QNAME_FREE(q2000, env);
+        axis2_qname_free(q2000, env);
     if (q2001)
-        AXIS2_QNAME_FREE(q2001, env);
+        axis2_qname_free(q2001, env);
 
     return ret;
 }
@@ -70,18 +70,18 @@ woden_schema_constants_compare_include(
     q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_2000);
     q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_2001);
 
-    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(include, env, q1999) ||
-            AXIS2_TRUE == AXIS2_QNAME_EQUALS(include, env, q2000) ||
-            AXIS2_TRUE == AXIS2_QNAME_EQUALS(include, env, q2001))
+    if (AXIS2_TRUE == axis2_qname_equals(include, env, q1999) ||
+            AXIS2_TRUE == axis2_qname_equals(include, env, q2000) ||
+            AXIS2_TRUE == axis2_qname_equals(include, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
     if (q1999)
-        AXIS2_QNAME_FREE(q1999, env);
+        axis2_qname_free(q1999, env);
     if (q2000)
-        AXIS2_QNAME_FREE(q2000, env);
+        axis2_qname_free(q2000, env);
     if (q2001)
-        AXIS2_QNAME_FREE(q2001, env);
+        axis2_qname_free(q2001, env);
 
     return ret;
 }
@@ -100,18 +100,18 @@ woden_schema_constants_compare_import(
     q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_2000);
     q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_2001);
 
-    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(import, env, q1999) ||
-            AXIS2_TRUE == AXIS2_QNAME_EQUALS(import, env, q2000) ||
-            AXIS2_TRUE == AXIS2_QNAME_EQUALS(import, env, q2001))
+    if (AXIS2_TRUE == axis2_qname_equals(import, env, q1999) ||
+            AXIS2_TRUE == axis2_qname_equals(import, env, q2000) ||
+            AXIS2_TRUE == axis2_qname_equals(import, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
     if (q1999)
-        AXIS2_QNAME_FREE(q1999, env);
+        axis2_qname_free(q1999, env);
     if (q2000)
-        AXIS2_QNAME_FREE(q2000, env);
+        axis2_qname_free(q2000, env);
     if (q2001)
-        AXIS2_QNAME_FREE(q2001, env);
+        axis2_qname_free(q2001, env);
 
     return ret;
 }
@@ -130,18 +130,18 @@ woden_schema_constants_compare_redefine(
     q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_2000);
     q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_2001);
 
-    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(redefine, env, q1999) ||
-            AXIS2_TRUE == AXIS2_QNAME_EQUALS(redefine, env, q2000) ||
-            AXIS2_TRUE == AXIS2_QNAME_EQUALS(redefine, env, q2001))
+    if (AXIS2_TRUE == axis2_qname_equals(redefine, env, q1999) ||
+            AXIS2_TRUE == axis2_qname_equals(redefine, env, q2000) ||
+            AXIS2_TRUE == axis2_qname_equals(redefine, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
     if (q1999)
-        AXIS2_QNAME_FREE(q1999, env);
+        axis2_qname_free(q1999, env);
     if (q2000)
-        AXIS2_QNAME_FREE(q2000, env);
+        axis2_qname_free(q2000, env);
     if (q2001)
-        AXIS2_QNAME_FREE(q2001, env);
+        axis2_qname_free(q2001, env);
 
     return ret;
 }

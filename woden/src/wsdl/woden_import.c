@@ -316,7 +316,7 @@ woden_import_free(void *import,
 
     if (import_impl->f_namespc)
     {
-        AXIS2_URI_FREE(import_impl->f_namespc, env);
+        axis2_uri_free(import_impl->f_namespc, env);
         import_impl->f_namespc = NULL;
     }
 
@@ -444,10 +444,10 @@ woden_import_set_namespace(
 
     if (import_impl->f_namespc)
     {
-        AXIS2_URI_FREE(import_impl->f_namespc, env);
+        axis2_uri_free(import_impl->f_namespc, env);
         import_impl->f_namespc = NULL;
     }
-    import_impl->f_namespc = AXIS2_URI_CLONE(ns_uri, env);
+    import_impl->f_namespc = axis2_uri_clone(ns_uri, env);
 
     return AXIS2_SUCCESS;
 }

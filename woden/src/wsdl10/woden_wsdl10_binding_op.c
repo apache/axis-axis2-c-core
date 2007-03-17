@@ -800,7 +800,7 @@ woden_wsdl10_binding_op_free(void *binding_op,
 
       if (binding_op_impl->f_qname)
       {
-	    AXIS2_QNAME_FREE(binding_op_impl->f_qname, env);
+	    axis2_qname_free(binding_op_impl->f_qname, env);
 	    binding_op_impl->f_qname = NULL;
       }
 
@@ -1041,10 +1041,10 @@ woden_wsdl10_binding_op_set_qname(
 
       if (binding_op_impl->f_qname)
       {
-	    AXIS2_QNAME_FREE(binding_op_impl->f_qname, env);
+	    axis2_qname_free(binding_op_impl->f_qname, env);
 	    binding_op_impl->f_qname = NULL;
       }
-      binding_op_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+      binding_op_impl->f_qname = axis2_qname_clone(qname, env);
 
       return AXIS2_SUCCESS;
 }

@@ -231,7 +231,7 @@ woden_wsdl_obj_get_component_exts_for_namespace(
     wsdl_obj_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     return (woden_component_exts_t *)axis2_hash_get(wsdl_obj_impl->
             f_comp_exts, str_namespc, AXIS2_HASH_KEY_STRING);
 }
@@ -253,7 +253,7 @@ woden_wsdl_obj_set_component_exts(
     wsdl_obj_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (str_namespc)
     {
         if (exts)

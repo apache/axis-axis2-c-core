@@ -494,8 +494,8 @@ build_element_decls(
 
 		  qname = (axis2_qname_t *) axis2_array_list_get(qnames, env, i);
 		  if (qname)
-			namespc = AXIS2_QNAME_GET_URI(qname, env);
-		  if (namespc && 0 == AXIS2_STRCMP(namespc, schema_tns))
+			namespc = axis2_qname_get_uri(qname, env);
+		  if (namespc && 0 == axis2_strcmp(namespc, schema_tns))
 		  {
 			void *ed = NULL;
 
@@ -551,8 +551,8 @@ build_type_defs(
 
 		  qname = (axis2_qname_t *) axis2_array_list_get(qnames, env, i);
 		  if (qname)
-			namespc = AXIS2_QNAME_GET_URI(qname, env);
-		  if (0 == AXIS2_STRCMP(namespc, schema_tns))
+			namespc = axis2_qname_get_uri(qname, env);
+		  if (0 == axis2_strcmp(namespc, schema_tns))
 		  {
 			void *td = NULL;
 
@@ -1057,8 +1057,8 @@ build_binding_exts(
        * extensions can be registered in some way and interpreted here at run time.
        */
       binding_type = WODEN_BINDING_GET_TYPE(binding, env);
-      binding_type_str = AXIS2_URI_TO_STRING(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
-      if (0 == AXIS2_STRCMP(WODEN_URI_NS_SOAP, binding_type_str))
+      binding_type_str = axis2_uri_to_string(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
+      if (0 == axis2_strcmp(WODEN_URI_NS_SOAP, binding_type_str))
       {
 	    void *sbe = NULL;
 	    axis2_uri_t *uri_ns_soap = NULL;
@@ -1152,8 +1152,8 @@ build_binding_op_exts(
       parent_element = WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(bind_op, env);
       parent_element = woden_binding_to_binding_element(parent_element, env);
       binding_type = WODEN_BINDING_ELEMENT_GET_TYPE(parent_element, env);
-      binding_type_str = AXIS2_URI_TO_STRING(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
-      if (0 == AXIS2_STRCMP(WODEN_URI_NS_SOAP, binding_type_str))
+      binding_type_str = axis2_uri_to_string(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
+      if (0 == axis2_strcmp(WODEN_URI_NS_SOAP, binding_type_str))
       {
 	    axis2_uri_t *uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
 	    /*

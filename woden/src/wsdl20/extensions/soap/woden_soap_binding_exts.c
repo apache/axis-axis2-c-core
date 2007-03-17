@@ -257,7 +257,7 @@ woden_soap_binding_exts_free(void *binding_exts,
 
     if (binding_exts_impl->qname)
     {
-        AXIS2_QNAME_FREE(binding_exts_impl->qname, env);
+        axis2_qname_free(binding_exts_impl->qname, env);
         binding_exts_impl->qname = NULL;
     }
     woden_soap_binding_exts_free_ops(binding_exts, env);

@@ -284,7 +284,7 @@ woden_attr_extensible_set_ext_attr(
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    str_attr_type = AXIS2_QNAME_TO_STRING(attr_type, env);
+    str_attr_type = axis2_qname_to_string(attr_type, env);
     if (attr)
         axis2_hash_set(extensible_impl->f_ext_attrs, str_attr_type,
                 AXIS2_HASH_KEY_STRING, attr);
@@ -310,7 +310,7 @@ woden_attr_extensible_get_ext_attr(
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    str_attr_type = AXIS2_QNAME_TO_STRING(attr_type, env);
+    str_attr_type = axis2_qname_to_string(attr_type, env);
     return (woden_xml_attr_t *)axis2_hash_get(extensible_impl->f_ext_attrs,
             str_attr_type, AXIS2_HASH_KEY_STRING);
 }
@@ -371,7 +371,7 @@ woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (extensible_impl->temp_attrs)
     {
         int size = 0, i = 0;
@@ -417,7 +417,7 @@ woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     for (index = axis2_hash_first(extensible_impl->f_ext_attrs, env); index;
             index = axis2_hash_next(env, index))
     {
@@ -427,8 +427,8 @@ woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
 
         axis2_hash_this(index, &v, NULL, NULL);
         key = (axis2_qname_t *) v;
-        str_ns = AXIS2_QNAME_GET_URI(key, env);
-        if (0 == AXIS2_STRCMP(str_ns, str_namespc))
+        str_ns = axis2_qname_get_uri(key, env);
+        if (0 == axis2_strcmp(str_ns, str_namespc))
         {
             result = AXIS2_TRUE;
             break;

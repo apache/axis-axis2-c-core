@@ -720,7 +720,7 @@ woden_endpoint_free(void *endpoint,
 
     if (endpoint_impl->f_binding_qname)
     {
-        AXIS2_QNAME_FREE(endpoint_impl->f_binding_qname, env);
+        axis2_qname_free(endpoint_impl->f_binding_qname, env);
         endpoint_impl->f_binding_qname = NULL;
     }
 
@@ -732,7 +732,7 @@ woden_endpoint_free(void *endpoint,
 
     if (endpoint_impl->f_address)
     {
-        AXIS2_URI_FREE(endpoint_impl->f_address, env);
+        axis2_uri_free(endpoint_impl->f_address, env);
         endpoint_impl->f_address = NULL;
     }
 
@@ -950,10 +950,10 @@ woden_endpoint_set_binding_qname(
 
     if (endpoint_impl->f_binding_qname)
     {
-        AXIS2_QNAME_FREE(endpoint_impl->f_binding_qname, env);
+        axis2_qname_free(endpoint_impl->f_binding_qname, env);
     }
 
-    endpoint_impl->f_binding_qname = AXIS2_QNAME_CLONE(binding_qname, env);
+    endpoint_impl->f_binding_qname = axis2_qname_clone(binding_qname, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1005,11 +1005,11 @@ woden_endpoint_set_address(
 
     if (endpoint_impl->f_address)
     {
-        AXIS2_URI_FREE(endpoint_impl->f_address, env);
+        axis2_uri_free(endpoint_impl->f_address, env);
         endpoint_impl->f_address = NULL;
     }
 
-    endpoint_impl->f_address = AXIS2_URI_CLONE(uri, env);
+    endpoint_impl->f_address = axis2_uri_clone(uri, env);
     return AXIS2_SUCCESS;
 }
 

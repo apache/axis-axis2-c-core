@@ -609,13 +609,13 @@ woden_svc_free(void *svc,
 
     if (svc_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(svc_impl->f_qname, env);
+        axis2_qname_free(svc_impl->f_qname, env);
         svc_impl->f_qname = NULL;
     }
 
     if (svc_impl->f_interface_qname)
     {
-        AXIS2_QNAME_FREE(svc_impl->f_interface_qname, env);
+        axis2_qname_free(svc_impl->f_interface_qname, env);
         svc_impl->f_interface_qname = NULL;
     }
 
@@ -823,9 +823,9 @@ woden_svc_set_qname(
 
     if (svc_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(svc_impl->f_qname, env);
+        axis2_qname_free(svc_impl->f_qname, env);
     }
-    svc_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+    svc_impl->f_qname = axis2_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
@@ -845,10 +845,10 @@ woden_svc_set_interface_qname(
 
     if (svc_impl->f_interface_qname)
     {
-        AXIS2_QNAME_FREE(svc_impl->f_interface_qname, env);
+        axis2_qname_free(svc_impl->f_interface_qname, env);
     }
 
-    svc_impl->f_interface_qname = AXIS2_QNAME_CLONE(interface_qname, env);
+    svc_impl->f_interface_qname = axis2_qname_clone(interface_qname, env);
     return AXIS2_SUCCESS;
 }
 

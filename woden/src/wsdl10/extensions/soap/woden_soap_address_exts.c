@@ -254,13 +254,13 @@ woden_wsdl10_soap_address_exts_free(void *address_exts,
 
     if (address_exts_impl->address)
     {
-        AXIS2_URI_FREE(address_exts_impl->address, env);
+        axis2_uri_free(address_exts_impl->address, env);
         address_exts_impl->address = NULL;
     }
 
     if (address_exts_impl->qname)
     {
-        AXIS2_QNAME_FREE(address_exts_impl->qname, env);
+        axis2_qname_free(address_exts_impl->qname, env);
         address_exts_impl->qname = NULL;
     }
     woden_wsdl10_soap_address_exts_free_ops(address_exts, env);
@@ -359,7 +359,7 @@ woden_wsdl10_soap_address_exts_set_soap_address(
     AXIS2_PARAM_CHECK(env->error, address, AXIS2_FAILURE);
     address_exts_impl = INTF_TO_IMPL(address_exts);
 
-    address_exts_impl->address = AXIS2_URI_CLONE(address, env);
+    address_exts_impl->address = axis2_uri_clone(address, env);
 
     return AXIS2_SUCCESS;
 }

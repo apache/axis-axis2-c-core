@@ -698,7 +698,7 @@ woden_wsdl10_binding_msg_ref_free(void *binding_msg_ref,
 
       if (binding_msg_ref_impl->f_qname)
       {
-	    AXIS2_QNAME_FREE(binding_msg_ref_impl->
+	    axis2_qname_free(binding_msg_ref_impl->
 			     f_qname, env);
 	    binding_msg_ref_impl->f_qname = NULL;
       }
@@ -922,10 +922,10 @@ woden_wsdl10_binding_msg_ref_set_qname(
 
       if (binding_msg_ref_impl->f_qname)
       {
-	    AXIS2_QNAME_FREE(binding_msg_ref_impl->f_qname, env);
+	    axis2_qname_free(binding_msg_ref_impl->f_qname, env);
 	    binding_msg_ref_impl->f_qname = NULL;
       }
-      binding_msg_ref_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+      binding_msg_ref_impl->f_qname = axis2_qname_clone(qname, env);
 
 
       return AXIS2_SUCCESS;

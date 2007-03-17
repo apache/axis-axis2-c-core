@@ -803,7 +803,7 @@ woden_binding_op_free(void *binding_op,
 
     if (binding_op_impl->f_ref)
     {
-        AXIS2_QNAME_FREE(binding_op_impl->f_ref, env);
+        axis2_qname_free(binding_op_impl->f_ref, env);
         binding_op_impl->f_ref = NULL;
     }
 
@@ -1044,10 +1044,10 @@ woden_binding_op_set_ref(
 
     if (binding_op_impl->f_ref)
     {
-        AXIS2_QNAME_FREE(binding_op_impl->f_ref, env);
+        axis2_qname_free(binding_op_impl->f_ref, env);
         binding_op_impl->f_ref = NULL;
     }
-    binding_op_impl->f_ref = AXIS2_QNAME_CLONE(qname, env);
+    binding_op_impl->f_ref = axis2_qname_clone(qname, env);
 
     return AXIS2_SUCCESS;
 }

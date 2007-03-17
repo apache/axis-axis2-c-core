@@ -41,7 +41,7 @@
  * Examples:
  * <pre>
  *      WODEN_INTERFACE_MSG_REF_SET_DIRECTION(intf_msg_ref, env, WODEN_IN);
- *      if(0 == AXIS2_STRCMP(WODEN_IN,WODEN_INTERFACE_GET_DIRECTION(
+ *      if(0 == axis2_strcmp(WODEN_IN,WODEN_INTERFACE_GET_DIRECTION(
  *          intf_msg_ref, env)) ...
  * </pre>
  * 

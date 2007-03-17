@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
     om_doc = get_root_element_from_filename(env, filename);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    doc_base_uri = AXIS2_STRACAT(axis2c_home, "/woden", env);
+    doc_base_uri = axis2_stracat(axis2c_home, "/woden", env);
     resolver = woden_resolver_create(env);
 
     desc = WODEN_RESOLVER_READ(resolver, env, om_doc, doc_base_uri);
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
         intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);
     }
     if (intface_qname)
-        printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname,
+        printf("Interface qname is %s\n", axis2_qname_to_string(intface_qname,
                 env));
     svc_list = WODEN_WSDL10_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
     if (svc_list)
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
             axis2_qname_t *svc_qname = WODEN_SVC_GET_QNAME(svc, env);
             if (svc_qname)
             {
-                printf("First service qname is %s\n", AXIS2_QNAME_TO_STRING(
+                printf("First service qname is %s\n", axis2_qname_to_string(
                             svc_qname, env));
             }
             endpoints = WODEN_SVC_GET_ENDPOINTS(svc, env);
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
             axis2_qname_t *binding_qname = WODEN_BINDING_GET_QNAME(binding, env);
             if (binding_qname)
             {
-                printf("First binding qname is %s\n", AXIS2_QNAME_TO_STRING(
+                printf("First binding qname is %s\n", axis2_qname_to_string(
                             binding_qname, env));
             }
         }
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
         axis2_qname_t *ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
         if (ed_qname)
         {
-            printf("Element declaration qname is %s\n", AXIS2_QNAME_TO_STRING(ed_qname, env));
+            printf("Element declaration qname is %s\n", axis2_qname_to_string(ed_qname, env));
         }
         content_model = WODEN_ELEMENT_DECL_GET_CONTENT_MODEL(ed, env);
         if (content_model)

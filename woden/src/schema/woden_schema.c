@@ -147,7 +147,7 @@ woden_schema_free(
 
     if (schema_impl->f_namespc)
     {
-        AXIS2_URI_FREE(schema_impl->f_namespc, env);
+        axis2_uri_free(schema_impl->f_namespc, env);
         schema_impl->f_namespc = NULL;
     }
 
@@ -278,10 +278,10 @@ woden_schema_set_namespace(
 
     if (schema_impl->f_namespc)
     {
-        AXIS2_URI_FREE(schema_impl->f_namespc, env);
+        axis2_uri_free(schema_impl->f_namespc, env);
         schema_impl->f_namespc = NULL;
     }
-    schema_impl->f_namespc = AXIS2_URI_CLONE(namespc, env);
+    schema_impl->f_namespc = axis2_uri_clone(namespc, env);
 
     return AXIS2_SUCCESS;
 }
@@ -392,6 +392,6 @@ woden_schema_get_namespace_as_string(
             "WODEN_SCHEMA", AXIS2_HASH_KEY_STRING));
 
     return schema_impl->f_namespc  ?
-            AXIS2_URI_TO_STRING(schema_impl->f_namespc, env, AXIS2_URI_UNP_OMITUSERINFO) : NULL;
+            axis2_uri_to_string(schema_impl->f_namespc, env, AXIS2_URI_UNP_OMITUSERINFO) : NULL;
 }
 

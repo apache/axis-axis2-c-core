@@ -354,7 +354,7 @@ woden_qname_list_or_token_any_attr_convert(
     list_token_attr_impl = INTF_TO_IMPL(list_token_attr);
 
     /* First, check if the attribute contains the xs:token '#any'.*/
-    if (0 == AXIS2_STRCMP("#any", attr_value)) return attr_value;
+    if (0 == axis2_strcmp("#any", attr_value)) return attr_value;
 
     /* Second, assume the attribute contains a list of xs:QName. */
     if (attr_value)

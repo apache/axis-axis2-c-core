@@ -357,7 +357,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     }
     req = axiom_element_get_attribute_value_by_name(el, env,
             WODEN_WSDL10_ATTR_REQUIRED);
-    if (req && 0 == AXIS2_STRCMP(WODEN_WSDL10_VALUE_TRUE, req))
+    if (req && 0 == axis2_strcmp(WODEN_WSDL10_VALUE_TRUE, req))
         required = AXIS2_TRUE;
     else
         required = AXIS2_FALSE;
@@ -366,7 +366,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     WODEN_EXT_ELEMENT_SET_REQUIRED(soap_mod, env, required);
     element_type_l = axis2_qname_create(env, "operation",
             "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
-    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(element_type, env, element_type_l))
+    if (AXIS2_TRUE == axis2_qname_equals(element_type, env, element_type_l))
     {
         axis2_char_t *action_str = NULL;
         axis2_uri_t *soap_action = NULL;
@@ -380,7 +380,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
                 env, soap_action);
         if( soap_action != NULL)
         {
-            AXIS2_URI_FREE(soap_action, env);
+            axis2_uri_free(soap_action, env);
         }
 
 
@@ -392,7 +392,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     }
     element_type_l = axis2_qname_create(env, "address",
             "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
-    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(element_type, env, element_type_l))
+    if (AXIS2_TRUE == axis2_qname_equals(element_type, env, element_type_l))
     {
         axis2_char_t *address_str = NULL;
         axis2_uri_t *soap_address = NULL;
@@ -404,7 +404,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         address_exts = woden_wsdl10_soap_address_exts_create(env);
         WODEN_WSDL10_SOAP_ADDRESS_EXTS_SET_SOAP_ADDRESS(address_exts,
                 env, soap_address);
-        AXIS2_URI_FREE(soap_address, env);
+        axis2_uri_free(soap_address, env);
 
         soap_mod = woden_wsdl10_soap_module_to_soap_module_element(soap_mod,
                 env);

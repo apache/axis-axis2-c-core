@@ -93,7 +93,7 @@ woden_msg_label_create(
     AXIS2_ENV_CHECK(env, NULL);
     msg_label_impl = (woden_msg_label_impl_t *) create(env);
 
-    msg_label_impl->f_value = AXIS2_STRDUP(value, env);
+    msg_label_impl->f_value = axis2_strdup(value, env);
     msg_label_impl->f_valid = valid;
 
     return &(msg_label_impl->msg_label);
@@ -209,7 +209,7 @@ woden_msg_label_equals(
     msg_label_impl = INTF_TO_IMPL(msg_label);
 
     value = WODEN_MSG_LABEL_TO_STRING(other, env);
-    if (0 == AXIS2_STRCMP(msg_label_impl->f_value, value))
+    if (0 == axis2_strcmp(msg_label_impl->f_value, value))
     {
         return AXIS2_TRUE;
     }

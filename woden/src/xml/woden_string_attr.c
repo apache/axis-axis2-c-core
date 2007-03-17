@@ -238,7 +238,7 @@ woden_string_attr_convert(
 
     if (attr_value)
     {
-        str = AXIS2_STRDUP(attr_value, env);
+        str = axis2_strdup(attr_value, env);
         if (!str)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

@@ -72,22 +72,22 @@ woden_om_util_register_unique_prefix(
 
     ns_uri = axis2_hash_get(namespcs, prefix, AXIS2_HASH_KEY_STRING);
     if (ns_uri)
-        ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
-    if (ns_uri_str && 0 == AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
+        ns_uri_str = axis2_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+    if (ns_uri_str && 0 == axis2_strcmp(ns_uri_str, namespc_uri_str))
     {
         /* Namespace already registerd */
         return AXIS2_SUCCESS;
     }
-    tmp_prefix = AXIS2_STRDUP(prefix, env);
-    while (ns_uri_str && 0 != AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
+    tmp_prefix = axis2_strdup(prefix, env);
+    while (ns_uri_str && 0 != axis2_strcmp(ns_uri_str, namespc_uri_str))
     {
         axis2_char_t *temp = NULL;
 
-        temp = AXIS2_STRACAT(tmp_prefix, "_", env);
+        temp = axis2_stracat(tmp_prefix, "_", env);
         ns_uri = axis2_hash_get(namespcs, temp, AXIS2_HASH_KEY_STRING);
-        ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+        ns_uri_str = axis2_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
         AXIS2_FREE(env->allocator, tmp_prefix);
-        tmp_prefix = AXIS2_STRDUP(temp, env);
+        tmp_prefix = axis2_strdup(temp, env);
         AXIS2_FREE(env->allocator, temp);
     }
     uri = axis2_uri_parse_string(env, namespc_uri_str);

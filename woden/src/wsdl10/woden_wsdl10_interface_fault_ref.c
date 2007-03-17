@@ -605,13 +605,13 @@ woden_wsdl10_interface_fault_ref_free(void *interface_fault_ref,
 
     if (interface_fault_ref_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(interface_fault_ref_impl->f_qname, env);
+        axis2_qname_free(interface_fault_ref_impl->f_qname, env);
         interface_fault_ref_impl->f_qname = NULL;
     }
 
     if (interface_fault_ref_impl->f_msg_qname)
     {
-        AXIS2_QNAME_FREE(interface_fault_ref_impl->f_msg_qname, env);
+        axis2_qname_free(interface_fault_ref_impl->f_msg_qname, env);
         interface_fault_ref_impl->f_msg_qname = NULL;
     }
 
@@ -806,9 +806,9 @@ woden_wsdl10_interface_fault_ref_set_qname(
 
     if (interface_fault_ref_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(interface_fault_ref_impl->f_qname, env);
+        axis2_qname_free(interface_fault_ref_impl->f_qname, env);
     }
-    interface_fault_ref_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+    interface_fault_ref_impl->f_qname = axis2_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
@@ -846,9 +846,9 @@ woden_wsdl10_interface_fault_ref_set_msg_qname(
 
     if (interface_fault_ref_impl->f_msg_qname)
     {
-        AXIS2_QNAME_FREE(interface_fault_ref_impl->f_msg_qname, env);
+        axis2_qname_free(interface_fault_ref_impl->f_msg_qname, env);
     }
-    interface_fault_ref_impl->f_msg_qname = AXIS2_QNAME_CLONE(element, env);
+    interface_fault_ref_impl->f_msg_qname = axis2_qname_clone(element, env);
     return AXIS2_SUCCESS;
 }
 

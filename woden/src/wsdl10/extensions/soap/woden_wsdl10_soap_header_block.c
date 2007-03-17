@@ -628,7 +628,7 @@ woden_wsdl10_soap_header_block_free(void *header_block,
 
     if (header_block_impl->f_ext_element_type)
     {
-        AXIS2_QNAME_FREE(header_block_impl->f_ext_element_type, env);
+        axis2_qname_free(header_block_impl->f_ext_element_type, env);
         header_block_impl->f_ext_element_type = NULL;
     }
 
@@ -646,7 +646,7 @@ woden_wsdl10_soap_header_block_free(void *header_block,
 
     if (header_block_impl->f_element_decl_qn)
     {
-        AXIS2_QNAME_FREE(header_block_impl->f_element_decl_qn, env);
+        axis2_qname_free(header_block_impl->f_element_decl_qn, env);
         header_block_impl->f_element_decl_qn = NULL;
     }
 
@@ -876,11 +876,11 @@ woden_wsdl10_soap_header_block_set_element_qname(
 
     if (header_block_impl->f_element_decl_qn)
     {
-        AXIS2_QNAME_FREE(header_block_impl->f_element_decl_qn, env);
+        axis2_qname_free(header_block_impl->f_element_decl_qn, env);
         header_block_impl->f_element_decl_qn = NULL;
     }
 
-    header_block_impl->f_element_decl_qn = AXIS2_QNAME_CLONE(qname, env);
+    header_block_impl->f_element_decl_qn = axis2_qname_clone(qname, env);
 
     return AXIS2_SUCCESS;
 
@@ -1046,11 +1046,11 @@ woden_wsdl10_soap_header_block_set_extension_type(
 
     if (header_block_impl->f_ext_element_type)
     {
-        AXIS2_QNAME_FREE(header_block_impl->f_ext_element_type, env);
+        axis2_qname_free(header_block_impl->f_ext_element_type, env);
         header_block_impl->f_ext_element_type = NULL;
     }
 
-    header_block_impl->f_ext_element_type = AXIS2_QNAME_CLONE(qname, env);
+    header_block_impl->f_ext_element_type = axis2_qname_clone(qname, env);
 
     return AXIS2_SUCCESS;
 }

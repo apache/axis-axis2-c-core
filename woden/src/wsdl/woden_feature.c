@@ -546,7 +546,7 @@ woden_feature_free(void *feature,
 
     if (feature_impl->f_ref)
     {
-        AXIS2_URI_FREE(feature_impl->f_ref, env);
+        axis2_uri_free(feature_impl->f_ref, env);
         feature_impl->f_ref = NULL;
     }
 
@@ -688,10 +688,10 @@ woden_feature_set_ref(
 
     if (feature_impl->f_ref)
     {
-        AXIS2_URI_FREE(feature_impl->f_ref, env);
+        axis2_uri_free(feature_impl->f_ref, env);
         feature_impl->f_ref = NULL;
     }
-    feature_impl->f_ref = AXIS2_URI_CLONE(ref, env);
+    feature_impl->f_ref = axis2_uri_clone(ref, env);
     return AXIS2_SUCCESS;
 }
 

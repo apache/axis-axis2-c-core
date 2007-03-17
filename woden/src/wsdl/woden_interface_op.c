@@ -724,13 +724,13 @@ woden_interface_op_free(
 
     if (interface_op_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(interface_op_impl->f_qname, env);
+        axis2_qname_free(interface_op_impl->f_qname, env);
         interface_op_impl->f_qname = NULL;
     }
 
     if (interface_op_impl->f_msg_exchange_pattern)
     {
-        AXIS2_URI_FREE(interface_op_impl->f_msg_exchange_pattern, env);
+        axis2_uri_free(interface_op_impl->f_msg_exchange_pattern, env);
         interface_op_impl->f_msg_exchange_pattern = NULL;
     }
 
@@ -1006,10 +1006,10 @@ woden_interface_op_set_qname(
 
     if (interface_op_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(interface_op_impl->f_qname, env);
+        axis2_qname_free(interface_op_impl->f_qname, env);
         interface_op_impl->f_qname = NULL;
     }
-    interface_op_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+    interface_op_impl->f_qname = axis2_qname_clone(qname, env);
 
     return AXIS2_SUCCESS;
 }
@@ -1031,10 +1031,10 @@ woden_interface_op_set_pattern(
 
     if (interface_op_impl->f_msg_exchange_pattern)
     {
-        AXIS2_URI_FREE(interface_op_impl->f_msg_exchange_pattern, env);
+        axis2_uri_free(interface_op_impl->f_msg_exchange_pattern, env);
         interface_op_impl->f_msg_exchange_pattern = NULL;
     }
-    interface_op_impl->f_msg_exchange_pattern = AXIS2_URI_CLONE(uri, env);
+    interface_op_impl->f_msg_exchange_pattern = axis2_uri_clone(uri, env);
 
 
     return AXIS2_SUCCESS;
@@ -1080,7 +1080,7 @@ woden_interface_op_add_style_uri(
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_op_impl->f_style, env, AXIS2_URI_CLONE(uri, env));
+    axis2_array_list_add(interface_op_impl->f_style, env, axis2_uri_clone(uri, env));
     return AXIS2_SUCCESS;
 }
 

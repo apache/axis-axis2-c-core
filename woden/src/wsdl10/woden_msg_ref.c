@@ -637,7 +637,7 @@ woden_wsdl10_msg_ref_free(
 
       if (msg_ref_impl->f_qname)
       {
-	    AXIS2_QNAME_FREE(msg_ref_impl->f_qname, env);
+	    axis2_qname_free(msg_ref_impl->f_qname, env);
 	    msg_ref_impl->f_qname = NULL;
       }
 
@@ -817,10 +817,10 @@ woden_wsdl10_msg_ref_set_qname(
 
       if (msg_ref_impl->f_qname)
       {
-	    AXIS2_QNAME_FREE(msg_ref_impl->f_qname, env);
+	    axis2_qname_free(msg_ref_impl->f_qname, env);
 	    msg_ref_impl->f_qname = NULL;
       }
-      msg_ref_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+      msg_ref_impl->f_qname = axis2_qname_clone(qname, env);
 
       return AXIS2_SUCCESS;
 }

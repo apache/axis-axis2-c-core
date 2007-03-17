@@ -600,13 +600,13 @@ woden_binding_free(void *binding,
 
     if (binding_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(binding_impl->f_qname, env);
+        axis2_qname_free(binding_impl->f_qname, env);
         binding_impl->f_qname = NULL;
     }
 
     if (binding_impl->f_interface_qname)
     {
-        AXIS2_QNAME_FREE(binding_impl->f_interface_qname, env);
+        axis2_qname_free(binding_impl->f_interface_qname, env);
         binding_impl->f_interface_qname = NULL;
     }
 
@@ -618,7 +618,7 @@ woden_binding_free(void *binding,
 
     if (binding_impl->f_type)
     {
-        AXIS2_URI_FREE(binding_impl->f_type, env);
+        axis2_uri_free(binding_impl->f_type, env);
         binding_impl->f_type = NULL;
     }
 
@@ -904,9 +904,9 @@ woden_binding_set_qname(
 
     if (binding_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(binding_impl->f_qname, env);
+        axis2_qname_free(binding_impl->f_qname, env);
     }
-    binding_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+    binding_impl->f_qname = axis2_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
@@ -927,9 +927,9 @@ woden_binding_set_interface_qname(
 
     if (binding_impl->f_interface_qname)
     {
-        AXIS2_QNAME_FREE(binding_impl->f_interface_qname, env);
+        axis2_qname_free(binding_impl->f_interface_qname, env);
     }
-    binding_impl->f_interface_qname = AXIS2_QNAME_CLONE(qname, env);
+    binding_impl->f_interface_qname = axis2_qname_clone(qname, env);
 
     return AXIS2_SUCCESS;
 }
@@ -984,10 +984,10 @@ woden_binding_set_type(
 
     if (binding_impl->f_type)
     {
-        AXIS2_URI_FREE(binding_impl->f_type, env);
+        axis2_uri_free(binding_impl->f_type, env);
         binding_impl->f_type = NULL;
     }
-    binding_impl->f_type = AXIS2_URI_CLONE(type, env);
+    binding_impl->f_type = axis2_uri_clone(type, env);
 
     return AXIS2_SUCCESS;
 }
@@ -1112,7 +1112,7 @@ woden_binding_get_binding_fault_element(
                 env, i);
         qname_l = (axis2_qname_t *) WODEN_BINDING_FAULT_ELEMENT_GET_REF(
                     bind_fault, env);
-        if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+        if (AXIS2_TRUE == axis2_qname_equals(qname, env, qname_l))
         {
             fault = bind_fault;
             break;
@@ -1149,7 +1149,7 @@ woden_binding_get_binding_op_element(
                 env, i);
         qname_l = (axis2_qname_t *) WODEN_BINDING_OP_ELEMENT_GET_REF(
                     bind_op, env);
-        if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+        if (AXIS2_TRUE == axis2_qname_equals(qname, env, qname_l))
         {
             op = bind_op;
             break;

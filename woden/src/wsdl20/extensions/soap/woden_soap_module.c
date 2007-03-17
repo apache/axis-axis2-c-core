@@ -551,7 +551,7 @@ woden_soap_module_free(void *module,
 
     if (module_impl->f_ext_element_type)
     {
-        AXIS2_QNAME_FREE(module_impl->f_ext_element_type, env);
+        axis2_qname_free(module_impl->f_ext_element_type, env);
         module_impl->f_ext_element_type = NULL;
     }
 
@@ -569,7 +569,7 @@ woden_soap_module_free(void *module,
 
     if (module_impl->f_ref)
     {
-        AXIS2_URI_FREE(module_impl->f_ref, env);
+        axis2_uri_free(module_impl->f_ref, env);
         module_impl->f_ref = NULL;
     }
 
@@ -752,11 +752,11 @@ woden_soap_module_set_ref(
 
     if (module_impl->f_ref)
     {
-        AXIS2_URI_FREE(module_impl->f_ref, env);
+        axis2_uri_free(module_impl->f_ref, env);
         module_impl->f_ref = NULL;
     }
 
-    module_impl->f_ref = AXIS2_URI_CLONE(uri, env);
+    module_impl->f_ref = axis2_uri_clone(uri, env);
 
     return AXIS2_SUCCESS;
 
@@ -863,11 +863,11 @@ woden_soap_module_set_extension_type(
 
     if (module_impl->f_ext_element_type)
     {
-        AXIS2_QNAME_FREE(module_impl->f_ext_element_type, env);
+        axis2_qname_free(module_impl->f_ext_element_type, env);
         module_impl->f_ext_element_type = NULL;
     }
 
-    module_impl->f_ext_element_type = AXIS2_QNAME_CLONE(qname, env);
+    module_impl->f_ext_element_type = axis2_qname_clone(qname, env);
 
     return AXIS2_SUCCESS;
 }

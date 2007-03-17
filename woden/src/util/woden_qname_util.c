@@ -30,9 +30,9 @@ axis2_qname_util_matches(
     axis2_bool_t ret = AXIS2_FALSE;
 
     qname_l = axis2_qname_util_new_qname(env, node);
-    if (node && AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+    if (node && AXIS2_TRUE == axis2_qname_equals(qname, env, qname_l))
         ret = AXIS2_TRUE;
-    AXIS2_QNAME_FREE(qname_l, env);
+    axis2_qname_free(qname_l, env);
 
     return ret;
 }

@@ -477,12 +477,12 @@ woden_xml_char_is_valid_name(
     axis2_char_t ch = 0;
     int i = 0;
 
-    if (AXIS2_STRLEN(name) == 0)
+    if (axis2_strlen(name) == 0)
         return AXIS2_FALSE;
     ch = name[0];
     if (woden_xml_char_is_name_start(ch) == AXIS2_FALSE)
         return AXIS2_FALSE;
-    for (i = 1; i < AXIS2_STRLEN(name); i++)
+    for (i = 1; i < axis2_strlen(name); i++)
     {
         ch = name[i];
         if (woden_xml_char_is_name(ch) == AXIS2_FALSE)
@@ -501,12 +501,12 @@ woden_xml_char_is_valid_nc_name(
     axis2_char_t ch = 0;
     int i = 0;
 
-    if (AXIS2_STRLEN(nc_name) == 0)
+    if (axis2_strlen(nc_name) == 0)
         return AXIS2_FALSE;
     ch = nc_name[0];
     if (woden_xml_char_is_nc_name_start(ch) == AXIS2_FALSE)
         return AXIS2_FALSE;
-    for (i = 1; i < AXIS2_STRLEN(nc_name); i++)
+    for (i = 1; i < axis2_strlen(nc_name); i++)
     {
         ch = nc_name[i];
         if (woden_xml_char_is_nc_name(ch) == AXIS2_FALSE)
@@ -524,9 +524,9 @@ woden_xml_char_is_valid_nmtoken(
     axis2_char_t ch = 0;
     int i = 0;
 
-    if (AXIS2_STRLEN(nmtoken) == 0)
+    if (axis2_strlen(nmtoken) == 0)
         return AXIS2_FALSE;
-    for (i = 0; i < AXIS2_STRLEN(nmtoken); i++)
+    for (i = 0; i < axis2_strlen(nmtoken); i++)
     {
         ch = nmtoken[i];
         if (! woden_xml_char_is_name(ch))

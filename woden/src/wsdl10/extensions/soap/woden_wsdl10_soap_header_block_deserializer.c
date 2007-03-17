@@ -357,7 +357,7 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
     }
     must_understand = axiom_element_get_attribute_value_by_name(ext_el, env,
             WODEN_WSDL10_ATTR_MUSTUNDERSTAND);
-    if (must_understand && 0 == AXIS2_STRCMP(WODEN_WSDL10_VALUE_TRUE, must_understand))
+    if (must_understand && 0 == axis2_strcmp(WODEN_WSDL10_VALUE_TRUE, must_understand))
         understood = AXIS2_TRUE;
     else
         understood = AXIS2_FALSE;
@@ -366,7 +366,7 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
 
     req = axiom_element_get_attribute_value_by_name(ext_el, env,
             WODEN_WSDL10_ATTR_REQUIRED);
-    if (req && 0 == AXIS2_STRCMP(WODEN_WSDL10_VALUE_TRUE, req))
+    if (req && 0 == axis2_strcmp(WODEN_WSDL10_VALUE_TRUE, req))
         required = AXIS2_TRUE;
     else
         required = AXIS2_FALSE;

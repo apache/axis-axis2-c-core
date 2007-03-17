@@ -264,13 +264,13 @@ woden_wsdl10_soap_binding_op_exts_free(void *binding_op_exts,
 
     if (binding_op_exts_impl->action)
     {
-        AXIS2_URI_FREE(binding_op_exts_impl->action, env);
+        axis2_uri_free(binding_op_exts_impl->action, env);
         binding_op_exts_impl->action = NULL;
     }
 
     if (binding_op_exts_impl->qname)
     {
-        AXIS2_QNAME_FREE(binding_op_exts_impl->qname, env);
+        axis2_qname_free(binding_op_exts_impl->qname, env);
         binding_op_exts_impl->qname = NULL;
     }
     woden_wsdl10_soap_binding_op_exts_free_ops(binding_op_exts, env);
@@ -393,7 +393,7 @@ woden_wsdl10_soap_binding_op_exts_set_soap_action(
     AXIS2_PARAM_CHECK(env->error, action, AXIS2_FAILURE);
     binding_op_exts_impl = INTF_TO_IMPL(binding_op_exts);
 
-    binding_op_exts_impl->action = AXIS2_URI_CLONE(action, env);
+    binding_op_exts_impl->action = axis2_uri_clone(action, env);
 
     return AXIS2_SUCCESS;
 }

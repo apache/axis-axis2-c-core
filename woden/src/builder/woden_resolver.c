@@ -233,7 +233,7 @@ yomu(
         WODEN_READER_FREE(reader, env);
 
     }
-    AXIS2_QNAME_FREE(qname, env);
+    axis2_qname_free(qname, env);
     qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_DEFINITIONS);
     check = check_element_qname(resolver, env, desc_el_node, qname);
     if (AXIS2_TRUE == check)

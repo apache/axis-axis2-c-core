@@ -233,7 +233,7 @@ woden_imported_schema_free(
 
     if (schema_impl->f_schema_location)
     {
-        AXIS2_URI_FREE(schema_impl->f_schema_location, env);
+        axis2_uri_free(schema_impl->f_schema_location, env);
         schema_impl->f_schema_location = NULL;
     }
 
@@ -337,7 +337,7 @@ woden_imported_schema_set_location(
 
     if (schema_impl->f_schema_location)
     {
-        AXIS2_URI_FREE(schema_impl->f_schema_location, env);
+        axis2_uri_free(schema_impl->f_schema_location, env);
         schema_impl->f_schema_location = NULL;
     }
     schema_impl->f_schema_location = AXIS2_URI_CLONE(location, env);

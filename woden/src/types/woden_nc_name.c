@@ -123,7 +123,7 @@ woden_nc_name_is_valid(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     nc_name_impl = INTF_TO_IMPL(nc_name);
 
-    for (scan = 0; scan < AXIS2_STRLEN(st_value); scan++)
+    for (scan = 0; scan < axis2_strlen(st_value); scan++)
     {
         if (scan == 0)
             b_valid = woden_xml_char_is_nc_name_start(st_value[scan]);
@@ -156,7 +156,7 @@ woden_nc_name_set_value(
         AXIS2_FREE(env->allocator, nc_name_impl->f_value);
         nc_name_impl->f_value = NULL;
     }
-    nc_name_impl->f_value = AXIS2_STRDUP(value, env);
+    nc_name_impl->f_value = axis2_strdup(value, env);
 
     return AXIS2_SUCCESS;
 }

@@ -629,7 +629,7 @@ woden_wsdl10_part_free(void *part,
 
       if (part_impl->f_qname)
       {
-	    AXIS2_QNAME_FREE(part_impl->f_qname, env);
+	    axis2_qname_free(part_impl->f_qname, env);
 	    part_impl->f_qname = NULL;
       }
 
@@ -641,7 +641,7 @@ woden_wsdl10_part_free(void *part,
 
       if (part_impl->f_element_qname)
       {
-	    AXIS2_QNAME_FREE(part_impl->f_element_qname, env);
+	    axis2_qname_free(part_impl->f_element_qname, env);
 	    part_impl->f_element_qname = NULL;
       }
 
@@ -851,10 +851,10 @@ woden_wsdl10_part_set_qname(
 
       if (part_impl->f_qname)
       {
-	    AXIS2_QNAME_FREE(part_impl->f_qname, env);
+	    axis2_qname_free(part_impl->f_qname, env);
 	    part_impl->f_qname = NULL;
       }
-      part_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+      part_impl->f_qname = axis2_qname_clone(qname, env);
 
 
       return AXIS2_SUCCESS;
@@ -877,9 +877,9 @@ woden_wsdl10_part_set_element_qname(
 
       if (part_impl->f_element_qname)
       {
-	    AXIS2_QNAME_FREE(part_impl->f_element_qname, env);
+	    axis2_qname_free(part_impl->f_element_qname, env);
       }
-      part_impl->f_element_qname = AXIS2_QNAME_CLONE(element, env);
+      part_impl->f_element_qname = axis2_qname_clone(element, env);
       return AXIS2_SUCCESS;
 }
 

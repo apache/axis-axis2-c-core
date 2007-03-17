@@ -102,8 +102,8 @@ woden_soap_fault_code_create(
     AXIS2_ENV_CHECK(env, NULL);
     soap_fault_code_impl = (woden_soap_fault_code_impl_t *) create(env);
 
-    soap_fault_code_impl->f_token = AXIS2_STRDUP(token, env);
-    soap_fault_code_impl->f_code_qn = AXIS2_QNAME_CLONE(code_qn, env);
+    soap_fault_code_impl->f_token = axis2_strdup(token, env);
+    soap_fault_code_impl->f_code_qn = axis2_qname_clone(code_qn, env);
 
     return &(soap_fault_code_impl->soap_fault_code);
 }
@@ -126,7 +126,7 @@ woden_soap_fault_code_free(
 
     if (soap_fault_code_impl->f_code_qn)
     {
-        AXIS2_QNAME_FREE(soap_fault_code_impl->f_code_qn, env);
+        axis2_qname_free(soap_fault_code_impl->f_code_qn, env);
         soap_fault_code_impl->f_code_qn = NULL;
     }
 

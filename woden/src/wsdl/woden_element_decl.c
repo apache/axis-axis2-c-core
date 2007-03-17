@@ -382,10 +382,10 @@ woden_element_decl_set_qname(
 
     if (decl_impl->f_qname)
     {
-        AXIS2_QNAME_FREE(decl_impl->f_qname, env);
+        axis2_qname_free(decl_impl->f_qname, env);
         decl_impl->f_qname = NULL;
     }
-    decl_impl->f_qname = AXIS2_QNAME_CLONE(qname, env);
+    decl_impl->f_qname = axis2_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
@@ -406,7 +406,7 @@ woden_element_decl_set_system(
 
     if (decl_impl->f_system)
     {
-        AXIS2_URI_FREE(decl_impl->f_system, env);
+        axis2_uri_free(decl_impl->f_system, env);
     }
     decl_impl->f_system = type_system_uri;
     return AXIS2_SUCCESS;
@@ -432,7 +432,7 @@ woden_element_decl_set_content_model(
         AXIS2_FREE(env->allocator, decl_impl->f_content_model);
         decl_impl->f_content_model = NULL;
     }
-    decl_impl->f_content_model = AXIS2_STRDUP(content_model, env);
+    decl_impl->f_content_model = axis2_strdup(content_model, env);
     return AXIS2_SUCCESS;
 }
 

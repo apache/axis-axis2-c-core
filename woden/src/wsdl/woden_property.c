@@ -633,7 +633,7 @@ woden_property_free(void *property,
 
     if (property_impl->f_ref)
     {
-        AXIS2_URI_FREE(property_impl->f_ref, env);
+        axis2_uri_free(property_impl->f_ref, env);
         property_impl->f_ref = NULL;
     }
 
@@ -780,10 +780,10 @@ woden_property_set_ref(
 
     if (property_impl->f_ref)
     {
-        AXIS2_URI_FREE(property_impl->f_ref, env);
+        axis2_uri_free(property_impl->f_ref, env);
         property_impl->f_ref = NULL;
     }
-    property_impl->f_ref = AXIS2_URI_CLONE(ref, env);
+    property_impl->f_ref = axis2_uri_clone(ref, env);
     return AXIS2_SUCCESS;
 }
 
@@ -968,10 +968,10 @@ woden_property_set_constraint_qname(
 
     if (property_impl->f_constraint_qname)
     {
-        AXIS2_QNAME_FREE(property_impl->f_constraint_qname, env);
+        axis2_qname_free(property_impl->f_constraint_qname, env);
         property_impl->f_constraint_qname = NULL;
     }
-    property_impl->f_constraint_qname = AXIS2_QNAME_CLONE(constraint, env);
+    property_impl->f_constraint_qname = axis2_qname_clone(constraint, env);
     return AXIS2_SUCCESS;
 }
 

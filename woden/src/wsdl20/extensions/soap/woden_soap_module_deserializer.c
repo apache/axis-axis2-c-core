@@ -351,7 +351,7 @@ woden_soap_module_deserializer_unmarshall(
     }
     req = axiom_element_get_attribute_value_by_name(el, env,
             WODEN_ATTR_REQUIRED);
-    if (req && 0 == AXIS2_STRCMP(WODEN_VALUE_TRUE, req))
+    if (req && 0 == axis2_strcmp(WODEN_VALUE_TRUE, req))
         required = AXIS2_TRUE;
     else
         required = AXIS2_FALSE;

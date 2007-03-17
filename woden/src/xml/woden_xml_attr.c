@@ -128,7 +128,7 @@ woden_xml_attr_free(
 
     if (xml_attr_impl->f_attr_type)
     {
-        AXIS2_QNAME_FREE(xml_attr_impl->f_attr_type, env);
+        axis2_qname_free(xml_attr_impl->f_attr_type, env);
         xml_attr_impl->f_attr_type = NULL;
     }
 
@@ -203,16 +203,16 @@ woden_xml_attr_init(
 
     if (xml_attr_impl->f_attr_type)
     {
-        AXIS2_QNAME_FREE(xml_attr_impl->f_attr_type, env);
+        axis2_qname_free(xml_attr_impl->f_attr_type, env);
         xml_attr_impl->f_attr_type = NULL;
     }
-    xml_attr_impl->f_attr_type = AXIS2_QNAME_CLONE(attr_type, env);
+    xml_attr_impl->f_attr_type = axis2_qname_clone(attr_type, env);
     if (xml_attr_impl->f_attr_type)
     {
-        AXIS2_QNAME_FREE(xml_attr_impl->f_attr_type, env);
+        axis2_qname_free(xml_attr_impl->f_attr_type, env);
         xml_attr_impl->f_attr_type = NULL;
     }
-    xml_attr_impl->f_external_form = AXIS2_STRDUP(attr_value, env);
+    xml_attr_impl->f_external_form = axis2_strdup(attr_value, env);
     xml_attr_impl->f_content = xml_attr_impl->xml_attr.ops->
             convert(&(xml_attr_impl->xml_attr), env, owner_el, owner_node,
                     attr_value);
