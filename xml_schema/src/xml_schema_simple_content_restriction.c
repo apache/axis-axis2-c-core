@@ -273,7 +273,7 @@ xml_schema_simple_content_restriction_free(
     }
     if (content_res_impl->base_type_name)
     {
-        AXIS2_QNAME_FREE(content_res_impl->base_type_name, env);
+        axis2_qname_free(content_res_impl->base_type_name, env);
         content_res_impl->base_type_name = NULL;
     }
     if (content_res_impl->annotated)
@@ -368,7 +368,7 @@ xml_schema_simple_content_restriction_set_base_type_name(
     content_res_impl = AXIS2_INTF_TO_IMPL(sim_content);
     if (content_res_impl->base_type_name)
     {
-        AXIS2_QNAME_FREE(content_res_impl->base_type_name, env);
+        axis2_qname_free(content_res_impl->base_type_name, env);
         content_res_impl->base_type_name = NULL;
     }
     content_res_impl->base_type_name = base_type_name;

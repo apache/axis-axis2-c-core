@@ -158,15 +158,15 @@ xml_schema_any_attribute_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(any_attr_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_ANY_ATTRIBUTE", env),
+            axis2_strdup("XML_SCHEMA_ANY_ATTRIBUTE", env),
             AXIS2_HASH_KEY_STRING, &(any_attr_impl->any_attr));
 
     axis2_hash_set(any_attr_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+            axis2_strdup("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, any_attr_impl->annotated);
 
     axis2_hash_set(any_attr_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+            axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(any_attr_impl->annotated, env));
 
@@ -262,7 +262,7 @@ xml_schema_any_attribute_set_namespace(void *any_attr,
         any_attr_impl->ns = NULL;
     }
 
-    any_attr_impl->ns = AXIS2_STRDUP(namespc, env);
+    any_attr_impl->ns = axis2_strdup(namespc, env);
 
     return AXIS2_SUCCESS;
 }

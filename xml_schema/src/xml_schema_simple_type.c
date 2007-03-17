@@ -149,21 +149,21 @@ xml_schema_simple_type_create(const axis2_env_t *env,
     }
 
     axis2_hash_set(simple_type->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_SIMPLE_TYPE", env),
+            axis2_strdup("XML_SCHEMA_SIMPLE_TYPE", env),
             AXIS2_HASH_KEY_STRING, &(simple_type->simple_type));
 
     axis2_hash_set(simple_type->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_TYPE", env),
+            axis2_strdup("XML_SCHEMA_TYPE", env),
             AXIS2_HASH_KEY_STRING, simple_type->schema_type);
 
     annotated = XML_SCHEMA_TYPE_GET_BASE_IMPL(simple_type->schema_type, env);
     if (annotated)
     {
         axis2_hash_set(simple_type->ht_super,
-                AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+                axis2_strdup("XML_SCHEMA_ANNOTATED", env),
                 AXIS2_HASH_KEY_STRING, annotated);
         axis2_hash_set(simple_type->ht_super,
-                AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+                axis2_strdup("XML_SCHEMA_OBJ", env),
                 AXIS2_HASH_KEY_STRING,
                 XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }

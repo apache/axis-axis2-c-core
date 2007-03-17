@@ -164,11 +164,11 @@ xml_schema_identity_constraint_create(const axis2_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(id_cns_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_IDENTITY_CONSTRAINT", env),
+    axis2_hash_set(id_cns_impl->ht_super, axis2_strdup("XML_SCHEMA_IDENTITY_CONSTRAINT", env),
             AXIS2_HASH_KEY_STRING, &(id_cns_impl->id_constr));
-    axis2_hash_set(id_cns_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+    axis2_hash_set(id_cns_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, id_cns_impl->annotated);
-    axis2_hash_set(id_cns_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+    axis2_hash_set(id_cns_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(id_cns_impl->annotated, env));
     status = xml_schema_annotated_resolve_methods(
@@ -245,7 +245,7 @@ xml_schema_identity_constraint_free(void *id_constr,
     }
     if (id_cns_impl->refer)
     {
-        AXIS2_QNAME_FREE(id_cns_impl->refer, env);
+        axis2_qname_free(id_cns_impl->refer, env);
         id_cns_impl->refer = NULL;
     }
     if (id_cns_impl->annotated)
@@ -357,7 +357,7 @@ xml_schema_identity_constraint_set_name(void *id_constr,
         AXIS2_FREE(env->allocator, id_cns_impl->name);
         id_cns_impl->name = NULL;
     }
-    id_cns_impl->name = AXIS2_STRDUP(name, env);
+    id_cns_impl->name = axis2_strdup(name, env);
     if (!id_cns_impl->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -423,7 +423,7 @@ xml_schema_identity_constraint_set_refer(void *id_constr,
     if (id_cns_impl->refer)
     {
         /*
-        AXIS2_QNAME_FREE(id_cns_impl->reref, env);
+        axis2_qname_free(id_cns_impl->reref, env);
         id_cns_impl->reref = NULL;
         */
     }

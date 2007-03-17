@@ -136,15 +136,15 @@ xml_schema_attribute_group_ref_create(const axis2_env_t *env)
     }
 
     axis2_hash_set(attr_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_ATTRIBUTE", env),
+            axis2_strdup("XML_SCHEMA_ATTRIBUTE", env),
             AXIS2_HASH_KEY_STRING, &(attr_impl->grp_ref));
 
     axis2_hash_set(attr_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+            axis2_strdup("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, attr_impl->annotated);
 
     axis2_hash_set(attr_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+            axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(attr_impl->annotated, env));
 
@@ -173,7 +173,7 @@ xml_schema_attribute_group_ref_free(
     }
     if (attr_impl->ref_qname)
     {
-        AXIS2_QNAME_FREE(attr_impl->ref_qname, env);
+        axis2_qname_free(attr_impl->ref_qname, env);
         attr_impl->ref_qname = NULL;
     }
 

@@ -227,15 +227,15 @@ xml_schema_type_create(const axis2_env_t *env,
         return NULL;
     }
     axis2_hash_set(type_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_TYPE", env),
+            axis2_strdup("XML_SCHEMA_TYPE", env),
             AXIS2_HASH_KEY_STRING, &(type_impl->type));
 
     axis2_hash_set(type_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+            axis2_strdup("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, type_impl->annotated);
 
     axis2_hash_set(type_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+            axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(type_impl->annotated, env));
 
@@ -259,7 +259,7 @@ xml_schema_type_free(void *type,
     type_impl = AXIS2_INTF_TO_IMPL(type);
     if (type_impl->qname)
     {
-        AXIS2_QNAME_FREE(type_impl->qname, env);
+        axis2_qname_free(type_impl->qname, env);
         type_impl->qname = NULL;
 
     }
@@ -552,7 +552,7 @@ xml_schema_type_set_name(void *type,
         AXIS2_FREE(env->allocator, type_impl->name);
         type_impl->name = NULL;
     }
-    type_impl->name = AXIS2_STRDUP(name, env);
+    type_impl->name = axis2_strdup(name, env);
     if (!type_impl->name)
     {
         return AXIS2_FAILURE;

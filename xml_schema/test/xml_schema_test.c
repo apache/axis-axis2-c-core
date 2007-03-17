@@ -356,7 +356,7 @@ void test_local_elements(CuTest *tc)
 
     CuAssertPtrNotNull(tc, qn1);
 
-    uri1 = AXIS2_QNAME_GET_URI(qn1, env);
+    uri1 = axis2_qname_get_uri(qn1, env);
 
     CuAssertPtrNotNull(tc, uri1);
 
@@ -368,7 +368,7 @@ void test_local_elements(CuTest *tc)
 
     CuAssertPtrNotNull(tc, qn2);
 
-    uri2 = AXIS2_QNAME_GET_URI(qn2, env);
+    uri2 = axis2_qname_get_uri(qn2, env);
 
     CuAssertPtrNotNull(tc, uri2);
 
@@ -515,7 +515,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
 
     env = axis2_env_create_all("test.log", 1);
 
-    reader = axiom_xml_reader_create_for_memory(env, xml, AXIS2_STRLEN(xml), NULL,
+    reader = axiom_xml_reader_create_for_memory(env, xml, axis2_strlen(xml), NULL,
             AXIS2_XML_PARSER_TYPE_BUFFER);
 
     builder = axiom_stax_builder_create(env, reader);

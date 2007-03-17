@@ -211,11 +211,11 @@ xml_schema_complex_content_restriction_create(const axis2_env_t *env)
     }
 
     axis2_hash_set(cmp_content_res_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION", env),
+            axis2_strdup("XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION", env),
             AXIS2_HASH_KEY_STRING, &(cmp_content_res_impl->cmp_content_res));
-    axis2_hash_set(cmp_content_res_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+    axis2_hash_set(cmp_content_res_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, cmp_content_res_impl->annotated);
-    axis2_hash_set(cmp_content_res_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+    axis2_hash_set(cmp_content_res_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(cmp_content_res_impl->annotated, env));
     xml_schema_annotated_resolve_methods(&(cmp_content_res_impl->cmp_content_res.base),
@@ -248,7 +248,7 @@ xml_schema_complex_content_restriction_free(
 
     if (content_res_impl->base_type_name)
     {
-        AXIS2_QNAME_FREE(content_res_impl->base_type_name, env);
+        axis2_qname_free(content_res_impl->base_type_name, env);
         content_res_impl->base_type_name = NULL;
     }
 
@@ -350,7 +350,7 @@ xml_schema_complex_content_restriction_set_base_type_name(
     content_res_impl = AXIS2_INTF_TO_IMPL(cmp_content);
     if (content_res_impl->base_type_name)
     {
-        AXIS2_QNAME_FREE(content_res_impl->base_type_name, env);
+        axis2_qname_free(content_res_impl->base_type_name, env);
         content_res_impl->base_type_name = NULL;
     }
     content_res_impl->base_type_name = base_type_name;

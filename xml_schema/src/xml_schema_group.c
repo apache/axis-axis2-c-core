@@ -136,11 +136,11 @@ xml_schema_group_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(group_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_GROUP", env), AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(group_impl->ht_super, axis2_strdup("XML_SCHEMA_GROUP", env), AXIS2_HASH_KEY_STRING,
             &(group_impl->group));
-    axis2_hash_set(group_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(group_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env), AXIS2_HASH_KEY_STRING,
             group_impl->annotated);
-    axis2_hash_set(group_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env), AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(group_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env), AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(group_impl->annotated, env));
 
 
@@ -256,7 +256,7 @@ xml_schema_group_set_name(void *group,
         AXIS2_FREE(env->allocator, group_impl->name);
         group_impl->name = NULL;
     }
-    group_impl->name = AXIS2_STRDUP(name, env);
+    group_impl->name = axis2_strdup(name, env);
     if (!group_impl->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

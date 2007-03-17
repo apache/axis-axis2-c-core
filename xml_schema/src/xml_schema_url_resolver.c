@@ -59,8 +59,8 @@ xml_schema_url_resolver_resolve_entity(
             uri2 = axis2_uri_parse_relative(env, uri1, schema_location);
             if (uri2)
             {
-                ref = AXIS2_URI_TO_STRING(uri2, env, 1);
-                /* AXIS2_URI_FREE(uri2, env);  */
+                ref = axis2_uri_to_string(uri2, env, 1);
+                /* axis2_uri_free(uri2, env);  */
                 return xml_schema_input_source_create_with_system_id(env, ref);
             }
         }
@@ -88,15 +88,15 @@ get_file_url(const axis2_env_t *env,
     axis2_char_t *final_path = NULL;
     if (!path)
         return NULL;
-    modified_path = AXIS2_STRDUP(path, env);
-    AXIS2_REPLACE(env, modified_path, '\\', '/');
+    modified_path = axis2_strdup(path, env);
+    axis2_replace(env, modified_path, '\\', '/');
     if (strncmp(modified_path, "/", 1) == 0)
     {
-        final_path = AXIS2_STRACAT("file://", modified_path, env);
+        final_path = axis2_stracat("file://", modified_path, env);
     }
     else
     {
-        final_path = AXIS2_STRACAT("file:///", modified_path, env);
+        final_path = axis2_stracat("file:///", modified_path, env);
     }
     if (modified_path)
     {

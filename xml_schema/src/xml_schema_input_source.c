@@ -131,7 +131,7 @@ xml_schema_input_source_create_with_system_id(
 
     input_source_impl = AXIS2_INTF_TO_IMPL(input_source);
 
-    input_source_impl->system_id = AXIS2_STRDUP(id, env);
+    input_source_impl->system_id = axis2_strdup(id, env);
     return &(input_source_impl->input_source);
 }
 
@@ -184,7 +184,7 @@ xml_schema_input_source_set_system_id(
         AXIS2_FREE(env->allocator, input_source->system_id);
         input_source->system_id = NULL;
     }
-    input_source->system_id = AXIS2_STRDUP(system_id, env);
+    input_source->system_id = axis2_strdup(system_id, env);
     return AXIS2_SUCCESS;
 }
 
@@ -211,7 +211,7 @@ xml_schema_input_source_set_public_id(
         AXIS2_FREE(env->allocator, input_source->public_id);
         input_source->public_id = NULL;
     }
-    input_source->public_id = AXIS2_STRDUP(public_id, env);
+    input_source->public_id = axis2_strdup(public_id, env);
     return AXIS2_SUCCESS;
 }
 
@@ -228,7 +228,7 @@ xml_schema_input_source_set_encoding(
         AXIS2_FREE(env->allocator, input_source->encoing);
         input_source->encoing = NULL;
     }
-    input_source->encoing = AXIS2_STRDUP(encoding, env);
+    input_source->encoing = axis2_strdup(encoding, env);
     return AXIS2_SUCCESS;
 }
 

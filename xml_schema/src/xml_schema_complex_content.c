@@ -299,12 +299,12 @@ xml_schema_complex_content_to_string(
     {
         if (xml == NULL)
         {
-            xml = AXIS2_STRDUP("\t", env);
+            xml = axis2_strdup("\t", env);
         }
         else
         {
             temp_xml = xml;
-            xml = AXIS2_STRACAT(xml, "\t", env);
+            xml = axis2_stracat(xml, "\t", env);
             if (temp_xml)
                 AXIS2_FREE(env->allocator, temp_xml);
             temp_xml = NULL;
@@ -313,13 +313,13 @@ xml_schema_complex_content_to_string(
 
     temp_prefix = prefix;
 
-    if (prefix && AXIS2_STRCMP(prefix, "") != 0 && strchr(prefix, ':') == NULL)
+    if (prefix && axis2_strcmp(prefix, "") != 0 && strchr(prefix, ':') == NULL)
     {
-        temp_prefix = AXIS2_STRACAT(prefix, ":", env);
+        temp_prefix = axis2_stracat(prefix, ":", env);
     }
 
-    temp_xml = AXIS2_STRACAT("<", prefix, env);
-    xml = AXIS2_STRACAT(temp_xml, "complexContent>\n", env);
+    temp_xml = axis2_stracat("<", prefix, env);
+    xml = axis2_stracat(temp_xml, "complexContent>\n", env);
     if (temp_xml)
     {
         AXIS2_FREE(env->allocator, temp_xml);

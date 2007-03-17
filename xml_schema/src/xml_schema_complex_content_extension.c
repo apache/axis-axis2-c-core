@@ -198,11 +198,11 @@ xml_schema_complex_content_extension_create(const axis2_env_t *env)
         xml_schema_complex_content_extension_free(&(cmp_cnt_ext_impl->cmp_cnt_ext), env);
         return NULL;
     }
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_COMPLEX_CONTENT_EXTENSION", env),
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup("XML_SCHEMA_COMPLEX_CONTENT_EXTENSION", env),
             AXIS2_HASH_KEY_STRING, &(cmp_cnt_ext_impl->cmp_cnt_ext));
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, cmp_cnt_ext_impl->annotated);
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(cmp_cnt_ext_impl->annotated, env));
 
@@ -233,7 +233,7 @@ xml_schema_complex_content_extension_free(void *cmp_cnt_ext_ext_ext,
     }
     if (content_ext_impl->base_type_name)
     {
-        AXIS2_QNAME_FREE(content_ext_impl->base_type_name, env);
+        axis2_qname_free(content_ext_impl->base_type_name, env);
         content_ext_impl->base_type_name = NULL;
     }
     if (content_ext_impl->annotated)
@@ -329,7 +329,7 @@ xml_schema_complex_content_extension_set_base_type_name(
     content_ext_impl = AXIS2_INTF_TO_IMPL(cmp_cnt_ext);
     if (content_ext_impl->base_type_name)
     {
-        AXIS2_QNAME_FREE(content_ext_impl->base_type_name, env);
+        axis2_qname_free(content_ext_impl->base_type_name, env);
         content_ext_impl->base_type_name = NULL;
     }
     content_ext_impl->base_type_name = base_type_name;

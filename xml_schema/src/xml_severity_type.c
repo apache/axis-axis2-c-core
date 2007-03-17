@@ -109,9 +109,9 @@ xml_schema_severity_type_create(const axis2_env_t *env,
         return NULL;
     }
     axis2_array_list_add(severity_type_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_ERROR, env));
+            axis2_strdup(XML_SCHEMA_CONST_ERROR, env));
     axis2_array_list_add(severity_type_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_WARNING, env));
+            axis2_strdup(XML_SCHEMA_CONST_WARNING, env));
 
     severity_type_impl->schema_enum = xml_schema_enum_create(env, value);
     if (!severity_type_impl->schema_enum)
@@ -130,11 +130,11 @@ xml_schema_severity_type_create(const axis2_env_t *env,
     }
 
     axis2_hash_set(severity_type_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_SEVERITY_TYPE", env),
+            axis2_strdup("XML_SCHEMA_SEVERITY_TYPE", env),
             AXIS2_HASH_KEY_STRING,  &(severity_type_impl->severity_type));
 
     axis2_hash_set(severity_type_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_ENUM", env),
+            axis2_strdup("XML_SCHEMA_ENUM", env),
             AXIS2_HASH_KEY_STRING, severity_type_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(

@@ -115,7 +115,7 @@ xml_schema_facet_create(const axis2_env_t *env,
     facet_impl->facet.base.ops = NULL;
 
     facet_impl->fixed = fixed ;
-facet_impl->value = AXIS2_STRDUP(value, env);
+facet_impl->value = axis2_strdup(value, env);
 
     facet_impl->facet.ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_facet_ops_t));
@@ -158,11 +158,11 @@ facet_impl->value = AXIS2_STRDUP(value, env);
         xml_schema_facet_free(&(facet_impl->facet), env);
         return NULL;
     }
-    axis2_hash_set(facet_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_FACET", env),
+    axis2_hash_set(facet_impl->ht_super, axis2_strdup("XML_SCHEMA_FACET", env),
             AXIS2_HASH_KEY_STRING, &(facet_impl->facet));
-    axis2_hash_set(facet_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+    axis2_hash_set(facet_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, facet_impl->annotated);
-    axis2_hash_set(facet_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+    axis2_hash_set(facet_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(
                 facet_impl->annotated, env));
@@ -258,7 +258,7 @@ xml_schema_facet_set_value(void *facet,
         AXIS2_FREE(env->allocator, facet_impl->value);
         facet_impl->value = NULL;
     }
-    facet_impl->value = AXIS2_STRDUP(value, env);
+    facet_impl->value = axis2_strdup(value, env);
     return AXIS2_SUCCESS;
 }
 
@@ -284,57 +284,57 @@ xml_schema_facet_construct(const axis2_env_t *env,
     if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
         return NULL;
 
-    fixed_value = AXIS2_STRDUP("fixed", env);
-    value_v = AXIS2_STRDUP("value", env);
+    fixed_value = axis2_strdup("fixed", env);
+    value_v = axis2_strdup("value", env);
 
     om_ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
     localname = axiom_element_get_localname(om_ele, env);
 
-    if (AXIS2_STRCMP(localname, "enumeration") == 0)
+    if (axis2_strcmp(localname, "enumeration") == 0)
     {
         facet_type = XML_SCHEMA_ENUMARATION_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "maxExclusive") == 0)
+    else if (axis2_strcmp(localname, "maxExclusive") == 0)
     {
         facet_type = XML_SCHEMA_MAX_EXCLUSIVE_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "maxInclusive") == 0)
+    else if (axis2_strcmp(localname, "maxInclusive") == 0)
     {
         facet_type = XML_SCHEMA_MAX_INCLUSIVE_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "minExclusive") == 0)
+    else if (axis2_strcmp(localname, "minExclusive") == 0)
     {
         facet_type = XML_SCHEMA_MIN_EXCLUSIVE_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "maxInclusive") == 0)
+    else if (axis2_strcmp(localname, "maxInclusive") == 0)
     {
         facet_type = XML_SCHEMA_MIN_INCLUSIVE_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "pattern") == 0)
+    else if (axis2_strcmp(localname, "pattern") == 0)
     {
         facet_type = XML_SCHEMA_PATTERN_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "whiteSpace") == 0)
+    else if (axis2_strcmp(localname, "whiteSpace") == 0)
     {
         facet_type = XML_SCHEMA_WHITE_SPACE_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "fractionDigits") == 0)
+    else if (axis2_strcmp(localname, "fractionDigits") == 0)
     {
         facet_type = XML_SCHEMA_FRACTION_DIGITS_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "length") == 0)
+    else if (axis2_strcmp(localname, "length") == 0)
     {
         facet_type = XML_SCHEMA_LENGTH_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "maxLength") == 0)
+    else if (axis2_strcmp(localname, "maxLength") == 0)
     {
         facet_type = XML_SCHEMA_MAX_LENGTH_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "minLength") == 0)
+    else if (axis2_strcmp(localname, "minLength") == 0)
     {
         facet_type = XML_SCHEMA_MIN_LENGTH_FACET;
     }
-    else if (AXIS2_STRCMP(localname, "totalDigits") == 0)
+    else if (axis2_strcmp(localname, "totalDigits") == 0)
     {
         facet_type = XML_SCHEMA_TATAL_DIGITS_FACET;
     }
@@ -342,7 +342,7 @@ xml_schema_facet_construct(const axis2_env_t *env,
         return NULL;
 
     attr_value = axiom_element_get_attribute_value_by_name(om_ele, env, fixed_value);
-    if (attr_value && AXIS2_STRCMP(attr_value, "fixed") == 0)
+    if (attr_value && axis2_strcmp(attr_value, "fixed") == 0)
         is_fixed = AXIS2_TRUE;
 
     attr_value = NULL;

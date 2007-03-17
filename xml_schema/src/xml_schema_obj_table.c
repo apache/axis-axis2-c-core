@@ -214,7 +214,7 @@ xml_schema_obj_table_get_item(xml_schema_obj_table_t *obj_table,
 
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
 
-    name = AXIS2_QNAME_TO_STRING((axis2_qname_t *)qname, env);
+    name = axis2_qname_to_string((axis2_qname_t *)qname, env);
     if (name)
     {
         return axis2_hash_get(obj_table_impl->collection, name,
@@ -305,7 +305,7 @@ xml_schema_obj_table_contains(xml_schema_obj_table_t *obj_table,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
-    name = AXIS2_QNAME_TO_STRING(qname, env);
+    name = axis2_qname_to_string(qname, env);
     if (name)
     {
         value = axis2_hash_get(obj_table_impl->collection, name,
@@ -330,7 +330,7 @@ xml_schema_obj_table_add(xml_schema_obj_table_t *obj_table,
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
-    name = AXIS2_QNAME_TO_STRING(qname, env);
+    name = axis2_qname_to_string(qname, env);
     if (name)
     {
         axis2_hash_set(obj_table_impl->collection,

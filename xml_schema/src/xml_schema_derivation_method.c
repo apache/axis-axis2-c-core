@@ -118,28 +118,28 @@ xml_schema_derivation_method_create(const axis2_env_t *env,
         return NULL;
     }
     axis2_array_list_add(derivation_method_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_ALL, env));
+            axis2_strdup(XML_SCHEMA_CONST_ALL, env));
 
     axis2_array_list_add(derivation_method_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_EMPTY, env));
+            axis2_strdup(XML_SCHEMA_CONST_EMPTY, env));
 
     axis2_array_list_add(derivation_method_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_EXTENSION, env));
+            axis2_strdup(XML_SCHEMA_CONST_EXTENSION, env));
 
     axis2_array_list_add(derivation_method_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_LIST, env));
+            axis2_strdup(XML_SCHEMA_CONST_LIST, env));
 
     axis2_array_list_add(derivation_method_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_NONE, env));
+            axis2_strdup(XML_SCHEMA_CONST_NONE, env));
 
     axis2_array_list_add(derivation_method_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_RESTRICTION, env));
+            axis2_strdup(XML_SCHEMA_CONST_RESTRICTION, env));
 
     axis2_array_list_add(derivation_method_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_SUBSTITUTION, env));
+            axis2_strdup(XML_SCHEMA_CONST_SUBSTITUTION, env));
 
     axis2_array_list_add(derivation_method_impl->members, env,
-            AXIS2_STRDUP(XML_SCHEMA_CONST_UNION, env));
+            axis2_strdup(XML_SCHEMA_CONST_UNION, env));
 
 
     derivation_method_impl->schema_enum =
@@ -153,10 +153,10 @@ xml_schema_derivation_method_create(const axis2_env_t *env,
     }
 
     derivation_method_impl->ht_super = axis2_hash_make(env);
-    axis2_hash_set(derivation_method_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_DERIVATION_METHOD", env),
+    axis2_hash_set(derivation_method_impl->ht_super, axis2_strdup("XML_SCHEMA_DERIVATION_METHOD", env),
             AXIS2_HASH_KEY_STRING, &(derivation_method_impl->derivation_method));
 
-    axis2_hash_set(derivation_method_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ENUM", env),
+    axis2_hash_set(derivation_method_impl->ht_super, axis2_strdup("XML_SCHEMA_ENUM", env),
             AXIS2_HASH_KEY_STRING, derivation_method_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(

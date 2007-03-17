@@ -115,29 +115,29 @@ xml_schema_tokenized_type_create(const axis2_env_t *env,
         return NULL;
 
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("CDATA", env));
+            axis2_strdup("CDATA", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("IDREF", env));
+            axis2_strdup("IDREF", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("IDREFS", env));
+            axis2_strdup("IDREFS", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("ENTITY", env));
+            axis2_strdup("ENTITY", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("ENTITIES", env));
+            axis2_strdup("ENTITIES", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("NMTOKEN", env));
+            axis2_strdup("NMTOKEN", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("NMTOKENS", env));
+            axis2_strdup("NMTOKENS", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("NOTATION", env));
+            axis2_strdup("NOTATION", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("ENUMERATION", env));
+            axis2_strdup("ENUMERATION", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("QName", env));
+            axis2_strdup("QName", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("NCName", env));
+            axis2_strdup("NCName", env));
     axis2_array_list_add(tokenized_type_impl->members, env,
-            AXIS2_STRDUP("None", env));
+            axis2_strdup("None", env));
 
     tokenized_type_impl->schema_enum = xml_schema_enum_create(env, value);
 

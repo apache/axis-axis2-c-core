@@ -157,18 +157,18 @@ xml_schema_group_ref_create(const axis2_env_t *env)
     }
 
     axis2_hash_set(group_ref_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_GROUP_REF", env),
+            axis2_strdup("XML_SCHEMA_GROUP_REF", env),
             AXIS2_HASH_KEY_STRING, &(group_ref_impl->group_ref));
 
-    axis2_hash_set(group_ref_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_PARTICLE", env),
+    axis2_hash_set(group_ref_impl->ht_super, axis2_strdup("XML_SCHEMA_PARTICLE", env),
             AXIS2_HASH_KEY_STRING, group_ref_impl->particle);
 
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(group_ref_impl->particle, env);
     if (annotated)
     {
-        axis2_hash_set(group_ref_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+        axis2_hash_set(group_ref_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
                 AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(group_ref_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+        axis2_hash_set(group_ref_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
                 AXIS2_HASH_KEY_STRING, XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
 
@@ -276,10 +276,10 @@ xml_schema_group_ref_set_ref_qname(void *group_ref,
     xml_schema_group_ref_impl_t *group_ref_impl = NULL;
     if (group_ref_impl->ref_qname)
     {
-        AXIS2_QNAME_FREE(group_ref_impl->ref_qname, env);
+        axis2_qname_free(group_ref_impl->ref_qname, env);
         group_ref_impl->ref_qname = NULL;
     }
-    group_ref_impl->ref_qname = AXIS2_QNAME_CLONE(ref_qname, env);
+    group_ref_impl->ref_qname = axis2_qname_clone(ref_qname, env);
     if (!group_ref_impl->ref_qname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

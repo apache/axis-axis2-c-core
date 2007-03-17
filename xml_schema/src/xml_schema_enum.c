@@ -292,7 +292,7 @@ xml_schema_enum_set_value(void *schema_enum,
         AXIS2_FREE(env->allocator, (schema_enum_impl->value));
         schema_enum_impl->value = NULL;
     }
-    schema_enum_impl->value = AXIS2_STRDUP(value, env);
+    schema_enum_impl->value = axis2_strdup(value, env);
     if (!schema_enum_impl->value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -347,7 +347,7 @@ xml_schema_enum_index(axis2_char_t *value,
     {
         axis2_char_t *mem_val = NULL;
         mem_val = (axis2_char_t *)axis2_array_list_get(values,  env, i);
-        if (mem_val && AXIS2_STRCMP(mem_val, value) == 0)
+        if (mem_val && axis2_strcmp(mem_val, value) == 0)
         {
             return i;
         }

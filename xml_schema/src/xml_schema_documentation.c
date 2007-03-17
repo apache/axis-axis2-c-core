@@ -174,11 +174,11 @@ xml_schema_documentation_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(documentation_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_DOCUMENTATION", env),
+            axis2_strdup("XML_SCHEMA_DOCUMENTATION", env),
             AXIS2_HASH_KEY_STRING, &(documentation_impl->documentation));
 
     axis2_hash_set(documentation_impl->ht_super,
-            AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+            axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING, documentation_impl->schema_obj);
 
     status = xml_schema_obj_resolve_methods(&(documentation_impl->documentation.base),
@@ -304,7 +304,7 @@ xml_schema_documentation_set_source(void *documentation,
         documentation_impl->source = NULL;
     }
 
-    documentation_impl->source = AXIS2_STRDUP(source, env);
+    documentation_impl->source = axis2_strdup(source, env);
     if (!documentation_impl->source)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -367,7 +367,7 @@ xml_schema_documentation_set_language(
         AXIS2_FREE(env->allocator, documentation_impl->language);
         documentation_impl->language = NULL;
     }
-    documentation_impl->language = AXIS2_STRDUP(language, env);
+    documentation_impl->language = axis2_strdup(language, env);
     return AXIS2_SUCCESS;
 }
 

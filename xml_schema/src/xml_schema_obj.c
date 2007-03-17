@@ -394,7 +394,7 @@ xml_schema_obj_set_source_uri(void *obj,
         AXIS2_FREE(env->allocator, obj_impl->source_uri);
         obj_impl->source_uri = NULL;
     }
-    obj_impl->source_uri = AXIS2_STRDUP(source_uri, env);
+    obj_impl->source_uri = axis2_strdup(source_uri, env);
 
     return AXIS2_SUCCESS;
 }

@@ -146,11 +146,11 @@ xml_schema_external_create(const axis2_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(external_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_EXTERNAL", env),
+    axis2_hash_set(external_impl->ht_super, axis2_strdup("XML_SCHEMA_EXTERNAL", env),
             AXIS2_HASH_KEY_STRING, &(external_impl->external));
-    axis2_hash_set(external_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+    axis2_hash_set(external_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, external_impl->annotated);
-    axis2_hash_set(external_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+    axis2_hash_set(external_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(external_impl->annotated, env));
 
@@ -357,7 +357,7 @@ xml_schema_external_set_schema_location(void *external,
         AXIS2_FREE(env->allocator, ext_impl->schema_location);
         ext_impl->schema_location = NULL;
     }
-    ext_impl->schema_location = AXIS2_STRDUP(location, env);
+    ext_impl->schema_location = axis2_strdup(location, env);
     return AXIS2_SUCCESS;
 }
 
