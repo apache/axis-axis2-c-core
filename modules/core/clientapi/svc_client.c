@@ -30,7 +30,6 @@
 #include <axis2_options.h>
 #include <axis2_conf_init.h>
 #include <axis2_mep_client.h>
-#include "../description/axis2_client_utils.h"
 #include <platforms/axis2_platform_auto_sense.h>
 #include <stdio.h>
 
