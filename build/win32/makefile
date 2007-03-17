@@ -308,7 +308,7 @@ woden :
 axis2_engine: 
 	$(CC) $(CFLAGS) $(AXIS2_ENGINE_SRC) /Fo$(AXIS2_INTDIR_CORE)\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CORE)\*.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib woden.lib $(LIBS)  \
+	$(AXIS2_PARSER).lib $(LIBS)  \
 	/DLL /OUT:$(AXIS2_LIBS)\$(AXIS2_ENGINE).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_ENGINE).lib
 
 axis2_http_sender: 
@@ -344,7 +344,7 @@ axis2_server:
 	
 	copy $(AXIS2_SOURCE_DIR)\samples\server\axis2.xml $(AXIS2_BINDIR)\
 
-axis2_core: axis2_util axis2_parser axiom xml_schema woden axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
+axis2_core: axis2_util axis2_parser axiom axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
 
 #################################
 #server modules
