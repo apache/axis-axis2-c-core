@@ -485,16 +485,16 @@ c14n_get_algorithm(
     const axis2_char_t* algo
     )
 {
-   if (axis2_strcmp(algo, OXS_HREF_XML_C14N))
+   if (axis2_strcmp(algo, OXS_HREF_XML_C14N) == 0)
             return C14N_XML_C14N;
 
-   if (axis2_strcmp(algo, OXS_HREF_XML_C14N_WITH_COMMENTS))
+   if (axis2_strcmp(algo, OXS_HREF_XML_C14N_WITH_COMMENTS) == 0)
             return C14N_XML_C14N_WITH_COMMENTS;
 
-   if (axis2_strcmp(algo, OXS_HREF_XML_EXC_C14N))
+   if (axis2_strcmp(algo, OXS_HREF_XML_EXC_C14N) == 0)
             return C14N_XML_EXC_C14N;
 
-   if (axis2_strcmp(algo, OXS_HREF_XML_EXC_C14N_WITH_COMMENTS))
+   if (axis2_strcmp(algo, OXS_HREF_XML_EXC_C14N_WITH_COMMENTS) == 0)
             return C14N_XML_EXC_C14N_WITH_COMMENTS;
 
    return 0; /*c14n_algo_t enum starts with 1*/
