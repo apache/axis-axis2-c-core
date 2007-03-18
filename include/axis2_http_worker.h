@@ -43,91 +43,61 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_http_worker_ops */
-    typedef struct axis2_http_worker_ops axis2_http_worker_ops_t;
     /** Type name for struct axis2_http_worker */
     typedef struct axis2_http_worker axis2_http_worker_t;
 
     /**
-     * HTTP Worker ops struct
-     * Encapsulator struct for ops of axis2_http_worker
+     * @param http_worker pointer to http worker
+     * @param env pointer to environment struct
+     * @param svr_conn pointer to svr conn
+     * @param simple_request pointer to simple request
      */
-    struct axis2_http_worker_ops
-    {
-        /**
-         * @param http_worker pointer to http worker
-         * @param env pointer to environment struct
-         * @param svr_conn pointer to svr conn
-         * @param simple_request pointer to simple request
-         */
-        axis2_bool_t (AXIS2_CALL *
-                process_request)(
-                    axis2_http_worker_t *http_worker,
-                    const axis2_env_t *env,
-                    axis2_simple_http_svr_conn_t *svr_conn,
-                    axis2_http_simple_request_t *simple_request);
-
-        /**
-         * @param http_worker pointer to http worker
-         * @param env pointer to environment struct
-         * @param port
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_svr_port)(
-                    axis2_http_worker_t *http_worker,
-                    const axis2_env_t *env,
-                    int port);
-
-        /**
-         * @param http_worker pointer to http worker
-         * @param env pointer to environment strut
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_http_worker_t *http_worker,
-                    const axis2_env_t *env);
-    };
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
+        const axis2_env_t *env,
+        axis2_simple_http_svr_conn_t *svr_conn,
+        axis2_http_simple_request_t *simple_request);
 
     /**
-     * axis2 http worker
+     * @param http_worker pointer to http worker
+     * @param env pointer to environment struct
+     * @param port
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_http_worker
-    {
-        /** operations of axis2 http worker */
-        axis2_http_worker_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_worker_set_svr_port(axis2_http_worker_t *http_worker,
+        const axis2_env_t *env,
+        int port);
 
+    /**
+     * @param http_worker pointer to http worker
+     * @param env pointer to environment strut
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_worker_free(axis2_http_worker_t *http_worker,
+        const axis2_env_t *env);
 
     /**
      * @param env pointer to environment struct
      * @param conf_ctx pointer to configuration context
      */
     AXIS2_EXTERN axis2_http_worker_t * AXIS2_CALL
-    axis2_http_worker_create (
-        const axis2_env_t *env,
+    axis2_http_worker_create (const axis2_env_t *env,
         axis2_conf_ctx_t *conf_ctx);
 
-/************************** Start of function macros **************************/
-
-/** Process the request.
-    @sa axis2_http_worker_ops#process_request */
+/** Process the request. */
 #define AXIS2_HTTP_WORKER_PROCESS_REQUEST(http_worker, env, svr_conn,\
-            simple_request) ((http_worker)->ops->process_request(\
-            http_worker, env, svr_conn, simple_request))
+            simple_request) axis2_http_worker_process_request(\
+            http_worker, env, svr_conn, simple_request)
 
-/** Sets the server port.
-    @sa axis2_http_worker_ops#set_svr_port */
+/** Sets the server port.  */
 #define AXIS2_HTTP_WORKER_SET_SVR_PORT(http_worker, env, port) \
-                ((http_worker)->ops->set_svr_port(http_worker, env, port))
+                axis2_http_worker_set_svr_port(http_worker, env, port)
 
-/** Frees the http worker.
-    @sa axis2_http_worker_ops#free */
+/** Frees the http worker. */
 #define AXIS2_HTTP_WORKER_FREE(http_worker, env) \
-                ((http_worker)->ops->free(http_worker, env))
-
-/************************** End of function macros ****************************/
+                axis2_http_worker_free(http_worker, env)
 
 /** @} */
 #ifdef __cplusplus

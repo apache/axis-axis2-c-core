@@ -41,124 +41,90 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_http_chunked_stream_ops */
-    typedef struct axis2_http_chunked_stream_ops axis2_http_chunked_stream_ops_t;
     /** Type name for struct axis2_http_chunked_stream */
     typedef struct axis2_http_chunked_stream axis2_http_chunked_stream_t;
 
 
     /**
-     * HTTP Chunked Stream ops struct
-     * Encapsulator struct for ops of axis2_http_chunked_stream
-     */
-    struct axis2_http_chunked_stream_ops
-    {
-        /**
-        * @param chunked_stream pointer to chunked stream
-        * @param env pointer to environment struct
-        * @param buffer 
-        * @param count
-        */
-        int (AXIS2_CALL *
-                read)(
-                    axis2_http_chunked_stream_t *chunked_stream,
-                    const axis2_env_t *env,
-                    void *buffer,
-                    size_t count);
-
-        /**
-        * @param env pointer to environment struct
-        * @param buffer
-        * @param count
-        */
-        int (AXIS2_CALL *
-                write)(
-                    axis2_http_chunked_stream_t *chunked_stream,
-                    const axis2_env_t *env,
-                    const void *buffer,
-                    size_t count);
-
-        /**
-        * @param chunked_stream pointer to chunked stream
-        * @param env pointer to environment struct
-        */
-        int (AXIS2_CALL *
-                get_current_chunk_size)(
-                    const axis2_http_chunked_stream_t *chunked_stream,
-                    const axis2_env_t *env);
-
-        /**
-        * @param chunked_stream pointer to chunked stream
-        * @param env pointer to environment struct
-        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-        */
-        axis2_status_t (AXIS2_CALL *
-                write_last_chunk)(
-                    axis2_http_chunked_stream_t *chunked_stream,
-                    const axis2_env_t *env);
-
-        /**
-        * @param chunked_stream pointer to chunked stream
-        * @param env pointer to environment struct
-        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-        */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_http_chunked_stream_t *chunked_stream,
-                    const axis2_env_t *env);
-    };
+    * @param chunked_stream pointer to chunked stream
+    * @param env pointer to environment struct
+    * @param buffer 
+    * @param count
+    */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_http_chunked_stream_read(axis2_http_chunked_stream_t *chunked_stream,
+        const axis2_env_t *env,
+        void *buffer,
+        size_t count);
 
     /**
-     * axis2 http chunked stream
-     */
-    struct axis2_http_chunked_stream
-    {
-        /** operations of axis2 http chucnked stream */
-        axis2_http_chunked_stream_ops_t *ops;
-    };
+    * @param env pointer to environment struct
+    * @param buffer
+    * @param count
+    */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_http_chunked_stream_write(axis2_http_chunked_stream_t *chunked_stream,
+        const axis2_env_t *env,
+        const void *buffer,
+        size_t count);
 
+    /**
+    * @param chunked_stream pointer to chunked stream
+    * @param env pointer to environment struct
+    */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_http_chunked_stream_get_current_chunk_size(const axis2_http_chunked_stream_t *chunked_stream,
+        const axis2_env_t *env);
+
+    /**
+    * @param chunked_stream pointer to chunked stream
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_chunked_stream_write_last_chunk(axis2_http_chunked_stream_t *chunked_stream,
+        const axis2_env_t *env);
+
+    /**
+    * @param chunked_stream pointer to chunked stream
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_chunked_stream_free(axis2_http_chunked_stream_t *chunked_stream,
+        const axis2_env_t *env);
 
     /**
      * @param env pointer to environment struct
      * @param stream pointer to stream
      */
     AXIS2_EXTERN axis2_http_chunked_stream_t * AXIS2_CALL
-    axis2_http_chunked_stream_create(
-        const axis2_env_t *env,
+    axis2_http_chunked_stream_create(const axis2_env_t *env,
         axis2_stream_t* stream);
 
-/********************* Start of function macros   ***************************/
-
-/** Read.
-    @sa axis2_http_chunked_stream_ops#read */
+/** Read. */
 #define AXIS2_HTTP_CHUNKED_STREAM_READ(chunked_stream, env, buffer, count) \
-                        ((chunked_stream)->ops->read(chunked_stream, env, \
-                  buffer, count))
+                        axis2_http_chunked_stream_read(chunked_stream, env, \
+                  buffer, count)
 
-/** Write.
-    @sa axis2_http_chunked_stream_ops#write */
+/** Write. */
 #define AXIS2_HTTP_CHUNKED_STREAM_WRITE(chunked_stream, env, buffer, count) \
-                  ((chunked_stream)->ops->write(chunked_stream, env, \
-                  buffer, count))
+                  axis2_http_chunked_stream_write(chunked_stream, env, \
+                  buffer, count)
 
-/** Gets the current chunk size.
-    @sa axis2_http_chunked_stream_ops#get_current_chunk_size */
+/** Gets the current chunk size. */
 #define AXIS2_HTTP_CHUNKED_GET_CURRENT_CHUNK_SIZE(chunked_stream, env) \
-                        ((chunked_stream)->ops->get_current_chunk_size \
-                  (chunked_stream, env))
+                        axis2_http_chunked_stream_get_current_chunk_size \
+                  (chunked_stream, env)
 
-/** Writes the last chunk.
-    @sa axis2_http_chunked_stream_ops#write_last_chunk */
+/** Writes the last chunk. */
 #define AXIS2_HTTP_CHUNKED_STREAM_WRITE_LAST_CHUNK(chunked_stream, env) \
-                  ((chunked_stream)->ops->write_last_chunk(chunked_stream\
-                  , env))
+                  axis2_http_chunked_stream_write_last_chunk(chunked_stream\
+                  , env)
 
-/** Free.
-    @sa axis2_http_chunked_stream_ops#free */
+/** Free. */
 #define AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env) \
-                        ((chunked_stream)->ops->free(chunked_stream, env))
-
-/************************* End of function macros *****************************/
+                        axis2_http_chunked_stream_free(chunked_stream, env)
 
 /** @} */
 #ifdef __cplusplus

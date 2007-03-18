@@ -40,66 +40,41 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_http_header_ops */
-    typedef struct axis2_http_header_ops axis2_http_header_ops_t;
     /** Type name for struct axis2_http_header */
     typedef struct axis2_http_header axis2_http_header_t;
 
+    /**
+     * @param header pointer to header
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_header_to_external_form(axis2_http_header_t *header,
+        const axis2_env_t *env);
 
     /**
-     * HTTP Header ops struct
-     * Encapsulator struct for ops of axis2_http_header
+     * @param header pointer to header
+     * @param env pointer to environment struct
      */
-    struct axis2_http_header_ops
-    {
-        /**
-         * @param header pointer to header
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                to_external_form)(
-                    axis2_http_header_t *header,
-                    const axis2_env_t *env);
-
-        /**
-         * @param header pointer to header
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_name)(
-                    const axis2_http_header_t *header,
-                    const axis2_env_t *env);
-
-        /**
-         * @param header pointer to header
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_value)(
-                    const axis2_http_header_t *header,
-                    const axis2_env_t *env);
-
-        /**
-         * @param header pointer to header
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_http_header_t *header,
-                    const axis2_env_t *env);
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_header_get_name(const axis2_http_header_t *header,
+        const axis2_env_t *env);
 
     /**
-     * HTTP Header struct
-     * Axis2 HTTP Header
+     * @param header pointer to header
+     * @param env pointer to environment struct
      */
-     struct axis2_http_header
-    {
-        /** Operations of http sender */
-        axis2_http_header_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_header_get_value(const axis2_http_header_t *header,
+        const axis2_env_t *env);
 
+    /**
+     * @param header pointer to header
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_header_free(axis2_http_header_t *header,
+        const axis2_env_t *env);
 
     /**
      * @param env pointer to environment struct
@@ -107,8 +82,7 @@ extern "C"
      * @param value pointer to value
      */
     AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
-    axis2_http_header_create (
-        const axis2_env_t *env,
+    axis2_http_header_create (const axis2_env_t *env,
         const axis2_char_t *name,
         const axis2_char_t *value);
 
@@ -116,34 +90,25 @@ extern "C"
      * @param env pointer to environment struct
      * @param str pointer to str
      */
-    AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL AXIS2_CALL
-    axis2_http_header_create_by_str (
-        const axis2_env_t *env,
+    AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
+    axis2_http_header_create_by_str (const axis2_env_t *env,
         const axis2_char_t *str);
 
-/************************** Start of function macros **************************/
-
-/** To external from.
-    @sa axis2_http_header_ops#to_external_form */
+/** To external from. */
 #define AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(header, env) \
-                                ((header)->ops->to_external_form(header, env))
+                                axis2_http_header_to_external_form(header, env)
 
-/** Gets the name.
-    @sa axis2_http_header_ops#get_name */
+/** Gets the name. */
 #define AXIS2_HTTP_HEADER_GET_NAME(header, env) \
-                                ((header)->ops->get_name(header, env))
+                                axis2_http_header_get_name(header, env)
 
-/** Get value.
-    @sa axis2_http_header_ops#get_value */
+/** Get value. */
 #define AXIS2_HTTP_HEADER_GET_VALUE(header, env) \
-                                ((header)->ops->get_value(header, env))
+                                axis2_http_header_get_value(header, env)
 
-/** Frees the http header.
-    @sa axis2_http_header_ops#free */
+/** Frees the http header. */
 #define AXIS2_HTTP_HEADER_FREE(header, env) \
-                                ((header)->ops->free(header, env))
-
-/************************** End of function macros ****************************/
+                                axis2_http_header_free(header, env)
 
 /** @} */
 #ifdef __cplusplus

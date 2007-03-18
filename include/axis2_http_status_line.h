@@ -39,126 +39,89 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_http_status_line_ops */
-    typedef struct axis2_http_status_line_ops axis2_http_status_line_ops_t;
     /** Type name for struct axis2_http_status_line */
     typedef struct axis2_http_status_line axis2_http_status_line_t;
 
+    /**
+     * @param status_line pointer to status line
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_http_status_line_get_status_code(const axis2_http_status_line_t *status_line,
+        const axis2_env_t *env);
 
     /**
-     * HTTP Status Line ops struct
-     * Encapsulator struct for ops of axis2_http_status_line
+     * @param status_line pointer to status line
+     * @param env pointer to environment struct
      */
-    struct axis2_http_status_line_ops
-    {
-        /**
-         * @param status_line pointer to status line
-         * @param env pointer to environment struct
-         */
-        int (AXIS2_CALL *
-                get_status_code)(
-                    const axis2_http_status_line_t *status_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param status_line pointer to status line
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_http_version)(
-                    const axis2_http_status_line_t *status_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param status_line pointer to status line
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_reason_phrase)(
-                    const axis2_http_status_line_t *status_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param status_line pointer to status line
-         * @param env pointer to environment struct
-         */
-        axis2_bool_t (AXIS2_CALL *
-                starts_with_http)(
-                    axis2_http_status_line_t *status_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param status_line pointer to status line
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                to_string)(
-                    axis2_http_status_line_t *status_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param status_line pointer to status line
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_http_status_line_t *status_line,
-                    const axis2_env_t *env);
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_status_line_get_http_version(const axis2_http_status_line_t *status_line,
+        const axis2_env_t *env);
 
     /**
-     * axis2 http status line
+     * @param status_line pointer to status line
+     * @param env pointer to environment struct
      */
-    struct axis2_http_status_line
-    {
-        /** operatoins of axis2 http status line */
-        axis2_http_status_line_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_status_line_get_reason_phrase(const axis2_http_status_line_t *status_line,
+        const axis2_env_t *env);
 
+    /**
+     * @param status_line pointer to status line
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_http_status_line_starts_with_http(axis2_http_status_line_t *status_line,
+        const axis2_env_t *env);
+
+    /**
+     * @param status_line pointer to status line
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_status_line_to_string(axis2_http_status_line_t *status_line,
+        const axis2_env_t *env);
+
+    /**
+     * @param status_line pointer to status line
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_status_line_free(axis2_http_status_line_t *status_line,
+        const axis2_env_t *env);
 
     /**
      * @param env pointer to environment struct
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_status_line_t *AXIS2_CALL
-    axis2_http_status_line_create(
-        const axis2_env_t *env,
+    axis2_http_status_line_create(const axis2_env_t *env,
         const axis2_char_t *str);
 
-/************************* Start of function macros    ***************************/
-
-/** Gets the status code.
-    @sa axis2_http_status_line_ops#get_status_code */
+/** Gets the status code. */
 #define AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env)\
-                    ((status_line)->ops->get_status_code (status_line, env))
+                    axis2_http_status_line_get_status_code (status_line, env)
 
-/** Gets the http version.
-    @sa axis2_http_status_line_ops#get_http_version */
+/** Gets the http version. */
 #define AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(status_line, env)\
-                    ((status_line)->ops->get_http_version (status_line, env))
+                    axis2_http_status_line_get_http_version (status_line, env)
 
-/** Get reason phrase.
-    @sa axis2_http_status_line_ops#get_reason_phrase */
+/** Get reason phrase. */
 #define AXIS2_HTTP_STATUS_LINE_GET_REASON_PHRASE(status_line, env)\
-                    ((status_line)->ops->get_reason_phrase (status_line, env))
+                    axis2_http_status_line_get_reason_phrase (status_line, env)
 
-/** Starts with http.
-    @sa axis2_http_status_line_ops#starts_with_http */
+/** Starts with http. */
 #define AXIS2_HTTP_STATUS_LINE_STARTS_WITH_HTTP(status_line, env)\
-                    ((status_line)->ops->starts_with_http (status_line, env))
+                    axis2_http_status_line_starts_with_http (status_line, env)
 
-/** To string.
-    @sa axis2_http_status_line_ops#to_string */
+/** To string. */
 #define AXIS2_HTTP_STATUS_LINE_TO_STRING(status_line, env)\
-                    ((status_line)->ops->to_string (status_line, env))
+                    axis2_http_status_line_to_string (status_line, env)
 
-/** Frees the http status line.
-    @sa axis2_http_status_line_ops#free */
+/** Frees the http status line. */
 #define AXIS2_HTTP_STATUS_LINE_FREE(status_line, env)\
-                    ((status_line)->ops->free(status_line, env))
-
-/************************* End of function macros *****************************/
+                    axis2_http_status_line_free(status_line, env)
 
 /** @} */
 #ifdef __cplusplus

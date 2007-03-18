@@ -39,83 +39,58 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_http_request_line_ops */
-    typedef struct axis2_http_request_line_ops axis2_http_request_line_ops_t;
     /** Type name for struct axis2_http_request_line */
     typedef struct axis2_http_request_line axis2_http_request_line_t;
 
-
     /**
-     * HTTP Request Line ops struct
-     * Encapsulator struct for ops of axis2_http_request_line
+     * @param request_line pointer to request line
+     * @param env pointer to environment struct
      */
-    struct axis2_http_request_line_ops
-    {
-        /**
-         * @param request_line pointer to request line
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_method)(
-                    const axis2_http_request_line_t *request_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param request_line pointer to request line
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_http_version)(
-                    const axis2_http_request_line_t *request_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param request_line pointer to request line
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                get_uri)(
-                    const axis2_http_request_line_t *request_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param request_line pointer to request line
-         * @param env pointer to environment struct
-         */
-        axis2_char_t *(AXIS2_CALL *
-                to_string)(
-                    axis2_http_request_line_t *request_line,
-                    const axis2_env_t *env);
-
-        /**
-         * @param request_line pointer to request line
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_http_request_line_t *request_line,
-                    const axis2_env_t *env);
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+	axis2_http_request_line_get_method(const axis2_http_request_line_t *request_line,
+		const axis2_env_t *env);
 
     /**
-     * @brief HTTP Reqest Line struct
-     * Axis2 HTTP Request Line
+     * @param request_line pointer to request line
+     * @param env pointer to environment struct
      */
-    struct axis2_http_request_line
-    {
-        axis2_http_request_line_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_request_line_get_http_version(const axis2_http_request_line_t *request_line,
+        const axis2_env_t *env);
 
     /**
+     * @param request_line pointer to request line
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_request_line_get_uri(const axis2_http_request_line_t *request_line,
+        const axis2_env_t *env);
+
+    /**
+     * @param request_line pointer to request line
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
+        const axis2_env_t *env);
+
+    /**
+     * @param request_line pointer to request line
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_request_line_free(axis2_http_request_line_t *request_line,
+        const axis2_env_t *env);
+
+	/**
      * @param env pointer to environment struct
      * @param method pointer to method
      * @param uri pointer to uri
      * @param http_version pointer to http version
      */
     AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
-    axis2_http_request_line_create(
-        const axis2_env_t *env,
+    axis2_http_request_line_create(const axis2_env_t *env,
         const axis2_char_t *method,
         const axis2_char_t *uri,
         const axis2_char_t *http_version);
@@ -125,38 +100,28 @@ extern "C"
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
-    axis2_http_request_line_parse_line(
-        const axis2_env_t *env,
+    axis2_http_request_line_parse_line(const axis2_env_t *env,
         const axis2_char_t *str);
 
-/********************* Start of function macros   ***************************/
-
-/** Get method.
-    @sa axis2_http_request_line_ops#get_method */
+/** Get method. */
 #define AXIS2_HTTP_REQUEST_LINE_GET_METHOD(request_line, env) \
-                        ((request_line)->ops->get_method (request_line, env))
+                        axis2_http_request_line_get_method (request_line, env)
 
-/** Gets the http version.
-    @sa axis2_http_request_line_ops#get_http_version */
+/** Gets the http version. */
 #define AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION(request_line, env) \
-                        ((request_line)->ops->get_http_version(request_line, env))
+                        axis2_http_request_line_get_http_version(request_line, env)
 
-/** Gets the uri.
-    @sa axis2_http_request_line_ops#get_uri */
+/** Gets the uri. */
 #define AXIS2_HTTP_REQUEST_LINE_GET_URI(request_line, env) \
-                        ((request_line)->ops->get_uri (request_line, env))
+                        axis2_http_request_line_get_uri (request_line, env)
 
-/** To string.
-    @sa axis2_http_request_line_ops#to_string */
+/** To string. */
 #define AXIS2_HTTP_REQUEST_LINE_TO_STRING(request_line, env) \
-                        ((request_line)->ops->to_string (request_line, env))
+                        axis2_http_request_line_to_string (request_line, env)
 
-/** Frees the http request line.
-    @sa axis2_http_request_line_ops#free */
+/** Frees the http request line. */
 #define AXIS2_HTTP_REQUEST_LINE_FREE(request_line, env) \
-                        ((request_line)->ops->free(request_line, env))
-
-/************************* End of function macros *****************************/
+                        axis2_http_request_line_free(request_line, env)
 
 /** @} */
 #ifdef __cplusplus

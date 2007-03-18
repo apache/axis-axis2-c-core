@@ -41,69 +41,45 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_http_out_transport_info_ops */
-    typedef struct axis2_http_out_transport_info_ops axis2_http_out_transport_info_ops_t;
     /** Type name for struct axis2_http_out_transport_info */
     typedef struct axis2_http_out_transport_info axis2_http_out_transport_info_t;
 
+    /**
+     * @param info pointer to info
+     * @param env pointer to environment struct
+     * @param content_type pointer to content type
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_http_out_transport_info_set_content_type(axis2_http_out_transport_info_t *info,
+        const axis2_env_t *env,
+        const axis2_char_t *content_type);
 
     /**
-     * HTTP Out Transport Info ops struct
-     * Encapsulator struct for ops of axis2_http_out_transport_info
+     * @param info pointer to info
+     * @param env pointer to environment struct
+     * @param encoding pointer to encoding
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_http_out_transport_info_ops
-    {
-        /**
-         * @param info pointer to info
-         * @param env pointer to environment struct
-         * @param content_type pointer to content type
-         */
-        int (AXIS2_CALL *
-                set_content_type)(
-                    axis2_http_out_transport_info_t *info,
-                    const axis2_env_t *env,
-                    const axis2_char_t *content_type);
-
-        /**
-         * @param info pointer to info
-         * @param env pointer to environment struct
-         * @param encoding pointer to encoding
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_char_encoding)(
-                    axis2_http_out_transport_info_t *info,
-                    const axis2_env_t *env,
-                    const axis2_char_t *encoding);
-
-        /**
-         * @param out_transport_info pointer to out transport info
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_http_out_transport_info_t *out_transport_info,
-                    const axis2_env_t *env);
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_out_transport_info_set_char_encoding(axis2_http_out_transport_info_t *info,
+        const axis2_env_t *env,
+        const axis2_char_t *encoding);
 
     /**
-     * axis2 http out transport info
+     * @param out_transport_info pointer to out transport info
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_http_out_transport_info
-    {
-        /** operations of http out transport info */
-        axis2_http_out_transport_info_ops_t *ops;
-    };
-
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_out_transport_info_free(axis2_http_out_transport_info_t *out_transport_info,
+        const axis2_env_t *env);
 
     /**
      * @param env pointer to environment struct
      * @param response pointer to response
      */
     AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL
-    axis2_http_out_transport_info_create(
-        const axis2_env_t *env,
+    axis2_http_out_transport_info_create(const axis2_env_t *env,
         axis2_http_simple_response_t *response);
 
     /**
@@ -114,30 +90,20 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_http_out_transport_info_free_void_arg(
-        void *transport_info,
+    axis2_http_out_transport_info_free_void_arg(void *transport_info,
         const axis2_env_t *env);
 
-/************************* Start of function macros    ***************************/
-
-/** Set content type.
-    @sa axis2_http_out_transport_info_ops#set_content_type */
+/** Set content type. */
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_transport_info, \
-               env, content_type) ((out_transport_info)->ops->\
-               set_content_type (out_transport_info, env, content_type))
+               env, content_type) axis2_http_out_transport_info_set_content_type (out_transport_info, env, content_type)
 
-/** Set cahr encoding.
-    @sa axis2_http_out_transport_info_ops#set_char_encoding */
+/** Set cahr encoding. */
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_transport_info,\
-               env, encoding) ((out_transport_info)->ops->set_char_encoding \
-               (out_transport_info, env, encoding))
+               env, encoding) axis2_http_out_transport_info_set_char_encoding(out_transport_info, env, encoding)
 
-/** Free.
-    @sa axis2_http_out_transport_info_ops#free */
+/** Free. */
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_FREE(out_transport_info, env)\
-                    ((out_transport_info)->ops->free(out_transport_info, env))
-
-/************************* End of function macros *****************************/
+                    axis2_http_out_transport_info_free(out_transport_info, env)
 
 /** @} */
 #ifdef __cplusplus

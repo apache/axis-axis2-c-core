@@ -31,32 +31,13 @@
 #include <axis2_url.h>
 #include <axis2_property.h>
 
-/**
- * @brief HTTP Worker struct impl
- * Axis2 HTTP Worker impl
- */
-
-typedef struct axis2_http_worker_impl
+struct axis2_http_worker
 {
-    axis2_http_worker_t http_worker;
     axis2_conf_ctx_t *conf_ctx;
     int svr_port;
-}
-axis2_http_worker_impl_t;
+};
 
-#define AXIS2_INTF_TO_IMPL(http_worker) ((axis2_http_worker_impl_t *)\
-                                                                (http_worker))
-
-/***************************** Function headers *******************************/
-
-axis2_bool_t AXIS2_CALL
-axis2_http_worker_process_request(
-    axis2_http_worker_t *http_worker,
-    const axis2_env_t *env,
-    axis2_simple_http_svr_conn_t *svr_conn,
-    axis2_http_simple_request_t *simple_request);
-
-axis2_status_t AXIS2_CALL
+static axis2_status_t 
 axis2_http_worker_set_response_headers(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env,
@@ -65,93 +46,61 @@ axis2_http_worker_set_response_headers(
     axis2_http_simple_response_t *simple_response,
     axis2_ssize_t content_length);
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t 
 axis2_http_worker_set_transport_out_config(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_http_simple_response_t *simple_response);
 
-axis2_hash_t *AXIS2_CALL
+static axis2_hash_t *
 axis2_http_worker_get_headers(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env,
     axis2_http_simple_request_t *request);
-
-axis2_status_t AXIS2_CALL
-axis2_http_worker_set_svr_port(
-    axis2_http_worker_t *worker,
-    const axis2_env_t *env,
-    int port);
-
-axis2_status_t AXIS2_CALL
-axis2_http_worker_free(
-    axis2_http_worker_t *http_worker,
-    const axis2_env_t *env);
-
-/***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_http_worker_t *AXIS2_CALL
 axis2_http_worker_create(
     const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
-    axis2_http_worker_impl_t *http_worker_impl = NULL;
+    axis2_http_worker_t *http_worker = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    http_worker_impl = (axis2_http_worker_impl_t *)
-            AXIS2_MALLOC(env->allocator, sizeof(axis2_http_worker_impl_t));
+    http_worker = (axis2_http_worker_t *)
+            AXIS2_MALLOC(env->allocator, sizeof(axis2_http_worker_t));
 
-    if (NULL == http_worker_impl)
+    if (NULL == http_worker)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    http_worker_impl->conf_ctx = conf_ctx;
-    http_worker_impl->svr_port = 9090; /* default - must set later*/
+    http_worker->conf_ctx = conf_ctx;
+    http_worker->svr_port = 9090; /* default - must set later*/
 
-    http_worker_impl->http_worker.ops = AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_http_worker_ops_t));
-    if (NULL == http_worker_impl->http_worker.ops)
-    {
-        axis2_http_worker_free((axis2_http_worker_t *)http_worker_impl, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    http_worker_impl->http_worker.ops->process_request =
-        axis2_http_worker_process_request;
-    http_worker_impl->http_worker.ops->set_svr_port =
-        axis2_http_worker_set_svr_port;
-    http_worker_impl->http_worker.ops->free = axis2_http_worker_free;
-
-    return &(http_worker_impl->http_worker);
+    return http_worker;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_worker_free(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    AXIS2_INTF_TO_IMPL(http_worker)->conf_ctx = NULL;
+    http_worker->conf_ctx = NULL;
 
-    if (http_worker->ops)
-        AXIS2_FREE(env->allocator, http_worker->ops);
-
-    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(http_worker));
+    AXIS2_FREE(env->allocator, http_worker);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_worker_process_request(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env,
     axis2_simple_http_svr_conn_t *svr_conn,
     axis2_http_simple_request_t *simple_request)
 {
-    axis2_http_worker_impl_t *http_worker_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_stream_t *request_body = NULL;
@@ -180,8 +129,7 @@ axis2_http_worker_process_request(
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, simple_request, AXIS2_FAILURE);
 
-    http_worker_impl = AXIS2_INTF_TO_IMPL(http_worker);
-    conf_ctx = http_worker_impl->conf_ctx;
+    conf_ctx = http_worker->conf_ctx;
 
     if (NULL == conf_ctx)
     {
@@ -233,10 +181,10 @@ axis2_http_worker_process_request(
     request_body = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(simple_request, env);
 
     out_desc = AXIS2_CONF_GET_TRANSPORT_OUT( axis2_conf_ctx_get_conf
-            (http_worker_impl->conf_ctx, env), env,
+            (http_worker->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
     in_desc = AXIS2_CONF_GET_TRANSPORT_IN( axis2_conf_ctx_get_conf
-            (http_worker_impl->conf_ctx, env), env,
+            (http_worker->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
      axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
@@ -255,7 +203,7 @@ axis2_http_worker_process_request(
 	    simple_request, env), env);
 
     request_url = axis2_url_create(env, "http", svr_ip,
-				   http_worker_impl->svr_port,
+				   http_worker->svr_port,
 				   path);
 
 	url_external_form = axis2_url_to_external_form(request_url, env);
@@ -436,8 +384,7 @@ axis2_http_worker_process_request(
     return status;
 }
 
-
-axis2_status_t AXIS2_CALL
+static axis2_status_t 
 axis2_http_worker_set_response_headers(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env,
@@ -530,7 +477,7 @@ axis2_http_worker_set_response_headers(
  * This is only called for HTTP/1.1 to enable 1.1 specific parameters.
  *
  */
-axis2_status_t AXIS2_CALL
+static axis2_status_t 
 axis2_http_worker_set_transport_out_config(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env,
@@ -551,7 +498,7 @@ axis2_http_worker_set_transport_out_config(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+static axis2_hash_t *
 axis2_http_worker_get_headers(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env,
@@ -597,13 +544,12 @@ axis2_http_worker_get_headers(
     return header_map;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_worker_set_svr_port(
     axis2_http_worker_t *worker,
     const axis2_env_t *env,
     int port)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(worker)->svr_port = port;
+    worker->svr_port = port;
     return AXIS2_SUCCESS;
 }
