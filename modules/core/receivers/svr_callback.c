@@ -80,7 +80,7 @@ axis2_svr_callback_handle_result(
     {
         return AXIS2_FAILURE;
     }
-    return AXIS2_ENGINE_SEND(engine, env, msg_ctx);
+    return axis2_engine_send(engine, env, msg_ctx);
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
@@ -107,8 +107,8 @@ axis2_svr_callback_handle_fault(
         return AXIS2_FAILURE;
     }
 
-    fault_ctx = AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx);
-    return AXIS2_ENGINE_SEND_FAULT(engine, env, fault_ctx);
+    fault_ctx =  axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx);
+    return axis2_engine_send_fault(engine, env, fault_ctx);
 }
 
 

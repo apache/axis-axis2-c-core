@@ -464,11 +464,11 @@ axis2_http_transport_utils_process_http_post_request(
 
     if (AXIS2_TRUE == AXIOM_SOAP_BODY_HAS_FAULT(soap_body, env))
     {
-        status = AXIS2_ENGINE_RECEIVE_FAULT(engine, env, msg_ctx);
+        status =  axis2_engine_receive_fault(engine, env, msg_ctx);
     }
     else
     {
-        status = AXIS2_ENGINE_RECEIVE(engine, env, msg_ctx);
+        status =  axis2_engine_receive(engine, env, msg_ctx);
     }
     if (!  axis2_msg_ctx_get_soap_envelope(msg_ctx, env) &&
             AXIS2_FALSE == is_soap11)
@@ -481,7 +481,7 @@ axis2_http_transport_utils_process_http_post_request(
 
     if (engine)
     {
-        AXIS2_ENGINE_FREE(engine, env);
+         axis2_engine_free(engine, env);
     }
 
     if (soap_body_str)
@@ -555,7 +555,7 @@ axis2_http_transport_utils_process_http_get_request(
          axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
          axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
         engine = axis2_engine_create(env, conf_ctx);
-        AXIS2_ENGINE_RECEIVE(engine, env, msg_ctx);
+         axis2_engine_receive(engine, env, msg_ctx);
         return AXIS2_TRUE;
     }
     return AXIS2_FALSE;

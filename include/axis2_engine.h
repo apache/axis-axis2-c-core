@@ -124,33 +124,6 @@ extern "C"
         const axis2_env_t *env,
         axis2_msg_ctx_t *processing_context);
      
-    /**
-     * Extracts fault information form message context.          
-     * @param engine pointer to engine
-     * @param env pointer to environment struct
-     * @param msg_ctx pointer to message context containing fault state
-     * @param fault pointer to SOAP fault struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_extract_fault_info_from_msg_ctx(axis2_engine_t *engine,
-        const axis2_env_t *env,
-        axis2_msg_ctx_t *msg_ctx,
-        struct axiom_soap_fault *fault);
-
-    /**
-     * Verifies that the context hierarchy consisting of service group 
-     * context, service context and operation context is built.
-     * @param engine pointer to engine
-     * @param env pointer to environment struct
-     * @param msg_ctx pointer to message context containing the context 
-     * related information
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
-     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_engine_verify_ctx_built(axis2_engine_t *engine,
-        const axis2_env_t *env,
-        axis2_msg_ctx_t *msg_ctx);
 
     /**
      * Invokes the phases in the given array list of phases. The list of 
@@ -265,63 +238,6 @@ extern "C"
     axis2_engine_create(const axis2_env_t *env,
         axis2_conf_ctx_t *conf_ctx);
 
-/** Sends SOAP message invoking the out flow. */
-#define AXIS2_ENGINE_SEND(engine, env, msg_ctx)\
-        axis2_engine_send(engine, env, msg_ctx)
-
-/** Receives SOAP message invoking the in flow. */
-#define AXIS2_ENGINE_RECEIVE(engine, env, msg_ctx) \
-        axis2_engine_receive(engine, env, msg_ctx)
-
-/** Sends a SOAP fault. */
-#define AXIS2_ENGINE_SEND_FAULT(engine, env, msg_ctx) \
-        axis2_engine_send_fault(engine, env, msg_ctx)
-
-/** Receive a SOAP fault. */
-#define AXIS2_ENGINE_RECEIVE_FAULT(engine, env, msg_ctx) \
-        axis2_engine_receive_fault(engine, env, msg_ctx)
-
-/** Creates fault message context. */
-#define AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx) \
-        axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx)
-
-/** Extracts the fault info from message context, */
-#define AXIS2_ENGINE_EXTRACT_FAULT_INFO_FROM_MSG_CTX(engine, env, msg_ctx, fault) \
-        axis2_engine_extract_fault_info_from_msg_ctx(engine, env, msg_ctx, fault)
-
-/** Verifies that the context hierarchy is built. */
-#define AXIS2_ENGINE_VERIFY_CTX_BUILT(engine, env, msg_ctx) \
-        axis2_engine_verify_ctx_built(engine, env, msg_ctx)
-
-/** Invokes the phases. */
-#define AXIS2_ENGINE_INVOKE_PHASES(engine, env, phases, msg_ctx) \
-        axis2_engine_invoke_phases(engine, env, phases, msg_ctx)
-
-/** Resumes the invocation phases. */
-#define AXIS2_ENGINE_RESUME_INVOCATION_PHASES(engine, env, phases, msg_ctx) \
-        axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx)
-
-/** Gets sender fault code. */
-#define AXIS2_ENGINE_GET_SENDER_FAULT_CODE(engine, env, soap_namespace) \
-        axis2_engine_get_sender_fault_code(engine, env, soap_namespace)
-
-/** Gets receiver fault code. */
-#define AXIS2_ENGINE_GET_RECEIVER_FAULT_CODE(engine, env, soap_namespace) \
-        axis2_engine_get_receiver_fault_code(engine, env, soap_namespace)
-
-/** Frees engine. */
-#define AXIS2_ENGINE_FREE(engine, env) \
-        axis2_engine_free(engine, env)
-
-/** Resumes send operation. */
-#define AXIS2_ENGINE_RESUME_SEND(engine, env, msg_ctx)\
-        axis2_engine_resume_send(engine, env, msg_ctx)
-
-/** Resumes  receive operation. */
-#define AXIS2_ENGINE_RESUME_RECEIVE(engine, env, msg_ctx) \
-        axis2_engine_resume_receive(engine, env, msg_ctx)
-
-/** @} */
 #ifdef __cplusplus
 }
 #endif

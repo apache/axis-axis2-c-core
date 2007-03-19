@@ -518,9 +518,9 @@ axis2_mep_client_two_way_send(
         }
     }
 
-    status = AXIS2_ENGINE_SEND(engine, env, msg_ctx);
+    status = axis2_engine_send(engine, env, msg_ctx);
     
-    AXIS2_ENGINE_FREE(engine, env);
+     axis2_engine_free(engine, env);
     engine = NULL;
     
     if (status != AXIS2_SUCCESS)
@@ -566,7 +566,7 @@ axis2_mep_client_two_way_send(
 	/* set response envelope */
     if (engine)
     {
-        AXIS2_ENGINE_FREE(engine, env);
+         axis2_engine_free(engine, env);
         engine = NULL;
     }
  	response_envelope =  axis2_msg_ctx_get_response_soap_envelope (msg_ctx, env);
@@ -576,7 +576,7 @@ axis2_mep_client_two_way_send(
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {
-            status = AXIS2_ENGINE_RECEIVE(engine, env, response);
+            status =  axis2_engine_receive(engine, env, response);
             if (status != AXIS2_SUCCESS)
                 return NULL;
         }
@@ -614,7 +614,7 @@ axis2_mep_client_two_way_send(
             engine = axis2_engine_create(env, conf_ctx);
             if (engine)
             {
-                status = AXIS2_ENGINE_RECEIVE(engine, env, response);
+                status =  axis2_engine_receive(engine, env, response);
                 if (status != AXIS2_SUCCESS)
                     return NULL;
             }
@@ -626,7 +626,7 @@ axis2_mep_client_two_way_send(
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
                 if (engine)
                 {
-                    AXIS2_ENGINE_FREE(engine, env);
+                     axis2_engine_free(engine, env);
                     engine = NULL;
                 }
                  axis2_msg_ctx_free(response, env);
@@ -642,7 +642,7 @@ axis2_mep_client_two_way_send(
 
     if (engine)
     {
-        AXIS2_ENGINE_FREE(engine, env);
+         axis2_engine_free(engine, env);
         engine = NULL;
     }
     return response;
@@ -696,14 +696,14 @@ axis2_mep_client_receive(
         axis2_msg_ctx_set_soap_envelope(response, env, response_envelope);
         if (engine)
         {
-            AXIS2_ENGINE_FREE(engine, env);
+             axis2_engine_free(engine, env);
             engine = NULL;
         }
 
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {
-            status = AXIS2_ENGINE_RECEIVE(engine, env, response);
+            status =  axis2_engine_receive(engine, env, response);
             if (status != AXIS2_SUCCESS)
             {
                 return NULL;
@@ -729,7 +729,7 @@ axis2_mep_client_receive(
 
     if (engine)
     {
-        AXIS2_ENGINE_FREE(engine, env);
+         axis2_engine_free(engine, env);
         engine = NULL;
     }
     return response;

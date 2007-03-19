@@ -58,7 +58,9 @@ axis2_disp_checker_create(
     disp_checker->base = NULL;
 
     /* create default name */
-    disp_checker->name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_DISP_CHECKER_NAME);
+    disp_checker->name = axis2_string_create_const(env, 
+        (axis2_char_t**)&AXIS2_DISP_CHECKER_NAME);
+
     if (!(disp_checker->name))
     {
         axis2_disp_checker_free(disp_checker, env);
@@ -81,7 +83,6 @@ axis2_disp_checker_create(
     }
 
     AXIS2_HANDLER_INIT(disp_checker->base, env, handler_desc);
-
     return disp_checker;
 }
 
@@ -163,7 +164,8 @@ axis2_disp_checker_invoke(
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    if (!( axis2_msg_ctx_get_server_side(msg_ctx, env))) /*if is client side, no point in proceeding*/
+    /*if is client side, no point in proceeding*/
+    if (!(axis2_msg_ctx_get_server_side(msg_ctx, env))) 
         return AXIS2_SUCCESS;
 
     op =  axis2_msg_ctx_get_op(msg_ctx, env);
@@ -191,8 +193,8 @@ axis2_disp_checker_invoke(
                  axis2_msg_ctx_set_svc(msg_ctx, env, tsvc);
         }
     }
-
     endpoint_ref =  axis2_msg_ctx_get_to(msg_ctx, env);
+
     if (endpoint_ref)
         address = axis2_endpoint_ref_get_address(endpoint_ref, env);
 

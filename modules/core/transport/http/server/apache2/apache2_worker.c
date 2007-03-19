@@ -272,8 +272,8 @@ axis2_apache2_worker_process_request(
             {
                 send_status =  HTTP_INTERNAL_SERVER_ERROR;
             }
-            fault_ctx = AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx);
-            AXIS2_ENGINE_SEND_FAULT(engine, env, fault_ctx);
+            fault_ctx =  axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx);
+            axis2_engine_send_fault(engine, env, fault_ctx);
             if (out_stream)
             {
                 body_string = axis2_stream_get_buffer(out_stream, env);

@@ -345,12 +345,12 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
                 {
                     /* if it is two way and not a fault then send through engine.
                        if it is one way we do not need to do an engine send */
-                    status = AXIS2_ENGINE_SEND(engine, env, out_msg_ctx);
+                    status = axis2_engine_send(engine, env, out_msg_ctx);
                 }
             }
         }
     }
-    AXIS2_ENGINE_FREE(engine, env);
+     axis2_engine_free(engine, env);
     if (! axis2_msg_ctx_is_paused(out_msg_ctx, env) && 
             ! axis2_msg_ctx_is_keep_alive(out_msg_ctx, env))
     {

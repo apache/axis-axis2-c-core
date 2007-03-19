@@ -293,7 +293,7 @@ axis2_http_worker_process_request(
             {
                 return AXIS2_FALSE;
             }
-            fault_ctx = AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx);
+            fault_ctx =  axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx);
             req_line = AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(simple_request
                     , env);
             if (req_line)
@@ -309,7 +309,7 @@ axis2_http_worker_process_request(
             }
             tmp_stat_line = axis2_http_status_line_create(env,
                     status_line_str);
-            AXIS2_ENGINE_SEND_FAULT(engine, env, fault_ctx);
+            axis2_engine_send_fault(engine, env, fault_ctx);
             AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env,
                     AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(tmp_stat_line, env),
                     AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(tmp_stat_line, env) ,

@@ -124,7 +124,6 @@ axis2_disp_set_name(
     if (disp->name)
     {
         axis2_string_free(disp->name, env);
-        disp->name = NULL;
     }
 
     if (name)
@@ -179,14 +178,11 @@ axis2_disp_free(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     if (disp->name)
     {
         axis2_string_free(disp->name, env);
     }
-
     AXIS2_FREE(env->allocator, disp);
-
     return AXIS2_SUCCESS;
 }
 

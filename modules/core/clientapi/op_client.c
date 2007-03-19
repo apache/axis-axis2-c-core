@@ -388,8 +388,8 @@ axis2_op_client_execute(
         engine = axis2_engine_create(env, conf_ctx);
         if (!engine)
             return AXIS2_FAILURE;
-        AXIS2_ENGINE_SEND(engine, env, msg_ctx);
-        AXIS2_ENGINE_FREE(engine, env);
+        axis2_engine_send(engine, env, msg_ctx);
+         axis2_engine_free(engine, env);
     }
     else
     {
