@@ -107,7 +107,7 @@ axis2_callback_invoke_on_complete(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     axis2_callback_set_envelope(callback, env,
-            AXIS2_ASYNC_RESULT_GET_ENVELOPE(result, env));
+            axis2_async_result_get_envelope(result, env));
     status = callback->on_complete(callback, env);
 
     return status;

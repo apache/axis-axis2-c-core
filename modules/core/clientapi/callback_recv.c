@@ -185,7 +185,7 @@ axis2_callback_recv_receive(
                      axis2_msg_ctx_set_soap_envelope(msg_ctx, env, NULL);
                 }
 
-                AXIS2_ASYNC_RESULT_FREE(result, env);
+                axis2_async_result_free(result, env);
                 if (callback && result)
                     return AXIS2_SUCCESS;
             }

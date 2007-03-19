@@ -86,17 +86,6 @@ extern "C"
     axis2_async_result_create(const axis2_env_t *env,
         axis2_msg_ctx_t *result);
 
-/** Gets the envelope. */
-#define AXIS2_ASYNC_RESULT_GET_ENVELOPE(async_result, env) \
-      axis2_async_result_get_envelope(async_result, env)
-
-/** Gets the result. */
-#define AXIS2_ASYNC_RESULT_GET_RESULT(async_result, env) \
-      axis2_async_result_get_result(async_result, env)
-
-/** Free. */
-#define AXIS2_ASYNC_RESULT_FREE(async_result, env) \
-      axis2_async_result_free (async_result, env)
 
 /** @} */
 #ifdef __cplusplus

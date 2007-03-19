@@ -582,7 +582,7 @@ axis2_op_client_worker_func(
     AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, th_env, AXIS2_TRUE);
 
     /* clean up memory */
-    AXIS2_ASYNC_RESULT_FREE(args_list->op_client->async_result, th_env);
+    axis2_async_result_free(args_list->op_client->async_result, th_env);
     
      axis2_op_ctx_free(op_ctx, th_env);
         
