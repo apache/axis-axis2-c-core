@@ -93,26 +93,6 @@ extern "C"
     AXIS2_EXTERN axis2_disp_checker_t *AXIS2_CALL
     axis2_disp_checker_create(const axis2_env_t *env);
     
-
-/** Gets base handler. */
-#define AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env) \
-      axis2_disp_checker_get_base(disp_checker, env)
-
-/** Gets QName. */
-#define AXIS2_DISP_CHECKER_GET_NAME(disp_checker, env) \
-      axis2_disp_checker_get_name(disp_checker, env)
-
-/** Sets the name. */
-#define AXIS2_DISP_CHECKER_SET_NAME(disp_checker, env, name) \
-      axis2_disp_checker_set_name(disp_checker, env, name)
-
-/** Frees dispatcher checker. */
-#define AXIS2_DISP_CHECKER_FREE(disp_checker, env) \
-      axis2_disp_checker_free(disp_checker, env)
-
-
-/** @} */
-
 #ifdef __cplusplus
 }
 #endif

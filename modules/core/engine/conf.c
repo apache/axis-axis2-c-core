@@ -1224,8 +1224,8 @@ axis2_conf_set_default_dispatchers(
     }
 
     disp_checker = axis2_disp_checker_create(env);
-    handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
-    AXIS2_DISP_CHECKER_FREE(disp_checker, env);
+    handler = axis2_disp_checker_get_base(disp_checker, env);
+     axis2_disp_checker_free(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
@@ -1275,7 +1275,7 @@ axis2_conf_set_dispatch_phase(
 
     disp_checker = axis2_disp_checker_create(env);
 
-    handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
+    handler = axis2_disp_checker_get_base(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
 
     status = axis2_array_list_add(conf->
@@ -1284,7 +1284,7 @@ axis2_conf_set_dispatch_phase(
     {
         AXIS2_PHASE_FREE(dispatch, env);
         AXIS2_PHASE_FREE(post_dispatch, env);
-        AXIS2_DISP_CHECKER_FREE(disp_checker, env);
+         axis2_disp_checker_free(disp_checker, env);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

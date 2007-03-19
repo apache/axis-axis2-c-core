@@ -147,17 +147,6 @@ extern "C"
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
     axiom_soap_action_disp_create(const axis2_env_t *env);
 
-
-/** Gets the base handler.  */
-#define axis2_disp_get_base(disp, env) \
-        axis2_disp_get_base(disp, env)
-
-/** Frees dispatcher. */
-#define axis2_disp_free(disp, env) \
-        axis2_disp_free(disp, env)
-
-/** @} */
-
 #ifdef __cplusplus
 }
 #endif
