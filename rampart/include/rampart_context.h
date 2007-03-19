@@ -56,8 +56,24 @@ extern "C"
 
     typedef struct rampart_context_t rampart_context_t;
 
+
+    /**
+    * Create a rampart_context.rampart_context is the wrapper
+    * of secpolicy and the main configuration for rampart.
+    * @env pointer to environment struct
+    * @return ramaprt_context_t* on successful creation.Else NULL; 
+    */
+
     AXIS2_EXTERN rampart_context_t *AXIS2_CALL
     rampart_context_create(const axis2_env_t *env);
+
+
+    /**
+    * Frees a rampart_context.
+    * @rampart_context the rampart_context
+    * @env pointer to environment struct
+    * @return AXIS2_SUCCESS on success else AXIS2_FAILURE. 
+    */
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rampart_context_free(rampart_context_t *rampart_context,
@@ -66,11 +82,29 @@ extern "C"
 
     /****************************************************************/    
 
+    /**
+    * Sets the policy node which is an om_node containing policy.This om_node
+    * can be build outside rampart. 
+    * @rampart_context the rampart_context
+    * @env pointer to environment struct
+    * @policy_node is an axiom_node.
+    * @return AXIS2_SUCCESS on success else AXIS2_FAILURE. 
+    */
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rampart_context_set_policy_node(rampart_context_t *rampart_context,
             const axis2_env_t *env,
             axiom_node_t *policy_node);
-                    
+    
+    /**
+    * Sets private key of sender as a buffer.This can be
+    * set from outside rampart.  
+    * @rampart_context the rampart_context
+    * @env pointer to environment struct
+    * @prv_key is a void buffer.
+    * @return AXIS2_SUCCESS on success else AXIS2_FAILURE. 
+    */
+
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     rampart_context_set_prv_key(rampart_context_t *rampart_context,
             const axis2_env_t *env,
@@ -201,7 +235,6 @@ extern "C"
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
-
     /*End of Getters */
 
 /*Rampart specific functions */
@@ -254,6 +287,16 @@ extern "C"
     rampart_context_set_authn_provider(rampart_context_t *rampart_context,
             const axis2_env_t *env,
             rampart_authn_provider_t *authn_provider);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rampart_context_get_require_timestamp(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rampart_context_get_require_ut(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
 
     AXIS2_EXTERN int AXIS2_CALL
     rampart_context_get_binding_type(

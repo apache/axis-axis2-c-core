@@ -131,6 +131,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
                 AXIS2_LOG_INFO(env->log,
                     "[rampart][rampart_out_handler] Security header building failed ERROR");
                 rampart_engine_shutdown(env,rampart_context);
+                return AXIS2_FAILURE;
         }
         status = rampart_engine_shutdown(env,rampart_context);
     }

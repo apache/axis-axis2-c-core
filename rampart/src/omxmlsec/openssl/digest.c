@@ -40,6 +40,7 @@ openssl_sha1(const axis2_env_t *env,
     encoded_str = AXIS2_MALLOC(env->allocator, axis2_base64_encode_len(SIZE_HASH));
     axis2_base64_encode(encoded_str, (char*)md, SHA_DIGEST_LENGTH);
 
+    AXIS2_LOG_INFO(env->log, "[openssl][sha1-output]\n\n%s\n\n", encoded_str);
     return encoded_str;
 }
 

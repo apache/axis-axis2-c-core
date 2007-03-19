@@ -62,3 +62,25 @@ oxs_util_get_format_by_file_extension(const axis2_env_t *env,
     }
 
 }
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_util_get_newline_removed_string(const axis2_env_t *env,
+        axis2_char_t *input)
+{
+    axis2_char_t *output = NULL;
+    int i = 0;
+
+    output = AXIS2_MALLOC(env->allocator,  axis2_strlen(input)+1);
+    
+    while(*input!='\0')
+    {
+        if(*input!='\n')
+        {
+            output[i] = *input;
+            i++;
+        }
+        input++;
+    }
+    output[i]='\0';   
+    return output; 
+}

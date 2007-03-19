@@ -72,7 +72,8 @@ load_sample_xml(const axis2_env_t *env,
     return tmpl;
 }
 
-void c14n(axis2_env_t *env, axis2_char_t* filename)
+axis2_char_t *
+c14n(axis2_env_t *env, axis2_char_t* filename)
 {
     axiom_document_t *doc = NULL;
     axis2_char_t *algo = NULL;
@@ -86,10 +87,10 @@ void c14n(axis2_env_t *env, axis2_char_t* filename)
     oxs_c14n_apply_algo(env, doc, &c14nized, NULL, (axiom_node_t*)input, algo);
     outf = fopen("c14n.txt", "w");
     fwrite(c14nized, 1, strlen(c14nized), outf);
-
+    return c14nized;
 }
 
-void digest(axis2_env_t *env, axis2_char_t *in){
+axis2_char_t* digest(axis2_env_t *env, axis2_char_t *in){
     axis2_char_t *dg = NULL;
     FILE *outf = NULL;
 
@@ -97,6 +98,7 @@ void digest(axis2_env_t *env, axis2_char_t *in){
     outf = fopen("digest.txt", "w");
     fwrite(dg, 1, strlen(dg), outf);
     printf("DIGEST = %s", dg);
+    return dg;
 }
 
 int main()
@@ -114,9 +116,18 @@ int main()
     env = axis2_env_create_all("./openssl.log", AXIS2_LOG_LEVEL_TRACE);
 
     /*new code*/
-     c14n(env, "input.xml");
-     digest(env, "ABCDABCDABCDABCD");
-     return 0;
+    {
+        axis2_char_t *c14op = NULL;
+        axis2_char_t *digestop = NULL;
+        /*FILE *inf = NULL;*/
+        /*c14op = c14n(env, "input.xml");*/
+        /*inf = fopen("c14n.txt", "r");
+        c14op = malloc(2000);
+        fread(c14op, 1, 1999, inf);*/
+        c14op = "<soapenv:Body xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\" wsu:Id=\"Id-26953436\"><example1:echo xmlns:example1=\"http://example1.org/example1\"><example1:Text>Testing Rampart with WS-SecPolicy</example1:Text></example1:echo></soapenv:Body>";
+        digestop = digest(env, c14op);
+        return 0;
+    }
     /*eof new code*/
 
     /*Load private key*/

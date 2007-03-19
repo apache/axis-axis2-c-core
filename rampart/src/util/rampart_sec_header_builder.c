@@ -34,6 +34,7 @@
 #include <axis2_utils.h>
 #include <axis2_array_list.h>
 #include <rampart_signature.h>
+
 /*Private functions*/
 axis2_status_t AXIS2_CALL
 rampart_interchange_nodes(const axis2_env_t *env,
@@ -182,7 +183,7 @@ rampart_shb_build_message(const axis2_env_t *env,
                 return AXIS2_FAILURE;
         }            
 
-            /*If both encryption and signature is done we should intercgange them.
+            /*If both encryption and signature is done we should interchange them.
              * because the action done last should appear first in the header. */
         sig_node = oxs_axiom_get_node_by_local_name(env,sec_node,OXS_NODE_SIGNATURE);
         enc_key_node = oxs_axiom_get_node_by_local_name(env,sec_node,OXS_NODE_ENCRYPTED_KEY);
@@ -223,11 +224,4 @@ rampart_shb_build_message(const axis2_env_t *env,
     }
     else
         return AXIS2_FAILURE;
-   /*Timestamp Inclusion*/
-    
-    /*username Token inclusion*/
-
-    /*check the protection order*/
-
-
 }

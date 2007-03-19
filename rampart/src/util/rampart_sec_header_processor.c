@@ -462,8 +462,11 @@ rampart_shp_process_signature(const axis2_env_t *env,
         return AXIS2_FAILURE;  
     }    
     
-    sign_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
+    /*sign_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
                             OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
+    */
+    sign_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
+                            OXS_NODE_SIGNEDINFO, NULL, NULL);
 
     if(!sign_info_node)
     {
@@ -496,8 +499,10 @@ rampart_shp_process_signature(const axis2_env_t *env,
             /*Verify each digest method with policy*/    
             axiom_node_t *digest_mtd_node = NULL;
             axis2_char_t *digest_mtd = NULL;
+            /*digest_mtd_node  = oxs_axiom_get_first_child_node_by_name(env,cur_node,
+                           OXS_NODE_DIGEST_METHOD, OXS_DSIG_NS, OXS_DS);*/
             digest_mtd_node  = oxs_axiom_get_first_child_node_by_name(env,cur_node,
-                           OXS_NODE_DIGEST_METHOD, OXS_DSIG_NS, OXS_DS);
+                           OXS_NODE_DIGEST_METHOD, NULL,NULL);            
             if(digest_mtd_node)
             {
                 digest_mtd = oxs_token_get_digest_method(env, digest_mtd_node);
@@ -547,15 +552,22 @@ rampart_shp_process_signature(const axis2_env_t *env,
         AXIS2_LOG_INFO(env->log, "[rampart][shp] No way of gettting the token.");
         return AXIS2_FAILURE;
     }
+    /*key_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
+                            OXS_NODE_KEY_INFO,OXS_DSIG_NS, OXS_DS );*/
+
     key_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
-                            OXS_NODE_KEY_INFO,OXS_DSIG_NS, OXS_DS );
+                           OXS_NODE_KEY_INFO,NULL,NULL);
+    
     if(!key_info_node)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][shp]Verify failed. Key Info node is not in the message.");
         return AXIS2_FAILURE;
     }
+    /*str_node = oxs_axiom_get_first_child_node_by_name(env,key_info_node,
+                            OXS_NODE_SECURITY_TOKEN_REFRENCE,OXS_WSSE_XMLNS,OXS_WSSE);*/
+
     str_node = oxs_axiom_get_first_child_node_by_name(env,key_info_node,
-                            OXS_NODE_SECURITY_TOKEN_REFRENCE,OXS_WSSE_XMLNS,OXS_WSSE);
+                            OXS_NODE_SECURITY_TOKEN_REFRENCE,NULL,NULL);
 
     if(str_node)
     {

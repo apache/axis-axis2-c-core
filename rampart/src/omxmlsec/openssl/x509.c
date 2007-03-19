@@ -27,6 +27,7 @@
 #include <oxs_error.h>
 #include <openssl_pkcs12.h>
 #include <openssl_x509.h>
+#include <oxs_utility.h>
 
 /*Usefull when we have BinarySecurityTokn*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -199,32 +200,21 @@ openssl_x509_get_cert_data(const axis2_env_t *env,
     axis2_char_t *core = NULL;
     axis2_char_t *res = NULL;
     axis2_char_t *buffer = NULL;
-    int i = 0;
-    int j = 0;
-    
+
     unformatted = openssl_x509_get_info(env, OPENSSL_X509_INFO_DATA_CERT, cert);
     core_tail = axis2_strstr(unformatted, "\n");
-    core_tail = core_tail+1;
     res = axis2_strstr(core_tail,"-----END");
-    res = res-1;
     res[0] = '\0';
     core = (axis2_char_t*)axis2_strdup(core_tail,env);
-    buffer = (axis2_char_t*)axis2_strdup(core,env);
-
-    while(core[i]!='\0')
+    if(core)
     {
-        if(core[i]!='\n')
-        {
-            buffer[j] = core[i];
-            j++;
-        }
-        i++;
-    }        
-    buffer[j]='\0';
-
-    AXIS2_FREE(env->allocator,core);
-    core = NULL;
-    return buffer;
+        buffer = oxs_util_get_newline_removed_string(env,core);
+        AXIS2_FREE(env->allocator,core);
+        core = NULL;
+        return buffer;
+    }
+    else
+        return NULL;
 }
 
 

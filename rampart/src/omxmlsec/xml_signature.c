@@ -47,7 +47,6 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
     axis2_char_t *digest = NULL; 
     int i = 0;
     
- /* printf("oxs_xml_sig_transform_n_digest\n %s", axiom_node_to_string(node, env));*/
     if((transforms) && (0 < axis2_array_list_size(transforms, env))){
         oxs_tr_dtype_t output_dtype = OXS_TRANSFORM_TYPE_UNKNOWN;/*This will always be the current dtype*/
         void *tr_output = NULL;
@@ -73,12 +72,10 @@ oxs_xml_sig_transform_n_digest(const axis2_env_t *env,
             /*If the required input type is CHAR and what we have is a NODE*/
             if((input_dtype == OXS_TRANSFORM_TYPE_CHAR) && (output_dtype == OXS_TRANSFORM_TYPE_NODE)){
                 /*Serialize*/
-                printf("Serialize before the transformation\n");
                 tr_input = axiom_node_to_string((axiom_node_t*)tr_output, env);
             /*If the required input type is NODE and what we have is a CHAR*/
             }else if((input_dtype == OXS_TRANSFORM_TYPE_NODE) && (output_dtype == OXS_TRANSFORM_TYPE_CHAR)){
                 /*De-serialize*/
-                printf("De-serialize before the transformation\n");
                 tr_input =  oxs_axiom_deserialize_node(env, (axis2_char_t *)tr_output);
             }else{
                 /*Let it go as it is. */
@@ -403,9 +400,12 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_array_list_t *sign_part_list = NULL;
     
+    /*signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node, 
+                            OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );*/
+
     signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node, 
-                            OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
-                                
+                            OXS_NODE_SIGNEDINFO, NULL,NULL);
+
     if(!signed_info_node){
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find <ds:SignedInfo> " );        
         return AXIS2_FAILURE;
@@ -442,7 +442,7 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
                 oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"<ds:Reference> node processing failed " );        
                 return AXIS2_FAILURE;
             }
-           
+    
             /*Now we have a new sign_part. Add it to the list.*/
             axis2_array_list_add(sign_part_list, env, sign_part);
             
@@ -451,16 +451,29 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
         }
         cur_node = AXIOM_NODE_GET_NEXT_SIBLING(cur_node, env);
     }
-    
+   
     oxs_sign_ctx_set_sign_parts(sign_ctx, env, sign_part_list);
     /*Finished processing SignedInfo. Now we are processing the Signature Value element*/
     /*The very next child of SignedInfo Should be the ds:SignatureValue*/
     sig_val_node = AXIOM_NODE_GET_NEXT_SIBLING(signed_info_node, env);
     if(0 == axis2_strcmp( OXS_NODE_SIGNATURE_VALUE, axiom_util_get_localname(sig_val_node, env))){
         axis2_char_t *sig_val = NULL;
+        axis2_char_t *newline_removed = NULL;
 
         sig_val = oxs_token_get_signature_value(env, sig_val_node);
-        oxs_sign_ctx_set_sig_val(sign_ctx, env, sig_val);
+        if(!sig_val)
+        {
+            oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find signature value. " );
+            return AXIS2_FAILURE;
+        }            
+        /*We now remove \n in this text.Otherwise verifications failed.*/
+        newline_removed = oxs_util_get_newline_removed_string(env,sig_val);                
+        if(!newline_removed)
+        {
+            oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot Remove new lines. " );
+            return AXIS2_FAILURE;
+        }        
+        oxs_sign_ctx_set_sig_val(sign_ctx, env, newline_removed);
 
     }else{
         /*Error the node should be the ds:SignatureValue*/
@@ -522,7 +535,10 @@ oxs_xml_sig_verify_digests(const axis2_env_t *env,
 
         /*Get ith sign_part*/
         sign_part = (oxs_sign_part_t*)axis2_array_list_get(sign_parts, env, i);
-        status = oxs_xml_sig_verify_sign_part(env, sign_part);      
+        status = oxs_xml_sig_verify_sign_part(env, sign_part);     
+        if(AXIS2_FAILURE == status){
+            return AXIS2_FAILURE;
+        }
     }
     
     return status;
@@ -572,16 +588,21 @@ oxs_xml_sig_verify(const axis2_env_t *env,
     signature_val = oxs_sign_ctx_get_sig_val(sign_ctx, env);
 
     /*Then we apply the C14N for the ds:SignedInfo*/
+    /*signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node,
+                                OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );*/
+   
     signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node,
-                                OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
+                                OXS_NODE_SIGNEDINFO, NULL,NULL );
+
     c14n_mtd = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env); 
     doc = axiom_node_get_document(signed_info_node, env);
     
     AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (verif1)= %s ", axiom_node_to_string(signed_info_node, env) );
     /*    oxs_c14n_apply(env, doc, AXIS2_FALSE, &content, AXIS2_TRUE, NULL, signed_info_node);*/
+
     oxs_c14n_apply_algo(env, doc, &content, NULL, signed_info_node, c14n_mtd);
    
-    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (verif2)= %s ", content );
+    AXIS2_LOG_INFO(env->log, "[oxs][xml_sig] C14N (verif2)=\n\n%s\n\n", content );
 
     /*In the final step we Verify*/ 
     status = oxs_sig_verify(env, sign_ctx, content , signature_val);

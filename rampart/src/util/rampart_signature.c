@@ -134,8 +134,32 @@ rampart_sig_sign_message(const axis2_env_t *env,
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_signature] No parts specified or specified parts can't be found for Signature.");
         return AXIS2_SUCCESS;
-    }                            
-    /*Now we have to check whether a token is specified.*/
+    }
+    /*If Timestamp and usernametoken are in the message we should sign them.*/
+
+/*  if(rampart_context_get_require_timestamp(rampart_context,env))
+    {
+        axiom_node_t *ts_node = NULL;
+        ts_node = oxs_axiom_get_node_by_local_name(env,sec_node,RAMPART_SECURITY_TIMESTAMP);
+        if(!ts_node)
+        {
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_signature] Required timestamp cannot be found.");
+            return AXIS2_FAILURE;
+        }            
+        axis2_array_list_add(nodes_to_sign,env,ts_node);
+    }        
+    if(rampart_context_get_require_ut(rampart_context,env))
+    {
+        axiom_node_t *ut_node = NULL;
+        ut_node = oxs_axiom_get_node_by_local_name(env,sec_node,RAMPART_SECURITY_USERNAMETOKEN);
+        if(!ut_node)
+        {
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_signature] Required username token cannot be found.");
+            return AXIS2_FAILURE;
+        }            
+        axis2_array_list_add(nodes_to_sign,env,ut_node);    
+    }        
+*/    /*Now we have to check whether a token is specified.*/
     token = rampart_context_get_token(rampart_context,env,AXIS2_FALSE,server_side);
     if(!token)
     {
