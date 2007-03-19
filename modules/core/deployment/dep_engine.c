@@ -284,7 +284,7 @@ axis2_dep_engine_free(
 
     if (dep_engine->conf_builder)
     {
-        AXIS2_CONF_BUILDER_FREE(dep_engine->conf_builder, env);
+        axis2_conf_builder_free(dep_engine->conf_builder, env);
     }
 
     if (dep_engine->arch_reader)
@@ -536,7 +536,7 @@ axis2_dep_engine_load(
          axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
     }
-    status = AXIS2_CONF_BUILDER_POPULATE_CONF(dep_engine->conf_builder, env);
+    status = axis2_conf_builder_populate_conf(dep_engine->conf_builder, env);
     if (AXIS2_SUCCESS != status)
     {
          axis2_conf_free(dep_engine->conf, env);
@@ -662,7 +662,7 @@ axis2_dep_engine_load_client(
          axis2_conf_free(dep_engine->conf, env);
         dep_engine->conf = NULL;
     }
-    status = AXIS2_CONF_BUILDER_POPULATE_CONF(dep_engine->conf_builder, env);
+    status = axis2_conf_builder_populate_conf(dep_engine->conf_builder, env);
     if (AXIS2_SUCCESS != status)
     {
          axis2_conf_free(dep_engine->conf, env);
