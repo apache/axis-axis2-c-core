@@ -36,7 +36,7 @@ w2c_file_writer_create_classfile_name (
     int error = 0;
     int length = 0;
         
-    if ( NULL == root_location )
+    if ( ! root_location )
     {
         full_path= axis2_strdup ( ".", env);
     }

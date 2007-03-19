@@ -114,7 +114,7 @@ axis2_http_svr_thread_create(
             (env->allocator, sizeof(
                         axis2_http_svr_thread_impl_t));
 
-    if (NULL == svr_thread_impl)
+    if (! svr_thread_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -134,7 +134,7 @@ axis2_http_svr_thread_create(
     }
     svr_thread_impl->svr_thread.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_svr_thread_ops_t));
-    if (NULL == svr_thread_impl->svr_thread.ops)
+    if (! svr_thread_impl->svr_thread.ops)
     {
         axis2_http_svr_thread_free((axis2_http_svr_thread_t *) svr_thread_impl,
                 env);
@@ -203,7 +203,7 @@ axis2_http_svr_thread_run(
 
         socket = axis2_network_handler_svr_socket_accept(env,
                 svr_thread_impl->listen_socket);
-        if (NULL == svr_thread_impl->worker)
+        if (! svr_thread_impl->worker)
         {
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "Worker not ready yet."
                     " Cannot serve the request");
@@ -212,7 +212,7 @@ axis2_http_svr_thread_run(
         }
         arg_list = AXIS2_MALLOC(env->allocator,
                 sizeof(axis2_http_svr_thd_args_t));
-        if (NULL == arg_list)
+        if (! arg_list)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "Memory allocation error in the svr thread loop");
@@ -224,7 +224,7 @@ axis2_http_svr_thread_run(
 #ifdef AXIS2_SVR_MULTI_THREADED
         worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
                 axis2_svr_thread_worker_func, (void *)arg_list);
-        if (NULL == worker_thread)
+        if (! worker_thread)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
                     "server thread loop");
@@ -322,7 +322,7 @@ axis2_svr_thread_worker_func (
 #endif
 
     arg_list = (axis2_http_svr_thd_args_t *)data;
-    if (NULL == arg_list)
+    if (! arg_list)
     {
         return NULL;
     }

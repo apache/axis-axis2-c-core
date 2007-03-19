@@ -33,7 +33,7 @@ axis2_generic_obj_create(const axis2_env_t *env)
     generic_obj = (axis2_generic_obj_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axis2_generic_obj_t));
 
-    if (NULL == generic_obj)
+    if (! generic_obj)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

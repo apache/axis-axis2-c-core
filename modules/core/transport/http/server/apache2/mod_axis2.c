@@ -292,7 +292,7 @@ axis2_module_init(
     }
     allocator = (axis2_allocator_t*) apr_palloc(pool,
                                                 sizeof(axis2_allocator_t));
-    if (NULL == allocator)
+    if (! allocator)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_ENOMEM, svr_rec,
                      "[Axis2] Error allocating mod_axis2 allocator");
@@ -305,7 +305,7 @@ axis2_module_init(
     allocator->current_pool = (void*) pool;
     allocator->global_pool = (void*) pool;
 
-    if (NULL == allocator)
+    if (! allocator)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                          "[Axis2] Error initializing mod_axis2 allocator");
@@ -315,21 +315,21 @@ axis2_module_init(
     axis2_error_init();
     
     error = axis2_error_create(allocator);
-    if (NULL == error)
+    if (! error)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error creating mod_axis2 error structure");
         exit(APEXIT_CHILDFATAL);
     }
     axis2_logger = axis2_log_create(allocator, NULL, conf->axis2_log_file);
-    if (NULL == axis2_logger)
+    if (! axis2_logger)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error creating mod_axis2 log structure");
         exit(APEXIT_CHILDFATAL);
     }
     thread_pool = axis2_thread_pool_init(allocator);
-    if (NULL == thread_pool)
+    if (! thread_pool)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error initializing mod_axis2 thread pool");
@@ -337,7 +337,7 @@ axis2_module_init(
     }
     axis2_env = axis2_env_create_with_error_log_thread_pool(allocator, error,
             axis2_logger, thread_pool);
-    if (NULL == axis2_env)
+    if (! axis2_env)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error creating mod_axis2 environment");
@@ -352,7 +352,7 @@ axis2_module_init(
     }
     axis2_worker = axis2_apache2_worker_create(axis2_env,
             conf->axis2_repo_path);
-    if (NULL == axis2_worker)
+    if (! axis2_worker)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error creating mod_axis2 apache2 worker");

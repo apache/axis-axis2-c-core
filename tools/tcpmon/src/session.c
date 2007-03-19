@@ -142,7 +142,7 @@ tcpmon_session_create(const axis2_env_t *env)
     session_impl = (tcpmon_session_impl_t *) AXIS2_MALLOC(env->
             allocator, sizeof(tcpmon_session_impl_t));
 
-    if (NULL == session_impl)
+    if (! session_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -160,7 +160,7 @@ tcpmon_session_create(const axis2_env_t *env)
 
     session_impl->session.ops =
         AXIS2_MALLOC(env->allocator, sizeof(tcpmon_session_ops_t));
-    if (NULL == session_impl->session.ops)
+    if (! session_impl->session.ops)
     {
         tcpmon_session_free(&(session_impl->session), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -392,7 +392,7 @@ tcpmon_session_start(tcpmon_session_t *session,
     session_impl-> is_running = AXIS2_TRUE;
     server_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
             server_funct, (void*)thread_data);
-    if (NULL == server_thread)
+    if (! server_thread)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
                 "server thread");
@@ -509,7 +509,7 @@ server_funct(axis2_thread_t *thd, void *data)
         request_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
                 tcpmon_entry_new_entry_funct,
                 (void*)request_thread_data);
-        if (NULL == request_thread)
+        if (! request_thread)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
                     "request thread");

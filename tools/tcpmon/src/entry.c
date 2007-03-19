@@ -124,7 +124,7 @@ tcpmon_entry_create(const axis2_env_t *env)
 	 entry_impl = (tcpmon_entry_impl_t *) AXIS2_MALLOC(env->
 																		allocator, sizeof(tcpmon_entry_impl_t));
 
-	 if (NULL == entry_impl)
+	 if (! entry_impl)
 		{
 			 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 			 return NULL;
@@ -142,7 +142,7 @@ tcpmon_entry_create(const axis2_env_t *env)
 
 	 entry_impl->entry.ops =
 		  AXIS2_MALLOC(env->allocator, sizeof(tcpmon_entry_ops_t));
-	 if (NULL == entry_impl->entry.ops)
+	 if (! entry_impl->entry.ops)
 		{
 			 tcpmon_entry_free(&(entry_impl->entry), env);
 			 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -420,7 +420,7 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 			 return NULL;
 		}
 	 client_stream = axis2_stream_create_socket(env, client_socket);
-	 if (NULL == client_stream)
+	 if (! client_stream)
 		{
 			 axis2_network_handler_close_socket(env, client_socket);
 			 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating client stream"
@@ -488,7 +488,7 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 		}
 
 	 host_stream = axis2_stream_create_socket(env, host_socket);
-	 if (NULL == host_stream)
+	 if (! host_stream)
 		{
 			 AXIS2_STREAM_WRITE(client_stream, env, NULL, 0);
 			 AXIS2_STREAM_FREE(client_stream, env);

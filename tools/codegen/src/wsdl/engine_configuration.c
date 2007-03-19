@@ -476,7 +476,7 @@ w2c_engine_configuration_create (const axis2_env_t *env)
     engine_configuration_impl = (w2c_engine_configuration_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_engine_configuration_impl_t));
 
-    if(NULL == engine_configuration_impl)
+    if(! engine_configuration_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -519,7 +519,7 @@ w2c_engine_configuration_create (const axis2_env_t *env)
 
     engine_configuration_impl->engine_configuration.ops = 
     AXIS2_MALLOC (env->allocator, sizeof(w2c_engine_configuration_ops_t));
-    if(NULL == engine_configuration_impl->engine_configuration.ops)
+    if(! engine_configuration_impl->engine_configuration.ops)
     {
         w2c_engine_configuration_free(&(engine_configuration_impl->engine_configuration), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -670,7 +670,7 @@ w2c_engine_configuration_create_with_options (const axis2_env_t *env,
     engine_configuration_impl = (w2c_engine_configuration_impl_t *) 
                      w2c_engine_configuration_create ( env);
 
-    if(NULL == engine_configuration_impl)
+    if(! engine_configuration_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;

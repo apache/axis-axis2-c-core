@@ -97,13 +97,13 @@ axis2_env_create(axis2_allocator_t *allocator)
     axis2_env_t *environment;
     axis2_log_t *log = NULL;
 
-    if (NULL == allocator)
+    if (! allocator)
         return NULL;
 
     environment =
         (axis2_env_t *) AXIS2_MALLOC(allocator, sizeof(axis2_env_t));
 
-    if (NULL == environment)
+    if (! environment)
         return NULL;
 
     log = axis2_log_create_default(allocator);
@@ -112,7 +112,7 @@ axis2_env_create(axis2_allocator_t *allocator)
 
     /* Create default error */
     environment->error = axis2_error_create(allocator);
-    if (NULL == environment->error)
+    if (! environment->error)
         return NULL;
     environment->log = log;
     environment->thread_pool = NULL;
@@ -133,21 +133,21 @@ axis2_env_create_with_error_log(axis2_allocator_t *allocator,
     axis2_log_t *log)
 {
     axis2_env_t *environment;
-    if (NULL == allocator)
+    if (! allocator)
         return NULL;
-    if (NULL == error)
+    if (! error)
         return NULL;
 
     environment = (axis2_env_t *) AXIS2_MALLOC(allocator, sizeof(axis2_env_t));
 
-    if (NULL == environment)
+    if (! environment)
         return NULL;
 
     environment->allocator = allocator;
     environment->error = error;
 
 
-    if (NULL == log)
+    if (! log)
     {
         environment->log_enabled = AXIS2_FALSE;
     }
@@ -169,24 +169,24 @@ axis2_env_create_with_error_log_thread_pool(axis2_allocator_t *allocator,
     axis2_thread_pool_t *pool)
 {
     axis2_env_t *environment;
-    if (NULL == allocator)
+    if (! allocator)
         return NULL;
-    if (NULL == error)
+    if (! error)
         return NULL;
-    if (NULL == pool)
+    if (! pool)
         return NULL;
 
     environment =
         (axis2_env_t *) AXIS2_MALLOC(allocator, sizeof(axis2_env_t));
 
-    if (NULL == environment)
+    if (! environment)
         return NULL;
 
     environment->allocator = allocator;
     environment->error = error;
     environment->thread_pool = pool;
 
-    if (NULL == log)
+    if (! log)
         environment->log_enabled = AXIS2_FALSE;
     environment->log_enabled = AXIS2_TRUE;
     environment->log = log;

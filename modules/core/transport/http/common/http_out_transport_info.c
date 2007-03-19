@@ -38,7 +38,7 @@ axis2_http_out_transport_info_create(
             (env->allocator, sizeof(
                         axis2_http_out_transport_info_t));
 
-    if (NULL == http_out_transport_info)
+    if (! http_out_transport_info)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

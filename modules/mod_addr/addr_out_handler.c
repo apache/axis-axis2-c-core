@@ -447,7 +447,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                 {
                     dec_ns = axiom_element_find_declared_namespace(relates_to_header_ele, env,
                             addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-                    if (NULL == dec_ns)
+                    if (! dec_ns)
                     {
                         dec_ns = axiom_element_find_namespace(relates_to_header_ele, env,
                                 relates_to_header_node, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);

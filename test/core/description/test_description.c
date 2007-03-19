@@ -87,7 +87,7 @@ int axis2_test_svc_add_module_ops()
     AXIS2_SVC_FREE(svc, env);
     axis2_qname_free(qname, env);
     axis2_module_desc_free(module_desc, env);
-    AXIS2_CONF_FREE(axis2_config, env);
+     axis2_conf_free(axis2_config, env);
 
     return 0;
 }
@@ -123,7 +123,7 @@ int axis2_test_svc_engage_module()
 
     AXIS2_SVC_FREE(svc, env);
     axis2_qname_free(qname, env);
-    AXIS2_CONF_FREE(axis2_config, env);
+     axis2_conf_free(axis2_config, env);
 
     return 0;
 }

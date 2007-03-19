@@ -97,7 +97,7 @@ axis2_http_transport_sender_create(
             (env->allocator, sizeof(
                         axis2_http_transport_sender_impl_t));
 
-    if (NULL == transport_sender_impl)
+    if (! transport_sender_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -110,7 +110,7 @@ axis2_http_transport_sender_create(
     transport_sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
     transport_sender_impl->transport_sender.ops = AXIS2_MALLOC(env->allocator
             , sizeof(axis2_transport_sender_ops_t));
-    if (NULL == transport_sender_impl->transport_sender.ops)
+    if (! transport_sender_impl->transport_sender.ops)
     {
         axis2_http_transport_sender_free((axis2_transport_sender_t *)
                 transport_sender_impl, env);
@@ -212,7 +212,7 @@ axis2_http_transport_sender_invoke(
      * If we still can't find the char set enc we will
      * use default
      */
-    if (NULL == char_set_enc)
+    if (! char_set_enc)
     {
         char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
     }
@@ -244,7 +244,7 @@ axis2_http_transport_sender_invoke(
     }
 
     soap_data_out =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
-    if (NULL == soap_data_out)
+    if (! soap_data_out)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX,
@@ -256,12 +256,12 @@ axis2_http_transport_sender_invoke(
     }
     xml_writer = axiom_xml_writer_create_for_memory(env, NULL,
             AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
-    if (NULL == xml_writer)
+    if (! xml_writer)
     {
         return AXIS2_FAILURE;
     }
     om_output = axiom_output_create(env, xml_writer);
-    if (NULL == om_output)
+    if (! om_output)
     {
         AXIOM_XML_WRITER_FREE(xml_writer, env);
         xml_writer = NULL;
@@ -295,7 +295,7 @@ axis2_http_transport_sender_invoke(
 
             out_info = axis2_msg_ctx_get_http_out_transport_info(msg_ctx, env);
 
-            if (NULL == out_info)
+            if (! out_info)
             {
                 AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL, AXIS2_FAILURE);
@@ -332,7 +332,7 @@ axis2_http_transport_sender_invoke(
                 axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(
                             soap_data_out, env);
 
-                if (NULL == soap_body)
+                if (! soap_body)
                 {
                     AXIS2_ERROR_SET(env->error,
                             AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
@@ -345,7 +345,7 @@ axis2_http_transport_sender_invoke(
                     return AXIS2_FAILURE;
                 }
                 body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
-                if (NULL == body_node)
+                if (! body_node)
                 {
                     axiom_output_free(om_output, env);
                     om_output = NULL;
@@ -353,7 +353,7 @@ axis2_http_transport_sender_invoke(
                     return AXIS2_FAILURE;
                 }
                 data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
-                if (NULL == data_out || AXIOM_NODE_GET_NODE_TYPE(data_out, env)
+                if (! data_out || AXIOM_NODE_GET_NODE_TYPE(data_out, env)
                         != AXIOM_ELEMENT)
                 {
                     axiom_output_free(om_output, env);
@@ -559,14 +559,14 @@ axis2_http_transport_sender_write_message(
     
     soap_action = axis2_string_get_buffer( axis2_msg_ctx_get_soap_action(msg_ctx, env), env);
     
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
     }
 
 	sender = axis2_http_sender_create(env);
 
-	if (NULL == sender)
+	if (! sender)
 	{
 		return AXIS2_FAILURE;
 	}

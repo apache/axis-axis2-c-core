@@ -333,7 +333,7 @@ woden_wsdl10_ext_registry_register_deserializer(
 
     inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
-    if (NULL == inner_deserializer_reg)
+    if (! inner_deserializer_reg)
     {
         inner_deserializer_reg = axis2_hash_make(env);
         axis2_hash_set(registry_impl->deserializer_reg, parent_type,
@@ -505,7 +505,7 @@ woden_wsdl10_ext_registry_register_ext_element_type(
 
     inner_ext_type_reg = axis2_hash_get(registry_impl->ext_element_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
-    if (NULL == inner_ext_type_reg)
+    if (! inner_ext_type_reg)
     {
         inner_ext_type_reg = axis2_hash_make(env);
         axis2_hash_set(registry_impl->ext_element_reg, parent_type,
@@ -548,7 +548,7 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
 
     inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg,
             owner_class, AXIS2_HASH_KEY_STRING);
-    if (NULL == inner_ext_attr_reg)
+    if (! inner_ext_attr_reg)
     {
         inner_ext_attr_reg = axis2_hash_make(env);
         axis2_hash_set(registry_impl->ext_attr_reg, owner_class,
@@ -622,7 +622,7 @@ woden_wsdl10_ext_registry_register_component_ext(
 
     inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    if (NULL == inner_comp_ext_reg)
+    if (! inner_comp_ext_reg)
     {
         inner_comp_ext_reg = axis2_hash_make(env);
         axis2_hash_set(registry_impl->comp_ext_reg, parent_class,

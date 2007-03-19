@@ -137,7 +137,7 @@ axiom_soap_body_disp_find_svc(
                                                 conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
                                                 if (conf)
                                                 {
-                                                    svc = AXIS2_CONF_GET_SVC(conf, env, url_tokens[0]);
+                                                    svc = axis2_conf_get_svc(conf, env, url_tokens[0]);
                                                     if (svc)
                                                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                                                 "Service found using SOAP message body's first child's namespace URI");

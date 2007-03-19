@@ -70,13 +70,13 @@ w2c_properties_create (const axis2_env_t *env,
     properties_impl = (w2c_properties_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_properties_impl_t));
 
-    if(NULL == properties_impl)
+    if(! properties_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     main_props = axis2_properties_create(env);
-    if(NULL == main_props)
+    if(! main_props)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -86,7 +86,7 @@ w2c_properties_create (const axis2_env_t *env,
     tmp_hash = axis2_properties_get_all( main_props, env);
     
     properties_impl-> prop_hash = axis2_hash_make (env);
-    if(NULL == properties_impl-> prop_hash)
+    if(! properties_impl-> prop_hash)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -128,7 +128,7 @@ w2c_properties_create (const axis2_env_t *env,
 
     properties_impl->properties.ops = 
     AXIS2_MALLOC (env->allocator, sizeof(w2c_properties_ops_t));
-    if(NULL == properties_impl->properties.ops)
+    if(! properties_impl->properties.ops)
     {
         w2c_properties_free(&(properties_impl->properties), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

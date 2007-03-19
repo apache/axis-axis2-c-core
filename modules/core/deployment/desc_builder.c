@@ -51,7 +51,7 @@ axis2_desc_builder_create(
             allocator, sizeof(axis2_desc_builder_t));
 
 
-    if (NULL == desc_builder)
+    if (! desc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -77,7 +77,7 @@ axis2_desc_builder_create_with_file_and_dep_engine(
 
     desc_builder = (axis2_desc_builder_t *)
             axis2_desc_builder_create(env);
-    if (NULL == desc_builder)
+    if (! desc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -106,7 +106,7 @@ axis2_desc_builder_create_with_dep_engine(
 
     desc_builder = (axis2_desc_builder_t *)
             axis2_desc_builder_create(env);
-    if (NULL == desc_builder)
+    if (! desc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -325,7 +325,7 @@ struct axis2_handler_desc *AXIS2_CALL
     if (class_qname)
         axis2_qname_free(class_qname, env);
 
-    if (NULL == class_attrib)
+    if (! class_attrib)
     {
         axis2_handler_desc_free(handler_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
@@ -351,7 +351,7 @@ struct axis2_handler_desc *AXIS2_CALL
     if (order_qname)
         axis2_qname_free(order_qname, env);
 
-    if (NULL == order_element || NULL == order_node)
+    if (! order_element || ! order_node)
     {
         axis2_handler_desc_free(handler_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
@@ -848,7 +848,7 @@ axis2_desc_builder_process_op_module_refs(
             ref_qname = axis2_qname_create(env, ref_name, NULL, NULL);
             module_desc = AXIS2_DEP_ENGINE_GET_MODULE(desc_builder->engine, env,
                     ref_qname);
-            if (NULL == module_desc)
+            if (! module_desc)
             {
                 axis2_qname_free(ref_qname, env);
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
@@ -904,7 +904,7 @@ axis2_desc_builder_load_msg_recv(
     {
         return NULL;
     }
-    impl_info_param = AXIS2_CONF_GET_PARAM(conf, env, class_name);
+    impl_info_param =  axis2_conf_get_param(conf, env, class_name);
 
     if (!impl_info_param)
     {
@@ -929,7 +929,7 @@ axis2_desc_builder_load_msg_recv(
         /* set the impl_info_param(which contain dll_desc as value) so that
          * loaded msg_recv loader lib can be re-used in future
          */
-        AXIS2_CONF_ADD_PARAM(conf, env, impl_info_param);
+         axis2_conf_add_param(conf, env, impl_info_param);
     }
 
     axis2_class_loader_init(env);

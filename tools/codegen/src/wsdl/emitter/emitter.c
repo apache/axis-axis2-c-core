@@ -86,7 +86,7 @@ w2c_emitter_create_impl( const axis2_env_t *env)
     emitter_impl = 
          AXIS2_MALLOC (env->allocator, sizeof(w2c_emitter_impl_t));
 
-    if(NULL == emitter_impl)
+    if(! emitter_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -102,7 +102,7 @@ w2c_emitter_init( w2c_emitter_impl_t *emitter_impl,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if(NULL == emitter_impl)
+    if(! emitter_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE); 
         return AXIS2_FAILURE;
@@ -117,7 +117,7 @@ w2c_emitter_init( w2c_emitter_impl_t *emitter_impl,
 
     emitter_impl->emitter.ops = 
            AXIS2_MALLOC (env->allocator, sizeof(w2c_emitter_ops_t));
-    if(NULL == emitter_impl->emitter.ops)
+    if(! emitter_impl->emitter.ops)
     {
         w2c_emitter_free(&(emitter_impl->emitter), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -197,7 +197,7 @@ w2c_emitter_set_config(w2c_emitter_t *emitter,
          W2C_ENGINE_CONFIGURATION_GET_NAMEMAKER_FUNC( config, env);
     emitter_impl-> qname2name_maker = W2C_ENGINE_CONFIGURATION_GET_QNAME2NAME( config, env);
     
-    if ( NULL == name_maker_func )
+    if ( ! name_maker_func )
     {
         emitter_impl-> name_maker_func = w2c_emitter_default_namemaker;
     }
@@ -256,7 +256,7 @@ w2c_emitter_write_class(w2c_emitter_impl_t *emitter_impl,
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_char_t *full_path = NULL;
 
-    if ( NULL == writer )
+    if ( ! writer )
     {
        return AXIS2_FAILURE;
     }
@@ -276,7 +276,7 @@ w2c_emitter_write_class(w2c_emitter_impl_t *emitter_impl,
     file_name = axiom_element_get_attribute_value_by_name 
                             ( root_ele, env, "name");
     full_path = W2C_WRITER_CREATE_OUT_FILE ( writer, env, package_name, file_name);
-    if ( NULL == full_path )
+    if ( ! full_path )
     {
         return AXIS2_FAILURE;
     }
@@ -302,7 +302,7 @@ w2c_emitter_parse_wsdl( w2c_emitter_impl_t *emitter_impl,
        W2C_ENGINE_CONFIGURATION_GET_WSDL_URI ( emitter_impl-> config, env);
 
     om_doc = get_root_element_from_filename(env, filename);
-    if ( NULL == om_doc )
+    if ( ! om_doc )
     {
         return AXIS2_FAILURE;
     }
@@ -342,7 +342,7 @@ get_root_element_from_filename(
     axiom_document_t *doc   = NULL;
 
     reader = axiom_xml_reader_create_for_file(env, filename, NULL);
-    if ( NULL == reader )
+    if ( ! reader )
     {
        return NULL;
     }
@@ -895,7 +895,7 @@ w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
     {
         type = W2C_TYPEMAPPER_GET_TYPE_NAME( typemapper, env, msg_qname);
     }
-    if ( NULL == type ) /* this is databinding not present for the message*/
+    if ( ! type ) /* this is databinding not present for the message*/
     {
         msg_qname = W2C_TYPEMAPPER_GET_DEFAULT_QNAME( typemapper, env);
         type = W2C_TYPEMAPPER_GET_TYPE_NAME( typemapper, env, msg_qname);

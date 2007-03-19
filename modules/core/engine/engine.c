@@ -124,7 +124,7 @@ axis2_engine_send(
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *global_out_phase = AXIS2_CONF_GET_OUT_PHASES(conf, env);
+                axis2_array_list_t *global_out_phase =  axis2_conf_get_out_phases(conf, env);
                 if (global_out_phase)
                 {
                     axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);
@@ -147,7 +147,7 @@ axis2_engine_send(
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *global_out_phase = AXIS2_CONF_GET_OUT_PHASES(conf, env);
+                axis2_array_list_t *global_out_phase =  axis2_conf_get_out_phases(conf, env);
                 if (global_out_phase)
                 {
                     axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);
@@ -206,7 +206,7 @@ axis2_engine_receive(
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
 
     pre_calculated_phases =
-        AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
+         axis2_conf_get_in_phases_upto_and_including_post_dispatch(conf, env);
 
     if ( axis2_msg_ctx_is_paused(msg_ctx, env))
     {
@@ -318,7 +318,7 @@ axis2_engine_send_fault(
             axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *phases = AXIS2_CONF_GET_OUT_FAULT_FLOW(conf, env);
+                axis2_array_list_t *phases =  axis2_conf_get_out_fault_flow(conf, env);
                 if (phases)
                 {
                     axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
@@ -359,7 +359,7 @@ axis2_engine_receive_fault(
             axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *phases = AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
+                axis2_array_list_t *phases =  axis2_conf_get_in_phases_upto_and_including_post_dispatch(conf, env);
                 if (phases)
                 {
                     if ( axis2_msg_ctx_is_paused(msg_ctx, env))
@@ -795,7 +795,7 @@ axis2_engine_resume_receive(
     conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     phases =
-        AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
+         axis2_conf_get_in_phases_upto_and_including_post_dispatch(conf, env);
 
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
     /* invoking the message receiver */

@@ -646,7 +646,7 @@ parse_desc(
     desc = woden_desc_to_desc_element(desc, env);
     WODEN_DESC_ELEMENT_SET_EXT_REGISTRY(desc, env, ext_reg);
 
-    if (NULL == wsdl_modules)
+    if (! wsdl_modules)
     {
         /* This is the initial WSDL document. No imports or includes yet.
          * TODO this might be the place to flag the initial Desc if necessary.
@@ -841,7 +841,7 @@ parse_desc(
      */
     desc = woden_desc_to_desc_element(desc, env);
     types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
-    if (NULL == types)
+    if (! types)
     {
 
         types = WODEN_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc, env);
@@ -1237,14 +1237,14 @@ parse_schema_import(
         uri = NULL;
     }
 
-    if (NULL == WODEN_SCHEMA_GET_NAMESPACE(schema, env))
+    if (! WODEN_SCHEMA_GET_NAMESPACE(schema, env))
     {
         /* The namespace attribute is REQUIRED on xs:import, so don't continue. */
         WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
         return schema;
     }
 
-    if (NULL == WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env))
+    if (! WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env))
     {
         /* This is a namespace-only import, no schema document to be retrieved so don't continue.*/
 
@@ -3911,7 +3911,7 @@ parse_ext_element(
     el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
     namespc = axiom_element_get_namespace(el, env, el_node);
     namespc_uri_str = axiom_namespace_get_uri(namespc, env);
-    if (NULL == namespc_uri_str || (0 == axis2_strcmp(namespc_uri_str, WODEN_NS_URI_WSDL20)))
+    if (! namespc_uri_str || (0 == axis2_strcmp(namespc_uri_str, WODEN_NS_URI_WSDL20)))
     {
         /* TODO Set error message */
         return NULL;
@@ -3919,7 +3919,7 @@ parse_ext_element(
 
     desc = woden_desc_to_desc_element(desc, env);
     ext_reg = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(desc, env);
-    if (NULL == ext_reg)
+    if (! ext_reg)
     {
         /* TODO Set error message */
         return NULL;
@@ -3993,7 +3993,7 @@ get_wsdl_from_location(
     /* Check if WSDL imported or included previously from this location.*/
     referenced_desc = axis2_hash_get(wsdl_modules, location_str, AXIS2_HASH_KEY_STRING);
 
-    if (NULL == referenced_desc)
+    if (! referenced_desc)
     {
         /* not previously imported or included, so retrieve the WSDL.*/
         void *schema_col = NULL;

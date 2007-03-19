@@ -135,7 +135,7 @@ axis2_get_instance(w2c_extension_t **inst,
     extension_impl = (w2c_databinding_adb_ext_impl_t*)AXIS2_MALLOC( env-> allocator, 
                                           sizeof(w2c_databinding_adb_ext_impl_t) );
  
-    if(NULL == extension_impl)
+    if(! extension_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return AXIS2_FAILURE;
@@ -143,7 +143,7 @@ axis2_get_instance(w2c_extension_t **inst,
     
     extension_impl->extension.ops = 
                 AXIS2_MALLOC (env->allocator, sizeof(w2c_extension_ops_t));
-    if(NULL == extension_impl->extension.ops)
+    if(! extension_impl->extension.ops)
     {
         w2c_databinding_adb_ext_free(&(extension_impl->extension), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -207,7 +207,7 @@ w2c_databinding_adb_ext_invoke( const axis2_env_t *env,
     doc_base_uri = W2C_ENGINE_CONFIGURATION_GET_BASE_URI ( conf, env);
 
     om_doc = get_root_element_from_filename(env, wsdl_name);
-    if ( NULL == om_doc )
+    if ( ! om_doc )
     {
         return AXIS2_FAILURE;
     }
@@ -305,7 +305,7 @@ get_root_element_from_filename(
     axiom_document_t *doc   = NULL;
 
     reader = axiom_xml_reader_create_for_file(env, filename, NULL);
-    if ( NULL == reader )
+    if ( ! reader )
     {
        return NULL;
     }

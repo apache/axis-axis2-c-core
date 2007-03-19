@@ -1008,7 +1008,7 @@ axiom_util_get_node_namespace_uri(axiom_node_t *om_node,
     if (AXIOM_NODE_GET_NODE_TYPE(om_node, env) == AXIOM_ELEMENT)
     {
         om_ele = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
-        if (NULL == om_ele)
+        if (! om_ele)
         {
             return NULL;
         }

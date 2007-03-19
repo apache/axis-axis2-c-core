@@ -46,7 +46,7 @@ axis2_http_simple_request_create(
             (env->allocator, sizeof(
                         axis2_http_simple_request_t));
 
-    if (NULL == simple_request)
+    if (! simple_request)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -59,7 +59,7 @@ axis2_http_simple_request_create(
     if (!(simple_request->stream))
     {
         simple_request->stream = axis2_stream_create_basic(env);
-        if (NULL == simple_request->stream)
+        if (! simple_request->stream)
         {
             axis2_http_simple_request_free((axis2_http_simple_request_t *)
                     simple_request, env);
@@ -159,7 +159,7 @@ axis2_http_simple_request_contains_header(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
 
-    if (NULL == simple_request->header_group)
+    if (! simple_request->header_group)
     {
         return AXIS2_FALSE;
     }
@@ -208,7 +208,7 @@ axis2_http_simple_request_get_first_header(
     AXIS2_PARAM_CHECK(env->error, str, NULL);
 
     header_group = simple_request->header_group;
-    if (NULL == simple_request->header_group)
+    if (! simple_request->header_group)
     {
         return NULL;
     }
@@ -253,7 +253,7 @@ axis2_http_simple_request_remove_headers(
 
     header_group = simple_request->header_group;
 
-    if (NULL == header_group)
+    if (! header_group)
     {
         /* Even though we couldn't complete the op, we are sure that the
          * requred header is no more in the request. So we can proceed without a
@@ -289,7 +289,7 @@ axis2_http_simple_request_add_header(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, header, AXIS2_FAILURE);
 
-    if (NULL == simple_request->header_group)
+    if (! simple_request->header_group)
     {
         simple_request->header_group = axis2_array_list_create(env, 1);
     }
@@ -381,7 +381,7 @@ axis2_http_simple_request_get_body_bytes(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     body = simple_request->stream;
-    if (NULL == body)
+    if (! body)
     {
         *buf = (char*)AXIS2_MALLOC(env->allocator, 1);
         *buf[0] = '\0';
@@ -429,10 +429,10 @@ axis2_http_simple_request_set_body_string(
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     body_stream = simple_request->stream;
-    if (NULL == body_stream)
+    if (! body_stream)
     {
         body_stream = axis2_stream_create_basic(env);
-        if (NULL == body_stream)
+        if (! body_stream)
         {
             return AXIS2_FAILURE;
         }

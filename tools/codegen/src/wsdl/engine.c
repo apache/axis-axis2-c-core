@@ -85,7 +85,7 @@ w2c_engine_create_with_parser (const axis2_env_t *env,
     engine_impl = (w2c_engine_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_engine_impl_t));
 
-    if(NULL == engine_impl)
+    if(! engine_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -93,7 +93,7 @@ w2c_engine_create_with_parser (const axis2_env_t *env,
     
     engine_impl->engine.ops = 
        AXIS2_MALLOC (env->allocator, sizeof(w2c_engine_ops_t));
-    if(NULL == engine_impl->engine.ops)
+    if(! engine_impl->engine.ops)
     {
         w2c_engine_free(&(engine_impl->engine), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -138,7 +138,7 @@ w2c_engine_create_with_parser (const axis2_env_t *env,
         output_lang = axis2_strdup( output_lang, env);
         W2C_ENGINE_CONFIGURATION_SET_OUTPUT_LANGUAGE
                      ( engine_impl-> conf, env, output_lang );
-        if ( NULL == output_lang )
+        if ( ! output_lang )
         {
             w2c_messages_print_n_log_error( env,
                        "engine.noDefaultLang");
@@ -232,7 +232,7 @@ w2c_engine_generate(w2c_engine_t *engine,
     /* the place where emitter is loading */
     emitter = w2c_class_loader_get_object_from_class_name
           ( env, emit_name , W2C_CLASS_LOADER_EMITTER_PATH, &dll_desc );
-    if ( NULL == emitter)
+    if ( ! emitter)
     {
         w2c_messages_print_n_log_error( env,
                        "engine.emitterMissing");

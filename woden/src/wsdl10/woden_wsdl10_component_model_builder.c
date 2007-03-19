@@ -269,7 +269,7 @@ woden_wsdl10_component_model_builder_create(
             AXIS2_MALLOC(env->allocator,
 			 sizeof(woden_wsdl10_component_model_builder_impl_t));
 
-      if (NULL == builder_impl)
+      if (! builder_impl)
       {
 	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 	    return NULL;
@@ -284,7 +284,7 @@ woden_wsdl10_component_model_builder_create(
       builder_impl->builder.ops =
 	    AXIS2_MALLOC(env->allocator,
 			 sizeof(woden_wsdl10_component_model_builder_ops_t));
-      if (NULL == builder_impl->builder.ops)
+      if (! builder_impl->builder.ops)
       {
 	    woden_wsdl10_component_model_builder_free(&(builder_impl->builder), env);
 	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1069,7 +1069,7 @@ build_binding_exts(
 	     */
 	    binding = woden_binding_to_wsdl_component(binding, env);
 	    uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
-	    if (NULL == WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(binding,
+	    if (! WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(binding,
 									      env, uri_ns_soap))
 	    {
 		  void *comp_ext = NULL;
@@ -1165,7 +1165,7 @@ build_binding_op_exts(
 	     * these default values.
 	     */
 	    bind_op = woden_wsdl10_binding_op_to_wsdl_component(bind_op, env);
-	    if (NULL == WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(bind_op,
+	    if (! WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(bind_op,
 									      env, uri_ns_soap))
 	    {
 		  /*void *comp_ext = NULL;

@@ -40,7 +40,7 @@ axis2_raw_xml_in_out_msg_recv_create(
 
     AXIS2_ENV_CHECK(env, NULL);
     msg_recv = axis2_msg_recv_create(env);
-    if (NULL == msg_recv)
+    if (! msg_recv)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

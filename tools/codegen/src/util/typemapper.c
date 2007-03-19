@@ -104,7 +104,7 @@ w2c_typemapper_create (const axis2_env_t *env)
     typemapper_impl = (w2c_typemapper_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_typemapper_impl_t));
 
-    if(NULL == typemapper_impl)
+    if(! typemapper_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -115,7 +115,7 @@ w2c_typemapper_create (const axis2_env_t *env)
     
     typemapper_impl->typemapper.ops = 
     AXIS2_MALLOC (env->allocator, sizeof(w2c_typemapper_ops_t));
-    if(NULL == typemapper_impl->typemapper.ops)
+    if(! typemapper_impl->typemapper.ops)
     {
         w2c_typemapper_free(&(typemapper_impl->typemapper), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

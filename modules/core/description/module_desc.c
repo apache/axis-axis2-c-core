@@ -50,7 +50,7 @@ axis2_module_desc_create(const axis2_env_t *env)
     module_desc = (axis2_module_desc_t *) AXIS2_MALLOC(env->allocator,
         sizeof(axis2_module_desc_t));
 
-    if (NULL == module_desc)
+    if (! module_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -64,7 +64,7 @@ axis2_module_desc_create(const axis2_env_t *env)
     module_desc->ops = NULL;
 
     module_desc->params = axis2_param_container_create(env);
-    if (NULL == module_desc->params)
+    if (! module_desc->params)
     {
         axis2_module_desc_free(module_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -72,7 +72,7 @@ axis2_module_desc_create(const axis2_env_t *env)
     }
 
     module_desc->flow_container = axis2_flow_container_create(env);
-    if (NULL == module_desc->flow_container)
+    if (! module_desc->flow_container)
     {
         axis2_module_desc_free(module_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)
@@ -80,7 +80,7 @@ axis2_module_desc_create(const axis2_env_t *env)
     }
 
     module_desc->ops = axis2_hash_make(env);
-    if (NULL == module_desc->ops)
+    if (! module_desc->ops)
     {
         axis2_module_desc_free(module_desc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -99,7 +99,7 @@ axis2_module_desc_create_with_qname(const axis2_env_t *env,
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     module_desc = axis2_module_desc_create(env);
-    if (NULL == module_desc)
+    if (! module_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -288,7 +288,7 @@ axis2_module_desc_add_op(axis2_module_desc_t *module_desc,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
 
-    if (NULL == (module_desc->ops))
+    if (! (module_desc->ops))
     {
         module_desc->ops = axis2_hash_make(env);
         if (!module_desc->ops)
@@ -297,7 +297,7 @@ axis2_module_desc_add_op(axis2_module_desc_t *module_desc,
 
     op_qname = axis2_op_get_qname(op, env);
 
-    if (NULL == op_qname)
+    if (! op_qname)
     {
         return AXIS2_FAILURE;
     }
@@ -344,7 +344,7 @@ axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     param_name_l = axis2_param_get_name(param, env);
-    if (NULL == param_name_l)
+    if (! param_name_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM,
             AXIS2_FAILURE);
@@ -394,12 +394,12 @@ axis2_module_desc_is_param_locked(const axis2_module_desc_t *module_desc,
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FAILURE);
 
     /* checking the locked value of parent*/
-    if (NULL == module_desc->parent)
+    if (! module_desc->parent)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_MODULE_DESC, AXIS2_FAILURE);
         return AXIS2_FALSE;
     }
-    locked = AXIS2_CONF_IS_PARAM_LOCKED(module_desc->parent, env, param_name);
+    locked =  axis2_conf_is_param_locked(module_desc->parent, env, param_name);
 
     if (AXIS2_TRUE == locked)
     {

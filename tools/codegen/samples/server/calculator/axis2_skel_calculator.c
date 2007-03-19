@@ -52,7 +52,7 @@ axiom_node_t* axis2_skel_calculator_add(const axis2_env_t *env  ,
     int result = 0;
 
     int value1, value2;
-    if (NULL == req)
+    if (! req)
     {
         printf("request null\n");
         return NULL;

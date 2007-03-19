@@ -43,7 +43,7 @@ axis2_ws_info_create_with_file_name_and_last_modified_date(
             allocator, sizeof(axis2_ws_info_t));
 
 
-    if (NULL == ws_info)
+    if (! ws_info)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

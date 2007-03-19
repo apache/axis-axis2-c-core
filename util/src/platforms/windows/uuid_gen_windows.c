@@ -30,7 +30,7 @@ axis2_platform_uuid_gen(char *s)
     unsigned char      *str;
     axis2_char_t      *retstr;
 
-    if (NULL == s)
+    if (! s)
     {
         return NULL;
     }

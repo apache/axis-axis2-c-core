@@ -152,7 +152,7 @@ w2c_schema_compiler_options_create (const axis2_env_t *env)
     compiler_options_impl = (w2c_schema_compiler_options_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_schema_compiler_options_impl_t));
 
-    if(NULL == compiler_options_impl)
+    if(! compiler_options_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -171,7 +171,7 @@ w2c_schema_compiler_options_create (const axis2_env_t *env)
 
     compiler_options_impl->compiler_options.ops =
     AXIS2_MALLOC (env->allocator, sizeof(w2c_schema_compiler_options_ops_t));
-    if(NULL == compiler_options_impl->compiler_options.ops)
+    if(! compiler_options_impl->compiler_options.ops)
     {
         w2c_schema_compiler_options_free(&(compiler_options_impl->compiler_options), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

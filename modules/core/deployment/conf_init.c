@@ -57,7 +57,7 @@ axis2_build_conf_ctx(
     {
         return NULL;
     }
-    AXIS2_CONF_SET_DEP_ENGINE(conf, env, dep_engine);
+     axis2_conf_set_dep_engine(conf, env, dep_engine);
 
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
@@ -100,7 +100,7 @@ axis2_build_client_conf_ctx(
     {
         return NULL;
     }
-    AXIS2_CONF_SET_DEP_ENGINE(conf, env, dep_engine);
+     axis2_conf_set_dep_engine(conf, env, dep_engine);
 
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
@@ -138,7 +138,7 @@ axis2_init_modules(
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     if (conf)
     {
-        axis2_hash_t *module_map = AXIS2_CONF_GET_ALL_MODULES(conf, env);
+        axis2_hash_t *module_map =  axis2_conf_get_all_modules(conf, env);
         if (module_map)
         {
             axis2_hash_index_t *hi = NULL;
@@ -183,7 +183,7 @@ axis2_init_transports(
         axis2_transport_out_desc_t **transport_out_map = NULL;
         int i = 0;
 
-        transport_in_map = AXIS2_CONF_GET_ALL_IN_TRANSPORTS(conf, env);
+        transport_in_map =  axis2_conf_get_all_in_transports(conf, env);
         for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
         {
             if (transport_in_map[i])
@@ -197,7 +197,7 @@ axis2_init_transports(
             }
         }
 
-        transport_out_map = AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(conf, env);
+        transport_out_map =  axis2_conf_get_all_out_transports(conf, env);
         for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
         {
             if (transport_out_map[i])

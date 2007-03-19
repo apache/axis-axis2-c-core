@@ -344,7 +344,7 @@ axis2_op_client_execute(
             axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                transport_in = AXIS2_CONF_GET_TRANSPORT_IN(conf, env,
+                transport_in =  axis2_conf_get_transport_in(conf, env,
                         axis2_transport_out_desc_get_enum(transport_out, env));
             }
         }
@@ -428,7 +428,7 @@ axis2_op_client_execute(
             axis2_op_client_worker_func_args_t *arg_list = NULL;
             arg_list = AXIS2_MALLOC(env->allocator,
                     sizeof(axis2_op_client_worker_func_args_t));
-            if (NULL == arg_list)
+            if (! arg_list)
             {
                 return AXIS2_FAILURE;
             }
@@ -442,7 +442,7 @@ axis2_op_client_execute(
             {
                 worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
                         axis2_op_client_worker_func, (void*)arg_list);
-                if (NULL == worker_thread)
+                if (! worker_thread)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
                             "call invoke non blocking");

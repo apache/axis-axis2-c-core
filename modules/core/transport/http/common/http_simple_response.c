@@ -44,13 +44,13 @@ axis2_http_simple_response_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     ret = axis2_http_simple_response_create_default(env);
-    if (NULL == ret)
+    if (! ret)
     {
         return NULL;
     }
     simple_response = ret;
 
-    if (NULL == simple_response)
+    if (! simple_response)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -155,7 +155,7 @@ axis2_http_simple_response_set_status_line(
             tmp_status_line_str);
     AXIS2_FREE(env->allocator, tmp_status_line_str);
 
-    if (NULL == simple_response->status_line)
+    if (! simple_response->status_line)
     {
         return AXIS2_FAILURE;
     }
@@ -239,7 +239,7 @@ axis2_http_simple_response_get_first_header(
     AXIS2_PARAM_CHECK(env->error, str, NULL);
 
     header_group = simple_response->header_group;
-    if (NULL == simple_response->header_group)
+    if (! simple_response->header_group)
     {
         return NULL;
     }
@@ -281,7 +281,7 @@ axis2_http_simple_response_remove_headers(
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     header_group = simple_response->header_group;
-    if (NULL == header_group)
+    if (! header_group)
     {
         /* Even though we couldn't complete the op, we are sure that the
          * requred header is no more in the request. So we can proceed without a
@@ -323,7 +323,7 @@ axis2_http_simple_response_set_header(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, header, AXIS2_FAILURE);
 
-    if (NULL == simple_response->header_group)
+    if (! simple_response->header_group)
     {
         simple_response->header_group = axis2_array_list_create(env, 10);
         axis2_array_list_add(simple_response->header_group, env, header);
@@ -424,10 +424,10 @@ axis2_http_simple_response_set_body_string(
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     body_stream = simple_response->stream;
-    if (NULL == body_stream)
+    if (! body_stream)
     {
         body_stream = axis2_stream_create_basic(env);
-        if (NULL == body_stream)
+        if (! body_stream)
         {
             return AXIS2_FAILURE;
         }
@@ -472,7 +472,7 @@ axis2_http_simple_response_get_body_bytes(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (NULL == simple_response->stream)
+    if (! simple_response->stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_BODY, AXIS2_FAILURE);
         return -1;
@@ -520,7 +520,7 @@ axis2_http_simple_response_contains_header(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
-    if (NULL == simple_response->header_group)
+    if (! simple_response->header_group)
     {
         return AXIS2_FALSE;
     }

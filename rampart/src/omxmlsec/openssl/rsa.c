@@ -113,7 +113,7 @@ openssl_rsa_create(
     rsa_impl = (openssl_rsa_impl_t *) AXIS2_MALLOC(env->allocator,
             sizeof(openssl_rsa_impl_t));
 
-    if (NULL == rsa_impl)
+    if (! rsa_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -122,7 +122,7 @@ openssl_rsa_create(
     rsa_impl->rsa.ops = AXIS2_MALLOC(env->allocator,
             sizeof(openssl_rsa_ops_t));
 
-    if (NULL == rsa_impl->rsa.ops)
+    if (! rsa_impl->rsa.ops)
     {
         openssl_rsa_free(&(rsa_impl->rsa), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

@@ -105,7 +105,7 @@ rampart_username_token_create(
     username_token_impl = (rampart_username_token_impl_t *) AXIS2_MALLOC(env->allocator,
             sizeof(rampart_username_token_impl_t));
 
-    if (NULL == username_token_impl)
+    if (! username_token_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -113,7 +113,7 @@ rampart_username_token_create(
 
     username_token_impl->username_token.ops = AXIS2_MALLOC(env->allocator,
             sizeof(rampart_username_token_ops_t));
-    if (NULL == username_token_impl->username_token.ops)
+    if (! username_token_impl->username_token.ops)
     {
         rampart_username_token_free(&(username_token_impl->username_token), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

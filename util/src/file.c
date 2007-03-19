@@ -35,7 +35,7 @@ axis2_file_create(const axis2_env_t *env)
     file = (axis2_file_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axis2_file_t));
 
-    if (NULL == file)
+    if (! file)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

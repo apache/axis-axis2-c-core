@@ -83,7 +83,7 @@ w2c_string_add_string ( axis2_char_t* string1, axis2_char_t* string2,
         return string1;
     }
 
-    if ( NULL == string1 )
+    if ( ! string1 )
     {
         string1 = AXIS2_MALLOC( env-> allocator, 
                    sizeof(axis2_char_t) * (additional_len +1 ) );

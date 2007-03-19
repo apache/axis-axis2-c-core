@@ -427,7 +427,7 @@ axis2_conf_ctx_free(
     }
     if (conf_ctx->conf)
     {
-        AXIS2_CONF_FREE(conf_ctx->conf, env);
+         axis2_conf_free(conf_ctx->conf, env);
     }
     if (conf_ctx->mutex)
     {

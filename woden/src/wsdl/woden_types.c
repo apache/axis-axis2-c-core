@@ -920,7 +920,7 @@ woden_types_get_element_declaration(
     types_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
     /* Can't resolve the element if the QName is NULL.*/
-    if (NULL == qname)
+    if (! qname)
         return NULL;
 
     uri = axis2_qname_get_uri(qname, env);

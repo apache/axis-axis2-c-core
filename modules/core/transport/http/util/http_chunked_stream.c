@@ -48,7 +48,7 @@ axis2_http_chunked_stream_create(
             (env->allocator, sizeof(
                         axis2_http_chunked_stream_t));
 
-    if (NULL == chunked_stream)
+    if (! chunked_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -85,11 +85,11 @@ axis2_http_chunked_stream_read(
     axis2_stream_t *stream = chunked_stream->stream;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (NULL == buffer)
+    if (! buffer)
     {
         return -1;
     }
-    if (NULL == stream)
+    if (! stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM
                 , AXIS2_FAILURE);
@@ -142,11 +142,11 @@ axis2_http_chunked_stream_write(
     axis2_char_t tmp_buf[10];
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (NULL == buffer)
+    if (! buffer)
     {
         return -1;
     }
-    if (NULL == stream)
+    if (! stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM
                 , AXIS2_FAILURE);

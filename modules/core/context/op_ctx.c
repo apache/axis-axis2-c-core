@@ -174,7 +174,7 @@ axis2_op_ctx_init(
 
         if (svc_name)
         {
-            svc = AXIS2_CONF_GET_SVC(conf, env, svc_name);
+            svc = axis2_conf_get_svc(conf, env, svc_name);
 
             if (svc)
             {

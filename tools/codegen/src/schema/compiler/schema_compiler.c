@@ -293,7 +293,7 @@ w2c_schema_compiler_create( const axis2_env_t *env,
     compiler_impl = (w2c_schema_compiler_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_schema_compiler_impl_t));
 
-    if(NULL == compiler_impl)
+    if(! compiler_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -319,7 +319,7 @@ w2c_schema_compiler_create( const axis2_env_t *env,
 
     compiler_impl->compiler.ops =
     AXIS2_MALLOC( env->allocator, sizeof(w2c_schema_compiler_ops_t));
-    if(NULL == compiler_impl->compiler.ops)
+    if(! compiler_impl->compiler.ops)
     {
         w2c_schema_compiler_free(&(compiler_impl->compiler), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -332,7 +332,7 @@ w2c_schema_compiler_create( const axis2_env_t *env,
     compiler_impl->writer =
           W2C_SCHEMA_PROPERTY_LOADER_GET_WRITER_INSTANCE( compiler_impl->loader, env);
 
-    if ( NULL == compiler_impl->writer)
+    if ( ! compiler_impl->writer)
     {
          w2c_schema_compiler_free(&(compiler_impl->compiler), env);
          return NULL;
@@ -482,7 +482,7 @@ w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
     {
         package_name = W2C_SCHEMA_WRITER_GET_EXTENSION_MAPPER_PACKAGE_NAME
                                                (compiler_impl->writer, env);
-        if ( NULL == package_name )
+        if ( ! package_name )
         {
             /** derive package name from the namespace */
             package_name = w2c_url_processor_make_package_name(env, target_ns);
@@ -494,7 +494,7 @@ w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
     /** adding the schema to loaded schema map */
     schema_stored = axis2_hash_get( compiler_impl-> loaded_schema_map, target_ns,
             AXIS2_HASH_KEY_STRING );
-    if( NULL == schema_stored)
+    if( ! schema_stored)
     {
         axis2_hash_set( compiler_impl-> loaded_schema_map, target_ns,
                 AXIS2_HASH_KEY_STRING, xml_schema);
@@ -692,17 +692,17 @@ w2c_schema_compiler_find_class_name(w2c_schema_compiler_impl_t *compiler_impl,
     qname_str = w2c_string_make_key_from_qname( qname, env);
     class_name = axis2_hash_get( compiler_impl->processed_type_map, qname_str,
                                 AXIS2_HASH_KEY_STRING);
-    if ( NULL == class_name )
+    if ( ! class_name )
     {
         class_name = axis2_hash_get( compiler_impl->simple_type_map, qname_str,
                                 AXIS2_HASH_KEY_STRING);
     }
-    if ( NULL == class_name )
+    if ( ! class_name )
     {
         class_name = axis2_hash_get( base_schema_type_map, qname_str,
                                 AXIS2_HASH_KEY_STRING);
     }
-    if ( NULL == class_name )
+    if ( ! class_name )
     {
         class_name= 
             W2C_SCHEMA_PROPERTY_LOADER_GET_DEFAULT_CLASS( compiler_impl->loader, env);
@@ -772,7 +772,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
     axis2_char_t *local_part = NULL;
 
     /** param check is done with displaying the message */
-    if( NULL == ele )
+    if( ! ele )
     {
         w2c_messages_print_n_log_error( env, "schema.elementNull");
         return AXIS2_FAILURE;
@@ -998,7 +998,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
         }
     }
     /* set a mapper package if not avaialable */
-    if( NULL == W2C_SCHEMA_WRITER_GET_EXTENSION_MAPPER_PACKAGE_NAME( compiler_impl-> writer, env))
+    if( ! W2C_SCHEMA_WRITER_GET_EXTENSION_MAPPER_PACKAGE_NAME( compiler_impl-> writer, env))
     {
         W2C_SCHEMA_WRITER_REGISTER_EXTENSION_MAPPER_PACKAGENAME( compiler_impl-> writer, env, 
                 mapper_package_name);
@@ -1106,7 +1106,7 @@ w2c_schema_compiler_generate_type_qname(  w2c_schema_compiler_impl_t *compiler_i
         sprintf( counter_str, "_anon_type%d", counter);
         new_local_part = axis2_stracat( local_part, counter_str, env);
         qname = axis2_qname_create( env, new_local_part, ns_uri, NULL);
-        if ( NULL == XML_SCHEMA_GET_TYPE_BY_QNAME( parent_schema, env, qname ) )
+        if ( ! XML_SCHEMA_GET_TYPE_BY_QNAME( parent_schema, env, qname ) )
         {
             /* new suitable qname found */
             return qname;
@@ -2249,7 +2249,7 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
             {
                 qname_str = w2c_string_make_key_from_qname( base_type_qname, env);
                 nsuri = axis2_qname_get_uri( base_type_qname, env);
-                if ( NULL == nsuri || '\0' == *nsuri)
+                if ( ! nsuri || '\0' == *nsuri)
                 {
                     /** the blank namespace should be taken */
                     nsuri = XML_SCHEMA_GET_NAMESPACE( parent_schema, env, "");

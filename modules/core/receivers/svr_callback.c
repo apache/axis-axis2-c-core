@@ -34,7 +34,7 @@ axis2_svr_callback_create(
     svr_callback = (axis2_svr_callback_t *)
             AXIS2_MALLOC(env->allocator, sizeof(axis2_svr_callback_t));
 
-    if (NULL == svr_callback)
+    if (! svr_callback)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

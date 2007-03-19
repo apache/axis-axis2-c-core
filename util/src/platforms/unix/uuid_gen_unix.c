@@ -163,7 +163,7 @@ axis2_uuid_gen_v1()
     axis2_uuid_static.time_last.tv_sec  = time_now.tv_sec;
     axis2_uuid_static.time_last.tv_usec = time_now.tv_usec;
 
-    if (NULL == ret_uuid)
+    if (! ret_uuid)
     {
         return NULL;
     }
@@ -181,17 +181,17 @@ axis2_platform_uuid_gen(char *s)
     unsigned char mac[7];
     char mac_hex[13];
 
-    if (NULL == s)
+    if (! s)
     {
         return NULL;
     }
     uuid_struct = axis2_uuid_gen_v1();
-    if (NULL == uuid_struct)
+    if (! uuid_struct)
     {
         return NULL;
     }
     uuid_str = s;
-    if (NULL == uuid_str)
+    if (! uuid_str)
     {
         return NULL;
     }
@@ -259,7 +259,7 @@ axis2_uuid_get_mac_addr()
 
     /* get details of the interfaces */
     lifrs = malloc((num.lifn_count + 1) * sizeof(*lifrs));
-    if (NULL == lifrs)
+    if (! lifrs)
     {
         exit(1); /* what is the right error handling here ? */
     }

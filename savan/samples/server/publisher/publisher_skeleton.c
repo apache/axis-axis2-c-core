@@ -146,7 +146,7 @@ publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
     
     worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
         publisher_worker_func, (void*)data);
-    if(NULL == worker_thread)
+    if(! worker_thread)
     {
         printf("failed to create thread");
         return AXIS2_FAILURE;

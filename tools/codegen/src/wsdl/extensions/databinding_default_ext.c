@@ -66,7 +66,7 @@ w2c_databinding_default_ext_engage(w2c_extension_t *extension,
     db_type = W2C_ENGINE_CONFIGURATION_GET_DATABINDING_TYPE( conf, env);
 
     /* this executes only with following configuration */
-    if ( NULL == db_type || !axis2_strcmp( db_type, "none" ) )
+    if ( ! db_type || !axis2_strcmp( db_type, "none" ) )
     {
         typemapper = W2C_ENGINE_CONFIGURATION_GET_TYPEMAPPER( conf, env);
         if ( typemapper != NULL )
@@ -91,7 +91,7 @@ axis2_get_instance(w2c_extension_t **inst,
     extension_impl = (w2c_databinding_default_ext_impl_t*)AXIS2_MALLOC( env-> allocator, 
                                           sizeof(w2c_databinding_default_ext_impl_t) );
  
-    if(NULL == extension_impl)
+    if(! extension_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return AXIS2_FAILURE;
@@ -99,7 +99,7 @@ axis2_get_instance(w2c_extension_t **inst,
     
     extension_impl->extension.ops = 
                 AXIS2_MALLOC (env->allocator, sizeof(w2c_extension_ops_t));
-    if(NULL == extension_impl->extension.ops)
+    if(! extension_impl->extension.ops)
     {
         w2c_databinding_default_ext_free(&(extension_impl->extension), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

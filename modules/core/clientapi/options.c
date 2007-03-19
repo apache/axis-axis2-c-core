@@ -581,7 +581,7 @@ axis2_options_set_sender_transport(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    options->transport_out = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, sender_transport);
+    options->transport_out =  axis2_conf_get_transport_out(conf, env, sender_transport);
 
     if (!(options->transport_out))
     {

@@ -42,7 +42,7 @@ axis2_module_builder_create(
             allocator, sizeof(axis2_module_builder_t));
 
 
-    if (NULL == module_builder)
+    if (! module_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -63,7 +63,7 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module(
     AXIS2_ENV_CHECK(env, NULL);
 
     module_builder = (axis2_module_builder_t *) axis2_module_builder_create(env);
-    if (NULL == module_builder)
+    if (! module_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -404,7 +404,7 @@ axis2_module_builder_process_ops(
         if (qattname)
             axis2_qname_free(qattname, env);
 
-        if (NULL == op_name_att)
+        if (! op_name_att)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OP_NAME_MISSING,
                     AXIS2_FAILURE);
@@ -419,7 +419,7 @@ axis2_module_builder_process_ops(
         {
             mep_url = axiom_attribute_get_value(op_mep_att, env);
         }
-        if (NULL == mep_url)
+        if (! mep_url)
         {
             /* Assuming in-out mep */
             op_desc = axis2_op_create_from_module(env);

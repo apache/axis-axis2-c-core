@@ -141,7 +141,7 @@ int main(
 
     allocator = axis2_allocator_init(NULL);
 
-    if (NULL == allocator)
+    if (! allocator)
     {
         printf("[Axis2]Startup FAILED due to memory allocation failure\n");
         system_exit(NULL, -1);
@@ -164,7 +164,7 @@ int main(
     AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms", axis2_http_socket_read_timeout);
 
     server = axis2_http_server_create(env, repo_path, port);
-    if (NULL == server)
+    if (! server)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server creation failed: Error code:"
                 " %d :: %s", env->error->error_number,

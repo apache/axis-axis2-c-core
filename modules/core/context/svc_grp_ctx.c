@@ -160,7 +160,7 @@ axis2_svc_grp_ctx_init(
     if (svc_grp_ctx->svc_grp_name)
     {
         svc_grp_ctx->svc_grp =
-            AXIS2_CONF_GET_SVC_GRP(conf, env, svc_grp_ctx->svc_grp_name);
+            axis2_conf_get_svc_grp(conf, env, svc_grp_ctx->svc_grp_name);
     }
 
     return AXIS2_SUCCESS;

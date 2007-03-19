@@ -372,7 +372,7 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
         return AXIS2_FALSE;
     }
     
-    engaged_modules = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(conf, env);
+    engaged_modules =  axis2_conf_get_all_engaged_modules(conf, env);
     if(engaged_modules)
     {
         size = axis2_array_list_size(engaged_modules,env);

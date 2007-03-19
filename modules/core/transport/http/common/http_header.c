@@ -42,7 +42,7 @@ axis2_http_header_create(
             (env->allocator, sizeof(
                         axis2_http_header_t));
 
-    if (NULL == http_header)
+    if (! http_header)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -66,7 +66,7 @@ axis2_http_header_create_by_str(
     AXIS2_ENV_CHECK(env, NULL);
 
     tmp_str = axis2_strdup(str, env);
-    if (NULL == tmp_str)
+    if (! tmp_str)
     {
         return NULL;
     }
@@ -77,7 +77,7 @@ axis2_http_header_create_by_str(
     }
 
     ch = strchr((const char *)tmp_str, ':');
-    if (NULL == ch)
+    if (! ch)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HEADER,
                 AXIS2_FAILURE);

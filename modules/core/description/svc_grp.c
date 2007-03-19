@@ -43,7 +43,7 @@ axis2_svc_grp_create(
     svc_grp = (axis2_svc_grp_t *)
             AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_grp_t));
 
-    if (NULL == svc_grp)
+    if (! svc_grp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -327,7 +327,7 @@ axis2_svc_grp_get_param(
     param = axis2_param_container_get_param(svc_grp->param_container, env, name);
     if (param == NULL && svc_grp->parent)
     {
-        param = AXIS2_CONF_GET_PARAM(svc_grp->parent, env, name);
+        param =  axis2_conf_get_param(svc_grp->parent, env, name);
     }
     return param;
 }
@@ -360,7 +360,7 @@ axis2_svc_grp_is_param_locked(
     /* checking the locked value of parent */
     if (parent)
     {
-        locked =  AXIS2_CONF_IS_PARAM_LOCKED(parent, env, param_name);
+        locked =   axis2_conf_is_param_locked(parent, env, param_name);
     }
     if (AXIS2_TRUE == locked)
     {
@@ -408,7 +408,7 @@ axis2_svc_grp_set_parent(
     AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
 
     if (svc_grp->parent)
-        AXIS2_CONF_FREE(svc_grp->parent, env);
+         axis2_conf_free(svc_grp->parent, env);
     svc_grp->parent = parent;
     return AXIS2_SUCCESS;
 }
@@ -465,7 +465,7 @@ axis2_svc_grp_engage_module(
         return AXIS2_FAILURE;
     }
 
-    module = AXIS2_CONF_GET_MODULE(svc_grp->parent, env, module_name);
+    module =  axis2_conf_get_module(svc_grp->parent, env, module_name);
     if (module)
     {
         axis2_svc_t *axis_svc = NULL;

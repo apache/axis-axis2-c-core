@@ -167,7 +167,7 @@ axis2_http_sender_create(
 		(env->allocator, sizeof(
 			axis2_http_sender_impl_t));
 
-    if (NULL == sender_impl)
+    if (! sender_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -184,7 +184,7 @@ axis2_http_sender_create(
     sender_impl->client = NULL;
     sender_impl->sender.ops = AXIS2_MALLOC(env->allocator,
 										   sizeof(axis2_http_sender_ops_t));
-    if (NULL == sender_impl->sender.ops)
+    if (! sender_impl->sender.ops)
     {
         axis2_http_sender_free((axis2_http_sender_t *)
 							   sender_impl, env);
@@ -289,7 +289,7 @@ axis2_http_sender_send(
 
 	if (!is_soap)
 	{
-        if (NULL == soap_body)
+        if (! soap_body)
         {
             AXIS2_ERROR_SET(env->error,
 							AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
@@ -299,7 +299,7 @@ axis2_http_sender_send(
             return AXIS2_FAILURE;
         }
         body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
-        if (NULL == body_node)
+        if (! body_node)
         {
             return AXIS2_FAILURE;
         }
@@ -317,7 +317,7 @@ axis2_http_sender_send(
 		}
 	}
 
-    if (NULL == url)
+    if (! url)
     {
         return AXIS2_FAILURE;
     }
@@ -329,7 +329,7 @@ axis2_http_sender_send(
     }
 
     sender_impl->client = axis2_http_client_create(env, url);
-    if (NULL == sender_impl->client)
+    if (! sender_impl->client)
     {
         return AXIS2_FAILURE;
     }
@@ -355,7 +355,7 @@ axis2_http_sender_send(
 
 		doing_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env);
 
-		if (NULL == sender_impl->om_output)
+		if (! sender_impl->om_output)
 		{
 			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_OM_OUTPUT,
 							AXIS2_FAILURE);
@@ -407,7 +407,7 @@ axis2_http_sender_send(
 			buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
 		}
 
-		if (NULL == buffer && !doing_mtom)
+		if (! buffer && !doing_mtom)
 		{
 			AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NULL xml returned"
 							"from xml writer");
@@ -804,7 +804,7 @@ axis2_http_sender_get_header_info(
     {
         int tmp_len = 0;
         content_length = AXIS2_MALLOC(env->allocator, sizeof(int));
-        if (NULL == content_length)
+        if (! content_length)
         {
             return AXIS2_FAILURE;
         }
@@ -835,7 +835,7 @@ axis2_http_sender_process_response(
     AXIS2_PARAM_CHECK(env->error, response, AXIS2_FAILURE);
 
     in_stream = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(response, env);
-    if (NULL == in_stream)
+    if (! in_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
 						AXIS2_FAILURE);
@@ -902,7 +902,7 @@ axis2_http_sender_set_http_version(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(sender)->http_version =  axis2_strdup(version, env);
-    if (NULL == AXIS2_INTF_TO_IMPL(sender)->http_version)
+    if (! AXIS2_INTF_TO_IMPL(sender)->http_version)
     {
         return AXIS2_FAILURE;
     }
@@ -927,18 +927,18 @@ axis2_http_sender_configure_proxy(
 
     sender_impl = AXIS2_INTF_TO_IMPL(sender);
     conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
-    if (NULL == conf_ctx)
+    if (! conf_ctx)
     {
         return AXIS2_FAILURE;
     }
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
-    if (NULL == conf)
+    if (! conf)
     {
         return AXIS2_FAILURE;
     }
     
-    trans_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
-    if (NULL == trans_desc)
+    trans_desc =  axis2_conf_get_transport_out(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+    if (! trans_desc)
     {
         return AXIS2_FAILURE;
     }
@@ -959,18 +959,18 @@ axis2_http_sender_configure_proxy(
 
             obj = axis2_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
 								 AXIS2_HASH_KEY_STRING);
-            if (NULL == obj)
+            if (! obj)
             {
                 return AXIS2_FAILURE;
             }
             host_attr = (axiom_attribute_t *) axis2_generic_obj_get_value(obj,
 																		 env);
-            if (NULL == host_attr)
+            if (! host_attr)
             {
                 return AXIS2_FAILURE;
             }
             proxy_host = axiom_attribute_get_value(host_attr, env);
-            if (NULL == proxy_host)
+            if (! proxy_host)
             {
                 return AXIS2_FAILURE;
             }
@@ -981,12 +981,12 @@ axis2_http_sender_configure_proxy(
 								 AXIS2_HASH_KEY_STRING);
             port_attr = (axiom_attribute_t*) axis2_generic_obj_get_value(obj,
 																		env);
-            if (NULL == port_attr)
+            if (! port_attr)
             {
                 return AXIS2_FAILURE;
             }
             proxy_port = axiom_attribute_get_value(port_attr, env);
-            if (NULL == proxy_port)
+            if (! proxy_port)
             {
                 return AXIS2_FAILURE;
             }
@@ -1122,14 +1122,14 @@ axis2_http_sender_get_param_string(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
     soap_env =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
-    if (NULL == soap_env)
+    if (! soap_env)
     {
         return NULL;
     }
     body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(
 		AXIOM_SOAP_ENVELOPE_GET_BODY(soap_env, env), env);
     data_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
-    if (NULL == data_node)
+    if (! data_node)
     {
         return NULL;
     }

@@ -40,7 +40,7 @@ axis2_phases_info_create(
     phases_info = (axis2_phases_info_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axis2_phases_info_t));
 
-    if (NULL == phases_info)
+    if (! phases_info)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -621,7 +621,7 @@ axis2_phases_info_set_op_phases(
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
     op_in_phases = axis2_phases_info_get_op_in_phases(phases_info, env);
-    if (NULL == op_in_phases)
+    if (! op_in_phases)
     {
         status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
         /* op_in_phases cannot be NULL */
@@ -629,7 +629,7 @@ axis2_phases_info_set_op_phases(
     }
 
     op_out_phases = axis2_phases_info_get_op_out_phases(phases_info, env);
-    if (NULL == op_out_phases)
+    if (! op_out_phases)
     {
         status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
         /* op_out_phases cannot be NULL */

@@ -50,7 +50,7 @@ axis2_ws_info_list_create_with_dep_engine(
             allocator, sizeof(axis2_ws_info_list_t));
 
 
-    if (NULL == ws_info_list)
+    if (! ws_info_list)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

@@ -121,7 +121,7 @@ axis2_http_response_writer_create_with_encoding(
             (env->allocator, sizeof(
                         axis2_http_response_writer_impl_t));
 
-    if (NULL == response_writer_impl)
+    if (! response_writer_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -131,7 +131,7 @@ axis2_http_response_writer_create_with_encoding(
 
     response_writer_impl->response_writer.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_response_writer_ops_t));
-    if (NULL == response_writer_impl->response_writer.ops)
+    if (! response_writer_impl->response_writer.ops)
     {
         axis2_http_response_writer_free((axis2_http_response_writer_t *)
                 response_writer_impl, env);
@@ -225,7 +225,7 @@ axis2_http_response_writer_write_char(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     writer_impl = AXIS2_INTF_TO_IMPL(response_writer);
-    if (NULL == writer_impl->stream)
+    if (! writer_impl->stream)
     {
         return AXIS2_FAILURE;
     }
@@ -252,7 +252,7 @@ axis2_http_response_writer_write_buf(
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
 
     writer_impl = AXIS2_INTF_TO_IMPL(response_writer);
-    if (NULL == writer_impl->stream)
+    if (! writer_impl->stream)
     {
         return AXIS2_FAILURE;
     }
@@ -283,7 +283,7 @@ axis2_http_response_writer_print_str(
     writer_impl = AXIS2_INTF_TO_IMPL(response_writer);
 
     len = axis2_strlen(str);
-    if (NULL == writer_impl->stream)
+    if (! writer_impl->stream)
     {
         return AXIS2_FAILURE;
     }

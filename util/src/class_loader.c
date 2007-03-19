@@ -75,7 +75,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
         return NULL;
     }
     dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);
-    if (NULL == dl_handler)
+    if (! dl_handler)
     {
         status = axis2_class_loader_load_lib(env, dll_desc);
         if (AXIS2_SUCCESS != status)
@@ -135,7 +135,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     if (AXIS2_SVC_DLL == dll_type)
     {
         create_funct(&svc_skeli, env);
-        if (NULL == svc_skeli)
+        if (! svc_skeli)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_ERROR_SET(env->error,
@@ -147,7 +147,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     if (AXIS2_HANDLER_DLL == dll_type)
     {
         create_funct(&handler, env);
-        if (NULL == handler)
+        if (! handler)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_ERROR_SET(env->error,
@@ -159,7 +159,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     if (AXIS2_MODULE_DLL == dll_type)
     {
         create_funct(&module, env);
-        if (NULL == module)
+        if (! module)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_ERROR_SET(env->error,
@@ -171,7 +171,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     if (AXIS2_MSG_RECV_DLL == dll_type)
     {
         create_funct(&msg_recv, env);
-        if (NULL == msg_recv)
+        if (! msg_recv)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "message receiver is NULL");
@@ -188,7 +188,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     if (AXIS2_TRANSPORT_RECV_DLL == dll_type)
     {
         create_funct(&transport_recv, env);
-        if (NULL == transport_recv)
+        if (! transport_recv)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "transport receiver is NULL");
@@ -205,7 +205,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     if (AXIS2_TRANSPORT_SENDER_DLL == dll_type)
     {
         create_funct(&transport_sender, env);
-        if (NULL == transport_sender)
+        if (! transport_sender)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "transport sender is NULL");
@@ -222,7 +222,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     else
     {
         create_funct(&obj, env);
-        if (NULL == obj)
+        if (! obj)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Object create function returned NULL");
@@ -249,7 +249,7 @@ axis2_class_loader_load_lib(const axis2_env_t *env,
 
     dll_name =  axis2_dll_desc_get_name(dll_desc, env);
     dl_handler = AXIS2_PLATFORM_LOADLIB(dll_name);
-    if (NULL == dl_handler)
+    if (! dl_handler)
     {
         /*
         axis2_char_t *errormsg = NULL;

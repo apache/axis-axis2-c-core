@@ -44,7 +44,7 @@ axis2_http_request_line_create(
     request_line = (axis2_http_request_line_t *)AXIS2_MALLOC
             (env->allocator, sizeof(axis2_http_request_line_t));
 
-    if (NULL == request_line)
+    if (! request_line)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -99,7 +99,7 @@ axis2_http_request_line_parse_line(
     tmp = axis2_strstr(str, AXIS2_HTTP_CRLF);
 
 
-    if (NULL == tmp)
+    if (! tmp)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
@@ -108,7 +108,7 @@ axis2_http_request_line_parse_line(
     }
     i = tmp - str;
     req_line = AXIS2_MALLOC(env->allocator, i * sizeof(axis2_char_t) + 1);
-    if (NULL == req_line)
+    if (! req_line)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -119,7 +119,7 @@ axis2_http_request_line_parse_line(
 
     method = tmp;
     tmp = strchr(tmp, ' ');
-    if (NULL == tmp)
+    if (! tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
         AXIS2_ERROR_SET(env->error,
@@ -130,7 +130,7 @@ axis2_http_request_line_parse_line(
     *tmp++ = '\0';
     uri = tmp;
     tmp = strrchr(tmp, ' ');
-    if (NULL == tmp)
+    if (! tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
         AXIS2_ERROR_SET(env->error,
@@ -191,7 +191,7 @@ axis2_http_request_line_to_string(
 
     ret = AXIS2_MALLOC(env->allocator,
             alloc_len * sizeof(axis2_char_t));
-    if (NULL == ret)
+    if (! ret)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

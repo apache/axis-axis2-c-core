@@ -38,7 +38,7 @@ axis2_stub_calculator_create(const axis2_env_t *env,
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     AXIS2_FUNC_PARAM_CHECK(client_home, env, NULL)
 
-    if (NULL == endpoint_uri)
+    if (! endpoint_uri)
     {
         endpoint_uri = axis2_stub_calculator_get_endpoint_uri_from_wsdl(env);
     }
@@ -154,7 +154,7 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axis2_env_t *e
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -163,7 +163,7 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axis2_env_t *e
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "Calculator#add";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -209,7 +209,7 @@ void axis2_stub_calculator_add_start(axis2_stub_t *stub, const axis2_env_t *env,
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -218,7 +218,7 @@ void axis2_stub_calculator_add_start(axis2_stub_t *stub, const axis2_env_t *env,
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "Calculator#add";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -258,7 +258,7 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axis2_env_t *e
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -267,7 +267,7 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axis2_env_t *e
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "Calculator#sub";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -313,7 +313,7 @@ void axis2_stub_calculator_sub_start(axis2_stub_t *stub, const axis2_env_t *env,
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -322,7 +322,7 @@ void axis2_stub_calculator_sub_start(axis2_stub_t *stub, const axis2_env_t *env,
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "Calculator#sub";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -362,7 +362,7 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axis2_env_t *e
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -371,7 +371,7 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axis2_env_t *e
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "Calculator#mul";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -417,7 +417,7 @@ void axis2_stub_calculator_mul_start(axis2_stub_t *stub, const axis2_env_t *env,
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -426,7 +426,7 @@ void axis2_stub_calculator_mul_start(axis2_stub_t *stub, const axis2_env_t *env,
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "Calculator#mul";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -466,7 +466,7 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axis2_env_t *e
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -475,7 +475,7 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axis2_env_t *e
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "Calculator#div";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -521,7 +521,7 @@ void axis2_stub_calculator_div_start(axis2_stub_t *stub, const axis2_env_t *env,
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -530,7 +530,7 @@ void axis2_stub_calculator_div_start(axis2_stub_t *stub, const axis2_env_t *env,
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "Calculator#div";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);

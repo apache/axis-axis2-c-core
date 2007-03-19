@@ -388,7 +388,7 @@ woden_wsdl10_soap_binding_fault_exts_get_soap_fault_code(
     binding_fault_exts_impl->qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_CODE);
     code = (woden_qname_or_token_any_attr_t *)
             WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(parent_element, env, binding_fault_exts_impl->qname);
-    if (NULL == code)
+    if (! code)
     {
         /* defaults to xs:token #any if the attribute is omitted from the WSDL.*/
         return (void *) woden_soap_fault_code_get_soap_fault_code_any(env);
@@ -436,7 +436,7 @@ woden_wsdl10_soap_binding_fault_exts_get_soap_fault_subcodes(
     binding_fault_exts_impl->qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES);
     subcodes = (woden_qname_list_or_token_any_attr_t *)
             WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(parent_element, env, binding_fault_exts_impl->qname);
-    if (NULL == subcodes)
+    if (! subcodes)
     {
         /* defaults to xs:token #any if the attribute is omitted from the WSDL.*/
         return (void *) woden_soap_fault_subcodes_get_soap_fault_subcodes_any(env);

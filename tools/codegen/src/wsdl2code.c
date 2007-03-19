@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 
     cmd_opt_parser = w2c_cmdline_option_parser_create
             (env, argc - 1, argv + 1);/* ommit first arg */
-    if (NULL == cmd_opt_parser)
+    if (! cmd_opt_parser)
     {
         w2c_print_usage(env);
     }

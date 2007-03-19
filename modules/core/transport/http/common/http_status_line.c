@@ -48,7 +48,7 @@ axis2_http_status_line_create(
             (env->allocator, sizeof(
                         axis2_http_status_line_t));
 
-    if (NULL == status_line)
+    if (! status_line)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -60,7 +60,7 @@ axis2_http_status_line_create(
     status_line->status_code = NULL;
 
     tmp = strstr(str, AXIS2_HTTP_CRLF);
-    if (NULL == tmp)
+    if (! tmp)
     {
         axis2_http_status_line_free((axis2_http_status_line_t *)
                 status_line, env);
@@ -72,7 +72,7 @@ axis2_http_status_line_create(
     i = tmp - str;
     tmp_status_line = AXIS2_MALLOC(env->allocator,
             i * sizeof(axis2_char_t) + 1);
-    if (NULL == tmp_status_line)
+    if (! tmp_status_line)
     {
         axis2_http_status_line_free((axis2_http_status_line_t *)
                 status_line, env);
@@ -85,7 +85,7 @@ axis2_http_status_line_create(
 
     http_version = tmp;
     tmp = strchr(tmp, ' ');
-    if (NULL == tmp)
+    if (! tmp)
     {
         AXIS2_FREE(env->allocator, tmp_status_line);
         axis2_http_status_line_free((axis2_http_status_line_t *)
@@ -98,7 +98,7 @@ axis2_http_status_line_create(
     *tmp++ = '\0';
     status_code = tmp;
     tmp = strchr(tmp, ' ');
-    if (NULL == tmp)
+    if (! tmp)
     {
         AXIS2_FREE(env->allocator, tmp_status_line);
         axis2_http_status_line_free((axis2_http_status_line_t *)
@@ -117,8 +117,8 @@ axis2_http_status_line_create(
     status_line->reason_phrase = (axis2_char_t *)
             axis2_strdup(reason_phrase, env);
 
-    if (NULL == status_line->http_version ||
-            NULL == status_line->reason_phrase)
+    if (! status_line->http_version ||
+            ! status_line->reason_phrase)
     {
         AXIS2_FREE(env->allocator, tmp_status_line);
         axis2_http_status_line_free((axis2_http_status_line_t *)

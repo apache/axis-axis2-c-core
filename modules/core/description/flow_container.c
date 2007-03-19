@@ -37,7 +37,7 @@ axis2_flow_container_create(const axis2_env_t *env)
         allocator, sizeof(axis2_flow_container_t));
 
 
-    if (NULL == flow_container)
+    if (! flow_container)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

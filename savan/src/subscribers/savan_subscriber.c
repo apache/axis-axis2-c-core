@@ -235,7 +235,7 @@ savan_subscriber_publish(
 
     /* Get anonymous service from conf. This will be null for the first time, 
      * but then it will be created when we create the svc_client */
-    svc = AXIS2_CONF_GET_SVC(conf, env, AXIS2_ANON_SERVICE);
+    svc = axis2_conf_get_svc(conf, env, AXIS2_ANON_SERVICE);
 
     svc_client = axis2_svc_client_create_with_conf_ctx_and_svc(env, path,
         conf_ctx, svc);

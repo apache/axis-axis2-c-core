@@ -134,7 +134,7 @@ w2c_schema_property_loader_create (const axis2_env_t *env,
     schema_property_loader_impl = (w2c_schema_property_loader_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_schema_property_loader_impl_t));
 
-    if(NULL == schema_property_loader_impl)
+    if(! schema_property_loader_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -142,7 +142,7 @@ w2c_schema_property_loader_create (const axis2_env_t *env,
     
     schema_property_loader_impl->schema_property_loader.ops = 
     AXIS2_MALLOC (env->allocator, sizeof(w2c_schema_property_loader_ops_t));
-    if(NULL == schema_property_loader_impl->schema_property_loader.ops)
+    if(! schema_property_loader_impl->schema_property_loader.ops)
     {
         w2c_schema_property_loader_free(&(schema_property_loader_impl->schema_property_loader), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -455,7 +455,7 @@ w2c_schema_property_loader_load_values(
                 {
                     writer = w2c_class_loader_get_object_from_class_name
                           ( env, val, W2C_CLASS_LOADER_WRITER_PATH, &dll_desc );
-                    if ( NULL == writer )
+                    if ( ! writer )
                     {
                         w2c_messages_print_n_log_error( env,
                                        "schema.writerclassMissing");

@@ -53,14 +53,14 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_char_t *ptr = NULL;
 
     url = axis2_url_parse_string (env, namespace );
-    if ( NULL == url )
+    if ( ! url )
     {
         return axis2_strdup( namespace, env);
     }
     host_name = axis2_url_get_server ( url, env );
     path = axis2_url_get_path ( url, env );
 
-    if ( NULL == host_name )
+    if ( ! host_name )
     {
         index = w2c_string_indexof ( host_name, ':');
         if ( index > -1 )
@@ -81,7 +81,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
         }
     }
     
-    if ( NULL == host_name || *host_name =='\0' )
+    if ( ! host_name || *host_name =='\0' )
     {
         return NULL;
     }

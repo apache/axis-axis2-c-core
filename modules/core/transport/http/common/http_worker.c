@@ -69,7 +69,7 @@ axis2_http_worker_create(
     http_worker = (axis2_http_worker_t *)
             AXIS2_MALLOC(env->allocator, sizeof(axis2_http_worker_t));
 
-    if (NULL == http_worker)
+    if (! http_worker)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -131,7 +131,7 @@ axis2_http_worker_process_request(
 
     conf_ctx = http_worker->conf_ctx;
 
-    if (NULL == conf_ctx)
+    if (! conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
                 AXIS2_FAILURE);
@@ -143,7 +143,7 @@ axis2_http_worker_process_request(
     http_version = AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION
             (AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE
                     (simple_request, env), env);
-    if (NULL == http_version)
+    if (! http_version)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_HTTP_VERSION,
                 AXIS2_FAILURE);
@@ -180,10 +180,10 @@ axis2_http_worker_process_request(
     }
     request_body = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(simple_request, env);
 
-    out_desc = AXIS2_CONF_GET_TRANSPORT_OUT( axis2_conf_ctx_get_conf
+    out_desc =  axis2_conf_get_transport_out( axis2_conf_ctx_get_conf
             (http_worker->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
-    in_desc = AXIS2_CONF_GET_TRANSPORT_IN( axis2_conf_ctx_get_conf
+    in_desc =  axis2_conf_get_transport_in( axis2_conf_ctx_get_conf
             (http_worker->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
@@ -289,7 +289,7 @@ axis2_http_worker_process_request(
             axis2_http_request_line_t *req_line = NULL;
             axis2_http_status_line_t *tmp_stat_line = NULL;
             axis2_char_t status_line_str[100];
-            if (NULL == engine)
+            if (! engine)
             {
                 return AXIS2_FALSE;
             }
@@ -512,7 +512,7 @@ axis2_http_worker_get_headers(
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_FAILURE);
 
     header_list = AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(request, env);
-    if (NULL == header_list)
+    if (! header_list)
     {
         return NULL;
     }
@@ -526,14 +526,14 @@ axis2_http_worker_get_headers(
     {
         axis2_http_header_t *tmp_hdr = NULL;
         tmp_hdr = axis2_array_list_get(header_list, env, i);
-        if (NULL == tmp_hdr)
+        if (! tmp_hdr)
         {
             continue;
         }
-        if (NULL == header_map)
+        if (! header_map)
         {
             header_map = axis2_hash_make(env);
-            if (NULL == header_map)
+            if (! header_map)
             {
                 return NULL;
             }

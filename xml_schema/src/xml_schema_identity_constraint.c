@@ -303,7 +303,7 @@ xml_schema_identity_constraint_resolve_methods(
 
     id_constr->ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_identity_constraint_ops_t));
-    if(NULL == id_constr->ops)
+    if(! id_constr->ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;

@@ -120,14 +120,14 @@ axis2_get_instance(w2c_extension_t **inst,
     impl = (w2c_default_qname2name_ext_impl_t*)AXIS2_MALLOC( env-> allocator, 
                                           sizeof(w2c_default_qname2name_ext_impl_t) );
  
-    if(NULL == impl)
+    if(! impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return AXIS2_FAILURE;
     }
     impl->extension.ops = 
                 AXIS2_MALLOC (env->allocator, sizeof(w2c_extension_ops_t));
-    if(NULL == impl->extension.ops)
+    if(! impl->extension.ops)
     {
         w2c_default_qname2name_ext_free(&(impl->extension), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -135,7 +135,7 @@ axis2_get_instance(w2c_extension_t **inst,
     }
     impl->qname2name_maker.ops = 
                 AXIS2_MALLOC (env->allocator, sizeof(w2c_qname2name_maker_ops_t));
-    if(NULL == impl->extension.ops)
+    if(! impl->extension.ops)
     {
         w2c_default_qname2name_ext_free(&(impl->extension), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

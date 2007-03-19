@@ -38,7 +38,7 @@ axis2_stub_interop_test_port_type_doc_service_create(const axis2_env_t *env,
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     AXIS2_FUNC_PARAM_CHECK(client_home, env, NULL)
 
-    if (NULL == endpoint_uri)
+    if (! endpoint_uri)
     {
         endpoint_uri = axis2_stub_interop_test_port_type_doc_service_get_endpoint_uri_from_wsdl(env);
     }
@@ -274,7 +274,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_st
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -283,7 +283,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_st
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -329,7 +329,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_start(axis2_stub_
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -338,7 +338,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_start(axis2_stub_
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -378,7 +378,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(ax
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -387,7 +387,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(ax
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -433,7 +433,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start(axis2
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -442,7 +442,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start(axis2
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -482,7 +482,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_s
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -491,7 +491,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_s
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -537,7 +537,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_start(axis2_stub
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -546,7 +546,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_start(axis2_stub
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -586,7 +586,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(a
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -595,7 +595,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(a
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -641,7 +641,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start(axis
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -650,7 +650,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start(axis
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -690,7 +690,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stu
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -699,7 +699,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stu
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -745,7 +745,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_start(axis2_stub_t
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -754,7 +754,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_start(axis2_stub_t
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -794,7 +794,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axi
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -803,7 +803,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axi
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -849,7 +849,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start(axis2_
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -858,7 +858,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start(axis2_
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -898,7 +898,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_st
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -907,7 +907,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_st
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -953,7 +953,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_start(axis2_stub_
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -962,7 +962,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_start(axis2_stub_
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1002,7 +1002,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(ax
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1011,7 +1011,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(ax
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1057,7 +1057,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start(axis2
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1066,7 +1066,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start(axis2
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1106,7 +1106,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1115,7 +1115,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1161,7 +1161,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_void_start(axis2_stub_t 
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1170,7 +1170,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_void_start(axis2_stub_t 
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1210,7 +1210,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_st
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1219,7 +1219,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_st
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1265,7 +1265,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_base64_start(axis2_stub_
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1274,7 +1274,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_base64_start(axis2_stub_
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1314,7 +1314,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1323,7 +1323,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1369,7 +1369,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_date_start(axis2_stub_t 
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1378,7 +1378,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_date_start(axis2_stub_t 
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1418,7 +1418,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1427,7 +1427,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1473,7 +1473,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start(axis2_s
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1482,7 +1482,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start(axis2_s
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1522,7 +1522,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_s
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1531,7 +1531,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_s
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1577,7 +1577,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start(axis2_stub
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1586,7 +1586,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start(axis2_stub
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1626,7 +1626,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_s
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1635,7 +1635,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_s
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
@@ -1681,7 +1681,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start(axis2_stub
 
 
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    if (NULL == options)
+    if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -1690,7 +1690,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start(axis2_stub
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
-    if (NULL == soap_action)
+    if (! soap_action)
     {
         soap_action = "";
         AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);

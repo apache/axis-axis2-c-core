@@ -267,7 +267,7 @@ w2c_c_emitter_write_stub_source( w2c_emitter_impl_t *emitter_impl,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     root = w2c_c_emitter_create_for_stub (emitter_impl, env );
-    if (NULL == root )
+    if (! root )
     {
         return AXIS2_FAILURE;
     }
@@ -290,7 +290,7 @@ w2c_c_emitter_write_stub_header( w2c_emitter_impl_t *emitter_impl,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     root = w2c_c_emitter_create_for_stub ( emitter_impl, env );
-    if (NULL == root )
+    if (! root )
     {
         return AXIS2_FAILURE;
     }
@@ -313,7 +313,7 @@ w2c_c_emitter_write_skel_source( w2c_emitter_impl_t *emitter_impl,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     root = w2c_c_emitter_create_for_skel( emitter_impl, env );
-    if (NULL == root )
+    if (! root )
     {
         return AXIS2_FAILURE;
     }
@@ -336,7 +336,7 @@ w2c_c_emitter_write_skel_header( w2c_emitter_impl_t *emitter_impl,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     root = w2c_c_emitter_create_for_skel( emitter_impl, env );
-    if (NULL == root )
+    if (! root )
     {
         return AXIS2_FAILURE;
     }
@@ -359,7 +359,7 @@ w2c_c_emitter_write_svc_skel( w2c_emitter_impl_t *emitter_impl,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     root = w2c_c_emitter_create_for_svc_skel( emitter_impl, env );
-    if (NULL == root )
+    if (! root )
     {
         return AXIS2_FAILURE;
     }
@@ -382,7 +382,7 @@ w2c_c_emitter_write_svc_xml( w2c_emitter_impl_t *emitter_impl,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     root = w2c_c_emitter_create_for_svc_xml( emitter_impl, env );
-    if (NULL == root )
+    if (! root )
     {
         return AXIS2_FAILURE;
     }

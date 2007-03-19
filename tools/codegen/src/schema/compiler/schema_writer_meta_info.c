@@ -409,7 +409,7 @@ w2c_schema_writer_meta_info_create (const axis2_env_t *env)
     writer_meta_info_impl = (w2c_schema_writer_meta_info_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_schema_writer_meta_info_impl_t));
 
-    if(NULL == writer_meta_info_impl)
+    if(! writer_meta_info_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -451,7 +451,7 @@ w2c_schema_writer_meta_info_create (const axis2_env_t *env)
 
     writer_meta_info_impl->writer_meta_info.ops =
     AXIS2_MALLOC (env->allocator, sizeof(w2c_schema_writer_meta_info_ops_t));
-    if(NULL == writer_meta_info_impl->writer_meta_info.ops)
+    if(! writer_meta_info_impl->writer_meta_info.ops)
     {
         w2c_schema_writer_meta_info_free(&(writer_meta_info_impl->writer_meta_info), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

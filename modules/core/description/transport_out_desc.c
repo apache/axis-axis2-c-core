@@ -40,7 +40,7 @@ axis2_transport_out_desc_create(const axis2_env_t *env,
     transport_out = (axis2_transport_out_desc_t *) AXIS2_MALLOC(env->
             allocator, sizeof(axis2_transport_out_desc_t));
 
-    if (NULL == transport_out)
+    if (! transport_out)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -55,7 +55,7 @@ axis2_transport_out_desc_create(const axis2_env_t *env,
     transport_out->param_container = NULL;
 
     transport_out->param_container = axis2_param_container_create(env);
-    if (NULL == transport_out->param_container)
+    if (! transport_out->param_container)
     {
         axis2_transport_out_desc_free(transport_out, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

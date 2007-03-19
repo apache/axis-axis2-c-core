@@ -75,7 +75,7 @@ axis2_conf_builder_create(
             allocator, sizeof(axis2_conf_builder_t));
 
 
-    if (NULL == conf_builder)
+    if (! conf_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -99,7 +99,7 @@ axis2_conf_builder_create_with_file_and_dep_engine_and_conf(
 
     conf_builder = (axis2_conf_builder_t *) axis2_conf_builder_create(
                 env);
-    if (NULL == conf_builder)
+    if (! conf_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -203,7 +203,7 @@ axis2_conf_builder_populate_conf(
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
         mep_att = axiom_element_get_attribute(msg_recv_element, env, qmep);
         att_value = axiom_attribute_get_value(mep_att, env);
-        AXIS2_CONF_ADD_MSG_RECV(conf_builder->conf, env, att_value, msg_recv);
+         axis2_conf_add_msg_recv(conf_builder->conf, env, att_value, msg_recv);
         axis2_qname_free(qmep, env);
     }
 
@@ -220,7 +220,7 @@ axis2_conf_builder_populate_conf(
     }
     else
     {
-        status = AXIS2_CONF_SET_DEFAULT_DISPATCHERS(conf_builder->conf, env);
+        status =  axis2_conf_set_default_dispatchers(conf_builder->conf, env);
         if (AXIS2_SUCCESS != status)
         {
             return AXIS2_FAILURE;
@@ -368,7 +368,7 @@ axis2_conf_builder_process_disp_order(
                 disp_order_element, env, qdisp, disp_order_node);
     axis2_qname_free(qdisp, env);
     disp_phase = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);
-    if (NULL == disp_phase)
+    if (! disp_phase)
     {
         return AXIS2_FAILURE;
     }
@@ -446,7 +446,7 @@ axis2_conf_builder_process_disp_order(
     }
     else
     {
-        status = AXIS2_CONF_SET_DISPATCH_PHASE(conf_builder->conf, env, disp_phase);
+        status =  axis2_conf_set_dispatch_phase(conf_builder->conf, env, disp_phase);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_PHASE_FREE(disp_phase, env);
@@ -701,7 +701,7 @@ axis2_conf_builder_process_transport_senders(
                 transport_out = axis2_transport_out_desc_create(env, transport_enum);
             }
 
-            if (NULL == transport_out)
+            if (! transport_out)
             {
                 return AXIS2_FAILURE;
             }
@@ -711,7 +711,7 @@ axis2_conf_builder_process_transport_senders(
             trs_dll_att = axiom_element_get_attribute(transport_element, env,
                     qdllname);
             axis2_qname_free(qdllname, env);
-            if (NULL == trs_dll_att)
+            if (! trs_dll_att)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_TRANSPORT_SENDER_ERROR,
                         AXIS2_FAILURE);
@@ -842,7 +842,7 @@ axis2_conf_builder_process_transport_senders(
             }
 
             /* adding to axis config */
-            status = AXIS2_CONF_ADD_TRANSPORT_OUT(conf_builder->conf, env,
+            status =  axis2_conf_add_transport_out(conf_builder->conf, env,
                     transport_out, transport_enum);
             if (AXIS2_SUCCESS != status)
             {
@@ -1083,7 +1083,7 @@ axis2_conf_builder_process_transport_recvs(
             }
 
             /* adding to axis config */
-            status = AXIS2_CONF_ADD_TRANSPORT_IN(conf_builder->conf, env,
+            status =  axis2_conf_add_transport_in(conf_builder->conf, env,
                     transport_in, transport_enum);
             if (AXIS2_SUCCESS != status)
             {
@@ -1116,12 +1116,12 @@ axis2_conf_builder_process_default_module_versions(
 
         om_element = (axiom_element_t *)
                 axiom_children_qname_iterator_next(module_versions, env);
-        if (NULL == om_element)
+        if (! om_element)
         {
             continue;
         }
         attribute_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        if (NULL == attribute_qname)
+        if (! attribute_qname)
         {
             continue;
         }
@@ -1129,13 +1129,13 @@ axis2_conf_builder_process_default_module_versions(
                 attribute_qname);
         axis2_qname_free(attribute_qname, env);
         attribute_qname = NULL;
-        if (NULL == name)
+        if (! name)
         {
             return AXIS2_FAILURE;
         }
         attribute_qname = axis2_qname_create(env,
                 AXIS2_ATTRIBUTE_DEFAULT_VERSION, NULL, NULL);
-        if (NULL == attribute_qname)
+        if (! attribute_qname)
         {
             continue;
         }
@@ -1143,11 +1143,11 @@ axis2_conf_builder_process_default_module_versions(
                 attribute_qname);
         axis2_qname_free(attribute_qname, env);
         attribute_qname = NULL;
-        if (NULL == default_version)
+        if (! default_version)
         {
             return AXIS2_FAILURE;
         }
-        AXIS2_CONF_ADD_DEFAULT_MODULE_VERSION(
+         axis2_conf_add_default_module_version(
             conf_builder->conf, env, name,
             default_version);
     }

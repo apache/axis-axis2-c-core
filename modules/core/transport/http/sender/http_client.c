@@ -172,7 +172,7 @@ axis2_http_client_create(
     http_client_impl = (axis2_http_client_impl_t *)AXIS2_MALLOC
             (env->allocator, sizeof(axis2_http_client_impl_t));
 
-    if (NULL == http_client_impl)
+    if (! http_client_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -194,7 +194,7 @@ axis2_http_client_create(
 
     http_client_impl->http_client.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_client_ops_t));
-    if (NULL == http_client_impl->http_client.ops)
+    if (! http_client_impl->http_client.ops)
     {
         axis2_http_client_free((axis2_http_client_t *) http_client_impl, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -307,14 +307,14 @@ axis2_http_client_send(
         return AXIS2_SUCCESS;
     }
 
-    if (NULL == client_impl->url)
+    if (! client_impl->url)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_URL, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     if (AXIS2_TRUE == client_impl->proxy_enabled)
     {
-        if (NULL == client_impl->proxy_host || client_impl->proxy_port <= 0)
+        if (! client_impl->proxy_host || client_impl->proxy_port <= 0)
         {
             return AXIS2_FAILURE;
         }
@@ -377,7 +377,7 @@ axis2_http_client_send(
                 client_impl->sockfd);
     }
 
-    if (NULL == client_impl->data_stream)
+    if (! client_impl->data_stream)
     {
         axis2_network_handler_close_socket(env, client_impl->sockfd);
         return AXIS2_FAILURE;
@@ -394,7 +394,7 @@ axis2_http_client_send(
             axis2_char_t *header_ext_form = NULL;
             axis2_http_header_t *tmp_header = (axis2_http_header_t *)
                     axis2_array_list_get(headers, env, i);
-            if (NULL == tmp_header)
+            if (! tmp_header)
             {
                 continue;
             }
@@ -438,7 +438,7 @@ axis2_http_client_send(
         /* length = len(server) + len(:port) + len("http://") + len(path) + 1*/
         host_port_str = AXIS2_MALLOC(env->allocator, axis2_strlen(server) +
                 + axis2_strlen(path) +  20 * sizeof(axis2_char_t));
-        if (NULL == host_port_str)
+        if (! host_port_str)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -488,7 +488,7 @@ axis2_http_client_send(
             chunked_stream = axis2_http_chunked_stream_create(env,
                     client_impl->data_stream);
             status = AXIS2_SUCCESS;
-            if (NULL == chunked_stream)
+            if (! chunked_stream)
             {
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Creatoin of chunked"
                         "stream failed");
@@ -541,7 +541,7 @@ axis2_http_client_recieve_header(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     client_impl = AXIS2_INTF_TO_IMPL(client);
-    if (-1 == client_impl->sockfd || NULL == client_impl->data_stream ||
+    if (-1 == client_impl->sockfd || ! client_impl->data_stream ||
             AXIS2_FALSE == client_impl->request_sent)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_REQUEST_NOT_SENT,
@@ -580,7 +580,7 @@ axis2_http_client_recieve_header(
 			return 0;
 		}
         status_line = axis2_http_status_line_create(env, str_status_line);
-        if (NULL == status_line)
+        if (! status_line)
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
@@ -745,7 +745,7 @@ axis2_http_client_set_proxy(
         client_impl->proxy_host_port = NULL;
     }
     client_impl->proxy_host = axis2_strdup(proxy_host, env);
-    if (NULL == client_impl->proxy_host)
+    if (! client_impl->proxy_host)
     {
         return AXIS2_FAILURE;
     }
@@ -792,7 +792,7 @@ axis2_http_client_connect_ssl_host(
     }
 
     tmp_stream = axis2_stream_create_socket(env, client_impl->sockfd);
-    if (NULL == tmp_stream)
+    if (! tmp_stream)
     {
         return AXIS2_FAILURE;
     }
@@ -822,7 +822,7 @@ axis2_http_client_connect_ssl_host(
         return AXIS2_FAILURE;
     }
     status_line = axis2_http_status_line_create(env, str_status_line);
-    if (NULL == status_line)
+    if (! status_line)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,

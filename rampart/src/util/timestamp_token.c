@@ -83,7 +83,7 @@ rampart_timestamp_token_create(
     timestamp_token_impl = (rampart_timestamp_token_impl_t *) AXIS2_MALLOC(env->allocator,
             sizeof(rampart_timestamp_token_impl_t));
 
-    if (NULL == timestamp_token_impl)
+    if (! timestamp_token_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -91,7 +91,7 @@ rampart_timestamp_token_create(
 
     timestamp_token_impl->timestamp_token.ops = AXIS2_MALLOC(env->allocator,
             sizeof(rampart_timestamp_token_ops_t));
-    if (NULL == timestamp_token_impl->timestamp_token.ops)
+    if (! timestamp_token_impl->timestamp_token.ops)
     {
         rampart_timestamp_token_free(&(timestamp_token_impl->timestamp_token), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

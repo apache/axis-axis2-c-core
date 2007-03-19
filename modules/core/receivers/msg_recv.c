@@ -81,7 +81,7 @@ axis2_msg_recv_create(
     msg_recv = (axis2_msg_recv_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axis2_msg_recv_t));
 
-    if (NULL == msg_recv)
+    if (! msg_recv)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -132,7 +132,7 @@ axis2_msg_recv_make_new_svc_obj(
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
     svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
-    if (NULL == svc)
+    if (! svc)
     {
         return NULL;
     }
@@ -180,7 +180,7 @@ axis2_msg_recv_get_impl_obj(
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
     svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
-    if (NULL == svc)
+    if (! svc)
     {
         return NULL;
     }
@@ -239,7 +239,7 @@ axis2_msg_recv_delete_svc_obj(
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
     svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
-    if (NULL == svc)
+    if (! svc)
     {
         return AXIS2_FAILURE;
     }

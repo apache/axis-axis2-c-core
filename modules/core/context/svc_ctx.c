@@ -136,7 +136,7 @@ axis2_svc_ctx_init(
     if (svc_ctx->svc_qname)
     {
         axis2_char_t *svc_name = axis2_qname_get_localpart(svc_ctx->svc_qname, env);
-        svc_ctx->svc = AXIS2_CONF_GET_SVC(conf, env, svc_name);
+        svc_ctx->svc = axis2_conf_get_svc(conf, env, svc_name);
     }
 
     return AXIS2_SUCCESS;

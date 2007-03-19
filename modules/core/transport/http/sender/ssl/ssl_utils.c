@@ -57,7 +57,7 @@ axis2_ssl_utils_initialize_ctx(
     /*printf("key_file: %s\n", key_file);
     printf("ca_file: %s\n", server_cert);*/
 
-    if (NULL == ca_file)
+    if (! ca_file)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_NO_CA_FILE,
                 AXIS2_FAILURE);
@@ -131,12 +131,12 @@ axis2_ssl_utils_initialize_ssl(
     AXIS2_PARAM_CHECK(env->error, ctx, NULL);
 
     ssl = SSL_new(ctx);
-    if (NULL == ssl)
+    if (! ssl)
     {
         return NULL;
     }
     sbio = BIO_new_socket(socket, BIO_NOCLOSE);
-    if (NULL == sbio)
+    if (! sbio)
     {
         return NULL;
     }

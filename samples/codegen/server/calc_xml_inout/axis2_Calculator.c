@@ -55,7 +55,7 @@ axis2_Calculator_add(const axis2_env_t * env, axiom_node_t* param0)
     int result = 0;
 
     int value1, value2;
-    if (NULL == req)
+    if (! req)
     {
         printf("response null\n");
         return NULL;

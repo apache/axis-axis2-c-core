@@ -78,7 +78,7 @@ axis2_apache2_worker_create(
     apache2_worker_impl = (axis2_apache2_worker_impl_t *)
             AXIS2_MALLOC(env->allocator, sizeof(axis2_apache2_worker_impl_t));
 
-    if (NULL == apache2_worker_impl)
+    if (! apache2_worker_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -86,7 +86,7 @@ axis2_apache2_worker_create(
     apache2_worker_impl->apache2_worker.ops = NULL;
     apache2_worker_impl->conf_ctx = axis2_build_conf_ctx(env, repo_path);
 
-    if (NULL == apache2_worker_impl->conf_ctx)
+    if (! apache2_worker_impl->conf_ctx)
     {
         axis2_apache2_worker_free((axis2_apache2_worker_t *)apache2_worker_impl,
                 env);
@@ -94,7 +94,7 @@ axis2_apache2_worker_create(
     }
     apache2_worker_impl->apache2_worker.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_apache2_worker_ops_t));
-    if (NULL == apache2_worker_impl->apache2_worker.ops)
+    if (! apache2_worker_impl->apache2_worker.ops)
     {
         axis2_apache2_worker_free((axis2_apache2_worker_t *)apache2_worker_impl,
                 env);
@@ -166,7 +166,7 @@ axis2_apache2_worker_process_request(
     /*url = axis2_url_create(env, "http",
             (axis2_char_t *)ap_get_server_name(request),
             ap_get_server_port(request), request->unparsed_uri);*/
-    if (NULL == conf_ctx)
+    if (! conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
                 AXIS2_FAILURE);
@@ -185,7 +185,7 @@ axis2_apache2_worker_process_request(
         content_length = -1;
         request->chunked = 1;
     }
-    if (NULL == http_version)
+    if (! http_version)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_HTTP_VERSION,
                 AXIS2_FAILURE);
@@ -197,10 +197,10 @@ axis2_apache2_worker_process_request(
 
     encoding_header_value = (axis2_char_t*)request->content_encoding;
 
-    out_desc = AXIS2_CONF_GET_TRANSPORT_OUT( axis2_conf_ctx_get_conf
+    out_desc =  axis2_conf_get_transport_out( axis2_conf_ctx_get_conf
             (apache2_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
-    in_desc = AXIS2_CONF_GET_TRANSPORT_IN( axis2_conf_ctx_get_conf
+    in_desc =  axis2_conf_get_transport_in( axis2_conf_ctx_get_conf
             (apache2_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
 
@@ -228,7 +228,7 @@ axis2_apache2_worker_process_request(
             (axis2_char_t *)apr_table_get(request->headers_in,
             AXIS2_HTTP_HEADER_SOAP_ACTION));
     request_body = axis2_stream_create_apache2(env, request);
-    if (NULL == request_body)
+    if (! request_body)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
                 " creating input stream.");
@@ -268,7 +268,7 @@ axis2_apache2_worker_process_request(
         {
             axis2_msg_ctx_t *fault_ctx = NULL;
             axis2_engine_t *engine = axis2_engine_create(env, conf_ctx);
-            if (NULL == engine)
+            if (! engine)
             {
                 send_status =  HTTP_INTERNAL_SERVER_ERROR;
             }

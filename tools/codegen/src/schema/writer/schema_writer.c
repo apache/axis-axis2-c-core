@@ -33,7 +33,7 @@ w2c_schema_writer_create (const axis2_env_t *env)
     writer_impl = (w2c_schema_writer_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_schema_writer_impl_t));
 
-    if(NULL == writer_impl)
+    if(! writer_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -65,7 +65,7 @@ w2c_schema_writer_create (const axis2_env_t *env)
 
     writer_impl->writer.ops =
     AXIS2_MALLOC (env->allocator, sizeof(w2c_schema_writer_ops_t));
-    if(NULL == writer_impl->writer.ops)
+    if(! writer_impl->writer.ops)
     {
         w2c_schema_writer_free(&(writer_impl->writer), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -92,7 +92,7 @@ w2c_schema_writer_create (const axis2_env_t *env)
  
     writer_impl->writer_impl_ops =
             AXIS2_MALLOC (env->allocator, sizeof(w2c_schema_writer_impl_ops_t));
-    if(NULL == writer_impl->writer_impl_ops)
+    if(! writer_impl->writer_impl_ops)
     {
         w2c_schema_writer_free(&(writer_impl->writer), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -310,7 +310,7 @@ w2c_schema_writer_write_batch( w2c_schema_writer_t *writer,
     writer_impl = W2C_INTF_TO_IMPL(writer);
     if( writer_impl-> wrap_classes)
     {
-        if ( NULL == writer_impl-> package_name)
+        if ( ! writer_impl-> package_name)
         {
             temp_package = W2C_SCHEMA_WRITER_DEFAULT_PACKAGE;
         }
@@ -448,11 +448,11 @@ w2c_schema_writer_get_package( w2c_schema_writer_impl_t *writer_impl,
         base_package_name = (axis2_char_t*)axis2_hash_get( writer_impl-> ns2packagename_map, namespace_uri,
              AXIS2_HASH_KEY_STRING);
     }
-    if ( NULL == base_package_name)
+    if ( ! base_package_name)
     {
         base_package_name = w2c_url_processor_make_package_name( env, namespace_uri);
     }
-    if( NULL == writer_impl-> package_name)
+    if( ! writer_impl-> package_name)
     {
         package_name = axis2_strdup( base_package_name, env);
     }
@@ -483,7 +483,7 @@ w2c_schema_writer_process( w2c_schema_writer_impl_t *writer_impl,
     axis2_char_t *namespace_uri = NULL;
 
     fully_qualified_class_name = W2C_SCHEMA_WRITER_META_INFO_GET_OWN_CLASSNAME( meta_info, env);
-    if( NULL == fully_qualified_class_name )
+    if( ! fully_qualified_class_name )
     {
         fully_qualified_class_name =
             W2C_SCHEMA_WRITER_MAKE_FULLY_QUALIFIED_CLASS_NAME( &(writer_impl->writer), env, qname);

@@ -37,7 +37,7 @@ w2c_writer_create_impl (const axis2_env_t *env)
     writer_impl = (w2c_writer_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_writer_impl_t));
 
-    if(NULL == writer_impl)
+    if(! writer_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -45,7 +45,7 @@ w2c_writer_create_impl (const axis2_env_t *env)
     
     writer_impl->writer.ops = 
     AXIS2_MALLOC (env->allocator, sizeof(w2c_writer_ops_t));
-    if(NULL == writer_impl->writer.ops)
+    if(! writer_impl->writer.ops)
     {
         w2c_writer_free(&(writer_impl->writer), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -269,11 +269,11 @@ w2c_writer_set_language(w2c_writer_impl_t *writer_impl,
     axis2_char_t* lang = NULL;
     lang = 
        W2C_ENGINE_CONFIGURATION_GET_OUTPUT_LANGUAGE ( writer_impl-> config, env);
-    if (NULL == lang )
+    if (! lang )
     {
         lang = 
             W2C_CONFIG_PROPERTY_LOADER_GET_DEFAULT_LANGUAGE(writer_impl->loader, env);
-        if ( NULL == lang )
+        if ( ! lang )
             return AXIS2_FAILURE;
     }
     writer_impl-> language = axis2_strdup(lang, env);
@@ -291,13 +291,13 @@ w2c_writer_load_template(w2c_writer_impl_t *writer_impl,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if ( NULL == writer_impl-> language )
+    if ( ! writer_impl-> language )
           return AXIS2_FAILURE;
 
 
     file_path = getenv("AXIS2C_HOME");
     file_path = axis2_strdup ( file_path, env);
-    if ( NULL == file_path)
+    if ( ! file_path)
     {
         return AXIS2_FAILURE;
     }
@@ -309,7 +309,7 @@ w2c_writer_load_template(w2c_writer_impl_t *writer_impl,
                         writer_impl-> language, AXIS2_HASH_KEY_STRING);
     
     tmpl_name = w2c_writer_find_template( writer_impl, env, lang_speci_map);
-    if ( NULL == tmpl_name || *tmpl_name =='\0')
+    if ( ! tmpl_name || *tmpl_name =='\0')
     {
         AXIS2_FREE ( env-> allocator, file_path );
         return AXIS2_FAILURE;

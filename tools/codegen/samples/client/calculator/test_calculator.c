@@ -92,7 +92,7 @@ void handle_respone_xml(const  axis2_env_t* env, axiom_node_t* res)
     axiom_element_t* ele = NULL;
     axis2_char_t* text =  NULL;
 
-    if (NULL == res)
+    if (! res)
     {
         printf("response null\n");
         return;

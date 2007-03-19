@@ -119,7 +119,7 @@ axis2_listener_manager_make_sure_started(
         conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
         if (conf)
         {
-            transport_in = AXIS2_CONF_GET_TRANSPORT_IN(conf, env, transport);
+            transport_in =  axis2_conf_get_transport_in(conf, env, transport);
             if (transport_in)
             {
                 listener = axis2_transport_in_desc_get_recv(transport_in, env);
@@ -129,7 +129,7 @@ axis2_listener_manager_make_sure_started(
                     axis2_listener_manager_worker_func_args_t *arg_list = NULL;
                     arg_list = AXIS2_MALLOC(env->allocator,
                             sizeof(axis2_listener_manager_worker_func_args_t));
-                    if (NULL == arg_list)
+                    if (! arg_list)
                     {
                         return AXIS2_FAILURE;
                     }
@@ -141,7 +141,7 @@ axis2_listener_manager_make_sure_started(
                     {
                         worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
                                 axis2_listener_manager_worker_func, (void*)arg_list);
-                        if (NULL == worker_thread)
+                        if (! worker_thread)
                         {
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
                                     "Invoke non blocking failed");

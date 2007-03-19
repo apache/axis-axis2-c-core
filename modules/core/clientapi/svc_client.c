@@ -152,7 +152,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     }
 
     svc_client->conf =  axis2_conf_ctx_get_conf(svc_client->conf_ctx, env);
-    repos_path = AXIS2_CONF_GET_REPO(svc_client->conf, env);
+    repos_path =  axis2_conf_get_repo(svc_client->conf, env);
     wsdl_path = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
 
     svc_client->options = axis2_options_create(env);
@@ -173,7 +173,7 @@ axis2_svc_client_create_for_dynamic_invocation(
             op = (axis2_op_t *) v;
 
             /* Setting operation phase */
-            info = AXIS2_CONF_GET_PHASES_INFO(svc_client->conf, env);
+            info =  axis2_conf_get_phases_info(svc_client->conf, env);
             AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op);
         }
     }
@@ -181,10 +181,10 @@ axis2_svc_client_create_for_dynamic_invocation(
 		  return AXIS2_FAILURE;
 
     /** add the service to the config context if it isn't in there already */
-    if (NULL == AXIS2_CONF_GET_SVC(svc_client->conf, env,
+    if (! axis2_conf_get_svc(svc_client->conf, env,
             AXIS2_SVC_GET_NAME(svc_client->svc, env)))
     {
-        AXIS2_CONF_ADD_SVC(svc_client->conf, env, svc_client->svc);
+         axis2_conf_add_svc(svc_client->conf, env, svc_client->svc);
     }
 
     /** create a service context for myself: create a new service group
@@ -268,7 +268,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     }
     else
     {
-        if (NULL == (svc_client->svc =
+        if (! (svc_client->svc =
                     axis2_svc_client_create_annonymous_svc(
                         svc_client, env)))
         {
@@ -278,10 +278,10 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     }
 
     /** add the service to the config context if it isn't in there already */
-    if (NULL == AXIS2_CONF_GET_SVC(svc_client->conf, env,
+    if (! axis2_conf_get_svc(svc_client->conf, env,
             AXIS2_SVC_GET_NAME(svc_client->svc, env)))
     {
-        AXIS2_CONF_ADD_SVC(svc_client->conf, env, svc_client->svc);
+         axis2_conf_add_svc(svc_client->conf, env, svc_client->svc);
     }
 
     /** create a service context for myself: create a new service group
@@ -379,7 +379,7 @@ axis2_svc_client_engage_module(
 
     if (mod_qname)
     {
-        module = AXIS2_CONF_GET_MODULE(svc_client->conf, env, mod_qname);
+        module =  axis2_conf_get_module(svc_client->conf, env, mod_qname);
 
         axis2_qname_free(mod_qname, env);
         mod_qname = NULL;
@@ -409,7 +409,7 @@ axis2_svc_client_disengage_module(
 
     mod_qname = axis2_qname_create(env, module_name, NULL, NULL);
 
-    module = AXIS2_CONF_GET_MODULE(svc_client->conf, env, mod_qname);
+    module =  axis2_conf_get_module(svc_client->conf, env, mod_qname);
 
     /**TODO:uncomment once axis2_svc_disengage_module is implemented
     if (module)
@@ -1102,7 +1102,7 @@ axis2_svc_client_create_annonymous_svc(
     axis2_op_set_msg_exchange_pattern(op_robust_out_only, env, AXIS2_MEP_URI_ROBUST_OUT_ONLY);
 
     /* Setting operation phase */
-    info = AXIS2_CONF_GET_PHASES_INFO(svc_client->conf, env);
+    info =  axis2_conf_get_phases_info(svc_client->conf, env);
     AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_out_in);
     AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_out_only);
     AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_robust_out_only);

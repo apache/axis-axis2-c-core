@@ -51,7 +51,7 @@ axis2_repos_listener_create(
     repos_listener = (axis2_repos_listener_t *) AXIS2_MALLOC(env->allocator
             , sizeof(axis2_repos_listener_t));
 
-    if (NULL == repos_listener)
+    if (! repos_listener)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -85,7 +85,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(
 
     repos_listener = (axis2_repos_listener_t *) axis2_repos_listener_create(env);
 
-    if (NULL == repos_listener)
+    if (! repos_listener)
     {
         return NULL;
     }

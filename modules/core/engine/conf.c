@@ -71,7 +71,7 @@ axis2_conf_create(
     conf = (axis2_conf_t *) AXIS2_MALLOC(env->allocator
             , sizeof(axis2_conf_t));
 
-    if (NULL == conf)
+    if (! conf)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -99,7 +99,7 @@ axis2_conf_create(
 
     conf->param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
-    if (NULL == conf->param_container)
+    if (! conf->param_container)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -107,7 +107,7 @@ axis2_conf_create(
     }
 
     conf->svc_grps = axis2_hash_make(env);
-    if (NULL == conf->svc_grps)
+    if (! conf->svc_grps)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -125,7 +125,7 @@ axis2_conf_create(
     }
 
     conf->engaged_modules = axis2_array_list_create(env, 0);
-    if (NULL == conf->engaged_modules)
+    if (! conf->engaged_modules)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -133,7 +133,7 @@ axis2_conf_create(
     }
 
     conf->handlers = axis2_array_list_create(env, 0);
-    if (NULL == conf->handlers)
+    if (! conf->handlers)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -142,7 +142,7 @@ axis2_conf_create(
 
     conf->in_phases_upto_and_including_post_dispatch =
         axis2_array_list_create(env, 0);
-    if (NULL == conf->in_phases_upto_and_including_post_dispatch)
+    if (! conf->in_phases_upto_and_including_post_dispatch)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -153,7 +153,7 @@ axis2_conf_create(
         axis2_disp_t *uri_dispatch = NULL;
 
         phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORT_IN);
-        if (NULL == phase)
+        if (! phase)
         {
             axis2_conf_free(conf, env);
             return NULL;
@@ -181,7 +181,7 @@ axis2_conf_create(
 
         }
         phase = axis2_phase_create(env, AXIS2_PHASE_PRE_DISPATCH);
-        if (NULL == phase)
+        if (! phase)
         {
             axis2_conf_free(conf, env);
             return NULL;
@@ -198,7 +198,7 @@ axis2_conf_create(
 
 
     conf->all_svcs = axis2_hash_make(env);
-    if (NULL == conf->all_svcs)
+    if (! conf->all_svcs)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -206,7 +206,7 @@ axis2_conf_create(
     }
 
     conf->msg_recvs = axis2_hash_make(env);
-    if (NULL == conf->msg_recvs)
+    if (! conf->msg_recvs)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -214,7 +214,7 @@ axis2_conf_create(
     }
 
     conf->faulty_svcs = axis2_hash_make(env);
-    if (NULL == conf->faulty_svcs)
+    if (! conf->faulty_svcs)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -222,7 +222,7 @@ axis2_conf_create(
     }
 
     conf->faulty_modules = axis2_hash_make(env);
-    if (NULL == conf->faulty_modules)
+    if (! conf->faulty_modules)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -230,7 +230,7 @@ axis2_conf_create(
     }
 
     conf->all_modules = axis2_hash_make(env);
-    if (NULL == conf->all_modules)
+    if (! conf->all_modules)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -238,7 +238,7 @@ axis2_conf_create(
     }
 
     conf->name_to_version_map = axis2_hash_make(env);
-    if (NULL == conf->name_to_version_map)
+    if (! conf->name_to_version_map)
     {
         axis2_conf_free(conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -597,14 +597,14 @@ axis2_conf_add_svc(
 
     svc_grp = axis2_svc_grp_create(env);
 
-    if (NULL == svc_grp)
+    if (! svc_grp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)
         return AXIS2_FAILURE;
     }
 
     svc_grp_qname = AXIS2_SVC_GET_QNAME(svc, env);
-    if (NULL == svc_grp_qname)
+    if (! svc_grp_qname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
                 AXIS2_FAILURE);
@@ -698,7 +698,7 @@ axis2_conf_get_param(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
-    if (NULL == conf->param_container)
+    if (! conf->param_container)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FAILURE);
@@ -814,13 +814,13 @@ axis2_conf_get_module(
         return ret;
     }
     module_name = axis2_qname_get_localpart(qname, env);
-    if (NULL == module_name)
+    if (! module_name)
     {
         return NULL;
     }
-    def_mod_ver = AXIS2_CONF_GET_DEFAULT_MODULE_VERSION(conf, env, module_name);
+    def_mod_ver =  axis2_conf_get_default_module_version(conf, env, module_name);
     mod_qname = axis2_core_utils_get_module_qname(env, name, def_mod_ver);
-    if (NULL == mod_qname)
+    if (! mod_qname)
     {
         return NULL;
     }
@@ -950,7 +950,7 @@ axis2_conf_is_engaged(
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FALSE);
 
-    def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(conf, env,
+    def_mod =  axis2_conf_get_default_module(conf, env,
             axis2_qname_get_localpart(module_name, env));
     if (def_mod)
     {
@@ -1144,7 +1144,6 @@ axis2_conf_set_default_dispatchers(
     axis2_phase_t *dispatch = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_disp_t *add_dispatch = NULL;
-    /*axis2_disp_t *uri_dispatch = NULL;*/
     axis2_disp_t *soap_action_based_dispatch = NULL;
     axis2_disp_t *soap_msg_body_based_dispatch = NULL;
     axis2_handler_t *handler = NULL;
@@ -1184,18 +1183,6 @@ axis2_conf_set_default_dispatchers(
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
 
-    /*uri_dispatch = axis2_req_uri_disp_create(env);
-    if (!uri_dispatch)
-    {
-        return AXIS2_FAILURE;
-    }
-
-    handler = axis2_disp_get_base(uri_dispatch, env);
-    axis2_disp_free(uri_dispatch, env);
-    AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
-    axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
-    handler = NULL;*/
-
     soap_action_based_dispatch = axiom_soap_action_disp_create(env);
     if (!soap_action_based_dispatch)
     {
@@ -1217,7 +1204,7 @@ axis2_conf_set_default_dispatchers(
     }
 
     post_dispatch = axis2_phase_create(env, AXIS2_PHASE_POST_DISPATCH);
-    if (NULL == post_dispatch)
+    if (! post_dispatch)
     {
         AXIS2_PHASE_FREE(dispatch, env);
         return AXIS2_FAILURE;
@@ -1228,7 +1215,6 @@ axis2_conf_set_default_dispatchers(
      axis2_disp_checker_free(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
-    handler = NULL;
 
     handler = axis2_ctx_handler_create(env, NULL);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 1, handler);
@@ -1267,7 +1253,7 @@ axis2_conf_set_dispatch_phase(
     }
 
     post_dispatch = axis2_phase_create(env, AXIS2_PHASE_POST_DISPATCH);
-    if (NULL == post_dispatch)
+    if (! post_dispatch)
     {
         AXIS2_PHASE_FREE(dispatch, env);
         return AXIS2_FAILURE;
@@ -1313,7 +1299,7 @@ axis2_conf_engage_module(
     AXIS2_PARAM_CHECK(env->error, module_ref, AXIS2_FAILURE);
 
     module_desc = axis2_conf_get_module(conf, env, module_ref);
-    if (NULL == module_desc)
+    if (! module_desc)
     {
         axis2_file_t *file = NULL;
         axis2_char_t *file_name = NULL;
@@ -1333,7 +1319,7 @@ axis2_conf_engage_module(
         file_name = axis2_qname_get_localpart(module_ref, env);
         file = (axis2_file_t *) axis2_arch_reader_create_module_arch(
                     arch_reader, env, file_name) ;
-        repos_path = AXIS2_CONF_GET_REPO(conf, env);
+        repos_path =  axis2_conf_get_repo(conf, env);
         temp_path1 = axis2_stracat(repos_path, AXIS2_PATH_SEP_STR, env);
         temp_path2 = axis2_stracat(temp_path1, AXIS2_MODULE_FOLDER, env);
         temp_path3 = axis2_stracat(temp_path2, AXIS2_PATH_SEP_STR, env);
@@ -1453,7 +1439,7 @@ axis2_conf_get_default_module_version(
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     def_ver_map = conf->name_to_version_map;
-    if (NULL == def_ver_map)
+    if (! def_ver_map)
     {
         return NULL;
     }
@@ -1476,9 +1462,9 @@ axis2_conf_get_default_module(
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     all_modules = conf->all_modules;
-    mod_ver = AXIS2_CONF_GET_DEFAULT_MODULE_VERSION(conf, env, module_name);
+    mod_ver =  axis2_conf_get_default_module_version(conf, env, module_name);
 
-    if (NULL == mod_ver)
+    if (!mod_ver)
     {
         mod_name = axis2_strdup(module_name, env);
     }
@@ -1493,7 +1479,7 @@ axis2_conf_get_default_module(
     AXIS2_FREE(env->allocator, mod_name);
     mod_name = NULL;
 
-    if (NULL == mod_qname)
+    if (!mod_qname)
     {
         return NULL;
     }
@@ -1523,11 +1509,11 @@ axis2_conf_add_default_module_version(
      */
     name_to_ver_map = conf->name_to_version_map;
 
-    if (NULL == axis2_hash_get(name_to_ver_map, module_name,
+    if (!axis2_hash_get(name_to_ver_map, module_name,
             AXIS2_HASH_KEY_STRING))
     {
         axis2_char_t *new_entry = axis2_strdup(module_version, env);
-        if (NULL == new_entry)
+        if (! new_entry)
         {
             return AXIS2_FAILURE;
         }
@@ -1553,11 +1539,11 @@ axis2_conf_engage_module_with_version(
 
     module_qname = axis2_core_utils_get_module_qname(env, module_name,
             version_id);
-    if (NULL == module_qname)
+    if (!module_qname)
     {
         return AXIS2_FAILURE;
     }
-    status = AXIS2_CONF_ENGAGE_MODULE(conf, env, module_qname);
+    status =  axis2_conf_engage_module(conf, env, module_qname);
     axis2_qname_free(module_qname, env);
     return status;
 }

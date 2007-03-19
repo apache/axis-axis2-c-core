@@ -35,7 +35,7 @@ axis2_svc_grp_builder_create(
             allocator, sizeof(axis2_svc_grp_builder_t));
 
 
-    if (NULL == svc_grp_builder)
+    if (! svc_grp_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -172,7 +172,7 @@ axis2_svc_grp_builder_populate_svc_grp(
         }
 
         svc_name = axiom_attribute_get_value(svc_name_att, env);
-        if (NULL == svc_name)
+        if (! svc_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_NAME_ERROR,
                     AXIS2_FAILURE);
@@ -189,7 +189,7 @@ axis2_svc_grp_builder_populate_svc_grp(
                 axis2_desc_builder_get_dep_engine(svc_grp_builder->desc_builder, env), 
                 env);
             axis_svc = axis2_arch_file_data_get_svc(file_data, env, svc_name);
-            if (NULL == axis_svc)
+            if (! axis_svc)
             {
                 axis2_qname_t *qsvc_name = NULL;
 
@@ -252,7 +252,7 @@ axis2_svc_grp_builder_process_module_refs(
             module = AXIS2_DEP_ENGINE_GET_MODULE(
                 axis2_desc_builder_get_dep_engine(svc_grp_builder->desc_builder, env), 
                 env, qrefname);
-            if (NULL == module)
+            if (! module)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
                         AXIS2_FAILURE);

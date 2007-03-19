@@ -70,7 +70,7 @@ axis2_apache2_out_transport_info_create(
             (env->allocator, sizeof(
                         axis2_apache2_out_transport_info_impl_t));
 
-    if (NULL == info_impl)
+    if (! info_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -80,7 +80,7 @@ axis2_apache2_out_transport_info_create(
 
     info_impl->out_transport_info.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_out_transport_info_ops_t));
-    if (NULL == info_impl->out_transport_info.ops)
+    if (! info_impl->out_transport_info.ops)
     {
         axis2_http_out_transport_info_free((axis2_http_out_transport_info_t *)
                 info_impl, env);

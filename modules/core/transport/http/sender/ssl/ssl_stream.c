@@ -96,7 +96,7 @@ axis2_stream_create_ssl(
     stream_impl = (ssl_stream_impl_t *)AXIS2_MALLOC(
                 env->allocator, sizeof(ssl_stream_impl_t));
 
-    if (NULL == stream_impl)
+    if (! stream_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -108,7 +108,7 @@ axis2_stream_create_ssl(
 
     stream_impl->ctx = axis2_ssl_utils_initialize_ctx(env, server_cert,
             key_file, ssl_pp);
-    if (NULL == stream_impl->ctx)
+    if (! stream_impl->ctx)
     {
         axis2_ssl_stream_free((axis2_stream_t*)stream_impl, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
@@ -116,7 +116,7 @@ axis2_stream_create_ssl(
     }
     stream_impl->ssl = axis2_ssl_utils_initialize_ssl(env, stream_impl->ctx,
             stream_impl->socket);
-    if (NULL == stream_impl->ssl)
+    if (! stream_impl->ssl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_ENGINE, AXIS2_FAILURE);
         return NULL;
@@ -124,7 +124,7 @@ axis2_stream_create_ssl(
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
     stream_impl->stream.ops = (axis2_stream_ops_t *) AXIS2_MALLOC(
                 env->allocator, sizeof(axis2_stream_ops_t));
-    if (NULL == stream_impl->stream.ops)
+    if (! stream_impl->stream.ops)
     {
         axis2_ssl_stream_free(&(stream_impl->stream), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

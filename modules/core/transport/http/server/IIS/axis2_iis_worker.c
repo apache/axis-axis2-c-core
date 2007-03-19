@@ -95,7 +95,7 @@ axis2_iis_worker_create(
     iis_worker_impl = (axis2_iis_worker_impl_t *)
             AXIS2_MALLOC(env->allocator, sizeof(axis2_iis_worker_impl_t));
 
-    if (NULL == iis_worker_impl)
+    if (! iis_worker_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -103,7 +103,7 @@ axis2_iis_worker_create(
     iis_worker_impl->iis_worker.ops = NULL;
     iis_worker_impl->conf_ctx = axis2_build_conf_ctx(env, repo_path);
 
-    if (NULL == iis_worker_impl->conf_ctx)
+    if (! iis_worker_impl->conf_ctx)
     {
         axis2_iis_worker_free((axis2_iis_worker_t *)iis_worker_impl,
                 env);
@@ -112,7 +112,7 @@ axis2_iis_worker_create(
     iis_worker_impl->iis_worker.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_iis_worker_ops_t));
 
-    if (NULL == iis_worker_impl->iis_worker.ops)
+    if (! iis_worker_impl->iis_worker.ops)
     {
         axis2_iis_worker_free((axis2_iis_worker_t *)iis_worker_impl,
                 env);
@@ -203,7 +203,7 @@ axis2_iis_worker_process_request(
 	iis_worker_impl = AXIS2_INTF_TO_IMPL(iis_worker);
 	conf_ctx = iis_worker_impl->conf_ctx;	
 
-	if (NULL == conf_ctx)
+	if (! conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
                 AXIS2_FAILURE);
@@ -229,10 +229,10 @@ axis2_iis_worker_process_request(
 
     out_stream = axis2_stream_create_basic(env);	
  
-    out_desc = AXIS2_CONF_GET_TRANSPORT_OUT( axis2_conf_ctx_get_conf
+    out_desc =  axis2_conf_get_transport_out( axis2_conf_ctx_get_conf
             (iis_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
-    in_desc = AXIS2_CONF_GET_TRANSPORT_IN( axis2_conf_ctx_get_conf
+    in_desc =  axis2_conf_get_transport_in( axis2_conf_ctx_get_conf
             (iis_worker_impl->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
 
@@ -259,7 +259,7 @@ axis2_iis_worker_process_request(
 	}
 	request_body = axis2_stream_create_iis(env, lpECB);
 
-	if (NULL == request_body)
+	if (! request_body)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
                 " creating input stream.");
@@ -305,7 +305,7 @@ axis2_iis_worker_process_request(
         {
             axis2_msg_ctx_t *fault_ctx = NULL;
             axis2_engine_t *engine = axis2_engine_create(env, conf_ctx);
-            if (NULL == engine)
+            if (! engine)
             {
                 send_status =  HTTP_INTERNAL_SERVER_ERROR;
             }

@@ -102,7 +102,7 @@ axis2_svc_create(
 
     svc = (axis2_svc_t *)
             AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_t));
-    if (NULL == svc)
+    if (! svc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -135,7 +135,7 @@ axis2_svc_create(
     svc->style = NULL;
 
     svc->param_container = axis2_param_container_create(env);
-    if (NULL == svc->param_container)
+    if (! svc->param_container)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -143,7 +143,7 @@ axis2_svc_create(
     }
 
     svc->flow_container = axis2_flow_container_create(env);
-    if (NULL == svc->flow_container)
+    if (! svc->flow_container)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -151,7 +151,7 @@ axis2_svc_create(
     }
 
     svc->op_alias_map = axis2_hash_make(env);
-    if (NULL == svc->op_alias_map)
+    if (! svc->op_alias_map)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -160,7 +160,7 @@ axis2_svc_create(
 
     /** create module list of default size */
     svc->op_action_map = axis2_hash_make(env);
-    if (NULL == svc->op_action_map)
+    if (! svc->op_action_map)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -168,7 +168,7 @@ axis2_svc_create(
     }
 
     svc->module_list = axis2_array_list_create(env, 0);
-    if (NULL == svc->module_list)
+    if (! svc->module_list)
     {
         axis2_svc_free(svc, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -177,7 +177,7 @@ axis2_svc_create(
 
     svc->schema_list = axis2_array_list_create(env,
             AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
-    if (NULL == svc->schema_list)
+    if (! svc->schema_list)
     {
         axis2_svc_free(svc, env);
         return NULL;
@@ -185,7 +185,7 @@ axis2_svc_create(
 
     svc->engaged_modules = axis2_array_list_create(env,
             AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
-    if (NULL == svc->engaged_modules)
+    if (! svc->engaged_modules)
     {
         axis2_svc_free(svc, env);
         return NULL;
@@ -228,7 +228,7 @@ axis2_svc_create_with_qname(
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     
     svc = axis2_svc_create(env);
-    if (NULL == svc)
+    if (! svc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -471,7 +471,7 @@ axis2_svc_get_op_with_qname(
 
     key = axis2_qname_get_localpart(op_qname, env);
     op = axis2_hash_get(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING);
-    if (NULL == op)
+    if (! op)
         op = axis2_hash_get(svc->op_action_map, key, AXIS2_HASH_KEY_STRING);
 
     return op;
@@ -1106,7 +1106,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(
     wsdl_endpoint = axis2_svc_get_endpoint(svc, env, endpoint);
     wsdl_binding = AXIS2_WSDL_ENDPOINT_GET_BINDING(wsdl_endpoint, env);
     binding_ops = AXIS2_WSDL_BINDING_GET_BINDING_OPS(wsdl_binding, env);
-    if (NULL == binding_ops)
+    if (! binding_ops)
     {
         return NULL;
     }
@@ -1439,7 +1439,7 @@ axis2_svc_set_custom_schema_prefix(
         svc->custom_schema_name_prefix = NULL;
     }
     svc->custom_schema_name_prefix = axis2_strdup(prefix, env);
-    if (NULL == svc->custom_schema_name_prefix)
+    if (! svc->custom_schema_name_prefix)
     {
         return AXIS2_FAILURE;
     }
@@ -1470,7 +1470,7 @@ axis2_svc_set_custom_schema_suffix(
         svc->custom_schema_name_suffix = NULL;
     }
     svc->custom_schema_name_suffix = axis2_strdup(suffix, env);
-    if (NULL == svc->custom_schema_name_suffix)
+    if (! svc->custom_schema_name_suffix)
     {
         return AXIS2_FAILURE;
     }
@@ -1487,7 +1487,7 @@ axis2_svc_print_schema(
     int i = 0;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (NULL == svc->schema_list)
+    if (! svc->schema_list)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_EMPTY_SCHEMA_LIST,
                 AXIS2_FAILURE);
@@ -1532,7 +1532,7 @@ axis2_svc_add_all_namespaces(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (NULL == svc->schema_list)
+    if (! svc->schema_list)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_EMPTY_SCHEMA_LIST,
                 AXIS2_FAILURE);
@@ -1540,7 +1540,7 @@ axis2_svc_add_all_namespaces(
     }
     schema = (xml_schema_t *)axis2_array_list_get(svc->schema_list, env, index);
     prefix_map = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(schema, env);
-    if (NULL == prefix_map)
+    if (! prefix_map)
     {
         return NULL;
     }
@@ -1576,7 +1576,7 @@ axis2_svc_add_schema(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, schema, AXIS2_FAILURE);
 
-    if (NULL == svc->schema_list)
+    if (! svc->schema_list)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_EMPTY_SCHEMA_LIST,
                 AXIS2_FAILURE);
@@ -1817,7 +1817,7 @@ axis2_svc_add_schema_ns(
             }
         }
     }
-    if (NULL == svc->ns_map)
+    if (! svc->ns_map)
     {
         svc->ns_map = axis2_hash_make(env);
         svc->ns_map = NULL;
@@ -1847,7 +1847,7 @@ axis2_svc_populate_schema_mappings(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     schemas = axis2_svc_get_all_schemas(svc, env);
-    if (NULL == schemas)
+    if (! schemas)
     {
         return AXIS2_FAILURE;
     }

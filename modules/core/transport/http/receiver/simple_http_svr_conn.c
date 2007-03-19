@@ -125,7 +125,7 @@ axis2_simple_http_svr_conn_create(
             AXIS2_MALLOC(env->allocator,
                     sizeof(axis2_simple_http_svr_conn_impl_t));
 
-    if (NULL == svr_conn_impl)
+    if (! svr_conn_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -138,7 +138,7 @@ axis2_simple_http_svr_conn_create(
     {
         svr_conn_impl->stream = axis2_stream_create_socket(env,
                 svr_conn_impl->socket);
-        if (NULL == svr_conn_impl->stream)
+        if (! svr_conn_impl->stream)
         {
             axis2_simple_http_svr_conn_free((axis2_simple_http_svr_conn_t *)
                     svr_conn_impl, env);
@@ -147,7 +147,7 @@ axis2_simple_http_svr_conn_create(
     }
     svr_conn_impl->svr_conn.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_simple_http_svr_conn_ops_t));
-    if (NULL == svr_conn_impl->svr_conn.ops)
+    if (! svr_conn_impl->svr_conn.ops)
     {
         axis2_simple_http_svr_conn_free((axis2_simple_http_svr_conn_t *)
                 svr_conn_impl, env);
@@ -364,7 +364,7 @@ axis2_simple_http_svr_conn_read_request(
         }
     }
     request_line = axis2_http_request_line_parse_line(env, str_line);
-    if (NULL == request_line)
+    if (! request_line)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
@@ -479,7 +479,7 @@ axis2_simple_http_svr_conn_write_response(
                 && strstr(content_type, AXIS2_HTTP_HEADER_XOP_XML))
             binary_content = AXIS2_TRUE;
     }
-    if (NULL == response_writer)
+    if (! response_writer)
     {
         return AXIS2_FAILURE;
     }
@@ -505,7 +505,7 @@ axis2_simple_http_svr_conn_write_response(
         }
     }
     status_line = AXIS2_HTTP_SIMPLE_RESPONSE_GET_STATUS_LINE(response, env);
-    if (NULL == status_line)
+    if (! status_line)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,

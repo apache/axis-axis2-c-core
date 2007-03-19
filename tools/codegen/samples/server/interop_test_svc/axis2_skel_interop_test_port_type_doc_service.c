@@ -47,7 +47,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string(const ax
     axiom_element_t * value_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
 
-    if (NULL == req)
+    if (! req)
     {
         printf("request null\n");
         return NULL;
@@ -99,7 +99,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer(const a
     axiom_element_t * value_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
 
-    if (NULL == req)
+    if (! req)
     {
         printf("request null\n");
         return NULL;
@@ -151,7 +151,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float(const axi
     axiom_element_t * value_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
 
-    if (NULL == req)
+    if (! req)
     {
         printf("request null\n");
         return NULL;

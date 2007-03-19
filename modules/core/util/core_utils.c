@@ -302,7 +302,7 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
         axis2_hash_this(hi, (const void **)&key_string, NULL, &val);
         if (key_string && NULL != val)
         {
-            AXIS2_CONF_ADD_DEFAULT_MODULE_VERSION(axis_conf, env,
+             axis2_conf_add_default_module_version(axis_conf, env,
                     (axis2_char_t *)key_string, (axis2_char_t *)val);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Added default module"
                     " version : %s for module : %s",

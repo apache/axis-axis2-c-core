@@ -234,7 +234,7 @@ axis2_http_transport_utils_process_http_post_request(
             {
                 callback_ctx->chunked_stream = axis2_http_chunked_stream_create(
                             env, in_stream);
-                if (NULL == callback_ctx->chunked_stream)
+                if (! callback_ctx->chunked_stream)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
                             " creating in chunked stream.");
@@ -316,7 +316,7 @@ axis2_http_transport_utils_process_http_post_request(
             axis2_http_transport_utils_on_data_request, NULL,
             (void *) callback_ctx, axis2_string_get_buffer(char_set_str, env));
 
-    if (NULL == xml_reader)
+    if (! xml_reader)
     {
         return AXIS2_FAILURE;
     }
@@ -324,7 +324,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_msg_ctx_set_charset_encoding(msg_ctx, env, char_set_str);
 
     om_builder = axiom_stax_builder_create(env, xml_reader);
-    if (NULL == om_builder)
+    if (! om_builder)
     {
         AXIOM_XML_READER_FREE(xml_reader, env);
         xml_reader = NULL;
@@ -336,7 +336,7 @@ axis2_http_transport_utils_process_http_post_request(
         is_soap11 = AXIS2_FALSE;
         soap_builder = axiom_soap_builder_create(env, om_builder,
                 AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
-        if (NULL == soap_builder)
+        if (! soap_builder)
         {
             /* We should not be freeing om_builder here as it is done by
                axiom_soap_builder_create in case of error - Samisa*/
@@ -348,7 +348,7 @@ axis2_http_transport_utils_process_http_post_request(
 
         soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder,
                 env);
-        if (NULL == soap_envelope)
+        if (! soap_envelope)
         {
             axiom_stax_builder_free(om_builder, env);
             om_builder = NULL;
@@ -365,7 +365,7 @@ axis2_http_transport_utils_process_http_post_request(
         {
             soap_builder = axiom_soap_builder_create(env, om_builder,
                     AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
-            if (NULL == soap_builder)
+            if (! soap_builder)
             {
                 /* We should not be freeing om_builder here as it is done by
                    axiom_soap_builder_create in case of error - Samisa*/
@@ -376,7 +376,7 @@ axis2_http_transport_utils_process_http_post_request(
             }
             soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(
                         soap_builder, env);
-            if (NULL == soap_envelope)
+            if (! soap_envelope)
             {
                 AXIOM_SOAP_BUILDER_FREE(soap_builder, env);
                 om_builder = NULL;
@@ -459,7 +459,7 @@ axis2_http_transport_utils_process_http_post_request(
     soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope,
             env);
 
-    if (NULL == soap_body)
+    if (! soap_body)
         return AXIS2_FAILURE;
 
     if (AXIS2_TRUE == AXIOM_SOAP_BODY_HAS_FAULT(soap_body, env))
@@ -470,7 +470,7 @@ axis2_http_transport_utils_process_http_post_request(
     {
         status = AXIS2_ENGINE_RECEIVE(engine, env, msg_ctx);
     }
-    if (NULL ==  axis2_msg_ctx_get_soap_envelope(msg_ctx, env) &&
+    if (!  axis2_msg_ctx_get_soap_envelope(msg_ctx, env) &&
             AXIS2_FALSE == is_soap11)
     {
         axiom_soap_envelope_t *def_envelope =
@@ -546,7 +546,7 @@ axis2_http_transport_utils_process_http_get_request(
     }*/
     soap_envelope = axis2_http_transport_utils_handle_media_type_url_encoded(
                 env, msg_ctx, request_params, AXIS2_HTTP_HEADER_GET);
-    if (NULL == soap_envelope)
+    if (! soap_envelope)
     {
         return AXIS2_FALSE;
     }
@@ -655,7 +655,7 @@ axis2_http_transport_utils_get_request_params(
 
     AXIS2_PARAM_CHECK(env->error, request_uri, AXIS2_FAILURE);
 
-    if (NULL == tmp || '\0' == *(tmp + 1))
+    if (! tmp || '\0' == *(tmp + 1))
     {
         return NULL;
     }
@@ -679,7 +679,7 @@ axis2_http_transport_utils_get_request_params(
         }
         if (tmp_name && NULL != tmp_value)
         {
-            if (NULL == ret)
+            if (! ret)
             {
                 ret = axis2_hash_make(env);
             }
@@ -690,7 +690,7 @@ axis2_http_transport_utils_get_request_params(
     }
     if (tmp_name && '\0' != *tmp2)
     {
-        if (NULL == ret)
+        if (! ret)
         {
             ret = axis2_hash_make(env);
         }
@@ -766,9 +766,9 @@ axis2_http_transport_utils_get_services_html(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
 
-    services_map = AXIS2_CONF_GET_ALL_SVCS( axis2_conf_ctx_get_conf(conf_ctx, env),
+    services_map =  axis2_conf_get_all_svcs( axis2_conf_ctx_get_conf(conf_ctx, env),
             env);
-    errorneous_svc_map = AXIS2_CONF_GET_ALL_FAULTY_SVCS( axis2_conf_ctx_get_conf(
+    errorneous_svc_map =  axis2_conf_get_all_faulty_svcs( axis2_conf_ctx_get_conf(
                 conf_ctx, env), env);
     if (services_map && 0 != axis2_hash_count(services_map))
     {
@@ -959,7 +959,7 @@ axis2_http_transport_utils_on_data_request(
     int len = -1;
     axis2_callback_info_t *cb_ctx = (axis2_callback_info_t *)ctx;
 
-    if (NULL == buffer || NULL == ctx)
+    if (! buffer || ! ctx)
     {
         return 0;
     }
@@ -1044,7 +1044,7 @@ axis2_http_transport_utils_create_soap_msg(
     callback_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_info_t));
     /* Note: the memory created above is freed in xml reader free function
        as this is passed on to the reader */
-    if (NULL == callback_ctx)
+    if (! callback_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -1067,7 +1067,7 @@ axis2_http_transport_utils_create_soap_msg(
         callback_ctx->content_length = *content_length;
         callback_ctx->unread_len = *content_length;
     }
-    if (NULL == in_stream)
+    if (! in_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
                 AXIS2_FAILURE);
@@ -1082,7 +1082,7 @@ axis2_http_transport_utils_create_soap_msg(
     {
         callback_ctx->chunked_stream = axis2_http_chunked_stream_create(env,
                 in_stream);
-        if (NULL == callback_ctx->chunked_stream)
+        if (! callback_ctx->chunked_stream)
         {
             return NULL;
         }
@@ -1112,7 +1112,7 @@ axis2_http_transport_utils_create_soap_msg(
 
         }
     }
-    if (NULL == char_set_enc)
+    if (! char_set_enc)
     {
         char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
     }
@@ -1168,12 +1168,12 @@ axis2_http_transport_utils_create_soap_msg(
         xml_reader = axiom_xml_reader_create_for_io(env,
                 axis2_http_transport_utils_on_data_request, NULL,
                 (void *)callback_ctx, char_set_enc);
-        if (NULL == xml_reader)
+        if (! xml_reader)
         {
             return NULL;
         }
         om_builder = axiom_stax_builder_create(env, xml_reader);
-        if (NULL == om_builder)
+        if (! om_builder)
         {
             AXIOM_XML_READER_FREE(xml_reader, env);
             xml_reader = NULL;
@@ -1181,7 +1181,7 @@ axis2_http_transport_utils_create_soap_msg(
         }
         soap_builder = axiom_soap_builder_create(env, om_builder,
                 soap_ns_uri);
-        if (NULL == soap_builder)
+        if (! soap_builder)
         {
             /* We should not be freeing om_builder here as it is done by
                axiom_soap_builder_create in case of error - Samisa*/
@@ -1225,12 +1225,12 @@ axis2_http_transport_utils_create_soap_msg(
         xml_reader = axiom_xml_reader_create_for_io(env,
                 axis2_http_transport_utils_on_data_request, NULL,
                 (void *)callback_ctx, char_set_enc);
-        if (NULL == xml_reader)
+        if (! xml_reader)
         {
             return NULL;
         }
         om_builder = axiom_stax_builder_create(env, xml_reader);
-        if (NULL == om_builder)
+        if (! om_builder)
         {
             AXIOM_XML_READER_FREE(xml_reader, env);
             xml_reader = NULL;
@@ -1264,12 +1264,12 @@ axis2_http_transport_utils_get_value_from_content_type(
     AXIS2_PARAM_CHECK(env->error, key, NULL);
 
     tmp_content_type = axis2_strdup(content_type, env);
-    if (NULL == tmp_content_type)
+    if (! tmp_content_type)
     {
         return NULL;
     }
     tmp = strstr(tmp_content_type, key);
-    if (NULL == tmp)
+    if (! tmp)
     {
         AXIS2_FREE(env->allocator, tmp_content_type);
         return NULL;
@@ -1282,7 +1282,7 @@ axis2_http_transport_utils_get_value_from_content_type(
     {
         *tmp2 = '\0';
     }
-    if (NULL == tmp)
+    if (! tmp)
     {
         AXIS2_FREE(env->allocator, tmp_content_type);
         return NULL;
@@ -1318,13 +1318,13 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     soap_env = axiom_soap_envelope_create_default_soap_envelope(env,
             AXIOM_SOAP11);
     soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_env, env);
-    if (NULL == soap_body)
+    if (! soap_body)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
                 AXIS2_FAILURE);
         return NULL;
     }
-    if (NULL == schema_element)
+    if (! schema_element)
     {
         axiom_element_t *body_child = NULL;
         axiom_node_t *body_child_node = NULL;
@@ -1405,7 +1405,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
                                 env);
                         param_val = axis2_hash_get(param_map, element_name,
                                 AXIS2_HASH_KEY_STRING);
-                        if (NULL == param_val)
+                        if (! param_val)
                         {
                             AXIS2_ERROR_SET(env->error,
                                     AXIS2_ERROR_REQD_PARAM_MISSING, AXIS2_FAILURE);
@@ -1449,7 +1449,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
     soap_env = axiom_soap_envelope_create_default_soap_envelope(env,
             AXIOM_SOAP11);
     soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_env, env);
-    if (NULL == soap_body)
+    if (! soap_body)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
                 AXIS2_FAILURE);
@@ -1497,7 +1497,7 @@ axis2_http_transport_utils_dispatch_and_verify(
     handler = axis2_disp_get_base(req_uri_disp, env);
     AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
 
-    if (NULL ==  axis2_msg_ctx_get_svc(msg_ctx, env) || NULL ==
+    if (!  axis2_msg_ctx_get_svc(msg_ctx, env) || !
              axis2_msg_ctx_get_op(msg_ctx, env))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,

@@ -118,7 +118,7 @@ axiom_navigator_next(axiom_navigator_t *om_navigator,
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (NULL == om_navigator->next)
+    if (! om_navigator->next)
     {
         return NULL;
     }

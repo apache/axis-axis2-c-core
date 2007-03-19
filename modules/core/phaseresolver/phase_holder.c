@@ -33,7 +33,7 @@ axis2_phase_holder_create(
     phase_holder = (axis2_phase_holder_t *) AXIS2_MALLOC(env->
             allocator, sizeof(axis2_phase_holder_t));
 
-    if (NULL == phase_holder)
+    if (! phase_holder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

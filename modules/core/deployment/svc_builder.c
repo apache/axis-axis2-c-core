@@ -44,7 +44,7 @@ axis2_svc_builder_create(
             allocator, sizeof(axis2_svc_builder_t));
 
 
-    if (NULL == svc_builder)
+    if (! svc_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -70,7 +70,7 @@ axis2_svc_builder_create_with_file_and_dep_engine_and_svc(
     AXIS2_PARAM_CHECK(env->error, dep_engine, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
     svc_builder = (axis2_svc_builder_t *) axis2_svc_builder_create(env);
-    if (NULL == svc_builder)
+    if (! svc_builder)
     {
         return NULL;
     }
@@ -98,7 +98,7 @@ axis2_svc_builder_create_with_dep_engine_and_svc(
     AXIS2_PARAM_CHECK(env->error, dep_engine, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
     svc_builder = (axis2_svc_builder_t *) axis2_svc_builder_create(env);
-    if (NULL == svc_builder)
+    if (! svc_builder)
     {
         return NULL;
     }
@@ -472,7 +472,7 @@ axis2_svc_builder_process_ops(
         op_name_att = axiom_element_get_attribute(op_element, env, qattname);
         axis2_qname_free(qattname, env);
         qattname = NULL;
-        if (NULL == op_name_att)
+        if (! op_name_att)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OP_NAME_MISSING,
                     AXIS2_FAILURE);
@@ -495,9 +495,9 @@ axis2_svc_builder_process_ops(
         op_name = axiom_attribute_get_value(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
         /*wsdl_op = AXIS2_SVC_GET_WSDL_OP(svc_builder->svc, env, qopname);*/
-        /*if (NULL == wsdl_op)
+        /*if (! wsdl_op)
         {*/
-            /*if (NULL == mep_url)
+            /*if (! mep_url)
             {*/
                 /* assumed MEP is in-out */
                 op_desc = axis2_op_create(env);
@@ -518,7 +518,7 @@ axis2_svc_builder_process_ops(
 
             /* Creating operation from existing operation */
         /*    mep = AXIS2_WSDL_OP_GET_MSG_EXCHANGE_PATTERN(wsdl_op, env);
-            if (NULL == mep)
+            if (! mep)
             {
                 op_desc = axis2_op_create_with_wsdl_op(env, wsdl_op);
             }
@@ -619,7 +619,7 @@ axis2_svc_builder_process_svc_module_conf(
                 env, qattname);
         axis2_qname_free(qattname, env);
         qattname = NULL;
-        if (NULL == module_name_att)
+        if (! module_name_att)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE_CONF,
                     AXIS2_FAILURE);
@@ -661,7 +661,7 @@ axis2_svc_builder_process_module_refs(
 
             ref_name = axiom_attribute_get_value(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
-            if (NULL == AXIS2_DEP_ENGINE_GET_MODULE(
+            if (! AXIS2_DEP_ENGINE_GET_MODULE(
                 axis2_desc_builder_get_dep_engine(svc_builder->desc_builder, env), 
                 env, qrefname))
             {

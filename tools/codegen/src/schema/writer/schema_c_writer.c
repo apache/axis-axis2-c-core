@@ -127,7 +127,7 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
     original_name = axis2_qname_get_localpart( qname, env);
     original_name = axis2_strdup( original_name, env);
     class_name = W2C_SCHEMA_WRITER_META_INFO_GET_OWN_CLASSNAME( meta_info, env);
-    if( NULL == class_name )
+    if( ! class_name )
     {
         class_name =
             W2C_SCHEMA_WRITER_MAKE_FULLY_QUALIFIED_CLASS_NAME( &(writer_impl->writer), env, qname);

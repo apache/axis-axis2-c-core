@@ -44,7 +44,7 @@ w2c_class_loader_get_object_from_class_name
     dll_name=
         axis2_dll_desc_create_platform_specific_dll_name(
                  dll_desc,  env, class_name );
-    if ( NULL == dll_name )
+    if ( ! dll_name )
     {
         w2c_messages_print_n_log_error ( env, "utils.classloadFailed");
         return NULL;

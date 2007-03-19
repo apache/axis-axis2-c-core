@@ -92,7 +92,7 @@ void test_template_parse(CuTest *tc)
     env = axis2_env_create(allocator);
 
     xml_stream = read_file("../../resources/xml/atoms.xml");
-    if (NULL == xml_stream)
+    if (! xml_stream)
         return;
     xslt_filename = "../../resources/xml/style1.xsl";
     out_filename = "../../resources/xml/result1.xml";

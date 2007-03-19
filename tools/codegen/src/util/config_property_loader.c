@@ -199,7 +199,7 @@ w2c_config_property_loader_create (const axis2_env_t *env)
     config_property_loader_impl = (w2c_config_property_loader_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_config_property_loader_impl_t));
 
-    if(NULL == config_property_loader_impl)
+    if(! config_property_loader_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -207,7 +207,7 @@ w2c_config_property_loader_create (const axis2_env_t *env)
     
     config_property_loader_impl->config_property_loader.ops = 
     AXIS2_MALLOC (env->allocator, sizeof(w2c_config_property_loader_ops_t));
-    if(NULL == config_property_loader_impl->config_property_loader.ops)
+    if(! config_property_loader_impl->config_property_loader.ops)
     {
         w2c_config_property_loader_free(&(config_property_loader_impl->config_property_loader), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

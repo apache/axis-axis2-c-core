@@ -264,7 +264,7 @@ axis2_mep_client_infer_transport(
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, transport_enum);
+                transport_out_desc =  axis2_conf_get_transport_out(conf, env, transport_enum);
             }
         }
 
@@ -319,9 +319,9 @@ axis2_mep_client_engage_module(
             if (conf)
             {
                 /*if it is already engaged do not engage it again*/
-                if (!(AXIS2_CONF_IS_ENGAGED(conf, env, qname)))
+                if (!( axis2_conf_is_engaged(conf, env, qname)))
                 {
-                    return AXIS2_CONF_ENGAGE_MODULE(conf, env, qname);
+                    return  axis2_conf_engage_module(conf, env, qname);
                 }
             }
         }

@@ -66,7 +66,7 @@ axis2_stream_create_libcurl(
     stream_impl = (libcurl_stream_impl_t *)AXIS2_MALLOC(
                 env->allocator, sizeof(libcurl_stream_impl_t));
 
-    if (NULL == stream_impl)
+    if (! stream_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -78,7 +78,7 @@ axis2_stream_create_libcurl(
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
     stream_impl->stream.ops = (axis2_stream_ops_t *) AXIS2_MALLOC(
                 env->allocator, sizeof(axis2_stream_ops_t));
-    if (NULL == stream_impl->stream.ops)
+    if (! stream_impl->stream.ops)
     {
         libcurl_stream_free(&(stream_impl->stream), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

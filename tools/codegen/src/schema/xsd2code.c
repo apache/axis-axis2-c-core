@@ -81,7 +81,7 @@ w2c_schema_compile( const axis2_env_t *env, axis2_char_t *schema_name,
     w2c_schema_compiler_t *compiler = NULL;
 
     reader = axiom_xml_reader_create_for_file(env, schema_name, NULL);
-    if ( NULL == reader )
+    if ( ! reader )
     {
         return;
     }

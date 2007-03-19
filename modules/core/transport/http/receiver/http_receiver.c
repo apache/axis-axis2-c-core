@@ -97,7 +97,7 @@ axis2_http_server_create(
     server_impl = (axis2_http_server_impl_t *)AXIS2_MALLOC
             (env->allocator, sizeof(axis2_http_server_impl_t));
 
-    if (NULL == server_impl)
+    if (! server_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -110,7 +110,7 @@ axis2_http_server_create(
 
     server_impl->http_server.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_transport_receiver_ops_t));
-    if (NULL == server_impl->http_server.ops)
+    if (! server_impl->http_server.ops)
     {
         axis2_http_server_free((axis2_transport_receiver_t *) server_impl, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -125,7 +125,7 @@ axis2_http_server_create(
          * may lead to double free
          */
         server_impl->conf_ctx_private = axis2_build_conf_ctx(env, repo);
-        if (NULL == server_impl->conf_ctx_private)
+        if (! server_impl->conf_ctx_private)
         {
             axis2_http_server_free((axis2_transport_receiver_t *) server_impl, env);
             return NULL;
@@ -221,13 +221,13 @@ axis2_http_server_start(
     server_impl = AXIS2_INTF_TO_IMPL(server);
     server_impl->svr_thread = axis2_http_svr_thread_create(env,
             server_impl->port);
-    if (NULL == server_impl->svr_thread)
+    if (! server_impl->svr_thread)
     {
         return AXIS2_FAILURE;
     }
     worker = axis2_http_worker_create(env, server_impl->conf_ctx);
     AXIS2_HTTP_WORKER_SET_SVR_PORT(worker, env, server_impl->port);
-    if (NULL == worker)
+    if (! worker)
     {
         AXIS2_HTTP_SVR_THREAD_FREE(server_impl->svr_thread, env);
         return AXIS2_FAILURE;
@@ -284,7 +284,7 @@ axis2_http_server_get_reply_to_epr(
     url = axis2_url_create(env, "http", host_address,
             AXIS2_INTF_TO_IMPL(server)->port, svc_path);
     AXIS2_FREE(env->allocator, svc_path);
-    if (NULL == url)
+    if (! url)
     {
         return NULL;
     }
@@ -301,7 +301,7 @@ axis2_http_server_is_running(
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
-    if (NULL == server_impl->svr_thread)
+    if (! server_impl->svr_thread)
     {
         return AXIS2_FALSE;
     }

@@ -96,7 +96,7 @@ void test_url(const axis2_env_t *env)
 {
     const axis2_char_t *str_url = "http://ws.apache.org/axis2/";
     axis2_url_t *url = axis2_url_parse_string(env, str_url);
-    if (NULL == url)
+    if (! url)
     {
         printf("URL is NULL\n");
         return;
@@ -147,7 +147,7 @@ void test_http_client(const axis2_env_t *env)
         return;
     }
     response = AXIS2_HTTP_CLIENT_GET_RESPONSE(client, env);
-    if (NULL == response)
+    if (! response)
     {
         printf("Test Failed : NULL response");
         return;
@@ -213,7 +213,7 @@ void test_https_client(const axis2_env_t *env)
         return;
     }
     response = AXIS2_HTTP_CLIENT_GET_RESPONSE(client, env);
-    if (NULL == response)
+    if (! response)
     {
         printf("Test Failed : NULL response");
         return;

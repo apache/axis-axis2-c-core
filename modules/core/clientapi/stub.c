@@ -35,7 +35,7 @@ axis2_stub_create(
     stub = (axis2_stub_t *) AXIS2_MALLOC(env->
             allocator, sizeof(axis2_stub_t));
 
-    if (NULL == stub)
+    if (! stub)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

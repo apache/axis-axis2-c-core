@@ -72,7 +72,7 @@ w2c_cmdline_option_create (const axis2_env_t *env)
     cmdline_option_impl = (w2c_cmdline_option_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_cmdline_option_impl_t));
 
-    if(NULL == cmdline_option_impl)
+    if(! cmdline_option_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -82,7 +82,7 @@ w2c_cmdline_option_create (const axis2_env_t *env)
     
     cmdline_option_impl->cmdline_option.ops = 
     AXIS2_MALLOC (env->allocator, sizeof(w2c_cmdline_option_ops_t));
-    if(NULL == cmdline_option_impl->cmdline_option.ops)
+    if(! cmdline_option_impl->cmdline_option.ops)
     {
         w2c_cmdline_option_free(&(cmdline_option_impl->cmdline_option), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

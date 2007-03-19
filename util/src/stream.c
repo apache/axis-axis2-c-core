@@ -135,7 +135,7 @@ axis2_stream_create_internal(const axis2_env_t *env)
     stream_impl->socket = -1;
     stream_impl->stream.ops = (axis2_stream_ops_t *) AXIS2_MALLOC(
         env->allocator, sizeof(axis2_stream_ops_t));
-    if (NULL == stream_impl->stream.ops)
+    if (! stream_impl->stream.ops)
     {
         axis2_stream_free(&(stream_impl->stream), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

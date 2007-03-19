@@ -372,21 +372,21 @@ axis2_msg_ctx_init(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
 
-    msg_ctx->transport_in_desc = AXIS2_CONF_GET_TRANSPORT_IN(conf, env,
+    msg_ctx->transport_in_desc =  axis2_conf_get_transport_in(conf, env,
         msg_ctx->transport_in_desc_enum);
 
-    msg_ctx->transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf,
+    msg_ctx->transport_out_desc =  axis2_conf_get_transport_out(conf,
         env, msg_ctx->transport_out_desc_enum);
 
     if (msg_ctx->svc_grp_id)
     {
-        msg_ctx->svc_grp = AXIS2_CONF_GET_SVC_GRP(conf, env,
+        msg_ctx->svc_grp = axis2_conf_get_svc_grp(conf, env,
                 msg_ctx->svc_grp_id);
     }
 
     if (msg_ctx->svc_qname)
     {
-        msg_ctx->svc = AXIS2_CONF_GET_SVC(conf, env,
+        msg_ctx->svc = axis2_conf_get_svc(conf, env,
                 axis2_qname_get_localpart(msg_ctx->svc_qname, env));
     }
 
@@ -1133,7 +1133,7 @@ axis2_msg_ctx_get_parameter(
     if (msg_ctx->conf_ctx)
     {
         axis2_conf_t *conf =  axis2_conf_ctx_get_conf(msg_ctx->conf_ctx, env);
-        param = AXIS2_CONF_GET_PARAM(conf, env, key);
+        param =  axis2_conf_get_param(conf, env, key);
     }
 
     return param;

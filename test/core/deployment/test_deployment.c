@@ -55,14 +55,14 @@ int axis2_test_dep_engine_load()
         return -1;
     }
     conf = AXIS2_DEP_ENGINE_LOAD(dep_engine, env);
-    AXIS2_CONF_SET_DEP_ENGINE(conf, env, dep_engine);
+     axis2_conf_set_dep_engine(conf, env, dep_engine);
     if (!conf)
     {
         printf("conf is NULL\n)");
         return -1;
     }
 
-    svc_map = AXIS2_CONF_GET_ALL_SVCS(conf, env);
+    svc_map =  axis2_conf_get_all_svcs(conf, env);
     if (svc_map)
         printf("svc_map count = %d\n", axis2_hash_count(svc_map));
     else
@@ -115,7 +115,7 @@ int axis2_test_dep_engine_load()
     }
 
     in_phases =
-        AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(
+         axis2_conf_get_in_phases_upto_and_including_post_dispatch(
             conf, env);
     if (!in_phases)
     {
@@ -125,7 +125,7 @@ int axis2_test_dep_engine_load()
     {
         printf("dep engine load is successfull\n");
     }
-    AXIS2_CONF_FREE(conf, env);
+     axis2_conf_free(conf, env);
 
     return 0;
 }
@@ -226,57 +226,57 @@ int axis2_test_default_module_version()
     axis_conf = axis2_conf_create(env);
     mod_qname1 = axis2_qname_create(env, "module1", NULL, NULL);
     module1 = axis2_module_desc_create_with_qname(env, mod_qname1);
-    AXIS2_CONF_ADD_MODULE(axis_conf, env, module1);
+     axis2_conf_add_module(axis_conf, env, module1);
 
     mod_qname2 = axis2_qname_create(env, "module2-0.90", NULL, NULL);
     module2 = axis2_module_desc_create_with_qname(env, mod_qname2);
-    AXIS2_CONF_ADD_MODULE(axis_conf, env, module2);
+     axis2_conf_add_module(axis_conf, env, module2);
 
     mod_qname3 = axis2_qname_create(env, "module2-0.92", NULL, NULL);
     module3 = axis2_module_desc_create_with_qname(env, mod_qname3);
-    AXIS2_CONF_ADD_MODULE(axis_conf, env, module3);
+     axis2_conf_add_module(axis_conf, env, module3);
 
     mod_qname4 = axis2_qname_create(env, "module2-0.91", NULL, NULL);
     module4 = axis2_module_desc_create_with_qname(env, mod_qname4);
-    AXIS2_CONF_ADD_MODULE(axis_conf, env, module4);
+     axis2_conf_add_module(axis_conf, env, module4);
 
     mod_qname5 = axis2_qname_create(env, "test_module-1.92", NULL, NULL);
     module5 = axis2_module_desc_create_with_qname(env, mod_qname5);
-    AXIS2_CONF_ADD_MODULE(axis_conf, env, module5);
+     axis2_conf_add_module(axis_conf, env, module5);
 
-    axis2_core_utils_calculate_default_module_version(env, AXIS2_CONF_GET_ALL_MODULES(
+    axis2_core_utils_calculate_default_module_version(env,  axis2_conf_get_all_modules(
                 axis_conf, env), axis_conf);
-    def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(axis_conf, env, "module1");
+    def_mod =  axis2_conf_get_default_module(axis_conf, env, "module1");
     if (def_mod != module1)
     {
         printf("axis2_default_module_version (module1) .. FAILED\n");
         return AXIS2_FAILURE;
     }
-    def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(axis_conf, env, "module2");
+    def_mod =  axis2_conf_get_default_module(axis_conf, env, "module2");
     if (def_mod != module3)
     {
         printf("axis2_default_module_version (module2) .. FAILED\n");
         return AXIS2_FAILURE;
     }
-    def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(axis_conf, env, "test_module");
+    def_mod =  axis2_conf_get_default_module(axis_conf, env, "test_module");
     if (def_mod != module5)
     {
         printf("axis2_default_module_version (test_module) .. FAILED\n");
         return AXIS2_FAILURE;
     }
     engage_qname = axis2_qname_create(env, "module2", NULL, NULL);
-    AXIS2_CONF_ENGAGE_MODULE(axis_conf, env, engage_qname);
+     axis2_conf_engage_module(axis_conf, env, engage_qname);
     axis2_qname_free(engage_qname, env);
     engage_qname = NULL;
 
     engage_qname = axis2_qname_create(env, "module1", NULL, NULL);
-    AXIS2_CONF_ENGAGE_MODULE(axis_conf, env, engage_qname);
+     axis2_conf_engage_module(axis_conf, env, engage_qname);
     axis2_qname_free(engage_qname, env);
     engage_qname = NULL;
 
-    AXIS2_CONF_ENGAGE_MODULE_WITH_VERSION(axis_conf, env, "test_module", "1.92");
+     axis2_conf_engage_module_with_version(axis_conf, env, "test_module", "1.92");
 
-    engaged_modules = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(axis_conf, env);
+    engaged_modules =  axis2_conf_get_all_engaged_modules(axis_conf, env);
 
     if (engaged_modules)
     {
@@ -321,7 +321,7 @@ int axis2_test_default_module_version()
         return AXIS2_FAILURE;
     }
     printf("axis2_default_module_version  .. SUCCESS\n");
-    AXIS2_CONF_FREE(axis_conf, env);
+     axis2_conf_free(axis_conf, env);
     return AXIS2_SUCCESS;
 }
 

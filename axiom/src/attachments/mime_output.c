@@ -106,7 +106,7 @@ axiom_mime_output_create(const axis2_env_t *env)
     mime_output_impl = (axiom_mime_output_impl_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axiom_mime_output_impl_t));
 
-    if (NULL == mime_output_impl)
+    if (! mime_output_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -116,7 +116,7 @@ axiom_mime_output_create(const axis2_env_t *env)
 
     mime_output_impl->mime_output.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axiom_mime_output_ops_t));
-    if (NULL == mime_output_impl->mime_output.ops)
+    if (! mime_output_impl->mime_output.ops)
     {
         axiom_mime_output_free(&(mime_output_impl->mime_output), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

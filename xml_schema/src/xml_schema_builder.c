@@ -1268,7 +1268,7 @@ handle_simple_type(
                 axis2_char_t *result = NULL;
                 key = axis2_array_list_get(namespaces_form_ele, env, 0);
                 result = axis2_hash_get(ht_ns, key, AXIS2_HASH_KEY_STRING);
-                if (NULL == result)
+                if (! result)
                 {
                     /**TODO set error */
                     return NULL;
@@ -1507,7 +1507,7 @@ handle_complex_type(
             void *grp_particle = NULL;
             grp = handle_group(builder, env, node1, schema_node);
             grp_particle = XML_SCHEMA_GROUP_GET_PARTICLE(grp, env);
-            if (NULL == grp_particle)
+            if (! grp_particle)
             {
                 XML_SCHEMA_COMPLEX_TYPE_SET_PARTICLE(cmp_type, env, grp);
             }
@@ -1781,7 +1781,7 @@ handle_simple_content_restriction(
 
         result = axis2_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
 
-        if (NULL == result)
+        if (! result)
         {
             /** TODO set error */
             return NULL;
@@ -1922,7 +1922,7 @@ handle_simple_content_extension(
 
         result = axis2_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
 
-        if (NULL == result)
+        if (! result)
         {
             /** TODO set error */
             return NULL;
@@ -2023,7 +2023,7 @@ handle_complex_content_restriction(
 
         result = axis2_hash_get(namespaces, prefix, AXIS2_HASH_KEY_STRING);
 
-        if (NULL == result)
+        if (! result)
         {
             /** TODO set error */
             return NULL;
@@ -2142,7 +2142,7 @@ handle_complex_content_extension(
 
         result = axis2_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
 
-        if (NULL == result)
+        if (! result)
         {
             /** TODO set error */
             return NULL;
@@ -2257,7 +2257,7 @@ handle_attribute_group_ref(
                         AXIS2_INTF_TO_IMPL(builder)->schema, env);
 
             uri = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
-            if (NULL == uri)
+            if (! uri)
             {
                 /** TODO set error code */
                 return NULL;
@@ -2803,7 +2803,7 @@ handle_group_ref(
             prefix = (axis2_char_t*)axis2_array_list_get(parts, env, 1);
         result = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
 
-        if (NULL == result)
+        if (! result)
         {
             /**TODO set error */
             return NULL;
@@ -3002,9 +3002,9 @@ handle_attribute(
             ns_hash = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
             result = axis2_hash_get(ns_hash, prefix, AXIS2_HASH_KEY_STRING);
-            if (NULL == result &&  xml_prefix && axis2_strcmp(xml_prefix, XML_SCHEMANS_PREFIX))
+            if (! result &&  xml_prefix && axis2_strcmp(xml_prefix, XML_SCHEMANS_PREFIX))
                 result = XML_SCHEMANS_URI;
-            if (NULL == result)
+            if (! result)
             {
                 /**TODO set error */
                 return NULL;
@@ -3219,7 +3219,7 @@ handle_element(
                 if (ns)
                     namesp = axiom_namespace_get_uri(ns, env);
             }
-            if (NULL == namesp)
+            if (! namesp)
             {       /** namespace not found */
                 namesp = XML_SCHEMA_GET_NAMESPACE(builder_impl->schema,
                         env, prefix);

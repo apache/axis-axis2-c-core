@@ -645,7 +645,7 @@ axis2_uri_parse_relative(const axis2_env_t *env,
     axis2_uri_t *uptr = NULL;
 
     uptr = axis2_uri_parse_string(env, uri) ;
-    if (NULL == uptr && AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if (! uptr && AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return uptr ;
     }
