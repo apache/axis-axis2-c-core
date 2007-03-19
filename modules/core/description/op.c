@@ -522,7 +522,7 @@ axis2_op_engage_module(axis2_op_t *op,
         axis2_module_t *module = NULL;
         axis2_status_t status = AXIS2_FAILURE;
 
-        status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(pr, env,
+        status = axis2_phase_resolver_engage_module_to_op(pr, env,
             op, moduleref);
         if (AXIS2_SUCCESS != status)
         {
@@ -540,7 +540,7 @@ axis2_op_engage_module(axis2_op_t *op,
     {
         return AXIS2_FAILURE;
     }
-    AXIS2_PHASE_RESOLVER_FREE(pr, env);
+    axis2_phase_resolver_free(pr, env);
     return AXIS2_SUCCESS;
 }
 

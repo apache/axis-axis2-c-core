@@ -138,26 +138,6 @@ extern "C"
     axis2_phase_holder_create_with_phases(const axis2_env_t *env,
         axis2_array_list_t *phases);
 
-/** Frees phase holder. */
-#define AXIS2_PHASE_HOLDER_FREE(phase_holder, env) \
-      axis2_phase_holder_free (phase_holder, env)
-
-/** Checks of a named phase exist. */
-#define AXIS2_PHASE_HOLDER_IS_PHASE_EXIST(phase_holder, env, phase_name) \
-      axis2_phase_holder_is_phase_exist (phase_holder, env, phase_name)
-
-/** Adds handler. */
-#define AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder, env, handler) \
-      axis2_phase_holder_add_handler (phase_holder, env, handler)
-
-/** Gets named phase. */
-#define AXIS2_PHASE_HOLDER_GET_PHASE(phase_holder, env, phase_name) \
-      axis2_phase_holder_get_phase (phase_holder, env, phase_name)
-
-/** Builds transport handler chain. */
-#define AXIS2_PHASE_HOLDER_BUILD_TRANSPORT_HANDLER_CHAIN(phase_holder, env, phase, handlers) \
-      axis2_phase_holder_build_transport_handler_chain (phase_holder, env, phase, handlers)
-
 /** @} */
 
 #ifdef __cplusplus

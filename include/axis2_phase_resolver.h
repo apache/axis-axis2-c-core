@@ -211,38 +211,6 @@ extern "C"
         struct axis2_conf *axis2_config,
         struct axis2_svc *svc);
 
-/** Frees phase resolver. */
-#define AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env) \
-      axis2_phase_resolver_free (phase_resolver, env)
-
-/** Builds execution chains. */
-#define AXIS2_PHASE_RESOLVER_BUILD_CHAINS(phase_resolver, env) \
-      axis2_phase_resolver_build_chains (phase_resolver, env)
-
-/** Builds module operations. */
-#define AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(phase_resolver, env, op) \
-      axis2_phase_resolver_build_module_op (phase_resolver, env, op)
-
-/** Builds transport chains. */
-#define AXIS2_PHASE_RESOLVER_BUILD_TRANSPORT_CHAINS(phase_resolver, env) \
-      axis2_phase_resolver_build_transport_chains (phase_resolver, env)
-
-/** Engages module globally. */
-#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_GLOBALLY(phase_resolver, env, module) \
-      axis2_phase_resolver_engage_module_globally (phase_resolver, env, module)
-
-/** Engages module to service from global module. */
-#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC_FROM_GLOBAL(phase_resolver, env, svc, module_desc) \
-      axis2_phase_resolver_engage_module_to_svc_from_global (phase_resolver, env, svc, module_desc)
-
-/** Engage module to service. */
-#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver, env, svc, module_desc) \
-      axis2_phase_resolver_engage_module_to_svc (phase_resolver, env, svc, module_desc)
-
-/** Engage module to operation. */
-#define AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(phase_resolver, env, axis_op, module_desc) \
-      axis2_phase_resolver_engage_module_to_op (phase_resolver, env, axis_op, module_desc)
-
 /** @} */
 
 #ifdef __cplusplus

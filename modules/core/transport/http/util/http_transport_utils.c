@@ -1317,7 +1317,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
 
     soap_env = axiom_soap_envelope_create_default_soap_envelope(env,
             AXIOM_SOAP11);
-    soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_env, env);
+    soap_body = axiom_soap_envelope_get_body(soap_env, env);
     if (! soap_body)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,

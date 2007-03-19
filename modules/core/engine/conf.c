@@ -1373,9 +1373,9 @@ axis2_conf_engage_module(
             return AXIS2_FAILURE;
         }
 
-        status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_GLOBALLY(phase_resolver, env,
+        status = axis2_phase_resolver_engage_module_globally(phase_resolver, env,
                 module_desc);
-        AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+        axis2_phase_resolver_free(phase_resolver, env);
         if (!status)
         {
             return status;

@@ -214,12 +214,12 @@ axis2_svc_grp_add_svc(
         return AXIS2_FAILURE;
     }
 
-    status = AXIS2_PHASE_RESOLVER_BUILD_CHAINS(handler_resolver, env);
+    status = axis2_phase_resolver_build_chains(handler_resolver, env);
     if (AXIS2_SUCCESS != status)
     {
         /* remove the previously added service */
         axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
-        AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
+        axis2_phase_resolver_free(handler_resolver, env);
         return status;
     }
 
@@ -228,7 +228,7 @@ axis2_svc_grp_add_svc(
     {
         /* remove the previously added service */
         axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
-        AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
+        axis2_phase_resolver_free(handler_resolver, env);
         return status;
     }
 
@@ -237,11 +237,11 @@ axis2_svc_grp_add_svc(
     {
         /* remove the previously added service */
         axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
-        AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
+        axis2_phase_resolver_free(handler_resolver, env);
         return status;
     }
 
-    AXIS2_PHASE_RESOLVER_FREE(handler_resolver, env);
+    axis2_phase_resolver_free(handler_resolver, env);
     return status;
 }
 
@@ -478,13 +478,13 @@ axis2_svc_grp_engage_module(
             /* engage in per each service */
             axis2_hash_this(index, NULL, NULL, &v);
             axis_svc = (axis2_svc_t *) v;
-            status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver,
+            status = axis2_phase_resolver_engage_module_to_svc(phase_resolver,
                     env, axis_svc, module);
             if (!status)
             {
                 if (phase_resolver)
                 {
-                    AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+                    axis2_phase_resolver_free(phase_resolver, env);
                 }
                 return status;
             }
@@ -493,7 +493,7 @@ axis2_svc_grp_engage_module(
     }
     if (phase_resolver)
     {
-        AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+        axis2_phase_resolver_free(phase_resolver, env);
     }
 
     return axis2_svc_grp_add_module_qname(svc_grp, env, module_name);

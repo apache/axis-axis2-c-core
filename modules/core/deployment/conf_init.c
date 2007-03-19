@@ -67,12 +67,12 @@ axis2_build_conf_ctx(
 
     conf_ctx = axis2_conf_ctx_create(env, conf);
 
-    AXIS2_PHASE_RESOLVER_BUILD_CHAINS(phase_resolver, env);
+    axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
 
-    AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+    axis2_phase_resolver_free(phase_resolver, env);
 
     return conf_ctx;
 }
@@ -114,12 +114,12 @@ axis2_build_client_conf_ctx(
         return NULL;
     }
 
-    AXIS2_PHASE_RESOLVER_BUILD_CHAINS(phase_resolver, env);
+    axis2_phase_resolver_build_chains(phase_resolver, env);
 
     axis2_init_modules(env, conf_ctx);
     axis2_init_transports(env, conf_ctx);
 
-    AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+    axis2_phase_resolver_free(phase_resolver, env);
 
     return conf_ctx;
 }

@@ -100,7 +100,7 @@ axis2_libcurl_send (
 
 	if (!is_soap)
 	{
-		soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(out, env);
+		soap_body = axiom_soap_envelope_get_body(out, env);
         if (! soap_body)
         {
             AXIS2_ERROR_SET(env->error,
@@ -110,7 +110,7 @@ axis2_libcurl_send (
 							AXIS2_ERROR_GET_MESSAGE(env->error));
             return AXIS2_FAILURE;
         }
-        body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+        body_node = axiom_soap_body_get_base_node(soap_body, env);
         if (! body_node)
         {
             return AXIS2_FAILURE;

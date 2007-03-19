@@ -691,7 +691,7 @@ axis2_svc_engage_module(
     {
         return AXIS2_FAILURE;
     }
-    status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver, env, svc,
+    status = axis2_phase_resolver_engage_module_to_svc(phase_resolver, env, svc,
         module_desc);
     if (status)
     {
@@ -702,7 +702,7 @@ axis2_svc_engage_module(
     }
     if (phase_resolver)
     {
-        AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
+        axis2_phase_resolver_free(phase_resolver, env);
         phase_resolver = NULL;
     }
 
@@ -776,7 +776,7 @@ axis2_svc_add_module_ops(
         {
             if (pr)
             {
-                AXIS2_PHASE_RESOLVER_FREE(pr, env);
+                axis2_phase_resolver_free(pr, env);
                 pr = NULL;
             }
             return AXIS2_FAILURE;
@@ -791,20 +791,20 @@ axis2_svc_add_module_ops(
             {
                 if (pr)
                 {
-                    AXIS2_PHASE_RESOLVER_FREE(pr, env);
+                    axis2_phase_resolver_free(pr, env);
                     pr = NULL;
                 }
                 return status;
             }
         }
 
-        status = AXIS2_PHASE_RESOLVER_BUILD_MODULE_OP(pr, env, op_desc);
+        status = axis2_phase_resolver_build_module_op(pr, env, op_desc);
 
         if (AXIS2_SUCCESS != status)
         {
             if (pr)
             {
-                AXIS2_PHASE_RESOLVER_FREE(pr, env);
+                axis2_phase_resolver_free(pr, env);
                 pr = NULL;
             }
             return status;
@@ -815,7 +815,7 @@ axis2_svc_add_module_ops(
         {
             if (pr)
             {
-                AXIS2_PHASE_RESOLVER_FREE(pr, env);
+                axis2_phase_resolver_free(pr, env);
                 pr = NULL;
             }
             return status;
@@ -825,7 +825,7 @@ axis2_svc_add_module_ops(
 
     if (pr)
     {
-        AXIS2_PHASE_RESOLVER_FREE(pr, env);
+        axis2_phase_resolver_free(pr, env);
         pr = NULL;
     }
     return AXIS2_SUCCESS;
