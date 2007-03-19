@@ -109,8 +109,7 @@ woden_imported_schema_to_schema(
 /************************End of Woden C Internal Methods***********************/
 
 static woden_imported_schema_t *
-create(
-    const axis2_env_t *env)
+create(const axis2_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -340,7 +339,7 @@ woden_imported_schema_set_location(
         axis2_uri_free(schema_impl->f_schema_location, env);
         schema_impl->f_schema_location = NULL;
     }
-    schema_impl->f_schema_location = AXIS2_URI_CLONE(location, env);
+    schema_impl->f_schema_location = axis2_uri_clone(location, env);
     return AXIS2_SUCCESS;
 }
 
