@@ -1331,7 +1331,7 @@ axis2_conf_engage_module(
             return AXIS2_FAILURE;
         }
         file_name = axis2_qname_get_localpart(module_ref, env);
-        file = (axis2_file_t *) AXIS2_ARCH_READER_CREATE_MODULE_ARCH(
+        file = (axis2_file_t *) axis2_arch_reader_create_module_arch(
                     arch_reader, env, file_name) ;
         repos_path = AXIS2_CONF_GET_REPO(conf, env);
         temp_path1 = axis2_stracat(repos_path, AXIS2_PATH_SEP_STR, env);

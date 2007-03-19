@@ -289,7 +289,7 @@ axis2_dep_engine_free(
 
     if (dep_engine->arch_reader)
     {
-        AXIS2_ARCH_READER_FREE(dep_engine->arch_reader, env);
+        axis2_arch_reader_free(dep_engine->arch_reader, env);
     }
 
     if (dep_engine->svc_builder)
@@ -1218,17 +1218,17 @@ axis2_dep_engine_do_deploy(
                      * AXIS2_ARCH_READER_PROCESS_WSDLS(arch_reader, env, dep_engine->curr_file);
                      * absolute_path = AXIS2_ARCH_FILE_DATA_GET_ABSOLUTE_PATH(
                      *          dep_engine->curr_file, env);
-                     * svc = AXIS2_ARCH_READER_CREATE_SVC(arch_reader, env, absolute_path);
+                     * svc = axis2_arch_reader_create_svc(arch_reader, env, absolute_path);
                      */
                     svc_grp = axis2_svc_grp_create_with_conf(env,
                             dep_engine->conf);
                     file_name = axis2_arch_file_data_get_name(dep_engine->
                             curr_file, env);
-                    status = AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env,
+                    status = axis2_arch_reader_process_svc_grp(arch_reader, env,
                             file_name, dep_engine, svc_grp);
                     if (AXIS2_SUCCESS != status)
                     {
-                        AXIS2_ARCH_READER_FREE(arch_reader, env);
+                        axis2_arch_reader_free(arch_reader, env);
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
                                 AXIS2_FAILURE);
                         return status;
@@ -1237,7 +1237,7 @@ axis2_dep_engine_do_deploy(
                             svc_grp);
                     if (AXIS2_SUCCESS != status)
                     {
-                        AXIS2_ARCH_READER_FREE(arch_reader, env);
+                        axis2_arch_reader_free(arch_reader, env);
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SVC,
                                 AXIS2_FAILURE);
                         return status;
@@ -1248,18 +1248,18 @@ axis2_dep_engine_do_deploy(
                     arch_reader = axis2_arch_reader_create(env);
                     if (dep_engine->arch_reader)
                     {
-                        AXIS2_ARCH_READER_FREE(dep_engine->arch_reader, env);
+                        axis2_arch_reader_free(dep_engine->arch_reader, env);
                     }
                     dep_engine->arch_reader = axis2_arch_reader_create(env);
                     meta_data = axis2_module_desc_create(env);
                     file_name = axis2_arch_file_data_get_name(dep_engine->
                             curr_file, env);
-                    status = AXIS2_ARCH_READER_READ_MODULE_ARCH(
+                    status = axis2_arch_reader_read_module_arch(
                                 dep_engine->arch_reader, env, file_name, dep_engine,
                                 meta_data);
                     if (AXIS2_SUCCESS != status)
                     {
-                        AXIS2_ARCH_READER_FREE(arch_reader, env);
+                        axis2_arch_reader_free(arch_reader, env);
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE,
                                 AXIS2_FAILURE);
                         return AXIS2_FAILURE;
@@ -1268,7 +1268,7 @@ axis2_dep_engine_do_deploy(
                             meta_data);
                     if (AXIS2_SUCCESS != status)
                     {
-                        AXIS2_ARCH_READER_FREE(arch_reader, env);
+                        axis2_arch_reader_free(arch_reader, env);
                         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE,
                                 AXIS2_FAILURE);
                         return AXIS2_FAILURE;
@@ -1277,7 +1277,7 @@ axis2_dep_engine_do_deploy(
                     dep_engine->curr_file = NULL;
                     break;
             }
-            AXIS2_ARCH_READER_FREE(arch_reader, env);
+            axis2_arch_reader_free(arch_reader, env);
         }
     }
     return AXIS2_SUCCESS;
@@ -1438,9 +1438,9 @@ axis2_dep_engine_build_module(
     module_desc = axis2_module_desc_create(env);
     arch_reader = axis2_arch_reader_create(env);
     file_name =  axis2_file_get_name(module_archive, env);
-    status = AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_name,
+    status = axis2_arch_reader_read_module_arch(arch_reader, env, file_name,
             dep_engine, module_desc);
-    AXIS2_ARCH_READER_FREE(arch_reader, env);
+    axis2_arch_reader_free(arch_reader, env);
     if (AXIS2_SUCCESS != status)
     {
         axis2_module_desc_free(module_desc, env);
@@ -1525,7 +1525,7 @@ axis2_dep_engine_set_arch_reader(
 
     if (dep_engine->arch_reader)
     {
-        AXIS2_ARCH_READER_FREE(dep_engine->arch_reader, env);
+        axis2_arch_reader_free(dep_engine->arch_reader, env);
         dep_engine->arch_reader = NULL;
     }
     dep_engine->arch_reader = arch_reader;

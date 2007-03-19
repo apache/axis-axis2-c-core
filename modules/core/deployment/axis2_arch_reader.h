@@ -23,11 +23,6 @@
  * @{
  */
 
-/**
- * @file axis2_arch_reader.h
- * @brief Axis2 Arch Reader interface
- */
-
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -64,7 +59,6 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
         const axis2_env_t *env);
-
 
     /**
      * To create a ServiceDescrption <code>AxisService</code>   using given wsdl.
@@ -141,29 +135,29 @@ extern "C"
     axis2_arch_reader_create(const axis2_env_t *env);
 
 
-/** Frees the arch reader. */
+/** Frees the arch reader. 
 #define AXIS2_ARCH_READER_FREE(arch_reader, env) \
-      axis2_arch_reader_free (arch_reader, env)
+      axis2_arch_reader_free (arch_reader, env)*/
 
-/** Creates the service. */
+/** Creates the service. 
 #define AXIS2_ARCH_READER_CREATE_SVC(arch_reader, env, file) \
-      axis2_arch_reader_create_svc (arch_reader, env, file)
+      axis2_arch_reader_create_svc (arch_reader, env, file)*/
 
-/** Process service group. */
+/** Process service group. 
 #define AXIS2_ARCH_READER_PROCESS_SVC_GRP(arch_reader, env, file_path, dep_engine, svc_grp) \
-      axis2_arch_reader_process_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp)
+      axis2_arch_reader_process_svc_grp (arch_reader, env, file_path, dep_engine, svc_grp)*/
 
-/** Builds the service group. */
+/** Builds the service group. 
 #define AXIS2_ARCH_READER_BUILD_SVC_GRP(arch_reader, env, file_name, dep_engine, svc_grp) \
-      axis2_arch_reader_build_svc_grp (arch_reader, env, file_name, dep_engine, svc_grp)
+      axis2_arch_reader_build_svc_grp (arch_reader, env, file_name, dep_engine, svc_grp)*/
 
-/** Reads the module archive.*/
+/** Reads the module archive.
 #define AXIS2_ARCH_READER_READ_MODULE_ARCH(arch_reader, env, file_path, dep_engine, module) \
-      axis2_arch_reader_read_module_arch (arch_reader, env, file_path, dep_engine, module)
+      axis2_arch_reader_read_module_arch (arch_reader, env, file_path, dep_engine, module)*/
 
-/** Creates the module archive. */
+/** Creates the module archive. 
 #define AXIS2_ARCH_READER_CREATE_MODULE_ARCH(arch_reader, env, module_name) \
-      axis2_arch_reader_create_module_arch (arch_reader, env, module_name)
+      axis2_arch_reader_create_module_arch (arch_reader, env, module_name)*/
 
 /** @} */
 
