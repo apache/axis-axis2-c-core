@@ -165,30 +165,6 @@ extern "C"
         const axis2_env_t *env,
         int soap_version);
 
-#define AXIOM_SOAP_ENVELOPE_GET_HEADER(envelope, env) \
-        axiom_soap_envelope_get_header(envelope, env)
-
-#define AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env) \
-        axiom_soap_envelope_get_body(envelope, env)
-
-#define AXIOM_SOAP_ENVELOPE_SERIALIZE(envelope, env, om_output, cache) \
-        axiom_soap_envelope_serialize(envelope, env, om_output, cache)
-
-#define AXIOM_SOAP_ENVELOPE_FREE(envelope, env) \
-        axiom_soap_envelope_free(envelope, env)
-
-#define AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env) \
-        axiom_soap_envelope_get_base_node(envelope, env)
-
-#define AXIOM_SOAP_ENVELOPE_GET_SOAP_VERSION(envelope, env) \
-        axiom_soap_envelope_get_soap_version(envelope, env)
-
-#define AXIOM_SOAP_ENVELOPE_GET_NAMESPACE(envelope, env) \
-        axiom_soap_envelope_get_namespace(envelope, env)
-
-#define AXIOM_SOAP_ENVELOPE_SET_SOAP_VERSION(envelope, env, soap_version) \
-        axiom_soap_envelope_set_soap_version(envelope, env, soap_version)
-
 
     /** @} */
 

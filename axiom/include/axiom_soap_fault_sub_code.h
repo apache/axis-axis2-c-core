@@ -76,18 +76,6 @@ extern "C"
     axiom_soap_fault_sub_code_get_base_node(axiom_soap_fault_sub_code_t *fault_sub_code,
             const axis2_env_t *env);
 
-#define AXIOM_SOAP_FAULT_SUB_CODE_FREE(fault_sub_code , env) \
-        axiom_soap_fault_sub_code_free(fault_sub_code, env)
-
-#define AXIOM_SOAP_FAULT_SUB_CODE_GET_VALUE(fault_sub_code , env) \
-        axiom_soap_fault_sub_code_get_value(fault_sub_code, env)
-
-#define AXIOM_SOAP_FAULT_SUB_CODE_GET_SUB_CODE(fault_sub_code , env) \
-        axiom_soap_fault_sub_code_get_sub_code(fault_sub_code, env)
-
-#define AXIOM_SOAP_FAULT_SUB_CODE_GET_BASE_NODE(fault_sub_code, env) \
-        axiom_soap_fault_sub_code_get_base_node(fault_sub_code, env)
-
     /** @} */
 
 #ifdef __cplusplus

@@ -534,12 +534,12 @@ axis2_engine_create_fault_msg_ctx(
 
         if (envelope)
         {
-            axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
-            if (body)
-            {
+            /*axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env); */
+            /* if (body) */
+            /*{ */
                /*  axiom_soap_fault_t *fault = AXIOM_SOAP_BODY_GET_FAULT(body, env); */
                 /* TODO: fault processing method */
-            }
+            /*} */
         }
         else
         {
@@ -675,11 +675,11 @@ axis2_engine_check_must_understand_headers(
     if (!soap_envelope)
         return AXIS2_FAILURE;
 
-    soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
+    soap_header = axiom_soap_envelope_get_header(soap_envelope, env);
     if (!soap_header)
         return AXIS2_SUCCESS;
 
-    header_block_ht = AXIOM_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(soap_header, env);
+    header_block_ht = axiom_soap_header_get_all_header_blocks(soap_header, env);
     if (!header_block_ht)
         return AXIS2_SUCCESS;
 
@@ -695,8 +695,8 @@ axis2_engine_check_must_understand_headers(
 
         if (header_block)
         {
-            if (AXIOM_SOAP_HEADER_BLOCK_IS_PROCESSED(header_block , env) ||
-                    !AXIOM_SOAP_HEADER_BLOCK_GET_MUST_UNDERSTAND(header_block, env))
+            if (axiom_soap_header_block_is_processed(header_block , env) ||
+                    !axiom_soap_header_block_get_must_understand(header_block, env))
             {
                 continue;
             }
@@ -706,7 +706,7 @@ axis2_engine_check_must_understand_headers(
                need to fix this to allow the engine/service to be in one or more
                additional roles and then to check that any headers targeted for
                that role too have been dealt with. */
-            role = AXIOM_SOAP_HEADER_BLOCK_GET_ROLE(header_block, env);
+            role = axiom_soap_header_block_get_role(header_block, env);
 
             if ( axis2_msg_ctx_get_is_soap_11(msg_ctx, env) != AXIS2_TRUE)
             {

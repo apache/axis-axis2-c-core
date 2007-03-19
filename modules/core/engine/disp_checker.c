@@ -207,7 +207,7 @@ axis2_disp_checker_invoke(
 			soap_version = AXIOM_SOAP11;
 		}
 		soap_envelope = axiom_soap_envelope_create_default_soap_envelope (env, soap_version); 
-		soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+		soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, "Receiver", "Service Not Found", soap_version);
 		 axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;
@@ -218,7 +218,7 @@ axis2_disp_checker_invoke(
     {
         AXIS2_LOG_INFO(env->log, "Operation Not found. Endpoint reference is : %s", (address) ? address : "NULL");
 		soap_envelope = axiom_soap_envelope_create_default_soap_envelope (env, soap_version); 
-		soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+		soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 		soap_fault = axiom_soap_fault_create_default_fault (env, soap_body, "Receiver", "Operation Not Found", soap_version);
 		 axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env, soap_envelope);
         return AXIS2_FAILURE;

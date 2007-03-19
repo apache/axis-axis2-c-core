@@ -79,10 +79,10 @@ axiom_soap_body_create_with_parent(const axis2_env_t *env,
     }
 
     /*get parent node from SOAP envelope */
-    parent_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env);
+    parent_node = axiom_soap_envelope_get_base_node(envelope, env);
     if (!parent_node)
     {
-        AXIOM_SOAP_BODY_FREE(soap_body, env);
+        axiom_soap_body_free(soap_body, env);
         return NULL;
     }
     parent_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
@@ -90,7 +90,7 @@ axiom_soap_body_create_with_parent(const axis2_env_t *env,
 
     if (!parent_ele)
     {
-        AXIOM_SOAP_BODY_FREE(soap_body, env);
+        axiom_soap_body_free(soap_body, env);
         return NULL;
     }
 
@@ -119,7 +119,7 @@ axiom_soap_body_free(axiom_soap_body_t *soap_body,
 
     if (soap_body->soap_fault)
     {
-        AXIOM_SOAP_FAULT_FREE(soap_body->soap_fault, env);
+        axiom_soap_fault_free(soap_body->soap_fault, env);
         soap_body->soap_fault = NULL;
     }
     AXIS2_FREE(env->allocator, soap_body);
@@ -144,7 +144,7 @@ AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_soap_body_has_fault(axiom_soap_body_t
         {
             while (!(soap_body->soap_fault) && !(AXIOM_NODE_IS_COMPLETE(soap_body->om_ele_node, env)))
             {
-                status = AXIOM_SOAP_BUILDER_NEXT(soap_body->soap_builder, env);
+                status = axiom_soap_builder_next(soap_body->soap_builder, env);
                 if (status == AXIS2_FAILURE)
                     return AXIS2_FALSE;
             }
@@ -180,7 +180,7 @@ axiom_soap_body_get_fault(axiom_soap_body_t *soap_body,
         while (!(soap_body->soap_fault) && !(AXIOM_NODE_IS_COMPLETE(soap_body->om_ele_node, env)))
         {
             int status = AXIS2_SUCCESS;
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_body->soap_builder, env);
+            status = axiom_soap_builder_next(soap_body->soap_builder, env);
             if (status == AXIS2_FAILURE)
                 return NULL;
         }
@@ -239,7 +239,7 @@ axiom_soap_body_build(axiom_soap_body_t *soap_body,
     {
         while (AXIOM_NODE_IS_COMPLETE(soap_body->om_ele_node, env) != AXIS2_TRUE)
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_body->soap_builder, env);
+            status = axiom_soap_builder_next(soap_body->soap_builder, env);
             if (status == AXIS2_FAILURE)
                 return AXIS2_FAILURE;
         }

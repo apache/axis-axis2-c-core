@@ -74,22 +74,6 @@ extern "C"
     axiom_soap_fault_detail_get_base_node(axiom_soap_fault_detail_t *fault_code,
             const axis2_env_t *env);
 
-    /******************** Macros **************************************************/
-
-    /** free soap_fault_detail */
-#define AXIOM_SOAP_FAULT_DETAIL_FREE(fault_detail , env) \
-        axiom_soap_fault_detail_free(fault_detail, env)
-
-#define AXIOM_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(fault_detail, env, ele_node) \
-        axiom_soap_fault_detail_add_detail_entry(fault_detail, env, ele_node)
-
-#define AXIOM_SOAP_FAULT_DETAIL_GET_ALL_DETAIL_ENTRIES(fault_detail, env) \
-        axiom_soap_fault_detail_get_all_detail_entries(fault_detail, env)
-
-#define AXIOM_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env) \
-        axiom_soap_fault_detail_get_base_node(fault_detail, env)
-
-
 
     /** @} */
 

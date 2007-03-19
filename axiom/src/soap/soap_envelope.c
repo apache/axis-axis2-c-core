@@ -45,8 +45,8 @@ struct axiom_soap_envelope
 };
 static axis2_status_t
 check_and_set_soap_version(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        axiom_namespace_t *ns);
+    const axis2_env_t *env,
+    axiom_namespace_t *ns);
 
 AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axiom_soap_envelope_create_null(const axis2_env_t *env)
@@ -54,8 +54,8 @@ axiom_soap_envelope_create_null(const axis2_env_t *env)
     axiom_soap_envelope_t *soap_envelope = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     soap_envelope = (axiom_soap_envelope_t*)AXIS2_MALLOC(
-                env->allocator,
-                sizeof(axiom_soap_envelope_t));
+        env->allocator,
+        sizeof(axiom_soap_envelope_t));
     if (!soap_envelope)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -73,7 +73,7 @@ axiom_soap_envelope_create_null(const axis2_env_t *env)
 
 AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axiom_soap_envelope_create(const axis2_env_t *env,
-        axiom_namespace_t *ns)
+     axiom_namespace_t *ns)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_element_t *ele = NULL;
@@ -93,8 +93,8 @@ axiom_soap_envelope_create(const axis2_env_t *env,
     }
 
     ele = axiom_element_create(env, NULL,
-            AXIOM_SOAP_ENVELOPE_LOCAL_NAME, ns,
-            &(soap_envelope->om_ele_node));
+        AXIOM_SOAP_ENVELOPE_LOCAL_NAME, ns,
+        &(soap_envelope->om_ele_node));
     if (!ele)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -106,8 +106,8 @@ axiom_soap_envelope_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axiom_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
-        int soap_version,
-        const axis2_char_t *prefix)
+    int soap_version,
+    const axis2_char_t *prefix)
 {
     axiom_namespace_t *ns        = NULL;
     const axis2_char_t *ns_prefix = NULL;
@@ -143,52 +143,46 @@ axiom_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_free(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (soap_envelope->header)
     {
-        AXIOM_SOAP_HEADER_FREE(soap_envelope->header, env);
-        soap_envelope->header = NULL;
+        axiom_soap_header_free(soap_envelope->header, env);
     }
     if (soap_envelope->body)
     {
-        AXIOM_SOAP_BODY_FREE(soap_envelope->body, env);
-        soap_envelope->body = NULL;
+        axiom_soap_body_free(soap_envelope->body, env);
     }
     if (soap_envelope->om_ele_node)
     {
         if (soap_envelope->soap_builder)
         {
-            AXIOM_SOAP_BUILDER_FREE(soap_envelope->soap_builder, env);
-            soap_envelope->soap_builder = NULL;
+            axiom_soap_builder_free(soap_envelope->soap_builder, env);
             soap_envelope->om_ele_node = NULL;
         }
         else
         {
             AXIOM_NODE_FREE_TREE(soap_envelope->om_ele_node, env);
-            soap_envelope->om_ele_node = NULL;
         }
     }
 
     AXIS2_FREE(env->allocator, soap_envelope);
-    soap_envelope = NULL;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_soap_envelope_get_base_node(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return soap_envelope->om_ele_node;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_set_base_node(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        axiom_node_t *node)
+    const axis2_env_t *env,
+    axiom_node_t *node)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
@@ -204,17 +198,16 @@ axiom_soap_envelope_set_base_node(axiom_soap_envelope_t *soap_envelope,
 
 AXIS2_EXTERN int AXIS2_CALL
 axiom_soap_envelope_get_soap_version(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return soap_envelope->soap_version;
 }
 
 /** this is an internal function */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_set_soap_version_internal(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        int soap_version)
+    const axis2_env_t *env,
+    int soap_version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_envelope->soap_version = soap_version;
@@ -224,10 +217,9 @@ axiom_soap_envelope_set_soap_version_internal(axiom_soap_envelope_t *soap_envelo
 
 AXIS2_EXTERN axiom_soap_header_t* AXIS2_CALL
 axiom_soap_envelope_get_header(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     int status = AXIS2_SUCCESS;
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (soap_envelope->header)
     {
@@ -238,7 +230,7 @@ axiom_soap_envelope_get_header(axiom_soap_envelope_t *soap_envelope,
         while (!(soap_envelope->header) && !AXIOM_NODE_IS_COMPLETE(
                     soap_envelope->om_ele_node, env))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_envelope->soap_builder, env);
+            status = axiom_soap_builder_next(soap_envelope->soap_builder, env);
             if (status == AXIS2_FAILURE)
                 break;
         }
@@ -249,9 +241,9 @@ axiom_soap_envelope_get_header(axiom_soap_envelope_t *soap_envelope,
 
 AXIS2_EXTERN axiom_soap_header_block_t* AXIS2_CALL
 axiom_soap_envelope_add_header(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        axis2_char_t *namespace_uri,
-        axis2_char_t *name)
+    const axis2_env_t *env,
+    axis2_char_t *namespace_uri,
+    axis2_char_t *name)
 {
     axiom_namespace_t *ns = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -270,10 +262,9 @@ axiom_soap_envelope_add_header(axiom_soap_envelope_t *soap_envelope,
 
 AXIS2_EXTERN axiom_soap_body_t* AXIS2_CALL
 axiom_soap_envelope_get_body(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     int status = AXIS2_SUCCESS;
-    AXIS2_ENV_CHECK(env, NULL);
 
     if (soap_envelope->body)
     {
@@ -283,7 +274,7 @@ axiom_soap_envelope_get_body(axiom_soap_envelope_t *soap_envelope,
     {
         while (!(soap_envelope->body)  && !AXIOM_NODE_IS_COMPLETE(soap_envelope->om_ele_node, env))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_envelope->soap_builder, env);
+            status = axiom_soap_builder_next(soap_envelope->soap_builder, env);
             if (status == AXIS2_FAILURE)
             {
                 return NULL;
@@ -295,9 +286,9 @@ axiom_soap_envelope_get_body(axiom_soap_envelope_t *soap_envelope,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        axiom_output_t *om_output,
-        axis2_bool_t cache)
+    const axis2_env_t *env,
+    axiom_output_t *om_output,
+    axis2_bool_t cache)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_envelope, AXIS2_FAILURE);
@@ -312,20 +303,20 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
     if (soap_envelope->soap_version == AXIOM_SOAP11)
     {
         axiom_soap_body_t *soap_body = NULL;
-        soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
         if (soap_body)
         {
             axiom_soap_fault_t *soap_fault = NULL;
-            if (AXIOM_SOAP_BODY_HAS_FAULT(soap_body, env))
+            if (axiom_soap_body_has_fault(soap_body, env))
             {
-                soap_fault = AXIOM_SOAP_BODY_GET_FAULT(soap_body, env);
+                soap_fault = axiom_soap_body_get_fault(soap_body, env);
                 if (soap_fault)
                 {
                     axiom_soap_fault_code_t *fault_code = NULL;
                     axiom_soap_fault_reason_t *fault_reason = NULL;
                     axiom_soap_fault_detail_t *fault_detail = NULL;
                     axiom_soap_fault_role_t *fault_role = NULL;
-                    fault_code = AXIOM_SOAP_FAULT_GET_CODE(soap_fault, env);
+                    fault_code = axiom_soap_fault_get_code(soap_fault, env);
                     if (fault_code)
                     {
                         axiom_node_t *fault_code_om_node = NULL;
@@ -335,26 +326,26 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                         axiom_soap_fault_value_t *fault_value = NULL;
                         axis2_char_t *text = NULL;
 
-                        fault_code_om_node = AXIOM_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
+                        fault_code_om_node = axiom_soap_fault_code_get_base_node(fault_code, env);
                         if (fault_code_om_node)
                         {
                             fault_code_om_ele = (axiom_element_t *)
-                                    AXIOM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
+                                AXIOM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
                             if (fault_code_om_ele)
                             {
                                 axiom_element_set_localname(fault_code_om_ele,
-                                        env, AXIOM_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME);
+                                env, AXIOM_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME);
 
-                                fault_value = AXIOM_SOAP_FAULT_CODE_GET_VALUE(fault_code, env);
+                                fault_value = axiom_soap_fault_code_get_value(fault_code, env);
 
                                 if (fault_value)
                                 {
-                                    fault_value_om_node = AXIOM_SOAP_FAULT_VALUE_GET_BASE_NODE(fault_value, env);
+                                    fault_value_om_node = axiom_soap_fault_value_get_base_node(fault_value, env);
                                     if (fault_value_om_node)
                                     {
                                         fault_value_om_node =  AXIOM_NODE_DETACH(fault_value_om_node, env);
                                         fault_value_om_ele = (axiom_element_t *)
-                                                AXIOM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
+                                            AXIOM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
                                         if (fault_value_om_ele)
                                         {
                                             text = axiom_element_get_text(fault_value_om_ele, env, fault_value_om_node);
@@ -370,7 +361,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                             }
                         }
                     }
-                    fault_reason = AXIOM_SOAP_FAULT_GET_REASON(soap_fault, env);
+                    fault_reason = axiom_soap_fault_get_reason(soap_fault, env);
                     if (fault_reason)
                     {
                         axiom_node_t *fault_reason_om_node = NULL;
@@ -380,35 +371,35 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                         axiom_soap_fault_text_t *fault_text = NULL;
                         axis2_char_t *text =  NULL;
 
-                        fault_reason_om_node = AXIOM_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env);
+                        fault_reason_om_node = axiom_soap_fault_reason_get_base_node(fault_reason, env);
                         if (fault_reason_om_node)
                         {
                             fault_reason_om_ele  = (axiom_element_t *)
-                                    AXIOM_NODE_GET_DATA_ELEMENT(fault_reason_om_node, env);
+                                AXIOM_NODE_GET_DATA_ELEMENT(fault_reason_om_node, env);
 
                             if (fault_reason_om_ele)
                             {
 
                                 axiom_element_set_localname(fault_reason_om_ele,
-                                        env, AXIOM_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME);
+                                    env, AXIOM_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME);
 
                                 fault_text =
-                                    AXIOM_SOAP_FAULT_REASON_GET_FIRST_SOAP_FAULT_TEXT(fault_reason, env);
+                                    axiom_soap_fault_reason_get_first_soap_fault_text(fault_reason, env);
                                 if (fault_text)
                                 {
-                                    fault_text_om_node = AXIOM_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env);
+                                    fault_text_om_node = axiom_soap_fault_text_get_base_node(fault_text, env);
                                     if (fault_text_om_node)
                                     {
                                         fault_text_om_node = AXIOM_NODE_DETACH(fault_text_om_node, env);
                                         fault_text_om_ele  = (axiom_element_t *)
-                                                AXIOM_NODE_GET_DATA_ELEMENT(fault_text_om_node, env);
+                                            AXIOM_NODE_GET_DATA_ELEMENT(fault_text_om_node, env);
                                         if (fault_text_om_ele)
                                         {
                                             text = axiom_element_get_text(fault_text_om_ele, env, fault_text_om_node);
                                             if (text)
                                             {
                                                 axiom_element_set_text(fault_reason_om_ele,
-                                                        env, text, fault_reason_om_node);
+                                                    env, text, fault_reason_om_node);
                                             }
                                         }
                                         AXIOM_NODE_FREE_TREE(fault_text_om_node, env);
@@ -418,39 +409,39 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
                         }
                     }
 
-                    fault_role = AXIOM_SOAP_FAULT_GET_ROLE(soap_fault, env);
+                    fault_role = axiom_soap_fault_get_role(soap_fault, env);
                     if (fault_role)
                     {
                         axiom_node_t *fault_role_om_node = NULL;
                         axiom_element_t *fault_role_om_ele = NULL;
 
-                        fault_role_om_node = AXIOM_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env);
+                        fault_role_om_node = axiom_soap_fault_role_get_base_node(fault_role, env);
                         if (fault_role_om_node)
                         {
                             fault_role_om_ele = (axiom_element_t *)
-                                    AXIOM_NODE_GET_DATA_ELEMENT(fault_role_om_node, env);
+                                AXIOM_NODE_GET_DATA_ELEMENT(fault_role_om_node, env);
                             if (fault_role_om_ele)
                             {
                                 axiom_element_set_localname(fault_role_om_ele, env,
-                                        AXIOM_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME);
+                                    AXIOM_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME);
                             }
                         }
                     }
 
-                    fault_detail = AXIOM_SOAP_FAULT_GET_DETAIL(soap_fault, env);
+                    fault_detail = axiom_soap_fault_get_detail(soap_fault, env);
                     if (fault_detail)
                     {
                         axiom_node_t *fault_detail_om_node = NULL;
                         axiom_element_t *fault_detail_om_ele = NULL;
-                        fault_detail_om_node = AXIOM_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env);
+                        fault_detail_om_node = axiom_soap_fault_detail_get_base_node(fault_detail, env);
                         if (fault_detail_om_node)
                         {
                             fault_detail_om_ele = (axiom_element_t *)
-                                    AXIOM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
+                                AXIOM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
                             if (fault_detail_om_ele)
                             {
                                 axiom_element_set_localname(fault_detail_om_ele,
-                                        env, AXIOM_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
+                                    env, AXIOM_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
                             }
                         }
                     }
@@ -468,8 +459,8 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_set_body(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        axiom_soap_body_t *body)
+    const axis2_env_t *env,
+    axiom_soap_body_t *body)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -480,14 +471,14 @@ axiom_soap_envelope_set_body(axiom_soap_envelope_t *soap_envelope,
     else
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                "trying to set a soap bedy to soap_envelope when a soap body alrady exists");
+            "trying to set a soap bedy to soap_envelope when a soap body alrady exists");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_envelope_set_header(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env, axiom_soap_header_t *header)
+    const axis2_env_t *env, axiom_soap_header_t *header)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -498,7 +489,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_envelope_set_header(axiom_soap
     else
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
-                " trying to set a soap header to soap_envelope when a soap header alrady exists");
+            " trying to set a soap header to soap_envelope when a soap header alrady exists");
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -506,7 +497,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_envelope_set_header(axiom_soap
 
 AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
 axiom_soap_envelope_get_namespace(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -527,8 +518,8 @@ axiom_soap_envelope_get_namespace(axiom_soap_envelope_t *soap_envelope,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_set_builder(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        axiom_soap_builder_t *soap_builder)
+    const axis2_env_t *env,
+    axiom_soap_builder_t *soap_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_builder, AXIS2_FAILURE);
@@ -538,7 +529,7 @@ axiom_soap_envelope_set_builder(axiom_soap_envelope_t *soap_envelope,
 
 AXIS2_EXTERN axiom_soap_envelope_t * AXIS2_CALL
 axiom_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
-        int soap_version)
+    int soap_version)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_header_t *soap_header = NULL;
@@ -548,8 +539,8 @@ axiom_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
     if (soap_version == AXIOM_SOAP11)
     {
         om_ns = axiom_namespace_create(env,
-                AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
-                AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
+            AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
+            AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
         if (!om_ns)
             return NULL;
         soap_envelope = axiom_soap_envelope_create(env, om_ns);
@@ -563,8 +554,8 @@ axiom_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
     else if (soap_version == AXIOM_SOAP12)
     {
         om_ns = axiom_namespace_create(env,
-                AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
-                AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
+            AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
+            AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);
         if (!om_ns)
             return NULL;
         soap_envelope = axiom_soap_envelope_create(env, om_ns);
@@ -577,17 +568,17 @@ axiom_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
     }
 
     AXIS2_ERROR_SET(env->error,
-            AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+        AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
     return NULL;
 }
 
 AXIS2_EXTERN axiom_soap_envelope_t * AXIS2_CALL
 axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
-        const axis2_char_t *code_value,
-        const axis2_char_t *reason_text,
-        const int soap_version,
-        axis2_array_list_t *sub_codes,
-        axiom_node_t *detail_node)
+    const axis2_char_t *code_value,
+    const axis2_char_t *reason_text,
+    const int soap_version,
+    axis2_array_list_t *sub_codes,
+    axiom_node_t *detail_node)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_body_t *soap_body = NULL;
@@ -597,7 +588,7 @@ axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
     if (AXIOM_SOAP11 != soap_version && AXIOM_SOAP12 != soap_version)
     {
         AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+            AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -607,17 +598,17 @@ axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
         return NULL;
     }
 
-    soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
     if (!soap_body)
     {
-        AXIOM_SOAP_ENVELOPE_FREE(soap_envelope, env);
+        axiom_soap_envelope_free(soap_envelope, env);
         return NULL;
     }
     fault = axiom_soap_fault_create_default_fault(env, soap_body,
-            code_value, reason_text, soap_version);
+        code_value, reason_text, soap_version);
     if (!fault)
     {
-        AXIOM_SOAP_ENVELOPE_FREE(soap_envelope, env);
+        axiom_soap_envelope_free(soap_envelope, env);
         return NULL;
     }
 
@@ -625,7 +616,7 @@ axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
     {
         int i = 0;
         axiom_soap_fault_code_t *fault_code = NULL;
-        fault_code = AXIOM_SOAP_FAULT_GET_CODE(fault, env);
+        fault_code = axiom_soap_fault_get_code(fault, env);
         if (fault_code)
         {
             for (i = 0; i < axis2_array_list_size(sub_codes, env); i++)
@@ -645,7 +636,7 @@ axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
             axiom_soap_fault_detail_create_with_parent(env, fault);
         if (detail)
         {
-            AXIOM_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(detail, env, detail_node);
+            axiom_soap_fault_detail_add_detail_entry(detail, env, detail_node);
         }
     }
 
@@ -655,8 +646,8 @@ axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
 
 static axis2_status_t
 check_and_set_soap_version(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        axiom_namespace_t *ns)
+    const axis2_env_t *env,
+    axiom_namespace_t *ns)
 {
     axis2_char_t *uri = NULL;
     if (!soap_envelope)
@@ -681,15 +672,15 @@ check_and_set_soap_version(axiom_soap_envelope_t *soap_envelope,
     else
     {
         AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);
+            AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);
     }
     return AXIS2_FAILURE;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_set_soap_version(axiom_soap_envelope_t *soap_envelope,
-        const axis2_env_t *env,
-        int soap_version)
+    const axis2_env_t *env,
+    int soap_version)
 {
     axiom_element_t *env_ele  = NULL;
     axiom_namespace_t *env_ns = NULL;
@@ -711,8 +702,8 @@ axiom_soap_envelope_set_soap_version(axiom_soap_envelope_t *soap_envelope,
     }
 
     env_ele = (axiom_element_t*)
-            AXIOM_NODE_GET_DATA_ELEMENT(soap_envelope->om_ele_node,
-                    env);
+        AXIOM_NODE_GET_DATA_ELEMENT(soap_envelope->om_ele_node,
+        env);
     if (!env_ele)
     {
         return AXIS2_FAILURE;

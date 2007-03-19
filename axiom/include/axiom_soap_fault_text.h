@@ -80,23 +80,6 @@ extern "C"
     axiom_soap_fault_text_get_text(axiom_soap_fault_text_t *fault_text,
             const axis2_env_t *env);
 
-#define AXIOM_SOAP_FAULT_TEXT_FREE(fault_text , env) \
-        axiom_soap_fault_text_free(fault_text, env)
-
-#define AXIOM_SOAP_FAULT_TEXT_SET_LANG(fault_text , env, lang) \
-        axiom_soap_fault_text_set_lang(fault_text, env, lang)
-
-#define AXIOM_SOAP_FAULT_TEXT_GET_LANG(fault_text , env) \
-        axiom_soap_fault_text_get_lang(fault_text, env)
-
-#define AXIOM_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env) \
-        axiom_soap_fault_text_get_base_node(fault_text, env)
-
-#define AXIOM_SOAP_FAULT_TEXT_SET_TEXT(fault_text, env, value, lang) \
-        axiom_soap_fault_text_set_text(fault_text, env, value, lang)
-
-#define AXIOM_SOAP_FAULT_TEXT_GET_TEXT(fault_text, env) \
-        axiom_soap_fault_text_get_text(fault_text, env)
     /** @} */
 
 #ifdef __cplusplus

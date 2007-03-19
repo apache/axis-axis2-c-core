@@ -71,17 +71,6 @@ extern "C"
     axiom_soap_fault_role_get_base_node(axiom_soap_fault_role_t *fault_role,
             const axis2_env_t *env);
 
-#define AXIOM_SOAP_FAULT_ROLE_FREE(fault_role , env) \
-        axiom_soap_fault_role_free(fault_role, env)
-
-#define AXIOM_SOAP_FAULT_ROLE_GET_VALUE(fault_role , env) \
-        axiom_soap_fault_role_get_role_value(fault_role, env)
-
-#define AXIOM_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env) \
-        axiom_soap_fault_role_get_base_node(fault_role, env)
-
-#define AXIOM_SOAP_FAULT_ROLE_SET_VALUE(fault_role , env, value) \
-        axiom_soap_fault_role_set_role_value(fault_role, env, value)
     /** @} */
 
 #ifdef __cplusplus

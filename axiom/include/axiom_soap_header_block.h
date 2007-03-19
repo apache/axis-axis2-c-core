@@ -116,47 +116,6 @@ extern "C"
     axiom_soap_header_block_get_soap_version(axiom_soap_header_block_t *header_block,
             const axis2_env_t *env);
 
-#define AXIOM_SOAP_HEADER_BLOCK_FREE(header_block , env) \
-        axiom_soap_header_block_free(header_block, env)
-
-#define AXIOM_SOAP_HEADER_BLOCK_GET_ROLE(header_block , env) \
-        axiom_soap_header_block_get_role(header_block, env)
-
-#define AXIOM_SOAP_HEADER_BLOCK_IS_PROCESSED(header_block , env) \
-        axiom_soap_header_block_is_processed(header_block, env)
-
-#define AXIOM_SOAP_HEADER_BLOCK_SET_PRECESSED(header_block , env) \
-        axiom_soap_header_block_set_processed(header_block, env)
-
-#define AXIOM_SOAP_HEADER_BLOCK_GET_MUST_UNDERSTAND(header_block, env) \
-        axiom_soap_header_block_get_must_understand(header_block, env)
-
-#define AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_BOOL(header_block,\
-             env, must_understand) \
-        axiom_soap_header_block_set_must_understand_with_bool(header_block, \
-             env, must_understand)
-
-#define AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_STRING(header_block,\
-             env, must_understand) \
-        axiom_soap_header_block_set_must_understand_with_string(header_block, \
-             env, must_understand)
-
-#define AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env) \
-        axiom_soap_header_block_get_base_node(header_block, env)
-
-#define AXIOM_SOAP_HEADER_BLOCK_GET_SOAP_VERSION(header_block, env) \
-        axiom_soap_header_block_get_soap_version(header_block, env)
-
-#define AXIOM_SOAP_HEADER_BLOCK_GET_ATTRIBUTE(header_block, env,\
-            attr_name, soap_envelope_namespace_uri)  \
-        axiom_soap_header_block_get_attribute(header_block, env, \
-            attr_name, soap_envelope_namespace_uri)
-
-#define AXIOM_SOAP_HEADER_BLOCK_SET_ATTRIBUTE(header_block, env,\
-            attr_name, attr_value, soap_envelope_namespace_uri)  \
-        axiom_soap_header_block_set_attribute(header_block, env, \
-            attr_name, attr_value, soap_envelope_namespace_uri)
-
     /** @} */
 
 #ifdef __cplusplus

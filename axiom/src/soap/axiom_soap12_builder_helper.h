@@ -44,25 +44,17 @@ extern "C"
       */
     AXIS2_EXTERN axiom_soap12_builder_helper_t* AXIS2_CALL
     axiom_soap12_builder_helper_create(const axis2_env_t *env,
-            axiom_soap_builder_t *soap_builder);
+        axiom_soap_builder_t *soap_builder);
     
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axiom_soap12_builder_helper_free(axiom_soap12_builder_helper_t *builder_helper,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_helper,
-            const axis2_env_t *env,
-            axiom_node_t *om_element_node,
-            int element_level);
-
-#define AXIOM_SOAP12_BUILDER_HELPER_FREE(builder_helper, env) \
-        axiom_soap12_builder_helper_free(builder_helper, env)
-
-#define AXIOM_SOAP12_BUILDER_HELPER_HANDLE_EVENT(builder_helper, \
-            env,  om_element_node,  element_level) \
-        axiom_soap12_builder_helper_handle_event(builder_helper, \
-            env,  om_element_node,  element_level)
+        const axis2_env_t *env,
+        axiom_node_t *om_element_node,
+        int element_level);
 
     /** @} */
 #ifdef __cplusplus

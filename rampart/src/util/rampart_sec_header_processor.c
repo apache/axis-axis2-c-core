@@ -357,7 +357,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
 
         /*This need to be done in order to build the soap body.Do not remove.*/
 
-        soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 
         /*Get the i-th element and decrypt it */
         id = (axis2_char_t*)axis2_array_list_get(reference_list, env, i);
@@ -365,7 +365,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
 
         /*Need to remove # sign from the ID*/
         id2 = axis2_string_substring_starting_at(id, 1);
-        envelope_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+        envelope_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
 
         /*Search for the node by its ID*/
         enc_data_node = oxs_axiom_get_node_by_id(env, envelope_node, OXS_ATTR_ID, id2);

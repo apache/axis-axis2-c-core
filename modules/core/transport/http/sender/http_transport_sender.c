@@ -329,7 +329,7 @@ axis2_http_transport_sender_invoke(
             if (AXIS2_TRUE ==  axis2_msg_ctx_get_doing_rest(msg_ctx, env))
             {
                 axiom_node_t *body_node = NULL;
-                axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(
+                axiom_soap_body_t *soap_body = axiom_soap_envelope_get_body(
                             soap_data_out, env);
 
                 if (! soap_body)
@@ -344,7 +344,7 @@ axis2_http_transport_sender_invoke(
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
                 }
-                body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+                body_node = axiom_soap_body_get_base_node(soap_body, env);
                 if (! body_node)
                 {
                     axiom_output_free(om_output, env);
@@ -369,7 +369,7 @@ axis2_http_transport_sender_invoke(
             {
                 axiom_output_set_do_optimize(om_output, env,
                         do_mtom);
-                AXIOM_SOAP_ENVELOPE_SERIALIZE(soap_data_out, env, om_output,
+                axiom_soap_envelope_serialize(soap_data_out, env, om_output,
                         AXIS2_FALSE);
                 if (do_mtom)
                 {

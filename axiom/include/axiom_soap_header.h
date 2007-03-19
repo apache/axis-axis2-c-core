@@ -163,36 +163,6 @@ extern "C"
             const axis2_env_t *env,
             axis2_qname_t *qname);
 
-#define AXIOM_SOAP_HEADER_FREE(header , env) \
-        axiom_soap_header_free(header, env)
-
-#define AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK(header, env, localname, ns) \
-        axiom_soap_header_add_header_block(header, env, localname, ns)
-
-#define AXIOM_SOAP_HEADER_EXAMINE_HEADER_BLOCKS(header, env, param_role) \
-        axiom_soap_header_examine_header_blocks(header, env, param_role)
-
-#define AXIOM_SOAP_HEADER_EXAMINE_ALL_HEADER_BLOCKS(header, env) \
-        axiom_soap_header_examine_all_header_blocks(header, env)
-
-#define AXIOM_SOAP_HEADER_EXTRACT_HEADER_BLOCKS(header, env, role) \
-        axiom_soap_header_extract_header_blocks(header, env, role)
-
-#define AXIOM_SOAP_HEADER_GET_BASE_NODE(header, env) \
-        axiom_soap_header_get_base_node(header, env)
-
-#define AXIOM_SOAP_HEADER_GET_SOAP_VERSION(header, env) \
-        axiom_soap_header_get_soap_version(header, env)
-
-#define AXIOM_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(header, env, uri)\
-        axiom_soap_header_get_header_blocks_with_namespace_uri(header, env, uri)
-
-#define AXIOM_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(header, env) \
-        axiom_soap_header_get_all_header_blocks(header, env)
-
-#define AXIOM_SOAP_HEADER_REMOVE_HEADER_BLOCK(header, env, qname) \
-        axiom_soap_header_remove_header_block(header, env, qname)
-
     /** @} */
 #ifdef __cplusplus
 }

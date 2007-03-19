@@ -271,7 +271,7 @@ axis2_http_sender_send(
 	axiom_node_t *body_node = NULL;
 	axiom_soap_body_t *soap_body = NULL;
 	axis2_bool_t is_soap = AXIS2_TRUE;
-	soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(out, env);
+	soap_body = axiom_soap_envelope_get_body(out, env);
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -298,7 +298,7 @@ axis2_http_sender_send(
 							AXIS2_ERROR_GET_MESSAGE(env->error));
             return AXIS2_FAILURE;
         }
-        body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+        body_node = axiom_soap_body_get_base_node(soap_body, env);
         if (! body_node)
         {
             return AXIS2_FAILURE;
@@ -388,7 +388,7 @@ axis2_http_sender_send(
 
 			axiom_output_set_do_optimize(sender_impl->om_output, env,
 										 doing_mtom); 
-			AXIOM_SOAP_ENVELOPE_SERIALIZE(out, env, sender_impl->om_output,
+			axiom_soap_envelope_serialize(out, env, sender_impl->om_output,
 										  AXIS2_FALSE);
 		}
 		else
@@ -1126,8 +1126,8 @@ axis2_http_sender_get_param_string(
     {
         return NULL;
     }
-    body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(
-		AXIOM_SOAP_ENVELOPE_GET_BODY(soap_env, env), env);
+    body_node = axiom_soap_body_get_base_node(
+		axiom_soap_envelope_get_body(soap_env, env), env);
     data_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
     if (! data_node)
     {

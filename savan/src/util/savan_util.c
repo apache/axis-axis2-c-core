@@ -98,7 +98,7 @@ savan_util_get_subscription_id_from_msg(
         return NULL;
     }
     
-    header = AXIOM_SOAP_ENVELOPE_GET_HEADER(envelope, env);
+    header = axiom_soap_envelope_get_header(envelope, env);
     if (!header)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to extract the "
@@ -107,7 +107,7 @@ savan_util_get_subscription_id_from_msg(
     }
     
     /* Get header element from header node */
-    header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(header, env);
+    header_node = axiom_soap_header_get_base_node(header, env);
     header_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_node, env);
     
     /* Get Identifier element from header */

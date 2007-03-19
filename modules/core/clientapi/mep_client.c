@@ -208,11 +208,11 @@ axis2_mep_client_prepare_soap_envelope(
     if (to_send)
     {
         axiom_soap_body_t *soap_body = NULL;
-        soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
+        soap_body = axiom_soap_envelope_get_body(envelope, env);
         if (soap_body)
         {
             axiom_node_t *node = NULL;
-            node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            node = axiom_soap_body_get_base_node(soap_body, env);
             if (node)
             {
                 AXIOM_NODE_ADD_CHILD(node, env, to_send);

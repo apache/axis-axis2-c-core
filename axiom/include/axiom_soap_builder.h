@@ -99,44 +99,6 @@ extern "C"
             const axis2_env_t *env,
             axis2_hash_t *map);
 
-/******************** Macros **************************************************/
-
-#define AXIOM_SOAP_BUILDER_FREE(builder, env) \
-        axiom_soap_builder_free(builder, env)
-
-#define AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder, env) \
-        axiom_soap_builder_get_soap_envelope(builder, env)
-
-#define AXIOM_SOAP_BUILDER_GET_DOCUMENT_ELEMENT(builder, env) \
-        axiom_soap_builder_get_document_element(builder, env)
-
-#define AXIOM_SOAP_BUILDER_NEXT(builder, env) \
-        axiom_soap_builder_next(builder, env)
-
-#define AXIOM_SOAP_BUILDER_GET_DOCUMENT(builder, env) \
-        axiom_soap_builder_get_document(builder, env)
-
-#define AXIOM_SOAP_BUILDER_NEXT(builder, env) \
-        axiom_soap_builder_next(builder, env)
-
-#define AXIOM_SOAP_BUILDER_SET_BOOL_PROCESSING_MANDATORY_FAULT_ELEMENTS(builder, env, value) \
-        axiom_soap_builder_set_bool_processing_mandatory_fault_elements(builder, env, value)
-
-#define AXIOM_SOAP_BUILDER_SET_PROCESSING_DETAIL_ELEMENTS(builder, env, value) \
-        axiom_soap_builder_set_processing_detail_elements(builder, env, value)
-
-#define AXIOM_SOAP_BUILDER_IS_PROCESSING_DETAIL_ELEMENTS(builder, env) \
-        axiom_soap_builder_is_processing_detail_elements(builder, env)
-
-
-#define AXIOM_SOAP_BUILDER_GET_SOAP_VERSION(builder, env) \
-        axiom_soap_builder_get_soap_version(builder, env)
-
-#define AXIOM_SOAP_BUILDER_PROCESS_NAMESPACE_DATA(builder, env, om_node, is_soap_element) \
-        axiom_soap_builder_process_namespace_data(builder, env, om_node, is_soap_element)
-
-#define AXIOM_SOAP_BUILDER_SET_MIME_BODY_PARTS(builder, env, map) \
-        axiom_soap_builder_set_mime_body_parts(builder, env, map)
 
     /** @} */
 #ifdef __cplusplus

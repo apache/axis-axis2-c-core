@@ -92,17 +92,6 @@ extern "C"
     axiom_soap_fault_value_set_text(axiom_soap_fault_value_t *fault_value,
             const axis2_env_t *env, axis2_char_t *text);
 
-#define AXIOM_SOAP_FAULT_VALUE_FREE(fault_value , env) \
-        axiom_soap_fault_value_free(fault_value, env)
-
-#define AXIOM_SOAP_FAULT_VALUE_GET_BASE_NODE(fault_value, env) \
-        axiom_soap_fault_value_get_base_node(fault_value, env)
-
-#define AXIOM_SOAP_FAULT_VALUE_GET_TEXT(fault_value, env) \
-      axiom_soap_fault_value_get_text(fault_value, env)
-
-#define AXIOM_SOAP_FAULT_VALUE_SET_TEXT(fault_value, env, text) \
-        axiom_soap_fault_value_set_text(fault_value, env, text)
     /** @} */
 
 #ifdef __cplusplus

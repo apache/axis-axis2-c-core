@@ -74,10 +74,10 @@ axiom_soap_fault_sub_code_create_with_parent(const axis2_env_t *env,
     if (!fault_sub_code)
         return NULL;
 
-    parent_node = AXIOM_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
+    parent_node = axiom_soap_fault_code_get_base_node(fault_code, env);
     if (!parent_node)
     {
-        AXIOM_SOAP_FAULT_SUB_CODE_FREE(fault_sub_code, env);
+        axiom_soap_fault_sub_code_free(fault_sub_code, env);
         return NULL;
     }
 
@@ -85,7 +85,7 @@ axiom_soap_fault_sub_code_create_with_parent(const axis2_env_t *env,
                 parent_node, env);
     if (!parent_ele)
     {
-        AXIOM_SOAP_FAULT_SUB_CODE_FREE(fault_sub_code, env);
+        axiom_soap_fault_sub_code_free(fault_sub_code, env);
         return NULL;
     }
     fault_sub_code->soap_version =
@@ -102,7 +102,7 @@ axiom_soap_fault_sub_code_create_with_parent(const axis2_env_t *env,
 
     if (!this_ele)
     {
-        AXIOM_SOAP_FAULT_SUB_CODE_FREE(fault_sub_code, env);
+        axiom_soap_fault_sub_code_free(fault_sub_code, env);
         return NULL;
     }
 
@@ -132,11 +132,11 @@ axiom_soap_fault_sub_code_create_with_parent_value(const axis2_env_t *env,
     fault_value = axiom_soap_fault_value_create_with_subcode(env, fault_sub_code);
     if (!fault_value)
     {
-        AXIOM_SOAP_FAULT_SUB_CODE_FREE(fault_sub_code, env);
+        axiom_soap_fault_sub_code_free(fault_sub_code, env);
         return NULL;
     }
 
-    AXIOM_SOAP_FAULT_VALUE_SET_TEXT(fault_value, env, value);
+    axiom_soap_fault_value_set_text(fault_value, env, value);
     return fault_sub_code;
 }
 
@@ -147,12 +147,12 @@ axiom_soap_fault_sub_code_free(axiom_soap_fault_sub_code_t *fault_sub_code,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (fault_sub_code->value)
     {
-        AXIOM_SOAP_FAULT_VALUE_FREE(fault_sub_code->value, env);
+        axiom_soap_fault_value_free(fault_sub_code->value, env);
         fault_sub_code->value = NULL;
     }
     if (fault_sub_code->subcode)
     {
-        AXIOM_SOAP_FAULT_SUB_CODE_FREE(fault_sub_code->subcode, env);
+        axiom_soap_fault_sub_code_free(fault_sub_code->subcode, env);
         fault_sub_code->subcode = NULL;
     }
     AXIS2_FREE(env->allocator, fault_sub_code);
@@ -197,7 +197,7 @@ axiom_soap_fault_sub_code_get_value
         while (!(fault_sub_code->value) &&
                 !AXIOM_NODE_IS_COMPLETE(fault_sub_code->om_ele_node, env))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(fault_sub_code->builder, env);
+            status = axiom_soap_builder_next(fault_sub_code->builder, env);
             if (status == AXIS2_FAILURE)
                 break;
         }
@@ -241,7 +241,7 @@ axiom_soap_fault_sub_code_get_subcode(
         while (!(fault_sub_code->subcode) &&
                 !AXIOM_NODE_IS_COMPLETE(fault_sub_code->om_ele_node, env))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(fault_sub_code->builder, env);
+            status = axiom_soap_builder_next(fault_sub_code->builder, env);
             if (status == AXIS2_FAILURE)
                 break;
         }

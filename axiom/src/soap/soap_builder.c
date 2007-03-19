@@ -160,12 +160,12 @@ axiom_soap_builder_free(axiom_soap_builder_t *soap_builder,
     {
         if (soap_builder->soap_version == AXIOM_SOAP11 && soap_builder->builder_helper)
         {
-            AXIOM_SOAP11_BUILDER_HELPER_FREE((axiom_soap11_builder_helper_t *)(soap_builder->builder_helper), env);
+            axiom_soap11_builder_helper_free((axiom_soap11_builder_helper_t *)(soap_builder->builder_helper), env);
             soap_builder->builder_helper = NULL;
         }
         else if (soap_builder->soap_version == AXIOM_SOAP12 && soap_builder->builder_helper)
         {
-            AXIOM_SOAP12_BUILDER_HELPER_FREE((axiom_soap12_builder_helper_t *)(soap_builder->builder_helper), env);
+            axiom_soap12_builder_helper_free((axiom_soap12_builder_helper_t *)(soap_builder->builder_helper), env);
             soap_builder->builder_helper = NULL;
         }
     }
@@ -305,7 +305,7 @@ axiom_soap_builder_get_document_element
     AXIS2_ENV_CHECK(env, NULL);
     if (soap_builder->soap_envelope)
     {
-        return AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_builder->soap_envelope, env);
+        return axiom_soap_envelope_get_base_node(soap_builder->soap_envelope, env);
     }
     else
         return NULL;
@@ -551,7 +551,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         axiom_soap_header_block_t *header_block = NULL;
         axiom_soap_header_t *soap_header = NULL;
 
-        soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_builder->soap_envelope, env);
+        soap_header = axiom_soap_envelope_get_header(soap_builder->soap_envelope, env);
         if (!soap_header)
             return AXIS2_FAILURE;
 
@@ -575,11 +575,11 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         axiom_soap_fault_t *soap_fault = NULL;
         axiom_namespace_t *env_ns = NULL;
 
-        env_ns = AXIOM_SOAP_ENVELOPE_GET_NAMESPACE(soap_builder->soap_envelope, env);
+        env_ns = axiom_soap_envelope_get_namespace(soap_builder->soap_envelope, env);
         if (!env_ns)
             return AXIS2_FAILURE;
 
-        soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_builder->soap_envelope, env);
+        soap_body = axiom_soap_envelope_get_body(soap_builder->soap_envelope, env);
 
         if (!soap_body)
             return AXIS2_FAILURE;
@@ -618,14 +618,14 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
     {
         if (soap_builder->soap_version == AXIOM_SOAP11)
         {
-            status = AXIOM_SOAP11_BUILDER_HELPER_HANDLE_EVENT(
+            status = axiom_soap11_builder_helper_handle_event(
                         ((axiom_soap11_builder_helper_t*)(soap_builder->builder_helper)),
                         env,  om_element_node , element_level);
 
         }
         else if (soap_builder->soap_version == AXIOM_SOAP12)
         {
-            status = AXIOM_SOAP12_BUILDER_HELPER_HANDLE_EVENT(
+            status = axiom_soap12_builder_helper_handle_event(
                         ((axiom_soap12_builder_helper_t *)(soap_builder->builder_helper)),
                         env,  om_element_node , element_level);
         }
@@ -702,7 +702,7 @@ axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
         return AXIS2_FAILURE;
     }
 
-    envelope_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_builder->soap_envelope, env);
+    envelope_node = axiom_soap_envelope_get_base_node(soap_builder->soap_envelope, env);
 
     if (!envelope_node)
         return AXIS2_FAILURE;
@@ -769,11 +769,11 @@ axiom_soap_builder_parse_headers(axiom_soap_builder_t *soap_builder,
     if (!soap_builder->soap_envelope)
         return AXIS2_FAILURE;
 
-    soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_builder->soap_envelope, env);
+    soap_header = axiom_soap_envelope_get_header(soap_builder->soap_envelope, env);
 
     if (soap_header)
     {
-        om_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
+        om_node = axiom_soap_header_get_base_node(soap_header, env);
         if (om_node)
         {
             while (!AXIOM_NODE_IS_COMPLETE(om_node, env))

@@ -76,8 +76,8 @@ rampart_shb_build_message(const axis2_env_t *env,
     axiom_node_t *enc_key_node = NULL;
 
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);    
-    soap_header  = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
-    soap_header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
+    soap_header  = axiom_soap_envelope_get_header(soap_envelope, env);
+    soap_header_node = axiom_soap_header_get_base_node(soap_header, env);
     soap_header_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                             soap_header_node, env);
 
@@ -85,7 +85,7 @@ rampart_shb_build_message(const axis2_env_t *env,
     sec_ns_obj =  axiom_namespace_create(env, RAMPART_WSSE_XMLNS,
                 RAMPART_WSSE);
 
-    sec_header_block = AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK(soap_header,
+    sec_header_block = axiom_soap_header_add_header_block(soap_header,
                 env, RAMPART_SECURITY, sec_ns_obj);
 
     if(!sec_header_block)
@@ -94,10 +94,10 @@ rampart_shb_build_message(const axis2_env_t *env,
         return AXIS2_SUCCESS;
     }
 
-    AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_BOOL(sec_header_block,
+    axiom_soap_header_block_set_must_understand_with_bool(sec_header_block,
                 env, AXIS2_TRUE);
 
-    sec_node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE(sec_header_block, env);
+    sec_node = axiom_soap_header_block_get_base_node(sec_header_block, env);
     sec_ele = (axiom_element_t *)
                     AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
         

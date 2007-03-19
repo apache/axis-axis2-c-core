@@ -475,7 +475,7 @@ savan_msg_recv_build_soap_envelope(
         return NULL;
     }
 
-    *body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
+    *body_node = axiom_soap_body_get_base_node(body, env);
     if (!(*body_node))
     {
         return NULL;

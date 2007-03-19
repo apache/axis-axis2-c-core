@@ -82,25 +82,6 @@ extern "C"
     axiom_soap_fault_reason_get_base_node(axiom_soap_fault_reason_t *fault_reason,
             const axis2_env_t *env);
 
-#define AXIOM_SOAP_FAULT_REASON_FREE(fault_reason , env) \
-        axiom_soap_fault_reason_free(fault_reason, env)
-
-
-#define AXIOM_SOAP_FAULT_REASON_GET_SOAP_FAULT_TEXT(fault_reason , env, lang) \
-        axiom_soap_fault_reason_get_soap_fault_text(fault_reason, env, lang)
-
-#define AXIOM_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env) \
-        axiom_soap_fault_reason_get_base_node(fault_reason, env)
-
-#define AXIOM_SOAP_FAULT_REASON_ADD_SOAP_FAULT_TEXT(fault_reason, env, fault_text) \
-        axiom_soap_fault_reason_add_soap_fault_text(fault_reason, env, fault_text)
-
-#define AXIOM_SOAP_FAULT_REASON_GET_ALL_SOAP_FAULT_TEXTS(fault_reason, env) \
-        axiom_soap_fault_reason_get_all_soap_fault_texts(fault_reason, env)
-
-#define AXIOM_SOAP_FAULT_REASON_GET_FIRST_SOAP_FAULT_TEXT(fault_reason, env) \
-        axiom_soap_fault_reason_get_first_soap_fault_text(fault_reason, env)
-
     /** @} */
 
 #ifdef __cplusplus

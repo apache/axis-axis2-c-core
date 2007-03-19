@@ -41,42 +41,47 @@ extern "C"
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_set_code(axiom_soap_fault_t *fault,
-                          const axis2_env_t *env,
-                          struct axiom_soap_fault_code *code);
+    const axis2_env_t *env,
+    struct axiom_soap_fault_code *code);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_set_reason(axiom_soap_fault_t *fault,
-                            const axis2_env_t *env,
-                            struct axiom_soap_fault_reason *reason);
+    const axis2_env_t *env,
+    struct axiom_soap_fault_reason *reason);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_set_node(axiom_soap_fault_t *fault,
-                          const axis2_env_t *env,
-                          struct axiom_soap_fault_node *node);
+    const axis2_env_t *env,
+    struct axiom_soap_fault_node *node);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_set_role(axiom_soap_fault_t *fault,
-                          const axis2_env_t *env,
-                          struct axiom_soap_fault_role *role);
+    const axis2_env_t *env,
+    struct axiom_soap_fault_role *role);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_set_detail(axiom_soap_fault_t *fault,
-                            const axis2_env_t *env,
-                            struct axiom_soap_fault_detail *detail);
+    const axis2_env_t *env,
+    struct axiom_soap_fault_detail *detail);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_set_base_node(axiom_soap_fault_t *fault,
-                               const axis2_env_t *env,
-                               axiom_node_t *node);
+    const axis2_env_t *env,
+    axiom_node_t *node);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_set_builder(axiom_soap_fault_t *fault,
-                             const axis2_env_t *env,
-                             struct axiom_soap_builder *builder);
+    const axis2_env_t *env,
+    struct axiom_soap_builder *builder);
     
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_set_soap_version(axiom_soap_fault_t *fault,
-                                  const axis2_env_t *env,
-                                  int soap_version);
+    const axis2_env_t *env,
+    int soap_version);
                                   
 AXIS2_EXTERN int AXIS2_CALL
 axiom_soap_fault_get_soap_version(axiom_soap_fault_t *fault,
-                                  const axis2_env_t *env);
+    const axis2_env_t *env);
     
     
 AXIS2_EXTERN axiom_soap_fault_t * AXIS2_CALL

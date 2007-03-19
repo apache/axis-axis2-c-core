@@ -94,14 +94,14 @@ axiom_soap_fault_create_with_parent(const axis2_env_t *env,
     if (!soap_fault)
         return NULL;
 
-    parent_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
+    parent_node = axiom_soap_body_get_base_node(body, env);
     if (!parent_node)
     {
         AXIS2_FREE(env->allocator, soap_fault);
         return NULL;
     }
     soap_fault->soap_version =
-        AXIOM_SOAP_BODY_GET_SOAP_VERSION(body, env);
+        axiom_soap_body_get_soap_version(body, env);
 
     parent_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                 parent_node, env);
@@ -160,27 +160,27 @@ axiom_soap_fault_free(axiom_soap_fault_t *soap_fault,
 
     if (soap_fault->fcode)
     {
-        AXIOM_SOAP_FAULT_CODE_FREE(soap_fault->fcode, env);
+        axiom_soap_fault_code_free(soap_fault->fcode, env);
         soap_fault->fcode = NULL;
     }
     if (soap_fault->fdetail)
     {
-        AXIOM_SOAP_FAULT_DETAIL_FREE(soap_fault->fdetail, env);
+        axiom_soap_fault_detail_free(soap_fault->fdetail, env);
         soap_fault->fdetail = NULL;
     }
     if (soap_fault->fnode)
     {
-        AXIOM_SOAP_FAULT_NODE_FREE(soap_fault->fnode, env);
+        axiom_soap_fault_node_free(soap_fault->fnode, env);
         soap_fault->fnode = NULL;
     }
     if (soap_fault->freason)
     {
-        AXIOM_SOAP_FAULT_REASON_FREE(soap_fault->freason, env);
+        axiom_soap_fault_reason_free(soap_fault->freason, env);
         soap_fault->freason = NULL;
     }
     if (soap_fault->frole)
     {
-        AXIOM_SOAP_FAULT_ROLE_FREE(soap_fault->frole, env);
+        axiom_soap_fault_role_free(soap_fault->frole, env);
         soap_fault->frole = NULL;
     }
     AXIS2_FREE(env->allocator, soap_fault);
@@ -223,7 +223,7 @@ axiom_soap_fault_get_code(axiom_soap_fault_t *soap_fault,
     {
         while (!(soap_fault->fcode) && !(AXIOM_NODE_IS_COMPLETE(soap_fault->om_ele_node, env)))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_fault->soap_builder, env);
+            status = axiom_soap_builder_next(soap_fault->soap_builder, env);
             if (status == AXIS2_FAILURE)
                 break;
         }
@@ -265,7 +265,7 @@ axiom_soap_fault_get_reason(axiom_soap_fault_t *soap_fault,
     {
         while (!(soap_fault->freason) && !(AXIOM_NODE_IS_COMPLETE(soap_fault->om_ele_node, env)))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_fault->soap_builder, env);
+            status = axiom_soap_builder_next(soap_fault->soap_builder, env);
             if (status == AXIS2_FAILURE)
                 break;
         }
@@ -308,7 +308,7 @@ axiom_soap_fault_get_node(axiom_soap_fault_t *soap_fault,
     {
         while (!(soap_fault->fnode) && !(AXIOM_NODE_IS_COMPLETE(soap_fault->om_ele_node, env)))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_fault->soap_builder, env);
+            status = axiom_soap_builder_next(soap_fault->soap_builder, env);
             if (status == AXIS2_FAILURE)
                 break;
         }
@@ -352,7 +352,7 @@ axiom_soap_fault_get_role(axiom_soap_fault_t *soap_fault,
     {
         while (!(soap_fault->frole) && !(AXIOM_NODE_IS_COMPLETE(soap_fault->om_ele_node, env)))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_fault->soap_builder, env);
+            status = axiom_soap_builder_next(soap_fault->soap_builder, env);
             if (status == AXIS2_FAILURE)
                 break;
         }
@@ -396,7 +396,7 @@ axiom_soap_fault_get_detail(axiom_soap_fault_t *soap_fault,
     {
         while (!(soap_fault->fdetail) && !(AXIOM_NODE_IS_COMPLETE(soap_fault->om_ele_node, env)))
         {
-            status = AXIOM_SOAP_BUILDER_NEXT(soap_fault->soap_builder, env);
+            status = axiom_soap_builder_next(soap_fault->soap_builder, env);
             if (status == AXIS2_FAILURE)
                 break;
         }
@@ -447,7 +447,7 @@ axiom_soap_fault_get_exception(axiom_soap_fault_t *soap_fault,
     detail = axiom_soap_fault_get_detail(soap_fault, env);
     if (!detail)
         return NULL;
-    detail_node = AXIOM_SOAP_FAULT_DETAIL_GET_BASE_NODE(detail, env);
+    detail_node = axiom_soap_fault_detail_get_base_node(detail, env);
     if (detail_node)
     {
         detail_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
@@ -505,7 +505,7 @@ axiom_soap_fault_set_exception(axiom_soap_fault_t *soap_fault,
     axiom_element_set_text(fault_detail_ele,
             env, exception, fault_detail_entry_node);
     /** now add this om element as a child of soap soap_fault detail om element node */
-    return AXIOM_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY(detail, env, fault_detail_entry_node);
+    return axiom_soap_fault_detail_add_detail_entry(detail, env, fault_detail_entry_node);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -547,24 +547,24 @@ axiom_soap_fault_create_default_fault(const axis2_env_t *env,
     soap_fault = axiom_soap_fault_create_with_parent(env, parent);
     if (!soap_fault)
         return NULL;
-    fault_node = AXIOM_SOAP_FAULT_GET_BASE_NODE(soap_fault, env);
+    fault_node = axiom_soap_fault_get_base_node(soap_fault, env);
     if (!fault_node)
     {
-        AXIOM_SOAP_FAULT_FREE(soap_fault, env);
+        axiom_soap_fault_free(soap_fault, env);
         return NULL;
     }
 
     soap_fault_code = axiom_soap_fault_code_create_with_parent(env, soap_fault);
     if (!soap_fault_code)
     {
-        AXIOM_SOAP_FAULT_FREE(soap_fault, env);
+        axiom_soap_fault_free(soap_fault, env);
         AXIOM_NODE_FREE_TREE(fault_node, env);
         return NULL;
     }
     soap_fault_reason = axiom_soap_fault_reason_create_with_parent(env, soap_fault);
     if (!soap_fault_reason)
     {
-        AXIOM_SOAP_FAULT_FREE(soap_fault, env);
+        axiom_soap_fault_free(soap_fault, env);
         AXIOM_NODE_FREE_TREE(fault_node, env);
         return NULL;
     }
@@ -572,12 +572,12 @@ axiom_soap_fault_create_default_fault(const axis2_env_t *env,
     soap_fault_value = axiom_soap_fault_value_create_with_code(env, soap_fault_code);
     if (!soap_fault_value)
     {
-        AXIOM_SOAP_FAULT_FREE(soap_fault, env);
+        axiom_soap_fault_free(soap_fault, env);
         AXIOM_NODE_FREE_TREE(fault_node, env);
         return NULL;
     }
 
-    value_node = AXIOM_SOAP_FAULT_VALUE_GET_BASE_NODE(soap_fault_value, env);
+    value_node = axiom_soap_fault_value_get_base_node(soap_fault_value, env);
     if (!value_node)
     {
         return NULL;
@@ -589,13 +589,13 @@ axiom_soap_fault_create_default_fault(const axis2_env_t *env,
     soap_fault_text = axiom_soap_fault_text_create_with_parent(env, soap_fault_reason);
     if (!soap_fault_text)
     {
-        AXIOM_SOAP_FAULT_FREE(soap_fault, env);
+        axiom_soap_fault_free(soap_fault, env);
         AXIOM_NODE_FREE_TREE(fault_node, env);
         return NULL;
     }
-    AXIOM_SOAP_FAULT_TEXT_SET_LANG(soap_fault_text, env, "en");
+    axiom_soap_fault_text_set_lang(soap_fault_text, env, "en");
 
-    text_node = AXIOM_SOAP_FAULT_TEXT_GET_BASE_NODE(soap_fault_text, env);
+    text_node = axiom_soap_fault_text_get_base_node(soap_fault_text, env);
     if (!text_node)
     {
         return NULL;

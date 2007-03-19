@@ -654,11 +654,11 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
                         soap_envelope =  axis2_msg_ctx_get_soap_envelope(res_msg_ctx, env);
                         if (soap_envelope)
                         {
-                            soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+                            soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 
                             if (soap_body)
                             {
-                                soap_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+                                soap_node = axiom_soap_body_get_base_node(soap_body, env);
                                 if (soap_node)
                                 {
                                     return AXIOM_NODE_GET_FIRST_ELEMENT(soap_node, env);
@@ -737,14 +737,14 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
     {
         return NULL;
     }
-    soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 
     if (!soap_body)
     {
         return NULL;
     }
 
-    soap_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+    soap_node = axiom_soap_body_get_base_node(soap_body, env);
     if (!soap_node)
     {
         return NULL;
@@ -1188,12 +1188,12 @@ axis2_svc_client_fill_soap_envelope(
     if (svc_client->headers)
     {
         axiom_soap_header_t *soap_header = NULL;
-        soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(envelope, env);
+        soap_header = axiom_soap_envelope_get_header(envelope, env);
 
         if (soap_header)
         {
             axiom_node_t *header_node = NULL;
-            header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
+            header_node = axiom_soap_header_get_base_node(soap_header, env);
 
             if (header_node)
             {
@@ -1216,11 +1216,11 @@ axis2_svc_client_fill_soap_envelope(
     if (payload)
     {
         axiom_soap_body_t *soap_body = NULL;
-        soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
+        soap_body = axiom_soap_envelope_get_body(envelope, env);
         if (soap_body)
         {
             axiom_node_t *node = NULL;
-            node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            node = axiom_soap_body_get_base_node(soap_body, env);
             if (node)
             {
                 AXIOM_NODE_ADD_CHILD(node, env, (axiom_node_t *)payload);

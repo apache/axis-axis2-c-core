@@ -69,7 +69,7 @@ axiom_soap_header_block_create_with_parent(const axis2_env_t *env,
     if (!header_block)
         return NULL;
 
-    parent_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(header, env);
+    parent_node = axiom_soap_header_get_base_node(header, env);
     if (!parent_node)
         return NULL;
 
@@ -77,7 +77,7 @@ axiom_soap_header_block_create_with_parent(const axis2_env_t *env,
             ns , &this_node);
     if (!om_ele)
     {
-        AXIOM_SOAP_HEADER_BLOCK_FREE(header_block, env);
+        axiom_soap_header_block_free(header_block, env);
         return NULL;
     }
     header_block->om_ele_node = this_node;
@@ -85,7 +85,7 @@ axiom_soap_header_block_create_with_parent(const axis2_env_t *env,
     axiom_soap_header_set_header_block(header, env, header_block);
 
     header_block->soap_version =
-        AXIOM_SOAP_HEADER_GET_SOAP_VERSION(header, env);
+        axiom_soap_header_get_soap_version(header, env);
 
     return header_block;
 }

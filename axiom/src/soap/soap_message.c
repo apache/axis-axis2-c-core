@@ -29,8 +29,8 @@ struct axiom_soap_message
 
 AXIS2_EXTERN axiom_soap_message_t* AXIS2_CALL
 axiom_soap_message_create(const axis2_env_t *env,
-        axiom_soap_builder_t *builder,
-        axiom_document_t *om_doc)
+    axiom_soap_builder_t *builder,
+    axiom_document_t *om_doc)
 {
     axiom_soap_message_t *soap_message = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -38,7 +38,7 @@ axiom_soap_message_create(const axis2_env_t *env,
     AXIS2_PARAM_CHECK(env->error, builder, NULL);
 
     soap_message = (axiom_soap_message_t *)AXIS2_MALLOC(env->allocator,
-            sizeof(axiom_soap_message_t));
+        sizeof(axiom_soap_message_t));
     if (!soap_message)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -53,7 +53,7 @@ axiom_soap_message_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_message_free(axiom_soap_message_t *soap_message,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (soap_message->om_doc)
@@ -63,19 +63,16 @@ axiom_soap_message_free(axiom_soap_message_t *soap_message,
     }
     if (soap_message->soap_envelope)
     {
-        AXIOM_SOAP_ENVELOPE_FREE(soap_message->soap_envelope, env);
-        soap_message->soap_envelope = NULL;
+        axiom_soap_envelope_free(soap_message->soap_envelope, env);
     }
     AXIS2_FREE(env->allocator, soap_message);
-    soap_message = NULL;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axiom_soap_message_get_soap_envelope(axiom_soap_message_t *soap_message,
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     if (soap_message->soap_envelope)
     {
         return soap_message->soap_envelope;
@@ -90,8 +87,8 @@ axiom_soap_message_get_soap_envelope(axiom_soap_message_t *soap_message,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_message_serialize(axiom_soap_message_t *soap_message,
-        const axis2_env_t *env,
-        axiom_output_t *om_output)
+    const axis2_env_t *env,
+    axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return axiom_document_serialize(soap_message->om_doc, env, om_output);

@@ -41,9 +41,10 @@ extern "C"
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_role_set_base_node
-                            (axiom_soap_fault_role_t *fault_role,
-                             const axis2_env_t *env,
-                             axiom_node_t *node);
+    (axiom_soap_fault_role_t *fault_role,
+    const axis2_env_t *env,
+    axiom_node_t *node);
+
     
 AXIS2_EXTERN axiom_soap_fault_role_t * AXIS2_CALL
 axiom_soap_fault_role_create(const axis2_env_t *env);

@@ -181,34 +181,6 @@ extern "C"
     axiom_soap_fault_get_base_node(axiom_soap_fault_t *fault,
             const axis2_env_t *env);
 
-#define AXIOM_SOAP_FAULT_FREE(fault , env) \
-        axiom_soap_fault_free(fault, env)
-
-#define AXIOM_SOAP_FAULT_GET_CODE(fault , env) \
-        axiom_soap_fault_get_code(fault, env)
-
-#define AXIOM_SOAP_FAULT_GET_REASON(fault , env) \
-        axiom_soap_fault_get_reason(fault, env)
-
-#define AXIOM_SOAP_FAULT_GET_DETAIL(fault , env) \
-        axiom_soap_fault_get_detail(fault, env)
-
-#define AXIOM_SOAP_FAULT_GET_ROLE(fault , env) \
-        axiom_soap_fault_get_role(fault, env)
-
-#define AXIOM_SOAP_FAULT_GET_NODE(fault , env) \
-        axiom_soap_fault_get_node(fault, env)
-
-#define AXIOM_SOAP_FAULT_GET_BASE_NODE(fault, env) \
-        axiom_soap_fault_get_base_node(fault, env)
-
-
-#define AXIOM_SOAP_FAULT_GET_EXCEPTION(fault, env) \
-        axiom_soap_fault_get_exception(fault, env)
-
-#define AXIOM_SOAP_FAULT_SET_EXCEPTION(fault, env, exception) \
-        axiom_soap_fault_set_exception(fault, env, exception)
-
     /** @} */
 #ifdef __cplusplus
 }

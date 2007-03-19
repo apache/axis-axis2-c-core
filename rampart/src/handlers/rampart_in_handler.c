@@ -101,7 +101,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
        return AXIS2_FAILURE;
     }        
         
-    soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
+    soap_header = axiom_soap_envelope_get_header(soap_envelope, env);
     if (!soap_header)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No SOAP header found. ERROR");
@@ -176,7 +176,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     if (soap_envelope)
     {
 
-        soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
+        soap_header = axiom_soap_envelope_get_header(soap_envelope, env);
         if (soap_header)
         {
             AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "SOAP header found");

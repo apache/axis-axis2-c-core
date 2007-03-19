@@ -141,31 +141,7 @@ extern "C"
             const axis2_env_t *env,
             axiom_node_t *child);
 
-    /******************** Macros **************************************************/
 
-    /** free soap_body */
-#define AXIOM_SOAP_BODY_FREE( body, env) \
-        axiom_soap_body_free( body, env)
-
-    /** indecate whether soap_body has a fault or not*/
-#define AXIOM_SOAP_BODY_HAS_FAULT( body, env) \
-        axiom_soap_body_has_fault( body, env)
-
-#define AXIOM_SOAP_BODY_GET_FAULT( body, env) \
-        axiom_soap_body_get_fault( body, env)
-
-#define AXIOM_SOAP_BODY_GET_BASE_NODE( body, env) \
-        axiom_soap_body_get_base_node( body, env)
-
-#define AXIOM_SOAP_BODY_GET_SOAP_VERSION( body, env) \
-        axiom_soap_body_get_soap_version( body, env)
-
-#define AXIOM_SOAP_BODY_BUILD( body, env) \
-        axiom_soap_body_build( body, env)
-
-#define AXIOM_SOAP_BODY_ADD_CHILD( body, env, child) \
-        axiom_soap_body_add_child( body, env, child);
-    /** @} */
 #ifdef __cplusplus
 }
 #endif

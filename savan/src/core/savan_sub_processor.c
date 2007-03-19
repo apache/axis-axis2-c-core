@@ -372,7 +372,7 @@ savan_sub_processor_create_subscriber_from_msg(
         return NULL;
     }
     
-    body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
+    body = axiom_soap_envelope_get_body(envelope, env);
     if (!body)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to extract the "
@@ -381,7 +381,7 @@ savan_sub_processor_create_subscriber_from_msg(
     }
     
     /* Get Body element from body node */
-    body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
+    body_node = axiom_soap_body_get_base_node(body, env);
     body_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(body_node, env);
     
     /* Get Subscribe element from Body */

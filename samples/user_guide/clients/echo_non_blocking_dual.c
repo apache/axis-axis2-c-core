@@ -183,7 +183,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
     }
     else
     {
-        ret_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+        ret_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
 
         if (!ret_node)
         {

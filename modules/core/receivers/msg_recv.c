@@ -90,7 +90,6 @@ axis2_msg_recv_create(
     msg_recv->scope = axis2_strdup ("app*", env);
     msg_recv->derived = NULL;
     msg_recv->receive = axis2_msg_recv_receive_impl;
-
     return msg_recv;
 }
 
@@ -328,13 +327,13 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
                     out_msg_ctx, env);
         if (soap_envelope)
         {
-            axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope,
+            axiom_soap_body_t *body = axiom_soap_envelope_get_body(soap_envelope,
                     env);
             if (body)
             {
                 /* in case of a SOAP fault, we got to return failure so that
                    transport gets to know that it should send 500 */
-                if (AXIOM_SOAP_BODY_HAS_FAULT(body, env))
+                if (axiom_soap_body_has_fault(body, env))
                 {
                     status = AXIS2_FAILURE;
                      axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env,

@@ -799,7 +799,7 @@ axis2_status_t rampart_context_set_nodes_to_encrypt_or_sign(
     axiom_soap_header_t *soap_header = NULL;
     axiom_node_t *header_node = NULL;
 
-    soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope,env);
+    soap_header = axiom_soap_envelope_get_header(soap_envelope,env);
     if(!soap_header)
         return AXIS2_FAILURE;
 
@@ -818,7 +818,7 @@ axis2_status_t rampart_context_set_nodes_to_encrypt_or_sign(
     {
         axis2_array_list_t *soap_header_blocks = NULL;
         int i = 0;
-        soap_header_blocks = AXIOM_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(soap_header,env,namespace);
+        soap_header_blocks = axiom_soap_header_get_header_blocks_with_namespace_uri(soap_header,env,namespace);
         if(!soap_header_blocks)
             return AXIS2_FAILURE;
 
@@ -829,7 +829,7 @@ axis2_status_t rampart_context_set_nodes_to_encrypt_or_sign(
             header_block = (axiom_soap_header_block_t *)axis2_array_list_get(soap_header_blocks,env,i);
             if(header_block)
             {
-                node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block,env);
+                node = axiom_soap_header_block_get_base_node(header_block,env);
                 if(node)
                 {    
                     axis2_array_list_add(nodes_to_encrypt_or_sign,env,node);
@@ -847,7 +847,7 @@ axis2_status_t rampart_context_set_nodes_to_encrypt_or_sign(
     else
     {
         axiom_node_t *ret_node = NULL;
-        header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header,env);
+        header_node = axiom_soap_header_get_base_node(soap_header,env);
         if(header_node)
         {
             ret_node = oxs_axiom_get_node_by_local_name(env,header_node,local_name);
@@ -1166,8 +1166,8 @@ rampart_context_get_nodes_to_protect(
             else
                 AXIS2_LOG_INFO(env->log, "[rampart][rampart_context] No Encrypted parts specified. Using the body.");
 
-            body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-            body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
+            body = axiom_soap_envelope_get_body(soap_envelope, env);
+            body_node = axiom_soap_body_get_base_node(body, env);
             body_child_node = axiom_node_get_first_element(body_node, env);
             axis2_array_list_add(nodes_to_sign_or_encrypt, env, body_child_node);
             return AXIS2_SUCCESS;
@@ -1204,8 +1204,8 @@ rampart_context_get_nodes_to_protect(
             axiom_node_t *body_child_node = NULL;
 
             AXIS2_LOG_INFO(env->log, "[rampart][rampart_context] Including the body.");
-            body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-            body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
+            body = axiom_soap_envelope_get_body(soap_envelope, env);
+            body_node = axiom_soap_body_get_base_node(body, env);
             body_child_node = axiom_node_get_first_element(body_node, env);
             axis2_array_list_add(nodes_to_sign_or_encrypt, env, body_child_node);
             return AXIS2_SUCCESS;

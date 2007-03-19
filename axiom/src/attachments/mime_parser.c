@@ -141,10 +141,10 @@ axiom_mime_parser_free(axiom_mime_parser_t *mime_parser,
 
 axis2_hash_t* AXIS2_CALL
 axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
-        const axis2_env_t *env,
-        AXIS2_READ_INPUT_CALLBACK callback,
-        void *callback_ctx,
-        axis2_char_t *mime_boundary)
+    const axis2_env_t *env,
+    AXIS2_READ_INPUT_CALLBACK callback,
+    void *callback_ctx,
+    axis2_char_t *mime_boundary)
 {
     axiom_mime_parser_impl_t *mime_parser_impl = NULL;
     axis2_char_t *buffer = NULL;
@@ -332,7 +332,9 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                     pos = memchr(old_pos, AXIOM_MIME_BOUNDARY_BYTE,
                         (mime_binary_len - (old_pos - mime_binary)));
                     if (!pos)
+		    {
                         break;
+		    }
                     else
                     {
                         old_pos = pos + 1;
@@ -352,7 +354,9 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                     mime_binary_len = pos - mime_binary;
                 }
                 else
+		{
                     pos = NULL;
+		}
             }
 
             if (!pos)

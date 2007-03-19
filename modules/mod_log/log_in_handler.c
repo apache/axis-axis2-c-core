@@ -78,8 +78,8 @@ axis2_log_in_handler_invoke(struct axis2_handler *handler,
     
     if (soap_envelope)
     {
-        AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env); /* hack to ensure soab buider state is in sync */
-        ret_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+        axiom_soap_envelope_get_body(soap_envelope, env); /* hack to ensure soab buider state is in sync */
+        ret_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
 
         if(ret_node)
         {

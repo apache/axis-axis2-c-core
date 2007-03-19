@@ -89,7 +89,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
     }
 
     /*We are checking for the soap header element*/
-    soap_header  = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
+    soap_header  = axiom_soap_envelope_get_header(soap_envelope, env);
 
     if (!soap_header)
     {
@@ -101,7 +101,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
     /*if the soap header is available then add the security header*/
     if (soap_header)
     {
-        soap_header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
+        soap_header_node = axiom_soap_header_get_base_node(soap_header, env);
         if(!soap_header_node)
         {
             AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Cannot Create the header node");

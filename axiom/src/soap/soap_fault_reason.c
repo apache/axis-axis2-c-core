@@ -77,7 +77,7 @@ axiom_soap_fault_reason_create_with_parent(const axis2_env_t *env,
     if (!fault_reason)
         return NULL;
 
-    parent_node = AXIOM_SOAP_FAULT_GET_BASE_NODE(fault, env);
+    parent_node = axiom_soap_fault_get_base_node(fault, env);
     if (!parent_node)
     {
         return NULL;
@@ -131,7 +131,7 @@ axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
             if (value)
             {
                 fault_text = (axiom_soap_fault_text_t *)value;
-                AXIOM_SOAP_FAULT_TEXT_FREE(fault_text, env);
+                axiom_soap_fault_text_free(fault_text, env);
                 fault_text = NULL;
             }
         }
@@ -170,7 +170,7 @@ axiom_soap_fault_reason_get_soap_fault_text
         {
             while (!(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
             {
-                status = AXIOM_SOAP_BUILDER_NEXT(fault_reason->soap_builder, env);
+                status = axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)
                     return NULL;
             }
@@ -192,7 +192,7 @@ axiom_soap_fault_reason_get_soap_fault_text
         {
             axis2_char_t *fault_lang = NULL;
             fault_text = (axiom_soap_fault_text_t *)value;
-            fault_lang = AXIOM_SOAP_FAULT_TEXT_GET_LANG(fault_text, env);
+            fault_lang = axiom_soap_fault_text_get_lang(fault_text, env);
             if (fault_lang && axis2_strcmp(lang, fault_lang) == 0)
             {
                 return fault_text;
@@ -255,7 +255,7 @@ axiom_soap_fault_reason_get_all_soap_fault_texts
         {
             while (!(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
             {
-                status = AXIOM_SOAP_BUILDER_NEXT(fault_reason->soap_builder, env);
+                status = axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)
                     return NULL;
             }
@@ -278,7 +278,7 @@ axiom_soap_fault_reason_get_first_soap_fault_text
         {
             while (!(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
             {
-                status = AXIOM_SOAP_BUILDER_NEXT(fault_reason->soap_builder, env);
+                status = axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)
                     return NULL;
             }
@@ -315,7 +315,7 @@ axiom_soap_fault_reason_add_soap_fault_text
     {
         axis2_char_t *lang = NULL;
         axis2_bool_t is_exists = AXIS2_FALSE;
-        lang = AXIOM_SOAP_FAULT_TEXT_GET_LANG(fault_text, env);
+        lang = axiom_soap_fault_text_get_lang(fault_text, env);
         if (lang)
         {
             is_exists = axiom_soap_fault_reason_lang_exists(fault_reason, env, lang);
@@ -351,7 +351,7 @@ axiom_soap_fault_reason_lang_exists(axiom_soap_fault_reason_t *fault_reason,
             axis2_char_t *text_lang = NULL;
             fault_text = (axiom_soap_fault_text_t *)value;
 
-            text_lang = AXIOM_SOAP_FAULT_TEXT_GET_LANG(fault_text, env);
+            text_lang = axiom_soap_fault_text_get_lang(fault_text, env);
             if (text_lang && (axis2_strcmp(lang, text_lang) == 0))
             {
                 return AXIS2_TRUE;

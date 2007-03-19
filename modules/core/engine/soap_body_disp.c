@@ -94,10 +94,10 @@ axiom_soap_body_disp_find_svc(
     soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (soap_envelope)
     {
-        axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        axiom_soap_body_t *soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
         if (soap_body)
         {
-            axiom_node_t *body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            axiom_node_t *body_node = axiom_soap_body_get_base_node(soap_body, env);
             if (body_node)
             {
                 axiom_node_t *body_first_child_node =
@@ -176,10 +176,10 @@ axiom_soap_body_disp_find_op(
     soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     if (soap_envelope)
     {
-        axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        axiom_soap_body_t *soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
         if (soap_body)
         {
-            axiom_node_t *body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            axiom_node_t *body_node = axiom_soap_body_get_base_node(soap_body, env);
             if (body_node)
             {
                 axiom_node_t *body_first_child_node =

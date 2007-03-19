@@ -150,7 +150,7 @@ axis2_libcurl_send (
 
 			axiom_output_set_do_optimize(om_output, env,
 										 doing_mtom); 
-			AXIOM_SOAP_ENVELOPE_SERIALIZE(out, env, om_output,
+			axiom_soap_envelope_serialize(out, env, om_output,
 										  AXIS2_FALSE);
 			if (AXIS2_TRUE ==  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
 			{

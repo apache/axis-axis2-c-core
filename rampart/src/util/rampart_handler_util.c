@@ -237,12 +237,12 @@ rampart_get_security_token(const axis2_env_t *env,
     axiom_element_t *header_block_ele = NULL;
     axiom_node_t *header_block_node = NULL;
 
-    sec_headers = AXIOM_SOAP_HEADER_GET_HEADER_BLOCKS_WITH_NAMESPACE_URI(soap_header, env, RAMPART_WSSE_XMLNS);
+    sec_headers = axiom_soap_header_get_header_blocks_with_namespace_uri(soap_header, env, RAMPART_WSSE_XMLNS);
     if (sec_headers)
     {
         sec_ns_str = axis2_strdup(RAMPART_WSSE_XMLNS, env);
 
-        header_block_ht = AXIOM_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(soap_header, env);
+        header_block_ht = axiom_soap_header_get_all_header_blocks(soap_header, env);
         if (!header_block_ht)
             return AXIS2_FAILURE;
 
@@ -257,7 +257,7 @@ rampart_get_security_token(const axis2_env_t *env,
 
             axis2_hash_this(hash_index, NULL, NULL, &hb);
             header_block = (axiom_soap_header_block_t *)hb;
-            header_block_node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
+            header_block_node = axiom_soap_header_block_get_base_node(header_block, env);
             header_block_ele  = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
             ele_localname = axiom_element_get_localname(header_block_ele, env);
 

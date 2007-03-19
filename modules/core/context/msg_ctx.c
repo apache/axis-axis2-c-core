@@ -330,7 +330,7 @@ axis2_msg_ctx_free(
 
     if (msg_ctx->fault_soap_envelope)
     {
-        AXIOM_SOAP_ENVELOPE_FREE(msg_ctx->fault_soap_envelope, env);
+        axiom_soap_envelope_free(msg_ctx->fault_soap_envelope, env);
     }
 
     if (msg_ctx->charset_encoding)
@@ -614,7 +614,7 @@ axis2_msg_ctx_set_soap_envelope(
     if (soap_envelope)
     {
         int soap_v = AXIOM_SOAP12;
-        soap_v = AXIOM_SOAP_ENVELOPE_GET_SOAP_VERSION(soap_envelope, env);
+        soap_v = axiom_soap_envelope_get_soap_version(soap_envelope, env);
         msg_ctx->is_soap_11 = (soap_v == AXIOM_SOAP12) ? AXIS2_FALSE : AXIS2_TRUE;
         msg_ctx->soap_envelope = soap_envelope;
     }
@@ -638,7 +638,7 @@ axis2_msg_ctx_set_response_soap_envelope(
     if (soap_envelope)
     {
         int soap_v = AXIOM_SOAP12;
-        soap_v = AXIOM_SOAP_ENVELOPE_GET_SOAP_VERSION(soap_envelope, env);
+        soap_v = axiom_soap_envelope_get_soap_version(soap_envelope, env);
         msg_ctx->response_soap_envelope = soap_envelope;
     }
     else

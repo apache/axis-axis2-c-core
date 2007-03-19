@@ -127,8 +127,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             axiom_soap_body_t *body = NULL;
 
             envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
-            body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
-            om_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
+            body = axiom_soap_envelope_get_body(envelope, env);
+            om_node = axiom_soap_body_get_base_node(body, env);
             om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
             om_node = AXIOM_NODE_GET_FIRST_ELEMENT(om_node, env);
          }
@@ -140,8 +140,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             axiom_element_t *op_element = NULL;
 
             envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
-            body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
-            op_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
+            body = axiom_soap_envelope_get_body(envelope, env);
+            op_node = axiom_soap_body_get_base_node(body, env);
             op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
             if (op_element)
             {
@@ -288,7 +288,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         return AXIS2_FAILURE;
     }
 
-    out_node = AXIOM_SOAP_BODY_GET_BASE_NODE(out_body, env);
+    out_node = axiom_soap_body_get_base_node(out_body, env);
     if (!out_node)
     {
         return AXIS2_FAILURE;
@@ -319,7 +319,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 		if (fault_node)
 		{
 			fault_detail = axiom_soap_fault_detail_create_with_parent (env, soap_fault);
-			AXIOM_SOAP_FAULT_DETAIL_ADD_DETAIL_ENTRY (fault_detail, env, fault_node);
+			axiom_soap_fault_detail_add_detail_entry (fault_detail, env, fault_node);
 		}
     }
 
@@ -336,7 +336,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     else
     {
         /* we should free the memory as the envelope is not used, one way case */
-        AXIOM_SOAP_ENVELOPE_FREE(default_envelope, env);
+        axiom_soap_envelope_free(default_envelope, env);
         default_envelope = NULL;
     }
 

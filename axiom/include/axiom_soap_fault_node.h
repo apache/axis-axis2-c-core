@@ -70,18 +70,6 @@ extern "C"
     axiom_soap_fault_node_get_base_node(axiom_soap_fault_node_t *fault_node,
             const axis2_env_t *env);
 
-#define AXIOM_SOAP_FAULT_NODE_FREE(fault_node , env) \
-        axiom_soap_fault_node_free(fault_node, env)
-
-#define AXIOM_SOAP_FAULT_NODE_GET_VALUE(fault_node , env) \
-        axiom_soap_fault_node_get_value(fault_node, env)
-
-#define AXIOM_SOAP_FAULT_NODE_GET_BASE_NODE(fault_node, env) \
-        axiom_soap_fault_node_get_base_node(fault_node, env)
-
-#define AXIOM_SOAP_FAULT_NODE_SET_VALUE(fault_node , env, uri) \
-        axiom_soap_fault_node_set_value(fault_node, env, uri)
-
     /** @} */
 
 #ifdef __cplusplus

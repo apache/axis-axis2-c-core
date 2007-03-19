@@ -87,10 +87,10 @@ axiom_soap_fault_text_create_with_parent(const axis2_env_t *env,
         return NULL;
     }
 
-    parent_node = AXIOM_SOAP_FAULT_REASON_GET_BASE_NODE(parent, env);
+    parent_node = axiom_soap_fault_reason_get_base_node(parent, env);
     if (!parent_node)
     {
-        AXIOM_SOAP_FAULT_TEXT_FREE(fault_text, env);
+        axiom_soap_fault_text_free(fault_text, env);
         return NULL;
     }
 
@@ -98,7 +98,7 @@ axiom_soap_fault_text_create_with_parent(const axis2_env_t *env,
             AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
     if (!parent_ele)
     {
-        AXIOM_SOAP_FAULT_TEXT_FREE(fault_text, env);
+        axiom_soap_fault_text_free(fault_text, env);
         return NULL;
     }
     soap_version = axiom_soap_fault_reason_get_soap_version(parent, env);
@@ -112,13 +112,13 @@ axiom_soap_fault_text_create_with_parent(const axis2_env_t *env,
 
     if (!this_ele)
     {
-        AXIOM_SOAP_FAULT_TEXT_FREE(fault_text, env);
+        axiom_soap_fault_text_free(fault_text, env);
         return NULL;
     }
 
     fault_text->om_ele_node = this_node;
 
-    AXIOM_SOAP_FAULT_REASON_ADD_SOAP_FAULT_TEXT(parent, env, fault_text);
+    axiom_soap_fault_reason_add_soap_fault_text(parent, env, fault_text);
 
     return fault_text;
 }

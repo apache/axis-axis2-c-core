@@ -136,15 +136,15 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
     if (!ele_localname)
         return AXIS2_FAILURE;
 
-    soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder_helper->soap_builder, env);
+    soap_envelope = axiom_soap_builder_get_soap_envelope(builder_helper->soap_builder, env);
     if (!soap_envelope)
         return AXIS2_FAILURE;
 
-    soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
     if (!soap_body)
         return AXIS2_FAILURE;
 
-    soap_fault = AXIOM_SOAP_BODY_GET_FAULT(soap_body, env);
+    soap_fault = axiom_soap_body_get_fault(soap_body, env);
     if (!soap_fault)
         return AXIS2_FAILURE;
 
@@ -398,7 +398,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
                     axiom_soap_fault_value_set_base_node(soap_fault_value, env, om_ele_node);
 
-                    parent_fcode = AXIOM_SOAP_FAULT_GET_CODE(soap_fault, env);
+                    parent_fcode = axiom_soap_fault_get_code(soap_fault, env);
                     if (!parent_fcode)
                         return AXIS2_FAILURE;
 
@@ -433,7 +433,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                         axiom_soap_fault_sub_code_set_base_node(fault_subcode, env, om_ele_node);
 
 
-                        fault_code = AXIOM_SOAP_FAULT_GET_CODE(soap_fault, env);
+                        fault_code = axiom_soap_fault_get_code(soap_fault, env);
                         if (!fault_code)
                             return AXIS2_FAILURE;
 
@@ -478,17 +478,17 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
                 axiom_soap_fault_text_set_base_node(soap_fault_text, env, om_ele_node);
 
-                fault_reason = AXIOM_SOAP_FAULT_GET_REASON(soap_fault, env);
+                fault_reason = axiom_soap_fault_get_reason(soap_fault, env);
                 if (!fault_reason)
                     return AXIS2_FAILURE;
 
-                AXIOM_SOAP_FAULT_REASON_ADD_SOAP_FAULT_TEXT(fault_reason, env, soap_fault_text);
+                axiom_soap_fault_reason_add_soap_fault_text(fault_reason, env, soap_fault_text);
                 /*****************
                 AXIOM_NODE_SET_BUILD_STATUS(om_ele_node, env, AXIS2_FALSE);
                 ******************/
                 builder_helper->reason_processing = AXIS2_FALSE;
 
-                AXIOM_SOAP_BUILDER_SET_BOOL_PROCESSING_MANDATORY_FAULT_ELEMENTS(builder_helper->soap_builder, env, AXIS2_FALSE);
+                axiom_soap_builder_set_bool_processing_mandatory_fault_elements(builder_helper->soap_builder, env, AXIS2_FALSE);
 
             }
             else
@@ -500,7 +500,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         }
         else if (axis2_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME) == 0)
         {
-            AXIOM_SOAP_BUILDER_SET_PROCESSING_DETAIL_ELEMENTS(builder_helper->soap_builder, env, AXIS2_TRUE);
+            axiom_soap_builder_set_processing_detail_elements(builder_helper->soap_builder, env, AXIS2_TRUE);
 
             if (!(builder_helper->detail_element_names))
             {
@@ -552,7 +552,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                     axiom_soap_fault_sub_code_t *sub_code = NULL;
                     axiom_soap_fault_code_t *code = NULL;
                     axiom_soap_fault_value_t *value = NULL;
-                    code = AXIOM_SOAP_FAULT_GET_CODE(soap_fault, env);
+                    code = axiom_soap_fault_get_code(soap_fault, env);
 
                     if (!code)
                     {
@@ -560,7 +560,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                         return AXIS2_FAILURE;
                     }
 
-                    sub_code = AXIOM_SOAP_FAULT_CODE_GET_SUB_CODE(code, env);
+                    sub_code = axiom_soap_fault_code_get_sub_code(code, env);
                     if (!sub_code)
                     {
                         AXIS2_LOG_DEBUG(env->log , AXIS2_LOG_SI, "fault subcode null when it should not be null");
@@ -595,13 +595,13 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
                         axiom_soap_fault_sub_code_set_base_node(subcode, env, om_ele_node);
 
-                        fault_code = AXIOM_SOAP_FAULT_GET_CODE(soap_fault, env);
+                        fault_code = axiom_soap_fault_get_code(soap_fault, env);
                         if (!fault_code)
                         {
                             AXIS2_LOG_DEBUG(env->log , AXIS2_LOG_SI, "fault code null when it should not be null");
                             return AXIS2_FAILURE;
                         }
-                        parent_subcode = AXIOM_SOAP_FAULT_CODE_GET_SUB_CODE(fault_code, env);
+                        parent_subcode = axiom_soap_fault_code_get_sub_code(fault_code, env);
                         if (!parent_subcode)
                         {
                             AXIS2_LOG_DEBUG(env->log , AXIS2_LOG_SI, "fault subcode null when it should not be null");
@@ -636,7 +636,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                 return AXIS2_FAILURE;
             }
         }
-        else if (AXIOM_SOAP_BUILDER_IS_PROCESSING_DETAIL_ELEMENTS(builder_helper->soap_builder, env))
+        else if (axiom_soap_builder_is_processing_detail_elements(builder_helper->soap_builder, env))
         {
 
             int detail_element_level = 0;

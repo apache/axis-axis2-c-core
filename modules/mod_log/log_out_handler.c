@@ -78,7 +78,7 @@ axis2_log_out_handler_invoke(struct axis2_handler *handler,
     
     if (soap_envelope)
     {
-        ret_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+        ret_node = axiom_soap_envelope_get_base_node(soap_envelope, env);
 
         if(ret_node)
         {

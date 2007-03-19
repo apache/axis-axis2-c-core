@@ -111,20 +111,20 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
         return AXIS2_FAILURE;
     }
 
-    soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(builder_helper->soap_builder, env);
+    soap_envelope = axiom_soap_builder_get_soap_envelope(builder_helper->soap_builder, env);
 
     if (!soap_envelope)
     {
         return AXIS2_FAILURE;
     }
 
-    soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+    soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
     if (!soap_body)
     {
         return AXIS2_FAILURE;
     }
 
-    soap_fault = AXIOM_SOAP_BODY_GET_FAULT(soap_body, env);
+    soap_fault = axiom_soap_body_get_fault(soap_body, env);
     if (!soap_fault)
     {
         return AXIS2_FAILURE;
@@ -144,7 +144,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
 
             if (builder_helper->fault_string_present)
             {
-                AXIOM_SOAP_BUILDER_SET_BOOL_PROCESSING_MANDATORY_FAULT_ELEMENTS(
+                axiom_soap_builder_set_bool_processing_mandatory_fault_elements(
                     builder_helper->soap_builder, env, AXIS2_FALSE);
             }
 
@@ -164,7 +164,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             if (!fault_value)
                 return AXIS2_FAILURE;
 
-            fault_value_node = AXIOM_SOAP_FAULT_VALUE_GET_BASE_NODE(fault_value, env);
+            fault_value_node = axiom_soap_fault_value_get_base_node(fault_value, env);
             if (!fault_value_node)
                 return AXIS2_FAILURE;
 
@@ -196,7 +196,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             int status = AXIS2_SUCCESS;
             if (builder_helper->fault_code_present)
             {
-                AXIOM_SOAP_BUILDER_SET_BOOL_PROCESSING_MANDATORY_FAULT_ELEMENTS(
+                axiom_soap_builder_set_bool_processing_mandatory_fault_elements(
                     builder_helper->soap_builder, env, AXIS2_FALSE);
             }
 
@@ -214,7 +214,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             if (!fault_text)
                 return AXIS2_FAILURE;
 
-            fault_text_node = AXIOM_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env);
+            fault_text_node = axiom_soap_fault_text_get_base_node(fault_text, env);
             if (!fault_text_node)
                 return AXIS2_FAILURE;
 
@@ -249,7 +249,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             axiom_soap_fault_set_role(soap_fault, env, fault_role);
             /*
             Role element may not have a namespace associated, hence commented, else it segfaults here - Samisa
-            status = AXIOM_SOAP_BUILDER_PROCESS_NAMESPACE_DATA(
+            status = axiom_soap_builder_process_namespace_data(
                 builder_helper->soap_builder, env, om_element_node, AXIS2_TRUE);
             if(status == AXIS2_FAILURE)
                     return AXIS2_FAILURE;*/
