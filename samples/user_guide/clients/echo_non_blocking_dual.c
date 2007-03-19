@@ -114,10 +114,10 @@ int main(int argc, char** argv)
     callback = axis2_callback_create(env);
 
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);
+    axis2_callback_set_on_complete(callback, echo_callback_on_complete);
 
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, echo_callback_on_error);
+    axis2_callback_set_on_error(callback, echo_callback_on_error);
 
 
     /* Send request */
@@ -171,7 +171,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
 
     printf("inside on_complete_callback function\n");
 
-    soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
+    soap_envelope = axis2_callback_get_envelope(callback, env);
 
     if (!soap_envelope)
     {

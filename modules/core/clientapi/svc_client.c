@@ -636,7 +636,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
 
         index = AXIS2_OPTIONS_GET_TIMEOUT_IN_MILLI_SECONDS(svc_client->options, env) / 10;
 
-        while (!(AXIS2_CALLBACK_GET_COMPLETE(callback, env)))
+        while (!(axis2_callback_get_complete(callback, env)))
         {
             /*wait till the response arrives*/
             if (index-- >= 0)
@@ -676,7 +676,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
             }
         }
 
-        soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
+        soap_envelope = axis2_callback_get_envelope(callback, env);
 
         /* start of hack to get rid of memory leak */
         msg_ctx = axis2_msg_ctx_create(env,
@@ -689,9 +689,9 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         /* process the result of the invocation */
         if (!soap_envelope)
         {
-            if (AXIS2_CALLBACK_GET_ERROR(callback, env) != AXIS2_ERROR_NONE)
+            if (axis2_callback_get_error(callback, env) != AXIS2_ERROR_NONE)
             {
-                AXIS2_ERROR_SET(env->error, AXIS2_CALLBACK_GET_ERROR(callback, env), AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, axis2_callback_get_error(callback, env), AXIS2_FAILURE);
                 return NULL;
             }
         }

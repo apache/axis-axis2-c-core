@@ -229,9 +229,9 @@ void axis2_stub_calculator_add_start(axis2_stub_t *stub, const axis2_env_t *env,
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -333,9 +333,9 @@ void axis2_stub_calculator_sub_start(axis2_stub_t *stub, const axis2_env_t *env,
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -437,9 +437,9 @@ void axis2_stub_calculator_mul_start(axis2_stub_t *stub, const axis2_env_t *env,
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -541,9 +541,9 @@ void axis2_stub_calculator_div_start(axis2_stub_t *stub, const axis2_env_t *env,
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);

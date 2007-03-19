@@ -349,9 +349,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_start(axis2_stub_
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -453,9 +453,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start(axis2
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -557,9 +557,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_start(axis2_stub
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -661,9 +661,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start(axis
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -765,9 +765,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_start(axis2_stub_t
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -869,9 +869,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start(axis2_
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -973,9 +973,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_start(axis2_stub_
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -1077,9 +1077,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start(axis2
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -1181,9 +1181,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_void_start(axis2_stub_t 
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -1285,9 +1285,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_base64_start(axis2_stub_
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -1389,9 +1389,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_date_start(axis2_stub_t 
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -1493,9 +1493,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start(axis2_s
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -1597,9 +1597,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start(axis2_stub
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
@@ -1701,9 +1701,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start(axis2_stub
 
     callback = axis2_callback_create(env);
     /* Set our on_complete fucntion pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, on_complete);
+    axis2_callback_set_on_complete(callback, on_complete);
     /* Set our on_error function pointer to the callback object */
-    AXIS2_CALLBACK_SET_ON_ERROR(callback, on_error);
+    axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
     AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);

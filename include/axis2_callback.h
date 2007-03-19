@@ -212,58 +212,6 @@ extern "C"
     axis2_callback_create(const axis2_env_t *env);
 
 
-/** Invokes on complete functions. */
-#define AXIS2_CALLBACK_INVOKE_ON_COMPLETE(callback, env, result) \
-      axis2_callback_invoke_on_complete(callback, env, result)
-
-/** Reports error. */
-#define AXIS2_CALLBACK_REPORT_ERROR(callback, env, error) \
-      axis2_callback_report_error(callback, env, error)
-
-/** Gets complete status. */
-#define AXIS2_CALLBACK_GET_COMPLETE(callback, env)\
-      axis2_callback_get_complete(callback, env)
-
-/** Sets complete status. */
-#define AXIS2_CALLBACK_SET_COMPLETE(callback, env, complete) \
-      axis2_callback_set_complete(callback, env, complete)
-
-/** Gets result SOAP envelope. */
-#define AXIS2_CALLBACK_GET_ENVELOPE(callback, env) \
-      axis2_callback_get_envelope(callback, env)
-
-/** Sets SOAP envelope. */
-#define AXIS2_CALLBACK_SET_ENVELOPE(callback, env, envelope) \
-      axis2_callback_set_envelope(callback, env, envelope)
-
-/** Gets error code. */
-#define AXIS2_CALLBACK_GET_ERROR(callback, env) \
-      axis2_callback_get_error(callback, env)
-
-/** Sets error code. */
-#define AXIS2_CALLBACK_SET_ERROR(callback, env, error) \
-      axis2_callback_set_error(callback, env, error)
-
-/** Gets data. */
-#define AXIS2_CALLBACK_GET_DATA(callback) \
-      axis2_callback_get_data(callback)
-
-/** Sets data. */
-#define AXIS2_CALLBACK_SET_DATA(callback, data) \
-      axis2_callback_set_data(callback, data)
-
-/** Sets on complete callback function. */
-#define AXIS2_CALLBACK_SET_ON_COMPLETE(callback, func) \
-      axis2_callback_set_on_complete(callback, func)
-
-/** Set on error callback function. */
-#define AXIS2_CALLBACK_SET_ON_ERROR(callback, func) \
-      axis2_callback_set_on_error(callback, func)
-
-/** Frees callback struct. */
-#define AXIS2_CALLBACK_FREE(callback, env) \
-      axis2_callback_free (callback, env)
-
 /** @} */
 #ifdef __cplusplus
 }

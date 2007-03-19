@@ -180,8 +180,8 @@ axis2_callback_recv_receive(
                 result = axis2_async_result_create(env, msg_ctx);
                 if (callback && result)
                 {
-                    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(callback, env, result);
-                    AXIS2_CALLBACK_SET_COMPLETE(callback, env, AXIS2_TRUE);
+                    axis2_callback_invoke_on_complete(callback, env, result);
+                    axis2_callback_set_complete(callback, env, AXIS2_TRUE);
                      axis2_msg_ctx_set_soap_envelope(msg_ctx, env, NULL);
                 }
 
