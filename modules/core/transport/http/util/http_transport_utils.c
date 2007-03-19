@@ -1494,7 +1494,7 @@ axis2_http_transport_utils_dispatch_and_verify(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     req_uri_disp = axis2_req_uri_disp_create(env);
-    handler = AXIS2_DISP_GET_BASE(req_uri_disp, env);
+    handler = axis2_disp_get_base(req_uri_disp, env);
     AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
 
     if (NULL ==  axis2_msg_ctx_get_svc(msg_ctx, env) || NULL ==

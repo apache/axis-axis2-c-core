@@ -149,19 +149,11 @@ extern "C"
 
 
 /** Gets the base handler.  */
-#define AXIS2_DISP_GET_BASE(disp, env) \
+#define axis2_disp_get_base(disp, env) \
         axis2_disp_get_base(disp, env)
 
-/** Gets QName. */
-#define AXIS2_DISP_GET_NAME(disp, env) \
-        axis2_disp_get_name(disp, env)
-
-/** Sets QName. */
-#define AXIS2_DISP_SET_QNAME(disp, env, name) \
-        axis2_disp_set_name(disp, env, name)
-
 /** Frees dispatcher. */
-#define AXIS2_DISP_FREE(disp, env) \
+#define axis2_disp_free(disp, env) \
         axis2_disp_free(disp, env)
 
 /** @} */

@@ -67,7 +67,7 @@ axiom_soap_body_disp_create(
         return NULL;
     }
 
-    handler = AXIS2_DISP_GET_BASE(disp, env);
+    handler = axis2_disp_get_base(disp, env);
     if (!handler)
     {
         AXIS2_ERROR_SET(env->error,

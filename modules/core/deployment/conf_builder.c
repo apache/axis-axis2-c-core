@@ -425,7 +425,7 @@ axis2_conf_builder_process_disp_order(
         disp_dll = (axis2_disp_t *) axis2_class_loader_create_dll(env,
                 impl_info_param);
 
-        handler = AXIS2_DISP_GET_BASE(disp_dll, env);
+        handler = axis2_disp_get_base(disp_dll, env);
         handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(handler, env);
         axis2_handler_desc_add_param(handler_desc, env, impl_info_param);
 

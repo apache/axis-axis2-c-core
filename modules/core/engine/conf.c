@@ -164,8 +164,8 @@ axis2_conf_create(
         if (uri_dispatch)
         {
                 axis2_handler_t *handler = NULL;
-                handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
-                AXIS2_DISP_FREE(uri_dispatch, env);
+                handler = axis2_disp_get_base(uri_dispatch, env);
+                axis2_disp_free(uri_dispatch, env);
                 AXIS2_PHASE_ADD_HANDLER_AT(phase, env, 0, handler);
                 axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
                 handler = NULL;
@@ -1165,8 +1165,8 @@ axis2_conf_set_default_dispatchers(
         return AXIS2_FAILURE;
     }
 
-    handler = AXIS2_DISP_GET_BASE(soap_msg_body_based_dispatch, env);
-    AXIS2_DISP_FREE(soap_msg_body_based_dispatch, env);
+    handler = axis2_disp_get_base(soap_msg_body_based_dispatch, env);
+    axis2_disp_free(soap_msg_body_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 0, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
@@ -1178,8 +1178,8 @@ axis2_conf_set_default_dispatchers(
         return AXIS2_FAILURE;
     }
 
-    handler = AXIS2_DISP_GET_BASE(add_dispatch, env);
-    AXIS2_DISP_FREE(add_dispatch, env);
+    handler = axis2_disp_get_base(add_dispatch, env);
+    axis2_disp_free(add_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
@@ -1190,8 +1190,8 @@ axis2_conf_set_default_dispatchers(
         return AXIS2_FAILURE;
     }
 
-    handler = AXIS2_DISP_GET_BASE(uri_dispatch, env);
-    AXIS2_DISP_FREE(uri_dispatch, env);
+    handler = axis2_disp_get_base(uri_dispatch, env);
+    axis2_disp_free(uri_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 1, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;*/
@@ -1202,8 +1202,8 @@ axis2_conf_set_default_dispatchers(
         return AXIS2_FAILURE;
     }
 
-    handler = AXIS2_DISP_GET_BASE(soap_action_based_dispatch, env);
-    AXIS2_DISP_FREE(soap_action_based_dispatch, env);
+    handler = axis2_disp_get_base(soap_action_based_dispatch, env);
+    axis2_disp_free(soap_action_based_dispatch, env);
     AXIS2_PHASE_ADD_HANDLER_AT(dispatch, env, 2, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
