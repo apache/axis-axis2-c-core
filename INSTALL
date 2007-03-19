@@ -340,7 +340,7 @@ Table of Contents
 5. Installing Apache2 Web Server integration module (mod_axis2)
 ---------------------------------------------------------------
 
-5.1 Building mod_axis2 the from source tree 
+5.1 Building mod_axis2 from the source tree 
 
 5.1.1 On the Linux Platform
 
@@ -417,10 +417,44 @@ Table of Contents
     Restart apache2 and test whether mod_axis2 module is loaded by typing the URL
         http://localhost/axis2/services
 
+
+6. Installing IIS (Interner Information Server) integration module (mod_axis2_IIS)
+----------------------------------------------------------------------------------
+
+6.1 Building mod_axis2_IIS from the source tree
+
+    After compiling the sources (as described in section 4.3) build the
+    mod_axis2.dll by issuing the command "nmake axis2_IIS_module".
+    This will build the mod_axis2_IIS.dll and copy it to %AXIS2C_HOME%\lib directory.
+    Example:
+    C:\axis2c\build\deploy\lib 
+
+6.2 Deploying in the IIS
+    
+    Add the following key to the registery.
+
+    HKEY_LOCAL_MACHINE\SOFTWARE\Apache Axis2c\IIS ISAPI Redirector
+
+    Under this registry key add the following entries.
+
+    Add a string value with the name axis2c_home and a value of the axis2c home path i.e c:\axis2c
+    Add a string value with the name log_file and a value of absolute path of the log file i.e c:\axis2c\logs\axis2.log
+    Add a string value with the name log_level. The value can be one of the following		
+		trace    - Log trace messages
+ 		error    - Log errors critical errors
+ 		info     - Log info and above
+ 		critical - Log critical errors only 
+		debug	   - Log debug and above (default)
+	 	warning  - Log warnings
+
+    Using the IIS management console, add a new virtual directory to the IIS/PWS web site called "axis2"
+    The physical path of this virtual directory should be the axis2\lib directory (Where the mod_axis2_IIS.dll is in)
+    Assign excecute permissions to this virtual directory.
+
+    Using the IIS management console, add mod_axis2_IIS.dll as a filter to the IIS/PWS web site. The name of the filter can be any meaningful name. 
+
+    Restart IIS and test whether mod_axis2_IIS module is loaded by typing the URL http://localhost/axis2. 
     Enjoy the Axis2C soap engine!
-
-
-
 
 
 FAQ
