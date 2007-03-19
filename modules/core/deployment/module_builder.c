@@ -171,7 +171,7 @@ axis2_module_builder_populate_module(
         
             file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(module_builder->
                 desc_builder->engine, env);
-            module_name = AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(file_data, env);
+            module_name = axis2_arch_file_data_get_module_name(file_data, env);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Populate module %s", module_name);
      
             module_qname = axis2_qname_create(env, module_name, NULL, NULL);
@@ -190,7 +190,7 @@ axis2_module_builder_populate_module(
         file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
                 axis2_desc_builder_get_dep_engine(module_builder->desc_builder, env), 
                 env);
-        module_name = AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(file_data, env);
+        module_name = axis2_arch_file_data_get_module_name(file_data, env);
 
         module_qname = axis2_qname_create(env, module_name, NULL, NULL);
         axis2_module_desc_set_qname(module_builder->module_desc, env, module_qname);
@@ -222,7 +222,7 @@ axis2_module_builder_populate_module(
 
                 file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
                             dep_engine, env);
-                AXIS2_ARCH_FILE_DATA_SET_MODULE_DLL_NAME(file_data, env,
+                axis2_arch_file_data_set_module_dll_name(file_data, env,
                         class_name);
 
             }

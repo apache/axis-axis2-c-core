@@ -23,12 +23,6 @@
  * @{
  */
 
-
-/**
- * @file axis2_arch_file_data.h
- * @brief Axis2 Arch File Data interface
- */
-
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -46,7 +40,7 @@ extern "C"
 #endif
 
     struct axis2_conf;
-    
+
     /** Type name for struct axis2_arch_fila_data */
     typedef struct axis2_arch_file_data axis2_arch_file_data_t;
 
@@ -228,70 +222,6 @@ extern "C"
     axis2_arch_file_data_create_with_type_and_name(const axis2_env_t *env,
         int type,
         const axis2_char_t *name);
-
-/** Frees the arch file data struct. */
-#define AXIS2_ARCH_FILE_DATA_FREE(arch_file_data, env) \
-      axis2_arch_file_data_free (arch_file_data, env)
-
-/** Gets the message receiver. */
-#define AXIS2_ARCH_FILE_DATA_GET_MSG_RECV(arch_file_data, env) \
-      axis2_arch_file_data_get_msg_recv (arch_file_data, env)
-
-/** Sets the message receiver. */
-#define AXIS2_ARCH_FILE_DATA_SET_MSG_RECV(arch_file_data, env, msg_recv) \
-      axis2_arch_file_data_set_msg_recv (arch_file_data, env, msg_recv)
-
-/** Gets the name. */
-#define AXIS2_ARCH_FILE_DATA_GET_NAME(arch_file_data, env) \
-      axis2_arch_file_data_get_name (arch_file_data, env)
-
-/** Gets the service name. */
-#define AXIS2_ARCH_FILE_DATA_GET_SVC_NAME(arch_file_data, env) \
-      axis2_arch_file_data_get_svc_name (arch_file_data, env)
-
-/** Gets the type. */
-#define AXIS2_ARCH_FILE_DATA_GET_TYPE(arch_file_data, env) \
-      axis2_arch_file_data_get_type (arch_file_data, env)
-
-/** Gets the file. */
-#define AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env) \
-      axis2_arch_file_data_get_file (arch_file_data, env)
-
-/** Gets the module name. */
-#define AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(arch_file_data, env) \
-      axis2_arch_file_data_get_module_name (arch_file_data, env)
-
-/** Sets the module name. */
-#define AXIS2_ARCH_FILE_DATA_SET_MODULE_NAME(arch_file_data, env, module_name) \
-      axis2_arch_file_data_set_module_name (arch_file_data, env, module_name)
-
-/** Gets the module dll name. */
-#define AXIS2_ARCH_FILE_DATA_GET_MODULE_DLL_NAME(arch_file_data, env) \
-      axis2_arch_file_data_get_module_dll_name (arch_file_data, env)
-
-/** Sets the module dll name. */
-#define AXIS2_ARCH_FILE_DATA_SET_MODULE_DLL_NAME(arch_file_data, env, class_name) \
-      axis2_arch_file_data_set_module_dll_name (arch_file_data, env, class_name)
-
-/** Adds the service. */
-#define AXIS2_ARCH_FILE_DATA_ADD_SVC(arch_file_data, env, svc_desc) \
-      axis2_arch_file_data_add_svc (arch_file_data, env, svc_desc)
-
-/** Gets the service. */
-#define AXIS2_ARCH_FILE_DATA_GET_SVC(arch_file_data, env, svc_name) \
-      axis2_arch_file_data_get_svc (arch_file_data, env, svc_name)
-
-/** Gets the service map. */
-#define AXIS2_ARCH_FILE_DATA_GET_SVC_MAP(arch_file_data, env) \
-      axis2_arch_file_data_get_svc_map (arch_file_data, env)
-
-/** Gets the deployable services. */
-#define AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(arch_file_data, env) \
-      axis2_arch_file_data_get_deployable_svcs (arch_file_data, env)
-
-/** Sets the deployable services. */
-#define AXIS2_ARCH_FILE_DATA_SET_DEPLOYABLE_SVCS(arch_file_data, env, deployable_svcs) \
-      axis2_arch_file_data_set_deployable_svcs (arch_file_data, env, deployable_svcs)
 
 /** @} */
 

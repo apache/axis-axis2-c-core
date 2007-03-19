@@ -188,7 +188,7 @@ axis2_svc_grp_builder_populate_svc_grp(
             file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
                 axis2_desc_builder_get_dep_engine(svc_grp_builder->desc_builder, env), 
                 env);
-            axis_svc = AXIS2_ARCH_FILE_DATA_GET_SVC(file_data, env, svc_name);
+            axis_svc = axis2_arch_file_data_get_svc(file_data, env, svc_name);
             if (NULL == axis_svc)
             {
                 axis2_qname_t *qsvc_name = NULL;
@@ -196,12 +196,12 @@ axis2_svc_grp_builder_populate_svc_grp(
                 qsvc_name = axis2_qname_create(env, svc_name, NULL, NULL);
                 axis_svc = axis2_svc_create_with_qname(env, qsvc_name);
                 axis2_qname_free(qsvc_name, env);
-                AXIS2_ARCH_FILE_DATA_ADD_SVC(file_data, env, axis_svc);
+                axis2_arch_file_data_add_svc(file_data, env, axis_svc);
 
             }
             /* the service that has to be deployed */
 
-            deployable_svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(file_data,
+            deployable_svcs = axis2_arch_file_data_get_deployable_svcs(file_data,
                     env);
             axis2_array_list_add(deployable_svcs, env, axis_svc);
             AXIS2_SVC_SET_PARENT(axis_svc, env, svc_grp);

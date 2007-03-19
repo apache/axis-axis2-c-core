@@ -261,7 +261,7 @@ axis2_svc_builder_populate_svc(
     arch_file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
         axis2_desc_builder_get_dep_engine(svc_builder->desc_builder, env), 
             env);
-    svc_folder = AXIS2_ARCH_FILE_DATA_GET_FILE(arch_file_data, env);
+    svc_folder = axis2_arch_file_data_get_file(arch_file_data, env);
     timestamp =  axis2_file_get_timestamp(svc_folder, env);
      axis2_dll_desc_set_timestamp(dll_desc, env, timestamp);
     svc_folder_path =  axis2_file_get_path(svc_folder, env);
