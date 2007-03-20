@@ -25,18 +25,15 @@
 #include <axis2_module.h>
 
 axis2_status_t AXIS2_CALL
-axis2_init_modules(
-    const axis2_env_t *env,
+axis2_init_modules(const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
 axis2_status_t AXIS2_CALL
-axis2_init_transports(
-    const axis2_env_t *env,
+axis2_init_transports(const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
 AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
-axis2_build_conf_ctx(
-    const axis2_env_t *env,
+axis2_build_conf_ctx(const axis2_env_t *env,
     const axis2_char_t *repo_name)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -78,8 +75,7 @@ axis2_build_conf_ctx(
 }
 
 axis2_conf_ctx_t *AXIS2_CALL
-axis2_build_client_conf_ctx(
-    const axis2_env_t *env,
+axis2_build_client_conf_ctx(const axis2_env_t *env,
     const axis2_char_t *axis2_home)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -100,7 +96,7 @@ axis2_build_client_conf_ctx(
     {
         return NULL;
     }
-     axis2_conf_set_dep_engine(conf, env, dep_engine);
+    axis2_conf_set_dep_engine(conf, env, dep_engine);
 
     phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
     if (!phase_resolver)
@@ -125,8 +121,7 @@ axis2_build_client_conf_ctx(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_init_modules(
-    const axis2_env_t *env,
+axis2_init_modules(const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_conf_t *conf = NULL;
@@ -144,7 +139,7 @@ axis2_init_modules(
             axis2_hash_index_t *hi = NULL;
             void *module = NULL;
             for (hi = axis2_hash_first(module_map, env);
-                    hi; hi = axis2_hash_next(env, hi))
+                hi; hi = axis2_hash_next(env, hi))
             {
                 axis2_hash_this(hi, NULL, NULL, &module);
                 if (module)
@@ -154,7 +149,9 @@ axis2_init_modules(
                     {
                         axis2_module_t *mod = axis2_module_desc_get_module(mod_desc, env);
                         if (mod)
+                        {
                             AXIS2_MODULE_INIT(mod, env, conf_ctx, mod_desc);
+                        }
                     }
                 }
             }
@@ -166,8 +163,7 @@ axis2_init_modules(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_init_transports(
-    const axis2_env_t *env,
+axis2_init_transports(const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_conf_t *conf = NULL;
@@ -188,10 +184,12 @@ axis2_init_transports(
         {
             if (transport_in_map[i])
             {
-                axis2_transport_receiver_t *listener = axis2_transport_in_desc_get_recv(transport_in_map[i], env);
+                axis2_transport_receiver_t *listener = 
+                    axis2_transport_in_desc_get_recv(transport_in_map[i], env);
                 if (listener)
                 {
-                    status = AXIS2_TRANSPORT_RECEIVER_INIT(listener, env, conf_ctx, transport_in_map[i]);
+                    status = AXIS2_TRANSPORT_RECEIVER_INIT(listener, env, conf_ctx, 
+                        transport_in_map[i]);
                 }
 
             }
@@ -206,7 +204,8 @@ axis2_init_transports(
                     axis2_transport_out_desc_get_sender(transport_out_map[i], env);
                 if (sender)
                 {
-                    status = AXIS2_TRANSPORT_SENDER_INIT(sender, env, conf_ctx, transport_out_map[i]);
+                    status = AXIS2_TRANSPORT_SENDER_INIT(sender, env, conf_ctx, 
+                        transport_out_map[i]);
                 }
 
             }

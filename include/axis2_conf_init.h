@@ -23,11 +23,6 @@
  * @{
  */
 
-/**
- * @file axis2_conf_init.h
- * @brief Axis2 configuration initilizing functions
- */
-
 #include <axis2_env.h>
 #include <axis2_utils_defines.h>
 #include <axis2_conf_ctx.h>
@@ -45,7 +40,8 @@ extern "C"
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL 
     axis2_build_conf_ctx(const axis2_env_t *env,
-            const axis2_char_t *repo_name);
+        const axis2_char_t *repo_name);
+
     /**
      * Builds the Configuration for the Client
      * @param env Pointer to environment struct. MUST NOT be NULL
@@ -54,7 +50,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL 
     axis2_build_client_conf_ctx(const axis2_env_t *env,
-            const axis2_char_t *axis2_home);
+        const axis2_char_t *axis2_home);
 
 
 /** @} */
