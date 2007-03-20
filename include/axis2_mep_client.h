@@ -217,50 +217,6 @@ extern "C"
     axis2_mep_client_receive(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
-/** Gets SOAP action. */
-#define AXIS2_MEP_CLIENT_GET_SOAP_ACTION(mep_client, env) \
-        axis2_mep_client_get_soap_action(mep_client, env)
-
-/** Prepares mep client for invocation. */
-#define AXIS2_MEP_CLIENT_PREPARE_INVOCATION(mep_client, env, op, msg_ctx) \
-      axis2_mep_client_prepare_invocation(mep_client, env, op, msg_ctx)
-
-/** Prepares SOAP envelope. */
-#define AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(mep_client, env, to_send) \
-      axis2_mep_client_prepare_soap_envelope(mep_client, env, to_send)
-
-/** Infers transport. */
-#define AXIS2_MEP_CLIENT_INFER_TRANSPORT(mep_client, env, epr) \
-      axis2_mep_client_infer_transport(mep_client, env, epr)
-
-/** Creates default SOAP envelope. */
-#define AXIS2_MEP_CLIENT_CREATE_DEFAULT_SOAP_ENVELOPE(mep_client, env) \
-      axis2_mep_client_create_default_soap_envelope(mep_client, env)
-
-/** Engages named module. */
-#define AXIS2_MEP_CLIENT_ENGAGE_MODULE(mep_client, env, qname) \
-      axis2_mep_client_engage_module(mep_client, env, qname)
-
-/** Sets SOAP version URI. */
-#define AXIS2_MEP_CLIENT_SET_SOAP_VERSION_URI(mep_client, env, soap_version_uri)\
-      axis2_mep_client_set_soap_version_uri(mep_client, env, soap_version_uri)
-
-/** Sets SOAP action. */
-#define AXIS2_MEP_CLIENT_SET_SOAP_ACTION(mep_client, env, soap_action) \
-      axis2_mep_client_set_soap_action(mep_client, env, soap_action)
-
-/** Sets WSA action. */
-#define AXIS2_MEP_CLIENT_SET_WSA_ACTION(mep_client, env, wsa_action) \
-      axis2_mep_client_set_wsa_action(mep_client, env, wsa_action)
-
-/** Gets service context. */
-#define AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, env) \
-      axis2_mep_client_get_svc_ctx(mep_client, env)
-
-/** Frees mep client. */
-#define AXIS2_MEP_CLIENT_FREE(mep_client, env) \
-      axis2_mep_client_free (mep_client, env)
-
 
     /** @} */
 #ifdef __cplusplus
