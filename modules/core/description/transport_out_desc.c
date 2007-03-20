@@ -93,12 +93,12 @@ axis2_transport_out_desc_free(axis2_transport_out_desc_t *transport_out,
 
     if (transport_out->out_phase)
     {
-        AXIS2_PHASE_FREE(transport_out->out_phase, env);
+         axis2_phase_free(transport_out->out_phase, env);
     }
 
     if (transport_out->fault_phase)
     {
-        AXIS2_PHASE_FREE(transport_out->fault_phase, env);
+         axis2_phase_free(transport_out->fault_phase, env);
     }
 
     AXIS2_FREE(env->allocator, transport_out);
@@ -227,7 +227,7 @@ axis2_transport_out_desc_set_out_phase(axis2_transport_out_desc_t *transport_out
 
     if (transport_out->out_phase)
     {
-        AXIS2_PHASE_FREE(transport_out->out_phase, env);
+         axis2_phase_free(transport_out->out_phase, env);
     }
     transport_out->out_phase = out_phase;
     return AXIS2_SUCCESS;
@@ -252,7 +252,7 @@ axis2_transport_out_desc_set_fault_phase(axis2_transport_out_desc_t *transport_o
 
     if (transport_out->fault_phase)
     {
-        AXIS2_PHASE_FREE(transport_out->fault_phase, env);
+         axis2_phase_free(transport_out->fault_phase, env);
     }
     transport_out->fault_phase = fault_phase;
     return AXIS2_SUCCESS;

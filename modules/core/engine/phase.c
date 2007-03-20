@@ -106,7 +106,7 @@ axis2_phase_add_handler_at(
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
             "axis2_handler_t *%s added to the index %d of the phase %s",
-            axis2_string_get_buffer(AXIS2_HANDLER_GET_NAME(handler, env), env), 
+            axis2_string_get_buffer(AXIS2_HANDLER_GET_NAME(handler, env), env),
             index,
             phase->name);
 
@@ -120,12 +120,10 @@ axis2_phase_add_handler(
     axis2_handler_t *handler)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
     AXIS2_LOG_INFO(env->log, "Handler %s added to phase %s",
             axis2_string_get_buffer(AXIS2_HANDLER_GET_NAME(handler, env), env),
             phase->name);
 
-    /*return axis2_array_list_add(phase->handlers, env, handler);*/
     return axis2_phase_add_unique(env, phase->handlers, handler);
 }
 
@@ -137,7 +135,6 @@ axis2_phase_invoke(
 {
     int index = 0, size = 0;
     axis2_status_t status = AXIS2_SUCCESS;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
      axis2_msg_ctx_set_paused_phase_name(msg_ctx, env, phase->name);
@@ -184,7 +181,7 @@ axis2_phase_invoke(
                 /* index increment should be done after the invoke function. If the invocation
                    failed this handler is taken care of and no need to revoke again */
                 index++;
-                 axis2_msg_ctx_set_current_handler_index(msg_ctx, env, index);
+                axis2_msg_ctx_set_current_handler_index(msg_ctx, env, index);
             }
         }
     }
@@ -198,8 +195,10 @@ axis2_phase_invoke(
         }
         else
         {
-            AXIS2_LOG_INFO(env->log, "Invoke the last handler %s within the phase %s",
-                    axis2_string_get_buffer(AXIS2_HANDLER_GET_NAME(phase->last_handler, env), env),
+            AXIS2_LOG_INFO(env->log, 
+                    "Invoke the last handler %s within the phase %s",
+                    axis2_string_get_buffer(
+                    AXIS2_HANDLER_GET_NAME(phase->last_handler, env), env),
                     phase->name);
             status = AXIS2_HANDLER_INVOKE(phase->last_handler, env, msg_ctx);
             if (status != AXIS2_SUCCESS)
@@ -679,7 +678,6 @@ axis2_phase_insert_after(
             {
                 if (i == (size - 1))
                 {
-                    /*return axis2_array_list_add(phase->handlers, env, handler);*/
                     return axis2_phase_add_unique(env, phase->handlers, handler);
                 }
                 else
@@ -692,7 +690,6 @@ axis2_phase_insert_after(
         return axis2_array_list_add_at(phase->handlers, env, 0, handler);
     else
     {
-        /*return axis2_array_list_add(phase->handlers, env, handler);*/
         return axis2_phase_add_unique(env, phase->handlers, handler);
     }
 }
@@ -781,7 +778,6 @@ axis2_phase_insert_before_and_after(
         if (axis2_strcmp(before_handler_name, before_name) == 0 &&
                 axis2_strcmp(after_handler_name, after_name) == 0)
         {
-            /*return axis2_array_list_add(phase->handlers, env, handler);*/
             return axis2_phase_add_unique(env, phase->handlers, handler);
         }
     }
@@ -841,13 +837,11 @@ axis2_phase_insert_before_and_after(
                 }
                 else
                 {
-                    /*return axis2_array_list_add(phase->handlers, env, handler);*/
                     return axis2_phase_add_unique(env, phase->handlers, handler);
                 }
             }
         }
     }
-    /*return axis2_array_list_add(phase->handlers, env, handler);*/
     return axis2_phase_add_unique(env, phase->handlers, handler);
 }
 
@@ -879,7 +873,9 @@ axis2_phase_insert_handler_desc(
 
     if (!_axis2_phase_is_valid_before(phase, env, handler))
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, 
+             AXIS2_ERROR_INVALID_HANDLER_STATE, 
+             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -897,7 +893,6 @@ axis2_phase_insert_handler_desc(
             status = axis2_phase_insert_after(phase, env, handler);
             break;
         case 3: /*AXIS2_ANYWHERE:*/
-            /*status = axis2_array_list_add(phase->handlers, env, handler);*/
             status = axis2_phase_add_unique(env, phase->handlers, handler);
             break;
         default:
@@ -969,7 +964,6 @@ axis2_phase_free(
     {
         axis2_array_list_free(phase->handlers, env);
     }
-
     AXIS2_FREE(env->allocator, phase);
     return AXIS2_SUCCESS;
 }

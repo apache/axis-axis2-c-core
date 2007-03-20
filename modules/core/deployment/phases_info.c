@@ -97,7 +97,7 @@ axis2_phases_info_free(
             phase = (axis2_phase_t *) v;
             if(phase)
             {
-                AXIS2_PHASE_FREE(phase, env);
+                 axis2_phase_free(phase, env);
             }
         }
         axis2_hash_free(phases_info->op_in_phases, env);
@@ -115,7 +115,7 @@ axis2_phases_info_free(
             phase = (axis2_phase_t *) v;
             if(phase)
             {
-                AXIS2_PHASE_FREE(phase, env);
+                 axis2_phase_free(phase, env);
             }
         }
         axis2_hash_free(phases_info->op_out_phases, env);
@@ -133,7 +133,7 @@ axis2_phases_info_free(
             phase = (axis2_phase_t *) v;
             if(phase)
             {
-                AXIS2_PHASE_FREE(phase, env);
+                 axis2_phase_free(phase, env);
             }
         }
         axis2_hash_free(phases_info->op_in_faultphases, env);
@@ -151,7 +151,7 @@ axis2_phases_info_free(
             phase = (axis2_phase_t *) v;
             if(phase)
             {
-                AXIS2_PHASE_FREE(phase, env);
+                 axis2_phase_free(phase, env);
             }
         }
         axis2_hash_free(phases_info->op_out_faultphases, env);
@@ -303,7 +303,7 @@ axis2_phases_info_get_op_in_phases(
     status = axis2_array_list_add(op_in_phases, env, phase);
     if (AXIS2_SUCCESS != status)
     {
-        AXIS2_PHASE_FREE(phase, env);
+         axis2_phase_free(phase, env);
         phase = NULL;
         axis2_array_list_free(op_in_phases, env);
         op_in_phases = NULL;
@@ -341,13 +341,13 @@ axis2_phases_info_get_op_in_phases(
                 int i = 0;
                 int size = 0;
 
-                AXIS2_PHASE_FREE(phase, env);
+                 axis2_phase_free(phase, env);
                 phase = NULL;
                 size = axis2_array_list_size(op_in_phases, env);
                 for (i = 0; i < size; i++)
                 {
                     phase = axis2_array_list_get(op_in_phases, env, i);
-                    AXIS2_PHASE_FREE(phase, env);
+                     axis2_phase_free(phase, env);
                     phase = NULL;
                 }
                 axis2_array_list_free(op_in_phases, env);
@@ -399,13 +399,13 @@ axis2_phases_info_get_op_out_phases(
             int i = 0;
             int size = 0;
 
-            AXIS2_PHASE_FREE(phase, env);
+             axis2_phase_free(phase, env);
             phase = NULL;
             size = axis2_array_list_size(op_out_phases, env);
             for (i = 0; i < size; i++)
             {
                 phase = axis2_array_list_get(op_out_phases, env, i);
-                AXIS2_PHASE_FREE(phase, env);
+                 axis2_phase_free(phase, env);
                 phase = NULL;
             }
             axis2_array_list_free(op_out_phases, env);
@@ -427,13 +427,13 @@ axis2_phases_info_get_op_out_phases(
         int i = 0;
         int size = 0;
 
-        AXIS2_PHASE_FREE(phase, env);
+         axis2_phase_free(phase, env);
         phase = NULL;
         size = axis2_array_list_size(op_out_phases, env);
         for (i = 0; i < size; i++)
         {
             phase = axis2_array_list_get(op_out_phases, env, i);
-            AXIS2_PHASE_FREE(phase, env);
+             axis2_phase_free(phase, env);
             phase = NULL;
         }
         axis2_array_list_free(op_out_phases, env);
@@ -459,13 +459,13 @@ axis2_phases_info_get_op_out_phases(
         int i = 0;
         int size = 0;
 
-        AXIS2_PHASE_FREE(phase, env);
+         axis2_phase_free(phase, env);
         phase = NULL;
         size = axis2_array_list_size(op_out_phases, env);
         for (i = 0; i < size; i++)
         {
             phase = axis2_array_list_get(op_out_phases, env, i);
-            AXIS2_PHASE_FREE(phase, env);
+             axis2_phase_free(phase, env);
             phase = NULL;
         }
         axis2_array_list_free(op_out_phases, env);
@@ -523,13 +523,13 @@ axis2_phases_info_get_op_in_faultphases(
             int i = 0;
             int size = 0;
 
-            AXIS2_PHASE_FREE(phase, env);
+             axis2_phase_free(phase, env);
             phase = NULL;
             size = axis2_array_list_size(op_in_faultphases, env);
             for (i = 0; i < size; i++)
             {
                 phase = axis2_array_list_get(op_in_faultphases, env, i);
-                AXIS2_PHASE_FREE(phase, env);
+                 axis2_phase_free(phase, env);
                 phase = NULL;
             }
             axis2_array_list_free(op_in_faultphases, env);
@@ -587,13 +587,13 @@ axis2_phases_info_get_op_out_faultphases(
             int i = 0;
             int size = 0;
 
-            AXIS2_PHASE_FREE(phase, env);
+             axis2_phase_free(phase, env);
             phase = NULL;
             size = axis2_array_list_size(op_out_faultphases, env);
             for (i = 0; i < size; i++)
             {
                 phase = axis2_array_list_get(op_out_faultphases, env, i);
-                AXIS2_PHASE_FREE(phase, env);
+                 axis2_phase_free(phase, env);
                 phase = NULL;
             }
             axis2_array_list_free(op_out_faultphases, env);

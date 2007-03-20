@@ -96,7 +96,7 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
 
         phase = (axis2_phase_t *) axis2_array_list_get(phase_holder->
             phase_list, env, i);
-        phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
+        phase_name_l =  axis2_phase_get_name(phase, env);
         if (0 == axis2_strcmp(phase_name_l, phase_name))
         {
             return AXIS2_TRUE;
@@ -125,7 +125,7 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
         axis2_phase_t *phase = NULL;
 
         phase = axis2_phase_holder_get_phase(phase_holder, env, phase_name);
-        status = AXIS2_PHASE_ADD_HANDLER_DESC(phase, env, handler);
+        status = axis2_phase_add_handler_desc(phase, env, handler);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Add handler %s to phase %s",
             axis2_string_get_buffer(axis2_handler_desc_get_name(handler, env), env), 
             phase_name);
@@ -158,7 +158,7 @@ axis2_phase_holder_get_phase(const axis2_phase_holder_t *phase_holder,
         const axis2_char_t *phase_name_l = NULL;
         phase = (axis2_phase_t *) axis2_array_list_get(phase_holder->
             phase_list, env, i);
-        phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
+        phase_name_l =  axis2_phase_get_name(phase, env);
         if (0 == axis2_strcmp(phase_name_l, phase_name))
         {
             return phase;
@@ -202,7 +202,7 @@ axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_hol
             return status;
 	}
 
-        status = AXIS2_PHASE_ADD_HANDLER(phase, env, handler);
+        status = axis2_phase_add_handler(phase, env, handler);
     }
     return status;
 }

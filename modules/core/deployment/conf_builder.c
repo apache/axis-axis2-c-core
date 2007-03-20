@@ -409,7 +409,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         impl_info_param = axis2_param_create(env, class_name, NULL);
         if (!impl_info_param)
         {
-            AXIS2_PHASE_FREE(disp_phase, env);
+             axis2_phase_free(disp_phase, env);
             return AXIS2_FAILURE;
         }
         axis2_param_set_value(impl_info_param, env, dll_desc);
@@ -424,7 +424,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         axis2_handler_desc_add_param(handler_desc, env, impl_info_param);
 
         /*disptachClas.getHandlerDesc().setParent(axisConfiguration); */
-        AXIS2_PHASE_ADD_HANDLER_AT(disp_phase, env, count, handler);
+         axis2_phase_add_handler_at(disp_phase, env, count, handler);
         count ++;
         qname_itr_has_next = axiom_children_qname_iterator_has_next(disps,
             env);
@@ -433,7 +433,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
 
     if (AXIS2_TRUE != found_disp)
     {
-        AXIS2_PHASE_FREE(disp_phase, env);
+         axis2_phase_free(disp_phase, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_DISPATCHER_FOUND,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -443,7 +443,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         status =  axis2_conf_set_dispatch_phase(conf_builder->conf, env, disp_phase);
         if (AXIS2_SUCCESS != status)
         {
-            AXIS2_PHASE_FREE(disp_phase, env);
+             axis2_phase_free(disp_phase, env);
             return status;
         }
     }

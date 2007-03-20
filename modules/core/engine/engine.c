@@ -578,9 +578,9 @@ axis2_engine_invoke_phases(
                 axis2_array_list_get(phases, env, i);
 
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
-                "Invoking phase %s", AXIS2_PHASE_GET_NAME(phase, env));
+                "Invoking phase %s",  axis2_phase_get_name(phase, env));
                 
-        status = AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
+        status = axis2_phase_invoke(phase, env, msg_ctx);
 
         if (status != AXIS2_SUCCESS)
         {
@@ -613,7 +613,7 @@ axis2_engine_resume_invocation_phases(
     {
         axis2_phase_t *phase = (axis2_phase_t *) axis2_array_list_get(phases,
                 env, i);
-        const axis2_char_t *phase_name = AXIS2_PHASE_GET_NAME(phase, env);
+        const axis2_char_t *phase_name =  axis2_phase_get_name(phase, env);
         const axis2_char_t *paused_phase_name =  
             axis2_msg_ctx_get_paused_phase_name(msg_ctx, env);
         /* skip invoking handlers until we find the paused phase */
@@ -627,7 +627,7 @@ axis2_engine_resume_invocation_phases(
                     env);
             /* invoke the paused handler and rest of the handlers of the paused
              * phase */
-            AXIS2_PHASE_INVOKE_START_FROM_HANDLER(phase, env, paused_handler_i,
+            axis2_phase_invoke_start_from_handler(phase, env, paused_handler_i,
                     msg_ctx);
         }
         else 
@@ -636,7 +636,7 @@ axis2_engine_resume_invocation_phases(
              * handlers of that phase, invoke all the phases after that */
             if (found_match)
             {
-                AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
+                axis2_phase_invoke(phase, env, msg_ctx);
             }
         }
     }
