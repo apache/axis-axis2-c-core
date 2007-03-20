@@ -48,13 +48,11 @@ typedef struct axis2_listener_manager_worker_func_args
 }axis2_listener_manager_worker_func_args_t;
 
 void *AXIS2_THREAD_FUNC
-axis2_listener_manager_worker_func(
-    axis2_thread_t *thd,
+axis2_listener_manager_worker_func(axis2_thread_t *thd,
     void *data);
 
 AXIS2_EXTERN axis2_listener_manager_t *AXIS2_CALL
-axis2_listener_manager_create(
-    const axis2_env_t *env)
+axis2_listener_manager_create(const axis2_env_t *env)
 {
     axis2_listener_manager_t *listener_manager = NULL;
     int i = 0;
@@ -81,9 +79,8 @@ axis2_listener_manager_create(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_listener_manager_make_sure_started(
-    axis2_listener_manager_t *listener_manager,
-    const axis2_env_t *env,
+axis2_listener_manager_make_sure_started(axis2_listener_manager_t *listener_manager,
+    const axis2_env_t *env, 
     const AXIS2_TRANSPORT_ENUMS transport,
     axis2_conf_ctx_t *conf_ctx)
 {
@@ -190,8 +187,7 @@ axis2_listener_manager_make_sure_started(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_listener_manager_stop(
-    axis2_listener_manager_t *listener_manager,
+axis2_listener_manager_stop(axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env,
     const AXIS2_TRANSPORT_ENUMS transport)
 {
@@ -219,8 +215,7 @@ axis2_listener_manager_stop(
 }
 
 AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
-axis2_listener_manager_get_reply_to_epr(
-    const axis2_listener_manager_t *listener_manager,
+axis2_listener_manager_get_reply_to_epr(const axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env,
     const axis2_char_t *svc_name,
     const AXIS2_TRANSPORT_ENUMS transport)
@@ -238,8 +233,7 @@ axis2_listener_manager_get_reply_to_epr(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_listener_manager_free(
-    axis2_listener_manager_t *listener_manager,
+axis2_listener_manager_free(axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env)
 {
     int i = 0;
@@ -258,16 +252,14 @@ axis2_listener_manager_free(
 }
 
 AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
-axis2_listener_manager_get_conf_ctx(
-    const axis2_listener_manager_t *listener_manager,
+axis2_listener_manager_get_conf_ctx(const axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env)
 {
     return listener_manager->conf_ctx;
 }
 
 void *AXIS2_THREAD_FUNC
-axis2_listener_manager_worker_func(
-    axis2_thread_t *thd,
+axis2_listener_manager_worker_func(axis2_thread_t *thd,
     void *data)
 {
     axis2_listener_manager_worker_func_args_t *args_list = NULL;
