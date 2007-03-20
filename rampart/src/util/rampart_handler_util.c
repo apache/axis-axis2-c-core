@@ -264,7 +264,7 @@ rampart_get_security_token(const axis2_env_t *env,
             if (axis2_strcmp(ele_localname, RAMPART_SECURITY) == 0)
             {
                 /*Set mustUnderstand = 0*/
-                AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_BOOL(header_block, env, AXIS2_FALSE);
+                axiom_soap_header_block_set_must_understand_with_bool(header_block, env, AXIS2_FALSE);
                 return header_block_node;
             }
 
