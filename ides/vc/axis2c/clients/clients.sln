@@ -15,6 +15,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yahoo", "yahoo\yahoo.vcproj
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "echo_blocking", "echo_blocking\echo_blocking.vcproj", "{76F139F5-913A-4328-8504-B1E9B7F1BA97}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "echo_blocking_addr", "echo_blocking_addr\echo_blocking_addr.vcproj", "{DDBF66ED-91FA-48ED-B23D-437473C52C0A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "echo_blocking_dual", "echo_blocking_dual\echo_blocking_dual.vcproj", "{584804F3-344F-4850-899C-85E1998694F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -49,6 +53,14 @@ Global
 		{76F139F5-913A-4328-8504-B1E9B7F1BA97}.Debug|Win32.Build.0 = Debug|Win32
 		{76F139F5-913A-4328-8504-B1E9B7F1BA97}.Release|Win32.ActiveCfg = Release|Win32
 		{76F139F5-913A-4328-8504-B1E9B7F1BA97}.Release|Win32.Build.0 = Release|Win32
+		{DDBF66ED-91FA-48ED-B23D-437473C52C0A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DDBF66ED-91FA-48ED-B23D-437473C52C0A}.Debug|Win32.Build.0 = Debug|Win32
+		{DDBF66ED-91FA-48ED-B23D-437473C52C0A}.Release|Win32.ActiveCfg = Release|Win32
+		{DDBF66ED-91FA-48ED-B23D-437473C52C0A}.Release|Win32.Build.0 = Release|Win32
+		{584804F3-344F-4850-899C-85E1998694F8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{584804F3-344F-4850-899C-85E1998694F8}.Debug|Win32.Build.0 = Debug|Win32
+		{584804F3-344F-4850-899C-85E1998694F8}.Release|Win32.ActiveCfg = Release|Win32
+		{584804F3-344F-4850-899C-85E1998694F8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
