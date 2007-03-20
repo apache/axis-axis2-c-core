@@ -141,6 +141,14 @@ extern "C"
             const axis2_env_t *env,
             axiom_node_t *child);
 
+	/**
+	 * SOAP builder construct a SOAP 1.2 fault all the time. 
+	 * So when SOAP 1.1 is in use, we should convert SOAP fault to 
+	 * SOAP 1.1 fault format before use.
+	 */
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	axiom_soap_body_convert_fault_to_soap11(axiom_soap_body_t *soap_body,
+		const axis2_env_t *env);
 
 #ifdef __cplusplus
 }

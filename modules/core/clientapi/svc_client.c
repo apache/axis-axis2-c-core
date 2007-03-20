@@ -744,6 +744,11 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         return NULL;
     }
 
+	if (AXIOM_SOAP11 == axiom_soap_envelope_get_soap_version(soap_envelope, env))
+	{
+		axiom_soap_body_convert_fault_to_soap11(soap_body, env);
+	}
+
     soap_node = axiom_soap_body_get_base_node(soap_body, env);
     if (!soap_node)
     {
