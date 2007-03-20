@@ -114,7 +114,7 @@ int main()
     int len = -1;
 
     env = axis2_env_create_all("./openssl.log", AXIS2_LOG_LEVEL_TRACE);
-
+#if 0
     /*new code*/
     {
         axis2_char_t *c14op = NULL;
@@ -129,7 +129,7 @@ int main()
         return 0;
     }
     /*eof new code*/
-
+#endif
     /*Load private key*/
     prvkey = oxs_key_mgr_load_private_key_from_pem_file(env, "key.pem", "");
     if(!prvkey){

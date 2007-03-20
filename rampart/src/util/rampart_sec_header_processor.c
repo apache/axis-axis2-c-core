@@ -700,135 +700,6 @@ rampart_shp_process_signature(const axis2_env_t *env,
     return status;
 }
 
-/*
-#ifdef PRE_CHECK    
-static axis2_status_t 
-rampart_shp_pre_security_check(const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
-    rampart_actions_t *actions,
-    axiom_soap_envelope_t *soap_envelope,
-    axiom_node_t *sec_node)
-{
-    axis2_char_t *items = NULL;
-    axis2_array_list_t *items_list = NULL;
-    int i = 0, size = 0;
-
-    AXIS2_LOG_INFO(env->log, "[rampart][shp] Enforcing Security");
-    items = RAMPART_ACTIONS_GET_ITEMS(actions, env);    
-    if (!items)
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][shp] No items defined. So nothing to do.");
-        return AXIS2_SUCCESS;
-    }
-
-  
-    items_list = axis2_tokenize(env, items, ' ');
-    size = axis2_array_list_size(items_list, env);
-
-  
-    for (i = 0; i < size; i++)
-    {
-        axis2_char_t *item = NULL;
-        item = axis2_array_list_get(items_list, env, i);    
-        
-        if (0 == axis2_strcmp(RAMPART_ACTION_ITEMS_USERNAMETOKEN, axis2_strtrim(env, item, NULL))){
-  
-            int num_of_ut = 0;
-            num_of_ut = oxs_axiom_get_number_of_children_with_qname(env, sec_node, 
-                        RAMPART_SECURITY_TIMESTAMP, RAMPART_WSU_XMLNS, RAMPART_WSSE); 
-            if(1 != num_of_ut){
-                AXIS2_LOG_INFO(env->log, "[rampart][shp] UsernameToken is required. But not available");
-                rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE, 
-                        "UsernameToken is not available", RAMPART_FAULT_IN_USERNAMETOKEN, msg_ctx);
-                return AXIS2_FAILURE;
-            }
-        }else if(0 == axis2_strcmp(RAMPART_ACTION_ITEMS_TIMESTAMP, axis2_strtrim(env, item, NULL))){
-        
-            int num_of_ts = 0;
-            num_of_ts = oxs_axiom_get_number_of_children_with_qname(env, sec_node,
-                        RAMPART_SECURITY_TIMESTAMP, RAMPART_WSU_XMLNS, RAMPART_WSSE);
-            if(1 != num_of_ts){
-                AXIS2_LOG_INFO(env->log, "[rampart][shp] Timestamp is required. But not available");
-                rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE, 
-                        "Timestamp is not available", RAMPART_FAULT_IN_TIMESTAMP, msg_ctx);
-                return AXIS2_FAILURE;
-            }
-
-        }
-
-    } 
-    return AXIS2_SUCCESS;
-}
-#endif
-*/
-/*Compare security checked results with action items*/
-/*
-static axis2_status_t
-rampart_shp_post_security_check(const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
-    rampart_actions_t *actions)
-{
-    axis2_char_t *items = NULL;
-    axis2_array_list_t *items_list = NULL;
-    int i = 0, size = 0;
-
-    AXIS2_LOG_INFO(env->log, "[rampart][shp] Enforcing Security");
-    items = RAMPART_ACTIONS_GET_ITEMS(actions, env);
-    if (!items)
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][shp] No items defined. So nothing to do.");
-        return AXIS2_SUCCESS;
-    }
-
-
-    items_list = axis2_tokenize(env, items, ' ');
-    size = axis2_array_list_size(items_list, env);
-
-
-    for (i = 0; i < size; i++)
-    {
-        axis2_char_t *item = NULL;
-        axis2_char_t *result = NULL;
-        item = axis2_array_list_get(items_list, env, i);
-
-        if (0 == axis2_strcmp(RAMPART_ACTION_ITEMS_USERNAMETOKEN, axis2_strtrim(env, item, NULL))){
-
-            result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_CHECKED);   
-            if(!result || (0 != axis2_strcmp(result, RAMPART_YES)) ){
-                AXIS2_LOG_INFO(env->log, "[rampart][shp] UsernameToken is required. But not available");
-                rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
-                        "UsernameToken is not available", RAMPART_FAULT_IN_USERNAMETOKEN, msg_ctx);
-                return AXIS2_FAILURE;
-            }
-            result = NULL;
-        }else if(0 == axis2_strcmp(RAMPART_ACTION_ITEMS_TIMESTAMP, axis2_strtrim(env, item, NULL))){
-
-            result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_TS_CHECKED);
-            if(!result || (0 != axis2_strcmp(result, RAMPART_YES)) ){
-                AXIS2_LOG_INFO(env->log, "[rampart][shp] Timestamp is required. But not available");
-                rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
-                        "Timestamp is not available", RAMPART_FAULT_IN_TIMESTAMP, msg_ctx);
-                return AXIS2_FAILURE;
-            }
-            result = NULL;
-        }else if(0 == axis2_strcmp(RAMPART_ACTION_ITEMS_ENCRYPT, axis2_strtrim(env, item, NULL))){
-
-            result = (axis2_char_t*)rampart_get_security_processed_result(env, msg_ctx, RAMPART_SPR_ENC_CHECKED);
-            if(!result || (0 != axis2_strcmp(result, RAMPART_YES)) ){
-                AXIS2_LOG_INFO(env->log, "[rampart][shp] Encryption is required. But not available");
-                rampart_create_fault_envelope(env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE,
-                        "Data are not encrypted", RAMPART_FAULT_IN_ENCRYPTED_KEY, msg_ctx);
-                return AXIS2_FAILURE;
-            }
-            result = NULL;
-        }else if (0 == axis2_strcmp(RAMPART_ACTION_ITEMS_SIGNATURE, axis2_strtrim(env, item, NULL))){
-
-        }
-
-    }
-    return AXIS2_SUCCESS;
-}
-*/
 
 /*Public functions*/
 
@@ -842,18 +713,6 @@ rampart_shp_process_message(const axis2_env_t *env,
     axiom_node_t *cur_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    /*If certian security elements are expected by the reciever, rampart should check for those */
-    /*This should be removed once header encryption is introduced. But this pre-check avoids further processing of headers.*/
-/*    
-#ifdef PRE_CHECK    
-    status =  rampart_shp_pre_security_check(env, msg_ctx, actions,  soap_envelope, sec_node);
-    if(AXIS2_FAILURE == status){
-        return AXIS2_FAILURE;
-    }
-#endif
-*/
-    /*TO DO*/
-    /*There should be method to verify the security header before processing*/
 
     AXIS2_LOG_INFO(env->log, "[rampart][shp] Process security header");
 
@@ -1019,12 +878,6 @@ rampart_shp_process_message(const axis2_env_t *env,
        AXIS2_LOG_INFO(env->log, "[rampart][shp] Invalid binding type.");
        return AXIS2_FAILURE;
     }        
-    /*
-    status = rampart_shp_post_security_check(env, msg_ctx, actions); 
-    if(AXIS2_FAILURE == status){
-        AXIS2_LOG_INFO(env->log, "[rampart][shp] Security header doesn't confirms reciever's policy");
-        return AXIS2_FAILURE;
-    }*/
 
 }
 
