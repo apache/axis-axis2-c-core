@@ -44,6 +44,12 @@ extern "C"
     /** Type name for struct axis2_http_out_transport_info */
     typedef struct axis2_http_out_transport_info axis2_http_out_transport_info_t;
 
+	struct axis2_http_out_transport_info
+	{
+		axis2_http_simple_response_t *response;
+		axis2_char_t *encoding;
+	};
+
     /**
      * @param info pointer to info
      * @param env pointer to environment struct

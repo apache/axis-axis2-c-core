@@ -20,12 +20,6 @@
 #include <axis2_http_transport.h>
 #include <axis2_string.h>
 
-struct axis2_http_out_transport_info
-{
-    axis2_http_simple_response_t *response;
-    axis2_char_t *encoding;
-};
-
 AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL
 axis2_http_out_transport_info_create(
     const axis2_env_t *env,
