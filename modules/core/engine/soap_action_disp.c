@@ -55,7 +55,8 @@ axiom_soap_action_disp_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_SOAP_ACTION_DISP_NAME);
+    name = axis2_string_create_const(env, 
+                (axis2_char_t**)&AXIS2_SOAP_ACTION_DISP_NAME);
 
     disp = axis2_disp_create(env, name);
     if (!disp)
@@ -67,7 +68,8 @@ axiom_soap_action_disp_create(
     handler = axis2_disp_get_base(disp, env);
     if (!handler)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, 
+             AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -82,10 +84,8 @@ axis2_svc_t *AXIS2_CALL
 axiom_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Checking for service using SOAPAction is a TODO item");
-
+    AXIS2_LOG_DEBUG(env->log, 
+         AXIS2_LOG_SI, "Checking for service using SOAPAction is a TODO item");
     return NULL;
 }
 
@@ -101,14 +101,14 @@ axiom_soap_action_disp_find_op(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    action = axis2_string_get_buffer( axis2_msg_ctx_get_soap_action(msg_ctx, env), env);
+    action = axis2_string_get_buffer(
+                 axis2_msg_ctx_get_soap_action(msg_ctx, env), env);
 
     if (action)
     {
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                 "Checking for operation using SOAPAction : %s", action);
 
-        /*op = AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, action);*/
         if (!op)
         {
             const axis2_char_t * op_name = NULL;
@@ -132,7 +132,6 @@ axiom_soap_action_disp_find_op(
         if (op)
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Operation found using SOAPAction");
     }
-
     return op;
 }
 
