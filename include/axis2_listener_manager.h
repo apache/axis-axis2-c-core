@@ -124,25 +124,6 @@ extern "C"
     AXIS2_EXTERN axis2_listener_manager_t *AXIS2_CALL
     axis2_listener_manager_create(const axis2_env_t *env);
 
-/** Makes sure the named transport is started. */
-#define AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(listener_manager, env, transport, conf_ctx)\
-        axis2_listener_manager_make_sure_started(listener_manager, env, transport, conf_ctx)
-
-/** Stops the named transport. */
-#define AXIS2_LISTENER_MANAGER_STOP(listener_manager, env, transport)\
-        axis2_listener_manager_stop(listener_manager, env, transport)
-
-/** Gets reply to endpoint reference. */
-#define AXIS2_LISTNER_MANAGER_GET_REPLY_TO_EPR(listener_manager, env, svc_name, transport) \
-        axis2_listener_manager_get_reply_to_epr(listener_manager, env, svc_name, transport)
-
-/** Gets configuration context. */
-#define AXIS2_LISTNER_MANAGER_GET_CONF_CTX(listener_manager, env) \
-        axis2_listener_manager_get_conf_ctx(listener_manager, env)
-
-/** Frees listener manager. */
-#define AXIS2_LISTNER_MANAGER_FREE(listener_manager, env) \
-        axis2_listener_manager_free(listener_manager, env)
 
     /** @} */
 #ifdef __cplusplus

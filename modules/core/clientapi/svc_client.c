@@ -798,7 +798,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc
 
         transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
                     svc_client->options, env);
-        AXIS2_LISTNER_MANAGER_MAKE_SURE_STARTED(svc_client->listener_manager, env,
+        axis2_listener_manager_make_sure_started(svc_client->listener_manager, env,
                 transport_in_protocol, svc_client->conf_ctx);
         /* Following sleep is required to ensure the listner is ready to receive response.
            If it is missing, the response gets lost. - Samisa */
@@ -887,7 +887,7 @@ axis2_svc_client_finalize_invoke(
 
     if (svc_client->listener_manager)
     {
-        return AXIS2_LISTENER_MANAGER_STOP(svc_client->listener_manager,
+        return axis2_listener_manager_stop(svc_client->listener_manager,
                 env, transport_in_protocol);
     }
 
@@ -1141,7 +1141,7 @@ axis2_svc_client_free(
 
     if (svc_client->listener_manager)
     {
-        AXIS2_LISTNER_MANAGER_FREE(svc_client->listener_manager, env);
+        axis2_listener_manager_free(svc_client->listener_manager, env);
     }
 
     if (svc_client->conf_ctx)
