@@ -119,7 +119,7 @@ axis2_callback_recv_free(
 
     if (callback_recv->base && callback_recv->base_deep_copy)
     {
-        AXIS2_MSG_RECV_FREE(callback_recv->base, env);
+        axis2_msg_recv_free(callback_recv->base, env);
     }
 
     if (callback_recv)

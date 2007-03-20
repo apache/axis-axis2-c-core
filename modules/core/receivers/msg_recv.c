@@ -71,17 +71,16 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
     void *callback_recv_param);
 
 AXIS2_EXPORT axis2_msg_recv_t *AXIS2_CALL
-axis2_msg_recv_create(
-    const axis2_env_t *env)
+axis2_msg_recv_create(const axis2_env_t *env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     msg_recv = (axis2_msg_recv_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_msg_recv_t));
+        sizeof(axis2_msg_recv_t));
 
-    if (! msg_recv)
+    if (!msg_recv)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -94,8 +93,7 @@ axis2_msg_recv_create(
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_free(
-    axis2_msg_recv_t *msg_recv,
+axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -114,8 +112,7 @@ axis2_msg_recv_free(
 }
 
 AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
-axis2_msg_recv_make_new_svc_obj(
-    axis2_msg_recv_t *msg_recv,
+axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
@@ -128,10 +125,10 @@ axis2_msg_recv_make_new_svc_obj(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
-    svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
-    if (! svc)
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
+    svc = axis2_svc_ctx_get_svc(svc_ctx, env);
+    if (!svc)
     {
         return NULL;
     }
@@ -146,7 +143,7 @@ axis2_msg_recv_make_new_svc_obj(
     if (!impl_info_param)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
-                AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return NULL;
     }
 
@@ -164,8 +161,7 @@ axis2_msg_recv_make_new_svc_obj(
 
 
 AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
-axis2_msg_recv_get_impl_obj(
-    axis2_msg_recv_t *msg_recv,
+axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
@@ -173,13 +169,12 @@ axis2_msg_recv_get_impl_obj(
     struct axis2_op_ctx *op_ctx = NULL;
     struct axis2_svc_ctx *svc_ctx = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
-    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
-    svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
-    if (! svc)
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
+    svc = axis2_svc_ctx_get_svc(svc_ctx, env);
+    if (!svc)
     {
         return NULL;
     }
@@ -188,8 +183,7 @@ axis2_msg_recv_get_impl_obj(
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_set_scope(
-    axis2_msg_recv_t *msg_recv,
+axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env,
     const axis2_char_t *scope)
 {
@@ -199,7 +193,6 @@ axis2_msg_recv_set_scope(
     if (msg_recv->scope)
     {
         AXIS2_FREE(env->allocator, msg_recv->scope);
-        msg_recv->scope = NULL;
     }
     msg_recv->scope = axis2_strdup(scope, env);
     if (!msg_recv->scope)
@@ -211,16 +204,14 @@ axis2_msg_recv_set_scope(
 }
 
 AXIS2_EXPORT axis2_char_t *AXIS2_CALL
-axis2_msg_recv_get_scope(
-    axis2_msg_recv_t *msg_recv,
+axis2_msg_recv_get_scope(axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env)
 {
     return msg_recv->scope;
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
-axis2_msg_recv_delete_svc_obj(
-    axis2_msg_recv_t *msg_recv,
+axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
@@ -235,10 +226,10 @@ axis2_msg_recv_delete_svc_obj(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
-    svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
-    svc =  axis2_svc_ctx_get_svc(svc_ctx, env);
-    if (! svc)
+    op_ctx = axis2_msg_ctx_get_op_ctx(msg_ctx, env);
+    svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
+    svc = axis2_svc_ctx_get_svc(svc_ctx, env);
+    if (!svc)
     {
         return AXIS2_FAILURE;
     }
@@ -249,7 +240,7 @@ axis2_msg_recv_delete_svc_obj(
         param_value = axis2_param_get_value(scope_param, env);
     }
     if (param_value && (0 == axis2_strcmp(AXIS2_APPLICATION_SCOPE,
-            param_value)))
+        param_value)))
     {
         return AXIS2_SUCCESS;
     }
@@ -258,7 +249,7 @@ axis2_msg_recv_delete_svc_obj(
     if (!impl_info_param)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
-                AXIS2_FAILURE);
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     dll_desc = axis2_param_get_value(impl_info_param, env);
@@ -286,11 +277,11 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
     {
         return AXIS2_FAILURE;
     }
-    op_ctx =  axis2_msg_ctx_get_op_ctx(out_msg_ctx, env);
+    op_ctx = axis2_msg_ctx_get_op_ctx(out_msg_ctx, env);
     if (!op_ctx)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-         axis2_msg_ctx_free(out_msg_ctx, env);
+        axis2_msg_ctx_free(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }
     
@@ -298,37 +289,40 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
     if (!status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-         axis2_msg_ctx_free(out_msg_ctx, env);
+        axis2_msg_ctx_free(out_msg_ctx, env);
         return status;
     }
     status =  axis2_op_ctx_add_msg_ctx(op_ctx, env, msg_ctx);
-    if(!status)
-        return status;
 
-    status = AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_SYNC(msg_recv, env,
-            msg_ctx, out_msg_ctx);
+    if(!status)
+    {
+        return status;
+    }
+
+    status = axis2_msg_recv_invoke_business_logic(msg_recv, env,
+        msg_ctx, out_msg_ctx);
     if (AXIS2_SUCCESS != status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-         axis2_msg_ctx_free(out_msg_ctx, env);
+        axis2_msg_ctx_free(out_msg_ctx, env);
         return status;
     }
-    svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
-    conf_ctx =  axis2_svc_ctx_get_conf_ctx(svc_ctx, env);
+    svc_ctx = axis2_op_ctx_get_parent(op_ctx, env);
+    conf_ctx = axis2_svc_ctx_get_conf_ctx(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
     if (!engine)
     {
-         axis2_msg_ctx_free(out_msg_ctx, env);
+        axis2_msg_ctx_free(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }
     if ( axis2_msg_ctx_get_soap_envelope(out_msg_ctx, env))
     {
         axiom_soap_envelope_t *soap_envelope =  axis2_msg_ctx_get_soap_envelope(
-                    out_msg_ctx, env);
+            out_msg_ctx, env);
         if (soap_envelope)
         {
             axiom_soap_body_t *body = axiom_soap_envelope_get_body(soap_envelope,
-                    env);
+                env);
             if (body)
             {
                 /* in case of a SOAP fault, we got to return failure so that
@@ -336,9 +330,9 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
                 if (axiom_soap_body_has_fault(body, env))
                 {
                     status = AXIS2_FAILURE;
-                     axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env,
-                            soap_envelope);
-                     axis2_msg_ctx_set_soap_envelope(out_msg_ctx, env, NULL);
+                    axis2_msg_ctx_set_fault_soap_envelope(msg_ctx, env,
+                        soap_envelope);
+                    axis2_msg_ctx_set_soap_envelope(out_msg_ctx, env, NULL);
                 }
                 else
                 {
@@ -350,8 +344,8 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
         }
     }
      axis2_engine_free(engine, env);
-    if (! axis2_msg_ctx_is_paused(out_msg_ctx, env) && 
-            ! axis2_msg_ctx_is_keep_alive(out_msg_ctx, env))
+    if (!axis2_msg_ctx_is_paused(out_msg_ctx, env) && 
+        !axis2_msg_ctx_is_keep_alive(out_msg_ctx, env))
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
     }
@@ -385,7 +379,6 @@ axis2_msg_recv_set_derived(axis2_msg_recv_t *msg_recv,
     msg_recv->derived = derived;
     return AXIS2_SUCCESS;
 }
-
 
 AXIS2_EXPORT void *AXIS2_CALL
 axis2_msg_recv_get_derived(const axis2_msg_recv_t *msg_recv,

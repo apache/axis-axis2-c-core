@@ -189,38 +189,6 @@ extern "C"
     AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
     axis2_msg_recv_create (const axis2_env_t *env);
 
-/** Frees the message receiver. */
-#define AXIS2_MSG_RECV_FREE(msg_recv, env) axis2_msg_recv_free (msg_recv, env)
-
-/** Receive. */
-#define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, callback_recv_param) \
-      axis2_msg_recv_receive (msg_recv, env, msg_ctx, callback_recv_param)
-
-/** Invoke in out business logic sync. */
-#define AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_SYNC(msg_recv, env, \
-            in_msg_ctx, out_msg_ctx) \
-        axis2_msg_recv_invoke_business_logic (msg_recv, env, \
-            in_msg_ctx, out_msg_ctx)
-
-/** Make new svc obj. */
-#define AXIS2_MSG_RECV_MAKE_NEW_SVC_OBJ(msg_recv, env, msg_ctx) \
-        axis2_msg_recv_make_new_svc_obj(msg_recv, env, msg_ctx)
-
-/** Get impl obj. */
-#define AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx) \
-      axis2_msg_recv_get_impl_obj(msg_recv, env, msg_ctx)
-
-/** Set scope. */
-#define AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, scope) \
-      axis2_msg_recv_set_scope(msg_recv, env, scope)
-
-/** Get scope. */
-#define AXIS2_MSG_RECV_GET_SCOPE(msg_recv, env) \
-        axis2_msg_recv_get_scope(msg_recv, env)
-
-/** Delete svc obj. */
-#define AXIS2_MSG_RECV_DELETE_SVC_OBJ(msg_recv, env, msg_ctx) \
-        axis2_msg_recv_delete_svc_obj(msg_recv, env, msg_ctx)
 
 /** @} */
 #ifdef __cplusplus

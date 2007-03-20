@@ -285,7 +285,7 @@ axis2_engine_receive(
                 "Message receiver not set in operation description");
             return AXIS2_FAILURE;
         }
-        status = AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx, 
+        status = axis2_msg_recv_receive(receiver, env, msg_ctx, 
             axis2_msg_recv_get_derived(receiver, env));
     }
     else
@@ -793,7 +793,7 @@ axis2_engine_resume_receive(
                         "Message receiver not set in operation description");
                     return AXIS2_FAILURE;
                 }
-                status = AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx, 
+                status = axis2_msg_recv_receive(receiver, env, msg_ctx, 
                     axis2_msg_recv_get_derived(receiver, env));
             }
         }

@@ -82,17 +82,6 @@ extern "C"
     AXIS2_EXTERN axis2_svr_callback_t *AXIS2_CALL
     axis2_svr_callback_create(const axis2_env_t *env);
 
-/** Frees server callback. */
-#define AXIS2_SVR_CALLBACK_FREE(svr_callback, env) \
-        axis2_svr_callback_free (svr_callback, env)
-
-/** Handler result. */
-#define AXIS2_SVR_CALLBACK_HANDLER_RESULT(svr_callback, env, msg_ctx) \
-      axis2_svr_callback_handle_result (svr_callback, env, msg_ctx)
-
-/** Handler fault. */
-#define AXIS2_SVR_CALLBACK_HANDLER_FAULT(svr_callback, env, msg_ctx) \
-      axis2_svr_callback_handle_fault (svr_callback, env, msg_ctx)
 
 /** @} */
 #ifdef __cplusplus

@@ -90,12 +90,12 @@ savan_msg_recv_create(
         return NULL;
     }
     
-    status = AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, AXIS2_APPLICATION_SCOPE);
+    status = axis2_msg_recv_set_scope(msg_recv, env, AXIS2_APPLICATION_SCOPE);
     if (status != AXIS2_TRUE)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to set "
             "message receiver scope"); 
-        AXIS2_MSG_RECV_FREE(msg_recv, env);
+        axis2_msg_recv_free(msg_recv, env);
         return NULL;
     }
     
@@ -119,7 +119,7 @@ savan_msg_recv_invoke_business_logic_sync(
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[savan][msg recv] invoke called");
 
     /* this call will load and create the service object. */
-    /*axis2_svc_skeleton_t* svc_obj = AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env,
+    /*axis2_svc_skeleton_t* svc_obj = axis2_msg_recv_get_impl_obj(msg_recv, env,
         msg_ctx);
     if (!svc_obj)
     {
@@ -508,7 +508,7 @@ AXIS2_EXPORT int axis2_remove_instance(
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)
     {
-        status = AXIS2_MSG_RECV_FREE(inst, env);
+        status = axis2_msg_recv_free(inst, env);
     }
     
     return status;

@@ -203,7 +203,7 @@ axis2_op_free(
 
     if (op->msg_recv)
     {
-        AXIS2_MSG_RECV_FREE(op->msg_recv, env);
+        axis2_msg_recv_free(op->msg_recv, env);
     }
     if (op->module_qnames)
     {
@@ -374,7 +374,7 @@ axis2_op_set_msg_recv(axis2_op_t *op,
 
     if (op->msg_recv)
     {
-        AXIS2_MSG_RECV_FREE(op->msg_recv, env);
+        axis2_msg_recv_free(op->msg_recv, env);
         op->msg_recv = NULL;
     }
 

@@ -423,7 +423,7 @@ axis2_conf_free(
             msg_recv = (axis2_msg_recv_t *) val;
             if (msg_recv)
             {
-                AXIS2_MSG_RECV_FREE(msg_recv, env);
+                axis2_msg_recv_free(msg_recv, env);
                 msg_recv = NULL;
             }
         }
@@ -925,7 +925,8 @@ axis2_conf_get_all_svcs(
         {
             axis2_hash_this(index_j, NULL, NULL, &value2);
             svc = (axis2_svc_t *) value2;
-            svc_name = axis2_qname_get_localpart(AXIS2_SVC_GET_QNAME(svc, env), env);
+            svc_name = 
+                axis2_qname_get_localpart(AXIS2_SVC_GET_QNAME(svc, env), env);
             axis2_hash_set(conf->all_svcs, svc_name,
                     AXIS2_HASH_KEY_STRING, svc);
 
@@ -1011,7 +1012,6 @@ axis2_conf_add_msg_recv(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
-
     if (!conf->msg_recvs)
     {
         conf->msg_recvs = axis2_hash_make(env);
@@ -1127,7 +1127,6 @@ axis2_conf_add_module(
     if (module_qname)
     {
         axis2_char_t *module_name = NULL;
-
         module_name = axis2_qname_to_string((axis2_qname_t *)module_qname, env);
         axis2_hash_set(conf->all_modules, module_name,
                 AXIS2_HASH_KEY_STRING, module);
@@ -1168,7 +1167,6 @@ axis2_conf_set_default_dispatchers(
     axis2_disp_free(soap_msg_body_based_dispatch, env);
      axis2_phase_add_handler_at(dispatch, env, 0, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
-    handler = NULL;
 
     add_dispatch = axis2_addr_disp_create(env);
     if (!add_dispatch)
@@ -1181,7 +1179,6 @@ axis2_conf_set_default_dispatchers(
     axis2_disp_free(add_dispatch, env);
      axis2_phase_add_handler_at(dispatch, env, 1, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
-    handler = NULL;
 
     soap_action_based_dispatch = axiom_soap_action_disp_create(env);
     if (!soap_action_based_dispatch)
@@ -1193,7 +1190,6 @@ axis2_conf_set_default_dispatchers(
     axis2_disp_free(soap_action_based_dispatch, env);
      axis2_phase_add_handler_at(dispatch, env, 2, handler);
     axis2_array_list_add(conf->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
-    handler = NULL;
 
     status = axis2_array_list_add(conf->
            in_phases_upto_and_including_post_dispatch, env, dispatch);
@@ -1439,7 +1435,7 @@ axis2_conf_get_default_module_version(
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     def_ver_map = conf->name_to_version_map;
-    if (! def_ver_map)
+    if (!def_ver_map)
     {
         return NULL;
     }
