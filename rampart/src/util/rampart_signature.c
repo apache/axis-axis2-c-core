@@ -103,7 +103,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
     axis2_char_t *digest_method = NULL;
     oxs_sign_ctx_t *sign_ctx = NULL;
     axis2_array_list_t *sign_parts = NULL;
-    axis2_array_list_t *tr_list = NULL;
+    /*axis2_array_list_t *tr_list = NULL;*/
     axis2_char_t *prv_key_file = NULL;
     axis2_char_t *password = NULL;
     axis2_bool_t server_side = AXIS2_FALSE;
@@ -137,7 +137,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
     }
     /*If Timestamp and usernametoken are in the message we should sign them.*/
 
-/*  if(rampart_context_get_require_timestamp(rampart_context,env))
+    if(rampart_context_get_require_timestamp(rampart_context,env))
     {
         axiom_node_t *ts_node = NULL;
         ts_node = oxs_axiom_get_node_by_local_name(env,sec_node,RAMPART_SECURITY_TIMESTAMP);
@@ -159,7 +159,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
         }            
         axis2_array_list_add(nodes_to_sign,env,ut_node);    
     }        
-*/    /*Now we have to check whether a token is specified.*/
+    /*Now we have to check whether a token is specified.*/
     token = rampart_context_get_token(rampart_context,env,AXIS2_FALSE,server_side);
     if(!token)
     {
@@ -222,7 +222,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
     digest_method = rampart_context_get_digest_mtd(rampart_context,env);
     
     sign_parts = axis2_array_list_create(env,0);   
-    tr_list = axis2_array_list_create(env,0);
+    /*tr_list = axis2_array_list_create(env,0);*/
 
     /*Now we should create sign part for each node in the arraylist.*/
     
@@ -232,11 +232,13 @@ rampart_sig_sign_message(const axis2_env_t *env,
         axis2_char_t *id = NULL;
         oxs_sign_part_t *sign_part = NULL;                
         oxs_transform_t *tr = NULL;
+        axis2_array_list_t *tr_list = NULL;
 
         node_to_sign = (axiom_node_t *)axis2_array_list_get(nodes_to_sign,env,i);
         if(node_to_sign)
         {
             sign_part = oxs_sign_part_create(env);
+            tr_list = axis2_array_list_create(env,0);
             id = oxs_util_generate_id(env,(axis2_char_t*)OXS_SIG_ID);
             tr = oxs_transforms_factory_produce_transform(env, OXS_HREF_TRANSFORM_XML_EXC_C14N);
             axis2_array_list_add(tr_list, env, tr);

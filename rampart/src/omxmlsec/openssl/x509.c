@@ -38,20 +38,36 @@ openssl_x509_load_from_buffer(const axis2_env_t *env,
     unsigned char *buff = NULL;
     BIO *mem = NULL;
     int ilen = 0;
+    axis2_char_t *formatted_buf = NULL;
+    axis2_char_t *buf_to_format = NULL;
+    int decode_len = 0;
+    int decoded_len = -1;
 
+    /*We should remove new lines here.*/
+    buf_to_format = (axis2_char_t*)axis2_strdup(b64_encoded_buf,env);
+    if(buf_to_format)
+    {
+        formatted_buf = oxs_util_get_newline_removed_string(env,buf_to_format);
+        AXIS2_FREE(env->allocator,buf_to_format);
+        buf_to_format = NULL;
+    }
+    else
+    {
+        oxs_error(env, ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+                    "New line removed buffer creation failed.");
+            return AXIS2_FAILURE;
+    }
     /*First we need to base64 decode*/
 /*  EVP_ENCODE_CTX ctx;*/
 /*  int len = 0;*/
 /*  int ret = 0;*/
-    int decode_len = 0;
-    int decoded_len = -1;
 
-    decode_len = axis2_base64_decode_len(b64_encoded_buf);
+    decode_len = axis2_base64_decode_len(formatted_buf );
     buff = AXIS2_MALLOC(env->allocator, decode_len);
 
-    ilen = axis2_strlen(b64_encoded_buf);
+    ilen = axis2_strlen(formatted_buf);
 
-    decoded_len = axis2_base64_decode_binary(buff,b64_encoded_buf);
+    decoded_len = axis2_base64_decode_binary(buff,formatted_buf);
     if (decoded_len < 0)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
