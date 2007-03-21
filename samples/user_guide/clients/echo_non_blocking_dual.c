@@ -203,6 +203,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
         }
     }
     isComplete = 1;
+	exit(0);
     return status;
 }
 
