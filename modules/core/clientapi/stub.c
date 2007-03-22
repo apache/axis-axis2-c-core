@@ -25,15 +25,13 @@ struct axis2_stub
 
 
 AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
-axis2_stub_create(
-    const axis2_env_t *env)
+axis2_stub_create(const axis2_env_t *env)
 {
     axis2_stub_t *stub = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    stub = (axis2_stub_t *) AXIS2_MALLOC(env->
-            allocator, sizeof(axis2_stub_t));
+    stub = (axis2_stub_t *) AXIS2_MALLOC(env->allocator, sizeof(axis2_stub_t));
 
     if (! stub)
     {
@@ -47,8 +45,7 @@ axis2_stub_create(
 }
 
 AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
-axis2_stub_create_with_endpoint_ref_and_client_home(
-    const axis2_env_t *env,
+axis2_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
     axis2_endpoint_ref_t *endpoint_ref,
     const axis2_char_t *client_home)
 {
@@ -79,12 +76,9 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
         axis2_stub_free(stub, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-
     }
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(stub->svc_client,
-            env,
-            stub-> options);
+    AXIS2_SVC_CLIENT_SET_OPTIONS(stub->svc_client, env, stub-> options);
 
     axis2_options_set_to(stub->options, env, endpoint_ref);
 
@@ -92,8 +86,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
 }
 
 AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
-axis2_stub_create_with_endpoint_uri_and_client_home(
-    const axis2_env_t *env,
+axis2_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
     const axis2_char_t *endpoint_uri,
     const axis2_char_t *client_home)
 {
@@ -109,8 +102,8 @@ axis2_stub_create_with_endpoint_uri_and_client_home(
         return NULL;
     }
     stub = (axis2_stub_t *)
-            axis2_stub_create_with_endpoint_ref_and_client_home(env, endpoint_ref,
-                    client_home);
+        axis2_stub_create_with_endpoint_ref_and_client_home(env, endpoint_ref,
+            client_home);
 
     if (!stub)
     {
@@ -123,8 +116,7 @@ axis2_stub_create_with_endpoint_uri_and_client_home(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_free(
-    axis2_stub_t *stub,
+axis2_stub_free(axis2_stub_t *stub,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -143,8 +135,7 @@ axis2_stub_free(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_set_endpoint_ref(
-    axis2_stub_t *stub,
+axis2_stub_set_endpoint_ref(axis2_stub_t *stub,
     const axis2_env_t *env,
     axis2_endpoint_ref_t *endpoint_ref)
 {
@@ -154,8 +145,7 @@ axis2_stub_set_endpoint_ref(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_set_endpoint_uri(
-    axis2_stub_t *stub,
+axis2_stub_set_endpoint_uri(axis2_stub_t *stub,
     const axis2_env_t *env,
     const axis2_char_t *endpoint_uri)
 {
@@ -175,8 +165,7 @@ axis2_stub_set_endpoint_uri(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_set_use_separate_listener(
-    axis2_stub_t *stub,
+axis2_stub_set_use_separate_listener(axis2_stub_t *stub,
     const axis2_env_t *env,
     const axis2_bool_t use_separate_listener)
 {
@@ -185,8 +174,7 @@ axis2_stub_set_use_separate_listener(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_engage_module(
-    axis2_stub_t *stub,
+axis2_stub_engage_module(axis2_stub_t *stub,
     const axis2_env_t *env,
     const axis2_char_t *module_name)
 {
@@ -196,8 +184,7 @@ axis2_stub_engage_module(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_set_soap_version(
-    axis2_stub_t *stub,
+axis2_stub_set_soap_version(axis2_stub_t *stub,
     const axis2_env_t *env,
     int soap_version)
 {
@@ -205,38 +192,34 @@ axis2_stub_set_soap_version(
     {
         return AXIS2_FAILURE;
     }
-    return axis2_options_set_soap_version(stub-> options,
-            env, soap_version);
+    return axis2_options_set_soap_version(stub-> options, env, soap_version);
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_stub_get_svc_ctx_id(
-    const axis2_stub_t *stub,
+axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
     const axis2_env_t *env)
 {
     const axis2_svc_ctx_t *svc_ctx = NULL;
     const axis2_char_t *svc_ctx_id = NULL;
 
-    svc_ctx = AXIS2_SVC_CLIENT_GET_SVC_CTX(stub->svc_client,
-            env);
+    svc_ctx = AXIS2_SVC_CLIENT_GET_SVC_CTX(stub->svc_client, env);
     svc_ctx_id =  axis2_svc_ctx_get_svc_id(svc_ctx, env);
     return svc_ctx_id;
 }
 
 axis2_svc_client_t *AXIS2_CALL
-axis2_stub_get_svc_client(
-    const axis2_stub_t *stub,
+axis2_stub_get_svc_client(const axis2_stub_t *stub,
     const axis2_env_t *env)
 {
     return stub->svc_client;
 }
 
 axis2_options_t *AXIS2_CALL
-axis2_stub_get_options(
-    const axis2_stub_t *stub,
+axis2_stub_get_options(const axis2_stub_t *stub,
     const axis2_env_t *env)
 {
     return stub->options;
 }
+
 
 
