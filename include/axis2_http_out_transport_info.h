@@ -52,12 +52,12 @@ extern "C"
 		axis2_status_t (AXIS2_CALL *set_content_type)(
 			axis2_http_out_transport_info_t *info,
 			const axis2_env_t *env,
-			axis2_char_t *content_type);
+			const axis2_char_t *content_type);
 
 		axis2_status_t (AXIS2_CALL *set_char_encoding)
 			(axis2_http_out_transport_info_t *info,
 			const axis2_env_t *env,
-			axis2_char_t *encoding);
+			const axis2_char_t *encoding);
 
 		axis2_status_t (AXIS2_CALL *free_function)
 			(axis2_http_out_transport_info_t *info,
@@ -117,15 +117,15 @@ extern "C"
 			axis2_http_out_transport_info_t *out_transport_info,
 			const axis2_env_t *env,
 			axis2_status_t (AXIS2_CALL *set_encoding)
-			(axis2_http_out_transport_info_t *,	const axis2_env_t *,axis2_char_t *));
+			(axis2_http_out_transport_info_t *,	const axis2_env_t *,const axis2_char_t *));
 
 	AXIS2_EXTERN void AXIS2_CALL
 		axis2_http_out_transport_info_set_content_type_func(
 		axis2_http_out_transport_info_t *out_transport_info,
 		const axis2_env_t *env,
-		axis2_status_t (AXIS2_CALL *set_content_type)(
+		    axis2_status_t (AXIS2_CALL *set_content_type)(
 			axis2_http_out_transport_info_t *,
-			const axis2_env_t*,axis2_char_t *));
+			const axis2_env_t*,const axis2_char_t *));
 
 	AXIS2_EXTERN void AXIS2_CALL
 		axis2_http_out_transport_info_set_free_func(
@@ -133,7 +133,7 @@ extern "C"
 		const axis2_env_t *env,
 		axis2_status_t (AXIS2_CALL *free_function)(
 		axis2_http_out_transport_info_t *,
-		const axis2_env_t*, axis2_char_t *));
+		const axis2_env_t*));
 
 
 /** Set content type. */
