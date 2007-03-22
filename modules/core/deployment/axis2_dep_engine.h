@@ -56,7 +56,7 @@ extern "C"
     struct axis2_module_builder;
     struct axis2_svc_builder;
     struct axis2_grp_builder;
-
+    struct axis2_svc_grp_builder;
     /** 
      * De-allocate memory
      * @param dep_engine pointer to deployment engine
@@ -314,85 +314,6 @@ extern "C"
         const axis2_env_t *env,
         struct axis2_svc_grp_builder *svc_grp_builder);
 
-/** Frees the deployment engine. */
-#define AXIS2_DEP_ENGINE_FREE(dep_engine, env) \
-      axis2_dep_engine_free (dep_engine, env)
-
-/** Adds the module. */
-#define AXIS2_DEP_ENGINE_ADD_MODULE(dep_engine, env, module_qname) \
-      axis2_dep_engine_add_module (dep_engine, env, module_qname)
-
-/** Get module. */
-#define AXIS2_DEP_ENGINE_GET_MODULE(dep_engine, env, module_qname) \
-      axis2_dep_engine_get_module (dep_engine, env, module_qname)
-
-/** Gets the current file item. */
-#define AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env) \
-      axis2_dep_engine_get_current_file_item (dep_engine, env)
-
-/** Adds web service to deploy. */
-#define AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(dep_engine, env, file) \
-      axis2_dep_engine_add_ws_to_deploy (dep_engine, env, file)
-
-/** Adds web service to undelploy */
-#define AXIS2_DEP_ENGINE_ADD_WS_TO_UNDEPLOY(dep_engine, env, file) \
-      axis2_dep_engine_add_ws_to_undeploy (dep_engine, env, file)
-
-/** Do deploy. */
-#define AXIS2_DEP_ENGINE_DO_DEPLOY(dep_engine, env) \
-      axis2_dep_engine_do_deploy (dep_engine, env)
-
-/** Undeploy. */
-#define AXIS2_DEP_ENGINE_UNDEPLOY(dep_engine, env) \
-      axis2_dep_engine_undeploy (dep_engine, env)
-
-/** Gets the phases infomation. */
-#define AXIS2_DEP_ENGINE_GET_PHASES_INFO(dep_engine, env) \
-      axis2_dep_engine_get_phases_info (dep_engine, env)
-
-/** Gets the axis2 configuration. */
-#define AXIS2_DEP_ENGINE_GET_AXIS2_CONF(dep_engine, env) \
-      axis2_dep_engine_get_axis_conf (dep_engine, env)
-
-/** Load.*/
-#define AXIS2_DEP_ENGINE_LOAD(dep_engine, env) \
-      axis2_dep_engine_load (dep_engine, env)
-
-/** Loads the client. */
-#define AXIS2_DEP_ENGINE_LOAD_CLIENT(dep_engine, env, client_home) \
-      axis2_dep_engine_load_client (dep_engine, env, client_home)
-
-/** Gets the handler dll. */
-#define AXIS2_DEP_ENGINE_GET_HANDLER_DLL(dep_engine, env, dll_name) \
-      axis2_dep_engine_get_handler_dll (dep_engine, env, dll_name)
-
-/** Is hot update. */
-#define AXIS2_DEP_ENGINE_IS_HOT_UPDATE(dep_engine, env) \
-      axis2_dep_engine_is_hot_update (dep_engine, env)
-
-/** Sets phases info. */
-#define AXIS2_DEP_ENGINE_SET_PHASES_INFO(dep_engine, env, phases_info) \
-      axis2_dep_engine_set_phases_info (dep_engine, env, phases_info)
-
-/** Build the service. */
-#define AXIS2_DEP_ENGINE_BUILD_SVC(dep_engine, env, svc, file_name) \
-      axis2_dep_engine_build_svc (dep_engine, env, svc, file_name)
-
-/** Builds the module. */
-#define AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, module_archive, conf) \
-      axis2_dep_engine_build_module (dep_engine, env, module_archive, conf)
-
-/** Gets the repos path. */
-#define AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env) \
-      axis2_dep_engine_get_repos_path (dep_engine, env)
-
-/** Sets the current file item. */
-#define AXIS2_DEP_ENGINE_SET_CURRENT_FILE_ITEM(dep_engine, env, file_data) \
-      axis2_dep_engine_set_current_file_item (dep_engine, env, file_data)
-
-/** Sets the arch reader. */
-#define AXIS2_DEP_ENGINE_SET_ARCH_READER(dep_engine, env, arch_reader) \
-      axis2_dep_engine_set_arch_reader (dep_engine, env, arch_reader)
 
 /** @} */
 

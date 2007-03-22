@@ -23,11 +23,6 @@
  * @{
  */
 
-/**
- * @file axis2_desc_builder.h
- * @brief Axis2 Description Builder interface
- */
-
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -128,7 +123,6 @@ extern "C"
         axis2_param_container_t *param_container,
         axis2_param_container_t *parent );
 
-
     /**
      * @param desc_builder pointer to desc builder
      * @param env pointer to environment struct
@@ -189,7 +183,6 @@ extern "C"
      * Populate the Axis2 Operation with details from the actionMapping,
      * outputActionMapping and faultActionMapping elements from the operation
      * element.
-     *
      * @param operation
      * @param op_desc
      */
@@ -237,56 +230,6 @@ extern "C"
     axis2_desc_builder_create_with_file_and_dep_engine(const axis2_env_t *env,
         axis2_char_t *file_name,
         struct axis2_dep_engine *engine);
-
-/** Frees the description builder. */
-#define AXIS2_DESC_BUILDER_FREE(desc_builder, env) \
-      axis2_desc_builder_free (desc_builder, env)
-
-/** Build om. */
-#define AXIS2_DESC_BUILDER_BUILD_OM(desc_builder, env) \
-      axis2_desc_builder_build_om (desc_builder, env)
-
-/** Process flow. */
-#define AXIS2_DESC_BUILDER_PROCESS_FLOW(desc_builder, env, flow_element, \
-        parent, node) axis2_desc_builder_process_flow (desc_builder, env, \
-            flow_element, parent, node)
-
-/** Process handler. */
-#define AXIS2_DESC_BUILDER_PROCESS_HANDLER(desc_builder, env, handler_element, \
-        parent) axis2_desc_builder_process_handler (desc_builder, \
-            env, handler_element, parent)
-
-/** Process params. */
-#define AXIS2_DESC_BUILDER_PROCESS_PARAMS(desc_builder, env, params, \
-        param_container, parent) axis2_desc_builder_process_params \
-            (desc_builder, env, params, param_container, parent)
-
-/** Process op module refs. */
-#define AXIS2_DESC_BUILDER_PROCESS_OP_MODULE_REFS(desc_builder, env, \
-        module_refs, op) axis2_desc_builder_process_op_module_refs \
-            (desc_builder, env, module_refs, op)
-
-/** Loads the message receiver. */
-#define AXIS2_DESC_BUILDER_LOAD_MSG_RECV(desc_builder, env, recv_element) \
-      axis2_desc_builder_load_msg_recv (desc_builder, env, recv_element)
-
-/** Gets the short file name. */
-#define AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, env, file_name) \
-      axis2_desc_builder_get_short_file_name (desc_builder, env, file_name)
-
-/** Gets the file name without prefix. */
-#define AXIS2_DESC_BUILDER_GET_FILE_NAME_WITHOUT_PREFIX(desc_builder, env, file_name) \
-      axis2_desc_builder_get_file_name_without_prefix (desc_builder, env, file_name)
-
-/** Gets the value. */
-#define AXIS2_DESC_BUILDER_GET_VALUE(desc_builder, env, in) \
-      axis2_desc_builder_get_value (desc_builder, env, in)
-
-/** Process Action Mappings. */
-#define AXIS2_DESC_BUILDER_PROCESS_ACTION_MAPPINGS(desc_builder, env, op_node, op_desc) \
-      axis2_desc_builder_process_action_mappings (desc_builder, env, op_node, op_desc)
-
-/*************************** End of function macros ***************************/
 
 /** @} */
 

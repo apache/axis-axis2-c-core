@@ -49,7 +49,7 @@ axis2_build_conf_ctx(const axis2_env_t *env,
         return NULL;
     }
 
-    conf = AXIS2_DEP_ENGINE_LOAD(dep_engine, env);
+    conf = axis2_dep_engine_load(dep_engine, env);
     if (!conf)
     {
         return NULL;
@@ -91,7 +91,7 @@ axis2_build_client_conf_ctx(const axis2_env_t *env,
         return NULL;
     }
 
-    conf = AXIS2_DEP_ENGINE_LOAD_CLIENT(dep_engine, env, axis2_home);
+    conf = axis2_dep_engine_load_client(dep_engine, env, axis2_home);
     if (!conf)
     {
         return NULL;

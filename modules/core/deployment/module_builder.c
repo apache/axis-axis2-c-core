@@ -89,7 +89,7 @@ axis2_module_builder_free(
 
     if (module_builder->desc_builder)
     {
-        AXIS2_DESC_BUILDER_FREE(module_builder->desc_builder, env);
+        axis2_desc_builder_free(module_builder->desc_builder, env);
     }
 
     if (module_builder)
@@ -136,7 +136,7 @@ axis2_module_builder_populate_module(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    module_node = AXIS2_DESC_BUILDER_BUILD_OM(module_builder->desc_builder, env);
+    module_node = axis2_desc_builder_build_om(module_builder->desc_builder, env);
     module_element = AXIOM_NODE_GET_DATA_ELEMENT(module_node, env);
     if (!module_element)
     {
@@ -169,7 +169,7 @@ axis2_module_builder_populate_module(
             axis2_char_t *module_name = NULL;
             axis2_qname_t *module_qname = NULL;
         
-            file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(module_builder->
+            file_data = axis2_dep_engine_get_current_file_item(module_builder->
                 desc_builder->engine, env);
             module_name = axis2_arch_file_data_get_module_name(file_data, env);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Populate module %s", module_name);
@@ -187,7 +187,7 @@ axis2_module_builder_populate_module(
         axis2_char_t *module_name = NULL;
         axis2_qname_t *module_qname = NULL;
 
-        file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
+        file_data = axis2_dep_engine_get_current_file_item(
                 axis2_desc_builder_get_dep_engine(module_builder->desc_builder, env), 
                 env);
         module_name = axis2_arch_file_data_get_module_name(file_data, env);
@@ -220,7 +220,7 @@ axis2_module_builder_populate_module(
             {
                 axis2_arch_file_data_t *file_data = NULL;
 
-                file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
+                file_data = axis2_dep_engine_get_current_file_item(
                             dep_engine, env);
                 axis2_arch_file_data_set_module_dll_name(file_data, env,
                         class_name);
@@ -242,7 +242,7 @@ axis2_module_builder_populate_module(
 
     if (parent)
         parent_container = axis2_conf_get_param_container(parent, env);
-    AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
+    axis2_desc_builder_process_params(module_builder->desc_builder, env,
             itr, axis2_module_desc_get_param_container(module_builder->module_desc, env), 
             parent_container);
 
@@ -257,7 +257,7 @@ axis2_module_builder_populate_module(
     {
         axis2_flow_t *flow = NULL;
 
-        flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
+        flow = axis2_desc_builder_process_flow(module_builder->
                 desc_builder, env, in_flow_element, 
                 axis2_module_desc_get_param_container(module_builder->module_desc, env),
                 in_flow_node);
@@ -281,7 +281,7 @@ axis2_module_builder_populate_module(
     {
         axis2_flow_t *flow = NULL;
 
-        flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
+        flow = axis2_desc_builder_process_flow(module_builder->
                 desc_builder, env, out_flow_element, 
                 axis2_module_desc_get_param_container(module_builder->module_desc, env),
                 out_flow_node);
@@ -304,7 +304,7 @@ axis2_module_builder_populate_module(
     {
         axis2_flow_t *flow = NULL;
 
-        flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
+        flow = axis2_desc_builder_process_flow(module_builder->
                 desc_builder, env, in_fault_flow_element, 
                 axis2_module_desc_get_param_container(module_builder->module_desc, env),
                 in_fault_flow_node);
@@ -327,7 +327,7 @@ axis2_module_builder_populate_module(
     {
         axis2_flow_t *flow = NULL;
 
-        flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(module_builder->
+        flow = axis2_desc_builder_process_flow(module_builder->
                 desc_builder, env, out_fault_flow_element, 
                 axis2_module_desc_get_param_container(module_builder->module_desc, env),
                 out_fault_flow_node);
@@ -445,12 +445,12 @@ axis2_module_builder_process_ops(
         if (qparamst)
             axis2_qname_free(qparamst, env);
 
-        AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
+        axis2_desc_builder_process_params(module_builder->desc_builder, env,
                 params, 
                 axis2_op_get_param_container(op_desc, env), 
                 axis2_module_desc_get_param_container(module_builder->module_desc, env));
         /* To process wsamapping */
-        AXIS2_DESC_BUILDER_PROCESS_ACTION_MAPPINGS(module_builder->desc_builder, 
+        axis2_desc_builder_process_action_mappings(module_builder->desc_builder, 
             env, op_node, op_desc);
 
         /* setting the mep of the operation */
@@ -465,7 +465,7 @@ axis2_module_builder_process_ops(
         {
             axis2_msg_recv_t *msg_recv = NULL;
 
-            msg_recv = AXIS2_DESC_BUILDER_LOAD_MSG_RECV(module_builder->
+            msg_recv = axis2_desc_builder_load_msg_recv(module_builder->
                     desc_builder, env, recv_element);
             axis2_op_set_msg_recv(op_desc, env, msg_recv);
         }
@@ -483,10 +483,10 @@ axis2_module_builder_process_ops(
                 qmodulest, op_node);
         if (qmodulest)
             axis2_qname_free(qmodulest, env);
-        AXIS2_DESC_BUILDER_PROCESS_OP_MODULE_REFS(module_builder->desc_builder,
+        axis2_desc_builder_process_op_module_refs(module_builder->desc_builder,
                 env, modules, op_desc);
         /* setting Operation phase */
-        info = AXIS2_DEP_ENGINE_GET_PHASES_INFO(
+        info = axis2_dep_engine_get_phases_info(
             axis2_desc_builder_get_dep_engine(module_builder->desc_builder, env),
             env);
         AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_desc);

@@ -83,7 +83,7 @@ axis2_svc_grp_builder_free(
 
     if (svc_grp_builder->desc_builder)
     {
-        AXIS2_DESC_BUILDER_FREE(svc_grp_builder->desc_builder,
+        axis2_desc_builder_free(svc_grp_builder->desc_builder,
                 env);
     }
     if (svc_grp_builder)
@@ -124,7 +124,7 @@ axis2_svc_grp_builder_populate_svc_grp(
     }
 
     parent =  axis2_svc_grp_get_parent(svc_grp, env);
-    status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_grp_builder->desc_builder, env, itr, 
+    status = axis2_desc_builder_process_params(svc_grp_builder->desc_builder, env, itr, 
             axis2_svc_grp_get_param_container(svc_grp, env), 
             axis2_conf_get_param_container(parent, env));
 
@@ -185,7 +185,7 @@ axis2_svc_grp_builder_populate_svc_grp(
             axis2_array_list_t *deployable_svcs = NULL;
             axis2_svc_builder_t *svc_builder = NULL;
 
-            file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(
+            file_data = axis2_dep_engine_get_current_file_item(
                 axis2_desc_builder_get_dep_engine(svc_grp_builder->desc_builder, env), 
                 env);
             axis_svc = axis2_arch_file_data_get_svc(file_data, env, svc_name);
@@ -249,7 +249,7 @@ axis2_svc_grp_builder_process_module_refs(
 
             ref_name = axiom_attribute_get_value(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
-            module = AXIS2_DEP_ENGINE_GET_MODULE(
+            module = axis2_dep_engine_get_module(
                 axis2_desc_builder_get_dep_engine(svc_grp_builder->desc_builder, env), 
                 env, qrefname);
             if (! module)

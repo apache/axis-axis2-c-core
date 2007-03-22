@@ -205,7 +205,7 @@ axis2_ws_info_list_add_ws_info_item(
             file_data = axis2_arch_file_data_create_with_type_and_file(env,
                     AXIS2_SVC, file);
             /* to inform that new web service is deployed */
-            status = AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(ws_info_list->deployer,
+            status = axis2_dep_engine_add_ws_to_deploy(ws_info_list->deployer,
                     env, file_data);
             if (AXIS2_SUCCESS != status)
             {
@@ -239,7 +239,7 @@ axis2_ws_info_list_add_ws_info_item(
             file_data = axis2_arch_file_data_create_with_type_and_file(env,
                     AXIS2_MODULE, file);
             /* to inform that new web service is deployed */
-            status = AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(ws_info_list->deployer,
+            status = axis2_dep_engine_add_ws_to_deploy(ws_info_list->deployer,
                     env, file_data);
             if (AXIS2_SUCCESS != status)
             {
@@ -371,7 +371,7 @@ axis2_ws_info_list_check_for_undeploy(
             ws_info = axis2_ws_info_create_with_file_name_and_last_modified_date(
                         env, file_item_name, last_modified_date);
             /* this is to be undeployed */
-            AXIS2_DEP_ENGINE_ADD_WS_TO_UNDEPLOY(ws_info_list->deployer, env,
+            axis2_dep_engine_add_ws_to_undeploy(ws_info_list->deployer, env,
                     ws_info);
         }
 
@@ -408,12 +408,12 @@ axis2_ws_info_list_update(
     }
     /* TODO uncomment when hot deployment supported */
     /*
-    if(AXIS2_TRUE == AXIS2_DEP_ENGINE_IS_HOT_UPDATE(ws_info_list->deployer, 
+    if(AXIS2_TRUE == axis2_dep_engine_is_hot_update(ws_info_list->deployer, 
         env))
     {
-        AXIS2_DEP_ENGINE_UNDEPLOY(ws_info_list->deployer, env);
+        axis2_dep_engine_undeploy(ws_info_list->deployer, env);
     }
     */
 
-    return AXIS2_DEP_ENGINE_DO_DEPLOY(ws_info_list->deployer, env);
+    return axis2_dep_engine_do_deploy(ws_info_list->deployer, env);
 }

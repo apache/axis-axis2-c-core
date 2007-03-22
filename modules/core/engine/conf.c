@@ -297,7 +297,7 @@ axis2_conf_free(
 
     if (conf->dep_engine)
     {
-        AXIS2_DEP_ENGINE_FREE(conf->dep_engine, env);
+        axis2_dep_engine_free(conf->dep_engine, env);
     }
 
     if (conf->all_modules)
@@ -1328,8 +1328,8 @@ axis2_conf_engage_module(
                 AXIS2_MODULE, file);
 
         dep_engine = axis2_dep_engine_create_with_repos_name(env, repos_path);
-        AXIS2_DEP_ENGINE_SET_CURRENT_FILE_ITEM(dep_engine, env, file_data);
-        module_desc = AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, file, conf);
+        axis2_dep_engine_set_current_file_item(dep_engine, env, file_data);
+        module_desc = axis2_dep_engine_build_module(dep_engine, env, file, conf);
         is_new_module = AXIS2_TRUE;
     }
     if (module_desc)

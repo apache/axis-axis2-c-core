@@ -7,13 +7,13 @@ export AXIS2C_HOME
 
 echo "AXIS2C_HOME = ${AXIS2C_HOME}"
 
-./configure --prefix=${AXIS2C_HOME}
+./configure --prefix=${AXIS2C_HOME} --with-apache2=/usr/local/apache2/include
 make 
 make install
 
 cd samples
 ./autogen.sh
-./configure --prefix=${AXIS2C_HOME} 
+./configure --prefix=${AXIS2C_HOME} --with-apache2=/usr/local/apache2/include 
 make 
 make install
 								

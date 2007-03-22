@@ -54,7 +54,7 @@ int axis2_test_dep_engine_load()
         printf("dep engine is not created \n");
         return -1;
     }
-    conf = AXIS2_DEP_ENGINE_LOAD(dep_engine, env);
+    conf = axis2_dep_engine_load(dep_engine, env);
      axis2_conf_set_dep_engine(conf, env, dep_engine);
     if (!conf)
     {
