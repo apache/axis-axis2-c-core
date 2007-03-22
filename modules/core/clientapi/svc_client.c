@@ -174,7 +174,7 @@ axis2_svc_client_create_for_dynamic_invocation(
 
             /* Setting operation phase */
             info =  axis2_conf_get_phases_info(svc_client->conf, env);
-            AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op);
+            axis2_phases_info_set_op_phases(info, env, op);
         }
     }
 	 else
@@ -1108,9 +1108,9 @@ axis2_svc_client_create_annonymous_svc(
 
     /* Setting operation phase */
     info =  axis2_conf_get_phases_info(svc_client->conf, env);
-    AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_out_in);
-    AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_out_only);
-    AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_robust_out_only);
+    axis2_phases_info_set_op_phases(info, env, op_out_in);
+    axis2_phases_info_set_op_phases(info, env, op_out_only);
+    axis2_phases_info_set_op_phases(info, env, op_robust_out_only);
     AXIS2_SVC_ADD_OP(svc, env, op_out_in);
     AXIS2_SVC_ADD_OP(svc, env, op_out_only);
     AXIS2_SVC_ADD_OP(svc, env, op_robust_out_only);

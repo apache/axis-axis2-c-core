@@ -995,7 +995,7 @@ axis2_conf_set_phases_info(
 
     if (conf->phases_info)
     {
-        AXIS2_PHASES_INFO_FREE(phases_info, env);
+        axis2_phases_info_free(phases_info, env);
         conf->phases_info = NULL;
     }
     conf->phases_info = phases_info;

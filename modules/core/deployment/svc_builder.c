@@ -585,7 +585,7 @@ axis2_svc_builder_process_ops(
         {
             axis2_phases_info_t *info = axis2_dep_engine_get_phases_info(
                         dep_engine, env);
-            AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_desc);
+            axis2_phases_info_set_op_phases(info, env, op_desc);
         }
 
         /* adding operation */

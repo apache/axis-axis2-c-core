@@ -473,7 +473,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         info = axis2_dep_engine_get_phases_info(
             axis2_desc_builder_get_dep_engine(module_builder->desc_builder, env),
             env);
-        AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_desc);
+        axis2_phases_info_set_op_phases(info, env, op_desc);
 
         /* adding operation */
         axis2_array_list_add(ops, env, op_desc);

@@ -288,7 +288,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
 
     if (dep_engine->phases_info)
     {
-        AXIS2_PHASES_INFO_FREE(dep_engine->phases_info, env);
+        axis2_phases_info_free(dep_engine->phases_info, env);
     }
 
     if (dep_engine->conf_builder)
@@ -652,7 +652,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     status =  axis2_conf_set_phases_info(dep_engine->conf, env,
         dep_engine->phases_info);
     out_fault_phases =
-        AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(dep_engine->phases_info, env);
+        axis2_phases_info_get_op_out_faultphases(dep_engine->phases_info, env);
     new_out_fault_phases = axis2_phases_info_copy_flow(env, out_fault_phases);
     if (out_fault_phases)
     {
@@ -854,7 +854,7 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    in_phases = AXIS2_PHASES_INFO_GET_IN_PHASES(dep_engine->phases_info, env);
+    in_phases = axis2_phases_info_get_in_phases(dep_engine->phases_info, env);
     /* TODO condition checking should be otherway since null value can occur */
     if (in_phases)
     {

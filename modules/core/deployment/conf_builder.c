@@ -510,19 +510,19 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
         }
         if (flow_type && 0 == axis2_strcmp(AXIS2_IN_FLOW_START, flow_type))
         {
-            AXIS2_PHASES_INFO_SET_IN_PHASES(info, env, phase_list);
+            axis2_phases_info_set_in_phases(info, env, phase_list);
         }
         else if (flow_type && 0 == axis2_strcmp(AXIS2_IN_FAILTFLOW, flow_type))
         {
-            AXIS2_PHASES_INFO_SET_IN_FAULTPHASES(info, env, phase_list);
+            axis2_phases_info_set_in_faultphases(info, env, phase_list);
         }
         else if (flow_type && 0 == axis2_strcmp(AXIS2_OUT_FLOW_START, flow_type))
         {
-            AXIS2_PHASES_INFO_SET_OUT_PHASES(info, env, phase_list);
+            axis2_phases_info_set_out_phases(info, env, phase_list);
         }
         else if (flow_type && 0 == axis2_strcmp(AXIS2_OUT_FAILTFLOW, flow_type))
         {
-            AXIS2_PHASES_INFO_SET_OUT_FAULTPHASES(info, env, phase_list);
+            axis2_phases_info_set_out_faultphases(info, env, phase_list);
         }
     }
     return AXIS2_SUCCESS;

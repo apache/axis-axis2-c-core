@@ -24,10 +24,6 @@
  * @{
  */
 
-/**
- * @file axis2_phases_info.h
- * @brief axis2 phases info interface. 
- */
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -185,61 +181,61 @@ extern "C"
     axis2_phases_info_copy_flow(const axis2_env_t *env,
         const axis2_array_list_t *flow_to_copy);
 
-/** Frees the phases info.*/
+/** Frees the phases info.
 #define AXIS2_PHASES_INFO_FREE(phases_info, env) \
-      axis2_phases_info_free (phases_info, env)
+      axis2_phases_info_free (phases_info, env)*/
 
-/** Sets the in phases. */
+/** Sets the in phases. 
 #define AXIS2_PHASES_INFO_SET_IN_PHASES(phases_info, env, in_phases) \
-      axis2_phases_info_set_in_phases(phases_info, env, in_phases)
+      axis2_phases_info_set_in_phases(phases_info, env, in_phases)*/
 
-/** Sets the out phases. */
+/** Sets the out phases. 
 #define AXIS2_PHASES_INFO_SET_OUT_PHASES(phases_info, env, out_phases) \
-      axis2_phases_info_set_out_phases(phases_info, env, out_phases)
+      axis2_phases_info_set_out_phases(phases_info, env, out_phases)*/
 
-/** Sets the in fault phases. */
+/** Sets the in fault phases. 
 #define AXIS2_PHASES_INFO_SET_IN_FAULTPHASES(phases_info, env, in_faultphases) \
-      axis2_phases_info_set_in_faultphases(phases_info, env, in_faultphases)
+      axis2_phases_info_set_in_faultphases(phases_info, env, in_faultphases)*/
 
-/** Sets the out fault phases. */
+/** Sets the out fault phases. 
 #define AXIS2_PHASES_INFO_SET_OUT_FAULTPHASES(phases_info, env, out_faultphases) \
-      axis2_phases_info_set_out_faultphases(phases_info, env, out_faultphases)
+      axis2_phases_info_set_out_faultphases(phases_info, env, out_faultphases)*/
 
-/** Gets the in phases. */
+/** Gets the in phases. 
 #define AXIS2_PHASES_INFO_GET_IN_PHASES(phases_info, env) \
-      axis2_phases_info_get_in_phases(phases_info, env)
+      axis2_phases_info_get_in_phases(phases_info, env)*/
 
-/** Gets the out phases. */
+/** Gets the out phases. 
 #define AXIS2_PHASES_INFO_GET_OUT_PHASES(phases_info, env) \
-      axis2_phases_info_get_out_phases(phases_info, env)
+      axis2_phases_info_get_out_phases(phases_info, env)*/
 
-/** Gets the in fault phases. */
+/** Gets the in fault phases. 
 #define AXIS2_PHASES_INFO_GET_IN_FAULTPHASES(phases_info, env) \
-      axis2_phases_info_get_in_faultphases(phases_info, env)
+      axis2_phases_info_get_in_faultphases(phases_info, env)*/
 
-/** Gets the out fault phases. */
+/** Gets the out fault phases. 
 #define AXIS2_PHASES_INFO_GET_OUT_FAULTPHASES(phases_info, env) \
-      axis2_phases_info_get_out_faultphases(phases_info, env)
+      axis2_phases_info_get_out_faultphases(phases_info, env)*/
 
-/** Gets the op in phases. */
+/** Gets the op in phases. 
 #define AXIS2_PHASES_INFO_GET_OP_IN_PHASES(phases_info, env) \
-      axis2_phases_info_get_op_in_phases(phases_info, env)
+      axis2_phases_info_get_op_in_phases(phases_info, env)*/
 
-/** Gets the op out phases. */
+/** Gets the op out phases. 
 #define AXIS2_PHASES_INFO_GET_OP_OUT_PHASES(phases_info, env) \
-      axis2_phases_info_get_op_out_phases(phases_info, env)
+      axis2_phases_info_get_op_out_phases(phases_info, env)*/
 
-/** Gets the op in fault phases. */
+/** Gets the op in fault phases. 
 #define AXIS2_PHASES_INFO_GET_OP_IN_FAULTPHASES(phases_info, env) \
-      axis2_phases_info_get_op_in_faultphases(phases_info, env)
+      axis2_phases_info_get_op_in_faultphases(phases_info, env)*/
 
-/** Gets the op out fault phases. */
+/** Gets the op out fault phases. 
 #define AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(phases_info, env) \
-      axis2_phases_info_get_op_out_faultphases(phases_info, env)
+      axis2_phases_info_get_op_out_faultphases(phases_info, env)*/
 
-/** Sets the op phases. */
+/** Sets the op phases. 
 #define AXIS2_PHASES_INFO_SET_OP_PHASES(phases_info, env, axis2_opt) \
-      axis2_phases_info_set_op_phases(phases_info, env, axis2_opt)
+      axis2_phases_info_set_op_phases(phases_info, env, axis2_opt)*/
 
 /** @} */
 #ifdef __cplusplus
