@@ -70,7 +70,7 @@ axiom_attribute_create(const axis2_env_t *env,
         if (!(attribute->value))
         {
             AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            axis2_string_free(env->allocator, attribute->localname);
+            axis2_string_free(attribute->localname, env);
             AXIS2_FREE(env->allocator, attribute);
             return NULL;
         }
@@ -198,7 +198,7 @@ axiom_attribute_get_localname(axiom_attribute_t *attribute,
 {
     if (attribute->localname)
     {
-        return axis2_string_get_buffer(attribute->localname, env);
+        return (axis2_char_t *)axis2_string_get_buffer(attribute->localname, env);
     }
     return NULL;
 }
@@ -209,7 +209,7 @@ axiom_attribute_get_value(axiom_attribute_t *attribute,
 {
     if (attribute->value)
     {
-        return axis2_string_get_buffer(attribute->value, env);
+        return (axis2_char_t *)axis2_string_get_buffer(attribute->value, env);
     }
     return NULL;
 }
@@ -348,7 +348,7 @@ axiom_attribute_create_str(const axis2_env_t *env,
         if (!(attribute->value))
         {
             AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            axis2_string_free(env->allocator, attribute->localname);
+            axis2_string_free(attribute->localname, env);
             AXIS2_FREE(env->allocator, attribute);
             return NULL;
         }
@@ -415,5 +415,3 @@ axiom_attribute_set_value_str(axiom_attribute_t *attribute,
     }
     return AXIS2_SUCCESS;
 }
-
-

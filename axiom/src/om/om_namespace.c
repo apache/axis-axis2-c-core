@@ -187,7 +187,7 @@ axiom_namespace_get_uri(axiom_namespace_t *om_namespace,
 {
     if (om_namespace->uri)
     {
-        return axis2_string_get_buffer(om_namespace->uri, env);
+        return (axis2_char_t *)axis2_string_get_buffer(om_namespace->uri, env);
     }
     return NULL;
 }
@@ -199,7 +199,7 @@ axiom_namespace_get_prefix(axiom_namespace_t *om_namespace,
 {
     if (om_namespace->prefix)
     {
-        return axis2_string_get_buffer(om_namespace->prefix, env);
+        return (axis2_char_t *)axis2_string_get_buffer(om_namespace->prefix, env);
     }
     return NULL;
 }
@@ -351,7 +351,7 @@ axiom_namespace_set_uri_str(axiom_namespace_t *om_namespace,
         om_namespace->uri = NULL;
     }
 
-    om_namespace->uri = axis2_string_clone(env, uri);
+    om_namespace->uri = axis2_string_clone(uri, env);
     if (!(om_namespace->uri))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

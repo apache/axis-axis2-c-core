@@ -1,5 +1,4 @@
 lib_LTLIBRARIES = libmod_axis2.la
-
 libmod_axis2_la_SOURCES = mod_axis2.c\
                        apache2_stream.c\
                        apache2_out_transport_info.c\
@@ -12,7 +11,6 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
 		     $(top_builddir)/modules/core/engine/libaxis2_engine.la\
 		     $(top_builddir)/util/src/libaxis2_util.la \
 		     $(top_builddir)/modules/core/transport/http/util/libaxis2_http_util.la\
-		     $(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la\
 		     $(top_builddir)/axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la\
                     -lpthread \
                     -L$(top_builddir)$(GUTHTHILA_LIBS) \

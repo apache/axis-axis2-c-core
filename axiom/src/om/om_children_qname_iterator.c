@@ -18,10 +18,6 @@
 #include <axiom_children_qname_iterator.h>
 #include <axiom_element.h>
 
-static axis2_bool_t AXIS2_CALL
-axiom_children_qname_iterator_qname_matches(const axis2_env_t *env,
-    axis2_qname_t *element_qname, axis2_qname_t *qname_to_match);
-
 struct axiom_children_qname_iterator
 {
     axiom_node_t *current_child;
@@ -136,10 +132,6 @@ axiom_children_qname_iterator_has_next(axiom_children_qname_iterator_t *iterator
                     iterator->current_child, env);
             }
 
-            /*if (om_element &&
-                axiom_children_qname_iterator_qname_matches(env,
-                axiom_element_get_qname(om_element, env, iterator->current_child),
-                iterator->given_qname))*/
             if (om_element &&
                 axis2_qname_equals(
                     axiom_element_get_qname(om_element, env, iterator->current_child),
@@ -190,42 +182,6 @@ axiom_children_qname_iterator_next(axiom_children_qname_iterator_t *iterator,
             AXIOM_NODE_GET_NEXT_SIBLING(iterator->current_child, env);
     }
     return iterator->last_child;
-}
-
-static axis2_bool_t AXIS2_CALL
-axiom_children_qname_iterator_qname_matches(const axis2_env_t *env,
-    axis2_qname_t *element_qname,
-    axis2_qname_t *qname_to_match)
-{
-    int lparts_match =  0;
-    int uris_match = 0;
-    axis2_char_t *ele_lpart = NULL;
-    axis2_char_t *match_lpart = NULL;
-    axis2_char_t *ele_nsuri = NULL;
-    axis2_char_t *match_nsuri = NULL;
-
-    if (!(qname_to_match))
-        return AXIS2_TRUE;
-    if (qname_to_match)
-    {
-        match_lpart = axis2_qname_get_localpart(qname_to_match, env);
-        match_nsuri = axis2_qname_get_uri(qname_to_match, env);
-    }
-    if (element_qname)
-    {
-        ele_lpart = axis2_qname_get_localpart(element_qname, env);
-        ele_nsuri = axis2_qname_get_localpart(element_qname, env);
-    }
-
-    lparts_match = (!match_lpart ||
-        (axis2_strcmp(match_lpart, "") == 0) ||
-        (element_qname && (axis2_strcmp(ele_lpart, match_lpart) == 0)));
-
-
-    uris_match = (!match_nsuri || (axis2_strcmp(match_nsuri, "") == 0) ||
-        (element_qname && (axis2_strcmp(ele_nsuri, match_nsuri) == 0)));
-
-    return lparts_match && uris_match;
 }
 
 

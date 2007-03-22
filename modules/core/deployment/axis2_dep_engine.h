@@ -39,7 +39,6 @@
 #include "axis2_conf_builder.h"
 #include "axis2_repos_listener.h"
 
-
 #ifdef __cplusplus
 extern "C"
 {

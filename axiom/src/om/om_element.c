@@ -774,7 +774,7 @@ axiom_element_get_localname(axiom_element_t *om_element,
     const axis2_env_t *env)
 {
     if (om_element->localname)
-        return axis2_string_get_buffer(om_element->localname, env);
+        return (axis2_char_t *)axis2_string_get_buffer(om_element->localname, env);
     else
         return NULL;
 }
