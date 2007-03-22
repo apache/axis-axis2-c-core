@@ -167,25 +167,18 @@ rampart_sig_sign_message(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }   
     token_type = rp_property_get_type(token,env);
-    if(token_type != RP_TOKEN_X509)
-    {
-        AXIS2_LOG_INFO(env->log,"[rampart][rampart_signature] We only support X509 tokens");
+    
+    if(!rampart_context_is_token_type_supported(token_type,env))
         return AXIS2_FAILURE;
-    }
+
     if(rampart_context_check_is_derived_keys(env,token))
     {
         AXIS2_LOG_INFO(env->log,"[rampart][rampart_signature] We still do not support derived keys");
         return AXIS2_FAILURE;
-    }        
-    eki = rampart_context_get_enc_key_identifier(rampart_context,token,server_side,env);
-    if(!eki)
-    {
-        AXIS2_LOG_INFO(env->log,"[rampart][rampart_signature] Key Identifier cannot be found.");
-        return AXIS2_FAILURE;
-    }        
-
-    /*If the type is direct reference we first build bst element*/
-    if(axis2_strcmp(eki,RAMPART_STR_DIRECT_REFERENCE)==0)
+    }
+    /*If the requirement is to include the token we should build the binary security
+     * token element here.*/
+    if(rampart_context_is_token_include(rampart_context,token,token_type,server_side,env))
     {
         axis2_char_t *bst_data = NULL;
 
@@ -196,6 +189,7 @@ rampart_sig_sign_message(const axis2_env_t *env,
         }
         /*This flag will be useful when creating key Info element.*/            
         is_direct_reference = AXIS2_TRUE;
+        eki = RAMPART_STR_DIRECT_REFERENCE;
 
         cert_id = oxs_util_generate_id(env,(axis2_char_t*)OXS_CERT_ID);
         bst_data = oxs_x509_cert_get_data(cert, env); 
@@ -213,9 +207,17 @@ rampart_sig_sign_message(const axis2_env_t *env,
             return AXIS2_FAILURE;
         }            
         
-    }        
+    }
     else
+    {
+        eki = rampart_context_get_key_identifier(rampart_context,token,env);
         is_direct_reference = AXIS2_FALSE;
+    }            
+    if(!eki)
+    {
+        AXIS2_LOG_INFO(env->log,"[rampart][rampart_signature] No way of attaching the token.");
+        return AXIS2_FAILURE;
+    }        
 
     /*Get the asymmetric signature algorithm*/
     asym_sig_algo = rampart_context_get_asym_sig_algo(rampart_context,env);
@@ -249,14 +251,6 @@ rampart_sig_sign_message(const axis2_env_t *env,
             axis2_array_list_add(sign_parts, env, sign_part);
         }    
     }
-/*            
-    eki = rampart_context_get_enc_key_identifier(rampart_context,token,server_side,env);
-    if(!eki)
-    {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] The token is not needed for inclusion.");
-        return AXIS2_SUCCESS;
-    }
-*/
     sign_ctx = oxs_sign_ctx_create(env);
     
     /*First check whether the private key is set*/

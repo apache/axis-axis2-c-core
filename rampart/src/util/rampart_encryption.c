@@ -82,11 +82,10 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
         return AXIS2_SUCCESS;
     }   
     token_type = rp_property_get_type(token,env);
-    if(token_type != RP_TOKEN_X509)
-    {
-        AXIS2_LOG_INFO(env->log,"[rampart][rampart_encryption] We only support X509 tokens");
-        return AXIS2_SUCCESS;
-    }
+
+    if(!rampart_context_is_token_type_supported(token_type,env))
+        return AXIS2_FAILURE;
+
     if(rampart_context_check_is_derived_keys(env,token))
     {
         AXIS2_LOG_INFO(env->log,"[rampart][rampart_encryption] We still do not support derived keys");
@@ -143,11 +142,21 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     enc_asym_algo = rampart_context_get_enc_asym_algo(rampart_context,env);
     
     /*Get encryption key identifier*/
-    eki = rampart_context_get_enc_key_identifier(rampart_context,token,server_side,env);
+    /*First we should check whether we include the token in the 
+     *message.*/
+
+    if(rampart_context_is_token_include(rampart_context,token,token_type,server_side,env))
+    {
+        eki = RAMPART_STR_DIRECT_REFERENCE;
+    }            
+    else
+    {        
+        eki = rampart_context_get_key_identifier(rampart_context,token,env);
+    }        
     if(!eki)
     {
-        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] The token is not needed for inclusion.");
-        return AXIS2_SUCCESS;
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] No mechanism for attaching the token.");
+        return AXIS2_FAILURE;
     }
 
     /*Create asymmetric encryption context*/
@@ -205,7 +214,6 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
             }
         }
     }
-    
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT);
     oxs_asym_ctx_set_st_ref_pattern(asym_ctx, env, eki);
     /*Encrypt the session key*/

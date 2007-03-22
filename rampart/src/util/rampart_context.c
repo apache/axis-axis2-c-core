@@ -909,7 +909,7 @@ rampart_context_get_key_identifier_from_wss(
     wss = rp_secpolicy_get_wss(rampart_context->secpolicy,env);
     if(!wss)
     {
-        identifier = RAMPART_STR_DIRECT_REFERENCE;
+        AXIS2_LOG_INFO(env->log,"Problem identifying the key Identifier." );        
         return identifier;    
     }
 
@@ -929,7 +929,7 @@ rampart_context_get_key_identifier_from_wss(
         else if(rp_wss10_get_must_support_ref_embedded_token(wss10,env))
             identifier = RAMPART_STR_EMBEDDED;
         else
-            identifier = RAMPART_STR_DIRECT_REFERENCE;
+            identifier = NULL;
         
         return identifier;                                         
     }
@@ -953,12 +953,170 @@ rampart_context_get_key_identifier_from_wss(
         else if(rp_wss11_get_must_support_ref_encryptedkey(wss11,env))
             identifier = RAMPART_STR_ENCRYPTED_KEY;
         else
-            identifier = RAMPART_STR_DIRECT_REFERENCE;                                         
+            identifier = NULL;                                         
 
         return identifier;
     }
     else return NULL;
 } 
+
+
+axis2_bool_t AXIS2_CALL 
+rampart_context_is_key_identifier_supported(
+        rp_property_t *token,
+        rampart_context_t *rampart_context,
+        const axis2_env_t *env)
+{
+    rp_property_t *wss = NULL;
+    rp_wss10_t *wss10 = NULL;
+    rp_wss11_t *wss11 = NULL;
+
+    wss = rp_secpolicy_get_wss(rampart_context->secpolicy,env);
+    if(!wss)
+    {
+        AXIS2_LOG_INFO(env->log,"wss properties are not set.." );
+        return AXIS2_FALSE;
+    }
+
+    if(rp_property_get_type(wss,env)==RP_WSS_WSS10)
+    {
+        wss10 = rp_property_get_value(wss,env);
+    }
+    else if(rp_property_get_type(wss,env)==RP_WSS_WSS11)
+    {
+        wss11 = rp_property_get_value(wss,env);
+    }
+        
+    if(rp_property_get_type(token,env)==RP_TOKEN_X509)
+    {
+        rp_x509_token_t *x509_token = NULL;
+        x509_token = (rp_x509_token_t *)rp_property_get_value(token,env);
+
+        if(!x509_token)
+        {
+            AXIS2_LOG_INFO(env->log,"Cannot get the token value from policy.");
+            return AXIS2_FALSE;
+        }
+        if(rp_x509_token_get_require_key_identifier_reference(x509_token,env))
+            return AXIS2_TRUE;
+    }
+    else
+        return AXIS2_FALSE;
+
+    if(wss10)
+        return rp_wss10_get_must_support_ref_key_identifier(wss10,env);
+
+    else if(wss11)
+        return rp_wss11_get_must_support_ref_key_identifier(wss11,env);
+
+    else return AXIS2_FALSE;
+
+}
+
+axis2_bool_t AXIS2_CALL 
+rampart_context_is_issuer_serial_supported(
+        rp_property_t *token,
+        rampart_context_t *rampart_context,
+        const axis2_env_t *env)
+{
+    rp_property_t *wss = NULL;
+    rp_wss10_t *wss10 = NULL;
+    rp_wss11_t *wss11 = NULL;
+
+    wss = rp_secpolicy_get_wss(rampart_context->secpolicy,env);
+    if(!wss)
+    {
+        AXIS2_LOG_INFO(env->log,"wss properties are not set.." );
+        return AXIS2_FALSE;
+    }
+
+    if(rp_property_get_type(wss,env)==RP_WSS_WSS10)
+    {
+        wss10 = rp_property_get_value(wss,env);
+    }
+    else if(rp_property_get_type(wss,env)==RP_WSS_WSS11)
+    {
+        wss11 = rp_property_get_value(wss,env);
+    }
+        
+    if(rp_property_get_type(token,env)==RP_TOKEN_X509)
+    {
+        rp_x509_token_t *x509_token = NULL;
+        x509_token = (rp_x509_token_t *)rp_property_get_value(token,env);
+
+        if(!x509_token)
+        {
+            AXIS2_LOG_INFO(env->log,"Cannot get the token value from policy.");
+            return AXIS2_FALSE;
+        }
+        if(rp_x509_token_get_require_issuer_serial_reference(x509_token,env))
+            return AXIS2_TRUE;
+    }
+    else
+        return AXIS2_FALSE;
+
+    if(wss10)
+        return rp_wss10_get_must_support_ref_issuer_serial(wss10,env);
+
+    else if(wss11)
+        return rp_wss11_get_must_support_ref_issuer_serial(wss11,env);
+
+    else return AXIS2_FALSE;
+
+}
+
+axis2_bool_t AXIS2_CALL 
+rampart_context_is_embedded_token_supported(
+        rp_property_t *token,
+        rampart_context_t *rampart_context,
+        const axis2_env_t *env)
+{
+    rp_property_t *wss = NULL;
+    rp_wss10_t *wss10 = NULL;
+    rp_wss11_t *wss11 = NULL;
+
+    wss = rp_secpolicy_get_wss(rampart_context->secpolicy,env);
+    if(!wss)
+    {
+        AXIS2_LOG_INFO(env->log,"wss properties are not set.." );
+        return AXIS2_FALSE;
+    }
+
+    if(rp_property_get_type(wss,env)==RP_WSS_WSS10)
+    {
+        wss10 = rp_property_get_value(wss,env);
+    }
+    else if(rp_property_get_type(wss,env)==RP_WSS_WSS11)
+    {
+        wss11 = rp_property_get_value(wss,env);
+    }
+        
+    if(rp_property_get_type(token,env)==RP_TOKEN_X509)
+    {
+        rp_x509_token_t *x509_token = NULL;
+        x509_token = (rp_x509_token_t *)rp_property_get_value(token,env);
+
+        if(!x509_token)
+        {
+            AXIS2_LOG_INFO(env->log,"Cannot get the token value from policy.");
+            return AXIS2_FALSE;
+        }
+        if(rp_x509_token_get_require_embedded_token_reference(x509_token,env))
+            return AXIS2_TRUE;
+    }
+    else
+        return AXIS2_FALSE;
+
+    if(wss10)
+        return rp_wss10_get_must_support_ref_embedded_token(wss10,env);
+
+    else if(wss11)
+        return rp_wss11_get_must_support_ref_embedded_token(wss11,env);
+
+    else return AXIS2_FALSE;
+}
+
+
 
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -1489,18 +1647,34 @@ rampart_context_get_encryption_user(
 
 }
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-rampart_context_get_enc_key_identifier(
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
+rampart_context_is_token_type_supported(
+        int token_type,
+        const axis2_env_t *env)
+{
+    if(token_type == RP_TOKEN_X509)
+        return AXIS2_TRUE;
+    else
+    {
+        AXIS2_LOG_INFO(env->log,"We still only suppport X509 Tokens.");
+        return AXIS2_FALSE;
+    }
+    /*This method will be extended when we are supporting other types of tokens.*/        
+}
+
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+rampart_context_is_token_include(
     rampart_context_t *rampart_context,
     rp_property_t *token,
+    int token_type,
     axis2_bool_t server_side,
     const axis2_env_t *env)
 {
-    axis2_char_t *inclusion = NULL;    
+    axis2_char_t *inclusion = NULL;
     axis2_bool_t include = AXIS2_TRUE;
-    axis2_char_t *identifier = NULL;
 
-    if(rp_property_get_type(token,env)==RP_TOKEN_X509)
+    if(token_type == RP_TOKEN_X509)
     {
         rp_x509_token_t *x509_token = NULL;
         x509_token = (rp_x509_token_t *)rp_property_get_value(token,env);
@@ -1510,31 +1684,81 @@ rampart_context_get_enc_key_identifier(
             include = ((axis2_strcmp(inclusion,RP_INCLUDE_ALWAYS)==0)||
                         (axis2_strcmp(inclusion,RP_INCLUDE_ONCE)==0));
         else
-            include = ((axis2_strcmp(inclusion,RP_INCLUDE_ALWAYS)==0)||
+           include = ((axis2_strcmp(inclusion,RP_INCLUDE_ALWAYS)==0)||
            (axis2_strcmp(inclusion,RP_INCLUDE_ONCE)==0)||
            (axis2_strcmp(inclusion,RP_INCLUDE_ALWAYS_TO_RECIPIENT)==0));
-        
-        if(include)
-        {
-           if(rp_x509_token_get_require_key_identifier_reference(x509_token,env))
-                identifier = RAMPART_STR_KEY_IDENTIFIER;
-           else if(rp_x509_token_get_require_issuer_serial_reference(x509_token,env))
-                identifier = RAMPART_STR_ISSUER_SERIAL;                        
-           else if(rp_x509_token_get_require_embedded_token_reference(x509_token,env))
-                identifier = RAMPART_STR_EMBEDDED; 
-           else if(rp_x509_token_get_require_thumb_print_reference(x509_token,env))
-                identifier = RAMPART_STR_THUMB_PRINT;
-           else
-                return rampart_context_get_key_identifier_from_wss(rampart_context,env);                             
+         
+        return include;
+    }
+    else
+    {
+        AXIS2_LOG_INFO(env->log,"We still only support x509 tokens");
+        return AXIS2_FALSE;
+    }
+}
 
-           return identifier;              
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+rampart_context_get_key_identifier(
+    rampart_context_t *rampart_context,
+    rp_property_t *token,
+    const axis2_env_t *env)
+{
+    axis2_char_t *identifier = NULL;
+
+    if(rp_property_get_type(token,env)==RP_TOKEN_X509)
+    {
+        rp_x509_token_t *x509_token = NULL;
+        x509_token = (rp_x509_token_t *)rp_property_get_value(token,env);
+
+        if(!x509_token)
+        {
+            AXIS2_LOG_INFO(env->log,"Cannot get the token value from policy.");
+            return NULL;
         }
-        else return NULL;
-                            
+        else
+        {
+            if(rp_x509_token_get_require_key_identifier_reference(x509_token,env))
+                identifier = RAMPART_STR_KEY_IDENTIFIER;
+            else if(rp_x509_token_get_require_issuer_serial_reference(x509_token,env))
+                identifier = RAMPART_STR_ISSUER_SERIAL;
+            else if(rp_x509_token_get_require_embedded_token_reference(x509_token,env))
+                identifier = RAMPART_STR_EMBEDDED;
+            else if(rp_x509_token_get_require_thumb_print_reference(x509_token,env))
+                identifier = RAMPART_STR_THUMB_PRINT;
+            else
+                return rampart_context_get_key_identifier_from_wss(rampart_context,env);
+
+           return identifier;
+        }
     }
     /*This can be extended when we are supporting other token types.*/
     else return NULL;
 }
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+rampart_context_is_key_identifier_type_supported(
+    rampart_context_t *rampart_context,
+    rp_property_t *token,
+    axis2_char_t *identifier,    
+    const axis2_env_t *env)
+{
+    if(axis2_strcmp(identifier,RAMPART_STR_KEY_IDENTIFIER)==0)
+        return rampart_context_is_key_identifier_supported(token,rampart_context,env);
+
+    else if(axis2_strcmp(identifier,RAMPART_STR_ISSUER_SERIAL)==0)
+        return rampart_context_is_issuer_serial_supported(token,rampart_context,env);
+
+    else if(axis2_strcmp(identifier,RAMPART_STR_EMBEDDED)==0)
+        return rampart_context_is_embedded_token_supported(token,rampart_context,env);
+
+    else if(axis2_strcmp(identifier,RAMPART_STR_THUMB_PRINT)==0)
+        return rampart_context_is_thumb_print_supported(token,rampart_context,env);
+
+    else
+        return AXIS2_FALSE;
+}
+
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rampart_context_get_layout(

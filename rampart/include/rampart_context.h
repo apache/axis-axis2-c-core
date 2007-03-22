@@ -378,12 +378,38 @@ extern "C"
     rampart_context_get_encryption_user(
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
-
+        
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rampart_context_is_token_include(
+            rampart_context_t *rampart_context,
+            rp_property_t *token,
+            int token_type,
+            axis2_bool_t server_side,
+            const axis2_env_t *env);
+/*
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     rampart_context_get_enc_key_identifier(
             rampart_context_t *rampart_context,
             rp_property_t *token,
             axis2_bool_t server_side,
+            const axis2_env_t *env);
+*/
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    rampart_context_get_key_identifier(
+            rampart_context_t *rampart_context,
+            rp_property_t *token,
+            const axis2_env_t *env);
+    
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rampart_context_is_token_type_supported(
+            int token_type,
+            const axis2_env_t *env);
+        
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    rampart_context_is_key_identifier_type_supported(
+            rampart_context_t *rampart_context,
+            rp_property_t *token,
+            axis2_char_t *identifier,
             const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
