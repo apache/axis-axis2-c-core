@@ -512,7 +512,6 @@ axis2_svc_client_send_robust_with_op_qname(axis2_svc_client_t *svc_client,
     if (qname_free_flag)
     {
         axis2_qname_free((axis2_qname_t *) op_qname, env);
-        op_qname = NULL;
     }
 
     return status;
@@ -565,7 +564,6 @@ axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
     if (qname_free_flag)
     {
         axis2_qname_free((axis2_qname_t *) op_qname, env);
-        op_qname = NULL;
     }
 
     return;
@@ -735,7 +733,6 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
     if (qname_free_flag)
     {
         axis2_qname_free((axis2_qname_t *) op_qname, env);
-        op_qname = NULL;
     }
 
     if (!soap_envelope)
