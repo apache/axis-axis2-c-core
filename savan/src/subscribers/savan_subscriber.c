@@ -245,14 +245,14 @@ savan_subscriber_publish(
     axis2_options_set_to(options, env, subscriber->notify_to);
     
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
+    axis2_svc_client_set_options(svc_client, env, options);
 
     /* Engage addressing module */
-    /*AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
+    /*axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
     
     op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
 
-    op_client = AXIS2_SVC_CLIENT_CREATE_OP_CLIENT(svc_client, env,
+    op_client = axis2_svc_client_create_op_client(svc_client, env,
         op_qname);
 
     AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);

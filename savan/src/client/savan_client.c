@@ -102,7 +102,7 @@ savan_client_subscribe(
         "subscribe...");
     
     /* set wsa action as Subscribe. remember the old action */
-    wsa_options = (axis2_options_t*)AXIS2_SVC_CLIENT_GET_OPTIONS (svc_client, env);
+    wsa_options = (axis2_options_t*)axis2_svc_client_get_options(svc_client, env);
     old_action = axis2_options_get_action(wsa_options, env);
     axis2_options_set_action(wsa_options, env, SAVAN_ACTIONS_SUB);
     
@@ -139,7 +139,7 @@ savan_client_subscribe(
     axiom_element_set_text(filter_elem, env, filter, filter_node);
     
     /* send the Subscription and wait for the response */
-    reply = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, sub_node);
+    reply = axis2_svc_client_send_receive(svc_client, env, sub_node);
     
     /* reset the old action */
     axis2_options_set_action(wsa_options, env, old_action);
@@ -197,7 +197,7 @@ savan_client_renew(
         "renew...");
     
     /* Set wsa action as Renew. remember the old action */
-    wsa_options = (axis2_options_t*)AXIS2_SVC_CLIENT_GET_OPTIONS (svc_client, env);
+    wsa_options = (axis2_options_t*)axis2_svc_client_get_options(svc_client, env);
     old_action = axis2_options_get_action(wsa_options, env);
     axis2_options_set_action(wsa_options, env, SAVAN_ACTIONS_RENEW);
     
@@ -216,7 +216,7 @@ savan_client_renew(
     savan_client_add_sub_id_to_soap_header(client, env, svc_client);
 
     /* send the Renew request and wait for the response */
-    reply = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, renew_node);
+    reply = axis2_svc_client_send_receive(svc_client, env, renew_node);
     
     /* reset the old action */
     axis2_options_set_action(wsa_options, env, old_action);
@@ -252,7 +252,7 @@ savan_client_unsubscribe(
         "unsubscribe...");
     
     /* set wsa action as Unsub. remember the old action */
-    wsa_options = (axis2_options_t*)AXIS2_SVC_CLIENT_GET_OPTIONS (svc_client, env);
+    wsa_options = (axis2_options_t*)axis2_svc_client_get_options(svc_client, env);
     old_action = axis2_options_get_action(wsa_options, env);
     axis2_options_set_action(wsa_options, env, SAVAN_ACTIONS_UNSUB);
     
@@ -263,7 +263,7 @@ savan_client_unsubscribe(
     savan_client_add_sub_id_to_soap_header(client, env, svc_client);
 
     /* send the Unsub request and wait for the response */
-    reply = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, unsub_node);
+    reply = axis2_svc_client_send_receive(svc_client, env, unsub_node);
     
     /* reset the old action */
     axis2_options_set_action(wsa_options, env, old_action);
@@ -307,7 +307,7 @@ savan_client_get_status(
         "get status...");
     
     /* Set wsa action as GetStatus. remember the old action */
-    wsa_options = (axis2_options_t*)AXIS2_SVC_CLIENT_GET_OPTIONS (svc_client, env);
+    wsa_options = (axis2_options_t*)axis2_svc_client_get_options(svc_client, env);
     old_action = axis2_options_get_action(wsa_options, env);
     axis2_options_set_action(wsa_options, env, SAVAN_ACTIONS_GET_STATUS);
     
@@ -318,7 +318,7 @@ savan_client_get_status(
     savan_client_add_sub_id_to_soap_header(client, env, svc_client);
 
     /* Send the GetStatus request and wait for the response */
-    reply = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, status_node);
+    reply = axis2_svc_client_send_receive(svc_client, env, status_node);
     
     /* Reset the old action */
     axis2_options_set_action(wsa_options, env, old_action);
@@ -392,7 +392,7 @@ savan_client_add_sub_id_to_soap_header(
 
     axiom_element_set_text(id_elem, env, client->sub_id, id_node);
 
-    AXIS2_SVC_CLIENT_ADD_HEADER(svc_client, env, id_node);
+    axis2_svc_client_add_header(svc_client, env, id_node);
 
     return AXIS2_SUCCESS;
 

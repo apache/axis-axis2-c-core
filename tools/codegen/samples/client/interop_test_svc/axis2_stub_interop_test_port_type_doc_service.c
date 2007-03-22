@@ -61,7 +61,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
     /* Modifying the Service */
     svc_client = axis2_stub_get_svc_client(stub, env);
-    svc = (axis2_svc_t*)AXIS2_SVC_CLIENT_GET_AXIS_SERVICE(svc_client, env);
+    svc = (axis2_svc_t*)axis2_svc_client_get_svc(svc_client, env);
     axis2_qname_create(env, "InteropTestPortTypeDocService" , NULL, NULL);
     AXIS2_SVC_SET_QNAME(svc, env, svc_qname);
 
@@ -295,7 +295,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_st
             "echoString" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -354,7 +354,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_start(axis2_stub_
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -399,7 +399,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(ax
             "echoStringArray" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -458,7 +458,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start(axis2
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -503,7 +503,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_s
             "echoInteger" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -562,7 +562,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_start(axis2_stub
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -607,7 +607,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(a
             "echoIntegerArray" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -666,7 +666,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start(axis
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -711,7 +711,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stu
             "echoFloat" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -770,7 +770,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_start(axis2_stub_t
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -815,7 +815,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axi
             "echoFloatArray" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -874,7 +874,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start(axis2_
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -919,7 +919,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_st
             "echoStruct" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -978,7 +978,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_start(axis2_stub_
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -1023,7 +1023,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(ax
             "echoStructArray" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -1082,7 +1082,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start(axis2
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -1127,7 +1127,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub
             "echoVoid" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -1186,7 +1186,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_void_start(axis2_stub_t 
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -1231,7 +1231,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_st
             "echoBase64" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -1290,7 +1290,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_base64_start(axis2_stub_
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -1335,7 +1335,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub
             "echoDate" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -1394,7 +1394,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_date_start(axis2_stub_t 
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -1439,7 +1439,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis
             "echoHexBinary" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -1498,7 +1498,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start(axis2_s
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -1543,7 +1543,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_s
             "echoDecimal" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -1602,7 +1602,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start(axis2_stub
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -1647,7 +1647,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_s
             "echoBoolean" ,
             "http://soapinterop.org",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -1706,7 +1706,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start(axis2_stub
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 

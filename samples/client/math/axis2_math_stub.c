@@ -48,7 +48,7 @@ void axis2_populate_axis_service(axis2_stub_t* stub, const axis2_env_t *env)
 
     /*Modifying the Service*/
     svc_client = axis2_stub_get_svc_client(stub, env);
-    svc = AXIS2_SVC_CLIENT_GET_AXIS_SERVICE(svc_client, env);
+    svc = axis2_svc_client_get_svc(svc_client, env);
 
     /*creating the operations*/
 
@@ -115,7 +115,7 @@ axis2_math_stub_add(axis2_stub_t *stub,
 
     svc_client = axis2_stub_get_svc_client(stub, env);
     op_qname = axis2_qname_create(env, "add" , "", NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, node);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, node);
     axis2_qname_free(op_qname, env);
 
     return ret_node;
@@ -134,7 +134,7 @@ axis2_math_stub_sub(axis2_stub_t *stub,
 
     svc_client = axis2_stub_get_svc_client(stub, env);
     op_qname = axis2_qname_create(env, "sub" , "", NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, node);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, node);
 
     return ret_node;
 }
@@ -152,7 +152,7 @@ axis2_math_stub_mul(axis2_stub_t *stub,
 
     svc_client = axis2_stub_get_svc_client(stub, env);
     op_qname = axis2_qname_create(env, "mul" , "", NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, node);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, node);
 
     return ret_node;
 }
@@ -170,7 +170,7 @@ axis2_math_stub_div(axis2_stub_t *stub,
 
     svc_client = axis2_stub_get_svc_client(stub, env);
     op_qname = axis2_qname_create(env, "div" , "", NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, node);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, node);
 
     return ret_node;
 }

@@ -78,13 +78,13 @@ int main(int argc, char** argv)
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);    
+    axis2_svc_client_set_options(svc_client, env, options);    
     
     /* Engage addressing module */
-    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
+    axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
     
     /* Engage savan module */
-    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "savan");
+    axis2_svc_client_engage_module(svc_client, env, "savan");
 
     savan_options = axis2_hash_make(env);
     axis2_hash_set(savan_options, SAVAN_OP_KEY_NOTIFY_EPR, AXIS2_HASH_KEY_STRING,
@@ -137,7 +137,7 @@ int main(int argc, char** argv)
 
     if (svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(svc_client, env);
+        axis2_svc_client_free(svc_client, env);
         svc_client = NULL;
     }
     
@@ -180,15 +180,15 @@ void init_event_source(axis2_env_t* env, axis2_char_t *home)
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);    
+    axis2_svc_client_set_options(svc_client, env, options);    
     
     /* Engage addressing module */
-    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
+    axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
     
     payload = build_om_payload_for_echo_svc(env);
     
     /* Send request */
-    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
+    ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
     
     if(ret_node)
     {

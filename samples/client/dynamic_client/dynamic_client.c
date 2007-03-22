@@ -119,7 +119,7 @@ process_for_wsdl1(
     payload = build_om_programatically_for_wsdl1(env);
     op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator",
             NULL);
-    response = AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env,
+    response = axis2_svc_client_send_receive_with_op_qname(svc_client, env,
             op_qname, payload);
 
     if (response)
@@ -135,7 +135,7 @@ process_for_wsdl1(
         printf("status:%s\n", "Failure");
     if (svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(svc_client, env);
+        axis2_svc_client_free(svc_client, env);
         svc_client = NULL;
     }
     return 0;
@@ -181,7 +181,7 @@ process_for_wsdl2(
     payload = build_om_programatically_for_wsdl2(env);
     op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator",
             NULL);
-    response = AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env,
+    response = axis2_svc_client_send_receive_with_op_qname(svc_client, env,
             op_qname, payload);
 
     if (response)
@@ -197,7 +197,7 @@ process_for_wsdl2(
         printf("status:%s\n", "Failure");
     if (svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(svc_client, env);
+        axis2_svc_client_free(svc_client, env);
         svc_client = NULL;
     }
     return 0;

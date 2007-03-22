@@ -54,10 +54,10 @@ void axis2_test_svc_client_blocking()
 
     options = axis2_options_create(env);
     axis2_options_set_to(options, env, endpoint_ref);
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
+    axis2_svc_client_set_options(svc_client, env, options);
 
     payload = build_om_payload_for_echo_svc(env, echo_text);
-    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
+    ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
     if (ret_node)
     {
         if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT)
@@ -71,7 +71,7 @@ void axis2_test_svc_client_blocking()
                 printf("axis2_test SVC_CLIENT_SEND_RECEIVE FAILURE\n");
         }
     }
-    AXIS2_SVC_CLIENT_FREE(svc_client, env);
+    axis2_svc_client_free(svc_client, env);
 }
 
 /* build SOAP request message content using OM */

@@ -106,12 +106,12 @@ savan_publishing_client_publish(
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
+    axis2_svc_client_set_options(svc_client, env, options);
 
-    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "savan");
+    axis2_svc_client_engage_module(svc_client, env, "savan");
 
     /* Send publishing message */
-    AXIS2_SVC_CLIENT_SEND_ROBUST_WITH_OP_QNAME(svc_client, env, op_qname, payload); 
+    axis2_svc_client_send_robust_with_op_qname(svc_client, env, op_qname, payload); 
     
     return AXIS2_SUCCESS;
 }

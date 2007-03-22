@@ -61,7 +61,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axis2_env
 
     /* Modifying the Service */
     svc_client = axis2_stub_get_svc_client(stub, env);
-    svc = (axis2_svc_t*)AXIS2_SVC_CLIENT_GET_AXIS_SERVICE(svc_client, env);
+    svc = (axis2_svc_t*)axis2_svc_client_get_svc(svc_client, env);
     axis2_qname_create(env, "Calculator" , NULL, NULL);
     AXIS2_SVC_SET_QNAME(svc, env, svc_qname);
 
@@ -175,7 +175,7 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axis2_env_t *e
             "add" ,
             "http://localhost/axis/Calculator",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -234,7 +234,7 @@ void axis2_stub_calculator_add_start(axis2_stub_t *stub, const axis2_env_t *env,
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -279,7 +279,7 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axis2_env_t *e
             "sub" ,
             "http://localhost/axis/Calculator",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -338,7 +338,7 @@ void axis2_stub_calculator_sub_start(axis2_stub_t *stub, const axis2_env_t *env,
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -383,7 +383,7 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axis2_env_t *e
             "mul" ,
             "http://localhost/axis/Calculator",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -442,7 +442,7 @@ void axis2_stub_calculator_mul_start(axis2_stub_t *stub, const axis2_env_t *env,
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 
@@ -487,7 +487,7 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axis2_env_t *e
             "div" ,
             "http://localhost/axis/Calculator",
             NULL);
-    ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, payload);
+    ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, payload);
 
 
 
@@ -546,7 +546,7 @@ void axis2_stub_calculator_div_start(axis2_stub_t *stub, const axis2_env_t *env,
     axis2_callback_set_on_error(callback, on_error);
 
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);
+    axis2_svc_client_send_receive_non_blocking(svc_client, env, payload, callback);
 }
 
 

@@ -99,13 +99,13 @@ int main(int argc, char** argv)
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
+    axis2_svc_client_set_options(svc_client, env, options);
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_soap_body_content(env, operation, google_key, word_to_spell);
 
     /* Send request */
-    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
+    ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
 
     if (ret_node)
     {
@@ -148,7 +148,7 @@ int main(int argc, char** argv)
 
     if (svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(svc_client, env);
+        axis2_svc_client_free(svc_client, env);
         svc_client = NULL;
     }
 

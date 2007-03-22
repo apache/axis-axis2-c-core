@@ -82,16 +82,16 @@ int main(int argc, char** argv)
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
+    axis2_svc_client_set_options(svc_client, env, options);
 
     /* Engage addressing module */
-    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
+    axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_programatically(env);
 
     /* Send request */
-    status = AXIS2_SVC_CLIENT_SEND_ROBUST(svc_client, env, payload);
+    status = axis2_svc_client_send_robust(svc_client, env, payload);
 
     if (status == AXIS2_SUCCESS)
     {
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 
     if (svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(svc_client, env);
+        axis2_svc_client_free(svc_client, env);
         svc_client = NULL;
     }
 

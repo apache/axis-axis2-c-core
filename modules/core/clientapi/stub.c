@@ -78,7 +78,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
         return NULL;
     }
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(stub->svc_client, env, stub-> options);
+    axis2_svc_client_set_options(stub->svc_client, env, stub-> options);
 
     axis2_options_set_to(stub->options, env, endpoint_ref);
 
@@ -123,7 +123,7 @@ axis2_stub_free(axis2_stub_t *stub,
 
     if (stub->svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(stub->svc_client, env);
+        axis2_svc_client_free(stub->svc_client, env);
     }
 
     if (stub)
@@ -180,7 +180,7 @@ axis2_stub_engage_module(axis2_stub_t *stub,
 {
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
-    return AXIS2_SVC_CLIENT_ENGAGE_MODULE(stub->svc_client, env, module_name);
+    return axis2_svc_client_engage_module(stub->svc_client, env, module_name);
 }
 
 axis2_status_t AXIS2_CALL
@@ -202,7 +202,7 @@ axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
     const axis2_svc_ctx_t *svc_ctx = NULL;
     const axis2_char_t *svc_ctx_id = NULL;
 
-    svc_ctx = AXIS2_SVC_CLIENT_GET_SVC_CTX(stub->svc_client, env);
+    svc_ctx = axis2_svc_client_get_svc_ctx(stub->svc_client, env);
     svc_ctx_id =  axis2_svc_ctx_get_svc_id(svc_ctx, env);
     return svc_ctx_id;
 }
