@@ -122,7 +122,7 @@ int main(int argc, char** argv)
 
     if (stub)
     {
-        AXIS2_STUB_FREE(stub, env);
+        axis2_stub_free(stub, env);
     }
 
     if (env)

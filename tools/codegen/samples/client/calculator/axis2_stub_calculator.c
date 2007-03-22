@@ -60,7 +60,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axis2_env
     axis2_op_t *op = NULL;
 
     /* Modifying the Service */
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     svc = (axis2_svc_t*)AXIS2_SVC_CLIENT_GET_AXIS_SERVICE(svc_client, env);
     axis2_qname_create(env, "Calculator" , NULL, NULL);
     AXIS2_SVC_SET_QNAME(svc, env, svc_qname);
@@ -153,7 +153,7 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axis2_env_t *e
     payload = content0;
 
 
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
@@ -161,7 +161,7 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axis2_env_t *e
                 axis2_error_get_message(env->error));
         return NULL;
     }
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
@@ -208,7 +208,7 @@ void axis2_stub_calculator_add_start(axis2_stub_t *stub, const axis2_env_t *env,
     payload = content0;
 
 
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
@@ -216,7 +216,7 @@ void axis2_stub_calculator_add_start(axis2_stub_t *stub, const axis2_env_t *env,
                 axis2_error_get_message(env->error));
         return;
     }
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
@@ -257,7 +257,7 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axis2_env_t *e
     payload = content2;
 
 
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
@@ -265,7 +265,7 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axis2_env_t *e
                 axis2_error_get_message(env->error));
         return NULL;
     }
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
@@ -312,7 +312,7 @@ void axis2_stub_calculator_sub_start(axis2_stub_t *stub, const axis2_env_t *env,
     payload = content2;
 
 
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
@@ -320,7 +320,7 @@ void axis2_stub_calculator_sub_start(axis2_stub_t *stub, const axis2_env_t *env,
                 axis2_error_get_message(env->error));
         return;
     }
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
@@ -361,7 +361,7 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axis2_env_t *e
     payload = content4;
 
 
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
@@ -369,7 +369,7 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axis2_env_t *e
                 axis2_error_get_message(env->error));
         return NULL;
     }
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
@@ -416,7 +416,7 @@ void axis2_stub_calculator_mul_start(axis2_stub_t *stub, const axis2_env_t *env,
     payload = content4;
 
 
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
@@ -424,7 +424,7 @@ void axis2_stub_calculator_mul_start(axis2_stub_t *stub, const axis2_env_t *env,
                 axis2_error_get_message(env->error));
         return;
     }
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
@@ -465,7 +465,7 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axis2_env_t *e
     payload = content6;
 
 
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
@@ -473,7 +473,7 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axis2_env_t *e
                 axis2_error_get_message(env->error));
         return NULL;
     }
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
@@ -520,7 +520,7 @@ void axis2_stub_calculator_div_start(axis2_stub_t *stub, const axis2_env_t *env,
     payload = content6;
 
 
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     if (! options)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
@@ -528,7 +528,7 @@ void axis2_stub_calculator_div_start(axis2_stub_t *stub, const axis2_env_t *env,
                 axis2_error_get_message(env->error));
         return;
     }
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {

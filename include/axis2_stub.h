@@ -179,43 +179,6 @@ extern "C"
         const axis2_char_t *client_home);
 
 
-/** Frees the axis2 stub. */
-#define AXIS2_STUB_FREE(stub, env) \
-      axis2_stub_free (stub, env)
-
-/** Sets the endpoint reference. */
-#define AXIS2_STUB_SET_ENDPOINT_REF(stub, env, endpoint_ref) \
-      axis2_stub_set_endpoint_ref (stub, env, endpoint_ref)
-
-/** Sets the endpoint uri. */
-#define AXIS2_STUB_SET_ENDPOINT_URI(stub, env, endpoint_uri) \
-      axis2_stub_set_endpoint_uri (stub, env, endpoint_uri)
-
-/** Sets bool value indicating whether to use a separate listener. */
-#define AXIS2_STUB_SET_USE_SEPERATE_LISTENER(stub, env, use_separate_listener) \
-      axis2_stub_set_use_separate_listener (stub, env, use_separate_listener)
-
-/** Engages the module. */
-#define AXIS2_STUB_ENGAGE_MODULE(stub, env, module_name) \
-      axis2_stub_engage_module (stub, env, module_name)
-
-/** Sets the SOAP version. */
-#define AXIS2_STUB_SET_SOAP_VERSION(stub, env, soap_version) \
-      axis2_stub_set_soap_version (stub, env, soap_version)
-
-/** Gets the service context id. */
-#define AXIS2_STUB_GET_SVC_CTX_ID(stub, env) \
-      axis2_stub_get_svc_ctx_id (stub, env)
-
-/** Gets the service client that this stub wraps. */
-#define AXIS2_STUB_GET_SVC_CLIENT(stub, env) \
-      axis2_stub_get_svc_client(stub, env)
-
-/** Gets the options used by service client wrapped by this stub. */
-#define AXIS2_STUB_GET_OPTIONS(stub, env) \
-      axis2_stub_get_options(stub, env)
-
-
     /** @} */
 
 #ifdef __cplusplus

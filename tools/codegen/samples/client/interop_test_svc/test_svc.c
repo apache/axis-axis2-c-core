@@ -45,9 +45,9 @@ int main(int argc, char** argv)
         client_home = "../../../deploy";
 
     stub = axis2_stub_interop_test_port_type_doc_service_create(env, client_home , endpoint_uri);
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     /*AXIS2_SVC_CLIENT_DISENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     axis2_options_set_action(options, env, "http://soapinterop.org");
 
     /** testing echoString */
@@ -58,9 +58,9 @@ int main(int argc, char** argv)
     printf("\n");
 
     stub = axis2_stub_interop_test_port_type_doc_service_create(env, client_home , endpoint_uri);
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     /*AXIS2_SVC_CLIENT_DISENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     axis2_options_set_action(options, env, "http://soapinterop.org");
 
     /** testing echoInteger*/
@@ -71,9 +71,9 @@ int main(int argc, char** argv)
     printf("\n");
 
     stub = axis2_stub_interop_test_port_type_doc_service_create(env, client_home , endpoint_uri);
-    svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
+    svc_client = axis2_stub_get_svc_client(stub, env);
     /*AXIS2_SVC_CLIENT_DISENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
-    options = AXIS2_STUB_GET_OPTIONS(stub, env);
+    options = axis2_stub_get_options(stub, env);
     axis2_options_set_action(options, env, "http://soapinterop.org");
 
     /** testing echoString */
