@@ -287,7 +287,7 @@ axis2_iis_worker_process_request(
 				body_str_len = strlen(body_string);
 			}
 
-            iis_out_transport_info->ops->set_content_type(iis_out_transport_info, env, "text/html");
+            axis2_http_out_transport_info_set_content_type(iis_out_transport_info, env, "text/html");
             send_status = OK;
         }
     }
