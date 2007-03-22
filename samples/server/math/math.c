@@ -57,7 +57,7 @@ axis2_math_add(const axis2_env_t *env, axiom_node_t *node)
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param1_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
-            param1_str = axiom_text_get_value(text, env);
+            param1_str = (axis2_char_t *)axiom_text_get_value(text, env);
         }
     }
     else
@@ -88,7 +88,7 @@ axis2_math_add(const axis2_env_t *env, axiom_node_t *node)
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param2_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
-            param2_str = axiom_text_get_value(text, env);
+            param2_str = (axis2_char_t *)axiom_text_get_value(text, env);
         }
     }
     else
@@ -169,7 +169,7 @@ axis2_math_sub(const axis2_env_t *env, axiom_node_t *node)
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param1_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
-            param1_str = axiom_text_get_value(text, env);
+            param1_str = (axis2_char_t *)axiom_text_get_value(text, env);
         }
     }
     else
@@ -200,7 +200,7 @@ axis2_math_sub(const axis2_env_t *env, axiom_node_t *node)
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param2_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
-            param2_str = axiom_text_get_value(text, env);
+            param2_str = (axis2_char_t *)axiom_text_get_value(text, env);
         }
     }
     else
@@ -282,7 +282,7 @@ axis2_math_mul(const axis2_env_t *env, axiom_node_t *node)
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param1_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
-            param1_str = axiom_text_get_value(text, env);
+            param1_str = (axis2_char_t *)axiom_text_get_value(text, env);
         }
     }
     else
@@ -313,7 +313,7 @@ axis2_math_mul(const axis2_env_t *env, axiom_node_t *node)
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param2_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
-            param2_str = axiom_text_get_value(text, env);
+            param2_str = (axis2_char_t *)axiom_text_get_value(text, env);
         }
     }
     else
@@ -395,7 +395,7 @@ axis2_math_div(const axis2_env_t *env, axiom_node_t *node)
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param1_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
-            param1_str = axiom_text_get_value(text, env);
+            param1_str = (axis2_char_t *)axiom_text_get_value(text, env);
         }
     }
     else
@@ -426,7 +426,7 @@ axis2_math_div(const axis2_env_t *env, axiom_node_t *node)
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(param2_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
-            param2_str = axiom_text_get_value(text, env);
+            param2_str = (axis2_char_t *)axiom_text_get_value(text, env);
         }
     }
     else

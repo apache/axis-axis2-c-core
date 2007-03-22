@@ -211,7 +211,7 @@ axis2_string_clone(struct axis2_string *string,
     }
 
     string->ref_count++;
-    
+
     return string;
 }
 

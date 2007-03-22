@@ -66,7 +66,7 @@ axis2_mtom_mtom(const axis2_env_t *env, axiom_node_t *node)
         if (text && axiom_text_get_value(text , env))
         {
             axiom_node_t *image_node = NULL;
-            axis2_char_t *text_str = axiom_text_get_value(text, env);
+            axis2_char_t *text_str = (axis2_char_t *)axiom_text_get_value(text, env);
             printf("File Name  %s \n", text_str);
 
             image_node = AXIOM_NODE_GET_NEXT_SIBLING(file_name_node, env);
@@ -99,7 +99,7 @@ axis2_mtom_mtom(const axis2_env_t *env, axiom_node_t *node)
                         axis2_byte_t *plain_binary = NULL;
                         axiom_data_handler_t *data_handler = NULL;
                         
-                        axis2_char_t *base64text = axiom_text_get_value(bin_text, env);
+                        axis2_char_t *base64text = (axis2_char_t *)axiom_text_get_value(bin_text, env);
                         printf("base64text = %s\n", base64text);
                         plain_binary_len = axis2_base64_decode_len(base64text);
                         plain_binary =  AXIS2_MALLOC(env->

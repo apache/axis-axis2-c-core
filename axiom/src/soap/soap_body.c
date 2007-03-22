@@ -467,4 +467,5 @@ axiom_soap_body_convert_fault_to_soap11(axiom_soap_body_t *soap_body,
             }
         }
     }
+    return AXIS2_SUCCESS;
 }

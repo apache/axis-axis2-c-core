@@ -1053,7 +1053,7 @@ axiom_element_get_text(axiom_element_t *om_element,
     axiom_node_t *element_node)
 {
     axis2_char_t *dest = NULL;
-    axis2_char_t *temp_text = NULL;
+    const axis2_char_t *temp_text = NULL;
     axiom_text_t *text_node = NULL;
     axiom_node_t *temp_node = NULL;
 

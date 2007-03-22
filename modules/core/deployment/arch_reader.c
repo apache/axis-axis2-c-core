@@ -54,10 +54,11 @@ axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (arch_reader->desc_builder)
+    /* desc builder is owned by dep_engine, so do not free it here */
+    /*if (arch_reader->desc_builder)
     {
         AXIS2_DESC_BUILDER_FREE(arch_reader->desc_builder, env);
-    }
+    }*/
 
     if (arch_reader)
     {
@@ -146,11 +147,6 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
-    if (arch_reader->desc_builder)
-    {
-        AXIS2_DESC_BUILDER_FREE(arch_reader->desc_builder, env);
-        arch_reader->desc_builder = NULL;
-    }
     arch_reader->desc_builder =
         axis2_desc_builder_create_with_file_and_dep_engine(env, svc_xml,
             dep_engine);
@@ -158,6 +154,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     {
         return AXIS2_FAILURE;
     }
+    axis2_dep_engine_add_desc_builder(dep_engine, env, arch_reader->desc_builder);
 
     svcs = AXIS2_DESC_BUILDER_BUILD_OM(arch_reader->desc_builder, env);
 
@@ -200,7 +197,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
             dep_engine, svc);
         status = AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svcs);
-        AXIS2_SVC_BUILDER_FREE(svc_builder, env);
+        axis2_dep_engine_add_svc_builder(dep_engine, env, svc_builder);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "populating service is not successful");
@@ -227,7 +224,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env,
             svcs, dep_engine);
         status = AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(grp_builder, env, svc_grp);
-        AXIS2_SVC_GRP_BUILDER_FREE(grp_builder, env);
+        axis2_dep_engine_add_svc_builder(dep_engine, env, grp_builder);
     }
     return status;
 }
@@ -266,7 +263,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
             axis2_module_builder_create_with_file_and_dep_engine_and_module(env,
                 module_xml, dep_engine, module_desc);
         status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env);
-        AXIS2_MODULE_BUILDER_FREE(module_builder, env);
+        axis2_dep_engine_add_svc_builder(dep_engine, env, module_builder);
     }
     else
     {

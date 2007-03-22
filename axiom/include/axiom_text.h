@@ -39,7 +39,7 @@ extern "C"
 
     /**
       * Creates a new text struct
-      * @param env Environment. MUST  NOT be NULL, .
+      * @param env Environment. 
       * @param parent parent of the new node. Optinal, can be NULL. 
       * The parent element must be of type AXIOM_ELEMENT
       * @param value Text value. Optinal, can be NULL.
@@ -54,9 +54,26 @@ extern "C"
         const axis2_char_t *value,
         axiom_node_t ** node);
 
+	/**
+      * Creates a new text struct
+      * @param env Environment. 
+      * @param parent parent of the new node. Optinal, can be NULL. 
+      * The parent element must be of type AXIOM_ELEMENT
+      * @param value Text value string. Optinal, can be NULL.
+      * @param comment_node This is an out parameter.  cannot be NULL.
+      * Returns the node corresponding to the text struct created.
+      * Node type will be set to AXIOM_TEXT  
+      * @return pointer to newly created text struct 
+      */
+    AXIS2_EXTERN axiom_text_t *AXIS2_CALL
+    axiom_text_create_str(const axis2_env_t *env,
+        axiom_node_t *parent,
+        axis2_string_t *value,
+        axiom_node_t ** node);
+
     /**
       * Creates a new text struct for binary data (MTOM)
-      * @param env Environment. MUST  NOT be NULL, .
+      * @param env Environment. 
       * @param parent parent of the new node. Optinal, can be NULL. 
       * The parent element must be of type AXIOM_ELEMENT
       * @param data_handler data handler. Optinal, can be NULL.
@@ -73,7 +90,7 @@ extern "C"
 
     /**
       * Free an axiom_text struct
-      * @param env environment.  MUST NOT be NULL.
+      * @param env environment. 
       * @param om_text pointer to om text struct to be freed.
       * @return satus of the op. AXIS2_SUCCESS on success
       * AXIS2_FAILURE on error.
@@ -84,7 +101,7 @@ extern "C"
 
     /**
       * Serialize op
-      * @param env environment.  MUST NOT be NULL.
+      * @param env environment. 
       * @param om_text pointer to om text struct to be serialized.
       * @param om_output AXIOM output handler to be used in serializing.
       * @return satus of the op. AXIS2_SUCCESS on success,
@@ -98,7 +115,7 @@ extern "C"
    /**
      * Sets the text value
      * @param om_text om_text struct
-     * @param env environment , MUST NOT be NULL.
+     * @param env environment.
      * @param value text
      * @return status of the op. AXIS2_SUCCESS on success,
      * AXIS2_FAILURE on error.
@@ -111,11 +128,34 @@ extern "C"
    /**
      * Gets text value 
      * @param om_text om_text struct
-     * @param env environment, MUST NOT be NULL.
+     * @param env environment.
      * @return text value , NULL is returned if there is no text value.
      */
-    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axiom_text_get_value(struct axiom_text *om_text,
+        const axis2_env_t *env);
+
+	/**
+     * Sets the text value
+     * @param om_text om_text struct
+     * @param env environment.
+     * @param value string
+     * @return status of the op. AXIS2_SUCCESS on success,
+     * AXIS2_FAILURE on error.
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_text_set_value_str(struct axiom_text *om_text,
+        const axis2_env_t *env,
+        axis2_string_t *value);
+
+   /**
+     * Gets text value 
+     * @param om_text om_text struct
+     * @param env environment.
+     * @return text valu stringe , NULL is returned if there is no text value.
+     */
+    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    axiom_text_get_value_str(struct axiom_text *om_text,
         const axis2_env_t *env);
 
    /**

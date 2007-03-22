@@ -52,6 +52,10 @@ extern "C"
 
     /** Type name for struct axis2_dep_engine */
     typedef struct axis2_dep_engine axis2_dep_engine_t;
+    struct axis2_desc_builder;
+    struct axis2_module_builder;
+    struct axis2_svc_builder;
+    struct axis2_grp_builder;
 
     /** 
      * De-allocate memory
@@ -289,6 +293,26 @@ extern "C"
     axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
         const axis2_char_t *repos_path,
         const axis2_char_t *svr_xml_file);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_add_desc_builder(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_desc_builder *desc_builder);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_add_module_builder(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_module_builder *module_builder);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_add_svc_builder(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_svc_builder *svc_builder);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_dep_engine_add_svc_grp_builder(axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        struct axis2_svc_grp_builder *svc_grp_builder);
 
 /** Frees the deployment engine. */
 #define AXIS2_DEP_ENGINE_FREE(dep_engine, env) \

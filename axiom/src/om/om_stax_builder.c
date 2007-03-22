@@ -186,6 +186,7 @@ axiom_stax_builder_create_om_text(axiom_stax_builder_t * om_builder,
     const axis2_env_t *env)
 {
     axis2_char_t *temp_value = NULL;
+	axis2_string_t *temp_value_str = NULL;
     axiom_node_t *node = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -197,7 +198,6 @@ axiom_stax_builder_create_om_text(axiom_stax_builder_t * om_builder,
         return NULL;
     }
     temp_value = AXIOM_XML_READER_GET_VALUE(om_builder->parser, env);
-
     if (!temp_value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_READER_VALUE_NULL,
@@ -205,22 +205,26 @@ axiom_stax_builder_create_om_text(axiom_stax_builder_t * om_builder,
         return NULL;
     }
 
+	temp_value_str = axis2_string_create_assume_ownership(env, &temp_value);
+    /*temp_value_str = axis2_string_create(env, temp_value);*/
+
     if (AXIOM_NODE_IS_COMPLETE(om_builder->lastnode, env))
     {
-        axiom_text_create(env,
+        axiom_text_create_str(env,
             AXIOM_NODE_GET_PARENT(om_builder->lastnode, env),
-            temp_value, &node);
+            temp_value_str, &node);
 
     }
     else
     {
-        axiom_text_create(env, om_builder->lastnode, temp_value, &node);
+        axiom_text_create_str(env, om_builder->lastnode, temp_value_str, &node);
     }
 
     axiom_node_set_complete(node , env, AXIS2_TRUE);
     om_builder->lastnode = node;
 
-    AXIOM_XML_READER_XML_FREE(om_builder->parser , env, temp_value);
+    /*AXIOM_XML_READER_XML_FREE(om_builder->parser , env, temp_value); */
+	axis2_string_free(temp_value_str, env);
     return node;
 }
 
