@@ -136,10 +136,14 @@ axiom_children_qname_iterator_has_next(axiom_children_qname_iterator_t *iterator
                     iterator->current_child, env);
             }
 
-            if (om_element &&
+            /*if (om_element &&
                 axiom_children_qname_iterator_qname_matches(env,
                 axiom_element_get_qname(om_element, env, iterator->current_child),
-                iterator->given_qname))
+                iterator->given_qname))*/
+            if (om_element &&
+                axis2_qname_equals(
+                    axiom_element_get_qname(om_element, env, iterator->current_child),
+                    env, iterator->given_qname))
             {
                 iterator->matching_node_found = AXIS2_TRUE;
                 iterator->need_to_move_forward = AXIS2_FALSE;
