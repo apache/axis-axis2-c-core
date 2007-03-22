@@ -122,7 +122,7 @@ axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
 
     if (repos_listener->info_list)
     {
-        AXIS2_WS_INFO_LIST_FREE(repos_listener->info_list, env);
+        axis2_ws_info_list_free(repos_listener->info_list, env);
     }
 
     AXIS2_FREE(env->allocator, repos_listener);
@@ -172,7 +172,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_repos_listener_update(axis2_repos_listener_t *repos_listener,
     const axis2_env_t *env)
 {
-    return AXIS2_WS_INFO_LIST_UPDATE(repos_listener->info_list, env);
+    return axis2_ws_info_list_update(repos_listener->info_list, env);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -183,7 +183,7 @@ axis2_repos_listener_init(axis2_repos_listener_t *repos_listener,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    status = AXIS2_WS_INFO_LIST_INIT(repos_listener->info_list, env);
+    status = axis2_ws_info_list_init(repos_listener->info_list, env);
     if (AXIS2_SUCCESS != status)
     {
         return status;
@@ -207,7 +207,7 @@ axis2_repos_listener_start_listen(axis2_repos_listener_t *repos_listener,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    AXIS2_WS_INFO_LIST_INIT(repos_listener->info_list, env);
+    axis2_ws_info_list_init(repos_listener->info_list, env);
     /* axis2_repos_listener_check_modules(repos_listener, env); */
     axis2_repos_listener_check_svcs(repos_listener, env);
     axis2_repos_listener_update(repos_listener, env);
@@ -247,7 +247,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
     {
         axis2_file_t *file = NULL;
         file = axis2_array_list_get(current_info_list, env, i);
-        status = AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(repos_listener->info_list, env,
+        status = axis2_ws_info_list_add_ws_info_item(repos_listener->info_list, env,
             file, type);
         if (AXIS2_SUCCESS != status)
         {

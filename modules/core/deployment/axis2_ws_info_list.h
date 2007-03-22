@@ -166,38 +166,6 @@ extern "C"
     axis2_ws_info_list_create_with_dep_engine(const axis2_env_t *env,
         struct axis2_dep_engine *dep_engine);
 
-/** Frees the ws info list. */
-#define AXIS2_WS_INFO_LIST_FREE(ws_info_list, env) \
-      axis2_ws_info_list_free (ws_info_list, env)
-
-/** Initialize the ws info list. */
-#define AXIS2_WS_INFO_LIST_INIT(ws_info_list, env) \
-      axis2_ws_info_list_init (ws_info_list, env)
-
-/** Add ws info item. */
-#define AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(ws_info_list, env, file, type) \
-      axis2_ws_info_list_add_ws_info_item (ws_info_list, env, file, type)
-
-/** Get file item. */
-#define AXIS2_WS_INFO_LIST_GET_FILE_ITEM(ws_info_list, env, file_name) \
-      axis2_ws_info_list_get_file_item (ws_info_list, env, file_name)
-
-/** Is modified. */
-#define AXIS2_WS_INFO_LIST_IS_MODIFIED(ws_info_list, env, file, ws_info) \
-      axis2_ws_info_list_is_modified (ws_info_list, env, file, ws_info)
-
-/** Is file exist. */
-#define AXIS2_WS_INFO_LIST_IS_FILE_EXIST(ws_info_list, env, file_name) \
-      axis2_ws_info_list_is_file_exist (ws_info_list, env, file_name)
-
-/** Check for undeploy. */
-#define AXIS2_WS_INFO_LIST_CHECK_FOR_UNDEPLOY(ws_info_list, env) \
-      axis2_ws_info_list_check_for_undeploy (ws_info_list, env)
-
-/** Update. */
-#define AXIS2_WS_INFO_LIST_UPDATE(ws_info_list, env) \
-      axis2_ws_info_list_update (ws_info_list, env)
-
 
 /*************************** End of function macros ***************************/
 
