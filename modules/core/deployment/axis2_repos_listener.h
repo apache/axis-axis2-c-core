@@ -23,11 +23,6 @@
  * @{
  */
 
-/**
- * @file axis2_repos_listener.h
- * @brief Axis2 Repos Listener interface
- */
-
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -130,29 +125,29 @@ extern "C"
         axis2_char_t *folder_name,
         struct axis2_dep_engine *dep_engine);
 
-/** Frees the repos listener. */
+/** Frees the repos listener. 
 #define AXIS2_REPOS_LISTENER_FREE(repos_listener, env) \
-      axis2_repos_listener_free (repos_listener, env)
+      axis2_repos_listener_free (repos_listener, env)*/
 
-/** Check modules. */
+/** Check modules. 
 #define AXIS2_REPOS_LISTENER_CHECK_MODULES(repos_listener, env) \
-      axis2_repos_listener_check_modules (repos_listener, env)
+      axis2_repos_listener_check_modules (repos_listener, env)*/
 
-/** Check the services. */
+/** Check the services. 
 #define AXIS2_REPOS_LISTENER_CHECK_SVCS(repos_listener, env) \
-      axis2_repos_listener_check_svcs (repos_listener, env)
+      axis2_repos_listener_check_svcs (repos_listener, env)*/
 
-/** Update. */
+/** Update. 
 #define AXIS2_REPOS_LISTENER_UPDATE(repos_listener, env) \
-      axis2_repos_listener_update (repos_listener, env)
+      axis2_repos_listener_update (repos_listener, env)*/
 
-/** Initialize the repos listener. */
+/** Initialize the repos listener. 
 #define AXIS2_REPOS_LISTENER_INIT(repos_listener, env) \
-      axis2_repos_listener_init (repos_listener, env)
+      axis2_repos_listener_init (repos_listener, env)*/
 
-/** Start listen. */
+/** Start listen. 
 #define AXIS2_REPOS_LISTENER_START_LISTEN(repos_listener, env) \
-      axis2_repos_listener_start_listen (repos_listener, env)
+      axis2_repos_listener_start_listen (repos_listener, env)*/
 
 /** @} */
 

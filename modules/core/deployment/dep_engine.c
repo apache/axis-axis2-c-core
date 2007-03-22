@@ -443,7 +443,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
 
     if (dep_engine->repos_listener)
     {
-        AXIS2_REPOS_LISTENER_FREE(dep_engine->repos_listener, env);
+        axis2_repos_listener_free(dep_engine->repos_listener, env);
     }
 
     if (dep_engine)
@@ -625,7 +625,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     */
     if (dep_engine->repos_listener)
     {
-        AXIS2_REPOS_LISTENER_FREE(dep_engine->repos_listener, env);
+        axis2_repos_listener_free(dep_engine->repos_listener, env);
     }
     dep_engine->repos_listener =
         axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
@@ -642,7 +642,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
     if (AXIS2_SUCCESS != status)
     {
-        AXIS2_REPOS_LISTENER_FREE(dep_engine->repos_listener, env);
+        axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
             AXIS2_FAILURE);
@@ -661,7 +661,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     axis2_conf_set_out_fault_phases(dep_engine->conf, env, new_out_fault_phases);
     if (AXIS2_SUCCESS != status)
     {
-        AXIS2_REPOS_LISTENER_FREE(dep_engine->repos_listener, env);
+        axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         return NULL;
     }
@@ -669,7 +669,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if (AXIS2_SUCCESS != status)
     {
-        AXIS2_REPOS_LISTENER_FREE(dep_engine->repos_listener, env);
+        axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
             AXIS2_FAILURE);
@@ -743,7 +743,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
         dep_engine->hot_update = AXIS2_FALSE;
         if (dep_engine->repos_listener)
         {
-            AXIS2_REPOS_LISTENER_FREE(dep_engine->repos_listener, env);
+            axis2_repos_listener_free(dep_engine->repos_listener, env);
         }
         dep_engine->repos_listener =
             axis2_repos_listener_create_with_folder_name_and_dep_engine(env,
@@ -759,7 +759,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if (AXIS2_FAILURE == status)
     {
-        AXIS2_REPOS_LISTENER_FREE(dep_engine->repos_listener, env);
+        axis2_repos_listener_free(dep_engine->repos_listener, env);
         axis2_conf_free(dep_engine->conf, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_VALIDATION_FAILED,
             AXIS2_FAILURE);
