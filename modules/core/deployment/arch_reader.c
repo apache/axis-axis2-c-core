@@ -196,7 +196,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 
         svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
             dep_engine, svc);
-        status = AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svcs);
+        status = axis2_svc_builder_populate_svc(svc_builder, env, svcs);
         axis2_dep_engine_add_svc_builder(dep_engine, env, svc_builder);
         if (AXIS2_SUCCESS != status)
         {

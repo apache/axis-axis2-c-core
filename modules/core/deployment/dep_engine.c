@@ -303,7 +303,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
 
     if (dep_engine->svc_builder)
     {
-        AXIS2_SVC_BUILDER_FREE(dep_engine->svc_builder, env);
+        axis2_svc_builder_free(dep_engine->svc_builder, env);
     }
 
     if (dep_engine->ws_to_deploy)
@@ -1419,7 +1419,7 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
     node = axis2_desc_builder_build_om(
         axis2_svc_builder_get_desc_builder(dep_engine->svc_builder, env),
         env);
-    AXIS2_SVC_BUILDER_POPULATE_SVC(dep_engine->svc_builder, env, node);
+    axis2_svc_builder_populate_svc(dep_engine->svc_builder, env, node);
     /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
 
     return svc;
