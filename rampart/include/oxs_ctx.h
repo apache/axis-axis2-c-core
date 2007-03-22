@@ -206,55 +206,6 @@ extern "C"
                     oxs_ctx_t *ctx,
                     const axis2_env_t *env
                     );
-
-        /**
-         * 
-         * @param ctx The OMXMLSecurity context 
-         * @param env pointer to environment struct
-         * @return of the context 
-         */
-        axiom_node_t *(AXIS2_CALL *
-        get_enc_data_node)(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env
-                    );
-
-        /**
-         * 
-         * @param ctx The OMXMLSecurity context 
-         * @param env pointer to environment struct
-         * @return of the context 
-         */
-        axiom_node_t *(AXIS2_CALL *
-        get_enc_method_node)(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env
-                    );
-
-        /**
-         * 
-         * @param ctx The OMXMLSecurity context 
-         * @param env pointer to environment struct
-         * @return of the context 
-         */
-        axiom_node_t *(AXIS2_CALL *
-        get_key_info_node)(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env
-                    );
-
-        /**
-         * 
-         * @param ctx The OMXMLSecurity context 
-         * @param env pointer to environment struct
-         * @return of the context 
-         */
-        axiom_node_t *(AXIS2_CALL *
-        get_cipher_value_node)(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env
-                    );
-
         /**
          * 
          * @param ctx The OMXMLSecurity context 
@@ -407,63 +358,6 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_char_t *input_data
                     );
-
-        /**
-         * 
-         * @param ctx The OMXMLSecurity context 
-         * @param env pointer to environment struct
-         * @param enc_data_node  reference to the EncryptionData node 
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-        set_enc_data_node)(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env,
-                    axiom_node_t *enc_data_node
-                    );
-
-        /**
-         * 
-         * @param ctx The OMXMLSecurity context 
-         * @param env pointer to environment struct
-         * @param enc_method_node  reference to the EncryptionMethod node 
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-        set_enc_method_node)(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env,
-                    axiom_node_t *enc_method_node
-                    );
-
-        /**
-         * 
-         * @param ctx The OMXMLSecurity context 
-         * @param env pointer to environment struct
-         * @param key_info_node  reference to the KeyInfo node  
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-        set_key_info_node)(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env,
-                    axiom_node_t *key_info_node
-                    );
-
-        /**
-         * 
-         * @param ctx The OMXMLSecurity context 
-         * @param env pointer to environment struct
-         * @param cipher_value_node reference to the cipherValue node 
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-        set_cipher_value_node)(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env,
-                    axiom_node_t *cipher_value_node
-                    );
-
     };
     
     struct oxs_ctx
@@ -514,18 +408,6 @@ extern "C"
 #define OXS_CTX_GET_INPUT_DATA(ctx, env) \
         ((ctx)->ops->get_input_data(ctx, env) )
     
-#define OXS_CTX_GET_ENC_DATA_NODE(ctx, env) \
-        ((ctx)->ops->get_enc_data_node(ctx, env) )
-    
-#define OXS_CTX_GET_ENC_METHOD_NODE(ctx, env) \
-        ((ctx)->ops->get_enc_method_node(ctx, env) )
-    
-#define OXS_CTX_GET_KEY_INFO_NODE(ctx, env) \
-        ((ctx)->ops->get_key_info_node(ctx, env) )
-    
-#define OXS_CTX_GET_CIPHER_VALUE_NODE(ctx, env) \
-        ((ctx)->ops->get_cipher_value_node(ctx, env) )
-    
 #define OXS_CTX_SET_MODE(ctx, env, mode) \
         ((ctx)->ops->set_mode(ctx, env, mode) )
     
@@ -559,19 +441,6 @@ extern "C"
 #define OXS_CTX_SET_INPUT_DATA(ctx, env, input_data) \
         ((ctx)->ops->set_input_data(ctx, env, input_data) )
     
-#define OXS_CTX_SET_ENC_DATA_NODE(ctx, env, enc_data_node) \
-        ((ctx)->ops->set_enc_data_node(ctx, env, enc_data_node) )
-    
-#define OXS_CTX_SET_ENC_METHOD_NODE(ctx, env, enc_method_node) \
-        ((ctx)->ops->set_enc_method_node(ctx, env, enc_method_node) )
-    
-#define OXS_CTX_SET_KEY_INFO_NODE(ctx, env, key_info_node) \
-        ((ctx)->ops->set_key_info_node(ctx, env, key_info_node) )
-    
-#define OXS_CTX_SET_CIPHER_VALUE_NODE(ctx, env, cipher_value_node) \
-        ((ctx)->ops->set_cipher_value_node(ctx, env, cipher_value_node) )
-    
-
 
 
 /** @} */

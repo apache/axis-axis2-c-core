@@ -48,11 +48,6 @@ typedef struct oxs_ctx_impl
     /*Used  in decryption process to keep the data to be decrypted*/
     axis2_char_t*           input_data;
 
-    /*TODO: Not in use. Remove later*/
-    axiom_node_t*           enc_data_node;
-    axiom_node_t*           enc_method_node;
-    axiom_node_t*           key_info_node;
-    axiom_node_t*           cipher_value_node;
 }
 oxs_ctx_impl_t;
 
@@ -138,31 +133,6 @@ oxs_ctx_get_input_data(
     oxs_ctx_t *ctx,
     const axis2_env_t *env
 );
-
-axiom_node_t *AXIS2_CALL
-oxs_ctx_get_enc_data_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axiom_node_t *AXIS2_CALL
-oxs_ctx_get_enc_method_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axiom_node_t *AXIS2_CALL
-oxs_ctx_get_key_info_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axiom_node_t *AXIS2_CALL
-oxs_ctx_get_cipher_value_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
 axis2_status_t AXIS2_CALL
 oxs_ctx_set_mode(
     oxs_ctx_t *ctx,
@@ -240,35 +210,6 @@ oxs_ctx_set_input_data(
     axis2_char_t *input_data
 );
 
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_enc_data_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axiom_node_t *enc_data_node
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_enc_method_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axiom_node_t *enc_method_node
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_key_info_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axiom_node_t *key_info_node
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_cipher_value_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axiom_node_t *cipher_value_node
-);
-
-
 /******************* end of function headers ******************************/
 AXIS2_EXTERN oxs_ctx_t *AXIS2_CALL
 oxs_ctx_create(const axis2_env_t *env)
@@ -294,10 +235,6 @@ oxs_ctx_create(const axis2_env_t *env)
     ctx_impl->carried_key_name  = NULL;
     ctx_impl->enc_mtd_algorithm  = NULL;
     ctx_impl->input_data  = NULL;
-    ctx_impl->enc_data_node  = NULL;
-    ctx_impl->enc_method_node  = NULL;
-    ctx_impl->key_info_node  = NULL;
-    ctx_impl->cipher_value_node  = NULL;
 
 
     ctx_impl->ctx.ops =  AXIS2_MALLOC(env->allocator, sizeof(oxs_ctx_ops_t));
@@ -331,10 +268,6 @@ oxs_ctx_init_ops(
     ctx->ops->get_carried_key_name = oxs_ctx_get_carried_key_name ;
     ctx->ops->get_enc_mtd_algorithm = oxs_ctx_get_enc_mtd_algorithm ;
     ctx->ops->get_input_data = oxs_ctx_get_input_data ;
-    ctx->ops->get_enc_data_node = oxs_ctx_get_enc_data_node ;
-    ctx->ops->get_enc_method_node = oxs_ctx_get_enc_method_node ;
-    ctx->ops->get_key_info_node = oxs_ctx_get_key_info_node ;
-    ctx->ops->get_cipher_value_node = oxs_ctx_get_cipher_value_node ;
 
     ctx->ops->set_mode = oxs_ctx_set_mode ;
     ctx->ops->set_operation = oxs_ctx_set_operation ;
@@ -347,10 +280,6 @@ oxs_ctx_init_ops(
     ctx->ops->set_carried_key_name = oxs_ctx_set_carried_key_name ;
     ctx->ops->set_enc_mtd_algorithm = oxs_ctx_set_enc_mtd_algorithm ;
     ctx->ops->set_input_data = oxs_ctx_set_input_data ;
-    ctx->ops->set_enc_data_node = oxs_ctx_set_enc_data_node ;
-    ctx->ops->set_enc_method_node = oxs_ctx_set_enc_method_node ;
-    ctx->ops->set_key_info_node = oxs_ctx_set_key_info_node ;
-    ctx->ops->set_cipher_value_node = oxs_ctx_set_cipher_value_node ;
 }
 
 /*public functions*/
@@ -571,62 +500,6 @@ oxs_ctx_get_input_data(
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->input_data ;
-}
-
-
-axiom_node_t *AXIS2_CALL
-oxs_ctx_get_enc_data_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-)
-{
-    oxs_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-
-    return ctx_impl->enc_data_node ;
-}
-
-
-axiom_node_t *AXIS2_CALL
-oxs_ctx_get_enc_method_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-)
-{
-    oxs_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-
-    return ctx_impl->enc_method_node ;
-}
-
-
-axiom_node_t *AXIS2_CALL
-oxs_ctx_get_key_info_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-)
-{
-    oxs_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-
-    return ctx_impl->key_info_node ;
-}
-
-
-axiom_node_t *AXIS2_CALL
-oxs_ctx_get_cipher_value_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-)
-{
-    oxs_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-
-    return ctx_impl->cipher_value_node ;
 }
 
 
@@ -858,92 +731,4 @@ oxs_ctx_set_input_data(
 
     return AXIS2_SUCCESS;
 }
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_enc_data_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axiom_node_t *enc_data_node
-)
-{
-    oxs_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->enc_data_node)
-    {
-        AXIS2_FREE(env->allocator, ctx_impl->enc_data_node);
-        ctx_impl->enc_data_node = NULL;
-    }
-    ctx_impl->enc_data_node = enc_data_node ;
-
-    return AXIS2_SUCCESS;
-}
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_enc_method_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axiom_node_t *enc_method_node
-)
-{
-    oxs_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->enc_method_node)
-    {
-        AXIS2_FREE(env->allocator, ctx_impl->enc_method_node);
-        ctx_impl->enc_method_node = NULL;
-    }
-    ctx_impl->enc_method_node = enc_method_node ;
-
-    return AXIS2_SUCCESS;
-}
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_key_info_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axiom_node_t *key_info_node
-)
-{
-    oxs_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->key_info_node)
-    {
-        AXIS2_FREE(env->allocator, ctx_impl->key_info_node);
-        ctx_impl->key_info_node = NULL;
-    }
-    ctx_impl->key_info_node = key_info_node ;
-
-    return AXIS2_SUCCESS;
-}
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_cipher_value_node(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axiom_node_t *cipher_value_node
-)
-{
-    oxs_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->cipher_value_node)
-    {
-        AXIS2_FREE(env->allocator, ctx_impl->cipher_value_node);
-        ctx_impl->cipher_value_node = NULL;
-    }
-    ctx_impl->cipher_value_node = cipher_value_node ;
-
-    return AXIS2_SUCCESS;
-}
-
-
-
-
 
