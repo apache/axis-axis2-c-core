@@ -137,7 +137,9 @@ axis2_http_out_transport_info_set_char_encoding(
 	if(http_out_transport_info->set_char_encoding)
 	{
 		return http_out_transport_info->set_char_encoding(http_out_transport_info, env, encoding);
-	}else{
+	}
+    else
+    {
 
 		if (http_out_transport_info->encoding)
 		{
