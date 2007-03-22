@@ -65,6 +65,26 @@ sorted_list_insert(
    else; /*neglect if the same ns*/
 }
 
+void
+sorted_list_free_container(
+    c14n_sorted_list_t *root,
+    const axis2_env_t *env
+    )
+{
+    if (!root) return;
+    if (root->left) 
+    {
+        sorted_list_free_container(root->left, env);
+        AXIS2_FREE(env->allocator, root->left);
+    }
+    if (root->right)
+    {
+        sorted_list_free_container(root->right, env);
+        AXIS2_FREE(env->allocator, root->right);
+    }
+    /*if (root) AXIS2_FREE(env->allocator, root);*/
+}
+
 void 
 sorted_list_free(
     c14n_sorted_list_t *root,

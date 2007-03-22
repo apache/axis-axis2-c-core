@@ -49,18 +49,28 @@ extern "C"
         const axis2_env_t *env
         );
 
+    void
+    sorted_list_free_container(
+        c14n_sorted_list_t *root,
+        const axis2_env_t *env
+        );
+
 #ifdef __cplusplus
 }
 #endif
 
-#define AXIS2_SORTED_LIST_INSERT(list, val, ctx, compar, env)\
+#define C14N_SORTED_LIST_INSERT(list, val, ctx, compar, env)\
     sorted_list_insert(list, val, ctx, compar)
 
 #define c14n_sorted_list_create(env) NULL
 
-#define AXIS2_SORTED_LIST_FREE(list, fp_free, env) sorted_list_free(list, fp_free)
+#define C14N_SORTED_LIST_FREE(list, fp_free, env) sorted_list_free(list, fp_free)
 
-#define AXIS2_SORTED_LIST_ITERATE(list, ctx, fp_perform, env)\
+#define C14N_SORTED_LIST_ITERATE(list, ctx, fp_perform, env)\
     sorted_list_iterate(list, ctx, fp_perform, env)
+
+#define C14N_SORTED_LIST_FREE_CONTAINER(list, env)\
+    sorted_list_free_container(list, env);\
+    AXIS2_FREE(env->allocator, list)
 
 #endif

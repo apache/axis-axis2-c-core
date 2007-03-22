@@ -872,7 +872,7 @@ c14n_apply_on_element(
     c14n_output(">", ctx);
 
     c14n_ns_stack_pop(save_stack, ctx); /*restore to previous ns stack */
-    /*TODO: save_stack free*/
+    /*TODO:DONE??? save_stack free*/
     /*since save_stack is used just to memorize the head of the stack,
      * we don't have to worry about freeing its members*/
     
@@ -1040,15 +1040,18 @@ c14n_apply_on_attribute_axis(
     
             if (v)
             {
-                AXIS2_SORTED_LIST_INSERT(&attr_list, v, ctx, attr_compare, 
+                C14N_SORTED_LIST_INSERT(&attr_list, v, ctx, attr_compare, 
                         ctx->env);
             }
         }
 
-        AXIS2_SORTED_LIST_ITERATE(attr_list, ctx, c14n_apply_on_attribute, 
+        C14N_SORTED_LIST_ITERATE(attr_list, ctx, c14n_apply_on_attribute, 
                 ctx->env);
     }
-    /*TODO: AXIS2_SORTED_LIST_FREE();*/
+    
+    /*TODO:DONE C14N_SORTED_LIST_FREE();*/
+    C14N_SORTED_LIST_FREE_CONTAINER(attr_list, ctx->env);
+    
     return AXIS2_SUCCESS;
 
     /* TODO: Still need to add the "xml" attrs of the parents in case of doc subsets
@@ -1068,7 +1071,7 @@ c14n_normalize_text(
     axis2_char_t *old = NULL;
     int bufsz = INIT_BUFFER_SIZE;
 
-    /* TODO: a better buffer implementation */
+    /* TODO:DONE a better buffer implementation */
     buf = (axis2_char_t *)(AXIS2_MALLOC(ctx->env->allocator, 
                 (sizeof(axis2_char_t) * bufsz) + 10));
     if (!buf)
@@ -1157,7 +1160,7 @@ c14n_normalize_attribute(
     axis2_char_t *old = NULL;
     int bufsz = INIT_BUFFER_SIZE;
 
-    /* TODO: a better buffer implementation */
+    /* TODO:DONE a better buffer implementation */
     buf = (axis2_char_t *)(AXIS2_MALLOC(ctx->env->allocator, 
                 sizeof(axis2_char_t) * INIT_BUFFER_SIZE + 10));
     if (!buf)
@@ -1292,7 +1295,7 @@ c14n_apply_on_namespace_axis(
                         if (c14n_ns_stack_get_default(ctx)!=NULL)
                         {
                             c14n_ns_stack_set_default(ns, ctx);
-                            AXIS2_SORTED_LIST_INSERT(&out_list, (void *)ns, ctx,
+                            C14N_SORTED_LIST_INSERT(&out_list, (void *)ns, ctx,
                                     ns_prefix_compare, ctx->env);
                         }
                              
@@ -1309,7 +1312,7 @@ c14n_apply_on_namespace_axis(
                         if (!prev_def_uri || axis2_strcmp(prev_def_uri, uri) != 0)
                         {
                             c14n_ns_stack_set_default(ns, ctx);
-                            AXIS2_SORTED_LIST_INSERT(&out_list, (void *)ns, ctx,
+                            C14N_SORTED_LIST_INSERT(&out_list, (void *)ns, ctx,
                                     ns_prefix_compare, ctx->env);
                         }
                     }
@@ -1318,16 +1321,18 @@ c14n_apply_on_namespace_axis(
                 {
                     /*non-default namespace*/
                     c14n_ns_stack_add(ns, ctx);
-                    AXIS2_SORTED_LIST_INSERT(&out_list, (void *)ns, ctx,
+                    C14N_SORTED_LIST_INSERT(&out_list, (void *)ns, ctx,
                             ns_prefix_compare, ctx->env);
                 }
             }
         }
     }
     
-    AXIS2_SORTED_LIST_ITERATE(out_list, ctx, c14n_apply_on_namespace, ctx->env);
+    C14N_SORTED_LIST_ITERATE(out_list, ctx, c14n_apply_on_namespace, ctx->env);
     
-    /*TODO: AXIS2_SORTED_LIST_FREE();*/
+    C14N_SORTED_LIST_FREE_CONTAINER(out_list, ctx->env);
+    
+    /*TODO:DONE C14N_SORTED_LIST_FREE();*/
     return AXIS2_SUCCESS;
 }
 
@@ -1366,7 +1371,7 @@ c14n_apply_on_namespace_axis_exclusive(
                 if (ns_uri_compare(ns, def_ns, ctx) != 0)
                 {
                     c14n_ns_stack_set_default(ns, ctx);
-                    AXIS2_SORTED_LIST_INSERT(&out_list, (void *)ns,
+                    C14N_SORTED_LIST_INSERT(&out_list, (void *)ns,
                             ctx, ns_prefix_compare, ctx->env);
                 }
             }
@@ -1407,7 +1412,7 @@ c14n_apply_on_namespace_axis_exclusive(
                         if (c14n_need_to_declare_ns(ele, node, ns, ctx))
                         {
                             c14n_ns_stack_add(ns, ctx);
-                            AXIS2_SORTED_LIST_INSERT(&out_list, (void *)ns, ctx,
+                            C14N_SORTED_LIST_INSERT(&out_list, (void *)ns, ctx,
                                     ns_prefix_compare, ctx->env);
                         }
                     }
@@ -1416,10 +1421,11 @@ c14n_apply_on_namespace_axis_exclusive(
         }
         pnode = AXIOM_NODE_GET_PARENT((axiom_node_t *)pnode, ctx->env);
     } /*while*/
-    AXIS2_SORTED_LIST_ITERATE(out_list, ctx, c14n_apply_on_namespace , ctx->env);
+    C14N_SORTED_LIST_ITERATE(out_list, ctx, c14n_apply_on_namespace , ctx->env);
     
+    C14N_SORTED_LIST_FREE_CONTAINER(out_list, ctx->env);
 
-    /*TODO: AXIS2_SORTED_LIST_FREE();*/
+    /*TODO:DONE C14N_SORTED_LIST_FREE();*/
     return AXIS2_SUCCESS;
 }
 
