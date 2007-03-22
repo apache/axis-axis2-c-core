@@ -99,19 +99,6 @@ extern "C"
         struct axis2_dep_engine *dep_engine,
         axis2_conf_t *conf);
 
-/** Frees the conf builder 
-#define AXIS2_CONF_BUILDER_FREE(conf_builder, env) \
-      axis2_conf_builder_free (conf_builder, env)*/
-
-/** Populate conf. 
-#define AXIS2_CONF_BUILDER_POPULATE_CONF(conf_builder, env) \
-      axis2_conf_builder_populate_conf (conf_builder, env)*/
-
-/** Process module refs. 
-#define AXIS2_CONF_BUILDER_PROCESS_MODULE_REFS(conf_builder, env, module_refs) \
-      axis2_conf_builder_process_module_refs (conf_builder, env, module_refs)*/
-
-
 /** @} */
 
 #ifdef __cplusplus

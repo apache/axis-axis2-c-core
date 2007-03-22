@@ -126,18 +126,6 @@ extern "C"
         struct axis2_dep_engine *dep_engine,
         axis2_svc_t *svc);
 
-/** Frees the service builder. 
-#define AXIS2_SVC_BUILDER_FREE(svc_builder, env) \
-      axis2_svc_builder_free (svc_builder, env)*/
-
-/** Populates the service. 
-#define AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svc_node) \
-      axis2_svc_builder_populate_svc (svc_builder, env, svc_node)*/
-
-/** Process module refs.
-#define AXIS2_SVC_BUILDER_PROCESS_MODULE_REFS(svc_builder, env, module_refs) \
-      axis2_svc_builder_process_module_refs (svc_builder, env, module_refs) */
-
 /** @} */
 
 #ifdef __cplusplus
