@@ -1752,9 +1752,6 @@ rampart_context_is_key_identifier_type_supported(
     else if(axis2_strcmp(identifier,RAMPART_STR_EMBEDDED)==0)
         return rampart_context_is_embedded_token_supported(token,rampart_context,env);
 
-    else if(axis2_strcmp(identifier,RAMPART_STR_THUMB_PRINT)==0)
-        return rampart_context_is_thumb_print_supported(token,rampart_context,env);
-
     else
         return AXIS2_FALSE;
 }
