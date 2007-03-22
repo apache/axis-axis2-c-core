@@ -31,29 +31,6 @@ typedef struct axis2_apache2_out_transport_info
 #define AXIS2_INTF_TO_IMPL(out_transport_info) \
                 ((axis2_apache2_out_transport_info_t *)(out_transport_info))
 
-axis2_http_out_transport_info_t *AXIS2_CALL
-axis2_apache2_out_transport_info_create(
-    const axis2_env_t *env,
-    request_rec *request)
-{
-    axis2_apache2_out_transport_info_t *info = NULL;
-    AXIS2_ENV_CHECK(env, NULL);
-
-    info = (axis2_apache2_out_transport_info_t *)AXIS2_MALLOC
-            (env->allocator, sizeof(
-                        axis2_apache2_out_transport_info_t));
-
-    if (! info)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    info->request = request;
-    info->encoding = NULL;
-
-    return &(info->out_transport_info);
-}
-
 axis2_status_t AXIS2_CALL
 axis2_apache2_out_transport_info_free_void_arg(
     void *transport_info,
@@ -67,7 +44,7 @@ axis2_apache2_out_transport_info_free_void_arg(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_http_out_transport_info_free(
+axis2_apache_out_transport_info_free(
     axis2_http_out_transport_info_t *out_transport_info,
     const axis2_env_t *env)
 {
@@ -88,7 +65,7 @@ axis2_http_out_transport_info_free(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_http_out_transport_info_set_content_type(
+axis2_apache_out_transport_info_set_content_type(
     axis2_http_out_transport_info_t *out_transport_info,
     const axis2_env_t *env,
     const axis2_char_t *content_type)
@@ -122,7 +99,7 @@ axis2_http_out_transport_info_set_content_type(
 
 
 axis2_status_t AXIS2_CALL
-axis2_http_out_transport_info_set_char_encoding(
+axis2_apache_out_transport_info_set_char_encoding(
     axis2_http_out_transport_info_t *info,
     const axis2_env_t *env,
     const axis2_char_t *encoding)
@@ -138,5 +115,37 @@ axis2_http_out_transport_info_set_char_encoding(
     info->encoding = axis2_strdup(encoding, env);
 
     return AXIS2_SUCCESS;
+}
+
+
+
+axis2_http_out_transport_info_t *AXIS2_CALL
+axis2_apache2_out_transport_info_create(
+    const axis2_env_t *env,
+    request_rec *request)
+{
+    axis2_apache2_out_transport_info_t *info = NULL;
+	axis2_http_out_transport_info_t *out_transport_info = NULL;
+		
+    AXIS2_ENV_CHECK(env, NULL);
+
+    info = (axis2_apache2_out_transport_info_t *)AXIS2_MALLOC
+            (env->allocator, sizeof(
+                        axis2_apache2_out_transport_info_t));
+
+    if (! info)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    info->request = request;
+    info->encoding = NULL;
+
+	out_transport_info = &(info->out_transport_info);
+
+	axis2_http_out_transport_info_set_char_encoding_func(out_transport_info, env, axis2_apache_out_transport_info_set_char_encoding);
+	axis2_http_out_transport_info_set_content_type_func(out_transport_info, env, axis2_apache_out_transport_info_set_content_type);
+
+    return out_transport_info;
 }
 

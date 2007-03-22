@@ -239,10 +239,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\engine\event.c"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\..\modules\core\engine\handler.c"
 					>
 				</File>
@@ -438,14 +434,6 @@
 			<Filter
 				Name="description"
 				>
-				<File
-					RelativePath="..\..\..\..\modules\core\description\axis2_client_utils.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\modules\core\description\client_utils.c"
-					>
-				</File>
 				<File
 					RelativePath="..\..\..\..\modules\core\description\desc.c"
 					>
