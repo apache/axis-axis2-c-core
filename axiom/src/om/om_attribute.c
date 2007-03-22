@@ -22,9 +22,9 @@
 struct axiom_attribute
 {
     /** localname of this attribute  */
-    axis2_char_t *localname;
+    axis2_string_t *localname;
     /** value of this attribute */
-    axis2_char_t *value;
+    axis2_string_t *value;
     /** attribute namespace */
     axiom_namespace_t *ns;
     /** store qname here */
@@ -57,7 +57,7 @@ axiom_attribute_create(const axis2_env_t *env,
     attribute->ns        = NULL;
     attribute->qname = NULL;
 
-    attribute->localname = (axis2_char_t*) axis2_strdup(localname, env);
+    attribute->localname = axis2_string_create(env, localname);
     if (!(attribute->localname))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -66,11 +66,11 @@ axiom_attribute_create(const axis2_env_t *env,
     }
     if (value)
     {
-        attribute->value = (axis2_char_t*) axis2_strdup(value, env);
+        attribute->value = axis2_string_create(env, value);
         if (!(attribute->value))
         {
             AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            AXIS2_FREE(env->allocator, attribute->localname);
+            axis2_string_free(env->allocator, attribute->localname);
             AXIS2_FREE(env->allocator, attribute);
             return NULL;
         }
@@ -96,11 +96,11 @@ axiom_attribute_free(axiom_attribute_t *attribute,
 
     if (attribute->localname)
     {
-        AXIS2_FREE(env->allocator, attribute->localname);
+        axis2_string_free(attribute->localname, env);
     }
     if (attribute->value)
     {
-        AXIS2_FREE(env->allocator, attribute->value);
+        axis2_string_free(attribute->value, env);
     }
     if (attribute->qname)
     {
@@ -134,13 +134,14 @@ axiom_attribute_get_qname(axiom_attribute_t *attribute,
         if (attribute->ns)
         {
             qname = axis2_qname_create(env,
-                attribute->localname,
+                axis2_string_get_buffer(attribute->localname, env),
                 axiom_namespace_get_uri(attribute->ns, env),
                 axiom_namespace_get_prefix(attribute->ns, env));
         }
         else
         {
-            qname = axis2_qname_create(env, attribute->localname,
+            qname = axis2_qname_create(env, 
+                axis2_string_get_buffer(attribute->localname, env),
                 NULL,  NULL);
         }
         attribute->qname = qname;
@@ -170,20 +171,23 @@ axiom_attribute_serialize(axiom_attribute_t *attribute,
         if ((uri) && (NULL != prefix) && (axis2_strcmp(prefix, "") != 0))
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 4,
-                attribute->localname,
-                attribute->value,
+                axis2_string_get_buffer(attribute->localname, env),
+                axis2_string_get_buffer(attribute->value, env),
                 uri , prefix);
         }
         else if (uri)
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 3,
-                attribute->localname, attribute->value, uri);
+                axis2_string_get_buffer(attribute->localname, env), 
+                axis2_string_get_buffer(attribute->value, env),
+                uri);
         }
     }
     else
     {
         status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 2,
-            attribute->localname, attribute->value);
+            axis2_string_get_buffer(attribute->localname, env), 
+            axis2_string_get_buffer(attribute->value, env));
     }
     return status;
 }
@@ -192,16 +196,22 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_attribute_get_localname(axiom_attribute_t *attribute,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return attribute->localname;
+    if (attribute->localname)
+    {
+        return axis2_string_get_buffer(attribute->localname, env);
+    }
+    return NULL;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_attribute_get_value(axiom_attribute_t *attribute,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return attribute->value;
+    if (attribute->value)
+    {
+        return axis2_string_get_buffer(attribute->value, env);
+    }
+    return NULL;
 }
 
 AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
@@ -220,12 +230,13 @@ axiom_attribute_set_localname(axiom_attribute_t *attribute,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
 
-    if ((attribute->localname))
+    if (attribute->localname)
     {
-        AXIS2_FREE(env->allocator, attribute->localname);
+        axis2_string_free(attribute->localname, env);
+        attribute->localname = NULL;
     }
 
-    attribute->localname = (axis2_char_t*)axis2_strdup(localname, env);
+    attribute->localname = axis2_string_create(env, localname);
 
     if (!(attribute->localname))
     {
@@ -246,10 +257,11 @@ axiom_attribute_set_value(axiom_attribute_t *attribute,
 
     if (attribute->value)
     {
-        AXIS2_FREE(env->allocator, attribute->value);
+        axis2_string_free(attribute->value, env);
+        attribute->value = NULL;
     }
 
-    attribute->value = (axis2_char_t*)axis2_strdup(value, env);
+    attribute->value = axis2_string_create(env, value);
     if (!(attribute->value))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -278,7 +290,7 @@ axiom_attribute_clone(axiom_attribute_t *attribute,
     AXIS2_ENV_CHECK(env, NULL);
 
     /** namespace is not cloned since it is a shollow copy*/
-    cloned_attr = axiom_attribute_create(env,
+    cloned_attr = axiom_attribute_create_str(env,
         attribute->localname,
         attribute->value,
         attribute->ns);
@@ -295,6 +307,112 @@ axiom_attribute_increment_ref(struct axiom_attribute *om_attribute,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_attribute->ref++;
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axiom_attribute_t* AXIS2_CALL
+axiom_attribute_create_str(const axis2_env_t *env,
+    axis2_string_t * localname,
+    axis2_string_t * value,
+    axiom_namespace_t * ns)
+{
+    axiom_attribute_t *attribute = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    /* localname is mandatory */
+    AXIS2_PARAM_CHECK(env->error, localname, NULL);
+
+    attribute = (axiom_attribute_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_attribute_t));
+    if (!attribute)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    /**  initialize fields */
+    attribute->localname = NULL;
+    attribute->value     = NULL;
+    attribute->ns        = NULL;
+    attribute->qname = NULL;
+
+    attribute->localname = axis2_string_clone(localname, env);
+    if (!(attribute->localname))
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, attribute);
+        return NULL;
+    }
+    if (value)
+    {
+        attribute->value = axis2_string_clone(value, env);
+        if (!(attribute->value))
+        {
+            AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            axis2_string_free(env->allocator, attribute->localname);
+            AXIS2_FREE(env->allocator, attribute);
+            return NULL;
+        }
+    }
+    attribute->ns = ns;
+
+    attribute->ref = 0;
+
+    return attribute;
+}
+
+AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+axiom_attribute_get_localname_str(axiom_attribute_t *attribute,
+    const axis2_env_t *env)
+{
+    return attribute->localname;
+}
+
+AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+axiom_attribute_get_value_str(axiom_attribute_t *attribute,
+    const axis2_env_t *env)
+{
+    return attribute->value;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_attribute_set_localname_str(axiom_attribute_t *attribute,
+    const axis2_env_t *env,
+    axis2_string_t *localname)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
+
+    if (attribute->localname)
+    {
+        axis2_string_free(attribute->localname, env);
+        attribute->localname = NULL;
+    }
+
+    attribute->localname = axis2_string_clone(localname, env);
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_attribute_set_value_str(axiom_attribute_t *attribute,
+    const axis2_env_t *env,
+    axis2_string_t *value)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
+
+    if (attribute->value)
+    {
+        axis2_string_free(attribute->value, env);
+        attribute->value = NULL;
+    }
+
+    attribute->value = axis2_string_clone(value, env);
+    if (!(attribute->value))
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
     return AXIS2_SUCCESS;
 }
 

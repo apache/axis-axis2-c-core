@@ -102,6 +102,9 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
     axis2_char_t *prefix = NULL;
     axis2_char_t *attr_name = NULL;
     axis2_char_t *attr_value = NULL;
+    axis2_string_t *attr_name_str = NULL;
+    axis2_string_t *attr_value_str = NULL;
+
 
     axis2_status_t status = AXIS2_SUCCESS;
 
@@ -143,11 +146,16 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
         attr_name = AXIOM_XML_READER_GET_ATTRIBUTE_NAME_BY_NUMBER(
             om_builder->parser, env, i);
 
+        attr_name_str = axis2_string_create_assume_ownership(env, &attr_name);
+
         attr_value = AXIOM_XML_READER_GET_ATTRIBUTE_VALUE_BY_NUMBER(
             om_builder->parser, env, i);
+
+        attr_value_str = axis2_string_create_assume_ownership(env, &attr_value);
+
         if (attr_name)
         {
-            attribute = axiom_attribute_create(env, attr_name, attr_value, ns);
+            attribute = axiom_attribute_create_str(env, attr_name_str, attr_value_str, ns);
             if (!attribute)
             {
                 return AXIS2_FAILURE;
@@ -168,13 +176,13 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
         {
             AXIOM_XML_READER_XML_FREE(om_builder->parser, env, prefix);
         }
-        if (attr_name)
+        if (attr_name_str)
         {
-            AXIOM_XML_READER_XML_FREE(om_builder->parser, env, attr_name);
+            axis2_string_free(attr_name_str, env);
         }
-        if (attr_value)
+        if (attr_value_str)
         {
-            AXIOM_XML_READER_XML_FREE(om_builder->parser, env, attr_value);
+            axis2_string_free(attr_value_str, env);
         }
         ns = NULL;
     }
@@ -206,7 +214,6 @@ axiom_stax_builder_create_om_text(axiom_stax_builder_t * om_builder,
     }
 
 	temp_value_str = axis2_string_create_assume_ownership(env, &temp_value);
-    /*temp_value_str = axis2_string_create(env, temp_value);*/
 
     if (AXIOM_NODE_IS_COMPLETE(om_builder->lastnode, env))
     {
@@ -223,7 +230,6 @@ axiom_stax_builder_create_om_text(axiom_stax_builder_t * om_builder,
     axiom_node_set_complete(node , env, AXIS2_TRUE);
     om_builder->lastnode = node;
 
-    /*AXIOM_XML_READER_XML_FREE(om_builder->parser , env, temp_value); */
 	axis2_string_free(temp_value_str, env);
     return node;
 }
@@ -289,6 +295,8 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
     axis2_char_t *temp_prefix = NULL;
     axis2_char_t *temp_ns_prefix = NULL;
     axis2_char_t *temp_ns_uri    = NULL;
+    axis2_string_t *temp_ns_prefix_str = NULL;
+    axis2_string_t *temp_ns_uri_str = NULL;
 
     int i = 0;
 
@@ -303,14 +311,19 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
         temp_ns_uri = AXIOM_XML_READER_GET_NAMESPACE_URI_BY_NUMBER(
             om_builder->parser, env , i);
 
+        temp_ns_prefix_str = axis2_string_create_assume_ownership(env, &temp_ns_prefix);
+        
+        temp_ns_uri_str = axis2_string_create_assume_ownership(env, &temp_ns_uri);
+
         if (!temp_ns_prefix || axis2_strcmp(temp_ns_prefix, "xmlns") == 0)
         {
             /** default namespace case */
             /** !temp_ns_prefix is for guththila */
             axiom_element_t *om_ele = NULL;
+            temp_ns_prefix_str = axis2_string_create(env, "");
             om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
 
-            om_ns = axiom_namespace_create(env, temp_ns_uri, "");
+            om_ns = axiom_namespace_create_str(env, temp_ns_uri_str, temp_ns_prefix_str);
             if (!om_ns || !om_ele)
             {
                 return AXIS2_FAILURE;
@@ -330,7 +343,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
             axis2_char_t *prefix = NULL;
             om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
 
-            om_ns = axiom_namespace_create(env, temp_ns_uri, temp_ns_prefix);
+            om_ns = axiom_namespace_create_str(env, temp_ns_uri_str, temp_ns_prefix_str);
             if (!om_ns || !om_ele)
             {
                 return AXIS2_FAILURE;
@@ -342,8 +355,8 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
             axis2_hash_set(om_builder->declared_namespaces,
                 prefix, AXIS2_HASH_KEY_STRING, om_ns);
         }
-        AXIOM_XML_READER_XML_FREE(om_builder->parser, env, temp_ns_prefix);
-        AXIOM_XML_READER_XML_FREE(om_builder->parser, env, temp_ns_uri);
+        axis2_string_free(temp_ns_uri_str, env);
+        axis2_string_free(temp_ns_prefix_str, env);
         if (!om_ns)
         {
             /* something went wrong */
@@ -387,6 +400,7 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
     axiom_node_t *element_node = NULL;
     axiom_element_t *om_ele = NULL;
     axis2_char_t *temp_localname = NULL;
+    axis2_string_t *temp_localname_str = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, om_builder, NULL);
@@ -399,12 +413,14 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
             AXIS2_FAILURE);
         return NULL;
     }
-
+    
+    temp_localname_str = axis2_string_create_assume_ownership(env, &temp_localname);
+    
     om_builder->element_level++;
 
     if (!(om_builder->lastnode))
     {
-        om_ele = axiom_element_create(env , NULL, temp_localname, NULL, &element_node);
+        om_ele = axiom_element_create_str(env , NULL, temp_localname_str, NULL, &element_node);
         if (!om_ele)
         {
             return NULL;
@@ -423,9 +439,9 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
     }
     else if (AXIOM_NODE_IS_COMPLETE(om_builder->lastnode, env))
     {
-        om_ele = axiom_element_create(env,
+        om_ele = axiom_element_create_str(env,
             AXIOM_NODE_GET_PARENT(om_builder->lastnode, env),
-            temp_localname, NULL, &element_node);
+            temp_localname_str, NULL, &element_node);
         if (!om_ele)
         {
             return NULL;
@@ -445,8 +461,8 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
     }
     else
     {
-        om_ele = axiom_element_create(env, om_builder->lastnode,
-            temp_localname, NULL, &element_node);
+        om_ele = axiom_element_create_str(env, om_builder->lastnode,
+            temp_localname_str, NULL, &element_node);
         if (element_node)
         {
             axiom_node_set_first_child(om_builder->lastnode,
@@ -456,10 +472,8 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
             axiom_node_set_builder(element_node, env, om_builder);
         }
     }
-    if (temp_localname)
-    {
-        AXIOM_XML_READER_XML_FREE(om_builder->parser , env, temp_localname);
-    }
+
+    axis2_string_free(temp_localname_str, env);
 
     /** order of processing namespaces first is important */
     axiom_stax_builder_process_namespaces(om_builder, env, element_node, 0);

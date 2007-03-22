@@ -29,7 +29,7 @@ struct axiom_element
     /** Element's namespace */
     axiom_namespace_t *ns;
     /** Element's local name */
-    axis2_char_t *localname;
+    axis2_string_t *localname;
     /** List of attributes */
     axis2_hash_t *attributes;
     /** List of namespaces */
@@ -91,7 +91,7 @@ axiom_element_create(const axis2_env_t *env,
     element->text_value = NULL;
     element->next_ns_prefix_number = 0;
 
-    element->localname = (axis2_char_t *) axis2_strdup(localname, env);
+    element->localname = axis2_string_create(env, localname);
     if (!element->localname)
     {
         AXIS2_FREE(env->allocator, element);
@@ -609,7 +609,7 @@ axiom_element_free(axiom_element_t *om_element,
 
     if (om_element->localname)
     {
-        AXIS2_FREE(env->allocator, om_element->localname);
+        axis2_string_free(om_element->localname, env);
     }
     if (om_element->ns)
     {
@@ -695,19 +695,19 @@ axiom_element_serialize_start_part(axiom_element_t *om_element,
         if ((uri) && (prefix) && (axis2_strcmp(prefix, "") != 0))
         {
             status = axiom_output_write(om_output, env,
-                AXIOM_ELEMENT, 3, om_element->localname,
+                AXIOM_ELEMENT, 3, axis2_string_get_buffer(om_element->localname, env),
                 uri, prefix);
         }
         else if (uri)
         {
             status = axiom_output_write(om_output, env,
-                AXIOM_ELEMENT, 2, om_element->localname, uri);
+                AXIOM_ELEMENT, 2, axis2_string_get_buffer(om_element->localname, env), uri);
         }
     }
     else
     {
         status = axiom_output_write(om_output, env,
-            AXIOM_ELEMENT, 1, om_element->localname);
+            AXIOM_ELEMENT, 1, axis2_string_get_buffer(om_element->localname, env));
     }
     if (om_element->attributes)
     {
@@ -773,7 +773,10 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_element_get_localname(axiom_element_t *om_element,
     const axis2_env_t *env)
 {
-    return om_element->localname;
+    if (om_element->localname)
+        return axis2_string_get_buffer(om_element->localname, env);
+    else
+        return NULL;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -785,10 +788,10 @@ axiom_element_set_localname(axiom_element_t *om_element,
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
     if (om_element->localname)
     {
-        AXIS2_FREE(env->allocator, om_element->localname);
+        axis2_string_free(om_element->localname, env);
         om_element->localname = NULL;
     }
-    om_element->localname = (axis2_char_t*)axis2_strdup(localname, env);
+    om_element->localname = axis2_string_create(env, localname);
     if (!(om_element->localname))
     {
         return AXIS2_FAILURE;
@@ -892,14 +895,14 @@ axiom_element_get_qname(axiom_element_t *om_element,
             if (axiom_namespace_get_prefix(ns, env))
             {
                 om_element->qname = axis2_qname_create(env ,
-                    om_element->localname,
+                    axis2_string_get_buffer(om_element->localname, env),
                     axiom_namespace_get_uri(ns, env),
                     axiom_namespace_get_prefix(ns, env));
             }
             else
             {
                 om_element->qname = axis2_qname_create(env,
-                    om_element->localname,
+                    axis2_string_get_buffer(om_element->localname, env),
                     axiom_namespace_get_uri(ns, env),
                     NULL);
             }
@@ -907,7 +910,7 @@ axiom_element_get_qname(axiom_element_t *om_element,
         else
         {
             om_element->qname = axis2_qname_create(env,
-                om_element->localname,
+                axis2_string_get_buffer(om_element->localname, env),
                 NULL,  NULL);
         }
     }
@@ -1505,5 +1508,118 @@ axiom_element_get_attribute_value_by_name(axiom_element_t *om_element,
     return NULL;
 }
 
+AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+axiom_element_create_str(const axis2_env_t *env,
+    axiom_node_t *parent,
+    axis2_string_t *localname,
+    axiom_namespace_t *ns,
+    axiom_node_t **node)
+{
+    axiom_element_t *element;
+    AXIS2_ENV_CHECK(env, NULL);
 
+    if (!localname || !node)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    (*node) = axiom_node_create(env);
+    if (!(*node))
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    element = (axiom_element_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_element_t));
+
+    if (!element)
+    {
+        AXIS2_FREE(env->allocator, (*node));
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    element->ns = NULL;
+    element->localname = NULL;
+    element->attributes = NULL;
+    element->namespaces = NULL;
+    element->qname = NULL;
+    element->child_ele_iter = NULL;
+    element->children_iter = NULL;
+    element->children_qname_iter = NULL;
+    element->text_value = NULL;
+    element->next_ns_prefix_number = 0;
+
+    element->localname = axis2_string_clone(localname, env);
+    if (!element->localname)
+    {
+        AXIS2_FREE(env->allocator, element);
+        AXIS2_FREE(env->allocator, (*node));
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    if (parent)
+    {
+        AXIOM_NODE_ADD_CHILD(parent, env, (*node));
+    }
+    axiom_node_set_complete((*node), env, AXIS2_FALSE);
+    axiom_node_set_node_type((*node), env, AXIOM_ELEMENT);
+    axiom_node_set_data_element((*node), env, element);
+
+    if (ns)
+    {
+        axis2_char_t *uri = NULL;
+        axis2_char_t *prefix = NULL;
+
+        uri = axiom_namespace_get_uri(ns, env);
+        prefix = axiom_namespace_get_prefix(ns, env);
+
+        element->ns = axiom_element_find_namespace(element,
+            env, *node, uri, prefix);
+        if (!(element->ns))
+        {
+            if (axiom_element_declare_namespace(element,
+                env, *node, ns) == AXIS2_SUCCESS)
+            {
+                element->ns = ns;
+            }
+        }
+        if (prefix && axis2_strcmp(prefix, "") == 0)
+        {
+            element->ns = NULL;
+        }
+    }
+
+    return element;
+}
+
+AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+axiom_element_get_localname_str(axiom_element_t *om_element,
+    const axis2_env_t *env)
+{
+    return om_element->localname;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_element_set_localname_str(axiom_element_t *om_element,
+    const axis2_env_t *env,
+    axis2_string_t *localname)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
+    
+    if (om_element->localname)
+    {
+        axis2_string_free(om_element->localname, env);
+        om_element->localname = NULL;
+    }
+    
+    om_element->localname = axis2_string_clone(localname, env);
+
+    if (!(om_element->localname))
+    {
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
 

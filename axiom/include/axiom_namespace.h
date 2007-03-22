@@ -21,6 +21,7 @@
 #include <axis2_utils_defines.h>
 #include <axis2_env.h>
 #include <axiom_output.h>
+#include <axis2_string.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -122,6 +123,24 @@ extern "C"
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_namespace_increment_ref(struct axiom_namespace *om_namespace,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
+    axiom_namespace_create_str(const axis2_env_t *env,
+        axis2_string_t * uri,
+        axis2_string_t * prefix);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_namespace_set_uri_str(axiom_namespace_t *om_namespace,
+        const axis2_env_t *env,
+        axis2_string_t *uri);
+
+    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    axiom_namespace_get_uri_str(axiom_namespace_t *om_namespace,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    axiom_namespace_get_prefix_str(axiom_namespace_t *om_namespace,
         const axis2_env_t *env);
 
     /** @} */

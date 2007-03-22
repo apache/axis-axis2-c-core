@@ -485,6 +485,23 @@ extern "C"
             const axis2_env_t *env,
             axis2_char_t *attr_name);
 
+    AXIS2_EXTERN axiom_element_t *AXIS2_CALL
+    axiom_element_create_str(const axis2_env_t *env,
+        axiom_node_t *parent,
+        axis2_string_t *localname,
+        axiom_namespace_t *ns,
+        axiom_node_t **node);
+
+    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    axiom_element_get_localname_str(axiom_element_t *om_element,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_element_set_localname_str(axiom_element_t *om_element,
+        const axis2_env_t *env,
+        axis2_string_t *localname);
+
+
     /** @} */
 
 

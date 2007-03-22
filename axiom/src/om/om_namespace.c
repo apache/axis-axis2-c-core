@@ -22,9 +22,9 @@
 struct axiom_namespace
 {
     /** namespace URI */
-    axis2_char_t *uri;
+    axis2_string_t *uri;
     /** namespace prefix  */
-    axis2_char_t *prefix;
+    axis2_string_t *prefix;
 
     axis2_char_t *key;
 
@@ -57,7 +57,7 @@ axiom_namespace_create(const axis2_env_t *env,
     om_namespace->uri = NULL;
     om_namespace->key = NULL;
 
-    om_namespace->uri = (axis2_char_t *) axis2_strdup(uri, env);
+    om_namespace->uri = axis2_string_create(env, uri);
     if (!om_namespace->uri)
     {
         AXIS2_FREE(env->allocator, om_namespace);
@@ -67,7 +67,7 @@ axiom_namespace_create(const axis2_env_t *env,
 
     if (prefix)
     {
-        om_namespace->prefix = (axis2_char_t *) axis2_strdup(prefix, env);
+        om_namespace->prefix = axis2_string_create(env, prefix);
         if (!om_namespace->prefix)
         {
             AXIS2_FREE(env->allocator, om_namespace);
@@ -93,12 +93,12 @@ axiom_namespace_free(axiom_namespace_t *om_namespace,
 
     if (om_namespace->prefix)
     {
-        AXIS2_FREE(env->allocator, om_namespace->prefix);
+        axis2_string_free(om_namespace->prefix, env);
     }
 
     if (om_namespace->uri)
     {
-        AXIS2_FREE(env->allocator, om_namespace->uri);
+        axis2_string_free(om_namespace->uri, env);
     }
 
     if (om_namespace->key)
@@ -130,7 +130,8 @@ axiom_namespace_equals(axiom_namespace_t *om_namespace,
 
     if (om_namespace->uri && om_namespace1->uri)
     {
-        uris_differ = axis2_strcmp(om_namespace->uri, om_namespace1->uri);
+        uris_differ = axis2_strcmp(axis2_string_get_buffer(om_namespace->uri, env), 
+            axis2_string_get_buffer(om_namespace1->uri, env));
     }
     else
     {
@@ -140,7 +141,8 @@ axiom_namespace_equals(axiom_namespace_t *om_namespace,
     if (om_namespace->prefix && om_namespace1->prefix)
     {
         prefixes_differ =
-            axis2_strcmp(om_namespace->prefix, om_namespace1->prefix);
+            axis2_strcmp(axis2_string_get_buffer(om_namespace->prefix, env), 
+            axis2_string_get_buffer(om_namespace1->prefix, env));
     }
     else
     {
@@ -165,16 +167,16 @@ axiom_namespace_serialize(axiom_namespace_t *om_namespace,
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     if (om_namespace->uri && NULL != om_namespace->prefix &&
-        axis2_strcmp(om_namespace->prefix, "") != 0)
+        axis2_strcmp(axis2_string_get_buffer(om_namespace->prefix, env), "") != 0)
     {
         status = axiom_output_write(om_output, env, AXIOM_NAMESPACE,
-            2, om_namespace->prefix,
-            om_namespace->uri);
+            2, axis2_string_get_buffer(om_namespace->prefix, env),
+            axis2_string_get_buffer(om_namespace->uri, env));
     }
     else if (om_namespace->uri)
     {
         status = axiom_output_write(om_output, env, AXIOM_NAMESPACE,
-            2, NULL, om_namespace->uri);
+            2, NULL, axis2_string_get_buffer(om_namespace->uri, env));
     }
     return status;
 }
@@ -183,7 +185,11 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_namespace_get_uri(axiom_namespace_t *om_namespace,
     const axis2_env_t *env)
 {
-    return om_namespace->uri;
+    if (om_namespace->uri)
+    {
+        return axis2_string_get_buffer(om_namespace->uri, env);
+    }
+    return NULL;
 }
 
 
@@ -191,7 +197,11 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_namespace_get_prefix(axiom_namespace_t *om_namespace,
     const axis2_env_t *env)
 {
-    return om_namespace->prefix;
+    if (om_namespace->prefix)
+    {
+        return axis2_string_get_buffer(om_namespace->prefix, env);
+    }
+    return NULL;
 }
 
 AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
@@ -202,7 +212,7 @@ axiom_namespace_clone(axiom_namespace_t *om_namespace,
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    cloned_ns = axiom_namespace_create(env,
+    cloned_ns = axiom_namespace_create_str(env,
         om_namespace->uri, om_namespace->prefix);
     if (cloned_ns)
     {
@@ -224,8 +234,9 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     }
     if ((om_namespace->uri) && (NULL != om_namespace->prefix))
     {
-        temp_str = axis2_stracat(om_namespace->uri, "|", env);
-        om_namespace->key = axis2_stracat(temp_str, om_namespace->prefix, env);
+        temp_str = axis2_stracat(axis2_string_get_buffer(om_namespace->uri, env), "|", env);
+        om_namespace->key = axis2_stracat(temp_str, 
+            axis2_string_get_buffer(om_namespace->prefix, env), env);
         if (temp_str)
         {
             AXIS2_FREE(env->allocator, temp_str);
@@ -234,7 +245,8 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     }
     else if ((om_namespace->uri) && !(om_namespace->prefix))
     {
-        om_namespace->key = axis2_strdup (om_namespace->uri, env);
+        om_namespace->key = axis2_strdup (
+            axis2_string_get_buffer(om_namespace->uri, env), env);
         if (!(om_namespace->key))
         {
             return NULL;
@@ -254,11 +266,11 @@ axiom_namespace_set_uri(axiom_namespace_t *om_namespace,
 
     if (om_namespace->uri)
     {
-        AXIS2_FREE(env->allocator, om_namespace->uri);
+        axis2_string_free(om_namespace->uri, env);
         om_namespace->uri = NULL;
     }
 
-    om_namespace->uri = axis2_strdup(uri, env);
+    om_namespace->uri = axis2_string_create(env, uri);
     if (!(om_namespace->uri))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -274,5 +286,92 @@ axiom_namespace_increment_ref(struct axiom_namespace *om_namespace,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_namespace->ref++;
     return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axiom_namespace_t *AXIS2_CALL
+axiom_namespace_create_str(const axis2_env_t *env,
+    axis2_string_t * uri,
+    axis2_string_t * prefix)
+{
+    axiom_namespace_t *om_namespace = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    if (!uri)
+    {
+      uri = axis2_string_create(env, "");
+    }
+
+    om_namespace = (axiom_namespace_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_namespace_t));
+    if (!om_namespace)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY , AXIS2_FAILURE);
+        return NULL;
+    }
+
+    om_namespace->ref = 0;
+    om_namespace->prefix = NULL;
+    om_namespace->uri = NULL;
+    om_namespace->key = NULL;
+
+    om_namespace->uri = axis2_string_clone(uri, env);
+    if (!om_namespace->uri)
+    {
+        AXIS2_FREE(env->allocator, om_namespace);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    if (prefix)
+    {
+        om_namespace->prefix = axis2_string_clone(prefix, env);
+        if (!om_namespace->prefix)
+        {
+            AXIS2_FREE(env->allocator, om_namespace);
+            AXIS2_FREE(env->allocator, om_namespace->uri);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return NULL;
+        }
+    }
+
+    return om_namespace ;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_namespace_set_uri_str(axiom_namespace_t *om_namespace,
+    const axis2_env_t *env,
+    axis2_string_t *uri)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
+
+    if (om_namespace->uri)
+    {
+        axis2_string_free(om_namespace->uri, env);
+        om_namespace->uri = NULL;
+    }
+
+    om_namespace->uri = axis2_string_clone(env, uri);
+    if (!(om_namespace->uri))
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+
+}
+
+AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+axiom_namespace_get_uri_str(axiom_namespace_t *om_namespace,
+    const axis2_env_t *env)
+{
+    return om_namespace->uri;
+}
+
+AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+axiom_namespace_get_prefix_str(axiom_namespace_t *om_namespace,
+    const axis2_env_t *env)
+{
+    return om_namespace->prefix;
 }
 

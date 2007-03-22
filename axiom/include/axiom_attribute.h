@@ -179,6 +179,30 @@ extern "C"
     axiom_attribute_increment_ref(struct axiom_attribute *om_attribute,
             const axis2_env_t *env);
 
+    AXIS2_EXTERN axiom_attribute_t* AXIS2_CALL
+    axiom_attribute_create_str(const axis2_env_t *env,
+        axis2_string_t * localname,
+        axis2_string_t * value,
+        axiom_namespace_t * ns);
+
+    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    axiom_attribute_get_localname_str(axiom_attribute_t *attribute,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    axiom_attribute_get_value_str(axiom_attribute_t *attribute,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_attribute_set_localname_str(axiom_attribute_t *attribute,
+        const axis2_env_t *env,
+        axis2_string_t *localname);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_attribute_set_value_str(axiom_attribute_t *attribute,
+        const axis2_env_t *env,
+        axis2_string_t *value);
+
     /** @} */
 
 #ifdef __cplusplus
