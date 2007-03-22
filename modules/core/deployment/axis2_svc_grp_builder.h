@@ -102,20 +102,6 @@ extern "C"
         axiom_node_t *svc,
         axis2_dep_engine_t *dep_engine);
 
-/** Frees the service group builder. */
-#define AXIS2_SVC_GRP_BUILDER_FREE(svc_grp_builder, env) \
-      axis2_svc_grp_builder_free (svc_grp_builder, env)
-
-/** Populates the service group. */
-#define AXIS2_SVC_GRP_BUILDER_POPULATE_SVC_GRP(svc_grp_builder, env, svc_grp) \
-      axis2_svc_grp_builder_populate_svc_grp (svc_grp_builder, env, svc_grp)
-
-/** Process module refs. */
-#define AXIS2_SVC_GRP_BUILDER_PROCESS_MODULE_REFS(svc_grp_builder, env, \
-        module_refs, svc_grp) \
-      axis2_svc_grp_builder_process_module_refs (svc_grp_builder, env, \
-            module_refs, svc_grp)
-
 /** @} */
 
 #ifdef __cplusplus

@@ -24,16 +24,14 @@ struct axis2_svc_grp_builder
 };
 
 AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-axis2_svc_grp_builder_create(
-    const axis2_env_t *env)
+axis2_svc_grp_builder_create(const axis2_env_t *env)
 {
     axis2_svc_grp_builder_t *svc_grp_builder = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    svc_grp_builder = (axis2_svc_grp_builder_t *) AXIS2_MALLOC(env->
-            allocator, sizeof(axis2_svc_grp_builder_t));
-
+    svc_grp_builder = (axis2_svc_grp_builder_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_svc_grp_builder_t));
 
     if (! svc_grp_builder)
     {
@@ -48,15 +46,14 @@ axis2_svc_grp_builder_create(
 }
 
 AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-axis2_svc_grp_builder_create_with_svc_and_dep_engine(
-    const axis2_env_t *env,
+axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axis2_env_t *env,
     axiom_node_t *svc_grp,
     axis2_dep_engine_t *dep_engine)
 {
     axis2_svc_grp_builder_t *svc_grp_builder = NULL;
 
     svc_grp_builder = (axis2_svc_grp_builder_t *)
-            axis2_svc_grp_builder_create(env);
+        axis2_svc_grp_builder_create(env);
     if (!svc_grp_builder)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -75,8 +72,7 @@ axis2_svc_grp_builder_create_with_svc_and_dep_engine(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_grp_builder_free(
-    axis2_svc_grp_builder_t *svc_grp_builder,
+axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -84,7 +80,7 @@ axis2_svc_grp_builder_free(
     if (svc_grp_builder->desc_builder)
     {
         axis2_desc_builder_free(svc_grp_builder->desc_builder,
-                env);
+            env);
     }
     if (svc_grp_builder)
     {
@@ -95,8 +91,7 @@ axis2_svc_grp_builder_free(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_grp_builder_populate_svc_grp(
-    axis2_svc_grp_builder_t *svc_grp_builder,
+axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *svc_grp_builder,
     const axis2_env_t *env,
     axis2_svc_grp_t *svc_grp)
 {
@@ -115,8 +110,8 @@ axis2_svc_grp_builder_populate_svc_grp(
     qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
 
     itr = axiom_element_get_children_with_qname(svc_grp_element, env, qparamst,
-            svc_grp_builder->svc_grp);
-    
+        svc_grp_builder->svc_grp);
+
     if (qparamst)
     {
         axis2_qname_free(qparamst, env);
@@ -125,13 +120,13 @@ axis2_svc_grp_builder_populate_svc_grp(
 
     parent =  axis2_svc_grp_get_parent(svc_grp, env);
     status = axis2_desc_builder_process_params(svc_grp_builder->desc_builder, env, itr, 
-            axis2_svc_grp_get_param_container(svc_grp, env), 
-            axis2_conf_get_param_container(parent, env));
+        axis2_svc_grp_get_param_container(svc_grp, env), 
+        axis2_conf_get_param_container(parent, env));
 
     /* Processing service modules required to be engaged globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_ref_itr = axiom_element_get_children_with_qname(svc_grp_element, env,
-            qmodulest, svc_grp_builder->svc_grp);
+        qmodulest, svc_grp_builder->svc_grp);
 
     if (qmodulest)
     {
@@ -140,10 +135,10 @@ axis2_svc_grp_builder_populate_svc_grp(
     }
 
     axis2_svc_grp_builder_process_module_refs(svc_grp_builder, env, module_ref_itr,
-            svc_grp);
+        svc_grp);
     qsvc_element = axis2_qname_create(env, AXIS2_SVC_ELEMENT, NULL, NULL);
     svc_itr = axiom_element_get_children_with_qname(svc_grp_element, env,
-            qsvc_element, svc_grp_builder->svc_grp);
+        qsvc_element, svc_grp_builder->svc_grp);
 
     if (qsvc_element)
     {
@@ -160,7 +155,7 @@ axis2_svc_grp_builder_populate_svc_grp(
         axis2_qname_t *qattname = NULL;
 
         svc_node = (axiom_node_t *) axiom_children_qname_iterator_next(
-                    svc_itr, env);
+            svc_itr, env);
         svc_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_node, env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         svc_name_att = axiom_element_get_attribute(svc_element, env, qattname);
@@ -175,7 +170,7 @@ axis2_svc_grp_builder_populate_svc_grp(
         if (! svc_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_NAME_ERROR,
-                    AXIS2_FAILURE);
+                AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
         else
@@ -202,7 +197,7 @@ axis2_svc_grp_builder_populate_svc_grp(
             /* the service that has to be deployed */
 
             deployable_svcs = axis2_arch_file_data_get_deployable_svcs(file_data,
-                    env);
+                env);
             axis2_array_list_add(deployable_svcs, env, axis_svc);
             AXIS2_SVC_SET_PARENT(axis_svc, env, svc_grp);
             svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
@@ -217,8 +212,7 @@ axis2_svc_grp_builder_populate_svc_grp(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_svc_grp_builder_process_module_refs(
-    axis2_svc_grp_builder_t *svc_grp_builder,
+axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *svc_grp_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *module_refs ,
     axis2_svc_grp_t *svc_grp)
@@ -234,12 +228,12 @@ axis2_svc_grp_builder_process_module_refs(
         axiom_attribute_t *module_ref_att = NULL;
         axis2_qname_t *qref = NULL;
 
-        module_ref_node = (axiom_node_t *) axiom_children_qname_iterator_next(
-                    module_refs, env);
+        module_ref_node = (axiom_node_t *) 
+            axiom_children_qname_iterator_next(module_refs, env);
         module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = axiom_element_get_attribute(module_ref_element, env,
-                qref);
+            qref);
         if (module_ref_att)
         {
             axis2_char_t *ref_name = NULL;
@@ -255,7 +249,7 @@ axis2_svc_grp_builder_process_module_refs(
             if (! module)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
-                        AXIS2_FAILURE);
+                    AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
             else
