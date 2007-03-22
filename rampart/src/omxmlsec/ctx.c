@@ -21,10 +21,8 @@
 #include <oxs_ctx.h>
 
 
-typedef struct oxs_ctx_impl
-{
-    oxs_ctx_t ctx;
-
+struct oxs_ctx_t
+{    
     /*Encryption mode*/
     oxs_ctx_mode_t mode;
 
@@ -48,239 +46,37 @@ typedef struct oxs_ctx_impl
     /*Used  in decryption process to keep the data to be decrypted*/
     axis2_char_t*           input_data;
 
-}
-oxs_ctx_impl_t;
-
-
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(oxs_ctx) ((oxs_ctx_impl_t *)oxs_ctx)
+};
 
 /******************* function headers ******************************/
-/* private functions */
-static void
-oxs_ctx_init_ops(
-    oxs_ctx_t *ctx);
-
-/*public functions*/
-axis2_status_t AXIS2_CALL
-oxs_ctx_free(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-oxs_ctx_mode_t AXIS2_CALL
-oxs_ctx_get_mode(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-oxs_ctx_operation_t AXIS2_CALL
-oxs_ctx_get_operation(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-oxs_key_t *AXIS2_CALL
-oxs_ctx_get_key(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axis2_char_t *AXIS2_CALL
-oxs_ctx_get_id(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axis2_char_t *AXIS2_CALL
-oxs_ctx_get_type(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axis2_char_t *AXIS2_CALL
-oxs_ctx_get_mime_type(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axis2_char_t *AXIS2_CALL
-oxs_ctx_get_encoding(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axis2_char_t *AXIS2_CALL
-oxs_ctx_get_recipient(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axis2_char_t *AXIS2_CALL
-oxs_ctx_get_carried_key_name(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axis2_char_t *AXIS2_CALL
-oxs_ctx_get_enc_mtd_algorithm(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-
-axis2_char_t *AXIS2_CALL
-oxs_ctx_get_input_data(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env
-);
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_mode(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    oxs_ctx_mode_t mode
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_operation(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    oxs_ctx_operation_t operation
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_key(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    oxs_key_t *key
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_id(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *id
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_type(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *type
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_mime_type(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *mime_type
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_encoding(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *encoding
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_recipient(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *recipient
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_carried_key_name(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *carried_key_name
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_enc_mtd_algorithm(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *enc_mtd_algorithm
-);
-
-axis2_status_t AXIS2_CALL
-oxs_ctx_set_input_data(
-    oxs_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *input_data
-);
-
-/******************* end of function headers ******************************/
 AXIS2_EXTERN oxs_ctx_t *AXIS2_CALL
 oxs_ctx_create(const axis2_env_t *env)
 {
-    oxs_ctx_impl_t *ctx_impl = NULL;
+    oxs_ctx_t *ctx = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    ctx_impl = AXIS2_MALLOC(env->allocator, sizeof(oxs_ctx_impl_t));
-    if (!ctx_impl)
+    ctx = AXIS2_MALLOC(env->allocator, sizeof(oxs_ctx_t));
+    if (!ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    ctx_impl->mode  = -1;
-    ctx_impl->operation  = -1;
-    ctx_impl->key  = NULL;
-    ctx_impl->id  = NULL;
-    ctx_impl->type  = NULL;
-    ctx_impl->mime_type  = NULL;
-    ctx_impl->encoding  = NULL;
-    ctx_impl->recipient  = NULL;
-    ctx_impl->carried_key_name  = NULL;
-    ctx_impl->enc_mtd_algorithm  = NULL;
-    ctx_impl->input_data  = NULL;
+    ctx->mode  = -1;
+    ctx->operation  = -1;
+    ctx->key  = NULL;
+    ctx->id  = NULL;
+    ctx->type  = NULL;
+    ctx->mime_type  = NULL;
+    ctx->encoding  = NULL;
+    ctx->recipient  = NULL;
+    ctx->carried_key_name  = NULL;
+    ctx->enc_mtd_algorithm  = NULL;
+    ctx->input_data  = NULL;
 
-
-    ctx_impl->ctx.ops =  AXIS2_MALLOC(env->allocator, sizeof(oxs_ctx_ops_t));
-    if (!ctx_impl->ctx.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        oxs_ctx_free(&(ctx_impl->ctx), env);
-        return NULL;
-    }
-
-    oxs_ctx_init_ops(&(ctx_impl->ctx));
-
-    return &(ctx_impl->ctx);
+    return ctx;
 }
 
-/* private functions */
-static void
-oxs_ctx_init_ops(
-    oxs_ctx_t *ctx)
-{
-    ctx->ops->free = oxs_ctx_free ;
-
-    ctx->ops->get_mode = oxs_ctx_get_mode ;
-    ctx->ops->get_operation = oxs_ctx_get_operation ;
-    ctx->ops->get_key = oxs_ctx_get_key;
-    ctx->ops->get_id = oxs_ctx_get_id ;
-    ctx->ops->get_type = oxs_ctx_get_type ;
-    ctx->ops->get_mime_type = oxs_ctx_get_mime_type ;
-    ctx->ops->get_encoding = oxs_ctx_get_encoding ;
-    ctx->ops->get_recipient = oxs_ctx_get_recipient ;
-    ctx->ops->get_carried_key_name = oxs_ctx_get_carried_key_name ;
-    ctx->ops->get_enc_mtd_algorithm = oxs_ctx_get_enc_mtd_algorithm ;
-    ctx->ops->get_input_data = oxs_ctx_get_input_data ;
-
-    ctx->ops->set_mode = oxs_ctx_set_mode ;
-    ctx->ops->set_operation = oxs_ctx_set_operation ;
-    ctx->ops->set_key = oxs_ctx_set_key;
-    ctx->ops->set_id = oxs_ctx_set_id ;
-    ctx->ops->set_type = oxs_ctx_set_type ;
-    ctx->ops->set_mime_type = oxs_ctx_set_mime_type ;
-    ctx->ops->set_encoding = oxs_ctx_set_encoding ;
-    ctx->ops->set_recipient = oxs_ctx_set_recipient ;
-    ctx->ops->set_carried_key_name = oxs_ctx_set_carried_key_name ;
-    ctx->ops->set_enc_mtd_algorithm = oxs_ctx_set_enc_mtd_algorithm ;
-    ctx->ops->set_input_data = oxs_ctx_set_input_data ;
-}
 
 /*public functions*/
 axis2_status_t AXIS2_CALL
@@ -288,64 +84,60 @@ oxs_ctx_free(oxs_ctx_t *ctx,
         const axis2_env_t *env
             )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-
-
-    if (ctx_impl->id)
+    if (ctx->id)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->id);
-        ctx_impl->id = NULL;
+        AXIS2_FREE(env->allocator, ctx->id);
+        ctx->id = NULL;
     }
 
-    if (ctx_impl->type)
+    if (ctx->type)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->type);
-        ctx_impl->type = NULL;
+        AXIS2_FREE(env->allocator, ctx->type);
+        ctx->type = NULL;
     }
 
-    if (ctx_impl->mime_type)
+    if (ctx->mime_type)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->mime_type);
-        ctx_impl->mime_type = NULL;
+        AXIS2_FREE(env->allocator, ctx->mime_type);
+        ctx->mime_type = NULL;
     }
 
-    if (ctx_impl->encoding)
+    if (ctx->encoding)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->encoding);
-        ctx_impl->encoding = NULL;
+        AXIS2_FREE(env->allocator, ctx->encoding);
+        ctx->encoding = NULL;
     }
 
-    if (ctx_impl->recipient)
+    if (ctx->recipient)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->recipient);
-        ctx_impl->recipient = NULL;
+        AXIS2_FREE(env->allocator, ctx->recipient);
+        ctx->recipient = NULL;
     }
 
-    if (ctx_impl->carried_key_name)
+    if (ctx->carried_key_name)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->carried_key_name);
-        ctx_impl->carried_key_name = NULL;
+        AXIS2_FREE(env->allocator, ctx->carried_key_name);
+        ctx->carried_key_name = NULL;
     }
 
-    if (ctx_impl->enc_mtd_algorithm)
+    if (ctx->enc_mtd_algorithm)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->enc_mtd_algorithm);
-        ctx_impl->enc_mtd_algorithm = NULL;
+        AXIS2_FREE(env->allocator, ctx->enc_mtd_algorithm);
+        ctx->enc_mtd_algorithm = NULL;
     }
 
-    if (ctx_impl->input_data)
+    if (ctx->input_data)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->input_data);
-        ctx_impl->input_data = NULL;
+        AXIS2_FREE(env->allocator, ctx->input_data);
+        ctx->input_data = NULL;
     }
 
     /*TODO free nodes and key*/
 
-    AXIS2_FREE(env->allocator,  ctx_impl);
-    ctx_impl = NULL;
+    AXIS2_FREE(env->allocator,  ctx);
+    ctx = NULL;
 
     return AXIS2_SUCCESS;
 }
@@ -356,11 +148,9 @@ oxs_ctx_get_mode(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->mode ;
+    return ctx->mode ;
 }
 
 oxs_ctx_operation_t AXIS2_CALL
@@ -369,11 +159,9 @@ oxs_ctx_get_operation(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->operation ;
+    return ctx->operation ;
 }
 
 
@@ -383,11 +171,9 @@ oxs_ctx_get_key(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->key ;
+    return ctx->key ;
 }
 
 
@@ -397,11 +183,9 @@ oxs_ctx_get_id(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->id ;
+    return ctx->id ;
 }
 
 
@@ -411,11 +195,9 @@ oxs_ctx_get_type(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->type ;
+    return ctx->type ;
 }
 
 
@@ -425,11 +207,9 @@ oxs_ctx_get_mime_type(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->mime_type ;
+    return ctx->mime_type ;
 }
 
 
@@ -439,11 +219,9 @@ oxs_ctx_get_encoding(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->encoding ;
+    return ctx->encoding ;
 }
 
 
@@ -453,11 +231,9 @@ oxs_ctx_get_recipient(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->recipient ;
+    return ctx->recipient ;
 }
 
 
@@ -467,11 +243,9 @@ oxs_ctx_get_carried_key_name(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->carried_key_name ;
+    return ctx->carried_key_name ;
 }
 
 
@@ -481,11 +255,9 @@ oxs_ctx_get_enc_mtd_algorithm(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->enc_mtd_algorithm ;
+    return ctx->enc_mtd_algorithm ;
 }
 
 
@@ -495,11 +267,9 @@ oxs_ctx_get_input_data(
     const axis2_env_t *env
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    return ctx_impl->input_data ;
+    return ctx->input_data ;
 }
 
 
@@ -510,11 +280,9 @@ oxs_ctx_set_mode(
     oxs_ctx_mode_t mode
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    ctx_impl->mode = mode ;
+    ctx->mode = mode ;
 
     return AXIS2_SUCCESS;
 }
@@ -526,11 +294,9 @@ oxs_ctx_set_operation(
     oxs_ctx_operation_t operation
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    ctx_impl->operation = operation ;
+    ctx->operation = operation ;
 
     return AXIS2_SUCCESS;
 }
@@ -542,16 +308,14 @@ oxs_ctx_set_key(
     oxs_key_t *key
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->key)
+    if (ctx->key)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->key);
-        ctx_impl->key = NULL;
+        AXIS2_FREE(env->allocator, ctx->key);
+        ctx->key = NULL;
     }
-    ctx_impl->key = key;
+    ctx->key = key;
 
     return AXIS2_SUCCESS;
 }
@@ -563,17 +327,15 @@ oxs_ctx_set_id(
     axis2_char_t *id
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, id, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->id)
+    if (ctx->id)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->id);
-        ctx_impl->id = NULL;
+        AXIS2_FREE(env->allocator, ctx->id);
+        ctx->id = NULL;
     }
-    ctx_impl->id = axis2_strdup(id, env);
+    ctx->id = axis2_strdup(id, env);
 
     return AXIS2_SUCCESS;
 }
@@ -585,17 +347,15 @@ oxs_ctx_set_type(
     axis2_char_t *type
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, type, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->type)
+    if (ctx->type)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->type);
-        ctx_impl->type = NULL;
+        AXIS2_FREE(env->allocator, ctx->type);
+        ctx->type = NULL;
     }
-    ctx_impl->type = axis2_strdup(type, env);
+    ctx->type = axis2_strdup(type, env);
 
     return AXIS2_SUCCESS;
 }
@@ -607,17 +367,15 @@ oxs_ctx_set_mime_type(
     axis2_char_t *mime_type
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, mime_type, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->mime_type)
+    if (ctx->mime_type)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->mime_type);
-        ctx_impl->mime_type = NULL;
+        AXIS2_FREE(env->allocator, ctx->mime_type);
+        ctx->mime_type = NULL;
     }
-    ctx_impl->mime_type = axis2_strdup(mime_type, env);
+    ctx->mime_type = axis2_strdup(mime_type, env);
 
     return AXIS2_SUCCESS;
 }
@@ -629,17 +387,15 @@ oxs_ctx_set_encoding(
     axis2_char_t *encoding
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, encoding, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->encoding)
+    if (ctx->encoding)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->encoding);
-        ctx_impl->encoding = NULL;
+        AXIS2_FREE(env->allocator, ctx->encoding);
+        ctx->encoding = NULL;
     }
-    ctx_impl->encoding = axis2_strdup(encoding, env);
+    ctx->encoding = axis2_strdup(encoding, env);
 
     return AXIS2_SUCCESS;
 }
@@ -651,17 +407,15 @@ oxs_ctx_set_recipient(
     axis2_char_t *recipient
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, recipient, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->recipient)
+    if (ctx->recipient)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->recipient);
-        ctx_impl->recipient = NULL;
+        AXIS2_FREE(env->allocator, ctx->recipient);
+        ctx->recipient = NULL;
     }
-    ctx_impl->recipient = axis2_strdup(recipient, env);
+    ctx->recipient = axis2_strdup(recipient, env);
 
     return AXIS2_SUCCESS;
 }
@@ -673,17 +427,15 @@ oxs_ctx_set_carried_key_name(
     axis2_char_t *carried_key_name
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, carried_key_name, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->carried_key_name)
+    if (ctx->carried_key_name)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->carried_key_name);
-        ctx_impl->carried_key_name = NULL;
+        AXIS2_FREE(env->allocator, ctx->carried_key_name);
+        ctx->carried_key_name = NULL;
     }
-    ctx_impl->carried_key_name = axis2_strdup(carried_key_name, env);
+    ctx->carried_key_name = axis2_strdup(carried_key_name, env);
 
     return AXIS2_SUCCESS;
 }
@@ -695,17 +447,15 @@ oxs_ctx_set_enc_mtd_algorithm(
     axis2_char_t *enc_mtd_algorithm
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, enc_mtd_algorithm, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->enc_mtd_algorithm)
+    if (ctx->enc_mtd_algorithm)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->enc_mtd_algorithm);
-        ctx_impl->enc_mtd_algorithm = NULL;
+        AXIS2_FREE(env->allocator, ctx->enc_mtd_algorithm);
+        ctx->enc_mtd_algorithm = NULL;
     }
-    ctx_impl->enc_mtd_algorithm = axis2_strdup(enc_mtd_algorithm, env);
+    ctx->enc_mtd_algorithm = axis2_strdup(enc_mtd_algorithm, env);
 
     return AXIS2_SUCCESS;
 }
@@ -717,17 +467,15 @@ oxs_ctx_set_input_data(
     axis2_char_t *input_data
 )
 {
-    oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, input_data, AXIS2_FAILURE);
 
-    ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->input_data)
+    if (ctx->input_data)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->input_data);
-        ctx_impl->input_data = NULL;
+        AXIS2_FREE(env->allocator, ctx->input_data);
+        ctx->input_data = NULL;
     }
-    ctx_impl->input_data = axis2_strdup(input_data, env) ;
+    ctx->input_data = axis2_strdup(input_data, env) ;
 
     return AXIS2_SUCCESS;
 }

@@ -46,14 +46,9 @@ extern "C"
 
 #define OXS_KEY_DEFAULT_SIZE        64
 
-    /** Type name for struct  oxs_key_ops */
-    typedef struct oxs_key_ops oxs_key_ops_t;
-
     /** Type name for struct  oxs_key */
-    typedef struct oxs_key oxs_key_t;
+typedef struct oxs_key_t oxs_key_t;
 
-    struct oxs_key_ops
-    {
          /**
          * Gets data of the key.
          * @param key oxs_key ptr to key
@@ -61,40 +56,40 @@ extern "C"
          * @return data 
          */
 
-        unsigned char *(AXIS2_CALL *
-                get_data)(
-                    const oxs_key_t *key,
-                    const axis2_env_t *env);
+unsigned char *AXIS2_CALL
+oxs_key_get_data(
+    const oxs_key_t *key,
+    const axis2_env_t *env);
          /**
          * Gets the name of the key.
          * @param key oxs_key ptr to key
          * @param env pointer to environment struct
          * @return name of the key
          */
-        axis2_char_t *(AXIS2_CALL *
-                get_name)(
-                    const oxs_key_t *key,
-                    const axis2_env_t *env);
+axis2_char_t *AXIS2_CALL
+oxs_key_get_name(
+    const oxs_key_t *key,
+    const axis2_env_t *env);
          /**
          * Gets the size of the key.
          * @param key oxs_key ptr to key
          * @param env pointer to environment struct
          * @return size of the key
          */
-        int (AXIS2_CALL *
-                get_size)(
-                    const oxs_key_t *key,
-                    const axis2_env_t *env);
+int AXIS2_CALL
+oxs_key_get_size(
+    const oxs_key_t *key,
+    const axis2_env_t *env);
          /**
          * Gets the usage of the key.
          * @param key oxs_key ptr to key
          * @param env pointer to environment struct
          * @return usage of the key
          */
-        int (AXIS2_CALL *
-                get_usage)(
-                    const oxs_key_t *key,
-                    const axis2_env_t *env);
+int AXIS2_CALL
+oxs_key_get_usage(
+    const oxs_key_t *key,
+    const axis2_env_t *env);
         
 
          /**
@@ -104,11 +99,11 @@ extern "C"
          * @param name name of the key
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
-                set_name)(
-                    oxs_key_t *key,
-                    const axis2_env_t *env,
-                    axis2_char_t *name);
+axis2_status_t AXIS2_CALL
+oxs_key_set_name(
+    oxs_key_t *key,
+    const axis2_env_t *env,
+    axis2_char_t *name);
 
 
          /**
@@ -118,11 +113,11 @@ extern "C"
          * @param usage usage of the key
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
-                set_usage)(
-                    oxs_key_t *key,
-                    const axis2_env_t *env,
-                    int usage);
+axis2_status_t AXIS2_CALL
+oxs_key_set_usage(
+    oxs_key_t *key,
+    const axis2_env_t *env,
+    int usage);
 
          /**
          * Free function for key.
@@ -130,11 +125,11 @@ extern "C"
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    oxs_key_t *key,
-                    const axis2_env_t *env
-                );
+axis2_status_t AXIS2_CALL
+oxs_key_free(
+    oxs_key_t *key,
+    const axis2_env_t *env
+);
 
          /**
          * Populate a key.
@@ -146,15 +141,14 @@ extern "C"
          * @param usage usage of the key
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
-                populate)(
-                    oxs_key_t *key,
-                    const axis2_env_t *env,
-                    unsigned char *data,
-                    axis2_char_t *name,
-                    int size,
-                    int usage
-                );
+axis2_status_t AXIS2_CALL
+oxs_key_populate(
+    oxs_key_t *key,
+    const axis2_env_t *env,
+    unsigned char *data,
+    axis2_char_t *name,
+    int size,
+    int usage);
         
          /**
          * Read a key from a file.
@@ -162,12 +156,11 @@ extern "C"
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
-                read_from_file)(
-                    oxs_key_t *key,
-                    const axis2_env_t *env,
-                    axis2_char_t *file_name
-                );
+axis2_status_t AXIS2_CALL
+oxs_key_read_from_file(
+    oxs_key_t *key,
+    const axis2_env_t *env,
+    axis2_char_t *file_name);
         
          /**
          * Fill the key for the given algo.
@@ -175,18 +168,11 @@ extern "C"
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
-                for_algo)(
-                    oxs_key_t *key,
-                    const axis2_env_t *env,
-                    axis2_char_t *key_algo
-                );
-    };
+axis2_status_t AXIS2_CALL
+oxs_key_for_algo(oxs_key_t *key,
+        const axis2_env_t *env,
+        axis2_char_t *key_algo);
 
-    struct oxs_key
-    {
-        oxs_key_ops_t *ops;
-    };
 
 AXIS2_EXTERN oxs_key_t *AXIS2_CALL
 oxs_key_create(const axis2_env_t *env);
@@ -195,34 +181,34 @@ oxs_key_create(const axis2_env_t *env);
 
 
 #define OXS_KEY_GET_DATA(key,env)\
-    ((key)->ops->get_data(key,env))
+    (oxs_key_get_data(key, env))
 
 #define OXS_KEY_GET_NAME(key,env)\
-    ((key)->ops->get_name(key,env))
+	(oxs_key_get_name(key, env))
 
 #define OXS_KEY_GET_SIZE(key,env)\
-    ((key)->ops->get_size(key,env))
+	(oxs_key_get_size(key, env))
 
 #define OXS_KEY_GET_USAGE(key,env)\
-    ((key)->ops->get_usage(key,env))
+	(oxs_key_get_usage(key, env))
 
 #define OXS_KEY_SET_NAME(key,env, name)\
-    ((key)->ops->set_name(key, env, name))
+    (oxs_key_set_name(key, env, name))
 
 #define OXS_KEY_SET_USAGE(key,env, usage)\
-    ((key)->ops->set_usage(key, env, usage))
+    (oxs_key_set_usage(key, env, usage))
 
 #define OXS_KEY_FREE(key,env)\
-    ((key)->ops->free(key, env))
+    (oxs_key_free(key, env))
 
 #define OXS_KEY_POPULATE(key,env, data, name, size, usage)\
-    ((key)->ops->populate(key, env, data, name, size, usage))
+    (oxs_key_populate(key, env, data, name, size, usage))
 
 #define OXS_KEY_READ_FROM_FILE(key,env, file_name)\
-    ((key)->ops->read_from_file(key, env, file_name))
+    (oxs_key_read_from_file(key, env, file_name))
 
 #define OXS_KEY_FOR_ALGO(key,env, key_algo)\
-    ((key)->ops->for_algo(key, env, key_algo))
+    (oxs_key_for_algo(key, env, key_algo))
 
 /** @} */
 #ifdef __cplusplus

@@ -34,19 +34,7 @@ extern "C"
 #include <rampart_crypto_util.h>
 #include <rampart_action.h>
 #include <rampart_context.h>
-    /** Type name for struct rampart_username_token_ops */
-    typedef struct rampart_username_token_ops rampart_username_token_ops_t;
-    /** Type name for struct rampart_username_token */
-    typedef struct rampart_username_token rampart_username_token_t;
-    /**
-     * Rampart username token ops struct
-     * Encapsulator struct for ops of rampart_username_token
-     */
-    struct rampart_username_token_ops
-    {
-        axis2_status_t (AXIS2_CALL *
-        free)(rampart_username_token_t *username_token,
-            const axis2_env_t *env);
+    
         /**
          * Build a username token according to the given parameters.
          * These parameter are taken from the action collection and message context
@@ -67,13 +55,12 @@ extern "C"
             );
 */        
 
-        axis2_status_t (AXIS2_CALL *
-        build)(rampart_username_token_t *username_token,
-            const axis2_env_t *env,
-            rampart_context_t *rampart_context,
-            axiom_node_t *sec_node,
-            axiom_namespace_t *sec_ns_obj
-            );
+axis2_status_t AXIS2_CALL
+rampart_username_token_build(
+        const axis2_env_t *env,
+        rampart_context_t *rampart_context,
+        axiom_node_t *sec_node,
+        axiom_namespace_t *sec_ns_obj);
         /*                            
          * Validates the given username token
          * @param env pointer to environment struct
@@ -82,49 +69,13 @@ extern "C"
          * @param actions collection of actions
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
-        validate)(rampart_username_token_t *username_token,
-            const axis2_env_t *env,
-            axis2_msg_ctx_t *msg_ctx,
-            axiom_node_t *ut_node,
-            rampart_context_t *rampart_context
-            );
-    };
-    
-    /**
-     * rampart_username_token struct
-     */
-    struct rampart_username_token
-    {
-        /** Operations of username_token */
-        rampart_username_token_ops_t *ops;
-    };
+axis2_status_t AXIS2_CALL
+rampart_username_token_validate(
+        const axis2_env_t *env,
+        axis2_msg_ctx_t *msg_ctx,
+        axiom_node_t *ut_node,
+        rampart_context_t *rampart_context);
 
-    /**
-     * Creates username_token struct
-     * @param env pointer to environment struct
-     * @return pointer to newly created username_token
-     */
-    AXIS2_EXTERN rampart_username_token_t *AXIS2_CALL
-    rampart_username_token_create (
-        const axis2_env_t *env);
-
-/*************************** Function macros **********************************/
-#define RAMPART_USERNAME_TOKEN_FREE(username_token, env) \
-        ((username_token)->ops->free(username_token, env))    
-/*
-#define RAMPART_USERNAME_TOKEN_BUILD(username_token, env, ctx, actions, sec_node, sec_ns_obj) \
-        ((username_token)->ops->build(username_token, env, ctx, actions, sec_node, sec_ns_obj))    
-*/
-
-#define RAMPART_USERNAME_TOKEN_BUILD(username_token, env,rampart_context,sec_node, sec_ns_obj) \
-        ((username_token)->ops->build(username_token, env,rampart_context,sec_node, sec_ns_obj))
-
-
-#define RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env, msg_ctx, ut_node, rampart_context) \
-        ((username_token)->ops->validate(username_token, env, msg_ctx, ut_node, rampart_context))    
-
-/** @} */
 #ifdef __cplusplus
 }
 #endif

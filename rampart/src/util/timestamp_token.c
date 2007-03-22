@@ -29,106 +29,9 @@
 #include <rampart_sec_processed_result.h>
 #include <oxs_axiom.h>
 
-typedef struct rampart_timestamp_token_impl
-{
-    rampart_timestamp_token_t timestamp_token;
-}
-rampart_timestamp_token_impl_t;
-
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(timestamp_token) ((rampart_timestamp_token_impl_t *)timestamp_token)
-
-/*************************** Function headers *********************************/
-/** private functions */
-static void
-rampart_timestamp_token_init_ops(
-    rampart_timestamp_token_t *timestamp_token);
-
-
-/** public functions*/
-axis2_status_t AXIS2_CALL
-rampart_timestamp_token_free(rampart_timestamp_token_t *timestamp_token,
-        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
-        const axis2_env_t *env,
-        axiom_node_t *sec_node,
-        const  axiom_namespace_t *sec_ns_obj,
-        int ttl);
-
-axis2_status_t AXIS2_CALL
-rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
-        const axis2_env_t *env,
-        axis2_msg_ctx_t *msg_ctx,
-        axiom_node_t *ts_node );
-
-/*************************** end of function headers *********************************/
-static void
-rampart_timestamp_token_init_ops(
-    rampart_timestamp_token_t *timestamp_token)
-{
-    timestamp_token->ops->free = rampart_timestamp_token_free;
-    timestamp_token->ops->build = rampart_timestamp_token_build;
-    timestamp_token->ops->validate = rampart_timestamp_token_validate;
-}
-rampart_timestamp_token_t *AXIS2_CALL
-rampart_timestamp_token_create(
-    const axis2_env_t *env)
-{
-    rampart_timestamp_token_impl_t *timestamp_token_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-
-    timestamp_token_impl = (rampart_timestamp_token_impl_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(rampart_timestamp_token_impl_t));
-
-    if (! timestamp_token_impl)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    timestamp_token_impl->timestamp_token.ops = AXIS2_MALLOC(env->allocator,
-            sizeof(rampart_timestamp_token_ops_t));
-    if (! timestamp_token_impl->timestamp_token.ops)
-    {
-        rampart_timestamp_token_free(&(timestamp_token_impl->timestamp_token), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    rampart_timestamp_token_init_ops(&(timestamp_token_impl->timestamp_token));
-
-    return &(timestamp_token_impl->timestamp_token);
-
-}
-
-axis2_status_t AXIS2_CALL
-rampart_timestamp_token_free(rampart_timestamp_token_t *timestamp_token,
-        const axis2_env_t *env)
-{
-    rampart_timestamp_token_impl_t *timestamp_token_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    timestamp_token_impl = AXIS2_INTF_TO_IMPL(timestamp_token);
-
-    if (timestamp_token->ops)
-    {
-        AXIS2_FREE(env->allocator, timestamp_token->ops);
-        timestamp_token->ops = NULL;
-    }
-    if (timestamp_token_impl)
-    {
-        AXIS2_FREE(env->allocator, timestamp_token_impl);
-        timestamp_token_impl = NULL;
-    }
-    return AXIS2_SUCCESS;
-
-}
-
-axis2_status_t AXIS2_CALL
-rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
+rampart_timestamp_token_build(
         const axis2_env_t *env,
         axiom_node_t *sec_node,
         const  axiom_namespace_t *sec_ns_obj,
@@ -183,7 +86,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
 }/*rampart_build_timestamp_token*/
 
 axis2_status_t AXIS2_CALL
-rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
+rampart_timestamp_token_validate(
         const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axiom_node_t *ts_node )

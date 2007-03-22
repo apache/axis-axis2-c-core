@@ -112,7 +112,6 @@ rampart_shp_process_timestamptoken(const axis2_env_t *env,
     rampart_context_t *rampart_context,
     axiom_node_t *sec_node)
 {
-    rampart_timestamp_token_t *timestamp_token = NULL;
     axis2_status_t valid_ts = AXIS2_FAILURE;
     axiom_node_t *ts_node = NULL;
 
@@ -140,8 +139,8 @@ rampart_shp_process_timestamptoken(const axis2_env_t *env,
             return AXIS2_FAILURE;
         }
         
-        timestamp_token = rampart_timestamp_token_create(env);
-        valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, msg_ctx, ts_node);
+
+        valid_ts = rampart_timestamp_token_validate(env, msg_ctx, ts_node);
 
         if (valid_ts)
         {
@@ -163,7 +162,6 @@ rampart_shp_process_usernametoken(const axis2_env_t *env,
     rampart_context_t *rampart_context,
     axiom_node_t *sec_node)
 {
-    rampart_username_token_t *username_token = NULL;
     axis2_status_t valid_user = AXIS2_FAILURE;
     axiom_node_t *ut_node = NULL;
 
@@ -190,10 +188,9 @@ rampart_shp_process_usernametoken(const axis2_env_t *env,
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Error in the security header");
             return AXIS2_FAILURE;
         }
-
-        username_token = rampart_username_token_create(env);
+        
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Validating UsernameToken");
-        valid_user = RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env,
+        valid_user = rampart_username_token_validate(env,
                             msg_ctx, ut_node, rampart_context);    
     }
     if (valid_user)

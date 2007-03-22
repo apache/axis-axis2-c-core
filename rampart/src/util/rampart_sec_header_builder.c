@@ -109,16 +109,14 @@ rampart_shb_build_message(const axis2_env_t *env,
         /*Timestamp Inclusion*/
         if(rampart_context_is_include_timestamp(rampart_context,env))
         {
-            rampart_timestamp_token_t *timestamp_token = NULL;
             int ttl = -1;
             AXIS2_LOG_INFO(env->log, "[rampart][shb]  building Timestamp Token");
             AXIS2_LOG_INFO(env->log, "[rampart][shb]  Using default timeToLive value %d",
                 RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE);
            /*ttl = RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE;*/
             ttl = rampart_context_get_ttl(rampart_context,env);
-            
-            timestamp_token = rampart_timestamp_token_create(env);
-            status = RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env,
+                        
+            status = rampart_timestamp_token_build(env,
                              sec_node, sec_ns_obj, ttl);
             if (status == AXIS2_FAILURE)
             {
@@ -133,14 +131,12 @@ rampart_shb_build_message(const axis2_env_t *env,
         {            
             if(rampart_context_is_include_username_token(rampart_context,env))
             {
-                rampart_username_token_t *username_token = NULL;
-
-                username_token = rampart_username_token_create(env);
+                
         /*Now we are passing rampart_context here so inside this method  
         relevant parameters are extracted. */
 
                 AXIS2_LOG_INFO(env->log, "[rampart][shb]  building UsernmaeToken");
-                status = RAMPART_USERNAME_TOKEN_BUILD(username_token,
+                status =rampart_username_token_build(
                                 env,
                                 rampart_context,
                                 sec_node,
