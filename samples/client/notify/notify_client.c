@@ -55,8 +55,8 @@ int main(int argc, char** argv)
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    AXIS2_OPTIONS_SET_ACTION(options, env,
+    axis2_options_set_to(options, env, endpoint_ref);
+    axis2_options_set_action(options, env,
             "http://example.org/action/notify");
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up

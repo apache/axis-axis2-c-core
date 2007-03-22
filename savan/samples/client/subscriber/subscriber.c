@@ -65,8 +65,8 @@ int main(int argc, char** argv)
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-/*    AXIS2_OPTIONS_SET_ACTION(options, env,
+    axis2_options_set_to(options, env, endpoint_ref);
+/*    axis2_options_set_action(options, env,
         "http://schemas.xmlsoap.org/ws/2004/08/eventing/Subscribe");    
 */
     /* Create service client */
@@ -165,8 +165,8 @@ void init_event_source(axis2_env_t* env, axis2_char_t *home)
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    AXIS2_OPTIONS_SET_ACTION(options, env,
+    axis2_options_set_to(options, env, endpoint_ref);
+    axis2_options_set_action(options, env,
         "http://ws.apache.org/axis2/c/savan/samples/pubilsher/start");
 
     /* Create service client */

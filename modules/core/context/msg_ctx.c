@@ -1541,10 +1541,10 @@ axis2_msg_ctx_get_options(
     AXIS2_ENV_CHECK(env, NULL);
 
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_MSG_INFO_HEADERS(options, env, 
+    axis2_options_set_msg_info_headers(options, env, 
         msg_ctx->msg_info_headers);
     properties =  axis2_ctx_get_non_persistent_map(msg_ctx->base, env);
-    AXIS2_OPTIONS_SET_PROPERTIES(options, env, properties);
+    axis2_options_set_properties(options, env, properties);
     return options;
 }
 
@@ -1568,13 +1568,13 @@ axis2_msg_ctx_set_options(
             msg_ctx->msg_info_headers, env);
     }
     msg_ctx->msg_info_headers =
-        AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(options, env);
+        axis2_options_get_msg_info_headers(options, env);
     msg_ctx->msg_info_headers_deep_copy = AXIS2_FALSE;
     
-    msg_ctx->doing_mtom = AXIS2_OPTIONS_GET_ENABLE_MTOM(options, env);
+    msg_ctx->doing_mtom = axis2_options_get_enable_mtom(options, env);
 
      axis2_ctx_set_non_persistent_map(msg_ctx->base, env,
-            AXIS2_OPTIONS_GET_PROPERTIES(options, env));
+            axis2_options_get_properties(options, env));
     rest_val = (axis2_property_t *)  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_ENABLE_REST, AXIS2_FALSE);
     if (rest_val)
@@ -1592,7 +1592,7 @@ axis2_msg_ctx_set_options(
         axis2_string_free(msg_ctx->soap_action, env);
     }
     
-    soap_action = AXIS2_OPTIONS_GET_SOAP_ACTION(options, env);
+    soap_action = axis2_options_get_soap_action(options, env);
     if (soap_action)
     {
         msg_ctx->soap_action = axis2_string_clone(soap_action, env);

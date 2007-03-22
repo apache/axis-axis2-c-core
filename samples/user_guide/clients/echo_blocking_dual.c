@@ -52,14 +52,14 @@ int main(int argc, char** argv)
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env, AXIS2_TRUE);
+    axis2_options_set_to(options, env, endpoint_ref);
+    axis2_options_set_use_separate_listener(options, env, AXIS2_TRUE);
 
     /* Seperate listner needs addressing, hence addressing stuff in options */
-    AXIS2_OPTIONS_SET_ACTION(options, env,
+    axis2_options_set_action(options, env,
             "http://ws.apache.org/axis2/c/samples/echoString");
     reply_to = axis2_endpoint_ref_create(env, "http://localhost:6060/axis2/services/__ANONYMOUS_SERVICE__/__OPERATION_OUT_IN__");
-    AXIS2_OPTIONS_SET_REPLY_TO(options, env, reply_to);
+    axis2_options_set_reply_to(options, env, reply_to);
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.

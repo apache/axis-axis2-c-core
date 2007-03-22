@@ -282,14 +282,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_st
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoString" ,
@@ -337,14 +337,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_start(axis2_stub_
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -386,14 +386,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(ax
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoStringArray" ,
@@ -441,14 +441,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start(axis2
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -490,14 +490,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_s
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoInteger" ,
@@ -545,14 +545,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_start(axis2_stub
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -594,14 +594,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(a
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoIntegerArray" ,
@@ -649,14 +649,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start(axis
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -698,14 +698,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stu
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoFloat" ,
@@ -753,14 +753,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_start(axis2_stub_t
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -802,14 +802,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axi
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoFloatArray" ,
@@ -857,14 +857,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start(axis2_
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -906,14 +906,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_st
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoStruct" ,
@@ -961,14 +961,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_start(axis2_stub_
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -1010,14 +1010,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(ax
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoStructArray" ,
@@ -1065,14 +1065,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start(axis2
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -1114,14 +1114,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoVoid" ,
@@ -1169,14 +1169,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_void_start(axis2_stub_t 
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -1218,14 +1218,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_st
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoBase64" ,
@@ -1273,14 +1273,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_base64_start(axis2_stub_
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -1322,14 +1322,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoDate" ,
@@ -1377,14 +1377,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_date_start(axis2_stub_t 
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -1426,14 +1426,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoHexBinary" ,
@@ -1481,14 +1481,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start(axis2_s
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -1530,14 +1530,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_s
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoDecimal" ,
@@ -1585,14 +1585,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start(axis2_stub
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -1634,14 +1634,14 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_s
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "echoBoolean" ,
@@ -1689,14 +1689,14 @@ void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start(axis2_stub
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);

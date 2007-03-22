@@ -78,17 +78,17 @@ int main(int argc, char** argv)
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+    axis2_options_set_to(options, env, endpoint_ref);
     /* Enable REST at the client side */
     rest_property = axis2_property_create(env);
     axis2_property_set_value(rest_property, env, axis2_strdup (AXIS2_VALUE_TRUE, env));
-    AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_ENABLE_REST,
+    axis2_options_set_property(options, env, AXIS2_ENABLE_REST,
             rest_property);
     if (AXIS2_TRUE == method_get)
     {
         get_property = axis2_property_create(env);
         axis2_property_set_value(get_property, env, axis2_strdup(AXIS2_HTTP_HEADER_GET, env));
-         AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_HTTP_METHOD,
+         axis2_options_set_property(options, env, AXIS2_HTTP_METHOD,
                 get_property);
     }
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up

@@ -79,8 +79,8 @@ int main(int argc, char** argv)
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_to(options, env, endpoint_ref);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");

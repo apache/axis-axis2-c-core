@@ -242,7 +242,7 @@ savan_subscriber_publish(
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, subscriber->notify_to);
+    axis2_options_set_to(options, env, subscriber->notify_to);
     
     /* Set service client options */
     AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);

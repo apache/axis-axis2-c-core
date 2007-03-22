@@ -162,14 +162,14 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axis2_env_t *e
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "Calculator#add";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "add" ,
@@ -217,14 +217,14 @@ void axis2_stub_calculator_add_start(axis2_stub_t *stub, const axis2_env_t *env,
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "Calculator#add";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -266,14 +266,14 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axis2_env_t *e
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "Calculator#sub";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "sub" ,
@@ -321,14 +321,14 @@ void axis2_stub_calculator_sub_start(axis2_stub_t *stub, const axis2_env_t *env,
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "Calculator#sub";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -370,14 +370,14 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axis2_env_t *e
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "Calculator#mul";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "mul" ,
@@ -425,14 +425,14 @@ void axis2_stub_calculator_mul_start(axis2_stub_t *stub, const axis2_env_t *env,
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "Calculator#mul";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);
@@ -474,14 +474,14 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axis2_env_t *e
         return NULL;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "Calculator#div";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
     op_qname = axis2_qname_create(env,
             "div" ,
@@ -529,14 +529,14 @@ void axis2_stub_calculator_div_start(axis2_stub_t *stub, const axis2_env_t *env,
         return;
     }
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
-    soap_action = AXIS2_OPTIONS_GET_ACTION(options, env);
+    soap_action = axis2_options_get_action(options, env);
     if (! soap_action)
     {
         soap_action = "Calculator#div";
-        AXIS2_OPTIONS_SET_ACTION(options, env, soap_action);
+        axis2_options_set_action(options, env, soap_action);
     }
 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
+    axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
 
     callback = axis2_callback_create(env);

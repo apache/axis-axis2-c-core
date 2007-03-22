@@ -53,7 +53,7 @@ void axis2_test_svc_client_blocking()
     svc_client = axis2_svc_client_create(env, client_home);
 
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+    axis2_options_set_to(options, env, endpoint_ref);
     AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
 
     payload = build_om_payload_for_echo_svc(env, echo_text);

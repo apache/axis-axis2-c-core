@@ -131,7 +131,7 @@ axis2_op_client_set_options(axis2_op_client_t *op_client,
 
     if(op_client->options)
     {
-        AXIS2_OPTIONS_FREE(op_client->options, env);
+        axis2_options_free(op_client->options, env);
     }
     op_client->options = (axis2_options_t *)options;
 
@@ -300,13 +300,13 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
      if the transport to use for sending is not specified, try to find it
      from the URL
     */
-    transport_out = AXIS2_OPTIONS_GET_TRANSPORT_OUT(op_client->options,
+    transport_out = axis2_options_get_transport_out(op_client->options,
             env);
     if(!transport_out)
     {
         axis2_endpoint_ref_t *to_epr = NULL;
         axis2_property_t *property = NULL;
-        property = AXIS2_OPTIONS_GET_PROPERTY(op_client->options, env, 
+        property = axis2_options_get_property(op_client->options, env, 
             AXIS2_TARGET_EPR);
         if(property)
 	{
@@ -314,7 +314,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
 	}
         if(!to_epr)
 	{
-            to_epr = AXIS2_OPTIONS_GET_TO(op_client->options, env);
+            to_epr = axis2_options_get_to(op_client->options, env);
 	}
         if(!to_epr)
 	{
@@ -334,7 +334,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
     }
 
 
-    transport_in = AXIS2_OPTIONS_GET_TRANSPORT_IN(op_client->options, env);
+    transport_in = axis2_options_get_transport_in(op_client->options, env);
     if(!transport_in)
     {
         axis2_conf_ctx_t *conf_ctx =  axis2_svc_ctx_get_conf_ctx(op_client->svc_ctx, env);
@@ -374,7 +374,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
         msg_id = NULL;
     }
 
-    if(AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(op_client->options, env))
+    if(axis2_options_get_use_separate_listener(op_client->options, env))
     {
         axis2_engine_t *engine = NULL;
 
@@ -542,7 +542,7 @@ axis2_op_client_free(axis2_op_client_t *op_client,
         op_client->op_ctx = NULL;
     }
 
-	if(AXIS2_OPTIONS_GET_XML_PARSER_RESET(op_client->options, env))
+	if(axis2_options_get_xml_parser_reset(op_client->options, env))
 	{
             axiom_xml_reader_cleanup(); 
 	}

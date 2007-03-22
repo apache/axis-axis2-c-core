@@ -48,7 +48,7 @@ int main(int argc, char** argv)
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     /*AXIS2_SVC_CLIENT_DISENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    AXIS2_OPTIONS_SET_ACTION(options, env, "http://soapinterop.org");
+    axis2_options_set_action(options, env, "http://soapinterop.org");
 
     /** testing echoString */
     printf("echoing string..\n");
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     /*AXIS2_SVC_CLIENT_DISENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    AXIS2_OPTIONS_SET_ACTION(options, env, "http://soapinterop.org");
+    axis2_options_set_action(options, env, "http://soapinterop.org");
 
     /** testing echoInteger*/
     printf("echoing integer..\n");
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     /*AXIS2_SVC_CLIENT_DISENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
     options = AXIS2_STUB_GET_OPTIONS(stub, env);
-    AXIS2_OPTIONS_SET_ACTION(options, env, "http://soapinterop.org");
+    axis2_options_set_action(options, env, "http://soapinterop.org");
 
     /** testing echoString */
     printf("echoing float..\n");

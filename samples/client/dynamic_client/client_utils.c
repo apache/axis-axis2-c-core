@@ -175,7 +175,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 endpoint_ref = axis2_endpoint_ref_create(env, address);
                 if (options)
 				{
-                    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+                    axis2_options_set_to(options, env, endpoint_ref);
 				}
             }
         }
@@ -391,7 +391,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                 endpoint_ref = axis2_endpoint_ref_create(env, address);
                 if (options)
 				{
-                    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+                    axis2_options_set_to(options, env, endpoint_ref);
 				}
             }
         }

@@ -326,7 +326,7 @@ axis2_svc_client_set_options(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (svc_client->options)
-        AXIS2_OPTIONS_FREE(svc_client->options, env);
+        axis2_options_free(svc_client->options, env);
     svc_client->options = (axis2_options_t *)options;
     return AXIS2_SUCCESS;
 }
@@ -348,7 +348,7 @@ axis2_svc_client_set_override_options(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (svc_client->override_options)
-        AXIS2_OPTIONS_FREE(svc_client->override_options, env);
+        axis2_options_free(svc_client->override_options, env);
 
     svc_client->override_options = (axis2_options_t *)override_options;
 
@@ -605,7 +605,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         {
             action_uri = (axis2_uri_t *) axis2_param_get_value(param, env);
             action_str = axis2_uri_to_string(action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
-            AXIS2_OPTIONS_SET_ACTION(svc_client->options, env, action_str);
+            axis2_options_set_action(svc_client->options, env, action_str);
         }
     }
 
@@ -615,7 +615,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
     }
 
-    if (AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(svc_client->options, env))
+    if (axis2_options_get_use_separate_listener(svc_client->options, env))
     {
         axis2_callback_t *callback = NULL;
         axis2_msg_ctx_t *msg_ctx = NULL;
@@ -634,7 +634,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         axis2_svc_client_send_receive_non_blocking_with_op_qname(
             svc_client, env, op_qname, payload, callback);
 
-        index = AXIS2_OPTIONS_GET_TIMEOUT_IN_MILLI_SECONDS(svc_client->options, env) / 10;
+        index = axis2_options_get_timeout_in_milli_seconds(svc_client->options, env) / 10;
 
         while (!(axis2_callback_get_complete(callback, env)))
         {
@@ -797,11 +797,11 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc
     AXIS2_OP_CLIENT_SET_CALLBACK(svc_client->op_client, env, callback);
     AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(svc_client->op_client, env, msg_ctx);
 
-    if (AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(svc_client->options, env))
+    if (axis2_options_get_use_separate_listener(svc_client->options, env))
     {
         axis2_op_t *op = NULL;
 
-        transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
+        transport_in_protocol = axis2_options_get_transport_in_protocol(
                     svc_client->options, env);
         axis2_listener_manager_make_sure_started(svc_client->listener_manager, env,
                 transport_in_protocol, svc_client->conf_ctx);
@@ -869,7 +869,7 @@ axis2_svc_client_create_op_client(
     */
     if (svc_client->override_options)
     {
-        AXIS2_OPTIONS_SET_PARENT(svc_client->override_options, env,
+        axis2_options_set_parent(svc_client->override_options, env,
                 AXIS2_OP_CLIENT_GET_OPTIONS(svc_client->op_client, env));
         AXIS2_OP_CLIENT_SET_OPTIONS(svc_client->op_client, env,
                 svc_client->override_options);
@@ -887,7 +887,7 @@ axis2_svc_client_finalize_invoke(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
+    transport_in_protocol = axis2_options_get_transport_in_protocol(
                 svc_client->options, env);
 
     if (svc_client->listener_manager)
@@ -1141,7 +1141,7 @@ axis2_svc_client_free(
 
     if (svc_client->options)
     {
-        AXIS2_OPTIONS_FREE(svc_client->options, env);
+        axis2_options_free(svc_client->options, env);
     }
 
     if (svc_client->listener_manager)
@@ -1170,7 +1170,7 @@ axis2_svc_client_fill_soap_envelope(
     int soap_version;
     axiom_soap_envelope_t *envelope = NULL;
 
-    soap_version_uri = AXIS2_OPTIONS_GET_SOAP_VERSION_URI(svc_client->options, env);
+    soap_version_uri = axis2_options_get_soap_version_uri(svc_client->options, env);
 
     if (!soap_version_uri)
     {

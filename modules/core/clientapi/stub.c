@@ -86,7 +86,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home(
             env,
             stub-> options);
 
-    AXIS2_OPTIONS_SET_TO(stub->options, env, endpoint_ref);
+    axis2_options_set_to(stub->options, env, endpoint_ref);
 
     return stub;
 }
@@ -149,7 +149,7 @@ axis2_stub_set_endpoint_ref(
     axis2_endpoint_ref_t *endpoint_ref)
 {
     AXIS2_PARAM_CHECK(env->error, endpoint_ref, AXIS2_FAILURE);
-    AXIS2_OPTIONS_SET_TO(stub->options , env, endpoint_ref);
+    axis2_options_set_to(stub->options , env, endpoint_ref);
     return AXIS2_SUCCESS;
 }
 
@@ -169,7 +169,7 @@ axis2_stub_set_endpoint_uri(
     {
         return AXIS2_FAILURE;
     }
-    AXIS2_OPTIONS_SET_TO(stub->options , env, endpoint_ref);
+    axis2_options_set_to(stub->options , env, endpoint_ref);
 
     return AXIS2_SUCCESS;
 }
@@ -180,7 +180,7 @@ axis2_stub_set_use_separate_listener(
     const axis2_env_t *env,
     const axis2_bool_t use_separate_listener)
 {
-    return AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(stub-> options, env,
+    return axis2_options_set_use_separate_listener(stub-> options, env,
             use_separate_listener);
 }
 
@@ -205,7 +205,7 @@ axis2_stub_set_soap_version(
     {
         return AXIS2_FAILURE;
     }
-    return AXIS2_OPTIONS_SET_SOAP_VERSION(stub-> options,
+    return axis2_options_set_soap_version(stub-> options,
             env, soap_version);
 }
 

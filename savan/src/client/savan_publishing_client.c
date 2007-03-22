@@ -88,8 +88,8 @@ savan_publishing_client_publish(
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    AXIS2_OPTIONS_SET_ACTION(options, env,
+    axis2_options_set_to(options, env, endpoint_ref);
+    axis2_options_set_action(options, env,
             "http://ws.apache.org/axis2/c/savan/dummy");
     
     op_qname = axis2_qname_create(env, "publish", NULL, NULL);
