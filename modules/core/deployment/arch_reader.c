@@ -262,7 +262,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
         module_builder =
             axis2_module_builder_create_with_file_and_dep_engine_and_module(env,
                 module_xml, dep_engine, module_desc);
-        status = AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env);
+        status = axis2_module_builder_populate_module(module_builder, env);
         axis2_dep_engine_add_module_builder(dep_engine, env, module_builder);
     }
     else

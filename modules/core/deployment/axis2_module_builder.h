@@ -23,11 +23,6 @@
  * @{
  */
 
-/**
- * @file axis2_module_builder.h
- * @brief Axis2 Module Builder interface
- */
-
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -86,13 +81,9 @@ extern "C"
         struct axis2_dep_engine *dep_engine,
         axis2_module_desc_t *module);
 
-/** Frees the module builder */
-#define AXIS2_MODULE_BUILDER_FREE(module_builder, env) \
-      axis2_module_builder_free (module_builder, env)
-
-/** Populates the module. */
+/** Populates the module. 
 #define AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env) \
-      axis2_module_builder_populate_module (module_builder, env)
+      axis2_module_builder_populate_module (module_builder, env)*/
 
 /** @} */
 
