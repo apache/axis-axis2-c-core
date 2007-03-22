@@ -49,18 +49,18 @@ extern "C"
 		axis2_http_simple_response_t *response;
 		axis2_char_t *encoding;
 
-		axis2_status_t (AXIS2_CALL *set_content_type)(
-			axis2_http_out_transport_info_t *info,
+		axis2_status_t (AXIS2_CALL *
+        set_content_type)(axis2_http_out_transport_info_t *info,
 			const axis2_env_t *env,
 			const axis2_char_t *content_type);
 
-		axis2_status_t (AXIS2_CALL *set_char_encoding)
-			(axis2_http_out_transport_info_t *info,
+		axis2_status_t (AXIS2_CALL *
+        set_char_encoding)(axis2_http_out_transport_info_t *info,
 			const axis2_env_t *env,
 			const axis2_char_t *encoding);
 
-		axis2_status_t (AXIS2_CALL *free_function)
-			(axis2_http_out_transport_info_t *info,
+		axis2_status_t (AXIS2_CALL *
+        free_function)(axis2_http_out_transport_info_t *info,
 			const axis2_env_t *env);
 	};
     /**
@@ -125,7 +125,7 @@ extern "C"
 		const axis2_env_t *env,
 		    axis2_status_t (AXIS2_CALL *set_content_type)(
 			axis2_http_out_transport_info_t *,
-			const axis2_env_t*,const axis2_char_t *));
+			const axis2_env_t*, const axis2_char_t *));
 
 	AXIS2_EXTERN void AXIS2_CALL
 		axis2_http_out_transport_info_set_free_func(
