@@ -107,6 +107,18 @@ int main(int argc, char** argv)
     /* Send request */
     ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
 
+    if (axis2_svc_client_get_last_response_has_fault(svc_client, env))
+        printf ("\nResponse has a SOAP fault\n");
+
+    if (axis2_svc_client_get_last_response_soap_envelope(svc_client, env))
+    {
+        printf("\n Returned SOAP envelope: %s\n", 
+            AXIOM_NODE_TO_STRING(axiom_soap_envelope_get_base_node(
+                axis2_svc_client_get_last_response_soap_envelope(svc_client, env),
+                env), 
+            env));
+    }
+
     if (ret_node)
     {
         if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT)

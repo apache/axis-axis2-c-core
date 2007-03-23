@@ -469,7 +469,26 @@ extern "C"
         const axis2_char_t *endpoint_name,
         const axis2_char_t *client_home);
 
+    /**
+     * Gets the last respose SOAP envelope. 
+     * @param svc_client pointer to service_client struct
+     * @param env env pointer to environemt struct
+     * @return pointer to SOAP envelope that was returned as a result 
+     * when send_receieve was called last time
+     */
+    AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+    axis2_svc_client_get_last_response_soap_envelope(const axis2_svc_client_t *svc_client,
+        const axis2_env_t *env);
 
+    /**
+     * Gets the boolean value indicating if the last respose had a SOAP fault. 
+     * @param svc_client pointer to service_client struct
+     * @param env env pointer to environemt struct
+     * @return AXIS2_TRUE if there was a fault, else AXIS2_FALSE
+     */
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+    axis2_svc_client_get_last_response_has_fault(const axis2_svc_client_t *svc_client,
+        const axis2_env_t *env);
 
 /** @} */
 #ifdef __cplusplus

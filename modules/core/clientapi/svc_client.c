@@ -56,6 +56,10 @@ struct axis2_svc_client
 
     axis2_op_client_t *op_client;
 
+    axiom_soap_envelope_t *last_response_soap_envelope;
+
+    axis2_bool_t last_response_has_fault;
+
 };
 
 static axis2_svc_t *
@@ -244,6 +248,8 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
     svc_client->callback_recv = NULL;
     svc_client->listener_manager = NULL;
     svc_client->op_client = NULL;
+    svc_client->last_response_soap_envelope = NULL;
+    svc_client->last_response_has_fault = AXIS2_FALSE;
 
     /** initialize private data to NULL, create options */
     if (!axis2_svc_client_init_data(env, svc_client))
@@ -595,6 +601,9 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
 
     AXIS2_ENV_CHECK(env, NULL);
 
+    svc_client->last_response_soap_envelope = NULL;
+    svc_client->last_response_has_fault = AXIS2_FALSE;
+
     op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client->svc, env, op_qname);
     if (op)
     {
@@ -626,9 +635,9 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
 
         callback = axis2_callback_create(env);
         if (!callback)
-	{
+        {
             return NULL;
-	}
+        }
 
         /* call two channel non blocking invoke to do the work and wait on the callback */
         axis2_svc_client_send_receive_non_blocking_with_op_qname(
@@ -651,12 +660,15 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
                     if (res_msg_ctx)
                     {
                         soap_envelope =  axis2_msg_ctx_get_soap_envelope(res_msg_ctx, env);
+                        svc_client->last_response_soap_envelope = soap_envelope;
                         if (soap_envelope)
                         {
                             soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 
                             if (soap_body)
                             {
+                                svc_client->last_response_has_fault = 
+                                    axiom_soap_body_has_fault(soap_body, env);
                                 soap_node = axiom_soap_body_get_base_node(soap_body, env);
                                 if (soap_node)
                                 {
@@ -720,11 +732,11 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
             svc_client->op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
 
         if (res_msg_ctx)
-	{
+        {
             soap_envelope =  axis2_msg_ctx_get_soap_envelope(res_msg_ctx, env);
-	}
+        }
         else
-	{
+        {
             AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client->op_client, env, 
                 res_msg_ctx); /* set in msg_ctx to be NULL to reset */
         }
@@ -739,12 +751,17 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
     {
         return NULL;
     }
+    svc_client->last_response_soap_envelope = soap_envelope;
+
     soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
 
     if (!soap_body)
     {
         return NULL;
     }
+
+    svc_client->last_response_has_fault = 
+        axiom_soap_body_has_fault(soap_body, env);                                
 
 	if (AXIOM_SOAP11 == axiom_soap_envelope_get_soap_version(soap_envelope, env))
 	{
@@ -1240,4 +1257,17 @@ axis2_svc_client_get_op_client(const axis2_svc_client_t *svc_client,
     return svc_client->op_client;
 }
 
+AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
+axis2_svc_client_get_last_response_soap_envelope(const axis2_svc_client_t *svc_client,
+    const axis2_env_t *env)
+{
+    return svc_client->last_response_soap_envelope;
+}
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_svc_client_get_last_response_has_fault(const axis2_svc_client_t *svc_client,
+    const axis2_env_t *env)
+{
+    return svc_client->last_response_has_fault;
+}
 
