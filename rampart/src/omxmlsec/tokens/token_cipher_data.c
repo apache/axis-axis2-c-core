@@ -54,7 +54,7 @@ oxs_token_get_cipher_value_from_cipher_data(const axis2_env_t *env,
     axiom_node_t *cv_node = NULL;
     axis2_char_t *value = NULL;
     /*First check direct <CipherValue>*/
-    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NODE_CIPHER_VALUE, NULL, NULL);
+    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NODE_CIPHER_VALUE, OXS_ENC_NS, OXS_XENC);
     if(cv_node){
         value = oxs_token_get_cipher_value(env, cv_node);
     }else{
