@@ -9,7 +9,8 @@ libmod_rampart_la_LIBADD  = ../handlers/librampart_handlers.la \
 			    ../util/librampart_util.la \
 			    ../omxmlsec/libomxmlsec.la \
 				../secpolicy/model/librp_model.la \
-				../secpolicy/builder/librp_builder.la	
+				../secpolicy/builder/librp_builder.la \
+				../../../modules/core/engine/libaxis2_engine.la
 
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../../include \

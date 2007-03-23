@@ -122,9 +122,9 @@ rampart_shp_process_timestamptoken(const axis2_env_t *env,
         {
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Timestamp is not in the message"); 
             return AXIS2_FAILURE;
-        }
-        else
+        }else{
             return AXIS2_SUCCESS;
+        }
     }            
     else if(!rampart_context_is_include_timestamp(rampart_context,env))
     {
