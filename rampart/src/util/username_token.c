@@ -270,21 +270,21 @@ rampart_username_token_validate(
         return AXIS2_FAILURE;
 
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one PASSWORD*/
-    if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, NULL, NULL))
+    if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, RAMPART_WSSE_XMLNS, RAMPART_WSSE))
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Username token must not have more than one password");
         return AXIS2_FAILURE;
     }
 
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one CREATED*/
-    if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, NULL, NULL))
+    if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, RAMPART_WSSE_XMLNS, RAMPART_WSSE))
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Username token must not have more than one creted element");
         return AXIS2_FAILURE;
     }
 
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one NONCE*/
-    if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, NULL, NULL))
+    if (1 <  oxs_axiom_get_number_of_children_with_qname(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, RAMPART_WSSE_XMLNS, RAMPART_WSSE))
     {
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Username token must not have more than one nonce element");
         return AXIS2_FAILURE;
