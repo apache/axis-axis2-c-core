@@ -44,7 +44,7 @@ oxs_buffer_create(const axis2_env_t *env)
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    buffer = AXIS2_MALLOC(env->allocator, sizeof(oxs_buffer_t));
+    buffer = (oxs_buffer_t*)AXIS2_MALLOC(env->allocator, sizeof(oxs_buffer_t));
     if (!buffer)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

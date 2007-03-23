@@ -55,7 +55,7 @@ oxs_ctx_create(const axis2_env_t *env)
     oxs_ctx_t *ctx = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    ctx = AXIS2_MALLOC(env->allocator, sizeof(oxs_ctx_t));
+    ctx = (oxs_ctx_t*)AXIS2_MALLOC(env->allocator, sizeof(oxs_ctx_t));
     if (!ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
