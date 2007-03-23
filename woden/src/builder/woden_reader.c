@@ -3752,9 +3752,9 @@ parse_property(
             {
                 int len = 0;
                 axiom_text_t *text_node = NULL;
-
-                text_node = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
-                const axis2_char_t *temp_str = axiom_text_get_value(text_node, env);
+				const axis2_char_t *temp_str = NULL;
+				text_node = axiom_node_get_data_element(node, env);
+                temp_str = axiom_text_get_value(text_node, env);
                 text_value = axis2_strtrim(env, temp_str, NULL);
                 len = axis2_strlen(text_value);
                 if (len > 0)

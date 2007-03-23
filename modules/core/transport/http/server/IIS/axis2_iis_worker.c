@@ -348,7 +348,7 @@ axis2_iis_worker_process_request(
 		const char *headers_vhtml[2];
 					
 		headers_vhtml[1] = (char *)malloc(16);
-		headers_vhtml[0] = axis2_http_out_transport_get_content(iis_out_transport_info);
+		headers_vhtml[0] = axis2_iis_out_transport_get_content(iis_out_transport_info);
 		sprintf(headers_vhtml[1], "%d", body_str_len);
 		if(!start_response(lpECB, send_status, NULL, headers_names, headers_vhtml, 2))
 		{

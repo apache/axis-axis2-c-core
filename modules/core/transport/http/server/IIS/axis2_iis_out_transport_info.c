@@ -138,13 +138,11 @@ axis2_iis_out_transport_info_create(
             env, axis2_iis_out_transport_info_set_content_type); 
     axis2_http_out_transport_info_set_char_encoding_func(http_out_info,
             env, axis2_iis_out_transport_info_set_char_encoding);
-    axis2_http_out_transport_info_set_free_function(http_out_info, 
+	axis2_http_out_transport_info_set_free_func(http_out_info, 
             env, axis2_iis_out_transport_info_free);
 
     return http_out_info;
 }
-
-
 
 axis2_char_t *
 axis2_iis_out_transport_get_content(axis2_http_out_transport_info_t *info)

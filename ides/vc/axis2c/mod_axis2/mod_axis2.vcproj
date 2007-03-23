@@ -63,6 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="libapr-1.lib apr-1.lib libhttpd.lib axis2_util.lib axis2_engine.lib axiom.lib axis2_parser.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories=".\..\deploy\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
