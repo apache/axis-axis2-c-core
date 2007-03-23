@@ -400,11 +400,11 @@ oxs_xml_sig_process_signature_node(const axis2_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_array_list_t *sign_part_list = NULL;
     
-    /*signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node, 
-                            OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );*/
-
     signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node, 
-                            OXS_NODE_SIGNEDINFO, NULL,NULL);
+                            OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
+
+    /*signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node, 
+                            OXS_NODE_SIGNEDINFO, NULL,NULL);*/
 
     if(!signed_info_node){
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot find <ds:SignedInfo> " );        
@@ -588,11 +588,11 @@ oxs_xml_sig_verify(const axis2_env_t *env,
     signature_val = oxs_sign_ctx_get_sig_val(sign_ctx, env);
 
     /*Then we apply the C14N for the ds:SignedInfo*/
-    /*signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node,
-                                OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );*/
-   
     signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node,
-                                OXS_NODE_SIGNEDINFO, NULL,NULL );
+                                OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
+   
+    /*signed_info_node = oxs_axiom_get_first_child_node_by_name(env, signature_node,
+                                OXS_NODE_SIGNEDINFO, NULL,NULL );*/
 
     c14n_mtd = oxs_sign_ctx_get_c14n_mtd(sign_ctx, env); 
     doc = axiom_node_get_document(signed_info_node, env);

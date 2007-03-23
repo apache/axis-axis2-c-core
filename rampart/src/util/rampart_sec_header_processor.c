@@ -231,7 +231,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     void *key_buf = NULL;
     
     /*Get EncryptedData references */
-    ref_list_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_REFERENCE_LIST, NULL, NULL);
+    ref_list_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_REFERENCE_LIST,OXS_ENC_NS,OXS_XENC);
     reference_list = oxs_token_get_reference_list_data(env, ref_list_node);
     /*If there are no references. Nothing to do. Return success*/
     if((!reference_list) || (0 == axis2_array_list_size(reference_list, env))){
@@ -241,7 +241,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List has %d node reference(s)", axis2_array_list_size(reference_list, env));
 
     /*Get the algorithm to decrypt the sesison key*/
-    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
+    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_ENCRYPTION_METHOD,OXS_ENC_NS,OXS_XENC);
     enc_asym_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
     /*If the reference list > 0 then We have nodes to decrypt. Next step is to get the encrypted key*/
     /*Obtain the session key which is encrypted*/
@@ -374,7 +374,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
             return AXIS2_FAILURE;
         }
         /*Create an enc_ctx*/    
-        mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_data_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
+        mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_data_node, OXS_NODE_ENCRYPTION_METHOD,OXS_ENC_NS,OXS_XENC);
         if(!mtd_node)
         {
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Node with ID=%s cannot be found", id);
@@ -461,11 +461,11 @@ rampart_shp_process_signature(const axis2_env_t *env,
         return AXIS2_FAILURE;  
     }    
     
-    /*sign_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
-                            OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
-    */
     sign_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
-                            OXS_NODE_SIGNEDINFO, NULL, NULL);
+                            OXS_NODE_SIGNEDINFO, OXS_DSIG_NS, OXS_DS );
+    
+    /*sign_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
+                            OXS_NODE_SIGNEDINFO, NULL, NULL);*/
 
     if(!sign_info_node)
     {
@@ -498,10 +498,10 @@ rampart_shp_process_signature(const axis2_env_t *env,
             /*Verify each digest method with policy*/    
             axiom_node_t *digest_mtd_node = NULL;
             axis2_char_t *digest_mtd = NULL;
-            /*digest_mtd_node  = oxs_axiom_get_first_child_node_by_name(env,cur_node,
-                           OXS_NODE_DIGEST_METHOD, OXS_DSIG_NS, OXS_DS);*/
             digest_mtd_node  = oxs_axiom_get_first_child_node_by_name(env,cur_node,
-                           OXS_NODE_DIGEST_METHOD, NULL,NULL);            
+                           OXS_NODE_DIGEST_METHOD, OXS_DSIG_NS, OXS_DS);
+            /*digest_mtd_node  = oxs_axiom_get_first_child_node_by_name(env,cur_node,
+                           OXS_NODE_DIGEST_METHOD, NULL,NULL);*/            
             if(digest_mtd_node)
             {
                 digest_mtd = oxs_token_get_digest_method(env, digest_mtd_node);
@@ -548,22 +548,22 @@ rampart_shp_process_signature(const axis2_env_t *env,
     }
     is_include_token = rampart_context_is_token_include(rampart_context,token,token_type,server_side,env);
 
-    /*key_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
-                            OXS_NODE_KEY_INFO,OXS_DSIG_NS, OXS_DS );*/
-
     key_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
-                           OXS_NODE_KEY_INFO,NULL,NULL);
+                            OXS_NODE_KEY_INFO,OXS_DSIG_NS, OXS_DS );
+
+    /*key_info_node = oxs_axiom_get_first_child_node_by_name(env, sig_node,
+                           OXS_NODE_KEY_INFO,NULL,NULL);*/
     
     if(!key_info_node)
     {
         AXIS2_LOG_INFO(env->log, "[rampart][shp]Verify failed. Key Info node is not in the message.");
         return AXIS2_FAILURE;
     }
-    /*str_node = oxs_axiom_get_first_child_node_by_name(env,key_info_node,
-                            OXS_NODE_SECURITY_TOKEN_REFRENCE,OXS_WSSE_XMLNS,OXS_WSSE);*/
-
     str_node = oxs_axiom_get_first_child_node_by_name(env,key_info_node,
-                            OXS_NODE_SECURITY_TOKEN_REFRENCE,NULL,NULL);
+                            OXS_NODE_SECURITY_TOKEN_REFRENCE,OXS_WSSE_XMLNS,OXS_WSSE);
+
+    /*str_node = oxs_axiom_get_first_child_node_by_name(env,key_info_node,
+                            OXS_NODE_SECURITY_TOKEN_REFRENCE,NULL,NULL);*/
 
     if(str_node)
     {

@@ -187,7 +187,7 @@ oxs_xml_enc_process_key_info(const axis2_env_t *env,
     axiom_node_t *cur_node = NULL;
     axis2_char_t *node_name = NULL;
 
-    st_ref_node =  oxs_axiom_get_first_child_node_by_name(env, key_info_node, OXS_NODE_SECURITY_TOKEN_REFRENCE, NULL, NULL); 
+    st_ref_node =  oxs_axiom_get_first_child_node_by_name(env, key_info_node, OXS_NODE_SECURITY_TOKEN_REFRENCE,OXS_WSSE_XMLNS,OXS_WSSE); 
     if(!st_ref_node){
         return AXIS2_FAILURE;
     }
@@ -354,7 +354,7 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
 
     /*Get the symmetric encryption algorithm*/
-    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
+    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_ENCRYPTION_METHOD,OXS_ENC_NS,OXS_XENC);
     sym_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
     if(!sym_algo){
         return AXIS2_FAILURE;
@@ -369,8 +369,8 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     OXS_CTX_SET_TYPE(enc_ctx, env, type);
     
     /*Get the cipher value*/
-    cd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_CIPHER_DATA, NULL, NULL);
-    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NODE_CIPHER_VALUE, NULL, NULL);
+    cd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_CIPHER_DATA,OXS_ENC_NS,OXS_XENC);
+    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NODE_CIPHER_VALUE,OXS_ENC_NS,OXS_XENC);
     cipher_val = oxs_token_get_cipher_value(env, cv_node); 
     
     /*Create input buffer with cipher data obtained*/
@@ -485,20 +485,20 @@ oxs_xml_enc_decrypt_key(const axis2_env_t *env,
     oxs_buffer_t *result_buf = NULL;
     
     /*Get encryption method algorithm*/
-    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
+    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_ENCRYPTION_METHOD,OXS_ENC_NS,OXS_XENC);
     enc_mtd_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
     if(!enc_mtd_algo){
         return AXIS2_FAILURE;
     }
     /*Get cipher data*/
-    cd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_CIPHER_DATA, NULL, NULL);
+    cd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_CIPHER_DATA,OXS_ENC_NS,OXS_XENC);
     cipher_val = oxs_token_get_cipher_value_from_cipher_data(env, cd_node);
     if(!cipher_val){
         return AXIS2_FAILURE;
     }
      
     /*Get key used to encrypt*/
-    key_info_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_KEY_INFO, NULL, NULL);
+    key_info_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_KEY_INFO,OXS_DSIG_NS,OXS_DS);
     status = oxs_xml_enc_process_key_info(env, asym_ctx, key_info_node, parent);
     /*Right now we support KeyInfo -> SecurityTokenReference -> Reference
                            KeyInfo -> SecurityTokenReference -> X509IssuerSerial */
