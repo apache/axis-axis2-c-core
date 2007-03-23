@@ -68,71 +68,47 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_ctx_set_property(struct axis2_ctx *ctx,
     const axis2_env_t *env,
     const axis2_char_t *key,
-    axis2_property_t *value,
-    const axis2_bool_t persistent)
+    axis2_property_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (persistent)
+    if (value)
     {
-        if (ctx->persistent_map)
-        {
-            axis2_hash_set(ctx->persistent_map, key,
-                    AXIS2_HASH_KEY_STRING, value);
-        }
-    }
-    else
-    {
-        if (value)
-        {
-            /* handle the case where we are setting a new value with the 
-               same key, we would have to free the existing value */
-            axis2_property_t *temp_value = axis2_hash_get(ctx->non_persistent_map, 
-                key, 
-                AXIS2_HASH_KEY_STRING);
-			if (temp_value)
+        /* handle the case where we are setting a new value with the 
+           same key, we would have to free the existing value */
+        axis2_property_t *temp_value = axis2_hash_get(ctx->non_persistent_map, 
+            key, 
+            AXIS2_HASH_KEY_STRING);
+		if (temp_value)
+		{
+			void *temp_value_value =  axis2_property_get_value (temp_value, env);
+			void *value_value =  axis2_property_get_value (value, env);
+			if (temp_value_value != value_value)
 			{
-				void *temp_value_value =  axis2_property_get_value (temp_value, env);
-				void *value_value =  axis2_property_get_value (value, env);
-				if (temp_value_value != value_value)
-				{
-					axis2_property_free(temp_value, env);
-				}
+				axis2_property_free(temp_value, env);
 			}
-        }
-        if (ctx->non_persistent_map)
-        {
-            axis2_hash_set(ctx->non_persistent_map, key,
-                AXIS2_HASH_KEY_STRING, value);
-        }
+		}
     }
+    if (ctx->non_persistent_map)
+    {
+        axis2_hash_set(ctx->non_persistent_map, key,
+            AXIS2_HASH_KEY_STRING, value);
+    }
+
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_property_t *AXIS2_CALL
 axis2_ctx_get_property(const axis2_ctx_t *ctx,
     const axis2_env_t *env,
-    const axis2_char_t *key,
-    const axis2_bool_t persistent)
+    const axis2_char_t *key)
 {
     axis2_property_t *ret = NULL;
 
-    if (persistent)
+    if (ctx->non_persistent_map)
     {
-        if (ctx->persistent_map)
-        {
-            ret = axis2_hash_get(ctx->persistent_map, key, 
-                AXIS2_HASH_KEY_STRING);
-        }
-    }
-
-    if (!ret)
-    {
-        if (ctx->non_persistent_map)
-        {
-            ret = axis2_hash_get(ctx->non_persistent_map, key, 
-                AXIS2_HASH_KEY_STRING);
-        }
+        ret = axis2_hash_get(ctx->non_persistent_map, key, 
+            AXIS2_HASH_KEY_STRING);
     }
     /** it is the responsibility of the caller to look-up parent if key is not found here
         Note that in C implementation it is the responsibility of the deriving struct to 

@@ -192,7 +192,7 @@ axis2_op_client_add_msg_ctx(axis2_op_client_t *op_client,
         if(! axis2_msg_ctx_get_doing_rest(out_msg_ctx, env))
         {
             dump_property =  axis2_msg_ctx_get_property(out_msg_ctx, env,
-                AXIS2_DUMP_INPUT_MSG_TRUE, AXIS2_FALSE);
+                AXIS2_DUMP_INPUT_MSG_TRUE);
             if(dump_property)
 	    {
                 dump_value = (axis2_char_t *) axis2_property_get_value (

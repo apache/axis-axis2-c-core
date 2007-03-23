@@ -178,7 +178,7 @@ axis2_http_transport_sender_invoke(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     /*property =  axis2_msg_ctx_get_property(msg_ctx, env,
-            AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
+            AXIS2_CHARACTER_SET_ENCODING);
     if (property)
     {
         char_set_enc = axis2_property_get_value(property, env);
@@ -199,7 +199,7 @@ axis2_http_transport_sender_invoke(
             if (ctx)
             {
                 property =  axis2_ctx_get_property(ctx, env,
-                        AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
+                        AXIS2_CHARACTER_SET_ENCODING);
                 if (property)
                 {
                     char_set_enc = axis2_property_get_value(property, env);

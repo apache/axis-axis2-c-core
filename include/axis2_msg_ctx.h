@@ -855,8 +855,7 @@ extern "C"
     AXIS2_EXTERN axis2_property_t *AXIS2_CALL
     axis2_msg_ctx_get_property(const axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
-        const axis2_char_t *key,
-        const axis2_bool_t persistent);
+        const axis2_char_t *key);
 
     /**
      * Sets property with given key.
@@ -873,8 +872,7 @@ extern "C"
     axis2_msg_ctx_set_property(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         const axis2_char_t *key,
-        axis2_property_t *value,
-        const axis2_bool_t persistent);
+        axis2_property_t *value);
     /**
      * Gets the QName of the handler at which invocation was paused.
      * @param msg_ctx message context

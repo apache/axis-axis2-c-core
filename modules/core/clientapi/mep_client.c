@@ -504,8 +504,7 @@ axis2_mep_client_two_way_send(
     engine = axis2_engine_create(env, conf_ctx);
     if (!engine)
         return NULL;
-    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TIMEOUT_IN_SECONDS, 
-        AXIS2_FALSE);
+    property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TIMEOUT_IN_SECONDS);
     if(property)
     {
         axis2_char_t *value = axis2_property_get_value(property, env);
@@ -545,11 +544,10 @@ axis2_mep_client_two_way_send(
     if (!response)
         return NULL;
 
-    property =  axis2_msg_ctx_get_property(msg_ctx, env,AXIS2_TRANSPORT_IN, AXIS2_FALSE);
+    property =  axis2_msg_ctx_get_property(msg_ctx, env,AXIS2_TRANSPORT_IN);
     if (property)
     {
-         axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property,
-                AXIS2_FALSE);
+         axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property);
         property = NULL;
     }
 
@@ -602,7 +600,7 @@ axis2_mep_client_two_way_send(
              * way single channel
              */
             property = axis2_msg_ctx_get_property(msg_ctx, env, 
-                AXIS2_HANDLER_ALREADY_VISITED, AXIS2_FALSE);
+                AXIS2_HANDLER_ALREADY_VISITED);
             if(property)
             {
                 axis2_char_t *value = axis2_property_get_value(property, env);
@@ -637,8 +635,7 @@ axis2_mep_client_two_way_send(
 
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
     avoid double free of this property */
-     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
-            AXIS2_FALSE);
+     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
 
     if (engine)
     {
@@ -670,11 +667,10 @@ axis2_mep_client_receive(
     if (!response)
         return NULL;
 
-    property =  axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_FALSE);
+    property =  axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TRANSPORT_IN);
     if (property)
     {
-         axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property,
-                AXIS2_FALSE);
+         axis2_msg_ctx_set_property(response, env, AXIS2_TRANSPORT_IN, property);
         property = NULL;
     }
 
@@ -724,8 +720,7 @@ axis2_mep_client_receive(
 
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
     avoid double free of this property */
-     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
-            AXIS2_FALSE);
+     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
 
     if (engine)
     {

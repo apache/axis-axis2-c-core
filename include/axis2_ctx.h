@@ -72,8 +72,7 @@ extern "C"
     axis2_ctx_set_property(struct axis2_ctx *ctx,
         const axis2_env_t *env,
         const axis2_char_t *key,
-        axis2_property_t *value,
-        const axis2_bool_t persistent);
+        axis2_property_t *value);
 
     /**
      * Gets the property with the given key.
@@ -88,8 +87,7 @@ extern "C"
     AXIS2_EXTERN axis2_property_t *AXIS2_CALL
     axis2_ctx_get_property(const axis2_ctx_t *ctx,
         const axis2_env_t *env,
-        const axis2_char_t *key,
-        const axis2_bool_t persistent);
+        const axis2_char_t *key);
 
     /**
      * Gets the non-persistent map of properties.

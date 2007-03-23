@@ -306,7 +306,7 @@ axis2_http_sender_send(
         data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
 
 		method = (axis2_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
-																AXIS2_HTTP_METHOD, AXIS2_FALSE);
+            AXIS2_HTTP_METHOD);
 		if (method)
 			method_value = (axis2_char_t *) axis2_property_get_value (method, env);
 
@@ -351,7 +351,7 @@ axis2_http_sender_send(
 		  axis2_http_client_free_void_arg);
 		  axis2_property_set_value(property, env, sender_impl->client);
 		   axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT,
-		  property, AXIS2_FALSE);*/
+		  property);*/
 
 		doing_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env);
 
@@ -376,7 +376,7 @@ axis2_http_sender_send(
 		if (is_soap)
 		{
 			dump_property =  axis2_msg_ctx_get_property(msg_ctx, env, 
-													   AXIS2_DUMP_INPUT_MSG_TRUE, AXIS2_FALSE);
+                AXIS2_DUMP_INPUT_MSG_TRUE);
 			if(dump_property)
 			{
 				axis2_char_t *dump_true = axis2_property_get_value(dump_property, env);
@@ -533,8 +533,7 @@ axis2_http_sender_send(
 		{
 			content_type_property  = (axis2_property_t *) axis2_msg_ctx_get_property(
 				msg_ctx, env,
-				AXIS2_USER_DEFINED_HTTP_HEADER_CONTENT_TYPE, 
-				AXIS2_FALSE);
+				AXIS2_USER_DEFINED_HTTP_HEADER_CONTENT_TYPE);
 		
 			if (content_type_property)
 			{
@@ -594,9 +593,6 @@ axis2_http_sender_send(
     AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender_impl->client, env,
 								  sender_impl->so_timeout);
     
-    /* TODO: Load from property
-     * ssl_pp_property =  axis2_msg_ctx_get_property(AXIS2_SSL_PASSPHRASE);*/
-
     ssl_pp_param =  axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_SSL_PASSPHRASE);
 
     if (ssl_pp_param)
@@ -746,8 +742,7 @@ axis2_http_sender_get_header_info(
 /*                 axis2_property_set_value(property, env, transfer_encoding); */
 /*                  axis2_msg_ctx_set_property(msg_ctx, env, */
 /* 										   AXIS2_HTTP_HEADER_TRANSFER_ENCODING, */
-/* 										   property, */
-/* 										   AXIS2_FALSE); */
+/* 										   property); */
 /*                 response_chunked = AXIS2_TRUE; */
                 transfer_encoding =
                     axis2_strdup(AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED,
@@ -784,7 +779,7 @@ axis2_http_sender_get_header_info(
             axis2_property_set_value(property, env, axis2_strdup(content_type,
 																 env));
             axis2_ctx_set_property(axis_ctx, env, MTOM_RECIVED_CONTENT_TYPE,
-								   property, AXIS2_FALSE);
+								   property);
         }
     }
     if (charset)
@@ -797,7 +792,7 @@ axis2_http_sender_get_header_info(
             axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
             axis2_property_set_value(property, env, charset);
             axis2_ctx_set_property(axis_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
-								   property, AXIS2_FALSE);
+								   property);
         }
     }
     if (AXIS2_FALSE == response_chunked)
@@ -814,8 +809,7 @@ axis2_http_sender_get_header_info(
         axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
         axis2_property_set_value(property, env, content_length);
          axis2_msg_ctx_set_property(msg_ctx, env,
-								   AXIS2_HTTP_HEADER_CONTENT_LENGTH, property,
-								   AXIS2_FALSE);
+								   AXIS2_HTTP_HEADER_CONTENT_LENGTH, property);
     }
     return AXIS2_SUCCESS;
 }
@@ -849,10 +843,8 @@ axis2_http_sender_process_response(
     axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
     axis2_property_set_free_func(property, env, axis2_stream_free_void_arg);
     axis2_property_set_value(property, env, in_stream);
-    /*axis2_ctx_set_property(axis_ctx, env, AXIS2_TRANSPORT_IN, property,
-	  AXIS2_FALSE);*/
-     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
-							   AXIS2_FALSE);
+    /*axis2_ctx_set_property(axis_ctx, env, AXIS2_TRANSPORT_IN, property);*/
+    axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
     return AXIS2_SUCCESS;
 }
 
@@ -1019,7 +1011,7 @@ axis2_http_sender_configure_server_cert(
     sender_impl = AXIS2_INTF_TO_IMPL(sender);
 
     server_cert_property =  axis2_msg_ctx_get_property(msg_ctx, env, 
-													  AXIS2_SSL_SERVER_CERT, AXIS2_FALSE);
+        AXIS2_SSL_SERVER_CERT);
     if(server_cert_property)
     {
 		server_cert = (axis2_char_t *) axis2_property_get_value(
@@ -1062,7 +1054,7 @@ axis2_http_sender_configure_key_file(
     sender_impl = AXIS2_INTF_TO_IMPL(sender);
 
     key_file_property =  axis2_msg_ctx_get_property(msg_ctx, env, 
-												   AXIS2_SSL_KEY_FILE, AXIS2_FALSE);
+        AXIS2_SSL_KEY_FILE);
     if(key_file_property)
     {
 		key_file = (axis2_char_t *) axis2_property_get_value(

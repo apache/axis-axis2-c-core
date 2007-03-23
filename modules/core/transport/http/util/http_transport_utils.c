@@ -604,7 +604,7 @@ axis2_http_transport_utils_do_write_mtom(
         value = axis2_param_get_value(param, env);
 
     property =  axis2_msg_ctx_get_property(msg_ctx, env,
-            AXIS2_ENABLE_MTOM, AXIS2_FALSE);
+            AXIS2_ENABLE_MTOM);
     if (property)
         value = (axis2_char_t *)axis2_property_get_value(property, env);
 
@@ -1035,7 +1035,7 @@ axis2_http_transport_utils_create_soap_msg(
 
 
     property =  axis2_msg_ctx_get_property(msg_ctx, env,
-            AXIS2_TRANSPORT_IN, AXIS2_FALSE);
+            AXIS2_TRANSPORT_IN);
     if (property)
     {
         in_stream = axis2_property_get_value(property, env);
@@ -1056,7 +1056,7 @@ axis2_http_transport_utils_create_soap_msg(
     callback_ctx->chunked_stream = NULL;
 
     property =  axis2_msg_ctx_get_property(msg_ctx, env,
-            AXIS2_HTTP_HEADER_CONTENT_LENGTH, AXIS2_FALSE);
+            AXIS2_HTTP_HEADER_CONTENT_LENGTH);
     if (property)
     {
         content_length = axis2_property_get_value(property, env);
@@ -1096,14 +1096,14 @@ axis2_http_transport_utils_create_soap_msg(
         if (ctx)
         {
             property =  axis2_ctx_get_property(ctx, env,
-                    AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
+                    AXIS2_CHARACTER_SET_ENCODING);
             if (property)
             {
                 char_set_enc = axis2_property_get_value(property, env);
                 property = NULL;
             }
             property =  axis2_ctx_get_property(ctx, env,
-                    MTOM_RECIVED_CONTENT_TYPE, AXIS2_FALSE);
+                    MTOM_RECIVED_CONTENT_TYPE);
             if (property)
             {
                 content_type = axis2_property_get_value(property, env);

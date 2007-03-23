@@ -136,7 +136,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
     ctx = axis2_msg_ctx_get_base(msg_ctx, env);
     property =
-         axis2_ctx_get_property(ctx, env, AXIS2_WSA_VERSION, AXIS2_FALSE);
+         axis2_ctx_get_property(ctx, env, AXIS2_WSA_VERSION);
     if (property)
     {
         addressing_version_from_msg_ctx = axis2_property_get_value(property,
@@ -178,8 +178,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             in_ctx = axis2_msg_ctx_get_base(in_msg_ctx, env);
 
             property =
-                 axis2_ctx_get_property(in_ctx, env, AXIS2_WSA_VERSION,
-                        AXIS2_FALSE);
+                 axis2_ctx_get_property(in_ctx, env, AXIS2_WSA_VERSION);
             if (property)
             {
                 addr_ns = axis2_property_get_value(property, env);
