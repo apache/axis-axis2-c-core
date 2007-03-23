@@ -1541,7 +1541,7 @@ axis2_msg_ctx_get_options(
     options = axis2_options_create(env);
     axis2_options_set_msg_info_headers(options, env, 
         msg_ctx->msg_info_headers);
-    properties =  axis2_ctx_get_non_persistent_map(msg_ctx->base, env);
+    properties =  axis2_ctx_get_property_map(msg_ctx->base, env);
     axis2_options_set_properties(options, env, properties);
     return options;
 }
@@ -1571,7 +1571,7 @@ axis2_msg_ctx_set_options(
     
     msg_ctx->doing_mtom = axis2_options_get_enable_mtom(options, env);
 
-     axis2_ctx_set_non_persistent_map(msg_ctx->base, env,
+     axis2_ctx_set_property_map(msg_ctx->base, env,
             axis2_options_get_properties(options, env));
     rest_val = (axis2_property_t *)  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_ENABLE_REST);

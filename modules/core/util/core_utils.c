@@ -114,8 +114,8 @@ axis2_core_utils_create_out_msg_ctx(
         axis2_ctx_t *new_ctx = axis2_msg_ctx_get_base(new_msg_ctx, env);
         if (new_ctx)
         {
-            axis2_ctx_set_non_persistent_map(new_ctx, env,
-                axis2_ctx_get_non_persistent_map(ctx, env));
+            axis2_ctx_set_property_map(new_ctx, env,
+                axis2_ctx_get_property_map(ctx, env));
         }
     }
 
