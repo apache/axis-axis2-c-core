@@ -117,6 +117,8 @@ oxs_key_create(const axis2_env_t *env)
 	oxs_key_t *key = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
+    key = AXIS2_MALLOC(env->allocator, sizeof(oxs_key_t));
+
     if (!key)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
