@@ -19,6 +19,9 @@
 #include <axis2_http_transport.h>
 #include "libcurl_stream.h"
 
+static int ref = 0;
+static CURL *handler;
+
 typedef struct axis2_libcurl
 {
 	axis2_char_t *memory;
@@ -47,8 +50,9 @@ axis2_libcurl_create (
 
 void
 axis2_libcurl_free (
-	const axis2_env_t *env, 
-	axis2_libcurl_t *curl);
+	void *curl,
+	const axis2_env_t *env);
+
 
 
 axis2_status_t AXIS2_CALL
@@ -60,8 +64,6 @@ axis2_libcurl_send (
     const axis2_char_t *str_url,
     const axis2_char_t *soap_action)
 {
-
-	CURL *handler;
 	struct curl_slist *headers = NULL;
 	axiom_soap_body_t *soap_body;
 	axis2_bool_t is_soap = AXIS2_TRUE;
@@ -75,12 +77,11 @@ axis2_libcurl_send (
 	axis2_char_t *buffer = NULL;
 	unsigned int buffer_size = 0;
 	axis2_char_t *content_type;
-	axis2_char_t *content_len = "Content-Length:";
+	axis2_char_t *content_len = AXIS2_HTTP_HEADER_CONTENT_LENGTH_;
 	const axis2_char_t *char_set_enc = NULL;
-	axis2_char_t *content = "Content-Type:";
-	axis2_char_t *soap_action_header = "SOAPAction:";
+	axis2_char_t *content = AXIS2_HTTP_HEADER_CONTENT_TYPE_;
+	axis2_char_t *soap_action_header = AXIS2_HTTP_HEADER_SOAP_ACTION_;
 	axis2_libcurl_t *data;
-	axis2_libcurl_t *header;
 	axis2_stream_t *in_stream;
 	axis2_property_t *trans_in_property;
 	axis2_string_t *char_set_enc_str;
@@ -88,11 +89,19 @@ axis2_libcurl_send (
     int output_stream_size = 0;
 
 	data = axis2_libcurl_create (env);
-	header = axis2_libcurl_create (env);
-	handler = curl_easy_init ();
-	headers = curl_slist_append (headers, "User-Agent:Axis2/C");
-	headers = curl_slist_append (headers, "Accept:");
-	headers = curl_slist_append (headers, "Expect:");
+    if (!ref)
+    {
+        handler = curl_easy_init ();
+        ref ++;
+    }
+    else
+    {
+        curl_easy_reset (handler);
+    }
+	headers = curl_slist_append (headers, AXIS2_HTTP_HEADER_USER_AGENT_AXIS2C);
+	headers = curl_slist_append (headers,  AXIS2_HTTP_HEADER_ACCEPT_);
+	headers = curl_slist_append (headers, AXIS2_HTTP_HEADER_EXPECT_);
+
     if (AXIS2_TRUE ==  axis2_msg_ctx_get_doing_rest(msg_ctx, env))
 		is_soap = AXIS2_FALSE;
 	else
@@ -101,7 +110,7 @@ axis2_libcurl_send (
 	if (!is_soap)
 	{
 		soap_body = axiom_soap_envelope_get_body(out, env);
-        if (! soap_body)
+        if (!soap_body)
         {
             AXIS2_ERROR_SET(env->error,
 							AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL,
@@ -111,7 +120,7 @@ axis2_libcurl_send (
             return AXIS2_FAILURE;
         }
         body_node = axiom_soap_body_get_base_node(soap_body, env);
-        if (! body_node)
+        if (!body_node)
         {
             return AXIS2_FAILURE;
         }
@@ -119,9 +128,11 @@ axis2_libcurl_send (
 
 		method = (axis2_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_HTTP_METHOD);
-		if (method)
-			method_value = (axis2_char_t *) axis2_property_get_value (method, env);
 
+		if (method)
+        {
+			method_value = (axis2_char_t *) axis2_property_get_value (method, env);
+        }
 		/* The default is POST */
 		if (method_value && 0 == axis2_strcmp(method_value, AXIS2_HTTP_HEADER_GET))
 		{
@@ -289,11 +300,11 @@ axis2_libcurl_send (
 	curl_easy_setopt (handler, CURLOPT_HTTPHEADER, headers);
 	curl_easy_setopt (handler, CURLOPT_WRITEFUNCTION, axis2_libcurl_write_memory_callback);
 	curl_easy_setopt (handler, CURLOPT_WRITEDATA, data);
-	curl_easy_setopt (handler, CURLOPT_HEADERFUNCTION, axis2_libcurl_header_callback);
-	curl_easy_setopt (handler, CURLOPT_WRITEHEADER, header);
+/* 	curl_easy_setopt (handler, CURLOPT_HEADERFUNCTION, axis2_libcurl_header_callback); */
+/* 	curl_easy_setopt (handler, CURLOPT_WRITEHEADER, header); */
 	curl_easy_perform (handler);
-	curl_slist_free_all (headers);
-	curl_easy_cleanup (handler);
+/* 	curl_slist_free_all (headers); */
+/* 	curl_easy_cleanup (handler); */
 
 	in_stream = axis2_stream_create_libcurl (env, data->memory, data->size);
     trans_in_property = axis2_property_create(env);
@@ -352,7 +363,9 @@ axis2_libcurl_create (const axis2_env_t *env)
 }
 
 void
-axis2_libcurl_free (const axis2_env_t *env, axis2_libcurl_t *curl)
+axis2_libcurl_free (void *curl, const axis2_env_t *env)
 {
 	AXIS2_FREE (env->allocator, curl);
+/* 	curl_slist_free_all (headers); */
+/* 	curl_easy_cleanup (handler); */
 }

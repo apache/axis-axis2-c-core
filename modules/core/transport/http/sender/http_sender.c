@@ -1090,7 +1090,7 @@ axis2_libcurl_http_send(
     const axis2_char_t *str_url,
     const axis2_char_t *soap_action)
 {
-	axis2_http_sender_impl_t *sender_impl =  AXIS2_INTF_TO_IMPL(sender);
+    axis2_http_sender_impl_t *sender_impl = AXIS2_INTF_TO_IMPL(sender);
 	return axis2_libcurl_send (sender_impl->om_output, env, msg_ctx, out, str_url, soap_action);
 }
 #endif
