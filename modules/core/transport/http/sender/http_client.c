@@ -83,7 +83,7 @@ axis2_http_client_create(
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_free(
     axis2_http_client_t *http_client,
     const axis2_env_t *env)
@@ -108,7 +108,7 @@ axis2_http_client_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_free_void_arg(
     void *client,
     const axis2_env_t *env)
@@ -121,7 +121,7 @@ axis2_http_client_free_void_arg(
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_send(
     axis2_http_client_t *client,
     const axis2_env_t *env,
@@ -365,7 +365,7 @@ axis2_http_client_send(
 }
 
 
-int AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 axis2_http_client_recieve_header(
     axis2_http_client_t *client,
     const axis2_env_t *env)
@@ -503,7 +503,7 @@ axis2_http_client_recieve_header(
 }
 
 
-axis2_http_simple_response_t *AXIS2_CALL
+AXIS2_EXTERN axis2_http_simple_response_t *AXIS2_CALL
 axis2_http_client_get_response(
     const axis2_http_client_t *client,
     const axis2_env_t *env)
@@ -512,7 +512,7 @@ axis2_http_client_get_response(
     return client->response;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_set_url(
     axis2_http_client_t *client,
     const axis2_env_t *env,
@@ -529,7 +529,7 @@ axis2_http_client_set_url(
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL
+AXIS2_EXTERN axis2_url_t *AXIS2_CALL
 axis2_http_client_get_url(
     const axis2_http_client_t *client,
     const axis2_env_t *env)
@@ -538,7 +538,7 @@ axis2_http_client_get_url(
     return client->url;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_set_timeout(
     axis2_http_client_t *client,
     const axis2_env_t *env,
@@ -549,7 +549,7 @@ axis2_http_client_set_timeout(
     return AXIS2_SUCCESS;
 }
 
-int AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 axis2_http_client_get_timeout(
     const axis2_http_client_t *client,
     const axis2_env_t *env)
@@ -558,7 +558,7 @@ axis2_http_client_get_timeout(
     return client->timeout;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_set_proxy(
     axis2_http_client_t *client,
     const axis2_env_t *env,
@@ -594,7 +594,7 @@ axis2_http_client_set_proxy(
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_client_get_proxy(
     const axis2_http_client_t *client,
     const axis2_env_t *env)
@@ -603,7 +603,7 @@ axis2_http_client_get_proxy(
     return client->proxy_host_port;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_connect_ssl_host(
     axis2_http_client_t *client,
     const axis2_env_t *env,
@@ -696,7 +696,7 @@ axis2_http_client_connect_ssl_host(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_set_dump_input_msg(
     axis2_http_client_t *client,
     const axis2_env_t *env,
@@ -707,7 +707,7 @@ axis2_http_client_set_dump_input_msg(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_set_server_cert(
     axis2_http_client_t *client,
     const axis2_env_t *env,
@@ -718,7 +718,7 @@ axis2_http_client_set_server_cert(
    return AXIS2_SUCCESS;
 }
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_client_get_server_cert(
     const axis2_http_client_t *client,
     const axis2_env_t *env)
@@ -727,7 +727,7 @@ axis2_http_client_get_server_cert(
    return client->server_cert;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_set_key_file(
     axis2_http_client_t *client,
     const axis2_env_t *env,
@@ -738,7 +738,7 @@ axis2_http_client_set_key_file(
    return AXIS2_SUCCESS;
 }
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_client_get_key_file(
     const axis2_http_client_t *client,
     const axis2_env_t *env)
