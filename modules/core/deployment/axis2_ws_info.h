@@ -24,11 +24,6 @@
  * @{
  */
 
-/**
- * @file axis2_ws_info.h
- * @brief Axis2 Ws Info interface
- */
-
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
@@ -124,30 +119,6 @@ extern "C"
         axis2_char_t *file_name,
         long last_modified_date,
         int type);
-
-/** Frees the ws info. */
-#define AXIS2_WS_INFO_FREE(ws_info, env) \
-      axis2_ws_info_free (ws_info, env)
-
-/** Gets the file name. */
-#define AXIS2_WS_INFO_GET_FILE_NAME(ws_info, env) \
-      axis2_ws_info_get_file_name (ws_info, env)
-
-/** Set file name. */
-#define AXIS2_WS_INFO_SET_FILE_NAME(ws_info, env, file_name) \
-      axis2_ws_info_set_file_name (ws_info, env, file_name)
-
-/** Gets the last modified date. */
-#define AXIS2_WS_INFO_GET_LAST_MODIFIED_DATE(ws_info, env) \
-      axis2_ws_info_get_last_modified_date (ws_info, env)
-
-/** Sets the last modified date. */
-#define AXIS2_WS_INFO_SET_LAST_MODIFIED_DATE(ws_info, env, last_modified_date) \
-      axis2_ws_info_set_last_modified_date (ws_info, env, last_modified_date)
-
-/** Get type. */
-#define AXIS2_WS_INFO_GET_TYPE(ws_info, env) \
-      axis2_ws_info_get_type (ws_info, env)
 
 /** @} */
 

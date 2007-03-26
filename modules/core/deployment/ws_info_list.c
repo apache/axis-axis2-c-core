@@ -117,7 +117,7 @@ axis2_ws_info_list_free(
 
             ws_info = (axis2_ws_info_t *) axis2_array_list_get(ws_info_list->
                     ws_info_list, env, i);
-            AXIS2_WS_INFO_FREE(ws_info, env);
+            axis2_ws_info_free(ws_info, env);
         }
         axis2_array_list_free(ws_info_list->ws_info_list, env);
         ws_info_list->ws_info_list = NULL;
@@ -154,7 +154,7 @@ axis2_ws_info_list_init(
 
         ws_info = (axis2_ws_info_t *)
                 axis2_array_list_get(ws_info_list->ws_info_list, env, i);
-        AXIS2_WS_INFO_FREE(ws_info, env);
+        axis2_ws_info_free(ws_info, env);
     }
     return AXIS2_SUCCESS;
 }
@@ -275,7 +275,7 @@ axis2_ws_info_list_get_file_item(
         ws_info = (axis2_ws_info_t *) axis2_array_list_get(ws_info_list->
                 ws_info_list, env, i);
 
-        file_name_l = AXIS2_WS_INFO_GET_FILE_NAME(ws_info, env);
+        file_name_l = axis2_ws_info_get_file_name(ws_info, env);
         if (0 == axis2_strcmp(file_name_l, file_name))
         {
             return ws_info;
@@ -297,7 +297,7 @@ axis2_ws_info_list_is_modified(
     AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ws_info, AXIS2_FAILURE);
 
-    last_modified_date = AXIS2_WS_INFO_GET_LAST_MODIFIED_DATE(ws_info, env);
+    last_modified_date = axis2_ws_info_get_last_modified_date(ws_info, env);
     return (last_modified_date !=  axis2_file_get_timestamp(file, env));
 }
 
@@ -345,7 +345,7 @@ axis2_ws_info_list_check_for_undeploy(
         file_item = (axis2_ws_info_t *) axis2_array_list_get(ws_info_list->
                 ws_info_list, env, i);
 
-        file_item_name = AXIS2_WS_INFO_GET_FILE_NAME(file_item, env);
+        file_item_name = axis2_ws_info_get_file_name(file_item, env);
         current_lists_size = axis2_array_list_size(ws_info_list->
                 current_info_lists, env);
         for (j = 0; j < current_lists_size; j++)
@@ -365,7 +365,7 @@ axis2_ws_info_list_check_for_undeploy(
             axis2_ws_info_t *ws_info = NULL;
             long last_modified_date = 0;
 
-            last_modified_date = AXIS2_WS_INFO_GET_LAST_MODIFIED_DATE(file_item,
+            last_modified_date = axis2_ws_info_get_last_modified_date(file_item,
                     env);
             axis2_array_list_add(temp_list, env, file_item);
             ws_info = axis2_ws_info_create_with_file_name_and_last_modified_date(

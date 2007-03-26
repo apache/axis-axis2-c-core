@@ -1326,12 +1326,12 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
 
             ws_info = (axis2_ws_info_t *)
                 axis2_array_list_get(dep_engine->ws_to_undeploy, env, i);
-            type = AXIS2_WS_INFO_GET_TYPE(ws_info, env);
+            type = axis2_ws_info_get_type(ws_info, env);
             if (type == AXIS2_SVC)
             {
                 axis2_char_t *file_name = NULL;
 
-                file_name = AXIS2_WS_INFO_GET_FILE_NAME(ws_info, env);
+                file_name = axis2_ws_info_get_file_name(ws_info, env);
                 svc_name = axis2_dep_engine_get_axis_svc_name(dep_engine, env,
                     file_name);
 

@@ -29,8 +29,7 @@ struct axis2_ws_info
 };
 
 AXIS2_EXTERN axis2_ws_info_t *AXIS2_CALL
-axis2_ws_info_create_with_file_name_and_last_modified_date(
-    const axis2_env_t *env,
+axis2_ws_info_create_with_file_name_and_last_modified_date(const axis2_env_t *env,
     axis2_char_t *file_name,
     long last_modified_date)
 {
@@ -39,9 +38,8 @@ axis2_ws_info_create_with_file_name_and_last_modified_date(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
-    ws_info = (axis2_ws_info_t *) AXIS2_MALLOC(env->
-            allocator, sizeof(axis2_ws_info_t));
-
+    ws_info = (axis2_ws_info_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axis2_ws_info_t));
 
     if (! ws_info)
     {
@@ -67,8 +65,7 @@ axis2_ws_info_create_with_file_name_and_last_modified_date(
 }
 
 AXIS2_EXTERN axis2_ws_info_t *AXIS2_CALL
-axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
-    const axis2_env_t *env,
+axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(const axis2_env_t *env,
     axis2_char_t *file_name,
     long last_modified_date,
     int type)
@@ -79,8 +76,8 @@ axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
     ws_info = (axis2_ws_info_t *)
-            axis2_ws_info_create_with_file_name_and_last_modified_date(env,
-                    file_name, last_modified_date);
+        axis2_ws_info_create_with_file_name_and_last_modified_date(env,
+            file_name, last_modified_date);
     if (!ws_info)
     {
         axis2_ws_info_free(ws_info, env);
@@ -92,8 +89,7 @@ axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_ws_info_free(
-    axis2_ws_info_t *ws_info,
+axis2_ws_info_free(axis2_ws_info_t *ws_info,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -112,16 +108,14 @@ axis2_ws_info_free(
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axis2_ws_info_get_file_name(
-    const axis2_ws_info_t *ws_info,
+axis2_ws_info_get_file_name(const axis2_ws_info_t *ws_info,
     const axis2_env_t *env)
 {
     return ws_info->file_name;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_ws_info_set_file_name(
-    axis2_ws_info_t *ws_info,
+axis2_ws_info_set_file_name(axis2_ws_info_t *ws_info,
     const axis2_env_t *env,
     axis2_char_t *file_name)
 {
@@ -138,8 +132,7 @@ axis2_ws_info_set_file_name(
 }
 
 AXIS2_EXTERN long AXIS2_CALL
-axis2_ws_info_get_last_modified_date(
-    const axis2_ws_info_t *ws_info,
+axis2_ws_info_get_last_modified_date(const axis2_ws_info_t *ws_info,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -148,8 +141,7 @@ axis2_ws_info_get_last_modified_date(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_ws_info_set_last_modified_date(
-    axis2_ws_info_t *ws_info,
+axis2_ws_info_set_last_modified_date(axis2_ws_info_t *ws_info,
     const axis2_env_t *env,
     long last_modified_date)
 {
@@ -159,9 +151,9 @@ axis2_ws_info_set_last_modified_date(
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_ws_info_get_type(
-    const axis2_ws_info_t *ws_info,
+axis2_ws_info_get_type(const axis2_ws_info_t *ws_info,
     const axis2_env_t *env)
 {
     return ws_info->type;
 }
+
