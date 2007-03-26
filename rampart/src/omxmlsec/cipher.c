@@ -32,7 +32,7 @@ oxs_get_cipher_property_for_url(const axis2_env_t *env,
     axis2_status_t ret = AXIS2_SUCCESS;
 
     cprop = openssl_cipher_property_create(env);
-    ret = OPENSSL_CIPHER_PROPERTY_SET_URL(cprop, env , url);
+    ret = openssl_cipher_property_set_url(cprop, env , url);
 
     cipher_name = oxs_get_cipher_name_for_url(env, url);
     if((!cipher_name) || (0 == axis2_strcmp(cipher_name, ""))){
@@ -40,7 +40,7 @@ oxs_get_cipher_property_for_url(const axis2_env_t *env,
                         OXS_ERROR_INVALID_DATA, "Cannot populate cipher property");
         return NULL;
     }
-    ret = OPENSSL_CIPHER_PROPERTY_SET_NAME(cprop, env , cipher_name);
+    ret = openssl_cipher_property_set_name(cprop, env , cipher_name);
 
     ret = openssl_populate_cipher_property(env, cprop);
     if (ret == AXIS2_FAILURE)

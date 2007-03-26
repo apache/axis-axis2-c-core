@@ -34,139 +34,33 @@ struct _evp_pkey{
     int type;
 }
 */
-typedef struct openssl_pkey_impl
+struct openssl_pkey_t
 {
-    openssl_pkey_t pkey;
-
     EVP_PKEY *key;
     axis2_char_t *name;
     int type;
-}
-openssl_pkey_impl_t;
+};
 
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(openssl_pkey) ((openssl_pkey_impl_t *)openssl_pkey)
-
-/******************* function headers ******************************/
-/* private functions */
-static void
-openssl_pkey_init_ops(
-    openssl_pkey_t *pkey);
-
-/* public functions */
-EVP_PKEY *AXIS2_CALL
-openssl_pkey_get_key(
-    const openssl_pkey_t *pkey,
-    const axis2_env_t *env
-);
-axis2_char_t *AXIS2_CALL
-openssl_pkey_get_name(
-    const openssl_pkey_t *pkey,
-    const axis2_env_t *env
-);
-int AXIS2_CALL
-openssl_pkey_get_size(
-    const openssl_pkey_t *pkey,
-    const axis2_env_t *env
-);
-int AXIS2_CALL
-openssl_pkey_get_type(
-    const openssl_pkey_t *pkey,
-    const axis2_env_t *env
-);
-
-
-axis2_status_t AXIS2_CALL
-openssl_pkey_set_key(
-    openssl_pkey_t *pkey,
-    const axis2_env_t *env,
-    EVP_PKEY *key
-);
-
-axis2_status_t AXIS2_CALL
-openssl_pkey_set_name(
-    openssl_pkey_t *pkey,
-    const axis2_env_t *env,
-    axis2_char_t *name
-);
-axis2_status_t AXIS2_CALL
-openssl_pkey_set_type(
-    openssl_pkey_t *pkey,
-    const axis2_env_t *env,
-    int type
-);
-
-axis2_status_t AXIS2_CALL
-openssl_pkey_load(
-    openssl_pkey_t *pkey,
-    const axis2_env_t *env,
-    axis2_char_t *filename,
-    axis2_char_t *password
-);
-
-axis2_status_t AXIS2_CALL
-openssl_pkey_populate(
-    openssl_pkey_t *pkey,
-    const axis2_env_t *env,
-    EVP_PKEY *key,
-    axis2_char_t *name,
-    int type
-);
-
-axis2_status_t AXIS2_CALL
-openssl_pkey_free(
-    openssl_pkey_t *pkey,
-    const axis2_env_t *env
-);
-
-/********************** end of function headers **************/
 
 AXIS2_EXTERN openssl_pkey_t *AXIS2_CALL
 openssl_pkey_create(const axis2_env_t *env)
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
+    openssl_pkey_t * pkey = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    pkey_impl = AXIS2_MALLOC(env->allocator, sizeof(openssl_pkey_impl_t));
-    if (!pkey_impl)
+    pkey = (openssl_pkey_t *)AXIS2_MALLOC(env->allocator, sizeof(openssl_pkey_t));
+    if (!pkey)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    pkey_impl->key   = NULL;
-    pkey_impl->name = NULL ;
-    pkey_impl->type = OPENSSL_PKEY_TYPE_UNKNOWN;
+    pkey->key   = NULL;
+    pkey->name = NULL ;
+    pkey->type = OPENSSL_PKEY_TYPE_UNKNOWN;
 
-    pkey_impl->pkey.ops =  AXIS2_MALLOC(env->allocator, sizeof(openssl_pkey_ops_t));
-    if (!pkey_impl->pkey.ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        openssl_pkey_free(&(pkey_impl->pkey), env);
-        return NULL;
-    }
-
-    openssl_pkey_init_ops(&(pkey_impl->pkey));
-
-    return &(pkey_impl->pkey);
-
+    return pkey;
 }
 
-static void
-openssl_pkey_init_ops(
-    openssl_pkey_t *pkey)
-{
-    pkey->ops->get_key  = openssl_pkey_get_key;
-    pkey->ops->get_name = openssl_pkey_get_name;
-    pkey->ops->get_size = openssl_pkey_get_size;
-    pkey->ops->get_type = openssl_pkey_get_type;
-    pkey->ops->set_key  = openssl_pkey_set_key;
-    pkey->ops->set_name = openssl_pkey_set_name;
-    pkey->ops->set_type = openssl_pkey_set_type;
-    pkey->ops->populate = openssl_pkey_populate;
-    pkey->ops->load     = openssl_pkey_load;
-    pkey->ops->free     = openssl_pkey_free;
-
-}
 
 EVP_PKEY *AXIS2_CALL
 openssl_pkey_get_key(
@@ -174,11 +68,9 @@ openssl_pkey_get_key(
     const axis2_env_t *env
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
-    return pkey_impl->key ;
+    return pkey->key ;
 }
 
 axis2_char_t *AXIS2_CALL
@@ -187,11 +79,9 @@ openssl_pkey_get_name(
     const axis2_env_t *env
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
-    return pkey_impl->name ;
+    return pkey->name ;
 
 }
 int AXIS2_CALL
@@ -200,11 +90,9 @@ openssl_pkey_get_size(
     const axis2_env_t *env
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
-    return sizeof(pkey_impl->key) ;
+    return sizeof(pkey->key) ;
 }
 int AXIS2_CALL
 openssl_pkey_get_type(
@@ -212,11 +100,9 @@ openssl_pkey_get_type(
     const axis2_env_t *env
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
-    return pkey_impl->type ;
+    return pkey->type ;
 }
 
 axis2_status_t AXIS2_CALL
@@ -226,17 +112,15 @@ openssl_pkey_set_key(
     EVP_PKEY *key
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
-    if (pkey_impl->key)
+    if (pkey->key)
     {
-        AXIS2_FREE(env->allocator, pkey_impl->key);
-        pkey_impl->key = NULL;
+        AXIS2_FREE(env->allocator, pkey->key);
+        pkey->key = NULL;
     }
 
-    pkey_impl->key = key;
+    pkey->key = key;
 
     return AXIS2_SUCCESS;
 }
@@ -248,17 +132,15 @@ openssl_pkey_set_name(
     axis2_char_t *name
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
-    if (pkey_impl->name)
+    if (pkey->name)
     {
-        AXIS2_FREE(env->allocator, pkey_impl->name);
-        pkey_impl->name = NULL;
+        AXIS2_FREE(env->allocator, pkey->name);
+        pkey->name = NULL;
     }
 
-    pkey_impl->name = axis2_strdup(name, env);
+    pkey->name = axis2_strdup(name, env);
 
     return AXIS2_SUCCESS;
 }
@@ -270,12 +152,9 @@ openssl_pkey_set_type(
     int type
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
-
-    pkey_impl->type = type;
+    pkey->type = type;
 
     return AXIS2_SUCCESS;
 
@@ -293,11 +172,9 @@ openssl_pkey_load(
     BIO *bio;
     int type = OPENSSL_PKEY_TYPE_UNKNOWN;
     int ret ;
-    openssl_pkey_impl_t * pkey_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
     bio = BIO_new_file(filename, "rb");
     /*Try to read the prv key first*/
@@ -335,11 +212,9 @@ openssl_pkey_populate(
     int type
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
     status = openssl_pkey_set_key(pkey, env, key);
     status = openssl_pkey_set_name(pkey, env, name);
@@ -354,25 +229,22 @@ openssl_pkey_free(
     const axis2_env_t *env
 )
 {
-    openssl_pkey_impl_t * pkey_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
-    if (pkey_impl->key)
+    if (pkey->key)
     {
-        AXIS2_FREE(env->allocator, pkey_impl->key);
-        pkey_impl->key = NULL;
+        AXIS2_FREE(env->allocator, pkey->key);
+        pkey->key = NULL;
     }
-    if (pkey_impl->name)
+    if (pkey->name)
     {
-        AXIS2_FREE(env->allocator, pkey_impl->name);
-        pkey_impl->name = NULL;
+        AXIS2_FREE(env->allocator, pkey->name);
+        pkey->name = NULL;
     }
 
-    pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
-    AXIS2_FREE(env->allocator, pkey_impl);
-    pkey_impl = NULL;
+    AXIS2_FREE(env->allocator, pkey);
+    pkey = NULL;
 
     return AXIS2_SUCCESS;
 }

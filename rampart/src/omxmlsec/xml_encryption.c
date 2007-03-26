@@ -236,7 +236,7 @@ oxs_xml_enc_encrypt_node(const axis2_env_t *env,
     /*Serialize node*/
     serialized_data = AXIOM_NODE_TO_STRING(node, env);
     serialized_buf = oxs_buffer_create(env);
-    ret =  OXS_BUFFER_POPULATE(serialized_buf, env, (unsigned char *)serialized_data, axis2_strlen(serialized_data));
+    ret =  oxs_buffer_populate(serialized_buf, env, (unsigned char *)serialized_data, axis2_strlen(serialized_data));
    
     /*We call encrypt_data*/
     ret = oxs_xml_enc_encrypt_data(env, enc_ctx, serialized_buf, enc_type_node); 
@@ -246,7 +246,7 @@ oxs_xml_enc_encrypt_node(const axis2_env_t *env,
         AXIOM_NODE_DETACH(node, env);
     }
     /*Free*/
-    OXS_BUFFER_FREE(serialized_buf, env); 
+    oxs_buffer_free(serialized_buf, env); 
     serialized_buf = NULL;
 
     /*Return success*/
@@ -269,13 +269,13 @@ oxs_xml_enc_encrypt_data(const axis2_env_t *env,
     axis2_status_t ret = AXIS2_FAILURE;
 
     /*Determine the algorithm to be used*/
-    sym_algo = OXS_CTX_GET_ENC_MTD_ALGORITHM(enc_ctx, env);
+    sym_algo = oxs_ctx_get_enc_mtd_algorithm(enc_ctx, env);
     
     /*Determine the key to be used*/
-    sym_key = OXS_CTX_GET_KEY(enc_ctx, env);
+    sym_key = oxs_ctx_get_key(enc_ctx, env);
 
     /*Set the operation to encrypt*/
-    OXS_CTX_SET_OPERATION(enc_ctx, env, OXS_CTX_OPERATION_ENCRYPT);
+    oxs_ctx_set_operation(enc_ctx, env, OXS_CTX_OPERATION_ENCRYPT);
 
     /*Create an empty buffer for encrypted data*/
     result_buf = oxs_buffer_create(env);
@@ -285,10 +285,10 @@ oxs_xml_enc_encrypt_data(const axis2_env_t *env,
     /*Create EncryptionMethod, CipherData element and populate*/
     enc_mtd_node = oxs_token_build_encryption_method_element(env, *enc_type_node, sym_algo);     
     cd_node = oxs_token_build_cipher_data_element(env, *enc_type_node);
-    cv_node = oxs_token_build_cipher_value_element(env, cd_node, (axis2_char_t*)OXS_BUFFER_GET_DATA(result_buf, env));
+    cv_node = oxs_token_build_cipher_value_element(env, cd_node, (axis2_char_t*)oxs_buffer_get_data(result_buf, env));
 
     /*Free buffers*/
-    OXS_BUFFER_FREE(result_buf, env); 
+    oxs_buffer_free(result_buf, env); 
     result_buf = NULL;
 
     return AXIS2_SUCCESS;
@@ -316,7 +316,7 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
                   "Data encryption failed");
         return AXIS2_FAILURE;
     }
-    decrypted_data = axis2_strmemdup(OXS_BUFFER_GET_DATA(result_buf, env), OXS_BUFFER_GET_SIZE(result_buf, env), env);
+    decrypted_data = axis2_strmemdup(oxs_buffer_get_data(result_buf, env), oxs_buffer_get_size(result_buf, env), env);
     /*De-serialize the decrypted content to build the node*/
     deserialized_node = (axiom_node_t*)oxs_axiom_deserialize_node(env, decrypted_data);
     if(!deserialized_node){
@@ -331,7 +331,7 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
     AXIOM_NODE_ADD_CHILD(parent_of_enc_node, env, deserialized_node);
     AXIOM_NODE_DETACH(enc_type_node, env);    
 
-    OXS_BUFFER_FREE(result_buf, env);
+    oxs_buffer_free(result_buf, env);
     result_buf = NULL;
 
     return AXIS2_SUCCESS;
@@ -364,9 +364,9 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     type = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_ATTR_TYPE);
 
     /*Populate the context for future use*/
-    OXS_CTX_SET_ENC_MTD_ALGORITHM(enc_ctx, env, sym_algo);
-    OXS_CTX_SET_ID(enc_ctx, env, id);
-    OXS_CTX_SET_TYPE(enc_ctx, env, type);
+    oxs_ctx_set_enc_mtd_algorithm(enc_ctx, env, sym_algo);
+    oxs_ctx_set_id(enc_ctx, env, id);
+    oxs_ctx_set_id(enc_ctx, env, type);
     
     /*Get the cipher value*/
     cd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_CIPHER_DATA,OXS_ENC_NS,OXS_XENC);
@@ -375,14 +375,14 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     
     /*Create input buffer with cipher data obtained*/
     input_buf = oxs_buffer_create(env);
-    OXS_BUFFER_POPULATE(input_buf, env, (unsigned char*)cipher_val, axis2_strlen(cipher_val) );
+    oxs_buffer_populate(input_buf, env, (unsigned char*)cipher_val, axis2_strlen(cipher_val) );
 
     /*Decrypt*/
-    OXS_CTX_SET_OPERATION(enc_ctx, env, OXS_CTX_OPERATION_DECRYPT);
+    oxs_ctx_set_operation(enc_ctx, env, OXS_CTX_OPERATION_DECRYPT);
     status =  oxs_encryption_symmetric_crypt(env, enc_ctx, input_buf, result_buf);
     
     /*Free*/
-    OXS_BUFFER_FREE(input_buf, env);
+    oxs_buffer_free(input_buf, env);
     input_buf = NULL;
 
     return status;
@@ -411,7 +411,7 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
 
     /*Create input buffer*/
     input = oxs_buffer_create(env);
-    OXS_BUFFER_POPULATE(input, env, OXS_KEY_GET_DATA(sym_key, env), OXS_KEY_GET_SIZE(sym_key, env));
+    oxs_buffer_populate(input, env, oxs_key_get_data(sym_key, env), oxs_key_get_size(sym_key, env));
 
     /*Create an empty buffer to collect results*/
     result = oxs_buffer_create(env);
@@ -419,7 +419,7 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     /*Call encryption*/
     status = oxs_encryption_asymmetric_crypt(env, asym_ctx, input, result);
     /*Free input*/
-    OXS_BUFFER_FREE(input, env);
+    oxs_buffer_free(input, env);
     input = NULL;
 
     if(AXIS2_FAILURE == status){
@@ -428,7 +428,7 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
     /*Get the encrypted key*/
-    encrypted_key_data = (axis2_char_t *)OXS_BUFFER_GET_DATA(result, env);
+    encrypted_key_data = (axis2_char_t *)oxs_buffer_get_data(result, env);
 
     /*Build nodes*/
     encrypted_key_node = oxs_token_build_encrypted_key_element(env, parent);
@@ -459,7 +459,7 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     oxs_token_build_data_reference_list(env, encrypted_key_node, id_list); 
 
     /*Free*/
-    OXS_BUFFER_FREE(result, env);
+    oxs_buffer_free(result, env);
     result = NULL;
 
     return AXIS2_SUCCESS; 
@@ -507,7 +507,7 @@ oxs_xml_enc_decrypt_key(const axis2_env_t *env,
     /*Get the pkey used to decrypt the session key. If found set it to the asym_ctx*/
     /*Create the input buffer*/
     input_buf = oxs_buffer_create(env);
-    OXS_BUFFER_POPULATE(input_buf, env, (unsigned char*)cipher_val, axis2_strlen(cipher_val));
+    oxs_buffer_populate(input_buf, env, (unsigned char*)cipher_val, axis2_strlen(cipher_val));
 
     /*Create a results buffer*/
     result_buf = oxs_buffer_create(env);
@@ -515,7 +515,7 @@ oxs_xml_enc_decrypt_key(const axis2_env_t *env,
     /*Call decryption*/
     status = oxs_encryption_asymmetric_crypt(env, asym_ctx, input_buf, result_buf);
     /*Free input*/
-    OXS_BUFFER_FREE(input_buf, env);
+    oxs_buffer_free(input_buf, env);
     input_buf = NULL;
     
     if(AXIS2_FAILURE == status){
@@ -523,13 +523,13 @@ oxs_xml_enc_decrypt_key(const axis2_env_t *env,
     }
     
     /*Populate the key with the data in the result buffer*/
-    OXS_KEY_POPULATE(key, env, 
-                            OXS_BUFFER_GET_DATA(result_buf, env), 
+    oxs_key_populate(key, env, 
+                            oxs_buffer_get_data(result_buf, env), 
                             "decrypted_session_key", 
-                            OXS_BUFFER_GET_SIZE(result_buf, env), 
+                            oxs_buffer_get_size(result_buf, env), 
                             OXS_KEY_USAGE_DECRYPT  );
     /*Free*/
-    OXS_BUFFER_FREE(result_buf, env);
+    oxs_buffer_free(result_buf, env);
     result_buf = NULL;
 
     return AXIS2_SUCCESS;

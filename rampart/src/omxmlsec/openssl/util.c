@@ -48,11 +48,11 @@ generate_random_data(const axis2_env_t *env, oxs_buffer_t *buffer, int size)
     encodedlen = axis2_base64_encode_len(size);
     encoded_str = AXIS2_MALLOC(env->allocator, encodedlen);
     ret = axis2_base64_encode(encoded_str, (const char *)temp_buffer, size);
-    status = OXS_BUFFER_POPULATE(buffer, env, (unsigned char*)encoded_str, size);
+    status = oxs_buffer_populate(buffer, env, (unsigned char*)encoded_str, size);
     AXIS2_FREE(env->allocator, encoded_str);
     encoded_str = NULL;
 #else
-    status = OXS_BUFFER_POPULATE(buffer, env, (unsigned char*)temp_buffer, size);
+    status = oxs_buffer_populate(buffer, env, (unsigned char*)temp_buffer, size);
 
 #endif
     return AXIS2_SUCCESS;
@@ -76,7 +76,7 @@ openssl_populate_cipher_property(const axis2_env_t *env, openssl_cipher_property
 
     }
 
-    cipher_name = OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env);
+    cipher_name = openssl_cipher_property_get_name(cprop, env);
     if (!cipher_name)
     {
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
@@ -98,10 +98,10 @@ openssl_populate_cipher_property(const axis2_env_t *env, openssl_cipher_property
     EVP_CIPHER_CTX_init(&ctx);
     EVP_CipherInit_ex(&ctx, cipher, NULL, NULL, NULL, -1);
 
-    OPENSSL_CIPHER_PROPERTY_SET_CIPHER(cprop, env, cipher);
-    OPENSSL_CIPHER_PROPERTY_SET_KEY_SIZE(cprop, env, EVP_CIPHER_CTX_key_length(&ctx));
-    OPENSSL_CIPHER_PROPERTY_SET_BLOCK_SIZE(cprop, env, EVP_CIPHER_CTX_block_size(&ctx));
-    OPENSSL_CIPHER_PROPERTY_SET_IV_SIZE(cprop, env, EVP_CIPHER_CTX_iv_length(&ctx));
+    openssl_cipher_property_set_cipher(cprop, env, cipher);
+    openssl_cipher_property_set_key_size(cprop, env, EVP_CIPHER_CTX_key_length(&ctx));
+    openssl_cipher_property_set_block_size(cprop, env, EVP_CIPHER_CTX_block_size(&ctx));
+    openssl_cipher_property_set_iv_size(cprop, env, EVP_CIPHER_CTX_iv_length(&ctx));
 
     /*free ctx*/
     EVP_CIPHER_CTX_cleanup(&ctx);

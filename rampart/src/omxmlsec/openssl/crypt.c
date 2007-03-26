@@ -44,60 +44,60 @@ openssl_bc_crypt(const axis2_env_t *env,
 
     /********************************Initialize*****************************************************/
 
-    iv_length = EVP_CIPHER_iv_length(OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env));
+    iv_length = EVP_CIPHER_iv_length(openssl_cipher_ctx_get_cipher(oc_ctx, env));
 
     /*Get the IV. If encrypt, we need to generate the IV else we need to get it from the input buffer*/
     if(encrypt){
         /*Generate IV*/
         ret = RAND_bytes(iv, iv_length);
         /*IV to the output*/
-        status = OXS_BUFFER_APPEND(output_buf, env, iv, iv_length);
+        status = oxs_buffer_append(output_buf, env, iv, iv_length);
     }else{ /*Decrypt*/
         /*If data is less than the IV its an error*/
-        if(OXS_BUFFER_GET_SIZE(input_buf, env) < iv_length){
+        if(oxs_buffer_get_size(input_buf, env) < iv_length){
             return -1;
         }
         /*Copy IV from the inbuf to our buffer*/
-        memcpy(iv, OXS_BUFFER_GET_DATA(input_buf, env), iv_length);
+        memcpy(iv, oxs_buffer_get_data(input_buf, env), iv_length);
         /*And remove from input*/
-        status = OXS_BUFFER_REMOVE_HEAD (input_buf, env, iv_length);
+        status = oxs_buffer_remove_head (input_buf, env, iv_length);
     }
     /*Get key*/
-    okey = OPENSSL_CIPHER_CTX_GET_KEY(oc_ctx, env);
-    memcpy(key,  OXS_KEY_GET_DATA(okey, env), OXS_KEY_GET_SIZE(okey, env));
+    okey = openssl_cipher_ctx_get_key(oc_ctx, env);
+    memcpy(key,  oxs_key_get_data(okey, env), oxs_key_get_size(okey, env));
 
     /*Set the IV */
-    ret = EVP_CipherInit(&ctx, (EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env), key, iv, encrypt);
+    ret = EVP_CipherInit(&ctx, (EVP_CIPHER *)openssl_cipher_ctx_get_cipher(oc_ctx, env), key, iv, encrypt);
 #ifndef OXS_OPENSSL_096
     EVP_CIPHER_CTX_set_padding(&ctx, 0);
 #endif
 
     /*Get the block length of the cipher*/
-    block_length = EVP_CIPHER_block_size((EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env));
+    block_length = EVP_CIPHER_block_size((EVP_CIPHER *)openssl_cipher_ctx_get_cipher(oc_ctx, env));
 
     /*********************************Update***********************************************************/
     for(;;){/*Loop untill all the data are encrypted*/
         unsigned char *out_buf = NULL;
         int  in_size =0, out_size =0, fixed=0, out_length = 0;
 
-        if (0 == OXS_BUFFER_GET_SIZE(input_buf, env)) {
+        if (0 == oxs_buffer_get_size(input_buf, env)) {
             last = 1;            
             break; /*Quit loop if NO DATA!!! */
         }
        
         /*If the amnt of data available is greater than the buffer size, we limit it to buffer size */
-        if(OXS_BUFFER_GET_SIZE(input_buf, env) > BUFSIZE){
+        if(oxs_buffer_get_size(input_buf, env) > BUFSIZE){
             in_size = BUFSIZE;
         }else{
-            in_size = OXS_BUFFER_GET_SIZE(input_buf, env);
+            in_size = oxs_buffer_get_size(input_buf, env);
         }
 
-        out_size = OXS_BUFFER_GET_SIZE(output_buf, env);
+        out_size = oxs_buffer_get_size(output_buf, env);
         
         /*Set the output buffer size*/
-        status = OXS_BUFFER_SET_MAX_SIZE(output_buf, env, out_size + in_size + block_length);
+        status = oxs_buffer_set_max_size(output_buf, env, out_size + in_size + block_length);
 
-        out_buf = OXS_BUFFER_GET_DATA(output_buf, env) + out_size;        /*position to write*/
+        out_buf = oxs_buffer_get_data(output_buf, env) + out_size;        /*position to write*/
         
 #ifndef OXS_OPENSSL_096
         /*If decrypt, we copy the final data to the out_buf of size block_length*/
@@ -112,7 +112,7 @@ openssl_bc_crypt(const axis2_env_t *env,
         }
 #endif
         /* encrypt or decrypt */
-        ret = EVP_CipherUpdate(&ctx, out_buf, &out_length, OXS_BUFFER_GET_DATA(input_buf, env), in_size);
+        ret = EVP_CipherUpdate(&ctx, out_buf, &out_length, oxs_buffer_get_data(input_buf, env), in_size);
 
 #ifndef OXS_OPENSSL_096   
         /*If decrypt, we copy data from the out_buf to the ctx.final*/
@@ -130,12 +130,12 @@ openssl_bc_crypt(const axis2_env_t *env,
         }
 #endif
         /* set correct output buffer size */
-        status = OXS_BUFFER_SET_SIZE(output_buf, env, out_size + out_length);    
+        status = oxs_buffer_set_size(output_buf, env, out_size + out_length);    
         if(AXIS2_FAILURE == status){
             return -1;
         }
         /* remove the processed block from input */
-        status = OXS_BUFFER_REMOVE_HEAD(input_buf, env, in_size);
+        status = oxs_buffer_remove_head(input_buf, env, in_size);
         if(AXIS2_FAILURE == status){
             return -1;
         }
@@ -150,9 +150,9 @@ openssl_bc_crypt(const axis2_env_t *env,
         unsigned char *out_buf = NULL;
         int out_size = 0,  out_length = 0, out_length2 = 0;
         
-        out_size = OXS_BUFFER_GET_SIZE(output_buf, env);
-        status = OXS_BUFFER_SET_MAX_SIZE(output_buf,  env, out_size + 2 * block_length);
-        out_buf = OXS_BUFFER_GET_DATA(output_buf, env)  + out_size;/*position to write*/
+        out_size = oxs_buffer_get_size(output_buf, env);
+        status = oxs_buffer_set_max_size(output_buf,  env, out_size + 2 * block_length);
+        out_buf = oxs_buffer_get_data(output_buf, env)  + out_size;/*position to write*/
 #ifndef OXS_OPENSSL_096
         if(encrypt){
             int pad_length;
@@ -182,7 +182,7 @@ openssl_bc_crypt(const axis2_env_t *env,
         }
 #endif
         /* set correct output buffer size */
-        status = OXS_BUFFER_SET_SIZE(output_buf, env, out_size + out_length + out_length2);
+        status = oxs_buffer_set_size(output_buf, env, out_size + out_length + out_length2);
         
         EVP_CIPHER_CTX_cleanup(&ctx);
         /*return the length of the outputbuf*/

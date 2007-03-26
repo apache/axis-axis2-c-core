@@ -112,14 +112,14 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
     /*If the prvkey is available, populate the openssl_pkey*/
     if(prvkey){
         open_prvkey = openssl_pkey_create(env);
-        OPENSSL_PKEY_POPULATE(open_prvkey, env, prvkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
+        openssl_pkey_populate(open_prvkey, env, prvkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
         oxs_asym_ctx_set_private_key(ctx, env, open_prvkey);
     }
     /*If the public key is available populate*/
     if(pubkey){
         /*This scenario is not recommonded. This will be executed iff the file is a public key file in PEM format*/
         open_pubkey = openssl_pkey_create(env);
-        OPENSSL_PKEY_POPULATE(open_pubkey, env, pubkey, filename, OPENSSL_PKEY_TYPE_PUBLIC_KEY);
+        openssl_pkey_populate(open_pubkey, env, pubkey, filename, OPENSSL_PKEY_TYPE_PUBLIC_KEY);
         oxs_cert = oxs_x509_cert_create(env);
         oxs_x509_cert_set_public_key(oxs_cert, env, open_pubkey);
         oxs_asym_ctx_set_certificate(ctx, env, oxs_cert);
@@ -141,7 +141,7 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
         /*Additionally we need to set the public key*/
         openssl_x509_get_pubkey(env, cert, &pubkey);
         open_pubkey = openssl_pkey_create(env);
-        OPENSSL_PKEY_POPULATE(open_pubkey, env, pubkey, openssl_x509_get_info(env, OPENSSL_X509_INFO_FINGER,cert), OPENSSL_PKEY_TYPE_PUBLIC_KEY); 
+        openssl_pkey_populate(open_pubkey, env, pubkey, openssl_x509_get_info(env, OPENSSL_X509_INFO_FINGER,cert), OPENSSL_PKEY_TYPE_PUBLIC_KEY); 
         /*Set the public key to the x509 certificate*/
         oxs_x509_cert_set_public_key(oxs_cert, env, open_pubkey);
         /*Set the x509 certificate to the asym ctx*/
@@ -173,7 +173,7 @@ oxs_key_mgr_load_private_key_from_string(const axis2_env_t *env,
     /*Populate*/
     if(prvkey){
         open_prvkey = openssl_pkey_create(env);
-        OPENSSL_PKEY_POPULATE(open_prvkey, env, prvkey, NULL, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
+        openssl_pkey_populate(open_prvkey, env, prvkey, NULL, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
     }else{
         return NULL;
     }
@@ -196,7 +196,7 @@ oxs_key_mgr_load_private_key_from_pem_file(const axis2_env_t *env,
     /*Populate*/
     if(prvkey){
         open_prvkey = openssl_pkey_create(env);
-        OPENSSL_PKEY_POPULATE(open_prvkey, env, prvkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
+        openssl_pkey_populate(open_prvkey, env, prvkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
     }else{
         return NULL;
     }
@@ -228,7 +228,7 @@ oxs_key_mgr_convert_to_x509(const axis2_env_t *env,
         /*Additionally we need to set the public key*/
         openssl_x509_get_pubkey(env, cert, &pubkey);
         open_pubkey = openssl_pkey_create(env);
-        OPENSSL_PKEY_POPULATE(open_pubkey, env, pubkey, openssl_x509_get_info(env, OPENSSL_X509_INFO_FINGER,cert), OPENSSL_PKEY_TYPE_PUBLIC_KEY);
+        openssl_pkey_populate(open_pubkey, env, pubkey, openssl_x509_get_info(env, OPENSSL_X509_INFO_FINGER,cert), OPENSSL_PKEY_TYPE_PUBLIC_KEY);
         /*Set the public key to the x509 certificate*/
         oxs_x509_cert_set_public_key(oxs_cert, env, open_pubkey);
     }
@@ -282,7 +282,7 @@ oxs_key_mgr_read_pkcs12_key_store(const axis2_env_t *env,
     } 
     if(pkey){
         *prv_key = openssl_pkey_create(env);
-        OPENSSL_PKEY_POPULATE(*prv_key, env, pkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
+        openssl_pkey_populate(*prv_key, env, pkey, filename, OPENSSL_PKEY_TYPE_PRIVATE_KEY);
     }
     
     if(c){

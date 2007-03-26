@@ -218,44 +218,6 @@ extern "C"
 AXIS2_EXTERN oxs_buffer_t *AXIS2_CALL
 oxs_buffer_create(const axis2_env_t *env);
 
-/*Macros*/
-
-#define OXS_BUFFER_FREE(buffer,env)\
-    (oxs_buffer_free(buffer,env))
-
-#define OXS_BUFFER_REMOVE_HEAD(buffer,env, size)\
-    (oxs_buffer_remove_head(buffer,env, size))
-
-#define OXS_BUFFER_REMOVE_TAIL(buffer,env, size)\
-    (oxs_buffer_remove_tail(buffer,env, size))
-
-#define OXS_BUFFER_POPULATE(buffer,env, data, size)\
-    (oxs_buffer_populate(buffer,env, data, size))
-
-#define OXS_BUFFER_APPEND(buffer,env, data, size)\
-    (oxs_buffer_append(buffer,env, data, size))
-
-#define OXS_BUFFER_PREPEND(buffer,env, data, size)\
-    (oxs_buffer_prepend(buffer,env, data, size))
-
-#define OXS_BUFFER_READ_FILE(buffer,env, file_name)\
-    (oxs_buffer_read_file(buffer,env, file_name))
-
-#define OXS_BUFFER_SET_SIZE(buffer,env, size)\
-    (oxs_buffer_set_size(buffer,env, size))
-
-#define OXS_BUFFER_SET_MAX_SIZE(buffer, env, size)\
-    (oxs_buffer_set_max_size(buffer, env, size))
-
-#define OXS_BUFFER_GET_DATA(buffer,env)\
-    (oxs_buffer_get_data(buffer,env))
-
-#define OXS_BUFFER_GET_SIZE(buffer,env)\
-    (oxs_buffer_get_size(buffer,env))
-
-#define OXS_BUFFER_GET_MAX_SIZE(buffer,env)\
-    (oxs_buffer_get_max_size(buffer,env))
-
 
 /** @} */
 #ifdef __cplusplus

@@ -145,7 +145,7 @@ int main()
     }
 
     inbuf = oxs_buffer_create(env);
-    OXS_BUFFER_POPULATE(inbuf, env, (unsigned char *)data, strlen(data));
+    oxs_buffer_populate(inbuf, env, (unsigned char *)data, strlen(data));
 
     outbuf = oxs_buffer_create(env);
     

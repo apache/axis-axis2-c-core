@@ -394,7 +394,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         }        
 
         ctx = oxs_ctx_create(env);
-        OXS_CTX_SET_KEY(ctx, env, decrypted_sym_key);
+        oxs_ctx_set_key(ctx, env, decrypted_sym_key);
         
         status = oxs_xml_enc_decrypt_node(env, ctx, enc_data_node, &decrypted_node);
         if(AXIS2_FAILURE == status){
@@ -403,7 +403,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
             return AXIS2_FAILURE;
         }
         /*Free*/
-        OXS_CTX_FREE(ctx, env);
+        oxs_ctx_free(ctx, env);
         ctx = NULL;
 
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Node ID=%s decrypted successfuly", id);
@@ -416,7 +416,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     /*Free*/
     oxs_asym_ctx_free(asym_ctx, env);
     asym_ctx = NULL;
-    OXS_KEY_FREE(decrypted_sym_key, env);
+    oxs_key_free(decrypted_sym_key, env);
     decrypted_sym_key = NULL;
 
     return AXIS2_SUCCESS;    

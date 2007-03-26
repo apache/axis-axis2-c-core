@@ -40,7 +40,7 @@ oxs_key_get_data(
 {    
     AXIS2_ENV_CHECK(env, NULL);    
 
-    return OXS_BUFFER_GET_DATA(key->buf, env);
+    return oxs_buffer_get_data(key->buf, env);
 }
 
 axis2_char_t *AXIS2_CALL
@@ -61,7 +61,7 @@ oxs_key_get_size(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    return OXS_BUFFER_GET_SIZE(key->buf, env);
+    return oxs_buffer_get_size(key->buf, env);
 }
 
 int AXIS2_CALL
@@ -142,7 +142,7 @@ oxs_key_free(oxs_key_t *key,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    OXS_BUFFER_FREE(key->buf, env);
+    oxs_buffer_free(key->buf, env);
     key->buf = NULL;
     AXIS2_FREE(env->allocator,  key->name);
     key->name = NULL;
@@ -165,10 +165,10 @@ oxs_key_populate(oxs_key_t *key,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    ret = OXS_KEY_SET_NAME(key, env, name);
-    ret = OXS_KEY_SET_USAGE(key, env, usage);
+    ret = oxs_key_set_name(key, env, name);
+    ret = oxs_key_set_usage(key, env, usage);
 
-    ret = OXS_BUFFER_POPULATE(key->buf, env, data, size);
+    ret = oxs_buffer_populate(key->buf, env, data, size);
 
     return AXIS2_SUCCESS;
 }
@@ -183,11 +183,11 @@ oxs_key_read_from_file(oxs_key_t *key,
     axis2_status_t status = AXIS2_FAILURE;
 
     buf = oxs_buffer_create(env);
-    status = OXS_BUFFER_READ_FILE(buf, env, file_name);
+    status = oxs_buffer_read_file(buf, env, file_name);
 
-    status = OXS_KEY_POPULATE(key, env,
-            OXS_BUFFER_GET_DATA(buf, env), file_name,
-            OXS_BUFFER_GET_SIZE(buf, env), OXS_KEY_USAGE_NONE);
+    status = oxs_key_populate(key, env,
+            oxs_buffer_get_data(buf, env), file_name,
+            oxs_buffer_get_size(buf, env), OXS_KEY_USAGE_NONE);
 
     return status;
 
@@ -213,7 +213,7 @@ oxs_key_for_algo(oxs_key_t *key,
         return AXIS2_FAILURE;
     }
 
-    size = OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env);
+    size = openssl_cipher_property_get_key_size(cprop, env);
 
     key_buf = oxs_buffer_create(env);
     /*The actual key generation happens here*/
@@ -225,12 +225,12 @@ oxs_key_for_algo(oxs_key_t *key,
         return AXIS2_FAILURE;
     }
 
-    temp_int = OXS_BUFFER_GET_SIZE(key_buf, env);
-    temp_str = OXS_BUFFER_GET_DATA(key_buf, env);
+    temp_int = oxs_buffer_get_size(key_buf, env);
+    temp_str = oxs_buffer_get_data(key_buf, env);
 
-    ret = OXS_KEY_POPULATE(key, env,
-            OXS_BUFFER_GET_DATA(key_buf, env), NULL,
-            OXS_BUFFER_GET_SIZE(key_buf, env), OXS_KEY_USAGE_NONE);
+    ret = oxs_key_populate(key, env,
+            oxs_buffer_get_data(key_buf, env), NULL,
+            oxs_buffer_get_size(key_buf, env), OXS_KEY_USAGE_NONE);
 
     /* Duplicate key data and free key_buf*/
     return ret;

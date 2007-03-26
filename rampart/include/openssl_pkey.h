@@ -43,123 +43,84 @@ extern "C" {
 #define OPENSSL_PKEY_TYPE_PUBLIC_KEY     1
 #define OPENSSL_PKEY_TYPE_PRIVATE_KEY    2
 
-    /** Type name for struct openssl_pkey_ops */
-    typedef struct openssl_pkey_ops openssl_pkey_ops_t;
+
     /** Type name for struct openssl_pkey */
-    typedef struct openssl_pkey openssl_pkey_t;
+    typedef struct openssl_pkey_t openssl_pkey_t;
 
 
-    struct openssl_pkey_ops
-    {
 
-        EVP_PKEY *(AXIS2_CALL *
-        get_key)(
-                    const openssl_pkey_t *pkey,
-                    const axis2_env_t *env
-                    );
-        axis2_char_t *(AXIS2_CALL *
-        get_name) (
-                    const openssl_pkey_t *pkey,
-                    const axis2_env_t *env
-                    );
-        int (AXIS2_CALL *
-        get_size)(
-                    const openssl_pkey_t *pkey,
-                    const axis2_env_t *env
-                    );
-        int (AXIS2_CALL *
-        get_type) (
-                    const openssl_pkey_t *pkey,
-                    const axis2_env_t *env
-                    );
+	EVP_PKEY *AXIS2_CALL
+	openssl_pkey_get_key(
+		const openssl_pkey_t *pkey,
+		const axis2_env_t *env
+	);
 
-        axis2_status_t (AXIS2_CALL *
-        set_key )(
-                    openssl_pkey_t *pkey,
-                    const axis2_env_t *env,
-                    EVP_PKEY *key
-                    );
+	axis2_char_t *AXIS2_CALL
+	openssl_pkey_get_name(
+		const openssl_pkey_t *pkey,
+		const axis2_env_t *env
+	);
 
-        axis2_status_t (AXIS2_CALL*
-        set_name )(
-                    openssl_pkey_t *pkey,
-                    const axis2_env_t *env,
-                    axis2_char_t *name
-                    );
-        axis2_status_t (AXIS2_CALL*
-        set_type )(
-                    openssl_pkey_t *pkey,
-                    const axis2_env_t *env,
-                    int type
-                    );
+	int AXIS2_CALL
+	openssl_pkey_get_size(
+		const openssl_pkey_t *pkey,
+		const axis2_env_t *env
+	);
 
-        axis2_status_t (AXIS2_CALL*
-        load )(
-                    openssl_pkey_t *pkey,
-                    const axis2_env_t *env,
-                    axis2_char_t *filename,
-                    axis2_char_t *password
-                    );
+	int AXIS2_CALL
+	openssl_pkey_get_type(
+		const openssl_pkey_t *pkey,
+		const axis2_env_t *env
+	);
 
-        axis2_status_t (AXIS2_CALL*
-        populate)(
-                    openssl_pkey_t *pkey,
-                    const axis2_env_t *env,
-                    EVP_PKEY *key,
-                    axis2_char_t *name,
-                    int type
-                    );
 
-        axis2_status_t (AXIS2_CALL*
-        free )(
-                   openssl_pkey_t *pkey,
-                   const axis2_env_t *env
-                   );
+	axis2_status_t AXIS2_CALL
+	openssl_pkey_set_key(
+		openssl_pkey_t *pkey,
+		const axis2_env_t *env,
+		EVP_PKEY *key
+	);
+
+	axis2_status_t AXIS2_CALL
+	openssl_pkey_set_name(
+		openssl_pkey_t *pkey,
+		const axis2_env_t *env,
+		axis2_char_t *name
+	);
+
+	axis2_status_t AXIS2_CALL
+	openssl_pkey_set_type(
+		openssl_pkey_t *pkey,
+		const axis2_env_t *env,
+		int type
+	);
+
+	axis2_status_t AXIS2_CALL
+	openssl_pkey_load(
+		openssl_pkey_t *pkey,
+		const axis2_env_t *env,
+		axis2_char_t *filename,
+		axis2_char_t *password
+	);
+
+	axis2_status_t AXIS2_CALL
+	openssl_pkey_populate(
+		openssl_pkey_t *pkey,
+		const axis2_env_t *env,
+		EVP_PKEY *key,
+		axis2_char_t *name,
+		int type
+	);
+
+	axis2_status_t AXIS2_CALL
+	openssl_pkey_free(
+		openssl_pkey_t *pkey,
+		const axis2_env_t *env
+	);
         
-    };
-
-    struct openssl_pkey
-    {
-        /** operations of openssl_pkey */
-        openssl_pkey_ops_t *ops;
-    };
-
     /*Create function*/
     AXIS2_EXTERN openssl_pkey_t *AXIS2_CALL
     openssl_pkey_create(const axis2_env_t *env);
-
-
-/**********************Macros******************************************/
-#define OPENSSL_PKEY_GET_KEY(pkey, env) \
-        ((pkey)->ops->get_key(pkey, env))
-
-#define OPENSSL_PKEY_GET_NAME(pkey, env) \
-        ((pkey)->ops->get_name(pkey, env))
-
-#define OPENSSL_PKEY_GET_SIZE(pkey, env) \
-        ((pkey)->ops->get_size(pkey, env))
-
-#define OPENSSL_PKEY_GET_TYPE(pkey, env) \
-        ((pkey)->ops->get_type(pkey, env))
-
-#define OPENSSL_PKEY_SET_KEY(pkey, env, key) \
-        ((pkey)->ops->set_key(pkey, env, key))
-
-#define OPENSSL_PKEY_SET_NAME(pkey, env, name) \
-        ((pkey)->ops->set_name(pkey, env, name))
-
-#define OPENSSL_PKEY_SET_TYPE(pkey, env, type) \
-        ((pkey)->ops->set_type(pkey, env, type))
-
-#define OPENSSL_PKEY_LOAD(pkey, env, filename, password) \
-        ((pkey)->ops->load(pkey, env, filename, password))
-
-#define OPENSSL_PKEY_POPULATE(pkey, env, key, name, type) \
-        ((pkey)->ops->populate(pkey, env, key, name, type))
-
-#define OPENSSL_PKEY_FREE(pkey, env) \
-        ((pkey)->ops->free(pkey, env))
-
 
 /** @} */
 #ifdef __cplusplus

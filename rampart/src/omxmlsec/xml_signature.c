@@ -206,11 +206,11 @@ oxs_xml_sig_sign_signed_info(const axis2_env_t *env,
     input_buf = oxs_buffer_create(env);
     output_buf = oxs_buffer_create(env);
 
-    OXS_BUFFER_POPULATE(input_buf, env, (unsigned char *)serialized_signed_info, axis2_strlen(serialized_signed_info));
+    oxs_buffer_populate(input_buf, env, (unsigned char *)serialized_signed_info, axis2_strlen(serialized_signed_info));
     /*Then sign... NOTE: The signature process includes making the digest. e.g. rsa-sha1 => RSA(SHA-1(contents))*/ 
     status = oxs_sig_sign(env, sign_ctx, input_buf, output_buf);
 
-    signature_val = (axis2_char_t*)OXS_BUFFER_GET_DATA(output_buf, env);
+    signature_val = (axis2_char_t*)oxs_buffer_get_data(output_buf, env);
     
     /*Construct <SignatureValue>*/
     signature_val_node = oxs_token_build_signature_value_element(env, signature_node, signature_val);

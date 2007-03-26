@@ -46,7 +46,7 @@ openssl_sig_sign(const axis2_env_t *env,
     int err, ret;
     /*Get the key*/
     /*open_pkey = oxs_sign_ctx_get_private_key(sign_ctx, env);*/
-    pkey = OPENSSL_PKEY_GET_KEY(prvkey, env);
+    pkey = openssl_pkey_get_key(prvkey, env);
     if(!pkey){
          oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIGN_FAILED,"Cannot load the private key" );
     }
@@ -59,8 +59,8 @@ openssl_sig_sign(const axis2_env_t *env,
 
     /*Sign init*/
     ret = EVP_SignInit(&md_ctx, digest);
-    AXIS2_LOG_INFO(env->log, "[openssl][sig] Signing content %s", OXS_BUFFER_GET_DATA(input_buf, env) );    
-    EVP_SignUpdate (&md_ctx, OXS_BUFFER_GET_DATA(input_buf, env), OXS_BUFFER_GET_SIZE(input_buf, env));
+    AXIS2_LOG_INFO(env->log, "[openssl][sig] Signing content %s", oxs_buffer_get_data(input_buf, env) );    
+    EVP_SignUpdate (&md_ctx, oxs_buffer_get_data(input_buf, env), oxs_buffer_get_size(input_buf, env));
     sig_len = sizeof(sig_buf);
     err = EVP_SignFinal (&md_ctx,
                sig_buf,
@@ -70,7 +70,7 @@ openssl_sig_sign(const axis2_env_t *env,
         ERR_print_errors_fp (stderr);     
     }
     /*Fill the output buffer*/
-    OXS_BUFFER_POPULATE(output_buf, env, sig_buf, sig_len);
+    oxs_buffer_populate(output_buf, env, sig_buf, sig_len);
 
     return sig_len;
 }
@@ -90,7 +90,7 @@ openssl_sig_verify(const axis2_env_t *env,
     /*Get the publickey*/
     /*cert = oxs_sign_ctx_get_certificate(sign_ctx, env);
     open_pubkey = oxs_x509_cert_get_public_key(cert, env);*/
-    pkey = OPENSSL_PKEY_GET_KEY(pubkey, env);
+    pkey = openssl_pkey_get_key(pubkey, env);
     if(!pkey){
          oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"Cannot load the public key" );
     }
@@ -107,15 +107,15 @@ openssl_sig_verify(const axis2_env_t *env,
          oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"EVP_VerifyInit failed" );
         return AXIS2_FAILURE;
     }
-    ret = EVP_VerifyUpdate(&md_ctx,  OXS_BUFFER_GET_DATA(input_buf, env),  OXS_BUFFER_GET_SIZE(input_buf, env));
+    ret = EVP_VerifyUpdate(&md_ctx,  oxs_buffer_get_data(input_buf, env),  oxs_buffer_get_size(input_buf, env));
     if(ret != 1) {
         /*Error*/
         oxs_error(env, ERROR_LOCATION, OXS_ERROR_SIG_VERIFICATION_FAILED,"EVP_VerifyUpdate failed" );
         return AXIS2_FAILURE;
     }
     
-    ret = EVP_VerifyFinal(&md_ctx, OXS_BUFFER_GET_DATA(sig_buf, env), 
-                                   OXS_BUFFER_GET_SIZE(sig_buf, env),
+    ret = EVP_VerifyFinal(&md_ctx, oxs_buffer_get_data(sig_buf, env), 
+                                   oxs_buffer_get_size(sig_buf, env),
                                    pkey);
     if(ret == 0){
         /*Error. Signature verification FAILED */

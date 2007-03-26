@@ -38,7 +38,7 @@ oxs_iv_generate_for_algo(const axis2_env_t *env,
                 "openssl_get_cipher_property failed");
         return NULL;
     }
-    size = OPENSSL_CIPHER_PROPERTY_GET_IV_SIZE(cprop, env);
+    size = openssl_cipher_property_get_iv_size(cprop, env);
 
     /*Here we have predefined IVs in the openssl_constants.
       Get the correct one using the size*/

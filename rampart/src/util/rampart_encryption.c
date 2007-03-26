@@ -100,7 +100,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     }
     /*Generate the  session key*/
     session_key = oxs_key_create(env);
-    status = OXS_KEY_FOR_ALGO(session_key, env, enc_sym_algo); 
+    status = oxs_key_for_algo(session_key, env, enc_sym_algo); 
     if(AXIS2_FAILURE == status){
         return AXIS2_FAILURE;
     }
@@ -125,9 +125,9 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
         /*Create the encryption context for OMXMLSEC*/
         enc_ctx = oxs_ctx_create(env);
         /*Set the key*/
-        OXS_CTX_SET_KEY(enc_ctx, env, session_key);
+        oxs_ctx_set_key(enc_ctx, env, session_key);
         /*Set the algorithm*/
-        OXS_CTX_SET_ENC_MTD_ALGORITHM(enc_ctx, env, enc_sym_algo);
+        oxs_ctx_set_enc_mtd_algorithm(enc_ctx, env, enc_sym_algo);
         /*Create an empty EncryptedDataNode*/
         parent_of_node_to_enc = AXIOM_NODE_GET_PARENT(node_to_enc, env);
         id = oxs_util_generate_id(env,(axis2_char_t*)OXS_ENCDATA_ID);

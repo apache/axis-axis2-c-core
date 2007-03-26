@@ -255,7 +255,7 @@ oxs_asym_ctx_set_private_key(
 
     if (asym_ctx->private_key)
     {
-        /*OPENSSL_PKEY_FREE(asym_ctx->private_key, env);*/
+        /*openssl_pkey_free(asym_ctx->private_key, env);*/
         asym_ctx->private_key = NULL;
     }
     asym_ctx->private_key = private_key;

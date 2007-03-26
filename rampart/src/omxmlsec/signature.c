@@ -56,8 +56,8 @@ oxs_sig_sign_rsa_sha1(const axis2_env_t *env,
     /*Base64 encode*/
     encodedlen = axis2_base64_encode_len(signedlen);
     encoded_str = AXIS2_MALLOC(env->allocator, encodedlen);
-    ret = axis2_base64_encode(encoded_str, (const char *)OXS_BUFFER_GET_DATA(signed_result_buf, env), signedlen);
-    status = OXS_BUFFER_POPULATE(output, env, (unsigned char*)axis2_strdup(encoded_str, env), encodedlen);
+    ret = axis2_base64_encode(encoded_str, (const char *)oxs_buffer_get_data(signed_result_buf, env), signedlen);
+    status = oxs_buffer_populate(output, env, (unsigned char*)axis2_strdup(encoded_str, env), encodedlen);
 
     /*Free signed_result_buf*/
     
@@ -124,11 +124,11 @@ oxs_sig_verify(const axis2_env_t *env,
     
     /*Create the signature buffer*/
     sig_buf = oxs_buffer_create(env);
-    ret = OXS_BUFFER_POPULATE(sig_buf, env, decoded_data, decoded_len);     
+    ret = oxs_buffer_populate(sig_buf, env, decoded_data, decoded_len);     
 
     /*Create the input buffer*/
     in_buf = oxs_buffer_create(env);
-    status = OXS_BUFFER_POPULATE(in_buf, env, (unsigned char*)content, axis2_strlen(content));
+    status = oxs_buffer_populate(in_buf, env, (unsigned char*)content, axis2_strlen(content));
 
     /*Get the public key. See.. this method is trickey. It might take the public key from the certificate, only if
      * the public key is not available directly*/

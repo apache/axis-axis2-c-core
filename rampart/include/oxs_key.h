@@ -177,40 +177,7 @@ oxs_key_for_algo(oxs_key_t *key,
 AXIS2_EXTERN oxs_key_t *AXIS2_CALL
 oxs_key_create(const axis2_env_t *env);
 
-/*Macros*/
 
-
-#define OXS_KEY_GET_DATA(key,env)\
-    (oxs_key_get_data(key, env))
-
-#define OXS_KEY_GET_NAME(key,env)\
-	(oxs_key_get_name(key, env))
-
-#define OXS_KEY_GET_SIZE(key,env)\
-	(oxs_key_get_size(key, env))
-
-#define OXS_KEY_GET_USAGE(key,env)\
-	(oxs_key_get_usage(key, env))
-
-#define OXS_KEY_SET_NAME(key,env, name)\
-    (oxs_key_set_name(key, env, name))
-
-#define OXS_KEY_SET_USAGE(key,env, usage)\
-    (oxs_key_set_usage(key, env, usage))
-
-#define OXS_KEY_FREE(key,env)\
-    (oxs_key_free(key, env))
-
-#define OXS_KEY_POPULATE(key,env, data, name, size, usage)\
-    (oxs_key_populate(key, env, data, name, size, usage))
-
-#define OXS_KEY_READ_FROM_FILE(key,env, file_name)\
-    (oxs_key_read_from_file(key, env, file_name))
-
-#define OXS_KEY_FOR_ALGO(key,env, key_algo)\
-    (oxs_key_for_algo(key, env, key_algo))
-
-/** @} */
 #ifdef __cplusplus
 }
 #endif
