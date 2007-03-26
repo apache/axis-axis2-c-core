@@ -130,7 +130,7 @@ rampart_get_property_from_ctx(const axis2_env_t *env,
 
     /*Get value from the dynamic settings*/
 
-    property =  axis2_ctx_get_property(ctx, env, key, AXIS2_FALSE);
+    property =  axis2_ctx_get_property(ctx, env, key);
     if (property)
     {
         str_property = axis2_property_get_value(property, env);
