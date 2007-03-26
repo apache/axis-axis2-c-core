@@ -58,7 +58,7 @@ axis2_string_create(const axis2_env_t *env,
     
     string->length = axis2_strlen(str);
     
-    if (string->length < 1)
+    if (string->length < 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
             AXIS2_FAILURE);
@@ -107,7 +107,7 @@ axis2_string_create_assume_ownership(const axis2_env_t *env,
     string->ref_count = 1;
     string->owns_buffer = AXIS2_TRUE;    
     
-    if (string->length < 1)
+    if (string->length < 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
             AXIS2_FAILURE);
@@ -146,7 +146,7 @@ axis2_string_create_const(const axis2_env_t *env,
     string->ref_count = 1;
     string->owns_buffer = AXIS2_FALSE;    
     
-    if (string->length < 1)
+    if (string->length < 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
             AXIS2_FAILURE);

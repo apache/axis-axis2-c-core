@@ -368,7 +368,8 @@ axiom_element_declare_namespace_assume_param_ownership(axiom_element_t *om_eleme
         key = AXIS2_MALLOC(env->allocator, sizeof(char) * 10);
         memset(key, 0, sizeof(char)*10);
         om_element->next_ns_prefix_number++;
-        sprintf(key, "axis2ns%d", om_element->next_ns_prefix_number);
+        /*sprintf(key, "axis2ns%d", om_element->next_ns_prefix_number);*/
+        sprintf(key, "");
         axis2_hash_set(om_element->namespaces, key,
             AXIS2_HASH_KEY_STRING, ns);
     }
@@ -430,7 +431,8 @@ axiom_element_declare_namespace(axiom_element_t *om_element,
         key = AXIS2_MALLOC(env->allocator, sizeof(char) * 10);
         memset(key, 0, sizeof(char)*10);
         om_element->next_ns_prefix_number++;
-        sprintf(key, "axis2ns%d", om_element->next_ns_prefix_number);
+        /*sprintf(key, "axis2ns%d", om_element->next_ns_prefix_number);*/
+        sprintf(key, "");
         axis2_hash_set(om_element->namespaces, key,
             AXIS2_HASH_KEY_STRING,  ns);
     }
