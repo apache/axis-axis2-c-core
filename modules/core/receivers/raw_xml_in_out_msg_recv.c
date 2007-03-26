@@ -99,7 +99,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
 
         if (svc)
         {
-            svc_name = AXIS2_SVC_GET_NAME(svc, env);
+            svc_name = axis2_svc_get_name(svc, env);
         }
         else
         {

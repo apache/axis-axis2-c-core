@@ -93,7 +93,7 @@ savan_out_handler_invoke(
     
     svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     if (svc)
-        svc_name = AXIS2_SVC_GET_NAME(svc, env);
+        svc_name = (xis2_svc_get_namesvc, env);
     
     printf("[%s][savan][out handler] invoke...\n", svc_name);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[%s][savan][out handler] invoke...",
@@ -115,7 +115,7 @@ savan_out_handler_invoke(
             return AXIS2_SUCCESS; /* returning FAILURE will break handler chain */
         }
         
-        param = AXIS2_SVC_GET_PARAM(svc, env, SUBSCRIBER_STORE);
+        param = axis2_svc_get_param(svc, env, SUBSCRIBER_STORE);
         if (!param)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan][out handler] "

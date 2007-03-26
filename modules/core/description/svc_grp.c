@@ -198,7 +198,7 @@ axis2_svc_grp_add_svc(
         if (!svc_grp->svcs)
             return AXIS2_FAILURE;
     }
-    svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
+    svc_qname = axis2_svc_get_qname(svc, env);
     svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
     axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
 
@@ -223,7 +223,7 @@ axis2_svc_grp_add_svc(
         return status;
     }
 
-    status = AXIS2_SVC_SET_LAST_UPDATE(svc, env);
+    status = axis2_svc_set_last_update(svc, env);
     if (AXIS2_SUCCESS != status)
     {
         /* remove the previously added service */
@@ -232,7 +232,7 @@ axis2_svc_grp_add_svc(
         return status;
     }
 
-    status = AXIS2_SVC_SET_PARENT(svc, env, svc_grp);
+    status = axis2_svc_set_parent(svc, env, svc_grp);
     if (AXIS2_SUCCESS != status)
     {
         /* remove the previously added service */

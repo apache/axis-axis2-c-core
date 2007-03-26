@@ -199,7 +199,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *svc_grp_builder,
             deployable_svcs = axis2_arch_file_data_get_deployable_svcs(file_data,
                 env);
             axis2_array_list_add(deployable_svcs, env, axis_svc);
-            AXIS2_SVC_SET_PARENT(axis_svc, env, svc_grp);
+            axis2_svc_set_parent(axis_svc, env, svc_grp);
             svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
                 axis2_desc_builder_get_dep_engine(svc_grp_builder->desc_builder, env), 
                 axis_svc);

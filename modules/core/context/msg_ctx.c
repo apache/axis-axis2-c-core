@@ -393,7 +393,7 @@ axis2_msg_ctx_init(
     if (msg_ctx->op_qname)
     {
         if (msg_ctx->svc)
-            msg_ctx->op = AXIS2_SVC_GET_OP_WITH_QNAME(msg_ctx->svc,
+            msg_ctx->op = axis2_svc_get_op_with_qname(msg_ctx->svc,
                     env, msg_ctx->op_qname);
     }
 
@@ -1114,7 +1114,7 @@ axis2_msg_ctx_get_parameter(
 
     if (msg_ctx->svc)
     {
-        param = AXIS2_SVC_GET_PARAM(msg_ctx->svc, env, key);
+        param = axis2_svc_get_param(msg_ctx->svc, env, key);
         if (param)
         {
             return param;
@@ -1432,9 +1432,9 @@ axis2_msg_ctx_set_svc(
     {
         axis2_svc_grp_t *svc_grp = NULL;
         msg_ctx->svc = svc;
-        msg_ctx->svc_qname = (axis2_qname_t *)AXIS2_SVC_GET_QNAME(svc, env);
+        msg_ctx->svc_qname = (axis2_qname_t *)axis2_svc_get_qname(svc, env);
 
-        svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
+        svc_grp = axis2_svc_get_parent(svc, env);
         if (svc_grp)
         {
             msg_ctx->svc_grp = svc_grp;

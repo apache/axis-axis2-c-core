@@ -191,7 +191,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         svc_node);
     axis2_qname_free(qparamst, env);
     qparamst = NULL;
-    parent = AXIS2_SVC_GET_PARENT(svc_builder->svc, env);
+    parent = axis2_svc_get_parent(svc_builder->svc, env);
 
     status = axis2_desc_builder_process_params(svc_builder->desc_builder, env,
         itr, 
@@ -224,7 +224,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         description_text = axiom_element_get_text (desc_element, env, desc_node);
         if (description_text)
         {
-            AXIS2_SVC_SET_SVC_DESC (svc_builder->svc, env, description_text);
+            axis2_svc_set_svc_desc(svc_builder->svc, env, description_text);
         }
     }
 	 /* --------------------services description end -------------------- */
@@ -232,7 +232,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
     name_attr = axiom_element_get_attribute(svc_element, env, qattname);
     svc_name = axiom_attribute_get_value(name_attr, env);
-    AXIS2_SVC_SET_NAME(svc_builder->svc, env, svc_name);
+    axis2_svc_set_name(svc_builder->svc, env, svc_name);
     axis2_qname_free(qattname, env);
 
     /* create dll_desc and set it in a parameter. then set that param in param
@@ -353,10 +353,10 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
                 axis2_char_t *key = NULL;
 
                 key = (axis2_char_t *) axis2_param_get_value(param, env);
-                AXIS2_SVC_ADD_MAPPING(svc_builder->svc, env, key, op_desc);
+                axis2_svc_add_mapping(svc_builder->svc, env, key, op_desc);
             }
         }
-        AXIS2_SVC_ADD_OP(svc_builder->svc, env, op_desc);
+        axis2_svc_add_op(svc_builder->svc, env, op_desc);
     }
     axis2_array_list_free(ops, env);
     return AXIS2_SUCCESS;
@@ -571,7 +571,7 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
             }
             else
             {
-                AXIS2_SVC_ADD_MODULE_QNAME(svc_builder->svc, env, qrefname);
+                axis2_svc_add_module_qname(svc_builder->svc, env, qrefname);
             }
             axis2_qname_free(qrefname, env);
         }

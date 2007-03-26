@@ -165,7 +165,7 @@ axis2_svc_client_create_for_dynamic_invocation(const axis2_env_t *env,
         void *v = NULL;
         axis2_op_t *op = NULL;
 
-        ops = AXIS2_SVC_GET_ALL_OPS(svc_client->svc, env);
+        ops = axis2_svc_get_all_ops(svc_client->svc, env);
         for (i = axis2_hash_first(ops, env); i; i = axis2_hash_next(env, i))
         {
             axis2_phases_info_t * info = NULL;
@@ -182,7 +182,7 @@ axis2_svc_client_create_for_dynamic_invocation(const axis2_env_t *env,
 
     /** add the service to the config context if it isn't in there already */
     if (! axis2_conf_get_svc(svc_client->conf, env,
-        AXIS2_SVC_GET_NAME(svc_client->svc, env)))
+        axis2_svc_get_name(svc_client->svc, env)))
     {
          axis2_conf_add_svc(svc_client->conf, env, svc_client->svc);
     }
@@ -190,7 +190,7 @@ axis2_svc_client_create_for_dynamic_invocation(const axis2_env_t *env,
     /** create a service context for myself: create a new service group
      context and then get the service context for myself as I'll need that
      later for stuff that I gotta do */
-    svc_grp = AXIS2_SVC_GET_PARENT(svc_client->svc, env);
+    svc_grp = axis2_svc_get_parent(svc_client->svc, env);
     if (!svc_grp)
     {
         return NULL;
@@ -213,7 +213,7 @@ axis2_svc_client_create_for_dynamic_invocation(const axis2_env_t *env,
         svc_grp_name, svc_grp_ctx);
 
     svc_client->svc_ctx =  axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env,
-        AXIS2_SVC_GET_NAME(svc_client->svc, env));
+        axis2_svc_get_name(svc_client->svc, env));
 
     return svc_client;
 }
@@ -284,7 +284,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
 
     /** add the service to the config context if it isn't in there already */
     if (! axis2_conf_get_svc(svc_client->conf, env,
-        AXIS2_SVC_GET_NAME(svc_client->svc, env)))
+        axis2_svc_get_name(svc_client->svc, env)))
     {
          axis2_conf_add_svc(svc_client->conf, env, svc_client->svc);
     }
@@ -292,7 +292,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
     /** create a service context for myself: create a new service group
      context and then get the service context for myself as I'll need that
      later for stuff that I gotta do */
-    svc_grp = AXIS2_SVC_GET_PARENT(svc_client->svc, env);
+    svc_grp = axis2_svc_get_parent(svc_client->svc, env);
     if (!svc_grp)
     {
         return NULL;
@@ -315,7 +315,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
         svc_grp_name, svc_grp_ctx);
 
     svc_client->svc_ctx =  axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env,
-        AXIS2_SVC_GET_NAME(svc_client->svc, env));
+        axis2_svc_get_name(svc_client->svc, env));
 
     return svc_client;
 }
@@ -400,7 +400,7 @@ axis2_svc_client_engage_module(axis2_svc_client_t *svc_client,
 
     if (module)
     {
-        return AXIS2_SVC_ENGAGE_MODULE(svc_client->svc, env, module,
+        return axis2_svc_engage_module(svc_client->svc, env, module,
             svc_client->conf);
     }
     return AXIS2_FAILURE;
@@ -604,7 +604,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
     svc_client->last_response_soap_envelope = NULL;
     svc_client->last_response_has_fault = AXIS2_FALSE;
 
-    op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client->svc, env, op_qname);
+    op = axis2_svc_get_op_with_qname(svc_client->svc, env, op_qname);
     if (op)
     {
         param = axis2_op_get_param(op, env, AXIS2_SOAP_ACTION);
@@ -830,7 +830,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc
            If it is missing, the response gets lost. - Samisa */
         AXIS2_USLEEP(1);
 
-        op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client->svc, env, op_qname);
+        op = axis2_svc_get_op_with_qname(svc_client->svc, env, op_qname);
         axis2_op_set_msg_recv(op, env,
             AXIS2_CALLBACK_RECV_GET_BASE(svc_client->callback_recv, env));
         AXIS2_OP_CLIENT_SET_CALLBACK_RECV(svc_client->op_client, env,
@@ -867,7 +867,7 @@ axis2_svc_client_create_op_client(axis2_svc_client_t *svc_client,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client->svc, env, op_qname);
+    op = axis2_svc_get_op_with_qname(svc_client->svc, env, op_qname);
 
     if (!op)
     {
@@ -1121,9 +1121,9 @@ axis2_svc_client_create_annonymous_svc(axis2_svc_client_t *svc_client,
     axis2_phases_info_set_op_phases(info, env, op_out_in);
     axis2_phases_info_set_op_phases(info, env, op_out_only);
     axis2_phases_info_set_op_phases(info, env, op_robust_out_only);
-    AXIS2_SVC_ADD_OP(svc, env, op_out_in);
-    AXIS2_SVC_ADD_OP(svc, env, op_out_only);
-    AXIS2_SVC_ADD_OP(svc, env, op_robust_out_only);
+    axis2_svc_add_op(svc, env, op_out_in);
+    axis2_svc_add_op(svc, env, op_out_only);
+    axis2_svc_add_op(svc, env, op_robust_out_only);
     return svc;
 }
 
@@ -1135,7 +1135,7 @@ axis2_svc_client_free(axis2_svc_client_t *svc_client,
 
     if (svc_client->svc)
     {
-        AXIS2_SVC_FREE(svc_client->svc, env);
+        axis2_svc_free(svc_client->svc, env);
     }
 
     if (svc_client->callback_recv)

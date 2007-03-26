@@ -781,7 +781,7 @@ axis2_http_transport_utils_get_services_html(
                 hi; hi = axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, NULL, NULL, &service);
-            sname = axis2_qname_get_localpart(AXIS2_SVC_GET_QNAME(
+            sname = axis2_qname_get_localpart(axis2_svc_get_qname(
                         ((axis2_svc_t *)service), env), env);
             ret = axis2_stracat(tmp2, "<h3><u>", env);
             tmp2 = ret;
@@ -794,11 +794,11 @@ axis2_http_transport_utils_get_services_html(
 				tmp2 = ret;
 							 /**
 							  *setting services description */
-				ret = axis2_stracat (tmp2, AXIS2_SVC_GET_SVC_DESC ((axis2_svc_t *)service, env), env);
+				ret = axis2_stracat (tmp2, axis2_svc_get_svc_desc((axis2_svc_t *)service, env), env);
 				tmp2 = ret;
 				ret = axis2_stracat (tmp2, "</p>", env);
 				tmp2 = ret;
-            ops = AXIS2_SVC_GET_ALL_OPS(((axis2_svc_t *)service), env);
+            ops = axis2_svc_get_all_ops(((axis2_svc_t *)service), env);
             if (ops && 0 != axis2_hash_count(ops))
             {
                 axis2_hash_index_t *hi2 = NULL;

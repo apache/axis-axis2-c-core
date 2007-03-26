@@ -115,7 +115,7 @@ axis2_phase_resolver_create_with_config_and_svc(
 
     phase_resolver->svc = svc;
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s",
-        AXIS2_SVC_GET_NAME(phase_resolver->svc, env));
+        axis2_svc_get_name(phase_resolver->svc, env));
 
     return phase_resolver;
 }
@@ -148,7 +148,7 @@ axis2_phase_resolver_build_chains(
     if (!(phase_resolver->svc))
         return AXIS2_FAILURE;
 
-    ops = AXIS2_SVC_GET_ALL_OPS(phase_resolver->svc, env);
+    ops = axis2_svc_get_all_ops(phase_resolver->svc, env);
 
     for (index_i = axis2_hash_first(ops, env); index_i; index_i =
         axis2_hash_next(env, index_i))
@@ -885,9 +885,9 @@ axis2_phase_resolver_engage_module_globally(
             axis2_hash_this(index_j, NULL, NULL, &w);
             svc = (axis2_svc_t *) w;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s",
-                AXIS2_SVC_GET_NAME(svc, env));
+                axis2_svc_get_name(svc, env));
 
-            status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc,
+            status = axis2_svc_add_module_ops(svc, env, module_desc,
                 phase_resolver->axis2_config);
             if (AXIS2_SUCCESS != status)
             {
@@ -932,7 +932,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
 
-    ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
+    ops = axis2_svc_get_all_ops(svc, env);
     if (!ops)
     {
         return AXIS2_FAILURE;
@@ -1254,12 +1254,12 @@ axis2_phase_resolver_engage_module_to_svc(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
+    ops = axis2_svc_get_all_ops(svc, env);
     if (!ops)
     {
         return AXIS2_FAILURE;
     }
-    status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc,
+    status = axis2_svc_add_module_ops(svc, env, module_desc,
         phase_resolver->axis2_config);
 
     if (AXIS2_SUCCESS != status)

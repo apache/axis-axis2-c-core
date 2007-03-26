@@ -219,7 +219,7 @@ axiom_soap_body_disp_find_op(
 SOAP message body's first child's local name : %s",
                                         element_name);
 
-                                op = AXIS2_SVC_GET_OP_WITH_NAME(
+                                op = axis2_svc_get_op_with_name(
                                     svc, env, element_name);
 
                                 if (op)

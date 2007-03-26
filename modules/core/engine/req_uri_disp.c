@@ -171,7 +171,7 @@ axis2_req_uri_disp_find_op(
                              target endpoint uri fragment : %s",
                              url_tokens[1]);
                     op_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
-                    op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, 
+                    op = axis2_svc_get_op_with_name(svc, env, 
                              axis2_qname_get_localpart(op_qname, env));
                     axis2_qname_free(op_qname, env);
                     if (op)

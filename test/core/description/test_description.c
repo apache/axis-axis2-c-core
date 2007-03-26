@@ -76,7 +76,7 @@ int axis2_test_svc_add_module_ops()
     svc = axis2_svc_create_with_qname(env, qname);
     module_desc = axis2_module_desc_create(env);
     axis2_config = axis2_conf_create(env);
-    status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, axis2_config);
+    status = axis2_svc_add_module_ops(svc, env, module_desc, axis2_config);
     if (status != AXIS2_SUCCESS)
     {
         printf("axis2_test_description_add_module_ops ERROR %d\n", status);
@@ -84,7 +84,7 @@ int axis2_test_svc_add_module_ops()
     else
         printf("axis2_test_add_module_ops SUCCESS\n");
 
-    AXIS2_SVC_FREE(svc, env);
+    axis2_svc_free(svc, env);
     axis2_qname_free(qname, env);
     axis2_module_desc_free(module_desc, env);
      axis2_conf_free(axis2_config, env);
@@ -112,7 +112,7 @@ int axis2_test_svc_engage_module()
     moduleref = axis2_module_desc_create(env);
     axis2_config = axis2_conf_create(env);
 
-    status = AXIS2_SVC_ENGAGE_MODULE(svc, env, moduleref, axis2_config);
+    status = axis2_svc_engage_module(svc, env, moduleref, axis2_config);
     moduleref = NULL;
     if (status != AXIS2_SUCCESS)
     {
@@ -121,7 +121,7 @@ int axis2_test_svc_engage_module()
     else
         printf("axis2_test_svc_engage_module SUCCESS\n");
 
-    AXIS2_SVC_FREE(svc, env);
+    axis2_svc_free(svc, env);
     axis2_qname_free(qname, env);
      axis2_conf_free(axis2_config, env);
 
@@ -148,13 +148,13 @@ int axis2_test_svc_get_op()
     qname = axis2_qname_create(env, "svc1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
 
-    status = AXIS2_SVC_ADD_OP(svc, env, op);
+    status = axis2_svc_add_op(svc, env, op);
 
     qname = axis2_qname_create(env, "op2", NULL, NULL);
     op = axis2_op_create_with_qname(env, qname);
-    status = AXIS2_SVC_ADD_OP(svc, env, op);
+    status = axis2_svc_add_op(svc, env, op);
 
-    ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
+    ops = axis2_svc_get_all_ops(svc, env);
 
     if (ops)
         printf("SUCCESS AXIS2_SVC_GET_OPS\n");
@@ -176,7 +176,7 @@ int axis2_test_svc_get_op()
         for (hi2 = axis2_hash_first(ops, env); hi2; hi2 = axis2_hash_next(env, hi2))
         {
             printf("count = %d \n", count++);
-            AXIS2_SVC_GET_ALL_OPS(svc, env);
+            axis2_svc_get_all_ops(svc, env);
             if (!(hi2))
                 break;
             axis2_hash_this(hi2, NULL, NULL, &op2);

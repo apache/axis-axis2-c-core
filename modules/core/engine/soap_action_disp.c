@@ -125,7 +125,7 @@ axiom_soap_action_disp_find_op(
 
             if (op_name)
             {
-                op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, op_name);
+                op = axis2_svc_get_op_with_name(svc, env, op_name);
             }
         }
 

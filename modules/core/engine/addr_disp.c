@@ -175,7 +175,7 @@ axis2_addr_disp_find_op(
                 "Checking for operation using WSA Action : %s", action);
 
         name = axis2_qname_create(env, action, NULL, NULL);
-        op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, name);
+        op = axis2_svc_get_op_with_qname(svc, env, name);
         if (op)
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Operation found using WSA Action");

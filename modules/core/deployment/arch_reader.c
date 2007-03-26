@@ -188,11 +188,11 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
             axis2_qname_free(svc_qname, env);
             if (AXIS2_SUCCESS != status)
             {
-                AXIS2_SVC_FREE(svc, env);
+                axis2_svc_free(svc, env);
                 return status;
             }
         }
-        AXIS2_SVC_SET_PARENT(svc, env, svc_grp);
+        axis2_svc_set_parent(svc, env, svc_grp);
 
         svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
             dep_engine, svc);

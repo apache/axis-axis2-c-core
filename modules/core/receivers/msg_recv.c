@@ -139,7 +139,7 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
         return impl_class;
     }
 
-    impl_info_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SERVICE_CLASS);
+    impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
     if (!impl_info_param)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
@@ -236,7 +236,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
         return AXIS2_FAILURE;
     }
 
-    scope_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SCOPE);
+    scope_param = axis2_svc_get_param(svc, env, AXIS2_SCOPE);
     if (scope_param)
     {
         param_value = axis2_param_get_value(scope_param, env);
@@ -247,7 +247,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
         return AXIS2_SUCCESS;
     }
 
-    impl_info_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SERVICE_CLASS);
+    impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
     if (!impl_info_param)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,

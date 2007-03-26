@@ -911,7 +911,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
         file = axis2_arch_file_data_get_file(dep_engine->curr_file, env);
         file_name =  axis2_file_get_name(file, env);
-        AXIS2_SVC_SET_FILE_NAME(svc, env, file_name);
+        axis2_svc_set_file_name(svc, env, file_name);
 
         /* modules from svc group */
         grp_modules =  axis2_svc_grp_get_all_module_qnames(svc_metadata, env);
@@ -930,7 +930,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
                 qmodulename);
             if (module_desc)
             {
-                AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, dep_engine->conf);
+                axis2_svc_engage_module(svc, env, module_desc, dep_engine->conf);
             }
             else
             {
@@ -943,7 +943,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         }
 
         /* modules from <service> */
-        list = AXIS2_SVC_GET_ALL_MODULE_QNAMES(svc, env);
+        list = axis2_svc_get_all_module_qnames(svc, env);
         sizej = axis2_array_list_size(list, env);
         for (j = 0; j < sizej; j++)
         {
@@ -957,7 +957,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             if (module_desc)
             {
                 axis2_status_t status = AXIS2_FAILURE;
-                status = AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, dep_engine->conf);
+                status = axis2_svc_engage_module(svc, env, module_desc, dep_engine->conf);
                 if(!status)
                 {
                     return status;
@@ -973,7 +973,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             }
         }
 
-        ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
+        ops = axis2_svc_get_all_ops(svc, env);
         for (index_i = axis2_hash_first(ops, env);
             index_i; index_i = axis2_hash_next(env, index_i))
         {

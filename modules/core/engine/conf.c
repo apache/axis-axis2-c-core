@@ -512,7 +512,7 @@ axis2_conf_add_svc_grp(
 
         axis2_hash_this(index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
-        svc_qname = AXIS2_SVC_GET_QNAME(desc, env);
+        svc_qname = axis2_svc_get_qname(desc, env);
         svc_name = axis2_qname_get_localpart(svc_qname, env);
 
         svc_name2 = axis2_hash_get(conf->all_svcs, svc_name,
@@ -536,7 +536,7 @@ axis2_conf_add_svc_grp(
 
         axis2_hash_this(index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
-        svc_name = axis2_qname_get_localpart(AXIS2_SVC_GET_QNAME(desc, env), env);
+        svc_name = axis2_qname_get_localpart(axis2_svc_get_qname(desc, env), env);
         axis2_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
                 desc);
         index_i = axis2_hash_next(env, index_i);
@@ -603,7 +603,7 @@ axis2_conf_add_svc(
         return AXIS2_FAILURE;
     }
 
-    svc_grp_qname = AXIS2_SVC_GET_QNAME(svc, env);
+    svc_grp_qname = axis2_svc_get_qname(svc, env);
     if (! svc_grp_qname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC,
@@ -926,7 +926,7 @@ axis2_conf_get_all_svcs(
             axis2_hash_this(index_j, NULL, NULL, &value2);
             svc = (axis2_svc_t *) value2;
             svc_name = 
-                axis2_qname_get_localpart(AXIS2_SVC_GET_QNAME(svc, env), env);
+                axis2_qname_get_localpart(axis2_svc_get_qname(svc, env), env);
             axis2_hash_set(conf->all_svcs, svc_name,
                     AXIS2_HASH_KEY_STRING, svc);
 

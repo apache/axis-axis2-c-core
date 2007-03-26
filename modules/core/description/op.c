@@ -303,7 +303,7 @@ axis2_op_get_param(const axis2_op_t *op,
     param = axis2_param_container_get_param(op->param_container, env, param_name);
     if (!param && op->parent)
     {
-        param = AXIS2_SVC_GET_PARAM(op->parent, env, param_name);
+        param = axis2_svc_get_param(op->parent, env, param_name);
     }
     return param;
 }
@@ -331,7 +331,7 @@ axis2_op_is_param_locked(axis2_op_t *op,
     parent = axis2_op_get_parent(op, env);
     if (parent)
     {
-        locked = AXIS2_SVC_IS_PARAM_LOCKED(parent, env, param_name);
+        locked = axis2_svc_is_param_locked(parent, env, param_name);
     }
     if (AXIS2_TRUE == locked)
     {

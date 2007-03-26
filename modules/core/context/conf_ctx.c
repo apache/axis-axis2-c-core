@@ -467,7 +467,7 @@ axis2_conf_ctx_fill_ctxs(
         return NULL;
     }
 
-    qname = AXIS2_SVC_GET_QNAME(svc, env);
+    qname = axis2_svc_get_qname(svc, env);
     if (!qname)
     {
         AXIS2_ERROR_SET(env->error,
@@ -483,7 +483,7 @@ axis2_conf_ctx_fill_ctxs(
         return NULL;
     }
 
-    svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
+    svc_grp = axis2_svc_get_parent(svc, env);
     if (svc_grp)
     {
         svc_grp_ctx_id = (axis2_char_t*) axis2_svc_grp_get_name(svc_grp, env);
@@ -529,7 +529,7 @@ axis2_conf_ctx_fill_ctxs(
     if (!svc_grp_ctx)
     {
         axis2_svc_grp_t *svc_grp = NULL;
-        svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
+        svc_grp = axis2_svc_get_parent(svc, env);
         svc_grp_ctx =  axis2_svc_grp_get_svc_grp_ctx(svc_grp, env, conf_ctx);
         svc_ctx =  axis2_svc_grp_ctx_get_svc_ctx(svc_grp_ctx, env, svc_id);
         if (!svc_ctx)

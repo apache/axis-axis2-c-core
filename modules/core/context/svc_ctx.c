@@ -67,7 +67,7 @@ axis2_svc_ctx_create(
     if (svc)
     {
         svc_ctx->svc = svc;
-        svc_ctx->svc_qname = (axis2_qname_t *)AXIS2_SVC_GET_QNAME(svc, env);
+        svc_ctx->svc_qname = (axis2_qname_t *)axis2_svc_get_qname(svc, env);
         if (svc_ctx->svc_qname)
         {
             svc_ctx->svc_id = axis2_qname_get_localpart(svc_ctx->svc_qname, env);
@@ -169,7 +169,7 @@ axis2_svc_ctx_set_svc(
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
     svc_ctx->svc = svc;
-    svc_ctx->svc_qname = (axis2_qname_t *)AXIS2_SVC_GET_QNAME(svc, env);
+    svc_ctx->svc_qname = (axis2_qname_t *)axis2_svc_get_qname(svc, env);
     if (svc_ctx->svc_qname)
     {
         svc_ctx->svc_id = axis2_qname_get_localpart(svc_ctx->
@@ -199,7 +199,7 @@ axis2_svc_ctx_create_op_ctx(
 
     if (svc_ctx->svc)
     {
-        op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_ctx->svc, env, qname);
+        op = axis2_svc_get_op_with_qname(svc_ctx->svc, env, qname);
         return axis2_op_ctx_create(env, op, svc_ctx);
     }
 

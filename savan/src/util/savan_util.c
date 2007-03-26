@@ -179,7 +179,7 @@ savan_util_get_subscriber_store(
         return NULL;
     }
 
-    param = AXIS2_SVC_GET_PARAM(svc, env, SUBSCRIBER_STORE);
+    param = axis2_svc_get_param(svc, env, SUBSCRIBER_STORE);
     if (!param)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Failed to extract the "

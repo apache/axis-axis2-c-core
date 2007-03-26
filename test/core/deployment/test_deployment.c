@@ -81,12 +81,12 @@ int axis2_test_dep_engine_load()
 
             axis2_hash_this(hi, NULL, NULL, &service);
             svc = (axis2_svc_t *) service;
-            impl_info_param = AXIS2_SVC_GET_PARAM(svc, env, AXIS2_SERVICE_CLASS);
+            impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
             if (!impl_info_param)
             {
                 printf("imple_info_param is null\n");
             }
-            ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
+            ops = axis2_svc_get_all_ops(svc, env);
             if (ops)
             {
                 printf("ops count = %d\n", axis2_hash_count(ops));

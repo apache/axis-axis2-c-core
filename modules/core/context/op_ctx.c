@@ -179,7 +179,7 @@ axis2_op_ctx_init(
             if (svc)
             {
                 op_ctx->op =
-                    AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_ctx->op_qname);
+                    axis2_svc_get_op_with_qname(svc, env, op_ctx->op_qname);
             }
         }
     }
@@ -326,7 +326,7 @@ axis2_op_ctx_set_parent(
                  axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
         }
         op_ctx->svc_qname =
-            (axis2_qname_t *)AXIS2_SVC_GET_QNAME( axis2_svc_ctx_get_svc(op_ctx->parent, env), env);
+            (axis2_qname_t *)axis2_svc_get_qname( axis2_svc_ctx_get_svc(op_ctx->parent, env), env);
     }
 
     return AXIS2_SUCCESS;

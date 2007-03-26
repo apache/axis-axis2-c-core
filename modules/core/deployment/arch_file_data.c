@@ -150,7 +150,7 @@ axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
             svc = (axis2_svc_t *) val;
             if (svc)
             {
-                AXIS2_SVC_FREE(svc, env);
+                axis2_svc_free(svc, env);
             }
         }
         axis2_hash_free(arch_file_data->svc_map, env);
@@ -303,7 +303,7 @@ axis2_arch_file_data_add_svc(axis2_arch_file_data_t *arch_file_data,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_desc, AXIS2_FAILURE);
 
-    svc_qname = AXIS2_SVC_GET_QNAME(svc_desc, env);
+    svc_qname = axis2_svc_get_qname(svc_desc, env);
     svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
     if (!arch_file_data->svc_map)
     {

@@ -145,10 +145,10 @@ axis2_mep_client_prepare_invocation(
         {
             axis2_op_t *temp_op = NULL;
             const axis2_qname_t *op_qname = axis2_op_get_qname(op, env);
-            temp_op = AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname);
+            temp_op = axis2_svc_get_op_with_qname(svc, env, op_qname);
             if (!temp_op)
             {
-                AXIS2_SVC_ADD_OP(svc, env, op);
+                axis2_svc_add_op(svc, env, op);
             }
         }
     }

@@ -126,12 +126,12 @@ savan_sub_processor_subscribe(
         return AXIS2_FAILURE;
     }
     
-    param = AXIS2_SVC_GET_PARAM(svc, env, SUBSCRIBER_STORE);
+    param = axis2_svc_get_param(svc, env, SUBSCRIBER_STORE);
     if (!param)
     {
         /* Store not found. Create and set it as a param */
         savan_sub_processor_set_sub_store(svc, env);
-        param = AXIS2_SVC_GET_PARAM(svc, env, SUBSCRIBER_STORE);
+        param = axis2_svc_get_param(svc, env, SUBSCRIBER_STORE);
     }
     
     store = (axis2_hash_t*)axis2_param_get_value(param, env);
@@ -299,7 +299,7 @@ savan_sub_processor_set_sub_store(
         return AXIS2_FAILURE;
     }
     
-    AXIS2_SVC_ADD_PARAM(svc, env, param);
+    axis2_svc_add_param(svc, env, param);
     
     return AXIS2_SUCCESS;       
 }

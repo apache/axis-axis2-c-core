@@ -395,7 +395,7 @@ rampart_is_rampart_engaged(const axis2_env_t *env,
         return axis2_conf_get_enable_security(conf,env);
     }    
             
-    engaged_modules = AXIS2_SVC_GET_ALL_MODULE_QNAMES(svc,env);
+    engaged_modules = axis2_svc_get_all_module_qnames(svc,env);
     if(engaged_modules)
     {
         size = axis2_array_list_size(engaged_modules,env);

@@ -133,8 +133,8 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
             ns = axis2_qname_get_uri(svc_qname, env);
             prefix = axis2_qname_get_prefix(svc_qname, env);
             temp_svc_qname = axis2_qname_create(env, localname, ns, prefix);
-            AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
-            AXIS2_SVC_SET_QNAME(axis2_svc, env, temp_svc_qname);
+            axis2_svc_set_name(axis2_svc, env, localname);
+            axis2_svc_set_qname(axis2_svc, env, temp_svc_qname);
             AXIS2_FREE(env->allocator, localname);
             axis2_qname_free(temp_svc_qname, env);
         }
@@ -259,7 +259,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
 			{
                 size = axis2_array_list_size(ext_elements, env);
 			}
-            AXIS2_SVC_ADD_OP(axis2_svc, env, axis2_op);
+            axis2_svc_add_op(axis2_svc, env, axis2_op);
         }
     }
     if (WODEN_WSDL10 == spec)
@@ -312,8 +312,8 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
             ns = axis2_qname_get_uri(svc_qname, env);
             prefix = axis2_qname_get_prefix(svc_qname, env);
             temp_svc_qname = axis2_qname_create(env, localname, ns, prefix);
-            AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
-            AXIS2_SVC_SET_QNAME(axis2_svc, env, temp_svc_qname);
+            axis2_svc_set_name(axis2_svc, env, localname);
+            axis2_svc_set_qname(axis2_svc, env, temp_svc_qname);
             AXIS2_FREE(env->allocator, localname);
             axis2_qname_free(temp_svc_qname, env);
         }
@@ -498,7 +498,7 @@ axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
                     break;
                 }
             }
-            AXIS2_SVC_ADD_OP(axis2_svc, env, axis2_op);
+            axis2_svc_add_op(axis2_svc, env, axis2_op);
         }
     }
     return axis2_svc;
