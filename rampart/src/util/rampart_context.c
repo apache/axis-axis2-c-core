@@ -47,6 +47,10 @@ struct rampart_context_t
 
     axis2_bool_t require_timestamp;
     axis2_bool_t require_ut;
+
+    /*This is used in callback functions.*/
+    void *ctx;
+
             
 };
 
@@ -146,6 +150,7 @@ rampart_context_create(const axis2_env_t *env)
     rampart_context->authenticate_with_digest = NULL;
     rampart_context->require_ut = AXIS2_FALSE;
     rampart_context->require_timestamp = AXIS2_FALSE;
+    rampart_context->ctx = NULL;
 
     return rampart_context;
 }
@@ -309,6 +314,7 @@ rampart_context_set_pwcb_function(rampart_context_t *rampart_context,
     AXIS2_PARAM_CHECK(env->error,pwcb_function,AXIS2_FAILURE);
 
     rampart_context->pwcb_function = pwcb_function;
+    rampart_context->ctx = ctx;
     return AXIS2_SUCCESS;
 }
 
@@ -454,6 +460,16 @@ rampart_context_get_pwcb_function(
     AXIS2_ENV_CHECK(env, NULL);
 
     return rampart_context->pwcb_function;
+}
+
+AXIS2_EXTERN void* AXIS2_CALL
+rampart_context_get_ctx(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+
+    return rampart_context->ctx;
 }
 
 AXIS2_EXTERN int AXIS2_CALL

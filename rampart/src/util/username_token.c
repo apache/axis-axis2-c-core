@@ -94,8 +94,15 @@ rampart_username_token_build(
     {
         password_function = rampart_context_get_pwcb_function(rampart_context,env);
         if(password_function)
+        {            
+            param = rampart_context_get_ctx(rampart_context,env);
+            if(!param)
+            {
+                AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Param is not set.");
+                return AXIS2_FAILURE;
+            }            
             password = (*password_function)(env,username,param);
-
+        }
         else
         {
             password_callback = rampart_context_get_password_callback(rampart_context,env);
@@ -104,7 +111,6 @@ rampart_username_token_build(
                 AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] password callback module is not loaded. ERROR");
                 return AXIS2_FAILURE;
             }
-
             password = rampart_callback_password(env, password_callback,username);
         }
     }
@@ -454,11 +460,18 @@ rampart_username_token_validate(
         
         /*If not then check the call  back function*/
         if(!password_from_svr)
-        {            
+        {           
             password_function = rampart_context_get_pwcb_function(rampart_context,env);
             if(password_function)
+            {
+                param = rampart_context_get_ctx(rampart_context,env);
+                if(!param)
+                {
+                    AXIS2_LOG_INFO(env->log,"[rampart][rampart_usernametoken] Param is NULL");
+                    return AXIS2_FAILURE;
+                }
                 password_from_svr = (*password_function)(env,username,param);
-
+            }
             else
             {    
                 password_callback = rampart_context_get_password_callback(rampart_context,env);

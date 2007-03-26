@@ -225,6 +225,11 @@ extern "C"
             rampart_context_t *rampart_context,
             const axis2_env_t *env);
 
+    AXIS2_EXTERN void* AXIS2_CALL
+    rampart_context_get_ctx(
+            rampart_context_t *rampart_context,
+            const axis2_env_t *env);
+    
     AXIS2_EXTERN int AXIS2_CALL
     rampart_context_get_ttl(
             rampart_context_t *rampart_context,
