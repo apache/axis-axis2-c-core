@@ -108,15 +108,25 @@ int main(int argc, char** argv)
     ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
 
     if (axis2_svc_client_get_last_response_has_fault(svc_client, env))
-        printf ("\nResponse has a SOAP fault\n");
-
-    if (axis2_svc_client_get_last_response_soap_envelope(svc_client, env))
     {
-        printf("\n Returned SOAP envelope: %s\n", 
-            AXIOM_NODE_TO_STRING(axiom_soap_envelope_get_base_node(
-                axis2_svc_client_get_last_response_soap_envelope(svc_client, env),
-                env), 
-            env));
+        axiom_soap_envelope_t *soap_envelope = NULL;
+        axiom_soap_body_t *soap_body = NULL;
+        axiom_soap_fault_t *soap_fault = NULL;
+        
+        printf ("\nResponse has a SOAP fault\n");
+        soap_envelope = 
+            axis2_svc_client_get_last_response_soap_envelope(svc_client, env);
+        if (soap_envelope)
+            soap_body = axiom_soap_envelope_get_body(soap_envelope, env);
+        if (soap_body)
+            soap_fault = axiom_soap_body_get_fault(soap_body, env);
+        if (soap_fault)
+        {
+            printf("\nReturned SOAP fault: %s\n", 
+                AXIOM_NODE_TO_STRING(axiom_soap_fault_get_base_node(soap_fault,env), 
+                env));
+        }
+        return -1;
     }
 
     if (ret_node)
