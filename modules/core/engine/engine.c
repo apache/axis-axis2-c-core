@@ -288,11 +288,8 @@ axis2_engine_receive(
         status = axis2_msg_recv_receive(receiver, env, msg_ctx, 
             axis2_msg_recv_get_derived(receiver, env));
     }
-    else
-    {
-        status = AXIS2_SUCCESS;
-    }
-    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Axis2 engine receive successful");
+
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Axis2 engine receive completed!");
 
     return status;
 }

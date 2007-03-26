@@ -166,7 +166,7 @@ axis2_ctx_handler_invoke(
         axis2_allocator_switch_to_local_pool(env->allocator);
     }
 
-    if (!svc_grp_ctx)
+    if (!svc_grp_ctx && (axis2_msg_ctx_get_server_side(msg_ctx, env)))
         return AXIS2_FAILURE;
     return AXIS2_SUCCESS;
 }
