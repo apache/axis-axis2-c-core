@@ -254,7 +254,9 @@ axiom_element_find_namespace(axiom_element_t *om_element,
                     return default_ns;
                 }
                 else
+                {
                     return NULL;
+                }
             }
             /** prefix is null , so iterate the namespaces hash to find the namespace */
             for (hashindex = axis2_hash_first(om_element->namespaces, env);
