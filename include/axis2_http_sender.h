@@ -46,96 +46,79 @@ extern "C"
 {
 #endif
 
-    /** Type name for struct axis2_http_sender_ops */
-    typedef struct axis2_http_sender_ops
-                axis2_http_sender_ops_t;
     /** Type name for struct axis2_http_sender_ */
     typedef struct axis2_http_sender axis2_http_sender_t;
 
 
     /**
-     * SOAP over HTTP sender ops struct
-     * Encapsulator struct for ops of axis2_http_sender
+     * @param sender sender
+     * @param env pointer to environment struct
+     * @param msg_ctx pointer to message context
+     * @param out out
+     * @param str_url str url
+     * @param soap_action pointer to soap action
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_http_sender_ops
-    {
-        /**
-         * @param sender sender
-         * @param env pointer to environment struct
-         * @param msg_ctx pointer to message context
-         * @param out out
-         * @param str_url str url
-         * @param soap_action pointer to soap action
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                send)(
-                    axis2_http_sender_t *sender,
-                    const axis2_env_t *env, 
-                    axis2_msg_ctx_t *msg_ctx,
-                    axiom_soap_envelope_t *out,
-                    const axis2_char_t *str_url,
-                    const axis2_char_t *soap_action);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_sender_send(axis2_http_sender_t *sender,
+        const axis2_env_t *env, 
+        axis2_msg_ctx_t *msg_ctx,
+        axiom_soap_envelope_t *out,
+        const axis2_char_t *str_url,
+        const axis2_char_t *soap_action);
 
 #ifdef AXIS2_LIBCURL_ENABLED
-        axis2_status_t (AXIS2_CALL *
-                send_curl)(
-                    axis2_http_sender_t *sender,
-                    const axis2_env_t *env, 
-                    axis2_msg_ctx_t *msg_ctx,
-                    axiom_soap_envelope_t *out,
-                    const axis2_char_t *str_url,
-                    const axis2_char_t *soap_action);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_libcurl_http_send(axis2_http_sender_t *sender,
+        const axis2_env_t *env, 
+        axis2_msg_ctx_t *msg_ctx,
+        axiom_soap_envelope_t *out,
+        const axis2_char_t *str_url,
+        const axis2_char_t *soap_action);
 #endif
 
 
-        /**
-         * @param sender sender
-         * @param env pointer to environment struct
-         * @param chunked chunked
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_chunked)(
-                    axis2_http_sender_t *sender,
-                    const axis2_env_t *env, 
-                    axis2_bool_t chunked);
+    /**
+     * @param sender sender
+     * @param env pointer to environment struct
+     * @param chunked chunked
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_sender_set_chunked(axis2_http_sender_t *sender,
+        const axis2_env_t *env, 
+        axis2_bool_t chunked);
 
-        /**
-         * @param sender sender
-         * @param env pointer to environment struct
-         * @param om_output om output
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_om_output)(
-                    axis2_http_sender_t *sender,
-                    const axis2_env_t *env, 
-                    axiom_output_t *om_output);
+    /**
+     * @param sender sender
+     * @param env pointer to environment struct
+     * @param om_output om output
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_sender_set_om_output(axis2_http_sender_t *sender,
+        const axis2_env_t *env, 
+        axiom_output_t *om_output);
 
-        /**
-         * @param sender sender
-         * @param env pointer to environment struct
-         * @param version pointer to version
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_http_version)(
-                    axis2_http_sender_t *sender,
-                    const axis2_env_t *env, 
-                    axis2_char_t *version);
+    /**
+     * @param sender sender
+     * @param env pointer to environment struct
+     * @param version pointer to version
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_sender_set_http_version(axis2_http_sender_t *sender,
+        const axis2_env_t *env, 
+        axis2_char_t *version);
 
-        /**
-         * @param sender sender
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                free)(
-                    axis2_http_sender_t *sender,
-                    const axis2_env_t *env);
-    };
-
+    /**
+     * @param sender sender
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_sender_free(axis2_http_sender_t *sender,
+        const axis2_env_t *env);
 
     /**
      * @param sender soap over http sender
@@ -143,9 +126,8 @@ extern "C"
      * @param msg_ctx pointer to message context
      * @param response pointer to response
      */
-    axis2_status_t AXIS2_CALL
-    axis2_http_sender_get_header_info(
-        axis2_http_sender_t *sender,
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_sender_get_header_info(axis2_http_sender_t *sender,
         const axis2_env_t *env, 
         axis2_msg_ctx_t *msg_ctx,
         axis2_http_simple_response_t *response);
@@ -156,9 +138,8 @@ extern "C"
      * @param msg_ctx pointer to message context
      * @param response pointer to response
      */
-    axis2_status_t AXIS2_CALL
-    axis2_http_sender_process_response(
-        axis2_http_sender_t *sender,
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_sender_process_response(axis2_http_sender_t *sender,
         const axis2_env_t *env, 
         axis2_msg_ctx_t *msg_ctx,
         axis2_http_simple_response_t *response);
@@ -169,69 +150,41 @@ extern "C"
      * @param env pointer to environment struct
      * @param msg_ctx pointer to message context
      */
-    axis2_status_t AXIS2_CALL
-    axis2_http_sender_get_timeout_values(
-        axis2_http_sender_t *sender,
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_http_sender_get_timeout_values(axis2_http_sender_t *sender,
         const axis2_env_t *env, 
         axis2_msg_ctx_t *msg_ctx);
 
-	axis2_char_t *AXIS2_CALL
-	axis2_http_sender_get_param_string(
-    axis2_http_sender_t *sender,
+	AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+	axis2_http_sender_get_param_string(axis2_http_sender_t *sender,
 	const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
-
-    /**
-     * Axis2 SOAP over HTTP sender
-     */
-    struct axis2_http_sender
-    {
-        /** Operations of Axis2 SOAP over HTTP sender */
-        axis2_http_sender_ops_t *ops;
-    };
-
 
     /**
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
-    axis2_http_sender_create(
-        const axis2_env_t *env);
+    axis2_http_sender_create(const axis2_env_t *env);
 
-/********************* Start of function macros   ***************************/
-
-/** Send.
-    @sa axis2_http_sender_ops#send */
-
-#ifdef AXIS2_LIBCURL_ENABLED
+/** Send. */
 #define AXIS2_HTTP_SENDER_SEND(sender, env, msg_ctx, output, url,soap_action)\
-	((sender)->ops->send_curl(sender, env, msg_ctx,output, url, soap_action))
-#else
-#define AXIS2_HTTP_SENDER_SEND(sender, env, msg_ctx, output, url,soap_action)\
-	((sender)->ops->send(sender, env, msg_ctx,output, url, soap_action))
-#endif
+	axis2_http_sender_send(sender, env, msg_ctx,output, url, soap_action)
 
-/** Set chunked.
-    @sa axis2_http_sender_ops#set_chunked */
+/** Set chunked. */
 #define AXIS2_HTTP_SENDER_SET_CHUNKED(sender, env, chunked) \
-                        ((sender)->ops->set_chunked(sender, env, chunked))
+                        axis2_http_sender_set_chunked(sender, env, chunked)
 
-/** Set om output.
-    @sa axis2_http_sender_ops#set_om_output */
+/** Set om output. */
 #define AXIS2_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output) \
-                        ((sender)->ops->set_om_output (sender, env, om_output))
+                        axis2_http_sender_set_om_output (sender, env, om_output)
 
-/** Set http version.
-    @sa axis2_http_sender_ops#set_http_version */
+/** Set http version. */
 #define AXIOM_SENDER_SET_HTTP_VERSION(sender, env, version)\
-                        ((sender)->ops->set_http_version (sender, env, version))
+                        axis2_http_sender_set_http_version (sender, env, version)
 
-/** Frees the soap over http sender.
-    @sa axis2_http_sender_ops#free */
+/** Frees the soap over http sender. */
 #define AXIS2_HTTP_SENDER_FREE(sender, env) \
-                        ((sender)->ops->free(sender, env))
-
-/************************* End of function macros *****************************/
+                        axis2_http_sender_free(sender, env)
 
 /** @} */
 #ifdef __cplusplus

@@ -39,14 +39,9 @@
 #ifdef AXIS2_LIBCURL_ENABLED
 #include "libcurl/axis2_libcurl.h"
 #endif
-/**
- * @brief SOAP over HTTP sender struct impl
- *   Axis2 SOAP over HTTP sender impl
- */
 
-typedef struct axis2_http_sender_impl
+struct axis2_http_sender
 {
-	axis2_http_sender_t sender;
     axis2_char_t *http_version;
     axis2_bool_t chunked;
     int so_timeout;
@@ -54,187 +49,71 @@ typedef struct axis2_http_sender_impl
     axiom_output_t *om_output;
     axis2_http_client_t *client;
 	axis2_bool_t is_soap;
-}axis2_http_sender_impl_t;
+};
 
-#define AXIS2_INTF_TO_IMPL(sender)				\
-	((axis2_http_sender_impl_t *)(sender))
-
-/***************************** Function headers *******************************/
-axis2_status_t AXIS2_CALL
-axis2_http_sender_get_header_info(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
-    axis2_http_simple_response_t *response);
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_process_response(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
-    axis2_http_simple_response_t *response);
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_get_timeout_values(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx);
-
-
-
-static axis2_char_t *AXIS2_CALL
+static axis2_char_t *
 axis2_url_encode (
-	const axis2_env_t *env,
-	axis2_char_t *dest,
-	axis2_char_t *src,
-	int strlen);
+	const axis2_env_t *env, 
+	axis2_char_t *dest, 
+	axis2_char_t *buff, 
+	int len);
 
-static int AXIS2_CALL
-is_safe_or_unreserve (char c);
+static int 
+is_safe_or_unreserve (
+	char c);
 
-axis2_status_t AXIS2_CALL
-axis2_http_sender_send(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
-	axiom_soap_envelope_t *out,
-    const axis2_char_t *str_url,
-    const axis2_char_t *soap_action);
-
-#ifdef AXIS2_LIBCURL_ENABLED
-axis2_status_t AXIS2_CALL
-axis2_libcurl_http_send(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx,
-	axiom_soap_envelope_t *out,
-    const axis2_char_t *str_url,
-    const axis2_char_t *soap_action);
-
-#endif
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_set_chunked(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_bool_t chunked);
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_set_om_output(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axiom_output_t *om_output);
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_set_http_version(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_char_t *version);
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_configure_proxy(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx);
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_configure_server_cert(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx);
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_configure_key_file(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env,
-    axis2_msg_ctx_t *msg_ctx);
-
-axis2_status_t AXIS2_CALL
-axis2_http_sender_free(
-    axis2_http_sender_t *sender,
-    const axis2_env_t *env);
-
-/***************************** End of function headers ************************/
-
-axis2_http_sender_t *AXIS2_CALL
+AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
 axis2_http_sender_create(
     const axis2_env_t *env)
 {
-    axis2_http_sender_impl_t *sender_impl = NULL;
+    axis2_http_sender_t *sender = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    sender_impl = (axis2_http_sender_impl_t *)AXIS2_MALLOC
+    sender = (axis2_http_sender_t *)AXIS2_MALLOC
 		(env->allocator, sizeof(
-			axis2_http_sender_impl_t));
+			axis2_http_sender_t));
 
-    if (! sender_impl)
+    if (! sender)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    sender_impl->http_version = (axis2_char_t *)AXIS2_HTTP_HEADER_PROTOCOL_11;
-    sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
-    sender_impl->connection_timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
+    sender->http_version = (axis2_char_t *)AXIS2_HTTP_HEADER_PROTOCOL_11;
+    sender->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
+    sender->connection_timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
     /* unlike the java impl we don't have a default om output
      * it should be explicitly set and it's a MUST
      */
-    sender_impl->om_output = NULL;
-    sender_impl->chunked = AXIS2_FALSE;
-    sender_impl->client = NULL;
-    sender_impl->sender.ops = AXIS2_MALLOC(env->allocator,
-										   sizeof(axis2_http_sender_ops_t));
-    if (! sender_impl->sender.ops)
-    {
-        axis2_http_sender_free((axis2_http_sender_t *)
-							   sender_impl, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    sender_impl->sender.ops->send =
-        axis2_http_sender_send;
-    sender_impl->sender.ops->set_chunked =
-        axis2_http_sender_set_chunked;
-    sender_impl->sender.ops->set_om_output =
-        axis2_http_sender_set_om_output;
-    sender_impl->sender.ops->set_http_version =
-        axis2_http_sender_set_http_version;
-    sender_impl->sender.ops->free =
-        axis2_http_sender_free;
-#ifdef AXIS2_LIBCURL_ENABLED
-	sender_impl->sender.ops->send_curl = axis2_libcurl_http_send;
-#endif
-    return &(sender_impl->sender);
+    sender->om_output = NULL;
+    sender->chunked = AXIS2_FALSE;
+    sender->client = NULL;
+    
+    return sender;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_free(
     axis2_http_sender_t *sender,
     const axis2_env_t *env)
 {
-    axis2_http_sender_impl_t *sender_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    sender_impl = AXIS2_INTF_TO_IMPL(sender);
-    if (sender_impl->http_version)
+    if (sender->http_version)
     {
-        AXIS2_FREE(env->allocator, sender_impl->http_version);
-        sender_impl->http_version = NULL;
+        AXIS2_FREE(env->allocator, sender->http_version);
     }
-    if (sender->ops)
-        AXIS2_FREE(env->allocator, sender->ops);
 
     /* Do not free this here since it will be required in later processing
      * of the response soap message
      */
-    sender_impl->client = NULL;
-    AXIS2_FREE(env->allocator, sender_impl);
+    sender->client = NULL;
+    AXIS2_FREE(env->allocator, sender);
     return AXIS2_SUCCESS;
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_send(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -243,10 +122,13 @@ axis2_http_sender_send(
     const axis2_char_t *str_url,
     const axis2_char_t *soap_action)
 {
+#ifdef AXIS2_LIBCURL_ENABLED
+    axis2_libcurl_http_send(sender, env, msg_ctx, output, url,soap_action);
+#else
+
     axis2_http_simple_request_t *request = NULL;
     axis2_http_request_line_t *request_line = NULL;
     axis2_url_t *url = NULL;
-    axis2_http_sender_impl_t *sender_impl = NULL;
     axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *buffer = NULL;
     unsigned int buffer_size = 0;
@@ -285,7 +167,6 @@ axis2_http_sender_send(
 		is_soap = AXIS2_TRUE;
 
     url = axis2_url_parse_string(env, str_url);
-    sender_impl = AXIS2_INTF_TO_IMPL(sender);
 
 	if (!is_soap)
 	{
@@ -322,14 +203,14 @@ axis2_http_sender_send(
         return AXIS2_FAILURE;
     }
 
-    if (sender_impl->client)
+    if (sender->client)
     {
-        AXIS2_HTTP_CLIENT_FREE(sender_impl->client, env);
-        sender_impl->client = NULL;
+        AXIS2_HTTP_CLIENT_FREE(sender->client, env);
+        sender->client = NULL;
     }
 
-    sender_impl->client = axis2_http_client_create(env, url);
-    if (! sender_impl->client)
+    sender->client = axis2_http_client_create(env, url);
+    if (! sender->client)
     {
         return AXIS2_FAILURE;
     }
@@ -349,19 +230,19 @@ axis2_http_sender_send(
 		  axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
 		  axis2_property_set_free_func(property, env,
 		  axis2_http_client_free_void_arg);
-		  axis2_property_set_value(property, env, sender_impl->client);
+		  axis2_property_set_value(property, env, sender->client);
 		   axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT,
 		  property);*/
 
 		doing_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env);
 
-		if (! sender_impl->om_output)
+		if (! sender->om_output)
 		{
 			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_OM_OUTPUT,
 							AXIS2_FAILURE);
 			return AXIS2_FAILURE;
 		}
-		xml_writer = axiom_output_get_xml_writer(sender_impl->om_output, env);
+		xml_writer = axiom_output_get_xml_writer(sender->om_output, env);
     
 		char_set_enc_str = axis2_msg_ctx_get_charset_encoding(msg_ctx, env);
 		if (!char_set_enc_str)
@@ -382,24 +263,24 @@ axis2_http_sender_send(
 				axis2_char_t *dump_true = axis2_property_get_value(dump_property, env);
 				if(0 == axis2_strcmp(dump_true, AXIS2_VALUE_TRUE))
 				{
-					AXIS2_HTTP_CLIENT_SET_DUMP_INPUT_MSG(sender_impl->client, env, AXIS2_TRUE);
+					AXIS2_HTTP_CLIENT_SET_DUMP_INPUT_MSG(sender->client, env, AXIS2_TRUE);
 				}
 			}
 
-			axiom_output_set_do_optimize(sender_impl->om_output, env,
+			axiom_output_set_do_optimize(sender->om_output, env,
 										 doing_mtom); 
-			axiom_soap_envelope_serialize(out, env, sender_impl->om_output,
+			axiom_soap_envelope_serialize(out, env, sender->om_output,
 										  AXIS2_FALSE);
 		}
 		else
 		{
-			AXIOM_NODE_SERIALIZE(data_out, env, sender_impl->om_output);
+			AXIOM_NODE_SERIALIZE(data_out, env, sender->om_output);
 		}
 
 
 		if (doing_mtom)
 		{
-			axiom_output_flush(sender_impl->om_output, env, &output_stream,
+			axiom_output_flush(sender->om_output, env, &output_stream,
 							   &output_stream_size);
 		}
 		else
@@ -416,7 +297,7 @@ axis2_http_sender_send(
 
 		request_line = axis2_http_request_line_create(env, "POST",
 													  axis2_url_get_path(url, env),
-													  sender_impl->http_version);
+													  sender->http_version);
 	}
 	else
 	{
@@ -427,7 +308,7 @@ axis2_http_sender_send(
         path = axis2_strcat(env, axis2_url_get_path(url, env), "?",
 							request_params, NULL);
         request_line = axis2_http_request_line_create(env, "GET", path,
-													  sender_impl->http_version);
+													  sender->http_version);
 	}
 
     request = axis2_http_simple_request_create(env, request_line, NULL, 0,
@@ -457,7 +338,7 @@ axis2_http_sender_send(
 	{
 		buffer_size = AXIOM_XML_WRITER_GET_XML_SIZE(xml_writer, env);
 
-		if (AXIS2_FALSE == sender_impl->chunked)
+		if (AXIS2_FALSE == sender->chunked)
 		{
 			axis2_char_t tmp_buf[10];
 			if (!buffer)
@@ -481,7 +362,7 @@ axis2_http_sender_send(
 		{
 			if (doing_mtom)
 			{
-				content_type = (axis2_char_t *)axiom_output_get_content_type(sender_impl->om_output,
+				content_type = (axis2_char_t *)axiom_output_get_content_type(sender->om_output,
 																			 env);
 				if (AXIS2_TRUE !=  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
 				{
@@ -558,7 +439,7 @@ axis2_http_sender_send(
 		}*/
 	}
 
-    if (0 == axis2_strcmp(sender_impl->http_version,
+    if (0 == axis2_strcmp(sender->http_version,
 						  AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
         axis2_char_t *header = NULL;
@@ -590,8 +471,8 @@ axis2_http_sender_send(
     axis2_http_sender_configure_key_file(sender, env, msg_ctx);
 
     axis2_http_sender_get_timeout_values(sender, env, msg_ctx);
-    AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender_impl->client, env,
-								  sender_impl->so_timeout);
+    AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender->client, env,
+								  sender->so_timeout);
     
     ssl_pp_param =  axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_SSL_PASSPHRASE);
 
@@ -600,7 +481,7 @@ axis2_http_sender_send(
         ssl_pp = axis2_param_get_value(ssl_pp_param, env);
     }
 
-    status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request, ssl_pp);
+    status_code = AXIS2_HTTP_CLIENT_SEND(sender->client, env, request, ssl_pp);
 
     /*AXIS2_FREE(env->allocator, buffer);
 	  buffer = NULL;*/
@@ -611,13 +492,13 @@ axis2_http_sender_send(
     AXIS2_FREE(env->allocator, output_stream);
     output_stream = NULL;
 
-    status_code = AXIS2_HTTP_CLIENT_RECIEVE_HEADER(sender_impl->client, env);
+    status_code = AXIS2_HTTP_CLIENT_RECIEVE_HEADER(sender->client, env);
 
     if (status_code < 0)
     {
         return AXIS2_FAILURE;
     }
-    response = AXIS2_HTTP_CLIENT_GET_RESPONSE(sender_impl->client, env);
+    response = AXIS2_HTTP_CLIENT_GET_RESPONSE(sender->client, env);
     if (AXIS2_HTTP_RESPONSE_OK_CODE_VAL == status_code ||
 		AXIS2_HTTP_RESPONSE_ACK_CODE_VAL == status_code)
     {
@@ -665,34 +546,33 @@ axis2_http_sender_send(
     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
 					AXIS2_FAILURE);
     return AXIS2_FAILURE;
+#endif
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_set_chunked(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
     axis2_bool_t chunked)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(sender)->chunked = chunked;
+    sender->chunked = chunked;
     return AXIS2_SUCCESS;
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_set_om_output(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
     axiom_output_t *om_output)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(sender)->om_output = om_output;
+    sender->om_output = om_output;
     return AXIS2_SUCCESS;
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_get_header_info(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -701,7 +581,6 @@ axis2_http_sender_get_header_info(
 {
     axis2_array_list_t *headers = NULL;
     axis2_char_t *charset = NULL;
-    axis2_http_sender_impl_t *sender_impl = NULL;
     int i = 0;
     axis2_bool_t response_chunked = AXIS2_FALSE;
     int *content_length = NULL;
@@ -711,8 +590,6 @@ axis2_http_sender_get_header_info(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, response, AXIS2_FAILURE);
-
-    sender_impl = AXIS2_INTF_TO_IMPL(sender);
 
     /*
      * TODO MTOM support (MIME header)
@@ -814,7 +691,7 @@ axis2_http_sender_get_header_info(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_process_response(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -848,7 +725,7 @@ axis2_http_sender_process_response(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_get_timeout_values(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -869,7 +746,7 @@ axis2_http_sender_get_timeout_values(
         so_str = (axis2_char_t *)axis2_param_get_value(tmp_param, env);
         if (so_str)
         {
-            AXIS2_INTF_TO_IMPL(sender)->so_timeout = AXIS2_ATOI(so_str);
+            sender->so_timeout = AXIS2_ATOI(so_str);
         }
     }
     tmp_param =  axis2_msg_ctx_get_parameter(msg_ctx, env,
@@ -879,29 +756,29 @@ axis2_http_sender_get_timeout_values(
         connection_str = (axis2_char_t *)axis2_param_get_value(tmp_param, env);
         if (connection_str)
         {
-            AXIS2_INTF_TO_IMPL(sender)->connection_timeout =
+            sender->connection_timeout =
                 AXIS2_ATOI(connection_str);
         }
     }
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_set_http_version(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
     axis2_char_t *version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(sender)->http_version =  axis2_strdup(version, env);
-    if (! AXIS2_INTF_TO_IMPL(sender)->http_version)
+    sender->http_version =  axis2_strdup(version, env);
+    if (! sender->http_version)
     {
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_configure_proxy(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -912,12 +789,10 @@ axis2_http_sender_configure_proxy(
     axis2_transport_out_desc_t *trans_desc = NULL;
     axis2_param_t *proxy_param = NULL;
     axis2_hash_t *transport_attrs = NULL;
-    axis2_http_sender_impl_t *sender_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
-    sender_impl = AXIS2_INTF_TO_IMPL(sender);
     conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     if (! conf_ctx)
     {
@@ -984,7 +859,7 @@ axis2_http_sender_configure_proxy(
             }
             if (proxy_host && NULL != proxy_port)
             {
-                AXIS2_HTTP_CLIENT_SET_PROXY(sender_impl->client, env, proxy_host,
+                AXIS2_HTTP_CLIENT_SET_PROXY(sender->client, env, proxy_host,
 											AXIS2_ATOI(proxy_port));
                 return AXIS2_SUCCESS;
             }
@@ -993,7 +868,7 @@ axis2_http_sender_configure_proxy(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_configure_server_cert(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -1003,12 +878,9 @@ axis2_http_sender_configure_server_cert(
 	axis2_param_t *server_cert_param = NULL;
 	axis2_char_t *server_cert = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
-    axis2_http_sender_impl_t *sender_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-
-    sender_impl = AXIS2_INTF_TO_IMPL(sender);
 
     server_cert_property =  axis2_msg_ctx_get_property(msg_ctx, env, 
         AXIS2_SSL_SERVER_CERT);
@@ -1030,13 +902,14 @@ axis2_http_sender_configure_server_cert(
     
     if(server_cert)
     {
-        status = AXIS2_HTTP_CLIENT_SET_SERVER_CERT(sender_impl->client, 
+        status = AXIS2_HTTP_CLIENT_SET_SERVER_CERT(sender->client, 
 												   env, server_cert);
     }
 
     return status;
 }
-axis2_status_t AXIS2_CALL
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_configure_key_file(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -1046,12 +919,9 @@ axis2_http_sender_configure_key_file(
 	axis2_param_t *key_file_param = NULL;
     axis2_char_t *key_file = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
-    axis2_http_sender_impl_t *sender_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-
-    sender_impl = AXIS2_INTF_TO_IMPL(sender);
 
     key_file_property =  axis2_msg_ctx_get_property(msg_ctx, env, 
         AXIS2_SSL_KEY_FILE);
@@ -1073,7 +943,7 @@ axis2_http_sender_configure_key_file(
 
     if (key_file)
     {
-		status = AXIS2_HTTP_CLIENT_SET_KEY_FILE(sender_impl->client, 
+		status = AXIS2_HTTP_CLIENT_SET_KEY_FILE(sender->client, 
 												env, key_file);
     }
 
@@ -1081,7 +951,7 @@ axis2_http_sender_configure_key_file(
 }
 
 #ifdef AXIS2_LIBCURL_ENABLED
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_libcurl_http_send(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -1090,12 +960,11 @@ axis2_libcurl_http_send(
     const axis2_char_t *str_url,
     const axis2_char_t *soap_action)
 {
-    axis2_http_sender_impl_t *sender_impl = AXIS2_INTF_TO_IMPL(sender);
-	return axis2_libcurl_send (sender_impl->om_output, env, msg_ctx, out, str_url, soap_action);
+	return axis2_libcurl_send (sender->om_output, env, msg_ctx, out, str_url, soap_action);
 }
 #endif
 
-axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_sender_get_param_string(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -1177,7 +1046,7 @@ axis2_http_sender_get_param_string(
     return param_string;
 }
 
-static axis2_char_t *AXIS2_CALL
+static axis2_char_t *
 axis2_url_encode (
 	const axis2_env_t *env, 
 	axis2_char_t *dest, 
@@ -1210,7 +1079,7 @@ axis2_url_encode (
     return dest;
 }
 
-static int AXIS2_CALL
+static int 
 is_safe_or_unreserve (
 	char c)
 {
