@@ -1281,9 +1281,9 @@ axis2_phase_resolver_engage_module_to_svc(
         op_desc = (axis2_op_t *) v;
         modules = axis2_op_get_all_modules(op_desc, env);
         if (modules)
-	{
+        {
             size = axis2_array_list_size(modules, env);
-	}
+        }
         for (j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
@@ -1295,6 +1295,10 @@ axis2_phase_resolver_engage_module_to_svc(
                 module_d_qname_l))
             {
                 engaged = AXIS2_TRUE;
+                status = AXIS2_FAILURE;
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                    "Module %s already engaged.", 
+                    axis2_qname_get_localpart(module_d_qname, env));
                 break;
             }
         }
