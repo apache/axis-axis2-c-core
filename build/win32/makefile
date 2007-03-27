@@ -60,6 +60,7 @@ AXIS2_INTDIR_TNR = $(AXIS2_INTDIR)\http_receiver
 AXIS2_INTDIR_PARSER = $(AXIS2_INTDIR)\axis2_parser
 AXIS2_INTDIR_ADDRESSING = $(AXIS2_INTDIR)\modules\addressing
 AXIS2_INTDIR_SAMPLES = $(AXIS2_INTDIR)\samples
+AXIS2_INTDIR_GUTHTHILA = $(AXIS2_INTDIR)\guththila
 
 #  versioning information
 
@@ -82,7 +83,13 @@ AXIS2_APACHE_MODULE = mod_axis2
 AXIS2_IIS_MODULE = axis2_mod_IIS
 AXIS2_MOD_ADDR = axis2_mod_addr
 AXIS2_SERVER = axis2_http_server
+GUTHTHILA = guththila
 
+PARSER = build
+
+!if "$(ENABLE_GUTHTHILA)" == "1"
+PARSER = $(PARSER)_with_guththila
+!endif
 
 #other modules 
 
@@ -119,7 +126,8 @@ WODEN_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\woden\include \
 		     /I$(AXIS2_SOURCE_DIR)\xml_schema\include \
 		     /I$(AXIS2_SOURCE_DIR)\woden\src\util 
 
-
+GUTHTHILA_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\guththila\include
+ 
 !if "$(ENABLE_SSL)" == "1"
 AXIS2_INCLUDE_PATH = $(AXIS2_INCLUDE_PATH) /I$(OPENSSL_BIN_DIR)\include
 !endif
@@ -135,6 +143,8 @@ AXIS2_UTIL_SRC = $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
 		$(AXIS2_SOURCE_DIR)\util\src\*.c 
 
 AXIS2_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c
+
+AXIS2_GUTHTHILA_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\guththila\*.c
 
 AXIOM_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
@@ -188,6 +198,8 @@ AXIS2_HTTP_SENDER_SRC = $(AXIS2_HTTP_SENDER_SRC) \
 AXIS2_HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\receiver\*.c 
 
 AXIS2_MOD_ADDR_SRC = $(AXIS2_SOURCE_DIR)\modules\mod_addr\*.c
+
+GUTHTHILA_SRC = $(AXIS2_SOURCE_DIR)\guththila\src\*.c
 
 
 ##################### compiler options
@@ -268,7 +280,8 @@ deploy:
 	if not exist $(AXIS2_INTDIR_PARSER) mkdir $(AXIS2_INTDIR_PARSER)
 	if not exist $(AXIS2_INTDIR_ADDRESSING) mkdir $(AXIS2_INTDIR_ADDRESSING)
 	if not exist $(AXIS2_INTDIR_SAMPLES) mkdir $(AXIS2_INTDIR_SAMPLES)
-		
+        if not exist $(AXIS2_INTDIR_GUTHTHILA) mkdir $(AXIS2_INTDIR_GUTHTHILA)	
+	
 #clean 
 clean:
 	if exist $(AXIS2_BINDIR) rmdir /S /Q $(AXIS2_BINDIR)
@@ -280,12 +293,25 @@ clean_make_dir:
 axis2_util: 
 	$(CC) $(CFLAGS) $(AXIS2_UTIL_SRC) /Fo$(AXIS2_INTDIR_UTIL)\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_UTIL)\*.obj $(LIBS) $(ZLIB_BIN_DIR)\lib\zdll.lib \
-		/DLL  /OUT:$(AXIS2_LIBS)\$(AXIS2_UTIL).dll  /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_UTIL).lib 
+	/DLL  /OUT:$(AXIS2_LIBS)\$(AXIS2_UTIL).dll  /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_UTIL).lib 
+
+guththila:
+	$(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) $(GUTHTHILA_SRC) /Fo$(AXIS2_INTDIR_GUTHTHILA)\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_GUTHTHILA)\*.obj $(AXIS2_UTIL).lib \
+	$(LIBS) \
+	/DLL /OUT:$(AXIS2_LIBS)\$(GUTHTHILA).dll /IMPLIB:$(AXIS2_LIBS)\$(GUTHTHILA).lib
+
+axis2_parser:
 		
-axis2_parser: 
 	$(CC) $(CFLAGS) $(AXIS2_PARSER_SRC) /Fo$(AXIS2_INTDIR_PARSER)\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_PARSER)\*.obj $(AXIS2_UTIL).lib $(LIBS) \
 	$(LIBXML2_BIN_DIR)\lib\libxml2.lib  /DLL \
+	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
+	
+axis2_parser_with_guththila:
+        $(CC) $(CFLAGS) $(GUTHTHILA_INCLUDE_PATH) $(AXIS2_GUTHTHILA_PARSER_SRC) /Fo$(AXIS2_INTDIR_PARSER)\ /c
+	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_PARSER)\*.obj $(AXIS2_UTIL).lib $(LIBS) \
+	$(AXIS2_LIBS)\$(GUTHTHILA).lib  /DLL \
 	/OUT:$(AXIS2_LIBS)\$(AXIS2_PARSER).dll /IMPLIB:$(AXIS2_LIBS)\$(AXIS2_PARSER).lib
 	
 axiom: 
@@ -331,6 +357,8 @@ axis2_mod_addr:
 	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
 
 
+
+		
 ##### simple_axis_server
 SIMPLE_AXIS2_SVR_SRC=$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\simple_axis2_server\http_server_main.c
 axis2_server: 
@@ -346,6 +374,8 @@ axis2_server:
 
 axis2_core: axis2_util axis2_parser axiom axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
 
+axis2_core_guththila: axis2_util guththila axis2_parser_with_guththila axiom axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_server
+	
 #################################
 #server modules
 
@@ -1174,10 +1204,14 @@ axis2:
 	
 ##############################################################################################
 
+build: clean_make_dir clean deploy axis2_core axis2_samples copy_include clean_make_dir 
 
+build_with_guththila : clean_make_dir clean deploy axis2_core_guththila axis2_samples copy_include clean_make_dir
 
-all: clean_make_dir clean deploy axis2_core axis2_samples copy_include clean_make_dir 
- 
+##############################################################################################
+
+all: $(PARSER)
+
 install: all
 
 dist: all mod_rampart_all axis2_server_modules savan copy_extra copy_samples mv_dist
