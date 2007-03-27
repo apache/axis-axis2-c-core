@@ -62,6 +62,24 @@ static int
 is_safe_or_unreserve (
 	char c);
 
+static axis2_status_t
+axis2_http_sender_configure_proxy(
+    axis2_http_sender_t *sender,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
+static axis2_status_t 
+axis2_http_sender_configure_server_cert(
+    axis2_http_sender_t *sender,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
+static axis2_status_t
+axis2_http_sender_configure_key_file(
+    axis2_http_sender_t *sender,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
 axis2_http_sender_create(
     const axis2_env_t *env)
@@ -778,7 +796,7 @@ axis2_http_sender_set_http_version(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t
 axis2_http_sender_configure_proxy(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -868,7 +886,7 @@ axis2_http_sender_configure_proxy(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t 
 axis2_http_sender_configure_server_cert(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,
@@ -909,7 +927,7 @@ axis2_http_sender_configure_server_cert(
     return status;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t
 axis2_http_sender_configure_key_file(
     axis2_http_sender_t *sender,
     const axis2_env_t *env,

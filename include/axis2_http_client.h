@@ -201,7 +201,7 @@ extern "C"
      * @param client
      * @param env pointer to environment struct
      */
-    axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_free_void_arg (void *client,
         const axis2_env_t *env);
 
