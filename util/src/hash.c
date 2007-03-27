@@ -533,7 +533,7 @@ axis2_hash_entry_free(const axis2_env_t *env, axis2_hash_entry_t *hash_entry)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (!hash_entry)
-        return AXIS2_FAILURE;
+        return;
     if (hash_entry->next)
     {
         axis2_hash_entry_free(env, hash_entry->next);

@@ -65,12 +65,12 @@ extern "C"
           * Deletes the stream
         * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t(AXIS2_CALL *
+        void (AXIS2_CALL *
         free_fn)(axis2_stream_t *stream,
             const axis2_env_t *env);
 
-        axis2_status_t(AXIS2_CALL *
-            free_void_arg)(void *stream,
+        void (AXIS2_CALL *
+        free_void_arg)(void *stream,
             const axis2_env_t *env);
 
         /**

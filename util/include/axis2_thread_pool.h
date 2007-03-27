@@ -87,8 +87,8 @@ extern "C"
          * Frees resources used by thread_pool
          * @param pool thread_pool to be freed
          */
-        axis2_status_t(AXIS2_CALL *
-                free)(axis2_thread_pool_t *pool);
+        void (AXIS2_CALL *
+        free)(axis2_thread_pool_t *pool);
     };
 
     /**

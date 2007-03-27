@@ -89,8 +89,8 @@ extern "C"
         * @returns axis2_status_code
         */
 
-        axis2_status_t(AXIS2_CALL *
-            free)(axiom_xml_reader_t *parser,
+        void (AXIS2_CALL *
+        free)(axiom_xml_reader_t *parser,
                 const axis2_env_t *env);
         /**
          * Get the Number of attributes in the current element 

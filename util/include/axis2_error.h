@@ -582,7 +582,7 @@ extern "C"
 		 * @return axis2_status_t status code
 		 */
 
-        axis2_status_t (AXIS2_CALL *
+        void (AXIS2_CALL *
         free)(struct axis2_error *error);
         
 		/**

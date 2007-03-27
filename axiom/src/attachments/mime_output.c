@@ -147,7 +147,6 @@ axiom_mime_output_free(axiom_mime_output_t *mime_output,
         AXIS2_FREE(env->allocator, mime_output_impl);
         mime_output_impl = NULL;
     }
-
     return;
 }
 

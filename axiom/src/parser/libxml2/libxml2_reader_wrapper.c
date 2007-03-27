@@ -838,8 +838,8 @@ axis2_libxml2_reader_wrapper_xml_free(axiom_xml_reader_t *parser,
     void *data)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, data, AXIS2_FAILURE);
-    xmlFree(data);
+    if(data)
+        xmlFree(data);
     return;
 }
 

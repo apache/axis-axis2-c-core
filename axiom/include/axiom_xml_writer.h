@@ -56,8 +56,8 @@ extern "C"
          *       AXIS2_SUCCESS on success and AXIS2_FAILURE on error
          */
 
-        axis2_status_t(AXIS2_CALL *
-                free)(axiom_xml_writer_t *writer,
+        void (AXIS2_CALL *
+        free)(axiom_xml_writer_t *writer,
                         const axis2_env_t *env);
         /**
          *  Write a start tag to output stream with localname.

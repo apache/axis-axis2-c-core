@@ -68,20 +68,20 @@ extern "C"
         /** Deallocate memory
           * @return status code
           */
-        axis2_status_t(AXIS2_CALL *
-                free)(
-                    axiom_mime_parser_t *mime_parser,
-                    const axis2_env_t *env);
+        void (AXIS2_CALL *
+        free)(
+               axiom_mime_parser_t *mime_parser,
+               const axis2_env_t *env);
 
-        int(AXIS2_CALL *
-                get_soap_body_len)(
-                    axiom_mime_parser_t *mime_parser,
-                    const axis2_env_t *env);
+        int (AXIS2_CALL *
+        get_soap_body_len)(
+               axiom_mime_parser_t *mime_parser,
+               const axis2_env_t *env);
 
-        axis2_char_t*(AXIS2_CALL *
-                get_soap_body_str)(
-                    axiom_mime_parser_t *mime_parser,
-                    const axis2_env_t *env);
+        axis2_char_t* (AXIS2_CALL *
+        get_soap_body_str)(
+               axiom_mime_parser_t *mime_parser,
+               const axis2_env_t *env);
     };
 
     /**
