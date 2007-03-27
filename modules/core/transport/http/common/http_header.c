@@ -96,12 +96,12 @@ axis2_http_header_create_by_str(
     return ret;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_header_free(
     axis2_http_header_t *http_header,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (http_header->name)
     {
@@ -113,7 +113,7 @@ axis2_http_header_free(
     }
 
     AXIS2_FREE(env->allocator, http_header);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

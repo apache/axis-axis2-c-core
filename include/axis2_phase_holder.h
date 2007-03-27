@@ -60,9 +60,9 @@ extern "C"
      * Frees phase holder.
      * @param phase_holder pointer to phase holder
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_phase_holder_free(axis2_phase_holder_t *phase_holder,
         const axis2_env_t *env);
 

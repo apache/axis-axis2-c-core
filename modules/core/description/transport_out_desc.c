@@ -65,11 +65,11 @@ axis2_transport_out_desc_create(const axis2_env_t *env,
     return transport_out;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_transport_out_desc_free(axis2_transport_out_desc_t *transport_out,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (transport_out->sender)
     {
@@ -103,19 +103,20 @@ axis2_transport_out_desc_free(axis2_transport_out_desc_t *transport_out,
 
     AXIS2_FREE(env->allocator, transport_out);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_transport_out_desc_free_void_arg(void *transport_out,
     const axis2_env_t *env)
 {
     axis2_transport_out_desc_t *transport_out_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     transport_out_l = (axis2_transport_out_desc_t *) transport_out;
-    return axis2_transport_out_desc_free(transport_out_l, env);
+    axis2_transport_out_desc_free(transport_out_l, env);
+    return;
 }
 
 AXIS2_TRANSPORT_ENUMS AXIS2_CALL

@@ -90,12 +90,11 @@ axis2_http_response_writer_println(
     axis2_http_response_writer_t *response_writer,
     const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_response_writer_free(
     axis2_http_response_writer_t *response_writer,
     const axis2_env_t *env);
 
-/***************************** End of function headers ************************/
 axis2_http_response_writer_t *AXIS2_CALL
 axis2_http_response_writer_create(
     const axis2_env_t *env,
@@ -164,7 +163,7 @@ axis2_http_response_writer_create_with_encoding(
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_response_writer_free(
     axis2_http_response_writer_t *response_writer,
     const axis2_env_t *env)

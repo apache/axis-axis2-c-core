@@ -31,7 +31,7 @@ axis2_handler_impl_t;
 #define AXIS2_INTF_TO_IMPL(handler) ((axis2_handler_impl_t *)handler)
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_handler_free(
     axis2_handler_t *handler,
     const axis2_env_t *env);
@@ -114,7 +114,7 @@ axis2_handler_create(
     return &(handler_impl->handler);
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_handler_free(
     axis2_handler_t *handler,
     const axis2_env_t *env)
@@ -131,7 +131,7 @@ axis2_handler_free(
     AXIS2_FREE(env->allocator, handler_impl);
     handler_impl = NULL;
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 const axis2_string_t *AXIS2_CALL

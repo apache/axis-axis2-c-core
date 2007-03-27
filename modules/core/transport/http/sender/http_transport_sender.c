@@ -79,12 +79,10 @@ axis2_http_transport_sender_write_message(
     axiom_soap_envelope_t *out,
     axiom_output_t *om_output);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_transport_sender_free(
     axis2_transport_sender_t *transport_sender,
     const axis2_env_t *env);
-
-/***************************** End of function headers ************************/
 
 axis2_transport_sender_t *AXIS2_CALL
 axis2_http_transport_sender_create(
@@ -131,7 +129,7 @@ axis2_http_transport_sender_create(
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_transport_sender_free(
     axis2_transport_sender_t *transport_sender,
     const axis2_env_t *env)
@@ -150,7 +148,7 @@ axis2_http_transport_sender_free(
         AXIS2_FREE(env->allocator, transport_sender->ops);
 
     AXIS2_FREE(env->allocator, transport_sender_impl);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

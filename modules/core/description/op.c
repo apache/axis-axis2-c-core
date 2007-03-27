@@ -183,12 +183,12 @@ axis2_op_create_with_qname(
     return op;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_op_free(
     axis2_op_t *op,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (op->base)
     {
@@ -249,19 +249,20 @@ axis2_op_free(
         AXIS2_FREE(env->allocator, op);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_op_free_void_arg(void *op,
     const axis2_env_t *env)
 {
     axis2_op_t *op_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     op_l = (axis2_op_t *) op;
-    return axis2_op_free(op_l, env);
+    axis2_op_free(op_l, env);
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -85,9 +85,9 @@ extern "C"
      * Frees operation.
      * @param op pointer to operation
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_op_free(axis2_op_t *op,
         const axis2_env_t *env);
 
@@ -95,9 +95,9 @@ extern "C"
      * Frees operation given as a void pointer.
      * @param op pointer to operation as a void pointer
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_op_free_void_arg(void *op,
         const axis2_env_t *env);
 
@@ -585,9 +585,9 @@ extern "C"
      * void parameter to an operation pointer and then call free method.
      * @param pointer to operation as a void pointer
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_op_free_void_arg(void *op,
         const axis2_env_t *env);
 

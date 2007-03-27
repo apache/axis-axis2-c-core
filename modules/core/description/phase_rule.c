@@ -200,11 +200,11 @@ axis2_phase_rule_set_last(axis2_phase_rule_t *phase_rule,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_phase_rule_free(axis2_phase_rule_t *phase_rule,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (phase_rule->before)
     {
@@ -223,7 +223,7 @@ axis2_phase_rule_free(axis2_phase_rule_t *phase_rule,
 
     AXIS2_FREE(env->allocator, phase_rule);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_phase_rule_t *AXIS2_CALL

@@ -110,12 +110,12 @@ axis2_http_sender_create(
     return sender;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_sender_free(
     axis2_http_sender_t *sender,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (sender->http_version)
     {
@@ -127,7 +127,7 @@ axis2_http_sender_free(
      */
     sender->client = NULL;
     AXIS2_FREE(env->allocator, sender);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

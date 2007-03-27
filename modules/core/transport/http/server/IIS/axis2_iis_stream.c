@@ -38,7 +38,7 @@ iis_stream_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(stream) ((iis_stream_impl_t *)(stream))
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 iis_stream_free(
     axis2_stream_t *stream,
     const axis2_env_t *env);
@@ -112,13 +112,13 @@ axis2_stream_create_iis(
     return &(stream_impl->stream);
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 iis_stream_free(
     axis2_stream_t *stream,
     const axis2_env_t *env)
 {
     iis_stream_impl_t *stream_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     if (stream_impl->stream.ops)
@@ -127,7 +127,7 @@ iis_stream_free(
     }
     AXIS2_FREE(env->allocator, stream_impl);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 int AXIS2_CALL

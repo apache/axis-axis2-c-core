@@ -85,12 +85,12 @@ axis2_http_simple_request_create(
     return simple_request;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_simple_request_free(
     axis2_http_simple_request_t *simple_request,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (AXIS2_TRUE == simple_request->owns_stream)
     {
@@ -98,7 +98,6 @@ axis2_http_simple_request_free(
     }
     /*
         Don't free the stream since it belongs to the socket
-        TODO : if chunked remove the chunked stream.
     */
     if (simple_request->request_line)
     {
@@ -121,7 +120,7 @@ axis2_http_simple_request_free(
 
     AXIS2_FREE(env->allocator, simple_request);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL

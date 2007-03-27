@@ -50,11 +50,11 @@ axis2_flow_create(const axis2_env_t *env)
     return flow;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_flow_free(axis2_flow_t *flow,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (flow->list)
     {
@@ -78,18 +78,19 @@ axis2_flow_free(axis2_flow_t *flow,
         AXIS2_FREE(env->allocator, flow);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_flow_free_void_arg(void *flow,
     const axis2_env_t *env)
 {
     axis2_flow_t *flow_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     flow_l = (axis2_flow_t *) flow;
-    return axis2_flow_free(flow_l, env);
+    axis2_flow_free(flow_l, env);
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

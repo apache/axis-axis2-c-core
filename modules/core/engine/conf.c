@@ -248,15 +248,14 @@ axis2_conf_create(
     return conf;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_conf_free(
     axis2_conf_t *conf,
     const axis2_env_t *env)
 {
-    axis2_status_t status = AXIS2_SUCCESS;
     int i = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (conf->param_container)
     {
@@ -476,7 +475,7 @@ axis2_conf_free(
         AXIS2_FREE(env->allocator, conf);
     }
 
-    return status;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

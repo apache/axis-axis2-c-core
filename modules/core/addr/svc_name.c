@@ -130,11 +130,11 @@ axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_svc_name_free(struct axis2_svc_name *svc_name,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (svc_name->qname)
     {
@@ -148,5 +148,5 @@ axis2_svc_name_free(struct axis2_svc_name *svc_name,
 
     AXIS2_FREE(env->allocator, svc_name);
 
-    return AXIS2_SUCCESS;
+    return;
 }

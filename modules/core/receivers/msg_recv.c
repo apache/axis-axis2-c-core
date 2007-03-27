@@ -92,11 +92,11 @@ axis2_msg_recv_create(const axis2_env_t *env)
     return msg_recv;
 }
 
-AXIS2_EXPORT axis2_status_t AXIS2_CALL
+AXIS2_EXPORT void AXIS2_CALL
 axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (msg_recv->scope)
     {
@@ -108,7 +108,7 @@ axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
         AXIS2_FREE(env->allocator, msg_recv);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL

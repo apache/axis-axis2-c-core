@@ -46,9 +46,9 @@ extern "C"
      * De-allocate memory
      * @param repos_listener pointer to repos listener
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
         const axis2_env_t *env);
 
@@ -124,30 +124,6 @@ extern "C"
     axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *env,
         axis2_char_t *folder_name,
         struct axis2_dep_engine *dep_engine);
-
-/** Frees the repos listener. 
-#define AXIS2_REPOS_LISTENER_FREE(repos_listener, env) \
-      axis2_repos_listener_free (repos_listener, env)*/
-
-/** Check modules. 
-#define AXIS2_REPOS_LISTENER_CHECK_MODULES(repos_listener, env) \
-      axis2_repos_listener_check_modules (repos_listener, env)*/
-
-/** Check the services. 
-#define AXIS2_REPOS_LISTENER_CHECK_SVCS(repos_listener, env) \
-      axis2_repos_listener_check_svcs (repos_listener, env)*/
-
-/** Update. 
-#define AXIS2_REPOS_LISTENER_UPDATE(repos_listener, env) \
-      axis2_repos_listener_update (repos_listener, env)*/
-
-/** Initialize the repos listener. 
-#define AXIS2_REPOS_LISTENER_INIT(repos_listener, env) \
-      axis2_repos_listener_init (repos_listener, env)*/
-
-/** Start listen. 
-#define AXIS2_REPOS_LISTENER_START_LISTEN(repos_listener, env) \
-      axis2_repos_listener_start_listen (repos_listener, env)*/
 
 /** @} */
 

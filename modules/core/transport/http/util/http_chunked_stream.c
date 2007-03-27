@@ -62,15 +62,15 @@ axis2_http_chunked_stream_create(
     return chunked_stream;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_chunked_stream_free(
     axis2_http_chunked_stream_t *chunked_stream,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     AXIS2_FREE(env->allocator, chunked_stream);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN int AXIS2_CALL

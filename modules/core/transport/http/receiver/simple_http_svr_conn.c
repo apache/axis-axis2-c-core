@@ -107,7 +107,7 @@ axis2_simple_http_svr_conn_get_svr_ip(
     const axis2_simple_http_svr_conn_t *svr_conn,
     const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_simple_http_svr_conn_free(
     axis2_simple_http_svr_conn_t *svr_conn,
     const axis2_env_t *env);
@@ -178,7 +178,7 @@ axis2_simple_http_svr_conn_create(
     return &(svr_conn_impl->svr_conn);
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_simple_http_svr_conn_free(
     axis2_simple_http_svr_conn_t *svr_conn,
     const axis2_env_t *env)
@@ -196,7 +196,7 @@ axis2_simple_http_svr_conn_free(
     AXIS2_FREE(env->allocator, svr_conn_impl);
     svr_conn_impl = NULL;
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

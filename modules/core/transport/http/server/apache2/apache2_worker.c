@@ -61,12 +61,10 @@ axis2_apache2_worker_get_bytes(
     const axis2_env_t *env,
     axis2_stream_t *stream);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_apache2_worker_free(
     axis2_apache2_worker_t *apache2_worker,
     const axis2_env_t *env);
-
-/***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_apache2_worker_t *AXIS2_CALL
 axis2_apache2_worker_create(
@@ -109,13 +107,13 @@ axis2_apache2_worker_create(
     return &(apache2_worker_impl->apache2_worker);
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_apache2_worker_free(
     axis2_apache2_worker_t *apache2_worker,
     const axis2_env_t *env)
 {
     axis2_apache2_worker_impl_t *worker_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     worker_impl = AXIS2_INTF_TO_IMPL(apache2_worker);
     if (worker_impl->conf_ctx)
@@ -129,7 +127,7 @@ axis2_apache2_worker_free(
 
     AXIS2_FREE(env->allocator, worker_impl->conf_ctx);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 int AXIS2_CALL

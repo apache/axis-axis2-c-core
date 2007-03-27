@@ -77,9 +77,9 @@ extern "C"
      * Frees phase resolver.
      * @param phase_resolver pointer to phase resolver
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_phase_resolver_free(axis2_phase_resolver_t *phase_resolver,
         const axis2_env_t *env);
 

@@ -92,12 +92,12 @@ axis2_http_simple_response_create_default(
     return simple_response;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_simple_response_free(
     axis2_http_simple_response_t *simple_response,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (simple_response->status_line)
     {
@@ -121,10 +121,11 @@ axis2_http_simple_response_free(
     }
 
     AXIS2_FREE(env->allocator, simple_response);
-    /* Stream is not freed
+    /* 
+     * Stream is not freed
      * Assumption : stream doesn't belong to the response
      */
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_status_t AXIS2_CALL

@@ -273,13 +273,11 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
     return dep_engine;
 }
 
-/******************************************************************************/
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (dep_engine->curr_file)
     {
@@ -451,7 +449,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
         AXIS2_FREE(env->allocator, dep_engine);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

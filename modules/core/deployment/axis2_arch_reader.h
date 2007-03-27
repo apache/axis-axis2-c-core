@@ -54,9 +54,9 @@ extern "C"
      * De-allocate memory
      * @param arch_reader pointer to arch reader
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
         const axis2_env_t *env);
 

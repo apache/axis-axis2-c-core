@@ -520,11 +520,11 @@ axis2_op_client_get_operation_context(const axis2_op_client_t *op_client,
     return op_client->op_ctx;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_op_client_free(axis2_op_client_t *op_client,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if(op_client->base)
     {
@@ -549,7 +549,7 @@ axis2_op_client_free(axis2_op_client_t *op_client,
 
     AXIS2_FREE(env->allocator, op_client);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

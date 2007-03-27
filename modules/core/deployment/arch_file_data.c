@@ -110,11 +110,11 @@ axis2_arch_file_data_create_with_type_and_name(const axis2_env_t *env,
     return arch_file_data;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (arch_file_data->file)
     {
@@ -165,7 +165,7 @@ axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
         AXIS2_FREE(env->allocator, arch_file_data);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL

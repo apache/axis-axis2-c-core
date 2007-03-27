@@ -44,9 +44,9 @@ extern "C"
      * Deallocate memory
      * @param svr_callback pointer to server callback struct
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_svr_callback_free(axis2_svr_callback_t *svr_callback,
         const axis2_env_t *env);
 

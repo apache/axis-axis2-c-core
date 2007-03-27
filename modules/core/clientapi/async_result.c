@@ -72,15 +72,15 @@ axis2_async_result_get_result(axis2_async_result_t *async_result,
     return async_result->result;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_async_result_free(axis2_async_result_t *async_result,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     AXIS2_FREE(env->allocator, async_result);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

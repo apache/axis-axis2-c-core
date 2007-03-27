@@ -106,11 +106,11 @@ axis2_conf_builder_create_with_file_and_dep_engine_and_conf(const axis2_env_t *e
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_conf_builder_free(axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (conf_builder->desc_builder)
     {
@@ -122,7 +122,7 @@ axis2_conf_builder_free(axis2_conf_builder_t *conf_builder,
         AXIS2_FREE(env->allocator, conf_builder);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

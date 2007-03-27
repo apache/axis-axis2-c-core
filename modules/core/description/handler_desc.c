@@ -273,11 +273,11 @@ axis2_handler_desc_set_parent(axis2_handler_desc_t *handler_desc,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (handler_desc->param_container)
     {
@@ -308,7 +308,7 @@ axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
         AXIS2_FREE(env->allocator, handler_desc);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL

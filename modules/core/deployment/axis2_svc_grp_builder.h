@@ -48,9 +48,9 @@ extern "C"
      * De-allocate memory
      * @param svc_grp_builder pointer to service group builder
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
         const axis2_env_t *env);
     

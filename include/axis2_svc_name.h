@@ -114,9 +114,9 @@ extern "C"
      * Frees service name struct.
      * @param svc_name pointer to service name struct
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_name_free(struct axis2_svc_name *svc_name,
         const axis2_env_t *env);
 

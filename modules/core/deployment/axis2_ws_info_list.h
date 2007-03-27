@@ -57,9 +57,9 @@ extern "C"
      * De-allocate memory
      * @param ws_info_list pointer to ws info list
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_ws_info_list_free(axis2_ws_info_list_t *ws_info_list,
         const axis2_env_t *env);
 

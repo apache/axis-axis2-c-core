@@ -48,9 +48,9 @@ extern "C"
      * De-allocate memory
      * @param arch_file_data pointer to arch_file_data
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
         const axis2_env_t *env);
 

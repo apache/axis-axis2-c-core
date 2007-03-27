@@ -109,11 +109,11 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *e
     return repos_listener;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (repos_listener->folder_name)
     {
@@ -127,7 +127,7 @@ axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
 
     AXIS2_FREE(env->allocator, repos_listener);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

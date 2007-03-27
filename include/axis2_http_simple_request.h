@@ -172,9 +172,9 @@ extern "C"
     /**
      * @param simple_request pointer to simple request
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_http_simple_request_free(axis2_http_simple_request_t *simple_request,
         const axis2_env_t *env);
 

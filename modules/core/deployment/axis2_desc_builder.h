@@ -63,7 +63,7 @@ extern "C"
      * @param desc_builder pointer to desc builder
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_desc_builder_free(axis2_desc_builder_t *desc_builder,
         const axis2_env_t *env);
 

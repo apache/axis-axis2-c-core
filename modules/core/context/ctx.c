@@ -123,11 +123,11 @@ axis2_ctx_get_property_map(const axis2_ctx_t *ctx,
     return ctx->property_map;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_ctx_free(struct axis2_ctx *ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (ctx->property_map && ctx->property_map_deep_copy)
     {
@@ -152,7 +152,7 @@ axis2_ctx_free(struct axis2_ctx *ctx,
 
     AXIS2_FREE(env->allocator, ctx);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

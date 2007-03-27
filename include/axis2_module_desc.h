@@ -56,9 +56,9 @@ extern "C"
      * Frees module description.
      * @param module_desc pointer to module description
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_module_desc_free(axis2_module_desc_t *module_desc,
         const axis2_env_t *env);
 
@@ -326,9 +326,9 @@ extern "C"
      * description free method on top of that pointer.
      * @param module_desc pointer to module description as a void pointer
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_module_desc_free_void_arg(void *module_desc,
         const axis2_env_t *env);
 

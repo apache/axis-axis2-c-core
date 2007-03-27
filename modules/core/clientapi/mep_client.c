@@ -451,12 +451,12 @@ axis2_mep_client_get_svc_ctx(
     return mep_client->svc_ctx;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_mep_client_free(
     axis2_mep_client_t *mep_client,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (mep_client->mep)
     {
@@ -480,7 +480,7 @@ axis2_mep_client_free(
 
     AXIS2_FREE(env->allocator, mep_client);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL

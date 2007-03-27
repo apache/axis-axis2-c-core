@@ -120,19 +120,19 @@ axis2_phase_resolver_create_with_config_and_svc(
     return phase_resolver;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_phase_resolver_free(
     axis2_phase_resolver_t *phase_resolver,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (phase_resolver)
     {
         AXIS2_FREE(env->allocator, phase_resolver);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

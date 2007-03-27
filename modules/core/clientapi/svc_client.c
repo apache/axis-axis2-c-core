@@ -1127,11 +1127,11 @@ axis2_svc_client_create_annonymous_svc(axis2_svc_client_t *svc_client,
     return svc;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_client_free(axis2_svc_client_t *svc_client,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (svc_client->svc)
     {
@@ -1165,7 +1165,7 @@ axis2_svc_client_free(axis2_svc_client_t *svc_client,
 
     AXIS2_FREE(env->allocator, svc_client);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 static axis2_bool_t

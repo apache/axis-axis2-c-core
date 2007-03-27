@@ -46,7 +46,7 @@ axis2_apache2_out_transport_info_create(
  * cast into appropriate type and then pass the cast object
  * into the http_out_transport_info structure's free method
  */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 axis2_apache2_out_transport_info_free_void_arg(
     void *transport_info,
     const axis2_env_t *env);

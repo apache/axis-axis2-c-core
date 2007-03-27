@@ -355,12 +355,12 @@ axis2_conf_ctx_init(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_conf_ctx_free(
     axis2_conf_ctx_t *conf_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (conf_ctx->base)
     {
@@ -436,7 +436,7 @@ axis2_conf_ctx_free(
 
     AXIS2_FREE(env->allocator, conf_ctx);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_svc_grp_ctx_t *AXIS2_CALL

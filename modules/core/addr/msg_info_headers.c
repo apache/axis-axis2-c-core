@@ -284,12 +284,12 @@ axis2_msg_info_headers_add_ref_param(struct axis2_msg_info_headers *msg_info_hea
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_msg_info_headers_free(
     struct axis2_msg_info_headers *msg_info_headers,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (msg_info_headers->to)
     {
@@ -328,7 +328,7 @@ axis2_msg_info_headers_free(
 
     AXIS2_FREE(env->allocator, msg_info_headers);
     
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

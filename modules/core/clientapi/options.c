@@ -684,11 +684,11 @@ axis2_options_get_msg_info_headers(const axis2_options_t *options,
     return options->msg_info_headers;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_options_free(axis2_options_t *options,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (options->properties)
     {
@@ -728,7 +728,7 @@ axis2_options_free(axis2_options_t *options,
 
     AXIS2_FREE(env->allocator, options);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN int AXIS2_CALL

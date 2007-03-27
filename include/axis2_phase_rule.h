@@ -167,9 +167,9 @@ extern "C"
      * Frees phase rule.
      * @param phase_rule pointer to phase rule
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_phase_rule_free(axis2_phase_rule_t *phase_rule,
         const axis2_env_t *env);
 

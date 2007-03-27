@@ -109,9 +109,9 @@ extern "C"
      * Frees relates to struct.                     
      * @param relates_to pointer to relates to struct
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_relates_to_free(struct axis2_relates_to *relates_to,
         const axis2_env_t *env);
 

@@ -78,12 +78,10 @@ axis2_http_server_is_running(
     axis2_transport_receiver_t *server,
     const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_server_free(
     axis2_transport_receiver_t *server,
     const axis2_env_t *env);
-
-/***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
 axis2_http_server_create(
@@ -144,13 +142,13 @@ axis2_http_server_create(
     return &(server_impl->http_server);
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_server_free(
     axis2_transport_receiver_t *server,
     const axis2_env_t *env)
 {
     axis2_http_server_impl_t *server_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     server_impl = AXIS2_INTF_TO_IMPL(server);
     if (server_impl->svr_thread)
     {
@@ -174,7 +172,7 @@ axis2_http_server_free(
         AXIS2_FREE(env->allocator, server->ops);
     }
     AXIS2_FREE(env->allocator, server_impl);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

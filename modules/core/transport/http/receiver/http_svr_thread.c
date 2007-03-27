@@ -86,7 +86,7 @@ axis2_http_svr_thread_set_worker(
     const axis2_env_t *env,
     axis2_http_worker_t *worker);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_svr_thread_free(
     axis2_http_svr_thread_t *svr_thread,
     const axis2_env_t *env);
@@ -157,13 +157,13 @@ axis2_http_svr_thread_create(
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_svr_thread_free(
     axis2_http_svr_thread_t *svr_thread,
     const axis2_env_t *env)
 {
     axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
 
     if (svr_thread_impl->worker)
@@ -181,7 +181,7 @@ axis2_http_svr_thread_free(
         AXIS2_FREE(env->allocator, svr_thread->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(svr_thread));
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

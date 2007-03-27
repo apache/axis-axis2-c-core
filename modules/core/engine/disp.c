@@ -172,17 +172,17 @@ axis2_disp_find_svc_and_op(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_disp_free(
     struct axis2_disp *disp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     if (disp->name)
     {
         axis2_string_free(disp->name, env);
     }
     AXIS2_FREE(env->allocator, disp);
-    return AXIS2_SUCCESS;
+    return;
 }
 

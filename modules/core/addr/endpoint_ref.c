@@ -135,7 +135,7 @@ axis2_endpoint_ref_set_svc_name(axis2_endpoint_ref_t *endpoint_ref,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_endpoint_ref_free_void_arg(void *endpoint_ref,
     const axis2_env_t *env)
 {
@@ -144,14 +144,15 @@ axis2_endpoint_ref_free_void_arg(void *endpoint_ref,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     endpoint_ref_l = (axis2_endpoint_ref_t *) endpoint_ref;
-    return axis2_endpoint_ref_free(endpoint_ref_l, env);
+    axis2_endpoint_ref_free(endpoint_ref_l, env);
+    return;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_endpoint_ref_free(axis2_endpoint_ref_t *endpoint_ref,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (endpoint_ref->address)
     {
@@ -186,7 +187,7 @@ axis2_endpoint_ref_free(axis2_endpoint_ref_t *endpoint_ref,
 
     AXIS2_FREE(env->allocator, endpoint_ref);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_array_list_t *AXIS2_CALL

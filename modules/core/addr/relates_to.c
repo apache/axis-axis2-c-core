@@ -135,11 +135,11 @@ axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_relates_to_free(struct axis2_relates_to *relates_to,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (relates_to->value)
     {
@@ -153,5 +153,5 @@ axis2_relates_to_free(struct axis2_relates_to *relates_to,
 
     AXIS2_FREE(env->allocator, relates_to);
 
-    return AXIS2_SUCCESS;
+    return;
 }

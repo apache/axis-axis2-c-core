@@ -37,13 +37,13 @@ typedef struct axis2_iis_out_transport_info_s
 #define AXIS2_INTF_TO_IMPL(out_transport_info) \
                 ((axis2_iis_out_transport_info_t *)(out_transport_info))
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_iis_out_transport_info_free(
     axis2_http_out_transport_info_t *out_transport_info,
     const axis2_env_t *env)
 {
     axis2_iis_out_transport_info_t *info = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     info = AXIS2_INTF_TO_IMPL(out_transport_info);
     
@@ -54,19 +54,20 @@ axis2_iis_out_transport_info_free(
     }
 
     AXIS2_FREE(env->allocator, info);
-    return AXIS2_SUCCESS;
+    return;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_iis_out_transport_info_free_void_arg(
     void *transport_info,
     const axis2_env_t *env)
 {
     axis2_http_out_transport_info_t *transport_info_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     transport_info_l = (axis2_http_out_transport_info_t *) transport_info;
-    return axis2_http_out_transport_info_free(transport_info_l, env);
+    axis2_http_out_transport_info_free(transport_info_l, env);
+    return;
 }
 
 axis2_status_t AXIS2_CALL

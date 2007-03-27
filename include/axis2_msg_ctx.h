@@ -168,9 +168,9 @@ extern "C"
      * Frees message context.
      * @param msg_ctx message context
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_msg_ctx_free(axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env);
 

@@ -79,9 +79,9 @@ extern "C"
     * Frees operation context.
     * @param op_ctx pointer to operation context
     * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @return void
     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_op_ctx_free(struct axis2_op_ctx *op_ctx,
         const axis2_env_t *env);
 

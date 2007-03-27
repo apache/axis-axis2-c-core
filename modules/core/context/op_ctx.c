@@ -123,13 +123,13 @@ axis2_op_ctx_get_base(
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_op_ctx_free(
     struct axis2_op_ctx *op_ctx,
     const axis2_env_t *env)
 {
     int i = 0;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (op_ctx->base)
     {
@@ -152,7 +152,7 @@ axis2_op_ctx_free(
 
     AXIS2_FREE(env->allocator, op_ctx);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -38,8 +38,7 @@ struct ssl_stream_impl
 
 #define AXIS2_INTF_TO_IMPL(stream) ((ssl_stream_impl_t *)(stream))
 
-/********************************Function headers******************************/
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_ssl_stream_free(
     axis2_stream_t *stream, 
     const axis2_env_t *env
@@ -140,14 +139,12 @@ axis2_stream_create_ssl(
 }
 
 
-axis2_status_t AXIS2_CALL
-axis2_ssl_stream_free(
-    axis2_stream_t *stream,
-    const axis2_env_t *env
-    )
+void AXIS2_CALL
+axis2_ssl_stream_free(axis2_stream_t *stream,
+    const axis2_env_t *env)
 {
     ssl_stream_impl_t *stream_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     if (stream_impl->stream.ops)
@@ -157,7 +154,7 @@ axis2_ssl_stream_free(
     axis2_ssl_utils_cleanup_ssl(env, stream_impl->ctx, stream_impl->ssl);
     AXIS2_FREE(env->allocator, stream_impl);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 int AXIS2_CALL

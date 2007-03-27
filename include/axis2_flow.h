@@ -56,9 +56,9 @@ extern "C"
      * Frees flow struct.
      * @param flow pointer to flow
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_flow_free(axis2_flow_t *flow,
         const axis2_env_t *env);
 
@@ -101,9 +101,9 @@ extern "C"
      * pointer to appropriate type and then call free method.
      * @param flow pointer to flow
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_flow_free_void_arg (void *flow,
         const axis2_env_t *env);
 

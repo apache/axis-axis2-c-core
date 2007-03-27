@@ -182,7 +182,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_http_client_free(axis2_http_client_t *client,
         const axis2_env_t *env);
 
@@ -201,7 +201,7 @@ extern "C"
      * @param client
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_http_client_free_void_arg (void *client,
         const axis2_env_t *env);
 

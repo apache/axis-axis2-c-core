@@ -42,18 +42,18 @@ axis2_svr_callback_create(const axis2_env_t *env)
     return svr_callback;
 }
 
-AXIS2_EXPORT axis2_status_t AXIS2_CALL
+AXIS2_EXPORT void AXIS2_CALL
 axis2_svr_callback_free(axis2_svr_callback_t *svr_callback,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (svr_callback)
     {
         AXIS2_FREE(env->allocator, svr_callback);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL

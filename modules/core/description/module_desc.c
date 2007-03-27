@@ -110,11 +110,11 @@ axis2_module_desc_create_with_qname(const axis2_env_t *env,
     return module_desc;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_module_desc_free(axis2_module_desc_t *module_desc,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (module_desc->module)
     {
@@ -162,18 +162,19 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
         AXIS2_FREE(env->allocator, module_desc);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_module_desc_free_void_arg(void *module_desc,
     const axis2_env_t *env)
 {
     axis2_module_desc_t *module_desc_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     module_desc_l = (axis2_module_desc_t *) module_desc;
-    return axis2_module_desc_free(module_desc_l, env);
+    axis2_module_desc_free(module_desc_l, env);
+    return;
 }
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL

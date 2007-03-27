@@ -79,11 +79,11 @@ axis2_ws_info_list_create_with_dep_engine(const axis2_env_t *env,
     return ws_info_list;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_ws_info_list_free(axis2_ws_info_list_t *ws_info_list,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (ws_info_list->current_info_lists)
     {
@@ -124,7 +124,7 @@ axis2_ws_info_list_free(axis2_ws_info_list_t *ws_info_list,
         AXIS2_FREE(env->allocator, ws_info_list);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

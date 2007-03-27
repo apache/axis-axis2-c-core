@@ -109,12 +109,12 @@ axis2_svc_builder_create_with_dep_engine_and_svc(const axis2_env_t *env,
     return svc_builder;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_builder_free(axis2_svc_builder_t *svc_builder,
     const axis2_env_t *env)
 {
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (svc_builder->desc_builder)
     {
@@ -128,7 +128,7 @@ axis2_svc_builder_free(axis2_svc_builder_t *svc_builder,
         AXIS2_FREE(env->allocator, svc_builder);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

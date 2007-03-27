@@ -89,9 +89,9 @@ extern "C"
      * Frees dispatcher struct.
      * @param disp pointer to dispatcher
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE                    
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_disp_free(axis2_disp_t *disp,
         const axis2_env_t *env);
 

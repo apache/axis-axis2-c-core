@@ -115,11 +115,11 @@ axis2_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
     return stub;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_stub_free(axis2_stub_t *stub,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (stub->svc_client)
     {
@@ -131,7 +131,7 @@ axis2_stub_free(axis2_stub_t *stub,
         AXIS2_FREE(env->allocator, stub);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_status_t AXIS2_CALL

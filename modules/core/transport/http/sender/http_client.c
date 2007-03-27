@@ -83,12 +83,12 @@ axis2_http_client_create(
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_client_free(
     axis2_http_client_t *http_client,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (http_client->url)
     {
@@ -105,19 +105,20 @@ axis2_http_client_free(
     }
 
     AXIS2_FREE(env->allocator, http_client);
-    return AXIS2_SUCCESS;
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_client_free_void_arg(
     void *client,
     const axis2_env_t *env)
 {
     axis2_http_client_t *client_l = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     client_l = (axis2_http_client_t *)client;
-    return axis2_http_client_free(client_l, env);
+    axis2_http_client_free(client_l, env);
+    return;
 }
 
 

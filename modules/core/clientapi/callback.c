@@ -167,11 +167,11 @@ axis2_callback_set_error(axis2_callback_t *callback,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_callback_free(axis2_callback_t *callback,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if(callback->mutex)
     {
@@ -180,7 +180,7 @@ axis2_callback_free(axis2_callback_t *callback,
 
     AXIS2_FREE(env->allocator, callback);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

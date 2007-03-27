@@ -109,12 +109,12 @@ axis2_status_t AXIS2_CALL
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_svc_ctx_free(
     struct axis2_svc_ctx *svc_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (svc_ctx->base)
     {
@@ -122,7 +122,7 @@ axis2_svc_ctx_free(
     }
 
     AXIS2_FREE(env->allocator, svc_ctx);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_status_t AXIS2_CALL

@@ -282,12 +282,12 @@ axis2_msg_ctx_set_parent(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_msg_ctx_free(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (msg_ctx->paused || msg_ctx->keep_alive)
         return AXIS2_SUCCESS;
@@ -360,7 +360,7 @@ axis2_msg_ctx_free(
     
     AXIS2_FREE(env->allocator, msg_ctx);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_status_t AXIS2_CALL

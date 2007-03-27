@@ -88,12 +88,12 @@ axis2_callback_recv_get_base(
     return callback_recv->base;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_callback_recv_free(
     axis2_callback_recv_t *callback_recv,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if(callback_recv->mutex)
     {
@@ -127,7 +127,7 @@ axis2_callback_recv_free(
         AXIS2_FREE(env->allocator, callback_recv);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

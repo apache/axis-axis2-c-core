@@ -57,11 +57,11 @@ axis2_phases_info_create(const axis2_env_t *env)
     return phases_info;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_phases_info_free(axis2_phases_info_t *phases_info,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (phases_info->in_phases)
     {
@@ -160,7 +160,7 @@ axis2_phases_info_free(axis2_phases_info_t *phases_info,
         AXIS2_FREE(env->allocator, phases_info);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -232,13 +232,13 @@ axis2_listener_manager_get_reply_to_epr(const axis2_listener_manager_t *listener
     return NULL;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_listener_manager_free(axis2_listener_manager_t *listener_manager,
     const axis2_env_t *env)
 {
     int i = 0;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
     {
@@ -248,7 +248,7 @@ axis2_listener_manager_free(axis2_listener_manager_t *listener_manager,
 
     AXIS2_FREE(env->allocator, listener_manager);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL

@@ -79,12 +79,12 @@ axis2_http_out_transport_info_impl_set_char_encoding(
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_impl_free(
     axis2_http_out_transport_info_t *http_out_transport_info,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     if(http_out_transport_info->response)
     {
         AXIS2_HTTP_SIMPLE_RESPONSE_FREE(http_out_transport_info->response, env);
@@ -94,7 +94,7 @@ axis2_http_out_transport_info_impl_free(
         AXIS2_FREE(env->allocator, http_out_transport_info->encoding);
     }
     AXIS2_FREE(env->allocator, http_out_transport_info);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL
@@ -130,24 +130,26 @@ axis2_http_out_transport_info_create(
     return http_out_transport_info;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_free(
     axis2_http_out_transport_info_t *http_out_transport_info,
     const axis2_env_t *env)
 {
-    return http_out_transport_info->free_function(http_out_transport_info, env);
+    http_out_transport_info->free_function(http_out_transport_info, env);
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_free_void_arg(
     void *transport_info,
     const axis2_env_t *env)
 {
     axis2_http_out_transport_info_t *transport_info_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     transport_info_l = (axis2_http_out_transport_info_t *) transport_info;
-    return axis2_http_out_transport_info_free(transport_info_l, env);
+    axis2_http_out_transport_info_free(transport_info_l, env);
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

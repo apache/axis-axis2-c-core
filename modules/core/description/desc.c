@@ -65,11 +65,11 @@ axis2_desc_create(const axis2_env_t *env)
     return desc;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_desc_free(axis2_desc_t *desc,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (desc->children)
     {
@@ -100,7 +100,7 @@ axis2_desc_free(axis2_desc_t *desc,
         AXIS2_FREE(env->allocator, desc);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

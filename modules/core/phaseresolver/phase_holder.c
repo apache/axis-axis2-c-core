@@ -62,18 +62,18 @@ axis2_phase_holder_create_with_phases(const axis2_env_t *env,
     return phase_holder;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_phase_holder_free(axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (phase_holder)
     {
         AXIS2_FREE(env->allocator, phase_holder);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

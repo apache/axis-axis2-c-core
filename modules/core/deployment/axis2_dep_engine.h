@@ -60,9 +60,9 @@ extern "C"
      * De-allocate memory
      * @param dep_engine pointer to deployment engine
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
         const axis2_env_t *env);
 

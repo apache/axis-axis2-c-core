@@ -95,11 +95,11 @@ axis2_any_content_type_get_value_map(const axis2_any_content_type_t *any_content
 	return any_content_type->value_map;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_any_content_type_free(axis2_any_content_type_t *any_content_type,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (any_content_type->value_map)
     {
@@ -108,5 +108,5 @@ axis2_any_content_type_free(axis2_any_content_type_t *any_content_type,
 
     AXIS2_FREE(env->allocator, any_content_type);
     
-	return AXIS2_SUCCESS;
+	return;
 }

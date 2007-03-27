@@ -109,12 +109,12 @@ axis2_svc_grp_create_with_conf(
 
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_grp_free(
     axis2_svc_grp_t *svc_grp,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (svc_grp->param_container)
     {
@@ -147,7 +147,7 @@ axis2_svc_grp_free(
     {
         AXIS2_FREE(env->allocator, svc_grp);
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

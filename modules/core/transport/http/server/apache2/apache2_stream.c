@@ -113,7 +113,7 @@ axis2_stream_create_apache2(
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 apache2_stream_free(
     axis2_stream_t *stream,
     const axis2_env_t *env)

@@ -126,12 +126,12 @@ axis2_disp_checker_set_name(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_disp_checker_free(
     axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (disp_checker->name)
     {
@@ -140,7 +140,7 @@ axis2_disp_checker_free(
 
     AXIS2_FREE(env->allocator, disp_checker);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_status_t AXIS2_CALL

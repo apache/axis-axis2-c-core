@@ -242,11 +242,11 @@ axis2_svc_create_with_qname(const axis2_env_t *env,
     return svc;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_free(axis2_svc_t *svc,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (svc->param_container)
     {
@@ -382,7 +382,7 @@ axis2_svc_free(axis2_svc_t *svc,
         svc = NULL;
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

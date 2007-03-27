@@ -113,11 +113,11 @@ axis2_desc_builder_create_with_dep_engine(const axis2_env_t *env,
     return desc_builder;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_desc_builder_free(axis2_desc_builder_t *desc_builder,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (desc_builder->file_name)
     {
@@ -136,7 +136,7 @@ axis2_desc_builder_free(axis2_desc_builder_t *desc_builder,
     {
         AXIS2_FREE(env->allocator, desc_builder);
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL

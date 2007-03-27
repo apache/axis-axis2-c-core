@@ -77,11 +77,11 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module(const axis2_env_
     return module_builder;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_module_builder_free(axis2_module_builder_t *module_builder,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (module_builder->desc_builder)
     {
@@ -93,7 +93,7 @@ axis2_module_builder_free(axis2_module_builder_t *module_builder,
         AXIS2_FREE(env->allocator, module_builder);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

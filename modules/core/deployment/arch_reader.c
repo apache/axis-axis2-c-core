@@ -48,24 +48,20 @@ axis2_arch_reader_create(const axis2_env_t *env)
     return arch_reader;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     /* desc builder is owned by dep_engine, so do not free it here */
-    /*if (arch_reader->desc_builder)
-    {
-        AXIS2_DESC_BUILDER_FREE(arch_reader->desc_builder, env);
-    }*/
 
     if (arch_reader)
     {
         AXIS2_FREE(env->allocator, arch_reader);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN struct axis2_svc *AXIS2_CALL

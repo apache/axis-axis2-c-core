@@ -354,12 +354,11 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_msg_recv **inst,
 AXIS2_EXPORT int axis2_remove_instance(struct axis2_msg_recv *inst,
     const axis2_env_t *env)
 {
-    axis2_status_t status = AXIS2_FAILURE;
     if (inst)
     {
-        status = axis2_msg_recv_free(inst, env);
+        axis2_msg_recv_free(inst, env);
     }
-    return status;
+    return AXIS2_SUCCESS;
 }
 
 

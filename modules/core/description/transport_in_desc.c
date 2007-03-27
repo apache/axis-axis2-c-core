@@ -71,11 +71,11 @@ axis2_transport_in_desc_create(const axis2_env_t *env,
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_transport_in_desc_free(axis2_transport_in_desc_t *transport_in,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (transport_in->recv)
     {
@@ -109,19 +109,20 @@ axis2_transport_in_desc_free(axis2_transport_in_desc_t *transport_in,
 
     AXIS2_FREE(env->allocator, transport_in);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_transport_in_desc_free_void_arg(void *transport_in,
     const axis2_env_t *env)
 {
     axis2_transport_in_desc_t *transport_in_l = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     transport_in_l = (axis2_transport_in_desc_t *) transport_in;
-    return axis2_transport_in_desc_free(transport_in_l, env);
+    axis2_transport_in_desc_free(transport_in_l, env);
+    return;
 }
 
 AXIS2_TRANSPORT_ENUMS AXIS2_CALL

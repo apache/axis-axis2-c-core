@@ -53,9 +53,9 @@ extern "C"
      * Frees stub struct.
      * @param stub pointer to stub struct
      * @param env pointer to environment struct
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_stub_free(axis2_stub_t *stub,
         const axis2_env_t *env);
 

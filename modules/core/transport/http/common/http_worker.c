@@ -80,18 +80,18 @@ axis2_http_worker_create(
     return http_worker;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_http_worker_free(
     axis2_http_worker_t *http_worker,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     http_worker->conf_ctx = NULL;
 
     AXIS2_FREE(env->allocator, http_worker);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

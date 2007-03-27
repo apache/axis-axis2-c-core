@@ -71,11 +71,11 @@ axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axis2_env_t *env,
     return svc_grp_builder;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (svc_grp_builder->desc_builder)
     {
@@ -87,7 +87,7 @@ axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
         AXIS2_FREE(env->allocator, svc_grp_builder);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -57,12 +57,12 @@ axis2_http_request_line_create(
     return request_line;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_http_request_line_free(
     axis2_http_request_line_t *request_line,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (request_line->method)
     {
@@ -78,7 +78,7 @@ axis2_http_request_line_free(
     }
 
     AXIS2_FREE(env->allocator, request_line);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL

@@ -72,9 +72,9 @@ extern "C"
     /**
      * @param http_worker pointer to http worker
      * @param env pointer to environment strut
-     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     * @return void
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_http_worker_free(axis2_http_worker_t *http_worker,
         const axis2_env_t *env);
 

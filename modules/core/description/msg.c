@@ -74,11 +74,11 @@ axis2_msg_create(const axis2_env_t *env)
     return msg;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_msg_free(axis2_msg_t *msg,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (msg->flow)
     {
@@ -112,7 +112,7 @@ axis2_msg_free(axis2_msg_t *msg,
         AXIS2_FREE(env->allocator, msg);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

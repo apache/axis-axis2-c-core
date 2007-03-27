@@ -948,12 +948,12 @@ axis2_phase_invoke_start_from_handler(
     return status;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_phase_free(
     axis2_phase_t *phase,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (phase->name)
     {
@@ -965,7 +965,7 @@ axis2_phase_free(
         axis2_array_list_free(phase->handlers, env);
     }
     AXIS2_FREE(env->allocator, phase);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 static axis2_status_t
