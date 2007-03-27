@@ -70,7 +70,7 @@ extern "C"
     * @param transport_receiver pointer to transport receiver
     * @param env pointer to environment struct
         */
-        axis2_status_t (AXIS2_CALL *
+        void (AXIS2_CALL *
                 free)(
                     axis2_transport_receiver_t *transport_receiver,
                     const axis2_env_t *env);

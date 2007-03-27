@@ -59,7 +59,7 @@ extern "C"
 			const axis2_env_t *env,
 			const axis2_char_t *encoding);
 
-		axis2_status_t (AXIS2_CALL *
+		void (AXIS2_CALL *
         free_function)(axis2_http_out_transport_info_t *info,
 			const axis2_env_t *env);
 	};
@@ -131,7 +131,7 @@ extern "C"
 	axis2_http_out_transport_info_set_free_func(
 		axis2_http_out_transport_info_t *out_transport_info,
 		const axis2_env_t *env,
-		axis2_status_t (AXIS2_CALL *free_function)(
+		void (AXIS2_CALL *free_function)(
 		axis2_http_out_transport_info_t *,
 		const axis2_env_t*));
 

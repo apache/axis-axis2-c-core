@@ -177,7 +177,7 @@ axis2_http_response_writer_free(
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(response_writer));
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_char_t *AXIS2_CALL

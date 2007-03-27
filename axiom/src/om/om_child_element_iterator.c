@@ -118,7 +118,7 @@ axiom_child_element_iterator_free
         AXIS2_FREE(env->allocator, iterator_impl->iterator.ops);
 
     AXIS2_FREE(env->allocator, iterator_impl);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_status_t AXIS2_CALL

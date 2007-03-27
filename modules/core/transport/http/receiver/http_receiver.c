@@ -331,10 +331,9 @@ AXIS2_EXPORT int axis2_remove_instance(
     axis2_transport_receiver_t *inst,
     const axis2_env_t *env)
 {
-    axis2_status_t status = AXIS2_FAILURE;
     if (inst)
     {
-        status = AXIS2_TRANSPORT_RECEIVER_FREE(inst, env);
+        AXIS2_TRANSPORT_RECEIVER_FREE(inst, env);
     }
-    return status;
+    return AXIS2_SUCCESS;
 }

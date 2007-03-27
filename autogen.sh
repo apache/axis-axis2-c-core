@@ -1,23 +1,23 @@
 #!/bin/bash
 echo 'Running autogen.sh in Util'
 cd util
-./autogen.sh
+sh autogen.sh
 
 echo 'Running autogen.sh in Axiom'
 cd ../axiom
-./autogen.sh
+sh autogen.sh
 
 echo 'Running autogen.sh in Xml_schema'
 cd ../xml_schema
-./autogen.sh
+sh autogen.sh
 
 echo 'Running autogen.sh in Woden'
 cd ../woden
-./autogen.sh
+sh autogen.sh
 
 echo 'Running autogen.sh in Guththila'
 cd ../guththila
-./autogen.sh
+sh autogen.sh
 
 echo 'Running autogen.sh in Axis2/C'
 cd ..

@@ -103,7 +103,7 @@ extern "C"
          * @param svr_thread pointer to server thread
          * @param env pointer to environment struct
          */
-        axis2_status_t (AXIS2_CALL *
+        void (AXIS2_CALL *
                 free)(
                     axis2_http_svr_thread_t *svr_thread,
                     const axis2_env_t *env);

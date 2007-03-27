@@ -67,7 +67,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        axis2_status_t (AXIS2_CALL *
+        void (AXIS2_CALL *
                 free)(
                     axis2_handler_t *handler,
                     const axis2_env_t *env);

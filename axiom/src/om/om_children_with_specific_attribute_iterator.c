@@ -142,7 +142,7 @@ axiom_children_with_specific_attribute_iterator_free(
         iterator->ops = NULL;
     }
     AXIS2_FREE(env->allocator, qname_iter_impl);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_status_t AXIS2_CALL

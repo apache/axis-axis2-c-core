@@ -88,7 +88,7 @@ axiom_namespace_free(axiom_namespace_t *om_namespace,
 
     if (--om_namespace->ref > 0)
     {
-        return AXIS2_SUCCESS;
+        return;
     }
 
     if (om_namespace->prefix)

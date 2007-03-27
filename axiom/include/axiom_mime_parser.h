@@ -68,10 +68,17 @@ extern "C"
         /** Deallocate memory
           * @return status code
           */
+<<<<<<< .mine
+        void (AXIS2_CALL *
+                free)(
+                    axiom_mime_parser_t *mime_parser,
+                    const axis2_env_t *env);
+=======
         void (AXIS2_CALL *
         free)(
                axiom_mime_parser_t *mime_parser,
                const axis2_env_t *env);
+>>>>>>> .r522846
 
         int (AXIS2_CALL *
         get_soap_body_len)(

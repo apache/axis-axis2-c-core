@@ -72,7 +72,7 @@ struct axiom_mime_body_part_ops
    /** Deallocate memory
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *
+    void (AXIS2_CALL *
     free) (axiom_mime_body_part_t *mime_body_part, 
             const axis2_env_t *env);
 };

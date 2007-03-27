@@ -196,7 +196,7 @@ AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_set_free_func(
     axis2_http_out_transport_info_t *out_transport_info,
     const axis2_env_t *env,
-    axis2_status_t (AXIS2_CALL *free_function)(axis2_http_out_transport_info_t *,const axis2_env_t*)
+    void (AXIS2_CALL *free_function)(axis2_http_out_transport_info_t *,const axis2_env_t*)
     )
 {
 	out_transport_info->free_function = free_function;

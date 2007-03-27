@@ -54,7 +54,7 @@ extern "C"
         /**
         * Free function free the om_children_with_specific_attribute_iterator struct
         */
-        axis2_status_t(AXIS2_CALL *
+        void (AXIS2_CALL *
                 free_fn)(axiom_children_with_specific_attribute_iterator_t *iterator,
                         const axis2_env_t *env);
 

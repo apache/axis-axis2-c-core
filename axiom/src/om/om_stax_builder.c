@@ -756,7 +756,7 @@ axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (!om_builder)
     {
-        return AXIS2_FAILURE;
+        return;
     }
 
     if (om_builder->parser)
@@ -785,7 +785,7 @@ axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
         }
     }
     AXIS2_FREE(env->allocator, om_builder);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axiom_document_t* AXIS2_CALL

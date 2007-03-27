@@ -531,7 +531,7 @@ axis2_hash_contains_key(
 static void
 axis2_hash_entry_free(const axis2_env_t *env, axis2_hash_entry_t *hash_entry)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     if (!hash_entry)
         return;
     if (hash_entry->next)

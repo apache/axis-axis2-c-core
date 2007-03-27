@@ -47,7 +47,7 @@ extern "C"
      */
     struct axiom_child_element_iterator_ops
     {
-        axis2_status_t(AXIS2_CALL *free_fn)
+        void (AXIS2_CALL *free_fn)
         (void *iterator,
                 const axis2_env_t *env);
 

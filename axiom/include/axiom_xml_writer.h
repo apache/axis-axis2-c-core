@@ -58,7 +58,7 @@ extern "C"
 
         void (AXIS2_CALL *
         free)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+            const axis2_env_t *env);
         /**
          *  Write a start tag to output stream with localname.
          *  Internally the writer keeps track of the opened tags 

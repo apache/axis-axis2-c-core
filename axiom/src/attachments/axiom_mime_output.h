@@ -79,7 +79,7 @@ struct axiom_mime_output_ops
    /** Deallocate memory
      * @return status code
      */
-    axis2_status_t (AXIS2_CALL *free) (axiom_mime_output_t *mime_output,
+    void (AXIS2_CALL *free) (axiom_mime_output_t *mime_output,
                             const axis2_env_t *env);
 
 };

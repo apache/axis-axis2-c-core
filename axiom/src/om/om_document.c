@@ -151,8 +151,6 @@ axiom_document_set_root_element(axiom_document_t *document,
     const axis2_env_t *env,
     axiom_node_t *node)
 {
-    int status = AXIS2_SUCCESS;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 

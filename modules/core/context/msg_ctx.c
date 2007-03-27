@@ -290,7 +290,7 @@ axis2_msg_ctx_free(
     AXIS2_ENV_CHECK(env, void);
 
     if (msg_ctx->paused || msg_ctx->keep_alive)
-        return AXIS2_SUCCESS;
+        return;
     
     if (msg_ctx->base)
     {

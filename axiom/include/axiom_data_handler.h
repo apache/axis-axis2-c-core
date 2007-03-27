@@ -98,7 +98,7 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_char_t* file_name);
 
-        axis2_status_t(AXIS2_CALL *
+        void (AXIS2_CALL *
                 free)(axiom_data_handler_t *data_handler,
                         const axis2_env_t *env);
     };
