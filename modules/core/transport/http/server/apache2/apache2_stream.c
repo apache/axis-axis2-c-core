@@ -35,8 +35,7 @@ apache2_stream_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(stream) ((apache2_stream_impl_t *)(stream))
 
-/********************************Function headers******************************/
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 apache2_stream_free(
     axis2_stream_t *stream,
     const axis2_env_t *env);
@@ -128,7 +127,7 @@ apache2_stream_free(
     }
     AXIS2_FREE(env->allocator, stream_impl);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 int AXIS2_CALL
