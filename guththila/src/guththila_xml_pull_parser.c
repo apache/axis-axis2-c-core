@@ -1,5 +1,5 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
+ * licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
@@ -1327,7 +1327,7 @@ guththila_get_attribute_name_by_number(axis2_env_t * environment, guththila_t * 
         guththila_exception(p_FILE, LINE, GUTHTHILA_ERROR_REQUESTED_NUMBER_GREATER_THAN_STACK_SIZE);
     else
     {
-        attribute = (guththila_attribute_t *) axis2_stack_get_atT(parser->attrib, environment, ix - i);
+        attribute = (guththila_attribute_t *) axis2_stack_get_at(parser->attrib, environment, ix - i);
     }
     return guththila_token_to_string(environment, attribute->name,
 									 parser->unicode_state);
