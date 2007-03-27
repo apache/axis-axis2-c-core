@@ -19,10 +19,6 @@ echo 'Running autogen.sh in Guththila'
 cd ../guththila
 ./autogen.sh
 
-echo 'Running autogen.sh in Rampart'
-cd ../rampart
-./autogen.sh
-
 echo 'Running autogen.sh in Axis2/C'
 cd ..
 

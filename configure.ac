@@ -101,25 +101,6 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
-AC_MSG_CHECKING(whether to build rampart )
-AC_ARG_ENABLE(rampart, [  --enable-rampart build ramprt. default=no],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    RAMPART_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    RAMPART_DIR="rampart"
-    if test -d $srcdir/rampart; then
-        AC_CONFIG_SUBDIRS(rampart)
-    fi
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
-
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
 AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
 [ case "${enableval}" in
@@ -330,7 +311,6 @@ AC_SUBST(APACHE2BUILD)
 AC_SUBST(PARSER_DIR)
 AC_SUBST(WRAPPER_DIR)
 AC_SUBST(GUTHTHILA_DIR)
-AC_SUBST(RAMPART_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 AM_CONDITIONAL(AXIS2_LIBCURL_ENABLED, test x$libcurl_enabled = xtrue)
