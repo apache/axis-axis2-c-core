@@ -77,7 +77,7 @@ axiom_comment_create(const axis2_env_t *env,
     return comment;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_comment_free(axiom_comment_t *comment,
     const axis2_env_t *env)
 {
@@ -88,7 +88,7 @@ axiom_comment_free(axiom_comment_t *comment,
         AXIS2_FREE(env->allocator, comment->value);
     }
     AXIS2_FREE(env->allocator, comment);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL

@@ -34,9 +34,7 @@ axiom_data_handler_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(data_handler) ((axiom_data_handler_impl_t *)(data_handler))
 
-/***************************** Function headers *******************************/
-
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_data_handler_free(axiom_data_handler_t *data_handler, 
     const axis2_env_t *env);
 
@@ -145,9 +143,7 @@ axiom_data_handler_create(const axis2_env_t *env,
 }
 
 
-/*************************** Start of op impls *************************/
-
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_data_handler_free(axiom_data_handler_t *data_handler, 
     const axis2_env_t *env)
 {
@@ -181,7 +177,7 @@ axiom_data_handler_free(axiom_data_handler_t *data_handler,
         AXIS2_FREE(env->allocator, data_handler_impl);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_char_t * AXIS2_CALL

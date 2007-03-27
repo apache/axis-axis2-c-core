@@ -110,8 +110,8 @@ axis2_linked_list_add_last_entry(axis2_linked_list_t *linked_list,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_linked_list_free(
-    axis2_linked_list_t *linked_list,
+AXIS2_EXTERN void AXIS2_CALL 
+axis2_linked_list_free(axis2_linked_list_t *linked_list,
     const axis2_env_t *env)
 {
     entry_t *current = NULL, *next = NULL;
@@ -126,8 +126,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_linked_list_free(
     }
     AXIS2_FREE(env->allocator, linked_list);
     linked_list = NULL;
-
-    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN entry_t * AXIS2_CALL

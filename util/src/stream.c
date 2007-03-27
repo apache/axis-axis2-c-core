@@ -42,12 +42,11 @@ struct axis2_stream_impl
 
 #define AXIS2_INTF_TO_IMPL(stream) ((axis2_stream_impl_t *)(stream))
 
-/********************************Function headers******************************/
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_stream_free(axis2_stream_t *stream, 
     const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_stream_free_void_arg(void *stream,
     const axis2_env_t *env);
 
@@ -149,7 +148,7 @@ axis2_stream_create_internal(const axis2_env_t *env)
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_stream_free(axis2_stream_t *stream, 
     const axis2_env_t *env)
 {
@@ -196,10 +195,10 @@ axis2_stream_free(axis2_stream_t *stream,
     }
     AXIS2_FREE(env->allocator, stream_impl);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_stream_free_void_arg(void *stream,
     const axis2_env_t *env)
 {
@@ -207,7 +206,8 @@ axis2_stream_free_void_arg(void *stream,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     stream_l = (axis2_stream_t *) stream;
-    return axis2_stream_free(stream_l, env);
+    axis2_stream_free(stream_l, env);
+    return;
 }
 
 /************************ Basic Stream Operations *****************************/

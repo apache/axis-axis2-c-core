@@ -66,7 +66,7 @@ axis2_stack_create(const axis2_env_t *env)
     return stack;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_stack_free(axis2_stack_t *stack,
     const axis2_env_t *env)
 {
@@ -77,7 +77,7 @@ axis2_stack_free(axis2_stack_t *stack,
         AXIS2_FREE(env->allocator, stack->data);
     }
     AXIS2_FREE(env->allocator, stack);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 void* AXIS2_CALL

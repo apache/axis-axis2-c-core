@@ -66,7 +66,7 @@ extern "C"
         AXIS2_FREE_VOID_ARG free_func,
         void *value);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_property_free(axis2_property_t *property,
         const axis2_env_t *env);
 

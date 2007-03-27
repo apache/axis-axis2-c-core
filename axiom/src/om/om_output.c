@@ -99,11 +99,11 @@ axiom_output_create(const axis2_env_t *env,
     return om_output;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_output_free(axiom_output_t *om_output,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (om_output->xml_version)
     {
@@ -138,7 +138,7 @@ axiom_output_free(axiom_output_t *om_output,
     }
 
     AXIS2_FREE(env->allocator, om_output);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

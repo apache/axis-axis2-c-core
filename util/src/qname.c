@@ -107,7 +107,7 @@ axis2_qname_create(const axis2_env_t *env,
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_qname_free(axis2_qname_t * qname,
     const axis2_env_t *env)
 {
@@ -117,7 +117,7 @@ axis2_qname_free(axis2_qname_t * qname,
 
     if (qname->ref > 0)
     {
-        return AXIS2_SUCCESS;
+        return;
     }
 
     if (qname->localpart)
@@ -139,7 +139,7 @@ axis2_qname_free(axis2_qname_t * qname,
 
     AXIS2_FREE(env->allocator, qname);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

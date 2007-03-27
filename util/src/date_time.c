@@ -75,9 +75,7 @@ axis2_date_time_create(const axis2_env_t *env)
 }
 
 
-/***************************Function implementation****************************/
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_date_time_free(axis2_date_time_t *date_time,
         const axis2_env_t *env)
 {
@@ -87,7 +85,7 @@ axis2_date_time_free(axis2_date_time_t *date_time,
     {
         AXIS2_FREE(env->allocator, date_time);
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

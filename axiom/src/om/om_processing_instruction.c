@@ -100,11 +100,11 @@ axiom_processing_instruction_create(const axis2_env_t *env,
     return processing_instruction;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (om_pi->value)
     {
@@ -119,7 +119,7 @@ axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
     }
 
     AXIS2_FREE(env->allocator, om_pi);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

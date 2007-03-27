@@ -749,9 +749,8 @@ axiom_stax_builder_next(axiom_stax_builder_t *om_builder,
     return node;
 }
 
-
-AXIS2_EXTERN axis2_status_t
-AXIS2_CALL axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
+AXIS2_EXTERN void AXIS2_CALL 
+axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

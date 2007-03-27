@@ -37,9 +37,8 @@ axiom_mime_parser_impl_t;
 #define AXIOM_MIME_PARSER_CONTENT_TYPE "content-type"
 
 #define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
-/***************************** Function headers *******************************/
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_mime_parser_free(axiom_mime_parser_t *mime_parser, 
     const axis2_env_t *env);
 
@@ -110,10 +109,7 @@ axiom_mime_parser_create(const axis2_env_t *env)
     return &(mime_parser_impl->mime_parser);
 }
 
-/*************************** Start of op impls *************************/
-
-axis2_status_t AXIS2_CALL
-
+void AXIS2_CALL
 axiom_mime_parser_free(axiom_mime_parser_t *mime_parser, 
     const axis2_env_t *env)
 {
@@ -135,7 +131,7 @@ axiom_mime_parser_free(axiom_mime_parser_t *mime_parser,
         AXIS2_FREE(env->allocator, mime_parser_impl);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

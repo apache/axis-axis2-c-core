@@ -111,8 +111,6 @@ extern "C"
         axis2_char_t *attr_value,
         axis2_bool_t detach);
 
-    /************ Macros *********************************************/
-
 #define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_FREE(iterator, env) \
         ((iterator)->ops->free_fn(iterator, env))
 

@@ -148,13 +148,13 @@ axiom_soap_builder_create(const axis2_env_t *env,
     return soap_builder;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_builder_free(axiom_soap_builder_t *soap_builder,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     if (!soap_builder)
-        return AXIS2_FAILURE;
+        return;
 
     if (soap_builder->builder_helper)
     {
@@ -205,7 +205,7 @@ axiom_soap_builder_free(axiom_soap_builder_t *soap_builder,
         soap_builder = NULL;
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

@@ -494,7 +494,7 @@ axis2_error_init()
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_error_impl_free(axis2_error_t *error)
 {
     if (error && NULL != error->ops)
@@ -505,7 +505,7 @@ axis2_error_impl_free(axis2_error_t *error)
     {
         AXIS2_FREE(error->allocator, error);
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_error_t* AXIS2_CALL

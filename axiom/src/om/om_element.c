@@ -600,11 +600,10 @@ axiom_element_get_attribute(axiom_element_t *om_element,
     return attr;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_element_free(axiom_element_t *om_element,
     const axis2_env_t *env)
 {
-    axis2_status_t status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (!om_element)
     {
@@ -674,7 +673,7 @@ axiom_element_free(axiom_element_t *om_element,
     }
     AXIS2_FREE(env->allocator, om_element);
 
-    return status;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

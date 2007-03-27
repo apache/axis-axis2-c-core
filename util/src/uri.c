@@ -208,7 +208,7 @@ axis2_uri_create(const axis2_env_t *env)
     return uri;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_uri_free(axis2_uri_t *uri,
     const axis2_env_t *env)
 {
@@ -270,7 +270,7 @@ axis2_uri_free(axis2_uri_t *uri,
 
     AXIS2_FREE(env->allocator, uri);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 /* parse_uri_components():

@@ -109,8 +109,6 @@ axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output,
         const axis2_char_t *soap_content_type);
 
 
-/*************************** Function macros **********************************/
-
 #define AXIOM_MIME_OUTPUT_FREE(mime_output, env) ((mime_output)->ops->free (mime_output, env))
 
 #define AXIOM_MIME_OUTPUT_COMPLETE(mime_output, env, output_stream, output_stream_size, soap_body_buffer, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type) \
@@ -118,8 +116,6 @@ axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output,
 
 #define AXIOM_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type) \
 ((mime_output)->ops->get_content_type_for_mime(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type))
-
-/*************************** End of function macros ***************************/
 
 /** @} */
 

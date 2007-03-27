@@ -34,8 +34,7 @@ struct axis2_thread_pool_impl
 #define AXIS2_INTF_TO_IMPL(thread_pool) \
     ((axis2_thread_pool_impl_t *)(thread_pool))
 
-/********************************Function headers******************************/
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_thread_pool_free(axis2_thread_pool_t *pool);
 
 axis2_thread_t* AXIS2_CALL
@@ -84,17 +83,17 @@ axis2_thread_pool_init(axis2_allocator_t *allocator)
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_thread_pool_free(axis2_thread_pool_t *pool)
 {
     axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
     if (!pool)
     {
-        return AXIS2_FAILURE;
+        return;
     }
     if (!pool_impl->allocator)
     {
-        return AXIS2_FAILURE;
+        return;
     }
     pool_impl = AXIS2_INTF_TO_IMPL(pool);
     if (pool_impl->thread_pool.ops)
@@ -102,7 +101,7 @@ axis2_thread_pool_free(axis2_thread_pool_t *pool)
         AXIS2_FREE(pool_impl->allocator, pool_impl->thread_pool.ops);
     }
     AXIS2_FREE(pool_impl->allocator, pool_impl);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_thread_t* AXIS2_CALL

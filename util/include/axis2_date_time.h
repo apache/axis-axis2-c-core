@@ -65,7 +65,7 @@ extern "C"
      * @param env pointer to environment struct. MUST NOT be NULL
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN void AXIS2_CALL 
     axis2_date_time_free(axis2_date_time_t *date_time,
         const axis2_env_t *env);
 

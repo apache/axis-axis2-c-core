@@ -83,13 +83,13 @@ axiom_attribute_create(const axis2_env_t *env,
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_attribute_free(axiom_attribute_t *attribute,
     const axis2_env_t *env)
 {
     if (--attribute->ref > 0)
     {
-        return AXIS2_SUCCESS;
+        return;
     }
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -109,10 +109,10 @@ axiom_attribute_free(axiom_attribute_t *attribute,
     
     AXIS2_FREE(env->allocator, attribute);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_attribute_free_void_arg(void *attribute,
     const axis2_env_t *env)
 {
@@ -120,7 +120,8 @@ axiom_attribute_free_void_arg(void *attribute,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_attribute_l = (axiom_attribute_t *) attribute;
-    return axiom_attribute_free(om_attribute_l, env);
+    axiom_attribute_free(om_attribute_l, env);
+    return;
 }
 
 AXIS2_EXTERN axis2_qname_t *AXIS2_CALL

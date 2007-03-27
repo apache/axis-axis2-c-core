@@ -53,7 +53,7 @@ extern "C"
     /**
     * Free the om_children_iterator struct
     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_children_iterator_free(axiom_children_iterator_t *iterator,
             const axis2_env_t *env);
 

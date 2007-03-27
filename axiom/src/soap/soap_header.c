@@ -142,11 +142,11 @@ axiom_soap_header_create_with_parent(const axis2_env_t *env,
     return soap_header;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_header_free(axiom_soap_header_t *soap_header,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (soap_header->header_blocks)
     {
@@ -188,7 +188,7 @@ axiom_soap_header_free(axiom_soap_header_t *soap_header,
 
     soap_header = NULL;
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axiom_soap_header_block_t* AXIS2_CALL

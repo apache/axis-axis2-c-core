@@ -70,7 +70,7 @@ extern "C"
       * @return satus of the op. AXIS2_SUCCESS on success
       *         AXIS2_FAILURE on error.
       */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_data_source_free(struct axiom_data_source *om_data_source,
             const axis2_env_t *env);
 

@@ -56,9 +56,7 @@ axis2_char_2_byte(const axis2_env_t *env, axis2_char_t *char_buffer, axis2_byte_
     return AXIS2_SUCCESS;
 }
 
-/***************************** Function headers *******************************/
-
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_mime_output_free(axiom_mime_output_t *mime_output, const axis2_env_t *env);
 
 axis2_byte_t * AXIS2_CALL
@@ -129,11 +127,9 @@ axiom_mime_output_create(const axis2_env_t *env)
     return &(mime_output_impl->mime_output);
 }
 
-/*************************** Start of op impls *************************/
-
-axis2_status_t AXIS2_CALL
-
-axiom_mime_output_free(axiom_mime_output_t *mime_output, const axis2_env_t *env)
+void AXIS2_CALL
+axiom_mime_output_free(axiom_mime_output_t *mime_output, 
+    const axis2_env_t *env)
 {
     axiom_mime_output_impl_t *mime_output_impl = NULL;
 
@@ -152,7 +148,7 @@ axiom_mime_output_free(axiom_mime_output_t *mime_output, const axis2_env_t *env)
         mime_output_impl = NULL;
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

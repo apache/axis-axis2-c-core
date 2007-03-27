@@ -72,7 +72,7 @@ extern "C"
      * @param env must not be null
      * @return status code AXIS2_SUCCESS 
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_body_free(axiom_soap_body_t *body,
             const axis2_env_t *env);
 

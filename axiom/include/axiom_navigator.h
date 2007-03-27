@@ -52,7 +52,7 @@ extern "C"
      * @param env environment MUST not be NULL
      * @returns AXIS2_SUCCESS 
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_navigator_free(axiom_navigator_t *om_navigator,
         const axis2_env_t *env);
 
@@ -104,23 +104,6 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_navigator_visited(axiom_navigator_t *om_navigator,
         const axis2_env_t *env);
-
-    /** Macros ********************************************************************/
-
-/*#define AXIOM_NAVIGATOR_FREE(navigator, env) \
-        axiom_navigator_free(navigator, env)*/
-
-/*#define AXIOM_NAVIGATOR_IS_NAVIGABLE(navigator, env) \
-        axiom_navigator_is_navigable(navigator, env)*/
-
-/*#define AXIOM_NAVIGATOR_IS_COMPLETED(navigator, env) \
-        axiom_navigator_is_completed(navigator, env)*/
-
-/*#define AXIOM_NAVIGATOR_VISITED(navigator, env) \
-        axiom_navigator_visited(navigator, env)*/
-
-/*#define AXIOM_NAVIGATOR_NEXT(navigator, env) \
-        axiom_navigator_next(navigator, env)*/
 
     /** @} */
 

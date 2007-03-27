@@ -215,7 +215,7 @@ axis2_url_parse_string(const axis2_env_t *env,
     }
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_url_free(axis2_url_t *url, 
     const axis2_env_t *env)
 {
@@ -237,7 +237,7 @@ axis2_url_free(axis2_url_t *url,
     }
     url->port = -1;
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL

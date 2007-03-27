@@ -95,13 +95,13 @@ axiom_soap_fault_detail_create_with_parent
     return  fault_detail;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_fault_detail_free(axiom_soap_fault_detail_t *fault_detail,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, fault_detail);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

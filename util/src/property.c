@@ -75,9 +75,7 @@ axis2_property_create_with_args(const axis2_env_t *env,
     return property;
 }
 
-/***************************Function implementation****************************/
-
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_property_free(axis2_property_t *property,
     const axis2_env_t *env)
 {
@@ -102,7 +100,7 @@ axis2_property_free(axis2_property_t *property,
     {
         AXIS2_FREE(env->allocator, property);
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_status_t AXIS2_CALL

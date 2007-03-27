@@ -54,7 +54,7 @@ axis2_env_create_all(const axis2_char_t *log_file,
     return env;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+AXIS2_EXTERN void AXIS2_CALL  
 axis2_env_free(axis2_env_t *env)
 {
     axis2_allocator_t *allocator = NULL;
@@ -88,7 +88,7 @@ axis2_env_free(axis2_env_t *env)
         allocator = NULL;
     }
 
-    return 0;
+    return;
 }
 
 AXIS2_EXTERN axis2_env_t* AXIS2_CALL
@@ -230,7 +230,7 @@ axis2_env_write_log(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL  
+AXIS2_EXTERN void AXIS2_CALL  
 axis2_env_free_masked(axis2_env_t *env, 
     char mask)
 {
@@ -248,7 +248,8 @@ axis2_env_free_masked(axis2_env_t *env,
     }
     if (env)
         AXIS2_FREE(env->allocator, env);
-    return AXIS2_SUCCESS;
+    
+    return;
 }
 
 

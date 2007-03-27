@@ -146,11 +146,11 @@ axiom_soap_fault_code_create_with_parent_value(const axis2_env_t *env,
     return fault_code;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_fault_code_free(axiom_soap_fault_code_t *fault_code,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (fault_code->subcode)
     {
@@ -162,7 +162,7 @@ axiom_soap_fault_code_free(axiom_soap_fault_code_t *fault_code,
     }
 
     AXIS2_FREE(env->allocator, fault_code);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

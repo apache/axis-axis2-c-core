@@ -17,11 +17,8 @@
 
 #include <axiom_child_element_iterator.h>
 
-/************** function prototypes *************************************/
-
-axis2_status_t AXIS2_CALL
-axiom_child_element_iterator_free
-(void *iterator,
+void AXIS2_CALL
+axiom_child_element_iterator_free(void *iterator,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -108,7 +105,7 @@ axiom_child_element_iterator_create(const axis2_env_t *env,
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_child_element_iterator_free
 (void *iterator,
         const axis2_env_t *env)

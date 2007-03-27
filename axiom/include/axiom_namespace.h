@@ -53,7 +53,7 @@ extern "C"
       * @param env Environment. MUST NOT be NULL.
       * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
       */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_namespace_free(struct axiom_namespace *om_namespace,
         const axis2_env_t *env);
 

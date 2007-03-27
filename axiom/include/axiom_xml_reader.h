@@ -274,7 +274,7 @@ extern "C"
          * @return status of the op, AXIS2_SUCCESS on success,
          * AXIS2_FAILURE on error.
          */
-        axis2_status_t(AXIS2_CALL *
+        void(AXIS2_CALL *
             xml_free)(axiom_xml_reader_t *parser,
                  const axis2_env_t *env,
                  void *data);

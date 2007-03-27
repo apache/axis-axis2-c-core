@@ -122,12 +122,12 @@ extern "C"
      * Free function, This function deallocate all the resources associated 
      * with the soap_envelope
      * IT frees it's soap body and soap headers as well as the underlying
-     * om node tree by calling AXIOM_NODE_FREE_TREE function
+     * om node tree by calling axiom_node_free_tree function
      * @param envelope soap_envelope
      * @param env environment
      * @return status code AXIS2_SUCCESS on success , AXIS2_FAILURE otherwise
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_envelope_free(axiom_soap_envelope_t *envelope,
         const axis2_env_t *env);
 

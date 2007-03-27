@@ -141,11 +141,11 @@ axiom_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
     return axiom_soap_envelope_create(env, ns);
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_envelope_free(axiom_soap_envelope_t *soap_envelope,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (soap_envelope->header)
     {
@@ -169,7 +169,7 @@ axiom_soap_envelope_free(axiom_soap_envelope_t *soap_envelope,
     }
 
     AXIS2_FREE(env->allocator, soap_envelope);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL

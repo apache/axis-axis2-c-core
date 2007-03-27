@@ -131,11 +131,11 @@ axiom_text_create_with_data_handler(const axis2_env_t *env,
     return om_text;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_text_free(axiom_text_t * om_text,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (om_text->value)
     {
@@ -163,7 +163,7 @@ axiom_text_free(axiom_text_t * om_text,
     }
 
     AXIS2_FREE(env->allocator, om_text);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

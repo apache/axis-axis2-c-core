@@ -116,12 +116,11 @@ axiom_soap_body_create_with_parent(const axis2_env_t *env,
     return soap_body;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_body_free(axiom_soap_body_t *soap_body,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, soap_body, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (soap_body->soap_fault)
     {
@@ -130,7 +129,7 @@ axiom_soap_body_free(axiom_soap_body_t *soap_body,
     }
     AXIS2_FREE(env->allocator, soap_body);
     soap_body = NULL;
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL axiom_soap_body_has_fault(axiom_soap_body_t *soap_body,

@@ -57,7 +57,7 @@ extern "C"
       *         else AXIS2_FAILURE
       */
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_detail_free(axiom_soap_fault_detail_t *fault_detail,
             const axis2_env_t *env);
 

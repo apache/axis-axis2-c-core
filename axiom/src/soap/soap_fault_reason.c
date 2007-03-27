@@ -111,11 +111,11 @@ axiom_soap_fault_reason_create_with_parent(const axis2_env_t *env,
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (fault_reason->fault_texts)
     {
@@ -143,7 +143,7 @@ axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
 
     fault_reason = NULL;
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axiom_soap_fault_text_t* AXIS2_CALL

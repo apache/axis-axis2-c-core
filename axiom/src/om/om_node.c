@@ -82,15 +82,15 @@ axiom_node_create(const axis2_env_t *env)
  *  This free fucntion will free an om_element and all the children contained in it
  *  before calling this function
 */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_node_free(axiom_node_t *om_node,
     const axis2_env_t *env)
 {
     axiom_node_t *child_node = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     if (!om_node)
     {
-        return AXIS2_FAILURE;
+        return;
     }
 
     if (om_node->first_child)
@@ -140,7 +140,7 @@ axiom_node_free(axiom_node_t *om_node,
 
     AXIS2_FREE(env->allocator, om_node);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

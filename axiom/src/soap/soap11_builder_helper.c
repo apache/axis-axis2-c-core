@@ -77,15 +77,15 @@ axiom_soap11_builder_helper_create(const axis2_env_t *env,
     return builder_helper;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap11_builder_helper_free(axiom_soap11_builder_helper_t *builder_helper,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     AXIS2_FREE(env->allocator, builder_helper);
     builder_helper = NULL;
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

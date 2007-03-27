@@ -44,7 +44,7 @@ extern "C"
     AXIS2_EXTERN axis2_generic_obj_t * AXIS2_CALL
     axis2_generic_obj_create(const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_generic_obj_free(axis2_generic_obj_t *generic_obj,
         const axis2_env_t *env);
 

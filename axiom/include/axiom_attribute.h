@@ -60,7 +60,7 @@ extern "C"
      * cast into appropriate type and then pass the cast object
      * into the om_attribute structure's free method
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_attribute_free_void_arg(
         void *om_attribute,
         const axis2_env_t *env);
@@ -73,7 +73,7 @@ extern "C"
       *         else AXIS2_FAILURE
       */
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_attribute_free(struct axiom_attribute *om_attribute,
             const axis2_env_t *env);
 

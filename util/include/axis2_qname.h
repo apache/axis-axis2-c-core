@@ -75,7 +75,7 @@ extern "C"
      *  Free a qname struct
      *  @return Status code
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_qname_free(struct axis2_qname * qname,
         const axis2_env_t *env);
 

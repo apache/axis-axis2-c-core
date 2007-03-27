@@ -77,7 +77,7 @@ axiom_doctype_create(const axis2_env_t *env,
     return doctype;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_doctype_free(axiom_doctype_t *om_doctype,
     const axis2_env_t *env)
 {
@@ -88,9 +88,8 @@ axiom_doctype_free(axiom_doctype_t *om_doctype,
             AXIS2_FREE(env->allocator, om_doctype->value);
         }
         AXIS2_FREE(env->allocator, om_doctype);
-        return AXIS2_SUCCESS;
     }
-    return AXIS2_FAILURE;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

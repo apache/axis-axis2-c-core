@@ -60,7 +60,7 @@ axis2_properties_create(const axis2_env_t *env)
     return properties;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_properties_free(axis2_properties_t *properties,
     const axis2_env_t *env)
 {
@@ -92,7 +92,7 @@ axis2_properties_free(axis2_properties_t *properties,
     {
         AXIS2_FREE(env->allocator, properties);
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL

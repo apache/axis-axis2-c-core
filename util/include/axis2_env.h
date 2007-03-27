@@ -141,7 +141,7 @@ extern "C"
       * Optional, can be NULL. If NULL default string handler would be used.
       * @return pointer to the newly created environment struct 
       */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN void AXIS2_CALL 
     axis2_env_free(axis2_env_t *env);
 
     /**
@@ -156,7 +156,7 @@ extern "C"
     *       Eg : 0x3 frees both log and error
     * @return status of the operation
     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN void AXIS2_CALL 
     axis2_env_free_masked(axis2_env_t *env, 
         char mask);
     /**

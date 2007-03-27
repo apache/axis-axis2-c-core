@@ -79,7 +79,7 @@ extern "C"
      * @return status code AXIS2_SUCCESS on success,
      *  AXIS2_FAILURE otherwise 
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_output_free(axiom_output_t *om_output,
         const axis2_env_t *env);
 

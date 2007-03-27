@@ -126,9 +126,6 @@ extern "C"
         const axis2_char_t *file_name,
         const axis2_char_t *mime_type);
 
-
-    /*************************** Function macros **********************************/
-
 #define AXIOM_DATA_HANDLER_FREE(data_handler, env) \
     ((data_handler)->ops->free (data_handler, env))
 

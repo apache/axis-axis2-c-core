@@ -54,12 +54,10 @@ axis2_param_container_create(const axis2_env_t *env)
     return param_container;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_param_container_free(axis2_param_container_t *param_container,
     const axis2_env_t *env)
 {
-    axis2_status_t status = AXIS2_SUCCESS;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (param_container->params)
@@ -92,10 +90,10 @@ axis2_param_container_free(axis2_param_container_t *param_container,
     }
 
     AXIS2_FREE(env->allocator, param_container);
-    return status;
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_param_container_free_void_arg(void *param_container,
     const axis2_env_t *env)
 {
@@ -103,7 +101,8 @@ axis2_param_container_free_void_arg(void *param_container,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     param_container_l = (axis2_param_container_t *) param_container;
-    return axis2_param_container_free(param_container_l, env);
+    axis2_param_container_free(param_container_l, env);
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

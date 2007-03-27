@@ -108,7 +108,7 @@ axis2_base64_binary_create_with_encoded_binary(const axis2_env_t *env,
     return base64_binary;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_base64_binary_free(axis2_base64_binary_t *base64_binary,
         const axis2_env_t *env)
 {
@@ -124,7 +124,7 @@ axis2_base64_binary_free(axis2_base64_binary_t *base64_binary,
         AXIS2_FREE(env->allocator, base64_binary);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

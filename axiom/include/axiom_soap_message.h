@@ -56,7 +56,7 @@ extern "C"
       * @return satus of the op. AXIS2_SUCCESS on success 
       *         else AXIS2_FAILURE
       */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_message_free(axiom_soap_message_t *message,
             const axis2_env_t *env);
 
@@ -69,14 +69,14 @@ extern "C"
             const axis2_env_t *env,
             axiom_output_t *om_output);
 
-#define AXIOM_SOAP_MESSAGE_FREE(message , env) \
+/*#define AXIOM_SOAP_MESSAGE_FREE(message , env) \
         ((message)->ops->free(message, env)
 
 #define AXIOM_SOAP_MESSAGE_GET_SOAP_ENVELOPE(message, env) \
         ((message)->ops->get_envelope(message, env)
 
 #define AXIOM_SOAP_MESSAGE_SERIALIZE(message, env, om_output) \
-        ((message)->ops->serialize(message, env, om_output)
+        ((message)->ops->serialize(message, env, om_output) */
     /** @} */
 
 #ifdef __cplusplus

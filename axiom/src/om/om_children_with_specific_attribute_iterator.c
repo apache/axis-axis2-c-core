@@ -19,9 +19,7 @@
 #include <axiom_attribute.h>
 #include <axiom_element.h>
 
-/************** function prototypes *************************************/
-
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_children_with_specific_attribute_iterator_free(
     axiom_children_with_specific_attribute_iterator_t *iterator,
     const axis2_env_t *env);
@@ -125,13 +123,13 @@ axiom_children_with_specific_attribute_iterator_create(
 }
 
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_children_with_specific_attribute_iterator_free(
     axiom_children_with_specific_attribute_iterator_t *iterator,
     const axis2_env_t *env)
 {
     axiom_children_with_specific_attribute_iterator_impl_t *qname_iter_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     qname_iter_impl = AXIS2_INTF_TO_IMPL(iterator);
     if (qname_iter_impl->attr_qname)
     {

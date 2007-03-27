@@ -51,7 +51,7 @@ extern "C"
      * type of function implemented. When the param value is set this function
      * should also be assigned to param free function
      */
-    typedef axis2_status_t (AXIS2_CALL *
+    typedef void (AXIS2_CALL *
     AXIS2_PARAM_VALUE_FREE)(void *param, 
         const axis2_env_t *env);
 
@@ -69,14 +69,14 @@ extern "C"
      * cast into appropriate type and then pass the cast object
      * into the param_container structure's free method
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_param_container_free_void_arg(void *param_container,
         const axis2_env_t *env);
 
     /** De-allocate memory
        * @return status code
        */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_param_container_free(axis2_param_container_t *param_container,
         const axis2_env_t *env);
 

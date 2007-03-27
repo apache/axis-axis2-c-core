@@ -64,7 +64,7 @@ extern "C"
       * @return satus of the op. AXIS2_SUCCESS on success
       *         AXIS2_FAILURE on error.
       */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_doctype_free(struct axiom_doctype *om_doctype,
             const axis2_env_t *env);
     /**

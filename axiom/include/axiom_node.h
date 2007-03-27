@@ -96,7 +96,7 @@ extern "C"
     * @param env Environment. MUST NOT be NULL, .
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_node_free(axiom_node_t *om_node,
             const axis2_env_t *env);
     /**
@@ -270,52 +270,36 @@ extern "C"
             const axis2_env_t *env);
 
 
-    /** frees given node */
 #define AXIOM_NODE_FREE_TREE(om_node,env) \
         axiom_node_free(om_node,env)
-    /** adds given child to the given parent */
 #define AXIOM_NODE_ADD_CHILD(om_node, env, child) \
         axiom_node_add_child(om_node, env, child)
-    /** detaches the given node from its parent */
 #define AXIOM_NODE_DETACH(om_node,env) \
         axiom_node_detach(om_node,env)
-    /** inserts a sibling after the given node */
 #define AXIOM_NODE_INSERT_SIBLING_AFTER(om_node,env,node_to_insert) \
         axiom_node_insert_sibling_after(om_node,env,node_to_insert)
-    /** inserts a sibling before the given node */
 #define AXIOM_NODE_INSERT_SIBLING_BEFORE(om_node,env,node_to_insert) \
         axiom_node_insert_sibling_before(om_node,env,node_to_insert)
-    /** serialize an om_node and all its children */
 #define AXIOM_NODE_SERIALIZE(om_node,env, om_output) \
         axiom_node_serialize(om_node,env,om_output)
-    /** returns parent of this om_node */
 #define AXIOM_NODE_GET_PARENT(om_node,env) \
         axiom_node_get_parent(om_node,env)
-    /** get firet child of this om_node  */
 #define AXIOM_NODE_GET_FIRST_CHILD(om_node,env) \
         axiom_node_get_first_child(om_node,env)
-    /**get last child  */
 #define AXIOM_NODE_GET_LAST_CHILD(om_node,env) \
         axiom_node_get_last_child(om_node,env)
-    /** get next sibling */
 #define AXIOM_NODE_GET_NEXT_SIBLING(om_node,env) \
         axiom_node_get_next_sibling(om_node,env)
-    /** get previous sibling */
 #define AXIOM_NODE_GET_PREVIOUS_SIBLING(om_node,env) \
         axiom_node_get_previous_sibling(om_node,env)
-    /** get firet element of this om_node  */
 #define AXIOM_NODE_GET_FIRST_ELEMENT(om_node,env) \
         axiom_node_get_first_element(om_node,env)
-    /** get build status */
 #define AXIOM_NODE_IS_COMPLETE(om_node,env) \
         axiom_node_is_complete(om_node,env)
-    /** get data element of this node can be om_element om_text etc */
 #define AXIOM_NODE_GET_DATA_ELEMENT(om_node,env) \
         axiom_node_get_data_element(om_node,env)
-    /** node type one of om_node_types */
 #define AXIOM_NODE_GET_NODE_TYPE(om_node,env) \
         axiom_node_get_node_type(om_node,env)
-    /** get document */
 #define AXIOM_NODE_GET_DOCUMENT(om_node, env) \
         axiom_node_get_document(om_node, env)
 

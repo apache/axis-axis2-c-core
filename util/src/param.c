@@ -219,7 +219,7 @@ axis2_param_get_value_list(axis2_param_t *param,
     return param->value_list;
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_param_free(axis2_param_t *param,
     const axis2_env_t *env)
 {
@@ -276,7 +276,7 @@ axis2_param_free(axis2_param_t *param,
     param_name = axis2_param_get_name(param, env);
     AXIS2_FREE(env->allocator, param_name);
     AXIS2_FREE(env->allocator, param);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

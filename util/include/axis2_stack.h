@@ -48,7 +48,7 @@ extern "C"
      * @param stack pointer to stack
      * @param env environemnt
      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_stack_free(axis2_stack_t *stack,
         const axis2_env_t *env);
 

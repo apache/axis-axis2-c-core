@@ -67,18 +67,18 @@ axiom_document_create(const axis2_env_t *env,
     return document;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_document_free(axiom_document_t *document,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
 
     if (document->root_element)
     {
         AXIOM_NODE_FREE_TREE(document->root_element, env);
     }
     AXIS2_FREE(env->allocator, document);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 
@@ -158,13 +158,9 @@ axiom_document_set_root_element(axiom_document_t *document,
 
     if (document->root_element)
     {
-        status = AXIOM_NODE_FREE_TREE(document->root_element, env);
-        if (status == AXIS2_SUCCESS)
-        {
-            document->root_element = node;
-            return AXIS2_SUCCESS;
-        }
-        return AXIS2_FAILURE;
+        AXIOM_NODE_FREE_TREE(document->root_element, env);
+        document->root_element = node;
+        return AXIS2_SUCCESS;
     }
     else
     {

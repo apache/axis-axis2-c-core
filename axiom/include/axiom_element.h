@@ -175,7 +175,7 @@ extern "C"
       * @param env Environment. MUST NOT be NULL.
        * @return satus of the op. AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
       */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axiom_element_free(axiom_element_t *element,
             const axis2_env_t *env);
 

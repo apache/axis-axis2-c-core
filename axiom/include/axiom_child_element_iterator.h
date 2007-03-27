@@ -96,8 +96,6 @@ extern "C"
     axiom_child_element_iterator_create(const axis2_env_t *env,
             axiom_node_t *current_child);
 
-    /************ Macros *********************************************/
-
 #define AXIOM_CHILD_ELEMENT_ITERATOR_FREE(iterator, env) \
         (((axiom_child_element_iterator_t *) iterator)->ops->free_fn(iterator, env))
 

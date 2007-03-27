@@ -90,13 +90,13 @@ axiom_soap_header_block_create_with_parent(const axis2_env_t *env,
     return header_block;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_header_block_free(axiom_soap_header_block_t *header_block,
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, header_block);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

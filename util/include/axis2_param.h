@@ -128,7 +128,7 @@ extern "C"
         const axis2_env_t *env,
         int type);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_param_free(struct axis2_param *param,
         const axis2_env_t *env);
 
@@ -150,7 +150,7 @@ extern "C"
     axis2_param_get_value_list(struct axis2_param *param,
         const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_param_value_free(void *param_value,
         const axis2_env_t *env);
 

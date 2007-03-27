@@ -34,9 +34,7 @@ extern axis2_char_t AXIS2_CRLF[];
 
 #define AXIS2_INTF_TO_IMPL(mime_body_part) ((axiom_mime_body_part_impl_t *)(mime_body_part))
 
-/***************************** Function headers *******************************/
-
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part, 
     const axis2_env_t *env);
 
@@ -102,9 +100,7 @@ axiom_mime_body_part_create(const axis2_env_t *env)
     return &(mime_body_part_impl->mime_body_part);
 }
 
-/*************************** Start of op impls *************************/
-
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part, 
     const axis2_env_t *env)
 {
@@ -143,7 +139,7 @@ axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part,
         AXIS2_FREE(env->allocator, mime_body_part_impl);
     }
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 

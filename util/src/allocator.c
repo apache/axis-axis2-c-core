@@ -49,14 +49,14 @@ axis2_allocator_init(axis2_allocator_t *allocator)
     return NULL;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_allocator_free(axis2_allocator_t *allocator)
 {
     if (allocator)
     {
         allocator->free_fn(allocator, allocator);
     }
-    return AXIS2_SUCCESS;
+    return;
 }
 
 void *AXIS2_CALL

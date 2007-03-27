@@ -70,13 +70,13 @@ axiom_navigator_create(const axis2_env_t *env,
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_navigator_free(axiom_navigator_t *om_navigator,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env , AXIS2_FAILURE);
     AXIS2_FREE(env->allocator, om_navigator);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

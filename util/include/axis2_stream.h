@@ -152,7 +152,7 @@ extern "C"
     /**
 	 *Free stream
 	 */
-	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+	AXIS2_EXTERN void AXIS2_CALL
 	axis2_stream_free(axis2_stream_t *stream, const axis2_env_t *env);	
 	
 	/**
@@ -161,7 +161,7 @@ extern "C"
      * into the module_desc structure's free method
      */
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_stream_free_void_arg(void *stream,
         const axis2_env_t *env);
 

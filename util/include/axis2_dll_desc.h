@@ -71,11 +71,11 @@ extern "C"
     AXIS2_EXTERN axis2_dll_desc_t* AXIS2_CALL
     axis2_dll_desc_create(const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_dll_desc_free_void_arg(void *dll_desc,
         const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_dll_desc_free(axis2_dll_desc_t *dll_desc,
         const axis2_env_t *env);
 

@@ -45,7 +45,7 @@ extern "C"
     AXIS2_EXTERN axis2_file_t * AXIS2_CALL
     axis2_file_create(const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_file_free(axis2_file_t *file,
         const axis2_env_t *env);
 

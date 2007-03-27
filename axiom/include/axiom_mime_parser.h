@@ -100,8 +100,6 @@ extern "C"
     AXIS2_EXTERN axiom_mime_parser_t * AXIS2_CALL
     axiom_mime_parser_create(const axis2_env_t *env);
 
-    /*************************** Function macros **********************************/
-
 #define AXIOM_MIME_PARSER_FREE(mime_parser, env) \
 ((mime_parser)->ops->free (mime_parser, env))
 

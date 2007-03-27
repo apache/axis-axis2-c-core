@@ -32,7 +32,7 @@ int AXIS2_CALL
 axis2_libxml2_reader_wrapper_next(axiom_xml_reader_t *parser,
     const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_libxml2_reader_wrapper_free(axiom_xml_reader_t *parser,
     const axis2_env_t *env);
 
@@ -98,7 +98,7 @@ axis2_char_t *AXIS2_CALL
 axis2_libxml2_reader_wrapper_get_dtd(axiom_xml_reader_t *parser,
     const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_libxml2_reader_wrapper_xml_free(axiom_xml_reader_t *parser,
     const axis2_env_t *env,
     void *data);
@@ -533,7 +533,7 @@ axis2_libxml2_reader_wrapper_next(axiom_xml_reader_t *parser,
     }
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_libxml2_reader_wrapper_free(axiom_xml_reader_t *parser,
     const axis2_env_t *env)
 {
@@ -554,7 +554,7 @@ axis2_libxml2_reader_wrapper_free(axiom_xml_reader_t *parser,
         parser->ops = NULL;
     }
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(parser));
-    return AXIS2_SUCCESS;
+    return;
 }
 
 int AXIS2_CALL
@@ -832,7 +832,7 @@ axis2_libxml2_reader_wrapper_get_pi_data(axiom_xml_reader_t *parser,
     }
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_libxml2_reader_wrapper_xml_free(axiom_xml_reader_t *parser,
     const axis2_env_t *env,
     void *data)
@@ -840,7 +840,7 @@ axis2_libxml2_reader_wrapper_xml_free(axiom_xml_reader_t *parser,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, data, AXIS2_FAILURE);
     xmlFree(data);
-    return AXIS2_SUCCESS;
+    return;
 }
 
 axis2_char_t *AXIS2_CALL

@@ -94,7 +94,7 @@ extern "C"
     * axis2_allocator_init() 
     * @param allocator 
     */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN void AXIS2_CALL 
     axis2_allocator_free(axis2_allocator_t *allocator);
 
   /** 

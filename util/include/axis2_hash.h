@@ -252,7 +252,7 @@ extern "C"
      *
      */
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    AXIS2_EXTERN void AXIS2_CALL 
     axis2_hash_free(axis2_hash_t *ht,
         const axis2_env_t *env);
 
@@ -263,7 +263,7 @@ extern "C"
      * @return return status code
      */
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_hash_free_void_arg(void *ht_void, 
         const axis2_env_t* env);
 

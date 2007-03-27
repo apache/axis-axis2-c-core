@@ -62,7 +62,7 @@ extern "C"
     AXIS2_EXTERN axis2_linked_list_t* AXIS2_CALL 
     axis2_linked_list_create(const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_linked_list_free(axis2_linked_list_t *linked_list,
         const axis2_env_t *env);
 

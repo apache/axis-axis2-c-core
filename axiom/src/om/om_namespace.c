@@ -80,7 +80,7 @@ axiom_namespace_create(const axis2_env_t *env,
     return om_namespace ;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_namespace_free(axiom_namespace_t *om_namespace,
     const axis2_env_t *env)
 {
@@ -108,7 +108,7 @@ axiom_namespace_free(axiom_namespace_t *om_namespace,
 
     AXIS2_FREE(env->allocator, om_namespace);
 
-    return AXIS2_SUCCESS;
+    return;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

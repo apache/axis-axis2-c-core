@@ -528,7 +528,7 @@ axis2_hash_contains_key(
     return AXIS2_FALSE;
 }
 
-static axis2_status_t
+static void
 axis2_hash_entry_free(const axis2_env_t *env, axis2_hash_entry_t *hash_entry)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -539,10 +539,10 @@ axis2_hash_entry_free(const axis2_env_t *env, axis2_hash_entry_t *hash_entry)
         axis2_hash_entry_free(env, hash_entry->next);
     }
     AXIS2_FREE(env->allocator, hash_entry);
-    return AXIS2_SUCCESS;
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_hash_free(axis2_hash_t *ht, const axis2_env_t* env)
 {
     int i = 0;
@@ -575,12 +575,11 @@ axis2_hash_free(axis2_hash_t *ht, const axis2_env_t* env)
         }
         AXIS2_FREE(env->allocator, (ht->array));
         AXIS2_FREE(env->allocator, ht);
-        return AXIS2_SUCCESS;
     }
-    return AXIS2_FAILURE;
+    return;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_hash_free_void_arg(void *ht_void, const axis2_env_t* env)
 {
     int i = 0;
@@ -601,8 +600,7 @@ axis2_hash_free_void_arg(void *ht_void, const axis2_env_t* env)
         }
         AXIS2_FREE(env->allocator, (ht->array));
         AXIS2_FREE(env->allocator, ht);
-        return AXIS2_SUCCESS;
     }
-    return AXIS2_FAILURE;
+    return;
 }
 
