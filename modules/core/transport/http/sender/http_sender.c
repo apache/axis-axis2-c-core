@@ -388,12 +388,15 @@ axis2_http_sender_send(
 					if (axis2_strcmp(soap_action, ""))
 					{
 						axis2_char_t *temp_content_type = NULL;
-						temp_content_type = axis2_stracat(content_type, ";action=", env);
+						temp_content_type = axis2_stracat(content_type, ";action=\"", env);
 						AXIS2_FREE(env->allocator, content_type);
 						content_type = temp_content_type;
 						temp_content_type = axis2_stracat(content_type, soap_action, env);
 						AXIS2_FREE(env->allocator, content_type);
 						content_type = temp_content_type;
+                        temp_content_type = axis2_stracat(content_type, "\"", env);
+					    AXIS2_FREE(env->allocator, content_type);
+					    content_type = temp_content_type;
 					}
 				}
 			}
@@ -416,10 +419,13 @@ axis2_http_sender_send(
 				content_type = temp_content_type;
 				if (axis2_strcmp(soap_action, ""))
 				{
-					temp_content_type = axis2_stracat(content_type, ";action=", env);
+					temp_content_type = axis2_stracat(content_type, ";action=\"", env);
 					AXIS2_FREE(env->allocator, content_type);
 					content_type = temp_content_type;
 					temp_content_type = axis2_stracat(content_type, soap_action, env);
+					AXIS2_FREE(env->allocator, content_type);
+					content_type = temp_content_type;
+                    temp_content_type = axis2_stracat(content_type, "\"", env);
 					AXIS2_FREE(env->allocator, content_type);
 					content_type = temp_content_type;
 				}
