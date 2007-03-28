@@ -70,7 +70,7 @@ axis2_iis_worker_get_bytes(
     const axis2_env_t *env,
     axis2_stream_t *stream);
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 axis2_iis_worker_free(
     axis2_iis_worker_t *iis_worker,
     const axis2_env_t *env);
