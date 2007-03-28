@@ -58,7 +58,7 @@ extern "C"
                     const axis2_env_t *env, 
                     request_rec *r);
 
-        axis2_status_t (AXIS2_CALL *
+        void (AXIS2_CALL *
                 free)(
                     axis2_apache2_worker_t *apache2_worker,
                     const axis2_env_t *env);
