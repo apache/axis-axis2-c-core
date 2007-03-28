@@ -600,7 +600,7 @@ axis2_strltrim(const axis2_env_t *env,
     {
         if (!strchr(_trim, *_p))
         {
-            ret = (axis2_char_t *) axis2_strdup(_p, env);
+            ret = (axis2_char_t *) axis2_strdup(env, _p);
             break;
         }
         ++_p;
@@ -629,7 +629,7 @@ axis2_strrtrim(const axis2_env_t *env,
     {
         if (!strchr(_trim, *__tail))
         {
-            ret = (axis2_char_t *) axis2_strdup(_s, env);
+            ret = (axis2_char_t *) axis2_strdup(env, _s);
             break;
         }
         *__tail = 0;
