@@ -567,8 +567,7 @@ axis2_replace(const axis2_env_t *env,
         return NULL;
     }
 
-    newstr = axis2_strdup(str, env);
-
+    newstr = axis2_strdup(env, str);
     index = strchr(newstr, s1);
     while (index)
     {
