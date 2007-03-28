@@ -115,7 +115,7 @@ axis2_http_client_free_void_arg(
 {
     axis2_http_client_t *client_l = NULL;
     AXIS2_ENV_CHECK(env, void);
-
+    
     client_l = (axis2_http_client_t *)client;
     axis2_http_client_free(client_l, env);
     return;
