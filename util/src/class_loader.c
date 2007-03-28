@@ -149,12 +149,6 @@ axis2_class_loader_load_lib(const axis2_env_t *env,
     dl_handler = AXIS2_PLATFORM_LOADLIB(dll_name);
     if (! dl_handler)
     {
-        /*
-        axis2_char_t *errormsg = NULL;
-
-        errormsg =  (axis2_char_t *) dlerror ();
-        printf("errormsg:%s\n", errormsg);
-        */
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED,
                 AXIS2_FAILURE);
         return AXIS2_FAILURE;
