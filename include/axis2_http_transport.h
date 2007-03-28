@@ -447,6 +447,18 @@ extern "C"
 #define AXIS2_SSL_PASSPHRASE "SSL_PASSPHRASE"
 
 /**
+ *HTTP Transport Level Error
+ */
+#define AXIS2_HTTP_TRANSPORT_ERROR "http_transport_error"
+
+
+/**
+ *415 Unsupported media Type
+ */
+
+#define AXIS2_HTTP_UNSUPPORTED_MEDIA_TYPE "415 Unsupported Media Type\r\n"
+
+/**
  *Constant for HTTP headers that user specify, Those headers will
  *provided as property to the message context.
  */

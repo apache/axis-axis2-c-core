@@ -183,6 +183,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_bool_t do_rest = AXIS2_FALSE;
     axis2_char_t *soap_action = NULL;
     unsigned int soap_action_len = 0;
+    axis2_property_t *http_error_property = NULL;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FAILURE);
@@ -395,6 +396,12 @@ axis2_http_transport_utils_process_http_post_request(
     {
         /* REST support */
         do_rest = AXIS2_TRUE;
+    }
+    else
+    {
+        http_error_property = axis2_property_create(env);
+        axis2_property_set_value(http_error_property, env, AXIS2_HTTP_UNSUPPORTED_MEDIA_TYPE);
+        axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_TRANSPORT_ERROR, http_error_property);
     }
 
     if (do_rest)
