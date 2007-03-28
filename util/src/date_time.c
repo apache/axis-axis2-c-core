@@ -126,6 +126,59 @@ axis2_date_time_deserialize_date_time(axis2_date_time_t *date_time,
     return AXIS2_SUCCESS;
 }
 
+/*Check if the @data_time is not expired, compared to @ref*/
+AXIS2_EXTERN axis2_date_time_comp_result_t AXIS2_CALL
+axis2_date_time_compare(axis2_date_time_t *date_time,
+        const axis2_env_t *env, axis2_date_time_t *ref)
+{
+   
+   AXIS2_ENV_CHECK(env, AXIS2_DATE_TIME_COMP_RES_FAILURE);
+  
+   if(date_time->year < ref->year){
+        return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED; 
+   }else if(date_time->year > ref->year){
+        return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
+   }
+
+   if(date_time->mon < ref->mon ){
+        return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED; 
+   }else if(date_time->mon > ref->mon){
+        return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
+   }
+
+   if(date_time->day < ref->day ){
+        return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED; 
+   }else if(date_time->day > ref->day){
+        return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
+   }
+
+   if(date_time->hour < ref->hour ){
+        return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED; 
+   }else if(date_time->hour > ref->hour){
+        return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
+   }
+
+   if(date_time->min < ref->min ){
+        return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED; 
+   }else if(date_time->min > ref->min){
+        return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
+   }
+
+   if(date_time->sec < ref->sec ){
+        return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED; 
+   }else if(date_time->sec > ref->sec){
+        return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
+   }
+
+   if(date_time->msec < ref->msec ){
+        return AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED; 
+   }else if(date_time->msec > ref->msec){
+        return AXIS2_DATE_TIME_COMP_RES_EXPIRED;
+   }
+   
+   return AXIS2_DATE_TIME_COMP_RES_EQUAL;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_date_time_set_date_time(axis2_date_time_t* date_time,
         const axis2_env_t *env,
@@ -204,6 +257,7 @@ axis2_date_time_get_month(axis2_date_time_t *date_time,
 {
     return (date_time->mon);
 }
+
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_date_time_get_date(axis2_date_time_t *date_time,

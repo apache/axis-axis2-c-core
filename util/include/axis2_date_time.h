@@ -39,6 +39,15 @@ extern "C"
 
     typedef struct axis2_date_time axis2_date_time_t;
 
+
+    typedef enum  {
+        AXIS2_DATE_TIME_COMP_RES_FAILURE = -1,
+        AXIS2_DATE_TIME_COMP_RES_UNKNOWN,
+        AXIS2_DATE_TIME_COMP_RES_EXPIRED,
+        AXIS2_DATE_TIME_COMP_RES_EQUAL,
+        AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED
+    }axis2_date_time_comp_result_t; 
+
     /**
      * Creates axis2_date_time struct with current date time
      * @param env double pointer to environment struct. MUST NOT be NULL
@@ -216,6 +225,19 @@ extern "C"
     AXIS2_EXTERN int AXIS2_CALL 
     axis2_date_time_get_msec(axis2_date_time_t *date_time,
         const axis2_env_t *env);
+    /**
+     * Compare the date and time of @date_time with the reference @ref.
+     * If the @date_time < @ref this returns NOT_EXPIRED.
+     * If the @date_time > @ref this returns EXPIRED.
+     * If the @date_time = @ref this returns EQUAL.
+     * @param date_time the date time to be compared
+     * @param env pointer to environment struct. MUST NOT be NULL
+     * @ref the reference date time
+     * @return NOT_EXPIRED/EXPIRED/EQUAL if valid otherwise return FAILURE
+     */
+    AXIS2_EXTERN axis2_date_time_comp_result_t AXIS2_CALL
+    axis2_date_time_compare(axis2_date_time_t *date_time,   
+        const axis2_env_t *env, axis2_date_time_t *ref);
 
 #ifdef __cplusplus
 }
