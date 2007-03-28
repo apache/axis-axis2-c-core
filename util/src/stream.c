@@ -110,10 +110,6 @@ axis2_stream_skip_socket(axis2_stream_t *stream,
     const axis2_env_t *env,
     int count);
 
-/************************* End of function headers ****************************/
-/*
- * Internal function. Not exposed to outside
- */
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_internal(const axis2_env_t *env)
 {
@@ -208,6 +204,79 @@ axis2_stream_free_void_arg(void *stream,
     stream_l = (axis2_stream_t *) stream;
     axis2_stream_free(stream_l, env);
     return;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_stream_flush(axis2_stream_t *stream,
+    const axis2_env_t *env)
+{
+    axis2_stream_impl_t *stream_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    stream_impl = AXIS2_INTF_TO_IMPL(stream);
+
+    if (stream_impl->fp)
+    {
+        if (fflush(stream_impl->fp))
+        {
+            return AXIS2_FAILURE;
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_stream_close(axis2_stream_t *stream,
+    const axis2_env_t *env)
+{
+    axis2_stream_impl_t *stream_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    stream_impl = AXIS2_INTF_TO_IMPL(stream);
+
+    switch (stream_impl->stream_type)
+    {
+        case AXIS2_STREAM_BASIC:
+        {
+            if (stream_impl->buffer_head)
+            {
+                AXIS2_FREE(env->allocator, stream_impl->buffer_head);
+            }
+            stream_impl->buffer = NULL;
+            stream_impl->len = -1;
+            break;
+        }
+        case AXIS2_STREAM_FILE:
+        {
+            if (stream_impl->fp)
+            {
+                if (fclose(stream_impl->fp))
+                {
+                    return AXIS2_FAILURE;
+                }
+            }
+            stream_impl->fp = NULL;
+            stream_impl->len = -1;
+            break;
+        }
+        case AXIS2_STREAM_SOCKET:
+        {
+            if (stream_impl->fp)
+            {
+                if (fclose(stream_impl->fp))
+                {
+                    return AXIS2_FAILURE;
+                }
+            }
+            stream_impl->socket = -1;
+            stream_impl->len = -1;
+            break;
+        }
+        default:
+            break;
+    }
+
+    return AXIS2_SUCCESS;
 }
 
 /************************ Basic Stream Operations *****************************/

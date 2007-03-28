@@ -173,12 +173,20 @@ extern "C"
         const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_stream_flush_buffer (const axis2_stream_t *stream,
+    axis2_stream_flush_buffer(const axis2_stream_t *stream,
         const axis2_env_t *env);
 
     AXIS2_EXTERN int AXIS2_CALL
     axis2_stream_peek_socket(axis2_stream_t *stream, const axis2_env_t *env,
         void *buffer, size_t count);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_stream_flush(axis2_stream_t *stream,
+        const axis2_env_t *env);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_stream_close(axis2_stream_t *stream,
+        const axis2_env_t *env);
 
 #define AXIS2_STREAM_FREE(stream, env) ((stream->ops)->free_fn(stream, env))
 
