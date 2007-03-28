@@ -112,8 +112,8 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
     AC_MSG_RESULT(yes)
     WRAPPER_DIR="libxml2"
     PKG_CHECK_MODULES(PARSER, libxml-2.0)
-    CFLAGS="$CFLAGS $PARSER_LIBS"
-
+    CFLAGS="$CFLAGS $PARSER_CFLAGS"
+    LDFLAGS="$LDFLAGS $PARSER_LIBS"
     ;;
   esac ],
   AC_MSG_RESULT(yes)
