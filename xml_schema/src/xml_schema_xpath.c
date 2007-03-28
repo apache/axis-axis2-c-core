@@ -101,16 +101,16 @@ xml_schema_xpath_create(const axis2_env_t *env)
     }
 
     axis2_hash_set(xpath_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_XPATH", env),
+            axis2_strdup(env, "XML_SCHEMA_XPATH"),
             AXIS2_HASH_KEY_STRING,
             &(xpath_impl->xpath));
 
     axis2_hash_set(xpath_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+            axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING,
             xpath_impl->annotated);
     axis2_hash_set(xpath_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_OBJ", env),
+            axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(xpath_impl->annotated, env));
 
@@ -231,7 +231,7 @@ xml_schema_xpath_set_xpath(void *xpath,
         AXIS2_FREE(env->allocator, xpath_impl->x_path);
         xpath_impl->x_path = NULL;
     }
-    xpath_impl->x_path = axis2_strdup(x_path, env);
+    xpath_impl->x_path = axis2_strdup(env, x_path);
     if (!xpath_impl->x_path)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

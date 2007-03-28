@@ -83,7 +83,7 @@ axis2_phase_create(
 
     if (phase_name)
     {
-        phase->name = axis2_strdup(phase_name, env);
+        phase->name = axis2_strdup(env, phase_name);
         if (!(phase->name))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

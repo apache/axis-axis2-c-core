@@ -253,7 +253,7 @@ axis2_http_client_send(
             }
             header_ext_form = AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
                         tmp_header, env);
-            str_header2 = axis2_stracat(str_header, header_ext_form, env);
+            str_header2 = axis2_stracat(env, str_header, header_ext_form);
             AXIS2_FREE(env->allocator, str_header);
             str_header = NULL;
             AXIS2_FREE(env->allocator, header_ext_form);
@@ -299,7 +299,7 @@ axis2_http_client_send(
         host_port_str = NULL;
 
     }
-    wire_format = axis2_stracat(str_request_line, str_header, env);
+    wire_format = axis2_stracat(env, str_request_line, str_header);
     AXIS2_FREE(env->allocator, str_header);
     str_header = NULL;
     AXIS2_FREE(env->allocator, str_request_line);
@@ -583,7 +583,7 @@ axis2_http_client_set_proxy(
         AXIS2_FREE(env->allocator, client->proxy_host_port);
         client->proxy_host_port = NULL;
     }
-    client->proxy_host = axis2_strdup(proxy_host, env);
+    client->proxy_host = axis2_strdup(env, proxy_host);
     if (! client->proxy_host)
     {
         return AXIS2_FAILURE;

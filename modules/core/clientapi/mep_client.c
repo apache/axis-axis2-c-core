@@ -75,7 +75,7 @@ axis2_mep_client_create(
         mep_client->svc_ctx = svc_ctx;
     }
 
-    mep_client->soap_version_uri = axis2_strdup(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, env);
+    mep_client->soap_version_uri = axis2_strdup(env, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
     if (!(mep_client->soap_version_uri))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -85,7 +85,7 @@ axis2_mep_client_create(
 
     if (mep)
     {
-        mep_client->mep = axis2_strdup(mep, env);
+        mep_client->mep = axis2_strdup(env, mep);
         if (!(mep_client->mep))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -346,7 +346,7 @@ axis2_mep_client_set_soap_version_uri(
 
     if (soap_version_uri)
     {
-        mep_client->soap_version_uri = axis2_strdup(soap_version_uri, env);
+        mep_client->soap_version_uri = axis2_strdup(env, soap_version_uri);
         if (!(mep_client->soap_version_uri))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -400,7 +400,7 @@ axis2_mep_client_set_wsa_action(
 
     if (wsa_action)
     {
-        mep_client->wsa_action = axis2_strdup(wsa_action, env);
+        mep_client->wsa_action = axis2_strdup(env, wsa_action);
         if (!(mep_client->wsa_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

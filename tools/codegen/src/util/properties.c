@@ -118,7 +118,7 @@ w2c_properties_create (const axis2_env_t *env,
                     tag = w2c_properties_trunk_and_dup( tag, p, env);
                     axis2_array_list_add_at( arr_list, env, i, tag);
                 }
-                key = axis2_strdup(key, env);
+                key = axis2_strdup(env, key);
                 axis2_hash_set( properties_impl-> prop_hash, key, AXIS2_HASH_KEY_STRING, arr_list);
             }
         }
@@ -218,7 +218,7 @@ w2c_properties_trunk_and_dup( axis2_char_t* start, axis2_char_t* end,
     for ( ; *start == ' '; start ++ ); /* remove front spaces */
     for ( end --; *end == ' '; end -- ); /* remove rear spaces */
     *(++end ) = '\0';
-    start = (axis2_char_t*)axis2_strdup ( start, env );
+    start = (axis2_char_t*)axis2_strdup (env,  start);
     return start;
 }
 

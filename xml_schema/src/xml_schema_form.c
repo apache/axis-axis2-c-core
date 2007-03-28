@@ -127,13 +127,13 @@ xml_schema_form_create(const axis2_env_t *env,
     }
 
     axis2_array_list_add(form_impl->members, env,
-            axis2_strdup(XML_SCHEMA_FORM_QUALIFIED, env));
+            axis2_strdup(env, XML_SCHEMA_FORM_QUALIFIED));
 
     axis2_array_list_add(form_impl->members, env,
-            axis2_strdup(XML_SCHEMA_FORM_UNQUALIFIED, env));
+            axis2_strdup(env, XML_SCHEMA_FORM_UNQUALIFIED));
 
     axis2_array_list_add(form_impl->members, env,
-            axis2_strdup(XML_SCHEMA_FORM_NONE, env));
+            axis2_strdup(env, XML_SCHEMA_FORM_NONE));
 
     form_impl->schema_enum = xml_schema_enum_create(env, value);
     if (!form_impl->schema_enum)
@@ -154,10 +154,10 @@ xml_schema_form_create(const axis2_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(form_impl->ht_super, axis2_strdup("XML_SCHEMA_FORM", env),
+	axis2_hash_set(form_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_FORM"),
             AXIS2_HASH_KEY_STRING, &(form_impl->form));
 
-    axis2_hash_set(form_impl->ht_super, axis2_strdup("XML_SCHEMA_ENUM", env),
+    axis2_hash_set(form_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ENUM"),
             AXIS2_HASH_KEY_STRING, form_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(

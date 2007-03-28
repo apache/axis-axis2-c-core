@@ -154,7 +154,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
     }
     /* else qname would already exist */ 
     sprintf(counter_str, "%d", counter);
-    given_name = axis2_stracat( local, counter_str, env);
+    given_name = axis2_stracat(env, local, counter_str);
 
     axis2_hash_set(impl-> qname2name, key, AXIS2_HASH_KEY_STRING, given_name);
     axis2_hash_set(impl-> name2number, local, AXIS2_HASH_KEY_STRING, (void*)(counter+1));

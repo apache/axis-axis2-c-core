@@ -168,7 +168,7 @@ savan_client_subscribe(
     }
 
     sub_id = savan_client_get_sub_id_from_response(body_elem, reply, env);
-    client->sub_id = axis2_strdup(sub_id, env);
+    client->sub_id = axis2_strdup(env, sub_id);
 
     return AXIS2_SUCCESS;
 }

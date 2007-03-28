@@ -282,15 +282,15 @@ xml_schema_attribute_create(const axis2_env_t *env)
     }
 
     axis2_hash_set(attr_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_ATTRIBUTE", env),
+            axis2_strdup(env, "XML_SCHEMA_ATTRIBUTE"),
             AXIS2_HASH_KEY_STRING, &(attr_impl->attr));
 
     axis2_hash_set(attr_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+            axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, attr_impl->annotated);
 
     axis2_hash_set(attr_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_OBJ", env),
+            axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(attr_impl->annotated, env));
 
@@ -424,7 +424,7 @@ xml_schema_attribute_set_default_value(
         AXIS2_FREE(env->allocator, attr_impl->default_value);
         attr_impl->default_value = NULL;
     }
-    attr_impl->default_value = axis2_strdup(default_value, env);
+    attr_impl->default_value = axis2_strdup(env, default_value);
     return AXIS2_SUCCESS;
 }
 
@@ -448,7 +448,7 @@ xml_schema_attribute_set_fixed_value(void *attr,
         AXIS2_FREE(env->allocator, attr_impl->fixed_value);
         attr_impl->fixed_value = NULL;
     }
-    attr_impl->fixed_value = axis2_strdup(fixed_value, env);
+    attr_impl->fixed_value = axis2_strdup(env, fixed_value);
     return AXIS2_SUCCESS;
 }
 
@@ -522,7 +522,7 @@ xml_schema_attribute_set_name(void *attr,
         AXIS2_FREE(env->allocator, attr_impl->name);
         attr_impl->name = NULL;
     }
-    attr_impl->name = axis2_strdup(name, env);
+    attr_impl->name = axis2_strdup(env, name);
     return AXIS2_SUCCESS;
 }
 

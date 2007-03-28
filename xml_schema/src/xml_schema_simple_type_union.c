@@ -180,11 +180,11 @@ xml_schema_simple_type_union_create(const axis2_env_t *env)
 
 
     axis2_hash_set(simple_type_union_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_SIMPLE_TYPE_UNION", env),
+            axis2_strdup(env, "XML_SCHEMA_SIMPLE_TYPE_UNION"),
             AXIS2_HASH_KEY_STRING, &(simple_type_union_impl->simple_type_union));
 
     axis2_hash_set(simple_type_union_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_SIMPLE_TYPE_CONTENT", env),
+            axis2_strdup(env, "XML_SCHEMA_SIMPLE_TYPE_CONTENT"),
             AXIS2_HASH_KEY_STRING,
             simple_type_union_impl->sim_type_content);
 
@@ -194,11 +194,11 @@ xml_schema_simple_type_union_create(const axis2_env_t *env)
     if (annotated)
     {
         axis2_hash_set(simple_type_union_impl->ht_super,
-                axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+                axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
                 AXIS2_HASH_KEY_STRING, annotated);
 
         axis2_hash_set(simple_type_union_impl->ht_super,
-                axis2_strdup("XML_SCHEMA_OBJ", env),
+                axis2_strdup(env, "XML_SCHEMA_OBJ"),
                 AXIS2_HASH_KEY_STRING,
                 XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
@@ -338,7 +338,7 @@ xml_schema_simple_type_union_set_member_types_source(void *simple_type_union,
         sim_type_res_impl->member_types_source = NULL;
     }
 
-    sim_type_res_impl->member_types_source = axis2_strdup(member_types_source, env);
+    sim_type_res_impl->member_types_source = axis2_strdup(env, member_types_source);
 
     return AXIS2_SUCCESS;
 }

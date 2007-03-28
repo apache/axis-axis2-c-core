@@ -86,7 +86,7 @@ axis2_msg_recv_create(const axis2_env_t *env)
         return NULL;
     }
 
-    msg_recv->scope = axis2_strdup ("app*", env);
+    msg_recv->scope = axis2_strdup (env, "app*");
     msg_recv->derived = NULL;
     msg_recv->receive = axis2_msg_recv_receive_impl;
     return msg_recv;
@@ -196,7 +196,7 @@ axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
     {
         AXIS2_FREE(env->allocator, msg_recv->scope);
     }
-    msg_recv->scope = axis2_strdup(scope, env);
+    msg_recv->scope = axis2_strdup(env, scope);
     if (!msg_recv->scope)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

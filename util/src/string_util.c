@@ -40,7 +40,7 @@ axis2_tokenize(const axis2_env_t *env,
         return NULL;
     }
 
-    str = axis2_strdup(in, env);
+    str = axis2_strdup(env, in);
 
     do
     {
@@ -93,13 +93,13 @@ axis2_first_token(const axis2_env_t *env,
     {
         return NULL;
     }
-    str = axis2_strdup(in, env);
+    str = axis2_strdup(env, in);
 
     index = strchr(str, delim);
     if (!index)
     {
         axis2_array_list_add(list, env, str);
-        axis2_array_list_add(list, env, axis2_strdup("", env));
+        axis2_array_list_add(list, env, axis2_strdup(env, ""));
         return list;
     }
 
@@ -133,12 +133,12 @@ axis2_last_token(const axis2_env_t *env,
         return NULL;
     }
 
-    str = axis2_strdup(in, env);
+    str = axis2_strdup(env, in);
     index = axis2_rindex(str, delim);
 
     if (!index)
     {
-        axis2_array_list_add(list, env, axis2_strdup("", env));
+        axis2_array_list_add(list, env, axis2_strdup(env, ""));
         axis2_array_list_add(list, env, str);
         return list;
     }

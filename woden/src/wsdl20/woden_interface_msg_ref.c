@@ -1004,7 +1004,7 @@ woden_interface_msg_ref_set_msg_content_model(
     {
         AXIS2_FREE(env->allocator, interface_msg_ref_impl->f_msg_content_model);
     }
-    interface_msg_ref_impl->f_msg_content_model = axis2_strdup(nm_token, env);
+    interface_msg_ref_impl->f_msg_content_model = axis2_strdup(env, nm_token);
     return AXIS2_SUCCESS;
 }
 

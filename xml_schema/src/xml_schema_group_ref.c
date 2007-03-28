@@ -157,18 +157,18 @@ xml_schema_group_ref_create(const axis2_env_t *env)
     }
 
     axis2_hash_set(group_ref_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_GROUP_REF", env),
+            axis2_strdup(env, "XML_SCHEMA_GROUP_REF"),
             AXIS2_HASH_KEY_STRING, &(group_ref_impl->group_ref));
 
-    axis2_hash_set(group_ref_impl->ht_super, axis2_strdup("XML_SCHEMA_PARTICLE", env),
+    axis2_hash_set(group_ref_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_PARTICLE"),
             AXIS2_HASH_KEY_STRING, group_ref_impl->particle);
 
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(group_ref_impl->particle, env);
     if (annotated)
     {
-        axis2_hash_set(group_ref_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+        axis2_hash_set(group_ref_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
                 AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(group_ref_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
+        axis2_hash_set(group_ref_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
                 AXIS2_HASH_KEY_STRING, XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
 

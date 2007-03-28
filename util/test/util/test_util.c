@@ -63,10 +63,10 @@ int test_hash_get(const axis2_env_t *env)
     a4 = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
 
 
-    a1->value = axis2_strdup("value1", env);
-    a2->value = axis2_strdup("value2", env);
-    a3->value = axis2_strdup("value3", env);
-    a4->value = axis2_strdup("value4", env);
+    a1->value = axis2_strdup(env, "value1");
+    a2->value = axis2_strdup(env, "value2");
+    a3->value = axis2_strdup(env, "value3");
+    a4->value = axis2_strdup(env, "value4");
 
     ht = axis2_hash_make(env);
 
@@ -116,7 +116,7 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
     axis2_error_t *error = axis2_error_create(allocator);
     const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
 
-    axis2_char_t *pathname = axis2_strdup("/tmp/test/", env);
+    axis2_char_t *pathname = axis2_strdup(env, "/tmp/test/");
 
     axis2_array_list_t *arr_folders = axis2_dir_handler_list_service_or_module_dirs(env, pathname);
     if (arr_folders == NULL)
@@ -161,31 +161,31 @@ void test_array_list(const axis2_env_t *env)
     printf("list size %d\n", axis2_array_list_size(al, env));
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
-    entry->value = axis2_strdup("value1", env);
+    entry->value = axis2_strdup(env, "value1");
     axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
-    entry->value = axis2_strdup("value2", env);
+    entry->value = axis2_strdup(env, "value2");
     axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
-    entry->value = axis2_strdup("value3", env);
+    entry->value = axis2_strdup(env, "value3");
     axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
-    entry->value = axis2_strdup("value4", env);
+    entry->value = axis2_strdup(env, "value4");
     axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
-    entry->value = axis2_strdup("value5", env);
+    entry->value = axis2_strdup(env, "value5");
     axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
-    entry->value = axis2_strdup("value6", env);
+    entry->value = axis2_strdup(env, "value6");
     axis2_array_list_add(al, env, (void*)entry);
 
     entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
-    entry->value = axis2_strdup("value7", env);
+    entry->value = axis2_strdup(env, "value7");
     axis2_array_list_set(al, env, 3, (void*)entry);
     axis2_array_list_remove(al, env, 2);
 

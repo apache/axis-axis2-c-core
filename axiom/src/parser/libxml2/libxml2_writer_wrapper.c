@@ -341,11 +341,11 @@ axiom_xml_writer_create(const axis2_env_t *env,
 
     if (encoding)
     {
-        writer_impl->encoding = axis2_strdup(encoding , env);
+        writer_impl->encoding = axis2_strdup(env, encoding);
     }
     else
     {
-        writer_impl->encoding = axis2_strdup(ENCODING, env);
+        writer_impl->encoding = axis2_strdup(env, ENCODING);
     }
 
     writer_impl->uri_prefix_map = axis2_hash_make(env);
@@ -434,11 +434,11 @@ axiom_xml_writer_create_for_memory(const axis2_env_t *env,
 
     if (encoding)
     {
-        writer_impl->encoding = axis2_strdup(encoding , env);
+        writer_impl->encoding = axis2_strdup(env, encoding);
     }
     else
     {
-        writer_impl->encoding = axis2_strdup(ENCODING, env);
+        writer_impl->encoding = axis2_strdup(env, ENCODING);
     }
 
     writer_impl->uri_prefix_map = axis2_hash_make(env);
@@ -934,7 +934,7 @@ axis2_libxml2_writer_wrapper_write_namespace(axiom_xml_writer_t *writer,
     }
     else
     {
-        xmlnsprefix = axis2_strdup("xmlns", env);
+        xmlnsprefix = axis2_strdup(env, "xmlns");
     }
 
     status = xmlTextWriterWriteAttribute(writer_impl->xml_writer,
@@ -1442,28 +1442,28 @@ uri_prefix_element_create(const axis2_env_t *env,
     up_element->uri = NULL;
     up_element->real_prefix = NULL;
 
-    up_element->uri = axis2_strdup(uri, env);
+    up_element->uri = axis2_strdup(env, uri);
     if (!up_element->uri)
     {
         uri_prefix_element_free(up_element, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    up_element->prefix = axis2_strdup(prefix, env);
+    up_element->prefix = axis2_strdup(env, prefix);
     if (prefix && !up_element->prefix)
     {
         uri_prefix_element_free(up_element, env);
         AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    up_element->key = axis2_strdup(key, env);
+    up_element->key = axis2_strdup(env, key);
     if (key  && !up_element->key)
     {
         uri_prefix_element_free(up_element, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    up_element->real_prefix = axis2_strdup(real_prefix, env);
+    up_element->real_prefix = axis2_strdup(env, real_prefix);
 
     return up_element;
 }

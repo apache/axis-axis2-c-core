@@ -292,7 +292,7 @@ xml_schema_enum_set_value(void *schema_enum,
         AXIS2_FREE(env->allocator, (schema_enum_impl->value));
         schema_enum_impl->value = NULL;
     }
-    schema_enum_impl->value = axis2_strdup(value, env);
+    schema_enum_impl->value = axis2_strdup(env, value);
     if (!schema_enum_impl->value)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

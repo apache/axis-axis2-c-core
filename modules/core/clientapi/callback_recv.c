@@ -142,7 +142,7 @@ axis2_callback_recv_add_callback(
 
     if (msg_id)
     {
-        axis2_char_t *mid = axis2_strdup(msg_id, env);
+        axis2_char_t *mid = axis2_strdup(env, msg_id);
         axis2_hash_set(callback_recv->callback_map,
                 mid, AXIS2_HASH_KEY_STRING, callback);
     }

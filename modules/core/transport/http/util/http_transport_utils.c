@@ -659,21 +659,21 @@ axis2_http_transport_utils_get_request_params(
     {
         return NULL;
     }
-    query_str = axis2_strdup(tmp + 1, env);
+    query_str = axis2_strdup(env, tmp + 1);
 
     for (tmp2 = tmp = query_str; *tmp != '\0'; ++tmp)
     {
         if ('=' == *tmp)
         {
             *tmp = '\0';
-            tmp_name = axis2_strdup(tmp2, env);
+            tmp_name = axis2_strdup(env, tmp2);
             axis2_http_transport_utils_strdecode(env, tmp_name, tmp_name);
             tmp2 = tmp + 1;
         }
         if ('&' == *tmp)
         {
             *tmp = '\0';
-            tmp_value = axis2_strdup(tmp2, env);
+            tmp_value = axis2_strdup(env, tmp2);
             axis2_http_transport_utils_strdecode(env, tmp_value, tmp_value);
             tmp2 = tmp + 1;
         }
@@ -694,7 +694,7 @@ axis2_http_transport_utils_get_request_params(
         {
             ret = axis2_hash_make(env);
         }
-        tmp_value = axis2_strdup(tmp2, env);
+        tmp_value = axis2_strdup(env, tmp2);
         axis2_http_transport_utils_strdecode(env, tmp_value, tmp_value);
         axis2_hash_set(ret, tmp_name, AXIS2_HASH_KEY_STRING, tmp_value);
     }
@@ -783,20 +783,20 @@ axis2_http_transport_utils_get_services_html(
             axis2_hash_this(hi, NULL, NULL, &service);
             sname = axis2_qname_get_localpart(axis2_svc_get_qname(
                         ((axis2_svc_t *)service), env), env);
-            ret = axis2_stracat(tmp2, "<h3><u>", env);
+            ret = axis2_stracat(env, tmp2, "<h3><u>");
             tmp2 = ret;
-            ret = axis2_stracat(tmp2, sname, env);
+            ret = axis2_stracat(env,tmp2, sname);
             AXIS2_FREE(env->allocator, tmp2);
             tmp2 = ret;
-            ret  = axis2_stracat(tmp2, "</u></h3>", env);
+            ret  = axis2_stracat(env, tmp2, "</u></h3>");
 				tmp2 = ret;
-				ret = axis2_stracat (tmp2, "<p>", env);
+				ret = axis2_stracat (env, tmp2, "<p>");
 				tmp2 = ret;
 							 /**
 							  *setting services description */
-				ret = axis2_stracat (tmp2, axis2_svc_get_svc_desc((axis2_svc_t *)service, env), env);
+				ret = axis2_stracat (env, tmp2, axis2_svc_get_svc_desc((axis2_svc_t *)service, env));
 				tmp2 = ret;
-				ret = axis2_stracat (tmp2, "</p>", env);
+				ret = axis2_stracat (env, tmp2, "</p>");
 				tmp2 = ret;
             ops = axis2_svc_get_all_ops(((axis2_svc_t *)service), env);
             if (ops && 0 != axis2_hash_count(ops))
@@ -805,8 +805,7 @@ axis2_http_transport_utils_get_services_html(
                 void *op = NULL;
                 axis2_char_t *oname = NULL;
 
-                ret = axis2_stracat(tmp2, "<i>Available Operations</i> <ul>",
-                        env);
+                ret = axis2_stracat(env, tmp2, "<i>Available Operations</i> <ul>");
                 AXIS2_FREE(env->allocator, tmp2);
                 tmp2 = ret;
                 for (hi2 = axis2_hash_first(ops, env);  hi2;
@@ -815,24 +814,24 @@ axis2_http_transport_utils_get_services_html(
                     axis2_hash_this(hi2, NULL, NULL, &op);
                     oname = axis2_qname_get_localpart(axis2_op_get_qname(
                                 ((axis2_op_t *)op), env), env);
-                    ret = axis2_stracat(tmp2, "<li>", env);
+                    ret = axis2_stracat(env, tmp2, "<li>");
                     AXIS2_FREE(env->allocator, tmp2);
                     tmp2 = ret;
 
-                    ret = axis2_stracat(tmp2, oname, env);
+                    ret = axis2_stracat(env, tmp2, oname);
                     AXIS2_FREE(env->allocator, tmp2);
                     tmp2 = ret;
-                    ret = axis2_stracat(tmp2, "</li>", env);
+                    ret = axis2_stracat(env, tmp2, "</li>");
                     AXIS2_FREE(env->allocator, tmp2);
                     tmp2 = ret;
                 }
-                ret = axis2_stracat(tmp2, "</ul>", env);
+                ret = axis2_stracat(env, tmp2, "</ul>");
                 AXIS2_FREE(env->allocator, tmp2);
                 tmp2 = ret;
             }
             else
             {
-                ret = axis2_stracat(tmp2, "No operations Available", env);
+                ret = axis2_stracat(env, tmp2, "No operations Available");
                 /*AXIS2_FREE(env->allocator, tmp);*/
                 tmp2 = ret;
             }
@@ -842,9 +841,8 @@ axis2_http_transport_utils_get_services_html(
     {
         void *fsname = NULL;
         svcs_exists = AXIS2_TRUE;
-        ret = axis2_stracat(tmp2, "<hr><h2><font color=\"red\">Faulty \
-                Services</font></h2>"
-                , env);
+        ret = axis2_stracat(env, tmp2, "<hr><h2><font color=\"red\">Faulty \
+                Services</font></h2>");
         AXIS2_FREE(env->allocator, tmp2);
         tmp2 = ret;
 
@@ -852,27 +850,27 @@ axis2_http_transport_utils_get_services_html(
                 axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, (const void **)&fsname, NULL, NULL);
-            ret = axis2_stracat(tmp2, "<h3><font color=\"red\">", env);
+            ret = axis2_stracat(env, tmp2, "<h3><font color=\"red\">");
             AXIS2_FREE(env->allocator, tmp2);
             tmp2 = ret;
-            ret = axis2_stracat(tmp2, (axis2_char_t *)fsname, env);
+            ret = axis2_stracat(env, tmp2, (axis2_char_t *)fsname);
             AXIS2_FREE(env->allocator, tmp2);
             tmp2 = ret;
-            ret = axis2_stracat(tmp2, "</font></h3>", env);
+            ret = axis2_stracat(env, tmp2, "</font></h3>");
             AXIS2_FREE(env->allocator, tmp2);
             tmp2 = ret;
         }
     }
     if (AXIS2_FALSE == svcs_exists)
     {
-        ret = axis2_strdup("<h2>There are no services deployed</h2>", env);
+        ret = axis2_strdup(env, "<h2>There are no services deployed</h2>");
     }
-    ret = axis2_stracat("<html><head><title>Axis2C :: Services</title></head>"
+    ret = axis2_stracat(env, "<html><head><title>Axis2C :: Services</title></head>"
             "<body><font face=\"courier\">"
-            , tmp2, env);
+            , tmp2);
     /*AXIS2_FREE(env->allocator, tmp2);*/
     tmp2 = ret;
-    ret = axis2_stracat(tmp2, "</font></body></html>\r\n", env);
+    ret = axis2_stracat(env, tmp2, "</font></body></html>\r\n");
     /*AXIS2_FREE(env->allocator, tmp);*/
 
     return ret;
@@ -1263,7 +1261,7 @@ axis2_http_transport_utils_get_value_from_content_type(
     AXIS2_PARAM_CHECK(env->error, content_type, NULL);
     AXIS2_PARAM_CHECK(env->error, key, NULL);
 
-    tmp_content_type = axis2_strdup(content_type, env);
+    tmp_content_type = axis2_strdup(env, content_type);
     if (! tmp_content_type)
     {
         return NULL;
@@ -1287,13 +1285,13 @@ axis2_http_transport_utils_get_value_from_content_type(
         AXIS2_FREE(env->allocator, tmp_content_type);
         return NULL;
     }
-    tmp2 =  axis2_strdup(tmp + 1, env);
+    tmp2 =  axis2_strdup(env, tmp + 1);
     
     AXIS2_FREE(env->allocator, tmp_content_type);
     if (*tmp2 == '"')
     {
         tmp = tmp2;
-        tmp2 =  axis2_strdup(tmp + 1, env);
+        tmp2 =  axis2_strdup(env, tmp + 1);
         tmp2[strlen(tmp2) - 1] = '\0';
     }
     return tmp2;

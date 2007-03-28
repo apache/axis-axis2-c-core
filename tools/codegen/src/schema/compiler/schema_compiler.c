@@ -1104,7 +1104,7 @@ w2c_schema_compiler_generate_type_qname(  w2c_schema_compiler_impl_t *compiler_i
     while( AXIS2_TRUE)
     {
         sprintf( counter_str, "_anon_type%d", counter);
-        new_local_part = axis2_stracat( local_part, counter_str, env);
+        new_local_part = axis2_stracat(env, local_part, counter_str);
         qname = axis2_qname_create( env, new_local_part, ns_uri, NULL);
         if ( ! XML_SCHEMA_GET_TYPE_BY_QNAME( parent_schema, env, qname ) )
         {

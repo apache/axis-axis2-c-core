@@ -100,8 +100,7 @@ axis2_http_transport_sender_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    transport_sender_impl->http_version = axis2_strdup(
-                AXIS2_HTTP_HEADER_PROTOCOL_11, env);
+    transport_sender_impl->http_version = axis2_strdup(env, AXIS2_HTTP_HEADER_PROTOCOL_11);
     transport_sender_impl->chunked = AXIS2_TRUE;
     transport_sender_impl->connection_timeout =
         AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
@@ -464,8 +463,7 @@ axis2_http_transport_sender_init(
                 AXIS2_FREE(env->allocator,
                         AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
             }
-            AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axis2_strdup(
-                        version, env);
+            AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axis2_strdup(env, version);
             encoding_param = axis2_param_container_get_param(
                         axis2_transport_out_desc_param_container(out_desc, env), env,
                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
@@ -490,8 +488,7 @@ axis2_http_transport_sender_init(
                 AXIS2_FREE(env->allocator,
                         AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
             }
-            AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axis2_strdup(
-                        version, env);
+            AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axis2_strdup(env, version);
             AXIS2_INTF_TO_IMPL(transport_sender)->chunked = AXIS2_FALSE;
         }
     }

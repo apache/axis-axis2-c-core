@@ -447,18 +447,18 @@ xml_schema_element_create(const axis2_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(element_impl->ht_super, axis2_strdup("XML_SCHEMA_ELEMENT", env),
+    axis2_hash_set(element_impl->ht_super, axis2_strdup(env,"XML_SCHEMA_ELEMENT"),
             AXIS2_HASH_KEY_STRING, &(element_impl->element));
 
-    axis2_hash_set(element_impl->ht_super, axis2_strdup("XML_SCHEMA_PARTICLE", env),
+    axis2_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_PARTICLE"),
             AXIS2_HASH_KEY_STRING, element_impl->particle);
 
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(element_impl->particle, env);
     if (annotated)
     {
-        axis2_hash_set(element_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+        axis2_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
                 AXIS2_HASH_KEY_STRING, &(element_impl->element));
-        axis2_hash_set(element_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
+        axis2_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
                 AXIS2_HASH_KEY_STRING, XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
     xml_schema_particle_resolve_methods(
@@ -662,7 +662,7 @@ xml_schema_element_set_fixed_value(
         AXIS2_FREE(env->allocator, element_impl->fixed_value);
         element_impl->fixed_value = NULL;
     }
-    element_impl->fixed_value = axis2_strdup(fixed_value, env);
+    element_impl->fixed_value = axis2_strdup(env, fixed_value);
     return AXIS2_SUCCESS;
 }
 
@@ -772,7 +772,7 @@ xml_schema_element_set_name(
         AXIS2_FREE(env->allocator, element_impl->name);
         element_impl->name = NULL;
     }
-    element_impl->name = axis2_strdup(name, env);
+    element_impl->name = axis2_strdup(env, name);
     return AXIS2_SUCCESS;
 }
 

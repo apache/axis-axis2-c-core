@@ -246,8 +246,8 @@ axis2_string_get_length(const struct axis2_string *string,
 #define MAX_SAVED_LENGTHS  6
 
 AXIS2_EXTERN void* AXIS2_CALL
-axis2_strdup(const void *ptr, 
-    const axis2_env_t *env)
+axis2_strdup(const axis2_env_t *env,
+    const void *ptr)
 {
     AXIS2_ENV_CHECK(env, NULL);
     if (ptr)
@@ -309,9 +309,9 @@ axis2_memchr(const void *ptr,
 }
 
 AXIS2_EXTERN void* AXIS2_CALL
-axis2_strndup(const void *ptr,
-    int n,
-    const axis2_env_t *env)
+axis2_strndup(const axis2_env_t *env,
+    const void *ptr,
+    int n)
 {
     const axis2_char_t *end;
     axis2_char_t *str;
@@ -401,9 +401,9 @@ axis2_strcat(const axis2_env_t *env, ...)
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_stracat(const axis2_char_t *s1, 
-    const axis2_char_t *s2, 
-    const axis2_env_t *env)
+axis2_stracat(const axis2_env_t *env,
+    const axis2_char_t *s1, 
+    const axis2_char_t *s2)
 {
     axis2_char_t *ret = NULL;
     int alloc_len = -1;
@@ -416,11 +416,11 @@ axis2_stracat(const axis2_char_t *s1,
     }
     if (!s1)
     {
-        return (axis2_char_t*)axis2_strdup(s2, env);
+        return (axis2_char_t*)axis2_strdup(env, s2);
     }
     if (!s2)
     {
-        return (axis2_char_t*)axis2_strdup(s1, env);
+        return (axis2_char_t*)axis2_strdup(env,s1);
     }
 
 	len1 = axis2_strlen(s1);

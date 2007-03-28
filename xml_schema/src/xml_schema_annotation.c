@@ -135,11 +135,11 @@ xml_schema_annotation_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(annotation_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_ANNOTATION", env),
+            axis2_strdup(env, "XML_SCHEMA_ANNOTATION"),
             AXIS2_HASH_KEY_STRING, &(annotation_impl->annotation));
 
     axis2_hash_set(annotation_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_OBJ", env),
+            axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING, annotation_impl->schema_obj);
 
     status =  xml_schema_obj_resolve_methods(&(annotation_impl->annotation.base),

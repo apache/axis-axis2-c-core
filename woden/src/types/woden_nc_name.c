@@ -156,7 +156,7 @@ woden_nc_name_set_value(
         AXIS2_FREE(env->allocator, nc_name_impl->f_value);
         nc_name_impl->f_value = NULL;
     }
-    nc_name_impl->f_value = axis2_strdup(value, env);
+    nc_name_impl->f_value = axis2_strdup(env, value);
 
     return AXIS2_SUCCESS;
 }

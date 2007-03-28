@@ -144,7 +144,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             addr_headers = axiom_soap_header_get_header_blocks_with_namespace_uri(soap_header, env, AXIS2_WSA_NAMESPACE_SUBMISSION);
             if (addr_headers)
             {
-                addr_ns_str = axis2_strdup(AXIS2_WSA_NAMESPACE_SUBMISSION, env);
+                addr_ns_str = axis2_strdup(env, AXIS2_WSA_NAMESPACE_SUBMISSION);
                 status = axis2_addr_in_extract_addr_submission_info(env,
                         soap_header,
                         &msg_info_headers,
@@ -156,7 +156,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
                 addr_headers = axiom_soap_header_get_header_blocks_with_namespace_uri(soap_header, env, AXIS2_WSA_NAMESPACE);
                 if (addr_headers)
                 {
-                    addr_ns_str = axis2_strdup(AXIS2_WSA_NAMESPACE, env);
+                    addr_ns_str = axis2_strdup(env, AXIS2_WSA_NAMESPACE);
                     status = axis2_addr_in_extract_addr_final_info(env,
                             soap_header,
                             &msg_info_headers,

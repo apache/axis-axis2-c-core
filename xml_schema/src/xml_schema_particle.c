@@ -161,12 +161,12 @@ xml_schema_particle_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(particle_impl->ht_super, axis2_strdup("XML_SCHEMA_PARTICLE", env), AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(particle_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_PARTICLE"), AXIS2_HASH_KEY_STRING,
             &(particle_impl->particle));
-    axis2_hash_set(particle_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env), AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(particle_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"), AXIS2_HASH_KEY_STRING,
             particle_impl->annotated);
 
-    axis2_hash_set(particle_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env), AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(particle_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"), AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(particle_impl->annotated, env));
 
     status = xml_schema_annotated_resolve_methods(

@@ -118,7 +118,7 @@ w2c_cmdline_option_create_with_values (const axis2_env_t *env,
     }
     /* populate data */
     w2c_cmdline_option_set_type(  cmdline_option_impl ,
-                                env, (axis2_char_t*)axis2_strdup(type, env));
+                                env, (axis2_char_t*)axis2_strdup(env, type));
     cmdline_option_impl-> values_arr = values_arr;
 
     return &(cmdline_option_impl->cmdline_option);

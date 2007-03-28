@@ -598,7 +598,7 @@
                         <!-- add axis2_char_t s -->
                         <xsl:when test="$nativePropertyType='axis2_char_t*'">
                            <xsl:value-of select="$axis2_capsname"/>_SET_<xsl:value-of select="$CapsCName"/>( <xsl:value-of select="$name"/>,
-                                                          env, axis2_strdup( attrib_text, env));
+                                                          env, axis2_strdup(env, attrib_text));
                         </xsl:when>
 
                         <!-- add axis2_qname_t s -->

@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
     om_doc = get_root_element_from_filename(env, filename);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    doc_base_uri = axis2_stracat(axis2c_home, "/woden", env);
+    doc_base_uri = axis2_stracat(env, axis2c_home, "/woden");
     resolver = woden_resolver_create(env);
 
     desc = WODEN_RESOLVER_READ(resolver, env, om_doc, doc_base_uri);

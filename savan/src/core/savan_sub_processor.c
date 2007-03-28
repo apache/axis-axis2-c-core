@@ -460,7 +460,7 @@ savan_sub_processor_set_sub_id_to_msg_ctx(
      * savan_msg_recv to send the wse:Identifier
      * Pass a copy because msg ctx free function frees all properties */
     property = axis2_property_create(env);
-    axis2_property_set_value(property, env, (void*)axis2_strdup(id, env));
+    axis2_property_set_value(property, env, (void*)axis2_strdup(env, id));
      axis2_msg_ctx_set_property(msg_ctx, env, SAVAN_KEY_SUB_ID, property,
         AXIS2_FALSE);
 

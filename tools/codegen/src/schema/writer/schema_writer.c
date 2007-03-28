@@ -197,7 +197,7 @@ w2c_schema_writer_init( w2c_schema_writer_t *writer,
 
     writer_impl = W2C_INTF_TO_IMPL(writer);
 
-    writer_impl-> template_name = axis2_strdup( template_name, env);
+    writer_impl-> template_name = axis2_strdup(env, template_name);
     writer_impl-> base_type_map = base_type_map;
 
     output = W2C_SCHEMA_COMPILER_OPTIONS_GET_OUTPUT_LOCATION( options, env);
@@ -321,13 +321,13 @@ w2c_schema_writer_write_batch( w2c_schema_writer_t *writer,
         out = W2C_SCHEMA_WRITER_CREATE_OUT_FILE( writer_impl, env, 
                       temp_package, W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME, ".c");
         /* parse with the template and create the files */
-        source_template = axis2_stracat( writer_impl-> template_name, "Source.xsl", env);
+        source_template = axis2_stracat(env, writer_impl-> template_name, "Source.xsl");
         w2c_schema_writer_parse( writer_impl, env,
                       writer_impl-> global_wrapped_node, out, source_template);
         out = W2C_SCHEMA_WRITER_CREATE_OUT_FILE( writer_impl, env, 
                       temp_package, W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME, ".h");
         /* parse with the template and create the files */
-        header_template = axis2_stracat( writer_impl-> template_name, "Header.xsl", env);
+        header_template = axis2_stracat(env, writer_impl-> template_name, "Header.xsl");
         w2c_schema_writer_parse( writer_impl, env,
                       writer_impl-> global_wrapped_node, out, header_template);
         AXIS2_FREE( env-> allocator, source_template);
@@ -356,7 +356,7 @@ w2c_schema_writer_init_with_file( w2c_schema_writer_impl_t *writer_impl,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if( root_dir == NULL )
     {
-        root_dir = axis2_strdup(".", env);
+        root_dir = axis2_strdup(env, ".");
     }
 
     writer_impl-> root_dir = root_dir;
@@ -411,7 +411,7 @@ w2c_schema_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
         package_prefix = 
             (writer_impl-> package_name == NULL)? 
                         (W2C_SCHEMA_WRITER_DEFAULT_PACKAGE "."):writer_impl-> package_name;
-        package_prefix = axis2_strdup( package_prefix, env);
+        package_prefix = axis2_strdup(env, package_prefix, package_prefix);
         package_prefix = w2c_string_add_string( package_prefix, 
                         W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME, env);
     }
@@ -422,8 +422,8 @@ w2c_schema_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
     if( package_prefix != NULL)
     {
         length = axis2_strlen( fully_qualified_class_name);
-        fully_qualified_class_name = axis2_stracat(package_prefix,
-                (package_prefix[length-1]=='.')?"":".", env);
+        fully_qualified_class_name = axis2_stracat(env, package_prefix,
+                (package_prefix[length-1]=='.')?"":".");
         fully_qualified_class_name = w2c_string_add_string(fully_qualified_class_name,
                 class_name, env );
         AXIS2_FREE( env-> allocator, class_name);
@@ -454,11 +454,11 @@ w2c_schema_writer_get_package( w2c_schema_writer_impl_t *writer_impl,
     }
     if( ! writer_impl-> package_name)
     {
-        package_name = axis2_strdup( base_package_name, env);
+        package_name = axis2_strdup(env, base_package_name);
     }
     else
     {
-        package_name = axis2_stracat(writer_impl-> package_name, base_package_name, env);
+        package_name = axis2_stracat(env, writer_impl-> package_name, base_package_name);
     }
     return package_name;
 }
@@ -514,12 +514,12 @@ w2c_schema_writer_process( w2c_schema_writer_impl_t *writer_impl,
             out = W2C_SCHEMA_WRITER_CREATE_OUT_FILE( writer_impl, env, 
                           "", W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME, ".c");
             /* parse with the template and create the files */
-            source_template = axis2_stracat( writer_impl-> template_name, "Source.xsl", env);
+            source_template = axis2_stracat(env, writer_impl-> template_name, "Source.xsl");
             w2c_schema_writer_parse( writer_impl, env,
                           model_source_node, out, source_template);
         }
         namespace_uri = axis2_qname_get_uri( qname, env);
-        model_name = axis2_stracat( class_name, "|", env);
+        model_name = axis2_stracat(env, class_name, "|");
         model_name = w2c_string_add_string( model_name, namespace_uri, env);
         axis2_hash_set( writer_impl-> model_map,  model_name, AXIS2_HASH_KEY_STRING, model_source_node);
     }
@@ -566,7 +566,7 @@ w2c_schema_writer_make_element( w2c_schema_writer_impl_t *writer_impl,
     /** class_name is already name maken */
     w2c_xslt_utils_add_attribute( env, model, "name", class_name);
 
-    caps_name = axis2_strdup( class_name, env); 
+    caps_name = axis2_strdup(env, class_name); 
     caps_name = axis2_string_toupper( caps_name);
     w2c_xslt_utils_add_attribute( env, model, "caps-name", caps_name);
     AXIS2_FREE( env-> allocator, caps_name);
@@ -711,14 +711,14 @@ w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
         if( NULL != classname )
         {
             w2c_xslt_utils_add_attribute( env, property, "type", classname);
-            caps_type = axis2_strdup( classname, env);
+            caps_type = axis2_strdup(env, classname);
             caps_type = axis2_string_toupper( caps_type);
             w2c_xslt_utils_add_attribute( env, property, "caps-type", caps_type);
             AXIS2_FREE( env-> allocator, caps_type);
         }
 
              
-        caps_name = axis2_strdup( unique_name, env);
+        caps_name = axis2_strdup(env, unique_name);
 
         caps_name = axis2_string_toupper( caps_name);
         w2c_xslt_utils_add_attribute( env, property, "caps-cname", caps_name);
@@ -823,7 +823,7 @@ w2c_schema_writer_make_unique_class_name( w2c_schema_writer_impl_t *writer_impl,
     axis2_char_t count_str[32];
     static int count = 0;
 
-    class_name = axis2_strdup( xml_name, env);
+    class_name = axis2_strdup(env, xml_name);
     present = (int)axis2_hash_get( list_of_names, xml_name, AXIS2_HASH_KEY_STRING);
     if ( present)
     {
@@ -874,7 +874,7 @@ w2c_schema_writer_parse( w2c_schema_writer_impl_t *writer_impl,
     /*printf("%s\n", buffer);*/
 
     full_path = getenv("AXIS2C_HOME");
-    full_path = axis2_strdup ( full_path, env);
+    full_path = axis2_strdup (env, full_path);
     full_path = w2c_string_add_string(full_path, W2C_SCHEMA_WRITER_XSLT_PATH, env );
     full_path = w2c_string_add_string(full_path, template_name, env );
 
@@ -911,18 +911,18 @@ w2c_schema_writer_get_prefix4uri( w2c_schema_writer_impl_t *writer_impl,
         if ( default_prefix == NULL || 0 == axis2_strlen( default_prefix) )
         {
             sprintf( count_str, "%d", writer_impl->last_prefix_index ++ );
-            prefix = axis2_stracat( "ns", count_str, env);
+            prefix = axis2_stracat(env, "ns", count_str);
         }
         else
         {
-            prefix = axis2_strdup( default_prefix, env);
+            prefix = axis2_strdup(env, default_prefix);
         }
         axis2_hash_set(writer_impl-> prefix2uri_map, prefix, AXIS2_HASH_KEY_STRING, uri);
         axis2_hash_set(writer_impl-> uri2prefix_map, uri, AXIS2_HASH_KEY_STRING, prefix);
     }
     else
     {
-        prefix = axis2_strdup( prefix, env);
+        prefix = axis2_strdup(env, prefix);
     }
     return prefix;
 }
@@ -935,7 +935,7 @@ w2c_schema_writer_register_extension_mapper_packagename(w2c_schema_writer_t *wri
     w2c_schema_writer_impl_t *writer_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     writer_impl = W2C_INTF_TO_IMPL(writer);
-    writer_impl-> mapping_class_package = axis2_strdup( packagename, env);
+    writer_impl-> mapping_class_package = axis2_strdup(env, packagename);
     return AXIS2_SUCCESS;
 }
 

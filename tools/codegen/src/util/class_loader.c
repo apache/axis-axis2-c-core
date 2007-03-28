@@ -37,7 +37,7 @@ w2c_class_loader_get_object_from_class_name
 	AXIS2_PARAM_CHECK(env->error, class_name, NULL);
 
     file_path = getenv("AXIS2C_HOME");
-    file_path = axis2_strdup( file_path, env);
+    file_path = axis2_strdup(env, file_path);
     dll_desc = axis2_dll_desc_create(env);
     *pdll_desc = dll_desc;
 

@@ -733,7 +733,7 @@ woden_types_set_type_system(
     {
         AXIS2_FREE(env->allocator, types_impl->f_type_system);
     }
-    types_impl->f_type_system = axis2_strdup(type_system, env);
+    types_impl->f_type_system = axis2_strdup(env, type_system);
     if (!types_impl->f_type_system)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)

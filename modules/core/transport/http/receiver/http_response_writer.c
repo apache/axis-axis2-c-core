@@ -126,7 +126,7 @@ axis2_http_response_writer_create_with_encoding(
         return NULL;
     }
     response_writer_impl->stream = stream;
-    response_writer_impl->encoding = (axis2_char_t *)axis2_strdup(encoding, env);
+    response_writer_impl->encoding = (axis2_char_t *)axis2_strdup(env, encoding);
 
     response_writer_impl->response_writer.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_response_writer_ops_t));

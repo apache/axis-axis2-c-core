@@ -734,10 +734,10 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             repos_name = axis2_dep_engine_get_repos_path(
                 axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
                 env);
-            temp_path = axis2_stracat(repos_name, AXIS2_PATH_SEP_STR, env);
-            temp_path2 = axis2_stracat(temp_path, AXIS2_LIB_FOLDER, env);
-            temp_path3 = axis2_stracat(temp_path2, AXIS2_PATH_SEP_STR, env);
-            path_qualified_dll_name = axis2_stracat(temp_path3, dll_name, env);
+            temp_path = axis2_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+            temp_path2 = axis2_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+            temp_path3 = axis2_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+            path_qualified_dll_name = axis2_stracat(env, temp_path3, dll_name);
             AXIS2_FREE(env->allocator, temp_path);
             AXIS2_FREE(env->allocator, temp_path2);
             AXIS2_FREE(env->allocator, temp_path3);
@@ -991,10 +991,10 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 repos_name = axis2_dep_engine_get_repos_path(
                     axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
                     env);
-                temp_path = axis2_stracat(repos_name, AXIS2_PATH_SEP_STR, env);
-                temp_path2 = axis2_stracat(temp_path, AXIS2_LIB_FOLDER, env);
-                temp_path3 = axis2_stracat(temp_path2, AXIS2_PATH_SEP_STR, env);
-                path_qualified_dll_name = axis2_stracat(temp_path3, dll_name, env);
+                temp_path = axis2_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+                temp_path2 = axis2_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+                temp_path3 = axis2_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+                path_qualified_dll_name = axis2_stracat(env, temp_path3, dll_name);
                 AXIS2_FREE(env->allocator, temp_path);
                 AXIS2_FREE(env->allocator, temp_path2);
                 AXIS2_FREE(env->allocator, temp_path3);

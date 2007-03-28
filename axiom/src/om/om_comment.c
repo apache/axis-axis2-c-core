@@ -56,7 +56,7 @@ axiom_comment_create(const axis2_env_t *env,
 
     if (value)
     {
-        comment->value = (axis2_char_t*)axis2_strdup(value, env);
+        comment->value = (axis2_char_t*)axis2_strdup(env, value);
         if (!comment->value)
         {
             AXIS2_FREE(env->allocator, comment);
@@ -111,7 +111,7 @@ axiom_comment_set_value(axiom_comment_t *comment,
         AXIS2_FREE(env->allocator, comment->value);
     }
 
-    comment->value = (axis2_char_t*)axis2_strdup(value, env);
+    comment->value = (axis2_char_t*)axis2_strdup(env, value);
 
     if (!comment->value)
     {

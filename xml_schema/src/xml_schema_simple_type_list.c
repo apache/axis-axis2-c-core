@@ -155,11 +155,11 @@ xml_schema_simple_type_list_create(const axis2_env_t *env)
     }
 
     axis2_hash_set(simple_type_list_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_SIMPLE_TYPE_LIST", env),
+            axis2_strdup(env, "XML_SCHEMA_SIMPLE_TYPE_LIST"),
             AXIS2_HASH_KEY_STRING, &(simple_type_list_impl->simple_type_list));
 
     axis2_hash_set(simple_type_list_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_SIMPLE_TYPE_CONTENT", env),
+            axis2_strdup(env, "XML_SCHEMA_SIMPLE_TYPE_CONTENT"),
             AXIS2_HASH_KEY_STRING, &(simple_type_list_impl->sim_type_content));
 
     annotated = XML_SCHEMA_SIMPLE_TYPE_CONTENT_GET_BASE_IMPL(
@@ -167,11 +167,11 @@ xml_schema_simple_type_list_create(const axis2_env_t *env)
     if (annotated)
     {
         axis2_hash_set(simple_type_list_impl->ht_super,
-                axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+                axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
                 AXIS2_HASH_KEY_STRING, annotated);
 
         axis2_hash_set(simple_type_list_impl->ht_super,
-                axis2_strdup("XML_SCHEMA_OBJ", env),
+                axis2_strdup(env, "XML_SCHEMA_OBJ"),
                 AXIS2_HASH_KEY_STRING,
                 XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
 

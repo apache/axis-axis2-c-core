@@ -115,7 +115,7 @@ axis2_dll_desc_set_name(axis2_dll_desc_t *dll_desc,
         AXIS2_FREE(env->allocator, dll_desc->path_qualified_dll_name);
     }
 
-    dll_desc->path_qualified_dll_name = axis2_strdup(name, env);
+    dll_desc->path_qualified_dll_name = axis2_strdup(env, name);
     if (!dll_desc->path_qualified_dll_name)
     {
         return AXIS2_FAILURE;
@@ -271,8 +271,8 @@ axis2_dll_desc_create_platform_specific_dll_name(axis2_dll_desc_t *dll_desc,
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    temp_name = axis2_stracat(AXIS2_LIB_PREFIX, class_name, env);
-    dll_desc->dll_name = axis2_stracat(temp_name, AXIS2_LIB_SUFFIX, env);
+    temp_name = axis2_stracat(env, AXIS2_LIB_PREFIX, class_name);
+    dll_desc->dll_name = axis2_stracat(env, temp_name, AXIS2_LIB_SUFFIX);
     AXIS2_FREE(env->allocator, temp_name);
     return dll_desc->dll_name;
 }

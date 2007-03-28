@@ -234,9 +234,10 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     }
     if ((om_namespace->uri) && (NULL != om_namespace->prefix))
     {
-        temp_str = axis2_stracat(axis2_string_get_buffer(om_namespace->uri, env), "|", env);
-        om_namespace->key = axis2_stracat(temp_str, 
-            axis2_string_get_buffer(om_namespace->prefix, env), env);
+        temp_str = axis2_stracat(env, axis2_string_get_buffer(om_namespace->uri, env), "|");
+        om_namespace->key = axis2_stracat(env,
+			temp_str, 
+            axis2_string_get_buffer(om_namespace->prefix, env));
         if (temp_str)
         {
             AXIS2_FREE(env->allocator, temp_str);
@@ -245,8 +246,7 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     }
     else if ((om_namespace->uri) && !(om_namespace->prefix))
     {
-        om_namespace->key = axis2_strdup (
-            axis2_string_get_buffer(om_namespace->uri, env), env);
+        om_namespace->key = axis2_strdup(env, axis2_string_get_buffer(om_namespace->uri, env));
         if (!(om_namespace->key))
         {
             return NULL;

@@ -133,8 +133,8 @@ extern "C"
      */
 
     AXIS2_EXTERN void* AXIS2_CALL
-    axis2_strdup(const void *ptr,
-        const axis2_env_t *env);
+    axis2_strdup(const axis2_env_t *env,
+	    const void *ptr);
 
     /**
      * duplicate the first n characters of a string into memory allocated 
@@ -144,9 +144,9 @@ extern "C"
      * @return The new string
      */
     AXIS2_EXTERN void* AXIS2_CALL
-    axis2_strndup(const void *ptr,
-        int n,
-        const axis2_env_t *env);
+    axis2_strndup(const axis2_env_t *env,
+	    const void *ptr,
+        int n);
 
     /**
      * Create a null-terminated string by making a copy of a sequence
@@ -196,9 +196,9 @@ extern "C"
      * memory for the return value
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_stracat(const axis2_char_t *s1,
-        const axis2_char_t *s2,
-        const axis2_env_t *env);
+    axis2_stracat(const axis2_env_t *env,
+	    const axis2_char_t *s1,
+        const axis2_char_t *s2);
 
     /**
      * Concatenate multiple strings, allocating memory

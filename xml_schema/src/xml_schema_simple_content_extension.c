@@ -173,15 +173,15 @@ xml_schema_simple_content_extension_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(sim_content_ext_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_SIMPLE_CONTENT_EXTENSION", env),
+            axis2_strdup(env, "XML_SCHEMA_SIMPLE_CONTENT_EXTENSION"),
             AXIS2_HASH_KEY_STRING, &(sim_content_ext_impl->sim_content_ext));
 
     axis2_hash_set(sim_content_ext_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+            axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, (sim_content_ext_impl->annotated));
 
     axis2_hash_set(sim_content_ext_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_OBJ", env),
+            axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(sim_content_ext_impl->annotated, env));
 

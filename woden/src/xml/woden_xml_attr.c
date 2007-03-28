@@ -212,7 +212,7 @@ woden_xml_attr_init(
         axis2_qname_free(xml_attr_impl->f_attr_type, env);
         xml_attr_impl->f_attr_type = NULL;
     }
-    xml_attr_impl->f_external_form = axis2_strdup(attr_value, env);
+    xml_attr_impl->f_external_form = axis2_strdup(env, attr_value);
     xml_attr_impl->f_content = xml_attr_impl->xml_attr.ops->
             convert(&(xml_attr_impl->xml_attr), env, owner_el, owner_node,
                     attr_value);

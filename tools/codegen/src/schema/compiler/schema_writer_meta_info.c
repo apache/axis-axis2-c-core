@@ -893,7 +893,7 @@ w2c_schema_writer_meta_info_set_enum_facet( w2c_schema_writer_meta_info_t *schem
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     writer_meta_info_impl = W2C_INTF_TO_IMPL(schema_writer_meta_info);
-    writer_meta_info_impl-> enum_facet = axis2_strdup(enum_facet,env);
+    writer_meta_info_impl-> enum_facet = axis2_strdup(env, enum_facet);
     return AXIS2_SUCCESS;
 }
 axis2_char_t *AXIS2_CALL

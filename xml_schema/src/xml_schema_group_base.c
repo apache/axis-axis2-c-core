@@ -137,18 +137,18 @@ xml_schema_group_base_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(group_base_impl->ht_super, axis2_strdup("XML_SCHEMA_GROUP_BASE", env),
+    axis2_hash_set(group_base_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_GROUP_BASE"),
             AXIS2_HASH_KEY_STRING, &(group_base_impl->group_base));
 
-    axis2_hash_set(group_base_impl->ht_super, axis2_strdup("XML_SCHEMA_PARTICLE", env),
+    axis2_hash_set(group_base_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_PARTICLE"),
             AXIS2_HASH_KEY_STRING, group_base_impl->particle);
 
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(group_base_impl->particle, env);
     if (annotated)
     {
-        axis2_hash_set(group_base_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+        axis2_hash_set(group_base_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
                 AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(group_base_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
+        axis2_hash_set(group_base_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
                 AXIS2_HASH_KEY_STRING, XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
 

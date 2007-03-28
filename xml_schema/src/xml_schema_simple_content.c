@@ -132,13 +132,13 @@ xml_schema_simple_content_create(const axis2_env_t *env)
         xml_schema_simple_content_free(&(sim_cnt_impl->sim_content), env);
         return NULL;
     }
-    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup("XML_SCHEMA_SIMPLE_CONTENT", env),
+    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_SIMPLE_CONTENT"),
             AXIS2_HASH_KEY_STRING, &(sim_cnt_impl->sim_content));
 
-    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, sim_cnt_impl->annotated);
 
-    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
+    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(sim_cnt_impl->annotated, env));
 
@@ -245,7 +245,7 @@ xml_schema_simple_content_to_string(void *sim_content,
     sim_cnt_impl = AXIS2_INTF_TO_IMPL(sim_content);
     if (prefix && axis2_strcmp(prefix, "") != 0 && strchr(prefix, ':') == NULL)
     {
-        xml = axis2_stracat(prefix, ":", env);
+        xml = axis2_stracat(env, prefix, ":");
     }
     return xml;
 }

@@ -210,7 +210,7 @@ w2c_cmdline_option_parser_parse( w2c_cmdline_option_parser_impl_t *parser,
         while ( i < argc && !(w2c_string_indexof_cs ( argv[i], "-" ) == 0)
             && !(w2c_string_indexof_cs ( argv[i], "--" ) == 0) )
         {
-            value = (axis2_char_t*)axis2_strdup(argv[i], env);
+            value = (axis2_char_t*)axis2_strdup(env, argv[i]);
             axis2_array_list_add ( values_arr, env, value );
             i ++;
         }

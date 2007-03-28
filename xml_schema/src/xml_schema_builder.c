@@ -1352,7 +1352,7 @@ handle_simple_type(
                 axis2_char_t *index = NULL;
                 axis2_qname_t *qn = NULL;
                 member = axis2_array_list_get(v, env, i);
-                mem_dup = axis2_strdup(member, env);
+                mem_dup = axis2_strdup(env, member);
 
                 index = strchr(mem_dup, ':');
                 if (index)
@@ -3974,7 +3974,7 @@ get_enum_string(
     if (attr_value)
     {
         axis2_char_t *atr_val = NULL;
-        atr_val = axis2_strdup(attr_value, env);
+        atr_val = axis2_strdup(env, attr_value);
 
         return (axis2_char_t*)axis2_strtrim(env, atr_val, NULL);
     }

@@ -114,7 +114,7 @@ w2c_string_make_c_simple_name( axis2_char_t *name,
     int new_index = 0;
     int earlier_capital = 0;
 
-    name = (axis2_char_t*)axis2_strdup( name, env); /* so constansts are allowd */
+    name = (axis2_char_t*)axis2_strdup(env,  name); /* so constansts are allowd */
     len = axis2_strlen( name);
     ret_val = (axis2_char_t*) AXIS2_MALLOC ( env-> allocator, 
                                         sizeof(axis2_char_t) * len * 2);
@@ -167,7 +167,7 @@ w2c_string_make_key_from_qname( axis2_qname_t *qname,
     local = axis2_qname_get_localpart( qname, env);
     uri = axis2_qname_get_uri( qname, env);
     
-    key = axis2_strdup( local, env);
+    key = axis2_strdup(env, local);
     if ( uri != NULL && *uri != '\0' ) /* it should not be empty*/
     {
         key = w2c_string_add_string( key, "|", env);

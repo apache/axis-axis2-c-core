@@ -313,11 +313,11 @@ xml_schema_create(const axis2_env_t *env,
     schema_impl->schema_root_node = NULL;
 
     if (namespc)
-        schema_impl->target_namespace = axis2_strdup(namespc, env);
+        schema_impl->target_namespace = axis2_strdup(env, namespc);
     if (!schema_impl->target_namespace)
     {
         schema_impl->target_namespace =
-            axis2_strdup(XML_SCHEMA_DEFAULT_TARGET_NS, env);
+            axis2_strdup(env, XML_SCHEMA_DEFAULT_TARGET_NS);
     }
     schema_impl->schema.ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_ops_t));
@@ -1073,7 +1073,7 @@ xml_schema_set_target_namespace(void *schema,
         schema_impl->target_namespace = NULL;
     }
 
-    schema_impl->target_namespace = axis2_strdup(target_namespace, env);
+    schema_impl->target_namespace = axis2_strdup(env, target_namespace);
 
     return AXIS2_SUCCESS;
 }
@@ -1224,7 +1224,7 @@ xml_schema_set_schema_ns_prefix(void *schema,
         AXIS2_FREE(env->allocator, sch_impl->schema_ns_prefix);
         sch_impl->schema_ns_prefix = NULL;
     }
-    sch_impl->schema_ns_prefix = axis2_strdup(ns_prefix, env);
+    sch_impl->schema_ns_prefix = axis2_strdup(env, ns_prefix);
     return AXIS2_FAILURE;
 }
 

@@ -160,7 +160,7 @@ axis2_svc_grp_set_name(
 
     if (svc_grp->svc_grp_name)
         AXIS2_FREE(env->allocator, svc_grp->svc_grp_name);
-    svc_grp->svc_grp_name = axis2_strdup(name, env);
+    svc_grp->svc_grp_name = axis2_strdup(env, name);
     if (!svc_grp->svc_grp_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

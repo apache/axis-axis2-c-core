@@ -47,8 +47,8 @@ axis2_http_header_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    http_header->name = (axis2_char_t *)axis2_strdup(name, env);
-    http_header->value = (axis2_char_t *)axis2_strdup(value, env);
+    http_header->name = (axis2_char_t *)axis2_strdup(env, name);
+    http_header->value = (axis2_char_t *)axis2_strdup(env, value);
 
     return http_header;
 }
@@ -65,7 +65,7 @@ axis2_http_header_create_by_str(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_ENV_CHECK(env, NULL);
 
-    tmp_str = axis2_strdup(str, env);
+    tmp_str = axis2_strdup(env, str);
     if (! tmp_str)
     {
         return NULL;

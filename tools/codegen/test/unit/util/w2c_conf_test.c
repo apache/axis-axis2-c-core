@@ -212,7 +212,7 @@ void test_messages(CuTest *tc)
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
-    key = axis2_strdup("wsdl2code.arg1", env);
+    key = axis2_strdup(env, "wsdl2code.arg1");
     expected = "Usage WSDL2Code -uri <Location of WSDL> : WSDL file location";
     actual = w2c_messages_get_message(env, key);
     CuAssertStrEquals(tc, expected, actual);

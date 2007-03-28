@@ -66,7 +66,7 @@ w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer
             W2C_QNAME2NAME_MAKER_SUGGEST_NAME( qname2name_maker, env, temp_qname);
     }
 
-    fully_qualified_class_name = axis2_strdup( fully_qualified_class_name, env);
+    fully_qualified_class_name = axis2_strdup(env, fully_qualified_class_name);
     
     name_maker = W2C_SCHEMA_COMPILER_OPTIONS_GET_NAME_MAKER_FUNC
                                             ( writer_impl-> options, env);
@@ -91,13 +91,13 @@ w2c_schema_c_writer_write_batch( w2c_schema_writer_t *writer,
         out = W2C_SCHEMA_WRITER_CREATE_OUT_FILE( writer_impl, env,
                       NULL, W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME, ".c");
         /* parse with the template and create the files */
-        source_template = axis2_stracat( writer_impl-> template_name, "Source.xsl", env);
+        source_template = axis2_stracat(env, writer_impl-> template_name, "Source.xsl");
         w2c_schema_writer_parse( writer_impl, env,
                       writer_impl-> global_wrapped_node, out, source_template);
         out = W2C_SCHEMA_WRITER_CREATE_OUT_FILE( writer_impl, env,
                       NULL, W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME, ".h");
         /* parse with the template and create the files */
-        header_template = axis2_stracat( writer_impl-> template_name, "Header.xsl", env);
+        header_template = axis2_stracat(env, writer_impl-> template_name, "Header.xsl");
         w2c_schema_writer_parse( writer_impl, env,
                       writer_impl-> global_wrapped_node, out, header_template);
         AXIS2_FREE( env-> allocator, source_template);
@@ -125,7 +125,7 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
     axis2_char_t *namespace_uri = NULL;
 
     original_name = axis2_qname_get_localpart( qname, env);
-    original_name = axis2_strdup( original_name, env);
+    original_name = axis2_strdup(env,  original_name, original_name);
     class_name = W2C_SCHEMA_WRITER_META_INFO_GET_OWN_CLASSNAME( meta_info, env);
     if( ! class_name )
     {
@@ -155,18 +155,18 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
             out = W2C_SCHEMA_WRITER_CREATE_OUT_FILE( writer_impl, env, 
                           "", class_name, ".c");
             /* parse with the template and create the files */
-            source_template = axis2_stracat( writer_impl-> template_name, "Source.xsl", env);
+            source_template = axis2_stracat(env, writer_impl-> template_name, "Source.xsl");
             w2c_schema_writer_parse( writer_impl, env,
                           model_source_node, out, source_template);
             out = W2C_SCHEMA_WRITER_CREATE_OUT_FILE( writer_impl, env, 
                           "", class_name, ".h"); 
             /* parse with the template and create the files */
-            header_template = axis2_stracat( writer_impl-> template_name, "Header.xsl", env);
+            header_template = axis2_stracat(env, writer_impl-> template_name, "Header.xsl");
             w2c_schema_writer_parse( writer_impl, env,
                           model_source_node, out, header_template);
         }
         namespace_uri = axis2_qname_get_uri( qname, env);
-        model_name = axis2_stracat( class_name, "|", env);
+        model_name = axis2_stracat(env, class_name, "|");
         model_name = w2c_string_add_string( model_name, namespace_uri, env);
         axis2_hash_set( writer_impl-> model_map,  model_name, AXIS2_HASH_KEY_STRING, model_source_node);
     }
@@ -184,7 +184,7 @@ w2c_schema_c_writer_create_out_file( w2c_schema_writer_impl_t *writer_impl,
     axis2_char_t *filename = NULL;
     axis2_char_t *fullpath = NULL;
 
-    filename = axis2_stracat( W2C_SCHEMA_C_WRITER_PREFIX, name, env);
+    filename = axis2_stracat(env, W2C_SCHEMA_C_WRITER_PREFIX, name);
     fullpath = w2c_file_writer_create_classfile_name( env, writer_impl->root_dir,
                 package_name, filename, extension);
     AXIS2_FREE( env-> allocator, filename);

@@ -349,17 +349,17 @@ deal_with_path:
             s1 = strchr(s, '#');
             if (s1)
             {
-                uri->fragment = axis2_strdup(s1 + 1, env);
+                uri->fragment = axis2_strdup(env, s1 + 1);
                 uri->query = axis2_strmemdup(s, s1 - s, env);
             }
             else
             {
-                uri->query = axis2_strdup(s, env);
+                uri->query = axis2_strdup(env, s);
             }
             return uri;
         }
         /* otherwise it's a fragment */
-        uri->fragment = axis2_strdup(s + 1, env);
+        uri->fragment = axis2_strdup(env, s + 1);
 
         return uri;
     }
@@ -494,7 +494,7 @@ axis2_uri_parse_hostinfo(const axis2_env_t *env,
      */
     memset(uri, '\0', sizeof(*uri));
     uri->is_initialized = 1;
-    uri->hostinfo = axis2_strdup(hostinfo, env);
+    uri->hostinfo = axis2_strdup(env, hostinfo);
 
     /* We expect hostinfo to point to the first character of
      * the hostname.  There must be a port, separated by a colon
@@ -519,9 +519,9 @@ axis2_uri_parse_hostinfo(const axis2_env_t *env,
     {
         return NULL;
     }
-    uri->hostname = axis2_strndup(hostinfo, s - hostinfo - v6_offset1, env);
+    uri->hostname = axis2_strndup(env, hostinfo, s - hostinfo - v6_offset1);
     ++s;
-    uri->port_str = axis2_strdup(s, env);
+    uri->port_str = axis2_strdup(env, s);
     if (*s != '\0')
     {
         uri->port = (unsigned short) strtol(uri->port_str, &endstr, 10);
@@ -555,14 +555,14 @@ axis2_uri_resolve_relative(const axis2_env_t *env,
         if (!uri->hostname)
         {
             /* is this compatible with is_initialised?  Harmless in any case */
-            uri->path = base->path ? base->path : axis2_strdup("/", env) ;
+            uri->path = base->path ? base->path : axis2_strdup(env, "/") ;
         }
         else
         {
             /* deal with the idiosyncracy of APR allowing path==NULL
              * without risk of breaking back-compatibility
              */
-            uri->path = axis2_strdup("/", env) ;
+            uri->path = axis2_strdup(env, "/") ;
         }
     }
     else if (uri->path[0] != '/')
@@ -603,27 +603,27 @@ axis2_uri_resolve_relative(const axis2_env_t *env,
     /* The trivial bits are everything-but-path */
     if (!uri->scheme)
     {
-        uri->scheme = axis2_strdup(base->scheme, env) ;
+        uri->scheme = axis2_strdup(env, base->scheme) ;
     }
     if (!uri->hostinfo)
     {
-        uri->hostinfo = axis2_strdup(base->hostinfo, env) ;
+        uri->hostinfo = axis2_strdup(env, base->hostinfo) ;
     }
     if (!uri->user)
     {
-        uri->user = axis2_strdup(base->user, env) ;
+        uri->user = axis2_strdup(env, base->user) ;
     }
     if (!uri->password)
     {
-        uri->password = axis2_strdup(base->password, env) ;
+        uri->password = axis2_strdup(env, base->password) ;
     }
     if (!uri->hostname)
     {
-        uri->hostname = axis2_strdup(base->hostname, env) ;
+        uri->hostname = axis2_strdup(env, base->hostname) ;
     }
     if (!uri->port_str)
     {
-        uri->port_str = axis2_strdup(base->port_str, env) ;
+        uri->port_str = axis2_strdup(env, base->port_str) ;
     }
     if (!uri->hostent)
     {
@@ -680,15 +680,15 @@ axis2_uri_clone(const axis2_uri_t* uri,
     AXIS2_ENV_CHECK(env, NULL);
     new_uri = (axis2_uri_t *) axis2_uri_create(env);
 
-    new_uri->scheme = axis2_strdup(uri->scheme, env);
-    new_uri->hostinfo = axis2_strdup(uri->hostinfo, env);
-    new_uri->user = axis2_strdup(uri->user, env);
-    new_uri->password = axis2_strdup(uri->password, env);
-    new_uri->hostname = axis2_strdup(uri->hostname, env);
-    new_uri->port_str = axis2_strdup(uri->port_str, env);
-    new_uri->path = axis2_strdup(uri->path, env);
-    new_uri->query = axis2_strdup(uri->query, env);
-    new_uri->fragment = axis2_strdup(uri->fragment, env);
+    new_uri->scheme = axis2_strdup(env, uri->scheme);
+    new_uri->hostinfo = axis2_strdup(env, uri->hostinfo);
+    new_uri->user = axis2_strdup(env, uri->user);
+    new_uri->password = axis2_strdup(env, uri->password);
+    new_uri->hostname = axis2_strdup(env, uri->hostname);
+    new_uri->port_str = axis2_strdup(env, uri->port_str);
+    new_uri->path = axis2_strdup(env, uri->path);
+    new_uri->query = axis2_strdup(env, uri->query);
+    new_uri->fragment = axis2_strdup(env, uri->fragment);
     new_uri->hostent = uri->hostent;
     new_uri->port = uri->port;
     new_uri->is_initialized = uri->is_initialized;

@@ -351,7 +351,7 @@ xml_schema_collection_set_base_uri(
         AXIS2_FREE(env->allocator, collec_impl->base_uri);
         collec_impl->base_uri = NULL;
     }
-    collec_impl->base_uri = axis2_strdup(base_uri, env);
+    collec_impl->base_uri = axis2_strdup(env, base_uri);
     return AXIS2_SUCCESS;
 }
 

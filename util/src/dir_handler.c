@@ -84,8 +84,8 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
             return NULL;
         }
          axis2_file_set_name(arch_file, env, fname);
-        temp_path = axis2_stracat(pathname, AXIS2_PATH_SEP_STR, env);
-        path = axis2_stracat(temp_path, fname, env);
+        temp_path = axis2_stracat(env, pathname, AXIS2_PATH_SEP_STR);
+        path = axis2_stracat(env, temp_path, fname);
         AXIS2_FREE(env->allocator, temp_path);
         if (!path)
         {
@@ -219,8 +219,8 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
             return NULL;
         }
          axis2_file_set_name(arch_file, env, fname);
-        temp_path = axis2_stracat(pathname, AXIS2_PATH_SEP_STR, env);
-        path = axis2_stracat(temp_path, fname, env);
+        temp_path = axis2_stracat(env, pathname, AXIS2_PATH_SEP_STR);
+        path = axis2_stracat(env, temp_path, fname);
         if (!path)
         {
             int size = 0;

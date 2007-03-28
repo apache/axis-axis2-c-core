@@ -80,7 +80,7 @@ axis2_desc_builder_create_with_file_and_dep_engine(const axis2_env_t *env,
         return NULL;
     }
 
-    desc_builder->file_name = axis2_strdup(file_name, env);
+    desc_builder->file_name = axis2_strdup(env, file_name);
     if (!desc_builder->file_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -569,7 +569,7 @@ set_attrs_and_value(axis2_param_t *param,
 
         temp = axiom_element_get_text(
             param_element, env, param_node);
-        para_test_value = axis2_strdup(temp, env);
+        para_test_value = axis2_strdup(env, temp);
         status = axis2_param_set_value(param, env, para_test_value);
         if (AXIS2_SUCCESS != status)
         {
@@ -894,10 +894,10 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
              axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                  class_name);
         repos_name = axis2_dep_engine_get_repos_path(desc_builder->engine, env);
-        temp_path = axis2_stracat(repos_name, AXIS2_PATH_SEP_STR, env);
-        temp_path2 = axis2_stracat(temp_path, AXIS2_LIB_FOLDER, env);
-        temp_path3 = axis2_stracat(temp_path2, AXIS2_PATH_SEP_STR, env);
-        dll_name = axis2_stracat(temp_path3, msg_recv_dll_name, env);
+        temp_path = axis2_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+        temp_path2 = axis2_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+        temp_path3 = axis2_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+        dll_name = axis2_stracat(env, temp_path3, msg_recv_dll_name);
         AXIS2_FREE(env->allocator, temp_path);
         AXIS2_FREE(env->allocator, temp_path2);
         AXIS2_FREE(env->allocator, temp_path3);
@@ -941,7 +941,7 @@ axis2_desc_builder_get_short_file_name(const axis2_desc_builder_t *desc_builder,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
 
-    file_name_l = axis2_strdup(file_name, env);
+    file_name_l = axis2_strdup(env, file_name);
     if (!file_name_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -967,7 +967,7 @@ axis2_desc_builder_get_file_name_without_prefix(const axis2_desc_builder_t *desc
     int len = 0;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, short_file_name, NULL);
-    file_name_l = axis2_strdup(short_file_name, env);
+    file_name_l = axis2_strdup(env, short_file_name);
     if (!file_name_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -991,7 +991,7 @@ axis2_desc_builder_get_value(const axis2_desc_builder_t *desc_builder,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, in, NULL);
 
-    in_l = axis2_strdup(in, env);
+    in_l = axis2_strdup(env, in);
     if (!in_l)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

@@ -68,7 +68,7 @@ axis2_qname_create(const axis2_env_t *env,
     qname->ref = 1;
 
 
-    qname->localpart = (axis2_char_t *)axis2_strdup(localpart, env);
+    qname->localpart = (axis2_char_t *)axis2_strdup(env, localpart);
     if (!(qname->localpart))
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
@@ -79,7 +79,7 @@ axis2_qname_create(const axis2_env_t *env,
     
     if (prefix)
     {
-        qname->prefix = (axis2_char_t*)axis2_strdup(prefix, env);
+        qname->prefix = (axis2_char_t*)axis2_strdup(env, prefix);
     }
     
     if (prefix && !(qname->prefix))
@@ -92,7 +92,7 @@ axis2_qname_create(const axis2_env_t *env,
     
     if (namespace_uri)
     {
-        qname->namespace_uri = (axis2_char_t*)axis2_strdup(namespace_uri, env);
+        qname->namespace_uri = (axis2_char_t*)axis2_strdup(env, namespace_uri);
     }
 
     if (namespace_uri && !(qname->namespace_uri))
@@ -236,14 +236,14 @@ axis2_qname_to_string(axis2_qname_t *qname,
 
     if (!(qname->namespace_uri) || axis2_strcmp(qname->namespace_uri, "") == 0)
     {
-        qname->qname_string = axis2_strdup(qname->localpart, env);
+        qname->qname_string = axis2_strdup(env, qname->localpart);
     }
     else if (!(qname->prefix) || axis2_strcmp(qname->prefix, "") == 0)
     {
 
         axis2_char_t *temp_string1 = NULL;
-        temp_string1 = axis2_stracat(qname->localpart, "|", env);
-        qname->qname_string = axis2_stracat(temp_string1, qname->namespace_uri, env);
+        temp_string1 = axis2_stracat(env, qname->localpart, "|");
+        qname->qname_string = axis2_stracat(env, temp_string1, qname->namespace_uri);
         if (temp_string1)
         {
             AXIS2_FREE(env->allocator, temp_string1);
@@ -255,10 +255,10 @@ axis2_qname_to_string(axis2_qname_t *qname,
         axis2_char_t *temp_string2 = NULL;
         axis2_char_t *temp_string3 = NULL;
 
-        temp_string1 = axis2_stracat(qname->localpart, "|", env);
-        temp_string2 = axis2_stracat(temp_string1, qname->namespace_uri, env);
-        temp_string3 = axis2_stracat(temp_string2, "|", env);
-        qname->qname_string = axis2_stracat(temp_string3, qname->prefix, env);
+        temp_string1 = axis2_stracat(env, qname->localpart, "|");
+        temp_string2 = axis2_stracat(env, temp_string1, qname->namespace_uri);
+        temp_string3 = axis2_stracat(env, temp_string2, "|");
+        qname->qname_string = axis2_stracat(env, temp_string3, qname->prefix);
 
         if (temp_string1)
         {
@@ -290,7 +290,7 @@ axis2_qname_create_from_string(const axis2_env_t *env,
     if (!qstring || axis2_strcmp(qstring, "") == 0)
         return NULL;
 
-    temp_string = axis2_strdup(qstring, env);
+    temp_string = axis2_strdup(env, qstring);
 
     index = strchr(temp_string, '|');
     if (index)

@@ -78,16 +78,16 @@ woden_om_util_register_unique_prefix(
         /* Namespace already registerd */
         return AXIS2_SUCCESS;
     }
-    tmp_prefix = axis2_strdup(prefix, env);
+    tmp_prefix = axis2_strdup(env, prefix);
     while (ns_uri_str && 0 != axis2_strcmp(ns_uri_str, namespc_uri_str))
     {
         axis2_char_t *temp = NULL;
 
-        temp = axis2_stracat(tmp_prefix, "_", env);
+        temp = axis2_stracat(env, tmp_prefix, "_");
         ns_uri = axis2_hash_get(namespcs, temp, AXIS2_HASH_KEY_STRING);
         ns_uri_str = axis2_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
         AXIS2_FREE(env->allocator, tmp_prefix);
-        tmp_prefix = axis2_strdup(temp, env);
+        tmp_prefix = axis2_strdup(env, temp);
         AXIS2_FREE(env->allocator, temp);
     }
     uri = axis2_uri_parse_string(env, namespc_uri_str);

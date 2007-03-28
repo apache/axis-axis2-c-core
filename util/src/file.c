@@ -83,7 +83,7 @@ axis2_file_set_name(axis2_file_t *file,
         AXIS2_FREE(env->allocator, file->name);
         file->name = NULL;
     }
-    file->name = axis2_strdup(name, env);
+    file->name = axis2_strdup(env, name);
     if (!file->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -121,7 +121,7 @@ axis2_file_set_path(axis2_file_t *file,
         AXIS2_FREE(env->allocator, file->path);
         file->path = NULL;
     }
-    file->path = axis2_strdup(path, env);
+    file->path = axis2_strdup(env, path);
     if (!(file->path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

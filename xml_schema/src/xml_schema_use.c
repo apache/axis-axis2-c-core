@@ -109,13 +109,13 @@ xml_schema_use_create(const axis2_env_t *env,
     if (!use_impl->members)
         return NULL;
     axis2_array_list_add(use_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_NONE, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_NONE));
     axis2_array_list_add(use_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_OPTIONAL, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_OPTIONAL));
     axis2_array_list_add(use_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_PROHIBITED, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_PROHIBITED));
     axis2_array_list_add(use_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_REQUIRED, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_REQUIRED));
 
     use_impl->schema_enum = xml_schema_enum_create(env, value);
 
@@ -126,12 +126,12 @@ xml_schema_use_create(const axis2_env_t *env,
         return NULL;
     }
     axis2_hash_set(use_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_USE", env),
+            axis2_strdup(env, "XML_SCHEMA_USE"),
             AXIS2_HASH_KEY_STRING,
             &(use_impl->use));
 
     axis2_hash_set(use_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_ENUM", env),
+            axis2_strdup(env, "XML_SCHEMA_ENUM"),
             AXIS2_HASH_KEY_STRING,
             use_impl->schema_enum);
 

@@ -116,7 +116,7 @@ w2c_xslt_utils_copy_node_tree(
         if ( AXIOM_NODE_GET_NODE_TYPE ( from_child, env ) == AXIOM_TEXT )
         {
             text = axiom_element_get_text ( from_ele, env, from );
-            text = axis2_strdup ( text, env);
+            text = axis2_strdup (env, text);
             axiom_element_set_text ( to_ele, env, text, to);
         }
         else if ( AXIOM_NODE_GET_NODE_TYPE ( from_child, env ) == AXIOM_ELEMENT )

@@ -127,18 +127,18 @@ xml_schema_import_create(const axis2_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(import_impl->ht_super, axis2_strdup("XML_SCHEMA_IMPORT", env),
+    axis2_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_IMPORT"),
             AXIS2_HASH_KEY_STRING, &(import_impl->import));
-    axis2_hash_set(import_impl->ht_super, axis2_strdup("XML_SCHEMA_EXTERNAL", env),
+    axis2_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_EXTERNAL"),
             AXIS2_HASH_KEY_STRING, import_impl->external);
 
     annotated = XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(import_impl->external, env);
     if (annotated)
     {
 
-        axis2_hash_set(import_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+        axis2_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
                 AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(import_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
+        axis2_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
                 AXIS2_HASH_KEY_STRING,
                 XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }

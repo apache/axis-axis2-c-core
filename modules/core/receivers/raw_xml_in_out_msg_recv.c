@@ -216,7 +216,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
                 axiom_namespace_t *ns = NULL;
                 axis2_char_t *res_name = NULL;
 
-                res_name = axis2_stracat(local_name, "Response", env);
+                res_name = axis2_stracat(env, local_name, "Response");
                 ns = axiom_namespace_create(env, "http://soapenc/", "res");
                 if (!ns)
                 {

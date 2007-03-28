@@ -49,10 +49,10 @@ axis2_http_request_line_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    request_line->method = (axis2_char_t *)axis2_strdup(method, env);
-    request_line->uri = (axis2_char_t *)axis2_strdup(uri, env);
-    request_line->http_version = (axis2_char_t *)axis2_strdup(
-                http_version, env);
+    request_line->method = (axis2_char_t *)axis2_strdup(env, method);
+    request_line->uri = (axis2_char_t *)axis2_strdup(env, uri);
+    request_line->http_version = (axis2_char_t *)axis2_strdup(env, http_version);
+                
 
     return request_line;
 }

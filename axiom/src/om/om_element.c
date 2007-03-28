@@ -1103,7 +1103,7 @@ axiom_element_get_text(axiom_element_t *om_element,
                 }
                 else if (!dest && temp_text && axis2_strcmp(temp_text, "") != 0)
                 {
-                    dest = axis2_strdup(temp_text, env);
+                    dest = axis2_strdup(env, temp_text);
                 }
             }
         }
@@ -1480,8 +1480,8 @@ axiom_element_get_attribute_value_by_name(axiom_element_t *om_element,
                 if (prefix)
                 {
                     axis2_char_t *tmp_val = NULL;
-                    tmp_val = axis2_stracat(prefix, ":", env);
-                    attr_qn_str = axis2_stracat(tmp_val, this_attr_name, env);
+                    tmp_val = axis2_stracat(env, prefix, ":");
+                    attr_qn_str = axis2_stracat(env, tmp_val, this_attr_name);
                     if (tmp_val)
                     {
                         AXIS2_FREE(env->allocator, tmp_val);
@@ -1491,7 +1491,7 @@ axiom_element_get_attribute_value_by_name(axiom_element_t *om_element,
             }
             else
             {
-                attr_qn_str = axis2_strdup(this_attr_name, env);
+                attr_qn_str = axis2_strdup(env, this_attr_name);
             }
 
             if (attr_qn_str && axis2_strcmp(attr_qn_str, attr_name) == 0)

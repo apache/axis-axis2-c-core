@@ -70,7 +70,7 @@ axis2_op_create(const axis2_env_t *env)
     op->qname = NULL;
     op->msg_exchange_pattern = NULL;
     op->style = NULL;
-    op->style = axis2_strdup(AXIS2_STYLE_DOC, env);
+    op->style = axis2_strdup(env, AXIS2_STYLE_DOC);
 
     op->param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
@@ -432,7 +432,7 @@ axis2_op_set_msg_exchange_pattern(axis2_op_t *op,
         op->msg_exchange_pattern = NULL;
     }
 
-    op->msg_exchange_pattern = axis2_strdup(pattern, env);
+    op->msg_exchange_pattern = axis2_strdup(env, pattern);
     return AXIS2_SUCCESS;
 }
 
@@ -464,7 +464,7 @@ axis2_op_set_style(axis2_op_t *op,
         op->style = NULL;
     }
 
-    op->style = axis2_strdup(style, env);
+    op->style = axis2_strdup(env, style);
     return AXIS2_SUCCESS;
 }
 

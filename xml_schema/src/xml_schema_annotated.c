@@ -166,11 +166,11 @@ xml_schema_annotated_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(annotated_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+            axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, &(annotated_impl->annotated));
 
     axis2_hash_set(annotated_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_OBJ", env), AXIS2_HASH_KEY_STRING,
+            axis2_strdup(env, "XML_SCHEMA_OBJ"), AXIS2_HASH_KEY_STRING,
             annotated_impl->schema_obj);
 
     status = xml_schema_obj_resolve_methods(
@@ -359,7 +359,7 @@ xml_schema_annotated_set_id(void *annotated,
         AXIS2_FREE(env->allocator, annotated_impl->id);
         annotated_impl->id = NULL;
     }
-    annotated_impl->id = axis2_strdup(id, env);
+    annotated_impl->id = axis2_strdup(env, id);
     return AXIS2_SUCCESS;
 
 }

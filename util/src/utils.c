@@ -80,13 +80,13 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
                     }
                     else
                     {
-                        ret[1] = axis2_strdup(service_str, env);
+                        ret[1] = axis2_strdup(env, service_str);
                     }
                 }
             }
             else
             {
-                ret[0] = axis2_strdup(service_str, env);
+                ret[0] = axis2_strdup(env, service_str);
             }
         }
     }

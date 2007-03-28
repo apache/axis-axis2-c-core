@@ -168,7 +168,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *ws_info_list,
     AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
 
     temp_name =  axis2_file_get_name(file, env);
-    info_list_name = axis2_strdup(temp_name, env);
+    info_list_name = axis2_strdup(env, temp_name);
     if (!info_list_name)
     {
         return AXIS2_FAILURE;

@@ -158,9 +158,9 @@ xml_schema_redefine_create(const axis2_env_t *env)
     }
 
 
-    axis2_hash_set(redefine_impl->ht_super, axis2_strdup("XML_SCHEMA_REDEFINE", env),
+    axis2_hash_set(redefine_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_REDEFINE"),
             AXIS2_HASH_KEY_STRING, &(redefine_impl->redefine));
-    axis2_hash_set(redefine_impl->ht_super, axis2_strdup("XML_SCHEMA_EXTERNAL", env),
+    axis2_hash_set(redefine_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_EXTERNAL"),
             AXIS2_HASH_KEY_STRING, redefine_impl->external);
 
     annotated = XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(redefine_impl->external, env);

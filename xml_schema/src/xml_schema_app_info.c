@@ -156,11 +156,11 @@ xml_schema_app_info_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(app_info_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_APP_INFO", env),
+            axis2_strdup(env, "XML_SCHEMA_APP_INFO"),
             AXIS2_HASH_KEY_STRING, &(app_info_impl->app_info));
 
     axis2_hash_set(app_info_impl->ht_super,
-            axis2_strdup("XML_SCHEMA_OBJ", env),
+            axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING, app_info_impl->schema_obj);
 
     status = xml_schema_obj_resolve_methods(&(app_info_impl->app_info.base),
@@ -288,7 +288,7 @@ xml_schema_app_info_set_source(void *app_info,
         app_info_impl->source = NULL;
     }
 
-    app_info_impl->source = axis2_strdup(source, env);
+    app_info_impl->source = axis2_strdup(env, source);
     if (!app_info_impl->source)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

@@ -120,13 +120,13 @@ xml_schema_content_processing_create(const axis2_env_t *env,
     }
 
     axis2_array_list_add(content_processing_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_LAX, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_LAX));
     axis2_array_list_add(content_processing_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_NONE, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_NONE));
     axis2_array_list_add(content_processing_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_SKIP, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_SKIP));
     axis2_array_list_add(content_processing_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_STRICT, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_STRICT));
 
     content_processing_impl->schema_enum = xml_schema_enum_create(env, value);
 
@@ -139,10 +139,10 @@ xml_schema_content_processing_create(const axis2_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(content_processing_impl->ht_super, axis2_strdup("XML_SCHEMA_CONTENT_PROCESSING", env),
+    axis2_hash_set(content_processing_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_CONTENT_PROCESSING"),
             AXIS2_HASH_KEY_STRING, &(content_processing_impl->content_processing));
 
-    axis2_hash_set(content_processing_impl->ht_super, axis2_strdup("XML_SCHEMA_ENUM", env),
+    axis2_hash_set(content_processing_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ENUM"),
             AXIS2_HASH_KEY_STRING, content_processing_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(

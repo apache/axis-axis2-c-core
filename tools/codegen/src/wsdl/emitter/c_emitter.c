@@ -154,7 +154,7 @@ w2c_c_emitter_set_config(w2c_emitter_t *emitter,
         qname = axis2_qname_create_from_string( env, key);
         if ( !W2C_TYPEMAPPER_IS_PRIMITIVE( typemapper, env, qname) )
         {
-            filename = axis2_stracat( W2C_C_EMITTER_TYPE_PREFIX, classname, env);
+            filename = axis2_stracat(env, W2C_C_EMITTER_TYPE_PREFIX, classname);
             root = W2C_ENGINE_CONFIGURATION_GET_OUTPUT_LOCATION( config, env);
             source = w2c_file_writer_create_classfile_name( env,
                                 root, 
@@ -412,7 +412,7 @@ w2c_c_emitter_create_for_stub (w2c_emitter_impl_t *emitter_impl,
     qname_str = axis2_qname_to_string(qname, env);
     
     root = w2c_xslt_utils_add_child_node(env, "class", NULL);
-    full_name = axis2_strdup ( W2C_C_EMITTER_STUB_PREFIX, env );
+    full_name = axis2_strdup (env, W2C_C_EMITTER_STUB_PREFIX);
     full_name = w2c_string_add_string ( full_name, given_name, env );
     full_name = w2c_string_add_string 
                             ( full_name, W2C_C_EMITTER_STUB_SUFFIX, env);
@@ -471,7 +471,7 @@ w2c_c_emitter_create_for_skel(w2c_emitter_impl_t *emitter_impl,
     qname_str = axis2_qname_to_string(qname, env);
     
     root = w2c_xslt_utils_add_child_node(env, "interface", NULL);
-    full_name = axis2_strdup ( W2C_C_EMITTER_SKEL_PREFIX, env );
+    full_name = axis2_strdup (env, W2C_C_EMITTER_SKEL_PREFIX);
     full_name = w2c_string_add_string ( full_name, given_name, env );
     full_name = w2c_string_add_string 
                             ( full_name, W2C_C_EMITTER_SKEL_SUFFIX, env);
@@ -509,7 +509,7 @@ w2c_c_emitter_create_for_svc_skel(w2c_emitter_impl_t *emitter_impl,
     qname_str = axis2_qname_to_string(qname, env);
     
     root = w2c_xslt_utils_add_child_node(env, "interface", NULL);
-    svc_skel_name = axis2_strdup ( W2C_C_EMITTER_SVC_SKEL_PREFIX, env );
+    svc_skel_name = axis2_strdup (env, W2C_C_EMITTER_SVC_SKEL_PREFIX);
     svc_skel_name = w2c_string_add_string ( svc_skel_name, given_name, env );
     svc_skel_name = w2c_string_add_string 
                             ( svc_skel_name, W2C_C_EMITTER_SVC_SKEL_SUFFIX, env);
@@ -519,7 +519,7 @@ w2c_c_emitter_create_for_svc_skel(w2c_emitter_impl_t *emitter_impl,
     w2c_xslt_utils_add_attribute (env, root, "prefix", svc_skel_name_c);
     w2c_xslt_utils_add_attribute (env, root, "qname", qname_str);
 
-    skel_name = axis2_strdup ( W2C_C_EMITTER_SKEL_PREFIX, env );
+    skel_name = axis2_strdup (env, W2C_C_EMITTER_SKEL_PREFIX);
     skel_name = w2c_string_add_string ( skel_name, given_name, env );
     skel_name = w2c_string_add_string 
                             ( skel_name, W2C_C_EMITTER_SKEL_SUFFIX, env);

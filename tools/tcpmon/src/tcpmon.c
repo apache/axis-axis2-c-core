@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 				else if (!strcmp ("-th", argv[ii]))
 				{
 						ii++;
-						target_host = (char*)axis2_strdup(argv[ii++], env);
+						target_host = (char*)axis2_strdup(env, argv[ii++]);
 				}
 				else if (!strcmp ("--test", argv [ii]))
 				{

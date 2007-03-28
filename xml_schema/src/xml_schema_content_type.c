@@ -115,15 +115,15 @@ xml_schema_content_type_create(const axis2_env_t *env,
     }
 
     axis2_array_list_add(content_type_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_ELEMENT_ONLY, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_ELEMENT_ONLY));
     axis2_array_list_add(content_type_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_EMPTY, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_EMPTY));
 
     axis2_array_list_add(content_type_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_MIXED, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_MIXED));
 
     axis2_array_list_add(content_type_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_TEXT_ONLY, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_TEXT_ONLY));
 
     content_type_impl->schema_enum = xml_schema_enum_create(env, value);
     if (!content_type_impl->schema_enum)

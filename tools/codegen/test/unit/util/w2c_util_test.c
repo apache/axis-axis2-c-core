@@ -60,7 +60,7 @@ void test_namespace_to_package_name(CuTest *tc)
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
-    input = (char*)axis2_strdup("http://ws.apache.org/axis2/c/w2c", env);
+    input = (char*)axis2_strdup(env, "http://ws.apache.org/axis2/c/w2c");
     actual =
         (char*)w2c_url_processor_make_package_name(env, input);
     expected = "org.apache.ws.axis2.c.w2c";
@@ -68,7 +68,7 @@ void test_namespace_to_package_name(CuTest *tc)
     free(input);
     free(actual);
 
-    input = (char*)axis2_strdup("http://while.234who.for/switch/case/2sixa", env);
+    input = (char*)axis2_strdup(env, "http://while.234who.for/switch/case/2sixa");
     actual =
         (char*)w2c_url_processor_make_package_name(env, input);
     expected = "_for._234who._while._switch._case._2sixa";

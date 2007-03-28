@@ -93,7 +93,7 @@ woden_msg_label_create(
     AXIS2_ENV_CHECK(env, NULL);
     msg_label_impl = (woden_msg_label_impl_t *) create(env);
 
-    msg_label_impl->f_value = axis2_strdup(value, env);
+    msg_label_impl->f_value = axis2_strdup(env, value);
     msg_label_impl->f_valid = valid;
 
     return &(msg_label_impl->msg_label);

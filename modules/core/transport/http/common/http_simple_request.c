@@ -396,7 +396,7 @@ axis2_http_simple_request_get_body_bytes(
     tmp_buf2 = AXIS2_MALLOC(env->allocator, 128 * sizeof(char));
     while (AXIS2_STREAM_READ(body, env, tmp_buf2, 128) > 0)
     {
-        tmp_buf3 = axis2_stracat(tmp_buf, tmp_buf2, env);
+        tmp_buf3 = axis2_stracat(env, tmp_buf, tmp_buf2);
         if (tmp_buf)
         {
             AXIS2_FREE(env->allocator, tmp_buf);

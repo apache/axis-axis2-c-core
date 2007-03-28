@@ -905,7 +905,7 @@ w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
     {
         w2c_xslt_utils_add_attribute (env, param, "ours", "yes");
     }
-    type = axis2_strdup( type, env);
+    type = axis2_strdup(env, type);
     w2c_xslt_utils_add_attribute (env, param, "type", type);
     type = axis2_string_toupper( type);
     w2c_xslt_utils_add_attribute (env, param, "caps-type", type);
@@ -920,7 +920,7 @@ w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
 axis2_char_t* w2c_emitter_default_namemaker( axis2_char_t *name, 
                              const axis2_env_t *env)
 {
-    return axis2_strdup( name, env);
+    return axis2_strdup(env, name);
 }
 
 axis2_char_t* w2c_emitter_default_qname2name( axis2_qname_t *qname,

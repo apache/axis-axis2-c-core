@@ -67,7 +67,7 @@ w2c_messages_get_message( const axis2_env_t *env, axis2_char_t *key )
      message = axis2_properties_get_property( props, env, key);
      if ( message )
      {
-         message = axis2_strdup ( message, env );
+         message = axis2_strdup (env, message);
      }
      axis2_properties_free( props, env);
 

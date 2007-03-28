@@ -1006,7 +1006,7 @@ axis2_msg_ctx_set_svc_ctx_id(
 
     if (svc_ctx_id)
     {
-        msg_ctx->svc_ctx_id = axis2_strdup(svc_ctx_id, env);
+        msg_ctx->svc_ctx_id = axis2_strdup(env, svc_ctx_id);
         if (!(msg_ctx->svc_ctx_id))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

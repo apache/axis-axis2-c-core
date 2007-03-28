@@ -692,9 +692,9 @@ w2c_config_property_loader_load_values(
          for (i = 0 ; i < size ;i++ )
          {
              axis2_hash_set ( temp_hash,
-              axis2_strdup( axis2_array_list_get(obj_impl ->databinding_framework_names, env, i ), env),
+              axis2_strdup(env, axis2_array_list_get(obj_impl ->databinding_framework_names, env, i )),
               AXIS2_HASH_KEY_STRING,
-              axis2_strdup( axis2_array_list_get(temp_array, env, i ), env));
+              axis2_strdup(env,  axis2_array_list_get(temp_array, env, i )));
          }
      }
      
@@ -705,7 +705,7 @@ w2c_config_property_loader_load_values(
      if ( prop != NULL)
      {
          obj_impl ->default_db_framework_name = 
-                      axis2_strdup( axis2_array_list_get(prop, env, 0 ), env);
+                      axis2_strdup( env, axis2_array_list_get(prop, env, 0 ));
      }
       
      /* load the third party schema names */
@@ -715,7 +715,7 @@ w2c_config_property_loader_load_values(
      if ( prop != NULL)
      {
          obj_impl ->third_party_schema_names= 
-                      axis2_strdup( axis2_array_list_get(prop, env, 0 ), env);
+                      axis2_strdup(env, axis2_array_list_get(prop, env, 0));
      }
        
      /* the db supporter template name */
@@ -725,7 +725,7 @@ w2c_config_property_loader_load_values(
      if ( prop != NULL)
      {
          obj_impl ->db_supporter_template_name= 
-                      axis2_strdup( axis2_array_list_get(prop, env, 0 ), env);
+                      axis2_strdup(env, axis2_array_list_get(prop, env, 0 ));
      }
       
      /* test object template name */
@@ -739,7 +739,7 @@ w2c_config_property_loader_load_values(
      if ( prop != NULL)
      {
          obj_impl ->test_object_template_name= 
-                      axis2_strdup( axis2_array_list_get(prop, env, 0), env);
+                      axis2_strdup(env, axis2_array_list_get(prop, env, 0));
      }
      
       
@@ -777,9 +777,9 @@ w2c_config_property_loader_load_values(
              key = axis2_array_list_get(obj_impl ->language_types, env, i);
              val = axis2_array_list_get(temp_array, env, i );
              axis2_hash_set ( temp_hash,
-              axis2_strdup(  key, env),
+              axis2_strdup(env, key),
               AXIS2_HASH_KEY_STRING,
-              axis2_strdup( val, env));
+              axis2_strdup(env, val));
          }
      }
  
@@ -790,7 +790,7 @@ w2c_config_property_loader_load_values(
      if ( prop != NULL)
      {
          obj_impl ->default_language = 
-                      axis2_strdup( axis2_array_list_get(prop, env, 0 ), env);
+                      axis2_strdup(env, axis2_array_list_get(prop, env, 0 ));
      }
 
      /**
@@ -839,7 +839,7 @@ w2c_config_property_loader_dup_array(
     for( i = 0; i < size; i ++ )
     {
         tmp = (axis2_char_t*)axis2_array_list_get( original, env, i);
-        tmp = axis2_strdup( tmp, env);
+        tmp = axis2_strdup(env, tmp);
         axis2_array_list_add_at( new_array, env, i, tmp);
     }
     return new_array;

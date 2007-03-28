@@ -149,7 +149,7 @@ axis2_properties_store(axis2_properties_t *properties,
             {
                 if (!value)
                 {
-                    value = axis2_strdup("", env);
+                    value = axis2_strdup(env, "");
                 }
                 fprintf(output, "%s=%s\n", key, value);
             }
@@ -297,7 +297,7 @@ axis2_properties_trunk_and_dup(axis2_char_t* start,
     for (; *start == ' '; start ++); /* remove front spaces */
     for (end --; *end == ' '; end --); /* remove rear spaces */
     *(++end) = '\0';
-    start = (axis2_char_t*)axis2_strdup(start, env);
+    start = (axis2_char_t*)axis2_strdup(env, start);
     return start;
 }
 

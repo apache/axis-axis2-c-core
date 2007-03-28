@@ -187,12 +187,12 @@ axis2_core_utils_get_module_qname(const axis2_env_t *env,
     {
         axis2_char_t * mod_name1 = NULL;
         axis2_char_t * mod_name = NULL;
-        mod_name1 = axis2_stracat(name, "-", env);
+        mod_name1 = axis2_stracat(env, name, "-");
         if (!mod_name1)
         {
             return NULL;
         }
-        mod_name = axis2_stracat(mod_name1, version, env);
+        mod_name = axis2_stracat(env, mod_name1, version);
         if (!mod_name)
         {
             AXIS2_FREE(env->allocator, mod_name1);
@@ -329,7 +329,7 @@ axis2_core_utils_get_module_name(const axis2_env_t *env, axis2_char_t *module_na
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
-    name = axis2_strdup(module_name, env);
+    name = axis2_strdup(env, module_name);
     if (!name)
     {
         return NULL;
@@ -354,7 +354,7 @@ axis2_core_utils_get_module_version(const axis2_env_t *env, axis2_char_t *module
     version_sep_loc = axis2_rindex(module_name, version_seperator);
     if (version_sep_loc)
     {
-        return axis2_strdup(version_sep_loc + sizeof(axis2_char_t), env);
+        return axis2_strdup(env, version_sep_loc + sizeof(axis2_char_t));
     }
     return NULL;
 }

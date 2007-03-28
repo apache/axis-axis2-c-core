@@ -22,7 +22,7 @@
 
 void test_strltrim(const axis2_env_t *env)
 {
-    axis2_char_t *s = axis2_strdup("    abcd efgh    ", env);
+    axis2_char_t *s = axis2_strdup(env, "    abcd efgh    ");
     axis2_char_t *trimmed = NULL;
     trimmed = axis2_strltrim(env, s, " \t\r\n");
     if (0 == axis2_strcmp(trimmed, "abcd efgh    "))
@@ -37,7 +37,7 @@ void test_strltrim(const axis2_env_t *env)
 
 void test_strrtrim(const axis2_env_t *env)
 {
-    axis2_char_t *s = axis2_strdup("abcd efgh    ", env);
+    axis2_char_t *s = axis2_strdup(env, "abcd efgh    ");
     axis2_char_t *trimmed = NULL;
     trimmed = axis2_strrtrim(env, s, " \t\r\n");
     if (0 == axis2_strcmp(trimmed, "    abcd efgh"))
@@ -52,7 +52,7 @@ void test_strrtrim(const axis2_env_t *env)
 
 void test_strtrim(const axis2_env_t *env)
 {
-    axis2_char_t *s = axis2_strdup("    abcd efgh    ", env);
+    axis2_char_t *s = axis2_strdup(env, "    abcd efgh    ");
     axis2_char_t *trimmed = NULL;
     trimmed = axis2_strtrim(env, s, " \t\r\n");
     if (0 == axis2_strcmp(trimmed, "abcd efgh"))

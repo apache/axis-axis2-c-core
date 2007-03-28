@@ -88,15 +88,15 @@ get_file_url(const axis2_env_t *env,
     axis2_char_t *final_path = NULL;
     if (!path)
         return NULL;
-    modified_path = axis2_strdup(path, env);
+    modified_path = axis2_strdup(env, path);
     axis2_replace(env, modified_path, '\\', '/');
     if (strncmp(modified_path, "/", 1) == 0)
     {
-        final_path = axis2_stracat("file://", modified_path, env);
+        final_path = axis2_stracat(env, "file://", modified_path);
     }
     else
     {
-        final_path = axis2_stracat("file:///", modified_path, env);
+        final_path = axis2_stracat(env, "file:///", modified_path);
     }
     if (modified_path)
     {

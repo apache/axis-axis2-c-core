@@ -432,7 +432,7 @@ woden_element_decl_set_content_model(
         AXIS2_FREE(env->allocator, decl_impl->f_content_model);
         decl_impl->f_content_model = NULL;
     }
-    decl_impl->f_content_model = axis2_strdup(content_model, env);
+    decl_impl->f_content_model = axis2_strdup(env, content_model);
     return AXIS2_SUCCESS;
 }
 

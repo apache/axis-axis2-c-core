@@ -115,7 +115,7 @@ xml_schema_facet_create(const axis2_env_t *env,
     facet_impl->facet.base.ops = NULL;
 
     facet_impl->fixed = fixed ;
-facet_impl->value = axis2_strdup(value, env);
+facet_impl->value = axis2_strdup(env, value);
 
     facet_impl->facet.ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_facet_ops_t));
@@ -158,11 +158,11 @@ facet_impl->value = axis2_strdup(value, env);
         xml_schema_facet_free(&(facet_impl->facet), env);
         return NULL;
     }
-    axis2_hash_set(facet_impl->ht_super, axis2_strdup("XML_SCHEMA_FACET", env),
+    axis2_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_FACET"),
             AXIS2_HASH_KEY_STRING, &(facet_impl->facet));
-    axis2_hash_set(facet_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+    axis2_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, facet_impl->annotated);
-    axis2_hash_set(facet_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
+    axis2_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(
                 facet_impl->annotated, env));
@@ -258,7 +258,7 @@ xml_schema_facet_set_value(void *facet,
         AXIS2_FREE(env->allocator, facet_impl->value);
         facet_impl->value = NULL;
     }
-    facet_impl->value = axis2_strdup(value, env);
+    facet_impl->value = axis2_strdup(env, value);
     return AXIS2_SUCCESS;
 }
 
@@ -284,8 +284,8 @@ xml_schema_facet_construct(const axis2_env_t *env,
     if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
         return NULL;
 
-    fixed_value = axis2_strdup("fixed", env);
-    value_v = axis2_strdup("value", env);
+    fixed_value = axis2_strdup(env, "fixed");
+    value_v = axis2_strdup(env, "value");
 
     om_ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
     localname = axiom_element_get_localname(om_ele, env);

@@ -102,7 +102,7 @@ woden_soap_fault_code_create(
     AXIS2_ENV_CHECK(env, NULL);
     soap_fault_code_impl = (woden_soap_fault_code_impl_t *) create(env);
 
-    soap_fault_code_impl->f_token = axis2_strdup(token, env);
+    soap_fault_code_impl->f_token = axis2_strdup(env, token);
     soap_fault_code_impl->f_code_qn = axis2_qname_clone(code_qn, env);
 
     return &(soap_fault_code_impl->soap_fault_code);

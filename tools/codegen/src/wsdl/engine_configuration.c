@@ -1204,7 +1204,7 @@ w2c_engine_configuration_set_base_uri (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->base_uri = axis2_strdup( base_uri, env);
+    engine_configuration_impl->base_uri = axis2_strdup(env, base_uri);
     return AXIS2_SUCCESS;
 }
 
@@ -1220,7 +1220,7 @@ w2c_engine_configuration_set_wsdl_uri (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->wsdl_uri = axis2_strdup( wsdl_uri, env);
+    engine_configuration_impl->wsdl_uri = axis2_strdup(env, wsdl_uri);
     return AXIS2_SUCCESS;
 }
 
@@ -1236,7 +1236,7 @@ w2c_engine_configuration_set_repository_path (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->repository_path = axis2_strdup( repository_path, env);
+    engine_configuration_impl->repository_path = axis2_strdup(env, repository_path);
     return AXIS2_SUCCESS;
 }
 
@@ -1252,7 +1252,7 @@ w2c_engine_configuration_set_type_mapping_file (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->type_mapping_file = axis2_strdup( type_mapping_file, env);
+    engine_configuration_impl->type_mapping_file = axis2_strdup(env, type_mapping_file);
     return AXIS2_SUCCESS;
 }
 
@@ -1316,7 +1316,7 @@ w2c_engine_configuration_set_output_language (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->output_language = axis2_strdup( output_language, env);
+    engine_configuration_impl->output_language = axis2_strdup(env, output_language);
     return AXIS2_SUCCESS;
 }
 
@@ -1332,7 +1332,7 @@ w2c_engine_configuration_set_databinding_type (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->databinding_type = axis2_strdup( databinding_type, env);
+    engine_configuration_impl->databinding_type = axis2_strdup(env, databinding_type);
     return AXIS2_SUCCESS;
 }
 
@@ -1460,7 +1460,7 @@ w2c_engine_configuration_set_package_name (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->package_name = axis2_strdup( package_name, env);
+    engine_configuration_impl->package_name = axis2_strdup(env, package_name);
     return AXIS2_SUCCESS;
 }
 
@@ -1508,7 +1508,7 @@ w2c_engine_configuration_set_port_name (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->port_name = axis2_strdup( port_name, env);
+    engine_configuration_impl->port_name = axis2_strdup(env, port_name);
     return AXIS2_SUCCESS;
 }
 
@@ -1524,7 +1524,7 @@ w2c_engine_configuration_set_service_name (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->service_name = axis2_strdup( service_name, env);
+    engine_configuration_impl->service_name = axis2_strdup(env, service_name);
     return AXIS2_SUCCESS;
 }
 
@@ -1588,7 +1588,7 @@ w2c_engine_configuration_set_wsdl_version (
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    engine_configuration_impl->wsdl_version = axis2_strdup( wsdl_version, env);
+    engine_configuration_impl->wsdl_version = axis2_strdup(env, wsdl_version);
     return AXIS2_SUCCESS;
 }
 

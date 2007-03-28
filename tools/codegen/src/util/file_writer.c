@@ -38,11 +38,11 @@ w2c_file_writer_create_classfile_name (
         
     if ( ! root_location )
     {
-        full_path= axis2_strdup ( ".", env);
+        full_path= axis2_strdup (env,  ".");
     }
     else
     {
-        full_path = axis2_strdup ( root_location,env );
+        full_path = axis2_strdup (env, root_location);
         for ( end = AXIS2_FALSE, cp = full_path; 1; cp ++)
         {
             if ( *cp == '\0' )

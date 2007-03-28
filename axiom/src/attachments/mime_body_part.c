@@ -198,19 +198,19 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
         axis2_hash_this(hash_index, &key, NULL, &value);
         if (key && value)
         {
-            temp_header_str = axis2_stracat(header_str, (axis2_char_t*)key, env);
+            temp_header_str = axis2_stracat(env, header_str, (axis2_char_t*)key);
             if (header_str)
             {
                 AXIS2_FREE(env->allocator, header_str);
             }
             header_str = temp_header_str;
-            temp_header_str = axis2_stracat(header_str, ": ", env);
+            temp_header_str = axis2_stracat(env, header_str, ": ");
             AXIS2_FREE(env->allocator, header_str);
             header_str = temp_header_str;
-            temp_header_str = axis2_stracat(header_str, (axis2_char_t*)value, env);
+            temp_header_str = axis2_stracat(env, header_str, (axis2_char_t*)value);
             AXIS2_FREE(env->allocator, header_str);
             header_str = temp_header_str;
-            temp_header_str = axis2_stracat(header_str, "\r\n", env);
+            temp_header_str = axis2_stracat(env, header_str, "\r\n");
             AXIS2_FREE(env->allocator, header_str);
             header_str = temp_header_str;
         }
@@ -218,7 +218,7 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
 
     if (mime_body_part_impl->data_handler)
     {
-        temp_header_str = axis2_stracat(header_str, "\r\n", env);
+        temp_header_str = axis2_stracat(env, header_str, "\r\n");
         AXIS2_FREE(env->allocator, header_str);
         header_str = temp_header_str;
     }

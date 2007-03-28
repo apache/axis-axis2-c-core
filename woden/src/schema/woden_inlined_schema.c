@@ -344,7 +344,7 @@ woden_inlined_schema_set_id(
         AXIS2_FREE(env->allocator, schema_impl->f_schema_id);
         schema_impl->f_schema_id = NULL;
     }
-    schema_impl->f_schema_id = axis2_strdup(id, env);
+    schema_impl->f_schema_id = axis2_strdup(env, id);
     return AXIS2_SUCCESS;
 }
 

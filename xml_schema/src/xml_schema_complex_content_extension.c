@@ -198,11 +198,11 @@ xml_schema_complex_content_extension_create(const axis2_env_t *env)
         xml_schema_complex_content_extension_free(&(cmp_cnt_ext_impl->cmp_cnt_ext), env);
         return NULL;
     }
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup("XML_SCHEMA_COMPLEX_CONTENT_EXTENSION", env),
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_COMPLEX_CONTENT_EXTENSION"),
             AXIS2_HASH_KEY_STRING, &(cmp_cnt_ext_impl->cmp_cnt_ext));
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup("XML_SCHEMA_ANNOTATED", env),
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, cmp_cnt_ext_impl->annotated);
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup("XML_SCHEMA_OBJ", env),
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(cmp_cnt_ext_impl->annotated, env));
 
