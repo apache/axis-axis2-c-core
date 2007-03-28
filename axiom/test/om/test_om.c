@@ -65,6 +65,7 @@ test_om_build(const char *filename)
     axiom_text_t *text = NULL;
     axiom_document_t *document = NULL;
     axiom_node_t *node1 = NULL, *node2 = NULL;
+    axiom_node_t *node3 = NULL;
     axiom_output_t *om_output = NULL;
     axiom_namespace_t* ns = NULL;
     axiom_xml_reader_t *reader = NULL;
@@ -150,6 +151,8 @@ test_om_build(const char *filename)
                 {
                     printf("\n localname %s\n" , axiom_element_get_localname(ele2, environment));
                 }
+                if (!node3)
+                    node3 = node2;
 
                 break;
             case AXIOM_TEXT:
@@ -174,7 +177,7 @@ test_om_build(const char *filename)
             AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create(environment, writer);
 
-    AXIOM_NODE_SERIALIZE(node1, environment , om_output);
+    axiom_node_serialize_sub_tree(node3, environment , om_output);
 
     buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, environment);
 
@@ -299,7 +302,7 @@ test_om_serialize()
 int
 main(int argc, char *argv[])
 {
-    const char *file_name = "./../../resources/xml/om/test.xml";
+    const char *file_name = "../../resources/xml/om/test.xml";
     if (argc > 1)
         file_name = argv[1];
     allocator = axis2_allocator_init(NULL);

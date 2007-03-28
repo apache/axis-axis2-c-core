@@ -269,6 +269,10 @@ extern "C"
     axiom_node_to_string(axiom_node_t *om_node,
             const axis2_env_t *env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_node_serialize_sub_tree(axiom_node_t *om_node,
+        const axis2_env_t *env,
+        struct axiom_output *om_output);
 
 #define AXIOM_NODE_FREE_TREE(om_node,env) \
         axiom_node_free(om_node,env)

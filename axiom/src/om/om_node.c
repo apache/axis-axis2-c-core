@@ -341,6 +341,8 @@ axiom_node_serialize(axiom_node_t *om_node,
 
     int status = AXIS2_SUCCESS;
     axiom_node_t *temp_node = NULL;
+    axiom_node_t *nodes[256];
+    int count = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -349,109 +351,359 @@ axiom_node_serialize(axiom_node_t *om_node,
         return AXIS2_SUCCESS;
     }
 
+    nodes[count++] = om_node;
+
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
-    if (om_node->node_type == AXIOM_ELEMENT)
-    {
-        if (om_node->data_element)
+    do {
+
+        if (om_node->node_type == AXIOM_ELEMENT)
         {
-            status = axiom_element_serialize_start_part((axiom_element_t *)(om_node->data_element),
-                env,
-                om_output,
-                om_node);
+            if (om_node->data_element)
+            {
+                status = axiom_element_serialize_start_part((axiom_element_t *)(om_node->data_element),
+                    env,
+                    om_output,
+                    om_node);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
         }
-        if (status != AXIS2_SUCCESS)
+        else if (om_node->node_type == AXIOM_DATA_SOURCE)
         {
-            return status;
-        }
-    }
-    else if (om_node->node_type == AXIOM_DATA_SOURCE)
-    {
-        if (om_node->data_element)
-        {
-            status = axiom_data_source_serialize((axiom_data_source_t*)(om_node->data_element),
-                env, om_output);
-        }
-        if (status != AXIS2_SUCCESS)
-        {
-            return status;
-        }
-    }
-    else if (om_node->node_type == AXIOM_TEXT)
-    {
-        if (om_node->data_element)
-        {
-            status = axiom_text_serialize((axiom_text_t*)(om_node->data_element),
-                env, om_output);
-        }
-        if (status != AXIS2_SUCCESS)
-        {
-            return status;
-        }
-    }
-    else if (om_node->node_type == AXIOM_COMMENT)
-    {
-        if (om_node->data_element)
-        {
-            status = axiom_comment_serialize((axiom_comment_t*)(om_node->data_element),
-                env, om_output);
-        }
-        if (status != AXIS2_SUCCESS)
-        {
-            return status;
-        }
-    }
-    else if (om_node->node_type == AXIOM_DOCTYPE)
-    {
-        if (om_node->data_element)
-        {
-            status = axiom_doctype_serialize((axiom_doctype_t*)(om_node->data_element),
-                env, om_output);
-        }
-        if (status != AXIS2_SUCCESS)
-        {
-            return status;
-        }
-    }
-    else if (om_node->node_type == AXIOM_PROCESSING_INSTRUCTION)
-    {
-        if (om_node->data_element)
-        {
-            status =
-                axiom_processing_instruction_serialize((axiom_processing_instruction_t*)(om_node->data_element),
+            if (om_node->data_element)
+            {
+                status = axiom_data_source_serialize((axiom_data_source_t*)(om_node->data_element),
                     env, om_output);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
         }
-
-        if (status != AXIS2_SUCCESS)
+        else if (om_node->node_type == AXIOM_TEXT)
         {
-            return status;
+            if (om_node->data_element)
+            {
+                status = axiom_text_serialize((axiom_text_t*)(om_node->data_element),
+                    env, om_output);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
         }
-    }
-
-
-    temp_node = axiom_node_get_first_child(om_node, env);
-    /* serialize children of this node */
-    while (temp_node)
-    {
-        status =  axiom_node_serialize(temp_node, env, om_output);
-        temp_node = AXIOM_NODE_GET_NEXT_SIBLING(temp_node, env);
-    }
-
-    if (om_node->node_type == AXIOM_ELEMENT)
-    {
-        if (om_node->data_element)
+        else if (om_node->node_type == AXIOM_COMMENT)
         {
-            status = axiom_element_serialize_end_part((axiom_element_t *)(om_node->data_element),
-                env, om_output);
+            if (om_node->data_element)
+            {
+                status = axiom_comment_serialize((axiom_comment_t*)(om_node->data_element),
+                    env, om_output);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
         }
-        if (status != AXIS2_SUCCESS)
+        else if (om_node->node_type == AXIOM_DOCTYPE)
         {
-            return status;
+            if (om_node->data_element)
+            {
+                status = axiom_doctype_serialize((axiom_doctype_t*)(om_node->data_element),
+                    env, om_output);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
         }
-    }
+        else if (om_node->node_type == AXIOM_PROCESSING_INSTRUCTION)
+        {
+            if (om_node->data_element)
+            {
+                status =
+                    axiom_processing_instruction_serialize((axiom_processing_instruction_t*)(om_node->data_element),
+                        env, om_output);
+            }
+
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
+        }
+
+
+        temp_node = axiom_node_get_first_child(om_node, env);
+        /* serialize children of this node */
+        if (temp_node)
+        {
+            om_node = temp_node;
+            nodes[count++] = om_node;
+        }
+        else
+        {
+            if (om_node->node_type == AXIOM_ELEMENT)
+            {
+                if (om_node->data_element)
+                {
+                    status = axiom_element_serialize_end_part((axiom_element_t *)(om_node->data_element),
+                        env, om_output);
+                }
+                if (status != AXIS2_SUCCESS)
+                {
+                    return status;
+                }
+            }
+            
+            temp_node = AXIOM_NODE_GET_NEXT_SIBLING(om_node, env);
+            if (temp_node)
+            {
+                om_node = temp_node;
+                nodes[count -1] = om_node;
+            }
+            else
+            {
+                while (count > 1 && !temp_node)
+                {
+                    count--;
+                    om_node = nodes[count -1];
+                    if (om_node->node_type == AXIOM_ELEMENT)
+                    {
+                        if (om_node->data_element)
+                        {
+                            status = axiom_element_serialize_end_part((axiom_element_t *)(om_node->data_element),
+                                env, om_output);
+                        }
+                        if (status != AXIS2_SUCCESS)
+                        {
+                            return status;
+                        }
+                    }
+
+                    temp_node = AXIOM_NODE_GET_NEXT_SIBLING(om_node, env);
+                }
+               
+                if (temp_node && count > 1)
+                {
+                    om_node = temp_node;
+                    nodes[count -1] = om_node;
+                }
+                else
+                {
+                    count--;
+                }
+            }
+           
+        }
+    } while(count > 0);
 
     return status;
 }
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_node_serialize_sub_tree(axiom_node_t *om_node,
+    const axis2_env_t *env,
+    axiom_output_t *om_output)
+{
+
+    int status = AXIS2_SUCCESS;
+    axiom_node_t *temp_node = NULL;
+    axiom_node_t *nodes[256];
+    int count = 0;
+    axis2_hash_t *namespaces = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if (!om_node)
+    {
+        return AXIS2_SUCCESS;
+    }
+
+    namespaces = axis2_hash_make(env);
+    nodes[count++] = om_node;
+
+    AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
+
+    do {
+
+        if (om_node->node_type == AXIOM_ELEMENT)
+        {
+            if (om_node->data_element)
+            {
+                axis2_hash_t *temp_namespaces = NULL;
+                axiom_namespace_t *namespace = NULL;
+                status = axiom_element_serialize_start_part(
+                    (axiom_element_t *)(om_node->data_element),
+                    env,
+                    om_output,
+                    om_node);
+                temp_namespaces = axiom_element_get_namespaces(
+                    (axiom_element_t *)(om_node->data_element), env);
+                if (temp_namespaces)
+                {
+                    axis2_hash_t *new_hash = NULL;
+                    new_hash = axis2_hash_overlay(temp_namespaces, env, namespaces);
+                    axis2_hash_free(namespaces, env);
+                    namespaces = new_hash;
+                }
+                namespace = axiom_element_get_namespace(
+                    (axiom_element_t *)(om_node->data_element), env, om_node);
+                if (namespace)
+                {
+                    axiom_namespace_t *ns = NULL;
+                    axis2_char_t *prefix = NULL;
+                    prefix = axiom_namespace_get_prefix(namespace, env);
+                    if (prefix)
+                    {
+                        ns = axis2_hash_get(namespaces, prefix, AXIS2_HASH_KEY_STRING);
+                        if (!ns)
+                        {
+                            axiom_namespace_serialize(namespace, env, om_output);
+                            axis2_hash_set(namespaces, prefix, 
+                                AXIS2_HASH_KEY_STRING, namespace);
+                        }
+                    }
+                }
+                
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
+        }
+        else if (om_node->node_type == AXIOM_DATA_SOURCE)
+        {
+            if (om_node->data_element)
+            {
+                status = axiom_data_source_serialize((axiom_data_source_t*)(om_node->data_element),
+                    env, om_output);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
+        }
+        else if (om_node->node_type == AXIOM_TEXT)
+        {
+            if (om_node->data_element)
+            {
+                status = axiom_text_serialize((axiom_text_t*)(om_node->data_element),
+                    env, om_output);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
+        }
+        else if (om_node->node_type == AXIOM_COMMENT)
+        {
+            if (om_node->data_element)
+            {
+                status = axiom_comment_serialize((axiom_comment_t*)(om_node->data_element),
+                    env, om_output);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
+        }
+        else if (om_node->node_type == AXIOM_DOCTYPE)
+        {
+            if (om_node->data_element)
+            {
+                status = axiom_doctype_serialize((axiom_doctype_t*)(om_node->data_element),
+                    env, om_output);
+            }
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
+        }
+        else if (om_node->node_type == AXIOM_PROCESSING_INSTRUCTION)
+        {
+            if (om_node->data_element)
+            {
+                status =
+                    axiom_processing_instruction_serialize((axiom_processing_instruction_t*)(om_node->data_element),
+                        env, om_output);
+            }
+
+            if (status != AXIS2_SUCCESS)
+            {
+                return status;
+            }
+        }
+
+
+        temp_node = axiom_node_get_first_child(om_node, env);
+        /* serialize children of this node */
+        if (temp_node)
+        {
+            om_node = temp_node;
+            nodes[count++] = om_node;
+        }
+        else
+        {
+            if (om_node->node_type == AXIOM_ELEMENT)
+            {
+                if (om_node->data_element)
+                {
+                    status = axiom_element_serialize_end_part((axiom_element_t *)(om_node->data_element),
+                        env, om_output);
+                }
+                if (status != AXIS2_SUCCESS)
+                {
+                    return status;
+                }
+            }
+            
+            temp_node = AXIOM_NODE_GET_NEXT_SIBLING(om_node, env);
+            if (temp_node)
+            {
+                om_node = temp_node;
+                nodes[count -1] = om_node;
+            }
+            else
+            {
+                while (count > 1 && !temp_node)
+                {
+                    count--;
+                    om_node = nodes[count -1];
+                    if (om_node->node_type == AXIOM_ELEMENT)
+                    {
+                        if (om_node->data_element)
+                        {
+                            status = axiom_element_serialize_end_part((axiom_element_t *)(om_node->data_element),
+                                env, om_output);
+                        }
+                        if (status != AXIS2_SUCCESS)
+                        {
+                            return status;
+                        }
+                    }
+
+                    temp_node = AXIOM_NODE_GET_NEXT_SIBLING(om_node, env);
+                }
+               
+                if (temp_node && count > 1)
+                {
+                    om_node = temp_node;
+                    nodes[count -1] = om_node;
+                }
+                else
+                {
+                    count--;
+                }
+            }
+           
+        }
+    } while(count > 0);
+
+    return status;
+}
+
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_node_get_parent(axiom_node_t *om_node,
