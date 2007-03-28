@@ -93,7 +93,7 @@ savan_out_handler_invoke(
     
     svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     if (svc)
-        svc_name = (xis2_svc_get_namesvc, env);
+        svc_name = (axis2_svc_get_namesvc, env);
     
     printf("[%s][savan][out handler] invoke...\n", svc_name);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[%s][savan][out handler] invoke...",
