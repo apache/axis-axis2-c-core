@@ -247,6 +247,10 @@ unsigned int AXIS2_CALL
 axis2_libxml2_writer_wrapper_get_xml_size(axiom_xml_writer_t *writer,
     const axis2_env_t *env);
 
+axis2_status_t AXIS2_CALL
+axis2_libxml2_writer_wrapper_flush(axiom_xml_writer_t *writer,
+    const axis2_env_t *env);
+
 int AXIS2_CALL
 axis2_libxml2_writer_wrapper_get_type(axiom_xml_writer_t *writer,
     const axis2_env_t *env);
@@ -538,6 +542,8 @@ axis2_libxml2_writer_wrapper_init_ops(axiom_xml_writer_t *writer)
         axis2_libxml2_writer_wrapper_get_xml;
     writer->ops->get_xml_size =
         axis2_libxml2_writer_wrapper_get_xml_size;
+    writer->ops->flush =
+        axis2_libxml2_writer_wrapper_flush;
     writer->ops->get_type =
         axis2_libxml2_writer_wrapper_get_type;
     writer->ops->write_raw =
@@ -1309,6 +1315,23 @@ axis2_libxml2_writer_wrapper_get_xml_size(axiom_xml_writer_t *writer,
     {
         return 0;
     }
+}
+
+axis2_status_t AXIS2_CALL
+axis2_libxml2_writer_wrapper_flush(axiom_xml_writer_t *writer,
+    const axis2_env_t *env)
+{
+    axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
+    writer_impl = AXIS2_INTF_TO_IMPL(writer);
+    if (writer_impl->xml_writer)
+    {
+        int ret = 0;
+        ret = xmlTextWriterFlush(writer_impl->xml_writer);
+        if (ret > -1)
+            return AXIS2_SUCCESS;
+    }
+
+    return AXIS2_FAILURE;
 }
 
 int AXIS2_CALL
