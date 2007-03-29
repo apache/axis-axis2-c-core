@@ -118,12 +118,14 @@ axis2_http_worker_process_request(
     axis2_char_t *encoding_header_value = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *svr_ip = NULL;
+    axis2_char_t *peer_ip = NULL;
     axis2_url_t *request_url = NULL;
     axis2_http_out_transport_info_t *http_out_transport_info = NULL;
     axis2_hash_t *headers = NULL;
     axis2_char_t *url_external_form = NULL;
     axis2_char_t *svc_grp_uuid = NULL;
     axis2_char_t *path = NULL;
+    axis2_property_t *peer_property = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FAILURE);
@@ -187,7 +189,7 @@ axis2_http_worker_process_request(
             (http_worker->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
     msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
-     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
+    axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
 
 
     if (0 == axis2_strcasecmp(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
@@ -197,6 +199,14 @@ axis2_http_worker_process_request(
     }
 
     svr_ip = AXIS2_SIMPLE_HTTP_SVR_CONN_GET_SVR_IP(svr_conn, env);
+    peer_ip = AXIS2_SIMPLE_HTTP_SVR_CONN_GET_PEER_IP(svr_conn, env);
+
+    if (peer_ip)
+    {
+        peer_property = axis2_property_create (env);
+        axis2_property_set_value (peer_property, env, axis2_strdup (env, peer_ip));
+        axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR, peer_property); 
+    }
 
     path =   AXIS2_HTTP_REQUEST_LINE_GET_URI(
 	AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
@@ -369,10 +379,6 @@ axis2_http_worker_process_request(
     status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
     AXIS2_FREE(env->allocator, url_external_form);
     url_external_form = NULL;
-    /* this is freed in the following block of logic, taking it from 
-       operation context that holds it
-     axis2_msg_ctx_free(msg_ctx, env); */
-    /* Free message contextx */
     op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);
     if (op_ctx) 
     {
@@ -386,14 +392,14 @@ axis2_http_worker_process_request(
 
         if (out_msg_ctx)
         {
-             axis2_msg_ctx_free(out_msg_ctx, env);
+            axis2_msg_ctx_free(out_msg_ctx, env);
             out_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_OUT] = NULL;
         }
 
         if (in_msg_ctx)
         {
-             axis2_msg_ctx_free(in_msg_ctx, env);
+            axis2_msg_ctx_free(in_msg_ctx, env);
             in_msg_ctx = NULL;
             msg_ctx_map[AXIS2_WSDL_MESSAGE_LABEL_IN] = NULL;
         }
@@ -535,7 +541,7 @@ axis2_http_worker_get_headers(
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_FAILURE);
 
     header_list = AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(request, env);
-    if (! header_list)
+    if (!header_list)
     {
         return NULL;
     }
@@ -549,14 +555,14 @@ axis2_http_worker_get_headers(
     {
         axis2_http_header_t *tmp_hdr = NULL;
         tmp_hdr = axis2_array_list_get(header_list, env, i);
-        if (! tmp_hdr)
+        if (!tmp_hdr)
         {
             continue;
         }
-        if (! header_map)
+        if (!header_map)
         {
             header_map = axis2_hash_make(env);
-            if (! header_map)
+            if (!header_map)
             {
                 return NULL;
             }

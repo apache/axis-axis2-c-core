@@ -85,6 +85,7 @@ extern "C"
 /** Transport URL */
 #define AXIS2_TRANSPORT_URL "TransportURL" 
 
+#define AXIS2_SVR_PEER_IP_ADDR "peer_ip_addr"
 /* Message flows */
 /** In flow */
 /*#define AXIS2_IN_FLOW 1*/

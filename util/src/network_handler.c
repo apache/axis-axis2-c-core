@@ -189,7 +189,6 @@ axis2_network_handler_svr_socket_accept(const axis2_env_t *env,
     int nodelay = 1;
     axis2_socket_len_t cli_len = 0;
     axis2_socket_t cli_socket = AXIS2_INVALID_SOCKET;
-
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     cli_len = sizeof(cli_addr);
@@ -198,7 +197,7 @@ axis2_network_handler_svr_socket_accept(const axis2_env_t *env,
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[Axis2][network_handler] Socket accept \
                 failed");
 
-    setsockopt(cli_socket, IPPROTO_TCP, TCP_NODELAY, &nodelay,
+    setsockopt(svr_socket, IPPROTO_TCP, TCP_NODELAY, &nodelay,
             sizeof(nodelay));
     ll.l_onoff = 1;
     ll.l_linger = 5;
@@ -254,6 +253,23 @@ axis2_network_handler_get_svr_ip(const axis2_env_t *env,
     char *ret = NULL;
     memset(&addr, 0, sizeof(addr));
     if (getsockname(socket, (struct sockaddr *)&addr, &len) < 0)
+    {
+        return NULL;
+    }
+    ret = inet_ntoa(addr.sin_addr);
+    return ret;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_network_handler_get_peer_ip(const axis2_env_t *env,
+        axis2_socket_t socket)
+{
+    struct sockaddr_in addr;
+
+    axis2_socket_len_t len = sizeof(addr);
+    char *ret = NULL;
+    memset(&addr, 0, sizeof(addr));
+    if (getpeername(socket, (struct sockaddr *)&addr, &len) < 0)
     {
         return NULL;
     }

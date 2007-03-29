@@ -167,6 +167,15 @@ extern "C"
         /**
          * @param svr_conn pointer to server connection struct
          * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
+                get_peer_ip)(
+                    const axis2_simple_http_svr_conn_t *svr_conn,
+                    const axis2_env_t *env);
+
+        /**
+         * @param svr_conn pointer to server connection struct
+         * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         void (AXIS2_CALL *
@@ -249,6 +258,11 @@ extern "C"
     @sa axis2_simple_http_svr_conn_ops#get_svr_ip */
 #define AXIS2_SIMPLE_HTTP_SVR_CONN_GET_SVR_IP(svr_conn, env) \
                     ((svr_conn)->ops->get_svr_ip(svr_conn, env))
+
+/** Get peer ip.
+    @sa axis2_simple_http_svr_conn_ops#get_peer_ip */
+#define AXIS2_SIMPLE_HTTP_SVR_CONN_GET_PEER_IP(svr_conn, env) \
+                    ((svr_conn)->ops->get_peer_ip(svr_conn, env))
 
 /** Frees the sime http server connection.
     @sa axis2_simple_http_svr_conn_ops#free */

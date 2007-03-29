@@ -95,6 +95,11 @@ extern "C"
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_network_handler_get_svr_ip(const axis2_env_t *env,
             axis2_socket_t socket);
+
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+    axis2_network_handler_get_peer_ip(const axis2_env_t *env,
+            axis2_socket_t socket);
+
     /** @} */
 
 #ifdef __cplusplus

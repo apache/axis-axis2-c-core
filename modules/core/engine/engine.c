@@ -29,7 +29,6 @@
 #include <axis2_addr.h>
 #include <axis2_uuid_gen.h>
 
-
 struct axis2_engine
 {
     /** configuration context */

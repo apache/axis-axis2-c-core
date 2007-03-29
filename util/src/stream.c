@@ -577,7 +577,6 @@ axis2_stream_read_socket(axis2_stream_t *stream,
     }
 
     len = recv(stream->socket, buffer, count, 0);
-
 #ifdef AXIS2_TCPMON
     if (len > 1)
     {

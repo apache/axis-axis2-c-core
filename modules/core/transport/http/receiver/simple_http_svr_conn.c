@@ -107,6 +107,11 @@ axis2_simple_http_svr_conn_get_svr_ip(
     const axis2_simple_http_svr_conn_t *svr_conn,
     const axis2_env_t *env);
 
+axis2_char_t *AXIS2_CALL
+axis2_simple_http_svr_conn_get_peer_ip(
+    const axis2_simple_http_svr_conn_t *svr_conn,
+    const axis2_env_t *env);
+
 void AXIS2_CALL
 axis2_simple_http_svr_conn_free(
     axis2_simple_http_svr_conn_t *svr_conn,
@@ -174,6 +179,8 @@ axis2_simple_http_svr_conn_create(
         axis2_simple_http_svr_conn_set_snd_timeout;
     svr_conn_impl->svr_conn.ops->get_svr_ip =
         axis2_simple_http_svr_conn_get_svr_ip;
+    svr_conn_impl->svr_conn.ops->get_peer_ip =
+        axis2_simple_http_svr_conn_get_peer_ip;
     svr_conn_impl->svr_conn.ops->free = axis2_simple_http_svr_conn_free;
     return &(svr_conn_impl->svr_conn);
 }
@@ -623,5 +630,15 @@ axis2_simple_http_svr_conn_get_svr_ip(
 {
     AXIS2_ENV_CHECK(env, NULL);
     return axis2_network_handler_get_svr_ip(env,
+            AXIS2_INTF_TO_IMPL(svr_conn)->socket);
+}
+
+axis2_char_t *AXIS2_CALL
+axis2_simple_http_svr_conn_get_peer_ip(
+    const axis2_simple_http_svr_conn_t *svr_conn,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return axis2_network_handler_get_peer_ip(env,
             AXIS2_INTF_TO_IMPL(svr_conn)->socket);
 }
