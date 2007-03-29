@@ -139,7 +139,7 @@ xml_schema_derivation_method_create(const axis2_env_t *env,
             axis2_strdup(env, XML_SCHEMA_CONST_SUBSTITUTION));
 
     axis2_array_list_add(derivation_method_impl->members, env,
-            axis2_strdup(XML_SCHEMA_CONST_UNION, env));
+            axis2_strdup(env, XML_SCHEMA_CONST_UNION));
 
 
     derivation_method_impl->schema_enum =
