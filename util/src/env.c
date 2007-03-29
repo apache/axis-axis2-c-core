@@ -213,23 +213,6 @@ axis2_env_enable_log(axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL  
-axis2_env_write_log(const axis2_env_t *env, 
-    const char* message, 
-    axis2_log_levels_t level)
-{
-    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
-
-    if (!(env->log_enabled))
-        return AXIS2_SUCCESS;
-
-    if (message && env->log)
-    {
-        AXIS2_LOG_WRITE(env->log, message, level, NULL);
-    }
-    return AXIS2_SUCCESS;
-}
-
 AXIS2_EXTERN void AXIS2_CALL  
 axis2_env_free_masked(axis2_env_t *env, 
     char mask)

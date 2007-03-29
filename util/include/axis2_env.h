@@ -172,16 +172,6 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axis2_env_check_status(const axis2_env_t *env);
 
-    /**
-      * Writes given message to the log
-      */
-    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axis2_env_write_log(const axis2_env_t *env, 
-        const char* message, 
-        axis2_log_levels_t level);
-        
-#define AXIS2_LOG(env, message, level) axis2_env_write_log (env,message, level)
-
 /*#define AXIS2_ENV_CHECK(env, error_return) \
     if(!env) \
     { \
