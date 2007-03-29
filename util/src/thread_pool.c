@@ -19,109 +19,61 @@
 #include <axis2_env.h>
 #include <axis2_error_default.h>
 
-/**
- * @brief Stream struct impl
- *   Axis2 Stream impl
- */
-typedef struct axis2_thread_pool_impl axis2_thread_pool_impl_t;
-
-struct axis2_thread_pool_impl
+struct axis2_thread_pool
 {
-    axis2_thread_pool_t thread_pool;
     axis2_allocator_t *allocator;
 };
 
-#define AXIS2_INTF_TO_IMPL(thread_pool) \
-    ((axis2_thread_pool_impl_t *)(thread_pool))
-
-void AXIS2_CALL
-axis2_thread_pool_free(axis2_thread_pool_t *pool);
-
-axis2_thread_t* AXIS2_CALL
-axis2_thread_pool_get_thread(axis2_thread_pool_t *pool,
-    axis2_thread_start_t func, void *data);
-
-axis2_status_t AXIS2_CALL
-axis2_thread_pool_join_thread(axis2_thread_pool_t *pool,
-    axis2_thread_t *thd);
-
-axis2_status_t AXIS2_CALL
-axis2_thread_pool_exit_thread(axis2_thread_pool_t *pool,
-    axis2_thread_t *thd);
-
-axis2_status_t AXIS2_CALL
-axis2_thread_pool_thread_detach(axis2_thread_pool_t *pool,
-    axis2_thread_t *thd);
-
-/************************* End of function headers ****************************/
 AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL
 axis2_thread_pool_init(axis2_allocator_t *allocator)
 {
-    axis2_thread_pool_impl_t *pool_impl = NULL;
+    axis2_thread_pool_t *pool = NULL;
 
-    pool_impl = (axis2_thread_pool_impl_t *)AXIS2_MALLOC(allocator,
-        sizeof(axis2_thread_pool_impl_t));
+    pool = (axis2_thread_pool_t *)AXIS2_MALLOC(allocator,
+        sizeof(axis2_thread_pool_t));
 
-    if (!pool_impl)
+    if (!pool)
     {
         return NULL;
     }
-    pool_impl->allocator = allocator;
-    pool_impl->thread_pool.ops = (axis2_thread_pool_ops_t *) AXIS2_MALLOC(
-        allocator, sizeof(axis2_thread_pool_ops_t));
-    if (!pool_impl->thread_pool.ops)
-    {
-        axis2_thread_pool_free(&(pool_impl->thread_pool));
-        return NULL;
-    }
-    pool_impl->thread_pool.ops->get_thread = axis2_thread_pool_get_thread;
-    pool_impl->thread_pool.ops->join_thread = axis2_thread_pool_join_thread;
-    pool_impl->thread_pool.ops->exit_thread = axis2_thread_pool_exit_thread;
-    pool_impl->thread_pool.ops->thread_detach = axis2_thread_pool_thread_detach;
-    pool_impl->thread_pool.ops->free = axis2_thread_pool_free;
-    return &(pool_impl->thread_pool);
+    pool->allocator = allocator;
+
+    return pool;
 }
 
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_thread_pool_free(axis2_thread_pool_t *pool)
 {
-    axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
     if (!pool)
     {
         return;
     }
-    if (!pool_impl->allocator)
+    if (!pool->allocator)
     {
         return;
     }
-    pool_impl = AXIS2_INTF_TO_IMPL(pool);
-    if (pool_impl->thread_pool.ops)
-    {
-        AXIS2_FREE(pool_impl->allocator, pool_impl->thread_pool.ops);
-    }
-    AXIS2_FREE(pool_impl->allocator, pool_impl);
+    AXIS2_FREE(pool->allocator, pool);
     return;
 }
 
-axis2_thread_t* AXIS2_CALL
+AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
 axis2_thread_pool_get_thread(axis2_thread_pool_t *pool,
     axis2_thread_start_t func, void *data)
 {
-    axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
     if (!pool)
     {
         return NULL;
     }
-    if (!pool_impl->allocator)
+    if (!pool->allocator)
     {
         return NULL;
     }
-    return axis2_thread_create(pool_impl->allocator, NULL, func, data);
+    return axis2_thread_create(pool->allocator, NULL, func, data);
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_pool_join_thread(axis2_thread_pool_t *pool,
     axis2_thread_t *thd)
 {
@@ -132,20 +84,19 @@ axis2_thread_pool_join_thread(axis2_thread_pool_t *pool,
     return axis2_thread_join(thd);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_pool_exit_thread(axis2_thread_pool_t *pool,
     axis2_thread_t *thd)
 {
-    axis2_thread_pool_impl_t *pool_impl = AXIS2_INTF_TO_IMPL(pool);
     if (!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
-    return axis2_thread_exit(thd, pool_impl->allocator);
+    return axis2_thread_exit(thd, pool->allocator);
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_pool_thread_detach(axis2_thread_pool_t *pool,
     axis2_thread_t *thd)
 {

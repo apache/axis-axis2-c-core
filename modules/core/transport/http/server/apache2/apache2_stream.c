@@ -35,11 +35,6 @@ apache2_stream_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(stream) ((apache2_stream_impl_t *)(stream))
 
-void AXIS2_CALL
-apache2_stream_free(
-    axis2_stream_t *stream,
-    const axis2_env_t *env);
-
 axis2_stream_type_t AXIS2_CALL
 apache2_stream_get_type(
     axis2_stream_t *stream,
@@ -94,40 +89,12 @@ axis2_stream_create_apache2(
 
     stream_impl->request = request;
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
-    stream_impl->stream.ops = (axis2_stream_ops_t *) AXIS2_MALLOC(
-                env->allocator, sizeof(axis2_stream_ops_t));
-    if (! stream_impl->stream.ops)
-    {
-        apache2_stream_free(&(stream_impl->stream), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
 
-    stream_impl->stream.ops->free_fn = apache2_stream_free;
-    stream_impl->stream.ops->read = apache2_stream_read;
-    stream_impl->stream.ops->write = apache2_stream_write;
-    stream_impl->stream.ops->skip = apache2_stream_skip;
+    axis2_stream_set_read(stream, env, apache2_stream_read);
+    axis2_stream_set_write(stream, env, apache2_stream_write);
+    axis2_stream_set_skip(stream, env, apache2_stream_skip);
 
     return &(stream_impl->stream);
-}
-
-
-void AXIS2_CALL
-apache2_stream_free(
-    axis2_stream_t *stream,
-    const axis2_env_t *env)
-{
-    apache2_stream_impl_t *stream_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
-    stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    if (stream_impl->stream.ops)
-    {
-        AXIS2_FREE(env->allocator, stream_impl->stream.ops);
-    }
-    AXIS2_FREE(env->allocator, stream_impl);
-
-    return;
 }
 
 int AXIS2_CALL

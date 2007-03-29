@@ -559,7 +559,6 @@ extern "C"
     };
         
     struct axis2_error;
-    struct axis2_error_ops;
 	typedef enum axis2_status_codes axis2_status_codes_t;
 	typedef enum axis2_error_codes axis2_error_codes_t;
 
@@ -569,56 +568,45 @@ extern "C"
  * @{
  */
 
-	/** 
-	 * \brief Axis2 error ops struct
-	 *
-	 * Encapsulator struct for ops of axis2_error
+	/**
+	 * deallocate memory of a error struct
+	 * @return axis2_status_t status code
 	 */
-    typedef struct axis2_error_ops
-    {
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_error_free(struct axis2_error *error);
+    
+	/**
+	 * get error message for the last error
+	 * @return error message for the last error. NULL on error.
+	 */
+	AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_error_get_message(const struct axis2_error *error);
+  
+	/**
+	 * This fucntion is supposed to be overridden in an extended error structure.
+	 * For example in Sandesha error structure this fucntion is overridden so that
+	 * errors of axis2 range call the get_message function of error struct but
+	 * errors of sandesha2 range get the messages from an array of that struct.
+	 * @return error message for the extended struct.
+	 */
+	AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_error_get_extended_message(const struct axis2_error *error);
+  
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_error_set_error_number(struct axis2_error *error,
+        axis2_error_codes_t error_number);
+	
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_error_set_status_code(struct axis2_error *error, 
+        axis2_status_codes_t status_code);
+  
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_error_get_status_code(struct axis2_error *error);
 
-		/**
-		 * deallocate memory of a error struct
-		 * @return axis2_status_t status code
-		 */
-
-        void (AXIS2_CALL *
-        free)(struct axis2_error *error);
-        
-		/**
-		 * get error message for the last error
-		 * @return error message for the last error. NULL on error.
-		 */
-		const axis2_char_t *(AXIS2_CALL *
-        get_message)(const struct axis2_error *error);
-      
-		/**
-		 * This fucntion is supposed to be overridden in an extended error structure.
-		 * For example in Sandesha error structure this fucntion is overridden so that
-		 * errors of axis2 range call the get_message function of error struct but
-		 * errors of sandesha2 range get the messages from an array of that struct.
-		 * @return error message for the extended struct.
-		 */
-		const axis2_char_t *(AXIS2_CALL *
-        get_extended_message)(const struct axis2_error *error);
-      
-		axis2_status_t (AXIS2_CALL *
-        set_error_number) (struct axis2_error *error,
-            axis2_error_codes_t error_number);
-		
-		axis2_status_t (AXIS2_CALL *
-        set_status_code)(struct axis2_error *error, 
-            axis2_status_codes_t status_code);
-      
-		axis2_status_t (AXIS2_CALL *
-        get_status_code) (struct axis2_error *error);
-
-		axis2_status_t (AXIS2_CALL *
-        set_error_message) (struct axis2_error *error,
-            axis2_char_t *message);
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_error_set_error_message(struct axis2_error *error,
+        axis2_char_t *message);
           
-    } axis2_error_ops_t;
-
 	/** 
 	 * \brief Axis2 Error struct
 	 *
@@ -627,7 +615,6 @@ extern "C"
     typedef struct axis2_error
     {
         /** error related ops */
-        struct axis2_error_ops *ops;
         axis2_allocator_t *allocator;
         /** last error number */
         int error_number;
@@ -635,24 +622,24 @@ extern "C"
 		axis2_char_t *message;
     } axis2_error_t;
 
-	AXIS2_EXTERN 
-	axis2_status_t AXIS2_CALL axis2_error_init();
+	AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+    axis2_error_init();
 
-#define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
+#define AXIS2_ERROR_FREE(error) axis2_error_free(error)
 
 #define AXIS2_ERROR_GET_MESSAGE(error) \
-    ((error)->ops->get_message(error))
+    axis2_error_get_message(error)
 
 #define AXIS2_ERROR_SET_MESSAGE(error, message) \
-    ((error)->ops->set_error_message(error, message))
+    axis2_error_set_error_message(error, message)
 
 #define AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number) \
-        ((error)->ops->set_error_number(error, error_number))
+        axis2_error_set_error_number(error, error_number)
    
 #define AXIS2_ERROR_SET_STATUS_CODE(error, status_code) \
-        ((error)->ops->set_status_code(error, status_code))
+        axis2_error_set_status_code(error, status_code)
         
-#define AXIS2_ERROR_GET_STATUS_CODE(error) ((error)->ops->get_status_code(error))
+#define AXIS2_ERROR_GET_STATUS_CODE(error) axis2_error_get_status_code(error)
 
 
 

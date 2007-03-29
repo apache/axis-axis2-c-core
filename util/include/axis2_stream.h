@@ -53,81 +53,60 @@ extern "C"
 
     typedef enum axis2_stream_type axis2_stream_type_t;
 
-    /**
-    * \brief Axis2 stream ops struct
-    *
-    * Encapsulator struct for ops of axis2_stream
+   /**
+    * Deletes the stream
+    * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
-    struct axis2_stream_ops
-    {
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_stream_free(axis2_stream_t *stream,
+        const axis2_env_t *env);
 
-        /**
-          * Deletes the stream
-        * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
-        */
-        void (AXIS2_CALL *
-        free_fn)(axis2_stream_t *stream,
-            const axis2_env_t *env);
-
-        void (AXIS2_CALL *
-        free_void_arg)(void *stream,
-            const axis2_env_t *env);
-
-        /**
-        * reads from stream
-        * @param buffer buffer into which the content is to be read
-        * @param count size of the buffer
-        * @return no: of bytes read
-        */
-
-        int(AXIS2_CALL *
-        read)(axis2_stream_t *stream,
-            const axis2_env_t *env,
-            void *buffer,
-            size_t count);
-        /**
-         * writes into stream
-         * @param buffer buffer to be written
-         * @param count size of the buffer
-         * @return no: of bytes actually written
-         */
-        int(AXIS2_CALL *
-        write)(axis2_stream_t *stream,
-            const axis2_env_t *env,
-            const void *buffer,
-            size_t count);
-        /**
-        * Skips over and discards n bytes of data from this input stream.
-        * @param count number of bytes to be discarded
-        * @return no: of bytes actually skipped
-        */
-        int(AXIS2_CALL *
-        skip)(axis2_stream_t *stream,
-            const axis2_env_t *env,
-            int count);
-
-        /**
-         * Returns the length of the stream (applicable only to basic stream)
-         * @return Length of the buffer if its type is basic, else -1
-         * (we can't define a length of a stream unless it is just a buffer)
-         */
-        int(AXIS2_CALL *
-        get_len)(axis2_stream_t *stream,
-            const axis2_env_t *env);
-    };
+    AXIS2_EXTERN void  AXIS2_CALL
+    axis2_stream_free_void_arg(void *stream,
+        const axis2_env_t *env);
 
     /**
-    * \brief Axis2 Stream struct
-    *
-    * Stream is the encapsulating struct for all stream related ops
+    * reads from stream
+    * @param buffer buffer into which the content is to be read
+    * @param count size of the buffer
+    * @return no: of bytes read
     */
-    struct axis2_stream
-    {
-        /** Stream related ops */
-        axis2_stream_ops_t *ops;
-        /** Stream End of File */
-        int axis2_eof;
-    };
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_stream_read(axis2_stream_t *stream,
+        const axis2_env_t *env,
+        void *buffer,
+        size_t count);
+
+    /**
+     * writes into stream
+     * @param buffer buffer to be written
+     * @param count size of the buffer
+     * @return no: of bytes actually written
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_stream_write(axis2_stream_t *stream,
+        const axis2_env_t *env,
+        const void *buffer,
+        size_t count);
+
+    /**
+    * Skips over and discards n bytes of data from this input stream.
+    * @param count number of bytes to be discarded
+    * @return no: of bytes actually skipped
+    */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_stream_skip(axis2_stream_t *stream,
+        const axis2_env_t *env,
+        int count);
+
+    /**
+     * Returns the length of the stream (applicable only to basic stream)
+     * @return Length of the buffer if its type is basic, else -1
+     * (we can't define a length of a stream unless it is just a buffer)
+     */
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_stream_get_len(axis2_stream_t *stream,
+        const axis2_env_t *env);
 
     /** \brief Constructor for creating an in memory stream
       * @return axis2_stream (in memory)
@@ -173,7 +152,7 @@ extern "C"
         const axis2_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_stream_flush_buffer(const axis2_stream_t *stream,
+    axis2_stream_flush_buffer(axis2_stream_t *stream,
         const axis2_env_t *env);
 
     AXIS2_EXTERN int AXIS2_CALL
@@ -188,22 +167,38 @@ extern "C"
     axis2_stream_close(axis2_stream_t *stream,
         const axis2_env_t *env);
 
-#define AXIS2_STREAM_FREE(stream, env) ((stream->ops)->free_fn(stream, env))
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_stream_set_read(axis2_stream_t *stream,
+        const axis2_env_t *env, 
+        void *func);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_stream_set_write(axis2_stream_t *stream,
+        const axis2_env_t *env, 
+        void *func);
+
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_stream_set_skip(axis2_stream_t *stream,
+        const axis2_env_t *env, 
+        void *func);
+
+
+#define AXIS2_STREAM_FREE(stream, env) axis2_stream_free(stream, env)
 
 #define AXIS2_STREAM_FREE_VOID_ARG(stream, env) \
-        ((stream->ops)->free_void_arg(stream, env))
+        axis2_stream_free_void_arg(stream, env)
 
 #define AXIS2_STREAM_READ(stream, env, buffer, count) \
-      ((stream)->ops->read(stream, env, buffer, count))
+      axis2_stream_read(stream, env, buffer, count)
 
 #define AXIS2_STREAM_WRITE(stream, env, buffer, count) \
-      ((stream)->ops->write(stream, env, buffer, count))
+      axis2_stream_write(stream, env, buffer, count)
 
 #define AXIS2_STREAM_SKIP(stream, env, count) \
-      ((stream)->ops->write(stream, env, count))
+      axis2_stream_write(stream, env, count)
 
 #define AXIS2_STREAM_BASIC_GET_LEN(stream, env) \
-      ((stream)->ops->get_len(stream, env))
+      axis2_stream_get_len(stream, env)
 
     /** @} */
 

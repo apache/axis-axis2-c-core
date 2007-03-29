@@ -18,28 +18,10 @@
 #include <stdlib.h>
 #include "axis2_error_default.h"
 
-const axis2_char_t * AXIS2_CALL
-axis2_error_impl_get_message(const axis2_error_t *error);
-
-axis2_status_t AXIS2_CALL
-axis2_error_impl_set_error_number(axis2_error_t *error, 
-    axis2_error_codes_t error_number);
-
-axis2_status_t AXIS2_CALL
-axis2_error_impl_set_status_code(axis2_error_t *error, 
-    axis2_status_codes_t status_code);
-
-axis2_status_t AXIS2_CALL
-axis2_error_impl_get_status_code(axis2_error_t *error);
-
-axis2_status_t AXIS2_CALL
-axis2_error_impl_set_error_message(axis2_error_t *error, 
-    axis2_char_t *message);
-
 /* array to hold error messages */
 const axis2_char_t* axis2_error_messages[AXIS2_ERROR_LAST];
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_error_init()
 {
     int i = 0;
@@ -494,13 +476,9 @@ axis2_error_init()
     return AXIS2_SUCCESS;
 }
 
-void AXIS2_CALL
-axis2_error_impl_free(axis2_error_t *error)
+AXIS2_EXTERN void AXIS2_CALL
+axis2_error_free(axis2_error_t *error)
 {
-    if (error && NULL != error->ops)
-    {
-        AXIS2_FREE(error->allocator, error->ops);
-    }
     if (error)
     {
         AXIS2_FREE(error->allocator, error);
@@ -523,30 +501,13 @@ axis2_error_create(axis2_allocator_t * allocator)
 
     error->allocator = allocator;
 
-    error->ops =
-        (axis2_error_ops_t *) AXIS2_MALLOC(allocator,
-                sizeof(axis2_error_ops_t));
-
 	error->message = NULL;
 
-    if (!error->ops)
-    {
-        AXIS2_FREE(allocator, error);
-        return NULL;
-    }
-
-    error->ops->get_message = axis2_error_impl_get_message;
-    error->ops->get_extended_message = axis2_error_impl_get_message;
-    error->ops->set_error_number = axis2_error_impl_set_error_number;
-    error->ops->set_status_code = axis2_error_impl_set_status_code;
-    error->ops->get_status_code = axis2_error_impl_get_status_code;
-    error->ops->free            = axis2_error_impl_free;
-    error->ops->set_error_message = axis2_error_impl_set_error_message;
     return error;
 }
 
-const axis2_char_t * AXIS2_CALL
-axis2_error_impl_get_message(const axis2_error_t *error)
+AXIS2_EXTERN const axis2_char_t * AXIS2_CALL
+axis2_error_get_message(const axis2_error_t *error)
 {
 	const axis2_char_t *message = NULL;
 	if (error)
@@ -567,30 +528,30 @@ axis2_error_impl_get_message(const axis2_error_t *error)
     return message;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_error_impl_set_error_number(axis2_error_t *error, 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_error_set_error_number(axis2_error_t *error, 
     axis2_error_codes_t error_number)
 {
     error->error_number = error_number;
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_error_impl_set_status_code(axis2_error_t *error, 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_error_set_status_code(axis2_error_t *error, 
     axis2_status_codes_t status_code)
 {
     error->status_code = status_code;
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_error_impl_get_status_code(axis2_error_t *error)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_error_get_status_code(axis2_error_t *error)
 {
     return error->status_code;
 }
 
-axis2_status_t AXIS2_CALL
-axis2_error_impl_set_error_message(axis2_error_t *error, 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_error_set_error_message(axis2_error_t *error, 
     axis2_char_t *message)
 {
 	if (message)
