@@ -26,7 +26,6 @@ static int password_cb(
 {
     strncpy(buf, (char *)passwd, size);
     buf[size-1] = '\0';
-    /*printf("ssl_passphrase:%s", buf);*/
     return(strlen(buf));
 }
 
@@ -44,18 +43,6 @@ axis2_ssl_utils_initialize_ctx(
     /*axis2_char_t *key_file = NULL;*/
 
     AXIS2_ENV_CHECK(env, NULL);
-
-    /*TODO getenv */
-	/*if (server_cert)
-		ca_file = server_cert;
-	else
-		ca_file = AXIS2_GETENV("AXIS2_SSL_CA_FILE");
-
-    key_file = AXIS2_GETENV("AXIS2_SSL_KEY_FILE");
-    */
-
-    /*printf("key_file: %s\n", key_file);
-    printf("ca_file: %s\n", server_cert);*/
 
     if (! ca_file)
     {

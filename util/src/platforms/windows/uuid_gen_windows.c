@@ -40,7 +40,6 @@ axis2_platform_uuid_gen(char *s)
         printf("warning - unique within computer \n");
     else if (retval == RPC_S_UUID_NO_ADDRESS)
     {
-        printf("error\n");
         return NULL;
     }
 
@@ -52,7 +51,6 @@ axis2_platform_uuid_gen(char *s)
     }
     else if (retval == RPC_S_OUT_OF_MEMORY)
     {
-        printf("system is out of memory \n");
         return NULL;
     }
     return retstr;

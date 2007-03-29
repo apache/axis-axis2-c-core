@@ -28,6 +28,4 @@ AXIS2_EXTERN int AXIS2_CALL axis2_platform_get_milliseconds()
    milliseconds = timebuffer.millitm;
     
    return milliseconds; 
-
-/* printf( "The time is %.19s.%hu %s", timeline, timebuffer.millitm, &timeline[20] );*/
 }

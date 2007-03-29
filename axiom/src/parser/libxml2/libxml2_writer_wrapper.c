@@ -1105,7 +1105,6 @@ axis2_libxml2_writer_wrapper_write_entity_ref(axiom_xml_writer_t *writer,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
-    printf("axis2_libxml2_writer_wrapper_write_entity_ref not implemented\n");
     return AXIS2_FAILURE;
 }
 
@@ -1272,7 +1271,6 @@ axis2_libxml2_writer_wrapper_write_encoded(axiom_xml_writer_t *writer,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
-    printf("axis2_libxml2_writer_wrapper_write_encoded not implemented\n");
     return AXIS2_FAILURE;
 }
 
@@ -1294,7 +1292,7 @@ axis2_libxml2_writer_wrapper_get_xml(axiom_xml_writer_t *writer,
     }
     else if (writer_impl->writer_type == AXIS2_XML_PARSER_TYPE_FILE)
     {
-        printf("axis2_libxml2_writer_wrapper_get_xml does not support file writer\n");
+        return NULL;
     }
 
     return NULL;

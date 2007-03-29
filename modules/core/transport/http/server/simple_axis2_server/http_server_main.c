@@ -143,7 +143,6 @@ int main(
 
     if (! allocator)
     {
-        printf("[Axis2]Startup FAILED due to memory allocation failure\n");
         system_exit(NULL, -1);
     }
 

@@ -296,13 +296,6 @@ axiom_element_find_namespace(axiom_element_t *om_element,
 
                 found_uri = axiom_namespace_get_uri(found_ns, env);
 
-                /* TODO fix this
-                if( ( found_uri) && axis2_strcmp(found_uri, uri) == 0)
-                {
-                    printf("\n  furi   %s    real uri %s  %s\n ", found_uri, uri, prefix);
-                    return found_ns;
-                }
-                */
                 return found_ns;
             }
         }

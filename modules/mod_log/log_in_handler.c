@@ -72,7 +72,6 @@ axis2_log_in_handler_invoke(struct axis2_handler *handler,
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     
     AXIS2_LOG_INFO(env->log, "Starting logging in handler .........");
-    printf("\n\nStarting logging in handler .........\n\n");
     
     soap_envelope =  axis2_msg_ctx_get_soap_envelope(msg_ctx, env);
     
@@ -88,7 +87,6 @@ axis2_log_in_handler_invoke(struct axis2_handler *handler,
             if(om_str)
             {
                 AXIS2_LOG_INFO(env->log, "Input msg: %s", om_str);
-                printf("Input msg: %s", om_str);
             }
         }
     }

@@ -644,7 +644,6 @@ axis2_http_transport_sender_get_instance(
     *inst = axis2_http_transport_sender_create(env);
     if (!(*inst))
     {
-        printf("transport sender load not success\n");
         return AXIS2_FAILURE;
     }
 

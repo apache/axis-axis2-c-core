@@ -17,172 +17,107 @@
 
 #include <axiom_child_element_iterator.h>
 
-void AXIS2_CALL
-axiom_child_element_iterator_free(void *iterator,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axiom_child_element_iterator_remove
-(axiom_child_element_iterator_t *iterator,
-        const axis2_env_t *env);
-
-axis2_bool_t AXIS2_CALL
-axiom_child_element_iterator_has_next
-(axiom_child_element_iterator_t *iterator,
-        const axis2_env_t *env);
-
-axiom_node_t* AXIS2_CALL
-axiom_child_element_iterator_next
-(axiom_child_element_iterator_t *iterator,
-        const axis2_env_t *env);
-
-/*************** end function prototypes **********************************/
-
-typedef struct axiom_child_element_iterator_impl_t
+struct axiom_child_element_iterator
 {
-    axiom_child_element_iterator_t iterator;
     axiom_node_t *current_child;
     axiom_node_t *last_child;
     axis2_bool_t next_called;
     axis2_bool_t remove_called;
-}
-axiom_child_element_iterator_impl_t;
-
-/***************** end impl struct ****************************************/
-
-#define AXIS2_INTF_TO_IMPL(iterator) \
-        ((axiom_child_element_iterator_impl_t *)iterator)
-
-/**************** end macro ***********************************************/
-
-
+};
 
 AXIS2_EXTERN  axiom_child_element_iterator_t * AXIS2_CALL
 axiom_child_element_iterator_create(const axis2_env_t *env,
         axiom_node_t *current_child)
 {
-    axiom_child_element_iterator_impl_t *iterator_impl = NULL;
+    axiom_child_element_iterator_t *iterator = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    iterator_impl = (axiom_child_element_iterator_impl_t *)AXIS2_MALLOC(
+    iterator = (axiom_child_element_iterator_t *)AXIS2_MALLOC(
                 env->allocator,
-                sizeof(axiom_child_element_iterator_impl_t));
+                sizeof(axiom_child_element_iterator_t));
 
-    if (!iterator_impl)
+    if (!iterator)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    iterator_impl->current_child = NULL;
-    iterator_impl->last_child    = NULL;
+    iterator->current_child = current_child;
+    iterator->last_child    = NULL;
 
-    iterator_impl->next_called = AXIS2_FALSE;
-    iterator_impl->remove_called = AXIS2_FALSE;
+    iterator->next_called = AXIS2_FALSE;
+    iterator->remove_called = AXIS2_FALSE;
 
-    iterator_impl->iterator.ops = NULL;
-    iterator_impl->iterator.ops =
-        (axiom_child_element_iterator_ops_t*)AXIS2_MALLOC(env->allocator,
-                sizeof(axiom_child_element_iterator_ops_t));
-
-    if (!(iterator_impl->iterator.ops))
-    {
-        AXIOM_CHILD_ELEMENT_ITERATOR_FREE(&(iterator_impl->iterator), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    iterator_impl->current_child = current_child;
-    iterator_impl->iterator.ops->free_fn =
-        axiom_child_element_iterator_free;
-    iterator_impl->iterator.ops->remove =
-        axiom_child_element_iterator_remove;
-    iterator_impl->iterator.ops->has_next =
-        axiom_child_element_iterator_has_next;
-    iterator_impl->iterator.ops->next =
-        axiom_child_element_iterator_next;
-    return &(iterator_impl->iterator);
+    return iterator;
 }
 
 
-void AXIS2_CALL
+AXIS2_EXTERN  void AXIS2_CALL
 axiom_child_element_iterator_free
 (void *iterator,
         const axis2_env_t *env)
 {
-    axiom_child_element_iterator_impl_t *iterator_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
-    if (iterator_impl->iterator.ops)
-        AXIS2_FREE(env->allocator, iterator_impl->iterator.ops);
-
-    AXIS2_FREE(env->allocator, iterator_impl);
+    AXIS2_FREE(env->allocator, iterator);
     return;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN  axis2_status_t AXIS2_CALL
 axiom_child_element_iterator_remove
 (axiom_child_element_iterator_t *iterator,
         const axis2_env_t *env)
 {
     axiom_node_t *last_child = NULL;
-    axiom_child_element_iterator_impl_t *iterator_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
 
-    if (!(iterator_impl->next_called))
+    if (!(iterator->next_called))
         return AXIS2_FAILURE;
-    if (iterator_impl->remove_called)
+    if (iterator->remove_called)
         return AXIS2_FAILURE;
 
-    iterator_impl->remove_called = AXIS2_TRUE;
+    iterator->remove_called = AXIS2_TRUE;
 
-    if (!(iterator_impl->last_child))
+    if (!(iterator->last_child))
         return AXIS2_FAILURE;
-    last_child = AXIOM_NODE_DETACH(iterator_impl->last_child, env);
+    last_child = AXIOM_NODE_DETACH(iterator->last_child, env);
     AXIOM_NODE_FREE_TREE(last_child, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN  axis2_bool_t AXIS2_CALL
 axiom_child_element_iterator_has_next
 (axiom_child_element_iterator_t *iterator,
         const axis2_env_t *env)
 {
-    axiom_child_element_iterator_impl_t *iterator_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
 
-    return (iterator_impl->current_child) ? AXIS2_TRUE : AXIS2_FALSE;
+    return (iterator->current_child) ? AXIS2_TRUE : AXIS2_FALSE;
 }
 
-axiom_node_t* AXIS2_CALL
+AXIS2_EXTERN  axiom_node_t* AXIS2_CALL
 axiom_child_element_iterator_next
 (axiom_child_element_iterator_t *iterator,
         const axis2_env_t *env)
 {
-    axiom_child_element_iterator_impl_t *iterator_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
 
-    iterator_impl->next_called = AXIS2_TRUE;
-    iterator_impl->remove_called = AXIS2_FALSE;
-    if (iterator_impl->current_child)
+    iterator->next_called = AXIS2_TRUE;
+    iterator->remove_called = AXIS2_FALSE;
+    if (iterator->current_child)
     {
-        iterator_impl->last_child = iterator_impl->current_child;
+        iterator->last_child = iterator->current_child;
         do
         {
-            iterator_impl->current_child = AXIOM_NODE_GET_NEXT_SIBLING(
-                        iterator_impl->current_child, env);
+            iterator->current_child = AXIOM_NODE_GET_NEXT_SIBLING(
+                        iterator->current_child, env);
 
         }
-        while (iterator_impl->current_child &&
-                (AXIOM_NODE_GET_NODE_TYPE(iterator_impl->current_child, env)
+        while (iterator->current_child &&
+                (AXIOM_NODE_GET_NODE_TYPE(iterator->current_child, env)
                         != AXIOM_ELEMENT));
 
 
-        return iterator_impl->last_child;
+        return iterator->last_child;
     }
     return NULL;
 }

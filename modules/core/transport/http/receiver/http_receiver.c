@@ -320,7 +320,6 @@ AXIS2_EXPORT int axis2_get_instance(
     *inst = axis2_http_server_create(env, NULL, -1);
     if (!(*inst))
     {
-        printf("transport receiver load not success\n");
         return AXIS2_FAILURE;
     }
 
