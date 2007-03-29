@@ -279,10 +279,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\..\..\modules\core\clientapi\mep_client.c"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\..\modules\core\clientapi\op_client.c"
 					>
 				</File>
@@ -739,10 +735,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\include\axis2_listener_manager.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\include\axis2_mep_client.h"
 				>
 			</File>
 			<File

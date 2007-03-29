@@ -29,7 +29,6 @@
 #include <axis2_array_list.h>
 #include <axis2_options.h>
 #include <axis2_conf_init.h>
-#include <axis2_mep_client.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <stdio.h>
 
@@ -656,7 +655,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
                     AXIS2_WSDL_MESSAGE_LABEL_OUT);
                 if (msg_ctx)
                 {
-                    axis2_msg_ctx_t *res_msg_ctx = axis2_mep_client_receive(env, msg_ctx);
+                    axis2_msg_ctx_t *res_msg_ctx = axis2_op_client_receive(env, msg_ctx);
                     if (res_msg_ctx)
                     {
                         soap_envelope =  axis2_msg_ctx_get_soap_envelope(res_msg_ctx, env);

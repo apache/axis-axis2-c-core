@@ -26,7 +26,6 @@
 
 #include <axis2_async_result.h>
 #include <axis2_callback.h>
-#include <axis2_mep_client.h>
 #include <axis2_op_client.h>
 #include <axis2_options.h>
 #include <axis2_stub.h>

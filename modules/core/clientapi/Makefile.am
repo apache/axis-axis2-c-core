@@ -3,7 +3,6 @@ libaxis2_clientapi_la_SOURCES = async_result.c \
                                 callback.c \
                                 listener_manager.c \
                                 callback_recv.c \
-				mep_client.c \
                                 stub.c \
 				options.c \
 				op_client.c \
