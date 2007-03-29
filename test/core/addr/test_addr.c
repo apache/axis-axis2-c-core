@@ -155,7 +155,7 @@ int axis2_test_msg_info_headers()
 
 
     status = AXIS2_FAILURE;
-    status = axis2_msg_info_headers_free(axis2_msg_info_headers, env);
+   /* status = axis2_msg_info_headers_free(axis2_msg_info_headers, env);*/
     if (status)
         printf("SUCCESS axis2_msg_info_headers_free\n");
     else

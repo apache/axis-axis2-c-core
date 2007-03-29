@@ -5,12 +5,12 @@ AM_CFLAGS = -g -O2 -pthread
 test_description_SOURCES = test_description.c
 
 test_description_LDADD   =  \
-					../../../util/src/libaxis2_util.la \
-					../../../axiom/src/om/libaxis2_axiom.la \
-					../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
-                    -lpthread \
-					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
-                    -L$(top_builddir)$(GUTHTHILA_LIBS) \
+			../../../util/src/libaxis2_util.la \
+			../../../axiom/src/om/libaxis2_axiom.la \
+			../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
+			-lpthread \
+			$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+			$(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la \
                     $(LIBXML2_LIBS)
                     
 INCLUDES = -I$(top_builddir)/include \
