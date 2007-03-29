@@ -149,11 +149,22 @@ extern "C"
             const int linenumber,
             const axis2_char_t *format, ...);
 
-#define AXIS2_LOG_FREE(allocator, log) \
-      ((log->ops)->free(allocator, log))
+    AXIS2_EXTERN void AXIS2_CALL 
+    axis2_log_free(axis2_allocator_t *allocator,
+        struct axis2_log *log);
 
-#define AXIS2_LOG_WRITE(log, buffer, level) \
-      ((log)->ops->write(log, buffer, level,AXIS2_LOG_SI))
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_log_write(axis2_log_t *log,
+        const axis2_char_t *buffer,
+        axis2_log_levels_t level,
+        const axis2_char_t *file,
+        const int line);
+
+#define AXIS2_LOG_FREE(allocator, log) \
+      axis2_log_free(allocator, log)
+
+#define AXIS2_LOG_WRITE(log, buffer, level, file) \
+      axis2_log_write(log, buffer, level, file, AXIS2_LOG_SI)
 
 #define AXIS2_LOG_DEBUG axis2_log_impl_log_debug
 #define AXIS2_LOG_INFO axis2_log_impl_log_info

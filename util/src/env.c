@@ -225,7 +225,7 @@ axis2_env_write_log(const axis2_env_t *env,
 
     if (message && env->log)
     {
-        AXIS2_LOG_WRITE(env->log, message, level);
+        AXIS2_LOG_WRITE(env->log, message, level, NULL);
     }
     return AXIS2_SUCCESS;
 }

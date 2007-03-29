@@ -537,3 +537,19 @@ AXIS2_EXTERN void AXIS2_CALL axis2_log_impl_log_trace(axis2_log_t *log,
 }
 #endif
 
+AXIS2_EXTERN void AXIS2_CALL 
+axis2_log_free(axis2_allocator_t *allocator,
+    struct axis2_log *log)
+{
+    log->ops->free(allocator, log);
+}
+
+AXIS2_EXTERN void AXIS2_CALL
+axis2_log_write(axis2_log_t *log,
+    const axis2_char_t *buffer,
+    axis2_log_levels_t level,
+    const axis2_char_t *file,
+    const int line)
+{
+    log->ops->write(log, buffer, level, file, line);
+}
