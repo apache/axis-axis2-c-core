@@ -23,7 +23,7 @@
 #include <axiom_output.h>
 #include <axiom_attribute.h>
 #include <axiom_namespace.h>
-#include <axis2_base64.h>
+#include <axutil_base64.h>
 
 
 /********************* axiom_data_source_struct ***************/

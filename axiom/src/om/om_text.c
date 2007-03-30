@@ -23,7 +23,7 @@
 #include <axiom_output.h>
 #include <axiom_attribute.h>
 #include <axiom_namespace.h>
-#include <axis2_base64.h>
+#include <axutil_base64.h>
 
 static const axis2_char_t *AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
@@ -500,11 +500,11 @@ axiom_text_get_text(axiom_text_t *om_text,
                 &data_handler_stream, &data_handler_stream_size);
             if (data_handler_stream)
             {
-                encoded_len = axis2_base64_encode_len(data_handler_stream_size);
+                encoded_len = axutil_base64_encode_len(data_handler_stream_size);
                 encoded_str = AXIS2_MALLOC(env->allocator, encoded_len);
                 if (encoded_str)
                 {
-                    encoded_len = axis2_base64_encode(encoded_str,
+                    encoded_len = axutil_base64_encode(encoded_str,
                         data_handler_stream, data_handler_stream_size);
                     encoded_str[encoded_len] = '\0';
                     return encoded_str;

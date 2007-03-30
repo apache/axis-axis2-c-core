@@ -18,7 +18,7 @@
 #ifndef AXIS2_BASE64_BINARY_H
 #define AXIS2_BASE64_BINARY_H
 
-#include <axis2_base64.h>
+#include <axutil_base64.h>
 #include <axis2_utils_defines.h>
 #include <axis2_env.h>
 

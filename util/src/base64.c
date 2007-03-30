@@ -22,7 +22,7 @@
  * ugly 'len' functions, which is quite a nasty cost.
  */
 
-#include <axis2_base64.h>
+#include <axutil_base64.h>
 
 static const unsigned char pr2six[256] =
     {
@@ -90,7 +90,7 @@ static unsigned char os_toascii[256] =
 
 #endif /* __OS400__ */
 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_len(const char *bufcoded)
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_decode_len(const char *bufcoded)
 {
     int nbytesdecoded;
     register const unsigned char *bufin;
@@ -105,19 +105,19 @@ AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_len(const char *bufcoded)
     return nbytesdecoded + 1;
 }
 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode(char *bufplain, const char *bufcoded)
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_decode(char *bufplain, const char *bufcoded)
 {
     int len;
-    len = axis2_base64_decode_binary((unsigned char *) bufplain, bufcoded);
+    len = axutil_base64_decode_binary((unsigned char *) bufplain, bufcoded);
     bufplain[len] = '\0';
     return len;
 }
 
-/* This is the same as axis2_base64_decode() except on EBCDIC machines, where
+/* This is the same as axutil_base64_decode() except on EBCDIC machines, where
  * the conversion of the output to ebcdic is left out.
  */
 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_binary(unsigned char *bufplain,
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_decode_binary(unsigned char *bufplain,
         const char *bufcoded)
 {
     int nbytesdecoded;
@@ -169,15 +169,15 @@ AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_binary(unsigned char *bufplain,
 static const char basis_64[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode_len(int len)
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_encode_len(int len)
 {
     return ((len + 2) / 3 * 4) + 1;
 }
 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode(char *encoded, const char *string, int len)
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_encode(char *encoded, const char *string, int len)
 {
 #ifndef __OS400__
-    return axis2_base64_encode_binary(encoded, (const unsigned char *) string, len);
+    return axutil_base64_encode_binary(encoded, (const unsigned char *) string, len);
 #else /* __OS400__ */
     int i;
     char *p;
@@ -214,10 +214,10 @@ AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode(char *encoded, const char *strin
 #endif                /* __OS400__ */
 }
 
-/* This is the same as axis2_base64_encode() except on EBCDIC machines, where
+/* This is the same as axutil_base64_encode() except on EBCDIC machines, where
  * the conversion of the input to ascii is left out.
  */
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode_binary(char *encoded,
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_encode_binary(char *encoded,
         const unsigned char *string, int len)
 {
     int i;

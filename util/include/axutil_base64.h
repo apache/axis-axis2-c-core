@@ -16,7 +16,7 @@
 
 #include <axis2_utils_defines.h>
 /*
- * @file axis2_base64.h
+ * @file axutil_base64.h
  * @brief AXIS2-UTIL Base64 Encoding
  */
 #ifndef AXIS2_BASE64_H
@@ -50,7 +50,7 @@ extern "C" {
  * @param len the length of an unencrypted string.
  * @return the length of the string after it is encrypted
  */ 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode_len(int len);
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_encode_len(int len);
 
 /*
  * Encode a text string using base64encoding.
@@ -59,7 +59,7 @@ AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode_len(int len);
  * @param len_plain_src The length of the plain text string
  * @return the length of the encoded string
  */ 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode(char * coded_dst, const char *plain_src, 
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_encode(char * coded_dst, const char *plain_src, 
                                  int len_plain_src);
 
 /*
@@ -69,7 +69,7 @@ AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode(char * coded_dst, const char *pl
  * @param len_plain_src The length of the plain text string
  * @return the length of the encoded string
  */ 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode_binary(char * coded_dst, 
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_encode_binary(char * coded_dst, 
                                         const unsigned char *plain_src,
                                         int len_plain_src);
 
@@ -78,7 +78,7 @@ AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode_binary(char * coded_dst,
  * @param coded_src The encoded string
  * @return the length of the plain text string
  */ 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_len(const char * coded_src);
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_decode_len(const char * coded_src);
 
 /*
  * Decode a string to plain text
@@ -86,7 +86,7 @@ AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_len(const char * coded_src);
  * @param coded_src The encoded string 
  * @return the length of the plain text string
  */ 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode(char * plain_dst, const char *coded_src);
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_decode(char * plain_dst, const char *coded_src);
 
 /*
  * Decode an EBCDIC string to plain text
@@ -94,7 +94,7 @@ AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode(char * plain_dst, const char *co
  * @param coded_src The encoded string 
  * @return the length of the plain text string
  */ 
-AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_binary(unsigned char * plain_dst, 
+AXIS2_EXTERN int AXIS2_CALL axutil_base64_decode_binary(unsigned char * plain_dst, 
                                         const char *coded_src);
 
 /* @} */
