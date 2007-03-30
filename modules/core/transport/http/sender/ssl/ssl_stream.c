@@ -121,19 +121,10 @@ axis2_stream_create_ssl(
         return NULL;
     }
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
-    stream_impl->stream.ops = (axis2_stream_ops_t *) AXIS2_MALLOC(
-                env->allocator, sizeof(axis2_stream_ops_t));
-    if (! stream_impl->stream.ops)
-    {
-        axis2_ssl_stream_free(&(stream_impl->stream), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    stream_impl->stream.ops->free_fn = axis2_ssl_stream_free;
-    stream_impl->stream.ops->read = axis2_ssl_stream_read;
-    stream_impl->stream.ops->write = axis2_ssl_stream_write;
-    stream_impl->stream.ops->skip = axis2_ssl_stream_skip;
+    
+    axis2_stream_set_read(stream_impl, env, axis2_ssl_stream_read);
+    axis2_stream_set_write(stream_impl, env, axis2_ssl_stream_write);
+    axis2_stream_set_skip(stream_impl, env, axis2_ssl_stream_skip);
 
     return &(stream_impl->stream);
 }
