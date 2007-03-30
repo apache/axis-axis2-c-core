@@ -35,8 +35,8 @@ struct woden_wsdl10_endpoint_impl
       woden_wsdl10_endpoint_t endpoint;
       woden_obj_types_t obj_type;
       woden_nested_configurable_t *nested_configurable;
-      axis2_hash_t *super;
-      axis2_hash_t *methods;
+      axutil_hash_t *super;
+      axutil_hash_t *methods;
       woden_nc_name_t *f_name;
       axis2_qname_t *f_binding_qname;
       void *f_binding;
@@ -50,7 +50,7 @@ woden_wsdl10_endpoint_free(
       void *endpoint,
       const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl10_endpoint_super_objs(
       void *endpoint,
       const axutil_env_t *env);
@@ -546,44 +546,44 @@ create(const axutil_env_t *env)
       endpoint_impl->endpoint.ops->set_binding_element =
 	    woden_wsdl10_endpoint_set_binding_element;
 
-      endpoint_impl->methods = axis2_hash_make(env);
+      endpoint_impl->methods = axutil_hash_make(env);
       if (!endpoint_impl->methods)
       {
 	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 	    return NULL;
       }
-      axis2_hash_set(endpoint_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+      axutil_hash_set(endpoint_impl->methods, "free", AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_free);
-      axis2_hash_set(endpoint_impl->methods, "super_objs",
+      axutil_hash_set(endpoint_impl->methods, "super_objs",
 		     AXIS2_HASH_KEY_STRING, woden_wsdl10_endpoint_super_objs);
-      axis2_hash_set(endpoint_impl->methods, "type",
+      axutil_hash_set(endpoint_impl->methods, "type",
 		     AXIS2_HASH_KEY_STRING, woden_wsdl10_endpoint_type);
 
-      axis2_hash_set(endpoint_impl->methods, "get_name",
+      axutil_hash_set(endpoint_impl->methods, "get_name",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_get_name);
-      axis2_hash_set(endpoint_impl->methods, "get_binding",
+      axutil_hash_set(endpoint_impl->methods, "get_binding",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_get_binding);
-      axis2_hash_set(endpoint_impl->methods, "get_address",
+      axutil_hash_set(endpoint_impl->methods, "get_address",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_get_address);
-      axis2_hash_set(endpoint_impl->methods, "set_name",
+      axutil_hash_set(endpoint_impl->methods, "set_name",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_set_name);
-      axis2_hash_set(endpoint_impl->methods, "set_binding_qname",
+      axutil_hash_set(endpoint_impl->methods, "set_binding_qname",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_set_binding_qname);
-      axis2_hash_set(endpoint_impl->methods, "get_binding_qname",
+      axutil_hash_set(endpoint_impl->methods, "get_binding_qname",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_get_binding_qname);
-      axis2_hash_set(endpoint_impl->methods, "get_binding_element",
+      axutil_hash_set(endpoint_impl->methods, "get_binding_element",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_get_binding_element);
-      axis2_hash_set(endpoint_impl->methods, "set_address",
+      axutil_hash_set(endpoint_impl->methods, "set_address",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_set_address);
-      axis2_hash_set(endpoint_impl->methods, "set_binding_element",
+      axutil_hash_set(endpoint_impl->methods, "set_binding_element",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_endpoint_set_binding_element);
 
@@ -606,19 +606,19 @@ woden_wsdl10_endpoint_create(const axutil_env_t *env)
 
       endpoint_impl->nested_configurable = woden_nested_configurable_create(env);
 
-      endpoint_impl->super = axis2_hash_make(env);
+      endpoint_impl->super = axutil_hash_make(env);
       if (!endpoint_impl->super)
       {
 	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 	    return NULL;
       }
-      axis2_hash_set(endpoint_impl->super, "WODEN_WSDL10_ENDPOINT",
+      axutil_hash_set(endpoint_impl->super, "WODEN_WSDL10_ENDPOINT",
 		     AXIS2_HASH_KEY_STRING, &(endpoint_impl->endpoint));
-      axis2_hash_set(endpoint_impl->super, "WODEN_NESTED_CONFIGURABLE",
+      axutil_hash_set(endpoint_impl->super, "WODEN_NESTED_CONFIGURABLE",
 		     AXIS2_HASH_KEY_STRING, endpoint_impl->nested_configurable);
       configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
 	    endpoint_impl->nested_configurable, env);
-      axis2_hash_set(endpoint_impl->super, "WODEN_CONFIGURABLE",
+      axutil_hash_set(endpoint_impl->super, "WODEN_CONFIGURABLE",
 		     AXIS2_HASH_KEY_STRING, configurable);
 
       documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
@@ -626,15 +626,15 @@ woden_wsdl10_endpoint_create(const axutil_env_t *env)
       wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
       element_extensible = WODEN_WSDL_ELEMENT_GET_ELEMENT_EXTENSIBLE(wsdl_el, env);
       attr_extensible = WODEN_WSDL_ELEMENT_GET_ATTR_EXTENSIBLE(wsdl_el, env);
-      axis2_hash_set(endpoint_impl->super, "WODEN_DOCUMENTABLE",
+      axutil_hash_set(endpoint_impl->super, "WODEN_DOCUMENTABLE",
 		     AXIS2_HASH_KEY_STRING, documentable);
-      axis2_hash_set(endpoint_impl->super, "WODEN_WSDL_OBJ",
+      axutil_hash_set(endpoint_impl->super, "WODEN_WSDL_OBJ",
 		     AXIS2_HASH_KEY_STRING, wsdl_obj);
-      axis2_hash_set(endpoint_impl->super, "WODEN_WSDL_ELEMENT",
+      axutil_hash_set(endpoint_impl->super, "WODEN_WSDL_ELEMENT",
 		     AXIS2_HASH_KEY_STRING, wsdl_el);
-      axis2_hash_set(endpoint_impl->super, "WODEN_ELEMENT_EXTENSIBLE",
+      axutil_hash_set(endpoint_impl->super, "WODEN_ELEMENT_EXTENSIBLE",
 		     AXIS2_HASH_KEY_STRING, element_extensible);
-      axis2_hash_set(endpoint_impl->super, "WODEN_ATTR_EXTENSIBLE",
+      axutil_hash_set(endpoint_impl->super, "WODEN_ATTR_EXTENSIBLE",
 		     AXIS2_HASH_KEY_STRING, attr_extensible);
 
 
@@ -791,13 +791,13 @@ woden_wsdl10_endpoint_free(void *endpoint,
 
       if (endpoint_impl->super)
       {
-	    axis2_hash_free(endpoint_impl->super, env);
+	    axutil_hash_free(endpoint_impl->super, env);
 	    endpoint_impl->super = NULL;
       }
 
       if (endpoint_impl->methods)
       {
-	    axis2_hash_free(endpoint_impl->methods, env);
+	    axutil_hash_free(endpoint_impl->methods, env);
 	    endpoint_impl->methods = NULL;
       }
 
@@ -823,7 +823,7 @@ woden_wsdl10_endpoint_free(void *endpoint,
       return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl10_endpoint_super_objs(
       void *endpoint,
       const axutil_env_t *env)
@@ -867,7 +867,7 @@ woden_wsdl10_endpoint_resolve_methods(
       woden_wsdl10_endpoint_t *endpoint,
       const axutil_env_t *env,
       woden_wsdl10_endpoint_t *endpoint_impl,
-      axis2_hash_t *methods)
+      axutil_hash_t *methods)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl_l = NULL;
 
@@ -875,32 +875,32 @@ woden_wsdl10_endpoint_resolve_methods(
       AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
       endpoint_impl_l = INTF_TO_IMPL(endpoint_impl);
 
-      endpoint->ops->free = axis2_hash_get(methods, "free",
+      endpoint->ops->free = axutil_hash_get(methods, "free",
 					   AXIS2_HASH_KEY_STRING);
-      endpoint->ops->super_objs = axis2_hash_get(methods, "super_objs",
+      endpoint->ops->super_objs = axutil_hash_get(methods, "super_objs",
 						 AXIS2_HASH_KEY_STRING);
-      endpoint->ops->type = axis2_hash_get(methods, "type",
+      endpoint->ops->type = axutil_hash_get(methods, "type",
 					   AXIS2_HASH_KEY_STRING);
 
-      endpoint->ops->get_name = axis2_hash_get(methods,
+      endpoint->ops->get_name = axutil_hash_get(methods,
 					       "get_name", AXIS2_HASH_KEY_STRING);
       if (!endpoint->ops->get_name && endpoint_impl_l)
 	    endpoint->ops->get_name =
 		  endpoint_impl_l->endpoint.ops->get_name;
 
-      endpoint->ops->get_binding = axis2_hash_get(methods,
+      endpoint->ops->get_binding = axutil_hash_get(methods,
 						  "get_binding", AXIS2_HASH_KEY_STRING);
       if (!endpoint->ops->get_binding && endpoint_impl_l)
 	    endpoint->ops->get_binding =
 		  endpoint_impl_l->endpoint.ops->get_binding;
 
-      endpoint->ops->get_address = axis2_hash_get(methods,
+      endpoint->ops->get_address = axutil_hash_get(methods,
 						  "get_address", AXIS2_HASH_KEY_STRING);
       if (!endpoint->ops->get_address && endpoint_impl_l)
 	    endpoint->ops->get_address =
 		  endpoint_impl_l->endpoint.ops->get_address;
 
-      endpoint->ops->set_binding_element = axis2_hash_get(methods,
+      endpoint->ops->set_binding_element = axutil_hash_get(methods,
 							  "set_binding_element", AXIS2_HASH_KEY_STRING);
       if (!endpoint->ops->set_binding_element && endpoint_impl_l)
 	    endpoint->ops->set_binding_element =
@@ -918,11 +918,11 @@ woden_wsdl10_endpoint_get_name(
       const axutil_env_t *env)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       return endpoint_impl->f_name;
@@ -934,11 +934,11 @@ woden_wsdl10_endpoint_get_binding(
       const axutil_env_t *env)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       return endpoint_impl->f_binding;
@@ -950,11 +950,11 @@ woden_wsdl10_endpoint_get_address(
       const axutil_env_t *env)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       return endpoint_impl->f_address;
@@ -970,11 +970,11 @@ woden_wsdl10_endpoint_set_name(
       woden_nc_name_t *name)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       if (endpoint_impl->f_name)
@@ -992,11 +992,11 @@ woden_wsdl10_endpoint_set_binding_qname(
       axis2_qname_t *binding_qname)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       if (endpoint_impl->f_binding_qname)
@@ -1014,11 +1014,11 @@ woden_wsdl10_endpoint_get_binding_qname(
       const axutil_env_t *env)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       return endpoint_impl->f_binding_qname;
@@ -1030,11 +1030,11 @@ woden_wsdl10_endpoint_get_binding_element(
       const axutil_env_t *env)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       return endpoint_impl->f_binding;
@@ -1047,11 +1047,11 @@ woden_wsdl10_endpoint_set_address(
       axis2_uri_t *uri)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       if (endpoint_impl->f_address)
@@ -1075,11 +1075,11 @@ woden_wsdl10_endpoint_set_binding_element(
       void *binding)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
       super = WODEN_WSDL10_ENDPOINT_SUPER_OBJS(endpoint, env);
-      endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      endpoint_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						  "WODEN_WSDL10_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
       if (endpoint_impl->f_binding)

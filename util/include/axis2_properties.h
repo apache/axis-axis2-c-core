@@ -21,7 +21,7 @@
 #include <axis2_utils_defines.h>
 #include <axutil_error.h>
 #include <axutil_env.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -86,7 +86,7 @@ extern "C"
      * @param  env Environment. MUST NOT be NULL
      * @return hash (key,value)
      */
-    AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
     axis2_properties_get_all(axis2_properties_t *properties,
         const axutil_env_t *env);
 

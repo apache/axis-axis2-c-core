@@ -25,7 +25,7 @@
  */
 
 #include <xml_schema_external.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 /** @defgroup xml_schema_include Xml Schema Particle
   * @ingroup xml_schema
@@ -55,7 +55,7 @@ struct xml_schema_import_ops
                    const axutil_env_t *env);
 
 
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *import,
                 const axutil_env_t *env);
                 

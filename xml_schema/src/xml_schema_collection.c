@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_includes.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 typedef struct xml_schema_collection_impl
             xml_schema_collection_impl_t;
@@ -25,19 +25,19 @@ struct xml_schema_collection_impl
 {
     xml_schema_collection_t collection;
 
-    axis2_hash_t *namespaces;
+    axutil_hash_t *namespaces;
 
     axis2_char_t *base_uri;
 
-    axis2_hash_t *in_scope_namespaces;
+    axutil_hash_t *in_scope_namespaces;
 
-    axis2_hash_t *systemid2_schemas;
+    axutil_hash_t *systemid2_schemas;
 
     xml_schema_t *xsd;
 
     axutil_array_list_t *schemas;
 
-    axis2_hash_t *unresolved_types;
+    axutil_hash_t *unresolved_types;
 
     axutil_array_list_t *builder_list;
 };
@@ -147,7 +147,7 @@ add_simple_type(
     xml_schema_t* schema,
     axis2_char_t *type_name);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_collection_get_systemid2_schemas(
     xml_schema_collection_t *collection,
     const axutil_env_t *env);
@@ -163,7 +163,7 @@ xml_schema_collection_set_schemas(
     const axutil_env_t *env,
     axutil_array_list_t *schemas);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_collection_get_namespaces(
     xml_schema_collection_t *collection,
     const axutil_env_t *env);
@@ -275,11 +275,11 @@ xml_schema_collection_create(const axutil_env_t *env)
         return NULL;
     }
 
-    collection_impl->namespaces          = axis2_hash_make(env);
-    collection_impl->in_scope_namespaces = axis2_hash_make(env);
-    collection_impl->systemid2_schemas   = axis2_hash_make(env);
+    collection_impl->namespaces          = axutil_hash_make(env);
+    collection_impl->in_scope_namespaces = axutil_hash_make(env);
+    collection_impl->systemid2_schemas   = axutil_hash_make(env);
     collection_impl->schemas             = axutil_array_list_create(env, 10);
-    collection_impl->unresolved_types    = axis2_hash_make(env);
+    collection_impl->unresolved_types    = axutil_hash_make(env);
     collection_impl->builder_list        = axutil_array_list_create(env, 10);
 
     if (!collection_impl->namespaces || !collection_impl->in_scope_namespaces ||
@@ -437,7 +437,7 @@ xml_schema_collection_init(
     add_simple_type(env, collection_impl->xsd, XML_SCHEMA_XSD_LANGUAGE);
     add_simple_type(env, collection_impl->xsd, XML_SCHEMA_XSD_TOKEN);
 
-    axis2_hash_set(collection_impl->namespaces, XML_SCHEMA_NS,
+    axutil_hash_set(collection_impl->namespaces, XML_SCHEMA_NS,
             AXIS2_HASH_KEY_STRING,  collection_impl->xsd);
 
     return AXIS2_SUCCESS;
@@ -567,7 +567,7 @@ xml_schema_collection_get_element_by_qname(
     uri = axis2_qname_get_uri(qname, env);
 
     if (collec_impl->namespaces)
-        schema = axis2_hash_get(collec_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
+        schema = axutil_hash_get(collec_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
 
     if (!schema)
         return NULL;
@@ -594,7 +594,7 @@ xml_schema_collection_get_type_by_qname(
     uri = axis2_qname_get_uri(schema_type_qname, env);
 
     if (collecion_impl->namespaces && NULL != uri)
-        schema = axis2_hash_get(collecion_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
+        schema = axutil_hash_get(collecion_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
 
     if (!schema)
         return NULL;
@@ -622,13 +622,13 @@ xml_schema_collection_add_unresolved_type(
     if (collection_impl->unresolved_types &&
             qn_string)
     {
-        receivers = axis2_hash_get(collection_impl->unresolved_types,
+        receivers = axutil_hash_get(collection_impl->unresolved_types,
                 qn_string, AXIS2_HASH_KEY_STRING);
 
         if (!receivers)
         {
             receivers = axutil_array_list_create(env, 10);
-            axis2_hash_set(collection_impl->unresolved_types, qn_string,
+            axutil_hash_set(collection_impl->unresolved_types, qn_string,
                     AXIS2_HASH_KEY_STRING, receivers);
         }
     }
@@ -655,7 +655,7 @@ xml_schema_collection_resolve_type(
     qn_string = axis2_qname_to_string(type_qname, env);
     if (qn_string && NULL != collection_impl->unresolved_types)
     {
-        receivers = axis2_hash_get(collection_impl->unresolved_types,
+        receivers = axutil_hash_get(collection_impl->unresolved_types,
                 qn_string, AXIS2_HASH_KEY_STRING);
 
         if (receivers)
@@ -677,7 +677,7 @@ xml_schema_collection_resolve_type(
             return AXIS2_FAILURE;
         }
         if (collection_impl->unresolved_types)
-            axis2_hash_set(collection_impl->unresolved_types, qn_string,
+            axutil_hash_set(collection_impl->unresolved_types, qn_string,
                     AXIS2_HASH_KEY_STRING, NULL);
     }
     return AXIS2_SUCCESS;
@@ -696,7 +696,7 @@ xml_schema_collection_get_namespace_for_prefix(
     if (collection_impl->in_scope_namespaces)
     {
         axis2_char_t *ns = NULL;
-        ns = (axis2_char_t *)axis2_hash_get(
+        ns = (axis2_char_t *)axutil_hash_get(
                     collection_impl->in_scope_namespaces,
                     prefix, AXIS2_HASH_KEY_STRING);
         return ns;
@@ -716,7 +716,7 @@ xml_schema_collection_map_namespace(
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
     if (collection_impl->in_scope_namespaces)
     {
-        axis2_hash_set(collection_impl->in_scope_namespaces, prefix,
+        axutil_hash_set(collection_impl->in_scope_namespaces, prefix,
                 AXIS2_HASH_KEY_STRING, namespc_uri);
         return AXIS2_SUCCESS;
     }
@@ -736,7 +736,7 @@ add_simple_type(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_collection_get_systemid2_schemas(
     xml_schema_collection_t *collection,
     const axutil_env_t *env)
@@ -773,7 +773,7 @@ xml_schema_collection_set_schemas(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_collection_get_namespaces(
     xml_schema_collection_t *collection,
     const axutil_env_t *env)
@@ -792,7 +792,7 @@ xml_schema_collection_get_schema(
     xml_schema_collection_impl_t *collection_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, system_id, NULL);
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
-    return axis2_hash_get(collection_impl->systemid2_schemas,
+    return axutil_hash_get(collection_impl->systemid2_schemas,
             system_id, AXIS2_HASH_KEY_STRING);
 }
 

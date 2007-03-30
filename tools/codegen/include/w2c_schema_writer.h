@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <w2c_schema_compiler_options.h>
 #include <xml_schema_element.h>
 #include <w2c_schema_writer_meta_info.h>
@@ -61,7 +61,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_ops
     free)(w2c_schema_writer_t *schema_writer,
           const axutil_env_t *env);
 
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_model_map)( w2c_schema_writer_t *writer,
         const axutil_env_t *env);
 
@@ -70,20 +70,20 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_ops
          const axutil_env_t *env,
          w2c_schema_compiler_options_t *options,
          axis2_char_t *template_name,
-         axis2_hash_t *base_typemap);
+         axutil_hash_t *base_typemap);
 
     axis2_char_t* (AXIS2_CALL *
     write_element)( w2c_schema_writer_t *writer,
          const axutil_env_t *env,
          xml_schema_element_t *element,
-         axis2_hash_t *typemap,
+         axutil_hash_t *typemap,
          w2c_schema_writer_meta_info_t *meta_info);
 
     axis2_char_t* (AXIS2_CALL *
     write_complex_type)( w2c_schema_writer_t *writer,
          const axutil_env_t *env,
          xml_schema_complex_type_t *type,
-         axis2_hash_t *typemap,
+         axutil_hash_t *typemap,
          w2c_schema_writer_meta_info_t *meta_info);
 
     axis2_status_t (AXIS2_CALL *
@@ -94,7 +94,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_ops
     write_simple_type)( w2c_schema_writer_t *writer,
          const axutil_env_t *env,
          xml_schema_complex_type_t *type,
-         axis2_hash_t *typemap,
+         axutil_hash_t *typemap,
          w2c_schema_writer_meta_info_t *meta_info);
 
     axis2_char_t* (AXIS2_CALL *
@@ -111,7 +111,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_ops
     axis2_status_t (AXIS2_CALL *
     write_extension_mapper)( w2c_schema_writer_t *writer,
                                 const axutil_env_t *env,
-                                axis2_hash_t *meta_info_array);
+                                axutil_hash_t *meta_info_array);
 
 
     axis2_char_t* (AXIS2_CALL *

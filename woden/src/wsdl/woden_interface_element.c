@@ -21,55 +21,55 @@ axis2_status_t AXIS2_CALL
 woden_interface_element_resolve_methods(
     woden_interface_element_t *interface_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    interface_element->ops->free = axis2_hash_get(methods, "free",
+    interface_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
 
-    interface_element->ops->type = axis2_hash_get(methods, "type",
+    interface_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->set_qname =
-        axis2_hash_get(methods, "set_qname",
+        axutil_hash_get(methods, "set_qname",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->get_qname =
-        axis2_hash_get(methods, "get_qname",
+        axutil_hash_get(methods, "get_qname",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->add_extends_qname =
-        axis2_hash_get(methods, "add_extends_qname",
+        axutil_hash_get(methods, "add_extends_qname",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->get_extends_qnames =
-        axis2_hash_get(methods, "get_extends_qnames",
+        axutil_hash_get(methods, "get_extends_qnames",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->add_style_default_uri =
-        axis2_hash_get(methods, "add_style_default_uri",
+        axutil_hash_get(methods, "add_style_default_uri",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->get_style_default =
-        axis2_hash_get(methods, "get_style_default",
+        axutil_hash_get(methods, "get_style_default",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->add_interface_fault_element =
-        axis2_hash_get(methods, "add_interface_fault_element",
+        axutil_hash_get(methods, "add_interface_fault_element",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->get_interface_fault_elements =
-        axis2_hash_get(methods, "get_interface_fault_elements",
+        axutil_hash_get(methods, "get_interface_fault_elements",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->add_interface_op_element =
-        axis2_hash_get(methods, "add_interface_op_element",
+        axutil_hash_get(methods, "add_interface_op_element",
                 AXIS2_HASH_KEY_STRING);
 
     interface_element->ops->get_interface_op_elements =
-        axis2_hash_get(methods, "get_interface_op_elements",
+        axutil_hash_get(methods, "get_interface_op_elements",
                 AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

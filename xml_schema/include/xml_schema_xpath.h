@@ -30,7 +30,7 @@
 #include <xml_schema_annotated.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 /** @defgroup xml_schema_xpath Xml Schema Xpath
   * @ingroup xml_schema
@@ -63,7 +63,7 @@ struct xml_schema_xpath_ops
     get_type)(void *xpath,
           const axutil_env_t *env);
           
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *xpath,
                 const axutil_env_t *env);
 

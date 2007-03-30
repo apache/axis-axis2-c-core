@@ -26,7 +26,7 @@ woden_om_util_get_qname(
     const axutil_env_t *env,
     axiom_node_t *context_el_node,
     axis2_char_t *prefixed_value,
-    axis2_hash_t *namespcs)
+    axutil_hash_t *namespcs)
 {
     axis2_char_t *index = NULL;
     axis2_char_t *prefix = NULL;
@@ -63,14 +63,14 @@ woden_om_util_register_unique_prefix(
     const axutil_env_t *env,
     axis2_char_t *prefix,
     axis2_char_t *namespc_uri_str,
-    axis2_hash_t *namespcs)
+    axutil_hash_t *namespcs)
 {
     axis2_uri_t *ns_uri = NULL;
     axis2_uri_t *uri = NULL;
     axis2_char_t *ns_uri_str = NULL;
     axis2_char_t *tmp_prefix = NULL;
 
-    ns_uri = axis2_hash_get(namespcs, prefix, AXIS2_HASH_KEY_STRING);
+    ns_uri = axutil_hash_get(namespcs, prefix, AXIS2_HASH_KEY_STRING);
     if (ns_uri)
         ns_uri_str = axis2_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (ns_uri_str && 0 == axis2_strcmp(ns_uri_str, namespc_uri_str))
@@ -84,14 +84,14 @@ woden_om_util_register_unique_prefix(
         axis2_char_t *temp = NULL;
 
         temp = axis2_stracat(env, tmp_prefix, "_");
-        ns_uri = axis2_hash_get(namespcs, temp, AXIS2_HASH_KEY_STRING);
+        ns_uri = axutil_hash_get(namespcs, temp, AXIS2_HASH_KEY_STRING);
         ns_uri_str = axis2_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
         AXIS2_FREE(env->allocator, tmp_prefix);
         tmp_prefix = axis2_strdup(env, temp);
         AXIS2_FREE(env->allocator, temp);
     }
     uri = axis2_uri_parse_string(env, namespc_uri_str);
-    axis2_hash_set(namespcs, prefix, AXIS2_HASH_KEY_STRING, uri);
+    axutil_hash_set(namespcs, prefix, AXIS2_HASH_KEY_STRING, uri);
 
     return AXIS2_SUCCESS;
 }

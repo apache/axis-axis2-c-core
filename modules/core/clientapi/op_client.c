@@ -17,7 +17,7 @@
 
 #include <axis2_op_client.h>
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_uuid_gen.h>
 #include <axis2_listener_manager.h>
 #include <axis2_engine.h>

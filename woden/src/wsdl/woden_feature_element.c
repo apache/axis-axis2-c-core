@@ -21,22 +21,22 @@ axis2_status_t AXIS2_CALL
 woden_feature_element_resolve_methods(
     woden_feature_element_t *feature_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    feature_element->ops->free = axis2_hash_get(methods, "free",
+    feature_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    feature_element->ops->type = axis2_hash_get(methods, "type",
+    feature_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
-    feature_element->ops->set_ref = axis2_hash_get(methods,
+    feature_element->ops->set_ref = axutil_hash_get(methods,
             "set_ref", AXIS2_HASH_KEY_STRING);
-    feature_element->ops->get_ref = axis2_hash_get(methods,
+    feature_element->ops->get_ref = axutil_hash_get(methods,
             "get_ref", AXIS2_HASH_KEY_STRING);
-    feature_element->ops->set_required = axis2_hash_get(methods,
+    feature_element->ops->set_required = axutil_hash_get(methods,
             "set_required", AXIS2_HASH_KEY_STRING);
-    feature_element->ops->is_required = axis2_hash_get(methods,
+    feature_element->ops->is_required = axutil_hash_get(methods,
             "is_required", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

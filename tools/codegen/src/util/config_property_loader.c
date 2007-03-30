@@ -20,7 +20,7 @@
 #include <axutil_array_list.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <stdlib.h>
 
 #define W2C_CONFIG_PROPERTY_LOADER_CODE_GEN_KEY_PREFIX "codegen.extension"
@@ -69,11 +69,11 @@ typedef struct w2c_config_property_loader_impl
     axutil_array_list_t *post_extension_class_names;
     axutil_array_list_t *third_party_schema_names;
     axutil_array_list_t *language_types;
-    axis2_hash_t *language_emitter_map;
+    axutil_hash_t *language_emitter_map;
     axis2_char_t *default_language;
-    axis2_hash_t *language_specific_properties_map;
+    axutil_hash_t *language_specific_properties_map;
     axutil_array_list_t *databinding_framework_names;
-    axis2_hash_t *databinding_framework_name_to_extension_map;
+    axutil_hash_t *databinding_framework_name_to_extension_map;
     axis2_char_t *default_db_framework_name;
 
     w2c_properties_t *prop_set;
@@ -132,7 +132,7 @@ w2c_config_property_loader_get_language_types (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL 
+axutil_hash_t* AXIS2_CALL 
 w2c_config_property_loader_get_language_emitter_map (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env);
@@ -142,7 +142,7 @@ w2c_config_property_loader_get_default_language (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL 
+axutil_hash_t* AXIS2_CALL 
 w2c_config_property_loader_get_language_specific_properties_map (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env);
@@ -152,7 +152,7 @@ w2c_config_property_loader_get_databinding_framework_names (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL 
+axutil_hash_t* AXIS2_CALL 
 w2c_config_property_loader_get_databinding_framework_name_to_extension_map (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env);
@@ -182,7 +182,7 @@ w2c_config_property_loader_free_array(
 
 static axis2_status_t
 w2c_config_property_loader_free_hash(
-                      axis2_hash_t *original,
+                      axutil_hash_t *original,
                       const axutil_env_t *env);
 
 /************************** End of function prototypes ************************/
@@ -341,7 +341,7 @@ w2c_config_property_loader_free (w2c_config_property_loader_t *config_property_l
     if (config_property_loader_impl-> language_specific_properties_map)
     {
         /* all the elemenets here will be freed by some other */
-        axis2_hash_free (
+        axutil_hash_free (
                  config_property_loader_impl-> language_specific_properties_map, env);
     }
 
@@ -526,7 +526,7 @@ w2c_config_property_loader_get_language_types (
 }
 
 
-axis2_hash_t* AXIS2_CALL 
+axutil_hash_t* AXIS2_CALL 
 w2c_config_property_loader_get_language_emitter_map (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env)
@@ -556,7 +556,7 @@ w2c_config_property_loader_get_default_language (
 }
 
 
-axis2_hash_t* AXIS2_CALL 
+axutil_hash_t* AXIS2_CALL 
 w2c_config_property_loader_get_language_specific_properties_map (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env)
@@ -586,7 +586,7 @@ w2c_config_property_loader_get_databinding_framework_names (
 }
 
 
-axis2_hash_t* AXIS2_CALL 
+axutil_hash_t* AXIS2_CALL 
 w2c_config_property_loader_get_databinding_framework_name_to_extension_map (
     w2c_config_property_loader_t *config_property_loader,
     const axutil_env_t *env)
@@ -620,10 +620,10 @@ w2c_config_property_loader_load_values(
                       w2c_config_property_loader_impl_t *obj_impl,
                       const axutil_env_t *env)
 {
-     axis2_hash_t* prop_hash = NULL;
-     axis2_hash_t* temp_hash = NULL;
-     axis2_hash_t* lang_spec_hash = NULL;
-     axis2_hash_index_t* hi = NULL;
+     axutil_hash_t* prop_hash = NULL;
+     axutil_hash_t* temp_hash = NULL;
+     axutil_hash_t* lang_spec_hash = NULL;
+     axutil_hash_index_t* hi = NULL;
      axutil_array_list_t* prop = NULL;
      axutil_array_list_t* temp_array = NULL;
      axis2_char_t* temp_buff = NULL;
@@ -639,7 +639,7 @@ w2c_config_property_loader_load_values(
       */
 
      /*load the extension class names*/
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_CODE_GEN_KEY_PREFIX,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL) 
@@ -649,7 +649,7 @@ w2c_config_property_loader_load_values(
      }
  
      /*load the post extension class names*/
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_POST_CODE_GEN_KEY_PREFIX,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL) 
@@ -659,7 +659,7 @@ w2c_config_property_loader_load_values(
      }
          
      /* load the data binding framework names */
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_FRAMEWORK_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL) 
@@ -670,7 +670,7 @@ w2c_config_property_loader_load_values(
      
      /* populate the data binding framework name to extension name map */
      temp_array = NULL;
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_FRAMEWORK_EXTENSION_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -687,11 +687,11 @@ w2c_config_property_loader_load_values(
               return;
          }
 
-         temp_hash = axis2_hash_make ( env );
+         temp_hash = axutil_hash_make ( env );
          obj_impl ->databinding_framework_name_to_extension_map = temp_hash;
          for (i = 0 ; i < size ;i++ )
          {
-             axis2_hash_set ( temp_hash,
+             axutil_hash_set ( temp_hash,
               axis2_strdup(env, axutil_array_list_get(obj_impl ->databinding_framework_names, env, i )),
               AXIS2_HASH_KEY_STRING,
               axis2_strdup(env,  axutil_array_list_get(temp_array, env, i )));
@@ -699,7 +699,7 @@ w2c_config_property_loader_load_values(
      }
      
      /*load the default framework name */
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_FRAMEWORK_DEFAULT_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -709,7 +709,7 @@ w2c_config_property_loader_load_values(
      }
       
      /* load the third party schema names */
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_THIRD_PARTY_SCHEMA_KEY_PREFIX,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -719,7 +719,7 @@ w2c_config_property_loader_load_values(
      }
        
      /* the db supporter template name */
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_TEMPLATE_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -733,7 +733,7 @@ w2c_config_property_loader_load_values(
       * starts with W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_TEMPLATE_NAME_KEY_PREFIX
       * ends with W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_TEMPLATE_NAME_KEY_SUFFIX
       */
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_TEST_OBJECT_TEMPLATE_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -744,7 +744,7 @@ w2c_config_property_loader_load_values(
      
       
      /* load the language types */
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_LANGUAGE_TYPE_KEY_PREFIX,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -754,7 +754,7 @@ w2c_config_property_loader_load_values(
      }
        
      /* load the language emitter map */
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_EMITTER_CLASS_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -770,13 +770,13 @@ w2c_config_property_loader_load_values(
               return;
          }
 
-         temp_hash = axis2_hash_make ( env );
+         temp_hash = axutil_hash_make ( env );
          obj_impl ->language_emitter_map = temp_hash;
          for (i = 0 ; i< size ; i++ )
          {
              key = axutil_array_list_get(obj_impl ->language_types, env, i);
              val = axutil_array_list_get(temp_array, env, i );
-             axis2_hash_set ( temp_hash,
+             axutil_hash_set ( temp_hash,
               axis2_strdup(env, key),
               AXIS2_HASH_KEY_STRING,
               axis2_strdup(env, val));
@@ -784,7 +784,7 @@ w2c_config_property_loader_load_values(
      }
  
      /* load the default language */
-     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axutil_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DEFAULT_LANGUAGE_TYPE_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -799,25 +799,25 @@ w2c_config_property_loader_load_values(
       */
      if ( obj_impl->language_types)
      {
-         temp_hash = axis2_hash_make ( env );
+         temp_hash = axutil_hash_make ( env );
          obj_impl->language_specific_properties_map = temp_hash;
          size= axutil_array_list_size (obj_impl->language_types , env);
          for (i = 0 ; i< size ; i++ )
          {
              temp_buff = axutil_array_list_get(obj_impl ->language_types, env, i );
-             lang_spec_hash = axis2_hash_make ( env );
-             for (hi = axis2_hash_first(prop_hash, env); hi;
-                  hi = axis2_hash_next(env, hi))
+             lang_spec_hash = axutil_hash_make ( env );
+             for (hi = axutil_hash_first(prop_hash, env); hi;
+                  hi = axutil_hash_next(env, hi))
              {
-                axis2_hash_this(hi, (void*)&key, NULL, (void*)&prop);
+                axutil_hash_this(hi, (void*)&key, NULL, (void*)&prop);
                 if ( w2c_string_indexof_cs ( key, temp_buff ) == 0 && 
                                     w2c_string_indexof ( key, '.') == strlen (temp_buff ))
                 {
                     prop = w2c_config_property_loader_dup_array( prop, env );
-                    axis2_hash_set ( lang_spec_hash, key, AXIS2_HASH_KEY_STRING, prop );
+                    axutil_hash_set ( lang_spec_hash, key, AXIS2_HASH_KEY_STRING, prop );
                 }
              }
-             axis2_hash_set (temp_hash, temp_buff, AXIS2_HASH_KEY_STRING, lang_spec_hash );
+             axutil_hash_set (temp_hash, temp_buff, AXIS2_HASH_KEY_STRING, lang_spec_hash );
          }
      }   
 }
@@ -868,17 +868,17 @@ w2c_config_property_loader_free_array(
 /** this frees (axis2_char_t, axis2_char_t) */
 static axis2_status_t
 w2c_config_property_loader_free_hash(
-                        axis2_hash_t *h,
+                        axutil_hash_t *h,
                         const axutil_env_t *env)
 {
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
 
-    for (hi = axis2_hash_first( h, env);
-                        hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first( h, env);
+                        hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
         if (key )
         {
             AXIS2_FREE( env-> allocator, key);
@@ -888,7 +888,7 @@ w2c_config_property_loader_free_hash(
             AXIS2_FREE(env-> allocator, value);
         }
     }
-    axis2_hash_free( h, env);
+    axutil_hash_free( h, env);
     return AXIS2_SUCCESS;
 
 }

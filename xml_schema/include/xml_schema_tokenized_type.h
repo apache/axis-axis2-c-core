@@ -59,7 +59,7 @@ struct xml_schema_tokenized_type_ops
     get_values)(void *tokenized_type,
                 const axutil_env_t *env);
                 
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *tokenized_type,
                 const axutil_env_t *env);
                 

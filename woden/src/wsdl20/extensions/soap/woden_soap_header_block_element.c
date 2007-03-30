@@ -21,50 +21,50 @@ axis2_status_t AXIS2_CALL
 woden_soap_header_block_element_resolve_methods(
     woden_soap_header_block_element_t *soap_header_block_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    soap_header_block_element->ops->free = axis2_hash_get(methods, "free",
+    soap_header_block_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    soap_header_block_element->ops->type = axis2_hash_get(methods, "type",
+    soap_header_block_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->set_element_qname =
-        axis2_hash_get(methods, "set_element_qname",
+        axutil_hash_get(methods, "set_element_qname",
                 AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->get_element_qname =
-        axis2_hash_get(methods, "get_element_qname",
+        axutil_hash_get(methods, "get_element_qname",
                 AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->get_element =
-        axis2_hash_get(methods, "get_element",
+        axutil_hash_get(methods, "get_element",
                 AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->set_must_understand =
-        axis2_hash_get(methods, "set_must understand",
+        axutil_hash_get(methods, "set_must understand",
                 AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->must_understand =
-        axis2_hash_get(methods, "must_understand",
+        axutil_hash_get(methods, "must_understand",
                 AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->set_parent_element =
-        axis2_hash_get(methods, "set_parent_element",
+        axutil_hash_get(methods, "set_parent_element",
                 AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->get_parent_element =
-        axis2_hash_get(methods, "get_parent_element",
+        axutil_hash_get(methods, "get_parent_element",
                 AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->add_documentation_element =
-        axis2_hash_get(methods, "add_documentation_element",
+        axutil_hash_get(methods, "add_documentation_element",
                 AXIS2_HASH_KEY_STRING);
 
     soap_header_block_element->ops->get_documentation_elements =
-        axis2_hash_get(methods, "get_documentation_elements",
+        axutil_hash_get(methods, "get_documentation_elements",
                 AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

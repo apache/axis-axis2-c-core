@@ -28,7 +28,7 @@
 #include <axutil_array_list.h>
 #include <axiom_children_qname_iterator.h>
 #include <axiom_children_with_specific_attribute_iterator.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom_soap_envelope.h>
 
 #ifdef __cplusplus
@@ -86,7 +86,7 @@ extern "C"
      * axiom_soap_header_t struct the message is sent to its ultimate
      * destination.
      */
-    AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
     axiom_soap_header_examine_header_blocks(axiom_soap_header_t* header,
             const axutil_env_t *env,
             axis2_char_t* param_role);
@@ -150,7 +150,7 @@ extern "C"
      * @returns a hash table of all header_blocks in this header
      * the returned hash is a readonly hash should not be modified
      */
-    AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
     axiom_soap_header_get_all_header_blocks(axiom_soap_header_t *header,
             const axutil_env_t *env);
     /**

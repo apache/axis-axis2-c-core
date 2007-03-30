@@ -55,7 +55,7 @@ struct woden_binding_ops
     free) (void *binding,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *binding,
             const axutil_env_t *env);
 
@@ -202,7 +202,7 @@ woden_binding_resolve_methods(
         woden_binding_t *binding,
         const axutil_env_t *env,
         woden_binding_t *binding_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_BINDING_FREE(binding, env) \

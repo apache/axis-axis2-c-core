@@ -28,7 +28,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 #ifdef __cplusplus
 extern "C"

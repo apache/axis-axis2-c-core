@@ -17,7 +17,7 @@
 
 #include "axis2_callback_recv.h"
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 struct axis2_callback_recv
 {
@@ -25,7 +25,7 @@ struct axis2_callback_recv
     axis2_msg_recv_t *base;
     axis2_bool_t base_deep_copy;
     /** callback map */
-    axis2_hash_t *callback_map;
+    axutil_hash_t *callback_map;
     axis2_thread_mutex_t *mutex;
 };
 
@@ -67,7 +67,7 @@ axis2_callback_recv_create(
     axis2_msg_recv_set_derived(callback_recv->base, env, callback_recv);
     axis2_msg_recv_set_receive(callback_recv->base, env, axis2_callback_recv_receive);
 
-    callback_recv->callback_map = axis2_hash_make(env);
+    callback_recv->callback_map = axutil_hash_make(env);
     if (!(callback_recv->callback_map))
     {
         axis2_callback_recv_free(callback_recv, env);
@@ -102,19 +102,19 @@ axis2_callback_recv_free(
 
     if (callback_recv->callback_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         const void *key = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(callback_recv->callback_map, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(callback_recv->callback_map, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, &key, NULL, &val);
+            axutil_hash_this(hi, &key, NULL, &val);
             if (key)
                 AXIS2_FREE(env->allocator, (char*)key);
 
         }
 
-        axis2_hash_free(callback_recv->callback_map, env);
+        axutil_hash_free(callback_recv->callback_map, env);
     }
 
     if (callback_recv->base && callback_recv->base_deep_copy)
@@ -143,7 +143,7 @@ axis2_callback_recv_add_callback(
     if (msg_id)
     {
         axis2_char_t *mid = axis2_strdup(env, msg_id);
-        axis2_hash_set(callback_recv->callback_map,
+        axutil_hash_set(callback_recv->callback_map,
                 mid, AXIS2_HASH_KEY_STRING, callback);
     }
     return AXIS2_SUCCESS;
@@ -175,7 +175,7 @@ axis2_callback_recv_receive(
             {
                 axis2_async_result_t *result = NULL;
                 axis2_callback_t *callback = (axis2_callback_t*)
-                        axis2_hash_get(callback_recv->callback_map, msg_id, AXIS2_HASH_KEY_STRING);
+                        axutil_hash_get(callback_recv->callback_map, msg_id, AXIS2_HASH_KEY_STRING);
 
                 result = axis2_async_result_create(env, msg_ctx);
                 if (callback && result)

@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_enum.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_utils.h>
 
 typedef struct xml_schema_enum_impl
@@ -32,7 +32,7 @@ struct xml_schema_enum_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     axutil_array_list_t *values;
 
@@ -47,7 +47,7 @@ xml_schema_enum_free(
     void *schema_enum,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_enum_super_objs(
     void *schema_enum,
     const axutil_env_t *env);
@@ -134,7 +134,7 @@ xml_schema_enum_create(const axutil_env_t *env,
     schema_enum_impl->schema_enum.ops->get_values =
         xml_schema_enum_get_values;
 
-    schema_enum_impl->ht_super = axis2_hash_make(env);
+    schema_enum_impl->ht_super = axutil_hash_make(env);
 
     if (!schema_enum_impl->ht_super)
     {
@@ -143,7 +143,7 @@ xml_schema_enum_create(const axutil_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(schema_enum_impl->ht_super, "XML_SCHEMA_ENUM",
+    axutil_hash_set(schema_enum_impl->ht_super, "XML_SCHEMA_ENUM",
             AXIS2_HASH_KEY_STRING, &(schema_enum_impl->schema_enum));
 
     xml_schema_enum_set_value(&(schema_enum_impl->schema_enum),
@@ -174,7 +174,7 @@ xml_schema_enum_free(void *schema_enum,
 
     if (schema_enum_impl->ht_super)
     {
-        axis2_hash_free(schema_enum_impl->ht_super, env);
+        axutil_hash_free(schema_enum_impl->ht_super, env);
         schema_enum_impl->ht_super = NULL;
     }
 
@@ -192,7 +192,7 @@ xml_schema_enum_free(void *schema_enum,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_enum_super_objs(
     void *schema_enum,
     const axutil_env_t *env)
@@ -265,10 +265,10 @@ xml_schema_enum_get_value(void *schema_enum,
         const axutil_env_t *env)
 {
     xml_schema_enum_impl_t *schema_enum_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     ht_super = XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env);
-    schema_enum_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_enum_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING));
 
     return schema_enum_impl->value;
@@ -280,11 +280,11 @@ xml_schema_enum_set_value(void *schema_enum,
         const axis2_char_t *value)
 {
     xml_schema_enum_impl_t *schema_enum_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
     /** TODO fix this method to match the list of values
         in sub class with 'value' */
     super = XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env);
-    schema_enum_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super,
+    schema_enum_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(super,
             "XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING));
 
     if (schema_enum_impl->value)
@@ -307,10 +307,10 @@ xml_schema_enum_equals(void *schema_enum,
         void *obj)
 {
     xml_schema_enum_impl_t *schema_enum_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     super = XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env);
-    schema_enum_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super,
+    schema_enum_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(super,
             "XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING));
 
 
@@ -323,10 +323,10 @@ xml_schema_enum_get_values(void *schema_enum,
         const axutil_env_t *env)
 {
     xml_schema_enum_impl_t *schema_enum_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     super = XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env);
-    schema_enum_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super,
+    schema_enum_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(super,
             "XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING));
 
     return schema_enum_impl->values;

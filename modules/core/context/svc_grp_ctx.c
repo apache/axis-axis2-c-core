@@ -18,7 +18,7 @@
 #include <axis2_svc_grp_ctx.h>
 #include <axis2_svc_grp.h>
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 struct axis2_svc_grp_ctx
 {
@@ -29,7 +29,7 @@ struct axis2_svc_grp_ctx
     /** service group context ID */
     axis2_char_t *id;
     /** map of service contexts belonging to this service context group */
-    axis2_hash_t *svc_ctx_map;
+    axutil_hash_t *svc_ctx_map;
     /** service group associated with this service group context */
     axis2_svc_grp_t *svc_grp;
     /** name of the service group associated with this context */
@@ -79,7 +79,7 @@ axis2_svc_grp_ctx_create(
         svc_grp_ctx->parent = conf_ctx;
     }
 
-    svc_grp_ctx->svc_ctx_map = axis2_hash_make(env);
+    svc_grp_ctx->svc_ctx_map = axutil_hash_make(env);
     if (!(svc_grp_ctx->svc_ctx_map))
     {
         axis2_svc_grp_ctx_free(svc_grp_ctx, env);
@@ -126,12 +126,12 @@ axis2_svc_grp_ctx_free(
 
     if (svc_grp_ctx->svc_ctx_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(svc_grp_ctx->svc_ctx_map, env);
-                hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(svc_grp_ctx->svc_ctx_map, env);
+                hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             if (val)
             {
                 axis2_svc_ctx_t *svc_ctx = NULL;
@@ -140,7 +140,7 @@ axis2_svc_grp_ctx_free(
             }
         }
 
-        axis2_hash_free(svc_grp_ctx->svc_ctx_map, env);
+        axutil_hash_free(svc_grp_ctx->svc_ctx_map, env);
         svc_grp_ctx->base = NULL;
     }
 
@@ -202,7 +202,7 @@ axis2_svc_grp_ctx_get_svc_ctx(
     const axutil_env_t *env,
     const axis2_char_t *svc_name)
 {
-    return (axis2_svc_ctx_t *) axis2_hash_get(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING);
+    return (axis2_svc_ctx_t *) axutil_hash_get(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -210,20 +210,20 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
     struct axis2_svc_grp_ctx *svc_grp_ctx,
     const axutil_env_t *env)
 {
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     void *next_svc = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_SUCCESS);
 
     if (svc_grp_ctx->svc_grp)
     {
-        axis2_hash_t *service_map =  axis2_svc_grp_get_all_svcs(svc_grp_ctx->svc_grp, env);
+        axutil_hash_t *service_map =  axis2_svc_grp_get_all_svcs(svc_grp_ctx->svc_grp, env);
         if (service_map)
         {
-            for (hi = axis2_hash_first(service_map, env);
-                    hi; hi = axis2_hash_next(env, hi))
+            for (hi = axutil_hash_first(service_map, env);
+                    hi; hi = axutil_hash_next(env, hi))
             {
-                axis2_hash_this(hi, NULL, NULL, &next_svc);
+                axutil_hash_this(hi, NULL, NULL, &next_svc);
                 if (next_svc)
                 {
                     axis2_svc_t *svc = NULL;
@@ -233,7 +233,7 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
                     svc_ctx = axis2_svc_ctx_create(env, svc, svc_grp_ctx);
                     svc_name = axis2_qname_get_localpart(axis2_svc_get_qname(svc, env), env);
                     if (svc_name)
-                        axis2_hash_set(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING, svc_ctx);
+                        axutil_hash_set(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING, svc_ctx);
                 }
             }
         }
@@ -249,7 +249,7 @@ axis2_svc_grp_ctx_get_svc_grp(
     return svc_grp_ctx->svc_grp;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_svc_grp_ctx_get_svc_ctx_map(
     const axis2_svc_grp_ctx_t *svc_grp_ctx,
     const axutil_env_t *env)

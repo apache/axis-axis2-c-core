@@ -38,7 +38,7 @@ struct xml_schema_simple_content_extension_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
 };
 
@@ -60,7 +60,7 @@ xml_schema_simple_content_extension_get_type(
     void *sim_content_ext,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_simple_content_extension_super_objs(
     void *sim_content_ext,
     const axutil_env_t *env);
@@ -150,7 +150,7 @@ xml_schema_simple_content_extension_create(const axutil_env_t *env)
     sim_content_ext_impl->sim_content_ext.ops->set_base_type_name =
         xml_schema_simple_content_extension_set_base_type_name;
 
-    sim_content_ext_impl->ht_super = axis2_hash_make(env);
+    sim_content_ext_impl->ht_super = axutil_hash_make(env);
     if (!sim_content_ext_impl->ht_super)
     {
         xml_schema_simple_content_extension_free(
@@ -172,15 +172,15 @@ xml_schema_simple_content_extension_create(const axutil_env_t *env)
                 env);
         return NULL;
     }
-    axis2_hash_set(sim_content_ext_impl->ht_super,
+    axutil_hash_set(sim_content_ext_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_SIMPLE_CONTENT_EXTENSION"),
             AXIS2_HASH_KEY_STRING, &(sim_content_ext_impl->sim_content_ext));
 
-    axis2_hash_set(sim_content_ext_impl->ht_super,
+    axutil_hash_set(sim_content_ext_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, (sim_content_ext_impl->annotated));
 
-    axis2_hash_set(sim_content_ext_impl->ht_super,
+    axutil_hash_set(sim_content_ext_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(sim_content_ext_impl->annotated, env));
@@ -329,7 +329,7 @@ xml_schema_simple_content_extension_get_type(
     return AXIS2_INTF_TO_IMPL(sim_content_ext)->obj_type;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_simple_content_extension_super_objs(
     void *sim_content_ext,
     const axutil_env_t *env)

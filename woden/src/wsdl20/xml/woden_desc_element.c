@@ -21,97 +21,97 @@ axis2_status_t AXIS2_CALL
 woden_desc_element_resolve_methods(
     woden_desc_element_t *desc_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    desc_element->ops->free = axis2_hash_get(methods, "free",
+    desc_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    desc_element->ops->type = axis2_hash_get(methods, "type",
+    desc_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    desc_element->ops->set_document_base_uri = axis2_hash_get(methods,
+    desc_element->ops->set_document_base_uri = axutil_hash_get(methods,
             "set_document_base_uri", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_document_base_uri = axis2_hash_get(methods,
+    desc_element->ops->get_document_base_uri = axutil_hash_get(methods,
             "get_document_base_uri", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->set_target_namespace = axis2_hash_get(methods,
+    desc_element->ops->set_target_namespace = axutil_hash_get(methods,
             "set_target_namespace", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_target_namespace = axis2_hash_get(methods,
+    desc_element->ops->get_target_namespace = axutil_hash_get(methods,
             "get_target_namespace", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->add_namespace = axis2_hash_get(methods,
+    desc_element->ops->add_namespace = axutil_hash_get(methods,
             "add_namespace", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->remove_namespace = axis2_hash_get(methods,
+    desc_element->ops->remove_namespace = axutil_hash_get(methods,
             "remove_namespace", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_namespace = axis2_hash_get(methods,
+    desc_element->ops->get_namespace = axutil_hash_get(methods,
             "get_namespace", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_namespaces = axis2_hash_get(methods,
+    desc_element->ops->get_namespaces = axutil_hash_get(methods,
             "get_namespaces", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_documentation_element = axis2_hash_get(methods,
+    desc_element->ops->create_documentation_element = axutil_hash_get(methods,
             "create_documentation_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_import_element = axis2_hash_get(methods,
+    desc_element->ops->create_import_element = axutil_hash_get(methods,
             "create_import_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_include_element = axis2_hash_get(methods,
+    desc_element->ops->create_include_element = axutil_hash_get(methods,
             "create_include_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_types_element = axis2_hash_get(methods,
+    desc_element->ops->create_types_element = axutil_hash_get(methods,
             "create_types_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_interface_element = axis2_hash_get(methods,
+    desc_element->ops->create_interface_element = axutil_hash_get(methods,
             "create_interface_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_interface_fault_element = axis2_hash_get(methods,
+    desc_element->ops->create_interface_fault_element = axutil_hash_get(methods,
             "create_interface_fault_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_interface_op_element = axis2_hash_get(methods,
+    desc_element->ops->create_interface_op_element = axutil_hash_get(methods,
             "create_interface_op_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_interface_fault_ref_element = axis2_hash_get(methods,
+    desc_element->ops->create_interface_fault_ref_element = axutil_hash_get(methods,
             "create_interface_fault_ref_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_interface_msg_ref_element = axis2_hash_get(methods,
+    desc_element->ops->create_interface_msg_ref_element = axutil_hash_get(methods,
             "create_interface_msg_ref_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_binding_element = axis2_hash_get(methods,
+    desc_element->ops->create_binding_element = axutil_hash_get(methods,
             "create_binding_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_binding_fault_element = axis2_hash_get(methods,
+    desc_element->ops->create_binding_fault_element = axutil_hash_get(methods,
             "create_binding_fault_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_binding_op_element = axis2_hash_get(methods,
+    desc_element->ops->create_binding_op_element = axutil_hash_get(methods,
             "create_binding_op_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_binding_fault_ref_element = axis2_hash_get(methods,
+    desc_element->ops->create_binding_fault_ref_element = axutil_hash_get(methods,
             "create_binding_fault_ref_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_binding_msg_ref_element = axis2_hash_get(methods,
+    desc_element->ops->create_binding_msg_ref_element = axutil_hash_get(methods,
             "create_binding_msg_ref_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_feature_element = axis2_hash_get(methods,
+    desc_element->ops->create_feature_element = axutil_hash_get(methods,
             "create_feature_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_svc_element = axis2_hash_get(methods,
+    desc_element->ops->create_svc_element = axutil_hash_get(methods,
             "create_svc_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_endpoint_element = axis2_hash_get(methods,
+    desc_element->ops->create_endpoint_element = axutil_hash_get(methods,
             "create_endpoint_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_property_element = axis2_hash_get(methods,
+    desc_element->ops->create_property_element = axutil_hash_get(methods,
             "create_property_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->add_import_element = axis2_hash_get(methods,
+    desc_element->ops->add_import_element = axutil_hash_get(methods,
             "add_import_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_import_elements = axis2_hash_get(methods,
+    desc_element->ops->get_import_elements = axutil_hash_get(methods,
             "get_import_elements", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->add_include_element = axis2_hash_get(methods,
+    desc_element->ops->add_include_element = axutil_hash_get(methods,
             "add_include_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_include_elements = axis2_hash_get(methods,
+    desc_element->ops->get_include_elements = axutil_hash_get(methods,
             "get_include_elements", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->set_types_element = axis2_hash_get(methods,
+    desc_element->ops->set_types_element = axutil_hash_get(methods,
             "set_types_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_types_element = axis2_hash_get(methods,
+    desc_element->ops->get_types_element = axutil_hash_get(methods,
             "get_types_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->add_interface_element = axis2_hash_get(methods,
+    desc_element->ops->add_interface_element = axutil_hash_get(methods,
             "add_interface_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_interface_elements = axis2_hash_get(methods,
+    desc_element->ops->get_interface_elements = axutil_hash_get(methods,
             "get_interface_elements", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->add_binding_element = axis2_hash_get(methods,
+    desc_element->ops->add_binding_element = axutil_hash_get(methods,
             "add_binding_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_binding_elements = axis2_hash_get(methods,
+    desc_element->ops->get_binding_elements = axutil_hash_get(methods,
             "get_binding_elements", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->add_svc_element = axis2_hash_get(methods,
+    desc_element->ops->add_svc_element = axutil_hash_get(methods,
             "add_svc_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_svc_elements = axis2_hash_get(methods,
+    desc_element->ops->get_svc_elements = axutil_hash_get(methods,
             "get_svc_elements", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->set_ext_registry = axis2_hash_get(methods,
+    desc_element->ops->set_ext_registry = axutil_hash_get(methods,
             "set_ext_registry", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_ext_registry = axis2_hash_get(methods,
+    desc_element->ops->get_ext_registry = axutil_hash_get(methods,
             "get_ext_registry", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->to_component = axis2_hash_get(methods,
+    desc_element->ops->to_component = axutil_hash_get(methods,
             "to_component", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

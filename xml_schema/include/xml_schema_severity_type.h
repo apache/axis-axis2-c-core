@@ -64,7 +64,7 @@ struct xml_schema_severity_type_ops
     get_values)(void *severity,
                 const axutil_env_t *env);
                 
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *severity,
                 const axutil_env_t *env);
                 

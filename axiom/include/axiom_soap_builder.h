@@ -97,7 +97,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axiom_soap_builder_set_mime_body_parts(axiom_soap_builder_t *builder,
             const axutil_env_t *env,
-            axis2_hash_t *map);
+            axutil_hash_t *map);
 
 
     /** @} */

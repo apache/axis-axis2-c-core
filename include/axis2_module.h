@@ -44,7 +44,7 @@
 #include <axis2_string.h>
 #include <axis2_conf.h>
 #include <axis2_module_desc.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 
 #ifdef __cplusplus
@@ -109,7 +109,7 @@ extern "C"
         /** operations of module */
         axis2_module_ops_t *ops;
         /** hash map of handler create functions */
-        axis2_hash_t *handler_create_func_map;
+        axutil_hash_t *handler_create_func_map;
     };
 
     /**

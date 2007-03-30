@@ -114,7 +114,7 @@ static axis2_status_t
 axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
     const axutil_env_t *env,
     axis2_flow_t *flow,
-    axis2_hash_t *handler_create_func_map);
+    axutil_hash_t *handler_create_func_map);
 
 static axis2_status_t
 axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
@@ -899,8 +899,8 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         axutil_array_list_t *list = NULL;
         int sizej = 0;
         int j = 0;
-        axis2_hash_t *ops = NULL;
-        axis2_hash_index_t *index_i = NULL;
+        axutil_hash_t *ops = NULL;
+        axutil_hash_index_t *index_i = NULL;
         axis2_char_t *file_name = NULL;
 
         svc = (axis2_svc_t *) axutil_array_list_get(svcs, env, i);
@@ -971,8 +971,8 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         }
 
         ops = axis2_svc_get_all_ops(svc, env);
-        for (index_i = axis2_hash_first(ops, env);
-            index_i; index_i = axis2_hash_next(env, index_i))
+        for (index_i = axutil_hash_first(ops, env);
+            index_i; index_i = axutil_hash_next(env, index_i))
         {
             void *v = NULL;
             axis2_op_t *op_desc = NULL;
@@ -980,7 +980,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             int sizek = 0;
             int k = 0;
 
-            axis2_hash_this(index_i, NULL, NULL, &v);
+            axutil_hash_this(index_i, NULL, NULL, &v);
             op_desc = (axis2_op_t *)v;
 
             modules = axis2_op_get_all_module_qnames(op_desc, env);
@@ -1082,7 +1082,7 @@ static axis2_status_t
 axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
     const axutil_env_t *env,
     axis2_flow_t *flow,
-    axis2_hash_t *handler_create_func_map)
+    axutil_hash_t *handler_create_func_map)
 {
     int count = 0;
     int j = 0;
@@ -1101,7 +1101,7 @@ axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
 
         handlermd = axis2_flow_get_handler(flow, env, j);
         handler_name = axis2_handler_desc_get_name(handlermd, env);
-        handler_create_func = axis2_hash_get(handler_create_func_map,
+        handler_create_func = axutil_hash_get(handler_create_func_map,
             axis2_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
         handler = handler_create_func(env, handler_name);
         AXIS2_HANDLER_INIT(handler, env, handlermd);
@@ -1319,7 +1319,7 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
         {
             int type = 0;
             axis2_ws_info_t *ws_info = NULL;
-            axis2_hash_t *faulty_svcs = NULL;
+            axutil_hash_t *faulty_svcs = NULL;
 
             ws_info = (axis2_ws_info_t *)
                 axutil_array_list_get(dep_engine->ws_to_undeploy, env, i);
@@ -1335,7 +1335,7 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
                  axis2_conf_remove_svc(dep_engine->conf, env, svc_name);
             }
             faulty_svcs =  axis2_conf_get_all_faulty_svcs(dep_engine->conf, env);
-            axis2_hash_set(faulty_svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
+            axutil_hash_set(faulty_svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         }
 
     }

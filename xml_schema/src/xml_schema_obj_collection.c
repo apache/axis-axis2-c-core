@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_obj_collection.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_utils.h>
 
 typedef struct xml_schema_obj_collection_impl

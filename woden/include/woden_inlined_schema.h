@@ -52,7 +52,7 @@ struct woden_inlined_schema_ops
             void *schema,
             const axutil_env_t *env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *schema,
             const axutil_env_t *env);
@@ -104,7 +104,7 @@ woden_inlined_schema_resolve_methods(
         woden_inlined_schema_t *schema,
         const axutil_env_t *env,
         woden_inlined_schema_t *schema_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_INLINED_SCHEMA_FREE(schema, env) \

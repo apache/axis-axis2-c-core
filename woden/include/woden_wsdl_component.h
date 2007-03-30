@@ -31,7 +31,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_uri.h>
 #include <woden.h>
 
@@ -88,7 +88,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl_component_resolve_methods(
         woden_wsdl_component_t *wsdl_component,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_WSDL_COMPONENT_FREE(wsdl_component, env) \

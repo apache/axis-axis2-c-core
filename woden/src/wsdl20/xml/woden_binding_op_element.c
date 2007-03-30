@@ -21,50 +21,50 @@ axis2_status_t AXIS2_CALL
 woden_binding_op_element_resolve_methods(
     woden_binding_op_element_t *binding_op_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    binding_op_element->ops->free = axis2_hash_get(methods, "free",
+    binding_op_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    binding_op_element->ops->type = axis2_hash_get(methods, "type",
+    binding_op_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->set_ref =
-        axis2_hash_get(methods, "set_ref",
+        axutil_hash_get(methods, "set_ref",
                 AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->get_ref =
-        axis2_hash_get(methods, "get_ref",
+        axutil_hash_get(methods, "get_ref",
                 AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->get_interface_op_element =
-        axis2_hash_get(methods, "get_interface_op_element",
+        axutil_hash_get(methods, "get_interface_op_element",
                 AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->add_binding_msg_ref_element =
-        axis2_hash_get(methods, "add_binding_msg_ref_element",
+        axutil_hash_get(methods, "add_binding_msg_ref_element",
                 AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->remove_binding_msg_ref_element =
-        axis2_hash_get(methods, "remove_binding_msg_ref_element",
+        axutil_hash_get(methods, "remove_binding_msg_ref_element",
                 AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->get_binding_msg_ref_elements =
-        axis2_hash_get(methods, "get_binding_msg_ref_elements",
+        axutil_hash_get(methods, "get_binding_msg_ref_elements",
                 AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->add_binding_fault_ref_element =
-        axis2_hash_get(methods, "add_binding_fault_ref_element",
+        axutil_hash_get(methods, "add_binding_fault_ref_element",
                 AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->remove_binding_fault_ref_element =
-        axis2_hash_get(methods, "remove_binding_fault_ref_element",
+        axutil_hash_get(methods, "remove_binding_fault_ref_element",
                 AXIS2_HASH_KEY_STRING);
 
     binding_op_element->ops->get_binding_fault_ref_elements =
-        axis2_hash_get(methods, "get_binding_fault_ref_elements",
+        axutil_hash_get(methods, "get_binding_fault_ref_elements",
                 AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

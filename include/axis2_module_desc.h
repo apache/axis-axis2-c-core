@@ -198,7 +198,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing the operations
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_module_desc_get_all_ops(const axis2_module_desc_t *module_desc,
         const axutil_env_t *env);
 

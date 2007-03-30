@@ -51,7 +51,7 @@ struct xml_schema_use_ops
     free) (void *use,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *use,
             const axutil_env_t *env);

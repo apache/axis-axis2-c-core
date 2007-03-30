@@ -55,7 +55,7 @@ struct woden_import_ops
     free) (void *import,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *import,
             const axutil_env_t *env);
 
@@ -126,7 +126,7 @@ woden_import_resolve_methods(
         woden_import_t *import,
         const axutil_env_t *env,
         woden_import_t *import_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_IMPORT_FREE(import, env) \

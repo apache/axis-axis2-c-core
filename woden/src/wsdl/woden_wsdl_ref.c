@@ -29,7 +29,7 @@ struct woden_wsdl_ref_impl
 {
     woden_wsdl_ref_t wsdl_ref;
     woden_wsdl_element_t *wsdl_element;
-    axis2_hash_t *super;
+    axutil_hash_t *super;
     woden_obj_types_t obj_type;
     axutil_array_list_t *f_documentation_elements;
     axis2_uri_t *f_location;
@@ -43,7 +43,7 @@ woden_wsdl_ref_free(
     void *wsdl_ref,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl_ref_super_objs(
     void *wsdl_ref,
     const axutil_env_t *env);
@@ -134,15 +134,15 @@ woden_wsdl_ref_create(
 
     wsdl_ref_impl->wsdl_element = woden_wsdl_element_create(env);
 
-    wsdl_ref_impl->super = axis2_hash_make(env);
+    wsdl_ref_impl->super = axutil_hash_make(env);
     if (!wsdl_ref_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(wsdl_ref_impl->super, "WODEN_WSDL_REF", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(wsdl_ref_impl->super, "WODEN_WSDL_REF", AXIS2_HASH_KEY_STRING,
             &(wsdl_ref_impl->wsdl_ref));
-    axis2_hash_set(wsdl_ref_impl->super, "WODEN_WSDL_ELEMENT", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(wsdl_ref_impl->super, "WODEN_WSDL_ELEMENT", AXIS2_HASH_KEY_STRING,
             wsdl_ref_impl->wsdl_element);
     return &(wsdl_ref_impl->wsdl_ref);
 }
@@ -165,7 +165,7 @@ woden_wsdl_ref_free(
 
     if (wsdl_ref_impl->super)
     {
-        axis2_hash_free(wsdl_ref_impl->super, env);
+        axutil_hash_free(wsdl_ref_impl->super, env);
         wsdl_ref_impl->super = NULL;
     }
 
@@ -183,7 +183,7 @@ woden_wsdl_ref_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl_ref_super_objs(
     void *wsdl_ref,
     const axutil_env_t *env)
@@ -196,7 +196,7 @@ woden_wsdl_ref_super_objs(
     return wsdl_ref_impl->super;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl_ref_super(
     void *wsdl_ref,
     const axutil_env_t *env)
@@ -227,7 +227,7 @@ woden_wsdl_ref_resolve_methods(
     woden_wsdl_ref_t *wsdl_ref,
     const axutil_env_t *env,
     woden_wsdl_ref_t *wsdl_ref_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_wsdl_ref_impl_t *wsdl_ref_impl_l = NULL;
 
@@ -235,44 +235,44 @@ woden_wsdl_ref_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     wsdl_ref_impl_l = INTF_TO_IMPL(wsdl_ref_impl);
 
-    wsdl_ref->ops->free = axis2_hash_get(methods, "free",
+    wsdl_ref->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    wsdl_ref->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    wsdl_ref->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    wsdl_ref->ops->type = axis2_hash_get(methods, "type",
+    wsdl_ref->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    wsdl_ref->ops->get_location = axis2_hash_get(methods,
+    wsdl_ref->ops->get_location = axutil_hash_get(methods,
             "get_location", AXIS2_HASH_KEY_STRING);
     if (!wsdl_ref->ops->get_location && wsdl_ref_impl_l)
         wsdl_ref->ops->get_location =
             wsdl_ref_impl_l->wsdl_ref.ops->get_location;
 
-    wsdl_ref->ops->set_location = axis2_hash_get(methods,
+    wsdl_ref->ops->set_location = axutil_hash_get(methods,
             "set_location", AXIS2_HASH_KEY_STRING);
     if (!wsdl_ref->ops->set_location && wsdl_ref_impl_l)
         wsdl_ref->ops->set_location =
             wsdl_ref_impl_l->wsdl_ref.ops->set_location;
 
-    wsdl_ref->ops->get_desc_element = axis2_hash_get(methods,
+    wsdl_ref->ops->get_desc_element = axutil_hash_get(methods,
             "get_desc_element", AXIS2_HASH_KEY_STRING);
     if (!wsdl_ref->ops->get_desc_element && wsdl_ref_impl_l)
         wsdl_ref->ops->get_desc_element =
             wsdl_ref_impl_l->wsdl_ref.ops->get_desc_element;
 
-    wsdl_ref->ops->set_desc_element = axis2_hash_get(methods,
+    wsdl_ref->ops->set_desc_element = axutil_hash_get(methods,
             "set_desc_element", AXIS2_HASH_KEY_STRING);
     if (!wsdl_ref->ops->set_desc_element && wsdl_ref_impl_l)
         wsdl_ref->ops->set_desc_element =
             wsdl_ref_impl_l->wsdl_ref.ops->set_desc_element;
 
-    wsdl_ref->ops->add_documentation_element = axis2_hash_get(methods,
+    wsdl_ref->ops->add_documentation_element = axutil_hash_get(methods,
             "add_documentation_element", AXIS2_HASH_KEY_STRING);
     if (!wsdl_ref->ops->add_documentation_element && wsdl_ref_impl_l)
         wsdl_ref->ops->add_documentation_element =
             wsdl_ref_impl_l->wsdl_ref.ops->add_documentation_element;
 
-    wsdl_ref->ops->get_documentation_elements = axis2_hash_get(methods,
+    wsdl_ref->ops->get_documentation_elements = axutil_hash_get(methods,
             "get_documentation_elements", AXIS2_HASH_KEY_STRING);
     if (!wsdl_ref->ops->get_documentation_elements && wsdl_ref_impl_l)
         wsdl_ref->ops->get_documentation_elements =
@@ -289,11 +289,11 @@ woden_wsdl_ref_get_location(
     const axutil_env_t *env)
 {
     woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env);
-    wsdl_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    wsdl_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL_REF", AXIS2_HASH_KEY_STRING));
 
     return wsdl_ref_impl->f_location;
@@ -306,11 +306,11 @@ woden_wsdl_ref_set_location(
     axis2_uri_t *loc_uri)
 {
     woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env);
-    wsdl_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    wsdl_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL_REF", AXIS2_HASH_KEY_STRING));
 
     if (wsdl_ref_impl->f_location)
@@ -327,11 +327,11 @@ woden_wsdl_ref_get_desc_element(
     const axutil_env_t *env)
 {
     woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env);
-    wsdl_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    wsdl_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL_REF", AXIS2_HASH_KEY_STRING));
 
     return wsdl_ref_impl->f_desc_element;
@@ -344,11 +344,11 @@ woden_wsdl_ref_set_desc_element(
     void *desc)
 {
     woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env);
-    wsdl_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    wsdl_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL_REF", AXIS2_HASH_KEY_STRING));
 
     if (wsdl_ref_impl->f_desc_element)
@@ -366,11 +366,11 @@ woden_wsdl_ref_add_documentation_element(
     void *doc_el)
 {
     woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env);
-    wsdl_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    wsdl_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL_REF", AXIS2_HASH_KEY_STRING));
 
     if (!wsdl_ref_impl->f_documentation_elements)
@@ -392,11 +392,11 @@ woden_wsdl_ref_get_documentation_elements(
     const axutil_env_t *env)
 {
     woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env);
-    wsdl_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    wsdl_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL_REF", AXIS2_HASH_KEY_STRING));
 
     return wsdl_ref_impl->f_documentation_elements;

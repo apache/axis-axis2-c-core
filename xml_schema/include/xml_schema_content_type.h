@@ -55,7 +55,7 @@ struct xml_schema_content_type_ops
     free) (void *content_type,
             const axutil_env_t *env);
             
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *content_type,
             const axutil_env_t *env);
 

@@ -133,7 +133,7 @@ struct woden_reader_impl
     axiom_document_t *om_doc;
     axiom_node_t *root_node;
     /* A map of imported schema definitions keyed by schema location URI */
-    axis2_hash_t *f_imported_schemas;
+    axutil_hash_t *f_imported_schemas;
     woden_ext_registry_t *f_ext_reg;
     axis2_uri_t *f_temp_uri;
 
@@ -179,7 +179,7 @@ parse_desc(
     const axutil_env_t *env,
     const axis2_char_t *document_base_uri,
     axiom_node_t *desc_el_node,
-    axis2_hash_t *wsdl_modules);
+    axutil_hash_t *wsdl_modules);
 
 static void *
 parse_documentation(
@@ -194,7 +194,7 @@ parse_import(
     const axutil_env_t *env,
     axiom_node_t *import_el_node,
     void *desc,
-    axis2_hash_t *wsdl_modules);
+    axutil_hash_t *wsdl_modules);
 
 static void *
 parse_include(
@@ -202,7 +202,7 @@ parse_include(
     const axutil_env_t *env,
     axiom_node_t *include_el_node,
     void *desc,
-    axis2_hash_t *wsdl_modules);
+    axutil_hash_t *wsdl_modules);
 
 /*
  * TODO Initial schema parsing is specific to XML Schema.
@@ -431,7 +431,7 @@ get_wsdl_from_location(
     const axutil_env_t *env,
     axis2_char_t *location_uri_str,
     void *desc,
-    axis2_hash_t *wsdl_modules);
+    axutil_hash_t *wsdl_modules);
 
 /*
  * Convert a string of type xs:anyURI to a axis2_uri.
@@ -460,7 +460,7 @@ create(
     reader_impl->reader.ops = AXIS2_MALLOC(env->allocator,
             sizeof(woden_reader_ops_t));
 
-    reader_impl->f_imported_schemas = axis2_hash_make(env);
+    reader_impl->f_imported_schemas = axutil_hash_make(env);
     if (!reader_impl->f_imported_schemas)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -499,7 +499,7 @@ woden_reader_free(
 
     if (reader_impl->f_imported_schemas)
     {
-        axis2_hash_free(reader_impl->f_imported_schemas, env);
+        axutil_hash_free(reader_impl->f_imported_schemas, env);
         reader_impl->f_imported_schemas = NULL;
     }
 
@@ -611,7 +611,7 @@ parse_desc(
     const axutil_env_t *env,
     const axis2_char_t *document_base_uri,
     axiom_node_t *desc_el_node,
-    axis2_hash_t *wsdl_modules)
+    axutil_hash_t *wsdl_modules)
 {
     woden_reader_impl_t *reader_impl = NULL;
     void *desc = NULL;
@@ -619,8 +619,8 @@ parse_desc(
     axis2_uri_t *uri = NULL;
     axis2_char_t *target_namespc = NULL;
     axiom_element_t *desc_el = NULL;
-    axis2_hash_t *attrs = NULL;
-    axis2_hash_index_t *index = NULL;
+    axutil_hash_t *attrs = NULL;
+    axutil_hash_index_t *index = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
     void *types = NULL;
@@ -651,7 +651,7 @@ parse_desc(
         /* This is the initial WSDL document. No imports or includes yet.
          * TODO this might be the place to flag the initial Desc if necessary.
          */
-        wsdl_modules = axis2_hash_make(env);
+        wsdl_modules = axutil_hash_make(env);
     }
     ext_reg = woden_reader_get_ext_registry(reader, env);
     if (ext_reg)
@@ -679,7 +679,7 @@ parse_desc(
 
     /* parse the namespace declarations */
     attrs = axiom_element_get_all_attributes(desc_el, env);
-    for (index = axis2_hash_first(attrs, env); index; index = axis2_hash_next(
+    for (index = axutil_hash_first(attrs, env); index; index = axutil_hash_next(
                 env, index))
     {
         void *v = NULL;
@@ -689,7 +689,7 @@ parse_desc(
         axis2_char_t *local_part = NULL;
         axis2_char_t *value = NULL;
 
-        axis2_hash_this(index, NULL, NULL, &v);
+        axutil_hash_this(index, NULL, NULL, &v);
         attr = (axiom_attribute_t *) v;
         namespc = axiom_attribute_get_namespace(attr, env);
         if (!namespc)
@@ -757,10 +757,10 @@ parse_desc(
             void *import_element = NULL;
 
             if (document_base_uri && AXIS2_TRUE !=
-                    axis2_hash_contains_key(wsdl_modules, env,
+                    axutil_hash_contains_key(wsdl_modules, env,
                             document_base_uri))
             {
-                axis2_hash_set(wsdl_modules, document_base_uri,
+                axutil_hash_set(wsdl_modules, document_base_uri,
                         AXIS2_HASH_KEY_STRING, desc);
             }
             import_element = parse_import(reader, env, temp_el_node, desc,
@@ -774,10 +774,10 @@ parse_desc(
             void *include_element = NULL;
 
             if (document_base_uri && AXIS2_TRUE !=
-                    axis2_hash_contains_key(wsdl_modules, env,
+                    axutil_hash_contains_key(wsdl_modules, env,
                             document_base_uri))
             {
-                axis2_hash_set(wsdl_modules, document_base_uri,
+                axutil_hash_set(wsdl_modules, document_base_uri,
                         AXIS2_HASH_KEY_STRING, desc);
             }
             include_element = parse_include(reader, env, temp_el_node, desc,
@@ -927,7 +927,7 @@ parse_import(
     const axutil_env_t *env,
     axiom_node_t *import_el_node,
     void *desc,
-    axis2_hash_t *wsdl_modules)
+    axutil_hash_t *wsdl_modules)
 {
     void *imp = NULL;
     axiom_element_t *import_el = NULL;
@@ -983,7 +983,7 @@ parse_include(
     const axutil_env_t *env,
     axiom_node_t *include_el_node,
     void *desc,
-    axis2_hash_t *wsdl_modules)
+    axutil_hash_t *wsdl_modules)
 {
     void *include = NULL;
     axiom_element_t *include_el = NULL;
@@ -1273,7 +1273,7 @@ parse_schema_import(
     schema_uri = axis2_uri_to_string(uri, env, AXIS2_URI_UNP_OMITUSERINFO);
 
     /* If the schema has already been imported, reuse it. */
-    schema_def = axis2_hash_get(reader_impl->f_imported_schemas, schema_uri,
+    schema_def = axutil_hash_get(reader_impl->f_imported_schemas, schema_uri,
             AXIS2_HASH_KEY_STRING);
     if (schema_def)
     {
@@ -1297,7 +1297,7 @@ parse_schema_import(
             WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
             return schema;
         }
-        axis2_hash_set(reader_impl->f_imported_schemas, schema_uri,
+        axutil_hash_set(reader_impl->f_imported_schemas, schema_uri,
                 AXIS2_HASH_KEY_STRING, schema_def);
 
     }
@@ -1542,7 +1542,7 @@ parse_interface_fault(
     if (element)
     {
         axis2_qname_t *qname = NULL;
-        axis2_hash_t *namespcs = NULL;
+        axutil_hash_t *namespcs = NULL;
 
         desc = woden_desc_to_desc_element(desc, env);
         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -1865,7 +1865,7 @@ parse_interface_fault_ref(
     if (ref)
     {
         axis2_qname_t *qname = NULL;
-        axis2_hash_t *namespcs = NULL;
+        axutil_hash_t *namespcs = NULL;
 
         desc = woden_desc_to_desc_element(desc, env);
         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -2131,7 +2131,7 @@ parse_interface_msg_ref(
         else
         {
             axis2_qname_t *qname = NULL;
-            axis2_hash_t *namespcs = NULL;
+            axutil_hash_t *namespcs = NULL;
 
             /* element is not #any, #none or #other, so it must be an element
              * qname 
@@ -2270,7 +2270,7 @@ parse_binding(
     intface = axiom_element_get_attribute_value_by_name(binding_el, env, WODEN_ATTR_INTERFACE);
     if (intface)
     {
-        axis2_hash_t *namespcs = NULL;
+        axutil_hash_t *namespcs = NULL;
 
         desc = woden_desc_to_desc_element(desc, env);
         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -2451,7 +2451,7 @@ parse_binding_fault(
 
     if (ref)
     {
-        axis2_hash_t *namespcs = NULL;
+        axutil_hash_t *namespcs = NULL;
 
         desc = woden_desc_to_desc_element(desc, env);
         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -2596,7 +2596,7 @@ parse_binding_op(
 
     if (ref)
     {
-        axis2_hash_t *namespcs = NULL;
+        axutil_hash_t *namespcs = NULL;
 
         desc = woden_desc_to_desc_element(desc, env);
         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -2790,7 +2790,7 @@ parse_binding_fault_ref(
 
     if (ref)
     {
-        axis2_hash_t *namespcs = NULL;
+        axutil_hash_t *namespcs = NULL;
 
         desc = woden_desc_to_desc_element(desc, env);
         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -3258,7 +3258,7 @@ parse_svc(
     intface = axiom_element_get_attribute_value_by_name(svc_el, env, WODEN_ATTR_INTERFACE);
     if (intface)
     {
-        axis2_hash_t *namespcs = NULL;
+        axutil_hash_t *namespcs = NULL;
 
         desc = woden_desc_to_desc_element(desc, env);
         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -3417,7 +3417,7 @@ parse_endpoint(
     binding = axiom_element_get_attribute_value_by_name(endpoint_el, env, WODEN_ATTR_BINDING);
     if (binding)
     {
-        axis2_hash_t *namespcs = NULL;
+        axutil_hash_t *namespcs = NULL;
 
         desc = woden_desc_to_desc_element(desc, env);
         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -3767,7 +3767,7 @@ parse_property(
                     else
                     {
                         axis2_qname_t *qname = NULL;
-                        axis2_hash_t *namespcs = NULL;
+                        axutil_hash_t *namespcs = NULL;
 
                         desc = woden_desc_to_desc_element(desc, env);
                         namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
@@ -3806,9 +3806,9 @@ parse_ext_attributes(
     void *wsdl_obj,
     void *desc)
 {
-    axis2_hash_t *node_map = NULL;
+    axutil_hash_t *node_map = NULL;
     axiom_element_t *om_el = NULL;
-    axis2_hash_index_t *index = NULL;
+    axutil_hash_index_t *index = NULL;
 
     om_el = AXIOM_NODE_GET_DATA_ELEMENT(om_el_node, env);
     node_map = axiom_element_get_all_attributes(om_el, env);
@@ -3821,8 +3821,8 @@ parse_ext_attributes(
         else
             return AXIS2_SUCCESS;
     }
-    for (index = axis2_hash_first(node_map, env); index; index =
-                axis2_hash_next(env, index))
+    for (index = axutil_hash_first(node_map, env); index; index =
+                axutil_hash_next(env, index))
     {
         void *om_attr = NULL;
         axis2_char_t *localname = NULL;
@@ -3831,7 +3831,7 @@ parse_ext_attributes(
         axis2_char_t *prefix = NULL;
         axis2_qname_t *attr_type = NULL;
 
-        axis2_hash_this(index, NULL, NULL, &om_attr);
+        axutil_hash_this(index, NULL, NULL, &om_attr);
         localname = axiom_attribute_get_localname((axiom_attribute_t *) om_attr, env);
         namespc = axiom_attribute_get_namespace((axiom_attribute_t *) om_attr, env);
         if (namespc)
@@ -3971,7 +3971,7 @@ get_wsdl_from_location(
     const axutil_env_t *env,
     axis2_char_t *location_uri_str,
     void *desc,
-    axis2_hash_t *wsdl_modules)
+    axutil_hash_t *wsdl_modules)
 {
     axis2_uri_t *context_uri = NULL;
     axis2_uri_t *location_uri = NULL;
@@ -3990,7 +3990,7 @@ get_wsdl_from_location(
     location_str = axis2_uri_to_string(location_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
 
     /* Check if WSDL imported or included previously from this location.*/
-    referenced_desc = axis2_hash_get(wsdl_modules, location_str, AXIS2_HASH_KEY_STRING);
+    referenced_desc = axutil_hash_get(wsdl_modules, location_str, AXIS2_HASH_KEY_STRING);
 
     if (! referenced_desc)
     {
@@ -4023,10 +4023,10 @@ get_wsdl_from_location(
 
         referenced_desc = parse_desc(reader, env, location_str,
                 doc_el_node, wsdl_modules);
-        if (AXIS2_TRUE != axis2_hash_contains_key(wsdl_modules, env,
+        if (AXIS2_TRUE != axutil_hash_contains_key(wsdl_modules, env,
                 location_str))
         {
-            axis2_hash_set(wsdl_modules, location_str, AXIS2_HASH_KEY_STRING,
+            axutil_hash_set(wsdl_modules, location_str, AXIS2_HASH_KEY_STRING,
                     referenced_desc);
         }
     }

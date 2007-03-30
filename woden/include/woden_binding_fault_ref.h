@@ -57,7 +57,7 @@ struct woden_binding_fault_ref_ops
     free) (void *binding_fault_ref,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *binding_fault_ref,
             const axutil_env_t *env);
 
@@ -178,7 +178,7 @@ woden_binding_fault_ref_resolve_methods(
         woden_binding_fault_ref_t *binding_fault_ref,
         const axutil_env_t *env,
         woden_binding_fault_ref_t *binding_fault_ref_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_BINDING_FAULT_REF_FREE(binding_fault_ref, env) \

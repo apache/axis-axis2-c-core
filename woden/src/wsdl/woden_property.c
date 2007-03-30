@@ -38,8 +38,8 @@ struct woden_property_impl
     woden_property_t property;
     woden_obj_types_t obj_type;
     woden_documentable_t *documentable;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
     /* WSDL Component model data */
     axis2_uri_t *f_ref;
     axis2_generic_obj_t *f_value;
@@ -58,7 +58,7 @@ woden_property_free(
     void *property,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_property_super_objs(
     void *property,
     const axutil_env_t *env);
@@ -448,65 +448,65 @@ create(const axutil_env_t *env)
     property_impl->property.ops->get_parent = woden_property_get_parent;
     property_impl->property.ops->to_element = woden_property_to_element;
 
-    property_impl->methods = axis2_hash_make(env);
+    property_impl->methods = axutil_hash_make(env);
     if (!property_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(property_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(property_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_property_free);
-    axis2_hash_set(property_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(property_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             woden_property_super_objs);
-    axis2_hash_set(property_impl->methods, "type",
+    axutil_hash_set(property_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_property_type);
 
-    axis2_hash_set(property_impl->methods, "set_ref",
+    axutil_hash_set(property_impl->methods, "set_ref",
             AXIS2_HASH_KEY_STRING,
             woden_property_set_ref);
-    axis2_hash_set(property_impl->methods, "get_ref",
+    axutil_hash_set(property_impl->methods, "get_ref",
             AXIS2_HASH_KEY_STRING,
             woden_property_get_ref);
-    axis2_hash_set(property_impl->methods, "set_parent_element",
+    axutil_hash_set(property_impl->methods, "set_parent_element",
             AXIS2_HASH_KEY_STRING,
             woden_property_set_parent_element);
-    axis2_hash_set(property_impl->methods, "get_parent_element",
+    axutil_hash_set(property_impl->methods, "get_parent_element",
             AXIS2_HASH_KEY_STRING,
             woden_property_get_parent_element);
-    axis2_hash_set(property_impl->methods, "get_parent",
+    axutil_hash_set(property_impl->methods, "get_parent",
             AXIS2_HASH_KEY_STRING,
             woden_property_get_parent);
-    axis2_hash_set(property_impl->methods, "to_element",
+    axutil_hash_set(property_impl->methods, "to_element",
             AXIS2_HASH_KEY_STRING,
             woden_property_to_element);
-    axis2_hash_set(property_impl->methods, "set_value",
+    axutil_hash_set(property_impl->methods, "set_value",
             AXIS2_HASH_KEY_STRING,
             woden_property_set_value);
-    axis2_hash_set(property_impl->methods, "get_value",
+    axutil_hash_set(property_impl->methods, "get_value",
             AXIS2_HASH_KEY_STRING,
             woden_property_get_value);
-    axis2_hash_set(property_impl->methods, "set_value_constraint",
+    axutil_hash_set(property_impl->methods, "set_value_constraint",
             AXIS2_HASH_KEY_STRING,
             woden_property_set_value_constraint);
-    axis2_hash_set(property_impl->methods, "get_value_constraint",
+    axutil_hash_set(property_impl->methods, "get_value_constraint",
             AXIS2_HASH_KEY_STRING,
             woden_property_get_value_constraint);
-    axis2_hash_set(property_impl->methods, "set_constraint_qname",
+    axutil_hash_set(property_impl->methods, "set_constraint_qname",
             AXIS2_HASH_KEY_STRING,
             woden_property_set_constraint_qname);
-    axis2_hash_set(property_impl->methods, "get_constraint_qname",
+    axutil_hash_set(property_impl->methods, "get_constraint_qname",
             AXIS2_HASH_KEY_STRING,
             woden_property_get_constraint_qname);
-    axis2_hash_set(property_impl->methods, "get_constraint",
+    axutil_hash_set(property_impl->methods, "get_constraint",
             AXIS2_HASH_KEY_STRING,
             woden_property_get_constraint);
-    axis2_hash_set(property_impl->methods, "set_types",
+    axutil_hash_set(property_impl->methods, "set_types",
             AXIS2_HASH_KEY_STRING,
             woden_property_set_types);
-    axis2_hash_set(property_impl->methods, "set_has_value_token",
+    axutil_hash_set(property_impl->methods, "set_has_value_token",
             AXIS2_HASH_KEY_STRING,
             woden_property_set_has_value_token);
-    axis2_hash_set(property_impl->methods, "has_value_token",
+    axutil_hash_set(property_impl->methods, "has_value_token",
             AXIS2_HASH_KEY_STRING,
             woden_property_has_value_token);
 
@@ -523,15 +523,15 @@ woden_property_create(const axutil_env_t *env)
 
     property_impl->documentable = woden_documentable_create(env);
 
-    property_impl->super = axis2_hash_make(env);
+    property_impl->super = axutil_hash_make(env);
     if (!property_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(property_impl->super, "WODEN_PROPERTY",
+    axutil_hash_set(property_impl->super, "WODEN_PROPERTY",
             AXIS2_HASH_KEY_STRING, &(property_impl->property));
-    axis2_hash_set(property_impl->super, "WODEN_DOCUMENTABLE",
+    axutil_hash_set(property_impl->super, "WODEN_DOCUMENTABLE",
             AXIS2_HASH_KEY_STRING, property_impl->documentable);
 
     return &(property_impl->property);
@@ -641,13 +641,13 @@ woden_property_free(void *property,
 
     if (property_impl->super)
     {
-        axis2_hash_free(property_impl->super, env);
+        axutil_hash_free(property_impl->super, env);
         property_impl->super = NULL;
     }
 
     if (property_impl->methods)
     {
-        axis2_hash_free(property_impl->methods, env);
+        axutil_hash_free(property_impl->methods, env);
         property_impl->methods = NULL;
     }
 
@@ -673,7 +673,7 @@ woden_property_free(void *property,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_property_super_objs(
     void *property,
     const axutil_env_t *env)
@@ -716,7 +716,7 @@ woden_property_resolve_methods(
     woden_property_t *property,
     const axutil_env_t *env,
     woden_property_t *property_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_property_impl_t *property_impl_l = NULL;
 
@@ -724,38 +724,38 @@ woden_property_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     property_impl_l = INTF_TO_IMPL(property_impl);
 
-    property->ops->free = axis2_hash_get(methods, "free",
+    property->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    property->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    property->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    property->ops->type = axis2_hash_get(methods, "type",
+    property->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    property->ops->get_ref = axis2_hash_get(methods,
+    property->ops->get_ref = axutil_hash_get(methods,
             "get_ref", AXIS2_HASH_KEY_STRING);
     if (!property->ops->get_ref && property_impl_l)
         property->ops->get_ref =
             property_impl_l->property.ops->get_ref;
 
-    property->ops->get_value_constraint = axis2_hash_get(methods,
+    property->ops->get_value_constraint = axutil_hash_get(methods,
             "get_value_constraint", AXIS2_HASH_KEY_STRING);
     if (!property->ops->get_value_constraint && property_impl_l)
         property->ops->get_value_constraint =
             property_impl_l->property.ops->get_value_constraint;
 
-    property->ops->get_value = axis2_hash_get(methods,
+    property->ops->get_value = axutil_hash_get(methods,
             "get_value", AXIS2_HASH_KEY_STRING);
     if (!property->ops->get_value && property_impl_l)
         property->ops->get_value =
             property_impl_l->property.ops->get_value;
 
-    property->ops->get_parent = axis2_hash_get(methods,
+    property->ops->get_parent = axutil_hash_get(methods,
             "get_parent", AXIS2_HASH_KEY_STRING);
     if (!property->ops->get_parent && property_impl_l)
         property->ops->get_parent =
             property_impl_l->property.ops->get_parent;
 
-    property->ops->to_element = axis2_hash_get(methods,
+    property->ops->to_element = axutil_hash_get(methods,
             "to_element", AXIS2_HASH_KEY_STRING);
     if (!property->ops->to_element && property_impl_l)
         property->ops->to_element =
@@ -771,11 +771,11 @@ woden_property_set_ref(
     axis2_uri_t *ref)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     if (property_impl->f_ref)
@@ -793,11 +793,11 @@ woden_property_get_ref(
     const axutil_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     return property_impl->f_ref;
@@ -810,11 +810,11 @@ woden_property_set_parent_element(
     woden_wsdl_element_t *parent)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     /*if(property_impl->f_parent)
@@ -831,11 +831,11 @@ woden_property_get_parent_element(
     const axutil_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     return property_impl->f_parent;
@@ -847,11 +847,11 @@ woden_property_get_parent(
     const axutil_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     return property_impl->f_parent;
@@ -863,11 +863,11 @@ woden_property_to_element(
     const axutil_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     return &(property_impl->property);
@@ -880,11 +880,11 @@ woden_property_set_value(
     axis2_generic_obj_t *value)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     if (property_impl->f_value)
@@ -902,11 +902,11 @@ woden_property_get_value(
     const axutil_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     return property_impl->f_value;
@@ -919,11 +919,11 @@ woden_property_set_value_constraint(
     void *type_def)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     /*if(property_impl->f_value_constraint)
@@ -942,11 +942,11 @@ woden_property_get_value_constraint(
     const axutil_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     return property_impl->f_value_constraint;
@@ -959,11 +959,11 @@ woden_property_set_constraint_qname(
     axis2_qname_t *constraint)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     if (property_impl->f_constraint_qname)
@@ -981,11 +981,11 @@ woden_property_get_constraint_qname(
     const axutil_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     return property_impl->f_constraint_qname;
@@ -998,11 +998,11 @@ woden_property_get_constraint(
 {
     woden_property_impl_t *property_impl = NULL;
     xml_schema_type_t *xst = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     if (property_impl->f_constraint_qname && property_impl->f_types)
@@ -1021,11 +1021,11 @@ woden_property_set_types(
     void *types)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     /*if(property_impl->f_types)
@@ -1044,11 +1044,11 @@ woden_property_set_has_value_token(
     axis2_bool_t b)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     property_impl->f_has_value_token = b;
@@ -1061,11 +1061,11 @@ woden_property_has_value_token(
     const axutil_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
-    property_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    property_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
 
     return property_impl->f_has_value_token;

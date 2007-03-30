@@ -25,7 +25,7 @@
 
 #include <axis2_utils.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 
 #ifdef __cplusplus
@@ -121,7 +121,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     * @param  env Environment. MUST NOT be NULL
     * @param the qname 2 typename hash
     */
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_all)(w2c_typemapper_t *typemapper,
           const axutil_env_t *env);
    

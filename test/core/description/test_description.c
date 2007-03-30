@@ -132,7 +132,7 @@ int axis2_test_svc_get_op()
 {
     struct axis2_svc *svc = NULL;
     struct axis2_qname *qname = NULL;
-    struct axis2_hash_t *ops = NULL;
+    struct axutil_hash_t *ops = NULL;
     struct axis2_op *op = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
 
@@ -166,20 +166,20 @@ int axis2_test_svc_get_op()
 
     if (ops)
     {
-        printf("ops count = %d\n", axis2_hash_count(ops));
+        printf("ops count = %d\n", axutil_hash_count(ops));
 
-        axis2_hash_index_t *hi2 = NULL;
+        axutil_hash_index_t *hi2 = NULL;
         void *op2 = NULL;
         axis2_char_t *oname = NULL;
         int count = 0;
 
-        for (hi2 = axis2_hash_first(ops, env); hi2; hi2 = axis2_hash_next(env, hi2))
+        for (hi2 = axutil_hash_first(ops, env); hi2; hi2 = axutil_hash_next(env, hi2))
         {
             printf("count = %d \n", count++);
             axis2_svc_get_all_ops(svc, env);
             if (!(hi2))
                 break;
-            axis2_hash_this(hi2, NULL, NULL, &op2);
+            axutil_hash_this(hi2, NULL, NULL, &op2);
             if (op2)
             {
                 const axis2_qname_t *qname = NULL;

@@ -32,7 +32,7 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axis2_qname.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom_node.h>
 #include <woden.h>
 #include <woden_wsdl10_ext_registry.h>
@@ -94,7 +94,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_deserializer_resolve_methods(
         woden_wsdl10_ext_deserializer_t *ext_deserializer,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_WSDL10_EXT_DESERIALIZER_FREE(ext_deserializer, env) \

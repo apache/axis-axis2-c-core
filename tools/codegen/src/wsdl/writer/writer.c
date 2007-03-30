@@ -170,11 +170,11 @@ axis2_char_t*
 w2c_writer_get_extension( w2c_writer_impl_t *writer_impl,
              const axutil_env_t *env)
 {
-    axis2_hash_t *lang_map = NULL;
-    axis2_hash_t *lang_speci_map = NULL;
+    axutil_hash_t *lang_map = NULL;
+    axutil_hash_t *lang_speci_map = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     int all_length = 0;
     int suf_length = 0;
     int index = 0;
@@ -184,13 +184,13 @@ w2c_writer_get_extension( w2c_writer_impl_t *writer_impl,
     lang_map = W2C_CONFIG_PROPERTY_LOADER_GET_LANGUAGE_SPECIFIC_PROPERTIES_MAP
                            ( writer_impl->loader, env );
     
-    lang_speci_map = axis2_hash_get( lang_map,
+    lang_speci_map = axutil_hash_get( lang_map,
                         writer_impl-> language, AXIS2_HASH_KEY_STRING);
     
-    for (hi = axis2_hash_first(lang_speci_map, env) ;
-                hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(lang_speci_map, env) ;
+                hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
         if ( key && arr_list)
         {
             suf_length = axis2_strlen( W2C_WRITER_EXTENSION_SUFFIX );
@@ -212,21 +212,21 @@ w2c_writer_get_extension( w2c_writer_impl_t *writer_impl,
 axis2_char_t *
 w2c_writer_find_template ( w2c_writer_impl_t *writer_impl,
                            const axutil_env_t *env,
-                           axis2_hash_t *lang_speci_map)
+                           axutil_hash_t *lang_speci_map)
 {
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     int all_length = 0;
     int suf_length = 0;
     int index = 0;
     axis2_char_t *tmpl_name = NULL;
     axutil_array_list_t *arr_list = NULL;
   
-    for (hi = axis2_hash_first(lang_speci_map, env) ;
-                hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(lang_speci_map, env) ;
+                hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
         if ( key && arr_list)
         {
             suf_length = axis2_strlen( W2C_WRITER_TEMPLATE_SUFFIX );
@@ -284,8 +284,8 @@ axis2_status_t
 w2c_writer_load_template(w2c_writer_impl_t *writer_impl,
        const axutil_env_t *env)
 {
-    axis2_hash_t* lang_map = NULL;
-    axis2_hash_t* lang_speci_map = NULL;
+    axutil_hash_t* lang_map = NULL;
+    axutil_hash_t* lang_speci_map = NULL;
     axis2_char_t* file_path = NULL;
     axis2_char_t* tmpl_name = NULL;
     
@@ -305,7 +305,7 @@ w2c_writer_load_template(w2c_writer_impl_t *writer_impl,
     lang_map = W2C_CONFIG_PROPERTY_LOADER_GET_LANGUAGE_SPECIFIC_PROPERTIES_MAP
                            ( writer_impl->loader, env );
     
-    lang_speci_map = axis2_hash_get( lang_map,
+    lang_speci_map = axutil_hash_get( lang_map,
                         writer_impl-> language, AXIS2_HASH_KEY_STRING);
     
     tmpl_name = w2c_writer_find_template( writer_impl, env, lang_speci_map);

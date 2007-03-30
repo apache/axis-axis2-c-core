@@ -62,7 +62,7 @@ struct xml_schema_element_ops
     get_type)(void *element,
           const axutil_env_t *env);
           
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *element,
                 const axutil_env_t *env);          
 

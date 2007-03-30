@@ -28,7 +28,7 @@ typedef struct w2c_properties_impl
 {
     w2c_properties_t properties;
     
-    axis2_hash_t *prop_hash;
+    axutil_hash_t *prop_hash;
        
 } w2c_properties_impl_t;
 
@@ -41,7 +41,7 @@ axis2_status_t AXIS2_CALL
 w2c_properties_free (w2c_properties_t *properties, 
            const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_properties_get_hash(w2c_properties_t *properties,
            const axutil_env_t *env);
 
@@ -59,10 +59,10 @@ w2c_properties_create (const axutil_env_t *env,
     axis2_properties_t *main_props = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     axis2_char_t *p = NULL;
     axis2_char_t *tag = NULL;
-    axis2_hash_t *tmp_hash = NULL;
+    axutil_hash_t *tmp_hash = NULL;
     axutil_array_list_t *arr_list = NULL;
     int i = 0;
    
@@ -85,7 +85,7 @@ w2c_properties_create (const axutil_env_t *env,
 
     tmp_hash = axis2_properties_get_all( main_props, env);
     
-    properties_impl-> prop_hash = axis2_hash_make (env);
+    properties_impl-> prop_hash = axutil_hash_make (env);
     if(! properties_impl-> prop_hash)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
@@ -94,10 +94,10 @@ w2c_properties_create (const axutil_env_t *env,
 
     if(tmp_hash)
     {
-        for (hi = axis2_hash_first( tmp_hash, env);
-                            hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first( tmp_hash, env);
+                            hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+            axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
             if (key && value)
             {
                 i = 0;
@@ -119,7 +119,7 @@ w2c_properties_create (const axutil_env_t *env,
                     axutil_array_list_add_at( arr_list, env, i, tag);
                 }
                 key = axis2_strdup(env, key);
-                axis2_hash_set( properties_impl-> prop_hash, key, AXIS2_HASH_KEY_STRING, arr_list);
+                axutil_hash_set( properties_impl-> prop_hash, key, AXIS2_HASH_KEY_STRING, arr_list);
             }
         }
     }
@@ -154,7 +154,7 @@ w2c_properties_free (w2c_properties_t *properties,
     axis2_char_t *key = NULL;
     int i = 0;
     int size = 0;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -162,10 +162,10 @@ w2c_properties_free (w2c_properties_t *properties,
    
     if(properties_impl-> prop_hash)
     {
-        for (hi = axis2_hash_first( properties_impl-> prop_hash, env);
-                            hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first( properties_impl-> prop_hash, env);
+                            hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, (void*)&key, NULL, (void*)&values_arr);
+            axutil_hash_this(hi, (void*)&key, NULL, (void*)&values_arr);
             if (key && values_arr)
             {
                 size = axutil_array_list_size( values_arr, env);
@@ -181,7 +181,7 @@ w2c_properties_free (w2c_properties_t *properties,
                 AXIS2_FREE(env-> allocator, key);
             }
         }
-        axis2_hash_free( properties_impl-> prop_hash, env);
+        axutil_hash_free( properties_impl-> prop_hash, env);
     }
     
     if(properties->ops)
@@ -198,7 +198,7 @@ w2c_properties_free (w2c_properties_t *properties,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_properties_get_hash(w2c_properties_t *properties,
            const axutil_env_t *env)
 {

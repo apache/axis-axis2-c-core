@@ -33,8 +33,8 @@ struct woden_include_impl
     woden_include_t include;
     woden_obj_types_t obj_type;
     woden_wsdl_ref_t *wsdl_ref;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
 };
 
 #define INTF_TO_IMPL(include) ((woden_include_impl_t *) include)
@@ -44,7 +44,7 @@ woden_include_free(
     void *include,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_include_super_objs(
     void *include,
     const axutil_env_t *env);
@@ -199,17 +199,17 @@ create(const axutil_env_t *env)
     include_impl->include.ops->type = woden_include_type;
     include_impl->include.ops->get_base_impl = woden_include_get_base_impl;
 
-    include_impl->methods = axis2_hash_make(env);
+    include_impl->methods = axutil_hash_make(env);
     if (!include_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(include_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(include_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_include_free);
-    axis2_hash_set(include_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(include_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             woden_include_super_objs);
-    axis2_hash_set(include_impl->methods, "type",
+    axutil_hash_set(include_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_include_type);
 
     return &(include_impl->include);
@@ -225,15 +225,15 @@ woden_include_create(const axutil_env_t *env)
 
     include_impl->wsdl_ref = woden_wsdl_ref_create(env);
 
-    include_impl->super = axis2_hash_make(env);
+    include_impl->super = axutil_hash_make(env);
     if (!include_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(include_impl->super, "WODEN_INCLUDE",
+    axutil_hash_set(include_impl->super, "WODEN_INCLUDE",
             AXIS2_HASH_KEY_STRING, &(include_impl->include));
-    axis2_hash_set(include_impl->super, "WODEN_WSDL_REF",
+    axutil_hash_set(include_impl->super, "WODEN_WSDL_REF",
             AXIS2_HASH_KEY_STRING, include_impl->wsdl_ref);
 
     return &(include_impl->include);
@@ -293,13 +293,13 @@ woden_include_free(void *include,
 
     if (include_impl->super)
     {
-        axis2_hash_free(include_impl->super, env);
+        axutil_hash_free(include_impl->super, env);
         include_impl->super = NULL;
     }
 
     if (include_impl->methods)
     {
-        axis2_hash_free(include_impl->methods, env);
+        axutil_hash_free(include_impl->methods, env);
         include_impl->methods = NULL;
     }
 
@@ -325,7 +325,7 @@ woden_include_free(void *include,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_include_super_objs(
     void *include,
     const axutil_env_t *env)
@@ -368,7 +368,7 @@ woden_include_resolve_methods(
     woden_include_t *include,
     const axutil_env_t *env,
     woden_include_t *include_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_include_impl_t *include_impl_l = NULL;
 
@@ -376,11 +376,11 @@ woden_include_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     include_impl_l = INTF_TO_IMPL(include_impl);
 
-    include->ops->free = axis2_hash_get(methods, "free",
+    include->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    include->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    include->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    include->ops->type = axis2_hash_get(methods, "type",
+    include->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

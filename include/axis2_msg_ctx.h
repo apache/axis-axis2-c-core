@@ -1394,14 +1394,14 @@ extern "C"
     axis2_msg_ctx_reset_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_msg_ctx_get_transport_headers(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_transport_headers(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
-        axis2_hash_t *transport_headers);
+        axutil_hash_t *transport_headers);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_msg_ctx_get_transfer_encoding(axis2_msg_ctx_t *msg_ctx,

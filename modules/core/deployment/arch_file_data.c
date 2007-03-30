@@ -32,7 +32,7 @@ struct axis2_arch_file_data
      * servics ,so wsdl service will be created for each wsdl an those will be 
      * temporarily store in this table
      */
-    axis2_hash_t *svc_map;
+    axutil_hash_t *svc_map;
     axutil_array_list_t *deployable_svcs;
 
 };
@@ -139,21 +139,21 @@ axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
 
     if (arch_file_data->svc_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
 
-        for (hi = axis2_hash_first(arch_file_data->svc_map, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(arch_file_data->svc_map, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
             axis2_svc_t *svc = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             svc = (axis2_svc_t *) val;
             if (svc)
             {
                 axis2_svc_free(svc, env);
             }
         }
-        axis2_hash_free(arch_file_data->svc_map, env);
+        axutil_hash_free(arch_file_data->svc_map, env);
     }
     if (arch_file_data->deployable_svcs)
     {
@@ -307,14 +307,14 @@ axis2_arch_file_data_add_svc(axis2_arch_file_data_t *arch_file_data,
     svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
     if (!arch_file_data->svc_map)
     {
-        arch_file_data->svc_map = axis2_hash_make(env);
+        arch_file_data->svc_map = axutil_hash_make(env);
         if (!arch_file_data->svc_map)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_hash_set(arch_file_data->svc_map, svc_name, AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(arch_file_data->svc_map, svc_name, AXIS2_HASH_KEY_STRING,
         svc_desc);
     return AXIS2_SUCCESS;
 }
@@ -331,7 +331,7 @@ axis2_arch_file_data_get_svc(const axis2_arch_file_data_t *arch_file_data,
 
     if (arch_file_data->svc_map)
     {
-        svc = (axis2_svc_t *) axis2_hash_get(arch_file_data->svc_map, svc_name,
+        svc = (axis2_svc_t *) axutil_hash_get(arch_file_data->svc_map, svc_name,
             AXIS2_HASH_KEY_STRING);
     }
     else
@@ -341,7 +341,7 @@ axis2_arch_file_data_get_svc(const axis2_arch_file_data_t *arch_file_data,
     return svc;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_arch_file_data_get_svc_map(const axis2_arch_file_data_t *arch_file_data,
     const axutil_env_t *env)
 {

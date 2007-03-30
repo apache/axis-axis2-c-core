@@ -27,7 +27,7 @@
 #include <axutil_error.h>
 #include <axutil_file.h>
 #include <axutil_file_handler.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_linked_list.h>
 #include <axis2_log.h>
 #include <axis2_network_handler.h>

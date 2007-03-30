@@ -20,7 +20,7 @@
 #include <axutil_array_list.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <stdlib.h>
 #include <w2c_messages.h>
 #include <w2c_class_loader.h>
@@ -425,8 +425,8 @@ w2c_schema_property_loader_load_values(
                       w2c_schema_property_loader_impl_t *obj_impl,
                       const axutil_env_t *env)
 {
-     axis2_hash_t *prop_hash = NULL;
-     axis2_hash_index_t *hi = NULL;
+     axutil_hash_t *prop_hash = NULL;
+     axutil_hash_index_t *hi = NULL;
      axis2_char_t *key= NULL;
      axis2_char_t *val= NULL;
      int index = 0;
@@ -443,10 +443,10 @@ w2c_schema_property_loader_load_values(
       */
      if ( language)
      {
-         for (hi = axis2_hash_first(prop_hash, env); hi;
-              hi = axis2_hash_next(env, hi))
+         for (hi = axutil_hash_first(prop_hash, env); hi;
+              hi = axutil_hash_next(env, hi))
          {
-            axis2_hash_this(hi, (void*)&key, NULL, (void*)&val);
+            axutil_hash_this(hi, (void*)&key, NULL, (void*)&val);
             if ( w2c_string_indexof_cs ( key, language) == 0 && 
                          (index = w2c_string_indexof ( key, '.')) == axis2_strlen(language))
             {

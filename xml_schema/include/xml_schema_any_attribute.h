@@ -61,7 +61,7 @@ struct xml_schema_any_attribute_ops
     get_type)(void *any_attr,
           const axutil_env_t *env);
           
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *any_attr,
                 const axutil_env_t *env);
                                       
@@ -106,7 +106,7 @@ xml_schema_any_attribute_resolve_methods(
                                 xml_schema_any_attribute_t *any_attr,
                                 const axutil_env_t *env,
                                 xml_schema_any_attribute_t *any_impl,
-                                axis2_hash_t *methods);
+                                axutil_hash_t *methods);
  */
 /******************************* Macros *************************************************/ 
  

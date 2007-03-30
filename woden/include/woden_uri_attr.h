@@ -126,7 +126,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_uri_attr_resolve_methods(
         woden_uri_attr_t *uri_attr,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_URI_ATTR_FREE(uri_attr, env) \

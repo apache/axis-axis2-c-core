@@ -25,7 +25,7 @@
  */
 
 #include <xml_schema_annotated.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 
 /** @defidentity_constraint xml_schema_identity_constraint Xml Schema 
@@ -60,7 +60,7 @@ struct xml_schema_identity_constraint_ops
     get_base_impl) (void *id_constr,
                     const axutil_env_t *env);
                     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *id_constr,
                 const axutil_env_t *env);
                 

@@ -35,7 +35,7 @@ typedef struct xml_schema_redefine_impl
 
     xml_schema_obj_table_t *schema_types;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_types_t obj_type;
 
@@ -59,7 +59,7 @@ xml_schema_types_t AXIS2_CALL
 xml_schema_redefine_get_type(void *redefine,
         const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_redefine_super_objs(void *redefine,
         const axutil_env_t *env);
 
@@ -142,7 +142,7 @@ xml_schema_redefine_create(const axutil_env_t *env)
     redefine_impl->redefine.ops->get_schema_types =
         xml_schema_redefine_get_schema_types;
 
-    redefine_impl->ht_super = axis2_hash_make(env);
+    redefine_impl->ht_super = axutil_hash_make(env);
     if (!redefine_impl->ht_super)
     {
         xml_schema_redefine_free(&(redefine_impl->redefine), env);
@@ -158,18 +158,18 @@ xml_schema_redefine_create(const axutil_env_t *env)
     }
 
 
-    axis2_hash_set(redefine_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_REDEFINE"),
+    axutil_hash_set(redefine_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_REDEFINE"),
             AXIS2_HASH_KEY_STRING, &(redefine_impl->redefine));
-    axis2_hash_set(redefine_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_EXTERNAL"),
+    axutil_hash_set(redefine_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_EXTERNAL"),
             AXIS2_HASH_KEY_STRING, redefine_impl->external);
 
     annotated = XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(redefine_impl->external, env);
     if (redefine_impl->external)
     {
 
-        axis2_hash_set(redefine_impl->ht_super, "XML_SCHEMA_ANNOTATED",
+        axutil_hash_set(redefine_impl->ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(redefine_impl->ht_super, "XML_SCHEMA_OBJ",
+        axutil_hash_set(redefine_impl->ht_super, "XML_SCHEMA_OBJ",
                 AXIS2_HASH_KEY_STRING,
                 XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
@@ -195,7 +195,7 @@ xml_schema_redefine_free(void *redefine,
 
     if (redefine_impl->ht_super)
     {
-        axis2_hash_free(redefine_impl->ht_super, env);
+        axutil_hash_free(redefine_impl->ht_super, env);
         redefine_impl->ht_super = NULL;
     }
 
@@ -239,7 +239,7 @@ xml_schema_redefine_resolve_methods(
                                 xml_schema_redefine_t *redefine,
                                 const axutil_env_t *env,
                                 xml_schema_redefine_t *redefine_impl,
-                                axis2_hash_t *methods)
+                                axutil_hash_t *methods)
 {
     xml_schema_redefine_impl_t *redefine_impl_l = NULL;
 
@@ -252,7 +252,7 @@ xml_schema_redefine_resolve_methods(
     redefine->ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_redefine_ops_t));
 
-    redefine->ops->free = axis2_hash_get(methods, "free",
+    redefine->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
 
     redefine->ops->get_base_impl =
@@ -319,7 +319,7 @@ xml_schema_redefine_get_type(void *redefine,
 }
 
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_redefine_super_objs(void *redefine,
         const axutil_env_t *env)
 {

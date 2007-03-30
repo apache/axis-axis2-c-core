@@ -78,7 +78,7 @@ axis2_mod_addr_shutdown(axis2_module_t *module,
         /* TODO
          *  do the neccessary clean in hash map
          */
-        axis2_hash_free(module->handler_create_func_map, env);
+        axutil_hash_free(module->handler_create_func_map, env);
         module->handler_create_func_map = NULL;
     }
 
@@ -96,17 +96,17 @@ axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    module->handler_create_func_map = axis2_hash_make(env);
+    module->handler_create_func_map = axutil_hash_make(env);
     if (!module->handler_create_func_map)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
                 AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    axis2_hash_set(module->handler_create_func_map, "AddressingInHandler",
+    axutil_hash_set(module->handler_create_func_map, "AddressingInHandler",
             AXIS2_HASH_KEY_STRING, axis2_addr_in_handler_create);
 
-    axis2_hash_set(module->handler_create_func_map, "AddressingOutHandler",
+    axutil_hash_set(module->handler_create_func_map, "AddressingOutHandler",
             AXIS2_HASH_KEY_STRING, axis2_addr_out_handler_create);
 
     return AXIS2_SUCCESS;

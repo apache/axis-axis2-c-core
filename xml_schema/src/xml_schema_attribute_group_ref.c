@@ -36,7 +36,7 @@ struct xml_schema_attribute_group_ref_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t* ht_super;
+    axutil_hash_t* ht_super;
 };
 
 #define AXIS2_INTF_TO_IMPL(grp_ref) \
@@ -58,7 +58,7 @@ xml_schema_attribute_group_ref_get_type(
     void *grp_ref,
     const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_attribute_group_ref_super_objs(void *grp_ref,
         const axutil_env_t *env);
 
@@ -120,7 +120,7 @@ xml_schema_attribute_group_ref_create(const axutil_env_t *env)
     attr_impl->grp_ref.ops->set_ref_qname =
         xml_schema_attribute_group_ref_set_ref_qname;
 
-    attr_impl->ht_super = axis2_hash_make(env);
+    attr_impl->ht_super = axutil_hash_make(env);
     if (!attr_impl->ht_super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -135,15 +135,15 @@ xml_schema_attribute_group_ref_create(const axutil_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(attr_impl->ht_super,
+    axutil_hash_set(attr_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ATTRIBUTE"),
             AXIS2_HASH_KEY_STRING, &(attr_impl->grp_ref));
 
-    axis2_hash_set(attr_impl->ht_super,
+    axutil_hash_set(attr_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, attr_impl->annotated);
 
-    axis2_hash_set(attr_impl->ht_super,
+    axutil_hash_set(attr_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(attr_impl->annotated, env));
@@ -168,7 +168,7 @@ xml_schema_attribute_group_ref_free(
 
     if (attr_impl->ht_super)
     {
-        axis2_hash_free(attr_impl->ht_super, env);
+        axutil_hash_free(attr_impl->ht_super, env);
         attr_impl->ht_super = NULL;
     }
     if (attr_impl->ref_qname)
@@ -219,7 +219,7 @@ xml_schema_attribute_group_ref_get_type(
     return AXIS2_INTF_TO_IMPL(grp_ref)->obj_type;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_attribute_group_ref_super_objs(
     void *grp_ref,
     const axutil_env_t *env)

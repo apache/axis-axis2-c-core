@@ -56,7 +56,7 @@ struct xml_schema_complex_type_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
 };
 
@@ -81,7 +81,7 @@ xml_schema_complex_type_get_type(
     void *complex_type,
     const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_complex_type_super_objs(
     void *complex_type,
     const axutil_env_t *env);
@@ -313,7 +313,7 @@ xml_schema_complex_type_create(
     complex_type_impl->complex_type.ops->to_string =
         xml_schema_complex_type_to_string;
 
-    complex_type_impl->ht_super = axis2_hash_make(env);
+    complex_type_impl->ht_super = axutil_hash_make(env);
 
     if (!complex_type_impl->ht_super)
     {
@@ -322,23 +322,23 @@ xml_schema_complex_type_create(
         return NULL;
     }
 
-    axis2_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_COMPLEX_TYPE",
+    axutil_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_COMPLEX_TYPE",
             AXIS2_HASH_KEY_STRING, &(complex_type_impl->complex_type));
-    axis2_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_TYPE",
+    axutil_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_TYPE",
             AXIS2_HASH_KEY_STRING, complex_type_impl->schema_type);
 
     annotated =
         XML_SCHEMA_TYPE_GET_BASE_IMPL(complex_type_impl->schema_type, env);
     if (annotated)
     {
-        axis2_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_ANNOTATED",
+        axutil_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_OBJ",
+        axutil_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_OBJ",
                 AXIS2_HASH_KEY_STRING,
                 XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
 
-    axis2_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_COMPLEX_TYPE",
+    axutil_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_COMPLEX_TYPE",
             AXIS2_HASH_KEY_STRING, &(complex_type_impl->complex_type));
 
     xml_schema_type_resolve_methods(&(complex_type_impl->complex_type.base), env,
@@ -619,7 +619,7 @@ xml_schema_complex_type_get_type(
     return AXIS2_INTF_TO_IMPL(complex_type)->obj_type;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_complex_type_super_objs(
     void *complex_type,
     const axutil_env_t *env)

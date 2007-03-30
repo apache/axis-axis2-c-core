@@ -38,8 +38,8 @@ struct woden_binding_fault_ref_impl
     woden_binding_fault_ref_t binding_fault_ref;
     woden_nested_configurable_t *nested_configurable;
     woden_obj_types_t obj_type;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
     axis2_qname_t *f_ref;
     void *f_direction;
     void *f_msg_label;
@@ -53,7 +53,7 @@ woden_binding_fault_ref_free(
     void *binding_fault_ref,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_binding_fault_ref_super_objs(
     void *binding_fault_ref,
     const axutil_env_t *env);
@@ -486,44 +486,44 @@ create(const axutil_env_t *env)
     binding_fault_ref_impl->binding_fault_ref.ops->set_interface_fault_ref =
         woden_binding_fault_ref_set_interface_fault_ref;
 
-    binding_fault_ref_impl->methods = axis2_hash_make(env);
+    binding_fault_ref_impl->methods = axutil_hash_make(env);
     if (!binding_fault_ref_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(binding_fault_ref_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(binding_fault_ref_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_free);
-    axis2_hash_set(binding_fault_ref_impl->methods, "super_objs",
+    axutil_hash_set(binding_fault_ref_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, woden_binding_fault_ref_super_objs);
-    axis2_hash_set(binding_fault_ref_impl->methods, "type",
+    axutil_hash_set(binding_fault_ref_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_binding_fault_ref_type);
 
-    axis2_hash_set(binding_fault_ref_impl->methods, "get_interface_fault_ref",
+    axutil_hash_set(binding_fault_ref_impl->methods, "get_interface_fault_ref",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_get_interface_fault_ref);
-    axis2_hash_set(binding_fault_ref_impl->methods, "to_element",
+    axutil_hash_set(binding_fault_ref_impl->methods, "to_element",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_to_element);
-    axis2_hash_set(binding_fault_ref_impl->methods, "set_ref",
+    axutil_hash_set(binding_fault_ref_impl->methods, "set_ref",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_set_ref);
-    axis2_hash_set(binding_fault_ref_impl->methods, "get_ref",
+    axutil_hash_set(binding_fault_ref_impl->methods, "get_ref",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_get_ref);
-    axis2_hash_set(binding_fault_ref_impl->methods, "get_interface_fault_ref_element",
+    axutil_hash_set(binding_fault_ref_impl->methods, "get_interface_fault_ref_element",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_get_interface_fault_ref_element);
-    axis2_hash_set(binding_fault_ref_impl->methods, "set_msg_label",
+    axutil_hash_set(binding_fault_ref_impl->methods, "set_msg_label",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_set_msg_label);
-    axis2_hash_set(binding_fault_ref_impl->methods, "get_msg_label",
+    axutil_hash_set(binding_fault_ref_impl->methods, "get_msg_label",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_get_msg_label);
-    axis2_hash_set(binding_fault_ref_impl->methods, "set_interface_fault_ref_element",
+    axutil_hash_set(binding_fault_ref_impl->methods, "set_interface_fault_ref_element",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_set_interface_fault_ref_element);
-    axis2_hash_set(binding_fault_ref_impl->methods, "set_interface_fault_ref",
+    axutil_hash_set(binding_fault_ref_impl->methods, "set_interface_fault_ref",
             AXIS2_HASH_KEY_STRING,
             woden_binding_fault_ref_set_interface_fault_ref);
 
@@ -541,21 +541,21 @@ woden_binding_fault_ref_create(const axutil_env_t *env)
 
     binding_fault_ref_impl->nested_configurable = woden_nested_configurable_create(env);
 
-    binding_fault_ref_impl->super = axis2_hash_make(env);
+    binding_fault_ref_impl->super = axutil_hash_make(env);
     if (!binding_fault_ref_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(binding_fault_ref_impl->super, "WODEN_BINDING_FAULT_REF",
+    axutil_hash_set(binding_fault_ref_impl->super, "WODEN_BINDING_FAULT_REF",
             AXIS2_HASH_KEY_STRING,
             &(binding_fault_ref_impl->binding_fault_ref));
-    axis2_hash_set(binding_fault_ref_impl->super, "WODEN_NESTED_CONFIGURABLE",
+    axutil_hash_set(binding_fault_ref_impl->super, "WODEN_NESTED_CONFIGURABLE",
             AXIS2_HASH_KEY_STRING,
             binding_fault_ref_impl->nested_configurable);
     configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
                 binding_fault_ref_impl->nested_configurable, env);
-    axis2_hash_set(binding_fault_ref_impl->super, "WODEN_CONFIGURABLE",
+    axutil_hash_set(binding_fault_ref_impl->super, "WODEN_CONFIGURABLE",
             AXIS2_HASH_KEY_STRING, configurable);
 
     return &(binding_fault_ref_impl->binding_fault_ref);
@@ -702,13 +702,13 @@ woden_binding_fault_ref_free(void *binding_fault_ref,
 
     if (binding_fault_ref_impl->super)
     {
-        axis2_hash_free(binding_fault_ref_impl->super, env);
+        axutil_hash_free(binding_fault_ref_impl->super, env);
         binding_fault_ref_impl->super = NULL;
     }
 
     if (binding_fault_ref_impl->methods)
     {
-        axis2_hash_free(binding_fault_ref_impl->methods, env);
+        axutil_hash_free(binding_fault_ref_impl->methods, env);
         binding_fault_ref_impl->methods = NULL;
     }
 
@@ -734,7 +734,7 @@ woden_binding_fault_ref_free(void *binding_fault_ref,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_binding_fault_ref_super_objs(
     void *binding_fault_ref,
     const axutil_env_t *env)
@@ -778,7 +778,7 @@ woden_binding_fault_ref_resolve_methods(
     woden_binding_fault_ref_t *binding_fault_ref,
     const axutil_env_t *env,
     woden_binding_fault_ref_t *binding_fault_ref_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl_l = NULL;
 
@@ -786,32 +786,32 @@ woden_binding_fault_ref_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     binding_fault_ref_impl_l = INTF_TO_IMPL(binding_fault_ref_impl);
 
-    binding_fault_ref->ops->free = axis2_hash_get(methods, "free",
+    binding_fault_ref->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    binding_fault_ref->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    binding_fault_ref->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    binding_fault_ref->ops->type = axis2_hash_get(methods, "type",
+    binding_fault_ref->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    binding_fault_ref->ops->get_interface_fault_ref = axis2_hash_get(methods,
+    binding_fault_ref->ops->get_interface_fault_ref = axutil_hash_get(methods,
             "get_interface_fault_ref", AXIS2_HASH_KEY_STRING);
     if (!binding_fault_ref->ops->get_interface_fault_ref && binding_fault_ref_impl_l)
         binding_fault_ref->ops->get_interface_fault_ref =
             binding_fault_ref_impl_l->binding_fault_ref.ops->get_interface_fault_ref;
 
-    binding_fault_ref->ops->to_element = axis2_hash_get(methods,
+    binding_fault_ref->ops->to_element = axutil_hash_get(methods,
             "to_element", AXIS2_HASH_KEY_STRING);
     if (!binding_fault_ref->ops->to_element && binding_fault_ref_impl_l)
         binding_fault_ref->ops->to_element =
             binding_fault_ref_impl_l->binding_fault_ref.ops->to_element;
 
-    binding_fault_ref->ops->set_interface_fault_ref_element = axis2_hash_get(methods,
+    binding_fault_ref->ops->set_interface_fault_ref_element = axutil_hash_get(methods,
             "set_interface_fault_ref_element", AXIS2_HASH_KEY_STRING);
     if (!binding_fault_ref->ops->set_interface_fault_ref_element && binding_fault_ref_impl_l)
         binding_fault_ref->ops->set_interface_fault_ref_element =
             binding_fault_ref_impl_l->binding_fault_ref.ops->set_interface_fault_ref_element;
 
-    binding_fault_ref->ops->set_interface_fault_ref = axis2_hash_get(methods,
+    binding_fault_ref->ops->set_interface_fault_ref = axutil_hash_get(methods,
             "set_interface_fault_ref", AXIS2_HASH_KEY_STRING);
     if (!binding_fault_ref->ops->set_interface_fault_ref && binding_fault_ref_impl_l)
         binding_fault_ref->ops->set_interface_fault_ref =
@@ -829,11 +829,11 @@ woden_binding_fault_ref_get_interface_fault_ref(
     const axutil_env_t *env)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     return binding_fault_ref_impl->f_interface_fault_ref;
@@ -845,11 +845,11 @@ woden_binding_fault_ref_get_direction(
     const axutil_env_t *env)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     return binding_fault_ref_impl->f_direction;
@@ -860,11 +860,11 @@ woden_binding_fault_ref_to_element(
     const axutil_env_t *env)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     return &(binding_fault_ref_impl->binding_fault_ref);
@@ -880,12 +880,12 @@ woden_binding_fault_ref_set_ref(
     axis2_qname_t *fault_qname)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_qname, AXIS2_FAILURE);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     if (binding_fault_ref_impl->f_ref)
@@ -902,11 +902,11 @@ woden_binding_fault_ref_get_ref(
     const axutil_env_t *env)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     return binding_fault_ref_impl->f_ref;
@@ -918,11 +918,11 @@ woden_binding_fault_ref_get_interface_fault_ref_element(
     const axutil_env_t *env)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     return NULL;
@@ -935,12 +935,12 @@ woden_binding_fault_ref_set_msg_label(
     void *msg_label)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_label, AXIS2_FAILURE);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     if (!binding_fault_ref_impl->f_msg_label)
@@ -959,11 +959,11 @@ woden_binding_fault_ref_get_msg_label(
     const axutil_env_t *env)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     return binding_fault_ref_impl->f_msg_label;
@@ -979,12 +979,12 @@ woden_binding_fault_ref_set_interface_fault_ref_element(
     void *fault_ref)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_ref, AXIS2_FAILURE);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     if (!binding_fault_ref_impl->f_interface_fault_ref)
@@ -1003,12 +1003,12 @@ woden_binding_fault_ref_set_interface_fault_ref(
     void *fault_ref)
 {
     woden_binding_fault_ref_impl_t *binding_fault_ref_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_ref, AXIS2_FAILURE);
     super = WODEN_BINDING_FAULT_REF_SUPER_OBJS(binding_fault_ref, env);
-    binding_fault_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    binding_fault_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_BINDING_FAULT_REF", AXIS2_HASH_KEY_STRING));
 
     if (!binding_fault_ref_impl->f_interface_fault_ref)

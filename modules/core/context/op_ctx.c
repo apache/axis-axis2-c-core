@@ -19,7 +19,7 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_op.h>
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 struct axis2_op_ctx
 {
@@ -41,7 +41,7 @@ struct axis2_op_ctx
     /** the global message_id -> op_ctx map which is stored in
      * the axis2_conf_ctx. We are caching it here for faster access.
      */
-    axis2_hash_t *op_ctx_map;
+    axutil_hash_t *op_ctx_map;
     /** op qname */
     axis2_qname_t *op_qname;
     /** service qname */

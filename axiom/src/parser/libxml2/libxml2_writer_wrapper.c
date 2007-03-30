@@ -23,7 +23,7 @@
 #include <axis2_string.h>
 #include <string.h>
 #include <axis2_stack.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axutil_array_list.h>
 
 /*******************************************************************************/
@@ -72,7 +72,7 @@ typedef struct axis2_libxml2_writer_wrapper_impl
 
     axis2_bool_t in_start_element;
 
-    axis2_hash_t *uri_prefix_map;
+    axutil_hash_t *uri_prefix_map;
 
     uri_prefix_element_t *default_lang_namespace;
 
@@ -352,7 +352,7 @@ axiom_xml_writer_create(const axutil_env_t *env,
         writer_impl->encoding = axis2_strdup(env, ENCODING);
     }
 
-    writer_impl->uri_prefix_map = axis2_hash_make(env);
+    writer_impl->uri_prefix_map = axutil_hash_make(env);
     if (!(writer_impl->uri_prefix_map))
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
@@ -445,7 +445,7 @@ axiom_xml_writer_create_for_memory(const axutil_env_t *env,
         writer_impl->encoding = axis2_strdup(env, ENCODING);
     }
 
-    writer_impl->uri_prefix_map = axis2_hash_make(env);
+    writer_impl->uri_prefix_map = axutil_hash_make(env);
     if (!(writer_impl->uri_prefix_map))
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
@@ -575,7 +575,7 @@ axis2_libxml2_writer_wrapper_free(axiom_xml_writer_t *writer,
     }
     if (writer_impl->uri_prefix_map)
     {
-        axis2_hash_free(writer_impl->uri_prefix_map, env);
+        axutil_hash_free(writer_impl->uri_prefix_map, env);
         writer_impl->uri_prefix_map = NULL;
     }
     if (writer_impl->stack)
@@ -1376,7 +1376,7 @@ axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
             if (ele)
             {
                 axutil_array_list_add(current_list, env, ele);
-                axis2_hash_set(writer_impl->uri_prefix_map, ele->key,
+                axutil_hash_set(writer_impl->uri_prefix_map, ele->key,
                     AXIS2_HASH_KEY_STRING, ele->prefix);
             }
         }
@@ -1395,7 +1395,7 @@ axis2_libxml2_writer_wrapper_is_namespace_declared(axiom_xml_writer_t *writer,
     if (writer_impl->uri_prefix_map && NULL != key)
     {
         void *ret = NULL;
-        ret = axis2_hash_get(writer_impl->uri_prefix_map, key,
+        ret = axutil_hash_get(writer_impl->uri_prefix_map, key,
             AXIS2_HASH_KEY_STRING);
         if (ret)
         {

@@ -33,8 +33,8 @@ struct woden_types_impl
     woden_types_t types;
     woden_obj_types_t obj_type;
     woden_documentable_t *documentable;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
     axis2_char_t *f_type_system;
     axutil_array_list_t *f_schemas;
     axutil_array_list_t *schema_defs;
@@ -47,7 +47,7 @@ woden_types_free(
     void *types,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_types_super_objs(
     void *types,
     const axutil_env_t *env);
@@ -396,62 +396,62 @@ create(const axutil_env_t *env)
     types_impl->types.ops->is_namespace_in_scope_with_namespace =
         woden_types_is_namespace_in_scope_with_namespace;
 
-    types_impl->methods = axis2_hash_make(env);
+    types_impl->methods = axutil_hash_make(env);
     if (!types_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(types_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(types_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_types_free);
-    axis2_hash_set(types_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(types_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             woden_types_super_objs);
-    axis2_hash_set(types_impl->methods, "type",
+    axutil_hash_set(types_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_types_type);
 
-    axis2_hash_set(types_impl->methods, "set_type_system",
+    axutil_hash_set(types_impl->methods, "set_type_system",
             AXIS2_HASH_KEY_STRING,
             woden_types_set_type_system);
-    axis2_hash_set(types_impl->methods, "get_type_system",
+    axutil_hash_set(types_impl->methods, "get_type_system",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_type_system);
-    axis2_hash_set(types_impl->methods, "add_schema",
+    axutil_hash_set(types_impl->methods, "add_schema",
             AXIS2_HASH_KEY_STRING,
             woden_types_add_schema);
-    axis2_hash_set(types_impl->methods, "remove_schema",
+    axutil_hash_set(types_impl->methods, "remove_schema",
             AXIS2_HASH_KEY_STRING,
             woden_types_remove_schema);
-    axis2_hash_set(types_impl->methods, "get_schemas",
+    axutil_hash_set(types_impl->methods, "get_schemas",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_schemas);
-    axis2_hash_set(types_impl->methods, "get_schemas_with_namespace",
+    axutil_hash_set(types_impl->methods, "get_schemas_with_namespace",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_schemas_with_namespace);
-    axis2_hash_set(types_impl->methods, "get_inlined_schemas",
+    axutil_hash_set(types_impl->methods, "get_inlined_schemas",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_inlined_schemas);
-    axis2_hash_set(types_impl->methods, "get_imported_schemas",
+    axutil_hash_set(types_impl->methods, "get_imported_schemas",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_imported_schemas);
-    axis2_hash_set(types_impl->methods, "get_element_declaration",
+    axutil_hash_set(types_impl->methods, "get_element_declaration",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_element_declaration);
-    axis2_hash_set(types_impl->methods, "get_type_definition",
+    axutil_hash_set(types_impl->methods, "get_type_definition",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_type_definition);
-    axis2_hash_set(types_impl->methods, "get_referenceable_schema_defs",
+    axutil_hash_set(types_impl->methods, "get_referenceable_schema_defs",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_referenceable_schema_defs);
-    axis2_hash_set(types_impl->methods, "get_referenceable_schema_defs_with_namespace",
+    axutil_hash_set(types_impl->methods, "get_referenceable_schema_defs_with_namespace",
             AXIS2_HASH_KEY_STRING,
             woden_types_get_referenceable_schema_defs_with_namespace);
-    axis2_hash_set(types_impl->methods, "is_namespace_in_scope_with_namespace_uri",
+    axutil_hash_set(types_impl->methods, "is_namespace_in_scope_with_namespace_uri",
             AXIS2_HASH_KEY_STRING,
             woden_types_is_namespace_in_scope_with_namespace_uri);
-    axis2_hash_set(types_impl->methods, "is_namespace_in_scope_with_qname",
+    axutil_hash_set(types_impl->methods, "is_namespace_in_scope_with_qname",
             AXIS2_HASH_KEY_STRING,
             woden_types_is_namespace_in_scope_with_qname);
-    axis2_hash_set(types_impl->methods, "is_namespace_in_scope_with_namespace",
+    axutil_hash_set(types_impl->methods, "is_namespace_in_scope_with_namespace",
             AXIS2_HASH_KEY_STRING,
             woden_types_is_namespace_in_scope_with_namespace);
 
@@ -469,15 +469,15 @@ woden_types_create(const axutil_env_t *env)
 
     types_impl->documentable = woden_documentable_create(env);
 
-    types_impl->super = axis2_hash_make(env);
+    types_impl->super = axutil_hash_make(env);
     if (!types_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(types_impl->super, "WODEN_TYPES", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(types_impl->super, "WODEN_TYPES", AXIS2_HASH_KEY_STRING,
             &(types_impl->types));
-    axis2_hash_set(types_impl->super, "WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(types_impl->super, "WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING,
             types_impl->documentable);
 
     return &(types_impl->types);
@@ -583,13 +583,13 @@ woden_types_free(
 
     if (types_impl->super)
     {
-        axis2_hash_free(types_impl->super, env);
+        axutil_hash_free(types_impl->super, env);
         types_impl->super = NULL;
     }
 
     if (types_impl->methods)
     {
-        axis2_hash_free(types_impl->methods, env);
+        axutil_hash_free(types_impl->methods, env);
         types_impl->methods = NULL;
     }
 
@@ -615,7 +615,7 @@ woden_types_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_types_super_objs(
     void *types,
     const axutil_env_t *env)
@@ -659,7 +659,7 @@ woden_types_resolve_methods(
     woden_types_t *types,
     const axutil_env_t *env,
     woden_types_t *types_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_types_impl_t *types_impl_l = NULL;
 
@@ -667,45 +667,45 @@ woden_types_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     types_impl_l = INTF_TO_IMPL(types_impl);
 
-    types->ops->free = axis2_hash_get(methods, "free",
+    types->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    types->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    types->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    types->ops->type = axis2_hash_get(methods, "type",
+    types->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    types->ops->get_element_declaration = axis2_hash_get(methods,
+    types->ops->get_element_declaration = axutil_hash_get(methods,
             "get_element_declaration", AXIS2_HASH_KEY_STRING);
     if (!types->ops->get_element_declaration && types_impl_l)
         types->ops->get_element_declaration =
             types_impl_l->types.ops->get_element_declaration;
 
-    types->ops->get_type_definition = axis2_hash_get(methods,
+    types->ops->get_type_definition = axutil_hash_get(methods,
             "get_type_definition", AXIS2_HASH_KEY_STRING);
     if (!types->ops->get_type_definition && types_impl_l)
         types->ops->get_type_definition =
             types_impl_l->types.ops->get_type_definition;
 
-    types->ops->get_referenceable_schema_defs = axis2_hash_get(methods,
+    types->ops->get_referenceable_schema_defs = axutil_hash_get(methods,
             "get_referenceable_schema_defs", AXIS2_HASH_KEY_STRING);
     if (!types->ops->get_referenceable_schema_defs && types_impl_l)
         types->ops->get_referenceable_schema_defs =
             types_impl_l->types.ops->get_referenceable_schema_defs;
 
     types->ops->is_namespace_in_scope_with_namespace_uri =
-        axis2_hash_get(methods, "is_namespace_in_scope_with_namespace_uri",
+        axutil_hash_get(methods, "is_namespace_in_scope_with_namespace_uri",
                 AXIS2_HASH_KEY_STRING);
     if (!types->ops->is_namespace_in_scope_with_namespace_uri && types_impl_l)
         types->ops->is_namespace_in_scope_with_namespace_uri =
             types_impl_l->types.ops->is_namespace_in_scope_with_namespace_uri;
 
-    types->ops->is_namespace_in_scope_with_qname = axis2_hash_get(methods,
+    types->ops->is_namespace_in_scope_with_qname = axutil_hash_get(methods,
             "is_namespace_in_scope_with_qname", AXIS2_HASH_KEY_STRING);
     if (!types->ops->is_namespace_in_scope_with_qname && types_impl_l)
         types->ops->is_namespace_in_scope_with_qname =
             types_impl_l->types.ops->is_namespace_in_scope_with_qname;
 
-    types->ops->is_namespace_in_scope_with_namespace = axis2_hash_get(methods,
+    types->ops->is_namespace_in_scope_with_namespace = axutil_hash_get(methods,
             "is_namespace_in_scope_with_namespace", AXIS2_HASH_KEY_STRING);
     if (!types->ops->is_namespace_in_scope_with_namespace && types_impl_l)
         types->ops->is_namespace_in_scope_with_namespace =
@@ -721,12 +721,12 @@ woden_types_set_type_system(
     axis2_char_t *type_system)
 {
     woden_types_impl_t *types_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, type_system, AXIS2_FAILURE);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     if (types_impl->f_type_system)
@@ -748,11 +748,11 @@ woden_types_get_type_system(
     const axutil_env_t *env)
 {
     woden_types_impl_t *types_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
     return types_impl->f_type_system;
 }
@@ -764,12 +764,12 @@ woden_types_add_schema(
     void *schema)
 {
     woden_types_impl_t *types_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, schema, AXIS2_FAILURE);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     return axutil_array_list_add(types_impl->f_schemas, env, schema);
@@ -784,12 +784,12 @@ woden_types_remove_schema(
     woden_types_impl_t *types_impl = NULL;
     int index = 0;
     axis2_status_t code = AXIS2_FAILURE;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, schema, AXIS2_FAILURE);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     index = axutil_array_list_index_of(types_impl->f_schemas, env, schema);
@@ -804,11 +804,11 @@ woden_types_get_schemas(
     const axutil_env_t *env)
 {
     woden_types_impl_t *types_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
     return types_impl->f_schemas;
 }
@@ -822,11 +822,11 @@ woden_types_get_schemas_with_namespace(
     woden_types_impl_t *types_impl = NULL;
     int i = 0, size = 0;
     axis2_char_t *str_namespc = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     if (namespc)
@@ -857,11 +857,11 @@ woden_types_get_inlined_schemas(
 {
     woden_types_impl_t *types_impl = NULL;
     int i = 0, size = 0;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     size = axutil_array_list_size(types_impl->f_schemas, env);
@@ -884,11 +884,11 @@ woden_types_get_imported_schemas(
 {
     woden_types_impl_t *types_impl = NULL;
     int i = 0, size = 0;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     size = axutil_array_list_size(types_impl->f_schemas, env);
@@ -913,11 +913,11 @@ woden_types_get_element_declaration(
     woden_types_impl_t *types_impl = NULL;
     xml_schema_element_t *xml_schema_el = NULL;
     axutil_array_list_t *schemas = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
     axis2_char_t *uri = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
     /* Can't resolve the element if the QName is NULL.*/
     if (! qname)
@@ -956,11 +956,11 @@ woden_types_get_type_definition(
     woden_types_impl_t *types_impl = NULL;
     xml_schema_type_t *xml_schema_type = NULL;
     axutil_array_list_t *schema_refs = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     if (qname)
@@ -998,11 +998,11 @@ woden_types_get_referenceable_schema_defs(
 {
     woden_types_impl_t *types_impl = NULL;
     int i = 0, size = 0;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     if (types_impl->schema_defs)
@@ -1046,12 +1046,12 @@ woden_types_get_referenceable_schema_defs_with_namespace(
 {
     woden_types_impl_t *types_impl = NULL;
     int i = 0, size = 0;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, namespc, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     size = axutil_array_list_size(types_impl->f_schemas, env);
@@ -1081,13 +1081,13 @@ woden_types_is_namespace_in_scope_with_namespace_uri(
 {
     woden_types_impl_t *types_impl = NULL;
     axis2_char_t *str_uri = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_PARAM_CHECK(env->error, namespc_uri, AXIS2_FAILURE);
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     str_uri = axis2_uri_to_string(namespc_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
@@ -1103,12 +1103,12 @@ woden_types_is_namespace_in_scope_with_qname(
     woden_types_impl_t *types_impl = NULL;
     axis2_char_t *str_uri = NULL;
     axis2_uri_t *uri = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     str_uri = axis2_qname_get_uri(qname, env);
@@ -1125,12 +1125,12 @@ woden_types_is_namespace_in_scope_with_namespace(
     woden_types_impl_t *types_impl = NULL;
     axis2_bool_t result = AXIS2_FALSE;
     int i = 0, size = 0;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
-    types_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     size = axutil_array_list_size(types_impl->f_schemas, env);

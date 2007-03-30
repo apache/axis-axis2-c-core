@@ -210,27 +210,27 @@ axis2_core_utils_get_module_qname(const axutil_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_core_utils_calculate_default_module_version(const axutil_env_t *env,
-        axis2_hash_t *modules_map, axis2_conf_t *axis_conf)
+        axutil_hash_t *modules_map, axis2_conf_t *axis_conf)
 {
-    axis2_hash_t *default_modules = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_t *default_modules = NULL;
+    axutil_hash_index_t *hi = NULL;
     void *val = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, modules_map, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, axis_conf, AXIS2_FAILURE);
 
-    default_modules = axis2_hash_make(env);
+    default_modules = axutil_hash_make(env);
     if (!default_modules)
     {
         return AXIS2_FAILURE;
     }
-    for (hi = axis2_hash_first(modules_map, env);  hi;
-            hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(modules_map, env);  hi;
+            hi = axutil_hash_next(env, hi))
     {
         axis2_module_desc_t *mod_desc = NULL;
 
-        axis2_hash_this(hi, NULL, NULL, &val);
+        axutil_hash_this(hi, NULL, NULL, &val);
         mod_desc = (axis2_module_desc_t *) val;
         if (mod_desc)
         {
@@ -254,7 +254,7 @@ axis2_core_utils_calculate_default_module_version(const axutil_env_t *env,
                     }
                     module_ver_str = axis2_core_utils_get_module_version(env,
                             mod_name_with_ver);
-                    current_def_ver = axis2_hash_get(default_modules,
+                    current_def_ver = axutil_hash_get(default_modules,
                             module_name_str, AXIS2_HASH_KEY_STRING);
                     if (current_def_ver)
                     {
@@ -262,7 +262,7 @@ axis2_core_utils_calculate_default_module_version(const axutil_env_t *env,
                                 axis2_core_utils_is_latest_mod_ver(env,
                                         module_ver_str, current_def_ver))
                         {
-                            axis2_hash_set(default_modules, module_name_str,
+                            axutil_hash_set(default_modules, module_name_str,
                                     AXIS2_HASH_KEY_STRING, module_ver_str);
                         }
                         else
@@ -279,7 +279,7 @@ axis2_core_utils_calculate_default_module_version(const axutil_env_t *env,
                     }
                     else
                     {
-                        axis2_hash_set(default_modules, module_name_str,
+                        axutil_hash_set(default_modules, module_name_str,
                                 AXIS2_HASH_KEY_STRING, module_ver_str);
                     }
 
@@ -295,11 +295,11 @@ axis2_core_utils_calculate_default_module_version(const axutil_env_t *env,
 
     hi = NULL;
     val = NULL;
-    for (hi = axis2_hash_first(default_modules, env);  hi;
-            hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(default_modules, env);  hi;
+            hi = axutil_hash_next(env, hi))
     {
         void *key_string = NULL;
-        axis2_hash_this(hi, (const void **)&key_string, NULL, &val);
+        axutil_hash_this(hi, (const void **)&key_string, NULL, &val);
         if (key_string && NULL != val)
         {
              axis2_conf_add_default_module_version(axis_conf, env,
@@ -312,7 +312,7 @@ axis2_core_utils_calculate_default_module_version(const axutil_env_t *env,
 
     if (default_modules)
     {
-        axis2_hash_free(default_modules, env);
+        axutil_hash_free(default_modules, env);
         default_modules = NULL;
     }
 

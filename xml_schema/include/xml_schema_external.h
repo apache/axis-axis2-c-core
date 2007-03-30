@@ -25,7 +25,7 @@
  */
 
 #include <xml_schema_annotated.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 /** @defgroup xml_schema_external Xml Schema Particle
   * @ingroup xml_schema
@@ -65,7 +65,7 @@ struct xml_schema_external_ops
             const axutil_env_t *env);            
 
 
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(
             void *external,
             const axutil_env_t *env);            

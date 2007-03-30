@@ -25,7 +25,7 @@
 #include <axiom_children_iterator.h>
 #include <axiom_children_qname_iterator.h>
 #include <axiom_child_element_iterator.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_utils.h>
 
 #ifdef __cplusplus
@@ -275,20 +275,20 @@ extern "C"
      * get  the attribute list of the element 
      * @param om_element om element
      * @param env environment must not be null
-     * @returns axis2_hash poiner to attributes hash
+     * @returns axutil_hash poiner to attributes hash
      * This hash table is read only 
      */
-    AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
     axiom_element_get_all_attributes(axiom_element_t *om_element,
             const axutil_env_t *env);
     /**
      * get the namespace list of the element
      * @param om_element om element
      * @param env environment
-     * @returns axis2_hash pointer to namespaces hash
+     * @returns axutil_hash pointer to namespaces hash
      * this hash table is read only
      */
-    AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
     axiom_element_get_namespaces(axiom_element_t *om_element,
             const axutil_env_t *env);
     /**
@@ -475,7 +475,7 @@ extern "C"
      *  Extract attributes , returns a clones hash table of attributes,
      *  if attributes are associated with a namespace it is also cloned
      */
-    AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
     axiom_element_extract_attributes(axiom_element_t *om_element,
             const axutil_env_t *env,
             axiom_node_t *ele_node);

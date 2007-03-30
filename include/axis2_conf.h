@@ -45,7 +45,7 @@
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
 #include <axis2_qname.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_phases_info.h>
 #include <axis2_msg_recv.h>
 
@@ -108,7 +108,7 @@ extern "C"
      * @return pointer to hash table containing the service groups, returns 
      * a reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_conf_get_all_svc_grps(const axis2_conf_t *conf,
         const axutil_env_t *env);
 
@@ -354,7 +354,7 @@ extern "C"
      * @return a pointer to the hash table of faulty services. Returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_conf_get_all_faulty_svcs(const axis2_conf_t *conf,
         const axutil_env_t *env);
 
@@ -367,7 +367,7 @@ extern "C"
      * @return a pointer to the hash table of faulty modules. Returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_conf_get_all_faulty_modules(const axis2_conf_t *conf,
         const axutil_env_t *env);
 
@@ -378,7 +378,7 @@ extern "C"
      * @return a pointer to the hash table of services. Returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_conf_get_all_svcs(const axis2_conf_t *conf,
         const axutil_env_t *env);
 
@@ -501,7 +501,7 @@ extern "C"
      * @return a pointer to hash table containing the list of modules. 
      * Returns a reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_conf_get_all_modules(const axis2_conf_t *conf,
         const axutil_env_t *env);
 

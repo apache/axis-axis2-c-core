@@ -21,28 +21,28 @@ axis2_status_t AXIS2_CALL
 woden_svc_element_resolve_methods(
     woden_svc_element_t *svc_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    svc_element->ops->free = axis2_hash_get(methods, "free",
+    svc_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    svc_element->ops->type = axis2_hash_get(methods, "type",
+    svc_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
-    svc_element->ops->set_qname = axis2_hash_get(methods,
+    svc_element->ops->set_qname = axutil_hash_get(methods,
             "set_qname", AXIS2_HASH_KEY_STRING);
-    svc_element->ops->get_qname = axis2_hash_get(methods,
+    svc_element->ops->get_qname = axutil_hash_get(methods,
             "get_qname", AXIS2_HASH_KEY_STRING);
-    svc_element->ops->set_interface_qname = axis2_hash_get(methods,
+    svc_element->ops->set_interface_qname = axutil_hash_get(methods,
             "set_interface_qname", AXIS2_HASH_KEY_STRING);
-    svc_element->ops->get_interface_qname = axis2_hash_get(methods,
+    svc_element->ops->get_interface_qname = axutil_hash_get(methods,
             "get_interface_qname", AXIS2_HASH_KEY_STRING);
-    svc_element->ops->get_interface_element = axis2_hash_get(methods,
+    svc_element->ops->get_interface_element = axutil_hash_get(methods,
             "get_interface_element", AXIS2_HASH_KEY_STRING);
-    svc_element->ops->add_endpoint_element = axis2_hash_get(methods,
+    svc_element->ops->add_endpoint_element = axutil_hash_get(methods,
             "add_endpoint_element", AXIS2_HASH_KEY_STRING);
-    svc_element->ops->get_endpoint_elements = axis2_hash_get(methods,
+    svc_element->ops->get_endpoint_elements = axutil_hash_get(methods,
             "get_endpoint_elements", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

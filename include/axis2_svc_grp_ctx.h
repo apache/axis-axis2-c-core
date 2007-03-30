@@ -171,7 +171,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash table containing the service context map
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_svc_grp_ctx_get_svc_ctx_map(const axis2_svc_grp_ctx_t *svc_grp_ctx,
         const axutil_env_t *env);
 

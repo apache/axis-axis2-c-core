@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <w2c_engine_configuration.h>
 #include <w2c_qname2name_maker.h>
 
@@ -113,9 +113,9 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler_options_ops
     axis2_status_t (AXIS2_CALL *
     set_ns2package_map)( w2c_schema_compiler_options_t *schema_compiler_options,
         const axutil_env_t *env,
-        axis2_hash_t *ns2package_map);
+        axutil_hash_t *ns2package_map);
 
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_ns2package_map)( w2c_schema_compiler_options_t *schema_compiler_options,
         const axutil_env_t *env);
 

@@ -81,7 +81,7 @@ struct axiom_soap_builder
 
     axis2_bool_t  done;
 
-    axis2_hash_t *mime_body_parts;
+    axutil_hash_t *mime_body_parts;
 
 };
 
@@ -174,13 +174,13 @@ axiom_soap_builder_free(axiom_soap_builder_t *soap_builder,
     
     if (soap_builder->mime_body_parts)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
         const void *key = NULL;
-        for (hi = axis2_hash_first(soap_builder->mime_body_parts, env);
-                hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(soap_builder->mime_body_parts, env);
+                hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, &key, NULL, &val);
+            axutil_hash_this(hi, &key, NULL, &val);
 
             if (key)
             {
@@ -191,7 +191,7 @@ axiom_soap_builder_free(axiom_soap_builder_t *soap_builder,
             key = NULL;
         }
 
-        axis2_hash_free(soap_builder->mime_body_parts, env);
+        axutil_hash_free(soap_builder->mime_body_parts, env);
         soap_builder->mime_body_parts = NULL;
     }
 
@@ -414,7 +414,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
                                 id += 4;
                                 if (soap_builder->mime_body_parts)
                                 {
-                                    data_handler = (axiom_data_handler_t *)axis2_hash_get(
+                                    data_handler = (axiom_data_handler_t *)axutil_hash_get(
                                                 soap_builder->mime_body_parts,
                                                 (void*)id, AXIS2_HASH_KEY_STRING);
                                     if (data_handler)
@@ -831,7 +831,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_builder_set_mime_body_parts
 (axiom_soap_builder_t *soap_builder,
         const axutil_env_t *env,
-        axis2_hash_t *map)
+        axutil_hash_t *map)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_builder->mime_body_parts = map;

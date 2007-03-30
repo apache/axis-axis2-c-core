@@ -58,7 +58,7 @@ struct woden_soap_module_deserializer_ops
     free) (void *mod_deser,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *mod_deser,
             const axutil_env_t *env);
 
@@ -108,7 +108,7 @@ woden_soap_module_deserializer_resolve_methods(
         woden_soap_module_deserializer_t *mod_deser,
         const axutil_env_t *env,
         woden_soap_module_deserializer_t *mod_deser_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_SOAP_MODULE_DESERIALIZER_FREE(mod_deser, env) \

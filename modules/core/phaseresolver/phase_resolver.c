@@ -140,22 +140,22 @@ axis2_phase_resolver_build_chains(
     axis2_phase_resolver_t *phase_resolver,
     const axutil_env_t *env)
 {
-    axis2_hash_index_t *index_i = 0;
+    axutil_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_op_t *op = NULL;
-    axis2_hash_t *ops = NULL;
+    axutil_hash_t *ops = NULL;
 
     if (!(phase_resolver->svc))
         return AXIS2_FAILURE;
 
     ops = axis2_svc_get_all_ops(phase_resolver->svc, env);
 
-    for (index_i = axis2_hash_first(ops, env); index_i; index_i =
-        axis2_hash_next(env, index_i))
+    for (index_i = axutil_hash_first(ops, env); index_i; index_i =
+        axutil_hash_next(env, index_i))
     {
         void *v = NULL;
         int j = 0;
-        axis2_hash_this(index_i, NULL, NULL, &v);
+        axutil_hash_this(index_i, NULL, NULL, &v);
         op = (axis2_op_t *)v;
         for (j = 1; j < 5; j++)
         {
@@ -845,8 +845,8 @@ axis2_phase_resolver_engage_module_globally(
     const axutil_env_t *env,
     axis2_module_desc_t *module_desc)
 {
-    axis2_hash_t *svc_grps = NULL;
-    axis2_hash_index_t *index_i = NULL;
+    axutil_hash_t *svc_grps = NULL;
+    axutil_hash_index_t *index_i = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -863,26 +863,26 @@ axis2_phase_resolver_engage_module_globally(
     {
         return AXIS2_FAILURE;
     }
-    for (index_i = axis2_hash_first(svc_grps, env); index_i; index_i =
-        axis2_hash_next(env, index_i))
+    for (index_i = axutil_hash_first(svc_grps, env); index_i; index_i =
+        axutil_hash_next(env, index_i))
     {
-        axis2_hash_t *svcs = NULL;
+        axutil_hash_t *svcs = NULL;
         axis2_svc_grp_t *svc_grp = NULL;
         void *v = NULL;
-        axis2_hash_index_t *index_j = NULL;
+        axutil_hash_index_t *index_j = NULL;
         const axis2_qname_t *mod_name = NULL;
 
-        axis2_hash_this(index_i, NULL, NULL, &v);
+        axutil_hash_this(index_i, NULL, NULL, &v);
         svc_grp = (axis2_svc_grp_t *) v;
         svcs =  axis2_svc_grp_get_all_svcs(svc_grp, env);
 
-        for (index_j = axis2_hash_first(svcs, env); index_j; index_j =
-            axis2_hash_next(env, index_j))
+        for (index_j = axutil_hash_first(svcs, env); index_j; index_j =
+            axutil_hash_next(env, index_j))
         {
             axis2_svc_t *svc = NULL;
             void *w = NULL;
 
-            axis2_hash_this(index_j, NULL, NULL, &w);
+            axutil_hash_this(index_j, NULL, NULL, &w);
             svc = (axis2_svc_t *) w;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s",
                 axis2_svc_get_name(svc, env));
@@ -921,9 +921,9 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
     axis2_svc_t *svc,
     axis2_module_desc_t *module_desc)
 {
-    axis2_hash_t *ops = NULL;
+    axutil_hash_t *ops = NULL;
     axis2_bool_t engaged = AXIS2_FALSE;
-    axis2_hash_index_t *index_i = NULL;
+    axutil_hash_index_t *index_i = NULL;
     int type = 0;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_phase_holder_t *phase_holder = NULL;
@@ -938,8 +938,8 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
         return AXIS2_FAILURE;
     }
 
-    for (index_i = axis2_hash_first(ops, env); index_i;
-        index_i = axis2_hash_next(env, index_i))
+    for (index_i = axutil_hash_first(ops, env); index_i;
+        index_i = axutil_hash_next(env, index_i))
     {
         void *v = NULL;
         axis2_op_t *op_desc = NULL;
@@ -949,7 +949,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
         const axis2_qname_t *module_desc_qname = NULL;
         int size = 0;
 
-        axis2_hash_this(index_i, NULL, NULL, &v);
+        axutil_hash_this(index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s",
             axis2_qname_get_localpart(axis2_op_get_qname(op_desc, env), env));
@@ -1247,8 +1247,8 @@ axis2_phase_resolver_engage_module_to_svc(
     axis2_svc_t *svc,
     axis2_module_desc_t *module_desc)
 {
-    axis2_hash_t *ops = NULL;
-    axis2_hash_index_t *index_i = NULL;
+    axutil_hash_t *ops = NULL;
+    axutil_hash_index_t *index_i = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     const axis2_qname_t *module_d_qname = NULL;
 
@@ -1267,8 +1267,8 @@ axis2_phase_resolver_engage_module_to_svc(
         return status;
     }
     module_d_qname = axis2_module_desc_get_qname(module_desc, env);
-    for (index_i = axis2_hash_first(ops, env); index_i; index_i =
-        axis2_hash_next(env, index_i))
+    for (index_i = axutil_hash_first(ops, env); index_i; index_i =
+        axutil_hash_next(env, index_i))
     {
         axutil_array_list_t *modules = NULL;
         axis2_op_t *op_desc = NULL;
@@ -1277,7 +1277,7 @@ axis2_phase_resolver_engage_module_to_svc(
         void *v = NULL;
         axis2_bool_t engaged = AXIS2_FALSE;
 
-        axis2_hash_this(index_i, NULL, NULL, &v);
+        axutil_hash_this(index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
         modules = axis2_op_get_all_modules(op_desc, env);
         if (modules)

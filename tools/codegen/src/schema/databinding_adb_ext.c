@@ -16,7 +16,7 @@
  */
  
 #include <w2c_extension.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axutil_array_list.h>
 #include <xml_schema.h>
 #include <stdio.h>

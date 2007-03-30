@@ -37,7 +37,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <woden.h>
@@ -138,7 +138,7 @@ struct woden_desc_element_ops
             const axutil_env_t *env,
             axis2_char_t *prefix);
     
-    axis2_hash_t *(AXIS2_CALL * 
+    axutil_hash_t *(AXIS2_CALL * 
     get_namespaces) (
             void *desc_el,
             const axutil_env_t *env);/* TODO return arrays instead of Map? */
@@ -342,7 +342,7 @@ axis2_status_t AXIS2_CALL
 woden_desc_element_resolve_methods(
         woden_desc_element_t *desc_element,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_DESC_ELEMENT_FREE(desc_el, env) \

@@ -34,7 +34,7 @@ struct xml_schema_documentation_impl
 
     axis2_char_t *language;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     axis2_char_t *source;
 
@@ -49,7 +49,7 @@ xml_schema_documentation_free(
     void *documentation,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_documentation_super_objs(
     void *documentation,
     const axutil_env_t *env);
@@ -165,7 +165,7 @@ xml_schema_documentation_create(const axutil_env_t *env)
         return NULL;
     }
 
-    documentation_impl->ht_super = axis2_hash_make(env);
+    documentation_impl->ht_super = axutil_hash_make(env);
 
     if (!documentation_impl->ht_super)
     {
@@ -173,11 +173,11 @@ xml_schema_documentation_create(const axutil_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(documentation_impl->ht_super,
+    axutil_hash_set(documentation_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_DOCUMENTATION"),
             AXIS2_HASH_KEY_STRING, &(documentation_impl->documentation));
 
-    axis2_hash_set(documentation_impl->ht_super,
+    axutil_hash_set(documentation_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING, documentation_impl->schema_obj);
 
@@ -208,7 +208,7 @@ xml_schema_documentation_free(void *documentation,
 
     if (documentation_impl->ht_super)
     {
-        axis2_hash_free(documentation_impl->ht_super, env);
+        axutil_hash_free(documentation_impl->ht_super, env);
         documentation_impl->ht_super = NULL;
     }
 
@@ -236,7 +236,7 @@ xml_schema_documentation_free(void *documentation,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_documentation_super_objs(
     void *documentation,
     const axutil_env_t *env)
@@ -265,12 +265,12 @@ xml_schema_documentation_get_source(void *documentation,
         const axutil_env_t *env)
 {
     xml_schema_documentation_impl_t *documentation_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
     if (ht_super)
     {
-        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_APP_INFO",
+        documentation_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super, "XML_SCHEMA_APP_INFO",
                 AXIS2_HASH_KEY_STRING));
         if (documentation_impl)
             return  documentation_impl->source;
@@ -285,14 +285,14 @@ xml_schema_documentation_set_source(void *documentation,
         axis2_char_t *source)
 {
     xml_schema_documentation_impl_t *documentation_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, source, AXIS2_FAILURE);
 
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
     if (ht_super)
     {
-        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_DOCUMENTATION",
+        documentation_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super, "XML_SCHEMA_DOCUMENTATION",
                 AXIS2_HASH_KEY_STRING));
         if (documentation_impl)
             return  AXIS2_FAILURE;
@@ -318,12 +318,12 @@ xml_schema_documentation_get_markup(void *documentation,
         const axutil_env_t *env)
 {
     xml_schema_documentation_impl_t *documentation_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
     if (ht_super)
     {
-        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_DOCUMENTATION",
+        documentation_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super, "XML_SCHEMA_DOCUMENTATION",
                 AXIS2_HASH_KEY_STRING));
         if (documentation_impl)
             return  NULL;
@@ -337,13 +337,13 @@ xml_schema_documentation_set_markup(void *documentation,
         axiom_child_element_iterator_t *markup)
 {
     xml_schema_documentation_impl_t *documentation_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, markup, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
     if (ht_super)
     {
-        documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        documentation_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA_DOCUMENTATION", AXIS2_HASH_KEY_STRING));
         if (documentation_impl)
             return  AXIS2_FAILURE;

@@ -24,7 +24,7 @@
  */
  
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <xml_schema_defines.h>
 
 #ifdef __cplusplus
@@ -102,7 +102,7 @@ extern "C"
 #define XML_SCHEMA_XSD_SCHEMA             "schema"
 
 
-typedef axis2_hash_t* (AXIS2_CALL *XML_SCHEMA_SUPER_OBJS_FN)(void *obj,
+typedef axutil_hash_t* (AXIS2_CALL *XML_SCHEMA_SUPER_OBJS_FN)(void *obj,
                                     const axutil_env_t *env);
                                     
 typedef xml_schema_types_t (AXIS2_CALL *XML_SCHEMA_GET_TYPE_FN)(void *obj, const axutil_env_t *env);

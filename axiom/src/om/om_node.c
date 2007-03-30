@@ -512,7 +512,7 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
     axiom_node_t *temp_node = NULL;
     axiom_node_t *nodes[256];
     int count = 0;
-    axis2_hash_t *namespaces = NULL;
+    axutil_hash_t *namespaces = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -521,7 +521,7 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
         return AXIS2_SUCCESS;
     }
 
-    namespaces = axis2_hash_make(env);
+    namespaces = axutil_hash_make(env);
     nodes[count++] = om_node;
 
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
@@ -532,7 +532,7 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
         {
             if (om_node->data_element)
             {
-                axis2_hash_t *temp_namespaces = NULL;
+                axutil_hash_t *temp_namespaces = NULL;
                 axiom_namespace_t *namespace = NULL;
                 status = axiom_element_serialize_start_part(
                     (axiom_element_t *)(om_node->data_element),
@@ -543,9 +543,9 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
                     (axiom_element_t *)(om_node->data_element), env);
                 if (temp_namespaces)
                 {
-                    axis2_hash_t *new_hash = NULL;
-                    new_hash = axis2_hash_overlay(temp_namespaces, env, namespaces);
-                    axis2_hash_free(namespaces, env);
+                    axutil_hash_t *new_hash = NULL;
+                    new_hash = axutil_hash_overlay(temp_namespaces, env, namespaces);
+                    axutil_hash_free(namespaces, env);
                     namespaces = new_hash;
                 }
                 namespace = axiom_element_get_namespace(
@@ -557,11 +557,11 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
                     prefix = axiom_namespace_get_prefix(namespace, env);
                     if (prefix)
                     {
-                        ns = axis2_hash_get(namespaces, prefix, AXIS2_HASH_KEY_STRING);
+                        ns = axutil_hash_get(namespaces, prefix, AXIS2_HASH_KEY_STRING);
                         if (!ns)
                         {
                             axiom_namespace_serialize(namespace, env, om_output);
-                            axis2_hash_set(namespaces, prefix, 
+                            axutil_hash_set(namespaces, prefix, 
                                 AXIS2_HASH_KEY_STRING, namespace);
                         }
                     }

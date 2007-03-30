@@ -64,7 +64,7 @@ struct xml_schema_attribute_group_ops
             void *attr_grp,
             const axutil_env_t *env);
           
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(
             void *attr_grp,
             const axutil_env_t *env);

@@ -30,7 +30,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
@@ -62,7 +62,7 @@ struct woden_element_extensible_ops
             element_extensible,
             const axutil_env_t *env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *
             element_extensible,
@@ -121,7 +121,7 @@ woden_element_extensible_resolve_methods(
         woden_element_extensible_t *extensible,
         const axutil_env_t *env,
         woden_element_extensible_t *extensible_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 
 #define WODEN_ELEMENT_EXTENSIBLE_FREE(extensible, env) \
       (((woden_element_extensible_t *) extensible)->ops->\

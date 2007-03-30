@@ -17,7 +17,7 @@
 
 #include "_axiom_soap_envelope.h"
 #include "_axiom_soap_body.h"
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom_soap_const.h>
 #include <axiom_soap_builder.h>
 #include <axiom_soap_fault_code.h>

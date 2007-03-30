@@ -30,7 +30,7 @@ struct xml_schema_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_form_t *attr_form_default;
 
@@ -62,7 +62,7 @@ struct xml_schema_impl
 
     axis2_char_t *version;
 
-    axis2_hash_t *namespaces_map;
+    axutil_hash_t *namespaces_map;
 
     axis2_char_t *schema_ns_prefix;
 
@@ -79,7 +79,7 @@ xml_schema_free(
     void *schema,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_super_objs(
     void *schema,
     const axutil_env_t *env);
@@ -239,7 +239,7 @@ serialize_internal(
         const axutil_env_t *env,
         void *writer);
 */
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_get_prefix_to_namespace_map(
     void *schema,
     const axutil_env_t *env);
@@ -248,7 +248,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_set_prefix_to_namespace_map(
     void *schema,
     const axutil_env_t *env,
-    axis2_hash_t *map);
+    axutil_hash_t *map);
 
 axis2_status_t AXIS2_CALL
 xml_schema_add_type(
@@ -421,7 +421,7 @@ xml_schema_create(const axutil_env_t *env,
 
     schema_impl->includes = xml_schema_obj_collection_create(env);
 
-    schema_impl->namespaces_map = axis2_hash_make(env);
+    schema_impl->namespaces_map = axutil_hash_make(env);
 
     schema_impl->elements = xml_schema_obj_table_create(env);
 
@@ -437,19 +437,19 @@ xml_schema_create(const axutil_env_t *env,
 
     schema_impl->annotated = xml_schema_annotated_create(env);
 
-    schema_impl->ht_super = axis2_hash_make(env);
+    schema_impl->ht_super = axutil_hash_make(env);
     if (!schema_impl->ht_super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(schema_impl->ht_super, "XML_SCHEMA",
+    axutil_hash_set(schema_impl->ht_super, "XML_SCHEMA",
             AXIS2_HASH_KEY_STRING, &(schema_impl->schema));
 
-    axis2_hash_set(schema_impl->ht_super, "XML_SCHEMA_ANNOTATED",
+    axutil_hash_set(schema_impl->ht_super, "XML_SCHEMA_ANNOTATED",
             AXIS2_HASH_KEY_STRING, schema_impl->annotated);
 
-    axis2_hash_set(schema_impl->ht_super, "XML_SCHEMA_OBJ",
+    axutil_hash_set(schema_impl->ht_super, "XML_SCHEMA_OBJ",
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(schema_impl->annotated, env));
 
@@ -492,16 +492,16 @@ xml_schema_free(
     }
     if (schema_impl->elements)
     {
-        axis2_hash_t *ht = NULL;
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_t *ht = NULL;
+        axutil_hash_index_t *hi = NULL;
 
         ht = XML_SCHEMA_OBJ_TABLE_GET_HASH_TABLE(schema_impl->elements, env);
         if (ht)
         {
-            for (hi = axis2_hash_first(ht, env); hi; hi = axis2_hash_next(env, hi))
+            for (hi = axutil_hash_first(ht, env); hi; hi = axutil_hash_next(env, hi))
             {
                 void *val = NULL;
-                axis2_hash_this(hi, NULL, NULL, &val);
+                axutil_hash_this(hi, NULL, NULL, &val);
                 if (val)
                 {
                     if (XML_SCHEMA_OBJ_GET_TYPE(val, env) == XML_SCHEMA_ELEMENT)
@@ -518,7 +518,7 @@ xml_schema_free(
 
     if (schema_impl->ht_super)
     {
-        axis2_hash_free(schema_impl->ht_super, env);
+        axutil_hash_free(schema_impl->ht_super, env);
         schema_impl->ht_super = NULL;
     }
 
@@ -555,7 +555,7 @@ xml_schema_get_type(
     return schema_impl->obj_type;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_super_objs(
     void *schema,
     const axutil_env_t *env)
@@ -588,7 +588,7 @@ xml_schema_get_namespace(
     axis2_char_t *prefix)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, prefix, NULL);
@@ -596,7 +596,7 @@ xml_schema_get_namespace(
     if (ht_super)
     {
 
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -604,7 +604,7 @@ xml_schema_get_namespace(
     if (schema_impl->namespaces_map)
     {
         void *result = NULL;
-        result = axis2_hash_get(schema_impl->namespaces_map, prefix,
+        result = axutil_hash_get(schema_impl->namespaces_map, prefix,
                 AXIS2_HASH_KEY_STRING);
         if (result)
             return (axis2_char_t *)result ;
@@ -618,13 +618,13 @@ xml_schema_get_attr_form_default(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -639,13 +639,13 @@ xml_schema_set_attr_form_default(
     xml_schema_form_t *value)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return AXIS2_FAILURE;
@@ -664,13 +664,13 @@ xml_schema_get_attr_groups(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -685,13 +685,13 @@ xml_schema_get_attrs(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -705,13 +705,13 @@ xml_schema_get_block_default(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -726,13 +726,13 @@ xml_schema_set_block_default(
     xml_schema_derivation_method_t *block_default)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return AXIS2_FAILURE;
@@ -750,13 +750,13 @@ xml_schema_get_element_form_default(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -771,12 +771,12 @@ xml_schema_set_element_form_default(
     xml_schema_form_t *element_form_default)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_PARAM_CHECK(env->error, element_form_default, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return AXIS2_FAILURE;
@@ -796,13 +796,13 @@ xml_schema_get_elements(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -817,13 +817,13 @@ xml_schema_get_element_by_qname(
     const axis2_qname_t *qname)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -843,7 +843,7 @@ xml_schema_get_type_by_qname(
     axis2_qname_t *qname)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
@@ -851,7 +851,7 @@ xml_schema_get_type_by_qname(
 
     if (ht_super)
     {
-        schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
         if (!schema_impl)
             return NULL;
@@ -870,14 +870,14 @@ xml_schema_get_final_default(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (!ht_super)
         return NULL;
 
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
 
     if (!schema_impl)
@@ -893,13 +893,13 @@ xml_schema_set_final_default(
     xml_schema_derivation_method_t *final_default)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (!ht_super)
         return AXIS2_FAILURE;
 
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
 
     if (!schema_impl)
@@ -919,12 +919,12 @@ xml_schema_get_groups(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (!ht_super)
         return NULL;
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     if (!schema_impl)
         return NULL;
@@ -936,12 +936,12 @@ xml_schema_get_includes(void *schema,
         const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (!ht_super)
         return NULL;
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     if (!schema_impl)
         return NULL;
@@ -955,7 +955,7 @@ xml_schema_is_compiled(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -963,7 +963,7 @@ xml_schema_is_compiled(
     if (!ht_super)
         return AXIS2_FAILURE;
 
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
 
     if (!schema_impl)
@@ -978,14 +978,14 @@ xml_schema_get_items(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
 
     if (!ht_super)
         return NULL;
 
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
 
     if (!schema_impl)
@@ -1000,14 +1000,14 @@ xml_schema_get_notations(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
 
     if (!ht_super)
         return NULL;
 
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     if (!schema_impl)
         return NULL;
@@ -1020,12 +1020,12 @@ xml_schema_get_schema_types(
     const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (!ht_super)
         return NULL;
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     if (!schema_impl)
         return NULL;
@@ -1058,12 +1058,12 @@ xml_schema_set_target_namespace(void *schema,
 {
     xml_schema_impl_t *schema_impl = NULL;
 
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (!ht_super)
         return AXIS2_FAILURE;
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     if (!schema_impl)
         return AXIS2_FAILURE;
@@ -1083,12 +1083,12 @@ xml_schema_get_version(void *schema,
         const axutil_env_t *env)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
     if (!ht_super)
         return NULL;
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
             "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
     if (!schema_impl)
         return NULL;
@@ -1135,17 +1135,17 @@ serialize_internal(void *schema,
                     void *writer)
 {
     xml_schema_impl_t *schema_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env,  AXIS2_FAILURE);
     ht_super = XML_SCHEMA_SUPER_OBJS(schema, env);
-    schema_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+    schema_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
         "XML_SCHEMA", AXIS2_HASH_KEY_STRING));
 
     return AXIS2_SUCCESS;
 }
 */
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_get_prefix_to_namespace_map(
     void *schema,
     const axutil_env_t *env)
@@ -1161,7 +1161,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_set_prefix_to_namespace_map(
     void *schema,
     const axutil_env_t *env,
-    axis2_hash_t *map)
+    axutil_hash_t *map)
 {
     xml_schema_impl_t *schema_impl = NULL;
 

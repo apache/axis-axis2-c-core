@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     axis2_options_t *options = NULL;
     axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
-    axis2_hash_t *savan_options = NULL;
+    axutil_hash_t *savan_options = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     savan_client_t *savan_client = NULL;
     axis2_char_t *expire_time = NULL;
@@ -86,8 +86,8 @@ int main(int argc, char** argv)
     /* Engage savan module */
     axis2_svc_client_engage_module(svc_client, env, "savan");
 
-    savan_options = axis2_hash_make(env);
-    axis2_hash_set(savan_options, SAVAN_OP_KEY_NOTIFY_EPR, AXIS2_HASH_KEY_STRING,
+    savan_options = axutil_hash_make(env);
+    axutil_hash_set(savan_options, SAVAN_OP_KEY_NOTIFY_EPR, AXIS2_HASH_KEY_STRING,
         "http://localhost:9090/axis2/services/listener");
 
     /* Create a savan client */

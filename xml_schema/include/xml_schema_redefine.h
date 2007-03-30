@@ -25,7 +25,7 @@
  */
 
 #include <xml_schema_external.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <xml_schema_obj_table.h>
 #include <xml_schema_obj_collection.h>
 
@@ -56,7 +56,7 @@ struct xml_schema_redefine_ops
     get_base_impl)(void *redefine,
                    const axutil_env_t *env);            
 
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *redefine,
                 const axutil_env_t *env);            
 

@@ -133,15 +133,15 @@ axis2_init_modules(const axutil_env_t *env,
     conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
     if (conf)
     {
-        axis2_hash_t *module_map =  axis2_conf_get_all_modules(conf, env);
+        axutil_hash_t *module_map =  axis2_conf_get_all_modules(conf, env);
         if (module_map)
         {
-            axis2_hash_index_t *hi = NULL;
+            axutil_hash_index_t *hi = NULL;
             void *module = NULL;
-            for (hi = axis2_hash_first(module_map, env);
-                hi; hi = axis2_hash_next(env, hi))
+            for (hi = axutil_hash_first(module_map, env);
+                hi; hi = axutil_hash_next(env, hi))
             {
-                axis2_hash_this(hi, NULL, NULL, &module);
+                axutil_hash_this(hi, NULL, NULL, &module);
                 if (module)
                 {
                     axis2_module_desc_t *mod_desc = (axis2_module_desc_t*)module;

@@ -355,10 +355,10 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     }
     else
     {
-        axis2_hash_t *order_itr = NULL;
+        axutil_hash_t *order_itr = NULL;
         axiom_children_qname_iterator_t *params = NULL;
         axis2_qname_t *param_qname = NULL;
-        axis2_hash_index_t *index_i = NULL;
+        axutil_hash_index_t *index_i = NULL;
 
         order_itr = axiom_element_get_all_attributes(order_element, env);
         if (!order_itr)
@@ -367,7 +367,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
             return NULL;
         }
 
-        index_i = axis2_hash_first(order_itr, env);
+        index_i = axutil_hash_first(order_itr, env);
 
         while (index_i)
         {
@@ -377,7 +377,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
             axis2_char_t *value = NULL;
             void *v = NULL;
 
-            axis2_hash_this(index_i, NULL, NULL, &v);
+            axutil_hash_this(index_i, NULL, NULL, &v);
             order_attrib = (axiom_attribute_t *) v;
             qname = axiom_attribute_get_qname(order_attrib, env);
             name = axis2_qname_get_localpart(qname, env);
@@ -451,7 +451,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                 }
                 AXIS2_FREE(env->allocator, bool_val);
             }
-            index_i = axis2_hash_next(env, index_i);
+            index_i = axutil_hash_next(env, index_i);
         }
 
         param_qname = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
@@ -484,7 +484,7 @@ set_attrs_and_value(axis2_param_t *param,
     axiom_node_t *param_node)
 {
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_hash_t *attrs = NULL;
+    axutil_hash_t *attrs = NULL;
     axiom_child_element_iterator_t *childs = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -496,10 +496,10 @@ set_attrs_and_value(axis2_param_t *param,
     attrs = axiom_element_extract_attributes(param_element, env, param_node);
     if (attrs)
     {
-        axis2_hash_index_t *i = NULL;
+        axutil_hash_index_t *i = NULL;
 
-        for (i = axis2_hash_first(attrs, env); i; i =
-            axis2_hash_next(env, i))
+        for (i = axutil_hash_first(attrs, env); i; i =
+            axutil_hash_next(env, i))
         {
             void *v = NULL;
             axiom_attribute_t *value = NULL;
@@ -507,7 +507,7 @@ set_attrs_and_value(axis2_param_t *param,
             axis2_qname_t *attr_qname = NULL;
             axis2_char_t *attr_name = NULL;
 
-            axis2_hash_this(i, NULL, NULL, &v);
+            axutil_hash_this(i, NULL, NULL, &v);
             if (!v)
             {
                 axis2_param_free(param, env);
@@ -527,7 +527,7 @@ set_attrs_and_value(axis2_param_t *param,
                 axiom_attribute_free_void_arg);
             attr_qname = axiom_attribute_get_qname(value, env);
             attr_name = axis2_qname_to_string(attr_qname, env);
-            axis2_hash_set(attrs, attr_name, AXIS2_HASH_KEY_STRING, obj);
+            axutil_hash_set(attrs, attr_name, AXIS2_HASH_KEY_STRING, obj);
         }
         axis2_param_set_attributes(param, env, attrs);
     }

@@ -29,7 +29,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_uri.h>
 #include <woden.h>
 
@@ -63,7 +63,7 @@ struct woden_schema_ops
             void *schema,
             const axutil_env_t *env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *schema,
             const axutil_env_t *env);
@@ -140,7 +140,7 @@ woden_schema_resolve_methods(
         woden_schema_t *schema,
         const axutil_env_t *env,
         woden_schema_t *schema_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_SCHEMA_FREE(schema, env) \

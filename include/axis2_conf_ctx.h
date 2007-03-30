@@ -34,7 +34,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axutil_env.h>
 #include <axis2_ctx.h>
 #include <axis2_svc_grp_ctx.h>
@@ -99,7 +99,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing all operation contexts
      */
-    AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
     axis2_conf_ctx_get_op_ctx_map(const axis2_conf_ctx_t *conf_ctx,
         const axutil_env_t *env);
 
@@ -109,7 +109,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing all service contexts
      */
-    AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
     axis2_conf_ctx_get_svc_ctx_map(const axis2_conf_ctx_t *conf_ctx,
         const axutil_env_t *env);
 
@@ -119,7 +119,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing all service group contexts
      */
-    AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t * AXIS2_CALL
     axis2_conf_ctx_get_svc_grp_ctx_map(const axis2_conf_ctx_t *conf_ctx,
         const axutil_env_t *env);
 

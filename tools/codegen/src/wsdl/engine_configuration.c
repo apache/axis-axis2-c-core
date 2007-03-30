@@ -18,7 +18,7 @@
 #include <w2c_engine_configuration.h>
 #include <w2c_engine_config_loader.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
 #include <w2c_qname2name_maker.h>
@@ -37,7 +37,7 @@ typedef struct w2c_engine_configuration_impl
     axis2_char_t *repository_path;
     /** Mapping file including the qname to type map */
     axis2_char_t *type_mapping_file;
-    axis2_hash_t *uri2packagemap;
+    axutil_hash_t *uri2packagemap;
     axis2_bool_t params_wrapped;
 
     axis2_char_t *output_location;
@@ -74,13 +74,13 @@ typedef struct w2c_engine_configuration_impl
     /**
      * A hashmap to hang the property objects
      */
-    axis2_hash_t *policy_map;
+    axutil_hash_t *policy_map;
 
     /*
     * A hashmap of properties that may be populated on the way. extensions can populate it
     * This can be used to keep non specific information
     */
-    axis2_hash_t *configuration_properties;
+    axutil_hash_t *configuration_properties;
    
     axis2_char_t *wsdl_version;
     axis2_bool_t flatten_files;
@@ -126,7 +126,7 @@ w2c_engine_configuration_get_type_mapping_file (
           w2c_engine_configuration_t * engine_configuration,
           const axutil_env_t* env );
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_uri2packagemap (
           w2c_engine_configuration_t * engine_configuration,
           const axutil_env_t* env );
@@ -216,12 +216,12 @@ w2c_engine_configuration_get_serverside_interface (
           w2c_engine_configuration_t * engine_configuration,
           const axutil_env_t* env );
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_policy_map (
           w2c_engine_configuration_t * engine_configuration,
           const axutil_env_t* env );
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_configuration_properties (
           w2c_engine_configuration_t * engine_configuration,
           const axutil_env_t* env );
@@ -293,7 +293,7 @@ axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_uri2packagemap (
            w2c_engine_configuration_t* engine_configuration,
            const axutil_env_t* env,
-           axis2_hash_t* uri2packagemap );
+           axutil_hash_t* uri2packagemap );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_params_wrapped (
@@ -401,13 +401,13 @@ axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_policy_map (
            w2c_engine_configuration_t* engine_configuration,
            const axutil_env_t* env,
-           axis2_hash_t* policy_map );
+           axutil_hash_t* policy_map );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_configuration_properties (
            w2c_engine_configuration_t* engine_configuration,
            const axutil_env_t* env,
-           axis2_hash_t* configuration_properties );
+           axutil_hash_t* configuration_properties );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_wsdl_version(
@@ -661,7 +661,7 @@ w2c_engine_configuration_create (const axutil_env_t *env)
 
 AXIS2_EXTERN w2c_engine_configuration_t * AXIS2_CALL 
 w2c_engine_configuration_create_with_options (const axutil_env_t *env,
-                     axis2_hash_t* options)
+                     axutil_hash_t* options)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
    
@@ -738,8 +738,8 @@ w2c_engine_configuration_free (w2c_engine_configuration_t *engine_configuration,
         W2C_TYPEMAPPER_FREE ( engine_configuration_impl->typemapper, env );
     }
     
-    axis2_hash_free (engine_configuration_impl->uri2packagemap, env );
-    axis2_hash_free (engine_configuration_impl->policy_map, env );
+    axutil_hash_free (engine_configuration_impl->uri2packagemap, env );
+    axutil_hash_free (engine_configuration_impl->policy_map, env );
 
 
     if(engine_configuration->ops)
@@ -812,7 +812,7 @@ w2c_engine_configuration_get_type_mapping_file (
     return engine_configuration_impl-> type_mapping_file;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_uri2packagemap (
           w2c_engine_configuration_t  *engine_configuration,
           const axutil_env_t *env )
@@ -1064,7 +1064,7 @@ w2c_engine_configuration_get_serverside_interface (
     return engine_configuration_impl-> serverside_interface;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_policy_map (
           w2c_engine_configuration_t  *engine_configuration,
           const axutil_env_t *env )
@@ -1078,7 +1078,7 @@ w2c_engine_configuration_get_policy_map (
     return engine_configuration_impl-> policy_map;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_configuration_properties (
           w2c_engine_configuration_t  *engine_configuration,
           const axutil_env_t *env )
@@ -1260,7 +1260,7 @@ axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_uri2packagemap (
            w2c_engine_configuration_t *engine_configuration,
            const axutil_env_t *env,
-           axis2_hash_t *uri2packagemap )
+           axutil_hash_t *uri2packagemap )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1548,7 +1548,7 @@ axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_policy_map (
            w2c_engine_configuration_t *engine_configuration,
            const axutil_env_t *env,
-           axis2_hash_t *policy_map )
+           axutil_hash_t *policy_map )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1564,7 +1564,7 @@ axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_configuration_properties (
            w2c_engine_configuration_t *engine_configuration,
            const axutil_env_t *env,
-           axis2_hash_t *configuration_properties )
+           axutil_hash_t *configuration_properties )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     

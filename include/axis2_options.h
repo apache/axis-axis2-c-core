@@ -35,7 +35,7 @@
 #include <axutil_env.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_endpoint_ref.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_relates_to.h>
 #include <axis2_transport_out_desc.h>
 #include <axis2_transport_receiver.h> 
@@ -136,7 +136,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to properties hash map if set, else NULL
      */
-    AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
     axis2_options_get_properties(const axis2_options_t *options,
         const axutil_env_t *env);
 
@@ -371,7 +371,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_properties(axis2_options_t *options,
         const axutil_env_t *env,
-        axis2_hash_t *properties);
+        axutil_hash_t *properties);
 
     /**
      * Sets a property with the given key value.

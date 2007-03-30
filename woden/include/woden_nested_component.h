@@ -35,7 +35,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <woden.h>
 #include <woden_wsdl_component.h>
 
@@ -92,7 +92,7 @@ axis2_status_t AXIS2_CALL
 woden_nested_component_resolve_methods(
         woden_nested_component_t *nested_component,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_NESTED_COMPONENT_FREE(nested_component, env) \

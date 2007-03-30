@@ -772,8 +772,8 @@ axis2_addr_out_handler_process_any_content_type(const axutil_env_t *env,
         parent_ele_node,
         const axis2_char_t * addr_ns)
 {
-    axis2_hash_t *value_ht = NULL;
-    axis2_hash_index_t *hash_index = NULL;
+    axutil_hash_t *value_ht = NULL;
+    axutil_hash_index_t *hash_index = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -787,10 +787,10 @@ axis2_addr_out_handler_process_any_content_type(const axutil_env_t *env,
         if (!value_ht)
             return AXIS2_FAILURE;
 
-        for (hash_index = axis2_hash_first(value_ht, env); hash_index;
-                hash_index = axis2_hash_next(env, hash_index))
+        for (hash_index = axutil_hash_first(value_ht, env); hash_index;
+                hash_index = axutil_hash_next(env, hash_index))
         {
-            axis2_hash_this(hash_index, &k, &len, &v);
+            axutil_hash_this(hash_index, &k, &len, &v);
             if (k)
             {
                 axiom_node_t *node = NULL;

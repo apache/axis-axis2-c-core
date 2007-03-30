@@ -18,7 +18,7 @@
 #include  "_axiom_soap_envelope.h"
 #include "_axiom_soap_header.h"
 #include <axiom_soap_header_block.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom_soap_const.h>
 #include <axiom_soap_builder.h>
 #include <stdio.h>
@@ -31,7 +31,7 @@ struct axiom_soap_header
 
     int soap_version;
 
-    axis2_hash_t *header_blocks;
+    axutil_hash_t *header_blocks;
 
     int hbnumber;
 
@@ -150,12 +150,12 @@ axiom_soap_header_free(axiom_soap_header_t *soap_header,
 
     if (soap_header->header_blocks)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(soap_header->header_blocks , env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(soap_header->header_blocks , env); hi;
+                hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL , NULL, &val);
+            axutil_hash_this(hi, NULL , NULL, &val);
 
             if (val)
             {
@@ -164,7 +164,7 @@ axiom_soap_header_free(axiom_soap_header_t *soap_header,
             }
         }
 
-        axis2_hash_free(soap_header->header_blocks, env);
+        axutil_hash_free(soap_header->header_blocks, env);
     }
     if (soap_header->header_block_keys)
     {
@@ -251,7 +251,7 @@ axiom_soap_header_add_header_block(axiom_soap_header_t* soap_header,
         return  NULL;
     }
 }
-AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
 axiom_soap_header_examine_header_blocks
 (axiom_soap_header_t* soap_header,
         const axutil_env_t *env,
@@ -410,13 +410,13 @@ axiom_soap_header_set_header_block(axiom_soap_header_t *soap_header,
 
     if (soap_header->header_blocks)
     {
-        axis2_hash_set(soap_header->header_blocks,
+        axutil_hash_set(soap_header->header_blocks,
                 key , AXIS2_HASH_KEY_STRING, header_block);
     }
     else
     {
-        soap_header->header_blocks = axis2_hash_make(env);
-        axis2_hash_set(soap_header->header_blocks,
+        soap_header->header_blocks = axutil_hash_make(env);
+        axutil_hash_set(soap_header->header_blocks,
                 key , AXIS2_HASH_KEY_STRING, header_block);
     }
     if (soap_header->header_block_keys)
@@ -444,7 +444,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
         const axis2_char_t *ns_uri)
 {
     axutil_array_list_t *header_block_list = NULL;
-    axis2_hash_index_t *hash_index = NULL;
+    axutil_hash_index_t *hash_index = NULL;
 
     axiom_soap_header_block_t *header_block = NULL;
 
@@ -467,10 +467,10 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
     if (!header_block_list)
         return NULL;
 
-    for (hash_index = axis2_hash_first(soap_header->header_blocks, env);
-            hash_index; hash_index = axis2_hash_next(env, hash_index))
+    for (hash_index = axutil_hash_first(soap_header->header_blocks, env);
+            hash_index; hash_index = axutil_hash_next(env, hash_index))
     {
-        axis2_hash_this(hash_index, NULL, NULL, &hb);
+        axutil_hash_this(hash_index, NULL, NULL, &hb);
         if (hb)
         {
             header_block = (axiom_soap_header_block_t*)hb;
@@ -514,7 +514,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
     return NULL;
 }
 
-AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
 axiom_soap_header_get_all_header_blocks(axiom_soap_header_t *soap_header,
         const axutil_env_t *env)
 {
@@ -529,7 +529,7 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
     axis2_char_t *qn_localname = NULL;
     axis2_char_t *qname_ns = NULL;
     axis2_char_t *qname_prefix = NULL;
-    axis2_hash_index_t *hi  = NULL;
+    axutil_hash_index_t *hi  = NULL;
 
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
 
@@ -541,13 +541,13 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
         return AXIS2_FAILURE;
 
 
-    for (hi = axis2_hash_first(soap_header->header_blocks, env);
-            hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(soap_header->header_blocks, env);
+            hi; hi = axutil_hash_next(env, hi))
     {
         const void *key = NULL;
         void *val = NULL;
 
-        axis2_hash_this(hi, &key, NULL, &val);
+        axutil_hash_this(hi, &key, NULL, &val);
         if (val)
         {
             axiom_soap_header_block_t *header_block = NULL;
@@ -566,7 +566,7 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
                 {
                     AXIOM_NODE_DETACH(node, env);
                     AXIOM_NODE_FREE_TREE(node, env);
-                    axis2_hash_set(soap_header->header_blocks, key, AXIS2_HASH_KEY_STRING,
+                    axutil_hash_set(soap_header->header_blocks, key, AXIS2_HASH_KEY_STRING,
                             NULL);
                     axiom_soap_header_block_free(header_block, env);
                     return AXIS2_SUCCESS;

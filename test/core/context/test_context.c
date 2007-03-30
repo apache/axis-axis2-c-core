@@ -39,9 +39,9 @@ void axis2_test_conf_ctx_init()
     struct axis2_op_ctx *op_ctx1 = NULL;
     struct axis2_op_ctx *op_ctx2 = NULL;
     struct axis2_op *op = NULL;
-    struct axis2_hash_t *op_ctx_map = NULL;
-    struct axis2_hash_t *svc_ctx_map = NULL;
-    struct axis2_hash_t *svc_grp_ctx_map = NULL;
+    struct axutil_hash_t *op_ctx_map = NULL;
+    struct axutil_hash_t *svc_ctx_map = NULL;
+    struct axutil_hash_t *svc_grp_ctx_map = NULL;
 
     axis2_status_t status = AXIS2_FAILURE;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
@@ -76,24 +76,24 @@ void axis2_test_conf_ctx_init()
 
     if (op_ctx_map)
     {
-        axis2_hash_set(op_ctx_map, "op_ctx1", AXIS2_HASH_KEY_STRING, op_ctx1);
-        axis2_hash_set(op_ctx_map, "op_ctx2", AXIS2_HASH_KEY_STRING, op_ctx2);
+        axutil_hash_set(op_ctx_map, "op_ctx1", AXIS2_HASH_KEY_STRING, op_ctx1);
+        axutil_hash_set(op_ctx_map, "op_ctx2", AXIS2_HASH_KEY_STRING, op_ctx2);
     }
 
     svc_ctx_map =  axis2_conf_ctx_get_svc_ctx_map(conf_ctx, env);
 
     if (svc_ctx_map)
     {
-        axis2_hash_set(svc_ctx_map, "svc_ctx1", AXIS2_HASH_KEY_STRING, svc_ctx1);
-        axis2_hash_set(svc_ctx_map, "svc_ctx2", AXIS2_HASH_KEY_STRING, svc_ctx2);
+        axutil_hash_set(svc_ctx_map, "svc_ctx1", AXIS2_HASH_KEY_STRING, svc_ctx1);
+        axutil_hash_set(svc_ctx_map, "svc_ctx2", AXIS2_HASH_KEY_STRING, svc_ctx2);
     }
 
     svc_grp_ctx_map =  axis2_conf_ctx_get_svc_grp_ctx_map(conf_ctx, env);
 
     if (svc_grp_ctx_map)
     {
-        axis2_hash_set(svc_ctx_map, "svc_grp_ctx1", AXIS2_HASH_KEY_STRING, svc_grp_ctx1);
-        axis2_hash_set(svc_ctx_map, "svc_grp_ctx2", AXIS2_HASH_KEY_STRING, svc_grp_ctx2);
+        axutil_hash_set(svc_ctx_map, "svc_grp_ctx1", AXIS2_HASH_KEY_STRING, svc_grp_ctx1);
+        axutil_hash_set(svc_ctx_map, "svc_grp_ctx2", AXIS2_HASH_KEY_STRING, svc_grp_ctx2);
     }
 
     status =  axis2_conf_ctx_init(conf_ctx, env, conf);

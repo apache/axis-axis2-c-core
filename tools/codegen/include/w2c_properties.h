@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -60,7 +60,7 @@ AXIS2_DECLARE_DATA  struct w2c_properties_ops
      * @param env double pointer to environment struct. MUST NOT be NULL
      * return hash ( key, array list of strings)
      */
-     axis2_hash_t* (AXIS2_CALL *
+     axutil_hash_t* (AXIS2_CALL *
      get_hash)(w2c_properties_t *properties,
            const axutil_env_t *env);
 };

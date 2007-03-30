@@ -80,7 +80,7 @@ struct woden_desc_ops
     to_desc_free) (void *desc,
             const axutil_env_t *env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *desc,
             const axutil_env_t *env);
 
@@ -242,7 +242,7 @@ woden_desc_resolve_methods(
         woden_desc_t *desc,
         const axutil_env_t *env,
         woden_desc_t *desc_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_DESC_FREE(desc, env) \

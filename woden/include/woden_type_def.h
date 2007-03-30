@@ -30,7 +30,7 @@
  */
 
 #include <woden.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 
@@ -58,7 +58,7 @@ struct woden_type_def_ops
     free) (void *type_def,
             const axutil_env_t *env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *type_def,
             const axutil_env_t *env);
     
@@ -150,7 +150,7 @@ woden_type_def_resolve_methods(
         woden_type_def_t *type_def,
         const axutil_env_t *env,
         woden_type_def_t *type_def_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 

@@ -23,7 +23,7 @@ struct axis2_svc_grp
     /** service group name */
     axis2_char_t *svc_grp_name;
     /** map of services */
-    axis2_hash_t *svcs;
+    axutil_hash_t *svcs;
     /** to store service group modules QNames */
     axutil_array_list_t *module_qnames;
     /** to store module ref at deploy time parsing */
@@ -80,7 +80,7 @@ axis2_svc_grp_create(
         return NULL;
     }
 
-    svc_grp->svcs = axis2_hash_make(env);
+    svc_grp->svcs = axutil_hash_make(env);
     if (!svc_grp->svcs)
     {
         axis2_svc_grp_free(svc_grp, env);
@@ -130,7 +130,7 @@ axis2_svc_grp_free(
     if (svc_grp->svcs)
     {
         /* services are freed by arch_file_data */
-        axis2_hash_free(svc_grp->svcs, env);
+        axutil_hash_free(svc_grp->svcs, env);
     }
 
     if (svc_grp->module_qnames)
@@ -194,13 +194,13 @@ axis2_svc_grp_add_svc(
 
     if (!svc_grp->svcs)
     {
-        svc_grp->svcs = axis2_hash_make(env);
+        svc_grp->svcs = axutil_hash_make(env);
         if (!svc_grp->svcs)
             return AXIS2_FAILURE;
     }
     svc_qname = axis2_svc_get_qname(svc, env);
     svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
-    axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
+    axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
 
     handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env,
             svc_grp->parent, svc);
@@ -208,7 +208,7 @@ axis2_svc_grp_add_svc(
     if (!handler_resolver)
     {
         /* remove the previously added service */
-        axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING,
+        axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING,
                 NULL);
 
         return AXIS2_FAILURE;
@@ -218,7 +218,7 @@ axis2_svc_grp_add_svc(
     if (AXIS2_SUCCESS != status)
     {
         /* remove the previously added service */
-        axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
+        axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         axis2_phase_resolver_free(handler_resolver, env);
         return status;
     }
@@ -227,7 +227,7 @@ axis2_svc_grp_add_svc(
     if (AXIS2_SUCCESS != status)
     {
         /* remove the previously added service */
-        axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
+        axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         axis2_phase_resolver_free(handler_resolver, env);
         return status;
     }
@@ -236,7 +236,7 @@ axis2_svc_grp_add_svc(
     if (AXIS2_SUCCESS != status)
     {
         /* remove the previously added service */
-        axis2_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
+        axutil_hash_set(svc_grp->svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         axis2_phase_resolver_free(handler_resolver, env);
         return status;
     }
@@ -257,11 +257,11 @@ axis2_svc_grp_get_svc(
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     name = axis2_qname_to_string((axis2_qname_t *)qname, env);
-    return (axis2_svc_t *) axis2_hash_get(svc_grp->svcs, name,
+    return (axis2_svc_t *) axutil_hash_get(svc_grp->svcs, name,
             AXIS2_HASH_KEY_STRING);
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_svc_grp_get_all_svcs(
     const axis2_svc_grp_t *svc_grp,
     const axutil_env_t *env)
@@ -284,7 +284,7 @@ axis2_svc_grp_remove_svc(
     svc = axis2_svc_grp_get_svc(svc_grp, env, svc_qname);
 
     svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
-    axis2_hash_set(svc_grp->svcs, svc_name,
+    axutil_hash_set(svc_grp->svcs, svc_name,
             AXIS2_HASH_KEY_STRING, NULL);
 
     return AXIS2_SUCCESS;
@@ -424,7 +424,7 @@ axis2_svc_grp_engage_module(
     axis2_qname_t *modu = NULL;
     axis2_char_t *modu_local = NULL;
     axis2_char_t *module_name_local = NULL;
-    axis2_hash_t *svc_map = NULL;
+    axutil_hash_t *svc_map = NULL;
     axis2_phase_resolver_t *phase_resolver = NULL;
     axis2_module_desc_t *module = NULL;
 
@@ -469,14 +469,14 @@ axis2_svc_grp_engage_module(
     if (module)
     {
         axis2_svc_t *axis_svc = NULL;
-        axis2_hash_index_t *index = NULL;
+        axutil_hash_index_t *index = NULL;
 
-        index = axis2_hash_first(svc_map, env);
+        index = axutil_hash_first(svc_map, env);
         while (index)
         {
             void *v = NULL;
             /* engage in per each service */
-            axis2_hash_this(index, NULL, NULL, &v);
+            axutil_hash_this(index, NULL, NULL, &v);
             axis_svc = (axis2_svc_t *) v;
             status = axis2_phase_resolver_engage_module_to_svc(phase_resolver,
                     env, axis_svc, module);
@@ -488,7 +488,7 @@ axis2_svc_grp_engage_module(
                 }
                 return status;
             }
-            index = axis2_hash_next(env, index);
+            index = axutil_hash_next(env, index);
         }
     }
     if (phase_resolver)

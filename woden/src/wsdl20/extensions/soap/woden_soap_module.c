@@ -31,8 +31,8 @@ typedef struct woden_soap_module_impl woden_soap_module_impl_t;
 struct woden_soap_module_impl
 {
     woden_soap_module_t module;
-    axis2_hash_t *methods;
-    axis2_hash_t *super;
+    axutil_hash_t *methods;
+    axutil_hash_t *super;
     woden_obj_types_t obj_type;
 
     void *f_parent;
@@ -51,7 +51,7 @@ woden_soap_module_free(
     void *module,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_soap_module_super_objs(
     void *module,
     const axutil_env_t *env);
@@ -350,104 +350,104 @@ create(const axutil_env_t *env)
     module_impl->module.ops->to_element =
         woden_soap_module_to_element;
 
-    module_impl->methods = axis2_hash_make(env);
+    module_impl->methods = axutil_hash_make(env);
     if (!module_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(module_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(module_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_soap_module_free);
-    axis2_hash_set(module_impl->methods, "super_objs",
+    axutil_hash_set(module_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, woden_soap_module_super_objs);
-    axis2_hash_set(module_impl->methods, "type",
+    axutil_hash_set(module_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_soap_module_type);
 
-    axis2_hash_set(module_impl->methods, "get_ref",
+    axutil_hash_set(module_impl->methods, "get_ref",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_ref);
 
-    axis2_hash_set(module_impl->methods, "is_required",
+    axutil_hash_set(module_impl->methods, "is_required",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_is_required);
 
-    axis2_hash_set(module_impl->methods, "get_parent",
+    axutil_hash_set(module_impl->methods, "get_parent",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_parent);
 
-    axis2_hash_set(module_impl->methods, "to_element",
+    axutil_hash_set(module_impl->methods, "to_element",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_to_element);
 
-    axis2_hash_set(module_impl->methods, "set_ref",
+    axutil_hash_set(module_impl->methods, "set_ref",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_set_ref);
 
-    axis2_hash_set(module_impl->methods, "set_parent_element",
+    axutil_hash_set(module_impl->methods, "set_parent_element",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_set_parent_element);
 
-    axis2_hash_set(module_impl->methods, "get_parent_element",
+    axutil_hash_set(module_impl->methods, "get_parent_element",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_parent_element);
 
-    axis2_hash_set(module_impl->methods, "add_documentation_element",
+    axutil_hash_set(module_impl->methods, "add_documentation_element",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_add_documentation_element);
 
-    axis2_hash_set(module_impl->methods, "get_documentation_elements",
+    axutil_hash_set(module_impl->methods, "get_documentation_elements",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_documentation_elements);
 
-    axis2_hash_set(module_impl->methods, "set_extension_type",
+    axutil_hash_set(module_impl->methods, "set_extension_type",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_set_extension_type);
 
-    axis2_hash_set(module_impl->methods, "get_extension_type",
+    axutil_hash_set(module_impl->methods, "get_extension_type",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_extension_type);
 
-    axis2_hash_set(module_impl->methods, "set_required",
+    axutil_hash_set(module_impl->methods, "set_required",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_set_required);
 
-    axis2_hash_set(module_impl->methods, "set_ext_attr",
+    axutil_hash_set(module_impl->methods, "set_ext_attr",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_set_ext_attr);
 
-    axis2_hash_set(module_impl->methods, "get_ext_attr",
+    axutil_hash_set(module_impl->methods, "get_ext_attr",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_ext_attr);
 
-    axis2_hash_set(module_impl->methods, "get_ext_attrs_for_namespace",
+    axutil_hash_set(module_impl->methods, "get_ext_attrs_for_namespace",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_ext_attrs_for_namespace);
 
-    axis2_hash_set(module_impl->methods, "get_ext_attrs",
+    axutil_hash_set(module_impl->methods, "get_ext_attrs",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_ext_attrs);
 
-    axis2_hash_set(module_impl->methods, "has_ext_attrs_for_namespace",
+    axutil_hash_set(module_impl->methods, "has_ext_attrs_for_namespace",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_has_ext_attrs_for_namespace);
 
-    axis2_hash_set(module_impl->methods, "add_ext_element",
+    axutil_hash_set(module_impl->methods, "add_ext_element",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_add_ext_element);
 
-    axis2_hash_set(module_impl->methods, "remove_ext_element",
+    axutil_hash_set(module_impl->methods, "remove_ext_element",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_remove_ext_element);
 
-    axis2_hash_set(module_impl->methods, "get_ext_elements",
+    axutil_hash_set(module_impl->methods, "get_ext_elements",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_ext_elements);
 
-    axis2_hash_set(module_impl->methods, "get_ext_elements_of_type",
+    axutil_hash_set(module_impl->methods, "get_ext_elements_of_type",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_get_ext_elements_of_type);
 
-    axis2_hash_set(module_impl->methods, "has_ext_elements_for_namespace",
+    axutil_hash_set(module_impl->methods, "has_ext_elements_for_namespace",
             AXIS2_HASH_KEY_STRING,
             woden_soap_module_has_ext_elements_for_namespace);
 
@@ -462,13 +462,13 @@ woden_soap_module_create(const axutil_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
     module_impl = (woden_soap_module_impl_t *) create(env);
 
-    module_impl->super = axis2_hash_make(env);
+    module_impl->super = axutil_hash_make(env);
     if (!module_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(module_impl->super, "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(module_impl->super, "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING,
             &(module_impl->module));
 
     return &(module_impl->module);
@@ -527,13 +527,13 @@ woden_soap_module_free(void *module,
 
     if (module_impl->super)
     {
-        axis2_hash_free(module_impl->super, env);
+        axutil_hash_free(module_impl->super, env);
         module_impl->super = NULL;
     }
 
     if (module_impl->methods)
     {
-        axis2_hash_free(module_impl->methods, env);
+        axutil_hash_free(module_impl->methods, env);
         module_impl->methods = NULL;
     }
 
@@ -589,7 +589,7 @@ woden_soap_module_free(void *module,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_soap_module_super_objs(
     void *module,
     const axutil_env_t *env)
@@ -620,7 +620,7 @@ woden_soap_module_resolve_methods(
     woden_soap_module_t *module,
     const axutil_env_t *env,
     woden_soap_module_t *module_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_soap_module_impl_t *module_impl_l = NULL;
 
@@ -628,32 +628,32 @@ woden_soap_module_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     module_impl_l = INTF_TO_IMPL(module_impl);
 
-    module->ops->free = axis2_hash_get(methods, "free",
+    module->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    module->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    module->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    module->ops->type = axis2_hash_get(methods, "type",
+    module->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    module->ops->get_ref = axis2_hash_get(methods,
+    module->ops->get_ref = axutil_hash_get(methods,
             "get_ref", AXIS2_HASH_KEY_STRING);
     if (!module->ops->get_ref && module_impl_l)
         module->ops->get_ref =
             module_impl_l->module.ops->get_ref;
 
-    module->ops->is_required = axis2_hash_get(methods,
+    module->ops->is_required = axutil_hash_get(methods,
             "is_required", AXIS2_HASH_KEY_STRING);
     if (!module->ops->is_required && module_impl_l)
         module->ops->is_required =
             module_impl_l->module.ops->is_required;
 
-    module->ops->get_parent = axis2_hash_get(methods,
+    module->ops->get_parent = axutil_hash_get(methods,
             "get_parent", AXIS2_HASH_KEY_STRING);
     if (!module->ops->get_parent && module_impl_l)
         module->ops->get_parent =
             module_impl_l->module.ops->get_parent;
 
-    module->ops->to_element = axis2_hash_get(methods,
+    module->ops->to_element = axutil_hash_get(methods,
             "to_element", AXIS2_HASH_KEY_STRING);
     if (!module->ops->to_element && module_impl_l)
         module->ops->to_element =
@@ -672,11 +672,11 @@ woden_soap_module_get_ref(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return module_impl->f_ref;
@@ -688,11 +688,11 @@ woden_soap_module_is_required(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return module_impl->f_required;
@@ -704,11 +704,11 @@ woden_soap_module_get_parent(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return module_impl->f_parent;
@@ -720,11 +720,11 @@ woden_soap_module_to_element(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return &(module_impl->module);
@@ -742,12 +742,12 @@ woden_soap_module_set_ref(
     axis2_uri_t *uri)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     if (module_impl->f_ref)
@@ -769,11 +769,11 @@ woden_soap_module_set_parent_element(
     void *wsdl_el)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     if (module_impl->f_parent)
@@ -792,11 +792,11 @@ woden_soap_module_get_parent_element(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return module_impl->f_parent;
@@ -809,12 +809,12 @@ woden_soap_module_add_documentation_element(
     void *doc_el)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, doc_el, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     if (!module_impl->f_documentation_elements)
@@ -837,11 +837,11 @@ woden_soap_module_get_documentation_elements(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return module_impl->f_documentation_elements;
@@ -854,11 +854,11 @@ woden_soap_module_set_extension_type(
     axis2_qname_t *qname)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     if (module_impl->f_ext_element_type)
@@ -878,11 +878,11 @@ woden_soap_module_get_extension_type(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return module_impl->f_ext_element_type;
@@ -895,11 +895,11 @@ woden_soap_module_set_required(
     axis2_bool_t required)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     module_impl->f_required = required;
@@ -919,13 +919,13 @@ woden_soap_module_set_ext_attr(
     void *attr)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, attr_type, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, attr, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(
@@ -939,12 +939,12 @@ woden_soap_module_get_ext_attr(
     axis2_qname_t *attr_type)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, attr_type, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(
@@ -958,12 +958,12 @@ woden_soap_module_get_ext_attrs_for_namespace(
     axis2_uri_t *namespc)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, namespc, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS_FOR_NAMESPACE(
@@ -976,11 +976,11 @@ woden_soap_module_get_ext_attrs(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS(
@@ -994,12 +994,12 @@ woden_soap_module_has_ext_attrs_for_namespace(
     axis2_uri_t *namespc)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
@@ -1013,12 +1013,12 @@ woden_soap_module_add_ext_element(
     void *ext_el)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ext_el, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(
@@ -1032,12 +1032,12 @@ woden_soap_module_remove_ext_element(
     void *ext_el)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ext_el, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_REMOVE_EXT_ELEMENT(
@@ -1052,11 +1052,11 @@ woden_soap_module_get_ext_elements(
     axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(
@@ -1070,12 +1070,12 @@ woden_soap_module_get_ext_elements_of_type(
     axis2_qname_t *ext_type)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ext_type, NULL);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(
@@ -1089,12 +1089,12 @@ woden_soap_module_has_ext_elements_for_namespace(
     axis2_uri_t *namespc)
 {
     woden_soap_module_impl_t *module_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
     super = WODEN_SOAP_MODULE_SUPER_OBJS(module, env);
-    module_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    module_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(

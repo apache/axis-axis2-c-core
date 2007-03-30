@@ -36,14 +36,14 @@ struct xml_schema_derivation_method_impl
 
     axutil_array_list_t *members;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 };
 
 #define AXIS2_INTF_TO_IMPL(derivation_method) \
         ((xml_schema_derivation_method_impl_t *) derivation_method)
 
 /************************* function prototypes ************************************/
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_derivation_method_super_objs(void *derivation_method,
         const axutil_env_t *env);
 
@@ -152,11 +152,11 @@ xml_schema_derivation_method_create(const axutil_env_t *env,
         return NULL;
     }
 
-    derivation_method_impl->ht_super = axis2_hash_make(env);
-    axis2_hash_set(derivation_method_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_DERIVATION_METHOD"),
+    derivation_method_impl->ht_super = axutil_hash_make(env);
+    axutil_hash_set(derivation_method_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_DERIVATION_METHOD"),
             AXIS2_HASH_KEY_STRING, &(derivation_method_impl->derivation_method));
 
-    axis2_hash_set(derivation_method_impl->ht_super, axis2_strdup(env,"XML_SCHEMA_ENUM"),
+    axutil_hash_set(derivation_method_impl->ht_super, axis2_strdup(env,"XML_SCHEMA_ENUM"),
             AXIS2_HASH_KEY_STRING, derivation_method_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(
@@ -240,7 +240,7 @@ xml_schema_derivation_method_get_values(void *derivation_method,
     return AXIS2_INTF_TO_IMPL(derivation_method)->members;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_derivation_method_super_objs(void *derivation_method,
         const axutil_env_t *env)
 {

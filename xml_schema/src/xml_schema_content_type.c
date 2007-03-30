@@ -37,7 +37,7 @@ struct xml_schema_content_type_impl
 
     axutil_array_list_t *members;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 };
 
 #define AXIS2_INTF_TO_IMPL(content_type) \
@@ -59,7 +59,7 @@ xml_schema_types_t AXIS2_CALL
 xml_schema_content_type_get_type(void *content_type,
         const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_content_type_super_objs(void *content_type,
         const axutil_env_t *env);
 
@@ -132,7 +132,7 @@ xml_schema_content_type_create(const axutil_env_t *env,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    content_type_impl->ht_super = axis2_hash_make(env);
+    content_type_impl->ht_super = axutil_hash_make(env);
     if (!content_type_impl->ht_super)
     {
         xml_schema_content_type_free(&(content_type_impl->content_type), env);
@@ -140,9 +140,9 @@ xml_schema_content_type_create(const axutil_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(content_type_impl->ht_super, axis2_strdup("XML_SCHEMA_CONTENT_TYPE", env),
+    axutil_hash_set(content_type_impl->ht_super, axis2_strdup("XML_SCHEMA_CONTENT_TYPE", env),
             AXIS2_HASH_KEY_STRING, &(content_type_impl->content_type));
-    axis2_hash_set(content_type_impl->ht_super, axis2_strdup("XML_SCHEMA_ENUM", env), AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(content_type_impl->ht_super, axis2_strdup("XML_SCHEMA_ENUM", env), AXIS2_HASH_KEY_STRING,
             content_type_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(
@@ -227,7 +227,7 @@ xml_schema_content_type_get_type(void *content_type,
     return AXIS2_INTF_TO_IMPL(content_type)->obj_type;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_content_type_super_objs(void *content_type,
         const axutil_env_t *env)
 {

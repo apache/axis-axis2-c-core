@@ -37,7 +37,7 @@ struct xml_schema_any_attribute_impl
      */
     xml_schema_types_t obj_type;
 
-    axis2_hash_t* ht_super;
+    axutil_hash_t* ht_super;
 
     axis2_char_t *ns;
 };
@@ -58,7 +58,7 @@ xml_schema_types_t AXIS2_CALL
 xml_schema_any_attribute_get_type(void *any_attr,
         const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_any_attribute_super_objs(void *any_attr,
         const axutil_env_t *env);
 
@@ -150,22 +150,22 @@ xml_schema_any_attribute_create(const axutil_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
     }
 
-    any_attr_impl->ht_super = axis2_hash_make(env);
+    any_attr_impl->ht_super = axutil_hash_make(env);
     if (!any_attr_impl->ht_super)
     {
         xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(any_attr_impl->ht_super,
+    axutil_hash_set(any_attr_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ANY_ATTRIBUTE"),
             AXIS2_HASH_KEY_STRING, &(any_attr_impl->any_attr));
 
-    axis2_hash_set(any_attr_impl->ht_super,
+    axutil_hash_set(any_attr_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, any_attr_impl->annotated);
 
-    axis2_hash_set(any_attr_impl->ht_super,
+    axutil_hash_set(any_attr_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(any_attr_impl->annotated, env));
@@ -194,7 +194,7 @@ xml_schema_any_attribute_free(void *any_attr,
     }
     if (any_attr_impl->ht_super)
     {
-        axis2_hash_free(any_attr_impl->ht_super, env);
+        axutil_hash_free(any_attr_impl->ht_super, env);
         any_attr_impl->ht_super = NULL;
     }
     if (any_attr_impl->process_content)
@@ -304,7 +304,7 @@ xml_schema_any_attribute_get_type(void *any_attr,
     return AXIS2_INTF_TO_IMPL(any_attr)->obj_type;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_any_attribute_super_objs(void *any_attr,
         const axutil_env_t *env)
 {

@@ -36,7 +36,7 @@ struct xml_schema_simple_content_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 };
 
 #define AXIS2_INTF_TO_IMPL(sim_content) \
@@ -58,7 +58,7 @@ xml_schema_types_t AXIS2_CALL
 xml_schema_simple_content_get_type(void *sim_content,
         const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_simple_content_super_objs(void *sim_content,
         const axutil_env_t *env);
 
@@ -120,7 +120,7 @@ xml_schema_simple_content_create(const axutil_env_t *env)
     sim_cnt_impl->sim_content.ops->to_string =
         xml_schema_simple_content_to_string;
 
-    sim_cnt_impl->ht_super = axis2_hash_make(env);
+    sim_cnt_impl->ht_super = axutil_hash_make(env);
     if (!sim_cnt_impl->ht_super)
     {
         xml_schema_simple_content_free(&(sim_cnt_impl->sim_content), env);
@@ -132,13 +132,13 @@ xml_schema_simple_content_create(const axutil_env_t *env)
         xml_schema_simple_content_free(&(sim_cnt_impl->sim_content), env);
         return NULL;
     }
-    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_SIMPLE_CONTENT"),
+    axutil_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_SIMPLE_CONTENT"),
             AXIS2_HASH_KEY_STRING, &(sim_cnt_impl->sim_content));
 
-    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
+    axutil_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, sim_cnt_impl->annotated);
 
-    axis2_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
+    axutil_hash_set(sim_cnt_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(sim_cnt_impl->annotated, env));
 
@@ -173,7 +173,7 @@ xml_schema_simple_content_free(void *sim_content,
     }
     if (sim_cnt_impl->ht_super)
     {
-        axis2_hash_free(sim_cnt_impl->ht_super, env);
+        axutil_hash_free(sim_cnt_impl->ht_super, env);
         sim_cnt_impl->ht_super = NULL;
     }
     if (sim_cnt_impl->sim_content.base.ops)
@@ -257,7 +257,7 @@ xml_schema_simple_content_get_type(void *sim_content,
     return AXIS2_INTF_TO_IMPL(sim_content)->obj_type;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_simple_content_super_objs(void *sim_content,
         const axutil_env_t *env)
 {

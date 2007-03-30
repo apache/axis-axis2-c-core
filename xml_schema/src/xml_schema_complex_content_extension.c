@@ -39,7 +39,7 @@ struct xml_schema_complex_content_extension_impl
 
     xml_schema_particle_t *particle;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_types_t obj_type;
 };
@@ -62,7 +62,7 @@ xml_schema_complex_content_extension_get_type(
     void *cmp_cnt_ext,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_complex_content_extension_super_objs(
     void *cmp_cnt_ext,
     const axutil_env_t *env);
@@ -175,7 +175,7 @@ xml_schema_complex_content_extension_create(const axutil_env_t *env)
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->to_string =
         xml_schema_complex_content_extension_to_string;
 
-    cmp_cnt_ext_impl->ht_super = axis2_hash_make(env);
+    cmp_cnt_ext_impl->ht_super = axutil_hash_make(env);
     if (!cmp_cnt_ext_impl->ht_super)
     {
         xml_schema_complex_content_extension_free(
@@ -198,11 +198,11 @@ xml_schema_complex_content_extension_create(const axutil_env_t *env)
         xml_schema_complex_content_extension_free(&(cmp_cnt_ext_impl->cmp_cnt_ext), env);
         return NULL;
     }
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_COMPLEX_CONTENT_EXTENSION"),
+    axutil_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_COMPLEX_CONTENT_EXTENSION"),
             AXIS2_HASH_KEY_STRING, &(cmp_cnt_ext_impl->cmp_cnt_ext));
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
+    axutil_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, cmp_cnt_ext_impl->annotated);
-    axis2_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
+    axutil_hash_set(cmp_cnt_ext_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(cmp_cnt_ext_impl->annotated, env));
 
@@ -381,7 +381,7 @@ xml_schema_complex_content_extension_get_type(
     return AXIS2_INTF_TO_IMPL(cmp_cnt_ext)->obj_type;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_complex_content_extension_super_objs(
     void *cmp_cnt_ext,
     const axutil_env_t *env)

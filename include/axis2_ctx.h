@@ -36,7 +36,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axutil_env.h>
 #include <axis2_property.h>
 
@@ -96,7 +96,7 @@ extern "C"
      * @return pointer to the hash map which stores the non-persistent
      * properties
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_ctx_get_property_map(const axis2_ctx_t *ctx,
         const axutil_env_t *env);
 
@@ -106,7 +106,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash table containing all properties
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_ctx_get_all_properties(const axis2_ctx_t *ctx,
         const axutil_env_t *env);
 
@@ -131,7 +131,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ctx_set_property_map(struct axis2_ctx *ctx,
         const axutil_env_t *env,
-        axis2_hash_t *map);
+        axutil_hash_t *map);
 
 #ifdef __cplusplus
 }

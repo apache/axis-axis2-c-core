@@ -31,7 +31,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
@@ -70,7 +70,7 @@ struct woden_fault_ref_element_ops
             void *fault_ref_element,
             const axutil_env_t *env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *fault_ref_element,
             const axutil_env_t *env);
@@ -138,7 +138,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_fault_ref_element_resolve_methods(
         woden_fault_ref_element_t *fault_ref_element,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_INTERFACE_FAULT_REF_ELEMENT_FREE(fault_ref_element, env) \

@@ -129,7 +129,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_qname_list_attr_resolve_methods(
         woden_qname_list_attr_t *qname_list_attr,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_QNAME_LIST_ATTR_FREE(qname_list_attr, env) \

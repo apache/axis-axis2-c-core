@@ -17,7 +17,7 @@
  
 #include <w2c_engine.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
 #include <w2c_cmdline_option.h>
@@ -75,7 +75,7 @@ w2c_engine_create_with_parser (const axutil_env_t *env,
                            w2c_cmdline_option_parser_t *parser)
 {
     w2c_engine_impl_t *engine_impl = NULL;
-    axis2_hash_t *all_options = NULL;
+    axutil_hash_t *all_options = NULL;
     axis2_char_t *wsdl_uri = NULL;
     axis2_char_t *base_uri = NULL;
     w2c_cmdline_option_t *option = NULL;
@@ -115,7 +115,7 @@ w2c_engine_create_with_parser (const axutil_env_t *env,
     engine_impl-> conf =  
         w2c_engine_configuration_create_with_options ( env, all_options );
 
-    option = axis2_hash_get(all_options, 
+    option = axutil_hash_get(all_options, 
             W2C_CMDLINE_OPTION_CONSTS_WSDL_LOCATION_URI,
             AXIS2_HASH_KEY_STRING );
     
@@ -201,7 +201,7 @@ w2c_engine_generate(w2c_engine_t *engine,
     int i = 0;
     w2c_extension_t *ext = NULL;
     w2c_emitter_t *emitter = NULL;
-    axis2_hash_t *emitter_map = NULL;
+    axutil_hash_t *emitter_map = NULL;
     axis2_char_t *emit_name = NULL;
     axis2_char_t *output_lang = NULL;
     axis2_bool_t all_flag = AXIS2_FALSE;
@@ -227,7 +227,7 @@ w2c_engine_generate(w2c_engine_t *engine,
                     ( engine_impl-> prop_loader, env );
     output_lang = W2C_ENGINE_CONFIGURATION_GET_OUTPUT_LANGUAGE
                      ( engine_impl-> conf, env );
-    emit_name = (axis2_char_t*)axis2_hash_get ( emitter_map,
+    emit_name = (axis2_char_t*)axutil_hash_get ( emitter_map,
                                             output_lang, AXIS2_HASH_KEY_STRING);
     /* the place where emitter is loading */
     emitter = w2c_class_loader_get_object_from_class_name

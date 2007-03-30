@@ -18,7 +18,7 @@
 
 #include <axis2_options.h>
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom_soap_const.h>
 #include <axis2_msg_info_headers.h>
 #include <axutil_array_list.h>
@@ -28,7 +28,7 @@ struct axis2_options
     /** parent options */
     axis2_options_t *parent;
 
-    axis2_hash_t *properties;
+    axutil_hash_t *properties;
 
     axis2_char_t *soap_version_uri;
 
@@ -95,7 +95,7 @@ axis2_options_create(const axutil_env_t *env)
         return NULL;
     }
 
-    options->properties = axis2_hash_make(env);
+    options->properties = axutil_hash_make(env);
     if (!(options->properties))
     {
         axis2_options_free(options, env);
@@ -232,13 +232,13 @@ axis2_options_get_message_id(const axis2_options_t *options,
     return message_id;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_options_get_properties(const axis2_options_t *options,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (axis2_hash_count(options->properties) == 0 && options->parent)
+    if (axutil_hash_count(options->properties) == 0 && options->parent)
     {
         return axis2_options_get_properties(options->parent, env);
     }
@@ -254,7 +254,7 @@ axis2_options_get_property(const axis2_options_t *options,
     void *property = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    property = axis2_hash_get(options->properties, key, AXIS2_HASH_KEY_STRING);
+    property = axutil_hash_get(options->properties, key, AXIS2_HASH_KEY_STRING);
 
     if (property == NULL && options->parent)
     {
@@ -490,13 +490,13 @@ axis2_options_set_message_id(axis2_options_t *options,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_properties(axis2_options_t *options,
     const axutil_env_t *env,
-    axis2_hash_t *properties)
+    axutil_hash_t *properties)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (options->properties)
     {
-        axis2_hash_free(options->properties, env);
+        axutil_hash_free(options->properties, env);
     }
     options->properties = properties;
     return AXIS2_SUCCESS;
@@ -508,7 +508,7 @@ axis2_options_set_property(axis2_options_t *options,
     const axis2_char_t *property_key,
     const void *property)
 {
-    axis2_hash_set(options->properties, property_key,
+    axutil_hash_set(options->properties, property_key,
         AXIS2_HASH_KEY_STRING, property);
     return AXIS2_SUCCESS;
 }
@@ -692,15 +692,15 @@ axis2_options_free(axis2_options_t *options,
 
     if (options->properties)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
         const void *key = NULL;
-        for (hi = axis2_hash_first(options->properties, env);
-            hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(options->properties, env);
+            hi; hi = axutil_hash_next(env, hi))
         {
             axis2_property_t *property = NULL;
 
-            axis2_hash_this(hi, &key, NULL, &val);
+            axutil_hash_this(hi, &key, NULL, &val);
             property = (axis2_property_t *) val;
 
             if (property)
@@ -708,7 +708,7 @@ axis2_options_free(axis2_options_t *options,
                 axis2_property_free(property, env);
             }
         }
-        axis2_hash_free(options->properties, env);
+        axutil_hash_free(options->properties, env);
     }
 
     if (options->soap_version_uri)

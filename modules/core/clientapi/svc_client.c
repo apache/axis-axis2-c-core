@@ -18,7 +18,7 @@
 #include <axis2_svc_client.h>
 #include <axis2_phases_info.h>
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_uri.h>
 #include "axis2_callback_recv.h"
 #include <axiom_soap_const.h>
@@ -111,7 +111,7 @@ axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
     axis2_svc_grp_t *svc_grp = NULL;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     const axis2_char_t *svc_grp_name = NULL;
-    axis2_hash_t *ops = NULL;
+    axutil_hash_t *ops = NULL;
     const axis2_char_t *repos_path = NULL;
     axis2_char_t *wsdl_path = NULL;
 
@@ -160,15 +160,15 @@ axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
         wsdl_svc_qname, endpoint_name, wsdl_path, svc_client->options); */
     if (svc_client->svc)
     {
-        axis2_hash_index_t *i = NULL;
+        axutil_hash_index_t *i = NULL;
         void *v = NULL;
         axis2_op_t *op = NULL;
 
         ops = axis2_svc_get_all_ops(svc_client->svc, env);
-        for (i = axis2_hash_first(ops, env); i; i = axis2_hash_next(env, i))
+        for (i = axutil_hash_first(ops, env); i; i = axutil_hash_next(env, i))
         {
             axis2_phases_info_t * info = NULL;
-            axis2_hash_this(i, NULL, NULL, &v);
+            axutil_hash_this(i, NULL, NULL, &v);
             op = (axis2_op_t *) v;
 
             /* Setting operation phase */

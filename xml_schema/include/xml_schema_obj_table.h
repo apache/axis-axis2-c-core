@@ -39,7 +39,7 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <xml_schema_obj.h>
 
@@ -146,7 +146,7 @@ struct xml_schema_obj_table_ops
             axis2_char_t *key,
             void *value);
          
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_hash_table)(
             xml_schema_obj_table_t *obj_table,
             const axutil_env_t *env);

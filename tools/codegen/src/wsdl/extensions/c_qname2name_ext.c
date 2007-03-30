@@ -25,8 +25,8 @@ typedef struct w2c_c_qname2name_ext_impl
     w2c_extension_t extension;
     w2c_qname2name_maker_t qname2name_maker;
 
-    axis2_hash_t *qname2name;
-    axis2_hash_t *name2number;
+    axutil_hash_t *qname2name;
+    axutil_hash_t *name2number;
 
 } w2c_c_qname2name_ext_impl_t;
 
@@ -52,8 +52,8 @@ w2c_c_qname2name_ext_free(w2c_extension_t *extension,
     w2c_c_qname2name_ext_impl_t *impl = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value =NULL;
-    axis2_hash_index_t *hi = NULL;
-    axis2_hash_t *h = NULL;
+    axutil_hash_index_t *hi = NULL;
+    axutil_hash_t *h = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -61,18 +61,18 @@ w2c_c_qname2name_ext_free(w2c_extension_t *extension,
 
     h = impl-> qname2name;
     
-    for (hi = axis2_hash_first(h, env) ;
-                hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(h, env) ;
+                hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
         if (key)
             AXIS2_FREE( env-> allocator, key);
         if (value)
             AXIS2_FREE( env-> allocator, value); 
     }
-    axis2_hash_free( h , env);
+    axutil_hash_free( h , env);
  
-    axis2_hash_free( impl-> name2number, env);
+    axutil_hash_free( impl-> name2number, env);
 
     if(extension->ops)
     {
@@ -136,7 +136,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
     impl = W2C_QNAME2NAME_MAKER_INTF_TO_IMPL(qname2name_maker);
 
     key = axis2_qname_to_string(qname, env);
-    local = (axis2_char_t*)axis2_hash_get( impl-> qname2name, key,
+    local = (axis2_char_t*)axutil_hash_get( impl-> qname2name, key,
                          AXIS2_HASH_KEY_STRING );
     if( local != NULL) /* key has been there somewhere */
     {
@@ -144,20 +144,20 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
     }
     /* otherwise */
     local = axis2_qname_get_localpart( qname, env);
-    counter = (int)axis2_hash_get( impl-> name2number, local,
+    counter = (int)axutil_hash_get( impl-> name2number, local,
                          AXIS2_HASH_KEY_STRING );
     if ( counter == 0 ) /** this means name doesnt exist */
     {
-        axis2_hash_set(impl-> qname2name, key, AXIS2_HASH_KEY_STRING, local);
-        axis2_hash_set(impl-> name2number, local, AXIS2_HASH_KEY_STRING, (void*)1);
+        axutil_hash_set(impl-> qname2name, key, AXIS2_HASH_KEY_STRING, local);
+        axutil_hash_set(impl-> name2number, local, AXIS2_HASH_KEY_STRING, (void*)1);
         return local;
     }
     /* else qname would already exist */ 
     sprintf(counter_str, "%d", counter);
     given_name = axis2_stracat(env, local, counter_str);
 
-    axis2_hash_set(impl-> qname2name, key, AXIS2_HASH_KEY_STRING, given_name);
-    axis2_hash_set(impl-> name2number, local, AXIS2_HASH_KEY_STRING, (void*)(counter+1));
+    axutil_hash_set(impl-> qname2name, key, AXIS2_HASH_KEY_STRING, given_name);
+    axutil_hash_set(impl-> name2number, local, AXIS2_HASH_KEY_STRING, (void*)(counter+1));
 
     return given_name;    
 }
@@ -189,8 +189,8 @@ axis2_get_instance(w2c_extension_t **inst,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return AXIS2_FAILURE;
     }
-    impl->qname2name = axis2_hash_make(env);
-    impl->name2number = axis2_hash_make(env);
+    impl->qname2name = axutil_hash_make(env);
+    impl->name2number = axutil_hash_make(env);
     impl->extension.ops = 
                 AXIS2_MALLOC (env->allocator, sizeof(w2c_extension_ops_t));
     if(! impl->extension.ops)

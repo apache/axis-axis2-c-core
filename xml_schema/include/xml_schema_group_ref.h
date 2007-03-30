@@ -28,7 +28,7 @@
 
 #include <xml_schema_defines.h>
 #include <xml_schema_particle.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 
 /** @defgroup_ref xml_schema_group_ref Xml Schema Group Ref
@@ -51,7 +51,7 @@ struct xml_schema_group_ref_ops
     free) (void *group_ref,
            const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *group_ref,
             const axutil_env_t *env);

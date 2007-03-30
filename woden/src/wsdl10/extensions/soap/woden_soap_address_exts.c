@@ -34,8 +34,8 @@ struct woden_wsdl10_soap_address_exts_impl
 {
     woden_wsdl10_soap_address_exts_t address_exts;
     woden_component_exts_t *component_exts;
-    axis2_hash_t *methods;
-    axis2_hash_t *super;
+    axutil_hash_t *methods;
+    axutil_hash_t *super;
     woden_obj_types_t obj_type;
 
     axis2_qname_t *qname;
@@ -49,7 +49,7 @@ woden_wsdl10_soap_address_exts_free(
     void *address_exts,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_super_objs(
     void *address_exts,
     const axutil_env_t *env);
@@ -154,26 +154,26 @@ create(const axutil_env_t *env)
     address_exts_impl->address_exts.ops->get_soap_address =
         woden_wsdl10_soap_address_exts_get_soap_address;
 
-    address_exts_impl->methods = axis2_hash_make(env);
+    address_exts_impl->methods = axutil_hash_make(env);
     if (!address_exts_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(address_exts_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(address_exts_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_address_exts_free);
-    axis2_hash_set(address_exts_impl->methods, "super_objs",
+    axutil_hash_set(address_exts_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, woden_wsdl10_soap_address_exts_super_objs);
-    axis2_hash_set(address_exts_impl->methods, "type",
+    axutil_hash_set(address_exts_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_wsdl10_soap_address_exts_type);
 
-    axis2_hash_set(address_exts_impl->methods, "get_soap_modules",
+    axutil_hash_set(address_exts_impl->methods, "get_soap_modules",
             AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_address_exts_get_soap_modules);
-    axis2_hash_set(address_exts_impl->methods, "set_soap_address",
+    axutil_hash_set(address_exts_impl->methods, "set_soap_address",
             AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_address_exts_set_soap_address);
-    axis2_hash_set(address_exts_impl->methods, "get_soap_address",
+    axutil_hash_set(address_exts_impl->methods, "get_soap_address",
             AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_address_exts_get_soap_address);
 
@@ -190,15 +190,15 @@ woden_wsdl10_soap_address_exts_create(const axutil_env_t *env)
 
     address_exts_impl->component_exts = woden_component_exts_create(env);
 
-    address_exts_impl->super = axis2_hash_make(env);
+    address_exts_impl->super = axutil_hash_make(env);
     if (!address_exts_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(address_exts_impl->super, "WODEN_WSDL10_SOAP_ADDRESS_EXTS", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(address_exts_impl->super, "WODEN_WSDL10_SOAP_ADDRESS_EXTS", AXIS2_HASH_KEY_STRING,
             &(address_exts_impl->address_exts));
-    axis2_hash_set(address_exts_impl->super, "WODEN_COMPONENT_EXTS", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(address_exts_impl->super, "WODEN_COMPONENT_EXTS", AXIS2_HASH_KEY_STRING,
             address_exts_impl->component_exts);
 
     return &(address_exts_impl->address_exts);
@@ -236,13 +236,13 @@ woden_wsdl10_soap_address_exts_free(void *address_exts,
 
     if (address_exts_impl->super)
     {
-        axis2_hash_free(address_exts_impl->super, env);
+        axutil_hash_free(address_exts_impl->super, env);
         address_exts_impl->super = NULL;
     }
 
     if (address_exts_impl->methods)
     {
-        axis2_hash_free(address_exts_impl->methods, env);
+        axutil_hash_free(address_exts_impl->methods, env);
         address_exts_impl->methods = NULL;
     }
 
@@ -279,7 +279,7 @@ woden_wsdl10_soap_address_exts_free(void *address_exts,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_super_objs(
     void *address_exts,
     const axutil_env_t *env)
@@ -323,7 +323,7 @@ woden_wsdl10_soap_address_exts_resolve_methods(
     woden_wsdl10_soap_address_exts_t *address_exts,
     const axutil_env_t *env,
     woden_wsdl10_soap_address_exts_t *address_exts_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl_l = NULL;
 
@@ -331,14 +331,14 @@ woden_wsdl10_soap_address_exts_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     address_exts_impl_l = INTF_TO_IMPL(address_exts_impl);
 
-    address_exts->ops->free = axis2_hash_get(methods, "free",
+    address_exts->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    address_exts->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    address_exts->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    address_exts->ops->type = axis2_hash_get(methods, "type",
+    address_exts->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    address_exts->ops->get_soap_modules = axis2_hash_get(methods,
+    address_exts->ops->get_soap_modules = axutil_hash_get(methods,
             "get_soap_modules", AXIS2_HASH_KEY_STRING);
     if (!address_exts->ops->get_soap_modules && address_exts_impl_l)
         address_exts->ops->get_soap_modules =

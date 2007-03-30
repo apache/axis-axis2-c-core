@@ -31,13 +31,13 @@ struct xml_schema_complex_content_impl
 
     xml_schema_annotated_t *annotated;
 
-    axis2_hash_t *methods;
+    axutil_hash_t *methods;
 
     void *content;
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     axis2_bool_t mixed;
 };
@@ -60,7 +60,7 @@ xml_schema_complex_content_get_type(
     void *complex_content,
     const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_complex_content_super_objs(
     void *complex_content,
     const axutil_env_t *env);
@@ -146,8 +146,8 @@ xml_schema_complex_content_create(const axutil_env_t *env)
     complex_content_impl->complex_content.ops->set_mixed =
         xml_schema_complex_content_set_mixed;
 
-    complex_content_impl->methods = axis2_hash_make(env);
-    complex_content_impl->ht_super = axis2_hash_make(env);
+    complex_content_impl->methods = axutil_hash_make(env);
+    complex_content_impl->ht_super = axutil_hash_make(env);
 
     if (!complex_content_impl->methods || !complex_content_impl->ht_super)
     {
@@ -155,17 +155,17 @@ xml_schema_complex_content_create(const axutil_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(complex_content_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(complex_content_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             xml_schema_complex_content_free);
-    axis2_hash_set(complex_content_impl->methods, "get_content",
+    axutil_hash_set(complex_content_impl->methods, "get_content",
             AXIS2_HASH_KEY_STRING, xml_schema_complex_content_get_content);
-    axis2_hash_set(complex_content_impl->methods, "set_content",
+    axutil_hash_set(complex_content_impl->methods, "set_content",
             AXIS2_HASH_KEY_STRING, xml_schema_complex_content_set_content);
-    axis2_hash_set(complex_content_impl->methods, "get_type",
+    axutil_hash_set(complex_content_impl->methods, "get_type",
             AXIS2_HASH_KEY_STRING, xml_schema_complex_content_get_type);
-    axis2_hash_set(complex_content_impl->methods, "super_objs",
+    axutil_hash_set(complex_content_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, xml_schema_complex_content_super_objs);
-    axis2_hash_set(complex_content_impl->methods, "to_string",
+    axutil_hash_set(complex_content_impl->methods, "to_string",
             AXIS2_HASH_KEY_STRING, xml_schema_complex_content_to_string);
 
     complex_content_impl->annotated = xml_schema_annotated_create(env);
@@ -174,13 +174,13 @@ xml_schema_complex_content_create(const axutil_env_t *env)
         xml_schema_complex_content_free(&(complex_content_impl->complex_content), env);
         return NULL;
     }
-    axis2_hash_set(complex_content_impl->ht_super,
+    axutil_hash_set(complex_content_impl->ht_super,
             "XML_SCHEMA_COMPLEX_CONTENT", AXIS2_HASH_KEY_STRING,
             &(complex_content_impl->complex_content));
-    axis2_hash_set(complex_content_impl->ht_super,
+    axutil_hash_set(complex_content_impl->ht_super,
             "XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING,
             (complex_content_impl->annotated));
-    axis2_hash_set(complex_content_impl->ht_super,
+    axutil_hash_set(complex_content_impl->ht_super,
             "XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(complex_content_impl->annotated, env));
 
@@ -210,12 +210,12 @@ xml_schema_complex_content_free(void *complex_content,
     }
     if (complex_content_impl->ht_super)
     {
-        axis2_hash_free(complex_content_impl->ht_super, env);
+        axutil_hash_free(complex_content_impl->ht_super, env);
         complex_content_impl->ht_super = NULL;
     }
     if (complex_content_impl->methods)
     {
-        axis2_hash_free(complex_content_impl->methods, env);
+        axutil_hash_free(complex_content_impl->methods, env);
         complex_content_impl->methods = NULL;
     }
     if (complex_content_impl->annotated)
@@ -363,7 +363,7 @@ xml_schema_complex_content_get_type(
     return AXIS2_INTF_TO_IMPL(complex_content)->obj_type;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_complex_content_super_objs(
     void *complex_content,
     const axutil_env_t *env)

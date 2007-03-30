@@ -52,7 +52,7 @@ struct xml_schema_form_ops
     free) (void *form,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *form,
             const axutil_env_t *env);
 

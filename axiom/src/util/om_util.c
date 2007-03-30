@@ -683,8 +683,8 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
     axis2_char_t *child_localname   = NULL;
     axiom_element_t *om_ele      = NULL;
     axiom_attribute_t *om_attr   = NULL;
-    axis2_hash_t *attr_ht           = NULL;
-    axis2_hash_index_t *hi          = NULL;
+    axutil_hash_t *attr_ht           = NULL;
+    axutil_hash_index_t *hi          = NULL;
     axis2_char_t *om_attr_value     = NULL;
     axis2_char_t *om_attr_name      = NULL;
 
@@ -710,11 +710,11 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
                     {
-                        for (hi = axis2_hash_first(attr_ht, env);  hi;
-                            hi = axis2_hash_next(env, hi))
+                        for (hi = axutil_hash_first(attr_ht, env);  hi;
+                            hi = axutil_hash_next(env, hi))
                         {
                             void *val = NULL;
-                            axis2_hash_this(hi, NULL, NULL, &val);
+                            axutil_hash_this(hi, NULL, NULL, &val);
                             if (val)
                             {
                                 om_attr = (axiom_attribute_t *)val;
@@ -760,11 +760,11 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
                     if (attr_ht)
                     {
 
-                        for (hi = axis2_hash_first(attr_ht, env);  hi;
-                            hi = axis2_hash_next(env, hi))
+                        for (hi = axutil_hash_first(attr_ht, env);  hi;
+                            hi = axutil_hash_next(env, hi))
                         {
                             void *val = NULL;
-                            axis2_hash_this(hi, NULL, NULL, &val);
+                            axutil_hash_this(hi, NULL, NULL, &val);
                             if (val)
                             {
                                 om_attr = (axiom_attribute_t *)val;
@@ -814,8 +814,8 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
     axiom_attribute_t *om_attr = NULL;
     axis2_char_t *om_attr_name = NULL;
     axis2_char_t *om_attr_value = NULL;
-    axis2_hash_index_t *hi      = NULL;
-    axis2_hash_t *attr_ht       = NULL;
+    axutil_hash_index_t *hi      = NULL;
+    axutil_hash_t *attr_ht       = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
@@ -836,11 +836,11 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
                     {
-                        for (hi = axis2_hash_first(attr_ht, env);  hi;
-                            hi = axis2_hash_next(env, hi))
+                        for (hi = axutil_hash_first(attr_ht, env);  hi;
+                            hi = axutil_hash_next(env, hi))
                         {
                             void *val = NULL;
-                            axis2_hash_this(hi, NULL, NULL, &val);
+                            axutil_hash_this(hi, NULL, NULL, &val);
                             if (val)
                             {
                                 om_attr = (axiom_attribute_t *)val;
@@ -890,8 +890,8 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
     axiom_attribute_t *om_attr = NULL;
     axis2_char_t *om_attr_value   = NULL;
     axis2_char_t *om_attr_name    = NULL;
-    axis2_hash_t *attr_ht         = NULL;
-    axis2_hash_index_t *hi        = NULL;
+    axutil_hash_t *attr_ht         = NULL;
+    axutil_hash_index_t *hi        = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
@@ -911,11 +911,11 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
                     {
-                        for (hi = axis2_hash_first(attr_ht, env);  hi;
-                            hi = axis2_hash_next(env, hi))
+                        for (hi = axutil_hash_first(attr_ht, env);  hi;
+                            hi = axutil_hash_next(env, hi))
                         {
                             void *val = NULL;
-                            axis2_hash_this(hi, NULL, NULL, &val);
+                            axutil_hash_this(hi, NULL, NULL, &val);
                             if (val)
                             {
                                 om_attr = (axiom_attribute_t *)val;

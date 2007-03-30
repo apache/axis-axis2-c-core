@@ -32,7 +32,7 @@ struct xml_schema_tokenized_type_impl
 
     axutil_array_list_t *members;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_types_t obj_type;
 };
@@ -58,7 +58,7 @@ xml_schema_types_t AXIS2_CALL
 xml_schema_tokenized_type_get_type(void *tokenized_type,
         const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_tokenized_type_super_objs(void *tokenized_type,
         const axutil_env_t *env);
 
@@ -141,7 +141,7 @@ xml_schema_tokenized_type_create(const axutil_env_t *env,
 
     tokenized_type_impl->schema_enum = xml_schema_enum_create(env, value);
 
-    tokenized_type_impl->ht_super = axis2_hash_make(env);
+    tokenized_type_impl->ht_super = axutil_hash_make(env);
     if (!tokenized_type_impl->ht_super)
     {
         xml_schema_tokenized_type_free(&(tokenized_type_impl->tokenized_type), env);
@@ -149,10 +149,10 @@ xml_schema_tokenized_type_create(const axutil_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(tokenized_type_impl->ht_super , "XML_SCHEMA_TOKENIZED_TYPE",
+    axutil_hash_set(tokenized_type_impl->ht_super , "XML_SCHEMA_TOKENIZED_TYPE",
             AXIS2_HASH_KEY_STRING, &(tokenized_type_impl->tokenized_type));
 
-    axis2_hash_set(tokenized_type_impl->ht_super, "XML_SCHEMA_ENUM",
+    axutil_hash_set(tokenized_type_impl->ht_super, "XML_SCHEMA_ENUM",
             AXIS2_HASH_KEY_STRING, tokenized_type_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(
@@ -225,12 +225,12 @@ xml_schema_tokenized_type_get_values(void *tokenized_type,
 {
     /*
     xml_schema_tokenized_type_impl_t *tokenized_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     ht_super = XML_SCHEMA_TOKENIZED_TYPE_SUPER_OBJS(tokenized_type, env);
     if( ht_super)
     {
         tokenized_impl = (xml_schema_tokenized_type_impl_t*)
-            axis2_hash_get(tokenized_impl->ht_super, "XML_SCHEMA_TOKENIZED_TYPE",
+            axutil_hash_get(tokenized_impl->ht_super, "XML_SCHEMA_TOKENIZED_TYPE",
                 AXIS2_HASH_KEY_STRING);
         if( tokenized_impl)
         {
@@ -248,7 +248,7 @@ xml_schema_tokenized_type_get_type(void *tokenized_type,
     return AXIS2_INTF_TO_IMPL(tokenized_type)->obj_type;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_tokenized_type_super_objs(void *tokenized_type,
         const axutil_env_t *env)
 {

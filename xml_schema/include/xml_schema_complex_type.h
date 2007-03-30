@@ -26,7 +26,7 @@
 
 #include <xml_schema_annotated.h>
 #include <xml_schema_type.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <xml_schema_complex_type.h>
 #include <xml_schema_any_attribute.h>
@@ -65,7 +65,7 @@ struct xml_schema_complex_type_ops
             void *cmp_type,
             const axutil_env_t *env);
             
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs)(
             void *cmp_type,
             const axutil_env_t *env);

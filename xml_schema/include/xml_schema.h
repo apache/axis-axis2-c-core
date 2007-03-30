@@ -30,7 +30,7 @@
 #include <xml_schema_annotated.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 /** @defgroup xml_schema Xml Schema
   * @ingroup xml_schema
@@ -67,7 +67,7 @@ struct xml_schema_ops
             void *schema,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs)(
             void *schema,
             const axutil_env_t *env);
@@ -219,7 +219,7 @@ struct xml_schema_ops
             void *schema,
             void *writer); 
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     get_prefix_to_namespace_map)(
             void *schema,
             const axutil_env_t *env);
@@ -228,7 +228,7 @@ struct xml_schema_ops
     set_prefix_to_namespace_map)(
             void *schema,
             const axutil_env_t *env,
-            axis2_hash_t *map);
+            axutil_hash_t *map);
 
     axis2_status_t (AXIS2_CALL *
     add_type)(

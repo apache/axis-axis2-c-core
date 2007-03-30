@@ -29,7 +29,7 @@ typedef struct xml_schema_import_impl
 
     axis2_char_t *ns;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_types_t obj_type;
 
@@ -53,7 +53,7 @@ xml_schema_types_t AXIS2_CALL
 xml_schema_import_get_type(void *import,
         const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_import_super_objs(void *import,
         const axutil_env_t *env);
 axis2_char_t* AXIS2_CALL
@@ -111,7 +111,7 @@ xml_schema_import_create(const axutil_env_t *env)
     import_impl->import.ops->set_namespace =
         xml_schema_import_set_namespace;
 
-    import_impl->ht_super = axis2_hash_make(env);
+    import_impl->ht_super = axutil_hash_make(env);
     if (!import_impl->ht_super)
     {
         xml_schema_import_free(&(import_impl->import), env);
@@ -127,18 +127,18 @@ xml_schema_import_create(const axutil_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_IMPORT"),
+    axutil_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_IMPORT"),
             AXIS2_HASH_KEY_STRING, &(import_impl->import));
-    axis2_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_EXTERNAL"),
+    axutil_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_EXTERNAL"),
             AXIS2_HASH_KEY_STRING, import_impl->external);
 
     annotated = XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(import_impl->external, env);
     if (annotated)
     {
 
-        axis2_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
+        axutil_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
                 AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
+        axutil_hash_set(import_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
                 AXIS2_HASH_KEY_STRING,
                 XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
@@ -162,7 +162,7 @@ xml_schema_import_free(void *import,
 
     if (import_impl->ht_super)
     {
-        axis2_hash_free(import_impl->ht_super, env);
+        axutil_hash_free(import_impl->ht_super, env);
         import_impl->ht_super = NULL;
     }
     if (import_impl->external)
@@ -230,7 +230,7 @@ xml_schema_import_get_type(void *import,
     return AXIS2_INTF_TO_IMPL(import)->obj_type;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_import_super_objs(void *import,
         const axutil_env_t *env)
 {

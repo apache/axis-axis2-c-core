@@ -56,7 +56,7 @@ struct woden_interface_fault_ops
     free) (void *interface_fault,
             const axutil_env_t *env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *interface_fault,
             const axutil_env_t *env);
 
@@ -162,7 +162,7 @@ woden_interface_fault_resolve_methods(
         woden_interface_fault_t *interface_fault,
         const axutil_env_t *env,
         woden_interface_fault_t *interface_fault_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_INTERFACE_FAULT_FREE(interface_fault, env) \

@@ -32,7 +32,7 @@ struct xml_schema_form_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
 
     axutil_array_list_t *members;
@@ -46,7 +46,7 @@ xml_schema_form_free(
     void *form,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_form_super_objs(
     void *form,
     const axutil_env_t *env);
@@ -65,7 +65,7 @@ xml_schema_form_resolve_methods(
     xml_schema_form_t *form,
     const axutil_env_t *env,
     xml_schema_form_t *form_impl,
-    axis2_hash_t *methods);
+    axutil_hash_t *methods);
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_form_get_values(void *form,
@@ -144,7 +144,7 @@ xml_schema_form_create(const axutil_env_t *env,
         return NULL;
     }
 
-    form_impl->ht_super = axis2_hash_make(env);
+    form_impl->ht_super = axutil_hash_make(env);
 
     if (!form_impl->ht_super)
     {
@@ -154,10 +154,10 @@ xml_schema_form_create(const axutil_env_t *env,
         return NULL;
     }
 
-	axis2_hash_set(form_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_FORM"),
+	axutil_hash_set(form_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_FORM"),
             AXIS2_HASH_KEY_STRING, &(form_impl->form));
 
-    axis2_hash_set(form_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ENUM"),
+    axutil_hash_set(form_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ENUM"),
             AXIS2_HASH_KEY_STRING, form_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(
@@ -199,7 +199,7 @@ xml_schema_form_free(void *form,
 
     if (form_impl->ht_super)
     {
-        axis2_hash_free(form_impl->ht_super, env);
+        axutil_hash_free(form_impl->ht_super, env);
         form_impl->ht_super = NULL;
     }
 
@@ -229,7 +229,7 @@ xml_schema_form_free(void *form,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_form_super_objs(void *form,
         const axutil_env_t *env)
 {
@@ -268,10 +268,10 @@ xml_schema_form_get_values(void *form,
         const axutil_env_t *env)
 {
     xml_schema_form_impl_t *form_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     super = XML_SCHEMA_FORM_SUPER_OBJS(form, env);
-    form_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super,
+    form_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(super,
             "XML_SCHEMA_FORM", AXIS2_HASH_KEY_STRING));
     return form_impl->members;
 }

@@ -27,7 +27,7 @@ struct axis2_module_desc
      * To store module operations , which are supposed to be added to a service
      * the module is engaged to a service
      */
-    axis2_hash_t *ops;
+    axutil_hash_t *ops;
     /** 
      * flow container that encapsulates the flows associated with the 
      * module 
@@ -79,7 +79,7 @@ axis2_module_desc_create(const axutil_env_t *env)
         return NULL;
     }
 
-    module_desc->ops = axis2_hash_make(env);
+    module_desc->ops = axutil_hash_make(env);
     if (! module_desc->ops)
     {
         axis2_module_desc_free(module_desc, env);
@@ -140,13 +140,13 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
 
     if (module_desc->ops)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(module_desc->ops, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(module_desc->ops, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             struct axis2_op * op = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             op = (struct axis2_op *) val;
             if (op)
                 axis2_op_free(op, env);
@@ -154,7 +154,7 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
             op = NULL;
 
         }
-        axis2_hash_free(module_desc->ops, env);
+        axutil_hash_free(module_desc->ops, env);
     }
 
     if (module_desc)
@@ -291,7 +291,7 @@ axis2_module_desc_add_op(axis2_module_desc_t *module_desc,
 
     if (! (module_desc->ops))
     {
-        module_desc->ops = axis2_hash_make(env);
+        module_desc->ops = axutil_hash_make(env);
         if (!module_desc->ops)
             return AXIS2_FAILURE;
     }
@@ -303,12 +303,12 @@ axis2_module_desc_add_op(axis2_module_desc_t *module_desc,
         return AXIS2_FAILURE;
     }
     op_name = axis2_qname_to_string((axis2_qname_t *)op_qname, env);
-    axis2_hash_set(module_desc->ops, op_name, AXIS2_HASH_KEY_STRING, op);
+    axutil_hash_set(module_desc->ops, op_name, AXIS2_HASH_KEY_STRING, op);
 
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_module_desc_get_all_ops(const  axis2_module_desc_t *module_desc,
     const axutil_env_t *env)
 {

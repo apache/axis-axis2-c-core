@@ -17,7 +17,7 @@
 
 #include <woden_xml_attr.h>
 #include <axis2_uri.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
 
@@ -156,28 +156,28 @@ axis2_status_t AXIS2_CALL
 woden_xml_attr_resolve_methods(
     woden_xml_attr_t *xml_attr,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
     xml_attr->ops = AXIS2_MALLOC(env->allocator,
             sizeof(woden_xml_attr_ops_t));
-    xml_attr->ops->free = axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->type = axis2_hash_get(methods, "type", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->init = axis2_hash_get(methods,
+    xml_attr->ops->free = axutil_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
+    xml_attr->ops->type = axutil_hash_get(methods, "type", AXIS2_HASH_KEY_STRING);
+    xml_attr->ops->init = axutil_hash_get(methods,
             "init", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->get_attribute_type = axis2_hash_get(methods,
+    xml_attr->ops->get_attribute_type = axutil_hash_get(methods,
             "get_attribute_type", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->get_content = axis2_hash_get(methods,
+    xml_attr->ops->get_content = axutil_hash_get(methods,
             "get_content", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->to_external_form = axis2_hash_get(methods,
+    xml_attr->ops->to_external_form = axutil_hash_get(methods,
             "to_external_form", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->is_valid = axis2_hash_get(methods,
+    xml_attr->ops->is_valid = axutil_hash_get(methods,
             "is_valid", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->convert = axis2_hash_get(methods,
+    xml_attr->ops->convert = axutil_hash_get(methods,
             "convert", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->set_valid = axis2_hash_get(methods,
+    xml_attr->ops->set_valid = axutil_hash_get(methods,
             "set_valid", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

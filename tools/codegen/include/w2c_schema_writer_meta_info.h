@@ -355,14 +355,14 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     set_element2schema_qnamemap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_hash_t *element2schema_qnamemap);
+                            axutil_hash_t *element2schema_qnamemap);
    /**
     * getter for element2schema_qnamemap.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the element2schema_qnamemap
     */
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     get_element2schema_qnamemap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
@@ -377,14 +377,14 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     set_element2classmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_hash_t *element2classmap);
+                            axutil_hash_t *element2classmap);
    /**
     * getter for element2classmap.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the element2classmap
     */
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     get_element2classmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
@@ -399,14 +399,14 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     set_specialtype_flagmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_hash_t *specialtype_flagmap);
+                            axutil_hash_t *specialtype_flagmap);
    /**
     * getter for specialtype_flagmap.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the specialtype_flagmap
     */
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     get_specialtype_flagmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
@@ -421,14 +421,14 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     set_qname_maxoccurs_countmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_hash_t *qname_maxoccurs_countmap);
+                            axutil_hash_t *qname_maxoccurs_countmap);
    /**
     * getter for qname_maxoccurs_countmap.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the qname_maxoccurs_countmap
     */
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     get_qname_maxoccurs_countmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
@@ -443,14 +443,14 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     set_qname_minoccurs_countmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_hash_t *qname_minoccurs_countmap);
+                            axutil_hash_t *qname_minoccurs_countmap);
    /**
     * getter for qname_minoccurs_countmap.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the qname_minoccurs_countmap
     */
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     get_qname_minoccurs_countmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 

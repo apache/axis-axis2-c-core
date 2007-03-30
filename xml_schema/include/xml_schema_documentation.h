@@ -28,7 +28,7 @@
 
 #include <xml_schema_defines.h>
 #include <xml_schema_obj.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom.h>
 
 /** @defgroup xml_schema_documentation Xml Schema App Info
@@ -57,7 +57,7 @@ struct xml_schema_documentation_ops
             void *documentation,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *documentation,
             const axutil_env_t *env);

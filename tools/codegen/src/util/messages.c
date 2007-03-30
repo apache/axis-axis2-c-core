@@ -17,7 +17,7 @@
  
 #include <w2c_messages.h>
 #include <axis2_property.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_string.h>
 #include <platforms/axis2_platform_auto_sense.h>
 

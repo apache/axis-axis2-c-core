@@ -26,7 +26,7 @@
 
 #include <xml_schema_annotated.h>
 #include <xml_schema_type.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <xml_schema_simple_type_content.h>
 /** @defgroup xml_schema_simple_type Xml Schema Type
@@ -61,7 +61,7 @@ struct xml_schema_simple_type_ops
     get_type) (void *simple_type,
             const axutil_env_t *env);
                     
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs) (void *simple_type,
                  const axutil_env_t *env);                                        
                     
@@ -107,7 +107,7 @@ xml_schema_simple_type_resolve_methods(
                                 xml_schema_simple_type_t *simple_type,
                                 const axutil_env_t *env,
                                 xml_schema_simple_type_t *type_impl,
-                                axis2_hash_t *methods);
+                                axutil_hash_t *methods);
  */
  /***************** Macros ***************************************************/
 #define XML_SCHEMA_SIMPLE_TYPE_FREE(simple_type, env) \

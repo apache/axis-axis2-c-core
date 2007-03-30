@@ -30,14 +30,14 @@ struct axis2_conf_ctx
     /* should be handled as a URL string ? */
     axis2_char_t *root_dir;
     /**
-     * axis2_hash_t *containing message ID to
+     * axutil_hash_t *containing message ID to
      * operation context mapping.
      */
-    axis2_hash_t *op_ctx_map;
+    axutil_hash_t *op_ctx_map;
 
-    axis2_hash_t *svc_ctx_map;
+    axutil_hash_t *svc_ctx_map;
 
-    axis2_hash_t *svc_grp_ctx_map;
+    axutil_hash_t *svc_grp_ctx_map;
 
     /* Mutex to synchronize the read/write operations */
     axis2_thread_mutex_t *mutex;
@@ -83,21 +83,21 @@ axis2_conf_ctx_create(
         return NULL;
     }
 
-    conf_ctx->op_ctx_map = axis2_hash_make(env);
+    conf_ctx->op_ctx_map = axutil_hash_make(env);
     if (!(conf_ctx->op_ctx_map))
     {
         axis2_conf_ctx_free(conf_ctx, env);
         return NULL;
     }
 
-    conf_ctx->svc_ctx_map = axis2_hash_make(env);
+    conf_ctx->svc_ctx_map = axutil_hash_make(env);
     if (!(conf_ctx->svc_ctx_map))
     {
         axis2_conf_ctx_free(conf_ctx, env);
         return NULL;
     }
 
-    conf_ctx->svc_grp_ctx_map = axis2_hash_make(env);
+    conf_ctx->svc_grp_ctx_map = axutil_hash_make(env);
     if (!(conf_ctx->svc_grp_ctx_map))
     {
         axis2_conf_ctx_free(conf_ctx, env);
@@ -133,7 +133,7 @@ axis2_conf_ctx_get_conf(
     return conf_ctx->conf;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_conf_ctx_get_op_ctx_map(
     const axis2_conf_ctx_t *conf_ctx,
     const axutil_env_t *env)
@@ -141,7 +141,7 @@ axis2_conf_ctx_get_op_ctx_map(
     return conf_ctx->op_ctx_map;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_conf_ctx_get_svc_ctx_map(
     const axis2_conf_ctx_t *conf_ctx,
     const axutil_env_t *env)
@@ -149,7 +149,7 @@ axis2_conf_ctx_get_svc_ctx_map(
     return conf_ctx->svc_ctx_map;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_conf_ctx_get_svc_grp_ctx_map(
     const axis2_conf_ctx_t *conf_ctx,
     const axutil_env_t *env)
@@ -167,7 +167,7 @@ axis2_conf_ctx_register_op_ctx(
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->op_ctx_map)
     {
-        axis2_hash_set(conf_ctx->op_ctx_map,
+        axutil_hash_set(conf_ctx->op_ctx_map,
                 message_id, AXIS2_HASH_KEY_STRING, op_ctx);
     }
     axis2_thread_mutex_unlock(conf_ctx->mutex);
@@ -188,7 +188,7 @@ axis2_conf_ctx_get_op_ctx(
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->op_ctx_map)
     {
-        rv = (axis2_op_ctx_t*)axis2_hash_get(conf_ctx->op_ctx_map,
+        rv = (axis2_op_ctx_t*)axutil_hash_get(conf_ctx->op_ctx_map,
                 message_id, AXIS2_HASH_KEY_STRING);
     }
     axis2_thread_mutex_unlock(conf_ctx->mutex);
@@ -205,7 +205,7 @@ axis2_conf_ctx_register_svc_ctx(
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_ctx_map)
     {
-        axis2_hash_set(conf_ctx->svc_ctx_map,
+        axutil_hash_set(conf_ctx->svc_ctx_map,
                 svc_id, AXIS2_HASH_KEY_STRING, svc_ctx);
     }
     axis2_thread_mutex_unlock(conf_ctx->mutex);
@@ -223,7 +223,7 @@ axis2_conf_ctx_get_svc_ctx(
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_ctx_map)
     {
-        rv = (axis2_svc_ctx_t*)axis2_hash_get(conf_ctx->svc_ctx_map,
+        rv = (axis2_svc_ctx_t*)axutil_hash_get(conf_ctx->svc_ctx_map,
                 svc_id, AXIS2_HASH_KEY_STRING);
     }
     axis2_thread_mutex_unlock(conf_ctx->mutex);
@@ -240,7 +240,7 @@ axis2_conf_ctx_register_svc_grp_ctx(
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_grp_ctx_map)
     {
-        axis2_hash_set(conf_ctx->svc_grp_ctx_map,
+        axutil_hash_set(conf_ctx->svc_grp_ctx_map,
                 svc_grp_id, AXIS2_HASH_KEY_STRING, svc_grp_ctx);
     }
     axis2_thread_mutex_unlock(conf_ctx->mutex);
@@ -257,7 +257,7 @@ axis2_conf_ctx_get_svc_grp_ctx(
     axis2_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_grp_ctx_map)
     {
-        rv = (axis2_svc_grp_ctx_t*)axis2_hash_get(conf_ctx->svc_grp_ctx_map, 
+        rv = (axis2_svc_grp_ctx_t*)axutil_hash_get(conf_ctx->svc_grp_ctx_map, 
             svc_grp_id, AXIS2_HASH_KEY_STRING);
     }
     axis2_thread_mutex_unlock(conf_ctx->mutex);
@@ -311,7 +311,7 @@ axis2_conf_ctx_init(
     const axutil_env_t *env,
     axis2_conf_t *conf)
 {
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     void *ctx = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -319,10 +319,10 @@ axis2_conf_ctx_init(
     axis2_thread_mutex_lock(conf_ctx->mutex);
     conf_ctx->conf = conf;
 
-    for (hi = axis2_hash_first(conf_ctx->op_ctx_map, env);
-            hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(conf_ctx->op_ctx_map, env);
+            hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, NULL, NULL, &ctx);
+        axutil_hash_this(hi, NULL, NULL, &ctx);
         if (ctx)
         {
             axis2_op_ctx_t *op_ctx = (axis2_op_ctx_t*) ctx;
@@ -330,10 +330,10 @@ axis2_conf_ctx_init(
         }
     }
 
-    for (hi = axis2_hash_first(conf_ctx->svc_ctx_map, env);
-            hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(conf_ctx->svc_ctx_map, env);
+            hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, NULL, NULL, &ctx);
+        axutil_hash_this(hi, NULL, NULL, &ctx);
         if (ctx)
         {
             axis2_svc_ctx_t *svc_ctx = (axis2_svc_ctx_t*) ctx;
@@ -341,10 +341,10 @@ axis2_conf_ctx_init(
         }
     }
 
-    for (hi = axis2_hash_first(conf_ctx->svc_grp_ctx_map, env);
-            hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(conf_ctx->svc_grp_ctx_map, env);
+            hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, NULL, NULL, &ctx);
+        axutil_hash_this(hi, NULL, NULL, &ctx);
         if (ctx)
         {
             axis2_svc_grp_ctx_t *svc_grp_ctx = (axis2_svc_grp_ctx_t*) ctx;
@@ -369,13 +369,13 @@ axis2_conf_ctx_free(
 
     if (conf_ctx->op_ctx_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(conf_ctx->op_ctx_map, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(conf_ctx->op_ctx_map, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             axis2_op_ctx_t *op_ctx = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             op_ctx = (axis2_op_ctx_t *) val;
             if (op_ctx)
                  axis2_op_ctx_free(op_ctx, env);
@@ -383,18 +383,18 @@ axis2_conf_ctx_free(
             op_ctx = NULL;
 
         }
-        axis2_hash_free(conf_ctx->op_ctx_map, env);
+        axutil_hash_free(conf_ctx->op_ctx_map, env);
     }
 
     if (conf_ctx->svc_ctx_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(conf_ctx->svc_ctx_map, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(conf_ctx->svc_ctx_map, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             axis2_svc_ctx_t *svc_ctx = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             svc_ctx = (axis2_svc_ctx_t *) val;
             if (svc_ctx)
                  axis2_svc_ctx_free(svc_ctx, env);
@@ -403,18 +403,18 @@ axis2_conf_ctx_free(
             svc_ctx = NULL;
 
         }
-        axis2_hash_free(conf_ctx->svc_ctx_map, env);
+        axutil_hash_free(conf_ctx->svc_ctx_map, env);
     }
 
     if (conf_ctx->svc_grp_ctx_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(conf_ctx->svc_grp_ctx_map, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(conf_ctx->svc_grp_ctx_map, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             svc_grp_ctx = (axis2_svc_grp_ctx_t *) val;
             if (svc_grp_ctx)
                  axis2_svc_grp_ctx_free(svc_grp_ctx, env);
@@ -423,7 +423,7 @@ axis2_conf_ctx_free(
             svc_grp_ctx = NULL;
 
         }
-        axis2_hash_free(conf_ctx->svc_grp_ctx_map, env);
+        axutil_hash_free(conf_ctx->svc_grp_ctx_map, env);
     }
     if (conf_ctx->conf)
     {
@@ -500,7 +500,7 @@ axis2_conf_ctx_fill_ctxs(
     if (svc_grp_ctx_id)
     {
         svc_grp_ctx = (axis2_svc_grp_ctx_t*)
-                axis2_hash_get(conf_ctx->svc_grp_ctx_map,
+                axutil_hash_get(conf_ctx->svc_grp_ctx_map,
                         svc_grp_ctx_id, AXIS2_HASH_KEY_STRING);
         if (svc_grp_ctx)
         {

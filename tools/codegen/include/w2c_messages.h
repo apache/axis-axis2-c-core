@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_properties.h>
 
 #ifdef __cplusplus

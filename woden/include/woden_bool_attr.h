@@ -128,7 +128,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_bool_attr_resolve_methods(
         woden_bool_attr_t *bool_attr,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_BOOL_ATTR_FREE(bool_attr, env) \

@@ -21,18 +21,18 @@ axis2_status_t AXIS2_CALL
 woden_nested_element_resolve_methods(
     woden_nested_element_t *nested_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    nested_element->ops->free = axis2_hash_get(methods, "free",
+    nested_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    nested_element->ops->type = axis2_hash_get(methods, "type",
+    nested_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
-    nested_element->ops->set_parent_element = axis2_hash_get(methods,
+    nested_element->ops->set_parent_element = axutil_hash_get(methods,
             "set_parent_element", AXIS2_HASH_KEY_STRING);
-    nested_element->ops->get_parent_element = axis2_hash_get(methods,
+    nested_element->ops->get_parent_element = axutil_hash_get(methods,
             "get_parent_element", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

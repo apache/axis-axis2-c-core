@@ -21,7 +21,7 @@
 struct axis2_any_content_type
 {
     /** map of values in the any content type  */
-    axis2_hash_t *value_map;
+    axutil_hash_t *value_map;
 };
 
 AXIS2_EXTERN axis2_any_content_type_t *AXIS2_CALL
@@ -41,7 +41,7 @@ axis2_any_content_type_create(const axutil_env_t *env)
 
     any_content_type->value_map = NULL;
 
-    any_content_type->value_map  = axis2_hash_make(env);
+    any_content_type->value_map  = axutil_hash_make(env);
 
     if (!(any_content_type->value_map))
     {
@@ -66,7 +66,7 @@ axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
         axis2_char_t *name = NULL;
 
         name = axis2_qname_to_string((axis2_qname_t *)qname, env);
-        axis2_hash_set(any_content_type->value_map, name,
+        axutil_hash_set(any_content_type->value_map, name,
 		    AXIS2_HASH_KEY_STRING, value);
     }
     return AXIS2_SUCCESS;
@@ -82,13 +82,13 @@ axis2_any_content_type_get_value(const axis2_any_content_type_t *any_content_typ
         axis2_char_t *name = NULL;
 
         name = axis2_qname_to_string((axis2_qname_t *)qname, env);
-        return axis2_hash_get(any_content_type->value_map, name,
+        return axutil_hash_get(any_content_type->value_map, name,
             AXIS2_HASH_KEY_STRING);
     }
     return NULL;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_any_content_type_get_value_map(const axis2_any_content_type_t *any_content_type,
     const axutil_env_t *env)
 {
@@ -103,7 +103,7 @@ axis2_any_content_type_free(axis2_any_content_type_t *any_content_type,
 
     if (any_content_type->value_map)
     {
-        axis2_hash_free(any_content_type->value_map, env);
+        axutil_hash_free(any_content_type->value_map, env);
     }
 
     AXIS2_FREE(env->allocator, any_content_type);

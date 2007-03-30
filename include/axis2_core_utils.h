@@ -51,7 +51,7 @@ struct axis2_conf;
                                     
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_core_utils_calculate_default_module_version(const axutil_env_t *env, 
-        axis2_hash_t *modules_map, 
+        axutil_hash_t *modules_map, 
         struct axis2_conf *axis_conf);
     
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL

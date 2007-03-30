@@ -29,7 +29,7 @@
 #include <axis2_string.h>
 #include <axis2_utils_defines.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <xml_schema_defines.h>
 #include <xml_schema_constants.h>
 
@@ -53,7 +53,7 @@ struct xml_schema_enum_ops
             void *schema_enum,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs)(
             void *schema_enum,
             const axutil_env_t *env);

@@ -130,7 +130,7 @@ savan_util_get_subscriber_from_msg(
         axis2_msg_ctx_t *msg_ctx,
         axis2_char_t *sub_id)
 {
-    axis2_hash_t *store = NULL;
+    axutil_hash_t *store = NULL;
     savan_subscriber_t *subscriber = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -150,21 +150,21 @@ savan_util_get_subscriber_from_msg(
         return NULL;
     }
 
-    subscriber = axis2_hash_get(store, sub_id, AXIS2_HASH_KEY_STRING);
+    subscriber = axutil_hash_get(store, sub_id, AXIS2_HASH_KEY_STRING);
     
     return subscriber;
 }
 
 /******************************************************************************/
 
-axis2_hash_t * AXIS2_CALL
+axutil_hash_t * AXIS2_CALL
 savan_util_get_subscriber_store(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_svc_t *svc = NULL;
     axis2_param_t *param = NULL;
-    axis2_hash_t *store = NULL;
+    axutil_hash_t *store = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -187,7 +187,7 @@ savan_util_get_subscriber_store(
         return NULL;
     }
 
-    store = (axis2_hash_t*)axis2_param_get_value(param, env);
+    store = (axutil_hash_t*)axis2_param_get_value(param, env);
 
     return store;
 }

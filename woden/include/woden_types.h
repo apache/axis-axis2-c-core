@@ -67,7 +67,7 @@ struct woden_types_ops
     free) (void *types,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *types,
             const axutil_env_t *env);
 
@@ -250,7 +250,7 @@ woden_types_resolve_methods(
         woden_types_t *types,
         const axutil_env_t *env,
         woden_types_t *types_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_TYPES_FREE(types, env) \

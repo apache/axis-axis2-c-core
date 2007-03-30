@@ -54,7 +54,7 @@ struct woden_soap_module_ops
             void *module,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL * 
+    axutil_hash_t *(AXIS2_CALL * 
     super_objs) (
             void *module,
             const axutil_env_t *env);
@@ -133,7 +133,7 @@ woden_soap_module_resolve_methods(
         woden_soap_module_t *soap_module,
         const axutil_env_t *env,
         woden_soap_module_t *soap_module_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_SOAP_MODULE_FREE(soap_module, env) \

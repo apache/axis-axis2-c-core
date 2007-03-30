@@ -68,7 +68,7 @@ struct xml_schema_annotated_ops
      * @param env environment
      * @returns pointer to hashtable
      */
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs)(
             void *annotated,
             const axutil_env_t *env);

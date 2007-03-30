@@ -37,7 +37,7 @@ struct xml_schema_identity_constraint_impl
     /** keyref field */
     axis2_qname_t *refer;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
     xml_schema_types_t obj_type;
 };
 
@@ -58,7 +58,7 @@ xml_schema_identity_constraint_get_type(void *id_constr,
         const axutil_env_t *env);
 
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_identity_constraint_super_objs(void *id_constr,
         const axutil_env_t *env);
 axis2_qname_t* AXIS2_CALL
@@ -148,7 +148,7 @@ xml_schema_identity_constraint_create(const axutil_env_t *env)
     id_cns_impl->id_constr.ops->set_selector =
         xml_schema_identity_constraint_set_selector;
 
-    id_cns_impl->ht_super = axis2_hash_make(env);
+    id_cns_impl->ht_super = axutil_hash_make(env);
 
     if (!id_cns_impl->ht_super)
     {
@@ -164,11 +164,11 @@ xml_schema_identity_constraint_create(const axutil_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(id_cns_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_IDENTITY_CONSTRAINT"),
+    axutil_hash_set(id_cns_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_IDENTITY_CONSTRAINT"),
             AXIS2_HASH_KEY_STRING, &(id_cns_impl->id_constr));
-    axis2_hash_set(id_cns_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
+    axutil_hash_set(id_cns_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, id_cns_impl->annotated);
-    axis2_hash_set(id_cns_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
+    axutil_hash_set(id_cns_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(id_cns_impl->annotated, env));
     status = xml_schema_annotated_resolve_methods(
@@ -240,7 +240,7 @@ xml_schema_identity_constraint_free(void *id_constr,
 
     if (id_cns_impl->ht_super)
     {
-        axis2_hash_free(id_cns_impl->ht_super, env);
+        axutil_hash_free(id_cns_impl->ht_super, env);
         id_cns_impl->ht_super = NULL;
     }
     if (id_cns_impl->refer)
@@ -291,7 +291,7 @@ xml_schema_identity_constraint_resolve_methods(
                 xml_schema_identity_constraint_t *id_constr,
                 const axutil_env_t *env,
                 xml_schema_identity_constraint_t *id_cns_impl,
-                axis2_hash_t *methods)
+                axutil_hash_t *methods)
 {
     xml_schema_identity_constraint_impl_t *identity_constraint_impl_l = NULL;
 
@@ -308,7 +308,7 @@ xml_schema_identity_constraint_resolve_methods(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    id_constr->ops->free = axis2_hash_get(methods, "free",
+    id_constr->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
     id_constr->ops->get_base_impl =
             identity_constraint_impl_l->id_constr.ops->get_base_impl;
@@ -398,7 +398,7 @@ xml_schema_identity_constraint_get_type(void *id_constr,
 }
 
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_identity_constraint_super_objs(void *id_constr,
         const axutil_env_t *env)
 {

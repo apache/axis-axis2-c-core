@@ -18,7 +18,7 @@
 #include <woden_component_exts.h>
 #include <woden_wsdl_element.h>
 #include <axis2_uri.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 typedef struct woden_component_exts_impl woden_component_exts_impl_t;
 
@@ -125,25 +125,25 @@ axis2_status_t AXIS2_CALL
 woden_component_exts_resolve_methods(
     woden_component_exts_t *component_exts,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
     component_exts->ops = AXIS2_MALLOC(env->allocator,
             sizeof(woden_component_exts_ops_t));
-    component_exts->ops->free = axis2_hash_get(methods, "free",
+    component_exts->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    component_exts->ops->get_parent_element = axis2_hash_get(methods,
+    component_exts->ops->get_parent_element = axutil_hash_get(methods,
             "get_parent_element", AXIS2_HASH_KEY_STRING);
-    component_exts->ops->to_component_exts_free = axis2_hash_get(methods,
+    component_exts->ops->to_component_exts_free = axutil_hash_get(methods,
             "to_component_exts_free", AXIS2_HASH_KEY_STRING);
-    component_exts->ops->type = axis2_hash_get(methods, "type",
+    component_exts->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
-    component_exts->ops->init = axis2_hash_get(methods,
+    component_exts->ops->init = axutil_hash_get(methods,
             "init", AXIS2_HASH_KEY_STRING);
     ;
-    component_exts->ops->get_namespace = axis2_hash_get(methods,
+    component_exts->ops->get_namespace = axutil_hash_get(methods,
             "get_namespace", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

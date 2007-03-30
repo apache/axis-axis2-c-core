@@ -29,7 +29,7 @@
 
 #include <xml_schema_defines.h>
 #include <xml_schema_annotated.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 /** @defgroup xml_schema_group Xml Schema Group
   * @ingroup xml_schema
@@ -55,7 +55,7 @@ struct xml_schema_group_ops
     free) (void *group,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *group,
             const axutil_env_t *env);
 

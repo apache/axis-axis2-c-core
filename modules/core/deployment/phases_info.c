@@ -23,10 +23,10 @@ struct axis2_phases_info
     axutil_array_list_t *out_phases;
     axutil_array_list_t *in_faultphases;
     axutil_array_list_t *out_faultphases;
-    axis2_hash_t *op_in_phases;
-    axis2_hash_t *op_out_phases;
-    axis2_hash_t *op_in_faultphases;
-    axis2_hash_t *op_out_faultphases;
+    axutil_hash_t *op_in_phases;
+    axutil_hash_t *op_out_phases;
+    axutil_hash_t *op_in_faultphases;
+    axutil_hash_t *op_out_faultphases;
 
 };
 
@@ -49,10 +49,10 @@ axis2_phases_info_create(const axutil_env_t *env)
     phases_info->out_phases = NULL;
     phases_info->in_faultphases = NULL;
     phases_info->out_faultphases = NULL;
-    phases_info->op_in_phases = axis2_hash_make(env);
-    phases_info->op_out_phases = axis2_hash_make(env);
-    phases_info->op_in_faultphases = axis2_hash_make(env);
-    phases_info->op_out_faultphases = axis2_hash_make(env);
+    phases_info->op_in_phases = axutil_hash_make(env);
+    phases_info->op_out_phases = axutil_hash_make(env);
+    phases_info->op_in_faultphases = axutil_hash_make(env);
+    phases_info->op_out_faultphases = axutil_hash_make(env);
 
     return phases_info;
 }
@@ -84,75 +84,75 @@ axis2_phases_info_free(axis2_phases_info_t *phases_info,
     }
     if (phases_info->op_in_phases)
     {
-        axis2_hash_index_t *i = NULL;
-        for (i = axis2_hash_first (phases_info->op_in_phases, env); i; i =
-            axis2_hash_next (env, i))
+        axutil_hash_index_t *i = NULL;
+        for (i = axutil_hash_first (phases_info->op_in_phases, env); i; i =
+            axutil_hash_next (env, i))
         {
             void *v = NULL;
             axis2_phase_t *phase = NULL;
 
-            axis2_hash_this (i, NULL, NULL, &v);
+            axutil_hash_this (i, NULL, NULL, &v);
             phase = (axis2_phase_t *) v;
             if(phase)
             {
                  axis2_phase_free(phase, env);
             }
         }
-        axis2_hash_free(phases_info->op_in_phases, env);
+        axutil_hash_free(phases_info->op_in_phases, env);
     }
     if (phases_info->op_out_phases)
     {
-        axis2_hash_index_t *i = NULL;
-        for (i = axis2_hash_first (phases_info->op_out_phases, env); i; i =
-            axis2_hash_next (env, i))
+        axutil_hash_index_t *i = NULL;
+        for (i = axutil_hash_first (phases_info->op_out_phases, env); i; i =
+            axutil_hash_next (env, i))
         {
             void *v = NULL;
             axis2_phase_t *phase = NULL;
 
-            axis2_hash_this (i, NULL, NULL, &v);
+            axutil_hash_this (i, NULL, NULL, &v);
             phase = (axis2_phase_t *) v;
             if(phase)
             {
                  axis2_phase_free(phase, env);
             }
         }
-        axis2_hash_free(phases_info->op_out_phases, env);
+        axutil_hash_free(phases_info->op_out_phases, env);
     }
     if (phases_info->op_in_faultphases)
     {
-        axis2_hash_index_t *i = NULL;
-        for (i = axis2_hash_first (phases_info->op_in_faultphases, env); 
-            i; i = axis2_hash_next (env, i))
+        axutil_hash_index_t *i = NULL;
+        for (i = axutil_hash_first (phases_info->op_in_faultphases, env); 
+            i; i = axutil_hash_next (env, i))
         {
             void *v = NULL;
             axis2_phase_t *phase = NULL;
 
-            axis2_hash_this (i, NULL, NULL, &v);
+            axutil_hash_this (i, NULL, NULL, &v);
             phase = (axis2_phase_t *) v;
             if(phase)
             {
                  axis2_phase_free(phase, env);
             }
         }
-        axis2_hash_free(phases_info->op_in_faultphases, env);
+        axutil_hash_free(phases_info->op_in_faultphases, env);
     }
     if (phases_info->op_out_faultphases)
     {
-        axis2_hash_index_t *i = NULL;
-        for (i = axis2_hash_first (phases_info->op_out_faultphases, env); 
-            i; i = axis2_hash_next (env, i))
+        axutil_hash_index_t *i = NULL;
+        for (i = axutil_hash_first (phases_info->op_out_faultphases, env); 
+            i; i = axutil_hash_next (env, i))
         {
             void *v = NULL;
             axis2_phase_t *phase = NULL;
 
-            axis2_hash_this (i, NULL, NULL, &v);
+            axutil_hash_this (i, NULL, NULL, &v);
             phase = (axis2_phase_t *) v;
             if(phase)
             {
                  axis2_phase_free(phase, env);
             }
         }
-        axis2_hash_free(phases_info->op_out_faultphases, env);
+        axutil_hash_free(phases_info->op_out_faultphases, env);
     }
 
     if (phases_info)
@@ -299,12 +299,12 @@ axis2_phases_info_get_op_in_phases(const axis2_phases_info_t *phases_info,
         }
         else
         {
-            phase = axis2_hash_get(phases_info->op_in_phases, phase_name, 
+            phase = axutil_hash_get(phases_info->op_in_phases, phase_name, 
                 AXIS2_HASH_KEY_STRING);
             if(!phase)
             {
                 phase = axis2_phase_create(env, phase_name);
-                axis2_hash_set(phases_info->op_in_phases, phase_name,
+                axutil_hash_set(phases_info->op_in_phases, phase_name,
                     AXIS2_HASH_KEY_STRING, phase);
             }
             status = axutil_array_list_add(op_in_phases, env, phase);
@@ -358,12 +358,12 @@ axis2_phases_info_get_op_out_phases(const axis2_phases_info_t *phases_info,
     {
         phase_name = (axis2_char_t *) axutil_array_list_get(phases_info->
             out_phases, env, i);
-        phase = axis2_hash_get(phases_info->op_out_phases, phase_name, 
+        phase = axutil_hash_get(phases_info->op_out_phases, phase_name, 
             AXIS2_HASH_KEY_STRING);
         if(!phase)
         {
             phase = axis2_phase_create(env, phase_name);
-            axis2_hash_set(phases_info->op_out_phases, phase_name,
+            axutil_hash_set(phases_info->op_out_phases, phase_name,
                 AXIS2_HASH_KEY_STRING, phase);
         }
         status = axutil_array_list_add(op_out_phases, env, phase);
@@ -421,12 +421,12 @@ axis2_phases_info_get_op_in_faultphases(const axis2_phases_info_t *phases_info,
     {
         phase_name = (axis2_char_t *)
             axutil_array_list_get(phases_info->in_faultphases, env, i);
-        phase = axis2_hash_get(phases_info->op_in_faultphases, phase_name, 
+        phase = axutil_hash_get(phases_info->op_in_faultphases, phase_name, 
             AXIS2_HASH_KEY_STRING);
         if(!phase)
         {
             phase = axis2_phase_create(env, phase_name);
-            axis2_hash_set(phases_info->op_in_faultphases, 
+            axutil_hash_set(phases_info->op_in_faultphases, 
                 phase_name, AXIS2_HASH_KEY_STRING, phase);
         }
         status = axutil_array_list_add(op_in_faultphases, env, phase);
@@ -486,12 +486,12 @@ axis2_phases_info_get_op_out_faultphases(const axis2_phases_info_t *phases_info,
     {
         phase_name = (axis2_char_t *) 
             axutil_array_list_get(phases_info->out_faultphases, env, i);
-        phase = axis2_hash_get(phases_info->op_out_faultphases, phase_name, 
+        phase = axutil_hash_get(phases_info->op_out_faultphases, phase_name, 
             AXIS2_HASH_KEY_STRING);
         if(!phase)
         {
             phase = axis2_phase_create(env, phase_name);
-            axis2_hash_set(phases_info->op_out_faultphases, 
+            axutil_hash_set(phases_info->op_out_faultphases, 
                 phase_name, AXIS2_HASH_KEY_STRING, phase);
         }
         status = axutil_array_list_add(op_out_faultphases, env, phase);

@@ -33,8 +33,8 @@ struct woden_feature_impl
     woden_feature_t feature;
     woden_obj_types_t obj_type;
     woden_documentable_t *documentable;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
     axis2_uri_t *f_ref;
     axis2_bool_t f_required;
     void *f_parent;
@@ -47,7 +47,7 @@ woden_feature_free(
     void *feature,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_feature_super_objs(
     void *feature,
     const axutil_env_t *env);
@@ -385,41 +385,41 @@ create(const axutil_env_t *env)
     feature_impl->feature.ops->to_element =
         woden_feature_to_element;
 
-    feature_impl->methods = axis2_hash_make(env);
+    feature_impl->methods = axutil_hash_make(env);
     if (!feature_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(feature_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(feature_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_feature_free);
-    axis2_hash_set(feature_impl->methods, "super_objs",
+    axutil_hash_set(feature_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, woden_feature_super_objs);
-    axis2_hash_set(feature_impl->methods, "type",
+    axutil_hash_set(feature_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_feature_type);
 
-    axis2_hash_set(feature_impl->methods, "get_parent",
+    axutil_hash_set(feature_impl->methods, "get_parent",
             AXIS2_HASH_KEY_STRING,
             woden_feature_get_parent);
-    axis2_hash_set(feature_impl->methods, "set_parent_element",
+    axutil_hash_set(feature_impl->methods, "set_parent_element",
             AXIS2_HASH_KEY_STRING,
             woden_feature_set_parent_element);
-    axis2_hash_set(feature_impl->methods, "get_parent_element",
+    axutil_hash_set(feature_impl->methods, "get_parent_element",
             AXIS2_HASH_KEY_STRING,
             woden_feature_get_parent_element);
-    axis2_hash_set(feature_impl->methods, "set_ref",
+    axutil_hash_set(feature_impl->methods, "set_ref",
             AXIS2_HASH_KEY_STRING,
             woden_feature_set_ref);
-    axis2_hash_set(feature_impl->methods, "get_ref",
+    axutil_hash_set(feature_impl->methods, "get_ref",
             AXIS2_HASH_KEY_STRING,
             woden_feature_get_ref);
-    axis2_hash_set(feature_impl->methods, "set_required",
+    axutil_hash_set(feature_impl->methods, "set_required",
             AXIS2_HASH_KEY_STRING,
             woden_feature_set_required);
-    axis2_hash_set(feature_impl->methods, "is_required",
+    axutil_hash_set(feature_impl->methods, "is_required",
             AXIS2_HASH_KEY_STRING,
             woden_feature_is_required);
-    axis2_hash_set(feature_impl->methods, "to_element",
+    axutil_hash_set(feature_impl->methods, "to_element",
             AXIS2_HASH_KEY_STRING,
             woden_feature_to_element);
 
@@ -436,15 +436,15 @@ woden_feature_create(const axutil_env_t *env)
 
     feature_impl->documentable = woden_documentable_create(env);
 
-    feature_impl->super = axis2_hash_make(env);
+    feature_impl->super = axutil_hash_make(env);
     if (!feature_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(feature_impl->super, "WODEN_FEATURE", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(feature_impl->super, "WODEN_FEATURE", AXIS2_HASH_KEY_STRING,
             &(feature_impl->feature));
-    axis2_hash_set(feature_impl->super, "WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(feature_impl->super, "WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING,
             feature_impl->documentable);
 
     return &(feature_impl->feature);
@@ -554,13 +554,13 @@ woden_feature_free(void *feature,
 
     if (feature_impl->super)
     {
-        axis2_hash_free(feature_impl->super, env);
+        axutil_hash_free(feature_impl->super, env);
         feature_impl->super = NULL;
     }
 
     if (feature_impl->methods)
     {
-        axis2_hash_free(feature_impl->methods, env);
+        axutil_hash_free(feature_impl->methods, env);
         feature_impl->methods = NULL;
     }
 
@@ -586,7 +586,7 @@ woden_feature_free(void *feature,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_feature_super_objs(
     void *feature,
     const axutil_env_t *env)
@@ -630,7 +630,7 @@ woden_feature_resolve_methods(
     woden_feature_t *feature,
     const axutil_env_t *env,
     woden_feature_t *feature_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_feature_impl_t *feature_impl_l = NULL;
 
@@ -638,32 +638,32 @@ woden_feature_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     feature_impl_l = INTF_TO_IMPL(feature_impl);
 
-    feature->ops->free = axis2_hash_get(methods, "free",
+    feature->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    feature->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    feature->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    feature->ops->type = axis2_hash_get(methods, "type",
+    feature->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    feature->ops->get_ref = axis2_hash_get(methods,
+    feature->ops->get_ref = axutil_hash_get(methods,
             "get_ref", AXIS2_HASH_KEY_STRING);
     if (!feature->ops->get_ref && feature_impl_l)
         feature->ops->get_ref =
             feature_impl_l->feature.ops->get_ref;
 
-    feature->ops->is_required = axis2_hash_get(methods,
+    feature->ops->is_required = axutil_hash_get(methods,
             "is_required", AXIS2_HASH_KEY_STRING);
     if (!feature->ops->is_required && feature_impl_l)
         feature->ops->is_required =
             feature_impl_l->feature.ops->is_required;
 
-    feature->ops->get_parent = axis2_hash_get(methods,
+    feature->ops->get_parent = axutil_hash_get(methods,
             "get_parent", AXIS2_HASH_KEY_STRING);
     if (!feature->ops->get_parent && feature_impl_l)
         feature->ops->get_parent =
             feature_impl_l->feature.ops->get_parent;
 
-    feature->ops->to_element = axis2_hash_get(methods,
+    feature->ops->to_element = axutil_hash_get(methods,
             "to_element", AXIS2_HASH_KEY_STRING);
     if (!feature->ops->to_element && feature_impl_l)
         feature->ops->to_element =
@@ -679,11 +679,11 @@ woden_feature_set_ref(
     axis2_uri_t *ref)
 {
     woden_feature_impl_t *feature_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_FEATURE_SUPER_OBJS(feature, env);
-    feature_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    feature_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     if (feature_impl->f_ref)
@@ -701,11 +701,11 @@ woden_feature_get_ref(
     const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_FEATURE_SUPER_OBJS(feature, env);
-    feature_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    feature_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     return feature_impl->f_ref;
@@ -718,11 +718,11 @@ woden_feature_set_required(
     axis2_bool_t required)
 {
     woden_feature_impl_t *feature_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_FEATURE_SUPER_OBJS(feature, env);
-    feature_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    feature_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     feature_impl->f_required = required;
@@ -735,11 +735,11 @@ woden_feature_is_required(
     const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_FEATURE_SUPER_OBJS(feature, env);
-    feature_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    feature_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     return feature_impl->f_required;
@@ -752,11 +752,11 @@ woden_feature_set_parent_element(
     woden_wsdl_element_t *parent)
 {
     woden_feature_impl_t *feature_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_FEATURE_SUPER_OBJS(feature, env);
-    feature_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    feature_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     if (feature_impl->f_parent)
@@ -773,11 +773,11 @@ woden_feature_get_parent_element(
     const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_FEATURE_SUPER_OBJS(feature, env);
-    feature_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    feature_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     return feature_impl->f_parent;
@@ -789,11 +789,11 @@ woden_feature_get_parent(
     const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_FEATURE_SUPER_OBJS(feature, env);
-    feature_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    feature_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     /* TODO complete this */
@@ -806,11 +806,11 @@ woden_feature_to_element(
     const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_FEATURE_SUPER_OBJS(feature, env);
-    feature_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    feature_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_FEATURE", AXIS2_HASH_KEY_STRING));
 
     return &(feature_impl->feature);

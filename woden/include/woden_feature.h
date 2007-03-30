@@ -60,7 +60,7 @@ struct woden_feature_ops
     free) (void *feature,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *feature,
             const axutil_env_t *env);
 
@@ -167,7 +167,7 @@ woden_feature_resolve_methods(
         woden_feature_t *feature,
         const axutil_env_t *env,
         woden_feature_t *feature_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_FEATURE_FREE(feature, env) \

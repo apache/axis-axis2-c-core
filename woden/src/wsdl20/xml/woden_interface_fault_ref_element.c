@@ -21,42 +21,42 @@ axis2_status_t AXIS2_CALL
 woden_interface_fault_ref_element_resolve_methods(
     woden_interface_fault_ref_element_t *interface_fault_ref_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    interface_fault_ref_element->ops->free = axis2_hash_get(methods, "free",
+    interface_fault_ref_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    interface_fault_ref_element->ops->type = axis2_hash_get(methods, "type",
+    interface_fault_ref_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
     interface_fault_ref_element->ops->set_ref =
-        axis2_hash_get(methods, "set_ref",
+        axutil_hash_get(methods, "set_ref",
                 AXIS2_HASH_KEY_STRING);
 
     interface_fault_ref_element->ops->get_ref =
-        axis2_hash_get(methods, "get_ref",
+        axutil_hash_get(methods, "get_ref",
                 AXIS2_HASH_KEY_STRING);
 
     interface_fault_ref_element->ops->get_interface_fault_element =
-        axis2_hash_get(methods, "get_interface_fault_element",
+        axutil_hash_get(methods, "get_interface_fault_element",
                 AXIS2_HASH_KEY_STRING);
 
     interface_fault_ref_element->ops->set_msg_label =
-        axis2_hash_get(methods, "set_msg_label",
+        axutil_hash_get(methods, "set_msg_label",
                 AXIS2_HASH_KEY_STRING);
 
     interface_fault_ref_element->ops->get_msg_label =
-        axis2_hash_get(methods, "get_msg_label",
+        axutil_hash_get(methods, "get_msg_label",
                 AXIS2_HASH_KEY_STRING);
 
     interface_fault_ref_element->ops->set_direction =
-        axis2_hash_get(methods, "set_direction",
+        axutil_hash_get(methods, "set_direction",
                 AXIS2_HASH_KEY_STRING);
 
     interface_fault_ref_element->ops->get_direction =
-        axis2_hash_get(methods, "get_direction",
+        axutil_hash_get(methods, "get_direction",
                 AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

@@ -160,7 +160,7 @@ axis2_http_sender_send(
     axis2_param_t *ssl_pp_param = NULL; /* ssl passphrase */
     axis2_char_t *ssl_pp = NULL;
 	axis2_property_t *content_type_property = NULL;
-	axis2_hash_t *content_type_hash = NULL;
+	axutil_hash_t *content_type_hash = NULL;
 	axis2_char_t *content_type_value = NULL;
 	axis2_property_t *method = NULL;
 	axis2_char_t *method_value = NULL;
@@ -439,9 +439,9 @@ axis2_http_sender_send(
 		
 			if (content_type_property)
 			{
-				content_type_hash = (axis2_hash_t *) axis2_property_get_value (content_type_property, env);
+				content_type_hash = (axutil_hash_t *) axis2_property_get_value (content_type_property, env);
 				if (content_type_hash)
-					content_type_value = (char *) axis2_hash_get (content_type_hash, 
+					content_type_value = (char *) axutil_hash_get (content_type_hash, 
 																  AXIS2_HTTP_HEADER_CONTENT_TYPE, 
 																  AXIS2_HASH_KEY_STRING);
 			}
@@ -808,7 +808,7 @@ axis2_http_sender_configure_proxy(
     axis2_conf_t *conf = NULL;
     axis2_transport_out_desc_t *trans_desc = NULL;
     axis2_param_t *proxy_param = NULL;
-    axis2_hash_t *transport_attrs = NULL;
+    axutil_hash_t *transport_attrs = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -844,7 +844,7 @@ axis2_http_sender_configure_proxy(
             axis2_char_t *proxy_host = NULL;
             axis2_char_t *proxy_port = NULL;
 
-            obj = axis2_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
+            obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
 								 AXIS2_HASH_KEY_STRING);
             if (! obj)
             {
@@ -864,7 +864,7 @@ axis2_http_sender_configure_proxy(
             /* Now we get the port */
             obj = NULL;
 
-            obj = axis2_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
+            obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
 								 AXIS2_HASH_KEY_STRING);
             port_attr = (axiom_attribute_t*) axis2_generic_obj_get_value(obj,
 																		env);

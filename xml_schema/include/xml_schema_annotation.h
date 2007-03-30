@@ -31,7 +31,7 @@
 #include <xml_schema_defines.h>
 #include <xml_schema_obj.h>
 #include <xml_schema_obj_collection.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -63,7 +63,7 @@ extern "C"
          * @returns pointer to hashtable if available ,NULL otherwise
          */
 
-        axis2_hash_t *(AXIS2_CALL *
+        axutil_hash_t *(AXIS2_CALL *
                 super_objs) (
                     void *annotation,
                     const axutil_env_t *env);

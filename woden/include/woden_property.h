@@ -60,7 +60,7 @@ struct woden_property_ops
     free) (void *property,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *property,
             const axutil_env_t *env);
 
@@ -187,7 +187,7 @@ woden_property_resolve_methods(
         woden_property_t *property,
         const axutil_env_t *env,
         woden_property_t *property_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_PROPERTY_FREE(property, env) \

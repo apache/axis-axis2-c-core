@@ -29,8 +29,8 @@ struct woden_configurable_impl
 {
     woden_configurable_t configurable;
     woden_documentable_t *documentable;
-    axis2_hash_t *methods;
-    axis2_hash_t *super;
+    axutil_hash_t *methods;
+    axutil_hash_t *super;
     axutil_array_list_t *f_features;
     axutil_array_list_t *f_properties;
 };
@@ -42,7 +42,7 @@ woden_configurable_free(
     void *configurable,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_configurable_super_objs(
     void *configurable,
     const axutil_env_t *env);
@@ -136,19 +136,19 @@ create(
     configurable_impl->configurable.base.configurable_element.
     ops = NULL;
 
-    configurable_impl->methods = axis2_hash_make(env);
+    configurable_impl->methods = axutil_hash_make(env);
     if (!configurable_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(configurable_impl->methods, "add_property_element",
+    axutil_hash_set(configurable_impl->methods, "add_property_element",
             AXIS2_HASH_KEY_STRING, woden_configurable_add_property_element);
-    axis2_hash_set(configurable_impl->methods, "get_property_elements",
+    axutil_hash_set(configurable_impl->methods, "get_property_elements",
             AXIS2_HASH_KEY_STRING, woden_configurable_get_property_elements);
-    axis2_hash_set(configurable_impl->methods, "add_feature_element",
+    axutil_hash_set(configurable_impl->methods, "add_feature_element",
             AXIS2_HASH_KEY_STRING, woden_configurable_add_feature_element);
-    axis2_hash_set(configurable_impl->methods, "get_feature_elements",
+    axutil_hash_set(configurable_impl->methods, "get_feature_elements",
             AXIS2_HASH_KEY_STRING, woden_configurable_get_feature_elements);
 
     configurable_impl->configurable.ops = AXIS2_MALLOC(env->allocator,
@@ -173,15 +173,15 @@ woden_configurable_create(
 
     configurable_impl->documentable = woden_documentable_create(env);
 
-    configurable_impl->super = axis2_hash_make(env);
+    configurable_impl->super = axutil_hash_make(env);
     if (!configurable_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(configurable_impl->super, "WODEN_CONFIGURABLE",
+    axutil_hash_set(configurable_impl->super, "WODEN_CONFIGURABLE",
             AXIS2_HASH_KEY_STRING, &(configurable_impl->configurable));
-    axis2_hash_set(configurable_impl->super, "WODEN_DOCUMENTABLE",
+    axutil_hash_set(configurable_impl->super, "WODEN_DOCUMENTABLE",
             AXIS2_HASH_KEY_STRING, configurable_impl->documentable);
 
     return &(configurable_impl->configurable);
@@ -238,7 +238,7 @@ woden_configurable_free(
 
     if (configurable_impl->super)
     {
-        axis2_hash_free(configurable_impl->super, env);
+        axutil_hash_free(configurable_impl->super, env);
         configurable_impl->super = NULL;
     }
 
@@ -256,7 +256,7 @@ woden_configurable_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_configurable_super_objs(
     void *configurable,
     const axutil_env_t *env)
@@ -287,7 +287,7 @@ woden_configurable_resolve_methods(
     woden_configurable_t *configurable,
     const axutil_env_t *env,
     woden_configurable_t *configurable_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_configurable_impl_t *configurable_impl_l = NULL;
 
@@ -297,11 +297,11 @@ woden_configurable_resolve_methods(
 
     configurable->ops = AXIS2_MALLOC(env->allocator,
             sizeof(woden_configurable_ops_t));
-    configurable->ops->free = axis2_hash_get(methods, "free",
+    configurable->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    configurable->ops->to_configurable_free = axis2_hash_get(methods,
+    configurable->ops->to_configurable_free = axutil_hash_get(methods,
             "to_configurable_free", AXIS2_HASH_KEY_STRING);
-    configurable->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    configurable->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;
@@ -313,11 +313,11 @@ woden_configurable_get_features(
     const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
-    configurable_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    configurable_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
 
     return configurable_impl->f_features;
@@ -329,11 +329,11 @@ woden_configurable_get_properties(
     const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
-    configurable_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    configurable_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
 
     return configurable_impl->f_properties;
@@ -346,12 +346,12 @@ woden_configurable_add_feature_element(
     void *feature)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, feature, AXIS2_FAILURE);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
-    configurable_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    configurable_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
 
     if (!configurable_impl->f_features)
@@ -373,11 +373,11 @@ woden_configurable_get_feature_elements(
     const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
-    configurable_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    configurable_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
 
     return configurable_impl->f_features;
@@ -390,12 +390,12 @@ woden_configurable_add_property_element(
     void *property)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, property, AXIS2_FAILURE);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
-    configurable_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    configurable_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
 
     if (!configurable_impl->f_properties)
@@ -417,11 +417,11 @@ woden_configurable_get_property_elements(
     const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
-    configurable_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    configurable_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
 
     return configurable_impl->f_properties;

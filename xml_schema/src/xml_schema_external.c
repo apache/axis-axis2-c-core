@@ -31,7 +31,7 @@ typedef struct xml_schema_external_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     axis2_char_t *schema_location;
 
@@ -51,7 +51,7 @@ xml_schema_annotated_t *AXIS2_CALL
 xml_schema_external_get_base_impl(void *external,
         const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_external_super_objs(void *external,
         const axutil_env_t *env);
 
@@ -129,7 +129,7 @@ xml_schema_external_create(const axutil_env_t *env)
     external_impl->external.ops->set_schema_location =
         xml_schema_external_set_schema_location;
 
-    external_impl->ht_super = axis2_hash_make(env);
+    external_impl->ht_super = axutil_hash_make(env);
 
     if (!external_impl->ht_super)
     {
@@ -146,11 +146,11 @@ xml_schema_external_create(const axutil_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(external_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_EXTERNAL"),
+    axutil_hash_set(external_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_EXTERNAL"),
             AXIS2_HASH_KEY_STRING, &(external_impl->external));
-    axis2_hash_set(external_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
+    axutil_hash_set(external_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, external_impl->annotated);
-    axis2_hash_set(external_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
+    axutil_hash_set(external_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(external_impl->annotated, env));
 
@@ -183,7 +183,7 @@ xml_schema_external_free(void *external,
 
     if (external_impl->ht_super)
     {
-        axis2_hash_free(external_impl->ht_super, env);
+        axutil_hash_free(external_impl->ht_super, env);
         external_impl->ht_super = NULL;
     }
     if (external_impl->annotated)
@@ -259,13 +259,13 @@ xml_schema_external_get_schema(void *external,
         const axutil_env_t *env)
 {
     xml_schema_external_impl_t *ext_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env);
     if (ht_super)
     {
 
-        ext_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        ext_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA_EXTERNAL", AXIS2_HASH_KEY_STRING));
         if (!ext_impl)
             return NULL;
@@ -279,13 +279,13 @@ xml_schema_external_set_schema(void *external,
         xml_schema_t *schema)
 {
     xml_schema_external_impl_t *ext_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env);
     if (ht_super)
     {
 
-        ext_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        ext_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA_EXTERNAL", AXIS2_HASH_KEY_STRING));
         if (!ext_impl)
             return AXIS2_FAILURE;
@@ -301,7 +301,7 @@ xml_schema_external_set_schema(void *external,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_external_super_objs(void *external,
         const axutil_env_t *env)
 {
@@ -320,13 +320,13 @@ xml_schema_external_get_schema_location(void *external,
         const axutil_env_t *env)
 {
     xml_schema_external_impl_t *ext_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env);
     if (ht_super)
     {
 
-        ext_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        ext_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA_EXTERNAL", AXIS2_HASH_KEY_STRING));
         if (!ext_impl)
             return NULL;
@@ -340,14 +340,14 @@ xml_schema_external_set_schema_location(void *external,
         axis2_char_t* location)
 {
     xml_schema_external_impl_t *ext_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, location, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env);
     if (ht_super)
     {
 
-        ext_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
+        ext_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(ht_super,
                 "XML_SCHEMA_EXTERNAL", AXIS2_HASH_KEY_STRING));
         if (!ext_impl)
             return AXIS2_FAILURE;

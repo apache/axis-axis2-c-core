@@ -34,8 +34,8 @@ struct woden_svc_impl
     woden_svc_t svc;
     woden_obj_types_t obj_type;
     woden_configurable_t *configurable;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
     axis2_qname_t *f_qname;
     axis2_qname_t *f_interface_qname;
     void *f_interface;
@@ -49,7 +49,7 @@ woden_svc_free(
     void *svc,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_svc_super_objs(
     void *svc,
     const axutil_env_t *env);
@@ -437,47 +437,47 @@ create(const axutil_env_t *env)
     svc_impl->svc.ops->set_interface_element =
         woden_svc_set_interface_element;
 
-    svc_impl->methods = axis2_hash_make(env);
+    svc_impl->methods = axutil_hash_make(env);
     if (!svc_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(svc_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(svc_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_svc_free);
-    axis2_hash_set(svc_impl->methods, "super_objs",
+    axutil_hash_set(svc_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, woden_svc_super_objs);
-    axis2_hash_set(svc_impl->methods, "type",
+    axutil_hash_set(svc_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_svc_type);
 
-    axis2_hash_set(svc_impl->methods, "get_qname",
+    axutil_hash_set(svc_impl->methods, "get_qname",
             AXIS2_HASH_KEY_STRING,
             woden_svc_get_qname);
-    axis2_hash_set(svc_impl->methods, "get_interface",
+    axutil_hash_set(svc_impl->methods, "get_interface",
             AXIS2_HASH_KEY_STRING,
             woden_svc_get_interface);
-    axis2_hash_set(svc_impl->methods, "get_endpoints",
+    axutil_hash_set(svc_impl->methods, "get_endpoints",
             AXIS2_HASH_KEY_STRING,
             woden_svc_get_endpoints);
-    axis2_hash_set(svc_impl->methods, "set_qname",
+    axutil_hash_set(svc_impl->methods, "set_qname",
             AXIS2_HASH_KEY_STRING,
             woden_svc_set_qname);
-    axis2_hash_set(svc_impl->methods, "set_interface_qname",
+    axutil_hash_set(svc_impl->methods, "set_interface_qname",
             AXIS2_HASH_KEY_STRING,
             woden_svc_set_interface_qname);
-    axis2_hash_set(svc_impl->methods, "get_interface_qname",
+    axutil_hash_set(svc_impl->methods, "get_interface_qname",
             AXIS2_HASH_KEY_STRING,
             woden_svc_get_interface_qname);
-    axis2_hash_set(svc_impl->methods, "get_interface_element",
+    axutil_hash_set(svc_impl->methods, "get_interface_element",
             AXIS2_HASH_KEY_STRING,
             woden_svc_get_interface_element);
-    axis2_hash_set(svc_impl->methods, "add_endpoint_element",
+    axutil_hash_set(svc_impl->methods, "add_endpoint_element",
             AXIS2_HASH_KEY_STRING,
             woden_svc_add_endpoint_element);
-    axis2_hash_set(svc_impl->methods, "get_endpoint_elements",
+    axutil_hash_set(svc_impl->methods, "get_endpoint_elements",
             AXIS2_HASH_KEY_STRING,
             woden_svc_get_endpoint_elements);
-    axis2_hash_set(svc_impl->methods, "set_interface_element",
+    axutil_hash_set(svc_impl->methods, "set_interface_element",
             AXIS2_HASH_KEY_STRING,
             woden_svc_set_interface_element);
 
@@ -494,15 +494,15 @@ woden_svc_create(const axutil_env_t *env)
 
     svc_impl->configurable = woden_configurable_create(env);
 
-    svc_impl->super = axis2_hash_make(env);
+    svc_impl->super = axutil_hash_make(env);
     if (!svc_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(svc_impl->super, "WODEN_SVC", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(svc_impl->super, "WODEN_SVC", AXIS2_HASH_KEY_STRING,
             &(svc_impl->svc));
-    axis2_hash_set(svc_impl->super, "WODEN_NESTED_CONFIGURABLE", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(svc_impl->super, "WODEN_NESTED_CONFIGURABLE", AXIS2_HASH_KEY_STRING,
             svc_impl->configurable);
 
     return &(svc_impl->svc);
@@ -635,13 +635,13 @@ woden_svc_free(void *svc,
 
     if (svc_impl->super)
     {
-        axis2_hash_free(svc_impl->super, env);
+        axutil_hash_free(svc_impl->super, env);
         svc_impl->super = NULL;
     }
 
     if (svc_impl->methods)
     {
-        axis2_hash_free(svc_impl->methods, env);
+        axutil_hash_free(svc_impl->methods, env);
         svc_impl->methods = NULL;
     }
 
@@ -667,7 +667,7 @@ woden_svc_free(void *svc,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_svc_super_objs(
     void *svc,
     const axutil_env_t *env)
@@ -711,7 +711,7 @@ woden_svc_resolve_methods(
     woden_svc_t *svc,
     const axutil_env_t *env,
     woden_svc_t *svc_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_svc_impl_t *svc_impl_l = NULL;
 
@@ -719,32 +719,32 @@ woden_svc_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     svc_impl_l = INTF_TO_IMPL(svc_impl);
 
-    svc->ops->free = axis2_hash_get(methods, "free",
+    svc->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    svc->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    svc->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    svc->ops->type = axis2_hash_get(methods, "type",
+    svc->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    svc->ops->get_qname = axis2_hash_get(methods,
+    svc->ops->get_qname = axutil_hash_get(methods,
             "get_qname", AXIS2_HASH_KEY_STRING);
     if (!svc->ops->get_qname && svc_impl_l)
         svc->ops->get_qname =
             svc_impl_l->svc.ops->get_qname;
 
-    svc->ops->get_interface = axis2_hash_get(methods,
+    svc->ops->get_interface = axutil_hash_get(methods,
             "get_interface", AXIS2_HASH_KEY_STRING);
     if (!svc->ops->get_interface && svc_impl_l)
         svc->ops->get_interface =
             svc_impl_l->svc.ops->get_interface;
 
-    svc->ops->get_endpoints = axis2_hash_get(methods,
+    svc->ops->get_endpoints = axutil_hash_get(methods,
             "get_endpoints", AXIS2_HASH_KEY_STRING);
     if (!svc->ops->get_endpoints && svc_impl_l)
         svc->ops->get_endpoints =
             svc_impl_l->svc.ops->get_endpoints;
 
-    svc->ops->set_interface_element = axis2_hash_get(methods,
+    svc->ops->set_interface_element = axutil_hash_get(methods,
             "set_interface_element", AXIS2_HASH_KEY_STRING);
     if (!svc->ops->set_interface_element && svc_impl_l)
         svc->ops->set_interface_element =
@@ -762,11 +762,11 @@ woden_svc_get_qname(
     const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     return svc_impl->f_qname;
@@ -778,11 +778,11 @@ woden_svc_get_interface(
     const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     return svc_impl->f_interface;
@@ -794,11 +794,11 @@ woden_svc_get_endpoints(
     const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     return svc_impl->f_endpoints;
@@ -814,11 +814,11 @@ woden_svc_set_qname(
     axis2_qname_t *qname)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     if (svc_impl->f_qname)
@@ -836,11 +836,11 @@ woden_svc_set_interface_qname(
     axis2_qname_t *interface_qname)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     if (svc_impl->f_interface_qname)
@@ -858,11 +858,11 @@ woden_svc_get_interface_qname(
     const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     return svc_impl->f_interface_qname;
@@ -874,11 +874,11 @@ woden_svc_get_interface_element(
     const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     return svc_impl->f_interface;
@@ -891,11 +891,11 @@ woden_svc_add_endpoint_element(
     void *endpoint)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     if (!svc_impl->f_endpoints)
@@ -917,11 +917,11 @@ woden_svc_get_endpoint_elements(
     const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     return svc_impl->f_endpoints;
@@ -937,11 +937,11 @@ woden_svc_set_interface_element(
     void *interface)
 {
     woden_svc_impl_t *svc_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
-    svc_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    svc_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_SVC", AXIS2_HASH_KEY_STRING));
 
     if (svc_impl->f_interface)

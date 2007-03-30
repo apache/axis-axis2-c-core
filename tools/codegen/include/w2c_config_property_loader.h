@@ -25,7 +25,7 @@
 
 #include <axis2_utils.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -140,9 +140,9 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     /**
      * Gets the emitter names map keys with the language name.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_hash_t*.
+     * @return Returns axutil_hash_t*.
      */
-    axis2_hash_t* (AXIS2_CALL* 
+    axutil_hash_t* (AXIS2_CALL* 
     get_language_emitter_map )(
         w2c_config_property_loader_t *config_property_loader,
         const axutil_env_t *env);
@@ -160,9 +160,9 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     /**
      * Gets the language specific properties.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_hash_t*.
+     * @return Returns axutil_hash_t*.
      */
-    axis2_hash_t* (AXIS2_CALL* 
+    axutil_hash_t* (AXIS2_CALL* 
     get_language_specific_properties_map )(
         w2c_config_property_loader_t *config_property_loader,
         const axutil_env_t *env);
@@ -181,9 +181,9 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
      * Gets the extensions map for the databinding frameworks.
      * The entries are keys by the framework name.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_hash_t*.
+     * @return Returns axutil_hash_t*.
      */
-    axis2_hash_t* (AXIS2_CALL* 
+    axutil_hash_t* (AXIS2_CALL* 
     get_databinding_framework_name_to_extension_map )(
         w2c_config_property_loader_t *config_property_loader,
         const axutil_env_t *env);

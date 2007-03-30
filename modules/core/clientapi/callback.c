@@ -17,7 +17,7 @@
 
 #include <axis2_callback.h>
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 struct axis2_callback
 {

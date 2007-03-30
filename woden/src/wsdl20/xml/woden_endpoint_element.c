@@ -21,28 +21,28 @@ axis2_status_t AXIS2_CALL
 woden_endpoint_element_resolve_methods(
     woden_endpoint_element_t *endpoint_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    endpoint_element->ops->free = axis2_hash_get(methods, "free",
+    endpoint_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->type = axis2_hash_get(methods, "type",
+    endpoint_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->set_name = axis2_hash_get(methods,
+    endpoint_element->ops->set_name = axutil_hash_get(methods,
             "set_name", AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->get_name = axis2_hash_get(methods,
+    endpoint_element->ops->get_name = axutil_hash_get(methods,
             "get_name", AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->set_binding_qname = axis2_hash_get(methods,
+    endpoint_element->ops->set_binding_qname = axutil_hash_get(methods,
             "set_binding_qname", AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->get_binding_qname = axis2_hash_get(methods,
+    endpoint_element->ops->get_binding_qname = axutil_hash_get(methods,
             "get_binding_qname", AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->get_binding_element = axis2_hash_get(methods,
+    endpoint_element->ops->get_binding_element = axutil_hash_get(methods,
             "get_binding_element", AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->set_address = axis2_hash_get(methods,
+    endpoint_element->ops->set_address = axutil_hash_get(methods,
             "set_address", AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->get_address = axis2_hash_get(methods,
+    endpoint_element->ops->get_address = axutil_hash_get(methods,
             "get_address", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

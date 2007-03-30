@@ -281,8 +281,8 @@ axis2_addr_in_extract_addr_params(const axutil_env_t *env,
         const axis2_char_t *addr_ns_str,
         axis2_msg_ctx_t *msg_ctx)
 {
-    axis2_hash_t *header_block_ht = NULL;
-    axis2_hash_index_t *hash_index =  NULL;
+    axutil_hash_t *header_block_ht = NULL;
+    axutil_hash_index_t *hash_index =  NULL;
     axis2_msg_info_headers_t *msg_info_headers = *(msg_info_headers_p);
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_bool_t to_found = AXIS2_FALSE;
@@ -308,8 +308,8 @@ axis2_addr_in_extract_addr_params(const axutil_env_t *env,
     if (!header_block_ht)
         return AXIS2_FAILURE;
 
-    for (hash_index = axis2_hash_first(header_block_ht, env); hash_index;
-            hash_index = axis2_hash_next(env, hash_index))
+    for (hash_index = axutil_hash_first(header_block_ht, env); hash_index;
+            hash_index = axutil_hash_next(env, hash_index))
     {
         void *hb = NULL;
         axiom_soap_header_block_t *header_block =    NULL;
@@ -319,7 +319,7 @@ axis2_addr_in_extract_addr_params(const axutil_env_t *env,
         axis2_endpoint_ref_t *epr = NULL;
         axis2_char_t *role = NULL;
 
-        axis2_hash_this(hash_index, NULL, NULL, &hb);
+        axutil_hash_this(hash_index, NULL, NULL, &hb);
 
         header_block = (axiom_soap_header_block_t *)hb;
         header_block_node = axiom_soap_header_block_get_base_node(header_block, env);
@@ -571,8 +571,8 @@ axis2_addr_in_extract_ref_params(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t* msg_info_headers)
 {
-    axis2_hash_t *header_block_ht = NULL;
-    axis2_hash_index_t *hash_index = NULL;
+    axutil_hash_t *header_block_ht = NULL;
+    axutil_hash_index_t *hash_index = NULL;
     axis2_qname_t *wsa_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -585,15 +585,15 @@ axis2_addr_in_extract_ref_params(const axutil_env_t *env,
     wsa_qname = axis2_qname_create(env, AXIS2_WSA_IS_REFERENCE_PARAMETER_ATTRIBUTE,
             AXIS2_WSA_NAMESPACE, NULL);
 
-    for (hash_index = axis2_hash_first(header_block_ht, env); hash_index;
-            hash_index = axis2_hash_next(env, hash_index))
+    for (hash_index = axutil_hash_first(header_block_ht, env); hash_index;
+            hash_index = axutil_hash_next(env, hash_index))
     {
         void *hb = NULL;
         axiom_soap_header_block_t *header_block =    NULL;
         axiom_node_t *header_block_node = NULL;
         axiom_element_t *header_block_ele = NULL;
 
-        axis2_hash_this(hash_index, NULL, NULL, &hb);
+        axutil_hash_this(hash_index, NULL, NULL, &hb);
 
         header_block = (axiom_soap_header_block_t *)hb;
         header_block_node = axiom_soap_header_block_get_base_node(header_block, env);
@@ -628,8 +628,8 @@ axis2_addr_in_extract_to_epr_ref_params(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         const axis2_char_t *addr_ns_str)
 {
-    axis2_hash_t *header_blocks_ht = NULL;
-    axis2_hash_index_t *hash_index = NULL;
+    axutil_hash_t *header_blocks_ht = NULL;
+    axutil_hash_index_t *hash_index = NULL;
     axis2_qname_t *is_ref_qn = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -645,8 +645,8 @@ axis2_addr_in_extract_to_epr_ref_params(const axutil_env_t *env,
     if (!is_ref_qn)
         return AXIS2_FAILURE;
 
-    for (hash_index = axis2_hash_first(header_blocks_ht, env); hash_index;
-            hash_index = axis2_hash_next(env, hash_index))
+    for (hash_index = axutil_hash_first(header_blocks_ht, env); hash_index;
+            hash_index = axutil_hash_next(env, hash_index))
     {
         axiom_element_t *header_block_ele = NULL;
         axiom_node_t *header_block_node = NULL;
@@ -655,7 +655,7 @@ axis2_addr_in_extract_to_epr_ref_params(const axutil_env_t *env,
         axiom_attribute_t *is_ref_param_attr = NULL;
         axis2_char_t *attr_value = NULL;
 
-        axis2_hash_this(hash_index, NULL, NULL, &hb);
+        axutil_hash_this(hash_index, NULL, NULL, &hb);
         if (hb)
         {
             header_block = (axiom_soap_header_block_t*)hb;

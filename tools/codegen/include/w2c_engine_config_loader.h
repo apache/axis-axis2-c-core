@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <w2c_engine_configuration.h>
 
 #ifdef __cplusplus
@@ -49,7 +49,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 w2c_engine_config_loader_load_config( 
     const axutil_env_t *env,
     w2c_engine_configuration_t *conf,
-    axis2_hash_t *option_map );
+    axutil_hash_t *option_map );
 
 
 /** @} */

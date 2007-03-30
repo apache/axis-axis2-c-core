@@ -28,7 +28,7 @@ typedef struct xml_schema_annotation_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_obj_t *schema_obj;
 
@@ -47,7 +47,7 @@ xml_schema_annotation_free(
     void *annotation,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_annotation_super_objs(
     void *annotation,
     const axutil_env_t *env);
@@ -127,18 +127,18 @@ xml_schema_annotation_create(const axutil_env_t *env)
         return NULL;
     }
 
-    annotation_impl->ht_super = axis2_hash_make(env);
+    annotation_impl->ht_super = axutil_hash_make(env);
     if (!annotation_impl->ht_super)
     {
         xml_schema_annotation_free(&(annotation_impl->annotation), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(annotation_impl->ht_super,
+    axutil_hash_set(annotation_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ANNOTATION"),
             AXIS2_HASH_KEY_STRING, &(annotation_impl->annotation));
 
-    axis2_hash_set(annotation_impl->ht_super,
+    axutil_hash_set(annotation_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING, annotation_impl->schema_obj);
 
@@ -168,7 +168,7 @@ xml_schema_annotation_free(void *annotation,
 
     if (annotation_impl->ht_super)
     {
-        axis2_hash_free(annotation_impl->ht_super, env);
+        axutil_hash_free(annotation_impl->ht_super, env);
         annotation_impl->ht_super = NULL;
     }
 
@@ -213,7 +213,7 @@ xml_schema_annotation_get_items(void *annotation,
     return AXIS2_INTF_TO_IMPL(annotation)->items;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_annotation_super_objs(
     void *annotation,
     const axutil_env_t *env)

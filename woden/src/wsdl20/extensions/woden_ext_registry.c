@@ -37,7 +37,7 @@
 #include <woden_qname_or_token_any_attr.h>
 #include <woden_qname_list_or_token_any_attr.h>
 #include <axis2_uri.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 typedef struct woden_ext_registry_impl woden_ext_registry_impl_t;
 
@@ -52,24 +52,24 @@ struct woden_ext_registry_impl
     This is a Map of Maps. The top-level Map is keyed by parent type,
     and the inner Maps are keyed by element QN.
     */
-    axis2_hash_t *deserializer_reg;
+    axutil_hash_t *deserializer_reg;
     /*
     This is a Map of Maps. The top-level Map is keyed by parent type,
     and the inner Maps are keyed by element QN.
     */
-    axis2_hash_t *ext_element_reg;
+    axutil_hash_t *ext_element_reg;
     /*
     This is a Map of Maps. The top-level Map is keyed by parent type,
     and the inner Maps are keyed by attr qname.
     */
-    axis2_hash_t *ext_attr_reg;
+    axutil_hash_t *ext_attr_reg;
 
     /*
     * This is a Map of Maps. The top-level Map is keyed by parent component
     * and the inner Map is keyed by (URI)extension namespace with a value of
     * component extensions.
     */
-    axis2_hash_t *comp_ext_reg;
+    axutil_hash_t *comp_ext_reg;
 
     axutil_array_list_t *key_set;
 
@@ -228,25 +228,25 @@ woden_ext_registry_create(
     registry_impl->registry.ops->query_component_ext_namespaces =
         woden_ext_registry_query_component_ext_namespaces;
 
-    registry_impl->ext_attr_reg = axis2_hash_make(env);
+    registry_impl->ext_attr_reg = axutil_hash_make(env);
     if (!registry_impl->ext_attr_reg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    registry_impl->deserializer_reg = axis2_hash_make(env);
+    registry_impl->deserializer_reg = axutil_hash_make(env);
     if (!registry_impl->deserializer_reg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    registry_impl->ext_element_reg = axis2_hash_make(env);
+    registry_impl->ext_element_reg = axutil_hash_make(env);
     if (!registry_impl->ext_element_reg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    registry_impl->comp_ext_reg = axis2_hash_make(env);
+    registry_impl->comp_ext_reg = axutil_hash_make(env);
     if (!registry_impl->comp_ext_reg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -325,22 +325,22 @@ woden_ext_registry_register_deserializer(
     void *ed)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_deserializer_reg = NULL;
+    axutil_hash_t *inner_deserializer_reg = NULL;
     axis2_char_t *element_type = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg,
+    inner_deserializer_reg = axutil_hash_get(registry_impl->deserializer_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
     if (! inner_deserializer_reg)
     {
-        inner_deserializer_reg = axis2_hash_make(env);
-        axis2_hash_set(registry_impl->deserializer_reg, parent_type,
+        inner_deserializer_reg = axutil_hash_make(env);
+        axutil_hash_set(registry_impl->deserializer_reg, parent_type,
                 AXIS2_HASH_KEY_STRING, inner_deserializer_reg);
     }
     element_type = axis2_qname_to_string(element_qtype, env);
-    axis2_hash_set(inner_deserializer_reg, element_type, AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(inner_deserializer_reg, element_type, AXIS2_HASH_KEY_STRING,
             ed);
     return AXIS2_SUCCESS;
 }
@@ -369,19 +369,19 @@ woden_ext_registry_query_deserializer(
     axis2_qname_t *element_type)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_deserializer_reg = NULL;
+    axutil_hash_t *inner_deserializer_reg = NULL;
     axis2_char_t *elem_name = NULL;
     void *ed = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg,
+    inner_deserializer_reg = axutil_hash_get(registry_impl->deserializer_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
     elem_name = axis2_qname_to_string(element_type, env);
     if (inner_deserializer_reg)
     {
-        ed = axis2_hash_get(inner_deserializer_reg, elem_name,
+        ed = axutil_hash_get(inner_deserializer_reg, elem_name,
                 AXIS2_HASH_KEY_STRING);
     }
     return ed;
@@ -408,19 +408,19 @@ woden_ext_registry_query_ext_element_type(
     axis2_qname_t *elem_qn)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_ext_attr_reg = NULL;
+    axutil_hash_t *inner_ext_attr_reg = NULL;
     axis2_char_t *elem_name = NULL;
     void *element = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg,
+    inner_ext_attr_reg = axutil_hash_get(registry_impl->ext_attr_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     elem_name = axis2_qname_to_string(elem_qn, env);
     if (inner_ext_attr_reg)
     {
-        element = axis2_hash_get(inner_ext_attr_reg, elem_name,
+        element = axutil_hash_get(inner_ext_attr_reg, elem_name,
                 AXIS2_HASH_KEY_STRING);
     }
     return element;
@@ -441,24 +441,24 @@ woden_ext_registry_get_allowable_exts(
     axis2_char_t *parent_type)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_deserializer_reg = NULL;
+    axutil_hash_t *inner_deserializer_reg = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg,
+    inner_deserializer_reg = axutil_hash_get(registry_impl->deserializer_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
     if (inner_deserializer_reg)
     {
-        axis2_hash_index_t *i = NULL;
+        axutil_hash_index_t *i = NULL;
 
         registry_impl->key_set = axutil_array_list_create(env, 0);
-        for (i = axis2_hash_first(inner_deserializer_reg, env); i; i =
-                    axis2_hash_next(env, i))
+        for (i = axutil_hash_first(inner_deserializer_reg, env); i; i =
+                    axutil_hash_next(env, i))
         {
             void *v = NULL;
 
-            axis2_hash_this(i, NULL, NULL, &v);
+            axutil_hash_this(i, NULL, NULL, &v);
             axutil_array_list_add(registry_impl->key_set, env, v);
         }
     }
@@ -490,22 +490,22 @@ woden_ext_registry_register_ext_element_type(
     void *element)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_ext_type_reg = NULL;
+    axutil_hash_t *inner_ext_type_reg = NULL;
     axis2_char_t *element_type = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_ext_type_reg = axis2_hash_get(registry_impl->ext_element_reg,
+    inner_ext_type_reg = axutil_hash_get(registry_impl->ext_element_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
     if (! inner_ext_type_reg)
     {
-        inner_ext_type_reg = axis2_hash_make(env);
-        axis2_hash_set(registry_impl->ext_element_reg, parent_type,
+        inner_ext_type_reg = axutil_hash_make(env);
+        axutil_hash_set(registry_impl->ext_element_reg, parent_type,
                 AXIS2_HASH_KEY_STRING, inner_ext_type_reg);
     }
     element_type = axis2_qname_to_string(element_qtype, env);
-    axis2_hash_set(inner_ext_type_reg, element_type, AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(inner_ext_type_reg, element_type, AXIS2_HASH_KEY_STRING,
             element);
     return AXIS2_SUCCESS;
 }
@@ -533,22 +533,22 @@ woden_ext_registry_register_ext_attr_type(
     void *attr)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_ext_attr_reg = NULL;
+    axutil_hash_t *inner_ext_attr_reg = NULL;
     axis2_char_t *attr_name = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg,
+    inner_ext_attr_reg = axutil_hash_get(registry_impl->ext_attr_reg,
             owner_class, AXIS2_HASH_KEY_STRING);
     if (! inner_ext_attr_reg)
     {
-        inner_ext_attr_reg = axis2_hash_make(env);
-        axis2_hash_set(registry_impl->ext_attr_reg, owner_class,
+        inner_ext_attr_reg = axutil_hash_make(env);
+        axutil_hash_set(registry_impl->ext_attr_reg, owner_class,
                 AXIS2_HASH_KEY_STRING, inner_ext_attr_reg);
     }
     attr_name = axis2_qname_to_string(attr_qname, env);
-    axis2_hash_set(inner_ext_attr_reg, attr_name, AXIS2_HASH_KEY_STRING, attr);
+    axutil_hash_set(inner_ext_attr_reg, attr_name, AXIS2_HASH_KEY_STRING, attr);
     return AXIS2_SUCCESS;
 }
 
@@ -572,19 +572,19 @@ woden_ext_registry_query_ext_attr_type(
     axis2_qname_t *attr_qn)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_ext_attr_reg = NULL;
+    axutil_hash_t *inner_ext_attr_reg = NULL;
     void *attr = NULL;
     axis2_char_t *attr_name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg,
+    inner_ext_attr_reg = axutil_hash_get(registry_impl->ext_attr_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     attr_name = axis2_qname_to_string(attr_qn, env);
     if (inner_ext_attr_reg)
     {
-        attr = axis2_hash_get(inner_ext_attr_reg, attr_name,
+        attr = axutil_hash_get(inner_ext_attr_reg, attr_name,
                 AXIS2_HASH_KEY_STRING);
     }
     return attr;
@@ -607,22 +607,22 @@ woden_ext_registry_register_component_ext(
     void *comp_ext)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_comp_ext_reg = NULL;
+    axutil_hash_t *inner_comp_ext_reg = NULL;
     axis2_char_t *namespc = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
+    inner_comp_ext_reg = axutil_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     if (! inner_comp_ext_reg)
     {
-        inner_comp_ext_reg = axis2_hash_make(env);
-        axis2_hash_set(registry_impl->comp_ext_reg, parent_class,
+        inner_comp_ext_reg = axutil_hash_make(env);
+        axutil_hash_set(registry_impl->comp_ext_reg, parent_class,
                 AXIS2_HASH_KEY_STRING, inner_comp_ext_reg);
     }
     namespc = axis2_uri_to_string(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
-    axis2_hash_set(inner_comp_ext_reg, namespc, AXIS2_HASH_KEY_STRING, comp_ext);
+    axutil_hash_set(inner_comp_ext_reg, namespc, AXIS2_HASH_KEY_STRING, comp_ext);
     return AXIS2_SUCCESS;
 }
 
@@ -642,19 +642,19 @@ woden_ext_registry_query_component_ext(
     axis2_uri_t *ext_namespc)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_comp_ext_reg = NULL;
+    axutil_hash_t *inner_comp_ext_reg = NULL;
     void *comp_ext = NULL;
     axis2_char_t *namespc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
+    inner_comp_ext_reg = axutil_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     namespc = axis2_uri_to_string(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (inner_comp_ext_reg)
     {
-        comp_ext = axis2_hash_get(inner_comp_ext_reg, namespc,
+        comp_ext = axutil_hash_get(inner_comp_ext_reg, namespc,
                 AXIS2_HASH_KEY_STRING);
     }
     return comp_ext;
@@ -673,24 +673,24 @@ woden_ext_registry_query_component_ext_namespaces(
     axis2_char_t *parent_class)
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
-    axis2_hash_t *inner_comp_ext_reg = NULL;
+    axutil_hash_t *inner_comp_ext_reg = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
+    inner_comp_ext_reg = axutil_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     registry_impl->key_set = axutil_array_list_create(env, 0);
     if (inner_comp_ext_reg)
     {
-        axis2_hash_index_t *i = NULL;
+        axutil_hash_index_t *i = NULL;
 
-        for (i = axis2_hash_first(inner_comp_ext_reg, env); i; i =
-                    axis2_hash_next(env, i))
+        for (i = axutil_hash_first(inner_comp_ext_reg, env); i; i =
+                    axutil_hash_next(env, i))
         {
             const void *key = NULL;
 
-            axis2_hash_this(i, &key, NULL, NULL);
+            axutil_hash_this(i, &key, NULL, NULL);
             axutil_array_list_add(registry_impl->key_set, env, key);
         }
     }

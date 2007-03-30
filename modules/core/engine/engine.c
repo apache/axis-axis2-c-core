@@ -17,7 +17,7 @@
 
 #include <axis2_engine.h>
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom_soap_const.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_body.h>
@@ -661,8 +661,8 @@ axis2_engine_check_must_understand_headers(
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_header_t *soap_header = NULL;
-    axis2_hash_t *header_block_ht = NULL;
-    axis2_hash_index_t *hash_index = NULL;
+    axutil_hash_t *header_block_ht = NULL;
+    axutil_hash_index_t *hash_index = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -679,14 +679,14 @@ axis2_engine_check_must_understand_headers(
     if (!header_block_ht)
         return AXIS2_SUCCESS;
 
-    for (hash_index = axis2_hash_first(header_block_ht, env); hash_index;
-            hash_index = axis2_hash_next(env, hash_index))
+    for (hash_index = axutil_hash_first(header_block_ht, env); hash_index;
+            hash_index = axutil_hash_next(env, hash_index))
     {
         void *hb = NULL;
         axiom_soap_header_block_t *header_block = NULL;
         axis2_char_t *role = NULL;
 
-        axis2_hash_this(hash_index, NULL, NULL, &hb);
+        axutil_hash_this(hash_index, NULL, NULL, &hb);
         header_block = (axiom_soap_header_block_t *)hb;
 
         if (header_block)

@@ -31,7 +31,7 @@ struct xml_schema_xpath_impl
 
     axis2_char_t *x_path;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_types_t obj_type;
 };
@@ -50,7 +50,7 @@ xml_schema_types_t AXIS2_CALL
 xml_schema_xpath_get_type(void *xpath,
         const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_xpath_super_objs(void *xpath,
         const axutil_env_t *env);
 
@@ -93,23 +93,23 @@ xml_schema_xpath_create(const axutil_env_t *env)
 
     xpath_impl->annotated = xml_schema_annotated_create(env);
 
-    xpath_impl->ht_super = axis2_hash_make(env);
+    xpath_impl->ht_super = axutil_hash_make(env);
     if (!xpath_impl->ht_super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    axis2_hash_set(xpath_impl->ht_super,
+    axutil_hash_set(xpath_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_XPATH"),
             AXIS2_HASH_KEY_STRING,
             &(xpath_impl->xpath));
 
-    axis2_hash_set(xpath_impl->ht_super,
+    axutil_hash_set(xpath_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING,
             xpath_impl->annotated);
-    axis2_hash_set(xpath_impl->ht_super,
+    axutil_hash_set(xpath_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(xpath_impl->annotated, env));
@@ -139,7 +139,7 @@ xml_schema_xpath_free(void *xpath,
     }
     if (xpath_impl->ht_super)
     {
-        axis2_hash_free(xpath_impl->ht_super, env);
+        axutil_hash_free(xpath_impl->ht_super, env);
         xpath_impl->ht_super = NULL;
     }
 
@@ -181,7 +181,7 @@ xml_schema_xpath_resolve_methods(
                                 xml_schema_xpath_t *xpath,
                                 const axutil_env_t *env,
                                 xml_schema_xpath_t *xpath_impl,
-                                axis2_hash_t *methods)
+                                axutil_hash_t *methods)
 {
     xml_schema_xpath_impl_t *xpath_impl_l = NULL;
 
@@ -193,7 +193,7 @@ xml_schema_xpath_resolve_methods(
 
     xpath->ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_xpath_ops_t));
-    xpath->ops->free = axis2_hash_get(methods, "free",
+    xpath->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
     xpath->ops->get_base_impl =
             xpath_impl_l->xpath.ops->get_base_impl;
@@ -247,7 +247,7 @@ xml_schema_xpath_get_type(void *xpath,
     return AXIS2_INTF_TO_IMPL(xpath)->obj_type;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_xpath_super_objs(void *xpath,
         const axutil_env_t *env)
 {

@@ -125,7 +125,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing all operations of the service
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_svc_get_all_ops(const axis2_svc_t *svc,
         const axutil_env_t *env);
 
@@ -545,7 +545,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing all endpoints
      */
-    /*AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    /*AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
             axis2_svc_get_all_endpoints(
                 const axis2_svc_t *svc,
                 const axutil_env_t *env);*/
@@ -561,7 +561,7 @@ extern "C"
             axis2_svc_set_all_endpoints(
                 axis2_svc_t *svc,
                 const axutil_env_t *env,
-                axis2_hash_t *endpoints);*/
+                axutil_hash_t *endpoints);*/
 
     /**
      * Gets namespace. 
@@ -651,7 +651,7 @@ extern "C"
      * reference, not a cloned copy
      */
      /*
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
             axis2_svc_axis2_svc_get_schema_mapping_table(
                 const axis2_svc_t *svc,
                 const axutil_env_t *env);*/
@@ -668,7 +668,7 @@ extern "C"
             axis2_svc_set_schema_mapping_table(
                 axis2_svc_t *svc,
                 const axutil_env_t *env,
-                axis2_hash_t *table);*/
+                axutil_hash_t *table);*/
 
     /**
      * Gets custom schema prefix.
@@ -916,7 +916,7 @@ extern "C"
      * @return pointer to hash map containing all namespaces, returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     gaxis2_svc_et_ns_map(const axis2_svc_t *svc,
         const axutil_env_t *env);
 
@@ -930,7 +930,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_ns_map(axis2_svc_t *svc,
         const axutil_env_t *env,
-        axis2_hash_t *ns_map);
+        axutil_hash_t *ns_map);
 
     /**
      * Populates the schema mappings. This method is used in code generation

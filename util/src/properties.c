@@ -37,7 +37,7 @@ axis2_properties_trunk_and_dup(axis2_char_t* start,
 
 struct axis2_properties
 {
-    axis2_hash_t *prop_hash;
+    axutil_hash_t *prop_hash;
 };
 
 AXIS2_EXTERN axis2_properties_t *AXIS2_CALL
@@ -55,7 +55,7 @@ axis2_properties_create(const axutil_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    properties->prop_hash = axis2_hash_make(env);
+    properties->prop_hash = axutil_hash_make(env);
 
     return properties;
 }
@@ -66,16 +66,16 @@ axis2_properties_free(axis2_properties_t *properties,
 {
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (properties->prop_hash)
     {
-        for (hi = axis2_hash_first(properties->prop_hash, env);
-            hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(properties->prop_hash, env);
+            hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+            axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
             if (key)
 	    {
                 AXIS2_FREE(env-> allocator, key);
@@ -85,7 +85,7 @@ axis2_properties_free(axis2_properties_t *properties,
                 AXIS2_FREE(env-> allocator, value);
 	    }
         }
-        axis2_hash_free(properties->prop_hash, env);
+        axutil_hash_free(properties->prop_hash, env);
     }
 
     if (properties)
@@ -102,7 +102,7 @@ axis2_properties_get_property(axis2_properties_t *properties,
 {
     AXIS2_PARAM_CHECK(env-> error, key, NULL);
 
-    return axis2_hash_get(properties-> prop_hash,
+    return axutil_hash_get(properties-> prop_hash,
         key, AXIS2_HASH_KEY_STRING);
 }
 
@@ -115,12 +115,12 @@ axis2_properties_set_property(axis2_properties_t *properties,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env-> error, key, AXIS2_FAILURE);
 
-    axis2_hash_set(properties-> prop_hash, key,
+    axutil_hash_set(properties-> prop_hash, key,
         AXIS2_HASH_KEY_STRING, value);
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
 axis2_properties_get_all(axis2_properties_t *properties,
     const axutil_env_t *env)
 {
@@ -132,7 +132,7 @@ axis2_properties_store(axis2_properties_t *properties,
     const axutil_env_t *env,
     FILE *output)
 {
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
 
@@ -141,10 +141,10 @@ axis2_properties_store(axis2_properties_t *properties,
 
     if (properties->prop_hash)
     {
-        for (hi = axis2_hash_first(properties->prop_hash, env);
-            hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(properties->prop_hash, env);
+            hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+            axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
             if (key)
             {
                 if (!value)
@@ -173,7 +173,7 @@ axis2_properties_load(axis2_properties_t *properties,
     int status = LINE_STARTED;
 
     axis2_char_t *key = NULL;
-    axis2_hash_t *prop_hash = NULL;
+    axutil_hash_t *prop_hash = NULL;
     axis2_char_t *buffer = NULL;
     axis2_char_t loginfo[1024];
 
@@ -240,7 +240,7 @@ axis2_properties_load(axis2_properties_t *properties,
             if (status == LINE_HALFWAY)
             {
                 tag =  axis2_properties_trunk_and_dup(tag, cur, env);
-                axis2_hash_set(prop_hash,
+                axutil_hash_set(prop_hash,
                     key, AXIS2_HASH_KEY_STRING, tag);
             }
             status = LINE_STARTED;
@@ -250,7 +250,7 @@ axis2_properties_load(axis2_properties_t *properties,
     {
         *cur = '\0';
         tag =  axis2_properties_trunk_and_dup(tag, cur, env);
-        axis2_hash_set(prop_hash,
+        axutil_hash_set(prop_hash,
             key, AXIS2_HASH_KEY_STRING, tag);
         status = LINE_STARTED;
     }

@@ -16,7 +16,7 @@
  */
 
 #include <stdio.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_string.h>
 #include <axutil_error_default.h>
 #include <axutil_array_list.h>
@@ -46,10 +46,10 @@ const axutil_env_t *test_init()
 
 int test_hash_get(const axutil_env_t *env)
 {
-    axis2_hash_t *ht;
+    axutil_hash_t *ht;
     a *a1, *a2, *a3, *a4;
 
-    axis2_hash_index_t *i = 0;
+    axutil_hash_index_t *i = 0;
     void *v = NULL;
 
     char *key1 = "key1";
@@ -68,34 +68,34 @@ int test_hash_get(const axutil_env_t *env)
     a3->value = axis2_strdup(env, "value3");
     a4->value = axis2_strdup(env, "value4");
 
-    ht = axis2_hash_make(env);
+    ht = axutil_hash_make(env);
 
-    axis2_hash_set(ht, key1, AXIS2_HASH_KEY_STRING, a1);
-    axis2_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, a2);
-    axis2_hash_set(ht, key3, AXIS2_HASH_KEY_STRING, a3);
-    axis2_hash_set(ht, key4, AXIS2_HASH_KEY_STRING, a4);
+    axutil_hash_set(ht, key1, AXIS2_HASH_KEY_STRING, a1);
+    axutil_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, a2);
+    axutil_hash_set(ht, key3, AXIS2_HASH_KEY_STRING, a3);
+    axutil_hash_set(ht, key4, AXIS2_HASH_KEY_STRING, a4);
 
-    axis2_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, NULL);
-    axis2_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, a2);
-    for (i = axis2_hash_first(ht, env); i; i = axis2_hash_next(env, i))
+    axutil_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, NULL);
+    axutil_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, a2);
+    for (i = axutil_hash_first(ht, env); i; i = axutil_hash_next(env, i))
     {
-        axis2_hash_this(i, NULL, NULL, &v);
+        axutil_hash_this(i, NULL, NULL, &v);
         printf("\n %s \n", ((a *) v)->value);
     }
 
     printf("\n demo get %s ",
-            ((a *) axis2_hash_get(ht, key1, AXIS2_HASH_KEY_STRING))->value);
+            ((a *) axutil_hash_get(ht, key1, AXIS2_HASH_KEY_STRING))->value);
 
     printf("\n demo get %s ",
-            ((a *) axis2_hash_get(ht, key2, AXIS2_HASH_KEY_STRING))->value);
+            ((a *) axutil_hash_get(ht, key2, AXIS2_HASH_KEY_STRING))->value);
 
     printf("\n demo get %s ",
-            ((a *) axis2_hash_get(ht, key3, AXIS2_HASH_KEY_STRING))->value);
+            ((a *) axutil_hash_get(ht, key3, AXIS2_HASH_KEY_STRING))->value);
 
     printf("\n demo get %s \n",
-            ((a *) axis2_hash_get(ht, key4, AXIS2_HASH_KEY_STRING))->value);
+            ((a *) axutil_hash_get(ht, key4, AXIS2_HASH_KEY_STRING))->value);
 
-    axis2_hash_free(ht, env);
+    axutil_hash_free(ht, env);
     AXIS2_FREE(env->allocator, a1->value);
     AXIS2_FREE(env->allocator, a2->value);
     AXIS2_FREE(env->allocator, a3->value);

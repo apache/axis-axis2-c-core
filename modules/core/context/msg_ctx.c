@@ -146,7 +146,7 @@ struct axis2_msg_ctx
     axis2_string_t *charset_encoding;
     axis2_stream_t *transport_out_stream;
     axis2_http_out_transport_info_t *http_out_transport_info;
-    axis2_hash_t *transport_headers;
+    axutil_hash_t *transport_headers;
     axis2_char_t *transfer_encoding;
     axis2_char_t *transport_url;
 };
@@ -350,7 +350,7 @@ axis2_msg_ctx_free(
         
     if (msg_ctx->transport_headers)
     {
-        axis2_hash_free(msg_ctx->transport_headers, env);
+        axutil_hash_free(msg_ctx->transport_headers, env);
     }
         
     if (msg_ctx->transfer_encoding)
@@ -1535,7 +1535,7 @@ axis2_msg_ctx_get_options(
     const axutil_env_t *env)
 {
     axis2_options_t *options = NULL;
-    axis2_hash_t *properties = NULL;
+    axutil_hash_t *properties = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     options = axis2_options_create(env);
@@ -1860,7 +1860,7 @@ axis2_msg_ctx_reset_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
     return AXIS2_SUCCESS;
 }
    
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_msg_ctx_get_transport_headers(axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env)
 {
@@ -1878,13 +1878,13 @@ axis2_msg_ctx_get_transport_headers(axis2_msg_ctx_t *msg_ctx,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_transport_headers(axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env,
-    axis2_hash_t *transport_headers)
+    axutil_hash_t *transport_headers)
 {
     if (msg_ctx)
     {
         if (msg_ctx->transport_headers)
         {
-            axis2_hash_free(msg_ctx->transport_headers, env); 
+            axutil_hash_free(msg_ctx->transport_headers, env); 
         }
         
         msg_ctx->transport_headers = transport_headers;

@@ -55,7 +55,7 @@ struct woden_include_ops
     free) (void *include,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *include,
             const axutil_env_t *env);
 
@@ -119,7 +119,7 @@ woden_include_resolve_methods(
         woden_include_t *include,
         const axutil_env_t *env,
         woden_include_t *include_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_INCLUDE_FREE(include, env) \

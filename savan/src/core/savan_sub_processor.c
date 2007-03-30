@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_svc.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
@@ -95,7 +95,7 @@ savan_sub_processor_subscribe(
 {
     axis2_svc_t *svc = NULL;
     axis2_param_t *param = NULL;
-    axis2_hash_t *store = NULL;
+    axutil_hash_t *store = NULL;
     savan_subscriber_t *subscriber = NULL;
     axis2_char_t *expires = NULL;
     axis2_char_t *id = NULL;
@@ -134,7 +134,7 @@ savan_sub_processor_subscribe(
         param = axis2_svc_get_param(svc, env, SUBSCRIBER_STORE);
     }
     
-    store = (axis2_hash_t*)axis2_param_get_value(param, env);
+    store = (axutil_hash_t*)axis2_param_get_value(param, env);
          
     /* Set the expiry time on the subscription */
     /* TODO : For now we are ignoring the Expiry sent by the client. Add support
@@ -143,7 +143,7 @@ savan_sub_processor_subscribe(
     savan_subscriber_set_expires(subscriber, env, expires);
 
     /* Store the created subscriber in the svc */
-    axis2_hash_set(store, savan_subscriber_get_id(subscriber, env),
+    axutil_hash_set(store, savan_subscriber_get_id(subscriber, env),
         AXIS2_HASH_KEY_STRING, subscriber);
 
     /* Store sub id in msg ctx to be used by the msg receiver */
@@ -275,7 +275,7 @@ savan_sub_processor_set_sub_store(
     axis2_svc_t *svc,
     const axutil_env_t *env)
 {
-    axis2_hash_t *store = NULL;
+    axutil_hash_t *store = NULL;
     axis2_param_t *param = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -284,7 +284,7 @@ savan_sub_processor_set_sub_store(
         "set sub store...");
     
     /* Create a hash map */
-    store = axis2_hash_make(env);
+    store = axutil_hash_make(env);
     if (!store)
     {
         /* TODO : error reporting */
@@ -476,7 +476,7 @@ savan_sub_processor_remove_subscriber(
     savan_subscriber_t *subscriber)
 {
     axis2_char_t *id = NULL;
-    axis2_hash_t *store = NULL;
+    axutil_hash_t *store = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -495,7 +495,7 @@ savan_sub_processor_remove_subscriber(
     }
 
     /* Setting NULL as value will remove the entry */
-    axis2_hash_set(store, id, AXIS2_HASH_KEY_STRING, NULL);
+    axutil_hash_set(store, id, AXIS2_HASH_KEY_STRING, NULL);
 
     return AXIS2_SUCCESS;
 }

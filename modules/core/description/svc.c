@@ -36,7 +36,7 @@ struct axis2_svc
     /**
      * WSDL related stuff
      */
-    axis2_hash_t *ns_map;
+    axutil_hash_t *ns_map;
     /* count of the entries in the namespace map */
     int ns_count;
     /* to keep the XML scheama either from WSDL or
@@ -49,15 +49,15 @@ struct axis2_svc
      * instance the schemas are asked for and then used to serve
      * the subsequent requests
      */
-    axis2_hash_t *schema_mapping_table;
+    axutil_hash_t *schema_mapping_table;
     /**
      * This is where operations are kept
      */
-    axis2_hash_t *op_alias_map;
+    axutil_hash_t *op_alias_map;
     /**
      * This is where action mappings are kept
      */
-    axis2_hash_t *op_action_map;
+    axutil_hash_t *op_action_map;
     /**
      * Keeps track whether the schema locations are adjusted
      */
@@ -149,7 +149,7 @@ axis2_svc_create(const axutil_env_t *env)
         return NULL;
     }
 
-    svc->op_alias_map = axis2_hash_make(env);
+    svc->op_alias_map = axutil_hash_make(env);
     if (! svc->op_alias_map)
     {
         axis2_svc_free(svc, env);
@@ -158,7 +158,7 @@ axis2_svc_create(const axutil_env_t *env)
     }
 
     /** create module list of default size */
-    svc->op_action_map = axis2_hash_make(env);
+    svc->op_action_map = axutil_hash_make(env);
     if (! svc->op_action_map)
     {
         axis2_svc_free(svc, env);
@@ -308,13 +308,13 @@ axis2_svc_free(axis2_svc_t *svc,
 
     if (svc->op_alias_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
 
-        for (hi = axis2_hash_first(svc->op_alias_map, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(svc->op_alias_map, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
 
             if (val)
             {
@@ -326,18 +326,18 @@ axis2_svc_free(axis2_svc_t *svc,
             }
         }
 
-        axis2_hash_free(svc->op_alias_map, env);
+        axutil_hash_free(svc->op_alias_map, env);
     }
 
     if (svc->op_action_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         const void *key = NULL;
 
-        for (hi = axis2_hash_first(svc->op_action_map, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(svc->op_action_map, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, &key, NULL, NULL);
+            axutil_hash_this(hi, &key, NULL, NULL);
 
             if (key)
             {
@@ -345,7 +345,7 @@ axis2_svc_free(axis2_svc_t *svc,
                 key = NULL;
             }
         }
-        axis2_hash_free(svc->op_action_map, env);
+        axutil_hash_free(svc->op_action_map, env);
     }
 
     if (svc->schema_target_ns_prefix)
@@ -414,7 +414,7 @@ axis2_svc_add_op(axis2_svc_t *svc,
     if (qname)
         key = axis2_qname_get_localpart(qname, env);
     if (key)
-        axis2_hash_set(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
+        axutil_hash_set(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
     return AXIS2_SUCCESS;
 }
 
@@ -430,10 +430,10 @@ axis2_svc_get_op_with_qname(const axis2_svc_t *svc,
     AXIS2_PARAM_CHECK(env->error, op_qname, NULL);
 
     key = axis2_qname_get_localpart(op_qname, env);
-    op = axis2_hash_get(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING);
+    op = axutil_hash_get(svc->op_alias_map, key, AXIS2_HASH_KEY_STRING);
     if (! op)
     {
-        op = axis2_hash_get(svc->op_action_map, key, AXIS2_HASH_KEY_STRING);
+        op = axutil_hash_get(svc->op_action_map, key, AXIS2_HASH_KEY_STRING);
     }
 
     return op;
@@ -447,11 +447,11 @@ axis2_svc_get_op_with_name(const axis2_svc_t *svc,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, nc_name, NULL);
 
-    return (axis2_op_t *) axis2_hash_get(svc->op_alias_map, nc_name,
+    return (axis2_op_t *) axutil_hash_get(svc->op_alias_map, nc_name,
         AXIS2_HASH_KEY_STRING);
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_svc_get_all_ops(const axis2_svc_t *svc,
     const axutil_env_t *env)
 {
@@ -653,8 +653,8 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
     axis2_module_desc_t *module_desc,
     axis2_conf_t *conf)
 {
-    axis2_hash_t *map = NULL;
-    axis2_hash_index_t *index = NULL;
+    axutil_hash_t *map = NULL;
+    axutil_hash_index_t *index = NULL;
     axis2_phase_resolver_t *pr = NULL;
     axis2_op_t *op_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -671,14 +671,14 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         return AXIS2_FAILURE;
     }
 
-    for (index = axis2_hash_first(map, env); index; index =
-        axis2_hash_next(env, index))
+    for (index = axutil_hash_first(map, env); index; index =
+        axutil_hash_next(env, index))
     {
         axutil_array_list_t *mappings_list = NULL;
         int size = 0;
         int j = 0;
         void *v = NULL;
-        axis2_hash_this(index, NULL, NULL, &v);
+        axutil_hash_this(index, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
         mappings_list = axis2_op_get_wsamapping_list(op_desc, env);
         /* adding WSA mapping into service */
@@ -857,7 +857,7 @@ axis2_svc_add_mapping(axis2_svc_t *svc,
     AXIS2_PARAM_CHECK(env->error, mapping_key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
-    axis2_hash_set(svc->op_action_map, axis2_strdup(env, mapping_key),
+    axutil_hash_set(svc->op_action_map, axis2_strdup(env, mapping_key),
             AXIS2_HASH_KEY_STRING, op_desc);
     return AXIS2_SUCCESS;
 }
@@ -936,7 +936,7 @@ axis2_svc_set_target_ns_prefix(axis2_svc_t *svc,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_svc_get_ns_map(const axis2_svc_t *svc,
     const axutil_env_t *env)
 {
@@ -947,9 +947,9 @@ axis2_svc_get_ns_map(const axis2_svc_t *svc,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_set_ns_map(axis2_svc_t *svc,
     const axutil_env_t *env,
-    axis2_hash_t *ns_map)
+    axutil_hash_t *ns_map)
 {
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns_map, AXIS2_FAILURE);
@@ -957,12 +957,12 @@ axis2_svc_set_ns_map(axis2_svc_t *svc,
 
     if (svc->ns_map)
     {
-        for (hi = axis2_hash_first(svc->ns_map, env);  hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(svc->ns_map, env);  hi;
+            hi = axutil_hash_next(env, hi))
         {
             void * value = NULL;
             void *key = NULL;
-            axis2_hash_this(hi, (const void **)&key, NULL,
+            axutil_hash_this(hi, (const void **)&key, NULL,
                 (void **)&value);
             if (key)
             {
@@ -975,34 +975,34 @@ axis2_svc_set_ns_map(axis2_svc_t *svc,
                 value = NULL;
             }
         }
-        axis2_hash_free(svc->ns_map, env);
+        axutil_hash_free(svc->ns_map, env);
     }
     svc->ns_map = ns_map;
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_svc_swap_mapping_table(axis2_svc_t *svc,
     const axutil_env_t *env,
-    axis2_hash_t *orig_table)
+    axutil_hash_t *orig_table)
 {
-    axis2_hash_t *new_table = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_t *new_table = NULL;
+    axutil_hash_index_t *hi = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, orig_table, AXIS2_FAILURE);
 
-    new_table = axis2_hash_make(env);
+    new_table = axutil_hash_make(env);
 
-    for (hi = axis2_hash_first(orig_table, env);  env;
-        hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(orig_table, env);  env;
+        hi = axutil_hash_next(env, hi))
     {
         void * value = NULL;
         void *key = NULL;
 
-        axis2_hash_this(hi, (const void **)&key, NULL,
+        axutil_hash_this(hi, (const void **)&key, NULL,
             (void **)&value);
-        axis2_hash_set(new_table, value, AXIS2_HASH_KEY_STRING, key);
+        axutil_hash_set(new_table, value, AXIS2_HASH_KEY_STRING, key);
     }
     return new_table;
 }

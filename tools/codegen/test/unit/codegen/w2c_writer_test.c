@@ -26,7 +26,7 @@
 #include <axiom.h>
 #include <w2c_xslt_utils.h>
 #include <w2c_cmdline_option_parser.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <w2c_engine_configuration.h>
 
 static const axis2_char_t* w2c_config_test_input1[] =
@@ -47,7 +47,7 @@ void test_writer(CuTest *tc)
     axiom_node_t* inter_node = NULL;
     axis2_char_t* buffer = NULL;
     w2c_cmdline_option_parser_t* parser = NULL;
-    axis2_hash_t* hash = NULL;
+    axutil_hash_t* hash = NULL;
     w2c_engine_configuration_t* conf = NULL;
     axutil_dll_desc_t* dll_desc = NULL;
 

@@ -34,7 +34,7 @@ struct xml_schema_content_processing_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     axutil_array_list_t *members;
 };
@@ -47,7 +47,7 @@ xml_schema_content_processing_free(
     void *content_processing,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_content_processing_super_objs(
     void *content_processing,
     const axutil_env_t *env);
@@ -130,7 +130,7 @@ xml_schema_content_processing_create(const axutil_env_t *env,
 
     content_processing_impl->schema_enum = xml_schema_enum_create(env, value);
 
-    content_processing_impl->ht_super = axis2_hash_make(env);
+    content_processing_impl->ht_super = axutil_hash_make(env);
     if (!content_processing_impl->ht_super)
     {
         xml_schema_content_processing_free(
@@ -139,10 +139,10 @@ xml_schema_content_processing_create(const axutil_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(content_processing_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_CONTENT_PROCESSING"),
+    axutil_hash_set(content_processing_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_CONTENT_PROCESSING"),
             AXIS2_HASH_KEY_STRING, &(content_processing_impl->content_processing));
 
-    axis2_hash_set(content_processing_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ENUM"),
+    axutil_hash_set(content_processing_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ENUM"),
             AXIS2_HASH_KEY_STRING, content_processing_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(
@@ -186,7 +186,7 @@ xml_schema_content_processing_free(void *content_processing,
 
     if (content_processing_impl->ht_super)
     {
-        axis2_hash_free(content_processing_impl->ht_super, env);
+        axutil_hash_free(content_processing_impl->ht_super, env);
         content_processing_impl->ht_super = NULL;
     }
 
@@ -215,7 +215,7 @@ xml_schema_content_processing_free(void *content_processing,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_content_processing_super_objs(
     void *content_processing,
     const axutil_env_t *env)
@@ -259,10 +259,10 @@ xml_schema_content_processing_get_values(void *content_processing,
         const axutil_env_t *env)
 {
     xml_schema_content_processing_impl_t *content_processing_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     super = XML_SCHEMA_USE_SUPER_OBJS(content_processing, env);
-    content_processing_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super,
+    content_processing_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(super,
             "XML_SCHEMA_CONTENT_PROCESSING", AXIS2_HASH_KEY_STRING));
 
     return content_processing_impl->members;

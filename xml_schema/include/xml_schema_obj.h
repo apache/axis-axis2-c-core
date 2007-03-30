@@ -39,7 +39,7 @@
 #include <axis2_string.h>
 #include <axis2_utils_defines.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <xml_schema_defines.h>
 #include <xml_schema_constants.h>
 
@@ -76,7 +76,7 @@ extern "C"
          * NULL otherwise
          */
 
-        axis2_hash_t *(AXIS2_CALL *
+        axutil_hash_t *(AXIS2_CALL *
                 super_objs) (
                     void *obj,
                     const axutil_env_t *env);
@@ -205,9 +205,9 @@ extern "C"
          * contain any meta infomation.
          * @param obj xml_schema_obj or its subtype 
          * @param env environment struct
-         * @returns pointer to axis2_hash_t , NULL of not intialized
+         * @returns pointer to axutil_hash_t , NULL of not intialized
          */
-        axis2_hash_t* (AXIS2_CALL *
+        axutil_hash_t* (AXIS2_CALL *
                 get_meta_info)(
                         void *obj,
                         const axutil_env_t *env);

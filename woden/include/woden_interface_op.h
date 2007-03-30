@@ -54,7 +54,7 @@ struct woden_interface_op_ops
     free) (void *interface_op,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *interface_op,
             const axutil_env_t *env);
 
@@ -175,7 +175,7 @@ woden_interface_op_resolve_methods(
         woden_interface_op_t *interface_op,
         const axutil_env_t *env,
         woden_interface_op_t *interface_op_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_INTERFACE_OP_FREE(interface_op, env) \

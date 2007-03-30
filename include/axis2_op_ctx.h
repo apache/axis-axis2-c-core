@@ -37,7 +37,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axutil_env.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_op.h>

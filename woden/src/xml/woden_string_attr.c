@@ -32,7 +32,7 @@ struct woden_string_attr_impl
     woden_string_attr_t string_attr;
     woden_xml_attr_t *xml_attr;
     woden_obj_types_t obj_type;
-    axis2_hash_t *methods;
+    axutil_hash_t *methods;
 };
 
 #define INTF_TO_IMPL(string_attr) \
@@ -103,19 +103,19 @@ woden_string_attr_create(
         woden_string_attr_convert;
 
 
-    string_attr_impl->methods = axis2_hash_make(env);
+    string_attr_impl->methods = axutil_hash_make(env);
     if (!string_attr_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(string_attr_impl->methods, "free",
+    axutil_hash_set(string_attr_impl->methods, "free",
             AXIS2_HASH_KEY_STRING, woden_string_attr_free);
-    axis2_hash_set(string_attr_impl->methods, "type",
+    axutil_hash_set(string_attr_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_string_attr_type);
-    axis2_hash_set(string_attr_impl->methods, "get_string",
+    axutil_hash_set(string_attr_impl->methods, "get_string",
             AXIS2_HASH_KEY_STRING, woden_string_attr_get_string);
-    axis2_hash_set(string_attr_impl->methods, "convert",
+    axutil_hash_set(string_attr_impl->methods, "convert",
             AXIS2_HASH_KEY_STRING, woden_string_attr_convert);
 
     string_attr_impl->xml_attr = woden_xml_attr_create(env, owner_el,
@@ -136,7 +136,7 @@ woden_string_attr_free(
 
     if (string_attr_impl->methods)
     {
-        axis2_hash_free(string_attr_impl->methods, env);
+        axutil_hash_free(string_attr_impl->methods, env);
         string_attr_impl->methods = NULL;
     }
 
@@ -190,20 +190,20 @@ axis2_status_t AXIS2_CALL
 woden_string_attr_resolve_methods(
     woden_string_attr_t *string_attr,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
     string_attr->ops->free =
-        axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    string_attr->ops->to_string_attr_free = axis2_hash_get(methods,
+        axutil_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
+    string_attr->ops->to_string_attr_free = axutil_hash_get(methods,
             "to_string_attr_free", AXIS2_HASH_KEY_STRING);
-    string_attr->ops->type = axis2_hash_get(methods,
+    string_attr->ops->type = axutil_hash_get(methods,
             "type", AXIS2_HASH_KEY_STRING);
-    string_attr->ops->get_string = axis2_hash_get(methods,
+    string_attr->ops->get_string = axutil_hash_get(methods,
             "get_string", AXIS2_HASH_KEY_STRING);
-    string_attr->ops->convert = axis2_hash_get(methods,
+    string_attr->ops->convert = axutil_hash_get(methods,
             "convert", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

@@ -53,7 +53,7 @@ axis2_http_worker_set_transport_out_config(
     axis2_conf_ctx_t *conf_ctx,
     axis2_http_simple_response_t *simple_response);
 
-static axis2_hash_t *
+static axutil_hash_t *
 axis2_http_worker_get_headers(
     axis2_http_worker_t *http_worker,
     const axutil_env_t *env,
@@ -121,7 +121,7 @@ axis2_http_worker_process_request(
     axis2_char_t *peer_ip = NULL;
     axis2_url_t *request_url = NULL;
     axis2_http_out_transport_info_t *http_out_transport_info = NULL;
-    axis2_hash_t *headers = NULL;
+    axutil_hash_t *headers = NULL;
     axis2_char_t *url_external_form = NULL;
     axis2_char_t *svc_grp_uuid = NULL;
     axis2_char_t *path = NULL;
@@ -527,7 +527,7 @@ axis2_http_worker_set_transport_out_config(
     return AXIS2_SUCCESS;
 }
 
-static axis2_hash_t *
+static axutil_hash_t *
 axis2_http_worker_get_headers(
     axis2_http_worker_t *http_worker,
     const axutil_env_t *env,
@@ -536,7 +536,7 @@ axis2_http_worker_get_headers(
     axutil_array_list_t *header_list = NULL;
     int hdr_count = 0;
     int i = 0;
-    axis2_hash_t *header_map = NULL;
+    axutil_hash_t *header_map = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_FAILURE);
 
@@ -561,13 +561,13 @@ axis2_http_worker_get_headers(
         }
         if (!header_map)
         {
-            header_map = axis2_hash_make(env);
+            header_map = axutil_hash_make(env);
             if (!header_map)
             {
                 return NULL;
             }
         }
-        axis2_hash_set(header_map, AXIS2_HTTP_HEADER_GET_NAME(tmp_hdr, env),
+        axutil_hash_set(header_map, AXIS2_HTTP_HEADER_GET_NAME(tmp_hdr, env),
                 AXIS2_HASH_KEY_STRING, tmp_hdr);
     }
     return header_map;

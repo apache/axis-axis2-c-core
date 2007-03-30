@@ -35,8 +35,8 @@ struct woden_interface_op_impl
     woden_interface_op_t interface_op;
     woden_nested_configurable_t *nested_configurable;
     woden_obj_types_t obj_type;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
     axis2_qname_t *f_qname;
     axis2_uri_t *f_msg_exchange_pattern;
     axutil_array_list_t *f_style;
@@ -51,7 +51,7 @@ woden_interface_op_free(
     void *interface_op,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_interface_op_super_objs(
     void *interface_op,
     const axutil_env_t *env);
@@ -505,68 +505,68 @@ create(const axutil_env_t *env)
     interface_op_impl->interface_op.ops->to_element =
         woden_interface_op_to_element;
 
-    interface_op_impl->methods = axis2_hash_make(env);
+    interface_op_impl->methods = axutil_hash_make(env);
     if (!interface_op_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(interface_op_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(interface_op_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_interface_op_free);
-    axis2_hash_set(interface_op_impl->methods, "super_objs",
+    axutil_hash_set(interface_op_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, woden_interface_op_super_objs);
-    axis2_hash_set(interface_op_impl->methods, "type",
+    axutil_hash_set(interface_op_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_interface_op_type);
 
-    axis2_hash_set(interface_op_impl->methods, "get_qname",
+    axutil_hash_set(interface_op_impl->methods, "get_qname",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_get_qname);
-    axis2_hash_set(interface_op_impl->methods, "get_msg_exchange_pattern",
+    axutil_hash_set(interface_op_impl->methods, "get_msg_exchange_pattern",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_get_msg_exchange_pattern);
-    axis2_hash_set(interface_op_impl->methods, "get_interface_msg_refs",
+    axutil_hash_set(interface_op_impl->methods, "get_interface_msg_refs",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_get_interface_msg_refs);
-    axis2_hash_set(interface_op_impl->methods, "get_interface_fault_refs",
+    axutil_hash_set(interface_op_impl->methods, "get_interface_fault_refs",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_get_interface_fault_refs);
-    axis2_hash_set(interface_op_impl->methods, "get_style",
+    axutil_hash_set(interface_op_impl->methods, "get_style",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_get_style);
-    axis2_hash_set(interface_op_impl->methods, "to_element",
+    axutil_hash_set(interface_op_impl->methods, "to_element",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_to_element);
-    axis2_hash_set(interface_op_impl->methods, "set_qname",
+    axutil_hash_set(interface_op_impl->methods, "set_qname",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_set_qname);
-    axis2_hash_set(interface_op_impl->methods, "set_pattern",
+    axutil_hash_set(interface_op_impl->methods, "set_pattern",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_set_pattern);
-    axis2_hash_set(interface_op_impl->methods, "get_pattern",
+    axutil_hash_set(interface_op_impl->methods, "get_pattern",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_get_pattern);
-    axis2_hash_set(interface_op_impl->methods, "add_style_uri",
+    axutil_hash_set(interface_op_impl->methods, "add_style_uri",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_add_style_uri);
-    axis2_hash_set(interface_op_impl->methods, "remove_style_uri",
+    axutil_hash_set(interface_op_impl->methods, "remove_style_uri",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_remove_style_uri);
-    axis2_hash_set(interface_op_impl->methods, "add_interface_msg_ref_element",
+    axutil_hash_set(interface_op_impl->methods, "add_interface_msg_ref_element",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_add_interface_msg_ref_element);
-    axis2_hash_set(interface_op_impl->methods, "remove_interface_msg_ref_element",
+    axutil_hash_set(interface_op_impl->methods, "remove_interface_msg_ref_element",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_remove_interface_msg_ref_element);
-    axis2_hash_set(interface_op_impl->methods, "get_interface_msg_ref_elements",
+    axutil_hash_set(interface_op_impl->methods, "get_interface_msg_ref_elements",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_get_interface_msg_ref_elements);
-    axis2_hash_set(interface_op_impl->methods, "add_interface_fault_ref_element",
+    axutil_hash_set(interface_op_impl->methods, "add_interface_fault_ref_element",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_add_interface_fault_ref_element);
-    axis2_hash_set(interface_op_impl->methods, "remove_interface_fault_ref_element",
+    axutil_hash_set(interface_op_impl->methods, "remove_interface_fault_ref_element",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_remove_interface_fault_ref_element);
-    axis2_hash_set(interface_op_impl->methods, "get_interface_fault_ref_elements",
+    axutil_hash_set(interface_op_impl->methods, "get_interface_fault_ref_elements",
             AXIS2_HASH_KEY_STRING,
             woden_interface_op_get_interface_fault_ref_elements);
 
@@ -585,24 +585,24 @@ woden_interface_op_create(const axutil_env_t *env)
 
     interface_op_impl->nested_configurable = woden_nested_configurable_create(env);
 
-    interface_op_impl->super = axis2_hash_make(env);
+    interface_op_impl->super = axutil_hash_make(env);
     if (!interface_op_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(interface_op_impl->super, "WODEN_INTERFACE_OP",
+    axutil_hash_set(interface_op_impl->super, "WODEN_INTERFACE_OP",
             AXIS2_HASH_KEY_STRING,
             &(interface_op_impl->interface_op));
-    axis2_hash_set(interface_op_impl->super, "WODEN_NESTED_CONFIGURABLE",
+    axutil_hash_set(interface_op_impl->super, "WODEN_NESTED_CONFIGURABLE",
             AXIS2_HASH_KEY_STRING,
             interface_op_impl->nested_configurable);
     configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
                 interface_op_impl->nested_configurable, env);
-    axis2_hash_set(interface_op_impl->super, "WODEN_CONFIGURABLE",
+    axutil_hash_set(interface_op_impl->super, "WODEN_CONFIGURABLE",
             AXIS2_HASH_KEY_STRING, configurable);
     documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
-    axis2_hash_set(interface_op_impl->super, "WODEN_DOCUMENTABLE",
+    axutil_hash_set(interface_op_impl->super, "WODEN_DOCUMENTABLE",
             AXIS2_HASH_KEY_STRING, documentable);
 
     return &(interface_op_impl->interface_op);
@@ -754,13 +754,13 @@ woden_interface_op_free(
 
     if (interface_op_impl->super)
     {
-        axis2_hash_free(interface_op_impl->super, env);
+        axutil_hash_free(interface_op_impl->super, env);
         interface_op_impl->super = NULL;
     }
 
     if (interface_op_impl->methods)
     {
-        axis2_hash_free(interface_op_impl->methods, env);
+        axutil_hash_free(interface_op_impl->methods, env);
         interface_op_impl->methods = NULL;
     }
 
@@ -787,7 +787,7 @@ woden_interface_op_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_interface_op_super_objs(
     void *interface_op,
     const axutil_env_t *env)
@@ -831,7 +831,7 @@ woden_interface_op_resolve_methods(
     woden_interface_op_t *interface_op,
     const axutil_env_t *env,
     woden_interface_op_t *interface_op_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_interface_op_impl_t *interface_op_impl_l = NULL;
 
@@ -839,44 +839,44 @@ woden_interface_op_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     interface_op_impl_l = INTF_TO_IMPL(interface_op_impl);
 
-    interface_op->ops->free = axis2_hash_get(methods, "free",
+    interface_op->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    interface_op->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    interface_op->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    interface_op->ops->type = axis2_hash_get(methods, "type",
+    interface_op->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    interface_op->ops->get_qname = axis2_hash_get(methods,
+    interface_op->ops->get_qname = axutil_hash_get(methods,
             "get_qname", AXIS2_HASH_KEY_STRING);
     if (!interface_op->ops->get_qname && interface_op_impl_l)
         interface_op->ops->get_qname =
             interface_op_impl_l->interface_op.ops->get_qname;
 
-    interface_op->ops->get_msg_exchange_pattern = axis2_hash_get(methods,
+    interface_op->ops->get_msg_exchange_pattern = axutil_hash_get(methods,
             "get_msg_exchange_pattern", AXIS2_HASH_KEY_STRING);
     if (!interface_op->ops->get_msg_exchange_pattern && interface_op_impl_l)
         interface_op->ops->get_msg_exchange_pattern =
             interface_op_impl_l->interface_op.ops->get_msg_exchange_pattern;
 
-    interface_op->ops->get_interface_msg_refs = axis2_hash_get(methods,
+    interface_op->ops->get_interface_msg_refs = axutil_hash_get(methods,
             "get_interface_msg_refs", AXIS2_HASH_KEY_STRING);
     if (!interface_op->ops->get_interface_msg_refs && interface_op_impl_l)
         interface_op->ops->get_interface_msg_refs =
             interface_op_impl_l->interface_op.ops->get_interface_msg_refs;
 
-    interface_op->ops->get_interface_fault_refs = axis2_hash_get(methods,
+    interface_op->ops->get_interface_fault_refs = axutil_hash_get(methods,
             "get_interface_fault_refs", AXIS2_HASH_KEY_STRING);
     if (!interface_op->ops->get_interface_fault_refs && interface_op_impl_l)
         interface_op->ops->get_interface_fault_refs =
             interface_op_impl_l->interface_op.ops->get_interface_fault_refs;
 
-    interface_op->ops->get_style = axis2_hash_get(methods,
+    interface_op->ops->get_style = axutil_hash_get(methods,
             "get_style", AXIS2_HASH_KEY_STRING);
     if (!interface_op->ops->get_style && interface_op_impl_l)
         interface_op->ops->get_style =
             interface_op_impl_l->interface_op.ops->get_style;
 
-    interface_op->ops->to_element = axis2_hash_get(methods,
+    interface_op->ops->to_element = axutil_hash_get(methods,
             "to_element", AXIS2_HASH_KEY_STRING);
     if (!interface_op->ops->to_element && interface_op_impl_l)
         interface_op->ops->to_element =
@@ -895,11 +895,11 @@ woden_interface_op_get_qname(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return interface_op_impl->f_qname;
@@ -911,11 +911,11 @@ woden_interface_op_get_msg_exchange_pattern(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return interface_op_impl->f_msg_exchange_pattern;
@@ -927,11 +927,11 @@ woden_interface_op_get_interface_msg_refs(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return interface_op_impl->f_msg_refs;
@@ -943,11 +943,11 @@ woden_interface_op_get_interface_fault_refs(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return interface_op_impl->f_fault_refs;
@@ -959,11 +959,11 @@ woden_interface_op_get_style(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return interface_op_impl->f_style;
@@ -975,11 +975,11 @@ woden_interface_op_to_element(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return &(interface_op_impl->interface_op);
@@ -996,12 +996,12 @@ woden_interface_op_set_qname(
     axis2_qname_t *qname)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     if (interface_op_impl->f_qname)
@@ -1021,12 +1021,12 @@ woden_interface_op_set_pattern(
     axis2_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     if (interface_op_impl->f_msg_exchange_pattern)
@@ -1046,11 +1046,11 @@ woden_interface_op_get_pattern(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return interface_op_impl->f_msg_exchange_pattern;
@@ -1063,12 +1063,12 @@ woden_interface_op_add_style_uri(
     axis2_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     if (!interface_op_impl->f_style)
@@ -1091,13 +1091,13 @@ woden_interface_op_remove_style_uri(
     axis2_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
     int index = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     index = axutil_array_list_index_of(interface_op_impl->f_style, env, uri);
@@ -1112,12 +1112,12 @@ woden_interface_op_add_interface_msg_ref_element(
     void *msg_ref)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ref, AXIS2_FAILURE);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     if (!interface_op_impl->f_msg_refs)
@@ -1141,13 +1141,13 @@ woden_interface_op_remove_interface_msg_ref_element(
     void *msg_ref)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
     int index = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ref, AXIS2_FAILURE);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     index = axutil_array_list_index_of(interface_op_impl->f_msg_refs, env, msg_ref);
@@ -1162,11 +1162,11 @@ woden_interface_op_get_interface_msg_ref_elements(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return interface_op_impl->f_msg_refs;
@@ -1179,12 +1179,12 @@ woden_interface_op_add_interface_fault_ref_element(
     void *fault_ref)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_ref, AXIS2_FAILURE);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     if (!interface_op_impl->f_fault_refs)
@@ -1208,13 +1208,13 @@ woden_interface_op_remove_interface_fault_ref_element(
     void *fault_ref)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
     int index = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_ref, AXIS2_FAILURE);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     index = axutil_array_list_index_of(interface_op_impl->f_fault_refs, env, fault_ref);
@@ -1229,11 +1229,11 @@ woden_interface_op_get_interface_fault_ref_elements(
     const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env);
-    interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    interface_op_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
     return interface_op_impl->f_fault_refs;

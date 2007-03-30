@@ -30,7 +30,7 @@ struct axis2_param
     axis2_bool_t locked;
     /** Parameter type */
     int type; /*default is AXIS2_TEXT_PARAM */
-    axis2_hash_t *attrs;
+    axutil_hash_t *attrs;
     axutil_array_list_t *value_list;
     axis2_status_t (AXIS2_CALL *
     value_free) (void *param_value,
@@ -154,30 +154,30 @@ axis2_param_set_param_type(axis2_param_t *param,
 axis2_status_t AXIS2_CALL
 axis2_param_set_attributes(axis2_param_t *param,
     const axutil_env_t *env,
-    axis2_hash_t *attrs)
+    axutil_hash_t *attrs)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, attrs, AXIS2_FAILURE);
 
     if (param->attrs)
     {
-        axis2_hash_index_t *i = NULL;
+        axutil_hash_index_t *i = NULL;
         void *v = NULL;
 
-        for (i = axis2_hash_first(param->attrs, env); i;
-            i = axis2_hash_next(env, i))
+        for (i = axutil_hash_first(param->attrs, env); i;
+            i = axutil_hash_next(env, i))
         {
-            axis2_hash_this(i, NULL, NULL, &v);
+            axutil_hash_this(i, NULL, NULL, &v);
             axis2_generic_obj_free(v, env);
         }
-        axis2_hash_free(param->attrs, env);
+        axutil_hash_free(param->attrs, env);
     }
 
     param->attrs = attrs;
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 axis2_param_get_attributes(axis2_param_t *param,
     const axutil_env_t *env)
 {
@@ -243,16 +243,16 @@ axis2_param_free(axis2_param_t *param,
 
     if (param->attrs)
     {
-        axis2_hash_index_t *i = NULL;
+        axutil_hash_index_t *i = NULL;
         void *v = NULL;
 
-        for (i = axis2_hash_first(param->attrs, env); i;
-            i = axis2_hash_next(env, i))
+        for (i = axutil_hash_first(param->attrs, env); i;
+            i = axutil_hash_next(env, i))
         {
-            axis2_hash_this(i, NULL, NULL, &v);
+            axutil_hash_this(i, NULL, NULL, &v);
             axis2_generic_obj_free(v, env);
         }
-        axis2_hash_free(param->attrs, env);
+        axutil_hash_free(param->attrs, env);
     }
 
     if (param->value_list)

@@ -32,7 +32,7 @@ struct woden_qname_or_token_any_attr_impl
     woden_qname_or_token_any_attr_t token_attr;
     woden_xml_attr_t *xml_attr;
     woden_obj_types_t obj_type;
-    axis2_hash_t *methods;
+    axutil_hash_t *methods;
 };
 
 #define INTF_TO_IMPL(token_attr) \
@@ -127,30 +127,30 @@ woden_qname_or_token_any_attr_create(const axutil_env_t *env,
         woden_qname_or_token_any_attr_convert;
 
 
-    token_attr_impl->methods = axis2_hash_make(env);
+    token_attr_impl->methods = axutil_hash_make(env);
     if (!token_attr_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(token_attr_impl->methods, "free",
+    axutil_hash_set(token_attr_impl->methods, "free",
             AXIS2_HASH_KEY_STRING, woden_qname_or_token_any_attr_free);
-    axis2_hash_set(token_attr_impl->methods, "type",
+    axutil_hash_set(token_attr_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_qname_or_token_any_attr_type);
 
-    axis2_hash_set(token_attr_impl->methods, "is_qname",
+    axutil_hash_set(token_attr_impl->methods, "is_qname",
             AXIS2_HASH_KEY_STRING,
             woden_qname_or_token_any_attr_is_qname);
-    axis2_hash_set(token_attr_impl->methods, "is_token",
+    axutil_hash_set(token_attr_impl->methods, "is_token",
             AXIS2_HASH_KEY_STRING,
             woden_qname_or_token_any_attr_is_token);
-    axis2_hash_set(token_attr_impl->methods, "get_qname",
+    axutil_hash_set(token_attr_impl->methods, "get_qname",
             AXIS2_HASH_KEY_STRING,
             woden_qname_or_token_any_attr_get_qname);
-    axis2_hash_set(token_attr_impl->methods, "get_token",
+    axutil_hash_set(token_attr_impl->methods, "get_token",
             AXIS2_HASH_KEY_STRING,
             woden_qname_or_token_any_attr_get_token);
-    axis2_hash_set(token_attr_impl->methods, "convert",
+    axutil_hash_set(token_attr_impl->methods, "convert",
             AXIS2_HASH_KEY_STRING,
             woden_qname_or_token_any_attr_convert);
 
@@ -187,7 +187,7 @@ woden_qname_or_token_any_attr_free(
 
     if (token_attr_impl->methods)
     {
-        axis2_hash_free(token_attr_impl->methods, env);
+        axutil_hash_free(token_attr_impl->methods, env);
         token_attr_impl->methods = NULL;
     }
 
@@ -234,25 +234,25 @@ woden_qname_or_token_any_attr_resolve_methods(
     woden_qname_or_token_any_attr_t *
     token_attr,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    token_attr->ops->free = axis2_hash_get(methods,
+    token_attr->ops->free = axutil_hash_get(methods,
             "free", AXIS2_HASH_KEY_STRING);
-    token_attr->ops->type = axis2_hash_get(methods,
+    token_attr->ops->type = axutil_hash_get(methods,
             "type", AXIS2_HASH_KEY_STRING);
 
-    token_attr->ops->is_qname = axis2_hash_get(methods,
+    token_attr->ops->is_qname = axutil_hash_get(methods,
             "is_qname", AXIS2_HASH_KEY_STRING);
-    token_attr->ops->is_token = axis2_hash_get(methods,
+    token_attr->ops->is_token = axutil_hash_get(methods,
             "is_token", AXIS2_HASH_KEY_STRING);
-    token_attr->ops->get_qname = axis2_hash_get(methods,
+    token_attr->ops->get_qname = axutil_hash_get(methods,
             "get_qname", AXIS2_HASH_KEY_STRING);
-    token_attr->ops->get_token = axis2_hash_get(methods,
+    token_attr->ops->get_token = axutil_hash_get(methods,
             "get_token", AXIS2_HASH_KEY_STRING);
-    token_attr->ops->convert = axis2_hash_get(methods,
+    token_attr->ops->convert = axutil_hash_get(methods,
             "convert", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

@@ -76,7 +76,7 @@ extern "C"
     * @param msg_ctx pointer to message context
     * @return the store on success, else NULL
     */
-    axis2_hash_t * AXIS2_CALL
+    axutil_hash_t * AXIS2_CALL
     savan_util_get_subscriber_store(
         const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);

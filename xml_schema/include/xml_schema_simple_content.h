@@ -28,7 +28,7 @@
  */
 
 #include <xml_schema_annotated.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 /** @defgroup xml_schema_simple_content Xml Schema Group
   * @ingroup xml_schema
@@ -58,7 +58,7 @@ struct xml_schema_simple_content_ops
     get_base_impl) (void *sim_content,
                     const axutil_env_t *env);
                     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *sim_content,
                 const axutil_env_t *env);
                     

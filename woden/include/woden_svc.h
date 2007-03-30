@@ -60,7 +60,7 @@ struct woden_svc_ops
     free) (void *svc,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *svc,
             const axutil_env_t *env);
 
@@ -175,7 +175,7 @@ woden_svc_resolve_methods(
         woden_svc_t *svc,
         const axutil_env_t *env,
         woden_svc_t *svc_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_SVC_FREE(svc, env) \

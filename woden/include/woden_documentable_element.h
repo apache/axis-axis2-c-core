@@ -32,7 +32,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axutil_array_list.h>
 #include <woden_wsdl_element.h>
 #include <woden.h>
@@ -91,7 +91,7 @@ axis2_status_t AXIS2_CALL
 woden_documentable_element_resolve_methods(
         woden_documentable_element_t *documentable_element,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_DOCUMENTABLE_ELEMENT_FREE(doc_el, env) \

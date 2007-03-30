@@ -59,7 +59,7 @@ struct woden_wsdl10_endpoint_ops
     free) (void *endpoint,
             const axutil_env_t *env);
     
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *endpoint,
             const axutil_env_t *env);
 
@@ -187,7 +187,7 @@ woden_wsdl10_endpoint_resolve_methods(
         woden_wsdl10_endpoint_t *endpoint,
         const axutil_env_t *env,
         woden_wsdl10_endpoint_t *endpoint_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_WSDL10_ENDPOINT_FREE(endpoint, env) \

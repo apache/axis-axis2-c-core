@@ -107,7 +107,7 @@ struct xml_schema_element_impl
      */
     axis2_qname_t *substitution_group;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_types_t obj_type;
 
@@ -131,7 +131,7 @@ xml_schema_element_get_type(
     void *element,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_element_super_objs(
     void *element,
     const axutil_env_t *env);
@@ -440,25 +440,25 @@ xml_schema_element_create(const axutil_env_t *env)
         xml_schema_element_free(&(element_impl->element), env);
         return NULL;
     }
-    element_impl->ht_super = axis2_hash_make(env);
+    element_impl->ht_super = axutil_hash_make(env);
     if (!element_impl->ht_super)
     {
         xml_schema_element_free(&(element_impl->element), env);
         return NULL;
     }
 
-    axis2_hash_set(element_impl->ht_super, axis2_strdup(env,"XML_SCHEMA_ELEMENT"),
+    axutil_hash_set(element_impl->ht_super, axis2_strdup(env,"XML_SCHEMA_ELEMENT"),
             AXIS2_HASH_KEY_STRING, &(element_impl->element));
 
-    axis2_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_PARTICLE"),
+    axutil_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_PARTICLE"),
             AXIS2_HASH_KEY_STRING, element_impl->particle);
 
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(element_impl->particle, env);
     if (annotated)
     {
-        axis2_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
+        axutil_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
                 AXIS2_HASH_KEY_STRING, &(element_impl->element));
-        axis2_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
+        axutil_hash_set(element_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
                 AXIS2_HASH_KEY_STRING, XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
     xml_schema_particle_resolve_methods(
@@ -933,7 +933,7 @@ xml_schema_element_set_type(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_element_super_objs(
     void *element,
     const axutil_env_t *env)

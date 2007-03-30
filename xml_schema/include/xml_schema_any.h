@@ -58,7 +58,7 @@ struct xml_schema_any_ops
             void *any,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *any,
             const axutil_env_t *env);
@@ -109,7 +109,7 @@ xml_schema_any_resolve_methods(
            xml_schema_any_t *any,
            const axutil_env_t *env,
            xml_schema_any_t *any_impl,
-           axis2_hash_t *methods);
+           axutil_hash_t *methods);
  */
  /************************ Macros *******************************************/
  

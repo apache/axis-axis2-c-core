@@ -46,7 +46,7 @@ struct axiom_stax_builder
     int current_event;
 
     int element_level;
-    axis2_hash_t *declared_namespaces;
+    axutil_hash_t *declared_namespaces;
 };
 
 AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
@@ -76,7 +76,7 @@ axiom_stax_builder_create(const axutil_env_t *env,
     om_builder->root_node = NULL;
     om_builder->element_level = 0;
 
-    om_builder->declared_namespaces = axis2_hash_make(env);
+    om_builder->declared_namespaces = axutil_hash_make(env);
 
     om_builder->document = axiom_document_create(env, NULL, om_builder);
     if (!om_builder->document)
@@ -352,7 +352,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
             status = axiom_element_declare_namespace_assume_param_ownership(om_ele,
                 env, om_ns);
             prefix = axiom_namespace_get_prefix(om_ns, env);
-            axis2_hash_set(om_builder->declared_namespaces,
+            axutil_hash_set(om_builder->declared_namespaces,
                 prefix, AXIS2_HASH_KEY_STRING, om_ns);
         }
         axis2_string_free(temp_ns_uri_str, env);
@@ -367,7 +367,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
     temp_prefix = AXIOM_XML_READER_GET_PREFIX(om_builder->parser, env);
     if (temp_prefix)
     {
-        om_ns = axis2_hash_get(om_builder->declared_namespaces,
+        om_ns = axutil_hash_get(om_builder->declared_namespaces,
             temp_prefix, AXIS2_HASH_KEY_STRING);
 
         if (om_ns)
@@ -767,7 +767,7 @@ axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
 
     if (om_builder->declared_namespaces)
     {
-        axis2_hash_free(om_builder->declared_namespaces, env);
+        axutil_hash_free(om_builder->declared_namespaces, env);
         om_builder->declared_namespaces = NULL;
     }
 

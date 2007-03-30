@@ -30,7 +30,7 @@
 #include <xml_schema_annotated.h>
 #include <xml_schema_obj_collection.h>
 #include <xml_schema_any_attribute.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 /** @defgroup xml_schema_simple_content_extension Xml Schema Group
   * @ingroup xml_schema
@@ -64,7 +64,7 @@ struct xml_schema_simple_content_extension_ops
     get_type)(void *sim_content_ext,
           const axutil_env_t *env);
           
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *sim_content_ext,
                 const axutil_env_t *env);                              
 

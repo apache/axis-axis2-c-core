@@ -31,7 +31,7 @@ struct xml_schema_use_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
 
     axutil_array_list_t *members;
@@ -43,7 +43,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_use_free(void *use,
         const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_use_super_objs(
     void *use,
     const axutil_env_t *env);
@@ -62,7 +62,7 @@ xml_schema_use_resolve_methods(
     xml_schema_use_t *use,
     const axutil_env_t *env,
     xml_schema_use_t *use_impl,
-    axis2_hash_t *methods);
+    axutil_hash_t *methods);
 
 axutil_array_list_t * AXIS2_CALL
 xml_schema_use_get_values(void *use,
@@ -119,18 +119,18 @@ xml_schema_use_create(const axutil_env_t *env,
 
     use_impl->schema_enum = xml_schema_enum_create(env, value);
 
-    use_impl->ht_super = axis2_hash_make(env);
+    use_impl->ht_super = axutil_hash_make(env);
     if (!use_impl->ht_super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(use_impl->ht_super,
+    axutil_hash_set(use_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_USE"),
             AXIS2_HASH_KEY_STRING,
             &(use_impl->use));
 
-    axis2_hash_set(use_impl->ht_super,
+    axutil_hash_set(use_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ENUM"),
             AXIS2_HASH_KEY_STRING,
             use_impl->schema_enum);
@@ -180,7 +180,7 @@ xml_schema_use_free(void *use,
 
     if (use_impl->ht_super)
     {
-        axis2_hash_free(use_impl->ht_super, env);
+        axutil_hash_free(use_impl->ht_super, env);
         use_impl->ht_super = NULL;
     }
 
@@ -202,7 +202,7 @@ xml_schema_use_free(void *use,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_use_super_objs(
     void *use,
     const axutil_env_t *env)
@@ -241,10 +241,10 @@ xml_schema_use_get_values(void *use,
         const axutil_env_t *env)
 {
     xml_schema_use_impl_t *use_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     super = XML_SCHEMA_USE_SUPER_OBJS(use, env);
-    use_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, "XML_SCHEMA_USE",
+    use_impl = AXIS2_INTF_TO_IMPL(axutil_hash_get(super, "XML_SCHEMA_USE",
             AXIS2_HASH_KEY_STRING));
     if (use_impl)
         return use_impl->members;

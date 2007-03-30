@@ -21,20 +21,20 @@ axis2_status_t AXIS2_CALL
 woden_configurable_component_resolve_methods(
     woden_configurable_component_t *configurable_component,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    configurable_component->ops->free = axis2_hash_get(methods, "free",
+    configurable_component->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    configurable_component->ops->to_configurable_component_free = axis2_hash_get(methods,
+    configurable_component->ops->to_configurable_component_free = axutil_hash_get(methods,
             "to_configurable_component_free", AXIS2_HASH_KEY_STRING);
-    configurable_component->ops->type = axis2_hash_get(methods, "type",
+    configurable_component->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
-    configurable_component->ops->get_features = axis2_hash_get(methods,
+    configurable_component->ops->get_features = axutil_hash_get(methods,
             "get_features", AXIS2_HASH_KEY_STRING);
-    configurable_component->ops->get_properties = axis2_hash_get(methods,
+    configurable_component->ops->get_properties = axutil_hash_get(methods,
             "get_properties", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

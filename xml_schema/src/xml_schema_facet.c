@@ -32,7 +32,7 @@ struct xml_schema_facet_impl
 
 int obj_type;
 
-axis2_hash_t* ht_super;
+axutil_hash_t* ht_super;
 
 axis2_char_t *value;
 };
@@ -85,7 +85,7 @@ xml_schema_facet_get_type(
     void *facet,
     const axutil_env_t *env);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_facet_super_objs(
     void *facet,
     const axutil_env_t *env);
@@ -152,17 +152,17 @@ facet_impl->value = axis2_strdup(env, value);
         return NULL;
     }
 
-    facet_impl->ht_super = axis2_hash_make(env);
+    facet_impl->ht_super = axutil_hash_make(env);
     if (!facet_impl->ht_super)
     {
         xml_schema_facet_free(&(facet_impl->facet), env);
         return NULL;
     }
-    axis2_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_FACET"),
+    axutil_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_FACET"),
             AXIS2_HASH_KEY_STRING, &(facet_impl->facet));
-    axis2_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
+    axutil_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"),
             AXIS2_HASH_KEY_STRING, facet_impl->annotated);
-    axis2_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
+    axutil_hash_set(facet_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"),
             AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(
                 facet_impl->annotated, env));
@@ -376,7 +376,7 @@ xml_schema_facet_get_type(void *facet,
     return AXIS2_INTF_TO_IMPL(facet)->obj_type;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 xml_schema_facet_super_objs(void *facet,
         const axutil_env_t *env)
 {

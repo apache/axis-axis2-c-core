@@ -75,7 +75,7 @@ w2c_writer_parse(w2c_writer_t *writer,
 axis2_char_t* 
 w2c_writer_find_template ( w2c_writer_impl_t* writer_impl,
                            const axutil_env_t* env,
-                           axis2_hash_t* lang_speci_map);
+                           axutil_hash_t* lang_speci_map);
 
 axis2_char_t*
 w2c_writer_get_extension( w2c_writer_impl_t* writer_impl,

@@ -19,7 +19,7 @@
 
 struct axis2_param_container
 {
-    axis2_hash_t *params;
+    axutil_hash_t *params;
     axutil_array_list_t *params_list;
 };
 
@@ -43,7 +43,7 @@ axis2_param_container_create(const axutil_env_t *env)
     param_container->params_list = NULL;
     param_container->params_list = axutil_array_list_create(env, 0);
 
-    param_container->params = axis2_hash_make(env);
+    param_container->params = axutil_hash_make(env);
     if (!param_container->params)
     {
         axis2_param_container_free(param_container, env);
@@ -62,13 +62,13 @@ axis2_param_container_free(axis2_param_container_t *param_container,
 
     if (param_container->params)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(param_container->params, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(param_container->params, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
             axis2_param_t *param = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             param = (axis2_param_t *) val;
             if (param)
             {
@@ -77,7 +77,7 @@ axis2_param_container_free(axis2_param_container_t *param_container,
             }
             val = NULL;
         }
-        axis2_hash_free(param_container->params, env);
+        axutil_hash_free(param_container->params, env);
     }
     if (param_container->params_list)
     {
@@ -117,7 +117,7 @@ axis2_param_container_add_param(axis2_param_container_t *param_container,
 
     if (!(param_container->params))
     {
-        param_container->params = axis2_hash_make(env);
+        param_container->params = axutil_hash_make(env);
         if (!param_container->params)
         {
             return AXIS2_FAILURE;
@@ -130,7 +130,7 @@ axis2_param_container_add_param(axis2_param_container_t *param_container,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    axis2_hash_set(param_container->params, param_name, 
+    axutil_hash_set(param_container->params, param_name, 
         AXIS2_HASH_KEY_STRING, param);
 
     return AXIS2_SUCCESS;
@@ -141,7 +141,7 @@ axis2_param_container_get_param(axis2_param_container_t *param_container,
     const axutil_env_t *env,
     const axis2_char_t *name)
 {
-    return (axis2_param_t *)(axis2_hash_get(param_container->params, 
+    return (axis2_param_t *)(axutil_hash_get(param_container->params, 
         name, AXIS2_HASH_KEY_STRING));
 }
 
@@ -149,7 +149,7 @@ AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axis2_param_container_get_params(axis2_param_container_t *param_container,
     const axutil_env_t *env)
 {
-    axis2_hash_index_t *index_i = 0;
+    axutil_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     void *value = NULL;
 
@@ -164,10 +164,10 @@ axis2_param_container_get_params(axis2_param_container_t *param_container,
         }
     }
 
-    for (index_i = axis2_hash_first(param_container->params, env);
-        index_i; index_i = axis2_hash_next(env, index_i))
+    for (index_i = axutil_hash_first(param_container->params, env);
+        index_i; index_i = axutil_hash_next(env, index_i))
     {
-        axis2_hash_this(index_i, NULL, NULL, &value);
+        axutil_hash_this(index_i, NULL, NULL, &value);
         status = axutil_array_list_add(param_container->params_list, env,
             value);
         if (AXIS2_SUCCESS != status)
@@ -189,7 +189,7 @@ axis2_param_container_is_param_locked(axis2_param_container_t *param_container,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    param = (axis2_param_t *)(axis2_hash_get(param_container->params, 
+    param = (axis2_param_t *)(axutil_hash_get(param_container->params, 
         param_name, AXIS2_HASH_KEY_STRING));
     if (!param)
     {

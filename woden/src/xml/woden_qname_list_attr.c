@@ -31,7 +31,7 @@ struct woden_qname_list_attr_impl
     woden_qname_list_attr_t qname_list_attr;
     woden_xml_attr_t *xml_attr;
     woden_obj_types_t obj_type;
-    axis2_hash_t *methods;
+    axutil_hash_t *methods;
 };
 
 #define INTF_TO_IMPL(qname_list_attr) \
@@ -102,19 +102,19 @@ woden_qname_list_attr_create(
         woden_qname_list_attr_convert;
 
 
-    qname_list_attr_impl->methods = axis2_hash_make(env);
+    qname_list_attr_impl->methods = axutil_hash_make(env);
     if (!qname_list_attr_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(qname_list_attr_impl->methods, "free",
+    axutil_hash_set(qname_list_attr_impl->methods, "free",
             AXIS2_HASH_KEY_STRING, woden_qname_list_attr_free);
-    axis2_hash_set(qname_list_attr_impl->methods, "type",
+    axutil_hash_set(qname_list_attr_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_qname_list_attr_type);
-    axis2_hash_set(qname_list_attr_impl->methods, "get_qnames",
+    axutil_hash_set(qname_list_attr_impl->methods, "get_qnames",
             AXIS2_HASH_KEY_STRING, woden_qname_list_attr_get_qnames);
-    axis2_hash_set(qname_list_attr_impl->methods, "convert",
+    axutil_hash_set(qname_list_attr_impl->methods, "convert",
             AXIS2_HASH_KEY_STRING, woden_qname_list_attr_convert);
 
     qname_list_attr_impl->xml_attr = woden_xml_attr_create(env, owner_el,
@@ -148,7 +148,7 @@ woden_qname_list_attr_free(
 
     if (qname_list_attr_impl->methods)
     {
-        axis2_hash_free(qname_list_attr_impl->methods, env);
+        axutil_hash_free(qname_list_attr_impl->methods, env);
         qname_list_attr_impl->methods = NULL;
     }
 
@@ -189,20 +189,20 @@ axis2_status_t AXIS2_CALL
 woden_qname_list_attr_resolve_methods(
     woden_qname_list_attr_t *qname_list_attr,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    qname_list_attr->ops->free = axis2_hash_get(methods,
+    qname_list_attr->ops->free = axutil_hash_get(methods,
             "free", AXIS2_HASH_KEY_STRING);
-    qname_list_attr->ops->to_qname_list_attr_free = axis2_hash_get(methods,
+    qname_list_attr->ops->to_qname_list_attr_free = axutil_hash_get(methods,
             "to_qname_list_attr_free", AXIS2_HASH_KEY_STRING);
-    qname_list_attr->ops->type = axis2_hash_get(methods,
+    qname_list_attr->ops->type = axutil_hash_get(methods,
             "type", AXIS2_HASH_KEY_STRING);
-    qname_list_attr->ops->get_qnames = axis2_hash_get(methods,
+    qname_list_attr->ops->get_qnames = axutil_hash_get(methods,
             "get_qnames", AXIS2_HASH_KEY_STRING);
-    qname_list_attr->ops->convert = axis2_hash_get(methods,
+    qname_list_attr->ops->convert = axutil_hash_get(methods,
             "convert", AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

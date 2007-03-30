@@ -37,8 +37,8 @@ struct woden_wsdl10_msg_ref_impl
       woden_wsdl10_msg_ref_t msg_ref;
       woden_nested_configurable_t *nested_configurable;
       woden_obj_types_t obj_type;
-      axis2_hash_t *super;
-      axis2_hash_t *methods;
+      axutil_hash_t *super;
+      axutil_hash_t *methods;
 
       axis2_qname_t *f_qname;
       void *f_part;
@@ -51,7 +51,7 @@ woden_wsdl10_msg_ref_free(
       void *msg_ref,
       const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl10_msg_ref_super_objs(
       void *msg_ref,
       const axutil_env_t *env);
@@ -458,32 +458,32 @@ create(const axutil_env_t *env)
       msg_ref_impl->msg_ref.ops->to_element =
 	    woden_wsdl10_msg_ref_to_element;
 
-      msg_ref_impl->methods = axis2_hash_make(env);
+      msg_ref_impl->methods = axutil_hash_make(env);
       if (!msg_ref_impl->methods)
       {
 	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 	    return NULL;
       }
-      axis2_hash_set(msg_ref_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+      axutil_hash_set(msg_ref_impl->methods, "free", AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_msg_ref_free);
-      axis2_hash_set(msg_ref_impl->methods, "super_objs",
+      axutil_hash_set(msg_ref_impl->methods, "super_objs",
 		     AXIS2_HASH_KEY_STRING, woden_wsdl10_msg_ref_super_objs);
-      axis2_hash_set(msg_ref_impl->methods, "type",
+      axutil_hash_set(msg_ref_impl->methods, "type",
 		     AXIS2_HASH_KEY_STRING, woden_wsdl10_msg_ref_type);
 
-      axis2_hash_set(msg_ref_impl->methods, "get_qname",
+      axutil_hash_set(msg_ref_impl->methods, "get_qname",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_msg_ref_get_qname);
-      axis2_hash_set(msg_ref_impl->methods, "to_element",
+      axutil_hash_set(msg_ref_impl->methods, "to_element",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_msg_ref_to_element);
-      axis2_hash_set(msg_ref_impl->methods, "set_qname",
+      axutil_hash_set(msg_ref_impl->methods, "set_qname",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_msg_ref_set_qname);
-      axis2_hash_set(msg_ref_impl->methods, "set_part",
+      axutil_hash_set(msg_ref_impl->methods, "set_part",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_msg_ref_set_part);
-      axis2_hash_set(msg_ref_impl->methods, "get_part",
+      axutil_hash_set(msg_ref_impl->methods, "get_part",
 		     AXIS2_HASH_KEY_STRING,
 		     woden_wsdl10_msg_ref_get_part);
 
@@ -501,21 +501,21 @@ woden_wsdl10_msg_ref_create(const axutil_env_t *env)
 
       msg_ref_impl->nested_configurable = woden_nested_configurable_create(env);
 
-      msg_ref_impl->super = axis2_hash_make(env);
+      msg_ref_impl->super = axutil_hash_make(env);
       if (!msg_ref_impl->super)
       {
 	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 	    return NULL;
       }
-      axis2_hash_set(msg_ref_impl->super, "WODEN_WSDL10_MSG_REF",
+      axutil_hash_set(msg_ref_impl->super, "WODEN_WSDL10_MSG_REF",
 		     AXIS2_HASH_KEY_STRING,
 		     &(msg_ref_impl->msg_ref));
-      axis2_hash_set(msg_ref_impl->super, "WODEN_NESTED_CONFIGURABLE",
+      axutil_hash_set(msg_ref_impl->super, "WODEN_NESTED_CONFIGURABLE",
 		     AXIS2_HASH_KEY_STRING,
 		     msg_ref_impl->nested_configurable);
       configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
 	    msg_ref_impl->nested_configurable, env);
-      axis2_hash_set(msg_ref_impl->super, "WODEN_CONFIGURABLE",
+      axutil_hash_set(msg_ref_impl->super, "WODEN_CONFIGURABLE",
 		     AXIS2_HASH_KEY_STRING, configurable);
 
       return &(msg_ref_impl->msg_ref);
@@ -649,13 +649,13 @@ woden_wsdl10_msg_ref_free(
 
       if (msg_ref_impl->super)
       {
-	    axis2_hash_free(msg_ref_impl->super, env);
+	    axutil_hash_free(msg_ref_impl->super, env);
 	    msg_ref_impl->super = NULL;
       }
 
       if (msg_ref_impl->methods)
       {
-	    axis2_hash_free(msg_ref_impl->methods, env);
+	    axutil_hash_free(msg_ref_impl->methods, env);
 	    msg_ref_impl->methods = NULL;
       }
 
@@ -683,7 +683,7 @@ woden_wsdl10_msg_ref_free(
       return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl10_msg_ref_super_objs(
       void *msg_ref,
       const axutil_env_t *env)
@@ -727,7 +727,7 @@ woden_wsdl10_msg_ref_resolve_methods(
       woden_wsdl10_msg_ref_t *msg_ref,
       const axutil_env_t *env,
       woden_wsdl10_msg_ref_t *msg_ref_impl,
-      axis2_hash_t *methods)
+      axutil_hash_t *methods)
 {
       woden_wsdl10_msg_ref_impl_t *msg_ref_impl_l = NULL;
 
@@ -735,20 +735,20 @@ woden_wsdl10_msg_ref_resolve_methods(
       AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
       msg_ref_impl_l = INTF_TO_IMPL(msg_ref_impl);
 
-      msg_ref->ops->free = axis2_hash_get(methods, "free",
+      msg_ref->ops->free = axutil_hash_get(methods, "free",
 					  AXIS2_HASH_KEY_STRING);
-      msg_ref->ops->super_objs = axis2_hash_get(methods, "super_objs",
+      msg_ref->ops->super_objs = axutil_hash_get(methods, "super_objs",
 						AXIS2_HASH_KEY_STRING);
-      msg_ref->ops->type = axis2_hash_get(methods, "type",
+      msg_ref->ops->type = axutil_hash_get(methods, "type",
 					  AXIS2_HASH_KEY_STRING);
 
-      msg_ref->ops->get_qname = axis2_hash_get(methods,
+      msg_ref->ops->get_qname = axutil_hash_get(methods,
 					       "get_qname", AXIS2_HASH_KEY_STRING);
       if (!msg_ref->ops->get_qname && msg_ref_impl_l)
 	    msg_ref->ops->get_qname =
 		  msg_ref_impl_l->msg_ref.ops->get_qname;
 
-      msg_ref->ops->to_element = axis2_hash_get(methods,
+      msg_ref->ops->to_element = axutil_hash_get(methods,
 						"to_element", AXIS2_HASH_KEY_STRING);
       if (!msg_ref->ops->to_element && msg_ref_impl_l)
 	    msg_ref->ops->to_element =
@@ -767,11 +767,11 @@ woden_wsdl10_msg_ref_get_qname(
       const axutil_env_t *env)
 {
       woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       super = WODEN_WSDL10_MSG_REF_SUPER_OBJS(msg_ref, env);
-      msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      msg_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						 "WODEN_WSDL10_MSG_REF", 
 						 AXIS2_HASH_KEY_STRING));
 
@@ -784,11 +784,11 @@ woden_wsdl10_msg_ref_to_element(
       const axutil_env_t *env)
 {
       woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       super = WODEN_WSDL10_MSG_REF_SUPER_OBJS(msg_ref, env);
-      msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      msg_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						 "WODEN_WSDL10_MSG_REF", 
 						 AXIS2_HASH_KEY_STRING));
 
@@ -806,12 +806,12 @@ woden_wsdl10_msg_ref_set_qname(
       axis2_qname_t *qname)
 {
       woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
       AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
       super = WODEN_WSDL10_MSG_REF_SUPER_OBJS(msg_ref, env);
-      msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      msg_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						 "WODEN_WSDL10_MSG_REF", 
 						 AXIS2_HASH_KEY_STRING));
 
@@ -832,12 +832,12 @@ woden_wsdl10_msg_ref_set_part(
       void *part)
 {
       woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
       AXIS2_PARAM_CHECK(env->error, part, AXIS2_FAILURE);
       super = WODEN_WSDL10_MSG_REF_SUPER_OBJS(msg_ref, env);
-      msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      msg_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						 "WODEN_WSDL10_MSG_REF", 
 						 AXIS2_HASH_KEY_STRING));
 
@@ -857,11 +857,11 @@ woden_wsdl10_msg_ref_get_part(
       const axutil_env_t *env)
 {
       woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
-      axis2_hash_t *super = NULL;
+      axutil_hash_t *super = NULL;
 
       AXIS2_ENV_CHECK(env, NULL);
       super = WODEN_WSDL10_MSG_REF_SUPER_OBJS(msg_ref, env);
-      msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super,
+      msg_ref_impl = INTF_TO_IMPL(axutil_hash_get(super,
 						 "WODEN_WSDL10_MSG_REF",
 						 AXIS2_HASH_KEY_STRING));
 

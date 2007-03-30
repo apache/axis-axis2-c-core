@@ -33,7 +33,7 @@ struct xml_schema_severity_type_impl
 
     axutil_array_list_t *members;
 
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
 
     xml_schema_types_t type;
 };
@@ -53,7 +53,7 @@ axutil_array_list_t *AXIS2_CALL
 xml_schema_severity_type_get_values(void *severity_type,
         const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_severity_type_super_objs(void *severity_type,
         const axutil_env_t *env);
 
@@ -121,7 +121,7 @@ xml_schema_severity_type_create(const axutil_env_t *env,
         return NULL;
     }
 
-    severity_type_impl->ht_super = axis2_hash_make(env);
+    severity_type_impl->ht_super = axutil_hash_make(env);
     if (!severity_type_impl->ht_super)
     {
         xml_schema_severity_type_free(&(severity_type_impl->severity_type), env);
@@ -129,11 +129,11 @@ xml_schema_severity_type_create(const axutil_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(severity_type_impl->ht_super,
+    axutil_hash_set(severity_type_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_SEVERITY_TYPE"),
             AXIS2_HASH_KEY_STRING,  &(severity_type_impl->severity_type));
 
-    axis2_hash_set(severity_type_impl->ht_super,
+    axutil_hash_set(severity_type_impl->ht_super,
             axis2_strdup(env, "XML_SCHEMA_ENUM"),
             AXIS2_HASH_KEY_STRING, severity_type_impl->schema_enum);
 
@@ -215,12 +215,12 @@ xml_schema_severity_type_get_values(void *severity_type,
 {
     /*
     xml_schema_severity_type_impl_t *severity_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
+    axutil_hash_t *ht_super = NULL;
     ht_super = XML_SCHEMA_SEREVITY_TYPE_SUPER_OBJS(severity_type, env);
     if( ht_super)
     {
         severity_impl = (xml_schema_severity_type_impl_t*)
-            axis2_hash_get(ht_super, "XML_SCHEMA_SEVERITY_TYPE", AXIS2_HASH_KEY_STRING);
+            axutil_hash_get(ht_super, "XML_SCHEMA_SEVERITY_TYPE", AXIS2_HASH_KEY_STRING);
         return severity_impl->members;    
     }
     */
@@ -228,7 +228,7 @@ xml_schema_severity_type_get_values(void *severity_type,
 }
 
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_severity_type_super_objs(void *severity_type,
         const axutil_env_t *env)
 {

@@ -18,7 +18,7 @@
 #include <w2c_cmdline_option_parser.h>
 #include <axis2_utils.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_cmdline_option_consts.h>
 #include <w2c_messages.h>
@@ -71,7 +71,7 @@ static axis2_status_t
 w2c_validate_cmdline_options(w2c_cmdline_option_parser_t* cmd_opt_parser,
         const axutil_env_t*  env)
 {
-    axis2_hash_t* h = NULL;
+    axutil_hash_t* h = NULL;
     axutil_array_list_t* invalid_arr = NULL;
     w2c_cmdline_option_t* option = NULL;
     int size = 0;
@@ -87,7 +87,7 @@ w2c_validate_cmdline_options(w2c_cmdline_option_parser_t* cmd_opt_parser,
     }
     h =  W2C_CMDLINE_OPTION_PARSER_GET_OPTIONS(cmd_opt_parser, env);
     option = (w2c_cmdline_option_t*)
-            axis2_hash_get(h, W2C_CMDLINE_OPTION_CONSTS_WSDL_LOCATION_URI,
+            axutil_hash_get(h, W2C_CMDLINE_OPTION_CONSTS_WSDL_LOCATION_URI,
                     AXIS2_HASH_KEY_STRING);
     if (option == NULL)
     {

@@ -30,7 +30,7 @@
 #include <xml_schema_annotated.h>
 #include <xml_schema.h>
 #include <axiom.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <xml_schema_collection.h>
 #include <axiom_util.h>
 /** @defgroup xml_schema_builder Xml Schema

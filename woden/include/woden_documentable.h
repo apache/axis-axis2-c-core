@@ -62,7 +62,7 @@ struct woden_documentable_ops
             void *documentable,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *documentable,
             const axutil_env_t *env);
@@ -117,7 +117,7 @@ woden_documentable_resolve_methods(
         woden_documentable_t *documentable,
         const axutil_env_t *env,
         woden_documentable_t *documentable_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 

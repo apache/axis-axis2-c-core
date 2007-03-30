@@ -30,7 +30,7 @@ struct xml_schema_group_impl
     xml_schema_group_t group;
     xml_schema_annotated_t *annotated;
     xml_schema_types_t obj_type;
-    axis2_hash_t *ht_super;
+    axutil_hash_t *ht_super;
     axis2_char_t *name;
     xml_schema_group_base_t *particle;
 };
@@ -42,7 +42,7 @@ xml_schema_group_free(
     void *group,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_group_super_objs(
     void *group,
     const axutil_env_t *env);
@@ -129,18 +129,18 @@ xml_schema_group_create(const axutil_env_t *env)
         xml_schema_group_free(&(group_impl->group), env);
         return NULL;
     }
-    group_impl->ht_super = axis2_hash_make(env);
+    group_impl->ht_super = axutil_hash_make(env);
     if (!group_impl->ht_super)
     {
         xml_schema_group_free(&(group_impl->group), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(group_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_GROUP"), AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(group_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_GROUP"), AXIS2_HASH_KEY_STRING,
             &(group_impl->group));
-    axis2_hash_set(group_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"), AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(group_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_ANNOTATED"), AXIS2_HASH_KEY_STRING,
             group_impl->annotated);
-    axis2_hash_set(group_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"), AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(group_impl->ht_super, axis2_strdup(env, "XML_SCHEMA_OBJ"), AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(group_impl->annotated, env));
 
 
@@ -175,7 +175,7 @@ xml_schema_group_free(void *group,
 
     if (group_impl->ht_super)
     {
-        axis2_hash_free(group_impl->ht_super, env);
+        axutil_hash_free(group_impl->ht_super, env);
         group_impl->ht_super = NULL;
     }
 
@@ -201,7 +201,7 @@ xml_schema_group_free(void *group,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 xml_schema_group_super_objs(void *group,
         const axutil_env_t *env)
 {

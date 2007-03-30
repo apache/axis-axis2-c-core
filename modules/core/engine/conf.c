@@ -26,7 +26,7 @@
 
 struct axis2_conf
 {
-    axis2_hash_t *svc_grps;
+    axutil_hash_t *svc_grps;
     axis2_transport_in_desc_t *transports_in[AXIS2_TRANSPORT_ENUM_MAX];
     axis2_transport_out_desc_t *transports_out[AXIS2_TRANSPORT_ENUM_MAX];
     /**
@@ -34,19 +34,19 @@ struct axis2_conf
      */
     axutil_array_list_t *engaged_modules;
     /*to store all the available modules (including version)*/
-    axis2_hash_t *all_modules;
+    axutil_hash_t *all_modules;
     /*to store mapping between default version to module name*/
-    axis2_hash_t *name_to_version_map;
+    axutil_hash_t *name_to_version_map;
     axutil_array_list_t *out_phases;
     axutil_array_list_t *in_fault_phases;
     axutil_array_list_t *out_fault_phases;
 
     axutil_array_list_t *in_phases_upto_and_including_post_dispatch;
     axis2_phases_info_t *phases_info;
-    axis2_hash_t *all_svcs;
-    axis2_hash_t *msg_recvs;
-    axis2_hash_t *faulty_svcs;
-    axis2_hash_t *faulty_modules;
+    axutil_hash_t *all_svcs;
+    axutil_hash_t *msg_recvs;
+    axutil_hash_t *faulty_svcs;
+    axutil_hash_t *faulty_modules;
     axis2_char_t *axis2_repo;
     axis2_dep_engine_t *dep_engine;
     axutil_array_list_t *handlers;
@@ -106,7 +106,7 @@ axis2_conf_create(
         return NULL;
     }
 
-    conf->svc_grps = axis2_hash_make(env);
+    conf->svc_grps = axutil_hash_make(env);
     if (! conf->svc_grps)
     {
         axis2_conf_free(conf, env);
@@ -197,7 +197,7 @@ axis2_conf_create(
     }
 
 
-    conf->all_svcs = axis2_hash_make(env);
+    conf->all_svcs = axutil_hash_make(env);
     if (! conf->all_svcs)
     {
         axis2_conf_free(conf, env);
@@ -205,7 +205,7 @@ axis2_conf_create(
         return NULL;
     }
 
-    conf->msg_recvs = axis2_hash_make(env);
+    conf->msg_recvs = axutil_hash_make(env);
     if (! conf->msg_recvs)
     {
         axis2_conf_free(conf, env);
@@ -213,7 +213,7 @@ axis2_conf_create(
         return NULL;
     }
 
-    conf->faulty_svcs = axis2_hash_make(env);
+    conf->faulty_svcs = axutil_hash_make(env);
     if (! conf->faulty_svcs)
     {
         axis2_conf_free(conf, env);
@@ -221,7 +221,7 @@ axis2_conf_create(
         return NULL;
     }
 
-    conf->faulty_modules = axis2_hash_make(env);
+    conf->faulty_modules = axutil_hash_make(env);
     if (! conf->faulty_modules)
     {
         axis2_conf_free(conf, env);
@@ -229,7 +229,7 @@ axis2_conf_create(
         return NULL;
     }
 
-    conf->all_modules = axis2_hash_make(env);
+    conf->all_modules = axutil_hash_make(env);
     if (! conf->all_modules)
     {
         axis2_conf_free(conf, env);
@@ -237,7 +237,7 @@ axis2_conf_create(
         return NULL;
     }
 
-    conf->name_to_version_map = axis2_hash_make(env);
+    conf->name_to_version_map = axutil_hash_make(env);
     if (! conf->name_to_version_map)
     {
         axis2_conf_free(conf, env);
@@ -264,18 +264,18 @@ axis2_conf_free(
 
     if (conf->svc_grps)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(conf->svc_grps, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(conf->svc_grps, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             axis2_svc_grp_t * svc_grp = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             svc_grp = (axis2_svc_grp_t *) val;
             if (svc_grp)
                  axis2_svc_grp_free(svc_grp, env);
         }
-        axis2_hash_free(conf->svc_grps, env);
+        axutil_hash_free(conf->svc_grps, env);
     }
 
     for (i = 0; i < AXIS2_TRANSPORT_ENUM_MAX; i++)
@@ -301,40 +301,40 @@ axis2_conf_free(
 
     if (conf->all_modules)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(conf->all_modules, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(conf->all_modules, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             axis2_module_desc_t * module_desc = NULL;
 
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             module_desc = (axis2_module_desc_t *) val;
             if (module_desc)
             {
                 axis2_module_desc_free(module_desc, env);
             }
         }
-        axis2_hash_free(conf->all_modules, env);
+        axutil_hash_free(conf->all_modules, env);
     }
 
     if (conf->name_to_version_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(conf->name_to_version_map, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(conf->name_to_version_map, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             axis2_char_t * module_ver = NULL;
 
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             module_ver = (axis2_char_t *) val;
             if (module_ver)
             {
                 AXIS2_FREE(env->allocator, module_ver);
             }
         }
-        axis2_hash_free(conf->name_to_version_map, env);
+        axutil_hash_free(conf->name_to_version_map, env);
     }
 
     if (conf->engaged_modules)
@@ -407,18 +407,18 @@ axis2_conf_free(
 
     if (conf->all_svcs)
     {
-        axis2_hash_free(conf->all_svcs, env);
+        axutil_hash_free(conf->all_svcs, env);
     }
 
     if (conf->msg_recvs)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(conf->msg_recvs, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(conf->msg_recvs, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             axis2_msg_recv_t * msg_recv = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             msg_recv = (axis2_msg_recv_t *) val;
             if (msg_recv)
             {
@@ -426,28 +426,28 @@ axis2_conf_free(
                 msg_recv = NULL;
             }
         }
-        axis2_hash_free(conf->msg_recvs, env);
+        axutil_hash_free(conf->msg_recvs, env);
     }
 
     if (conf->faulty_svcs)
     {
-        axis2_hash_free(conf->faulty_svcs, env);
+        axutil_hash_free(conf->faulty_svcs, env);
     }
 
     if (conf->faulty_modules)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first(conf->faulty_modules, env); hi;
-                hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(conf->faulty_modules, env); hi;
+                hi = axutil_hash_next(env, hi))
         {
             axis2_module_desc_t * module_desc = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             module_desc = (axis2_module_desc_t *) val;
             if (module_desc)
                 axis2_module_desc_free(module_desc, env);
         }
-        axis2_hash_free(conf->faulty_modules, env);
+        axutil_hash_free(conf->faulty_modules, env);
     }
 
     if (conf->handlers)
@@ -484,8 +484,8 @@ axis2_conf_add_svc_grp(
     const axutil_env_t *env,
     axis2_svc_grp_t *svc_grp)
 {
-    axis2_hash_t *svcs = NULL;
-    axis2_hash_index_t *index_i = NULL;
+    axutil_hash_t *svcs = NULL;
+    axutil_hash_index_t *index_i = NULL;
     axis2_char_t *svc_name = NULL;
     const axis2_char_t *svc_grp_name = NULL;
     int k = 0;
@@ -496,12 +496,12 @@ axis2_conf_add_svc_grp(
     svcs =  axis2_svc_grp_get_all_svcs(svc_grp, env);
     if (!conf->all_svcs)
     {
-        conf->all_svcs = axis2_hash_make(env);
+        conf->all_svcs = axutil_hash_make(env);
         if (!conf->all_svcs)
             return AXIS2_FAILURE;
     }
-    k = axis2_hash_count(svcs);
-    index_i = axis2_hash_first(svcs, env);
+    k = axutil_hash_count(svcs);
+    index_i = axutil_hash_first(svcs, env);
     while (index_i)
     {
         void *value = NULL;
@@ -509,12 +509,12 @@ axis2_conf_add_svc_grp(
         axis2_char_t *svc_name2 = NULL;
         const axis2_qname_t *svc_qname = NULL;
 
-        axis2_hash_this(index_i, NULL, NULL, &value);
+        axutil_hash_this(index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
         svc_qname = axis2_svc_get_qname(desc, env);
         svc_name = axis2_qname_get_localpart(svc_qname, env);
 
-        svc_name2 = axis2_hash_get(conf->all_svcs, svc_name,
+        svc_name2 = axutil_hash_get(conf->all_svcs, svc_name,
                 AXIS2_HASH_KEY_STRING);
         /* no two service names deployed in the engine can be same */
         if (svc_name2)
@@ -523,32 +523,32 @@ axis2_conf_add_svc_grp(
                     AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
-        index_i = axis2_hash_next(env, index_i);
+        index_i = axutil_hash_next(env, index_i);
     }
 
     svcs =  axis2_svc_grp_get_all_svcs(svc_grp, env);
-    index_i = axis2_hash_first(svcs, env);
+    index_i = axutil_hash_first(svcs, env);
     while (index_i)
     {
         void *value = NULL;
         axis2_svc_t *desc = NULL;
 
-        axis2_hash_this(index_i, NULL, NULL, &value);
+        axutil_hash_this(index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
         svc_name = axis2_qname_get_localpart(axis2_svc_get_qname(desc, env), env);
-        axis2_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
+        axutil_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
                 desc);
-        index_i = axis2_hash_next(env, index_i);
+        index_i = axutil_hash_next(env, index_i);
     }
 
     svc_grp_name =  axis2_svc_grp_get_name(svc_grp, env);
     if (!conf->svc_grps)
     {
-        conf->svc_grps = axis2_hash_make(env);
+        conf->svc_grps = axutil_hash_make(env);
         if (!conf->svc_grps)
             return AXIS2_FAILURE;
     }
-    axis2_hash_set(conf->svc_grps, svc_grp_name,
+    axutil_hash_set(conf->svc_grps, svc_grp_name,
             AXIS2_HASH_KEY_STRING, svc_grp);
 
     return AXIS2_SUCCESS;
@@ -569,11 +569,11 @@ axis2_conf_get_svc_grp(
                 AXIS2_FAILURE);
         return NULL;
     }
-    return (axis2_svc_grp_t *)(axis2_hash_get(conf->svc_grps,
+    return (axis2_svc_grp_t *)(axutil_hash_get(conf->svc_grps,
             svc_grp_name, AXIS2_HASH_KEY_STRING));
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_conf_get_all_svc_grps(
     const axis2_conf_t *conf,
     const axutil_env_t *env)
@@ -644,7 +644,7 @@ axis2_conf_get_svc(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
-    return axis2_hash_get(conf->all_svcs, svc_name,
+    return axutil_hash_get(conf->all_svcs, svc_name,
             AXIS2_HASH_KEY_STRING);
 }
 
@@ -657,7 +657,7 @@ axis2_conf_remove_svc(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_name, AXIS2_FAILURE);
 
-    axis2_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(conf->all_svcs, svc_name, AXIS2_HASH_KEY_STRING,
             NULL);
     return AXIS2_SUCCESS;
 }
@@ -806,7 +806,7 @@ axis2_conf_get_module(
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
 
     name = axis2_qname_to_string((axis2_qname_t *)qname, env);
-    ret = (axis2_module_desc_t *) axis2_hash_get(conf->all_modules,
+    ret = (axis2_module_desc_t *) axutil_hash_get(conf->all_modules,
             name, AXIS2_HASH_KEY_STRING);
     if (ret)
     {
@@ -824,7 +824,7 @@ axis2_conf_get_module(
         return NULL;
     }
     name = axis2_qname_to_string(mod_qname, env);
-    ret = (axis2_module_desc_t *) axis2_hash_get(conf->all_modules,
+    ret = (axis2_module_desc_t *) axutil_hash_get(conf->all_modules,
             name, AXIS2_HASH_KEY_STRING);
     axis2_qname_free(mod_qname, env);
     mod_qname = NULL;
@@ -879,7 +879,7 @@ axis2_conf_get_all_out_transports(
     return (axis2_transport_out_desc_t **)conf->transports_out;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_conf_get_all_faulty_svcs(
     const axis2_conf_t *conf,
     const axutil_env_t *env)
@@ -887,7 +887,7 @@ axis2_conf_get_all_faulty_svcs(
     return conf->faulty_svcs;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_conf_get_all_faulty_modules(
     const axis2_conf_t *conf,
     const axutil_env_t *env)
@@ -895,44 +895,44 @@ axis2_conf_get_all_faulty_modules(
     return conf->faulty_modules;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_conf_get_all_svcs(
     const axis2_conf_t *conf,
     const axutil_env_t *env)
 {
-    axis2_hash_t *sgs = NULL;
-    axis2_hash_index_t *index_i = NULL;
-    axis2_hash_index_t *index_j = NULL;
+    axutil_hash_t *sgs = NULL;
+    axutil_hash_index_t *index_i = NULL;
+    axutil_hash_index_t *index_j = NULL;
     void *value = NULL;
     void *value2 = NULL;
     axis2_svc_grp_t *axis_svc_grp = NULL;
-    axis2_hash_t *svcs = NULL;
+    axutil_hash_t *svcs = NULL;
     axis2_svc_t *svc = NULL;
     axis2_char_t *svc_name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     sgs = axis2_conf_get_all_svc_grps(conf, env);
-    index_i = axis2_hash_first(sgs, env);
+    index_i = axutil_hash_first(sgs, env);
     while (index_i)
     {
-        axis2_hash_this(index_i, NULL, NULL, &value);
+        axutil_hash_this(index_i, NULL, NULL, &value);
         axis_svc_grp = (axis2_svc_grp_t *) value;
         svcs =  axis2_svc_grp_get_all_svcs(axis_svc_grp, env);
-        index_j = axis2_hash_first(svcs, env);
+        index_j = axutil_hash_first(svcs, env);
         while (index_j)
         {
-            axis2_hash_this(index_j, NULL, NULL, &value2);
+            axutil_hash_this(index_j, NULL, NULL, &value2);
             svc = (axis2_svc_t *) value2;
             svc_name = 
                 axis2_qname_get_localpart(axis2_svc_get_qname(svc, env), env);
-            axis2_hash_set(conf->all_svcs, svc_name,
+            axutil_hash_set(conf->all_svcs, svc_name,
                     AXIS2_HASH_KEY_STRING, svc);
 
-            index_j = axis2_hash_next(env, index_j);
+            index_j = axutil_hash_next(env, index_j);
         }
 
-        index_i = axis2_hash_next(env, index_i);
+        index_i = axutil_hash_next(env, index_i);
     }
     return conf->all_svcs;
 }
@@ -1013,11 +1013,11 @@ axis2_conf_add_msg_recv(
     AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
     if (!conf->msg_recvs)
     {
-        conf->msg_recvs = axis2_hash_make(env);
+        conf->msg_recvs = axutil_hash_make(env);
         if (!conf->msg_recvs)
             return AXIS2_FAILURE;
     }
-    axis2_hash_set(conf->msg_recvs, key, AXIS2_HASH_KEY_STRING, msg_recv);
+    axutil_hash_set(conf->msg_recvs, key, AXIS2_HASH_KEY_STRING, msg_recv);
     return AXIS2_SUCCESS;
 }
 
@@ -1027,7 +1027,7 @@ axis2_conf_get_msg_recv(
     const axutil_env_t *env,
     axis2_char_t *key)
 {
-    return (axis2_msg_recv_t *) axis2_hash_get(conf->msg_recvs, key, AXIS2_HASH_KEY_STRING);
+    return (axis2_msg_recv_t *) axutil_hash_get(conf->msg_recvs, key, AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -1092,7 +1092,7 @@ axis2_conf_set_out_fault_phases(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_conf_get_all_modules(
     const axis2_conf_t *conf,
     const axutil_env_t *env)
@@ -1127,7 +1127,7 @@ axis2_conf_add_module(
     {
         axis2_char_t *module_name = NULL;
         module_name = axis2_qname_to_string((axis2_qname_t *)module_qname, env);
-        axis2_hash_set(conf->all_modules, module_name,
+        axutil_hash_set(conf->all_modules, module_name,
                 AXIS2_HASH_KEY_STRING, module);
     }
 
@@ -1429,7 +1429,7 @@ axis2_conf_get_default_module_version(
     const axutil_env_t *env,
     const axis2_char_t *module_name)
 {
-    axis2_hash_t *def_ver_map = NULL;
+    axutil_hash_t *def_ver_map = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
@@ -1438,7 +1438,7 @@ axis2_conf_get_default_module_version(
     {
         return NULL;
     }
-    return axis2_hash_get(def_ver_map, module_name, AXIS2_HASH_KEY_STRING);
+    return axutil_hash_get(def_ver_map, module_name, AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
@@ -1450,7 +1450,7 @@ axis2_conf_get_default_module(
     axis2_module_desc_t *ret_mod = NULL;
     axis2_char_t *mod_name = NULL;
     const axis2_char_t *mod_ver = NULL;
-    axis2_hash_t *all_modules = NULL;
+    axutil_hash_t *all_modules = NULL;
     axis2_qname_t *mod_qname = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -1478,7 +1478,7 @@ axis2_conf_get_default_module(
     {
         return NULL;
     }
-    ret_mod = (axis2_module_desc_t *)axis2_hash_get(all_modules,
+    ret_mod = (axis2_module_desc_t *)axutil_hash_get(all_modules,
             axis2_qname_to_string(mod_qname, env),
             AXIS2_HASH_KEY_STRING);
 
@@ -1493,7 +1493,7 @@ axis2_conf_add_default_module_version(
     const axis2_char_t *module_name,
     const axis2_char_t *module_version)
 {
-    axis2_hash_t *name_to_ver_map = NULL;
+    axutil_hash_t *name_to_ver_map = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
@@ -1504,7 +1504,7 @@ axis2_conf_add_default_module_version(
      */
     name_to_ver_map = conf->name_to_version_map;
 
-    if (!axis2_hash_get(name_to_ver_map, module_name,
+    if (!axutil_hash_get(name_to_ver_map, module_name,
             AXIS2_HASH_KEY_STRING))
     {
         axis2_char_t *new_entry = axis2_strdup(env, module_version);
@@ -1512,7 +1512,7 @@ axis2_conf_add_default_module_version(
         {
             return AXIS2_FAILURE;
         }
-        axis2_hash_set(name_to_ver_map, module_name, AXIS2_HASH_KEY_STRING,
+        axutil_hash_set(name_to_ver_map, module_name, AXIS2_HASH_KEY_STRING,
                 new_entry);
         return AXIS2_SUCCESS;
     }

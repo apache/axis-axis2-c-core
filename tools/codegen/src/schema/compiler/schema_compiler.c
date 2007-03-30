@@ -25,7 +25,7 @@
 #include <w2c_schema_property_loader.h>
 #include <w2c_typemapper.h>
 #include <xml_schema_includes.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <w2c_string.h>
 #include <stdlib.h>
 
@@ -39,21 +39,21 @@ typedef struct w2c_schema_compiler_impl
     w2c_schema_compiler_options_t *compiler_options;
     w2c_schema_writer_t *writer;
     /** maps */
-    axis2_hash_t *processed_type_map;
-    axis2_hash_t *processed_element_map;
-    axis2_hash_t *loaded_schema_map;
-    axis2_hash_t *processed_anonymous_complex_typemap;
-    axis2_hash_t *processed_ele_ref_map;
-    axis2_hash_t *simple_type_map;
-    axis2_hash_t *changed_type_map;
-    axis2_hash_t *processed_type_meta_info_map;
-    axis2_hash_t *available_schema_map;
+    axutil_hash_t *processed_type_map;
+    axutil_hash_t *processed_element_map;
+    axutil_hash_t *loaded_schema_map;
+    axutil_hash_t *processed_anonymous_complex_typemap;
+    axutil_hash_t *processed_ele_ref_map;
+    axutil_hash_t *simple_type_map;
+    axutil_hash_t *changed_type_map;
+    axutil_hash_t *processed_type_meta_info_map;
+    axutil_hash_t *available_schema_map;
     w2c_typemapper_t *base_schema_type_mapper;
-    axis2_hash_t *all_processed_anon_type;
+    axutil_hash_t *all_processed_anon_type;
 
     /** virtual lists */
-    axis2_hash_t *processed_ele_list;
-    axis2_hash_t *nillable_ele_list;
+    axutil_hash_t *processed_ele_list;
+    axutil_hash_t *nillable_ele_list;
 
 
     w2c_schema_property_loader_t *loader;
@@ -99,8 +99,8 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
                         const axutil_env_t *env,
                         xml_schema_element_t *ele,
                         axis2_bool_t is_outer,
-                        axis2_hash_t *inner_element_map,
-                        axis2_hash_t *local_nillable_list,
+                        axutil_hash_t *inner_element_map,
+                        axutil_hash_t *local_nillable_list,
                         xml_schema_t *parent_schema);
 
 axis2_status_t
@@ -286,7 +286,7 @@ w2c_schema_compiler_create( const axutil_env_t *env,
     axis2_char_t *language = NULL;
     axis2_char_t *template_name = NULL;
     axis2_char_t *typemapper_file = NULL;
-    axis2_hash_t *base_schema_type_map = NULL; 
+    axutil_hash_t *base_schema_type_map = NULL; 
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -300,19 +300,19 @@ w2c_schema_compiler_create( const axutil_env_t *env,
     }
     compiler_impl->compiler_options = compiler_options;
     /* creates empty hashes */
-    compiler_impl->processed_type_map = axis2_hash_make( env);
-    compiler_impl->processed_element_map = axis2_hash_make( env);
-    compiler_impl->simple_type_map = axis2_hash_make( env);
-    compiler_impl->processed_anonymous_complex_typemap = axis2_hash_make( env);
-    compiler_impl->changed_type_map = axis2_hash_make( env);
-    compiler_impl->processed_type_meta_info_map = axis2_hash_make( env);
-    compiler_impl->processed_ele_ref_map = axis2_hash_make( env);
-    compiler_impl->loaded_schema_map = axis2_hash_make( env);
-    compiler_impl->available_schema_map = axis2_hash_make( env);
-    compiler_impl->all_processed_anon_type = axis2_hash_make( env);
+    compiler_impl->processed_type_map = axutil_hash_make( env);
+    compiler_impl->processed_element_map = axutil_hash_make( env);
+    compiler_impl->simple_type_map = axutil_hash_make( env);
+    compiler_impl->processed_anonymous_complex_typemap = axutil_hash_make( env);
+    compiler_impl->changed_type_map = axutil_hash_make( env);
+    compiler_impl->processed_type_meta_info_map = axutil_hash_make( env);
+    compiler_impl->processed_ele_ref_map = axutil_hash_make( env);
+    compiler_impl->loaded_schema_map = axutil_hash_make( env);
+    compiler_impl->available_schema_map = axutil_hash_make( env);
+    compiler_impl->all_processed_anon_type = axutil_hash_make( env);
 
-    compiler_impl->processed_ele_list = axis2_hash_make( env);
-    compiler_impl->nillable_ele_list = axis2_hash_make( env);
+    compiler_impl->processed_ele_list = axutil_hash_make( env);
+    compiler_impl->nillable_ele_list = axutil_hash_make( env);
     compiler_impl->base_schema_type_mapper = NULL;
     compiler_impl->writer = NULL;
     compiler_impl->loader = NULL;
@@ -377,35 +377,35 @@ w2c_schema_compiler_free (w2c_schema_compiler_t *schema_compiler,
     }
     if( schema_compiler_impl-> processed_type_map)
     {
-        axis2_hash_free( schema_compiler_impl-> processed_type_map, env);
+        axutil_hash_free( schema_compiler_impl-> processed_type_map, env);
     }
     if( schema_compiler_impl-> processed_element_map)
     {
-        axis2_hash_free( schema_compiler_impl-> processed_element_map, env);
+        axutil_hash_free( schema_compiler_impl-> processed_element_map, env);
     }
     if( schema_compiler_impl-> loaded_schema_map)
     {
-        axis2_hash_free( schema_compiler_impl-> loaded_schema_map, env);
+        axutil_hash_free( schema_compiler_impl-> loaded_schema_map, env);
     }
     if( schema_compiler_impl-> processed_anonymous_complex_typemap)
     {
-        axis2_hash_free( schema_compiler_impl-> processed_anonymous_complex_typemap, env);
+        axutil_hash_free( schema_compiler_impl-> processed_anonymous_complex_typemap, env);
     }
     if( schema_compiler_impl-> processed_ele_ref_map)
     {
-        axis2_hash_free( schema_compiler_impl-> processed_ele_ref_map, env);
+        axutil_hash_free( schema_compiler_impl-> processed_ele_ref_map, env);
     }
     if( schema_compiler_impl-> simple_type_map)
     {
-        axis2_hash_free( schema_compiler_impl-> simple_type_map, env);
+        axutil_hash_free( schema_compiler_impl-> simple_type_map, env);
     }
     if( schema_compiler_impl-> changed_type_map)
     {
-        axis2_hash_free( schema_compiler_impl-> changed_type_map, env);
+        axutil_hash_free( schema_compiler_impl-> changed_type_map, env);
     }
     if( schema_compiler_impl-> processed_type_meta_info_map)
     {
-        axis2_hash_free( schema_compiler_impl-> processed_type_meta_info_map, env);
+        axutil_hash_free( schema_compiler_impl-> processed_type_meta_info_map, env);
     }
     if( schema_compiler_impl-> base_schema_type_mapper)
     {
@@ -413,15 +413,15 @@ w2c_schema_compiler_free (w2c_schema_compiler_t *schema_compiler,
     }
     if( schema_compiler_impl-> available_schema_map)
     {
-        axis2_hash_free( schema_compiler_impl-> available_schema_map, env);
+        axutil_hash_free( schema_compiler_impl-> available_schema_map, env);
     }
     if( schema_compiler_impl-> processed_ele_list)
     {
-        axis2_hash_free( schema_compiler_impl-> processed_ele_list, env);
+        axutil_hash_free( schema_compiler_impl-> processed_ele_list, env);
     }
     if( schema_compiler_impl-> nillable_ele_list)
     {
-        axis2_hash_free( schema_compiler_impl-> nillable_ele_list, env);
+        axutil_hash_free( schema_compiler_impl-> nillable_ele_list, env);
     }
     if ( schema_compiler_impl-> loader)
     {
@@ -492,11 +492,11 @@ w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
     }
 
     /** adding the schema to loaded schema map */
-    schema_stored = axis2_hash_get( compiler_impl-> loaded_schema_map, target_ns,
+    schema_stored = axutil_hash_get( compiler_impl-> loaded_schema_map, target_ns,
             AXIS2_HASH_KEY_STRING );
     if( ! schema_stored)
     {
-        axis2_hash_set( compiler_impl-> loaded_schema_map, target_ns,
+        axutil_hash_set( compiler_impl-> loaded_schema_map, target_ns,
                 AXIS2_HASH_KEY_STRING, xml_schema);
     }
 
@@ -581,7 +581,7 @@ w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
     w2c_schema_writer_meta_info_t *meta_inf = NULL;
     axis2_char_t *class_name = NULL;
     axis2_char_t *qname2str = NULL;
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     xml_schema_particle_t *particle = NULL;
     axis2_bool_t is_array = AXIS2_FALSE;
     axis2_qname_t *type_qname = NULL;
@@ -593,14 +593,14 @@ w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
     qname = XML_SCHEMA_ELEMENT_GET_QNAME( element, env);
     qname_str = w2c_string_make_key_from_qname( qname, env);
     
-    existing = axis2_hash_get( compiler_impl->processed_element_map, qname_str, AXIS2_HASH_KEY_STRING);
+    existing = axutil_hash_get( compiler_impl->processed_element_map, qname_str, AXIS2_HASH_KEY_STRING);
     if ( existing != NULL )
     {
         return AXIS2_SUCCESS;
     }
     meta_inf = w2c_schema_writer_meta_info_create( env);
     base_hash = XML_SCHEMA_ELEMENT_SUPER_OBJS( element, env);
-    particle = axis2_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
+    particle = axutil_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
     is_array = w2c_schema_compiler_is_array( compiler_impl, env, particle);
 
     schema_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE( element, env);
@@ -613,7 +613,7 @@ w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
         type_qname = XML_SCHEMA_TYPE_GET_QNAME(schema_type, env);
         class_name = w2c_schema_compiler_find_class_name( compiler_impl, env, type_qname, is_array);
         qname2str = w2c_string_make_key_from_qname( type_qname, env);
-        changed_qname = axis2_hash_get( compiler_impl-> changed_type_map, qname2str, AXIS2_HASH_KEY_STRING);
+        changed_qname = axutil_hash_get( compiler_impl-> changed_type_map, qname2str, AXIS2_HASH_KEY_STRING);
         /** this means the schema type actually returns a different QName */
         if ( changed_qname == NULL )
         {
@@ -640,7 +640,7 @@ w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
             if ( schema_type != NULL )
             {
                 /* TODO: recheck getting the meta inf corrosponding to the element */
-                meta_inf = axis2_hash_get(compiler_impl-> processed_anonymous_complex_typemap,
+                meta_inf = axutil_hash_get(compiler_impl-> processed_anonymous_complex_typemap,
                                          qname_str, AXIS2_HASH_KEY_STRING);
                 if ( meta_inf) /* this is some extra to java */
                 {
@@ -659,7 +659,7 @@ w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
         }
     }
 
-    if ( axis2_hash_get( compiler_impl-> nillable_ele_list,
+    if ( axutil_hash_get( compiler_impl-> nillable_ele_list,
                                  qname_str, AXIS2_HASH_KEY_STRING) )
     {
         W2C_SCHEMA_WRITER_META_INFO_REGISTER_NILLABLE_QNAME( meta_inf, env, qname);
@@ -668,7 +668,7 @@ w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
     written_classname = 
         W2C_SCHEMA_WRITER_WRITE_ELEMENT( compiler_impl-> writer, env, element, 
                 compiler_impl->processed_type_map, meta_inf);
-    axis2_hash_set( compiler_impl->processed_element_map, qname_str,
+    axutil_hash_set( compiler_impl->processed_element_map, qname_str,
             AXIS2_HASH_KEY_STRING, written_classname );
 
     /** registering the class is not done */
@@ -684,22 +684,22 @@ w2c_schema_compiler_find_class_name(w2c_schema_compiler_impl_t *compiler_impl,
 {
     axis2_char_t *qname_str = NULL;
     axis2_char_t *class_name = NULL;
-    axis2_hash_t *base_schema_type_map = NULL; 
+    axutil_hash_t *base_schema_type_map = NULL; 
     
     base_schema_type_map = 
         W2C_TYPEMAPPER_GET_ALL( compiler_impl-> base_schema_type_mapper, env);
 
     qname_str = w2c_string_make_key_from_qname( qname, env);
-    class_name = axis2_hash_get( compiler_impl->processed_type_map, qname_str,
+    class_name = axutil_hash_get( compiler_impl->processed_type_map, qname_str,
                                 AXIS2_HASH_KEY_STRING);
     if ( ! class_name )
     {
-        class_name = axis2_hash_get( compiler_impl->simple_type_map, qname_str,
+        class_name = axutil_hash_get( compiler_impl->simple_type_map, qname_str,
                                 AXIS2_HASH_KEY_STRING);
     }
     if ( ! class_name )
     {
-        class_name = axis2_hash_get( base_schema_type_map, qname_str,
+        class_name = axutil_hash_get( base_schema_type_map, qname_str,
                                 AXIS2_HASH_KEY_STRING);
     }
     if ( ! class_name )
@@ -741,8 +741,8 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
                         const axutil_env_t *env,
                         xml_schema_element_t *ele,
                         axis2_bool_t is_outer,
-                        axis2_hash_t *inner_ele_map,
-                        axis2_hash_t *local_nillable_list,
+                        axutil_hash_t *inner_ele_map,
+                        axutil_hash_t *local_nillable_list,
                         xml_schema_t *parent_schema)
 {
     int processed = 0;
@@ -751,7 +751,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
     xml_schema_type_t *schema_type = NULL;
     axis2_char_t *class_name = NULL;
 
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     xml_schema_particle_t *particle = NULL;
     axis2_bool_t is_array = AXIS2_FALSE;
 
@@ -781,7 +781,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
     if( qname != NULL)
     {
        qname_str = w2c_string_make_key_from_qname( qname, env);
-       processed = (int)axis2_hash_get( compiler_impl-> processed_ele_list, qname_str,
+       processed = (int)axutil_hash_get( compiler_impl-> processed_ele_list, qname_str,
                                      AXIS2_HASH_KEY_STRING );
        if ( is_outer && processed != 0 )
        {
@@ -790,7 +790,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
        }
     }
     base_hash = XML_SCHEMA_ELEMENT_SUPER_OBJS( ele, env);
-    particle = axis2_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
+    particle = axutil_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
     is_array = w2c_schema_compiler_is_array( compiler_impl, env, particle);
 
     schema_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE( ele, env);
@@ -809,7 +809,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
             {
                 class_name = w2c_schema_compiler_find_class_name( compiler_impl, env, type_qname, is_array);
                 qname_str  = w2c_string_make_key_from_qname( qname, env);
-                axis2_hash_set( inner_ele_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
+                axutil_hash_set( inner_ele_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
                 /** not adding meta info to schema_type */
             }
             else
@@ -821,25 +821,25 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
                     local_part = axis2_qname_get_localpart( generated_type_qname, env);
                     XML_SCHEMA_TYPE_SET_NAME( schema_type, env, local_part);
                     qname_str  = w2c_string_make_key_from_qname( qname, env);
-                    meta_inf = axis2_hash_get(compiler_impl-> processed_anonymous_complex_typemap,
+                    meta_inf = axutil_hash_get(compiler_impl-> processed_anonymous_complex_typemap,
                                                                  qname_str, AXIS2_HASH_KEY_STRING);
 
                     /** remove this from anonymous list */
-                    axis2_hash_set( compiler_impl-> processed_anonymous_complex_typemap, 
+                    axutil_hash_set( compiler_impl-> processed_anonymous_complex_typemap, 
                                                 qname_str, AXIS2_HASH_KEY_STRING, 0 );
                     /** this is just store anon generated types */
-                    axis2_hash_set( compiler_impl-> all_processed_anon_type, 
+                    axutil_hash_set( compiler_impl-> all_processed_anon_type, 
                                             local_part, AXIS2_HASH_KEY_STRING, local_part );
 
                     base_hash = XML_SCHEMA_TYPE_SUPER_OBJS( schema_type, env);
-                    complex_type = axis2_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
+                    complex_type = axutil_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
 
                     w2c_schema_compiler_write_complex_type( compiler_impl, env, complex_type, meta_inf);
                     
                     type_qname = XML_SCHEMA_TYPE_GET_QNAME( schema_type, env);
                     qname_str  = w2c_string_make_key_from_qname( type_qname, env);
                     class_name = w2c_schema_compiler_find_class_name( compiler_impl, env, type_qname, is_array);
-                    axis2_hash_set( inner_ele_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
+                    axutil_hash_set( inner_ele_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
                     /** not adding meta info to schema_type */
                 }
             }
@@ -847,7 +847,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
         else
         {
             qname_str  = w2c_string_make_key_from_qname( qname, env);
-            axis2_hash_set( compiler_impl-> processed_ele_list, qname_str, AXIS2_HASH_KEY_STRING, (void*)1);
+            axutil_hash_set( compiler_impl-> processed_ele_list, qname_str, AXIS2_HASH_KEY_STRING, (void*)1);
         }
     }
     else if ( ref_qname != NULL )
@@ -867,7 +867,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
         {
             class_name = w2c_schema_compiler_find_class_name( compiler_impl, env, type_qname, is_array);
             qname_str  = w2c_string_make_key_from_qname( ref_ele_qname, env);
-            axis2_hash_set( compiler_impl-> processed_ele_ref_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
+            axutil_hash_set( compiler_impl-> processed_ele_ref_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
             /** ignore adding meta info */
         }
         else
@@ -879,26 +879,26 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
             {
                 local_part = axis2_qname_get_localpart( generated_type_qname, env);
                 XML_SCHEMA_TYPE_SET_NAME( ref_schema_type, env, local_part);
-                meta_inf = axis2_hash_get(compiler_impl-> processed_anonymous_complex_typemap,
+                meta_inf = axutil_hash_get(compiler_impl-> processed_anonymous_complex_typemap,
                                                              qname_str, AXIS2_HASH_KEY_STRING);
 
                 /** remove this from anonymous list */
                 qname_str  = w2c_string_make_key_from_qname( ref_ele_qname, env);
-                axis2_hash_set( compiler_impl-> processed_anonymous_complex_typemap, 
+                axutil_hash_set( compiler_impl-> processed_anonymous_complex_typemap, 
                                             qname_str, AXIS2_HASH_KEY_STRING, 0 );
                 /** this is just store anon generated types */
-                axis2_hash_set( compiler_impl-> all_processed_anon_type, 
+                axutil_hash_set( compiler_impl-> all_processed_anon_type, 
                                             local_part, AXIS2_HASH_KEY_STRING, local_part );
 
                 base_hash = XML_SCHEMA_TYPE_SUPER_OBJS( ref_schema_type, env);
-                complex_type = axis2_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
+                complex_type = axutil_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
 
                 w2c_schema_compiler_write_complex_type( compiler_impl, env, complex_type, meta_inf);
                 
                 type_qname = XML_SCHEMA_TYPE_GET_QNAME( ref_schema_type, env);
                 qname_str  = w2c_string_make_key_from_qname( type_qname, env);
                 class_name = w2c_schema_compiler_find_class_name( compiler_impl, env, type_qname, is_array);
-                axis2_hash_set( compiler_impl-> processed_ele_ref_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
+                axutil_hash_set( compiler_impl-> processed_ele_ref_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
                 /** not adding meta info to ref_schema_type */
             }
         }
@@ -916,11 +916,11 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
             {
                 class_name = w2c_schema_compiler_find_class_name( compiler_impl,
                                  env, schema_type_qname, is_array);
-                axis2_hash_set( inner_ele_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
+                axutil_hash_set( inner_ele_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
             }
             else
             {
-                axis2_hash_set( compiler_impl->processed_ele_list, qname_str,
+                axutil_hash_set( compiler_impl->processed_ele_list, qname_str,
                     AXIS2_HASH_KEY_STRING, (void*)1);
             }
         }
@@ -932,11 +932,11 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
             {
                 class_name = w2c_schema_compiler_find_class_name( compiler_impl,
                                  env, schema_type_qname, is_array);
-                axis2_hash_set( inner_ele_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
+                axutil_hash_set( inner_ele_map, qname_str, AXIS2_HASH_KEY_STRING, class_name);
             }
             else
             {
-                axis2_hash_set( compiler_impl->processed_ele_list, qname_str,
+                axutil_hash_set( compiler_impl->processed_ele_list, qname_str,
                     AXIS2_HASH_KEY_STRING, (void*)1);
             }
         }
@@ -947,12 +947,12 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
     {
         if( is_outer)
         {
-            axis2_hash_set( compiler_impl-> nillable_ele_list,
+            axutil_hash_set( compiler_impl-> nillable_ele_list,
                                  qname_str, AXIS2_HASH_KEY_STRING, (void*)1);
         }
         else
         {
-            axis2_hash_set( local_nillable_list,
+            axutil_hash_set( local_nillable_list,
                                  qname_str, AXIS2_HASH_KEY_STRING, (void*)1);
         }
     }
@@ -970,7 +970,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
     xml_schema_t *schema = NULL;
     axis2_char_t *ns = NULL;
     axis2_char_t *mapper_package_name = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     axis2_qname_t *qname = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
@@ -990,7 +990,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
     {
         schema = (xml_schema_t*) axutil_array_list_get( schema_list, env, i);
         ns = XML_SCHEMA_GET_TARGET_NAMESPACE( schema, env);
-        axis2_hash_set( compiler_impl-> available_schema_map, ns,
+        axutil_hash_set( compiler_impl-> available_schema_map, ns,
                 AXIS2_HASH_KEY_STRING, schema);
         if( 0 == i )
         {
@@ -1014,30 +1014,30 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
     w2c_schema_compiler_finalize_compilation( compiler_impl, env);
    
     /** this is just to allow indenting types files also */  
-    for (hi = axis2_hash_first( compiler_impl-> simple_type_map, env);
-                         hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first( compiler_impl-> simple_type_map, env);
+                         hi; hi = axutil_hash_next(env, hi))
     {
-         axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+         axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
          qname = axis2_qname_create_from_string( env, key);
          W2C_TYPEMAPPER_ADD_TYPEMAPPING_NAME( compiler_impl-> base_schema_type_mapper,
                  env, qname, value);
          axis2_qname_free( qname, env);
     }
 
-    for (hi = axis2_hash_first( compiler_impl-> all_processed_anon_type, env);
-                         hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first( compiler_impl-> all_processed_anon_type, env);
+                         hi; hi = axutil_hash_next(env, hi))
     {
-         axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+         axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
          qname = axis2_qname_create_from_string( env, key);
          W2C_TYPEMAPPER_ADD_TYPEMAPPING_NAME( compiler_impl-> base_schema_type_mapper,
                  env, qname, value);
          axis2_qname_free( qname, env);
     }
 
-    for (hi = axis2_hash_first( compiler_impl-> processed_type_map, env);
-                         hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first( compiler_impl-> processed_type_map, env);
+                         hi; hi = axutil_hash_next(env, hi))
     {
-         axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+         axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
          qname = axis2_qname_create_from_string( env, key);
          W2C_TYPEMAPPER_ADD_TYPEMAPPING_NAME( compiler_impl-> base_schema_type_mapper,
                  env, qname, value);
@@ -1045,10 +1045,10 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
     }
 
     /** the processed element set which is useful  */ 
-    for (hi = axis2_hash_first( compiler_impl-> processed_element_map, env);
-                         hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first( compiler_impl-> processed_element_map, env);
+                         hi; hi = axutil_hash_next(env, hi))
     {
-         axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+         axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
          qname = axis2_qname_create_from_string( env, key);
          W2C_TYPEMAPPER_ADD_TYPEMAPPING_NAME( compiler_impl-> base_schema_type_mapper,
                  env, qname, value);
@@ -1068,13 +1068,13 @@ w2c_schema_compiler_resolve_parent_schema( w2c_schema_compiler_impl_t *compiler_
     xml_schema_t *schema = NULL;
     
     target_ns = axis2_qname_get_uri( schema_type_qname, env);
-    loaded_schema = (xml_schema_t*)axis2_hash_get( compiler_impl-> loaded_schema_map,
+    loaded_schema = (xml_schema_t*)axutil_hash_get( compiler_impl-> loaded_schema_map,
             target_ns, AXIS2_HASH_KEY_STRING );
     if ( loaded_schema != NULL )
     {
         return loaded_schema;
     }
-    schema = (xml_schema_t*)axis2_hash_get( compiler_impl-> available_schema_map,
+    schema = (xml_schema_t*)axutil_hash_get( compiler_impl-> available_schema_map,
             target_ns, AXIS2_HASH_KEY_STRING );
     if ( schema != NULL )
     {
@@ -1122,13 +1122,13 @@ w2c_schema_compiler_is_already_processed(  w2c_schema_compiler_impl_t *compiler_
                                            axis2_qname_t *qname )
 {
     axis2_char_t *qname_str = w2c_string_make_key_from_qname( qname, env );
-    axis2_hash_t *base_schema_type_map = NULL;
+    axutil_hash_t *base_schema_type_map = NULL;
     base_schema_type_map =
                     W2C_TYPEMAPPER_GET_ALL( compiler_impl-> base_schema_type_mapper, env);
 
-    return axis2_hash_get( compiler_impl-> processed_type_map, qname_str, AXIS2_HASH_KEY_STRING ) ||
-           axis2_hash_get( compiler_impl-> simple_type_map, qname_str, AXIS2_HASH_KEY_STRING ) ||
-           axis2_hash_get( base_schema_type_map, qname_str, AXIS2_HASH_KEY_STRING ); 
+    return axutil_hash_get( compiler_impl-> processed_type_map, qname_str, AXIS2_HASH_KEY_STRING ) ||
+           axutil_hash_get( compiler_impl-> simple_type_map, qname_str, AXIS2_HASH_KEY_STRING ) ||
+           axutil_hash_get( base_schema_type_map, qname_str, AXIS2_HASH_KEY_STRING ); 
 }
 
 axis2_char_t*
@@ -1142,7 +1142,7 @@ w2c_schema_compiler_find_ref_classname( w2c_schema_compiler_impl_t *compiler_imp
 
     qname_str = w2c_string_make_key_from_qname( qname, env);
     class_name = (axis2_char_t*)
-        axis2_hash_get( compiler_impl-> processed_ele_ref_map, qname_str, AXIS2_HASH_KEY_STRING);
+        axutil_hash_get( compiler_impl-> processed_ele_ref_map, qname_str, AXIS2_HASH_KEY_STRING);
     if ( is_array)
     {
         /* TODO: do something in language independent manner */
@@ -1160,12 +1160,12 @@ w2c_schema_compiler_process_schema(  w2c_schema_compiler_impl_t *compiler_impl,
 {
     xml_schema_complex_type_t *complex_type = NULL;
     xml_schema_simple_type_t *simple_type = NULL;
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
 
     if( XML_SCHEMA_COMPLEX_TYPE == XML_SCHEMA_TYPE_GET_TYPE( schema_type, env) )
     {
         base_hash = XML_SCHEMA_TYPE_SUPER_OBJS( schema_type, env);
-        complex_type = axis2_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
+        complex_type = axutil_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
         if ( XML_SCHEMA_TYPE_GET_NAME( schema_type, env ) != NULL )
         {
             w2c_schema_compiler_process_named_complex_schema_type(
@@ -1180,7 +1180,7 @@ w2c_schema_compiler_process_schema(  w2c_schema_compiler_impl_t *compiler_impl,
     else if ( XML_SCHEMA_SIMPLE_TYPE == XML_SCHEMA_TYPE_GET_TYPE( schema_type, env) )
     {
         base_hash = XML_SCHEMA_TYPE_SUPER_OBJS( schema_type, env);
-        simple_type = axis2_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE", AXIS2_HASH_KEY_STRING);
+        simple_type = axutil_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE", AXIS2_HASH_KEY_STRING);
         w2c_schema_compiler_process_simple_schema_type( compiler_impl, env, simple_type, ele, parent_schema );
     }
     return AXIS2_SUCCESS;
@@ -1202,7 +1202,7 @@ w2c_schema_compiler_process_anonymous_complex_schema_type(
     qname = XML_SCHEMA_ELEMENT_GET_QNAME( ele, env);
     qname_str = w2c_string_make_key_from_qname( qname, env);
 
-    axis2_hash_set( compiler_impl-> processed_anonymous_complex_typemap, qname_str, 
+    axutil_hash_set( compiler_impl-> processed_anonymous_complex_typemap, qname_str, 
                     AXIS2_HASH_KEY_STRING, meta_info);
     return AXIS2_SUCCESS;
 }
@@ -1215,23 +1215,23 @@ w2c_schema_compiler_process_named_complex_schema_type(
                                     xml_schema_t *parent_schema )
 {
 
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     xml_schema_type_t *schema_type = NULL;
     axis2_qname_t *qname = NULL;
     axis2_char_t *qname_str = NULL;
     axis2_char_t *fully_qualified_class_name = NULL;
     w2c_schema_writer_meta_info_t *meta_info = NULL;
-    axis2_hash_t *base_schema_type_map = NULL;
+    axutil_hash_t *base_schema_type_map = NULL;
 
     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( complex_type, env);
-    schema_type = axis2_hash_get( base_hash, "XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING);
+    schema_type = axutil_hash_get( base_hash, "XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING);
     qname = XML_SCHEMA_TYPE_GET_QNAME( schema_type, env);
     qname_str = w2c_string_make_key_from_qname( qname, env);
     base_schema_type_map =
                     W2C_TYPEMAPPER_GET_ALL( compiler_impl-> base_schema_type_mapper, env);
 
-    if( axis2_hash_get( compiler_impl-> processed_type_map, qname_str, AXIS2_HASH_KEY_STRING) ||
-        axis2_hash_get( base_schema_type_map, qname_str, AXIS2_HASH_KEY_STRING) )
+    if( axutil_hash_get( compiler_impl-> processed_type_map, qname_str, AXIS2_HASH_KEY_STRING) ||
+        axutil_hash_get( base_schema_type_map, qname_str, AXIS2_HASH_KEY_STRING) )
     {
         return AXIS2_SUCCESS;
     } 
@@ -1239,7 +1239,7 @@ w2c_schema_compiler_process_named_complex_schema_type(
     /* Must do this up front to support recursive types */
     fully_qualified_class_name = W2C_SCHEMA_WRITER_MAKE_FULLY_QUALIFIED_CLASS_NAME( 
                      compiler_impl-> writer, env, qname);
-    axis2_hash_set( compiler_impl-> processed_type_map, qname_str,
+    axutil_hash_set( compiler_impl-> processed_type_map, qname_str,
                    AXIS2_HASH_KEY_STRING, fully_qualified_class_name );
     
     /* ignoring adding meta info */
@@ -1264,19 +1264,19 @@ w2c_schema_compiler_write_complex_type(
                                     xml_schema_complex_type_t *complex_type,
                                     w2c_schema_writer_meta_info_t *meta_info )
 {
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     xml_schema_type_t *schema_type = NULL;
     axis2_qname_t *qname = NULL;
     axis2_char_t *qname_str = NULL;
 
     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( complex_type, env);
-    schema_type = axis2_hash_get( base_hash, "XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING);
+    schema_type = axutil_hash_get( base_hash, "XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING);
     qname = XML_SCHEMA_TYPE_GET_QNAME( schema_type, env);
     qname_str = w2c_string_make_key_from_qname( qname, env);
 
     W2C_SCHEMA_WRITER_WRITE_COMPLEX_TYPE( compiler_impl-> writer, env, complex_type,
                              compiler_impl-> processed_type_map, meta_info);
-    axis2_hash_set( compiler_impl-> processed_type_meta_info_map, qname_str, 
+    axutil_hash_set( compiler_impl-> processed_type_meta_info_map, qname_str, 
                                               AXIS2_HASH_KEY_STRING, meta_info);
     return AXIS2_SUCCESS;
 }
@@ -1375,7 +1375,7 @@ w2c_schema_compiler_process_complex_content(
     xml_schema_complex_content_restriction_t *restriction = NULL;
     axis2_qname_t *base_type_qname = NULL;
     xml_schema_type_t *type = NULL;
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     xml_schema_complex_type_t *complex_type = NULL;
     xml_schema_simple_type_t *simple_type = NULL;
     axis2_char_t *name = NULL;
@@ -1398,7 +1398,7 @@ w2c_schema_compiler_process_complex_content(
                 if ( XML_SCHEMA_COMPLEX_TYPE == XML_SCHEMA_TYPE_GET_TYPE( type, env ) )
                 {
                     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( type, env);
-                    complex_type = axis2_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
+                    complex_type = axutil_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
                     name = XML_SCHEMA_TYPE_GET_NAME( type, env);
                     if ( NULL != name )
                     {
@@ -1416,7 +1416,7 @@ w2c_schema_compiler_process_complex_content(
                 {
                     /* process simple type */
                     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( type, env);
-                    simple_type = axis2_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE", AXIS2_HASH_KEY_STRING);
+                    simple_type = axutil_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE", AXIS2_HASH_KEY_STRING);
                     w2c_schema_compiler_process_simple_schema_type( compiler_impl,
                                     env, simple_type, NULL, parent_schema);
                 }
@@ -1450,7 +1450,7 @@ w2c_schema_compiler_process_complex_content(
                 if ( XML_SCHEMA_COMPLEX_TYPE == XML_SCHEMA_TYPE_GET_TYPE( type, env ) )
                 {
                     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( type, env);
-                    complex_type = axis2_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
+                    complex_type = axutil_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
                     name = XML_SCHEMA_TYPE_GET_NAME( type, env);
                     if ( NULL != name )
                     {
@@ -1498,7 +1498,7 @@ w2c_schema_compiler_copy_meta_info(
 {
     xml_schema_type_t *type =  NULL;
     axis2_char_t *qname_str = NULL;
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     xml_schema_complex_type_t *complex_type = NULL;
     void *content_model = NULL;
     xml_schema_complex_content_t *complex_content = NULL;
@@ -1510,7 +1510,7 @@ w2c_schema_compiler_copy_meta_info(
 
     qname_str = w2c_string_make_key_from_qname( base_type_qname, env);
     type = XML_SCHEMA_GET_TYPE_BY_QNAME( parent_schema, env, base_type_qname);
-    meta_info = axis2_hash_get( compiler_impl-> processed_type_meta_info_map, qname_str, 
+    meta_info = axutil_hash_get( compiler_impl-> processed_type_meta_info_map, qname_str, 
                                AXIS2_HASH_KEY_STRING);
 
     if ( meta_info != NULL )
@@ -1518,7 +1518,7 @@ w2c_schema_compiler_copy_meta_info(
         if ( XML_SCHEMA_COMPLEX_TYPE == XML_SCHEMA_TYPE_GET_TYPE( type, env ) )
         {
             base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( type, env);
-            complex_type = axis2_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
+            complex_type = axutil_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
             content_model = XML_SCHEMA_COMPLEX_TYPE_GET_CONTENT_MODEL( complex_type, env);
             if ( content_model != NULL)
             { 
@@ -1580,7 +1580,7 @@ w2c_schema_compiler_process_simple_content(
     xml_schema_simple_content_restriction_t *restriction = NULL;
     axis2_qname_t *base_type_qname = NULL;
     xml_schema_type_t *type = NULL;
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     xml_schema_complex_type_t *complex_type = NULL;
     xml_schema_simple_type_t *simple_type = NULL;
     axis2_char_t *name = NULL;
@@ -1611,7 +1611,7 @@ w2c_schema_compiler_process_simple_content(
                 if ( XML_SCHEMA_COMPLEX_TYPE == XML_SCHEMA_TYPE_GET_TYPE( type, env ) )
                 {
                     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( type, env);
-                    complex_type = axis2_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
+                    complex_type = axutil_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
                     name = XML_SCHEMA_TYPE_GET_NAME( type, env);
                     if ( NULL != name )
                     {
@@ -1629,7 +1629,7 @@ w2c_schema_compiler_process_simple_content(
                 {
                     /* process simple type */
                     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( type, env);
-                    simple_type = axis2_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE", AXIS2_HASH_KEY_STRING);
+                    simple_type = axutil_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE", AXIS2_HASH_KEY_STRING);
                     w2c_schema_compiler_process_simple_schema_type( compiler_impl,
                                     env, simple_type, NULL, parent_schema);
                 }
@@ -1671,7 +1671,7 @@ w2c_schema_compiler_process_simple_content(
                 if ( XML_SCHEMA_COMPLEX_TYPE == XML_SCHEMA_TYPE_GET_TYPE( type, env ) )
                 {
                     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( type, env);
-                    complex_type = axis2_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
+                    complex_type = axutil_hash_get( base_hash, "XML_SCHEMA_COMPLEX_TYPE", AXIS2_HASH_KEY_STRING);
                     name = XML_SCHEMA_TYPE_GET_NAME( type, env);
                     if ( NULL != name )
                     {
@@ -1689,7 +1689,7 @@ w2c_schema_compiler_process_simple_content(
                 {
                     /* process simple type */
                     base_hash = XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS( type, env);
-                    simple_type = axis2_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE", AXIS2_HASH_KEY_STRING);
+                    simple_type = axutil_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE", AXIS2_HASH_KEY_STRING);
                     w2c_schema_compiler_process_simple_schema_type( compiler_impl,
                                     env, simple_type, NULL, parent_schema);
                 }
@@ -1720,7 +1720,7 @@ w2c_schema_compiler_process_simple_extension_base_type(
 
     class_name = w2c_schema_compiler_find_class_name( compiler_impl, env,
                                      ext_base_type, AXIS2_FALSE);
-    changed_qname = axis2_hash_get( compiler_impl-> changed_type_map, qname_str, 
+    changed_qname = axutil_hash_get( compiler_impl-> changed_type_map, qname_str, 
                                AXIS2_HASH_KEY_STRING);
 
     if ( changed_qname == NULL )
@@ -1749,7 +1749,7 @@ w2c_schema_compiler_process_simple_restriction_base_type(
 
     class_name = w2c_schema_compiler_find_class_name( compiler_impl, env,
                                      res_base_type, AXIS2_FALSE);
-    changed_qname = axis2_hash_get( compiler_impl-> changed_type_map, qname_str, 
+    changed_qname = axutil_hash_get( compiler_impl-> changed_type_map, qname_str, 
                                AXIS2_HASH_KEY_STRING);
 
     if ( changed_qname == NULL )
@@ -1779,7 +1779,7 @@ w2c_schema_compiler_process_facet(
     xml_schema_facet_t *facet = NULL;
     axis2_char_t *facet_value = NULL;
     long facet_lvalue = 0;
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
 
     count = XML_SCHEMA_OBJ_COLLECTION_GET_COUNT( facets, env);
     for ( i = 0; i < count; i ++)
@@ -1788,14 +1788,14 @@ w2c_schema_compiler_process_facet(
         if( XML_SCHEMA_PATTERN_FACET == XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACETS", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACETS", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             W2C_SCHEMA_WRITER_META_INFO_SET_PATTERN_FACET( meta_info, env, facet_value);
         }
         else if( XML_SCHEMA_ENUMARATION_FACET == XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             if ( !enum_start )
             {
@@ -1810,7 +1810,7 @@ w2c_schema_compiler_process_facet(
         else if( XML_SCHEMA_LENGTH_FACET == XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             facet_lvalue = atol( facet_value);
             W2C_SCHEMA_WRITER_META_INFO_SET_LENGTH_FACET( meta_info, env, facet_lvalue);
@@ -1818,7 +1818,7 @@ w2c_schema_compiler_process_facet(
         else if( XML_SCHEMA_MAX_EXCLUSIVE_FACET== XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             facet_lvalue = atol( facet_value);
             W2C_SCHEMA_WRITER_META_INFO_SET_MAXEXCLUSIVE_FACET( meta_info, env, facet_lvalue);
@@ -1826,7 +1826,7 @@ w2c_schema_compiler_process_facet(
         else if( XML_SCHEMA_MIN_EXCLUSIVE_FACET== XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             facet_lvalue = atol( facet_value);
             W2C_SCHEMA_WRITER_META_INFO_SET_MINEXCLUSIVE_FACET( meta_info, env, facet_lvalue);
@@ -1834,7 +1834,7 @@ w2c_schema_compiler_process_facet(
         else if( XML_SCHEMA_MAX_INCLUSIVE_FACET== XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             facet_lvalue = atol( facet_value);
             W2C_SCHEMA_WRITER_META_INFO_SET_MAXINCLUSIVE_FACET( meta_info, env, facet_lvalue);
@@ -1842,7 +1842,7 @@ w2c_schema_compiler_process_facet(
         else if( XML_SCHEMA_MIN_INCLUSIVE_FACET== XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             facet_lvalue = atol( facet_value);
             W2C_SCHEMA_WRITER_META_INFO_SET_MININCLUSIVE_FACET( meta_info, env, facet_lvalue);
@@ -1850,7 +1850,7 @@ w2c_schema_compiler_process_facet(
         else if( XML_SCHEMA_MAX_LENGTH_FACET== XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             facet_lvalue = atol( facet_value);
             W2C_SCHEMA_WRITER_META_INFO_SET_MAXLENGTH_FACET( meta_info, env, facet_lvalue);
@@ -1858,7 +1858,7 @@ w2c_schema_compiler_process_facet(
         else if( XML_SCHEMA_MIN_LENGTH_FACET== XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            facet = (xml_schema_facet_t*)axis2_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
+            facet = (xml_schema_facet_t*)axutil_hash_get( base_hash, "XML_SCHEMA_FACET", AXIS2_HASH_KEY_STRING);
             facet_value = XML_SCHEMA_FACET_GET_VALUE( facet, env);
             facet_lvalue = atol( facet_value);
             W2C_SCHEMA_WRITER_META_INFO_SET_MINLENGTH_FACET( meta_info, env, facet_lvalue);
@@ -1901,13 +1901,13 @@ w2c_schema_compiler_process_attribute(
     axis2_char_t *mapped_name = NULL; /* class_name*/
     axis2_char_t *qname_str = NULL;
     axis2_qname_t *attr_qname = NULL;
-    axis2_hash_t *base_schema_type_map = NULL;
+    axutil_hash_t *base_schema_type_map = NULL;
     
     base_schema_type_map =
                     W2C_TYPEMAPPER_GET_ALL( compiler_impl-> base_schema_type_mapper, env);
     schema_type_name = XML_SCHEMA_ATTRIBUTE_GET_SCHEMA_TYPE_NAME( attri, env);
     qname_str = w2c_string_make_key_from_qname( schema_type_name, env);
-    mapped_name = axis2_hash_get( base_schema_type_map, qname_str,
+    mapped_name = axutil_hash_get( base_schema_type_map, qname_str,
                                       AXIS2_HASH_KEY_STRING);
     /* for now we assume (!!!) that attributes refer to standard types only */
     if ( mapped_name != NULL )
@@ -1971,10 +1971,10 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
                                     axis2_bool_t order,
                                     xml_schema_t *parent_schema )
 {
-    axis2_hash_t *processed_element_array_status_map = NULL;
-    axis2_hash_t *processed_element_type_map = NULL;
-    axis2_hash_t *element_order_map = NULL;
-    axis2_hash_t *local_nillable_list = NULL;
+    axutil_hash_t *processed_element_array_status_map = NULL;
+    axutil_hash_t *processed_element_type_map = NULL;
+    axutil_hash_t *element_order_map = NULL;
+    axutil_hash_t *local_nillable_list = NULL;
 
     int i = 0;
     int count = 0;
@@ -1985,7 +1985,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
     xml_schema_any_t *any = NULL;
     void *key = NULL;
     int value = 0;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     int starting_item_number_order = 0;
     axis2_char_t *class_name = NULL;
 
@@ -1999,7 +1999,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
     axis2_qname_t *any_element_field_qname = NULL;
 
     xml_schema_obj_t *schema_obj = NULL;
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     axis2_char_t *default_array = NULL;
     axis2_char_t *default_class = NULL;
 
@@ -2007,10 +2007,10 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
     long max_occurs = 0;
     long min_occurs = 0;
 
-    processed_element_array_status_map = axis2_hash_make( env);
-    element_order_map = axis2_hash_make( env);
-    processed_element_type_map = axis2_hash_make( env);
-    local_nillable_list = axis2_hash_make( env);
+    processed_element_array_status_map = axutil_hash_make( env);
+    element_order_map = axutil_hash_make( env);
+    processed_element_type_map = axutil_hash_make( env);
+    local_nillable_list = axutil_hash_make( env);
     default_array = 
         W2C_SCHEMA_PROPERTY_LOADER_GET_DEFAULT_ARRAY( compiler_impl-> loader, env);
     default_class =  
@@ -2023,44 +2023,44 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
         if( XML_SCHEMA_ELEMENT == XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            ele = (xml_schema_element_t*)axis2_hash_get( base_hash, "XML_SCHEMA_ELEMENT", AXIS2_HASH_KEY_STRING);
-            particle = axis2_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
+            ele = (xml_schema_element_t*)axutil_hash_get( base_hash, "XML_SCHEMA_ELEMENT", AXIS2_HASH_KEY_STRING);
+            particle = axutil_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
             is_array = w2c_schema_compiler_is_array( compiler_impl, env,  particle);
             w2c_schema_compiler_process_element( compiler_impl, env, ele,
                                      AXIS2_FALSE, processed_element_type_map,local_nillable_list, parent_schema);
             /** CHECK: putting a pointer to hash key*/
-            axis2_hash_set( processed_element_array_status_map, ele, sizeof(void*), (void*)(is_array?1:-1));
+            axutil_hash_set( processed_element_array_status_map, ele, sizeof(void*), (void*)(is_array?1:-1));
             if ( order)
             {
-               axis2_hash_set( element_order_map, ele, sizeof(void*), (void*)i );
+               axutil_hash_set( element_order_map, ele, sizeof(void*), (void*)i );
             }
         }
         else if( XML_SCHEMA_ANY == XML_SCHEMA_OBJ_GET_TYPE( schema_obj, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( schema_obj, env);
-            any = (xml_schema_any_t*)axis2_hash_get( base_hash, "XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING);
+            any = (xml_schema_any_t*)axutil_hash_get( base_hash, "XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING);
             qname = axis2_qname_create( env, W2C_SCHEMA_CONSTS_ANY_ELEMENT_FIELD_NAME,
                                         NULL, NULL );
             qname_str = w2c_string_make_key_from_qname( qname, env);
             /** CHECK: putting a pointer to hash key*/
-            axis2_hash_set( processed_element_type_map, qname_str,
+            axutil_hash_set( processed_element_type_map, qname_str,
                              AXIS2_HASH_KEY_STRING, any);
             
-            axis2_hash_set( processed_element_array_status_map, any, sizeof(void*), (void*)(is_array?1:-1));
+            axutil_hash_set( processed_element_array_status_map, any, sizeof(void*), (void*)(is_array?1:-1));
             /* any can also be inside a sequence */
             if ( order)
             {
-                axis2_hash_set( element_order_map, any, sizeof(void*), (void*)i );
+                axutil_hash_set( element_order_map, any, sizeof(void*), (void*)i );
             }
         }
     }
 
     /* loop through the processed items and add them to the matainf object */
     starting_item_number_order = W2C_SCHEMA_WRITER_META_INFO_GET_ORDER_START_POINT( meta_info, env);
-    for (hi = axis2_hash_first( processed_element_array_status_map, env);
-                hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first( processed_element_array_status_map, env);
+                hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
         if( XML_SCHEMA_ELEMENT == XML_SCHEMA_OBJ_GET_TYPE( key, env) )
         {
             ele = (xml_schema_element_t*) key;
@@ -2068,7 +2068,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
             if ( qname != NULL )
             {
                 qname_str = w2c_string_make_key_from_qname( qname, env);
-                class_name = (axis2_char_t*)axis2_hash_get( processed_element_type_map,
+                class_name = (axis2_char_t*)axutil_hash_get( processed_element_type_map,
                                            qname_str, AXIS2_HASH_KEY_STRING);
                 /* always get the schema type name from the schema it-self */
                 schema_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE( ele, env);
@@ -2106,7 +2106,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
             }
             /* register the occurence counts */
             base_hash = XML_SCHEMA_ELEMENT_SUPER_OBJS( ele, env);
-            particle = axis2_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
+            particle = axutil_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
             max_occurs = XML_SCHEMA_PARTICLE_GET_MAX_OCCURS( particle, env);
             min_occurs = XML_SCHEMA_PARTICLE_GET_MIN_OCCURS( particle, env);
 
@@ -2117,7 +2117,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
             /* we need the order to be preserved. So record the order also */
             if ( order)
             {
-                index = (int)axis2_hash_get( element_order_map, ele, sizeof(void*));
+                index = (int)axutil_hash_get( element_order_map, ele, sizeof(void*));
                 W2C_SCHEMA_WRITER_META_INFO_REGISTER_QNAME_INDEX( meta_info, env, referenced_qname,
                                                    index+ starting_item_number_order);
             }
@@ -2125,7 +2125,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
             {
                 qname_str = w2c_string_make_key_from_qname( qname, env);
                 /* get the nillable state and register that on the metainf holder */
-                if ( axis2_hash_get( local_nillable_list, qname_str, AXIS2_HASH_KEY_STRING) != NULL)
+                if ( axutil_hash_get( local_nillable_list, qname_str, AXIS2_HASH_KEY_STRING) != NULL)
                 {
                     W2C_SCHEMA_WRITER_META_INFO_REGISTER_NILLABLE_QNAME( meta_info, env, qname);
                 }
@@ -2141,7 +2141,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
         if( XML_SCHEMA_ANY == XML_SCHEMA_OBJ_GET_TYPE( key, env) )
         {
             base_hash = XML_SCHEMA_OBJ_SUPER_OBJS( key, env);
-            any = (xml_schema_any_t*)axis2_hash_get( base_hash, "XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING);
+            any = (xml_schema_any_t*)axutil_hash_get( base_hash, "XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING);
             any_element_field_qname = axis2_qname_create( env, W2C_SCHEMA_CONSTS_ANY_ELEMENT_FIELD_NAME,
                                         NULL, NULL );
             W2C_SCHEMA_WRITER_META_INFO_REGISTER_MAPPING(meta_info, env, 
@@ -2150,7 +2150,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
 
             /* register the occurence counts */
             base_hash = XML_SCHEMA_ANY_SUPER_OBJS( any, env);
-            particle = axis2_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
+            particle = axutil_hash_get( base_hash, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING);
             max_occurs = XML_SCHEMA_PARTICLE_GET_MAX_OCCURS( particle, env);
             min_occurs = XML_SCHEMA_PARTICLE_GET_MIN_OCCURS( particle, env);
 
@@ -2161,7 +2161,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
             /* we need the order to be preserved. So record the order also */
             if ( order)
             {
-                index = (int)axis2_hash_get( element_order_map, ele, sizeof(void*));
+                index = (int)axutil_hash_get( element_order_map, ele, sizeof(void*));
                 W2C_SCHEMA_WRITER_META_INFO_REGISTER_QNAME_INDEX( meta_info, env, referenced_qname,
                                                    index+ starting_item_number_order);
             }
@@ -2221,9 +2221,9 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
     axis2_char_t *class_name = NULL;
     axis2_qname_t *type_qname = NULL;
     xml_schema_simple_type_t *rest_base_type = NULL;
-    axis2_hash_t *base_hash = NULL;
+    axutil_hash_t *base_hash = NULL;
     xml_schema_type_t *type = NULL;
-    axis2_hash_t *base_schema_type_map = NULL;
+    axutil_hash_t *base_schema_type_map = NULL;
     xml_schema_simple_type_t *base_type = NULL;
     axis2_char_t* nsuri = NULL;
     static int counter = 0;
@@ -2240,7 +2240,7 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
                 XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_GET_TYPE( content , env ) )
         {
             /*base_hash = XML_SCHEMA_SIMPLE_TYPE_CONTENT_SUPER_OBJS( content, env);
-            restriction = axis2_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE_RESTRICTION", AXIS2_HASH_KEY_STRING);*/
+            restriction = axutil_hash_get( base_hash, "XML_SCHEMA_SIMPLE_TYPE_RESTRICTION", AXIS2_HASH_KEY_STRING);*/
 
             /** TODO: check xml schema about this: so simple content extensions are not fully supported */
 
@@ -2256,7 +2256,7 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
                     qname_str = w2c_string_add_string( qname_str, "|", env);
                     qname_str = w2c_string_add_string( qname_str, nsuri, env);
                 }
-                class_name = axis2_hash_get( base_schema_type_map, qname_str, AXIS2_HASH_KEY_STRING);
+                class_name = axutil_hash_get( base_schema_type_map, qname_str, AXIS2_HASH_KEY_STRING);
             }
             else /* TRY with this */
             {
@@ -2264,7 +2264,7 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
                 if( base_type != NULL)
                 {
                     base_hash = XML_SCHEMA_SIMPLE_TYPE_SUPER_OBJS( base_type, env);
-                    type = axis2_hash_get( base_hash, "XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING);
+                    type = axutil_hash_get( base_hash, "XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING);
                     base_type_qname = XML_SCHEMA_TYPE_GET_QNAME ( type, env);
                 }
 
@@ -2273,7 +2273,7 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
             if ( class_name != NULL )
             {
                 base_hash = XML_SCHEMA_SIMPLE_TYPE_SUPER_OBJS( simple_type, env);
-                type = axis2_hash_get( base_hash, "XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING);
+                type = axutil_hash_get( base_hash, "XML_SCHEMA_TYPE", AXIS2_HASH_KEY_STRING);
 
                 type_qname = XML_SCHEMA_TYPE_GET_QNAME ( type, env);
                 if ( type_qname != NULL)
@@ -2289,10 +2289,10 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
                     sprintf(qname_str, "type%d", counter++);
                     XML_SCHEMA_TYPE_SET_NAME( type, env, qname_str);
                 } 
-                axis2_hash_set( compiler_impl-> simple_type_map, qname_str,
+                axutil_hash_set( compiler_impl-> simple_type_map, qname_str,
                                       AXIS2_HASH_KEY_STRING, class_name);
                 /* set the old schema type QName and the new schema type QName */
-                axis2_hash_set(  compiler_impl-> changed_type_map, qname_str, 
+                axutil_hash_set(  compiler_impl-> changed_type_map, qname_str, 
                                       AXIS2_HASH_KEY_STRING, base_type_qname);
                 /* add the class name to the meta info map */
                 /** TODO:meta_info ignored */

@@ -35,7 +35,7 @@
 #include <axiom_stax_builder.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axiom_element.h>
 #include <axis2_stream.h>
 #include <axiom_soap_envelope.h>
@@ -81,7 +81,7 @@ extern "C"
         axis2_string_t *soap_action_header,
         const axis2_char_t *request_uri,
         axis2_conf_ctx_t *conf_ctx,
-        axis2_hash_t *request_params);
+        axutil_hash_t *request_params);
 
     AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
     axis2_http_transport_utils_select_builder_for_mime(
@@ -106,7 +106,7 @@ extern "C"
         const axutil_env_t *env, 
         axis2_msg_ctx_t *msg_ctx);
 
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_http_transport_utils_get_request_params(
         const axutil_env_t *env,
         axis2_char_t *request_uri);
@@ -116,7 +116,7 @@ extern "C"
         const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx);
 
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_http_transport_utils_get_request_params(
         const axutil_env_t *env,
         axis2_char_t *request_uri);

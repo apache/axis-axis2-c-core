@@ -237,7 +237,7 @@ axis2_libcurl_send (
 		else
 		{
 			axis2_property_t *content_type_property = NULL;
-			axis2_hash_t *content_type_hash = NULL;
+			axutil_hash_t *content_type_hash = NULL;
 			axis2_char_t *content_type_value = NULL;
 
 			AXIOM_NODE_SERIALIZE(data_out, env, om_output);
@@ -247,9 +247,9 @@ axis2_libcurl_send (
 		
 			if (content_type_property)
 			{
-				content_type_hash = (axis2_hash_t *) axis2_property_get_value (content_type_property, env);
+				content_type_hash = (axutil_hash_t *) axis2_property_get_value (content_type_property, env);
 				if (content_type_hash)
-					content_type_value = (char *) axis2_hash_get (content_type_hash, 
+					content_type_value = (char *) axutil_hash_get (content_type_hash, 
 																  AXIS2_HTTP_HEADER_CONTENT_TYPE, 
 																  AXIS2_HASH_KEY_STRING);
 			}

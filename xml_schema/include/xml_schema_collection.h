@@ -31,7 +31,7 @@
 #include <axis2_utils.h>
 
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <xml_schema_obj.h>
 #include <axiom_xml_reader.h>
@@ -162,7 +162,7 @@ struct xml_schema_collection_ops
             axis2_char_t *prefix, 
             axis2_char_t *namespc_uri);
             
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_systemid2_schemas)(
             xml_schema_collection_t* collection,
             const axutil_env_t *env);
@@ -178,7 +178,7 @@ struct xml_schema_collection_ops
             const axutil_env_t *env,
             axutil_array_list_t *schemas);            
                       
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_namespaces)(
             xml_schema_collection_t *collection,
             const axutil_env_t *env);

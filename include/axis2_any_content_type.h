@@ -30,7 +30,7 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 #include <axis2_const.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 
 #ifdef __cplusplus
@@ -83,7 +83,7 @@ extern "C"
      * @return pointer to hash table containing all values, returns a 
      * reference, not a cloned copy 
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_any_content_type_get_value_map(const axis2_any_content_type_t *any_content_type,
         const axutil_env_t *env);
 

@@ -55,7 +55,7 @@ struct xml_schema_group_base_ops
     free) (void *group_base,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *group_base,
             const axutil_env_t *env);
 

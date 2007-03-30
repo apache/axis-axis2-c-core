@@ -26,7 +26,7 @@
 #include <xml_schema_obj_collection.h>
 #include <xml_schema_any_attribute.h>
 #include <xml_schema_simple_type.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 
 /** @defgroup xml_schema_complex_content_restriction Xml Schema Group
@@ -56,7 +56,7 @@ struct xml_schema_complex_content_restriction_ops
             void *cmp_content_res,
             const axutil_env_t *env);
             
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(
             void *cmp_content_res,
             const axutil_env_t *env);

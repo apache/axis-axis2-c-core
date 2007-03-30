@@ -38,7 +38,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <woden.h>
 
@@ -109,7 +109,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_ext_element_resolve_methods(
         woden_ext_element_t *ext_element,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 
 #define WODEN_EXT_ELEMENT_FREE(ext_element, env) \
       (((woden_ext_element_t *) ext_element)->ops->free (ext_element, env))

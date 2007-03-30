@@ -46,8 +46,8 @@ void test_engine_config_loader(CuTest *tc)
     axutil_env_t *env;
     axutil_allocator_t *allocator;
     w2c_cmdline_option_parser_t* parser = NULL;
-    axis2_hash_index_t *hi;
-    axis2_hash_t* hash = NULL;
+    axutil_hash_index_t *hi;
+    axutil_hash_t* hash = NULL;
     int input_size;
     axis2_char_t actual[1024];
     int actual_len = 0;
@@ -84,10 +84,10 @@ void test_engine_config_loader(CuTest *tc)
 
     hash = W2C_ENGINE_CONFIGURATION_GET_URI2PACKAGEMAP(conf, env);
 
-    for (hi = axis2_hash_first(hash, env), actual[0] = '\0';
-            hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(hash, env), actual[0] = '\0';
+            hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
         sprintf(actual, "%s%s=%s,", actual, key, value);
     }
     actual_len = axis2_strlen(actual);
@@ -109,10 +109,10 @@ void test_engine_config_loader(CuTest *tc)
 
     hash = W2C_ENGINE_CONFIGURATION_GET_URI2PACKAGEMAP(conf, env);
 
-    for (hi = axis2_hash_first(hash, env), actual[0] = '\0';
-            hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(hash, env), actual[0] = '\0';
+            hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
         sprintf(actual, "%s%s=%s,", actual, key, value);
     }
     actual_len = axis2_strlen(actual);

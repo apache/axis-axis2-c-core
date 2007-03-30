@@ -100,8 +100,8 @@ w2c_xslt_utils_copy_node_tree(
     axis2_qname_t *qname = NULL;
     axis2_char_t *text = NULL;
 
-    axis2_hash_t *attr_ht = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_t *attr_ht = NULL;
+    axutil_hash_index_t *hi = NULL;
     void *val = NULL;
     axiom_attribute_t *om_attri = NULL;
 
@@ -133,10 +133,10 @@ w2c_xslt_utils_copy_node_tree(
     attr_ht = axiom_element_get_all_attributes(from_ele, env);
     if(NULL != attr_ht)
     {
-        for( hi = axis2_hash_first(attr_ht, env);  hi;
-                hi = axis2_hash_next(env, hi))
+        for( hi = axutil_hash_first(attr_ht, env);  hi;
+                hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             if(NULL != val)
             {
                 om_attri = (axiom_attribute_t *)val;

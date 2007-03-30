@@ -27,7 +27,7 @@
  */
 
 #include <axis2_param_container.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_description.h>
 
 #ifdef __cplusplus
@@ -125,7 +125,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to hash map containing children
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_desc_get_all_children(const axis2_desc_t *desc,
         const axutil_env_t *env);
 

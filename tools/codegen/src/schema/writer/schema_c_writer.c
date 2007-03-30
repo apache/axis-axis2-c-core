@@ -111,12 +111,12 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
                         const axutil_env_t *env,
                         axis2_qname_t *qname,
                         w2c_schema_writer_meta_info_t *meta_info,
-                        axis2_hash_t *typemap,
+                        axutil_hash_t *typemap,
                         axis2_bool_t is_element)
 {
     axis2_char_t *original_name = NULL;
     axis2_char_t *class_name = NULL;
-    axis2_hash_t *property_names = NULL;
+    axutil_hash_t *property_names = NULL;
     axiom_node_t *model_source_node = NULL;
     axis2_char_t *out = NULL;
     axis2_char_t *source_template = NULL;
@@ -133,7 +133,7 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
             W2C_SCHEMA_WRITER_MAKE_FULLY_QUALIFIED_CLASS_NAME( &(writer_impl->writer), env, qname);
     }
 
-    property_names = axis2_hash_make( env);
+    property_names = axutil_hash_make( env);
 
     if( writer_impl-> template_loaded)
     {
@@ -168,7 +168,7 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
         namespace_uri = axis2_qname_get_uri( qname, env);
         model_name = axis2_stracat(env, class_name, "|");
         model_name = w2c_string_add_string( model_name, namespace_uri, env);
-        axis2_hash_set( writer_impl-> model_map,  model_name, AXIS2_HASH_KEY_STRING, model_source_node);
+        axutil_hash_set( writer_impl-> model_map,  model_name, AXIS2_HASH_KEY_STRING, model_source_node);
     }
     AXIS2_FREE( env->allocator, original_name);
     return class_name;

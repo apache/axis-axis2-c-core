@@ -29,8 +29,8 @@ struct woden_documentable_impl
 {
     woden_documentable_t documentable;
     woden_wsdl_obj_t *wsdl_obj;
-    axis2_hash_t *methods;
-    axis2_hash_t *super;
+    axutil_hash_t *methods;
+    axutil_hash_t *super;
     axutil_array_list_t *f_doc_elems;
 };
 
@@ -41,7 +41,7 @@ woden_documentable_free(
     void *documentable,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_documentable_super_objs(
     void *documentable,
     const axutil_env_t *env);
@@ -116,7 +116,7 @@ create(
     documentable_impl->documentable.ops = AXIS2_MALLOC(env->allocator,
             sizeof(woden_documentable_ops_t));
 
-    documentable_impl->methods = axis2_hash_make(env);
+    documentable_impl->methods = axutil_hash_make(env);
     if (!documentable_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -146,15 +146,15 @@ woden_documentable_create(
 
     documentable_impl->wsdl_obj = woden_wsdl_obj_create(env);
 
-    documentable_impl->super = axis2_hash_make(env);
+    documentable_impl->super = axutil_hash_make(env);
     if (!documentable_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(documentable_impl->super, "WODEN_DOCUMENTABLE",
+    axutil_hash_set(documentable_impl->super, "WODEN_DOCUMENTABLE",
             AXIS2_HASH_KEY_STRING, &(documentable_impl->documentable));
-    axis2_hash_set(documentable_impl->super, "WODEN_WSDL_OBJ",
+    axutil_hash_set(documentable_impl->super, "WODEN_WSDL_OBJ",
             AXIS2_HASH_KEY_STRING, documentable_impl->wsdl_obj);
 
 
@@ -206,7 +206,7 @@ woden_documentable_free(
 
     if (documentable_impl->super)
     {
-        axis2_hash_free(documentable_impl->super, env);
+        axutil_hash_free(documentable_impl->super, env);
         documentable_impl->super = NULL;
     }
 
@@ -226,7 +226,7 @@ woden_documentable_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_documentable_super_objs(
     void *documentable,
     const axutil_env_t *env)
@@ -257,7 +257,7 @@ woden_documentable_resolve_methods(
     woden_documentable_t *documentable,
     const axutil_env_t *env,
     woden_documentable_t *documentable_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_documentable_impl_t *documentable_impl_l = NULL;
 
@@ -268,20 +268,20 @@ woden_documentable_resolve_methods(
     documentable->ops = AXIS2_MALLOC(env->allocator,
             sizeof(woden_documentable_ops_t));
 
-    documentable->ops->free = axis2_hash_get(methods, "free",
+    documentable->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    documentable->ops->to_documentable_free = axis2_hash_get(methods,
+    documentable->ops->to_documentable_free = axutil_hash_get(methods,
             "to_documentable_free", AXIS2_HASH_KEY_STRING);
-    documentable->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    documentable->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
 
-    documentable->ops->add_documentation_element = axis2_hash_get(methods,
+    documentable->ops->add_documentation_element = axutil_hash_get(methods,
             "add_documentation_element", AXIS2_HASH_KEY_STRING);
     if (!documentable->ops->add_documentation_element && documentable_impl_l)
         documentable->ops->add_documentation_element =
             documentable_impl_l->documentable.ops->add_documentation_element;
 
-    documentable->ops->get_documentation_elements = axis2_hash_get(methods,
+    documentable->ops->get_documentation_elements = axutil_hash_get(methods,
             "get_documentation_elements", AXIS2_HASH_KEY_STRING);
     if (!documentable->ops->get_documentation_elements && documentable_impl_l)
         documentable->ops->get_documentation_elements =
@@ -297,12 +297,12 @@ woden_documentable_add_documentation_element(
     woden_documentation_element_t *documentation)
 {
     woden_documentable_impl_t *documentable_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, documentation, AXIS2_FAILURE);
     super = WODEN_DOCUMENTABLE_SUPER_OBJS(documentable, env);
-    documentable_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    documentable_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING));
 
     if (!documentable_impl->f_doc_elems)
@@ -324,11 +324,11 @@ woden_documentable_get_documentation_elements(
     const axutil_env_t *env)
 {
     woden_documentable_impl_t *documentable_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DOCUMENTABLE_SUPER_OBJS(documentable, env);
-    documentable_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    documentable_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING));
 
 

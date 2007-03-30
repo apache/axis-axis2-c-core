@@ -69,8 +69,8 @@ void test_cmdline_option(CuTest *tc)
     axutil_allocator_t *allocator;
     w2c_cmdline_option_parser_t *parser = NULL;
     w2c_cmdline_option_t *option = NULL;
-    axis2_hash_index_t *hi;
-    axis2_hash_t *hash = NULL;
+    axutil_hash_index_t *hi;
+    axutil_hash_t *hash = NULL;
     axutil_array_list_t *arr_list = NULL;
     int i = 0;
     int input_size;
@@ -86,7 +86,7 @@ void test_cmdline_option(CuTest *tc)
     hash = W2C_CMDLINE_OPTION_PARSER_GET_OPTIONS(parser, env);
 
     option = (w2c_cmdline_option_t*)
-            axis2_hash_get(hash, "uri", AXIS2_HASH_KEY_STRING);
+            axutil_hash_get(hash, "uri", AXIS2_HASH_KEY_STRING);
     arr_list = W2C_CMDLINE_OPTION_GET_VALUES(option, env);
 
     for (i = 0 , strcpy(actual, W2C_CMDLINE_OPTION_GET_TYPE(option, env));
@@ -99,10 +99,10 @@ void test_cmdline_option(CuTest *tc)
     CuAssertStrEquals(tc, expected, actual);
 
     /* ----------------------------------------------------------------------*/
-    for (hi = axis2_hash_first(hash, env), actual[0] = '\0';
-            hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(hash, env), actual[0] = '\0';
+            hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, NULL, NULL, (void*)&option);
+        axutil_hash_this(hi, NULL, NULL, (void*)&option);
         arr_list = W2C_CMDLINE_OPTION_GET_VALUES(option, env);
         sprintf(actual, "%s{%s}: ", actual, W2C_CMDLINE_OPTION_GET_TYPE(option, env));
 
@@ -138,8 +138,8 @@ void test_config_property_loader(CuTest *tc)
     w2c_config_property_loader_t *loader = NULL;
     axis2_char_t *actual = NULL;
     axis2_char_t *expected = NULL;
-    axis2_hash_index_t *hi = NULL;
-    axis2_hash_t *hash = NULL;
+    axutil_hash_index_t *hi = NULL;
+    axutil_hash_t *hash = NULL;
     axutil_array_list_t *arr_list = NULL;
     int i = 0;
     axis2_char_t *axis2c_home = NULL;
@@ -167,15 +167,15 @@ void test_config_property_loader(CuTest *tc)
 
     hash =
         W2C_CONFIG_PROPERTY_LOADER_GET_LANGUAGE_SPECIFIC_PROPERTIES_MAP(loader, env);
-    hash = (axis2_hash_t*)axis2_hash_get(hash, "c", AXIS2_HASH_KEY_STRING);
+    hash = (axutil_hash_t*)axutil_hash_get(hash, "c", AXIS2_HASH_KEY_STRING);
 
     if (hash)
     {
         actual = (axis2_char_t*) malloc(sizeof(axis2_char_t) * 4096);
-        for (hi = axis2_hash_first(hash, env), actual[0] = '\0';
-                hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(hash, env), actual[0] = '\0';
+                hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
+            axutil_hash_this(hi, (void*)&key, NULL, (void*)&arr_list);
             sprintf(actual, "%s{%s}: ", actual, key);
 
             for (i = 0 ; i < axutil_array_list_size(arr_list, env); i ++)

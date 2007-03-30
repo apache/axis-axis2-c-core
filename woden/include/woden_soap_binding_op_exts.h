@@ -63,7 +63,7 @@ struct woden_soap_binding_op_exts_ops
     free) (void *soap_binding_op_exts,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (void *soap_binding_op_exts,
             const axutil_env_t *env);
 
@@ -117,7 +117,7 @@ woden_soap_binding_op_exts_resolve_methods(
         woden_soap_binding_op_exts_t *soap_binding_op_exts,
         const axutil_env_t *env,
         woden_soap_binding_op_exts_t *soap_binding_op_exts_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_SOAP_BINDING_OP_EXTS_FREE(soap_binding_op_exts, env) \

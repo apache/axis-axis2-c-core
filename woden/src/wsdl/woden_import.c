@@ -33,8 +33,8 @@ struct woden_import_impl
     woden_import_t import;
     woden_obj_types_t obj_type;
     woden_wsdl_ref_t *wsdl_ref;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
 
     axis2_uri_t *f_namespc;
 };
@@ -46,7 +46,7 @@ woden_import_free(
     void *import,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_import_super_objs(
     void *import,
     const axutil_env_t *env);
@@ -215,23 +215,23 @@ create(const axutil_env_t *env)
     import_impl->import.ops->get_namespace = woden_import_get_namespace;
     import_impl->import.ops->set_namespace = woden_import_set_namespace;
 
-    import_impl->methods = axis2_hash_make(env);
+    import_impl->methods = axutil_hash_make(env);
     if (!import_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(import_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(import_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_import_free);
-    axis2_hash_set(import_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(import_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             woden_import_super_objs);
-    axis2_hash_set(import_impl->methods, "type",
+    axutil_hash_set(import_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_import_type);
 
-    axis2_hash_set(import_impl->methods, "set_namespace",
+    axutil_hash_set(import_impl->methods, "set_namespace",
             AXIS2_HASH_KEY_STRING,
             woden_import_set_namespace);
-    axis2_hash_set(import_impl->methods, "get_namespace",
+    axutil_hash_set(import_impl->methods, "get_namespace",
             AXIS2_HASH_KEY_STRING,
             woden_import_get_namespace);
 
@@ -248,15 +248,15 @@ woden_import_create(const axutil_env_t *env)
 
     import_impl->wsdl_ref = woden_wsdl_ref_create(env);
 
-    import_impl->super = axis2_hash_make(env);
+    import_impl->super = axutil_hash_make(env);
     if (!import_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(import_impl->super, "WODEN_IMPORT",
+    axutil_hash_set(import_impl->super, "WODEN_IMPORT",
             AXIS2_HASH_KEY_STRING, &(import_impl->import));
-    axis2_hash_set(import_impl->super, "WODEN_WSDL_REF",
+    axutil_hash_set(import_impl->super, "WODEN_WSDL_REF",
             AXIS2_HASH_KEY_STRING, import_impl->wsdl_ref);
 
     return &(import_impl->import);
@@ -322,13 +322,13 @@ woden_import_free(void *import,
 
     if (import_impl->super)
     {
-        axis2_hash_free(import_impl->super, env);
+        axutil_hash_free(import_impl->super, env);
         import_impl->super = NULL;
     }
 
     if (import_impl->methods)
     {
-        axis2_hash_free(import_impl->methods, env);
+        axutil_hash_free(import_impl->methods, env);
         import_impl->methods = NULL;
     }
 
@@ -354,7 +354,7 @@ woden_import_free(void *import,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_import_super_objs(
     void *import,
     const axutil_env_t *env)
@@ -397,7 +397,7 @@ woden_import_resolve_methods(
     woden_import_t *import,
     const axutil_env_t *env,
     woden_import_t *import_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_import_impl_t *import_impl_l = NULL;
 
@@ -405,20 +405,20 @@ woden_import_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     import_impl_l = INTF_TO_IMPL(import_impl);
 
-    import->ops->free = axis2_hash_get(methods, "free",
+    import->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    import->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    import->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    import->ops->type = axis2_hash_get(methods, "type",
+    import->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    import->ops->get_namespace = axis2_hash_get(methods,
+    import->ops->get_namespace = axutil_hash_get(methods,
             "get_namespace", AXIS2_HASH_KEY_STRING);
     if (!import->ops->get_namespace && import_impl_l)
         import->ops->get_namespace =
             import_impl_l->import.ops->get_namespace;
 
-    import->ops->set_namespace = axis2_hash_get(methods,
+    import->ops->set_namespace = axutil_hash_get(methods,
             "set_namespace", AXIS2_HASH_KEY_STRING);
     if (!import->ops->set_namespace && import_impl_l)
         import->ops->set_namespace =
@@ -434,12 +434,12 @@ woden_import_set_namespace(
     axis2_uri_t *ns_uri)
 {
     woden_import_impl_t *import_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns_uri, AXIS2_FAILURE);
     super = WODEN_IMPORT_SUPER_OBJS(import, env);
-    import_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    import_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_IMPORT", AXIS2_HASH_KEY_STRING));
 
     if (import_impl->f_namespc)
@@ -458,11 +458,11 @@ woden_import_get_namespace(
     const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_IMPORT_SUPER_OBJS(import, env);
-    import_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    import_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_IMPORT", AXIS2_HASH_KEY_STRING));
 
     return import_impl->f_namespc;

@@ -63,7 +63,7 @@ struct woden_nested_configurable_ops
             void *nested_configurable,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL *
+    axutil_hash_t *(AXIS2_CALL *
     super_objs) (
             void *nested_configurable,
             const axutil_env_t *env);
@@ -106,7 +106,7 @@ woden_nested_configurable_resolve_methods(
         woden_nested_configurable_t *nested_configurable,
         const axutil_env_t *env,
         woden_nested_configurable_t *nested_configurable_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 

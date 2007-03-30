@@ -168,7 +168,7 @@ extern "C"
      * @param file_data pointer to arch_file_data
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_arch_file_data_get_svc_map(const axis2_arch_file_data_t *file_data,
         const axutil_env_t *env);
 

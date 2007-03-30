@@ -29,7 +29,7 @@
 #include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
@@ -120,7 +120,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_binding_fault_element_resolve_methods(
         woden_binding_fault_element_t *binding_fault_element,
         const axutil_env_t *env,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_BINDING_FAULT_ELEMENT_FREE(binding_fault_element, env) \

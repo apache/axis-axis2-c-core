@@ -33,7 +33,7 @@
 #include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_svc_client.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -55,7 +55,7 @@ extern "C"
         savan_client_t *client,
         const axutil_env_t *env,
         axis2_svc_client_t *svc_client,
-        axis2_hash_t *options);
+        axutil_hash_t *options);
     
     /**
      * Send Renew request using the given service client
@@ -70,7 +70,7 @@ extern "C"
         savan_client_t *client,
         const axutil_env_t *env,
         axis2_svc_client_t *svc_client,
-        axis2_hash_t *options);
+        axutil_hash_t *options);
             
     /**
      * Send Unsubscribe request using the given service client

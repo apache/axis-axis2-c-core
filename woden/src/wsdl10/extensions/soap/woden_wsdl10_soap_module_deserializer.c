@@ -43,8 +43,8 @@ struct woden_wsdl10_soap_module_deserializer_impl
 {
     woden_wsdl10_soap_module_deserializer_t mod_deser;
     woden_obj_types_t obj_type;
-    axis2_hash_t *super;
-    axis2_hash_t *methods;
+    axutil_hash_t *super;
+    axutil_hash_t *methods;
 };
 
 #define INTF_TO_IMPL(mod_deser) \
@@ -60,7 +60,7 @@ woden_wsdl10_soap_module_deserializer_type(
     void *mod_deser,
     const axutil_env_t *env);
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_super_objs(
     void *mod_deser,
     const axutil_env_t *env);
@@ -149,20 +149,20 @@ create(const axutil_env_t *env)
     mod_deser_impl->mod_deser.ops->unmarshall =
         woden_wsdl10_soap_module_deserializer_unmarshall;
 
-    mod_deser_impl->methods = axis2_hash_make(env);
+    mod_deser_impl->methods = axutil_hash_make(env);
     if (!mod_deser_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(mod_deser_impl->methods, "free", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(mod_deser_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_module_deserializer_free);
-    axis2_hash_set(mod_deser_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
+    axutil_hash_set(mod_deser_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_module_deserializer_super_objs);
-    axis2_hash_set(mod_deser_impl->methods, "type",
+    axutil_hash_set(mod_deser_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_wsdl10_soap_module_deserializer_type);
 
-    axis2_hash_set(mod_deser_impl->methods, "unmarshall",
+    axutil_hash_set(mod_deser_impl->methods, "unmarshall",
             AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_module_deserializer_unmarshall);
 
@@ -177,13 +177,13 @@ woden_wsdl10_soap_module_deserializer_create(const axutil_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
     mod_deser_impl = (woden_wsdl10_soap_module_deserializer_impl_t *) create(env);
 
-    mod_deser_impl->super = axis2_hash_make(env);
+    mod_deser_impl->super = axutil_hash_make(env);
     if (!mod_deser_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(mod_deser_impl->super, "WODEN_WSDL10_SOAP_MODULE_DESERIALIZER",
+    axutil_hash_set(mod_deser_impl->super, "WODEN_WSDL10_SOAP_MODULE_DESERIALIZER",
             AXIS2_HASH_KEY_STRING, &(mod_deser_impl->mod_deser));
 
     return &(mod_deser_impl->mod_deser);
@@ -223,13 +223,13 @@ woden_wsdl10_soap_module_deserializer_free(
 
     if (mod_deser_impl->super)
     {
-        axis2_hash_free(mod_deser_impl->super, env);
+        axutil_hash_free(mod_deser_impl->super, env);
         mod_deser_impl->super = NULL;
     }
 
     if (mod_deser_impl->methods)
     {
-        axis2_hash_free(mod_deser_impl->methods, env);
+        axutil_hash_free(mod_deser_impl->methods, env);
         mod_deser_impl->methods = NULL;
     }
 
@@ -249,7 +249,7 @@ woden_wsdl10_soap_module_deserializer_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t *AXIS2_CALL
+axutil_hash_t *AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_super_objs(
     void *mod_deser,
     const axutil_env_t *env)
@@ -280,7 +280,7 @@ woden_wsdl10_soap_module_deserializer_resolve_methods(
     woden_wsdl10_soap_module_deserializer_t *mod_deser,
     const axutil_env_t *env,
     woden_wsdl10_soap_module_deserializer_t *mod_deser_impl,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl_l = NULL;
 
@@ -288,14 +288,14 @@ woden_wsdl10_soap_module_deserializer_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     mod_deser_impl_l = INTF_TO_IMPL(mod_deser_impl);
 
-    mod_deser->ops->free = axis2_hash_get(methods, "free",
+    mod_deser->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    mod_deser->ops->super_objs = axis2_hash_get(methods, "super_objs",
+    mod_deser->ops->super_objs = axutil_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    mod_deser->ops->type = axis2_hash_get(methods, "type",
+    mod_deser->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    mod_deser->ops->unmarshall = axis2_hash_get(methods,
+    mod_deser->ops->unmarshall = axutil_hash_get(methods,
             "unmarshall", AXIS2_HASH_KEY_STRING);
     if (!mod_deser->ops->unmarshall && mod_deser_impl_l)
         mod_deser->ops->unmarshall =
@@ -316,7 +316,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     woden_wsdl10_ext_registry_t *ext_reg)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
-    axis2_hash_t *super = NULL;
+    axutil_hash_t *super = NULL;
     void *soap_mod = NULL;
     axis2_char_t *ref = NULL;
     axis2_char_t *req = NULL;
@@ -328,7 +328,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_MODULE_DESERIALIZER_SUPER_OBJS(mod_deser, env);
-    mod_deser_impl = INTF_TO_IMPL(axis2_hash_get(super,
+    mod_deser_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL10_SOAP_MODULE_DESERIALIZER", AXIS2_HASH_KEY_STRING));
 
     /*soap_mod = WODEN_WSDL10_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_reg, env,

@@ -31,7 +31,7 @@ typedef struct w2c_schema_compiler_options_impl
     axis2_bool_t helper_mode;
     axis2_bool_t write_out;
     axis2_bool_t wrap_classes;
-    axis2_hash_t *ns2package_map;
+    axutil_hash_t *ns2package_map;
     axis2_char_t *language;
 
     W2C_ENGINE_CONFIGURATION_NAMEMAKER maker_func;
@@ -101,14 +101,14 @@ w2c_schema_compiler_options_set_wrap_classes( w2c_schema_compiler_options_t *com
         const axutil_env_t *env,
         axis2_bool_t wrap_classes);
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_schema_compiler_options_get_ns2package_map( w2c_schema_compiler_options_t *compiler_options,
         const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_options_set_ns2package_map( w2c_schema_compiler_options_t *compiler_options,
         const axutil_env_t *env,
-        axis2_hash_t *ns2package_map);
+        axutil_hash_t *ns2package_map);
 
 axis2_char_t* AXIS2_CALL
 w2c_schema_compiler_options_get_language( w2c_schema_compiler_options_t *compiler_options,
@@ -249,7 +249,7 @@ w2c_schema_compiler_options_free (w2c_schema_compiler_options_t *schema_compiler
     }
     if (schema_compiler_options_impl-> ns2package_map)
     {
-        axis2_hash_free(schema_compiler_options_impl-> ns2package_map, env);
+        axutil_hash_free(schema_compiler_options_impl-> ns2package_map, env);
     }
     if (schema_compiler_options_impl-> language)
     {
@@ -457,7 +457,7 @@ w2c_schema_compiler_options_set_wrap_classes( w2c_schema_compiler_options_t *com
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL
+axutil_hash_t* AXIS2_CALL
 w2c_schema_compiler_options_get_ns2package_map( w2c_schema_compiler_options_t *compiler_options,
         const axutil_env_t *env)
 {
@@ -474,7 +474,7 @@ w2c_schema_compiler_options_get_ns2package_map( w2c_schema_compiler_options_t *c
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_options_set_ns2package_map( w2c_schema_compiler_options_t *compiler_options,
         const axutil_env_t *env,
-        axis2_hash_t *ns2package_map)
+        axutil_hash_t *ns2package_map)
 {
     w2c_schema_compiler_options_impl_t *compiler_options_impl = NULL;
 

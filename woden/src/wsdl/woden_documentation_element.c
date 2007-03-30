@@ -21,20 +21,20 @@ axis2_status_t AXIS2_CALL
 woden_documentation_element_resolve_methods(
     woden_documentation_element_t *documentation_element,
     const axutil_env_t *env,
-    axis2_hash_t *methods)
+    axutil_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
 
-    documentation_element->ops->free = axis2_hash_get(methods, "free",
+    documentation_element->ops->free = axutil_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    documentation_element->ops->type = axis2_hash_get(methods, "type",
+    documentation_element->ops->type = axutil_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
     documentation_element->ops->set_content =
-        axis2_hash_get(methods, "set_content",
+        axutil_hash_get(methods, "set_content",
                 AXIS2_HASH_KEY_STRING);
     documentation_element->ops->get_content =
-        axis2_hash_get(methods, "get_content",
+        axutil_hash_get(methods, "get_content",
                 AXIS2_HASH_KEY_STRING);
 
     return AXIS2_SUCCESS;

@@ -72,7 +72,7 @@ savan_client_subscribe(
     savan_client_t *client,
     const axutil_env_t *env,
     axis2_svc_client_t *svc_client,
-    axis2_hash_t *options)
+    axutil_hash_t *options)
 {
     axis2_options_t *wsa_options = NULL;
     const axis2_char_t *old_action = NULL;
@@ -107,10 +107,10 @@ savan_client_subscribe(
     axis2_options_set_action(wsa_options, env, SAVAN_ACTIONS_SUB);
     
     /* extract the values from the options map */
-    endto = axis2_hash_get(options, SAVAN_OP_KEY_ENDTO_EPR, AXIS2_HASH_KEY_STRING);
-    notify = axis2_hash_get(options, SAVAN_OP_KEY_NOTIFY_EPR, AXIS2_HASH_KEY_STRING);
-    filter = axis2_hash_get(options, SAVAN_OP_KEY_FILTER, AXIS2_HASH_KEY_STRING);
-    expires = axis2_hash_get(options, SAVAN_OP_KEY_EXPIRES, AXIS2_HASH_KEY_STRING);
+    endto = axutil_hash_get(options, SAVAN_OP_KEY_ENDTO_EPR, AXIS2_HASH_KEY_STRING);
+    notify = axutil_hash_get(options, SAVAN_OP_KEY_NOTIFY_EPR, AXIS2_HASH_KEY_STRING);
+    filter = axutil_hash_get(options, SAVAN_OP_KEY_FILTER, AXIS2_HASH_KEY_STRING);
+    expires = axutil_hash_get(options, SAVAN_OP_KEY_EXPIRES, AXIS2_HASH_KEY_STRING);
     
     /* create the body of the Subscribe request */
     ns = axiom_namespace_create (env, EVENTING_NAMESPACE, EVENTING_NS_PREFIX);
@@ -181,7 +181,7 @@ savan_client_renew(
     savan_client_t *client,
     const axutil_env_t *env,
     axis2_svc_client_t *svc_client,
-    axis2_hash_t *options)
+    axutil_hash_t *options)
 {
     axis2_options_t *wsa_options = NULL;
     const axis2_char_t *old_action = NULL;
@@ -202,7 +202,7 @@ savan_client_renew(
     axis2_options_set_action(wsa_options, env, SAVAN_ACTIONS_RENEW);
     
     /* Extract the values from the options map */
-    expires = axis2_hash_get(options, SAVAN_OP_KEY_EXPIRES, AXIS2_HASH_KEY_STRING);
+    expires = axutil_hash_get(options, SAVAN_OP_KEY_EXPIRES, AXIS2_HASH_KEY_STRING);
     
     /* Create the body of the Renew request */
     ns = axiom_namespace_create (env, EVENTING_NAMESPACE, EVENTING_NS_PREFIX);

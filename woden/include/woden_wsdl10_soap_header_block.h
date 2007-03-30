@@ -54,7 +54,7 @@ struct woden_wsdl10_soap_header_block_ops
             void *header_block,
             const axutil_env_t *env);
 
-    axis2_hash_t *(AXIS2_CALL * 
+    axutil_hash_t *(AXIS2_CALL * 
     super_objs) (
             void *header_block,
             const axutil_env_t *env);
@@ -156,7 +156,7 @@ woden_wsdl10_soap_header_block_resolve_methods(
         woden_wsdl10_soap_header_block_t *soap_header_block,
         const axutil_env_t *env,
         woden_wsdl10_soap_header_block_t *soap_header_block_impl,
-        axis2_hash_t *methods);
+        axutil_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
 #define WODEN_WSDL10_SOAP_HEADER_BLOCK_FREE(soap_header_block, env) \

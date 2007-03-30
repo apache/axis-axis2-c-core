@@ -17,7 +17,7 @@
  
 #include <w2c_engine_config_loader.h>
 #include <w2c_cmdline_option_consts.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <axutil_array_list.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_messages.h>
@@ -30,15 +30,15 @@
 static w2c_cmdline_option_t*
 w2c_engine_config_loader_load_option(const axutil_env_t *env,
                                     axis2_char_t *short_opt,axis2_char_t *long_opt,
-                                     axis2_hash_t *options);
+                                     axutil_hash_t *options);
 static void
-w2c_engine_config_loader_free_hash(const axutil_env_t *env, axis2_hash_t *h );
+w2c_engine_config_loader_free_hash(const axutil_env_t *env, axutil_hash_t *h );
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 w2c_engine_config_loader_load_config(
     const axutil_env_t *env,
     w2c_engine_configuration_t *conf,
-    axis2_hash_t *option_map )
+    axutil_hash_t *option_map )
 {
     w2c_cmdline_option_t *option = NULL;
     axis2_char_t *tmp_string= NULL;
@@ -49,8 +49,8 @@ w2c_engine_config_loader_load_config(
     axis2_char_t *cp = NULL;
     int loop_state = 0;
     axis2_char_t *tmp_key = NULL;
-    axis2_hash_t *h = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_t *h = NULL;
+    axutil_hash_index_t *hi = NULL;
     axutil_array_list_t *tmp_array = NULL;
     w2c_properties_t *props = NULL;
     int len = 0;
@@ -269,7 +269,7 @@ w2c_engine_config_loader_load_config(
         tmp_string = W2C_CMDLINE_OPTION_GET_VALUE ( option, env );
         if (tmp_string)
         {
-           h = axis2_hash_make (env );
+           h = axutil_hash_make (env );
            loop_state = -1; /* 1 - started, 1 - '=' found 2- end*/
            for ( cp = tmp_string; loop_state !=2 ; cp ++ )
            {
@@ -320,13 +320,13 @@ w2c_engine_config_loader_load_config(
                     else 
                         loop_state = 0;
                     *cp = '\0';
-                    axis2_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING,
+                    axutil_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING,
                                     axis2_strdup (env, tag) );
                }
            }
            if (loop_state == -1)
            {
-               axis2_hash_free (h ,env); /*clear created hash*/
+               axutil_hash_free (h ,env); /*clear created hash*/
                /* asumes option value is a filename */
                props = w2c_properties_create( env, tmp_string, '\0');
                h = W2C_PROPERTIES_GET_HASH( props, env);
@@ -337,13 +337,13 @@ w2c_engine_config_loader_load_config(
                else
                {
                    /* replace arraylist in each with string */
-                   for (hi = axis2_hash_first(h , env) ;
-                               hi; hi = axis2_hash_next(env, hi))
+                   for (hi = axutil_hash_first(h , env) ;
+                               hi; hi = axutil_hash_next(env, hi))
                    {
-                       axis2_hash_this(hi, (void*)&tmp_key, NULL, (void*)&tmp_string);
+                       axutil_hash_this(hi, (void*)&tmp_key, NULL, (void*)&tmp_string);
                        tmp_key = axis2_strdup(env, tmp_key);
                        tmp_string = axis2_strdup (env, tmp_string);
-                       axis2_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string);
+                       axutil_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string);
                    }
                }
                W2C_PROPERTIES_FREE( props, env);
@@ -354,10 +354,10 @@ w2c_engine_config_loader_load_config(
     
     /* catch extra parameters */
     h = NULL;
-    for (hi = axis2_hash_first(option_map , env) ;
-                hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(option_map , env) ;
+                hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&tmp_key,
+        axutil_hash_this(hi, (void*)&tmp_key,
              NULL, (void*)&tmp_array);
         if ( w2c_string_indexof_cs 
              ( tmp_key, W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX)== 0 && tmp_array)
@@ -365,11 +365,11 @@ w2c_engine_config_loader_load_config(
            tmp_string = (char*)axutil_array_list_get (tmp_array, env, 0 );
            if ( h == NULL )
            {
-               h = axis2_hash_make ( env );   
+               h = axutil_hash_make ( env );   
            }
            len = axis2_strlen (W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX );
            tmp_key = axis2_string_substring_starting_at ( tmp_key, len);
-           axis2_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string );
+           axutil_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string );
            axutil_array_list_free ( tmp_array, env);
         }
     }
@@ -381,12 +381,12 @@ w2c_engine_config_loader_load_config(
 static w2c_cmdline_option_t*
 w2c_engine_config_loader_load_option(const axutil_env_t *env,
                                     axis2_char_t *short_opt,axis2_char_t *long_opt,
-                                     axis2_hash_t *options_map) 
+                                     axutil_hash_t *options_map) 
 {
     w2c_cmdline_option_t *option = NULL;
     if (long_opt != NULL) 
     {
-        option = (w2c_cmdline_option_t*)axis2_hash_get(options_map,
+        option = (w2c_cmdline_option_t*)axutil_hash_get(options_map,
                                long_opt, AXIS2_HASH_KEY_STRING);
         if (option != NULL)
         {
@@ -396,7 +396,7 @@ w2c_engine_config_loader_load_option(const axutil_env_t *env,
     /* short option gets last precedence */
     if (short_opt != NULL)
     {
-        option = (w2c_cmdline_option_t*)axis2_hash_get(options_map,
+        option = (w2c_cmdline_option_t*)axutil_hash_get(options_map,
                                short_opt, AXIS2_HASH_KEY_STRING);
     }
 
@@ -404,17 +404,17 @@ w2c_engine_config_loader_load_option(const axutil_env_t *env,
 }
 
 static void
-w2c_engine_config_loader_free_hash(const axutil_env_t *env, axis2_hash_t *h )
+w2c_engine_config_loader_free_hash(const axutil_env_t *env, axutil_hash_t *h )
 {
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value =NULL;
-    for (hi = axis2_hash_first(h, env) ;
-                hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(h, env) ;
+                hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&value);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&value);
         if ( value )AXIS2_FREE ( env-> allocator, value );
         if ( key )AXIS2_FREE ( env-> allocator, key);
     }
-    axis2_hash_free ( h , env);
+    axutil_hash_free ( h , env);
 }

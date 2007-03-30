@@ -132,12 +132,12 @@ w2c_c_emitter_set_config(w2c_emitter_t *emitter,
        w2c_config_property_loader_t *loader)
 {
     w2c_typemapper_t *typemapper = NULL;
-    axis2_hash_t *types = NULL;
+    axutil_hash_t *types = NULL;
     axis2_char_t *key = NULL;
     axis2_qname_t *qname = NULL;
     axis2_char_t *filename = NULL;
     axis2_char_t *classname = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     axis2_char_t *source = NULL;
     axis2_char_t *header = NULL;
     axis2_char_t *root = NULL;
@@ -147,10 +147,10 @@ w2c_c_emitter_set_config(w2c_emitter_t *emitter,
     typemapper = W2C_ENGINE_CONFIGURATION_GET_TYPEMAPPER( config, env);
     types = W2C_TYPEMAPPER_GET_ALL( typemapper, env);
 
-    for (hi = axis2_hash_first( types, env);
-                         hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first( types, env);
+                         hi; hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, (void*)&key, NULL, (void*)&classname);
+        axutil_hash_this(hi, (void*)&key, NULL, (void*)&classname);
         qname = axis2_qname_create_from_string( env, key);
         if ( !W2C_TYPEMAPPER_IS_PRIMITIVE( typemapper, env, qname) )
         {

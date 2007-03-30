@@ -25,7 +25,7 @@ struct axis2_desc
     axis2_param_container_t *param_container;
 
     /** children of this description */
-    axis2_hash_t *children;
+    axutil_hash_t *children;
 };
 
 AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
@@ -55,7 +55,7 @@ axis2_desc_create(const axutil_env_t *env)
         return NULL;
     }
 
-    desc->children = axis2_hash_make(env);
+    desc->children = axutil_hash_make(env);
 	if (!(desc->children))
     {
         axis2_desc_free(desc, env);
@@ -73,13 +73,13 @@ axis2_desc_free(axis2_desc_t *desc,
 
     if (desc->children)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *val = NULL;
 
-        for (hi = axis2_hash_first(desc->children, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(desc->children, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
 
             if (val)
             {
@@ -87,7 +87,7 @@ axis2_desc_free(axis2_desc_t *desc,
             }
         }
 
-        axis2_hash_free(desc->children, env);
+        axutil_hash_free(desc->children, env);
     }
 
     if (desc->param_container)
@@ -158,14 +158,14 @@ axis2_desc_add_child(const axis2_desc_t *desc,
 
     if (desc->children)
     {
-        axis2_hash_set(desc->children, key,
+        axutil_hash_set(desc->children, key,
             AXIS2_HASH_KEY_STRING, child);
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axis2_desc_get_all_children(const axis2_desc_t *desc,
     const axutil_env_t *env)
 {
@@ -177,7 +177,7 @@ axis2_desc_get_child(const axis2_desc_t *desc,
     const axutil_env_t *env,
     const axis2_char_t *key)
 {
-    return axis2_hash_get(desc->children, key, AXIS2_HASH_KEY_STRING);
+    return axutil_hash_get(desc->children, key, AXIS2_HASH_KEY_STRING);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -189,7 +189,7 @@ axis2_desc_remove_child(const axis2_desc_t *desc,
 
     if (desc->children)
     {
-        axis2_hash_set(desc->children, key,
+        axutil_hash_set(desc->children, key,
             AXIS2_HASH_KEY_STRING, NULL);
         return AXIS2_SUCCESS;
     }

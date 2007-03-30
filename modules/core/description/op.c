@@ -952,9 +952,9 @@ axis2_op_register_op_ctx(axis2_op_t *op,
     status =  axis2_msg_ctx_set_op_ctx(msg_ctx, env, op_ctx);
     if (AXIS2_FAILURE == status)
     {
-        axis2_hash_t *op_ctx_map = NULL;
-        op_ctx_map = (axis2_hash_t *)  axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
-        axis2_hash_set(op_ctx_map, msg_id, AXIS2_HASH_KEY_STRING, NULL);
+        axutil_hash_t *op_ctx_map = NULL;
+        op_ctx_map = (axutil_hash_t *)  axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
+        axutil_hash_set(op_ctx_map, msg_id, AXIS2_HASH_KEY_STRING, NULL);
     }
     if (AXIS2_TRUE ==  axis2_op_ctx_get_is_complete(op_ctx, env))
     {

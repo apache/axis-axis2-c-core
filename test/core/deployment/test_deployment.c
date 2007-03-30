@@ -37,7 +37,7 @@ int axis2_test_dep_engine_load()
 {
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
-    axis2_hash_t *svc_map = NULL;
+    axutil_hash_t *svc_map = NULL;
     axutil_array_list_t *in_phases = NULL;
     axis2_char_t *axis2c_home = NULL;
 
@@ -64,22 +64,22 @@ int axis2_test_dep_engine_load()
 
     svc_map =  axis2_conf_get_all_svcs(conf, env);
     if (svc_map)
-        printf("svc_map count = %d\n", axis2_hash_count(svc_map));
+        printf("svc_map count = %d\n", axutil_hash_count(svc_map));
     else
         printf("svc_map count = zero\n");
 
     if (svc_map)
     {
-        axis2_hash_index_t *hi = NULL;
+        axutil_hash_index_t *hi = NULL;
         void *service = NULL;
-        for (hi = axis2_hash_first(svc_map, env);
-                hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(svc_map, env);
+                hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_t *ops = NULL;
+            axutil_hash_t *ops = NULL;
             axis2_svc_t *svc = NULL;
             axis2_param_t *impl_info_param = NULL;
 
-            axis2_hash_this(hi, NULL, NULL, &service);
+            axutil_hash_this(hi, NULL, NULL, &service);
             svc = (axis2_svc_t *) service;
             impl_info_param = axis2_svc_get_param(svc, env, AXIS2_SERVICE_CLASS);
             if (!impl_info_param)
@@ -89,17 +89,17 @@ int axis2_test_dep_engine_load()
             ops = axis2_svc_get_all_ops(svc, env);
             if (ops)
             {
-                printf("ops count = %d\n", axis2_hash_count(ops));
+                printf("ops count = %d\n", axutil_hash_count(ops));
 
-                axis2_hash_index_t *hi2 = NULL;
+                axutil_hash_index_t *hi2 = NULL;
                 void *op = NULL;
                 axis2_char_t *oname = NULL;
 
-                for (hi2 = axis2_hash_first(ops, env); hi2; hi2 = axis2_hash_next(env, hi2))
+                for (hi2 = axutil_hash_first(ops, env); hi2; hi2 = axutil_hash_next(env, hi2))
                 {
                     if (!hi2)
                         break;
-                    axis2_hash_this(hi2, NULL, NULL, &op);
+                    axutil_hash_this(hi2, NULL, NULL, &op);
                     if (op)
                     {
                         const axis2_qname_t *qname = NULL;

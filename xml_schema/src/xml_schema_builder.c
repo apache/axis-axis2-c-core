@@ -244,7 +244,7 @@ populate_element_namespaces(
         xml_schema_builder_t *builder,
         const axutil_env_t *env,
         axiom_node_t *ele_node,
-        axis2_hash_t* ele_to_ns_map);
+        axutil_hash_t* ele_to_ns_map);
 */
 static xml_schema_identity_constraint_t*
 handle_constraint(
@@ -315,7 +315,7 @@ xml_schema_builder_resolve_xml_schema(
 static axis2_bool_t
 value_exist_in_hash(
     const axutil_env_t *env,
-    axis2_hash_t *ht,
+    axutil_hash_t *ht,
     axis2_char_t *value);
 
 static xml_schema_form_t*
@@ -478,9 +478,9 @@ handle_xml_schema_element(
 {
     xml_schema_builder_impl_t *builder_impl = NULL;
 
-    axis2_hash_t *ht_sch2schemas = NULL;
+    axutil_hash_t *ht_sch2schemas = NULL;
     axutil_array_list_t *schemas        = NULL;
-    axis2_hash_t *namespaces     = NULL;
+    axutil_hash_t *namespaces     = NULL;
     axis2_char_t *target_ns = NULL;
 
     /** element form default */
@@ -508,7 +508,7 @@ handle_xml_schema_element(
 
         if (ht_sch2schemas)
         {
-            axis2_hash_set(ht_sch2schemas, uri,
+            axutil_hash_set(ht_sch2schemas, uri,
                     AXIS2_HASH_KEY_STRING, builder_impl->schema);
         }
     }
@@ -527,11 +527,11 @@ handle_xml_schema_element(
     if (namespaces && NULL != target_ns)
     {
         void *val = NULL;
-        val = axis2_hash_get(namespaces, target_ns, AXIS2_HASH_KEY_STRING);
+        val = axutil_hash_get(namespaces, target_ns, AXIS2_HASH_KEY_STRING);
         if (!val)
         {
             /** value does not exist */
-            axis2_hash_set(namespaces, target_ns,
+            axutil_hash_set(namespaces, target_ns,
                     AXIS2_HASH_KEY_STRING, builder_impl->schema);
 
         }
@@ -941,11 +941,11 @@ set_namespace_attributes(
 {
     xml_schema_builder_impl_t *builder_impl = NULL;
     axiom_node_t* parent_node = NULL;
-    axis2_hash_t *ht_ns = NULL;
-    axis2_hash_index_t *hi_ns = NULL;
+    axutil_hash_t *ht_ns = NULL;
+    axutil_hash_index_t *hi_ns = NULL;
     axiom_element_t *om_ele = NULL;
 
-    axis2_hash_t *ht_sch_ns = NULL;
+    axutil_hash_t *ht_sch_ns = NULL;
     axis2_qname_t *target_ns_qn = NULL;
     axis2_char_t *contain = NULL;
 
@@ -976,11 +976,11 @@ set_namespace_attributes(
         if (!ht_sch_ns)
             return AXIS2_FAILURE;
     
-        for (hi_ns = axis2_hash_first(ht_ns, env); hi_ns;
-                hi_ns = axis2_hash_next(env, hi_ns))
+        for (hi_ns = axutil_hash_first(ht_ns, env); hi_ns;
+                hi_ns = axutil_hash_next(env, hi_ns))
         {
             void *val = NULL;
-            axis2_hash_this(hi_ns, NULL, NULL, &val);
+            axutil_hash_this(hi_ns, NULL, NULL, &val);
             if (val)
             {
                 axis2_char_t *uri = NULL;
@@ -991,7 +991,7 @@ set_namespace_attributes(
     
                 if (prefix && axis2_strcmp(prefix, "") != 0)
                 {
-                    axis2_hash_set(ht_sch_ns, prefix,
+                    axutil_hash_set(ht_sch_ns, prefix,
                             AXIS2_HASH_KEY_STRING, uri);
     
                     if (uri && axis2_strcmp(uri, XML_SCHEMA_NS) == 0)
@@ -1002,7 +1002,7 @@ set_namespace_attributes(
                 else
                 {
                     /** default namespace [xmlns=""] */
-                    axis2_hash_set(ht_sch_ns, "", AXIS2_HASH_KEY_STRING, uri);
+                    axutil_hash_set(ht_sch_ns, "", AXIS2_HASH_KEY_STRING, uri);
                 }
             }
         }
@@ -1040,7 +1040,7 @@ put_namespace(
     axis2_char_t *ns)
 {
     xml_schema_builder_impl_t *builder_impl = NULL;
-    axis2_hash_t *ht_sch_ns = NULL;
+    axutil_hash_t *ht_sch_ns = NULL;
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
@@ -1048,15 +1048,15 @@ put_namespace(
 
     ht_sch_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
-    if (axis2_hash_get(ht_sch_ns, prefix, AXIS2_HASH_KEY_STRING))
+    if (axutil_hash_get(ht_sch_ns, prefix, AXIS2_HASH_KEY_STRING))
     {
         /** key already exist */
         axis2_char_t *gen_prefix = AXIS2_MALLOC(env->allocator, sizeof(10));
         sprintf(gen_prefix, "gen%d", builder_impl->gen_no++);
-        axis2_hash_set(ht_sch_ns, gen_prefix, AXIS2_HASH_KEY_STRING, ns);
+        axutil_hash_set(ht_sch_ns, gen_prefix, AXIS2_HASH_KEY_STRING, ns);
     }
 
-    axis2_hash_set(ht_sch_ns, prefix, AXIS2_HASH_KEY_STRING, ns);
+    axutil_hash_set(ht_sch_ns, prefix, AXIS2_HASH_KEY_STRING, ns);
 
     return AXIS2_SUCCESS;
 }
@@ -1167,7 +1167,7 @@ handle_simple_type(
         if (attribute_value)
         {
             axutil_array_list_t *temp_list = NULL;
-            axis2_hash_t *ht_ns           = NULL;
+            axutil_hash_t *ht_ns           = NULL;
             axis2_char_t *namesp          = NULL;
             axutil_array_list_t *last_list = NULL;
             axis2_char_t *name            = NULL;
@@ -1181,7 +1181,7 @@ handle_simple_type(
             }
 
             ht_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
-            namesp = axis2_hash_get(ht_ns, namesp, AXIS2_HASH_KEY_STRING);
+            namesp = axutil_hash_get(ht_ns, namesp, AXIS2_HASH_KEY_STRING);
 
             last_list = axis2_last_token(env, attribute_value, ':');
 
@@ -1259,7 +1259,7 @@ handle_simple_type(
             axis2_qname_t *item_type_qn = NULL;
             axis2_char_t *ns = NULL;
             axis2_char_t *key = NULL;
-            axis2_hash_t *ht_ns = NULL;
+            axutil_hash_t *ht_ns = NULL;
             namespaces_form_ele = axis2_tokenize(env, attr_value, ':');
             ht_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
@@ -1267,7 +1267,7 @@ handle_simple_type(
             {
                 axis2_char_t *result = NULL;
                 key = axutil_array_list_get(namespaces_form_ele, env, 0);
-                result = axis2_hash_get(ht_ns, key, AXIS2_HASH_KEY_STRING);
+                result = axutil_hash_get(ht_ns, key, AXIS2_HASH_KEY_STRING);
                 if (! result)
                 {
                     /**TODO set error */
@@ -1332,7 +1332,7 @@ handle_simple_type(
         {
             axutil_array_list_t *tokens = NULL;
             axutil_array_list_t *v = NULL;
-            axis2_hash_t *ht_namespaces = NULL;
+            axutil_hash_t *ht_namespaces = NULL;
             int i = 0;
             XML_SCHEMA_SIMPLE_TYPE_UNION_SET_MEMBER_TYPES_SOURCE(sch_union,
                     env, attr_value);
@@ -1365,7 +1365,7 @@ handle_simple_type(
                 {
                     localname = mem_dup;
                 }
-                uri = axis2_hash_get(ht_namespaces, prefix, AXIS2_HASH_KEY_STRING);
+                uri = axutil_hash_get(ht_namespaces, prefix, AXIS2_HASH_KEY_STRING);
                 qn = axis2_qname_create(env, localname, uri, prefix);
                 /*
                 AXIS2_FREE(env->allocator, mem_dup);
@@ -1761,7 +1761,7 @@ handle_simple_content_restriction(
 
         axutil_array_list_t *list = NULL;
 
-        axis2_hash_t *namespaces = NULL;
+        axutil_hash_t *namespaces = NULL;
 
         axis2_char_t *result = NULL;
 
@@ -1779,7 +1779,7 @@ handle_simple_content_restriction(
 
         namespaces = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
-        result = axis2_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
+        result = axutil_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
 
         if (! result)
         {
@@ -1905,7 +1905,7 @@ handle_simple_content_extension(
     {
         axis2_char_t *ns_from_ele = "";
         axutil_array_list_t *list = NULL;
-        axis2_hash_t *namespaces = NULL;
+        axutil_hash_t *namespaces = NULL;
         axis2_char_t *result = NULL;
         axutil_array_list_t* last_list = NULL;
         axis2_char_t *name = NULL;
@@ -1920,7 +1920,7 @@ handle_simple_content_extension(
 
         namespaces = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
-        result = axis2_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
+        result = axutil_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
 
         if (! result)
         {
@@ -2007,7 +2007,7 @@ handle_complex_content_restriction(
     {
         axis2_char_t *prefix = "";
         axutil_array_list_t *list = NULL;
-        axis2_hash_t *namespaces = NULL;
+        axutil_hash_t *namespaces = NULL;
         axis2_char_t *result = NULL;
         axutil_array_list_t* last_list = NULL;
         axis2_char_t *name = NULL;
@@ -2021,7 +2021,7 @@ handle_complex_content_restriction(
 
         namespaces = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
-        result = axis2_hash_get(namespaces, prefix, AXIS2_HASH_KEY_STRING);
+        result = axutil_hash_get(namespaces, prefix, AXIS2_HASH_KEY_STRING);
 
         if (! result)
         {
@@ -2125,7 +2125,7 @@ handle_complex_content_extension(
     {
         axis2_char_t *ns_from_ele = "";
         axutil_array_list_t *list = NULL;
-        axis2_hash_t *namespaces = NULL;
+        axutil_hash_t *namespaces = NULL;
         axis2_char_t *result = NULL;
         axutil_array_list_t* last_list = NULL;
         axis2_char_t *name = NULL;
@@ -2140,7 +2140,7 @@ handle_complex_content_extension(
 
         namespaces = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
-        result = axis2_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
+        result = axutil_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
 
         if (! result)
         {
@@ -2243,7 +2243,7 @@ handle_attribute_group_ref(
     {
         axutil_array_list_t *parts = NULL;
         axis2_char_t *prefix = NULL;
-        axis2_hash_t *ht_ns  = NULL;
+        axutil_hash_t *ht_ns  = NULL;
         axis2_char_t *uri = NULL;
         axis2_char_t *ref = NULL;
         axutil_array_list_t *last_list = NULL;
@@ -2256,7 +2256,7 @@ handle_attribute_group_ref(
             ht_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(
                         AXIS2_INTF_TO_IMPL(builder)->schema, env);
 
-            uri = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
+            uri = axutil_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
             if (! uri)
             {
                 /** TODO set error code */
@@ -2766,7 +2766,7 @@ handle_group_ref(
     axiom_element_t *ele1 = NULL;
     axiom_node_t   *node1 = NULL;
 
-    axis2_hash_t *ht_ns = NULL;
+    axutil_hash_t *ht_ns = NULL;
 
     group = xml_schema_group_ref_create(env);
 
@@ -2801,7 +2801,7 @@ handle_group_ref(
 
         if (axutil_array_list_size(parts, env) > 1)
             prefix = (axis2_char_t*)axutil_array_list_get(parts, env, 1);
-        result = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
+        result = axutil_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
 
         if (! result)
         {
@@ -2899,13 +2899,13 @@ handle_attribute(
 
         if (axutil_array_list_size(args, env) > 1)
         {
-            axis2_hash_t *ht_ns = NULL;
+            axutil_hash_t *ht_ns = NULL;
             axiom_namespace_t *ns = NULL;
             ht_ns = axiom_element_get_namespaces(attr_ele, env);
             prefix = axutil_array_list_get(args, env, 0);
             if (ht_ns)
             {
-                ns = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
+                ns = axutil_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
                 if (ns)
                 {
                     namesp = axiom_namespace_get_uri(ns, env);
@@ -2993,7 +2993,7 @@ handle_attribute(
         if (axutil_array_list_size(ns_list, env) > 1)
         {
             axis2_char_t *result = NULL;
-            axis2_hash_t *ns_hash = NULL;
+            axutil_hash_t *ns_hash = NULL;
             axis2_char_t *prefix  = NULL;
             axis2_char_t *xml_prefix = NULL;
             prefix = axutil_array_list_get(ns_list, env, 1);
@@ -3001,7 +3001,7 @@ handle_attribute(
 
             ns_hash = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
-            result = axis2_hash_get(ns_hash, prefix, AXIS2_HASH_KEY_STRING);
+            result = axutil_hash_get(ns_hash, prefix, AXIS2_HASH_KEY_STRING);
             if (! result &&  xml_prefix && axis2_strcmp(xml_prefix, XML_SCHEMANS_PREFIX))
                 result = XML_SCHEMANS_URI;
             if (! result)
@@ -3209,13 +3209,13 @@ handle_element(
 
         if (axutil_array_list_size(args, env) > 1)
         {
-            axis2_hash_t *ht_ns = NULL;
+            axutil_hash_t *ht_ns = NULL;
             axiom_namespace_t *ns = NULL;
             ht_ns = axiom_element_get_namespaces(om_ele, env);
             prefix = axutil_array_list_get(args, env, 0);
             if (ht_ns)
             {
-                ns = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
+                ns = axutil_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
                 if (ns)
                     namesp = axiom_namespace_get_uri(ns, env);
             }
@@ -3271,7 +3271,7 @@ handle_element(
         axis2_char_t *ref_name   = NULL;
         axis2_char_t *args0      = NULL;
         axis2_char_t *namesp     = NULL;
-        axis2_hash_t *ht_ns      = NULL;
+        axutil_hash_t *ht_ns      = NULL;
         axis2_qname_t *qn        = NULL;
 
         args = axis2_tokenize(env, attr_value, ':');
@@ -3282,7 +3282,7 @@ handle_element(
             axis2_char_t *result = NULL;
 
             args0 = axutil_array_list_get(args, env, 0);
-            result = axis2_hash_get(ht_ns, args0, AXIS2_HASH_KEY_STRING);
+            result = axutil_hash_get(ht_ns, args0, AXIS2_HASH_KEY_STRING);
             if (!result)
             {
                 /**TODO set error */
@@ -3355,7 +3355,7 @@ handle_element(
             axis2_char_t *ref_name   = NULL;
             axis2_char_t *args0      = NULL;
             axis2_char_t *namesp     = NULL;
-            axis2_hash_t *ht_ns      = NULL;
+            axutil_hash_t *ht_ns      = NULL;
             axis2_qname_t *qn        = NULL;
 
             args = axis2_tokenize(env, attr_val, ':');
@@ -3366,7 +3366,7 @@ handle_element(
                 axis2_char_t *result = NULL;
 
                 args0 = axutil_array_list_get(args, env, 0);
-                result = axis2_hash_get(ht_ns, args0, AXIS2_HASH_KEY_STRING);
+                result = axutil_hash_get(ht_ns, args0, AXIS2_HASH_KEY_STRING);
                 if (!result)
                 {
                     /**TODO set error */
@@ -3464,10 +3464,10 @@ populate_element_namespaces(
         xml_schema_builder_t *builder,
         const axutil_env_t *env,
         axiom_node_t *ele_node,
-        axis2_hash_t* ele_to_ns_map)
+        axutil_hash_t* ele_to_ns_map)
 {
     axiom_element_t *ele = NULL;
-    axis2_hash_t *ns_hash = NULL;
+    axutil_hash_t *ns_hash = NULL;
 
     AXIS2_PARAM_CHECK(env->error, ele_node, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ele_to_ns_map, AXIS2_FAILURE);
@@ -3477,12 +3477,12 @@ populate_element_namespaces(
 
     if( ns_hash)
     {
-        axis2_hash_index_t *hi = NULL;
-        for(hi = axis2_hash_first(ns_hash, env);
-            hi; hi = axis2_hash_next(env, hi))
+        axutil_hash_index_t *hi = NULL;
+        for(hi = axutil_hash_first(ns_hash, env);
+            hi; hi = axutil_hash_next(env, hi))
         {
             void *val = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             if( val)
             {
                 axiom_namespace_t *ns = NULL;
@@ -3492,7 +3492,7 @@ populate_element_namespaces(
                 uri = axiom_namespace_get_uri(ns, env);
                 prefix = axiom_namespace_get_prefix(ns, env);
 
-                axis2_hash_set(ele_to_ns_map, axis2_strdup(prefix, env),
+                axutil_hash_set(ele_to_ns_map, axis2_strdup(prefix, env),
                     AXIS2_HASH_KEY_STRING, axis2_strdup(uri, env));
             }
         }
@@ -3561,13 +3561,13 @@ handle_constraint(
         {
             axis2_char_t *ns1 = NULL;
 
-            axis2_hash_t *namespaces_ht = NULL;
+            axutil_hash_t *namespaces_ht = NULL;
             ns1 = axutil_array_list_get(ns_from_ele, env, 0);
 
             namespaces_ht =
                 XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
 
-            ns = axis2_hash_get(namespaces_ht, ns1, AXIS2_HASH_KEY_STRING);
+            ns = axutil_hash_get(namespaces_ht, ns1, AXIS2_HASH_KEY_STRING);
         }
         else
         {
@@ -3984,17 +3984,17 @@ get_enum_string(
 static axis2_bool_t
 value_exist_in_hash(
     const axutil_env_t *env,
-    axis2_hash_t *ht,
+    axutil_hash_t *ht,
     axis2_char_t *value)
 {
     void *val = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     if (!value || !ht)
         return AXIS2_FALSE;
-    for (hi = axis2_hash_first(ht, env); hi;
-            hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(ht, env); hi;
+            hi = axutil_hash_next(env, hi))
     {
-        axis2_hash_this(hi, NULL, NULL, &val);
+        axutil_hash_this(hi, NULL, NULL, &val);
         if (val)
         {
             axis2_char_t *htvalue = NULL;

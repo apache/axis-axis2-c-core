@@ -62,7 +62,7 @@ struct xml_schema_derivation_method_ops
     get_values)(void *derivation_method,
                 const axutil_env_t *env);
                 
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     super_objs)(void *derivation_method,
                 const axutil_env_t *env);
     

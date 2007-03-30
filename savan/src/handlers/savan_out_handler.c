@@ -82,10 +82,10 @@ savan_out_handler_invoke(
     savan_message_types_t msg_type = SAVAN_MSG_TYPE_UNKNOWN;
     /*axis2_svc_t *svc = NULL;*/
     axis2_param_t *param = NULL;
-    axis2_hash_t *store = NULL;
+    axutil_hash_t *store = NULL;
     const axis2_svc_t *svc = NULL;
     const axis2_char_t *svc_name = NULL;
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
     void *val = NULL;
     
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
@@ -123,7 +123,7 @@ savan_out_handler_invoke(
             return AXIS2_SUCCESS; /* returning FAILURE will break handler chain */
         }
         
-        store = (axis2_hash_t*)axis2_param_get_value(param, env);
+        store = (axutil_hash_t*)axis2_param_get_value(param, env);
         if (!store)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan][out handler] "
@@ -133,10 +133,10 @@ savan_out_handler_invoke(
         
         /* Iterate the subscribe store and send the msg to each one */
         
-        for (hi = axis2_hash_first(store, env); hi; hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(store, env); hi; hi = axutil_hash_next(env, hi))
         {
             savan_subscriber_t * sub = NULL;
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             sub = (savan_subscriber_t *)val;
             if (sub)
             {

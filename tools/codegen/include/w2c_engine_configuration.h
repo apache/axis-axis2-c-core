@@ -25,7 +25,7 @@
 
 #include <axis2_utils.h>
 #include <axutil_array_list.h>
-#include <axis2_hash.h>
+#include <axutil_hash.h>
 #include <w2c_typemapper.h>
 #include <w2c_qname2name_maker.h>
 
@@ -105,7 +105,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
      * @param env Environment. MUST NOT be NULL
      * @return uri2packagemap
      */
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_uri2packagemap)(w2c_engine_configuration_t *engine_configuration,
                 const axutil_env_t *env );
 
@@ -285,7 +285,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
      * @param env Environment. MUST NOT be NULL
      * @return policy_map
      */
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_policy_map)(w2c_engine_configuration_t *engine_configuration,
                 const axutil_env_t *env );
 
@@ -295,7 +295,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
      * @param env Environment. MUST NOT be NULL
      * @return configuration_properties
      */
-    axis2_hash_t* (AXIS2_CALL *
+    axutil_hash_t* (AXIS2_CALL *
     get_configuration_properties)(w2c_engine_configuration_t *engine_configuration,
                 const axutil_env_t *env );
 
@@ -419,7 +419,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
     axis2_status_t (AXIS2_CALL* 
     set_uri2packagemap ) ( w2c_engine_configuration_t *engine_configuration,
                 const axutil_env_t *env, 
-                axis2_hash_t *uri2packagemap );
+                axutil_hash_t *uri2packagemap );
 
     /**
      * set params_wrapped.
@@ -635,7 +635,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
     axis2_status_t (AXIS2_CALL* 
     set_policy_map ) ( w2c_engine_configuration_t *engine_configuration,
                 const axutil_env_t *env, 
-                axis2_hash_t *policy_map );
+                axutil_hash_t *policy_map );
 
     /**
      * set configuration_properties.
@@ -647,7 +647,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
     axis2_status_t (AXIS2_CALL* 
     set_configuration_properties ) ( w2c_engine_configuration_t *engine_configuration,
                 const axutil_env_t *env, 
-                axis2_hash_t *configuration_properties );
+                axutil_hash_t *configuration_properties );
 
     /**
      * set wsdl_versio.
@@ -789,7 +789,7 @@ w2c_engine_configuration_create( const axutil_env_t *env );
  */
 AXIS2_EXTERN w2c_engine_configuration_t* AXIS2_CALL
 w2c_engine_configuration_create_with_options( const axutil_env_t *env,
-                             axis2_hash_t *options );
+                             axutil_hash_t *options );
 
 
 /*************************** Function macros **********************************/

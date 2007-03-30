@@ -31,9 +31,9 @@ struct axiom_element
     /** Element's local name */
     axis2_string_t *localname;
     /** List of attributes */
-    axis2_hash_t *attributes;
+    axutil_hash_t *attributes;
     /** List of namespaces */
-    axis2_hash_t *namespaces;
+    axutil_hash_t *namespaces;
 
     axis2_qname_t *qname;
 
@@ -240,7 +240,7 @@ axiom_element_find_namespace(axiom_element_t *om_element,
         {
             /** check for a default namepsace */
             axiom_namespace_t *default_ns = NULL;
-            axis2_hash_index_t *hashindex;
+            axutil_hash_index_t *hashindex;
 
             default_ns = axiom_element_get_default_namespace(om_element ,
                 env, element_node);
@@ -259,10 +259,10 @@ axiom_element_find_namespace(axiom_element_t *om_element,
                 }
             }
             /** prefix is null , so iterate the namespaces hash to find the namespace */
-            for (hashindex = axis2_hash_first(om_element->namespaces, env);
-                hashindex; hashindex = axis2_hash_next(env, hashindex))
+            for (hashindex = axutil_hash_first(om_element->namespaces, env);
+                hashindex; hashindex = axutil_hash_next(env, hashindex))
             {
-                axis2_hash_this(hashindex, NULL, NULL, &ns);
+                axutil_hash_this(hashindex, NULL, NULL, &ns);
                 if (ns)
                 {
                     axiom_namespace_t *temp_ns = NULL;
@@ -286,7 +286,7 @@ axiom_element_find_namespace(axiom_element_t *om_element,
         else if (prefix)
         {
             /** prefix is not null get namespace directly if exist */
-            ns = axis2_hash_get(om_element->namespaces, prefix,
+            ns = axutil_hash_get(om_element->namespaces, prefix,
                 AXIS2_HASH_KEY_STRING);
             if (ns)
             {
@@ -344,7 +344,7 @@ axiom_element_declare_namespace_assume_param_ownership(axiom_element_t *om_eleme
 
     if (!(om_element->namespaces))
     {
-        om_element->namespaces = axis2_hash_make(env);
+        om_element->namespaces = axutil_hash_make(env);
         if (!(om_element->namespaces))
         {
             return AXIS2_FAILURE;
@@ -352,7 +352,7 @@ axiom_element_declare_namespace_assume_param_ownership(axiom_element_t *om_eleme
     }
     if (prefix)
     {
-        axis2_hash_set(om_element->namespaces,
+        axutil_hash_set(om_element->namespaces,
             prefix, AXIS2_HASH_KEY_STRING, ns);
     }
     else
@@ -362,7 +362,7 @@ axiom_element_declare_namespace_assume_param_ownership(axiom_element_t *om_eleme
         memset(key, 0, sizeof(char)*10);
         om_element->next_ns_prefix_number++;
         key[0] = '\0';
-        axis2_hash_set(om_element->namespaces, key,
+        axutil_hash_set(om_element->namespaces, key,
             AXIS2_HASH_KEY_STRING, ns);
     }
     axiom_namespace_increment_ref(ns, env);
@@ -406,7 +406,7 @@ axiom_element_declare_namespace(axiom_element_t *om_element,
 
     if (!(om_element->namespaces))
     {
-        om_element->namespaces = axis2_hash_make(env);
+        om_element->namespaces = axutil_hash_make(env);
         if (!(om_element->namespaces))
         {
             return AXIS2_FAILURE;
@@ -414,7 +414,7 @@ axiom_element_declare_namespace(axiom_element_t *om_element,
     }
     if (prefix)
     {
-        axis2_hash_set(om_element->namespaces,
+        axutil_hash_set(om_element->namespaces,
             prefix, AXIS2_HASH_KEY_STRING, ns);
     }
     else
@@ -424,7 +424,7 @@ axiom_element_declare_namespace(axiom_element_t *om_element,
         memset(key, 0, sizeof(char)*10);
         om_element->next_ns_prefix_number++;
         key[0] = '\0';
-        axis2_hash_set(om_element->namespaces, key,
+        axutil_hash_set(om_element->namespaces, key,
             AXIS2_HASH_KEY_STRING,  ns);
     }
     axiom_namespace_increment_ref(ns, env);
@@ -438,7 +438,7 @@ axiom_element_find_declared_namespace(axiom_element_t *om_element,
     const axis2_char_t * uri,
     const axis2_char_t * prefix)
 {
-    axis2_hash_index_t *hash_index = NULL;
+    axutil_hash_index_t *hash_index = NULL;
     void *ns = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
@@ -450,10 +450,10 @@ axiom_element_find_declared_namespace(axiom_element_t *om_element,
     if (!prefix || axis2_strcmp(prefix, "") == 0)
     {
         /** prefix null iterate the namespace hash for matching uri */
-        for (hash_index = axis2_hash_first(om_element->namespaces, env);
-            hash_index; hash_index = axis2_hash_next(env, hash_index))
+        for (hash_index = axutil_hash_first(om_element->namespaces, env);
+            hash_index; hash_index = axutil_hash_next(env, hash_index))
         {
-            axis2_hash_this(hash_index, NULL, NULL, &ns);
+            axutil_hash_this(hash_index, NULL, NULL, &ns);
             if (ns)
             {
                 axiom_namespace_t *temp_ns = NULL;
@@ -476,7 +476,7 @@ axiom_element_find_declared_namespace(axiom_element_t *om_element,
     else if (prefix)
     {
         axiom_namespace_t *found_ns = NULL;
-        ns = axis2_hash_get(om_element->namespaces, prefix, AXIS2_HASH_KEY_STRING);
+        ns = axutil_hash_get(om_element->namespaces, prefix, AXIS2_HASH_KEY_STRING);
         if (ns)
         {
             axis2_char_t *found_uri = NULL;
@@ -552,7 +552,7 @@ axiom_element_add_attribute(axiom_element_t *om_element,
 
     if (!(om_element->attributes))
     {
-        om_element->attributes = axis2_hash_make(env);
+        om_element->attributes = axutil_hash_make(env);
         if (!(om_element->attributes))
         {
             return AXIS2_FAILURE;
@@ -563,7 +563,7 @@ axiom_element_add_attribute(axiom_element_t *om_element,
     if (qname)
     {
         axis2_char_t *name = axis2_qname_to_string(qname, env);
-        axis2_hash_set(om_element->attributes,
+        axutil_hash_set(om_element->attributes,
             name, AXIS2_HASH_KEY_STRING,
             attribute);
     }
@@ -585,7 +585,7 @@ axiom_element_get_attribute(axiom_element_t *om_element,
 
     if ((om_element->attributes) && name)
     {
-        attr = (axiom_attribute_t*)(axis2_hash_get(om_element->attributes,
+        attr = (axiom_attribute_t*)(axutil_hash_get(om_element->attributes,
             name, AXIS2_HASH_KEY_STRING));
     }
     return attr;
@@ -611,36 +611,36 @@ axiom_element_free(axiom_element_t *om_element,
     }
     if (om_element->attributes)
     {
-        axis2_hash_index_t *hi;
+        axutil_hash_index_t *hi;
         void *val = NULL;
 
-        for (hi = axis2_hash_first(om_element->attributes, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(om_element->attributes, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
 
             if (val)
             {
                 axiom_attribute_free((axiom_attribute_t *)val, env);
             }
         }
-        axis2_hash_free(om_element->attributes, env);
+        axutil_hash_free(om_element->attributes, env);
     }
 
     if (om_element->namespaces)
     {
-        axis2_hash_index_t *hi;
+        axutil_hash_index_t *hi;
         void *val = NULL;
-        for (hi = axis2_hash_first(om_element->namespaces, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(om_element->namespaces, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
             if (val)
             {
                 axiom_namespace_free((axiom_namespace_t *)val, env);
             }
         }
-        axis2_hash_free(om_element->namespaces, env);
+        axutil_hash_free(om_element->namespaces, env);
     }
     if (om_element->qname)
     {
@@ -705,12 +705,12 @@ axiom_element_serialize_start_part(axiom_element_t *om_element,
     }
     if (om_element->attributes)
     {
-        axis2_hash_index_t *hi;
+        axutil_hash_index_t *hi;
         void *val;
-        for (hi = axis2_hash_first(om_element->attributes, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(om_element->attributes, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
 
             if (val)
             {
@@ -728,12 +728,12 @@ axiom_element_serialize_start_part(axiom_element_t *om_element,
 
     if (om_element->namespaces)
     {
-        axis2_hash_index_t *hi;
+        axutil_hash_index_t *hi;
         void *val;
-        for (hi = axis2_hash_first(om_element->namespaces, env); hi;
-            hi = axis2_hash_next(env, hi))
+        for (hi = axutil_hash_first(om_element->namespaces, env); hi;
+            hi = axutil_hash_next(env, hi))
         {
-            axis2_hash_this(hi, NULL, NULL, &val);
+            axutil_hash_this(hi, NULL, NULL, &val);
 
             if (val)
             {
@@ -854,7 +854,7 @@ axiom_element_set_namespace_assume_param_ownership(axiom_element_t *om_element,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axiom_element_get_all_attributes(axiom_element_t *om_element,
     const axutil_env_t *env)
 {
@@ -862,7 +862,7 @@ axiom_element_get_all_attributes(axiom_element_t *om_element,
     return om_element->attributes;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axiom_element_get_namespaces(axiom_element_t *om_element,
     const axutil_env_t *env)
 {
@@ -1007,7 +1007,7 @@ axiom_element_remove_attribute(axiom_element_t *om_element,
         name = axis2_qname_to_string(qname, env);
         if (name)
         {
-            axis2_hash_set(om_element->attributes, name,
+            axutil_hash_set(om_element->attributes, name,
                 AXIS2_HASH_KEY_STRING, NULL);
             return AXIS2_SUCCESS;
         }
@@ -1238,7 +1238,7 @@ axiom_element_get_default_namespace(axiom_element_t *om_element,
 
     if (om_element->namespaces)
     {
-        default_ns = axis2_hash_get(om_element->namespaces, "",
+        default_ns = axutil_hash_get(om_element->namespaces, "",
             AXIS2_HASH_KEY_STRING);
         if (default_ns)
         {
@@ -1285,14 +1285,14 @@ axiom_element_declare_default_namespace(axiom_element_t *om_element,
     }
     if (om_element->namespaces)
     {
-        om_element->namespaces = axis2_hash_make(env);
+        om_element->namespaces = axutil_hash_make(env);
         if (!(om_element->namespaces))
         {
             return NULL;
         }
     }
 
-    axis2_hash_set(om_element->namespaces, "",
+    axutil_hash_set(om_element->namespaces, "",
         AXIS2_HASH_KEY_STRING, default_ns);
     axiom_namespace_increment_ref(default_ns, env);
     return default_ns;
@@ -1318,7 +1318,7 @@ axiom_element_find_namespace_uri(axiom_element_t *om_element,
 
     if (om_element->namespaces)
     {
-        ns = axis2_hash_get(om_element->namespaces, prefix,
+        ns = axutil_hash_get(om_element->namespaces, prefix,
             AXIS2_HASH_KEY_STRING);
         if (ns)
         {
@@ -1355,7 +1355,7 @@ axiom_element_get_attribute_value(axiom_element_t *om_element,
 
     if ((om_element->attributes) && (NULL != name))
     {
-        attr = (axiom_attribute_t*) axis2_hash_get(om_element->attributes,
+        attr = (axiom_attribute_t*) axutil_hash_get(om_element->attributes,
             name, AXIS2_HASH_KEY_STRING);
         if (attr)
         {
@@ -1377,13 +1377,13 @@ axiom_element_set_namespace_with_no_find_in_current_scope(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
 axiom_element_extract_attributes(axiom_element_t *om_element,
     const axutil_env_t *env,
     axiom_node_t *ele_node)
 {
-    axis2_hash_index_t *hi = NULL;
-    axis2_hash_t *ht_cloned = NULL;
+    axutil_hash_index_t *hi = NULL;
+    axutil_hash_t *ht_cloned = NULL;
 
     axiom_attribute_t *om_attr = NULL;
     axiom_attribute_t *cloned_attr = NULL;
@@ -1399,18 +1399,18 @@ axiom_element_extract_attributes(axiom_element_t *om_element,
     {
         return NULL;
     }
-    ht_cloned = axis2_hash_make(env);
+    ht_cloned = axutil_hash_make(env);
     if (!ht_cloned)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    for (hi = axis2_hash_first(om_element->attributes, env);
-        hi; hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(om_element->attributes, env);
+        hi; hi = axutil_hash_next(env, hi))
     {
         void *val = NULL;
-        axis2_hash_this(hi, NULL, NULL, &val);
+        axutil_hash_this(hi, NULL, NULL, &val);
         if (val)
         {
             om_attr = (axiom_attribute_t *)val;
@@ -1424,7 +1424,7 @@ axiom_element_extract_attributes(axiom_element_t *om_element,
             }
             qn = axiom_attribute_get_qname(cloned_attr, env);
             key = axis2_qname_to_string(qn, env);
-            axis2_hash_set(ht_cloned, key, AXIS2_HASH_KEY_STRING, cloned_attr);
+            axutil_hash_set(ht_cloned, key, AXIS2_HASH_KEY_STRING, cloned_attr);
         }
         val = NULL;
         key = NULL;
@@ -1442,19 +1442,19 @@ axiom_element_get_attribute_value_by_name(axiom_element_t *om_element,
     const axutil_env_t *env,
     axis2_char_t *attr_name)
 {
-    axis2_hash_index_t *hi = NULL;
+    axutil_hash_index_t *hi = NULL;
 
     AXIS2_PARAM_CHECK(env->error, attr_name, NULL);
     if (!om_element->attributes)
     {
         return NULL;
     }
-    for (hi = axis2_hash_first(om_element->attributes, env); hi;
-         hi = axis2_hash_next(env, hi))
+    for (hi = axutil_hash_first(om_element->attributes, env); hi;
+         hi = axutil_hash_next(env, hi))
     {
         void *attr = NULL;
         axiom_attribute_t *om_attr = NULL;
-        axis2_hash_this(hi, NULL, NULL, &attr);
+        axutil_hash_this(hi, NULL, NULL, &attr);
         if (attr)
         {
             axis2_char_t *this_attr_name;
