@@ -33,10 +33,6 @@
 
 
 #define READ_SIZE  2048
-/**
- * @brief Apahche2 Worker struct impl
- *   Axis2 Apache2 Worker impl
- */
 
 typedef struct axis2_apache2_worker_impl
 {
@@ -47,8 +43,6 @@ axis2_apache2_worker_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(apache2_worker) ((axis2_apache2_worker_impl_t *)\
                         (apache2_worker))
-
-/***************************** Function headers *******************************/
 
 int AXIS2_CALL
 axis2_apache2_worker_process_request(
@@ -161,9 +155,7 @@ axis2_apache2_worker_process_request(
 
     apache2_worker_impl = AXIS2_INTF_TO_IMPL(apache2_worker);
     conf_ctx = apache2_worker_impl->conf_ctx;
-    /*url = axis2_url_create(env, "http",
-            (axis2_char_t *)ap_get_server_name(request),
-            ap_get_server_port(request), request->unparsed_uri);*/
+
     if (! conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
@@ -172,7 +164,6 @@ axis2_apache2_worker_process_request(
     }
     content_length = request->remaining;
     http_version = request->protocol;
-    /*req_url = axis2_url_to_external_form(url, env);*/
     req_url = request->unparsed_uri;
 
     content_type = (axis2_char_t *)apr_table_get(request->headers_in,
@@ -207,9 +198,6 @@ axis2_apache2_worker_process_request(
 
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
-    /*axis2_msg_ctx_set_transport_headers(msg_ctx, env, 
-                   axis2_apache2_worker_get_headers(apache2_worker, env, 
-                         simple_request));*/
     ctx_uuid = axis2_uuid_gen(env);
     if (ctx_uuid)
     {
@@ -295,36 +283,22 @@ axis2_apache2_worker_process_request(
         }
         else
         {
-            send_status = HTTP_ACCEPTED;
+            send_status = DONE;
+            request->status = HTTP_ACCEPTED;
         }
     }
+    
     if (body_string)
     {
         ap_rwrite(body_string, body_string_len, request);
         body_string = NULL;
     }
     
-    /*if (url)
-    {
-        axis2_url_free(url, env);
-        url = NULL;
-    }
-    if (req_url)
-    {
-        AXIS2_FREE(env->allocator, req_url);
-        req_url = NULL;
-    }*/
-    
     if (request_body)
     {
         AXIS2_STREAM_FREE(request_body, env);
         request_body = NULL;
     }
-
-    /*if (send_status != HTTP_INTERNAL_SERVER_ERROR)
-    {
-         axis2_msg_ctx_free(msg_ctx, env);
-    }*/
 
     axis2_string_free(soap_action, env);
 
