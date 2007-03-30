@@ -15,25 +15,25 @@
  * limitations under the License.
  */
 
-#include <axis2_file.h>
+#include <axutil_file.h>
 #include <axis2_string.h>
 
-struct axis2_file
+struct axutil_file
 {
     axis2_char_t *name;
     axis2_char_t *path;
     AXIS2_TIME_T timestamp;
 };
 
-AXIS2_EXTERN axis2_file_t *AXIS2_CALL
-axis2_file_create(const axutil_env_t *env)
+AXIS2_EXTERN axutil_file_t *AXIS2_CALL
+axutil_file_create(const axutil_env_t *env)
 {
-    axis2_file_t *file = NULL;
+    axutil_file_t *file = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    file = (axis2_file_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_file_t));
+    file = (axutil_file_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axutil_file_t));
 
     if (! file)
     {
@@ -48,7 +48,7 @@ axis2_file_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_file_free(axis2_file_t *file,
+axutil_file_free(axutil_file_t *file,
         const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -71,7 +71,7 @@ axis2_file_free(axis2_file_t *file,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_file_set_name(axis2_file_t *file,
+axutil_file_set_name(axutil_file_t *file,
         const axutil_env_t *env,
         axis2_char_t *name)
 {
@@ -93,7 +93,7 @@ axis2_file_set_name(axis2_file_t *file,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axis2_file_get_name(axis2_file_t *file,
+axutil_file_get_name(axutil_file_t *file,
         const axutil_env_t *env)
 {
     if (!file->name)
@@ -106,7 +106,7 @@ axis2_file_get_name(axis2_file_t *file,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_file_set_path(axis2_file_t *file,
+axutil_file_set_path(axutil_file_t *file,
         const axutil_env_t *env,
         axis2_char_t *path)
 {
@@ -131,7 +131,7 @@ axis2_file_set_path(axis2_file_t *file,
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-axis2_file_get_path(axis2_file_t *file,
+axutil_file_get_path(axutil_file_t *file,
         const axutil_env_t *env)
 {
     if (!(file->path))
@@ -145,7 +145,7 @@ axis2_file_get_path(axis2_file_t *file,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_file_set_timestamp(axis2_file_t *file,
+axutil_file_set_timestamp(axutil_file_t *file,
         const axutil_env_t *env,
         AXIS2_TIME_T timestamp)
 {
@@ -154,31 +154,31 @@ axis2_file_set_timestamp(axis2_file_t *file,
 }
 
 AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
-axis2_file_get_timestamp(axis2_file_t *file,
+axutil_file_get_timestamp(axutil_file_t *file,
         const axutil_env_t *env)
 {
     return file->timestamp;
 }
 
-AXIS2_EXTERN axis2_file_t *AXIS2_CALL
-axis2_file_clone(axis2_file_t *file,
+AXIS2_EXTERN axutil_file_t *AXIS2_CALL
+axutil_file_clone(axutil_file_t *file,
         const axutil_env_t *env)
 {
-    axis2_file_t *new_file = NULL;
+    axutil_file_t *new_file = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
-    new_file = axis2_file_create(env);
-    status =  axis2_file_set_name(new_file, env, file->name);
+    new_file = axutil_file_create(env);
+    status =  axutil_file_set_name(new_file, env, file->name);
     if (AXIS2_SUCCESS != status)
     {
         return NULL;
     }
-    status =  axis2_file_set_path(new_file, env, file->path);
+    status =  axutil_file_set_path(new_file, env, file->path);
     if (AXIS2_SUCCESS != status)
     {
         return NULL;
     }
-     axis2_file_set_timestamp(new_file, env, file->timestamp);
+     axutil_file_set_timestamp(new_file, env, file->timestamp);
     return new_file;
 }
 

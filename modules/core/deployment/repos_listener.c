@@ -243,7 +243,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
     size = axutil_array_list_size(current_info_list, env);
     for (i = 0; i < size; i++) /* loop until empty */
     {
-        axis2_file_t *file = NULL;
+        axutil_file_t *file = NULL;
         file = axutil_array_list_get(current_info_list, env, i);
         status = axis2_ws_info_list_add_ws_info_item(repos_listener->info_list, env,
             file, type);
@@ -255,10 +255,10 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
             size_j = axutil_array_list_size(current_info_list, env);
             for (j = 0; j < size_j; j++)
             {
-                axis2_file_t *del_file = NULL;
+                axutil_file_t *del_file = NULL;
 
                 del_file = axutil_array_list_get(current_info_list, env, j);
-                axis2_file_free(del_file, env);
+                axutil_file_free(del_file, env);
             }
             axutil_array_list_free(current_info_list, env);
             current_info_list = NULL;
@@ -268,10 +268,10 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
 
     for (i = 0; i < size; i++)
     {
-        axis2_file_t *del_file = NULL;
+        axutil_file_t *del_file = NULL;
 
         del_file = axutil_array_list_get(current_info_list, env, i);
-        axis2_file_free(del_file, env);
+        axutil_file_free(del_file, env);
     }
     axutil_array_list_free(current_info_list, env);
     current_info_list = NULL;

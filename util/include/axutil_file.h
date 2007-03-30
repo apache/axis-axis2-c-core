@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_FILE_H
-#define AXIS2_FILE_H
+#ifndef AXUTIL_FILE_H
+#define AXUTIL_FILE_H
 
 #include <axis2_utils_defines.h>
 #include <axutil_error.h>
@@ -30,10 +30,10 @@ extern "C"
 {
 #endif
 
-    typedef struct axis2_file axis2_file_t;
+    typedef struct axutil_file axutil_file_t;
 
     /**
-     * @defgroup axis2_file file
+     * @defgroup axutil_file file
      * @ingroup axis2_util
      * @{
      */
@@ -42,45 +42,45 @@ extern "C"
      * create new file
      * @return file newly created file
      */
-    AXIS2_EXTERN axis2_file_t * AXIS2_CALL
-    axis2_file_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_file_t * AXIS2_CALL
+    axutil_file_create(const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_file_free(axis2_file_t *file,
+    axutil_file_free(axutil_file_t *file,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_file_set_name(axis2_file_t *file,
+    axutil_file_set_name(axutil_file_t *file,
         const axutil_env_t *env,
         axis2_char_t *name);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_file_get_name(axis2_file_t *file,
+    axutil_file_get_name(axutil_file_t *file,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_file_set_path(axis2_file_t *file,
+    axutil_file_set_path(axutil_file_t *file,
         const axutil_env_t *env,
         axis2_char_t *path);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_file_get_path(axis2_file_t *file,
+    axutil_file_get_path(axutil_file_t *file,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_file_set_timestamp(axis2_file_t *file,
+    axutil_file_set_timestamp(axutil_file_t *file,
         const axutil_env_t *env,
         AXIS2_TIME_T timestamp);
 
     AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
-    axis2_file_get_timestamp(axis2_file_t *file,
+    axutil_file_get_timestamp(axutil_file_t *file,
         const axutil_env_t *env);
 
     /**
      * create a newly allocated clone of the argument file
      */
-    AXIS2_EXTERN axis2_file_t * AXIS2_CALL
-    axis2_file_clone(axis2_file_t *file,
+    AXIS2_EXTERN axutil_file_t * AXIS2_CALL
+    axutil_file_clone(axutil_file_t *file,
         const axutil_env_t *env);
 
 #ifdef __cplusplus

@@ -21,7 +21,7 @@
 
 struct axis2_arch_file_data
 {
-    axis2_file_t *file;
+    axutil_file_t *file;
     int type;
     axis2_char_t *msg_recv;
     axis2_char_t *module_name;
@@ -77,7 +77,7 @@ axis2_arch_file_data_create(const axutil_env_t *env)
 AXIS2_EXTERN axis2_arch_file_data_t *AXIS2_CALL
 axis2_arch_file_data_create_with_type_and_file(const axutil_env_t *env,
     int type,
-    axis2_file_t *file)
+    axutil_file_t *file)
 {
     axis2_arch_file_data_t *arch_file_data = NULL;
     arch_file_data = (axis2_arch_file_data_t *)
@@ -89,7 +89,7 @@ axis2_arch_file_data_create_with_type_and_file(const axutil_env_t *env,
     }
 
     arch_file_data->type = type;
-    arch_file_data->file =  axis2_file_clone(file, env);
+    arch_file_data->file =  axutil_file_clone(file, env);
     return arch_file_data;
 }
 
@@ -118,7 +118,7 @@ axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
 
     if (arch_file_data->file)
     {
-        axis2_file_free(arch_file_data->file, env);
+        axutil_file_free(arch_file_data->file, env);
     }
     if (arch_file_data->msg_recv)
     {
@@ -196,7 +196,7 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_arch_file_data_get_name(const axis2_arch_file_data_t *arch_file_data,
     const axutil_env_t *env)
 {
-    return  axis2_file_get_name(arch_file_data->file, env);
+    return  axutil_file_get_name(arch_file_data->file, env);
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -209,7 +209,7 @@ axis2_arch_file_data_get_svc_name(const axis2_arch_file_data_t *arch_file_data,
 
     if (arch_file_data->file)
     {
-        svc_name =  axis2_file_get_name(arch_file_data->file, env);
+        svc_name =  axutil_file_get_name(arch_file_data->file, env);
     }
     else
     {
@@ -226,7 +226,7 @@ axis2_arch_file_data_get_type(const axis2_arch_file_data_t *arch_file_data,
     return arch_file_data->type;
 }
 
-AXIS2_EXTERN axis2_file_t *AXIS2_CALL
+AXIS2_EXTERN axutil_file_t *AXIS2_CALL
 axis2_arch_file_data_get_file(const axis2_arch_file_data_t *arch_file_data,
     const axutil_env_t *env)
 {
@@ -243,7 +243,7 @@ axis2_arch_file_data_get_module_name(const axis2_arch_file_data_t *arch_file_dat
 
     if (arch_file_data->file)
     {
-        module_name =  axis2_file_get_name(arch_file_data->file, env);
+        module_name =  axutil_file_get_name(arch_file_data->file, env);
     }
     else
     {

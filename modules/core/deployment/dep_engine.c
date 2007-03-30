@@ -894,7 +894,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
     for (i = 0; i < sizei; i++)
     {
         axis2_svc_t *svc = NULL;
-        axis2_file_t *file = NULL;
+        axutil_file_t *file = NULL;
         axutil_array_list_t *grp_modules = NULL;
         axutil_array_list_t *list = NULL;
         int sizej = 0;
@@ -907,7 +907,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
 
         /*axis2_dep_engine_load_svc_props(dep_engine, env, svc);*/
         file = axis2_arch_file_data_get_file(dep_engine->curr_file, env);
-        file_name =  axis2_file_get_name(file, env);
+        file_name =  axutil_file_get_name(file, env);
         axis2_svc_set_file_name(svc, env, file_name);
 
         /* modules from svc group */
@@ -1025,7 +1025,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     axis2_module_t *module = NULL;
     axutil_dll_desc_t *dll_desc = NULL;
     axis2_param_t *impl_info_param = NULL;
-    axis2_file_t *module_folder = NULL;
+    axutil_file_t *module_folder = NULL;
     AXIS2_TIME_T timestamp = 0;
     axis2_char_t *module_folder_path = NULL;
     axis2_char_t *temp_path = NULL;
@@ -1043,9 +1043,9 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
         read_in_dll);
 
     module_folder = axis2_arch_file_data_get_file(dep_engine->curr_file, env);
-    timestamp =  axis2_file_get_timestamp(module_folder, env);
+    timestamp =  axutil_file_get_timestamp(module_folder, env);
     axutil_dll_desc_set_timestamp(dll_desc, env, timestamp);
-    module_folder_path =  axis2_file_get_path(module_folder, env);
+    module_folder_path =  axutil_file_get_path(module_folder, env);
     temp_path = axis2_stracat(env, module_folder_path, AXIS2_PATH_SEP_STR);
     dll_path = axis2_stracat(env, temp_path, dll_name);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
@@ -1428,7 +1428,7 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
 AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
 axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     const axutil_env_t *env,
-    axis2_file_t *module_archive,
+    axutil_file_t *module_archive,
     axis2_conf_t *conf)
 {
     axis2_module_desc_t *module_desc = NULL;
@@ -1452,7 +1452,7 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
         AXIS2_MODULE, module_archive);
     module_desc = axis2_module_desc_create(env);
     arch_reader = axis2_arch_reader_create(env);
-    file_name =  axis2_file_get_name(module_archive, env);
+    file_name =  axutil_file_get_name(module_archive, env);
     status = axis2_arch_reader_read_module_arch(arch_reader, env, file_name,
         dep_engine, module_desc);
     axis2_arch_reader_free(arch_reader, env);

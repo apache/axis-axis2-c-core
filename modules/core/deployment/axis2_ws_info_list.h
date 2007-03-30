@@ -93,7 +93,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
         const axutil_env_t *env,
-        axis2_file_t *file,
+        axutil_file_t *file,
         int type);
 
     /**
@@ -119,7 +119,7 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_ws_info_list_is_modified(axis2_ws_info_list_t *info_list,
         const axutil_env_t *env,
-        axis2_file_t *file,
+        axutil_file_t *file,
         struct axis2_ws_info *ws_info);
 
     /**

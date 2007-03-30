@@ -121,7 +121,7 @@ extern "C"
      * @param env pointer to environment struct
      * @param module_name pointer to module name
      */
-    AXIS2_EXTERN axis2_file_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_file_t *AXIS2_CALL
     axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
         const axutil_env_t *env,
         axis2_char_t *module_name);

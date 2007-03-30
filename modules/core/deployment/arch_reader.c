@@ -271,21 +271,21 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     return status;
 }
 
-AXIS2_EXTERN axis2_file_t *AXIS2_CALL
+AXIS2_EXTERN axutil_file_t *AXIS2_CALL
 axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
     const axutil_env_t *env,
     axis2_char_t *module_name)
 {
-    axis2_file_t *file = NULL;
+    axutil_file_t *file = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    file = axis2_file_create(env);
+    file = axutil_file_create(env);
     if (!file)
     {
         return NULL;
     }
-     axis2_file_set_name(file, env, module_name);
+     axutil_file_set_name(file, env, module_name);
     return file;
 }
 

@@ -157,7 +157,7 @@ axis2_ws_info_list_init(axis2_ws_info_list_t *ws_info_list,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *ws_info_list,
     const axutil_env_t *env,
-    axis2_file_t *file,
+    axutil_file_t *file,
     int type)
 {
     axis2_status_t status = AXIS2_FAILURE;
@@ -167,7 +167,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *ws_info_list,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
 
-    temp_name =  axis2_file_get_name(file, env);
+    temp_name =  axutil_file_get_name(file, env);
     info_list_name = axis2_strdup(env, temp_name);
     if (!info_list_name)
     {
@@ -186,7 +186,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *ws_info_list,
             long last_modified_date = 0;
             axis2_arch_file_data_t *file_data = NULL;
 
-            last_modified_date =  axis2_file_get_timestamp(file, env);
+            last_modified_date =  axutil_file_get_timestamp(file, env);
             ws_info = axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
                 env, info_list_name, last_modified_date, AXIS2_SVC);
             status = axutil_array_list_add(ws_info_list->ws_info_list, env, ws_info);
@@ -219,7 +219,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *ws_info_list,
             long last_modified_date = 0;
             axis2_arch_file_data_t *file_data = NULL;
 
-            last_modified_date =  axis2_file_get_timestamp(file, env);
+            last_modified_date =  axutil_file_get_timestamp(file, env);
             ws_info = axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
                 env, info_list_name, last_modified_date, AXIS2_MODULE);
             status = axutil_array_list_add(ws_info_list->ws_info_list, env, ws_info);
@@ -278,7 +278,7 @@ axis2_ws_info_list_get_file_item(axis2_ws_info_list_t *ws_info_list,
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_ws_info_list_is_modified(axis2_ws_info_list_t *ws_info_list,
     const axutil_env_t *env,
-    axis2_file_t *file,
+    axutil_file_t *file,
     axis2_ws_info_t *ws_info)
 {
     long last_modified_date = 0;
@@ -288,7 +288,7 @@ axis2_ws_info_list_is_modified(axis2_ws_info_list_t *ws_info_list,
     AXIS2_PARAM_CHECK(env->error, ws_info, AXIS2_FAILURE);
 
     last_modified_date = axis2_ws_info_get_last_modified_date(ws_info, env);
-    return (last_modified_date !=  axis2_file_get_timestamp(file, env));
+    return (last_modified_date !=  axutil_file_get_timestamp(file, env));
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

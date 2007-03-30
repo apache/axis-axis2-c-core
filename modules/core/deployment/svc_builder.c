@@ -169,7 +169,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axutil_dll_desc_t *dll_desc = NULL;
     axis2_param_t *impl_info_param = NULL;
     axis2_arch_file_data_t *arch_file_data = NULL;
-    axis2_file_t *svc_folder = NULL;
+    axutil_file_t *svc_folder = NULL;
     axis2_char_t *dll_path = NULL;
     axis2_char_t *svc_folder_path = NULL;
     int i = 0;
@@ -257,9 +257,9 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         axis2_desc_builder_get_dep_engine(svc_builder->desc_builder, env), 
             env);
     svc_folder = axis2_arch_file_data_get_file(arch_file_data, env);
-    timestamp =  axis2_file_get_timestamp(svc_folder, env);
+    timestamp =  axutil_file_get_timestamp(svc_folder, env);
     axutil_dll_desc_set_timestamp(dll_desc, env, timestamp);
-    svc_folder_path =  axis2_file_get_path(svc_folder, env);
+    svc_folder_path =  axutil_file_get_path(svc_folder, env);
     dll_path = axis2_strcat(env, svc_folder_path, AXIS2_PATH_SEP_STR,
         svc_dll_name, NULL);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dll path is : %s", dll_path);

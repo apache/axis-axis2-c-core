@@ -1296,7 +1296,7 @@ axis2_conf_engage_module(
     module_desc = axis2_conf_get_module(conf, env, module_ref);
     if (! module_desc)
     {
-        axis2_file_t *file = NULL;
+        axutil_file_t *file = NULL;
         axis2_char_t *file_name = NULL;
         axis2_arch_reader_t *arch_reader = NULL;
         const axis2_char_t *repos_path = NULL;
@@ -1312,7 +1312,7 @@ axis2_conf_engage_module(
             return AXIS2_FAILURE;
         }
         file_name = axis2_qname_get_localpart(module_ref, env);
-        file = (axis2_file_t *) axis2_arch_reader_create_module_arch(
+        file = (axutil_file_t *) axis2_arch_reader_create_module_arch(
                     arch_reader, env, file_name) ;
         repos_path =  axis2_conf_get_repo(conf, env);
         temp_path1 = axis2_stracat(env, repos_path, AXIS2_PATH_SEP_STR);
@@ -1322,7 +1322,7 @@ axis2_conf_engage_module(
         AXIS2_FREE(env->allocator, temp_path1);
         AXIS2_FREE(env->allocator, temp_path2);
         AXIS2_FREE(env->allocator, temp_path3);
-         axis2_file_set_path(file, env, path);
+         axutil_file_set_path(file, env, path);
         file_data = axis2_arch_file_data_create_with_type_and_file(env,
                 AXIS2_MODULE, file);
 

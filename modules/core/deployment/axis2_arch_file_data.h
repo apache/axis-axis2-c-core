@@ -32,7 +32,7 @@
 #include <axis2_conf.h>
 #include <axutil_array_list.h>
 #include <axutil_dir_handler.h>
-#include <axis2_file.h>
+#include <axutil_file.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -104,7 +104,7 @@ extern "C"
      * @param file_data pointer to arch_file_data
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_file_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_file_t *AXIS2_CALL
     axis2_arch_file_data_get_file(const axis2_arch_file_data_t *file_data,
         const axutil_env_t *env);
 
@@ -209,7 +209,7 @@ extern "C"
     AXIS2_EXTERN axis2_arch_file_data_t *AXIS2_CALL
     axis2_arch_file_data_create_with_type_and_file(const axutil_env_t *env,
         int type,
-        axis2_file_t *file);
+        axutil_file_t *file);
 
     /**
      * Creates arch file data struct

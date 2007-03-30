@@ -25,7 +25,7 @@
 #include <axis2_log_default.h>
 #include <axis2_log.h>
 #include <axutil_dir_handler.h>
-#include <axis2_file.h>
+#include <axutil_file.h>
 #include "axis2_log.h"
 #include "test_thread.h"
 #include <test_log.h>
@@ -110,7 +110,7 @@ int test_hash_get(const axutil_env_t *env)
 void test_axutil_dir_handler_list_service_or_module_dirs()
 {
     int i, isize;
-    axis2_file_t *file = NULL;
+    axutil_file_t *file = NULL;
     axis2_char_t *filename = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axutil_error_t *error = axutil_error_create(allocator);
@@ -131,8 +131,8 @@ void test_axutil_dir_handler_list_service_or_module_dirs()
 
     for (i = 0;i < isize;++i)
     {
-        file = (axis2_file_t*)axutil_array_list_get(arr_folders, env, i);
-        filename =  axis2_file_get_name(file, env);
+        file = (axutil_file_t*)axutil_array_list_get(arr_folders, env, i);
+        filename =  axutil_file_get_name(file, env);
         printf("filename = %s \n", filename);
     }
     printf("----end of test_axutil_dir_handler_list_service_or_module_dirs----\n");

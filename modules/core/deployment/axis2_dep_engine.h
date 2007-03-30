@@ -228,7 +228,7 @@ extern "C"
     AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
     axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
         const axutil_env_t *env,
-        axis2_file_t *module_archive,
+        axutil_file_t *module_archive,
         struct axis2_conf *conf);
 
     /** 
