@@ -35,7 +35,7 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <woden.h>
 #include <woden_documentable_element.h>
 #include <woden_configurable_element.h>
@@ -122,7 +122,7 @@ struct woden_interface_op_element_ops
             const axis2_env_t *env,
             void *msg_ref);
  
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_interface_msg_ref_elements) (
             void *iface_op_ele,
             const axis2_env_t *env);
@@ -139,7 +139,7 @@ struct woden_interface_op_element_ops
             const axis2_env_t *env,
             void *fault_ref);
  
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_interface_fault_ref_elements) (
             void *iface_op_ele,
             const axis2_env_t *env);

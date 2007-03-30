@@ -38,7 +38,7 @@ int axis2_test_dep_engine_load()
     axis2_dep_engine_t *dep_engine = NULL;
     axis2_conf_t *conf = NULL;
     axis2_hash_t *svc_map = NULL;
-    axis2_array_list_t *in_phases = NULL;
+    axutil_array_list_t *in_phases = NULL;
     axis2_char_t *axis2c_home = NULL;
 
     printf("******************************************\n");
@@ -212,7 +212,7 @@ int axis2_test_default_module_version()
     axis2_module_desc_t *module4 = NULL;
     axis2_module_desc_t *module5 = NULL;
     axis2_module_desc_t *def_mod = NULL;
-    axis2_array_list_t *engaged_modules = NULL;
+    axutil_array_list_t *engaged_modules = NULL;
     axis2_qname_t *engage_qname = NULL;
     axis2_bool_t found1 = AXIS2_FALSE;
     axis2_bool_t found2 = AXIS2_FALSE;
@@ -282,11 +282,11 @@ int axis2_test_default_module_version()
     {
         int list_size = 0;
         int i = 0;
-        list_size = axis2_array_list_size(engaged_modules, env);
+        list_size = axutil_array_list_size(engaged_modules, env);
         for (i = 0; i < list_size; i++)
         {
             axis2_qname_t *engaged_mod_qname = NULL;
-            engaged_mod_qname = axis2_array_list_get(engaged_modules, env, i);
+            engaged_mod_qname = axutil_array_list_get(engaged_modules, env, i);
             if (0 == axis2_strcmp("module2-0.92",
                     axis2_qname_get_localpart(engaged_mod_qname, env)))
             {

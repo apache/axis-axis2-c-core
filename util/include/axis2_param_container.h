@@ -34,7 +34,7 @@
 #include <axis2_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 
 /*#include <axiom_element.h>*/
@@ -102,7 +102,7 @@ extern "C"
     /** To get all the params in a given description
      * @return all the params contained
      */
-    AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
     axis2_param_container_get_params(axis2_param_container_t *param_container,
         const axis2_env_t *env);
 

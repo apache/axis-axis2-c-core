@@ -38,7 +38,7 @@
  */
 
 #include <axiom_node.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_msg_ctx.h>
 
 #ifdef __cplusplus
@@ -124,7 +124,7 @@ extern "C"
         /** operations of service skeleton */
         axis2_svc_skeleton_ops_t *ops;
         /** Array list of functions, implementing the service operations */
-        axis2_array_list_t *func_array;
+        axutil_array_list_t *func_array;
     };
 
 

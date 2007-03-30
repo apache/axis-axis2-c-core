@@ -35,7 +35,7 @@
 #include <axis2_http_request_line.h>
 #include <axis2_http_header.h>
 #include <axis2_stream.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 
 #ifdef __cplusplus
@@ -79,7 +79,7 @@ extern "C"
      * @param simple_request pointer to simple request
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_http_simple_request_get_headers(const axis2_http_simple_request_t *simple_request,
         const axis2_env_t *env);
 

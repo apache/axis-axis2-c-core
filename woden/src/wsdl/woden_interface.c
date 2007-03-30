@@ -36,12 +36,12 @@ struct woden_interface_impl
     woden_obj_types_t obj_type;
     axis2_hash_t *super;
     axis2_hash_t *methods;
-    axis2_array_list_t *f_extended_interfaces;
+    axutil_array_list_t *f_extended_interfaces;
     axis2_qname_t *f_qname;
-    axis2_array_list_t *f_extends_qnames;
-    axis2_array_list_t *f_style_default;
-    axis2_array_list_t *f_interface_fault_elements;
-    axis2_array_list_t *f_interface_op_elements;
+    axutil_array_list_t *f_extends_qnames;
+    axutil_array_list_t *f_style_default;
+    axutil_array_list_t *f_interface_fault_elements;
+    axutil_array_list_t *f_interface_op_elements;
 };
 
 #define INTF_TO_IMPL(interface) ((woden_interface_impl_t *) interface)
@@ -74,12 +74,12 @@ woden_interface_get_qname(
     void *interface,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_extended_interfaces(
     void *interface,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_interface_faults(
     void *interface,
     const axis2_env_t *env);
@@ -90,7 +90,7 @@ woden_interface_get_interface_fault(
     const axis2_env_t *env,
     axis2_qname_t *qname);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_interface_ops(
     void *interface,
     const axis2_env_t *env);
@@ -126,7 +126,7 @@ woden_interface_add_extended_qname(
     const axis2_env_t *env,
     woden_wsdl_element_t *qname);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_extends_qnames(
     void *interface,
     const axis2_env_t *env);
@@ -137,7 +137,7 @@ woden_interface_add_interface_fault_element(
     const axis2_env_t *env,
     void *fault);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_interface_fault_elements(
     void *interface,
     const axis2_env_t *env);
@@ -148,7 +148,7 @@ woden_interface_add_interface_op_element(
     const axis2_env_t *env,
     void *op);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_interface_op_elements(
     void *interface,
     const axis2_env_t *env);
@@ -516,7 +516,7 @@ woden_interface_free(void *interface,
 
     if (interface_impl->f_extended_interfaces)
     {
-        axis2_array_list_free(interface_impl->f_extended_interfaces, env);
+        axutil_array_list_free(interface_impl->f_extended_interfaces, env);
         interface_impl->f_extended_interfaces = NULL;
     }
 
@@ -528,25 +528,25 @@ woden_interface_free(void *interface,
 
     if (interface_impl->f_extends_qnames)
     {
-        axis2_array_list_free(interface_impl->f_extends_qnames, env);
+        axutil_array_list_free(interface_impl->f_extends_qnames, env);
         interface_impl->f_extends_qnames = NULL;
     }
 
     if (interface_impl->f_style_default)
     {
-        axis2_array_list_free(interface_impl->f_style_default, env);
+        axutil_array_list_free(interface_impl->f_style_default, env);
         interface_impl->f_style_default = NULL;
     }
 
     if (interface_impl->f_interface_fault_elements)
     {
-        axis2_array_list_free(interface_impl->f_interface_fault_elements, env);
+        axutil_array_list_free(interface_impl->f_interface_fault_elements, env);
         interface_impl->f_interface_fault_elements = NULL;
     }
 
     if (interface_impl->f_interface_op_elements)
     {
-        axis2_array_list_free(interface_impl->f_interface_op_elements, env);
+        axutil_array_list_free(interface_impl->f_interface_op_elements, env);
         interface_impl->f_interface_op_elements = NULL;
     }
 
@@ -701,7 +701,7 @@ woden_interface_get_qname(
     return interface_impl->f_qname;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_extended_interfaces(
     void *interface,
     const axis2_env_t *env)
@@ -717,7 +717,7 @@ woden_interface_get_extended_interfaces(
     return interface_impl->f_extended_interfaces;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_interface_faults(
     void *interface,
     const axis2_env_t *env)
@@ -750,13 +750,13 @@ woden_interface_get_interface_fault(
     interface_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_INTERFACE", AXIS2_HASH_KEY_STRING));
 
-    size = axis2_array_list_size(interface_impl->f_interface_fault_elements, env);
+    size = axutil_array_list_size(interface_impl->f_interface_fault_elements, env);
     for (i = 0; i < size; i++)
     {
         void *flt = NULL;
         axis2_qname_t *qname_l = NULL;
 
-        flt = axis2_array_list_get(interface_impl->f_interface_fault_elements,
+        flt = axutil_array_list_get(interface_impl->f_interface_fault_elements,
                 env, i);
         qname_l = (axis2_qname_t *) WODEN_INTERFACE_FAULT_GET_QNAME(flt, env);
         if (AXIS2_TRUE == axis2_qname_equals(qname, env, qname_l))
@@ -769,7 +769,7 @@ woden_interface_get_interface_fault(
     return fault;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_interface_ops(
     void *interface,
     const axis2_env_t *env)
@@ -844,14 +844,14 @@ woden_interface_add_style_default_uri(
 
     if (!interface_impl->f_style_default)
     {
-        interface_impl->f_style_default = axis2_array_list_create(env, 0);
+        interface_impl->f_style_default = axutil_array_list_create(env, 0);
         if (!interface_impl->f_style_default)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_impl->f_style_default, env, axis2_uri_clone(
+    axutil_array_list_add(interface_impl->f_style_default, env, axis2_uri_clone(
                 uri, env));
 
     return AXIS2_SUCCESS;
@@ -890,19 +890,19 @@ woden_interface_add_extended_qname(
 
     if (!interface_impl->f_extends_qnames)
     {
-        interface_impl->f_extends_qnames = axis2_array_list_create(env, 0);
+        interface_impl->f_extends_qnames = axutil_array_list_create(env, 0);
         if (!interface_impl->f_extends_qnames)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_impl->f_extends_qnames, env, qname);
+    axutil_array_list_add(interface_impl->f_extends_qnames, env, qname);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_extends_qnames(
     void *interface,
     const axis2_env_t *env)
@@ -935,19 +935,19 @@ woden_interface_add_interface_fault_element(
 
     if (!interface_impl->f_interface_fault_elements)
     {
-        interface_impl->f_interface_fault_elements = axis2_array_list_create(env, 0);
+        interface_impl->f_interface_fault_elements = axutil_array_list_create(env, 0);
         if (!interface_impl->f_interface_fault_elements)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_impl->f_interface_fault_elements, env, fault);
+    axutil_array_list_add(interface_impl->f_interface_fault_elements, env, fault);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_interface_fault_elements(
     void *interface,
     const axis2_env_t *env)
@@ -980,19 +980,19 @@ woden_interface_add_interface_op_element(
 
     if (!interface_impl->f_interface_op_elements)
     {
-        interface_impl->f_interface_op_elements = axis2_array_list_create(env, 0);
+        interface_impl->f_interface_op_elements = axutil_array_list_create(env, 0);
         if (!interface_impl->f_interface_op_elements)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_impl->f_interface_op_elements, env, op);
+    axutil_array_list_add(interface_impl->f_interface_op_elements, env, op);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_get_interface_op_elements(
     void *interface,
     const axis2_env_t *env)
@@ -1025,14 +1025,14 @@ woden_interface_add_extended_interface(
 
     if (!interface_impl->f_extended_interfaces)
     {
-        interface_impl->f_extended_interfaces = axis2_array_list_create(env, 0);
+        interface_impl->f_extended_interfaces = axutil_array_list_create(env, 0);
         if (!interface_impl->f_extended_interfaces)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_impl->f_extended_interfaces, env, extended_interface);
+    axutil_array_list_add(interface_impl->f_extended_interfaces, env, extended_interface);
     return AXIS2_SUCCESS;
 }
 

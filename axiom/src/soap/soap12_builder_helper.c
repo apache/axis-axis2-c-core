@@ -16,7 +16,7 @@
  */
 
 #include "axiom_soap12_builder_helper.h"
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include "_axiom_soap_body.h"
 #include "_axiom_soap_fault.h"
 #include "_axiom_soap_envelope.h"
@@ -57,7 +57,7 @@ struct axiom_soap12_builder_helper
 
     axis2_bool_t reason_processing;
 
-    axis2_array_list_t *detail_element_names;
+    axutil_array_list_t *detail_element_names;
 };
 
 AXIS2_EXTERN axiom_soap12_builder_helper_t* AXIS2_CALL
@@ -102,7 +102,7 @@ axiom_soap12_builder_helper_free(axiom_soap12_builder_helper_t *builder_helper,
 
     if (builder_helper->detail_element_names)
     {
-        axis2_array_list_free(builder_helper->detail_element_names, env);
+        axutil_array_list_free(builder_helper->detail_element_names, env);
         builder_helper->detail_element_names = NULL;
     }
 
@@ -503,10 +503,10 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
             if (!(builder_helper->detail_element_names))
             {
-                builder_helper->detail_element_names = axis2_array_list_create(env, 20);
+                builder_helper->detail_element_names = axutil_array_list_create(env, 20);
             }
 
-            axis2_array_list_add(builder_helper->detail_element_names, env, ele_localname);
+            axutil_array_list_add(builder_helper->detail_element_names, env, ele_localname);
 
         }
         else
@@ -644,9 +644,9 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             if (!(builder_helper->detail_element_names))
                 return AXIS2_FAILURE;
 
-            for (i = 0; i < axis2_array_list_size(builder_helper->detail_element_names, env) ; i++)
+            for (i = 0; i < axutil_array_list_size(builder_helper->detail_element_names, env) ; i++)
             {
-                if (axis2_strcmp(parent_localname, axis2_array_list_get(builder_helper->detail_element_names, env, i)) == 0)
+                if (axis2_strcmp(parent_localname, axutil_array_list_get(builder_helper->detail_element_names, env, i)) == 0)
                 {
                     local_name_exists = AXIS2_TRUE;
                     detail_element_level = i + 1;
@@ -654,7 +654,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             }
             if (local_name_exists)
             {
-                axis2_array_list_add(builder_helper->detail_element_names, env, ele_localname);
+                axutil_array_list_add(builder_helper->detail_element_names, env, ele_localname);
             }
             else
             {

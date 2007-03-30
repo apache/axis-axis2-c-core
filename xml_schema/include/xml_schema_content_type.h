@@ -67,7 +67,7 @@ struct xml_schema_content_type_ops
     get_base_impl) (void *content_type,
                     const axis2_env_t *env);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_values)(void *content_type,
                 const axis2_env_t *env);
     

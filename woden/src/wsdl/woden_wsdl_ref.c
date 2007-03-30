@@ -31,7 +31,7 @@ struct woden_wsdl_ref_impl
     woden_wsdl_element_t *wsdl_element;
     axis2_hash_t *super;
     woden_obj_types_t obj_type;
-    axis2_array_list_t *f_documentation_elements;
+    axutil_array_list_t *f_documentation_elements;
     axis2_uri_t *f_location;
     woden_desc_element_t *f_desc_element;
 };
@@ -81,7 +81,7 @@ woden_wsdl_ref_add_documentation_element(
     const axis2_env_t *env,
     void *doc_el);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_ref_get_documentation_elements(
     void *wsdl_ref,
     const axis2_env_t *env);
@@ -375,18 +375,18 @@ woden_wsdl_ref_add_documentation_element(
 
     if (!wsdl_ref_impl->f_documentation_elements)
     {
-        wsdl_ref_impl->f_documentation_elements = axis2_array_list_create(env, 0);
+        wsdl_ref_impl->f_documentation_elements = axutil_array_list_create(env, 0);
         if (!wsdl_ref_impl->f_documentation_elements)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    return axis2_array_list_add(wsdl_ref_impl->f_documentation_elements, env,
+    return axutil_array_list_add(wsdl_ref_impl->f_documentation_elements, env,
             doc_el);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_ref_get_documentation_elements(
     void *wsdl_ref,
     const axis2_env_t *env)

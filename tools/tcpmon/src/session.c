@@ -22,7 +22,7 @@
 #include <tcpmon_util.h>
 #include <axis2_thread.h>
 #include <axis2_network_handler.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 #include "tcpmon_session_local.h"
 #include "tcpmon_entry_local.h"
@@ -40,7 +40,7 @@ typedef struct tcpmon_session_impl
     axis2_char_t *target_host;
     TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry_funct;
     TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct;
-    axis2_array_list_t* entries;
+    axutil_array_list_t* entries;
 
     axis2_bool_t is_running;
 }
@@ -156,7 +156,7 @@ tcpmon_session_create(const axis2_env_t *env)
 
     session_impl -> on_new_entry_funct = NULL;
     session_impl -> on_trans_fault_funct = NULL;
-    session_impl -> entries = axis2_array_list_create(env, 10);
+    session_impl -> entries = axutil_array_list_create(env, 10);
 
     session_impl->session.ops =
         AXIS2_MALLOC(env->allocator, sizeof(tcpmon_session_ops_t));
@@ -202,12 +202,12 @@ tcpmon_session_free(tcpmon_session_t *session,
 
     session_impl = AXIS2_INTF_TO_IMPL(session);
 
-    for (entries_size = axis2_array_list_size(session_impl-> entries, env) - 1;
+    for (entries_size = axutil_array_list_size(session_impl-> entries, env) - 1;
             entries_size >= 0; entries_size --)
     {
         TCPMON_ENTRY_FREE(entry, env);
     }
-    axis2_array_list_free(session_impl-> entries, env);
+    axutil_array_list_free(session_impl-> entries, env);
 
     if (session->ops)
     {
@@ -542,7 +542,7 @@ tcpmon_session_add_new_entry(tcpmon_session_t* session,
 
     session_impl = AXIS2_INTF_TO_IMPL(session);
 
-    axis2_array_list_add(session_impl-> entries,
+    axutil_array_list_add(session_impl-> entries,
             env,
             entry);
     return AXIS2_SUCCESS;

@@ -17,7 +17,7 @@
 
 #include <axis2_endpoint_ref.h>
 #include <axis2_string.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 struct axis2_endpoint_ref
 {
@@ -26,15 +26,15 @@ struct axis2_endpoint_ref
     /** interface qname */
     axis2_qname_t *interface_qname;
     /** reference parameters */
-    axis2_array_list_t *ref_param_list;
+    axutil_array_list_t *ref_param_list;
     /** meta data */
-    axis2_array_list_t *metadata_list;
+    axutil_array_list_t *metadata_list;
     /** reference parameter attribute list */
-    axis2_array_list_t *ref_attribute_list;
+    axutil_array_list_t *ref_attribute_list;
     /** meta data attribute list */
-    axis2_array_list_t *meta_attribute_list;
+    axutil_array_list_t *meta_attribute_list;
     /** extensible element list */
-    axis2_array_list_t *extension_list;
+    axutil_array_list_t *extension_list;
     /** service name */
     axis2_svc_name_t *svc_name;
 };
@@ -161,27 +161,27 @@ axis2_endpoint_ref_free(axis2_endpoint_ref_t *endpoint_ref,
 
     if (endpoint_ref->ref_param_list)
     {
-        axis2_array_list_free(endpoint_ref->ref_param_list, env);
+        axutil_array_list_free(endpoint_ref->ref_param_list, env);
     }
 
     if (endpoint_ref->metadata_list)
     {
-        axis2_array_list_free(endpoint_ref->metadata_list, env);
+        axutil_array_list_free(endpoint_ref->metadata_list, env);
     }
 
     if (endpoint_ref->ref_attribute_list)
     {
-        axis2_array_list_free(endpoint_ref->ref_attribute_list, env);
+        axutil_array_list_free(endpoint_ref->ref_attribute_list, env);
     }
 
     if (endpoint_ref->meta_attribute_list)
     {
-        axis2_array_list_free(endpoint_ref->meta_attribute_list, env);
+        axutil_array_list_free(endpoint_ref->meta_attribute_list, env);
     }
 
     if (endpoint_ref->extension_list)
     {
-        axis2_array_list_free(endpoint_ref->extension_list, env);
+        axutil_array_list_free(endpoint_ref->extension_list, env);
     }
 
 
@@ -190,14 +190,14 @@ axis2_endpoint_ref_free(axis2_endpoint_ref_t *endpoint_ref,
     return;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 axis2_endpoint_ref_get_ref_param_list(const axis2_endpoint_ref_t *endpoint_ref,
     const axis2_env_t *env)
 {
     return endpoint_ref->ref_param_list;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 axis2_endpoint_ref_get_metadata_list(const axis2_endpoint_ref_t *endpoint_ref,
     const axis2_env_t *env)
 {
@@ -213,7 +213,7 @@ axis2_endpoint_ref_add_ref_param(axis2_endpoint_ref_t *endpoint_ref,
 
     if (!(endpoint_ref->ref_param_list))
     {
-        endpoint_ref->ref_param_list = axis2_array_list_create(env, 0);
+        endpoint_ref->ref_param_list = axutil_array_list_create(env, 0);
         if (!(endpoint_ref->ref_param_list))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -223,7 +223,7 @@ axis2_endpoint_ref_add_ref_param(axis2_endpoint_ref_t *endpoint_ref,
 
     if (endpoint_ref->ref_param_list && ref_param_node)
     {
-        return axis2_array_list_add(endpoint_ref->ref_param_list, env,
+        return axutil_array_list_add(endpoint_ref->ref_param_list, env,
             ref_param_node);
     }
 
@@ -239,7 +239,7 @@ axis2_endpoint_ref_add_metadata(axis2_endpoint_ref_t *endpoint_ref,
 
     if (!(endpoint_ref->metadata_list))
     {
-        endpoint_ref->metadata_list = axis2_array_list_create(env, 0);
+        endpoint_ref->metadata_list = axutil_array_list_create(env, 0);
         if (!(endpoint_ref->metadata_list))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -249,7 +249,7 @@ axis2_endpoint_ref_add_metadata(axis2_endpoint_ref_t *endpoint_ref,
 
     if (endpoint_ref->metadata_list && meta_data_node)
     {
-        return axis2_array_list_add(endpoint_ref->metadata_list, env, 
+        return axutil_array_list_add(endpoint_ref->metadata_list, env, 
             meta_data_node);
     }
 
@@ -257,21 +257,21 @@ axis2_endpoint_ref_add_metadata(axis2_endpoint_ref_t *endpoint_ref,
 }
 
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 axis2_endpoint_ref_get_ref_attribute_list(const axis2_endpoint_ref_t *endpoint_ref,
     const axis2_env_t *env)
 {
     return endpoint_ref->ref_attribute_list;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 axis2_endpoint_ref_get_metadata_attribute_list(const axis2_endpoint_ref_t *endpoint_ref,
     const axis2_env_t *env)
 {
     return endpoint_ref->meta_attribute_list;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 axis2_endpoint_ref_get_extension_list(const axis2_endpoint_ref_t *endpoint_ref,
     const axis2_env_t *env)
 {
@@ -287,7 +287,7 @@ axis2_endpoint_ref_add_ref_attribute(axis2_endpoint_ref_t *endpoint_ref,
 
     if (!(endpoint_ref->ref_attribute_list))
     {
-        endpoint_ref->ref_attribute_list = axis2_array_list_create(env, 0);
+        endpoint_ref->ref_attribute_list = axutil_array_list_create(env, 0);
         if (!(endpoint_ref->ref_attribute_list))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -297,7 +297,7 @@ axis2_endpoint_ref_add_ref_attribute(axis2_endpoint_ref_t *endpoint_ref,
 
     if (endpoint_ref->ref_attribute_list && attr)
     {
-        return axis2_array_list_add(endpoint_ref->ref_attribute_list, env, 
+        return axutil_array_list_add(endpoint_ref->ref_attribute_list, env, 
             attr);
     }
 
@@ -313,7 +313,7 @@ axis2_endpoint_ref_add_metadata_attribute(axis2_endpoint_ref_t *endpoint_ref,
 
     if (!(endpoint_ref->meta_attribute_list))
     {
-        endpoint_ref->meta_attribute_list = axis2_array_list_create(env, 0);
+        endpoint_ref->meta_attribute_list = axutil_array_list_create(env, 0);
         if (!(endpoint_ref->meta_attribute_list))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -323,7 +323,7 @@ axis2_endpoint_ref_add_metadata_attribute(axis2_endpoint_ref_t *endpoint_ref,
 
     if (endpoint_ref->meta_attribute_list && attr)
     {
-        return axis2_array_list_add(endpoint_ref->meta_attribute_list, env, attr);
+        return axutil_array_list_add(endpoint_ref->meta_attribute_list, env, attr);
     }
 
     return AXIS2_FAILURE;
@@ -338,7 +338,7 @@ axis2_endpoint_ref_add_extension(axis2_endpoint_ref_t *endpoint_ref,
 
     if (!(endpoint_ref->extension_list))
     {
-        endpoint_ref->extension_list = axis2_array_list_create(env, 0);
+        endpoint_ref->extension_list = axutil_array_list_create(env, 0);
         if (!(endpoint_ref->extension_list))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -348,7 +348,7 @@ axis2_endpoint_ref_add_extension(axis2_endpoint_ref_t *endpoint_ref,
 
     if (endpoint_ref->extension_list && extension_node)
     {
-        return axis2_array_list_add(endpoint_ref->extension_list, env, 
+        return axutil_array_list_add(endpoint_ref->extension_list, env, 
             extension_node);
     }
 

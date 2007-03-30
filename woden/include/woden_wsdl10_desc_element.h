@@ -259,7 +259,7 @@ struct woden_wsdl10_desc_element_ops
             const axis2_env_t *env,
             void *import_el);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_import_elements) (
             void *desc_ele,
             const axis2_env_t *env);
@@ -270,7 +270,7 @@ struct woden_wsdl10_desc_element_ops
             const axis2_env_t *env,
             void *include_el);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_include_elements) (
             void *desc_ele,
             const axis2_env_t *env);
@@ -298,12 +298,12 @@ struct woden_wsdl10_desc_element_ops
             const axis2_env_t *env,
             void *interface_el);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_msg_elements) (
             void *desc_ele,
             const axis2_env_t *env);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_interface_elements) (
             void *desc_ele,
             const axis2_env_t *env);
@@ -314,7 +314,7 @@ struct woden_wsdl10_desc_element_ops
             const axis2_env_t *env,
             void *binding_el);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_binding_elements) (
             void *desc_ele,
             const axis2_env_t *env);
@@ -325,7 +325,7 @@ struct woden_wsdl10_desc_element_ops
             const axis2_env_t *env,
             void *svc_el);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_svc_elements) (
             void *desc_ele,
             const axis2_env_t *env);

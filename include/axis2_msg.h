@@ -30,7 +30,7 @@
 
 #include <axis2_param_container.h>
 #include <axis2_op.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_description.h>
 #include <axis2_phase_meta.h>
 
@@ -99,7 +99,7 @@ extern "C"
      * @return pointer to list of parameters, returns a reference, not a 
      * cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_msg_get_all_params(const axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -146,7 +146,7 @@ extern "C"
      * @return pointer to array list containing the list of phases 
      * representing the flow
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_msg_get_flow( const axis2_msg_t *msg,
         const axis2_env_t *env);
 
@@ -161,7 +161,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_flow(axis2_msg_t *msg,
         const axis2_env_t *env,
-        axis2_array_list_t *flow);
+        axutil_array_list_t *flow);
 
     /** 
      * Gets direction of message.

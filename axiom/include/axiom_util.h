@@ -18,7 +18,7 @@
 #ifndef AXIOM_UTIL_H
 #define AXIOM_UTIL_H
 
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_string.h>
 #include <axiom.h>
 #include <axis2_uri.h>
@@ -118,7 +118,7 @@ extern "C"
     axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
             const axis2_env_t  *env,
             axiom_node_t *ele_node,
-            axis2_array_list_t *names,
+            axutil_array_list_t *names,
             axiom_node_t **child_node);
 
 
@@ -126,14 +126,14 @@ extern "C"
     axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
             const axis2_env_t  *env,
             axiom_node_t *ele_node,
-            axis2_array_list_t *names,
+            axutil_array_list_t *names,
             axiom_node_t **child_node);
 
     AXIS2_EXTERN axiom_element_t * AXIS2_CALL
     axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
             const axis2_env_t  *env,
             axiom_node_t *ele_node,
-            axis2_array_list_t *names,
+            axutil_array_list_t *names,
             axiom_node_t **next_node);
 
     AXIS2_EXTERN axiom_element_t * AXIS2_CALL

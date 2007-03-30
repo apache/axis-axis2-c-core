@@ -434,7 +434,7 @@ axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
     const axis2_char_t *code_value,
     const axis2_char_t *reason_text,
     const int soap_version,
-    axis2_array_list_t *sub_codes,
+    axutil_array_list_t *sub_codes,
     axiom_node_t *detail_node)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
@@ -476,9 +476,9 @@ axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
         fault_code = axiom_soap_fault_get_code(fault, env);
         if (fault_code)
         {
-            for (i = 0; i < axis2_array_list_size(sub_codes, env); i++)
+            for (i = 0; i < axutil_array_list_size(sub_codes, env); i++)
             {
-                axis2_char_t *sub_code = (axis2_char_t*) axis2_array_list_get(sub_codes, env, i);
+                axis2_char_t *sub_code = (axis2_char_t*) axutil_array_list_get(sub_codes, env, i);
                 if (sub_code)
                 {
                     axiom_soap_fault_sub_code_create_with_parent_value(env, fault_code, sub_code);

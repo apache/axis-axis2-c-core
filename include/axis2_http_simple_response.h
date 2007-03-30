@@ -32,7 +32,7 @@
 #include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_http_status_line.h>
 #include <axis2_http_header.h>
 #include <axis2_stream.h>
@@ -107,7 +107,7 @@ extern "C"
     * @param simple_response pointer to simple response struct
     * @param env pointer to environment struct
     */
-    AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
     axis2_http_simple_response_get_headers(axis2_http_simple_response_t *simple_response,
         const axis2_env_t *env);
 

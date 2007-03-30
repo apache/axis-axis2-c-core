@@ -24,7 +24,7 @@
 #include <string.h>
 #include <axis2_stack.h>
 #include <axis2_hash.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 /*******************************************************************************/
 
@@ -296,7 +296,7 @@ axis2_libxml2_writer_wrapper_find_prefix(axiom_xml_writer_t *writer,
     axis2_char_t *uri);
 
 static uri_prefix_element_t*
-axis2_libxml2_writer_wrapper_find_prefix_in_context(axis2_array_list_t  *context,
+axis2_libxml2_writer_wrapper_find_prefix_in_context(axutil_array_list_t  *context,
     const axis2_env_t *env,
     axis2_char_t *uri);
 
@@ -1349,7 +1349,7 @@ axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
     const axis2_char_t *prefix)
 {
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
-    axis2_array_list_t *current_list = NULL;
+    axutil_array_list_t *current_list = NULL;
     axis2_char_t key[1024];
     const axis2_char_t *temp_prefix = NULL;
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
@@ -1364,7 +1364,7 @@ axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
 
     if (writer_impl->stack)
     {
-        current_list = (axis2_array_list_t *)
+        current_list = (axutil_array_list_t *)
             axis2_stack_get(writer_impl->stack, env);
 
         if (current_list)
@@ -1375,7 +1375,7 @@ axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
             ele = uri_prefix_element_create(env, uri , temp_prefix, prefix,  key);
             if (ele)
             {
-                axis2_array_list_add(current_list, env, ele);
+                axutil_array_list_add(current_list, env, ele);
                 axis2_hash_set(writer_impl->uri_prefix_map, ele->key,
                     AXIS2_HASH_KEY_STRING, ele->prefix);
             }
@@ -1525,13 +1525,13 @@ axis2_libxml2_writer_wrapper_find_prefix(axiom_xml_writer_t *writer,
 
     for (i = size - 1 ; i < 0; i --)
     {
-        axis2_array_list_t *context = NULL;
+        axutil_array_list_t *context = NULL;
         void *value = NULL;
         value = axis2_stack_get_at(writer_impl->stack, env, i);
         if (value)
         {
             uri_prefix_element_t *up_ele = NULL;
-            context = (axis2_array_list_t *)value;
+            context = (axutil_array_list_t *)value;
             up_ele =
                 axis2_libxml2_writer_wrapper_find_prefix_in_context(context,
                     env, uri);
@@ -1545,7 +1545,7 @@ axis2_libxml2_writer_wrapper_find_prefix(axiom_xml_writer_t *writer,
 }
 
 static uri_prefix_element_t*
-axis2_libxml2_writer_wrapper_find_prefix_in_context(axis2_array_list_t  *context,
+axis2_libxml2_writer_wrapper_find_prefix_in_context(axutil_array_list_t  *context,
     const axis2_env_t *env,
     axis2_char_t *uri)
 {
@@ -1555,12 +1555,12 @@ axis2_libxml2_writer_wrapper_find_prefix_in_context(axis2_array_list_t  *context
     {
         return NULL;
     }
-    size = axis2_array_list_size(context, env);
+    size = axutil_array_list_size(context, env);
     for (i = 0; i < size; i++)
     {
         uri_prefix_element_t *ele = NULL;
         void *value = NULL;
-        value = axis2_array_list_get(context, env, i);
+        value = axutil_array_list_get(context, env, i);
         if (value)
         {
             ele = (uri_prefix_element_t*)value;

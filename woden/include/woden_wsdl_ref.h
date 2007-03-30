@@ -104,7 +104,7 @@ struct woden_wsdl_ref_ops
             const axis2_env_t *env,
             void *doc_el);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_documentation_elements) (
             void *wsdl_ref,
             const axis2_env_t *env);

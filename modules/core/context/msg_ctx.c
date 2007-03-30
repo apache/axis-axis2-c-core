@@ -110,7 +110,7 @@ struct axis2_msg_ctx
     /* To keep track of the direction */
     int flow;
     /** The chain of Handlers/Phases for processing this message */
-    axis2_array_list_t *execution_chain;
+    axutil_array_list_t *execution_chain;
     /** Index into the execution chain of the currently executing handler */
     int current_handler_index;
     /** Index of the paused  handler */
@@ -1623,7 +1623,7 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_execution_chain(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
-    axis2_array_list_t *execution_chain)
+    axutil_array_list_t *execution_chain)
 {
     msg_ctx->execution_chain = execution_chain;
     msg_ctx->current_handler_index = -1;
@@ -1632,7 +1632,7 @@ axis2_msg_ctx_set_execution_chain(
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 axis2_msg_ctx_get_execution_chain(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
@@ -1651,7 +1651,7 @@ axis2_msg_ctx_set_current_handler_index(
     if (msg_ctx->execution_chain)
     {
         axis2_handler_t *handler = (axis2_handler_t *)
-                axis2_array_list_get(msg_ctx->execution_chain,
+                axutil_array_list_get(msg_ctx->execution_chain,
                         env, index);
         if (handler)
         {

@@ -26,7 +26,7 @@
 
 #include "axis2_skel_calculator.h"
 #include <axis2_svc_skeleton.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <stdio.h>
 
 /**
@@ -89,15 +89,15 @@ int AXIS2_CALL
 axis2_svc_skel_calculator_init(axis2_svc_skeleton_t *svc_skeleton,
         const axis2_env_t *env)
 {
-    svc_skeleton->func_array = axis2_array_list_create(env, 10);
+    svc_skeleton->func_array = axutil_array_list_create(env, 10);
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "add");
+    axutil_array_list_add(svc_skeleton->func_array, env, "add");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "sub");
+    axutil_array_list_add(svc_skeleton->func_array, env, "sub");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "mul");
+    axutil_array_list_add(svc_skeleton->func_array, env, "mul");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "div");
+    axutil_array_list_add(svc_skeleton->func_array, env, "div");
 
 
     /* Any initialization stuff of axis2_skel_calculator goes here */
@@ -110,7 +110,7 @@ axis2_svc_skel_calculator_free(axis2_svc_skeleton_t *svc_skeleton,
 {
     if (svc_skeleton->func_array)
     {
-        axis2_array_list_free(svc_skeleton->func_array, env);
+        axutil_array_list_free(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }
 

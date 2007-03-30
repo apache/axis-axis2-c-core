@@ -29,7 +29,7 @@ struct axis2_svc
     long last_update;
     axis2_char_t *filename;
     /** to store module descriptions at deploy time parsing */
-    axis2_array_list_t *module_list;
+    axutil_array_list_t *module_list;
 
     /* service description  */
 	 axis2_char_t *svc_desc;
@@ -42,7 +42,7 @@ struct axis2_svc
     /* to keep the XML scheama either from WSDL or
      * C2WSDL(in the future)
      */
-    axis2_array_list_t *schema_list;
+    axutil_array_list_t *schema_list;
     /**
      * A table that keeps a mapping of unique XSD names (Strings)
      * against the schema objects. This is populated in the first
@@ -85,7 +85,7 @@ struct axis2_svc
     void *impl_class;
     axis2_qname_t *qname;
     axis2_char_t *style;
-    axis2_array_list_t *engaged_modules;
+    axutil_array_list_t *engaged_modules;
     /** parameter container to hold service related parameters */
     struct axis2_param_container *param_container;
     /** flow container that encapsulates the flow related data */
@@ -166,7 +166,7 @@ axis2_svc_create(const axis2_env_t *env)
         return NULL;
     }
 
-    svc->module_list = axis2_array_list_create(env, 0);
+    svc->module_list = axutil_array_list_create(env, 0);
     if (! svc->module_list)
     {
         axis2_svc_free(svc, env);
@@ -174,7 +174,7 @@ axis2_svc_create(const axis2_env_t *env)
         return NULL;
     }
 
-    svc->schema_list = axis2_array_list_create(env,
+    svc->schema_list = axutil_array_list_create(env,
         AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
     if (! svc->schema_list)
     {
@@ -182,7 +182,7 @@ axis2_svc_create(const axis2_env_t *env)
         return NULL;
     }
 
-    svc->engaged_modules = axis2_array_list_create(env,
+    svc->engaged_modules = axutil_array_list_create(env,
         AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
     if (! svc->engaged_modules)
     {
@@ -277,27 +277,27 @@ axis2_svc_free(axis2_svc_t *svc,
         int i = 0;
         int size = 0;
 
-        size = axis2_array_list_size(svc->module_list, env);
+        size = axutil_array_list_size(svc->module_list, env);
         for (i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
-            qname = axis2_array_list_get(svc->module_list, env, i);
+            qname = axutil_array_list_get(svc->module_list, env, i);
             if (qname)
             {
                 axis2_qname_free(qname, env);
             }
         }
-        axis2_array_list_free(svc->module_list, env);
+        axutil_array_list_free(svc->module_list, env);
     }
 
     if (svc->schema_list)
     {
-        axis2_array_list_free(svc->schema_list, env);
+        axutil_array_list_free(svc->schema_list, env);
     }
 
     if (svc->engaged_modules)
     {
-        axis2_array_list_free(svc->engaged_modules, env);
+        axutil_array_list_free(svc->engaged_modules, env);
     }
 
     if (svc->axis_svc_name)
@@ -549,7 +549,7 @@ axis2_svc_get_param(const axis2_svc_t *svc,
     return param;
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_svc_get_all_params(const axis2_svc_t *svc,
     const axis2_env_t *env)
 {
@@ -611,7 +611,7 @@ axis2_svc_engage_module(axis2_svc_t *svc,
     if (status)
     {
         const axis2_qname_t *qname = NULL;
-        status = axis2_array_list_add(svc->engaged_modules, env, module_desc);
+        status = axutil_array_list_add(svc->engaged_modules, env, module_desc);
         qname = axis2_module_desc_get_qname(module_desc, env);
         axis2_svc_add_module_qname(svc, env, qname);
     }
@@ -629,13 +629,13 @@ axis2_svc_is_module_engaged(axis2_svc_t *svc,
     axis2_qname_t *module_qname)
 {
     int i = 0, size = 0;
-    size = axis2_array_list_size(svc->engaged_modules, env);
+    size = axutil_array_list_size(svc->engaged_modules, env);
     for (i = 0; i < size; i++)
     {
         const axis2_qname_t *module_qname_l = NULL;
         axis2_module_desc_t *module_desc_l = NULL;
 
-        module_desc_l = (axis2_module_desc_t *) axis2_array_list_get(
+        module_desc_l = (axis2_module_desc_t *) axutil_array_list_get(
             svc->engaged_modules, env, i);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
 
@@ -674,7 +674,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
     for (index = axis2_hash_first(map, env); index; index =
         axis2_hash_next(env, index))
     {
-        axis2_array_list_t *mappings_list = NULL;
+        axutil_array_list_t *mappings_list = NULL;
         int size = 0;
         int j = 0;
         void *v = NULL;
@@ -682,7 +682,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         op_desc = (axis2_op_t *) v;
         mappings_list = axis2_op_get_wsamapping_list(op_desc, env);
         /* adding WSA mapping into service */
-        size = axis2_array_list_size(mappings_list, env);
+        size = axutil_array_list_size(mappings_list, env);
 
         if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
@@ -696,7 +696,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         {
             axis2_char_t *mapping = NULL;
 
-            mapping = (axis2_char_t *) axis2_array_list_get(mappings_list, env, j);
+            mapping = (axis2_char_t *) axutil_array_list_get(mappings_list, env, j);
             status = axis2_svc_add_mapping(svc, env, mapping, op_desc);
             if (AXIS2_SUCCESS != status)
             {
@@ -873,11 +873,11 @@ axis2_svc_add_module_qname(axis2_svc_t *svc,
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
 
     qmodule_qname_l = axis2_qname_clone((axis2_qname_t *)module_qname, env);
-    return axis2_array_list_add(svc->module_list, env,
+    return axutil_array_list_add(svc->module_list, env,
             qmodule_qname_l);
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_svc_get_all_module_qnames(const axis2_svc_t *svc,
     const axis2_env_t *env)
 {

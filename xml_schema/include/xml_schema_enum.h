@@ -28,7 +28,7 @@
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils_defines.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <xml_schema_defines.h>
 #include <xml_schema_constants.h>
@@ -79,7 +79,7 @@ struct xml_schema_enum_ops
             const axis2_env_t *env,
             void *obj);
 
-    axis2_array_list_t* (AXIS2_CALL *
+    axutil_array_list_t* (AXIS2_CALL *
     get_values)(
             void *schema_enum, 
             const axis2_env_t *env);
@@ -109,7 +109,7 @@ xml_schema_enum_resolve_methods(xml_schema_enum_t *schema_enum,
 AXIS2_EXTERN int AXIS2_CALL
 xml_schema_enum_index(axis2_char_t *value,
                             const axis2_env_t *env,
-                            axis2_array_list_t *values);
+                            axutil_array_list_t *values);
                             
 /***************** macros ****************************************************/                           
 

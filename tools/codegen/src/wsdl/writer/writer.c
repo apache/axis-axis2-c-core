@@ -16,7 +16,7 @@
  */
  
 #include "writer_protected.h"
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
 #include <w2c_engine_configuration.h>
@@ -179,7 +179,7 @@ w2c_writer_get_extension( w2c_writer_impl_t *writer_impl,
     int suf_length = 0;
     int index = 0;
     axis2_char_t *ext_name = NULL;
-    axis2_array_list_t *arr_list = NULL;
+    axutil_array_list_t *arr_list = NULL;
   
     lang_map = W2C_CONFIG_PROPERTY_LOADER_GET_LANGUAGE_SPECIFIC_PROPERTIES_MAP
                            ( writer_impl->loader, env );
@@ -199,7 +199,7 @@ w2c_writer_get_extension( w2c_writer_impl_t *writer_impl,
                                      (key, W2C_WRITER_EXTENSION_SUFFIX );
             if ( index + suf_length == all_length )/* this meen its a suf*/
             {
-                 value = axis2_array_list_get( arr_list, env, 0);
+                 value = axutil_array_list_get( arr_list, env, 0);
                  ext_name = axis2_strdup (env, ".");
                  ext_name = w2c_string_add_string ( ext_name, value, env);
                  break;
@@ -221,7 +221,7 @@ w2c_writer_find_template ( w2c_writer_impl_t *writer_impl,
     int suf_length = 0;
     int index = 0;
     axis2_char_t *tmpl_name = NULL;
-    axis2_array_list_t *arr_list = NULL;
+    axutil_array_list_t *arr_list = NULL;
   
     for (hi = axis2_hash_first(lang_speci_map, env) ;
                 hi; hi = axis2_hash_next(env, hi))
@@ -235,12 +235,12 @@ w2c_writer_find_template ( w2c_writer_impl_t *writer_impl,
                                      (key, W2C_WRITER_TEMPLATE_SUFFIX );
             if ( index + suf_length == all_length )/* this meen its a suf*/
             {
-                 value = axis2_array_list_get ( arr_list, env, 0 );
+                 value = axutil_array_list_get ( arr_list, env, 0 );
                  index = w2c_string_indexof_cs
                                       (value, writer_impl-> self_name );
                  if (0 == index) /* prefix matches for the first entry*/
                  {
-                     value = axis2_array_list_get ( arr_list, env, 1);
+                     value = axutil_array_list_get ( arr_list, env, 1);
                      tmpl_name = axis2_strdup (env, "");
                      tmpl_name = w2c_string_add_string ( tmpl_name, value, env);
                      break;

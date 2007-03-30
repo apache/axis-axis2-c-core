@@ -27,7 +27,7 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axiom_namespace.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -80,7 +80,7 @@ extern "C"
         const axis2_char_t *code_value,
         const axis2_char_t *reason_text,
         const int soap_version,
-        axis2_array_list_t *sub_codes,
+        axutil_array_list_t *sub_codes,
         axiom_node_t *detail_node);
 
     /**

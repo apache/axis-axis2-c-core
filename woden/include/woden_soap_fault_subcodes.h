@@ -41,7 +41,7 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <woden.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -78,7 +78,7 @@ struct woden_soap_fault_subcodes_ops
             void *soap_fault_subcodes,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_qnames) (
             void *soap_fault_subcodes,
             const axis2_env_t *env);
@@ -101,7 +101,7 @@ AXIS2_EXTERN woden_soap_fault_subcodes_t * AXIS2_CALL
 woden_soap_fault_subcodes_create(
         const axis2_env_t *env,
         axis2_char_t *token,
-        axis2_array_list_t *subcode_qns);
+        axutil_array_list_t *subcode_qns);
 
 AXIS2_EXTERN void * AXIS2_CALL
 woden_soap_fault_subcodes_get_soap_fault_subcodes_any(

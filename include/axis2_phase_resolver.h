@@ -44,7 +44,7 @@
 #include <axis2_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <axis2_handler_desc.h>
 #include <axis2_phase.h>

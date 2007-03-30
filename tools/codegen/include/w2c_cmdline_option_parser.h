@@ -25,7 +25,7 @@
 
 #include <axis2_utils.h>
 #include <axis2_hash.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_parser_ops
     * @param  env Environment. MUST NOT be NULL
     * @return list of invalid options
     */
-    axis2_array_list_t* (AXIS2_CALL *
+    axutil_array_list_t* (AXIS2_CALL *
     get_invalid_options)(w2c_cmdline_option_parser_t *cmdline_option_parser,
           const axis2_env_t *env);
 

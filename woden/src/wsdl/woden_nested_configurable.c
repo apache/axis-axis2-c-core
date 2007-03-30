@@ -31,7 +31,7 @@ struct woden_nested_configurable_impl
     woden_configurable_t *configurable;
     axis2_hash_t *methods;
     axis2_hash_t *super;
-    axis2_array_list_t *f_parent;
+    axutil_array_list_t *f_parent;
 };
 
 #define INTF_TO_IMPL(nested_configurable) ((woden_nested_configurable_impl_t *) nested_configurable)

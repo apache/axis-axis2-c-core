@@ -18,7 +18,7 @@
 #include <w2c_engine_config_loader.h>
 #include <w2c_cmdline_option_consts.h>
 #include <axis2_hash.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_messages.h>
 #include <axis2_string.h>
@@ -51,7 +51,7 @@ w2c_engine_config_loader_load_config(
     axis2_char_t *tmp_key = NULL;
     axis2_hash_t *h = NULL;
     axis2_hash_index_t *hi = NULL;
-    axis2_array_list_t *tmp_array = NULL;
+    axutil_array_list_t *tmp_array = NULL;
     w2c_properties_t *props = NULL;
     int len = 0;
     
@@ -362,7 +362,7 @@ w2c_engine_config_loader_load_config(
         if ( w2c_string_indexof_cs 
              ( tmp_key, W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX)== 0 && tmp_array)
         {
-           tmp_string = (char*)axis2_array_list_get (tmp_array, env, 0 );
+           tmp_string = (char*)axutil_array_list_get (tmp_array, env, 0 );
            if ( h == NULL )
            {
                h = axis2_hash_make ( env );   
@@ -370,7 +370,7 @@ w2c_engine_config_loader_load_config(
            len = axis2_strlen (W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX );
            tmp_key = axis2_string_substring_starting_at ( tmp_key, len);
            axis2_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string );
-           axis2_array_list_free ( tmp_array, env);
+           axutil_array_list_free ( tmp_array, env);
         }
     }
     W2C_ENGINE_CONFIGURATION_SET_CONFIGURATION_PROPERTIES( conf, env, h );

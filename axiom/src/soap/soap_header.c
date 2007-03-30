@@ -23,7 +23,7 @@
 #include <axiom_soap_builder.h>
 #include <stdio.h>
 #include <axiom_node_internal.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 struct axiom_soap_header
 {
@@ -37,7 +37,7 @@ struct axiom_soap_header
 
     axiom_soap_builder_t *soap_builder;
 
-    axis2_array_list_t *header_block_keys;
+    axutil_array_list_t *header_block_keys;
 };
 
 static axis2_bool_t AXIS2_CALL
@@ -67,7 +67,7 @@ axiom_soap_header_create(const axis2_env_t *env)
     soap_header->soap_version = AXIOM_SOAP12;
     soap_header->header_block_keys = NULL;
 
-    soap_header->header_block_keys = axis2_array_list_create(env, 10);
+    soap_header->header_block_keys = axutil_array_list_create(env, 10);
     if (!soap_header->header_block_keys)
     {
         AXIS2_FREE(env->allocator, soap_header);
@@ -171,17 +171,17 @@ axiom_soap_header_free(axiom_soap_header_t *soap_header,
         int size = 0;
         void *val = NULL;
         int i = 0;
-        size = axis2_array_list_size(soap_header->header_block_keys, env);
+        size = axutil_array_list_size(soap_header->header_block_keys, env);
         for (i = 0; i < size; i++)
         {
-            val = axis2_array_list_get(soap_header->header_block_keys, env, i);
+            val = axutil_array_list_get(soap_header->header_block_keys, env, i);
             if (val)
             {
                 AXIS2_FREE(env->allocator, (char*)val);
                 val = NULL;
             }
         }
-        axis2_array_list_free(soap_header->header_block_keys, env);
+        axutil_array_list_free(soap_header->header_block_keys, env);
         soap_header->header_block_keys = NULL;
     }
     AXIS2_FREE(env->allocator, soap_header);
@@ -421,7 +421,7 @@ axiom_soap_header_set_header_block(axiom_soap_header_t *soap_header,
     }
     if (soap_header->header_block_keys)
     {
-        axis2_array_list_add(soap_header->header_block_keys, env, key);
+        axutil_array_list_add(soap_header->header_block_keys, env, key);
     }
     return AXIS2_SUCCESS;
 
@@ -437,13 +437,13 @@ axiom_soap_header_set_builder(axiom_soap_header_t *soap_header,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
 axiom_soap_header_get_header_blocks_with_namespace_uri
 (axiom_soap_header_t* soap_header,
         const axis2_env_t *env,
         const axis2_char_t *ns_uri)
 {
-    axis2_array_list_t *header_block_list = NULL;
+    axutil_array_list_t *header_block_list = NULL;
     axis2_hash_index_t *hash_index = NULL;
 
     axiom_soap_header_block_t *header_block = NULL;
@@ -463,7 +463,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
     if (!(soap_header->header_blocks))
         return NULL;
 
-    header_block_list = axis2_array_list_create(env, 10);
+    header_block_list = axutil_array_list_create(env, 10);
     if (!header_block_list)
         return NULL;
 
@@ -489,7 +489,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
                         hb_namespace_uri = axiom_namespace_get_uri(ns, env);
                         if (axis2_strcmp(hb_namespace_uri, ns_uri) == 0)
                         {
-                            axis2_array_list_add(header_block_list, env, header_block);
+                            axutil_array_list_add(header_block_list, env, header_block);
                             found++;
                         }
                     }
@@ -509,7 +509,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
     }
     else
     {
-        axis2_array_list_free(header_block_list, env);
+        axutil_array_list_free(header_block_list, env);
     }
     return NULL;
 }

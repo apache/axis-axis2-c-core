@@ -17,7 +17,7 @@
  
 #include <w2c_config_property_loader.h>
 #include <w2c_properties.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
 #include <axis2_hash.h>
@@ -65,14 +65,14 @@ typedef struct w2c_config_property_loader_impl
     
     axis2_char_t *test_object_template_name;
     axis2_char_t *db_supporter_template_name;
-    axis2_array_list_t *extension_class_names;
-    axis2_array_list_t *post_extension_class_names;
-    axis2_array_list_t *third_party_schema_names;
-    axis2_array_list_t *language_types;
+    axutil_array_list_t *extension_class_names;
+    axutil_array_list_t *post_extension_class_names;
+    axutil_array_list_t *third_party_schema_names;
+    axutil_array_list_t *language_types;
     axis2_hash_t *language_emitter_map;
     axis2_char_t *default_language;
     axis2_hash_t *language_specific_properties_map;
-    axis2_array_list_t *databinding_framework_names;
+    axutil_array_list_t *databinding_framework_names;
     axis2_hash_t *databinding_framework_name_to_extension_map;
     axis2_char_t *default_db_framework_name;
 
@@ -112,22 +112,22 @@ w2c_config_property_loader_get_db_supporter_template_name (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_extension_class_names (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_post_extension_class_names (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_third_party_schema_names (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_language_types (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env);
@@ -147,7 +147,7 @@ w2c_config_property_loader_get_language_specific_properties_map (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_databinding_framework_names (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env);
@@ -169,14 +169,14 @@ w2c_config_property_loader_load_values(
                       w2c_config_property_loader_impl_t *obj_impl,
                       const axis2_env_t *env);
 
-static axis2_array_list_t*
+static axutil_array_list_t*
 w2c_config_property_loader_dup_array(
-                      axis2_array_list_t *arr,
+                      axutil_array_list_t *arr,
                       const axis2_env_t *env);
 
 static axis2_status_t
 w2c_config_property_loader_free_array(
-                      axis2_array_list_t *original,
+                      axutil_array_list_t *original,
                       const axis2_env_t *env);
 
 
@@ -466,7 +466,7 @@ w2c_config_property_loader_get_db_supporter_template_name (
 }
 
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_extension_class_names (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env)
@@ -481,7 +481,7 @@ w2c_config_property_loader_get_extension_class_names (
 }
 
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_post_extension_class_names (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env)
@@ -496,7 +496,7 @@ w2c_config_property_loader_get_post_extension_class_names (
 }
 
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_third_party_schema_names (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env)
@@ -511,7 +511,7 @@ w2c_config_property_loader_get_third_party_schema_names (
 }
 
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_language_types (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env)
@@ -571,7 +571,7 @@ w2c_config_property_loader_get_language_specific_properties_map (
 }
 
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_config_property_loader_get_databinding_framework_names (
     w2c_config_property_loader_t *config_property_loader,
     const axis2_env_t *env)
@@ -624,8 +624,8 @@ w2c_config_property_loader_load_values(
      axis2_hash_t* temp_hash = NULL;
      axis2_hash_t* lang_spec_hash = NULL;
      axis2_hash_index_t* hi = NULL;
-     axis2_array_list_t* prop = NULL;
-     axis2_array_list_t* temp_array = NULL;
+     axutil_array_list_t* prop = NULL;
+     axutil_array_list_t* temp_array = NULL;
      axis2_char_t* temp_buff = NULL;
      axis2_char_t* key= NULL;
      axis2_char_t* val= NULL;
@@ -639,7 +639,7 @@ w2c_config_property_loader_load_values(
       */
 
      /*load the extension class names*/
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_CODE_GEN_KEY_PREFIX,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL) 
@@ -649,7 +649,7 @@ w2c_config_property_loader_load_values(
      }
  
      /*load the post extension class names*/
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_POST_CODE_GEN_KEY_PREFIX,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL) 
@@ -659,7 +659,7 @@ w2c_config_property_loader_load_values(
      }
          
      /* load the data binding framework names */
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_FRAMEWORK_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL) 
@@ -670,7 +670,7 @@ w2c_config_property_loader_load_values(
      
      /* populate the data binding framework name to extension name map */
      temp_array = NULL;
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_FRAMEWORK_EXTENSION_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -678,8 +678,8 @@ w2c_config_property_loader_load_values(
          temp_array = 
              w2c_config_property_loader_dup_array(prop, env );
          
-         size= axis2_array_list_size (obj_impl ->databinding_framework_names, env);
-         if (size != axis2_array_list_size (temp_array, env) )
+         size= axutil_array_list_size (obj_impl ->databinding_framework_names, env);
+         if (size != axutil_array_list_size (temp_array, env) )
          {
               fprintf ( stderr, "data_binding_framework name to extension diff in size" );
               w2c_config_property_loader_free(
@@ -692,40 +692,40 @@ w2c_config_property_loader_load_values(
          for (i = 0 ; i < size ;i++ )
          {
              axis2_hash_set ( temp_hash,
-              axis2_strdup(env, axis2_array_list_get(obj_impl ->databinding_framework_names, env, i )),
+              axis2_strdup(env, axutil_array_list_get(obj_impl ->databinding_framework_names, env, i )),
               AXIS2_HASH_KEY_STRING,
-              axis2_strdup(env,  axis2_array_list_get(temp_array, env, i )));
+              axis2_strdup(env,  axutil_array_list_get(temp_array, env, i )));
          }
      }
      
      /*load the default framework name */
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_FRAMEWORK_DEFAULT_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
      {
          obj_impl ->default_db_framework_name = 
-                      axis2_strdup( env, axis2_array_list_get(prop, env, 0 ));
+                      axis2_strdup( env, axutil_array_list_get(prop, env, 0 ));
      }
       
      /* load the third party schema names */
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_THIRD_PARTY_SCHEMA_KEY_PREFIX,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
      {
          obj_impl ->third_party_schema_names= 
-                      axis2_strdup(env, axis2_array_list_get(prop, env, 0));
+                      axis2_strdup(env, axutil_array_list_get(prop, env, 0));
      }
        
      /* the db supporter template name */
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_TEMPLATE_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
      {
          obj_impl ->db_supporter_template_name= 
-                      axis2_strdup(env, axis2_array_list_get(prop, env, 0 ));
+                      axis2_strdup(env, axutil_array_list_get(prop, env, 0 ));
      }
       
      /* test object template name */
@@ -733,18 +733,18 @@ w2c_config_property_loader_load_values(
       * starts with W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_TEMPLATE_NAME_KEY_PREFIX
       * ends with W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_TEMPLATE_NAME_KEY_SUFFIX
       */
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DATA_BINDING_TEST_OBJECT_TEMPLATE_NAME_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
      {
          obj_impl ->test_object_template_name= 
-                      axis2_strdup(env, axis2_array_list_get(prop, env, 0));
+                      axis2_strdup(env, axutil_array_list_get(prop, env, 0));
      }
      
       
      /* load the language types */
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_LANGUAGE_TYPE_KEY_PREFIX,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
@@ -754,15 +754,15 @@ w2c_config_property_loader_load_values(
      }
        
      /* load the language emitter map */
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_EMITTER_CLASS_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
      {
          temp_array = w2c_config_property_loader_dup_array(prop, env );
          
-         size= axis2_array_list_size (obj_impl->language_types , env);
-         if (size != axis2_array_list_size (temp_array, env) )
+         size= axutil_array_list_size (obj_impl->language_types , env);
+         if (size != axutil_array_list_size (temp_array, env) )
          {
               fprintf ( stderr, "data_binding_framework name to extension diff in size" );
               w2c_config_property_loader_free(
@@ -774,8 +774,8 @@ w2c_config_property_loader_load_values(
          obj_impl ->language_emitter_map = temp_hash;
          for (i = 0 ; i< size ; i++ )
          {
-             key = axis2_array_list_get(obj_impl ->language_types, env, i);
-             val = axis2_array_list_get(temp_array, env, i );
+             key = axutil_array_list_get(obj_impl ->language_types, env, i);
+             val = axutil_array_list_get(temp_array, env, i );
              axis2_hash_set ( temp_hash,
               axis2_strdup(env, key),
               AXIS2_HASH_KEY_STRING,
@@ -784,13 +784,13 @@ w2c_config_property_loader_load_values(
      }
  
      /* load the default language */
-     prop = (axis2_array_list_t*)axis2_hash_get ( prop_hash,
+     prop = (axutil_array_list_t*)axis2_hash_get ( prop_hash,
            W2C_CONFIG_PROPERTY_LOADER_DEFAULT_LANGUAGE_TYPE_KEY,
            AXIS2_HASH_KEY_STRING );
      if ( prop != NULL)
      {
          obj_impl ->default_language = 
-                      axis2_strdup(env, axis2_array_list_get(prop, env, 0 ));
+                      axis2_strdup(env, axutil_array_list_get(prop, env, 0 ));
      }
 
      /**
@@ -801,10 +801,10 @@ w2c_config_property_loader_load_values(
      {
          temp_hash = axis2_hash_make ( env );
          obj_impl->language_specific_properties_map = temp_hash;
-         size= axis2_array_list_size (obj_impl->language_types , env);
+         size= axutil_array_list_size (obj_impl->language_types , env);
          for (i = 0 ; i< size ; i++ )
          {
-             temp_buff = axis2_array_list_get(obj_impl ->language_types, env, i );
+             temp_buff = axutil_array_list_get(obj_impl ->language_types, env, i );
              lang_spec_hash = axis2_hash_make ( env );
              for (hi = axis2_hash_first(prop_hash, env); hi;
                   hi = axis2_hash_next(env, hi))
@@ -821,26 +821,26 @@ w2c_config_property_loader_load_values(
          }
      }   
 }
-static axis2_array_list_t*
+static axutil_array_list_t*
 w2c_config_property_loader_dup_array(
-                    axis2_array_list_t *original,
+                    axutil_array_list_t *original,
                     const axis2_env_t *env)
 {
     int i = 0;
     int size = 0;
-    axis2_array_list_t* new_array = NULL;
+    axutil_array_list_t* new_array = NULL;
     axis2_char_t *tmp = NULL;
     
-    size = axis2_array_list_size( original, env);
+    size = axutil_array_list_size( original, env);
     if ( 0 == size )
-        return axis2_array_list_create( env, 1);
+        return axutil_array_list_create( env, 1);
 
-    new_array = axis2_array_list_create( env, size);
+    new_array = axutil_array_list_create( env, size);
     for( i = 0; i < size; i ++ )
     {
-        tmp = (axis2_char_t*)axis2_array_list_get( original, env, i);
+        tmp = (axis2_char_t*)axutil_array_list_get( original, env, i);
         tmp = axis2_strdup(env, tmp);
-        axis2_array_list_add_at( new_array, env, i, tmp);
+        axutil_array_list_add_at( new_array, env, i, tmp);
     }
     return new_array;
 }
@@ -848,20 +848,20 @@ w2c_config_property_loader_dup_array(
 /** this frees axis2_char_t[] */
 static axis2_status_t
 w2c_config_property_loader_free_array(
-                        axis2_array_list_t *arr,
+                        axutil_array_list_t *arr,
                         const axis2_env_t *env)
 {
     int i = 0;
     int size = 0;
     axis2_char_t *tmp = NULL;
     
-    size = axis2_array_list_size( arr, env);
+    size = axutil_array_list_size( arr, env);
     for( i = 0; i < size; i ++ )
     {
-        tmp = (axis2_char_t*)axis2_array_list_get( arr, env, i);
+        tmp = (axis2_char_t*)axutil_array_list_get( arr, env, i);
         AXIS2_FREE( env-> allocator, tmp);
     }
-    axis2_array_list_free( arr, env);
+    axutil_array_list_free( arr, env);
     return AXIS2_SUCCESS;
 }
 

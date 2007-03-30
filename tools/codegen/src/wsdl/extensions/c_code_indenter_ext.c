@@ -63,7 +63,7 @@ w2c_c_code_indenter_ext_engage(w2c_extension_t *extension,
     w2c_c_code_indenter_ext_impl_t *extension_impl = NULL;
     axis2_bool_t indent_code = AXIS2_FALSE;
     axis2_char_t *lang = NULL;
-    axis2_array_list_t *filenames = NULL;
+    axutil_array_list_t *filenames = NULL;
     int i = 0, size = 0;
     axis2_char_t *filename = NULL;
     int length = 0;
@@ -78,10 +78,10 @@ w2c_c_code_indenter_ext_engage(w2c_extension_t *extension,
     /* this executes only with following configuration */
     if ( indent_code && axis2_strcmp( lang, "c") == 0)
     {
-        size = axis2_array_list_size( filenames, env);
+        size = axutil_array_list_size( filenames, env);
         for ( i = 0; i < size; i ++ )
         {
-            filename = axis2_array_list_get( filenames, env, i);
+            filename = axutil_array_list_get( filenames, env, i);
             length = axis2_strlen( filename);
             /* take only .c or .h files */
             if( filename[length-1] == 'c' || filename[length-1] == 'h' ||

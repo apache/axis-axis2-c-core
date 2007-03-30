@@ -36,7 +36,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_const.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_any_content_type.h>
 #include <axis2_svc_name.h>
 #include <axiom_node.h>
@@ -132,7 +132,7 @@ extern "C"
      * @return pointer to array list containing all reference parameters,
      * returns a reference, not a cloned copy 
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_ref_param_list(const axis2_endpoint_ref_t *endpoint_ref,
         const axis2_env_t *env);
 
@@ -144,7 +144,7 @@ extern "C"
      * @return pointer to array list containing metadata, returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_metadata_list(const axis2_endpoint_ref_t *endpoint_ref,
         const axis2_env_t *env);
 
@@ -155,7 +155,7 @@ extern "C"
      * @return pointer to array list containing reference attributes, 
      * returns a reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_ref_attribute_list(const axis2_endpoint_ref_t *endpoint_ref,
         const axis2_env_t *env);
 
@@ -166,7 +166,7 @@ extern "C"
      * @return pointer to array list containing metadata attributes, 
      * returns a reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_metadata_attribute_list(const axis2_endpoint_ref_t *endpoint_ref,
         const axis2_env_t *env);
 
@@ -178,7 +178,7 @@ extern "C"
      * @return pointer to array list containing extensions, 
      * returns a reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_extension_list(const axis2_endpoint_ref_t *endpoint_ref,
         const axis2_env_t *env);
 

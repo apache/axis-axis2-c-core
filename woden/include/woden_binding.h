@@ -85,12 +85,12 @@ struct woden_binding_ops
             void *binding,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_binding_faults) (
             void *binding,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_binding_ops) (
             void *binding,
             const axis2_env_t *env);

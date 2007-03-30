@@ -27,7 +27,7 @@ struct woden_soap_fault_subcodes_impl
 {
     woden_soap_fault_subcodes_t soap_fault_subcodes;
     axis2_char_t *f_token;
-    axis2_array_list_t *f_subcode_qns;
+    axutil_array_list_t *f_subcode_qns;
 };
 
 #define INTF_TO_IMPL(soap_fault_subcodes) ((woden_soap_fault_subcodes_impl_t *) soap_fault_subcodes)
@@ -49,7 +49,7 @@ woden_soap_fault_subcodes_is_token(
     void *soap_fault_subcodes,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_fault_subcodes_get_qnames(
     void *soap_fault_subcodes,
     const axis2_env_t *env);
@@ -95,7 +95,7 @@ AXIS2_EXTERN woden_soap_fault_subcodes_t * AXIS2_CALL
 woden_soap_fault_subcodes_create(
     const axis2_env_t *env,
     axis2_char_t *token,
-    axis2_array_list_t *subcode_qns)
+    axutil_array_list_t *subcode_qns)
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
 
@@ -128,15 +128,15 @@ woden_soap_fault_subcodes_free(
     {
         int i = 0, size = 0;
 
-        size = axis2_array_list_size(soap_fault_subcodes_impl->f_subcode_qns,
+        size = axutil_array_list_size(soap_fault_subcodes_impl->f_subcode_qns,
                 env);
         for (i = 0; i < size; i++)
         {
-            axis2_qname_t *qname = axis2_array_list_get(soap_fault_subcodes_impl->
+            axis2_qname_t *qname = axutil_array_list_get(soap_fault_subcodes_impl->
                     f_subcode_qns, env, i);
             axis2_qname_free(qname, env);
         }
-        axis2_array_list_free(soap_fault_subcodes_impl->f_subcode_qns, env);
+        axutil_array_list_free(soap_fault_subcodes_impl->f_subcode_qns, env);
         soap_fault_subcodes_impl->f_subcode_qns = NULL;
     }
 
@@ -178,7 +178,7 @@ woden_soap_fault_subcodes_is_qnames(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_fault_subcodes_impl = INTF_TO_IMPL(soap_fault_subcodes);
 
-    size = axis2_array_list_size(soap_fault_subcodes_impl->f_subcode_qns, env);
+    size = axutil_array_list_size(soap_fault_subcodes_impl->f_subcode_qns, env);
     return (size > 0);
 }
 
@@ -195,7 +195,7 @@ woden_soap_fault_subcodes_is_token(
     return (NULL != soap_fault_subcodes_impl->f_token);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_fault_subcodes_get_qnames(
     void *soap_fault_subcodes,
     const axis2_env_t *env)

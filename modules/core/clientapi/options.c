@@ -21,7 +21,7 @@
 #include <axis2_hash.h>
 #include <axiom_soap_const.h>
 #include <axis2_msg_info_headers.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 struct axis2_options
 {

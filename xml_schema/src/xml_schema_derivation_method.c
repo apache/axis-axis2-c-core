@@ -34,7 +34,7 @@ struct xml_schema_derivation_method_impl
 
     xml_schema_types_t type;
 
-    axis2_array_list_t *members;
+    axutil_array_list_t *members;
 
     axis2_hash_t *ht_super;
 };
@@ -59,7 +59,7 @@ xml_schema_enum_t *AXIS2_CALL
 xml_schema_derivation_method_get_base_impl(void *derivation_method,
         const axis2_env_t *env);
 
-axis2_array_list_t * AXIS2_CALL
+axutil_array_list_t * AXIS2_CALL
 xml_schema_derivation_method_get_values(void *derivation_method,
         const axis2_env_t *env);
 
@@ -109,7 +109,7 @@ xml_schema_derivation_method_create(const axis2_env_t *env,
     derivation_method_impl->derivation_method.ops->get_type =
         xml_schema_derivation_method_get_type;
 
-    derivation_method_impl->members = axis2_array_list_create(env, 0);
+    derivation_method_impl->members = axutil_array_list_create(env, 0);
 
     if (!derivation_method_impl->members)
     {
@@ -117,28 +117,28 @@ xml_schema_derivation_method_create(const axis2_env_t *env,
             &(derivation_method_impl->derivation_method), env);
         return NULL;
     }
-    axis2_array_list_add(derivation_method_impl->members, env,
+    axutil_array_list_add(derivation_method_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_ALL));
 
-    axis2_array_list_add(derivation_method_impl->members, env,
+    axutil_array_list_add(derivation_method_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_EMPTY));
 
-    axis2_array_list_add(derivation_method_impl->members, env,
+    axutil_array_list_add(derivation_method_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_EXTENSION));
 
-    axis2_array_list_add(derivation_method_impl->members, env,
+    axutil_array_list_add(derivation_method_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_LIST));
 
-    axis2_array_list_add(derivation_method_impl->members, env,
+    axutil_array_list_add(derivation_method_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_NONE));
 
-    axis2_array_list_add(derivation_method_impl->members, env,
+    axutil_array_list_add(derivation_method_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_RESTRICTION));
 
-    axis2_array_list_add(derivation_method_impl->members, env,
+    axutil_array_list_add(derivation_method_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_SUBSTITUTION));
 
-    axis2_array_list_add(derivation_method_impl->members, env,
+    axutil_array_list_add(derivation_method_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_UNION));
 
 
@@ -182,18 +182,18 @@ xml_schema_derivation_method_free(void *derivation_method,
     {
         int size = 0;
         int i    = 0;
-        size = axis2_array_list_size(derivation_method_impl->members, env);
+        size = axutil_array_list_size(derivation_method_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
-            value = (axis2_char_t*) axis2_array_list_get(derivation_method_impl->members, env, i);
+            value = (axis2_char_t*) axutil_array_list_get(derivation_method_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
-        axis2_array_list_free(derivation_method_impl->members, env);
+        axutil_array_list_free(derivation_method_impl->members, env);
         derivation_method_impl->members = NULL;
     }
 
@@ -233,7 +233,7 @@ xml_schema_derivation_method_get_base_impl(void *derivation_method,
     return derivation_method_impl->schema_enum;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_derivation_method_get_values(void *derivation_method,
         const axis2_env_t *env)
 {

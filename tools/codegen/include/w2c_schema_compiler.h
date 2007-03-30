@@ -77,7 +77,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler_ops
     w2c_typemapper_t *(AXIS2_CALL *
     compile_schema_list)( w2c_schema_compiler_t *compiler,
                 const axis2_env_t *env,
-                axis2_array_list_t *schema_list);
+                axutil_array_list_t *schema_list);
 
 };
 

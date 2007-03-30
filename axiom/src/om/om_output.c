@@ -21,7 +21,7 @@
 #include <axiom_xml_writer.h>
 #include <axiom_text.h>
 #include <axiom_soap_const.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_uuid_gen.h>
 #include <axiom_mime_output.h>
 
@@ -56,7 +56,7 @@ struct axiom_output
 
     axis2_bool_t ignore_xml_declaration;
 
-    axis2_array_list_t *binary_node_list;
+    axutil_array_list_t *binary_node_list;
 
     axiom_mime_output_t *mime_output;
 
@@ -129,7 +129,7 @@ axiom_output_free(axiom_output_t *om_output,
 
     if (om_output->binary_node_list)
     {
-        axis2_array_list_free(om_output->binary_node_list, env);
+        axutil_array_list_free(om_output->binary_node_list, env);
     }
 
     if (om_output->mime_output)
@@ -291,16 +291,16 @@ axiom_output_write_optimized(axiom_output_t *om_output,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (om_output->binary_node_list)
     {
-        axis2_array_list_add(om_output->binary_node_list, env, om_text);
+        axutil_array_list_add(om_output->binary_node_list, env, om_text);
     }
     else
     {
-        om_output->binary_node_list = axis2_array_list_create(env, 5);
+        om_output->binary_node_list = axutil_array_list_create(env, 5);
         if (!(om_output->binary_node_list))
         {
             return AXIS2_FAILURE;
         }
-        axis2_array_list_add(om_output->binary_node_list, env, om_text);
+        axutil_array_list_add(om_output->binary_node_list, env, om_text);
     }
     return AXIS2_SUCCESS;
 }

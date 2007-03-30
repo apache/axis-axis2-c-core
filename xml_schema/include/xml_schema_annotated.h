@@ -147,10 +147,10 @@ struct xml_schema_annotated_ops
      * belong to the schema target namespace.
      * @param annotated pointer to annotated struct
      * @param env environment
-     ^ @returns a pointer to axis2_array_list_t if attributes exists
+     ^ @returns a pointer to axutil_array_list_t if attributes exists
      * NULL otherwise
      */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_unhandled_attrs) (
             void *annotated,
             const axis2_env_t *env);
@@ -165,7 +165,7 @@ struct xml_schema_annotated_ops
     set_unhandled_attrs) (
             void *annotated,
             const axis2_env_t *env,
-            axis2_array_list_t *unhandled_attrs);
+            axutil_array_list_t *unhandled_attrs);
 };
 
 /**

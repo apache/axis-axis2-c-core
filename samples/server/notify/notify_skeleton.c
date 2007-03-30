@@ -16,7 +16,7 @@
  */
 #include "axis2_svc_skeleton.h"
 #include "notify.h"
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 int AXIS2_CALL
 notify_free(axis2_svc_skeleton_t *svc_skeleton,
@@ -68,11 +68,11 @@ int AXIS2_CALL
 notify_init(axis2_svc_skeleton_t *svc_skeleton,
         const axis2_env_t *env)
 {
-    svc_skeleton->func_array = axis2_array_list_create(env, 0);
+    svc_skeleton->func_array = axutil_array_list_create(env, 0);
     /* Add the implemented operation names of the service to
      * the array list of functions 
      */
-    axis2_array_list_add(svc_skeleton->func_array, env, "notify");
+    axutil_array_list_add(svc_skeleton->func_array, env, "notify");
     /* Any initialization stuff of notify service should go here */
     return AXIS2_SUCCESS;
 }
@@ -122,7 +122,7 @@ notify_free(axis2_svc_skeleton_t *svc_skeleton,
     /* Free the function array */
     if (svc_skeleton->func_array)
     {
-        axis2_array_list_free(svc_skeleton->func_array, env);
+        axutil_array_list_free(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }
 

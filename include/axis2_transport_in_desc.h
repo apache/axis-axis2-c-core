@@ -41,7 +41,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axutil_allocator.h>
-#include <axis2_array_list.h> 
+#include <axutil_array_list.h> 
 /*#include <axis2_transport_receiver.h>*/
 #include <axis2_phase_meta.h>
 #include <axis2_phase.h>

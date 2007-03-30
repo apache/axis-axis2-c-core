@@ -71,7 +71,7 @@ struct woden_wsdl10_ext_registry_impl
     */
     axis2_hash_t *comp_ext_reg;
 
-    axis2_array_list_t *key_set;
+    axutil_array_list_t *key_set;
 
     woden_string_attr_t *string_attr;
     woden_uri_attr_t *uri_attr;
@@ -117,7 +117,7 @@ woden_wsdl10_ext_registry_query_ext_element_type(
     axis2_char_t *parent_class,
     axis2_qname_t *elem_qn);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_get_allowable_exts(
     void *registry,
     const axis2_env_t *env,
@@ -161,7 +161,7 @@ woden_wsdl10_ext_registry_query_component_ext(
     axis2_char_t *parent_class,
     axis2_uri_t *ext_namespc);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext_namespaces(
     void *registry,
     const axis2_env_t *env,
@@ -441,7 +441,7 @@ woden_wsdl10_ext_registry_query_ext_element_type(
 * Returns null if no extension deserializers are registered for
 * this parent type.
 */
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_get_allowable_exts(
     void *registry,
     const axis2_env_t *env,
@@ -459,14 +459,14 @@ woden_wsdl10_ext_registry_get_allowable_exts(
     {
         axis2_hash_index_t *i = NULL;
 
-        registry_impl->key_set = axis2_array_list_create(env, 0);
+        registry_impl->key_set = axutil_array_list_create(env, 0);
         for (i = axis2_hash_first(inner_deserializer_reg, env); i; i =
                     axis2_hash_next(env, i))
         {
             void *v = NULL;
 
             axis2_hash_this(i, NULL, NULL, &v);
-            axis2_array_list_add(registry_impl->key_set, env, v);
+            axutil_array_list_add(registry_impl->key_set, env, v);
         }
     }
     return registry_impl->key_set;
@@ -673,7 +673,7 @@ woden_wsdl10_ext_registry_query_component_ext(
 * @param parentClass the class of WSDL component extended by these namespaces
 * @return an array of namespace URIs
 */
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext_namespaces(
     void *registry,
     const axis2_env_t *env,
@@ -687,7 +687,7 @@ woden_wsdl10_ext_registry_query_component_ext_namespaces(
 
     inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    registry_impl->key_set = axis2_array_list_create(env, 0);
+    registry_impl->key_set = axutil_array_list_create(env, 0);
     if (inner_comp_ext_reg)
     {
         axis2_hash_index_t *i = NULL;
@@ -698,7 +698,7 @@ woden_wsdl10_ext_registry_query_component_ext_namespaces(
             const void *key = NULL;
 
             axis2_hash_this(i, &key, NULL, NULL);
-            axis2_array_list_add(registry_impl->key_set, env, key);
+            axutil_array_list_add(registry_impl->key_set, env, key);
         }
     }
     return registry_impl->key_set;

@@ -460,7 +460,7 @@ axis2_simple_http_svr_conn_write_response(
 {
     axis2_http_response_writer_t *response_writer = NULL;
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
-    axis2_array_list_t *headers = NULL;
+    axutil_array_list_t *headers = NULL;
     axis2_stream_t *response_stream = NULL;
     axis2_char_t *response_body = NULL;
     int body_size = 0;
@@ -526,10 +526,10 @@ axis2_simple_http_svr_conn_write_response(
 
     if (headers)
     {
-        for (i = 0; i < axis2_array_list_size(headers, env); i++)
+        for (i = 0; i < axutil_array_list_size(headers, env); i++)
         {
             axis2_http_header_t *header = NULL;
-            header = (axis2_http_header_t *)axis2_array_list_get(headers, env,
+            header = (axis2_http_header_t *)axutil_array_list_get(headers, env,
                     i);
             if (header)
             {

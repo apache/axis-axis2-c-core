@@ -18,14 +18,14 @@
 
 #include <axis2_string.h>
 #include <axis2_phase.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_const.h>
 
 static axis2_status_t
 axis2_phase_add_unique(
     const axis2_env_t *env,
-    axis2_array_list_t *list,
+    axutil_array_list_t *list,
     axis2_handler_t *handler);
 
 struct axis2_phase
@@ -33,7 +33,7 @@ struct axis2_phase
     /** phase name */
     axis2_char_t *name;
     /** array list of handlers */
-    axis2_array_list_t* handlers;
+    axutil_array_list_t* handlers;
     /** first handler of phase */
     axis2_handler_t *first_handler;
     /** first handler of phase set? */
@@ -73,7 +73,7 @@ axis2_phase_create(
     phase->last_handler_set = AXIS2_FALSE;
     phase->is_one_handler = AXIS2_FALSE;
 
-    phase->handlers = axis2_array_list_create(env, 10);
+    phase->handlers = axutil_array_list_create(env, 10);
     if (!(phase->handlers))
     {
         /** error is already set by last method array list container create */
@@ -110,7 +110,7 @@ axis2_phase_add_handler_at(
             index,
             phase->name);
 
-    return axis2_array_list_add_at(phase->handlers, env, index, handler);
+    return axutil_array_list_add_at(phase->handlers, env, index, handler);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -158,7 +158,7 @@ axis2_phase_invoke(
         }
     }
     /* Invoking the rest of handlers except first_handler and last_handler */
-    size = axis2_array_list_size(phase->handlers, env);
+    size = axutil_array_list_size(phase->handlers, env);
     while (index < size)
     {
         if ( axis2_msg_ctx_is_paused(msg_ctx, env))
@@ -168,7 +168,7 @@ axis2_phase_invoke(
         else
         {
             axis2_handler_t *handler = (axis2_handler_t*)
-            axis2_array_list_get(phase->handlers, env, index);
+            axutil_array_list_get(phase->handlers, env, index);
             if (handler)
             {
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
@@ -223,7 +223,7 @@ axis2_phase_get_handler_count(
     const axis2_phase_t *phase,
     const axis2_env_t *env)
 {
-    return axis2_array_list_size(phase->handlers, env);
+    return axutil_array_list_size(phase->handlers, env);
 }
 
 
@@ -364,7 +364,7 @@ axis2_phase_add_handler_desc(
 
         if (first && last)
         {
-            if (axis2_array_list_size(phase->handlers, env) > 0)
+            if (axutil_array_list_size(phase->handlers, env) > 0)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_RULES, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -377,7 +377,7 @@ axis2_phase_add_handler_desc(
                 return AXIS2_FAILURE;
             }
 
-            /*status = axis2_array_list_add(phase->handlers, env, handler);*/
+            /*status = axutil_array_list_add(phase->handlers, env, handler);*/
             status = axis2_phase_add_unique(env, phase->handlers, handler);
             if (status == AXIS2_SUCCESS)
                 phase->is_one_handler = AXIS2_TRUE;
@@ -558,16 +558,16 @@ axis2_phase_insert_before(
 
         if (axis2_strcmp(before, handler_name) == 0)
         {
-            /*return axis2_array_list_add(phase->handlers, env, handler);*/
+            /*return axutil_array_list_add(phase->handlers, env, handler);*/
             return axis2_phase_add_unique(env, phase->handlers, handler);
         }
     }
 
-    size = axis2_array_list_size(phase->handlers, env);
+    size = axutil_array_list_size(phase->handlers, env);
 
     for (i = 0; i < size; i++)
     {
-        axis2_handler_t *temp_handler = (axis2_handler_t *) axis2_array_list_get(phase->handlers, env, i);
+        axis2_handler_t *temp_handler = (axis2_handler_t *) axutil_array_list_get(phase->handlers, env, i);
         if (temp_handler)
         {
             handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(temp_handler, env);
@@ -586,12 +586,12 @@ axis2_phase_insert_before(
 
             if (axis2_strcmp(before, handler_name) == 0)
             {
-                return axis2_array_list_add_at(phase->handlers, env, i, handler);
+                return axutil_array_list_add_at(phase->handlers, env, i, handler);
             }
         }
     }
     /* add as the last handler */
-    /* return axis2_array_list_add(phase->handlers, env, handler); */
+    /* return axutil_array_list_add(phase->handlers, env, handler); */
     return axis2_phase_add_unique(env, phase->handlers, handler);
 }
 
@@ -649,15 +649,15 @@ axis2_phase_insert_after(
 
         if (axis2_strcmp(after, handler_name) == 0)
         {
-            return axis2_array_list_add_at(phase->handlers, env, 0, handler);
+            return axutil_array_list_add_at(phase->handlers, env, 0, handler);
         }
     }
 
-    size = axis2_array_list_size(phase->handlers, env);
+    size = axutil_array_list_size(phase->handlers, env);
 
     for (i = 0; i < size; i++)
     {
-        axis2_handler_t *temp_handler = (axis2_handler_t *) axis2_array_list_get(phase->handlers, env, i);
+        axis2_handler_t *temp_handler = (axis2_handler_t *) axutil_array_list_get(phase->handlers, env, i);
         if (temp_handler)
         {
             handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(temp_handler, env);
@@ -681,13 +681,13 @@ axis2_phase_insert_after(
                     return axis2_phase_add_unique(env, phase->handlers, handler);
                 }
                 else
-                    return axis2_array_list_add_at(phase->handlers, env, i + 1, handler);
+                    return axutil_array_list_add_at(phase->handlers, env, i + 1, handler);
             }
         }
     }
 
     if (size > 0)
-        return axis2_array_list_add_at(phase->handlers, env, 0, handler);
+        return axutil_array_list_add_at(phase->handlers, env, 0, handler);
     else
     {
         return axis2_phase_add_unique(env, phase->handlers, handler);
@@ -788,7 +788,7 @@ axis2_phase_insert_before_and_after(
             after = 0;
     }
 
-    size = axis2_array_list_size(phase->handlers, env);
+    size = axutil_array_list_size(phase->handlers, env);
 
     if (after_handler_name)
     {
@@ -798,7 +798,7 @@ axis2_phase_insert_before_and_after(
 
     for (i = 0; i < size; i++)
     {
-        axis2_handler_t *temp_handler = (axis2_handler_t *) axis2_array_list_get(phase->handlers, env, i);
+        axis2_handler_t *temp_handler = (axis2_handler_t *) axutil_array_list_get(phase->handlers, env, i);
         if (temp_handler)
         {
             handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(temp_handler, env);
@@ -833,7 +833,7 @@ axis2_phase_insert_before_and_after(
             {
                 if (after + 1 < size)
                 {
-                    return axis2_array_list_add_at(phase->handlers, env, after + 1, handler);
+                    return axutil_array_list_add_at(phase->handlers, env, after + 1, handler);
                 }
                 else
                 {
@@ -902,7 +902,7 @@ axis2_phase_insert_handler_desc(
     return status;
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phase_get_all_handlers(
     const axis2_phase_t *phase,
     const axis2_env_t *env)
@@ -924,10 +924,10 @@ axis2_phase_invoke_start_from_handler(
 
     axis2_msg_ctx_set_paused_phase_name(msg_ctx, env, phase->name);
 
-    size = axis2_array_list_size(phase->handlers, env);
+    size = axutil_array_list_size(phase->handlers, env);
     for (i = paused_handler_index; i < size; i++)
     {
-        axis2_handler_t *handler = (axis2_handler_t *) axis2_array_list_get(
+        axis2_handler_t *handler = (axis2_handler_t *) axutil_array_list_get(
                     phase->handlers, env, i);
         if (handler)
         {
@@ -962,7 +962,7 @@ axis2_phase_free(
 
     if (phase->handlers)
     {
-        axis2_array_list_free(phase->handlers, env);
+        axutil_array_list_free(phase->handlers, env);
     }
     AXIS2_FREE(env->allocator, phase);
     return;
@@ -971,7 +971,7 @@ axis2_phase_free(
 static axis2_status_t
 axis2_phase_add_unique(
     const axis2_env_t *env,
-    axis2_array_list_t *list,
+    axutil_array_list_t *list,
     axis2_handler_t *handler)
 {
     int i = 0, size = 0;
@@ -979,13 +979,13 @@ axis2_phase_add_unique(
     const axis2_string_t *handler_name = NULL;
 
     handler_name = AXIS2_HANDLER_GET_NAME(handler, env);
-    size = axis2_array_list_size(list, env);
+    size = axutil_array_list_size(list, env);
     for (i = 0; i < size; i++)
     {
         axis2_handler_t *obj = NULL;
         const axis2_string_t *obj_name = NULL;
 
-        obj = (axis2_handler_t *) axis2_array_list_get(list, env, i);
+        obj = (axis2_handler_t *) axutil_array_list_get(list, env, i);
         obj_name = AXIS2_HANDLER_GET_NAME(obj, env);
         if (obj == handler)
         {
@@ -1000,7 +1000,7 @@ axis2_phase_add_unique(
         }
     }
     if (AXIS2_TRUE == add_handler)
-        axis2_array_list_add(list, env, handler);
+        axutil_array_list_add(list, env, handler);
     return AXIS2_SUCCESS;
 }
 

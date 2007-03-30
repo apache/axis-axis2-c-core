@@ -35,7 +35,7 @@ struct xml_schema_content_type_impl
 
     xml_schema_types_t obj_type;
 
-    axis2_array_list_t *members;
+    axutil_array_list_t *members;
 
     axis2_hash_t *ht_super;
 };
@@ -51,7 +51,7 @@ xml_schema_enum_t *AXIS2_CALL
 xml_schema_content_type_get_base_impl(void *content_type,
         const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_content_type_get_values(void *content_type,
         const axis2_env_t *env);
 
@@ -107,22 +107,22 @@ xml_schema_content_type_create(const axis2_env_t *env,
     content_type_impl->content_type.ops->super_objs =
         xml_schema_content_type_super_objs;
 
-    content_type_impl->members = axis2_array_list_create(env, 0);
+    content_type_impl->members = axutil_array_list_create(env, 0);
     if (!content_type_impl->members)
     {
         xml_schema_content_type_free(&(content_type_impl->content_type), env);
         return NULL;
     }
 
-    axis2_array_list_add(content_type_impl->members, env,
+    axutil_array_list_add(content_type_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_ELEMENT_ONLY));
-    axis2_array_list_add(content_type_impl->members, env,
+    axutil_array_list_add(content_type_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_EMPTY));
 
-    axis2_array_list_add(content_type_impl->members, env,
+    axutil_array_list_add(content_type_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_MIXED));
 
-    axis2_array_list_add(content_type_impl->members, env,
+    axutil_array_list_add(content_type_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_TEXT_ONLY));
 
     content_type_impl->schema_enum = xml_schema_enum_create(env, value);
@@ -167,18 +167,18 @@ xml_schema_content_type_free(void *content_type,
     {
         int size = 0;
         int i    = 0;
-        size = axis2_array_list_size(content_type_impl->members, env);
+        size = axutil_array_list_size(content_type_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
-            value = (axis2_char_t*) axis2_array_list_get(content_type_impl->members, env, i);
+            value = (axis2_char_t*) axutil_array_list_get(content_type_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
-        axis2_array_list_free(content_type_impl->members, env);
+        axutil_array_list_free(content_type_impl->members, env);
         content_type_impl->members = NULL;
     }
 
@@ -213,7 +213,7 @@ xml_schema_content_type_get_base_impl(void *content_type,
     return content_type_impl->schema_enum;
 }
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 xml_schema_content_type_get_values(void *content_type,
         const axis2_env_t *env)
 {

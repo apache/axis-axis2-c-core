@@ -18,7 +18,7 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axiom_document.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_uri.h>
 #include <axiom_util.h>
 
@@ -493,7 +493,7 @@ AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
         const axis2_env_t  *env,
         axiom_node_t *ele_node,
-        axis2_array_list_t *names,
+        axutil_array_list_t *names,
         axiom_node_t **child_node)
 {
     axiom_node_t *child = NULL;
@@ -515,12 +515,12 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
             om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(child, env);
             if (om_ele)
             {
-                size = axis2_array_list_size(names, env);
+                size = axutil_array_list_size(names, env);
                 child_localname = axiom_element_get_localname(om_ele, env);
 
                 for (i = 0; i < size; i++)
                 {
-                    given_localname = (axis2_char_t *)axis2_array_list_get(names, env, i);
+                    given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
 
                     if ((child_localname) && (NULL != given_localname) &&
                         axis2_strcmp(child_localname, given_localname) == 0)
@@ -546,11 +546,11 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
             om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
             if (om_ele)
             {
-                size = axis2_array_list_size(names, env);
+                size = axutil_array_list_size(names, env);
                 child_localname = axiom_element_get_localname(om_ele, env);
                 for (i = 0; i < size; i++)
                 {
-                    given_localname = (axis2_char_t *)axis2_array_list_get(names, env, i);
+                    given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
                     if ((child_localname) && (NULL != given_localname) &&
                         (axis2_strcmp(child_localname, given_localname) == 0))
                     {
@@ -575,7 +575,7 @@ AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
         const axis2_env_t  *env,
         axiom_node_t *ele_node,
-        axis2_array_list_t *names,
+        axutil_array_list_t *names,
         axiom_node_t **child_node)
 {
     axiom_node_t *child = NULL;
@@ -598,10 +598,10 @@ axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
                 AXIOM_NODE_GET_DATA_ELEMENT(ele_node, env);
             if (om_ele)
             {
-                size = axis2_array_list_size(names, env);
+                size = axutil_array_list_size(names, env);
                 for (i = 0; i < size; i++)
                 {
-                    given_localname = (axis2_char_t *)axis2_array_list_get(names, env, i);
+                    given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
                     child_localname = axiom_element_get_localname(om_ele, env);
                     if (child_localname && (NULL != given_localname) &&
                         (axis2_strcmp(child_localname, given_localname) == 0))
@@ -624,7 +624,7 @@ AXIS2_EXTERN axiom_element_t *AXIS2_CALL
 axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
         const axis2_env_t  *env,
         axiom_node_t *ele_node,
-        axis2_array_list_t *names,
+        axutil_array_list_t *names,
         axiom_node_t **next_node)
 {
     axiom_node_t *next_sibling = NULL;
@@ -647,10 +647,10 @@ axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
                 AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
             if (om_ele)
             {
-                size = axis2_array_list_size(names, env);
+                size = axutil_array_list_size(names, env);
                 for (i = 0; i < size; i++)
                 {
-                    given_localname = (axis2_char_t *)axis2_array_list_get(names, env, i);
+                    given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
                     ele_localname = axiom_element_get_localname(om_ele, env);
                     if ((ele_localname) && (NULL != given_localname) &&
                         (axis2_strcmp(given_localname, ele_localname) == 0))

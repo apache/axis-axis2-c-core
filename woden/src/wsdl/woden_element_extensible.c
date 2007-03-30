@@ -32,8 +32,8 @@ struct woden_element_extensible_impl
     woden_element_extensible_t extensible;
     woden_obj_types_t obj_type;
     axis2_hash_t *super;
-    axis2_array_list_t *f_ext_elements;
-    axis2_array_list_t *temp_elems;
+    axutil_array_list_t *f_ext_elements;
+    axutil_array_list_t *temp_elems;
 };
 
 #define INTF_TO_IMPL(extensible) \
@@ -66,12 +66,12 @@ woden_element_extensible_remove_ext_element(
     const axis2_env_t *env,
     woden_ext_element_t *ext_el);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements(
     void *extensible,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements_of_type(
     void *extensible,
     const axis2_env_t *env,
@@ -122,7 +122,7 @@ woden_element_extensible_create(
     extensible_impl->extensible.ops->has_ext_elements_for_namespace =
         woden_element_extensible_has_ext_elements_for_namespace;
 
-    extensible_impl->f_ext_elements = axis2_array_list_create(env, 0);
+    extensible_impl->f_ext_elements = axutil_array_list_create(env, 0);
     extensible_impl->super = axis2_hash_make(env);
     if (!extensible_impl->super)
     {
@@ -146,22 +146,22 @@ woden_element_extensible_free(void *extensible,
 
     if (extensible_impl->f_ext_elements)
     {
-        axis2_array_list_free(extensible_impl->f_ext_elements, env);
+        axutil_array_list_free(extensible_impl->f_ext_elements, env);
         extensible_impl->f_ext_elements = NULL;
     }
 
     if (extensible_impl->temp_elems)
     {
         int size = 0, i = 0;
-        size = axis2_array_list_size(extensible_impl->temp_elems, env);
+        size = axutil_array_list_size(extensible_impl->temp_elems, env);
         for (i = 0; i < size; i++)
         {
             void *ext_el = NULL;
 
-            ext_el = axis2_array_list_get(extensible_impl->temp_elems, env, i);
+            ext_el = axutil_array_list_get(extensible_impl->temp_elems, env, i);
             WODEN_XML_ATTR_FREE(ext_el, env);
         }
-        axis2_array_list_free(extensible_impl->temp_elems, env);
+        axutil_array_list_free(extensible_impl->temp_elems, env);
         extensible_impl->temp_elems = NULL;
     }
 
@@ -280,7 +280,7 @@ woden_element_extensible_add_ext_element(
             "WODEN_ELEMENT_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
 
-    return axis2_array_list_add(extensible_impl->f_ext_elements, env, ext_el);
+    return axutil_array_list_add(extensible_impl->f_ext_elements, env, ext_el);
 }
 
 axis2_status_t AXIS2_CALL
@@ -299,12 +299,12 @@ woden_element_extensible_remove_ext_element(
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_ELEMENT_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    index = axis2_array_list_index_of(extensible_impl->f_ext_elements, env, ext_el);
-    axis2_array_list_remove(extensible_impl->f_ext_elements, env, index);
+    index = axutil_array_list_index_of(extensible_impl->f_ext_elements, env, ext_el);
+    axutil_array_list_remove(extensible_impl->f_ext_elements, env, index);
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements(void *extensible,
         const axis2_env_t *env)
 {
@@ -319,7 +319,7 @@ woden_element_extensible_get_ext_elements(void *extensible,
     return extensible_impl->f_ext_elements;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements_of_type(void *extensible,
         const axis2_env_t *env,
         axis2_qname_t *ext_type)
@@ -338,31 +338,31 @@ woden_element_extensible_get_ext_elements_of_type(void *extensible,
     if (extensible_impl->temp_elems)
     {
         int size = 0, i = 0;
-        size = axis2_array_list_size(extensible_impl->temp_elems, env);
+        size = axutil_array_list_size(extensible_impl->temp_elems, env);
         for (i = 0; i < size; i++)
         {
             void *ext_el = NULL;
 
-            ext_el = axis2_array_list_get(extensible_impl->temp_elems, env, i);
+            ext_el = axutil_array_list_get(extensible_impl->temp_elems, env, i);
             WODEN_XML_ATTR_FREE(ext_el, env);
         }
-        axis2_array_list_free(extensible_impl->temp_elems, env);
+        axutil_array_list_free(extensible_impl->temp_elems, env);
         extensible_impl->temp_elems = NULL;
     }
 
-    extensible_impl->temp_elems = axis2_array_list_create(env, 0);
-    size = axis2_array_list_size(extensible_impl->f_ext_elements, env);
+    extensible_impl->temp_elems = axutil_array_list_create(env, 0);
+    size = axutil_array_list_size(extensible_impl->f_ext_elements, env);
     for (i = 0; i < size; i++)
     {
         woden_ext_element_t *ext_elem = NULL;
         axis2_qname_t *ext_type_l = NULL;
 
-        ext_elem = (woden_ext_element_t *)axis2_array_list_get(
+        ext_elem = (woden_ext_element_t *)axutil_array_list_get(
                     extensible_impl->f_ext_elements, env, i);
         ext_type_l = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_elem, env);
         if (AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
         {
-            axis2_array_list_add(extensible_impl->temp_elems, env, ext_elem);
+            axutil_array_list_add(extensible_impl->temp_elems, env, ext_elem);
         }
     }
     return extensible_impl->temp_elems;
@@ -388,14 +388,14 @@ woden_element_extensible_has_ext_elements_for_namespace(
             "WODEN_ELEMENT_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
     ext_ns = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
-    size = axis2_array_list_size(extensible_impl->f_ext_elements, env);
+    size = axutil_array_list_size(extensible_impl->f_ext_elements, env);
     for (i = 0; i < size; i++)
     {
         woden_ext_element_t *ext_elem = NULL;
         axis2_qname_t *ext_type = NULL;
         axis2_char_t *uri = NULL;
 
-        ext_elem = (woden_ext_element_t *) axis2_array_list_get(
+        ext_elem = (woden_ext_element_t *) axutil_array_list_get(
                     extensible_impl->f_ext_elements, env, i);
         ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_elem, env);
         uri = axis2_qname_get_uri(ext_type, env);

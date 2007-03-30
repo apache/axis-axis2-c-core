@@ -29,7 +29,7 @@
 #include <xml_schema_simple_type_content.h>
 #include <xml_schema_obj_collection.h>
 #include <axis2_hash.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 /** @defgroup xml_schema_simple_type_union 
   * @ingroup xml_schema
   * @{
@@ -80,7 +80,7 @@ struct xml_schema_simple_type_union_ops
             void *sim_type_union,
             const axis2_env_t *env);
                     
-    axis2_array_list_t* (AXIS2_CALL *
+    axutil_array_list_t* (AXIS2_CALL *
     get_member_types_qnames)(
             void *sim_type_union,
             const axis2_env_t *env);
@@ -89,7 +89,7 @@ struct xml_schema_simple_type_union_ops
     set_member_types_qnames)(
             void *sim_type_union,
             const axis2_env_t *env,
-            axis2_array_list_t *qns);                
+            axutil_array_list_t *qns);                
                 
 };
 

@@ -19,7 +19,7 @@
 
 struct axis2_phase_holder
 {
-    axis2_array_list_t *phase_list;
+    axutil_array_list_t *phase_list;
 };
 
 AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
@@ -45,7 +45,7 @@ axis2_phase_holder_create(const axis2_env_t *env)
 
 AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
 axis2_phase_holder_create_with_phases(const axis2_env_t *env,
-    axis2_array_list_t *phases)
+    axutil_array_list_t *phases)
 {
     axis2_phase_holder_t *phase_holder = NULL;
 
@@ -88,13 +88,13 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, phase_name, AXIS2_FALSE);
 
-    size = axis2_array_list_size(phase_holder->phase_list, env);
+    size = axutil_array_list_size(phase_holder->phase_list, env);
 
     for (i = 0; i < size; i++)
     {
         const axis2_char_t *phase_name_l = NULL;
 
-        phase = (axis2_phase_t *) axis2_array_list_get(phase_holder->
+        phase = (axis2_phase_t *) axutil_array_list_get(phase_holder->
             phase_list, env, i);
         phase_name_l =  axis2_phase_get_name(phase, env);
         if (0 == axis2_strcmp(phase_name_l, phase_name))
@@ -151,12 +151,12 @@ axis2_phase_holder_get_phase(const axis2_phase_holder_t *phase_holder,
 
     AXIS2_PARAM_CHECK(env->error, phase_name, NULL);
 
-    size = axis2_array_list_size(phase_holder->phase_list, env);
+    size = axutil_array_list_size(phase_holder->phase_list, env);
 
     for (i = 0; i < size; i++)
     {
         const axis2_char_t *phase_name_l = NULL;
-        phase = (axis2_phase_t *) axis2_array_list_get(phase_holder->
+        phase = (axis2_phase_t *) axutil_array_list_get(phase_holder->
             phase_list, env, i);
         phase_name_l =  axis2_phase_get_name(phase, env);
         if (0 == axis2_strcmp(phase_name_l, phase_name))
@@ -172,7 +172,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,
     axis2_phase_t *phase,
-    axis2_array_list_t *handlers)
+    axutil_array_list_t *handlers)
 {
     axis2_handler_t *handler = NULL;
     int size = 0;
@@ -184,11 +184,11 @@ axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_hol
     AXIS2_PARAM_CHECK(env->error, phase, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, handlers, AXIS2_FAILURE);
 
-    size = axis2_array_list_size(handlers, env);
+    size = axutil_array_list_size(handlers, env);
 
     for (i = 0; i < size; i++)
     {
-        handler_desc = (axis2_handler_desc_t *) axis2_array_list_get(
+        handler_desc = (axis2_handler_desc_t *) axutil_array_list_get(
             handlers, env, i);
         status = AXIS2_HANDLER_INIT(handler, env, handler_desc);
         if (AXIS2_FAILURE == status)

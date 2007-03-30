@@ -40,7 +40,7 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *phase_orders);
 
-static axis2_array_list_t *
+static axutil_array_list_t *
 axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
     axiom_node_t *phase_orders_node);
@@ -474,7 +474,7 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
         axiom_attribute_t *phase_orders_att = NULL;
         axis2_qname_t *qtype = NULL;
         axis2_char_t *flow_type = NULL;
-        axis2_array_list_t *phase_list = NULL;
+        axutil_array_list_t *phase_list = NULL;
 
         phase_orders_node = (axiom_node_t *) axiom_children_qname_iterator_next(
                     phase_orders, env);
@@ -529,12 +529,12 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
 }
 
 
-static axis2_array_list_t *
+static axutil_array_list_t *
 axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     const axis2_env_t *env,
     axiom_node_t *phase_orders_node)
 {
-    axis2_array_list_t *phase_list = NULL;
+    axutil_array_list_t *phase_list = NULL;
     axiom_children_qname_iterator_t *phases = NULL;
     axis2_qname_t *qphase = NULL;
     axiom_element_t *phase_orders_element;
@@ -550,14 +550,14 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
             AXIS2_FAILURE);
         return NULL;
     }
-    phase_list = axis2_array_list_create(env, 0);
+    phase_list = axutil_array_list_create(env, 0);
     qphase = axis2_qname_create(env, AXIS2_PHASE, NULL, NULL);
     phases = axiom_element_get_children_with_qname(phase_orders_element, env,
         qphase, phase_orders_node);
     axis2_qname_free(qphase, env);
     if (!phases)
     {
-        axis2_array_list_free(phase_list, env);
+        axutil_array_list_free(phase_list, env);
         return NULL;
     }
 
@@ -589,7 +589,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
         }
         if (att_value)
         {
-            axis2_array_list_add(phase_list, env, att_value);
+            axutil_array_list_add(phase_list, env, att_value);
         }
 
         axis2_qname_free(qattname, env);

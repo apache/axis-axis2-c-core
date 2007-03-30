@@ -34,7 +34,7 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <woden.h>
 #include <woden_ext_element.h>
 #include <woden_attr_extensible.h>
@@ -98,7 +98,7 @@ struct woden_soap_module_element_ops
             const axis2_env_t *env,
             void *doc_el);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_documentation_elements) (
             void *soap_module_element,
             const axis2_env_t *env);

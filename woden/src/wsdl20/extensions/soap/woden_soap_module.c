@@ -36,7 +36,7 @@ struct woden_soap_module_impl
     woden_obj_types_t obj_type;
 
     void *f_parent;
-    axis2_array_list_t *f_documentation_elements;
+    axutil_array_list_t *f_documentation_elements;
     axis2_qname_t *f_ext_element_type;
     axis2_bool_t f_required;
     void *f_attr_ext;
@@ -112,7 +112,7 @@ woden_soap_module_add_documentation_element(
     axis2_env_t *env,
     void *doc_el);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_documentation_elements(
     void *module,
     axis2_env_t *env);
@@ -151,13 +151,13 @@ woden_soap_module_get_ext_attr(
     axis2_env_t *env,
     axis2_qname_t *attr_type);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_attrs_for_namespace(
     void *module,
     axis2_env_t *env,
     axis2_uri_t *namespc);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_attrs(
     void *module,
     axis2_env_t *env);
@@ -180,12 +180,12 @@ woden_soap_module_remove_ext_element(
     axis2_env_t *env,
     void *ext_el);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_elements(
     void *module,
     axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_elements_of_type(
     void *module,
     axis2_env_t *env,
@@ -545,7 +545,7 @@ woden_soap_module_free(void *module,
 
     if (module_impl->f_documentation_elements)
     {
-        axis2_array_list_free(module_impl->f_documentation_elements, env);
+        axutil_array_list_free(module_impl->f_documentation_elements, env);
         module_impl->f_documentation_elements = NULL;
     }
 
@@ -820,18 +820,18 @@ woden_soap_module_add_documentation_element(
     if (!module_impl->f_documentation_elements)
     {
         module_impl->f_documentation_elements =
-            axis2_array_list_create(env, 0);
+            axutil_array_list_create(env, 0);
         if (!module_impl->f_documentation_elements)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(module_impl->f_documentation_elements, env, doc_el);
+    axutil_array_list_add(module_impl->f_documentation_elements, env, doc_el);
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_documentation_elements(
     void *module,
     axis2_env_t *env)
@@ -951,7 +951,7 @@ woden_soap_module_get_ext_attr(
                 module_impl->f_attr_ext, env, attr_type);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_attrs_for_namespace(
     void *module,
     axis2_env_t *env,
@@ -970,7 +970,7 @@ woden_soap_module_get_ext_attrs_for_namespace(
                 module_impl->f_attr_ext, env, namespc);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_attrs(
     void *module,
     axis2_env_t *env)
@@ -1046,7 +1046,7 @@ woden_soap_module_remove_ext_element(
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_elements(
     void *module,
     axis2_env_t *env)
@@ -1063,7 +1063,7 @@ woden_soap_module_get_ext_elements(
                 module_impl->f_elem_ext, env);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_elements_of_type(
     void *module,
     axis2_env_t *env,

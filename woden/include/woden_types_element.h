@@ -121,7 +121,7 @@ struct woden_types_element_ops
      * 
      * @return an array of Schema objects
      */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_schemas) (
             void *types_el,
             const axis2_env_t *env);
@@ -138,7 +138,7 @@ struct woden_types_element_ops
      * 
      * @return the Schemas for the schema with the specified target namespace.
      */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_schemas_with_namespace) (
             void *types_el,
             const axis2_env_t *env,
@@ -150,7 +150,7 @@ struct woden_types_element_ops
      * 
      * @return an array of Schema objects.
      */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_inlined_schemas) (
             void *types_el,
             const axis2_env_t *env);
@@ -161,7 +161,7 @@ struct woden_types_element_ops
      * 
      * @return an array of Schema objects.
      */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_imported_schemas) (
             void *types_el,
             const axis2_env_t *env);

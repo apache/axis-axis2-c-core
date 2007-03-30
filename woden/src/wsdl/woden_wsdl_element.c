@@ -70,12 +70,12 @@ woden_wsdl_element_get_ext_attr(
     const axis2_env_t *env,
     axis2_qname_t *attr_type);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_attrs(
     void *wsdl_element,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_attrs_for_namespace(
     void *wsdl_element,
     const axis2_env_t *env,
@@ -99,12 +99,12 @@ woden_wsdl_element_remove_ext_element(
     const axis2_env_t *env,
     woden_ext_element_t *ext_el);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements(
     void *wsdl_element,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements_of_type(
     void *wsdl_element,
     const axis2_env_t *env,
@@ -128,12 +128,12 @@ woden_wsdl_element_remove_ext_element(
     const axis2_env_t *env,
     woden_ext_element_t *ext_el);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements(
     void *wsdl_element,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements_of_type(
     void *wsdl_element,
     const axis2_env_t *env,
@@ -513,7 +513,7 @@ woden_wsdl_element_get_ext_attr(
             env, attr_type);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_attrs(
     void *wsdl_element,
     const axis2_env_t *env)
@@ -530,7 +530,7 @@ woden_wsdl_element_get_ext_attrs(
             env);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_attrs_for_namespace(
     void *wsdl_element,
     const axis2_env_t *env,
@@ -606,7 +606,7 @@ woden_wsdl_element_remove_ext_element(
             f_elem_ext, env, ext_el);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements(
     void *wsdl_element,
     const axis2_env_t *env)
@@ -623,7 +623,7 @@ woden_wsdl_element_get_ext_elements(
             f_elem_ext, env);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements_of_type(
     void *wsdl_element,
     const axis2_env_t *env,

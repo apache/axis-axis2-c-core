@@ -26,7 +26,7 @@
 #include <axiom_soap_header.h>
 #include <axis2_listener_manager.h>
 #include <axis2_module_desc.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_options.h>
 #include <axis2_conf_init.h>
 #include <platforms/axis2_platform_auto_sense.h>
@@ -46,7 +46,7 @@ struct axis2_svc_client
 
     axis2_options_t *override_options;
 
-    axis2_array_list_t *headers;
+    axutil_array_list_t *headers;
 
     /** for receiving the async messages */
     axis2_callback_recv_t *callback_recv;
@@ -441,14 +441,14 @@ axis2_svc_client_add_header(axis2_svc_client_t *svc_client,
 
     if (!svc_client->headers)
     {
-        svc_client->headers = axis2_array_list_create(env, 0);
+        svc_client->headers = axutil_array_list_create(env, 0);
         if (!svc_client->headers)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(svc_client->headers, env, header);
+    axutil_array_list_add(svc_client->headers, env, header);
 
     return AXIS2_SUCCESS;
 }
@@ -465,12 +465,12 @@ axis2_svc_client_remove_all_headers(axis2_svc_client_t *svc_client,
         return AXIS2_FAILURE;
     }
 
-    size = axis2_array_list_size(svc_client->headers, env);
+    size = axutil_array_list_size(svc_client->headers, env);
 
     for (i = 0; i < size; i++)
     {
         axiom_node_t *node = NULL;
-        node = axis2_array_list_get(svc_client->headers, env, i);
+        node = axutil_array_list_get(svc_client->headers, env, i);
 
         if (node)
         {
@@ -1214,11 +1214,11 @@ axis2_svc_client_fill_soap_envelope(const axis2_env_t *env,
             {
                 int size = 0;
                 int i = 0;
-                size = axis2_array_list_size(svc_client->headers, env);
+                size = axutil_array_list_size(svc_client->headers, env);
                 for (i = 0; i < size; i++)
                 {
                     axiom_node_t *node = NULL;
-                    node = axis2_array_list_get(svc_client->headers, env, i);
+                    node = axutil_array_list_get(svc_client->headers, env, i);
                     if (node)
                     {
                         AXIOM_NODE_ADD_CHILD(header_node, env, node);

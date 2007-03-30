@@ -23,7 +23,7 @@ struct axis2_msg
     /** parent operation */
     axis2_op_t *parent;
     /** list of phases that represent the flow  */
-    axis2_array_list_t *flow;
+    axutil_array_list_t *flow;
     /** name of the message */
     axis2_char_t *name;
     /** XML schema element qname */
@@ -64,7 +64,7 @@ axis2_msg_create(const axis2_env_t *env)
         return NULL;
     }
 
-    msg->flow = axis2_array_list_create(env, 0);
+    msg->flow = axutil_array_list_create(env, 0);
     if (!msg->flow)
     {
         axis2_msg_free(msg, env);
@@ -82,7 +82,7 @@ axis2_msg_free(axis2_msg_t *msg,
 
     if (msg->flow)
     {
-        axis2_array_list_free(msg->flow, env);
+        axutil_array_list_free(msg->flow, env);
     }
 
     if (msg->name)
@@ -151,7 +151,7 @@ axis2_msg_get_param(const axis2_msg_t *msg,
     return axis2_param_container_get_param(msg->param_container, env, param_name);
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_msg_get_all_params(const axis2_msg_t *msg,
     const axis2_env_t *env)
 {
@@ -177,7 +177,7 @@ axis2_msg_get_parent(const axis2_msg_t *msg,
     return msg->parent;
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_msg_get_flow(const axis2_msg_t *msg,
     const axis2_env_t *env)
 {
@@ -216,12 +216,12 @@ axis2_msg_is_param_locked(axis2_msg_t *msg,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_set_flow(axis2_msg_t *msg,
     const axis2_env_t *env,
-    axis2_array_list_t *flow)
+    axutil_array_list_t *flow)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (msg->flow)
     {
-        axis2_array_list_free(msg->flow, env);
+        axutil_array_list_free(msg->flow, env);
         msg->flow = NULL;
     }
     if (flow)

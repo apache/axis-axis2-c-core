@@ -31,8 +31,8 @@ struct woden_configurable_impl
     woden_documentable_t *documentable;
     axis2_hash_t *methods;
     axis2_hash_t *super;
-    axis2_array_list_t *f_features;
-    axis2_array_list_t *f_properties;
+    axutil_array_list_t *f_features;
+    axutil_array_list_t *f_properties;
 };
 
 #define INTF_TO_IMPL(configurable) ((woden_configurable_impl_t *) configurable)
@@ -52,12 +52,12 @@ woden_configurable_get_base_impl(
     void *configurable,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_features(
     void *configurable,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_properties(
     void *configurable,
     const axis2_env_t *env);
@@ -68,7 +68,7 @@ woden_configurable_add_feature_element(
     const axis2_env_t *env,
     void *feature);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_feature_elements(
     void *configurable,
     const axis2_env_t *env);
@@ -79,7 +79,7 @@ woden_configurable_add_property_element(
     const axis2_env_t *env,
     void *property);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_property_elements(
     void *configurable,
     const axis2_env_t *env);
@@ -220,13 +220,13 @@ woden_configurable_free(
 
     if (configurable_impl->f_features)
     {
-        axis2_array_list_free(configurable_impl->f_features, env);
+        axutil_array_list_free(configurable_impl->f_features, env);
         configurable_impl->f_features = NULL;
     }
 
     if (configurable_impl->f_properties)
     {
-        axis2_array_list_free(configurable_impl->f_properties, env);
+        axutil_array_list_free(configurable_impl->f_properties, env);
         configurable_impl->f_properties = NULL;
     }
 
@@ -307,7 +307,7 @@ woden_configurable_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_features(
     void *configurable,
     const axis2_env_t *env)
@@ -323,7 +323,7 @@ woden_configurable_get_features(
     return configurable_impl->f_features;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_properties(
     void *configurable,
     const axis2_env_t *env)
@@ -356,18 +356,18 @@ woden_configurable_add_feature_element(
 
     if (!configurable_impl->f_features)
     {
-        configurable_impl->f_features = axis2_array_list_create(env, 0);
+        configurable_impl->f_features = axutil_array_list_create(env, 0);
         if (!configurable_impl->f_features)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    return axis2_array_list_add(configurable_impl->f_features, env,
+    return axutil_array_list_add(configurable_impl->f_features, env,
             feature);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_feature_elements(
     void *configurable,
     const axis2_env_t *env)
@@ -400,18 +400,18 @@ woden_configurable_add_property_element(
 
     if (!configurable_impl->f_properties)
     {
-        configurable_impl->f_properties = axis2_array_list_create(env, 0);
+        configurable_impl->f_properties = axutil_array_list_create(env, 0);
         if (!configurable_impl->f_properties)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    return axis2_array_list_add(configurable_impl->f_properties, env,
+    return axutil_array_list_add(configurable_impl->f_properties, env,
             property);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_property_elements(
     void *configurable,
     const axis2_env_t *env)

@@ -72,7 +72,7 @@ void test_simple_type_schema_generation(CuTest *tc)
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
     xml_schema_obj_table_t *obj_table = NULL;
-    axis2_array_list_t *list = NULL;
+    axutil_array_list_t *list = NULL;
     int i = 0;
 
     void *ele = NULL;
@@ -95,9 +95,9 @@ void test_simple_type_schema_generation(CuTest *tc)
 
     CuAssertPtrNotNull(tc, list);
 
-    for (i = 0; i < axis2_array_list_size(list, env); i++)
+    for (i = 0; i < axutil_array_list_size(list, env); i++)
     {
-        ele = axis2_array_list_get(list, env, i);
+        ele = axutil_array_list_get(list, env, i);
 
         CuAssertPtrNotNull(tc, ele);
 
@@ -205,7 +205,7 @@ void test_circular_schema(CuTest *tc)
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
     axis2_char_t *filename = NULL;
-    axis2_array_list_t *schemas = NULL;
+    axutil_array_list_t *schemas = NULL;
 
     env = axis2_env_create_all("test.log", 1);
 
@@ -228,7 +228,7 @@ void test_circular_schema(CuTest *tc)
 
     CuAssertPtrNotNull(tc, schemas);
 
-    CuAssertIntEquals(tc, 2, axis2_array_list_size(schemas, env));
+    CuAssertIntEquals(tc, 2, axutil_array_list_size(schemas, env));
 
 
 

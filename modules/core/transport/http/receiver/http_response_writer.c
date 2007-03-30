@@ -16,7 +16,7 @@
  */
 
 #include <axis2_http_response_writer.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_http_transport.h>
 #include <axis2_string.h>
 

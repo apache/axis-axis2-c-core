@@ -26,7 +26,7 @@
 #include <axis2_utils_defines.h>
 #include <axis2_env.h>
 #include <axis2_hash.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -144,9 +144,9 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_set_value_list(struct axis2_param *param,
         const axis2_env_t *env,
-        axis2_array_list_t *value_list);
+        axutil_array_list_t *value_list);
 
-    AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
     axis2_param_get_value_list(struct axis2_param *param,
         const axis2_env_t *env);
 

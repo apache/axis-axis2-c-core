@@ -600,7 +600,7 @@ axis2_http_sender_get_header_info(
     axis2_msg_ctx_t *msg_ctx,
     axis2_http_simple_response_t *response)
 {
-    axis2_array_list_t *headers = NULL;
+    axutil_array_list_t *headers = NULL;
     axis2_char_t *charset = NULL;
     int i = 0;
     axis2_bool_t response_chunked = AXIS2_FALSE;
@@ -620,9 +620,9 @@ axis2_http_sender_get_header_info(
     {
         return AXIS2_SUCCESS;
     }
-    for (i = 0; i < axis2_array_list_size(headers, env); i++)
+    for (i = 0; i < axutil_array_list_size(headers, env); i++)
     {
-        axis2_http_header_t *header = axis2_array_list_get(headers, env, i);
+        axis2_http_header_t *header = axutil_array_list_get(headers, env, i);
         axis2_char_t *name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
 														header, env);
         if (name)
@@ -995,7 +995,7 @@ axis2_http_sender_get_param_string(
     axiom_node_t *data_node = NULL;
     axiom_element_t *data_element = NULL;
     axiom_child_element_iterator_t *iterator = NULL;
-    axis2_array_list_t *param_list = NULL;
+    axutil_array_list_t *param_list = NULL;
     axis2_char_t *param_string = NULL;
     int i = 0;
 
@@ -1014,7 +1014,7 @@ axis2_http_sender_get_param_string(
     {
         return NULL;
     }
-    param_list = axis2_array_list_create(env, AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
+    param_list = axutil_array_list_create(env, AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
 
 	data_element = AXIOM_NODE_GET_DATA_ELEMENT(data_node, env);
 
@@ -1038,17 +1038,17 @@ axis2_http_sender_get_param_string(
 				memset (encoded_value, 0, strlen (value));
 				encoded_value = axis2_url_encode (env, encoded_value, value, strlen (value));
 
-				axis2_array_list_add(param_list, env, axis2_strcat(env, name, "=",
+				axutil_array_list_add(param_list, env, axis2_strcat(env, name, "=",
 																   encoded_value, NULL));
 			}
 		}
 	}
-    for (i = 0; i < axis2_array_list_size(param_list, env); i++)
+    for (i = 0; i < axutil_array_list_size(param_list, env); i++)
     {
         axis2_char_t *tmp_string = NULL;
         axis2_char_t *pair = NULL;
 
-        pair = axis2_array_list_get(param_list, env, i);
+        pair = axutil_array_list_get(param_list, env, i);
 		if(i ==0)
 			tmp_string = axis2_stracat(env, param_string, pair);
 		else
@@ -1062,7 +1062,7 @@ axis2_http_sender_get_param_string(
         AXIS2_FREE(env->allocator, pair);
         param_string = tmp_string;
     }
-    axis2_array_list_free(param_list, env);
+    axutil_array_list_free(param_list, env);
     return param_string;
 }
 

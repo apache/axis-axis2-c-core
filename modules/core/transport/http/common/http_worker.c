@@ -533,7 +533,7 @@ axis2_http_worker_get_headers(
     const axis2_env_t *env,
     axis2_http_simple_request_t *request)
 {
-    axis2_array_list_t *header_list = NULL;
+    axutil_array_list_t *header_list = NULL;
     int hdr_count = 0;
     int i = 0;
     axis2_hash_t *header_map = NULL;
@@ -545,7 +545,7 @@ axis2_http_worker_get_headers(
     {
         return NULL;
     }
-    hdr_count = axis2_array_list_size(header_list, env);
+    hdr_count = axutil_array_list_size(header_list, env);
     if (0 == hdr_count)
     {
         return NULL;
@@ -554,7 +554,7 @@ axis2_http_worker_get_headers(
     for (i = 0; i < hdr_count; i++)
     {
         axis2_http_header_t *tmp_hdr = NULL;
-        tmp_hdr = axis2_array_list_get(header_list, env, i);
+        tmp_hdr = axutil_array_list_get(header_list, env, i);
         if (!tmp_hdr)
         {
             continue;

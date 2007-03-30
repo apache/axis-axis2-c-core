@@ -28,7 +28,7 @@
 
 #include <woden.h>
 #include <woden_xml_attr.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 /** @defgroup woden_qname_list_or_token_any_attr QName List or Token Any Attribute
   * @ingroup woden
@@ -91,7 +91,7 @@ struct woden_qname_list_or_token_any_attr_ops
             const axis2_env_t *env);
 
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_qnames) (
             void *list_token_attr,
             const axis2_env_t *env);

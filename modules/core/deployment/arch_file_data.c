@@ -33,7 +33,7 @@ struct axis2_arch_file_data
      * temporarily store in this table
      */
     axis2_hash_t *svc_map;
-    axis2_array_list_t *deployable_svcs;
+    axutil_array_list_t *deployable_svcs;
 
 };
 
@@ -63,7 +63,7 @@ axis2_arch_file_data_create(const axis2_env_t *env)
     arch_file_data->svc_map = NULL;
     arch_file_data->deployable_svcs = NULL;
 
-    arch_file_data->deployable_svcs = axis2_array_list_create(env, 0);
+    arch_file_data->deployable_svcs = axutil_array_list_create(env, 0);
     if (!arch_file_data->deployable_svcs)
     {
         axis2_arch_file_data_free(arch_file_data, env);
@@ -157,7 +157,7 @@ axis2_arch_file_data_free(axis2_arch_file_data_t *arch_file_data,
     }
     if (arch_file_data->deployable_svcs)
     {
-        axis2_array_list_free(arch_file_data->deployable_svcs, env);
+        axutil_array_list_free(arch_file_data->deployable_svcs, env);
     }
 
     if (arch_file_data)
@@ -348,7 +348,7 @@ axis2_arch_file_data_get_svc_map(const axis2_arch_file_data_t *arch_file_data,
     return arch_file_data->svc_map;
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_arch_file_data_get_deployable_svcs(const axis2_arch_file_data_t *arch_file_data,
     const axis2_env_t *env)
 {
@@ -358,7 +358,7 @@ axis2_arch_file_data_get_deployable_svcs(const axis2_arch_file_data_t *arch_file
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *arch_file_data,
     const axis2_env_t *env,
-    axis2_array_list_t *deployable_svcs)
+    axutil_array_list_t *deployable_svcs)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, deployable_svcs, AXIS2_FAILURE);

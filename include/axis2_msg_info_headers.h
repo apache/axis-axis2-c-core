@@ -38,7 +38,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_const.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_any_content_type.h>
 #include <axis2_svc_name.h>
@@ -385,7 +385,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to array list containing all reference parameters
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_msg_info_headers_get_all_ref_params(const axis2_msg_info_headers_t *msg_info_headers,
         const axis2_env_t *env);
 

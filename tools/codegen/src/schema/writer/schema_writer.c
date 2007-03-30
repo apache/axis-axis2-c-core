@@ -638,7 +638,7 @@ w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
                         axis2_hash_t *typemap,
                         axis2_bool_t is_inherited)
 {
-    axis2_array_list_t *qnames = NULL;
+    axutil_array_list_t *qnames = NULL;
     int i = 0;
     int size = 0;
     axis2_qname_t *qname = NULL;
@@ -677,10 +677,10 @@ w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
     {
         qnames = W2C_SCHEMA_WRITER_META_INFO_GET_QNAME_ARRAY( meta_info, env);
     }
-    size = axis2_array_list_size( qnames, env);
+    size = axutil_array_list_size( qnames, env);
     for( i = 0; i < size; i ++)
     {
-        qname = axis2_array_list_get( qnames, env, i);
+        qname = axutil_array_list_get( qnames, env, i);
         property = w2c_xslt_utils_add_child_node( env, "property", model);
     
         if ( qname2name_maker == NULL)

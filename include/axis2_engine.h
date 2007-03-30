@@ -35,7 +35,7 @@
   */
 
 #include <axis2_defines.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_env.h>
 #include <axis2_conf_ctx.h>
 
@@ -141,7 +141,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_invoke_phases(axis2_engine_t *engine,
         const axis2_env_t *env,
-        axis2_array_list_t *phases,
+        axutil_array_list_t *phases,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -163,7 +163,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_resume_invocation_phases(axis2_engine_t *engine,
         const axis2_env_t *env,
-        axis2_array_list_t *phases,
+        axutil_array_list_t *phases,
         axis2_msg_ctx_t *msg_ctx);
 
     /**

@@ -77,12 +77,12 @@ struct woden_interface_ops
             void *woden_interface,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_extended_interfaces) (
             void *woden_interface,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_interface_faults) (
             void *woden_interface,
             const axis2_env_t *env);
@@ -93,7 +93,7 @@ struct woden_interface_ops
             const axis2_env_t *env,
             axis2_qname_t *qname);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_interface_ops) (
             void *woden_interface,
             const axis2_env_t *env);

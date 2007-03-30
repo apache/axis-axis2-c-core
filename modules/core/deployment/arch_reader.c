@@ -168,7 +168,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         axis2_svc_t *svc = NULL;
         axis2_svc_builder_t *svc_builder = NULL;
         axis2_arch_file_data_t *file_data = NULL;
-        axis2_array_list_t *dep_svcs = NULL;
+        axutil_array_list_t *dep_svcs = NULL;
         axis2_char_t *svc_name = NULL;
 
         file_data = axis2_dep_engine_get_current_file_item(dep_engine, env);
@@ -206,7 +206,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         {
             return AXIS2_FAILURE;
         }
-        status = axis2_array_list_add(dep_svcs, env, svc);
+        status = axutil_array_list_add(dep_svcs, env, svc);
         if (AXIS2_SUCCESS != status)
         {
             return AXIS2_FAILURE;

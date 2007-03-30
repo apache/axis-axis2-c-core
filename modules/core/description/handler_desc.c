@@ -169,7 +169,7 @@ axis2_handler_desc_add_param(axis2_handler_desc_t *handler_desc,
         env, param);
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_handler_desc_get_all_params(const axis2_handler_desc_t *handler_desc,
     const axis2_env_t *env)
 {

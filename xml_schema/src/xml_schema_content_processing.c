@@ -36,7 +36,7 @@ struct xml_schema_content_processing_impl
 
     axis2_hash_t *ht_super;
 
-    axis2_array_list_t *members;
+    axutil_array_list_t *members;
 };
 
 #define AXIS2_INTF_TO_IMPL(content_processing) \
@@ -61,7 +61,7 @@ xml_schema_enum_t *AXIS2_CALL
 xml_schema_content_processing_get_base_impl(void *content_processing,
         const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_content_processing_get_values(void *content_processing,
         const axis2_env_t *env);
 
@@ -110,7 +110,7 @@ xml_schema_content_processing_create(const axis2_env_t *env,
     content_processing_impl->content_processing.ops->get_values =
         xml_schema_content_processing_get_values;
 
-    content_processing_impl->members = axis2_array_list_create(env, 0);
+    content_processing_impl->members = axutil_array_list_create(env, 0);
 
     if (!content_processing_impl->members)
     {
@@ -119,13 +119,13 @@ xml_schema_content_processing_create(const axis2_env_t *env,
         return NULL;
     }
 
-    axis2_array_list_add(content_processing_impl->members, env,
+    axutil_array_list_add(content_processing_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_LAX));
-    axis2_array_list_add(content_processing_impl->members, env,
+    axutil_array_list_add(content_processing_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_NONE));
-    axis2_array_list_add(content_processing_impl->members, env,
+    axutil_array_list_add(content_processing_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_SKIP));
-    axis2_array_list_add(content_processing_impl->members, env,
+    axutil_array_list_add(content_processing_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_STRICT));
 
     content_processing_impl->schema_enum = xml_schema_enum_create(env, value);
@@ -168,19 +168,19 @@ xml_schema_content_processing_free(void *content_processing,
     {
         int size = 0;
         int i    = 0;
-        size = axis2_array_list_size(content_processing_impl->members, env);
+        size = axutil_array_list_size(content_processing_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
             value = (axis2_char_t*)
-                    axis2_array_list_get(content_processing_impl->members, env, i);
+                    axutil_array_list_get(content_processing_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
-        axis2_array_list_free(content_processing_impl->members, env);
+        axutil_array_list_free(content_processing_impl->members, env);
         content_processing_impl->members = NULL;
     }
 
@@ -254,7 +254,7 @@ xml_schema_content_processing_get_base_impl(
     return content_processing_impl->schema_enum;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_content_processing_get_values(void *content_processing,
         const axis2_env_t *env)
 {

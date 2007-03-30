@@ -90,27 +90,27 @@ struct woden_wsdl10_desc_ops
     /* ************************************************************
      *  Description interface methods (the WSDL Component model)
      * ************************************************************/
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_msgs) (
             void *desc,
             const axis2_env_t *env);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_interfaces) (
             void *desc,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_bindings) (
             void *desc,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_svcs) (
             void *desc,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_element_decls) (
             void *desc,
             const axis2_env_t *env);
@@ -121,7 +121,7 @@ struct woden_wsdl10_desc_ops
             const axis2_env_t *env,
             axis2_qname_t *qname);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_type_defs) (
             void *desc,
             const axis2_env_t *env);

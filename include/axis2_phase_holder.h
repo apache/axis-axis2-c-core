@@ -37,7 +37,7 @@
 #include <axis2_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_handler_desc.h>
 #include <axis2_phase.h>
 #include <axis2_phase_rule.h>
@@ -118,7 +118,7 @@ extern "C"
     axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder,
         const axis2_env_t *env,
         struct axis2_phase *phase,
-        axis2_array_list_t *handlers);
+        axutil_array_list_t *handlers);
 
     /**
      * Creates phase holder struct.
@@ -136,7 +136,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
     axis2_phase_holder_create_with_phases(const axis2_env_t *env,
-        axis2_array_list_t *phases);
+        axutil_array_list_t *phases);
 
 /** @} */
 

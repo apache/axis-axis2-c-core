@@ -535,9 +535,9 @@ set_attrs_and_value(axis2_param_t *param,
     childs = axiom_element_get_child_elements(param_element, env, param_node);
     if (childs)
     {
-        axis2_array_list_t *value_list = NULL;
+        axutil_array_list_t *value_list = NULL;
 
-        value_list = axis2_array_list_create(env, 0);
+        value_list = axutil_array_list_create(env, 0);
         axis2_param_set_value_list(param, env, value_list);
 
         while (AXIS2_TRUE == AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(childs, env))
@@ -559,7 +559,7 @@ set_attrs_and_value(axis2_param_t *param,
             }
             axis2_param_set_param_type(param, env, AXIS2_DOM_PARAM);
             set_attrs_and_value(param, env, element, node);
-            axis2_array_list_add(value_list, env, param);
+            axutil_array_list_add(value_list, env, param);
         }
     }
     else
@@ -599,7 +599,7 @@ axis2_desc_builder_process_action_mappings(axis2_desc_builder_t *desc_builder,
     axiom_element_t *op_element = NULL;
     axis2_qname_t *qname = NULL;
     axiom_children_qname_iterator_t *action_mappings = NULL;
-    axis2_array_list_t *mapping_list = axis2_array_list_create(env, 0);
+    axutil_array_list_t *mapping_list = axutil_array_list_create(env, 0);
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
@@ -618,7 +618,7 @@ axis2_desc_builder_process_action_mappings(axis2_desc_builder_t *desc_builder,
     {
         if (mapping_list)
         {
-            axis2_array_list_free(mapping_list, env);
+            axutil_array_list_free(mapping_list, env);
             mapping_list = NULL;
         }
         return AXIS2_SUCCESS;
@@ -643,7 +643,7 @@ axis2_desc_builder_process_action_mappings(axis2_desc_builder_t *desc_builder,
             input_action_string);
         if(0 != axis2_strcmp("", input_action_string))
         {
-            axis2_array_list_add(mapping_list, env, input_action_string);
+            axutil_array_list_add(mapping_list, env, input_action_string);
         }
         else
         {

@@ -528,9 +528,9 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
 {
     axiom_soap_header_block_t *header_block = NULL;
     const axis2_char_t *address = NULL;
-    axis2_array_list_t *ref_param_list = NULL;
-    axis2_array_list_t *meta_data_list = NULL;
-    axis2_array_list_t *extension_list = NULL;
+    axutil_array_list_t *ref_param_list = NULL;
+    axutil_array_list_t *meta_data_list = NULL;
+    axutil_array_list_t *extension_list = NULL;
     axiom_node_t *header_block_node = NULL;
     axiom_node_t *header_node = NULL;
     axiom_namespace_t *addr_ns_obj = NULL;
@@ -590,11 +590,11 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
             &header_block_node, addr_ns);
 
     ref_param_list = axis2_endpoint_ref_get_ref_param_list(endpoint_ref, env);
-    if (ref_param_list && axis2_array_list_size(ref_param_list, env) > 0)
+    if (ref_param_list && axutil_array_list_size(ref_param_list, env) > 0)
     {
         axiom_node_t *reference_node = NULL;
         axiom_element_t *reference_ele = NULL;
-        axis2_array_list_t *ref_attribute_list = NULL;
+        axutil_array_list_t *ref_attribute_list = NULL;
         int i = 0;
 
         addr_ns_obj = axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
@@ -609,9 +609,9 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
         if (ref_attribute_list)
         {
             int j = 0;
-            for (j = 0; j < axis2_array_list_size(ref_attribute_list, env); j++)
+            for (j = 0; j < axutil_array_list_size(ref_attribute_list, env); j++)
             {
-                axiom_attribute_t *attr = (axiom_attribute_t *)axis2_array_list_get(ref_attribute_list, env, j);
+                axiom_attribute_t *attr = (axiom_attribute_t *)axutil_array_list_get(ref_attribute_list, env, j);
                 if (attr)
                 {
                     axiom_element_add_attribute(reference_ele, env, attr, reference_node);
@@ -619,9 +619,9 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
             }
         }
 
-        for (i = 0; i < axis2_array_list_size(ref_param_list, env); i++)
+        for (i = 0; i < axutil_array_list_size(ref_param_list, env); i++)
         {
-            axiom_node_t *ref_node = (axiom_node_t *)axis2_array_list_get(ref_param_list, env, i);
+            axiom_node_t *ref_node = (axiom_node_t *)axutil_array_list_get(ref_param_list, env, i);
             if (ref_node)
             {
                 AXIOM_NODE_ADD_CHILD(reference_node, env, ref_node);
@@ -631,11 +631,11 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
     }
 
     meta_data_list = axis2_endpoint_ref_get_metadata_list(endpoint_ref, env);
-    if (meta_data_list && axis2_array_list_size(meta_data_list, env) > 0)
+    if (meta_data_list && axutil_array_list_size(meta_data_list, env) > 0)
     {
         axiom_node_t *reference_node = NULL;
         axiom_element_t *reference_ele = NULL;
-        axis2_array_list_t *meta_attribute_list = NULL;
+        axutil_array_list_t *meta_attribute_list = NULL;
         int i = 0;
 
         if (!reference_node) /* may be we alredy created this in ref params block */
@@ -653,9 +653,9 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
         if (meta_attribute_list)
         {
             int j = 0;
-            for (j = 0; j < axis2_array_list_size(meta_attribute_list, env); j++)
+            for (j = 0; j < axutil_array_list_size(meta_attribute_list, env); j++)
             {
-                axiom_attribute_t *attr = (axiom_attribute_t *)axis2_array_list_get(meta_attribute_list, env, j);
+                axiom_attribute_t *attr = (axiom_attribute_t *)axutil_array_list_get(meta_attribute_list, env, j);
                 if (attr)
                 {
                     axiom_element_add_attribute(reference_ele, env, attr, reference_node);
@@ -663,9 +663,9 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
             }
         }
 
-        for (i = 0; i < axis2_array_list_size(meta_data_list, env); i ++)
+        for (i = 0; i < axutil_array_list_size(meta_data_list, env); i ++)
         {
-            axiom_node_t *ref_node = (axiom_node_t *)axis2_array_list_get(meta_data_list, env, i);
+            axiom_node_t *ref_node = (axiom_node_t *)axutil_array_list_get(meta_data_list, env, i);
             if (ref_node)
             {
                 AXIOM_NODE_ADD_CHILD(reference_node, env, ref_node);
@@ -674,12 +674,12 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
     }
 
     extension_list = axis2_endpoint_ref_get_extension_list(endpoint_ref, env);
-    if (extension_list && axis2_array_list_size(extension_list, env) > 0)
+    if (extension_list && axutil_array_list_size(extension_list, env) > 0)
     {
         int i = 0;
-        for (i = 0; i < axis2_array_list_size(extension_list, env); i ++)
+        for (i = 0; i < axutil_array_list_size(extension_list, env); i ++)
         {
-            axiom_node_t *ref_node = (axiom_node_t *)axis2_array_list_get(extension_list, env, i);
+            axiom_node_t *ref_node = (axiom_node_t *)axutil_array_list_get(extension_list, env, i);
             if (ref_node)
             {
                 AXIOM_NODE_ADD_CHILD(header_block_node, env, ref_node);

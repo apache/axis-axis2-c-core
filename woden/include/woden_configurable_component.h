@@ -33,7 +33,7 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_uri.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <woden.h>
 #include <woden_wsdl_component.h>
 
@@ -71,12 +71,12 @@ struct woden_configurable_component_ops
             void *configurable_component,
             const axis2_env_t *env);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_features) (
             void *configurable_component,
             const axis2_env_t *env);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_properties) (
             void *configurable_component,
             const axis2_env_t *env);

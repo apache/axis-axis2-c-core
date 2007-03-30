@@ -55,18 +55,18 @@
 #include <xml_schema_obj_table.h>
 
 #include "../wsdl20/woden_constants.h"
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_uri.h>
 
 typedef struct woden_wsdl10_component_model_builder_impl
 {
       woden_wsdl10_component_model_builder_t builder;
       void *f_desc;
-      axis2_array_list_t *f_schemas_done;
-      axis2_array_list_t *f_msgs_done;
-      axis2_array_list_t *f_interfaces_done;
-      axis2_array_list_t *f_bindings_done;
-      axis2_array_list_t *f_svcs_done;
+      axutil_array_list_t *f_schemas_done;
+      axutil_array_list_t *f_msgs_done;
+      axutil_array_list_t *f_interfaces_done;
+      axutil_array_list_t *f_bindings_done;
+      axutil_array_list_t *f_svcs_done;
 
 }
 woden_wsdl10_component_model_builder_impl_t;
@@ -127,7 +127,7 @@ static axis2_status_t
 build_msg_refs(
       void *builder,
       const axis2_env_t *env,
-      axis2_array_list_t *msg_els);
+      axutil_array_list_t *msg_els);
 
 static axis2_status_t
 build_parts(
@@ -251,7 +251,7 @@ static axis2_status_t
 build_properties(
       void *builder,
       const axis2_env_t *env,
-      axis2_array_list_t *prop_els,
+      axutil_array_list_t *prop_els,
       void *parent);
 
 /************************** End of function prototypes ************************/
@@ -332,8 +332,8 @@ init_components(
       const axis2_env_t *env,
       void *desc)
 {
-      axis2_array_list_t *includes = NULL;
-      axis2_array_list_t *imports = NULL;
+      axutil_array_list_t *includes = NULL;
+      axutil_array_list_t *imports = NULL;
       int i = 0, size = 0;
 
       build_elements_and_types(builder, env, desc);
@@ -345,13 +345,13 @@ init_components(
       includes = WODEN_WSDL10_DESC_ELEMENT_GET_INCLUDE_ELEMENTS(desc, env);
       if (includes)
       {
-	    size = axis2_array_list_size(includes, env);
+	    size = axutil_array_list_size(includes, env);
 	    for (i = 0; i < size; i++)
 	    {
 		  void *incl_desc = NULL;
 		  void *incl_el = NULL;
 
-		  incl_el = axis2_array_list_get(includes, env, i);
+		  incl_el = axutil_array_list_get(includes, env, i);
 		  incl_desc = WODEN_INCLUDE_ELEMENT_GET_DESC_ELEMENT(incl_el, env);
 		  if (incl_desc)
 		  {
@@ -363,13 +363,13 @@ init_components(
       imports = WODEN_WSDL10_DESC_ELEMENT_GET_IMPORT_ELEMENTS(desc, env);
       if (imports)
       {
-	    size = axis2_array_list_size(imports, env);
+	    size = axutil_array_list_size(imports, env);
 	    for (i = 0; i < size; i++)
 	    {
 		  void *imp_desc = NULL;
 		  void *imp_el = NULL;
 
-		  imp_el = axis2_array_list_get(imports, env, i);
+		  imp_el = axutil_array_list_get(imports, env, i);
 		  imp_desc = WODEN_IMPORT_ELEMENT_GET_DESC_ELEMENT(imp_el, env);
 		  if (imp_desc)
 		  {
@@ -410,27 +410,27 @@ build_elements_and_types(
 
       if (types)
       {
-	    axis2_array_list_t *referenceable_schema_defs = NULL;
+	    axutil_array_list_t *referenceable_schema_defs = NULL;
 	    int i = 0, size = 0;
 
 	    referenceable_schema_defs =
 		  WODEN_TYPES_GET_REFERENCEABLE_SCHEMA_DEFS(types, env);
 	    if (referenceable_schema_defs)
-		  size = axis2_array_list_size(referenceable_schema_defs, env);
+		  size = axutil_array_list_size(referenceable_schema_defs, env);
 	    for (i = 0; i < size; i++)
 	    {
 		  void *schema_def = NULL;
 		  int i = 0, size = 0;
 		  axis2_bool_t new_schema = AXIS2_TRUE;
 
-		  schema_def = axis2_array_list_get(referenceable_schema_defs, env, i);
+		  schema_def = axutil_array_list_get(referenceable_schema_defs, env, i);
 		  if (builder_impl->f_schemas_done)
-			size = axis2_array_list_size(builder_impl->f_schemas_done, env);
+			size = axutil_array_list_size(builder_impl->f_schemas_done, env);
 		  for (i = 0; i < size; i++)
 		  {
 			void *schema_done = NULL;
 
-			schema_done = axis2_array_list_get(builder_impl->f_schemas_done,
+			schema_done = axutil_array_list_get(builder_impl->f_schemas_done,
 							   env, i);
 			/* TODO Check the logic here */
 			if (schema_def == schema_done)
@@ -446,12 +446,12 @@ build_elements_and_types(
 			build_type_defs(builder, env, schema_def, type_system_uri);
 			if (!builder_impl->f_schemas_done)
 			{
-			      builder_impl->f_schemas_done = axis2_array_list_create(env, 0);
+			      builder_impl->f_schemas_done = axutil_array_list_create(env, 0);
 			      if (!builder_impl->f_schemas_done)
 				    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
 						    AXIS2_FAILURE);
 			}
-			axis2_array_list_add(builder_impl->f_schemas_done, env, schema_def);
+			axutil_array_list_add(builder_impl->f_schemas_done, env, schema_def);
 		  }
 	    }
       }
@@ -480,19 +480,19 @@ build_element_decls(
       if (schema_tns)
       {
 	    xml_schema_obj_table_t *element_table = NULL;
-	    axis2_array_list_t *qnames = NULL;
+	    axutil_array_list_t *qnames = NULL;
 	    int i = 0, size = 0;
 
 	    element_table = XML_SCHEMA_GET_ELEMENTS(schema_def, env);
 	    qnames = XML_SCHEMA_OBJ_TABLE_GET_NAMES(element_table, env);
 	    if (qnames)
-		  size = axis2_array_list_size(qnames, env);
+		  size = axutil_array_list_size(qnames, env);
 	    for (i = 0; i < size; i++)
 	    {
 		  axis2_qname_t *qname = NULL;
 		  axis2_char_t *namespc = NULL;
 
-		  qname = (axis2_qname_t *) axis2_array_list_get(qnames, env, i);
+		  qname = (axis2_qname_t *) axutil_array_list_get(qnames, env, i);
 		  if (qname)
 			namespc = axis2_qname_get_uri(qname, env);
 		  if (namespc && 0 == axis2_strcmp(namespc, schema_tns))
@@ -537,19 +537,19 @@ build_type_defs(
       if (schema_tns)
       {
 	    xml_schema_obj_table_t *type_table = NULL;
-	    axis2_array_list_t *qnames = NULL;
+	    axutil_array_list_t *qnames = NULL;
 	    int i = 0, size = 0;
 
 	    type_table = XML_SCHEMA_GET_SCHEMA_TYPES(schema_def, env);
 	    qnames = XML_SCHEMA_OBJ_TABLE_GET_NAMES(type_table, env);
 	    if (qnames)
-		  size = axis2_array_list_size(qnames, env);
+		  size = axutil_array_list_size(qnames, env);
 	    for (i = 0; i < size; i++)
 	    {
 		  axis2_qname_t *qname = NULL;
 		  axis2_char_t *namespc = NULL;
 
-		  qname = (axis2_qname_t *) axis2_array_list_get(qnames, env, i);
+		  qname = (axis2_qname_t *) axutil_array_list_get(qnames, env, i);
 		  if (qname)
 			namespc = axis2_qname_get_uri(qname, env);
 		  if (0 == axis2_strcmp(namespc, schema_tns))
@@ -584,7 +584,7 @@ static axis2_status_t
 build_msg_refs(
       void *builder,
       const axis2_env_t *env,
-      axis2_array_list_t *msg_els)
+      axutil_array_list_t *msg_els)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
       int i = 0, size = 0;
@@ -593,14 +593,14 @@ build_msg_refs(
       AXIS2_PARAM_CHECK(env->error, msg_els, AXIS2_FAILURE);
       builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-      size = axis2_array_list_size(msg_els, env);
+      size = axutil_array_list_size(msg_els, env);
       for (i = 0; i < size; i++)
       {
 	    void *msg_impl = NULL;
 
-	    msg_impl = axis2_array_list_get(msg_els, env, i);
+	    msg_impl = axutil_array_list_get(msg_els, env, i);
 	    if (!builder_impl->f_msgs_done || (AXIS2_TRUE !=
-					       axis2_array_list_contains(builder_impl->f_msgs_done, env,
+					       axutil_array_list_contains(builder_impl->f_msgs_done, env,
 									 msg_impl)))
 	    {
 		  WODEN_WSDL10_DESC_ADD_TO_ALL_MSGS(builder_impl->f_desc,
@@ -608,12 +608,12 @@ build_msg_refs(
 		  build_parts(builder, env, msg_impl);
 		  if (!builder_impl->f_msgs_done)
 		  {
-			builder_impl->f_msgs_done = axis2_array_list_create(env, 0);
+			builder_impl->f_msgs_done = axutil_array_list_create(env, 0);
 			if (!builder_impl->f_msgs_done)
 			      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
 					      AXIS2_FAILURE);
 		  }
-		  axis2_array_list_add(builder_impl->f_msgs_done, env, msg_impl);
+		  axutil_array_list_add(builder_impl->f_msgs_done, env, msg_impl);
 	    }
       }
       return AXIS2_SUCCESS;
@@ -664,7 +664,7 @@ build_interfaces(
       void *desc)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *interface_els = NULL;
+      axutil_array_list_t *interface_els = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -675,18 +675,18 @@ build_interfaces(
       interface_els = WODEN_WSDL10_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
       if (interface_els)
       {
-	    size = axis2_array_list_size(interface_els, env);
+	    size = axutil_array_list_size(interface_els, env);
       }
       for (i = 0; i < size; i++)
       {
 	    void *int_impl = NULL;
 
-	    int_impl = axis2_array_list_get(interface_els, env, i);
+	    int_impl = axutil_array_list_get(interface_els, env, i);
 	    if (!builder_impl->f_interfaces_done || AXIS2_TRUE !=
-                axis2_array_list_contains(builder_impl->f_interfaces_done, env,
+                axutil_array_list_contains(builder_impl->f_interfaces_done, env,
 					  int_impl))
 	    {
-		  axis2_array_list_t *property_els = NULL;
+		  axutil_array_list_t *property_els = NULL;
 		  void *configurable = NULL;
 
 		  WODEN_WSDL10_DESC_ADD_TO_ALL_INTERFACES(builder_impl->f_desc,
@@ -700,12 +700,12 @@ build_interfaces(
 		  build_interface_ops(builder, env, int_impl);
 		  if (!builder_impl->f_interfaces_done)
 		  {
-			builder_impl->f_interfaces_done = axis2_array_list_create(env, 0);
+			builder_impl->f_interfaces_done = axutil_array_list_create(env, 0);
 			if (!builder_impl->f_interfaces_done)
 			      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
 					      AXIS2_FAILURE);
 		  }
-		  axis2_array_list_add(builder_impl->f_interfaces_done, env, int_impl);
+		  axutil_array_list_add(builder_impl->f_interfaces_done, env, int_impl);
 	    }
       }
       return AXIS2_SUCCESS;
@@ -718,7 +718,7 @@ build_interface_ops(
       void *interface)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *ops = NULL;
+      axutil_array_list_t *ops = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -729,15 +729,15 @@ build_interface_ops(
       ops = WODEN_INTERFACE_ELEMENT_GET_INTERFACE_OP_ELEMENTS(
 	    interface, env);
       if (ops)
-	    size = axis2_array_list_size(ops, env);
+	    size = axutil_array_list_size(ops, env);
       for (i = 0; i < size; i++)
       {
 	    void *op = NULL;
-	    axis2_array_list_t *property_elements = NULL;
+	    axutil_array_list_t *property_elements = NULL;
 	    void *nested_confble = NULL;
 	    void *confble = NULL;
 
-	    op = axis2_array_list_get(ops, env, i);
+	    op = axutil_array_list_get(ops, env, i);
 	    nested_confble = WODEN_INTERFACE_OP_GET_BASE_IMPL(op, env);
 	    confble = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
 	    confble = woden_configurable_to_configurable_element(confble, env);
@@ -757,7 +757,7 @@ build_interface_fault_refs(
       void *op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *fault_refs = NULL;
+      axutil_array_list_t *fault_refs = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -768,14 +768,14 @@ build_interface_fault_refs(
       fault_refs = WODEN_INTERFACE_OP_ELEMENT_GET_INTERFACE_FAULT_REF_ELEMENTS(
 	    op, env);
       if (fault_refs)
-	    size = axis2_array_list_size(fault_refs, env);
+	    size = axutil_array_list_size(fault_refs, env);
       for (i = 0; i < size; i++)
       {
 	    void *fault_ref = NULL;
-	    axis2_array_list_t *property_elements = NULL;
+	    axutil_array_list_t *property_elements = NULL;
 	    axis2_qname_t *qname = NULL;
 
-	    fault_ref = axis2_array_list_get(fault_refs, env, i);
+	    fault_ref = axutil_array_list_get(fault_refs, env, i);
 	    fault_ref = woden_wsdl10_interface_fault_ref_to_configurable_element(fault_ref, env);
 	    property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
 		  fault_ref, env);
@@ -785,7 +785,7 @@ build_interface_fault_refs(
 	    qname = WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_GET_MSG_QNAME(fault_ref, env);
 	    if (qname)
 	    {
-		  axis2_array_list_t *msgs = NULL;
+		  axutil_array_list_t *msgs = NULL;
 
 		  msgs = WODEN_WSDL10_DESC_GET_MSGS(builder_impl->f_desc, env);
 		  build_msg_refs(builder, env, msgs);
@@ -801,7 +801,7 @@ build_interface_msg_refs(
       void *op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *int_msg_refs = NULL;
+      axutil_array_list_t *int_msg_refs = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -812,12 +812,12 @@ build_interface_msg_refs(
       int_msg_refs = WODEN_INTERFACE_OP_ELEMENT_GET_INTERFACE_MSG_REF_ELEMENTS(
 	    op, env);
       if (int_msg_refs)
-	    size = axis2_array_list_size(int_msg_refs, env);
+	    size = axutil_array_list_size(int_msg_refs, env);
       for (i = 0; i < size; i++)
       {
 	    void *int_msg_ref = NULL;
 	    axis2_qname_t *qname = NULL;
-	    int_msg_ref = axis2_array_list_get(int_msg_refs, env, i);
+	    int_msg_ref = axutil_array_list_get(int_msg_refs, env, i);
 	    int_msg_ref = woden_wsdl10_interface_msg_ref_to_configurable_element(int_msg_ref, env);
 
 
@@ -825,7 +825,7 @@ build_interface_msg_refs(
 	    qname = WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_GET_MSG_QNAME(int_msg_ref, env);
 	    if (qname)
 	    {
-		  axis2_array_list_t *msgs = NULL;
+		  axutil_array_list_t *msgs = NULL;
 
 		  msgs = WODEN_WSDL10_DESC_GET_MSGS(builder_impl->f_desc, env);
 		  build_msg_refs(builder, env, msgs);
@@ -849,7 +849,7 @@ build_bindings(
       void *desc)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *binding_els = NULL;
+      axutil_array_list_t *binding_els = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -859,17 +859,17 @@ build_bindings(
       desc = woden_wsdl10_desc_to_desc_element(desc, env);
       binding_els = WODEN_WSDL10_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
       if (binding_els)
-	    size = axis2_array_list_size(binding_els, env);
+	    size = axutil_array_list_size(binding_els, env);
       for (i = 0; i < size; i++)
       {
 	    void *bind_impl = NULL;
 
-	    bind_impl = axis2_array_list_get(binding_els, env, i);
+	    bind_impl = axutil_array_list_get(binding_els, env, i);
 	    if (builder_impl->f_bindings_done && AXIS2_TRUE !=
-                axis2_array_list_contains(builder_impl->f_bindings_done,
+                axutil_array_list_contains(builder_impl->f_bindings_done,
 					  env, bind_impl))
 	    {
-		  axis2_array_list_t *property_elements = NULL;
+		  axutil_array_list_t *property_elements = NULL;
 
 		  WODEN_WSDL10_DESC_ADD_TO_ALL_BINDINGS(builder_impl->f_desc,
 							env, bind_impl);
@@ -881,12 +881,12 @@ build_bindings(
 		  build_binding_exts(builder, env, bind_impl);
 		  if (!builder_impl->f_bindings_done)
 		  {
-			builder_impl->f_bindings_done = axis2_array_list_create(env, 0);
+			builder_impl->f_bindings_done = axutil_array_list_create(env, 0);
 			if (!builder_impl->f_bindings_done)
 			      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
 					      AXIS2_FAILURE);
 		  }
-		  axis2_array_list_add(builder_impl->f_bindings_done, env, bind_impl);
+		  axutil_array_list_add(builder_impl->f_bindings_done, env, bind_impl);
 
 	    }
       }
@@ -900,7 +900,7 @@ build_binding_ops(
       void *binding)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *ops = NULL;
+      axutil_array_list_t *ops = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -911,13 +911,13 @@ build_binding_ops(
       ops = WODEN_BINDING_ELEMENT_GET_BINDING_OP_ELEMENTS(
 	    binding, env);
       if (ops)
-	    size = axis2_array_list_size(ops, env);
+	    size = axutil_array_list_size(ops, env);
       for (i = 0; i < size; i++)
       {
 	    void *op = NULL;
-	    axis2_array_list_t *property_elements = NULL;
+	    axutil_array_list_t *property_elements = NULL;
 
-	    op = axis2_array_list_get(ops, env, i);
+	    op = axutil_array_list_get(ops, env, i);
 	    op = woden_wsdl10_binding_op_to_configurable_element(op, env);
 	    property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
 		  op, env);
@@ -936,7 +936,7 @@ build_binding_fault_refs(
       void *op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *fault_refs = NULL;
+      axutil_array_list_t *fault_refs = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -948,12 +948,12 @@ build_binding_fault_refs(
       fault_refs = WODEN_WSDL10_BINDING_OP_ELEMENT_GET_BINDING_FAULT_REF_ELEMENTS(
 	    op, env);
       if (fault_refs)
-	    size = axis2_array_list_size(fault_refs, env);
+	    size = axutil_array_list_size(fault_refs, env);
       for (i = 0; i < size; i++)
       {
 	    void *fault_ref = NULL;
 
-	    fault_ref = axis2_array_list_get(fault_refs, env, i);
+	    fault_ref = axutil_array_list_get(fault_refs, env, i);
 	    build_binding_fault_ref_exts(builder, env, fault_ref);
       }
       return AXIS2_SUCCESS;
@@ -966,7 +966,7 @@ build_binding_msg_refs(
       void *op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *msgs = NULL;
+      axutil_array_list_t *msgs = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -977,12 +977,12 @@ build_binding_msg_refs(
       msgs = WODEN_WSDL10_BINDING_OP_ELEMENT_GET_BINDING_MSG_REF_ELEMENTS(
 	    op, env);
       if (msgs)
-	    size = axis2_array_list_size(msgs, env);
+	    size = axutil_array_list_size(msgs, env);
       for (i = 0; i < size; i++)
       {
 	    void *msg = NULL;
 
-	    msg = axis2_array_list_get(msgs, env, i);
+	    msg = axutil_array_list_get(msgs, env, i);
 	    build_binding_msg_ref_exts(builder, env, msg);
       }
       return AXIS2_SUCCESS;
@@ -996,7 +996,7 @@ build_binding_exts(
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
       woden_wsdl10_ext_registry_t *er = NULL;
-      axis2_array_list_t *ext_namespcs = NULL;
+      axutil_array_list_t *ext_namespcs = NULL;
       int i = 0, size = 0;
       axis2_uri_t *binding_type = NULL;
       axis2_char_t *binding_type_str = NULL;
@@ -1014,7 +1014,7 @@ build_binding_exts(
        * First, create a Component Extensions object for each registered extension namespace 
        * used with this binding. 
        */
-      size = axis2_array_list_size(ext_namespcs, env);
+      size = axutil_array_list_size(ext_namespcs, env);
       for (i = 0; i < size; i++)
       {
 	    axis2_uri_t *ext_ns = NULL;
@@ -1025,7 +1025,7 @@ build_binding_exts(
 	    void *docble = NULL;
 	    void *confble = NULL;
 
-	    ext_ns = axis2_array_list_get(ext_namespcs, env, i);
+	    ext_ns = axutil_array_list_get(ext_namespcs, env, i);
 
 	    confble = WODEN_BINDING_GET_BASE_IMPL(binding, env);
 	    docble = WODEN_CONFIGURABLE_GET_BASE_IMPL(confble, env);
@@ -1095,7 +1095,7 @@ build_binding_op_exts(
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
       woden_wsdl10_ext_registry_t *er = NULL;
-      axis2_array_list_t *ext_namespcs = NULL;
+      axutil_array_list_t *ext_namespcs = NULL;
       int i = 0, size = 0;
       void *parent_element = NULL;
       axis2_uri_t *binding_type = NULL;
@@ -1109,7 +1109,7 @@ build_binding_op_exts(
       er = WODEN_WSDL10_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
       ext_namespcs = WODEN_WSDL10_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(er, env, "binding_op");
       if (ext_namespcs)
-	    size = axis2_array_list_size(ext_namespcs, env);
+	    size = axutil_array_list_size(ext_namespcs, env);
       /*
        * First, create a Component Extensions object for each registered extension 
        * namespace used with this binding operation. 
@@ -1120,7 +1120,7 @@ build_binding_op_exts(
 	    axis2_bool_t temp1 = AXIS2_FALSE;
 	    axis2_bool_t temp2 = AXIS2_FALSE;
 
-	    ext_ns = axis2_array_list_get(ext_namespcs, env, i);
+	    ext_ns = axutil_array_list_get(ext_namespcs, env, i);
 	    bind_op = woden_wsdl10_binding_op_to_attr_extensible(
 		  bind_op, env);
 	    temp1 = WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
@@ -1189,7 +1189,7 @@ build_binding_msg_ref_exts(
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
       woden_wsdl10_ext_registry_t *er = NULL;
-      axis2_array_list_t *ext_namespcs = NULL;
+      axutil_array_list_t *ext_namespcs = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1200,14 +1200,14 @@ build_binding_msg_ref_exts(
       er = WODEN_WSDL10_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
       ext_namespcs = WODEN_WSDL10_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(er, env, "binding_msg_ref");
       if (ext_namespcs)
-	    size = axis2_array_list_size(ext_namespcs, env);
+	    size = axutil_array_list_size(ext_namespcs, env);
       for (i = 0; i < size; i++)
       {
 	    axis2_uri_t *ext_ns = NULL;
 	    axis2_bool_t temp1 = AXIS2_FALSE;
 	    axis2_bool_t temp2 = AXIS2_FALSE;
 
-	    ext_ns = axis2_array_list_get(ext_namespcs, env, i);
+	    ext_ns = axutil_array_list_get(ext_namespcs, env, i);
 	    bind_msg_ref = woden_wsdl10_binding_msg_ref_to_attr_extensible(
 		  bind_msg_ref, env);
 	    temp1 = WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
@@ -1238,7 +1238,7 @@ build_binding_fault_ref_exts(
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
       woden_wsdl10_ext_registry_t *er = NULL;
-      axis2_array_list_t *ext_namespcs = NULL;
+      axutil_array_list_t *ext_namespcs = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1249,14 +1249,14 @@ build_binding_fault_ref_exts(
       er = WODEN_WSDL10_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
       ext_namespcs = WODEN_WSDL10_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(er, env, "binding_fault_ref");
       if (ext_namespcs)
-	    size = axis2_array_list_size(ext_namespcs, env);
+	    size = axutil_array_list_size(ext_namespcs, env);
       for (i = 0; i < size; i++)
       {
 	    axis2_uri_t *ext_ns = NULL;
 	    axis2_bool_t temp1 = AXIS2_FALSE;
 	    axis2_bool_t temp2 = AXIS2_FALSE;
 
-	    ext_ns = axis2_array_list_get(ext_namespcs, env, i);
+	    ext_ns = axutil_array_list_get(ext_namespcs, env, i);
 	    bind_fault_ref = woden_binding_fault_ref_to_attr_extensible(
 		  bind_fault_ref, env);
 	    temp1 = WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
@@ -1321,7 +1321,7 @@ build_svcs(
       void *desc)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
-      axis2_array_list_t *svcs = NULL;
+      axutil_array_list_t *svcs = NULL;
       int i = 0, size = 0;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1331,20 +1331,20 @@ build_svcs(
       desc = woden_wsdl10_desc_to_desc_element(desc, env);
       svcs = WODEN_WSDL10_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
       if (svcs)
-	    size = axis2_array_list_size(svcs, env);
+	    size = axutil_array_list_size(svcs, env);
       for (i = 0; i < size; i++)
       {
 	    void *svc = NULL;
 
-	    svc = axis2_array_list_get(svcs, env, i);
+	    svc = axutil_array_list_get(svcs, env, i);
 	    if (builder_impl->f_svcs_done &&
-                (AXIS2_TRUE != axis2_array_list_contains(builder_impl->f_svcs_done,
+                (AXIS2_TRUE != axutil_array_list_contains(builder_impl->f_svcs_done,
 							 env, svc)))
 	    {
 		  WODEN_WSDL10_DESC_ADD_TO_ALL_SVCS(builder_impl->f_desc, env, svc);
 		  if (!builder_impl->f_svcs_done)
 		  {
-			builder_impl->f_svcs_done = axis2_array_list_create(env, 0);
+			builder_impl->f_svcs_done = axutil_array_list_create(env, 0);
 			if (!builder_impl->f_svcs_done)
 			{
 			      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
@@ -1352,7 +1352,7 @@ build_svcs(
 			      return AXIS2_FAILURE;
 			}
 		  }
-		  axis2_array_list_add(builder_impl->f_svcs_done, env, svc);
+		  axutil_array_list_add(builder_impl->f_svcs_done, env, svc);
 	    }
       }
       return AXIS2_SUCCESS;
@@ -1367,7 +1367,7 @@ static axis2_status_t
 build_properties(
       void *builder,
       const axis2_env_t *env,
-      axis2_array_list_t *prop_els,
+      axutil_array_list_t *prop_els,
       void *parent)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -1378,13 +1378,13 @@ build_properties(
       AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
       builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-      size = axis2_array_list_size(prop_els, env);
+      size = axutil_array_list_size(prop_els, env);
       for (i = 0; i < size; i++)
       {
 	    void *prop = NULL;
 	    axis2_qname_t *qname = NULL;
 
-	    prop = axis2_array_list_get(prop_els, env, i);
+	    prop = axutil_array_list_get(prop_els, env, i);
 	    prop = woden_property_to_property_element(prop, env);
 	    qname = WODEN_PROPERTY_ELEMENT_GET_CONSTRAINT_QNAME(prop, env);
 	    if (qname)

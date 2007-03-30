@@ -65,7 +65,7 @@ woden_qname_list_or_token_any_attr_is_token(
     void *list_token_attr,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_qname_list_or_token_any_attr_get_qnames(
     void *list_token_attr,
     const axis2_env_t *env);
@@ -301,7 +301,7 @@ woden_qname_list_or_token_any_attr_is_token(
     }
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_qname_list_or_token_any_attr_get_qnames(
     void *list_token_attr,
     const axis2_env_t *env)
@@ -311,7 +311,7 @@ woden_qname_list_or_token_any_attr_get_qnames(
 
     AXIS2_ENV_CHECK(env, NULL);
     list_token_attr_impl = INTF_TO_IMPL(list_token_attr);
-    return (axis2_array_list_t *) WODEN_XML_ATTR_GET_CONTENT(
+    return (axutil_array_list_t *) WODEN_XML_ATTR_GET_CONTENT(
                 list_token_attr_impl->xml_attr, env);
 }
 
@@ -348,7 +348,7 @@ woden_qname_list_or_token_any_attr_convert(
 {
     woden_qname_list_or_token_any_attr_impl_t *
     list_token_attr_impl = NULL;
-    axis2_array_list_t *qn_array = NULL;
+    axutil_array_list_t *qn_array = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     list_token_attr_impl = INTF_TO_IMPL(list_token_attr);

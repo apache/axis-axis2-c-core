@@ -29,7 +29,7 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <xml_schema_obj.h>
 
@@ -93,7 +93,7 @@ struct xml_schema_obj_collection_ops
                const axis2_env_t *env,
                int i);
                 
-    axis2_array_list_t* (AXIS2_CALL *
+    axutil_array_list_t* (AXIS2_CALL *
     to_array)(xml_schema_obj_collection_t *obj_collection,
               const axis2_env_t *env);                
 

@@ -19,12 +19,12 @@
 #include <string.h>
 #include <axis2_utils.h>
 
-AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axis2_tokenize(const axis2_env_t *env,
     axis2_char_t *in,
     int delim)
 {
-    axis2_array_list_t *list = NULL;
+    axutil_array_list_t *list = NULL;
     axis2_char_t *rest = NULL;
     axis2_char_t *str  = NULL;
 
@@ -34,7 +34,7 @@ axis2_tokenize(const axis2_env_t *env,
     {
         return NULL;
     }
-    list = axis2_array_list_create(env, 10);
+    list = axutil_array_list_create(env, 10);
     if (!list)
     {
         return NULL;
@@ -47,7 +47,7 @@ axis2_tokenize(const axis2_env_t *env,
         index = strchr(str, delim);
         if ((!index) && (str) && axis2_strcmp(str, "") != 0)
         {
-            axis2_array_list_add(list, env, str);
+            axutil_array_list_add(list, env, str);
             break;
         }
 
@@ -56,7 +56,7 @@ axis2_tokenize(const axis2_env_t *env,
         if ((list) && (str) && axis2_strcmp(str, "") != 0)
         {
 
-            axis2_array_list_add(list, env, str);
+            axutil_array_list_add(list, env, str);
         }
 
         if (!rest || axis2_strcmp(rest, "") == 0)
@@ -72,12 +72,12 @@ axis2_tokenize(const axis2_env_t *env,
     return list;
 }
 
-AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axis2_first_token(const axis2_env_t *env,
     axis2_char_t *in,
     int delim)
 {
-    axis2_array_list_t *list    = NULL;
+    axutil_array_list_t *list    = NULL;
     axis2_char_t *str           = NULL;
     axis2_char_t *rest          = NULL;
     axis2_char_t *index         = NULL;
@@ -88,7 +88,7 @@ axis2_first_token(const axis2_env_t *env,
         return NULL;
     }
 
-    list = axis2_array_list_create(env, 2);
+    list = axutil_array_list_create(env, 2);
     if (!list)
     {
         return NULL;
@@ -98,25 +98,25 @@ axis2_first_token(const axis2_env_t *env,
     index = strchr(str, delim);
     if (!index)
     {
-        axis2_array_list_add(list, env, str);
-        axis2_array_list_add(list, env, axis2_strdup(env, ""));
+        axutil_array_list_add(list, env, str);
+        axutil_array_list_add(list, env, axis2_strdup(env, ""));
         return list;
     }
 
     rest = index + 1;
     str[index - str] = '\0';
 
-    axis2_array_list_add(list, env, str);
-    axis2_array_list_add(list, env, rest);
+    axutil_array_list_add(list, env, str);
+    axutil_array_list_add(list, env, rest);
     return list;
 }
 
-AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axis2_last_token(const axis2_env_t *env,
     axis2_char_t *in,
     int delim)
 {
-    axis2_array_list_t *list    = NULL;
+    axutil_array_list_t *list    = NULL;
     axis2_char_t *str           = NULL;
     axis2_char_t *rest          = NULL;
     axis2_char_t *index         = NULL;
@@ -127,7 +127,7 @@ axis2_last_token(const axis2_env_t *env,
         return NULL;
     }
 
-    list = axis2_array_list_create(env, 2);
+    list = axutil_array_list_create(env, 2);
     if (!list)
     {
         return NULL;
@@ -138,16 +138,16 @@ axis2_last_token(const axis2_env_t *env,
 
     if (!index)
     {
-        axis2_array_list_add(list, env, axis2_strdup(env, ""));
-        axis2_array_list_add(list, env, str);
+        axutil_array_list_add(list, env, axis2_strdup(env, ""));
+        axutil_array_list_add(list, env, str);
         return list;
     }
 
     rest = index + 1;
     str[index - str] = '\0';
 
-    axis2_array_list_add(list, env, str);
-    axis2_array_list_add(list, env, rest);
+    axutil_array_list_add(list, env, str);
+    axutil_array_list_add(list, env, rest);
 
     return list;
 }

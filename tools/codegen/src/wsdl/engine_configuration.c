@@ -17,7 +17,7 @@
  
 #include <w2c_engine_configuration.h>
 #include <w2c_engine_config_loader.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
@@ -90,7 +90,7 @@ typedef struct w2c_engine_configuration_impl
     /** c specific names */
     axis2_bool_t convert_names;
     axis2_bool_t indent_code;
-    axis2_array_list_t *filenames;
+    axutil_array_list_t *filenames;
 
     w2c_qname2name_maker_t *qname2name;
     W2C_ENGINE_CONFIGURATION_NAMEMAKER namemaker_func; 
@@ -457,7 +457,7 @@ w2c_engine_configuration_add_filename(
            const axis2_env_t* env,
            axis2_char_t *filename);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 w2c_engine_configuration_get_filenames(
            w2c_engine_configuration_t* engine_configuration,
            const axis2_env_t* env);
@@ -515,7 +515,7 @@ w2c_engine_configuration_create (const axis2_env_t *env)
     engine_configuration_impl->convert_names = AXIS2_FALSE;
     engine_configuration_impl->indent_code = AXIS2_FALSE;
 
-    engine_configuration_impl->filenames = axis2_array_list_create(env, 10);
+    engine_configuration_impl->filenames = axutil_array_list_create(env, 10);
 
     engine_configuration_impl->engine_configuration.ops = 
     AXIS2_MALLOC (env->allocator, sizeof(w2c_engine_configuration_ops_t));
@@ -695,7 +695,7 @@ w2c_engine_configuration_free (w2c_engine_configuration_t *engine_configuration,
     
     if ( engine_configuration_impl->filenames)
     {
-        axis2_array_list_free( engine_configuration_impl->filenames, env);
+        axutil_array_list_free( engine_configuration_impl->filenames, env);
     }
     if ( engine_configuration_impl->base_uri )
     {
@@ -1701,11 +1701,11 @@ w2c_engine_configuration_add_filename(
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 
-    axis2_array_list_add( engine_configuration_impl->filenames, env, filename);
+    axutil_array_list_add( engine_configuration_impl->filenames, env, filename);
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 w2c_engine_configuration_get_filenames(
            w2c_engine_configuration_t* engine_configuration,
            const axis2_env_t* env)

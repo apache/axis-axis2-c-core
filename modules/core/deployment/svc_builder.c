@@ -26,7 +26,7 @@ struct axis2_svc_builder
     struct axis2_desc_builder *desc_builder;
 };
 
-static axis2_array_list_t *
+static axutil_array_list_t *
 axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *op_itr);
@@ -162,7 +162,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axiom_node_t *out_faultflow_node = NULL;
     axiom_element_t *out_faultflow_element = NULL;
     axiom_attribute_t *name_attr = NULL;
-    axis2_array_list_t *ops = NULL;
+    axutil_array_list_t *ops = NULL;
     axis2_char_t *svc_name = NULL;
     axis2_char_t *class_name = NULL;
     axis2_char_t *svc_dll_name = NULL;
@@ -328,25 +328,25 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     ops = axis2_svc_builder_process_ops(svc_builder, env, operation_itr);
     if (ops)
     {
-        size = axis2_array_list_size(ops, env);
+        size = axutil_array_list_size(ops, env);
     }
     for (i = 0; i < size; i++)
     {
         axis2_op_t *op_desc = NULL;
-        axis2_array_list_t *params = NULL;
+        axutil_array_list_t *params = NULL;
         int j = 0;
         int sizej = 0;
 
-        op_desc = (axis2_op_t *) axis2_array_list_get(ops, env, i);
+        op_desc = (axis2_op_t *) axutil_array_list_get(ops, env, i);
         params = axis2_op_get_all_params(op_desc, env);
         /* Adding wsa-mapping into service */
-        sizej = axis2_array_list_size(params, env);
+        sizej = axutil_array_list_size(params, env);
         for (j = 0; j < sizej; j++)
         {
             axis2_param_t *param = NULL;
             axis2_char_t *param_name = NULL;
 
-            param = axis2_array_list_get(params, env, j);
+            param = axutil_array_list_get(params, env, j);
             param_name = axis2_param_get_name(param, env);
             if (0 == axis2_strcmp(param_name, AXIS2_WSA_MAPPING))
             {
@@ -358,21 +358,21 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         }
         axis2_svc_add_op(svc_builder->svc, env, op_desc);
     }
-    axis2_array_list_free(ops, env);
+    axutil_array_list_free(ops, env);
     return AXIS2_SUCCESS;
 }
 
-static axis2_array_list_t *
+static axutil_array_list_t *
 axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *op_itr)
 {
-    axis2_array_list_t *ops = NULL;
+    axutil_array_list_t *ops = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, op_itr, NULL);
 
-    ops = axis2_array_list_create(env, 0);
+    ops = axutil_array_list_create(env, 0);
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(op_itr, env))
     {
         axiom_element_t *op_element = NULL;
@@ -491,7 +491,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         }
 
         /* adding operation */
-        status = axis2_array_list_add(ops, env, op_desc);
+        status = axutil_array_list_add(ops, env, op_desc);
     }
 
     return ops;

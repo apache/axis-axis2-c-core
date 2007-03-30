@@ -20,7 +20,7 @@
 struct axis2_param_container
 {
     axis2_hash_t *params;
-    axis2_array_list_t *params_list;
+    axutil_array_list_t *params_list;
 };
 
 AXIS2_EXTERN axis2_param_container_t * AXIS2_CALL
@@ -41,7 +41,7 @@ axis2_param_container_create(const axis2_env_t *env)
 
     param_container->params = NULL;
     param_container->params_list = NULL;
-    param_container->params_list = axis2_array_list_create(env, 0);
+    param_container->params_list = axutil_array_list_create(env, 0);
 
     param_container->params = axis2_hash_make(env);
     if (!param_container->params)
@@ -85,7 +85,7 @@ axis2_param_container_free(axis2_param_container_t *param_container,
          * requested from param_container. Params referenced here are
          * actually contained in params hash table
          */
-        axis2_array_list_free(param_container->params_list, env);
+        axutil_array_list_free(param_container->params_list, env);
         param_container->params_list = NULL;
     }
 
@@ -145,7 +145,7 @@ axis2_param_container_get_param(axis2_param_container_t *param_container,
         name, AXIS2_HASH_KEY_STRING));
 }
 
-AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axis2_param_container_get_params(axis2_param_container_t *param_container,
     const axis2_env_t *env)
 {
@@ -155,7 +155,7 @@ axis2_param_container_get_params(axis2_param_container_t *param_container,
 
     if (!param_container->params_list)
     {
-        param_container->params_list = axis2_array_list_create(env, 0);
+        param_container->params_list = axutil_array_list_create(env, 0);
         if (!param_container->params_list)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
@@ -168,11 +168,11 @@ axis2_param_container_get_params(axis2_param_container_t *param_container,
         index_i; index_i = axis2_hash_next(env, index_i))
     {
         axis2_hash_this(index_i, NULL, NULL, &value);
-        status = axis2_array_list_add(param_container->params_list, env,
+        status = axutil_array_list_add(param_container->params_list, env,
             value);
         if (AXIS2_SUCCESS != status)
         {
-            axis2_array_list_free(param_container->params_list , env);
+            axutil_array_list_free(param_container->params_list , env);
             return NULL;
         }
     }

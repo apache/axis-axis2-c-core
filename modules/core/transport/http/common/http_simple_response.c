@@ -26,7 +26,7 @@
 struct axis2_http_simple_response
 {
     axis2_http_status_line_t *status_line;
-    axis2_array_list_t *header_group;
+    axutil_array_list_t *header_group;
     axis2_stream_t *stream;
 };
 
@@ -59,12 +59,12 @@ axis2_http_simple_response_create(
     if (http_hdr_count > 0 &&  http_headers)
     {
         int i = 0;
-        simple_response->header_group = axis2_array_list_create(env,
+        simple_response->header_group = axutil_array_list_create(env,
                 http_hdr_count);
 
         for (i = 0; i < http_hdr_count; i++)
         {
-            axis2_array_list_add(simple_response->header_group, env,
+            axutil_array_list_add(simple_response->header_group, env,
                     (void *)http_headers[i]);
         }
     }
@@ -107,17 +107,17 @@ axis2_http_simple_response_free(
     {
         int i = 0;
         axis2_http_header_t *tmp = NULL;
-        for (i = 0; i < axis2_array_list_size(simple_response->header_group,
+        for (i = 0; i < axutil_array_list_size(simple_response->header_group,
                 env); i++)
         {
-            tmp = (axis2_http_header_t *)axis2_array_list_get(
+            tmp = (axis2_http_header_t *)axutil_array_list_get(
                         simple_response->header_group, env, i);
             if (tmp)
             {
                 AXIS2_HTTP_HEADER_FREE(tmp, env);
             }
         }
-        axis2_array_list_free(simple_response->header_group, env);
+        axutil_array_list_free(simple_response->header_group, env);
     }
 
     AXIS2_FREE(env->allocator, simple_response);
@@ -216,7 +216,7 @@ axis2_http_simple_response_get_status_line(
     return AXIS2_HTTP_STATUS_LINE_TO_STRING(simple_response->status_line, env);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 axis2_http_simple_response_get_headers(
     axis2_http_simple_response_t *simple_response,
     const axis2_env_t *env)
@@ -234,7 +234,7 @@ axis2_http_simple_response_get_first_header(
     axis2_char_t *tmp_name = NULL;
     int i = 0;
     int count = 0;
-    axis2_array_list_t *header_group = NULL;
+    axutil_array_list_t *header_group = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, str, NULL);
@@ -244,16 +244,16 @@ axis2_http_simple_response_get_first_header(
     {
         return NULL;
     }
-    if (0 == axis2_array_list_size(header_group, env))
+    if (0 == axutil_array_list_size(header_group, env))
     {
         return NULL;
     }
 
-    count = axis2_array_list_size(header_group, env);
+    count = axutil_array_list_size(header_group, env);
 
     for (i = 0; i < count; i++)
     {
-        tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
+        tmp_header = (axis2_http_header_t *)axutil_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
         if (0 == axis2_strcasecmp(str, tmp_name))
@@ -272,7 +272,7 @@ axis2_http_simple_response_remove_headers(
     const axis2_env_t *env,
     const axis2_char_t *str)
 {
-    axis2_array_list_t *header_group = NULL;
+    axutil_array_list_t *header_group = NULL;
     axis2_http_header_t *tmp_header = NULL;
     axis2_char_t *tmp_name = NULL;
     int i = 0;
@@ -291,18 +291,18 @@ axis2_http_simple_response_remove_headers(
         return AXIS2_SUCCESS;
     }
 
-    count = axis2_array_list_size(header_group, env);
+    count = axutil_array_list_size(header_group, env);
 
 
     for (i = 0; i < count; i++)
     {
-        tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
+        tmp_header = (axis2_http_header_t *)axutil_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
         if (0 == axis2_strcasecmp(str, tmp_name))
         {
             AXIS2_HTTP_HEADER_FREE(tmp_header, env);
-            axis2_array_list_remove(header_group, env, i);
+            axutil_array_list_remove(header_group, env, i);
             break;
         }
     }
@@ -319,15 +319,15 @@ axis2_http_simple_response_set_header(
     int count = 0;
     axis2_http_header_t *tmp_header = NULL;
     axis2_char_t *tmp_name = NULL;
-    axis2_array_list_t *header_group = NULL;
+    axutil_array_list_t *header_group = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, header, AXIS2_FAILURE);
 
     if (! simple_response->header_group)
     {
-        simple_response->header_group = axis2_array_list_create(env, 10);
-        axis2_array_list_add(simple_response->header_group, env, header);
+        simple_response->header_group = axutil_array_list_create(env, 10);
+        axutil_array_list_add(simple_response->header_group, env, header);
         return AXIS2_SUCCESS;
     }
 
@@ -336,21 +336,21 @@ axis2_http_simple_response_set_header(
      */
     header_group = simple_response->header_group;
 
-    count = axis2_array_list_size(header_group, env);
+    count = axutil_array_list_size(header_group, env);
     for (i = 0; i < count; i++)
     {
-        tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
+        tmp_header = (axis2_http_header_t *)axutil_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
         if (0 == axis2_strcasecmp(AXIS2_HTTP_HEADER_GET_NAME(header, env),
                 tmp_name))
         {
             AXIS2_HTTP_HEADER_FREE(tmp_header, env);
-            axis2_array_list_remove(header_group, env, i);
+            axutil_array_list_remove(header_group, env, i);
             break;
         }
     }
-    axis2_array_list_add(simple_response->header_group, env,
+    axutil_array_list_add(simple_response->header_group, env,
             (void *)header);
     return AXIS2_SUCCESS;
 }
@@ -525,7 +525,7 @@ axis2_http_simple_response_contains_header(
     {
         return AXIS2_FALSE;
     }
-    count = axis2_array_list_size(simple_response->header_group, env);
+    count = axutil_array_list_size(simple_response->header_group, env);
     if (0 == count)
     {
         return AXIS2_FALSE;
@@ -534,7 +534,7 @@ axis2_http_simple_response_contains_header(
     for (i = 0; i < count; i++)
     {
         header_name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
-                axis2_array_list_get(simple_response->header_group,
+                axutil_array_list_get(simple_response->header_group,
                         env, i), env);
         if (0 == axis2_strcasecmp(name, header_name))
             return AXIS2_TRUE;

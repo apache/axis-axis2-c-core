@@ -26,7 +26,7 @@
 #include <axis2_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axiom_soap_header.h>
 
 #ifdef __cplusplus

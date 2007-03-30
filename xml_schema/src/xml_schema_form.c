@@ -35,7 +35,7 @@ struct xml_schema_form_impl
     axis2_hash_t *ht_super;
 
 
-    axis2_array_list_t *members;
+    axutil_array_list_t *members;
 };
 
 #define AXIS2_INTF_TO_IMPL(form) \
@@ -67,7 +67,7 @@ xml_schema_form_resolve_methods(
     xml_schema_form_t *form_impl,
     axis2_hash_t *methods);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_form_get_values(void *form,
         const axis2_env_t *env);
 
@@ -119,20 +119,20 @@ xml_schema_form_create(const axis2_env_t *env,
     form_impl->form.ops->get_values =
         xml_schema_form_get_values;
 
-    form_impl->members = axis2_array_list_create(env, 0);
+    form_impl->members = axutil_array_list_create(env, 0);
     if (!form_impl->members)
     {
         xml_schema_form_free(&(form_impl->form), env);
         return NULL;
     }
 
-    axis2_array_list_add(form_impl->members, env,
+    axutil_array_list_add(form_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_FORM_QUALIFIED));
 
-    axis2_array_list_add(form_impl->members, env,
+    axutil_array_list_add(form_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_FORM_UNQUALIFIED));
 
-    axis2_array_list_add(form_impl->members, env,
+    axutil_array_list_add(form_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_FORM_NONE));
 
     form_impl->schema_enum = xml_schema_enum_create(env, value);
@@ -182,18 +182,18 @@ xml_schema_form_free(void *form,
     {
         int size = 0;
         int i    = 0;
-        size = axis2_array_list_size(form_impl->members, env);
+        size = axutil_array_list_size(form_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
-            value = (axis2_char_t*) axis2_array_list_get(form_impl->members, env, i);
+            value = (axis2_char_t*) axutil_array_list_get(form_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
-        axis2_array_list_free(form_impl->members, env);
+        axutil_array_list_free(form_impl->members, env);
         form_impl->members = NULL;
     }
 
@@ -263,7 +263,7 @@ xml_schema_form_get_base_impl(void *form,
 }
 
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 xml_schema_form_get_values(void *form,
         const axis2_env_t *env)
 {

@@ -173,7 +173,7 @@ extern "C"
      * @return pointer to array list containing parameter, returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_grp_get_all_params(const axis2_svc_grp_t *svc_grp,
         const axis2_env_t *env);
 
@@ -246,7 +246,7 @@ extern "C"
      * @return pointer to array list containing all QNames, returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_grp_get_all_module_qnames(const axis2_svc_grp_t *svc_grp,
         const axis2_env_t *env);
 
@@ -269,7 +269,7 @@ extern "C"
      * @return pointer to array list containing module reference, returns 
      * a reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_grp_get_all_module_refs(const axis2_svc_grp_t *svc_grp,
         const axis2_env_t *env);
 

@@ -33,7 +33,7 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axis2_hash.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <woden_wsdl_element.h>
 #include <woden.h>
 
@@ -74,7 +74,7 @@ struct woden_documentable_element_ops
                         const axis2_env_t *env,
                         struct woden_documentation_element *doc_elem);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_documentation_elements) (void *doc_el,
                         const axis2_env_t *env);
 

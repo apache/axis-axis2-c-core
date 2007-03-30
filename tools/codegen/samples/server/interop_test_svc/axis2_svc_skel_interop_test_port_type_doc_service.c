@@ -26,7 +26,7 @@
 
 #include "axis2_skel_interop_test_port_type_doc_service.h"
 #include <axis2_svc_skeleton.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <stdio.h>
 
 /**
@@ -89,35 +89,35 @@ int AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_init(axis2_svc_skeleton_t *svc_skeleton,
         const axis2_env_t *env)
 {
-    svc_skeleton->func_array = axis2_array_list_create(env, 10);
+    svc_skeleton->func_array = axutil_array_list_create(env, 10);
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoString");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoString");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoStringArray");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoStringArray");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoInteger");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoInteger");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoIntegerArray");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoIntegerArray");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoFloat");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoFloat");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoFloatArray");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoFloatArray");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoStruct");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoStruct");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoStructArray");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoStructArray");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoVoid");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoVoid");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoBase64");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoBase64");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoDate");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoDate");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoHexBinary");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoHexBinary");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoDecimal");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoDecimal");
 
-    axis2_array_list_add(svc_skeleton->func_array, env, "echoBoolean");
+    axutil_array_list_add(svc_skeleton->func_array, env, "echoBoolean");
 
 
     /* Any initialization stuff of axis2_skel_interop_test_port_type_doc_service goes here */
@@ -130,7 +130,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_free(axis2_svc_skeleton_t *svc
 {
     if (svc_skeleton->func_array)
     {
-        axis2_array_list_free(svc_skeleton->func_array, env);
+        axutil_array_list_free(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }
 

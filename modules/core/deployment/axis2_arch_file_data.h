@@ -30,7 +30,7 @@
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_conf.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_dir_handler.h>
 #include <axis2_file.h>
 
@@ -176,7 +176,7 @@ extern "C"
      * @param file_data pointer to arch_file_data
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_arch_file_data_get_deployable_svcs(const axis2_arch_file_data_t *file_data,
         const axis2_env_t *env);
 
@@ -189,7 +189,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
         const axis2_env_t *env,
-        axis2_array_list_t *deployable_svcs);
+        axutil_array_list_t *deployable_svcs);
 
     /**
      * Creates arch file data struct

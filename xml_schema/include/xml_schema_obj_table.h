@@ -38,7 +38,7 @@
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <xml_schema_obj.h>
@@ -100,9 +100,9 @@ struct xml_schema_obj_table_ops
      * are used as keys in the table
      * @param obj_table pointer to xml_schema_obj_table struct instance
      * @param env environment struct
-     * @returns axis2_array_list struct instance containing keys 
+     * @returns axutil_array_list struct instance containing keys 
      */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_names)(
             xml_schema_obj_table_t *obj_table,
             const axis2_env_t *env);
@@ -114,7 +114,7 @@ struct xml_schema_obj_table_ops
      * @returns array_list containing all values in the xml_schema_obj_table
      * The returned values are read only and must not be modified
      */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_values)(
             xml_schema_obj_table_t *obj_table,
             const axis2_env_t *env);

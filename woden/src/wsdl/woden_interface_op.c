@@ -39,9 +39,9 @@ struct woden_interface_op_impl
     axis2_hash_t *methods;
     axis2_qname_t *f_qname;
     axis2_uri_t *f_msg_exchange_pattern;
-    axis2_array_list_t *f_style;
-    axis2_array_list_t *f_msg_refs;
-    axis2_array_list_t *f_fault_refs;
+    axutil_array_list_t *f_style;
+    axutil_array_list_t *f_msg_refs;
+    axutil_array_list_t *f_fault_refs;
 };
 
 #define INTF_TO_IMPL(interface_op) ((woden_interface_op_impl_t *) interface_op)
@@ -80,17 +80,17 @@ woden_interface_op_get_msg_exchange_pattern(
     void *interface_op,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_msg_refs(
     void *interface_op,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_fault_refs(
     void *interface_op,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_style(
     void *interface_op,
     const axis2_env_t *env);
@@ -145,7 +145,7 @@ woden_interface_op_remove_interface_msg_ref_element(
     const axis2_env_t *env,
     void *msg_ref);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_msg_ref_elements(
     void *interface_op,
     const axis2_env_t *env);
@@ -162,7 +162,7 @@ woden_interface_op_remove_interface_fault_ref_element(
     const axis2_env_t *env,
     void *fault_ref);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_fault_ref_elements(
     void *interface_op,
     const axis2_env_t *env);
@@ -736,19 +736,19 @@ woden_interface_op_free(
 
     if (interface_op_impl->f_style)
     {
-        axis2_array_list_free(interface_op_impl->f_style, env);
+        axutil_array_list_free(interface_op_impl->f_style, env);
         interface_op_impl->f_style = NULL;
     }
 
     if (interface_op_impl->f_msg_refs)
     {
-        axis2_array_list_free(interface_op_impl->f_msg_refs, env);
+        axutil_array_list_free(interface_op_impl->f_msg_refs, env);
         interface_op_impl->f_msg_refs = NULL;
     }
 
     if (interface_op_impl->f_fault_refs)
     {
-        axis2_array_list_free(interface_op_impl->f_fault_refs, env);
+        axutil_array_list_free(interface_op_impl->f_fault_refs, env);
         interface_op_impl->f_fault_refs = NULL;
     }
 
@@ -921,7 +921,7 @@ woden_interface_op_get_msg_exchange_pattern(
     return interface_op_impl->f_msg_exchange_pattern;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_msg_refs(
     void *interface_op,
     const axis2_env_t *env)
@@ -937,7 +937,7 @@ woden_interface_op_get_interface_msg_refs(
     return interface_op_impl->f_msg_refs;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_fault_refs(
     void *interface_op,
     const axis2_env_t *env)
@@ -953,7 +953,7 @@ woden_interface_op_get_interface_fault_refs(
     return interface_op_impl->f_fault_refs;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_style(
     void *interface_op,
     const axis2_env_t *env)
@@ -1073,14 +1073,14 @@ woden_interface_op_add_style_uri(
 
     if (!interface_op_impl->f_style)
     {
-        interface_op_impl->f_style = axis2_array_list_create(env, 0);
+        interface_op_impl->f_style = axutil_array_list_create(env, 0);
         if (!interface_op_impl->f_style)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_op_impl->f_style, env, axis2_uri_clone(uri, env));
+    axutil_array_list_add(interface_op_impl->f_style, env, axis2_uri_clone(uri, env));
     return AXIS2_SUCCESS;
 }
 
@@ -1100,8 +1100,8 @@ woden_interface_op_remove_style_uri(
     interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
-    index = axis2_array_list_index_of(interface_op_impl->f_style, env, uri);
-    axis2_array_list_remove(interface_op_impl->f_style, env, index);
+    index = axutil_array_list_index_of(interface_op_impl->f_style, env, uri);
+    axutil_array_list_remove(interface_op_impl->f_style, env, index);
     return AXIS2_SUCCESS;
 }
 
@@ -1122,14 +1122,14 @@ woden_interface_op_add_interface_msg_ref_element(
 
     if (!interface_op_impl->f_msg_refs)
     {
-        interface_op_impl->f_msg_refs = axis2_array_list_create(env, 0);
+        interface_op_impl->f_msg_refs = axutil_array_list_create(env, 0);
         if (!interface_op_impl->f_msg_refs)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_op_impl->f_msg_refs, env, msg_ref);
+    axutil_array_list_add(interface_op_impl->f_msg_refs, env, msg_ref);
 
     return AXIS2_SUCCESS;
 }
@@ -1150,13 +1150,13 @@ woden_interface_op_remove_interface_msg_ref_element(
     interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
-    index = axis2_array_list_index_of(interface_op_impl->f_msg_refs, env, msg_ref);
-    axis2_array_list_remove(interface_op_impl->f_msg_refs, env, index);
+    index = axutil_array_list_index_of(interface_op_impl->f_msg_refs, env, msg_ref);
+    axutil_array_list_remove(interface_op_impl->f_msg_refs, env, index);
     return AXIS2_SUCCESS;
 }
 
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_msg_ref_elements(
     void *interface_op,
     const axis2_env_t *env)
@@ -1189,14 +1189,14 @@ woden_interface_op_add_interface_fault_ref_element(
 
     if (!interface_op_impl->f_fault_refs)
     {
-        interface_op_impl->f_fault_refs = axis2_array_list_create(env, 0);
+        interface_op_impl->f_fault_refs = axutil_array_list_create(env, 0);
         if (!interface_op_impl->f_fault_refs)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(interface_op_impl->f_fault_refs, env, fault_ref);
+    axutil_array_list_add(interface_op_impl->f_fault_refs, env, fault_ref);
 
     return AXIS2_SUCCESS;
 }
@@ -1217,13 +1217,13 @@ woden_interface_op_remove_interface_fault_ref_element(
     interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
-    index = axis2_array_list_index_of(interface_op_impl->f_fault_refs, env, fault_ref);
-    axis2_array_list_remove(interface_op_impl->f_fault_refs, env, index);
+    index = axutil_array_list_index_of(interface_op_impl->f_fault_refs, env, fault_ref);
+    axutil_array_list_remove(interface_op_impl->f_fault_refs, env, index);
     return AXIS2_SUCCESS;
 }
 
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_fault_ref_elements(
     void *interface_op,
     const axis2_env_t *env)

@@ -73,7 +73,7 @@ woden_soap_binding_op_exts_get_soap_action(
     void *binding_op_exts,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_modules(
     void *binding_op_exts,
     const axis2_env_t *env);
@@ -384,13 +384,13 @@ woden_soap_binding_op_exts_get_soap_action(
     return action  ? WODEN_URI_ATTR_GET_URI(action, env) : NULL;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_modules(
     void *binding_op_exts,
     const axis2_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
-    axis2_array_list_t *soap_mods = NULL;
+    axutil_array_list_t *soap_mods = NULL;
     void *parent_element = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);

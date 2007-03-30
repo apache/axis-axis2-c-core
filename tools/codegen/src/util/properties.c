@@ -16,7 +16,7 @@
  */
  
 #include <w2c_properties.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
 #include <axis2_properties.h>
@@ -63,7 +63,7 @@ w2c_properties_create (const axis2_env_t *env,
     axis2_char_t *p = NULL;
     axis2_char_t *tag = NULL;
     axis2_hash_t *tmp_hash = NULL;
-    axis2_array_list_t *arr_list = NULL;
+    axutil_array_list_t *arr_list = NULL;
     int i = 0;
    
 
@@ -101,14 +101,14 @@ w2c_properties_create (const axis2_env_t *env,
             if (key && value)
             {
                 i = 0;
-                arr_list = axis2_array_list_create(env, 10);
+                arr_list = axutil_array_list_create(env, 10);
                 for( p = value, tag = value; *p; p ++)
                 {
                     if ( *p == seperator)
                     {
                         *p = '\0';
                         tag = w2c_properties_trunk_and_dup( tag, p, env);
-                        axis2_array_list_add_at( arr_list, env, i, tag);
+                        axutil_array_list_add_at( arr_list, env, i, tag);
                         tag = p + 1;
                         i ++;
                     }
@@ -116,7 +116,7 @@ w2c_properties_create (const axis2_env_t *env,
                 if ( p != tag )
                 {
                     tag = w2c_properties_trunk_and_dup( tag, p, env);
-                    axis2_array_list_add_at( arr_list, env, i, tag);
+                    axutil_array_list_add_at( arr_list, env, i, tag);
                 }
                 key = axis2_strdup(env, key);
                 axis2_hash_set( properties_impl-> prop_hash, key, AXIS2_HASH_KEY_STRING, arr_list);
@@ -149,7 +149,7 @@ w2c_properties_free (w2c_properties_t *properties,
                             const axis2_env_t *env)
 {
     w2c_properties_impl_t *properties_impl = NULL;
-    axis2_array_list_t *values_arr = NULL;
+    axutil_array_list_t *values_arr = NULL;
     axis2_char_t *value = NULL;
     axis2_char_t *key = NULL;
     int i = 0;
@@ -168,16 +168,16 @@ w2c_properties_free (w2c_properties_t *properties,
             axis2_hash_this(hi, (void*)&key, NULL, (void*)&values_arr);
             if (key && values_arr)
             {
-                size = axis2_array_list_size( values_arr, env);
+                size = axutil_array_list_size( values_arr, env);
                 for (i = 0; i < size; i ++)
                 {
-                    value = (axis2_char_t*)axis2_array_list_get( values_arr, env, i);
+                    value = (axis2_char_t*)axutil_array_list_get( values_arr, env, i);
                     if ( value != NULL)
                     {
                         AXIS2_FREE( env-> allocator, value);
                     }
                 }
-                axis2_array_list_free( values_arr, env);
+                axutil_array_list_free( values_arr, env);
                 AXIS2_FREE(env-> allocator, key);
             }
         }

@@ -18,7 +18,7 @@
 #include <axis2_addr_mod.h>
 #include <axis2_addr.h>
 #include <axis2_handler_desc.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axiom_soap_const.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_header.h>
@@ -52,7 +52,7 @@ axis2_status_t
 axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
-        axis2_array_list_t *addr_headers,
+        axutil_array_list_t *addr_headers,
         axis2_msg_ctx_t *msg_ctx);
 
 
@@ -72,14 +72,14 @@ axis2_status_t
 axis2_addr_in_extract_addr_params(const axis2_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
-        axis2_array_list_t *addr_headers,
+        axutil_array_list_t *addr_headers,
         const axis2_char_t *addr_ns,
         axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
-        axis2_array_list_t *addr_headers,
+        axutil_array_list_t *addr_headers,
         axis2_msg_ctx_t *msg_ctx);
 
 void
@@ -136,7 +136,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
         soap_header = axiom_soap_envelope_get_header(soap_envelope, env);
         if (soap_header)
         {
-            axis2_array_list_t *addr_headers = NULL;
+            axutil_array_list_t *addr_headers = NULL;
             axis2_ctx_t *ctx = NULL;
             axis2_char_t *addr_ns_str = NULL;
             axis2_msg_info_headers_t *msg_info_headers =  axis2_msg_ctx_get_msg_info_headers(msg_ctx, env);
@@ -185,7 +185,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
             /* extract service group context, if available */
             axis2_addr_in_extract_svc_grp_ctx_id(env, soap_header, msg_ctx);
 
-            axis2_array_list_free(addr_headers, env);
+            axutil_array_list_free(addr_headers, env);
             return status;
         }
     }
@@ -248,7 +248,7 @@ axis2_status_t
 axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
-        axis2_array_list_t *addr_headers,
+        axutil_array_list_t *addr_headers,
         axis2_msg_ctx_t *msg_ctx)
 {
     return axis2_addr_in_extract_addr_params(env,
@@ -262,7 +262,7 @@ axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
 axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
-        axis2_array_list_t *addr_headers,
+        axutil_array_list_t *addr_headers,
         axis2_msg_ctx_t *msg_ctx)
 {
     return axis2_addr_in_extract_addr_params(env,
@@ -277,7 +277,7 @@ axis2_status_t
 axis2_addr_in_extract_addr_params(const axis2_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers_p,
-        axis2_array_list_t *addr_headers,
+        axutil_array_list_t *addr_headers,
         const axis2_char_t *addr_ns_str,
         axis2_msg_ctx_t *msg_ctx)
 {
@@ -710,7 +710,7 @@ axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx)
 {
     axiom_soap_envelope_t *envelope = NULL;
-    axis2_array_list_t *sub_codes = NULL;
+    axutil_array_list_t *sub_codes = NULL;
     int soap_version = AXIOM_SOAP12;
     axiom_node_t* text_om_node = NULL;
     axiom_element_t * text_om_ele = NULL;
@@ -726,11 +726,11 @@ axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
     text_om_ele = axiom_element_create(env, NULL, "ProblemHeaderQName", ns1, &text_om_node);
     axiom_element_set_text(text_om_ele, env, header_name, text_om_node);
 
-    sub_codes = axis2_array_list_create(env, 2);
+    sub_codes = axutil_array_list_create(env, 2);
     if (sub_codes)
     {
-        axis2_array_list_add(sub_codes, env, "wsa:InvalidAddressingHeader");
-        axis2_array_list_add(sub_codes, env, "wsa:InvalidCardinality");
+        axutil_array_list_add(sub_codes, env, "wsa:InvalidAddressingHeader");
+        axutil_array_list_add(sub_codes, env, "wsa:InvalidCardinality");
     }
 
     envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env,

@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <w2c_typemapper.h>
 #include <w2c_qname2name_maker.h>
@@ -750,7 +750,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
      * @param env Environment. MUST NOT be NULL
      * @return array list of generated filenames.
      */
-    axis2_array_list_t* (AXIS2_CALL* 
+    axutil_array_list_t* (AXIS2_CALL* 
     get_filenames) ( w2c_engine_configuration_t *engine_configuration,
                 const axis2_env_t *env); 
 

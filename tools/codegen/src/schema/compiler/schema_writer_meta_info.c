@@ -369,11 +369,11 @@ w2c_schema_writer_meta_info_get_max_occurs( w2c_schema_writer_meta_info_t *schem
                              const axis2_env_t *env,
                              axis2_qname_t *qname);
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_qname_array( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                                      const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_ordered_qname_array( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                                      const axis2_env_t *env);
 
@@ -1567,21 +1567,21 @@ w2c_schema_writer_meta_info_get_max_occurs( w2c_schema_writer_meta_info_t *schem
     return max_occurs?max_occurs:1; /* default to 1 */
 }  
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_qname_array( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                                      const axis2_env_t *env)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
     axis2_hash_index_t *hi = NULL;
-    axis2_array_list_t *arr_list = NULL;
+    axutil_array_list_t *arr_list = NULL;
     axis2_qname_t *qname = NULL;
     int i = 0;
 
 
     AXIS2_ENV_CHECK(env, NULL);
     writer_meta_info_impl = W2C_INTF_TO_IMPL(schema_writer_meta_info);
-    arr_list = axis2_array_list_create( env, 10 );
+    arr_list = axutil_array_list_create( env, 10 );
     for (hi = axis2_hash_first( writer_meta_info_impl-> element2classmap, env), i = 0;
                         hi; hi = axis2_hash_next(env, hi), i++)
     {
@@ -1589,23 +1589,23 @@ w2c_schema_writer_meta_info_get_qname_array( w2c_schema_writer_meta_info_t *sche
         if (qname_str)
         {
             qname = axis2_qname_create_from_string( env, qname_str);
-            axis2_array_list_add_at( arr_list, env, i, qname);
+            axutil_array_list_add_at( arr_list, env, i, qname);
         }
     }
     return arr_list;
 }
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_ordered_qname_array( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                                      const axis2_env_t *env)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
-    axis2_array_list_t *arr_list = NULL;
+    axutil_array_list_t *arr_list = NULL;
     int i = 0;
     int real_index = 0;
     int size = 0;
     axis2_qname_t *qname = NULL;
-    axis2_array_list_t *temp_arr_list = NULL;
+    axutil_array_list_t *temp_arr_list = NULL;
     axis2_char_t index_str[32];
     
 
@@ -1614,7 +1614,7 @@ w2c_schema_writer_meta_info_get_ordered_qname_array( w2c_schema_writer_meta_info
     writer_meta_info_impl = W2C_INTF_TO_IMPL(schema_writer_meta_info);
 
     size = w2c_schema_writer_meta_info_get_order_start_point( schema_writer_meta_info , env);
-    arr_list = axis2_array_list_create( env, size);
+    arr_list = axutil_array_list_create( env, size);
 
     /** copy all the qnames in the orderemap */
     for ( i = 0, real_index = 0; i < size; i ++ )
@@ -1624,26 +1624,26 @@ w2c_schema_writer_meta_info_get_ordered_qname_array( w2c_schema_writer_meta_info
                 writer_meta_info_impl-> qname_orderlist, index_str, AXIS2_HASH_KEY_STRING );
         if ( qname != NULL )
         {
-            axis2_array_list_add_at( arr_list, env, real_index, qname );
+            axutil_array_list_add_at( arr_list, env, real_index, qname );
             real_index ++;
         }
     }
   
     temp_arr_list = w2c_schema_writer_meta_info_get_qname_array( schema_writer_meta_info, env);
 
-    size = axis2_array_list_size( temp_arr_list, env);
+    size = axutil_array_list_size( temp_arr_list, env);
     for ( i = 0; i < size; i ++)
     {
-        qname = (axis2_qname_t*) axis2_array_list_get(
+        qname = (axis2_qname_t*) axutil_array_list_get(
                        temp_arr_list, env, i );
         if ( w2c_schema_writer_meta_info_get_any_attri_status4qname( 
                     schema_writer_meta_info, env, qname ) )
         {
-            axis2_array_list_add_at( arr_list, env, real_index, qname );
+            axutil_array_list_add_at( arr_list, env, real_index, qname );
             real_index ++;
         } 
     }
-    axis2_array_list_free( temp_arr_list, env);
+    axutil_array_list_free( temp_arr_list, env);
      
     return arr_list;
 }

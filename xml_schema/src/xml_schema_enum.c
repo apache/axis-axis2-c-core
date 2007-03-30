@@ -34,7 +34,7 @@ struct xml_schema_enum_impl
 
     axis2_hash_t *ht_super;
 
-    axis2_array_list_t *values;
+    axutil_array_list_t *values;
 
     axis2_char_t *value;
 };
@@ -74,7 +74,7 @@ xml_schema_enum_equals(
     const axis2_env_t *env,
     void *obj);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_enum_get_values(
     void *schema_enum,
     const axis2_env_t *env);
@@ -168,7 +168,7 @@ xml_schema_enum_free(void *schema_enum,
 
     if (schema_enum_impl->values)
     {
-        axis2_array_list_free(schema_enum_impl->values, env);
+        axutil_array_list_free(schema_enum_impl->values, env);
         schema_enum_impl->values = NULL;
     }
 
@@ -318,7 +318,7 @@ xml_schema_enum_equals(void *schema_enum,
     return AXIS2_TRUE;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_enum_get_values(void *schema_enum,
         const axis2_env_t *env)
 {
@@ -335,18 +335,18 @@ xml_schema_enum_get_values(void *schema_enum,
 AXIS2_EXTERN int AXIS2_CALL
 xml_schema_enum_index(axis2_char_t *value,
         const axis2_env_t *env,
-        axis2_array_list_t *values)
+        axutil_array_list_t *values)
 {
     int size = 0;
     int i    = 0;
     AXIS2_ENV_CHECK(env, -1);
     AXIS2_PARAM_CHECK(env->error, value, -1);
     AXIS2_PARAM_CHECK(env->error, values, -1);
-    size = axis2_array_list_size(values, env);
+    size = axutil_array_list_size(values, env);
     for (i = 0; i < size; i++)
     {
         axis2_char_t *mem_val = NULL;
-        mem_val = (axis2_char_t *)axis2_array_list_get(values,  env, i);
+        mem_val = (axis2_char_t *)axutil_array_list_get(values,  env, i);
         if (mem_val && axis2_strcmp(mem_val, value) == 0)
         {
             return i;

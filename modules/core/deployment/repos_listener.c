@@ -220,7 +220,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
 {
     int size = 0;
     int i = 0;
-    axis2_array_list_t *current_info_list = NULL;
+    axutil_array_list_t *current_info_list = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -240,11 +240,11 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No %s in the folder.", folder_name);
         return AXIS2_SUCCESS;
     }
-    size = axis2_array_list_size(current_info_list, env);
+    size = axutil_array_list_size(current_info_list, env);
     for (i = 0; i < size; i++) /* loop until empty */
     {
         axis2_file_t *file = NULL;
-        file = axis2_array_list_get(current_info_list, env, i);
+        file = axutil_array_list_get(current_info_list, env, i);
         status = axis2_ws_info_list_add_ws_info_item(repos_listener->info_list, env,
             file, type);
         if (AXIS2_SUCCESS != status)
@@ -252,15 +252,15 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
             int size_j = 0;
             int j = 0;
 
-            size_j = axis2_array_list_size(current_info_list, env);
+            size_j = axutil_array_list_size(current_info_list, env);
             for (j = 0; j < size_j; j++)
             {
                 axis2_file_t *del_file = NULL;
 
-                del_file = axis2_array_list_get(current_info_list, env, j);
+                del_file = axutil_array_list_get(current_info_list, env, j);
                 axis2_file_free(del_file, env);
             }
-            axis2_array_list_free(current_info_list, env);
+            axutil_array_list_free(current_info_list, env);
             current_info_list = NULL;
             return status;
         }
@@ -270,10 +270,10 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
     {
         axis2_file_t *del_file = NULL;
 
-        del_file = axis2_array_list_get(current_info_list, env, i);
+        del_file = axutil_array_list_get(current_info_list, env, i);
         axis2_file_free(del_file, env);
     }
-    axis2_array_list_free(current_info_list, env);
+    axutil_array_list_free(current_info_list, env);
     current_info_list = NULL;
     return AXIS2_SUCCESS;
 }

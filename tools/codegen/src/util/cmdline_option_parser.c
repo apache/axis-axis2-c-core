@@ -49,7 +49,7 @@ w2c_cmdline_option_parser_get_options (
           w2c_cmdline_option_parser_t *cmdline_option_parser,
           const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL 
+axutil_array_list_t* AXIS2_CALL 
 w2c_cmdline_option_parser_get_invalid_options (
           w2c_cmdline_option_parser_t *cmdline_option_parser,
           const axis2_env_t *env);
@@ -158,13 +158,13 @@ w2c_cmdline_option_parser_get_options (
     return cmdline_option_parser_impl -> hash;   
 }
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 w2c_cmdline_option_parser_get_invalid_options (
           w2c_cmdline_option_parser_t *cmdline_option_parser,
           const axis2_env_t *env)
 {
     w2c_cmdline_option_parser_impl_t *cmdline_option_parser_impl = NULL;
-    axis2_array_list_t *invalid_arr = NULL;
+    axutil_array_list_t *invalid_arr = NULL;
     axis2_hash_index_t *hi = NULL;
     w2c_cmdline_option_t *option = NULL;
   
@@ -172,7 +172,7 @@ w2c_cmdline_option_parser_get_invalid_options (
     
     cmdline_option_parser_impl = W2C_INTF_TO_IMPL(cmdline_option_parser);
     
-    invalid_arr = axis2_array_list_create ( env, 1 );
+    invalid_arr = axutil_array_list_create ( env, 1 );
     
     for (hi = axis2_hash_first(cmdline_option_parser_impl->hash, env); hi;
                         hi = axis2_hash_next( env, hi))
@@ -180,7 +180,7 @@ w2c_cmdline_option_parser_get_invalid_options (
          axis2_hash_this(hi, NULL, NULL, (void*)&option);
          if (w2c_cmdline_option_validator_isinvalid ( env,option ) )
          {
-             axis2_array_list_add ( invalid_arr, env, option );
+             axutil_array_list_add ( invalid_arr, env, option );
          }
      }
      return invalid_arr;
@@ -197,21 +197,21 @@ w2c_cmdline_option_parser_parse( w2c_cmdline_option_parser_impl_t *parser,
     axis2_hash_t *hash;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
-    axis2_array_list_t *values_arr= NULL;
+    axutil_array_list_t *values_arr= NULL;
    
     hash = axis2_hash_make ( env );
     parser->hash = hash;
     while ( i < argc )
     {
         key = argv[i];
-        values_arr = (axis2_array_list_t*)
-                    axis2_array_list_create(env, 1 );
+        values_arr = (axutil_array_list_t*)
+                    axutil_array_list_create(env, 1 );
         i ++;
         while ( i < argc && !(w2c_string_indexof_cs ( argv[i], "-" ) == 0)
             && !(w2c_string_indexof_cs ( argv[i], "--" ) == 0) )
         {
             value = (axis2_char_t*)axis2_strdup(env, argv[i]);
-            axis2_array_list_add ( values_arr, env, value );
+            axutil_array_list_add ( values_arr, env, value );
             i ++;
         }
         option = (w2c_cmdline_option_t*)

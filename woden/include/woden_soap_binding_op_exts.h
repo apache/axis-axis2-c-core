@@ -36,7 +36,7 @@
 
 #include <woden.h>
 #include <woden_component_exts.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 /** @defgroup woden_soap_binding_op_exts Soap Binding Operation Extensions
   * @ingroup woden
@@ -88,7 +88,7 @@ struct woden_soap_binding_op_exts_ops
             void *binding_op_exts,
             const axis2_env_t *env); 
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_soap_modules) (
             void *binding_op_exts,
             const axis2_env_t *env);

@@ -1369,17 +1369,17 @@ parse_interface(
 
     if (style_default)
     {
-        axis2_array_list_t *string_list = NULL;
+        axutil_array_list_t *string_list = NULL;
         axis2_char_t *uri_str = NULL;
         int i = 0, size = 0;
 
         string_list = axis2_tokenize(env, style_default, ' ');
         if (string_list)
-            size = axis2_array_list_size(string_list, env);
+            size = axutil_array_list_size(string_list, env);
         for (i = 0; i < size; i++)
         {
             axis2_uri_t *uri = NULL;
-            uri_str = axis2_array_list_get(string_list, env, i);
+            uri_str = axutil_array_list_get(string_list, env, i);
             intface = woden_interface_to_interface_element(intface, env);
             uri = get_uri(env, uri_str);
             WODEN_INTERFACE_ELEMENT_ADD_STYLE_DEFAULT_URI(intface, env, uri);
@@ -1665,16 +1665,16 @@ parse_interface_op(
 
     if (style)
     {
-        axis2_array_list_t *str_list = NULL;
+        axutil_array_list_t *str_list = NULL;
         axis2_char_t *uri_str = NULL;
         axis2_uri_t *uri = NULL;
         int i = 0, size = 0;
 
-        size = axis2_array_list_size(str_list, env);
+        size = axutil_array_list_size(str_list, env);
         axis2_tokenize(env, style, ' ');
         for (i = 0; i < size; i++)
         {
-            uri_str = axis2_array_list_get(str_list, env, i);
+            uri_str = axutil_array_list_get(str_list, env, i);
             uri = get_uri(env, uri_str);
             op = woden_interface_op_to_interface_op_element(op, env);
             WODEN_INTERFACE_OP_ELEMENT_ADD_STYLE_URI(op, env, uri);
@@ -2281,18 +2281,18 @@ parse_binding(
     /* Dereference the interface qname */
     if (intface_qn)
     {
-        axis2_array_list_t *interfaces = NULL;
+        axutil_array_list_t *interfaces = NULL;
         int i = 0, size = 0;
 
         desc = woden_desc_to_desc_element(desc, env);
         interfaces = WODEN_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
-        size = axis2_array_list_size(interfaces, env);
+        size = axutil_array_list_size(interfaces, env);
         for (i = 0; i < size; i++)
         {
             void *intface = NULL;
             axis2_qname_t *qname = NULL;
 
-            intface = axis2_array_list_get(interfaces, env, i);
+            intface = axutil_array_list_get(interfaces, env, i);
             intface = woden_interface_to_interface_element(intface, env);
             qname = WODEN_INTERFACE_ELEMENT_GET_QNAME(intface, env);
             if (AXIS2_TRUE == axis2_qname_equals(intface_qn, env, qname))
@@ -2469,19 +2469,19 @@ parse_binding_fault(
         intface = WODEN_BINDING_ELEMENT_GET_INTERFACE_ELEMENT(parent, env);
         if (intface)
         {
-            axis2_array_list_t *int_faults = NULL;
+            axutil_array_list_t *int_faults = NULL;
             int i = 0, size = 0;
 
             int_faults =
                 WODEN_INTERFACE_ELEMENT_GET_INTERFACE_FAULT_ELEMENTS(
                     intface, env);
-            size = axis2_array_list_size(int_faults, env);
+            size = axutil_array_list_size(int_faults, env);
             for (i = 0; i < size; i++)
             {
                 void *intface_flt = NULL;
                 axis2_qname_t *qname = NULL;
 
-                intface_flt = axis2_array_list_get(int_faults, env, i);
+                intface_flt = axutil_array_list_get(int_faults, env, i);
                 if (intface_flt)
                 {
                     intface_flt =
@@ -2608,7 +2608,7 @@ parse_binding_op(
     if (ref_qn)
     {
         void *intface = NULL;
-        axis2_array_list_t *int_ops = NULL;
+        axutil_array_list_t *int_ops = NULL;
         int i = 0, size = 0;
 
         /* Here I know that parent is an instance of binding */
@@ -2616,13 +2616,13 @@ parse_binding_op(
         intface = WODEN_BINDING_ELEMENT_GET_INTERFACE_ELEMENT(parent, env);
         intface = woden_interface_to_interface_element(intface, env);
         int_ops = WODEN_INTERFACE_ELEMENT_GET_INTERFACE_OP_ELEMENTS(intface, env);
-        size = axis2_array_list_size(int_ops, env);
+        size = axutil_array_list_size(int_ops, env);
         for (i = 0; i < size; i++)
         {
             void *intface_op = NULL;
             axis2_qname_t *qname = NULL;
 
-            intface_op = axis2_array_list_get(int_ops, env, i);
+            intface_op = axutil_array_list_get(int_ops, env, i);
             if (intface_op)
                 qname = WODEN_INTERFACE_OP_ELEMENT_GET_QNAME(
                             intface_op, env);
@@ -2865,21 +2865,21 @@ parse_binding_fault_ref(
                     bind_op, env);
         if (int_op)
         {
-            axis2_array_list_t *int_flt_refs = NULL;
+            axutil_array_list_t *int_flt_refs = NULL;
             int i = 0, size = 0;
 
             int_op = woden_interface_op_to_interface_op_element(int_op, env);
             int_flt_refs =
                 WODEN_INTERFACE_OP_ELEMENT_GET_INTERFACE_FAULT_REF_ELEMENTS(
                     int_op, env);
-            size = axis2_array_list_size(int_flt_refs, env);
+            size = axutil_array_list_size(int_flt_refs, env);
             for (i = 0; i < size; i++)
             {
                 void *int_flt_ref = NULL;
                 axis2_qname_t *qname = NULL;
                 woden_msg_label_t *label = NULL;
 
-                int_flt_ref = axis2_array_list_get(int_flt_refs, env, i);
+                int_flt_ref = axutil_array_list_get(int_flt_refs, env, i);
                 int_flt_ref =
                     woden_interface_fault_ref_to_interface_fault_ref_element(
                         int_flt_ref, env);
@@ -3115,21 +3115,21 @@ parse_binding_msg_ref(
                     bind_op, env);
         if (int_op)
         {
-            axis2_array_list_t *int_msg_refs = NULL;
+            axutil_array_list_t *int_msg_refs = NULL;
             int i = 0, size = 0;
 
             int_op = woden_interface_op_to_interface_op_element(int_op, env);
             int_msg_refs =
                 WODEN_INTERFACE_OP_ELEMENT_GET_INTERFACE_MSG_REF_ELEMENTS(
                     int_op, env);
-            size = axis2_array_list_size(int_msg_refs, env);
+            size = axutil_array_list_size(int_msg_refs, env);
             for (i = 0; i < size; i++)
             {
                 void *int_msg_ref = NULL;
                 woden_msg_label_t *msg_label = NULL;
                 woden_msg_label_t *label = NULL;
 
-                int_msg_ref = axis2_array_list_get(int_msg_refs, env, i);
+                int_msg_ref = axutil_array_list_get(int_msg_refs, env, i);
                 int_msg_ref =
                     woden_interface_msg_ref_to_interface_msg_ref_element(
                         int_msg_ref, env);
@@ -3269,19 +3269,19 @@ parse_svc(
     /* Dereference the interface qname */
     if (intface_qn)
     {
-        axis2_array_list_t *interfaces = NULL;
+        axutil_array_list_t *interfaces = NULL;
         int i = 0, size = 0;
 
         desc = woden_desc_to_desc_element(desc, env);
         interfaces = WODEN_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
         if (interfaces)
-            size = axis2_array_list_size(interfaces, env);
+            size = axutil_array_list_size(interfaces, env);
         for (i = 0; i < size; i++)
         {
             void *intface = NULL;
             axis2_qname_t *qname = NULL;
 
-            intface = axis2_array_list_get(interfaces, env, i);
+            intface = axutil_array_list_get(interfaces, env, i);
             intface = woden_interface_to_interface_element(intface, env);
             qname = WODEN_INTERFACE_ELEMENT_GET_QNAME(intface, env);
             if (AXIS2_TRUE == axis2_qname_equals(intface_qn, env, qname))
@@ -3428,19 +3428,19 @@ parse_endpoint(
     /* Dereference the binding qname */
     if (binding_qn)
     {
-        axis2_array_list_t *bindings = NULL;
+        axutil_array_list_t *bindings = NULL;
         int i = 0, size = 0;
 
         desc = woden_desc_to_desc_element(desc, env);
         bindings = WODEN_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
         if (bindings)
-            size = axis2_array_list_size(bindings, env);
+            size = axutil_array_list_size(bindings, env);
         for (i = 0; i < size; i++)
         {
             void *binding = NULL;
             axis2_qname_t *qname = NULL;
 
-            binding = axis2_array_list_get(bindings, env, i);
+            binding = axutil_array_list_get(bindings, env, i);
             binding = woden_binding_to_binding_element(binding, env);
             qname = WODEN_BINDING_ELEMENT_GET_QNAME(binding, env);
             if (AXIS2_TRUE == axis2_qname_equals(binding_qn, env, qname))

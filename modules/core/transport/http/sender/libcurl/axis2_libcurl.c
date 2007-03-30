@@ -25,7 +25,7 @@ static CURL *handler;
 typedef struct axis2_libcurl
 {
 	axis2_char_t *memory;
-	axis2_array_list_t *alist;
+	axutil_array_list_t *alist;
 	unsigned int size;
 	const axis2_env_t *env;
 }axis2_libcurl_t;
@@ -346,7 +346,7 @@ axis2_libcurl_header_callback(void *ptr, size_t size, size_t nmemb, void *data)
 		memcpy(&(mem->memory[mem->size]), ptr, realsize);
 		mem->size += realsize;
 		mem->memory[mem->size] = 0;
-		axis2_array_list_add (mem->alist, mem->env, axis2_strdup (mem->env, mem->memory));
+		axutil_array_list_add (mem->alist, mem->env, axis2_strdup (mem->env, mem->memory));
 	}
 	return realsize;
 }
@@ -357,7 +357,7 @@ axis2_libcurl_create (const axis2_env_t *env)
 	axis2_libcurl_t *curl = NULL;
 	curl = (axis2_libcurl_t *) AXIS2_MALLOC (env->allocator, sizeof (axis2_libcurl_t));
 	curl->size = 0;
-	curl->alist = axis2_array_list_create (env, 7);
+	curl->alist = axutil_array_list_create (env, 7);
 	curl->env = env;
 	return curl;
 }

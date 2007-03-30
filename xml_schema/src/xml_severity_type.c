@@ -31,7 +31,7 @@ struct xml_schema_severity_type_impl
 
     xml_schema_enum_t *schema_enum;
 
-    axis2_array_list_t *members;
+    axutil_array_list_t *members;
 
     axis2_hash_t *ht_super;
 
@@ -49,7 +49,7 @@ xml_schema_enum_t *AXIS2_CALL
 xml_schema_severity_type_get_base_impl(void *severity_type,
         const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_severity_type_get_values(void *severity_type,
         const axis2_env_t *env);
 
@@ -102,15 +102,15 @@ xml_schema_severity_type_create(const axis2_env_t *env,
     severity_type_impl->severity_type.ops->super_objs =
         xml_schema_severity_type_super_objs;
 
-    severity_type_impl->members = axis2_array_list_create(env, 0);
+    severity_type_impl->members = axutil_array_list_create(env, 0);
     if (!severity_type_impl->members)
     {
         xml_schema_severity_type_free(&(severity_type_impl->severity_type), env);
         return NULL;
     }
-    axis2_array_list_add(severity_type_impl->members, env,
+    axutil_array_list_add(severity_type_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_ERROR));
-    axis2_array_list_add(severity_type_impl->members, env,
+    axutil_array_list_add(severity_type_impl->members, env,
             axis2_strdup(env, XML_SCHEMA_CONST_WARNING));
 
     severity_type_impl->schema_enum = xml_schema_enum_create(env, value);
@@ -159,18 +159,18 @@ xml_schema_severity_type_free(void *severity_type,
     {
         int size = 0;
         int i    = 0;
-        size = axis2_array_list_size(severity_type_impl->members, env);
+        size = axutil_array_list_size(severity_type_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
-            value = (axis2_char_t*) axis2_array_list_get(severity_type_impl->members, env, i);
+            value = (axis2_char_t*) axutil_array_list_get(severity_type_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
-        axis2_array_list_free(severity_type_impl->members, env);
+        axutil_array_list_free(severity_type_impl->members, env);
         severity_type_impl->members = NULL;
     }
 
@@ -209,7 +209,7 @@ xml_schema_severity_type_get_base_impl(void *severity_type,
     return severity_type_impl->schema_enum;
 }
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 xml_schema_severity_type_get_values(void *severity_type,
         const axis2_env_t *env)
 {

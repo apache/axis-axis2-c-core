@@ -33,7 +33,7 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <woden.h>
 
 #ifdef __cplusplus
@@ -89,12 +89,12 @@ struct woden_attr_extensible_ops
             const axis2_env_t *env,
             axis2_qname_t *attr_type); 
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_ext_attrs) (
             void *extensible,
             const axis2_env_t *env); 
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_ext_attrs_for_namespace) (
             void *extensible,
             const axis2_env_t *env,

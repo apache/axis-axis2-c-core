@@ -107,7 +107,7 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
         axis2_byte_t **output_stream,
         int *output_stream_size,
         axis2_char_t *soap_body_buffer,
-        axis2_array_list_t *binary_node_list,
+        axutil_array_list_t *binary_node_list,
         axis2_char_t *boundary,
         axis2_char_t *content_id,
         axis2_char_t *char_set_encoding,
@@ -180,9 +180,9 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
         int temp_stream_size = 0;
         axis2_byte_t *temp = NULL;
         int temp_size = 0;
-        for (j = 0; j < axis2_array_list_size(binary_node_list, env); j++)
+        for (j = 0; j < axutil_array_list_size(binary_node_list, env); j++)
         {
-            axiom_text_t *text = (axiom_text_t *)axis2_array_list_get(binary_node_list, env, j);
+            axiom_text_t *text = (axiom_text_t *)axutil_array_list_get(binary_node_list, env, j);
             if (text)
             {
                 axiom_mime_body_part_t *mime_body_part = NULL;

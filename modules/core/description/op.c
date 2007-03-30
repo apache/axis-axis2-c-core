@@ -30,9 +30,9 @@ struct axis2_op
 
     int mep;
     /* to store deploy time modules */
-    axis2_array_list_t *module_qnames;
-    axis2_array_list_t *engaged_module_list;
-    axis2_array_list_t *wsamapping_list;
+    axutil_array_list_t *module_qnames;
+    axutil_array_list_t *engaged_module_list;
+    axutil_array_list_t *wsamapping_list;
     axis2_bool_t from_module;
     axis2_qname_t *qname;
     axis2_char_t *msg_exchange_pattern;
@@ -208,25 +208,25 @@ axis2_op_free(
     if (op->module_qnames)
     {
         int i = 0;
-        for (i = 0; i < axis2_array_list_size(op->module_qnames, env); i++)
+        for (i = 0; i < axutil_array_list_size(op->module_qnames, env); i++)
         {
             axis2_qname_t *module_ref = NULL;
-            module_ref = axis2_array_list_get(op->module_qnames, env, i);
+            module_ref = axutil_array_list_get(op->module_qnames, env, i);
 
             if (module_ref)
             {
                 axis2_qname_free(module_ref, env);
             }
         }
-        axis2_array_list_free(op->module_qnames, env);
+        axutil_array_list_free(op->module_qnames, env);
     }
     if (op->engaged_module_list)
     {
-        axis2_array_list_free(op->engaged_module_list, env);
+        axutil_array_list_free(op->engaged_module_list, env);
     }
     if (op->wsamapping_list)
     {
-        axis2_array_list_free(op->wsamapping_list, env);
+        axutil_array_list_free(op->wsamapping_list, env);
     }
 
     if (op->qname)
@@ -309,7 +309,7 @@ axis2_op_get_param(const axis2_op_t *op,
     return param;
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_all_params(const axis2_op_t *op,
     const axis2_env_t *env)
 {
@@ -476,7 +476,7 @@ axis2_op_engage_module(axis2_op_t *op,
 {
     int index = 0;
     int size = 0;
-    axis2_array_list_t *collection_module = NULL;
+    axutil_array_list_t *collection_module = NULL;
     axis2_module_desc_t *module_desc = NULL;
     axis2_phase_resolver_t *pr = NULL;
     axis2_bool_t need_to_add = AXIS2_FALSE;
@@ -488,7 +488,7 @@ axis2_op_engage_module(axis2_op_t *op,
     collection_module = op->engaged_module_list;
     if (collection_module)
     {
-        size = axis2_array_list_size(collection_module, env);
+        size = axutil_array_list_size(collection_module, env);
     }
     if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
@@ -500,7 +500,7 @@ axis2_op_engage_module(axis2_op_t *op,
         const axis2_qname_t *qname1 = NULL;
         const axis2_qname_t *qname2 = NULL;
 
-        module_desc = (axis2_module_desc_t *) axis2_array_list_get(collection_module,
+        module_desc = (axis2_module_desc_t *) axutil_array_list_get(collection_module,
             env, index);
         if (!module_desc)
         {
@@ -534,7 +534,7 @@ axis2_op_engage_module(axis2_op_t *op,
         
         if (AXIS2_TRUE == need_to_add)
         {
-            axis2_array_list_add(collection_module, env, moduleref);
+            axutil_array_list_add(collection_module, env, moduleref);
         }
     }
     else
@@ -560,9 +560,9 @@ axis2_op_add_to_engaged_module_list(axis2_op_t *op,
 
     if (!op->engaged_module_list)
     {
-        op->engaged_module_list = axis2_array_list_create(env, 0);
+        op->engaged_module_list = axutil_array_list_create(env, 0);
     }
-    size = axis2_array_list_size(op->engaged_module_list, env);
+    size = axutil_array_list_size(op->engaged_module_list, env);
 
     if (AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
@@ -574,7 +574,7 @@ axis2_op_add_to_engaged_module_list(axis2_op_t *op,
         const axis2_qname_t *module_qname_l = NULL;
 
         module_desc_l = 
-            (axis2_module_desc_t *) axis2_array_list_get(op->engaged_module_list, env, index);
+            (axis2_module_desc_t *) axutil_array_list_get(op->engaged_module_list, env, index);
         module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
         
         if (axis2_qname_equals(module_qname, env, module_qname_l))
@@ -584,10 +584,10 @@ axis2_op_add_to_engaged_module_list(axis2_op_t *op,
 
     }
 
-    return axis2_array_list_add(op->engaged_module_list, env, module_desc);
+    return axutil_array_list_add(op->engaged_module_list, env, module_desc);
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_all_modules(const axis2_op_t *op,
     const axis2_env_t *env)
 {
@@ -659,7 +659,7 @@ axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
 
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_fault_in_flow(const axis2_op_t *op,
     const axis2_env_t *env)
 {
@@ -676,7 +676,7 @@ axis2_op_get_fault_in_flow(const axis2_op_t *op,
 }
 
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_fault_out_flow(const axis2_op_t *op,
     const axis2_env_t *env)
 {
@@ -693,7 +693,7 @@ axis2_op_get_fault_out_flow(const axis2_op_t *op,
 }
 
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_out_flow(const axis2_op_t *op,
     const axis2_env_t *env)
 {
@@ -710,7 +710,7 @@ axis2_op_get_out_flow(const axis2_op_t *op,
 }
 
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_in_flow(const axis2_op_t *op,
     const axis2_env_t *env)
 {
@@ -729,7 +729,7 @@ axis2_op_get_in_flow(const axis2_op_t *op,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_set_fault_in_flow(axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_array_list_t *list)
+    axutil_array_list_t *list)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
@@ -749,7 +749,7 @@ axis2_op_set_fault_in_flow(axis2_op_t *op,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_set_fault_out_flow(axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_array_list_t *list)
+    axutil_array_list_t *list)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
@@ -768,7 +768,7 @@ axis2_op_set_fault_out_flow(axis2_op_t *op,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_set_out_flow(axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_array_list_t *list)
+    axutil_array_list_t *list)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
@@ -789,7 +789,7 @@ axis2_op_set_out_flow(axis2_op_t *op,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_set_in_flow(axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_array_list_t *list)
+    axutil_array_list_t *list)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
@@ -817,10 +817,10 @@ axis2_op_add_module_qname(axis2_op_t *op,
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
     module_qname_l = axis2_qname_clone((axis2_qname_t *)module_qname, env);
 
-    return axis2_array_list_add(op->module_qnames, env, module_qname_l);
+    return axutil_array_list_add(op->module_qnames, env, module_qname_l);
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_all_module_qnames(const axis2_op_t *op,
     const axis2_env_t *env)
 {
@@ -1121,21 +1121,21 @@ axis2_op_is_from_module(const axis2_op_t *op,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_set_wsamapping_list(axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_array_list_t *mapping_list)
+    axutil_array_list_t *mapping_list)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, mapping_list, AXIS2_FAILURE);
     
     if (op->wsamapping_list)
     {
-        axis2_array_list_free(op->wsamapping_list, env);
+        axutil_array_list_free(op->wsamapping_list, env);
         op->wsamapping_list = NULL;
     }
     op->wsamapping_list = mapping_list;
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_wsamapping_list(axis2_op_t *op,
     const axis2_env_t *env)
 {

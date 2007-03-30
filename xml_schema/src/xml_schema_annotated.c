@@ -40,7 +40,7 @@ struct xml_schema_annotated_impl
 
     axis2_char_t *id;
 
-    axis2_array_list_t *unhandled_attrs;
+    axutil_array_list_t *unhandled_attrs;
 };
 
 #define AXIS2_INTF_TO_IMPL(annotated) \
@@ -86,14 +86,14 @@ xml_schema_annotated_set_annotation(void *annotated,
         xml_schema_annotation_t *
         annotation);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_annotated_get_unhandled_attrs(void *annotated,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_annotated_set_unhandled_attrs(void *annotated,
         const axis2_env_t *env,
-        axis2_array_list_t *
+        axutil_array_list_t *
         unhandled_attrs);
 
 /******************* implementation functions ********************************/
@@ -206,7 +206,7 @@ xml_schema_annotated_free(void *annotated,
     if (annotated_impl->unhandled_attrs)
     {
         /* TODO need to iterate and free attributes */
-        axis2_array_list_free(annotated_impl->unhandled_attrs, env);
+        axutil_array_list_free(annotated_impl->unhandled_attrs, env);
         annotated_impl->unhandled_attrs = NULL;
     }
 
@@ -412,7 +412,7 @@ xml_schema_annotated_set_annotation(void *annotated,
 
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_annotated_get_unhandled_attrs(void *annotated,
         const axis2_env_t *env)
 {
@@ -434,7 +434,7 @@ xml_schema_annotated_get_unhandled_attrs(void *annotated,
 axis2_status_t AXIS2_CALL
 xml_schema_annotated_set_unhandled_attrs(void *annotated,
         const axis2_env_t *env,
-        axis2_array_list_t *
+        axutil_array_list_t *
         unhandled_attrs)
 {
     xml_schema_annotated_impl_t *annotated_impl = NULL;

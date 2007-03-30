@@ -32,7 +32,7 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <woden.h>
 
 #ifdef __cplusplus
@@ -134,7 +134,7 @@ struct woden_ext_registry_ops
     * Returns null if no extension deserializers are registered for
     * this parent type.
     */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_allowable_exts) (
             void *registry,
             const axis2_env_t *env,
@@ -242,7 +242,7 @@ struct woden_ext_registry_ops
     * @param parentClass the class of WSDL component extended by these namespaces
     * @return an array of namespace URIs
     */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     query_component_ext_namespaces) (
             void *registry,
             const axis2_env_t *env,

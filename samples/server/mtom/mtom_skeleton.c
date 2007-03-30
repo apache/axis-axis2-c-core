@@ -16,7 +16,7 @@
  */
 #include <axis2_svc_skeleton.h>
 #include "mtom.h"
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 int AXIS2_CALL
 mtom_free(axis2_svc_skeleton_t *svc_skeleton,
@@ -67,11 +67,11 @@ int AXIS2_CALL
 mtom_init(axis2_svc_skeleton_t *svc_skeleton,
         const axis2_env_t *env)
 {
-    svc_skeleton->func_array = axis2_array_list_create(env, 0);
+    svc_skeleton->func_array = axutil_array_list_create(env, 0);
     /* Add the implemented operation names of the service to
      * the array list of functions 
      */
-    axis2_array_list_add(svc_skeleton->func_array, env, "mtomString");
+    axutil_array_list_add(svc_skeleton->func_array, env, "mtomString");
     /* Any initialization stuff of mtom service should go here */
     return AXIS2_SUCCESS;
 }
@@ -120,7 +120,7 @@ mtom_free(axis2_svc_skeleton_t *svc_skeleton,
     /* Free the function array */
     if (svc_skeleton->func_array)
     {
-        axis2_array_list_free(svc_skeleton->func_array, env);
+        axutil_array_list_free(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }
 

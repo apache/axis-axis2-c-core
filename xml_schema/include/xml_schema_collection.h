@@ -30,7 +30,7 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <xml_schema_obj.h>
@@ -167,7 +167,7 @@ struct xml_schema_collection_ops
             xml_schema_collection_t* collection,
             const axis2_env_t *env);
             
-    axis2_array_list_t* (AXIS2_CALL *
+    axutil_array_list_t* (AXIS2_CALL *
     get_schemas)(
             xml_schema_collection_t* collection,
             const axis2_env_t *env);
@@ -176,7 +176,7 @@ struct xml_schema_collection_ops
     set_schemas)(
             xml_schema_collection_t *collection,
             const axis2_env_t *env,
-            axis2_array_list_t *schemas);            
+            axutil_array_list_t *schemas);            
                       
     axis2_hash_t* (AXIS2_CALL *
     get_namespaces)(

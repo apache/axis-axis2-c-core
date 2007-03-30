@@ -38,7 +38,7 @@
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils_defines.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <xml_schema_defines.h>
 #include <xml_schema_constants.h>

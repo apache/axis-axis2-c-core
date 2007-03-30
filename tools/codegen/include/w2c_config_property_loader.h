@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 
 #ifdef __cplusplus
@@ -101,18 +101,18 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     /**
      * Gets the extension class names.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_array_list_t*.
+     * @return Returns axutil_array_list_t*.
      */
-    axis2_array_list_t* (AXIS2_CALL* 
+    axutil_array_list_t* (AXIS2_CALL* 
     get_extension_class_names )(
         w2c_config_property_loader_t *config_property_loader,
         const axis2_env_t *env);
      /**
      * Gets the post extension class names.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_array_list_t*.
+     * @return Returns axutil_array_list_t*.
      */
-    axis2_array_list_t* (AXIS2_CALL* 
+    axutil_array_list_t* (AXIS2_CALL* 
     get_post_extension_class_names )(
         w2c_config_property_loader_t *config_property_loader,
         const axis2_env_t *env);
@@ -120,9 +120,9 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     /**
      * Gets the third party schema names list.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_array_list_t*.
+     * @return Returns axutil_array_list_t*.
      */
-    axis2_array_list_t* (AXIS2_CALL* 
+    axutil_array_list_t* (AXIS2_CALL* 
     get_third_party_schema_names )(
         w2c_config_property_loader_t *config_property_loader,
         const axis2_env_t *env);
@@ -130,9 +130,9 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     /**
      * Gets the language type names.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_array_list_t*.
+     * @return Returns axutil_array_list_t*.
      */
-    axis2_array_list_t* (AXIS2_CALL* 
+    axutil_array_list_t* (AXIS2_CALL* 
     get_language_types )(
         w2c_config_property_loader_t *config_property_loader,
         const axis2_env_t *env);
@@ -170,9 +170,9 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     /**
      * Gets the databinding framework names.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_array_list_t*.
+     * @return Returns axutil_array_list_t*.
      */
-    axis2_array_list_t* (AXIS2_CALL* 
+    axutil_array_list_t* (AXIS2_CALL* 
     get_databinding_framework_names )(
         w2c_config_property_loader_t *config_property_loader,
         const axis2_env_t *env);

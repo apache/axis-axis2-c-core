@@ -27,7 +27,7 @@
 
 #include <woden.h>
 #include <woden_xml_attr.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 /** @defgroup woden_qname_list_attr QName List Attribute
   * @ingroup woden
@@ -77,7 +77,7 @@ struct woden_qname_list_attr_ops
      *  QNameAttr interface declared methods 
      * ************************************************************/
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_qnames) (
             void *qname_list_attr,
             const axis2_env_t *env);

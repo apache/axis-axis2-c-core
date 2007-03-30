@@ -39,8 +39,8 @@ struct woden_binding_op_impl
     axis2_hash_t *super;
     axis2_hash_t *methods;
     axis2_qname_t *f_ref;
-    axis2_array_list_t *f_msg_refs;
-    axis2_array_list_t *f_fault_refs;
+    axutil_array_list_t *f_msg_refs;
+    axutil_array_list_t *f_fault_refs;
     void *f_interface_op;
 };
 
@@ -69,12 +69,12 @@ woden_binding_op_get_base_impl(
  *  Binding Operation  methods (the WSDL Component model)
  * ************************************************************/
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_binding_op_get_binding_msg_refs(
     void *binding_op,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_binding_op_get_binding_fault_refs(
     void *binding_op,
     const axis2_env_t *env);
@@ -121,7 +121,7 @@ woden_binding_op_remove_binding_msg_ref_element(
     void *msg_ref);
 
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_binding_op_get_binding_msg_ref_elements(
     void *binding_op,
     const axis2_env_t *env);
@@ -138,7 +138,7 @@ woden_binding_op_remove_binding_fault_ref_element(
     const axis2_env_t *env,
     void *fault_ref);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_binding_op_get_binding_fault_ref_elements(
     void *binding_op,
     const axis2_env_t *env);
@@ -809,13 +809,13 @@ woden_binding_op_free(void *binding_op,
 
     if (binding_op_impl->f_msg_refs)
     {
-        axis2_array_list_free(binding_op_impl->f_msg_refs, env);
+        axutil_array_list_free(binding_op_impl->f_msg_refs, env);
         binding_op_impl->f_msg_refs = NULL;
     }
 
     if (binding_op_impl->f_fault_refs)
     {
-        axis2_array_list_free(binding_op_impl->f_fault_refs, env);
+        axutil_array_list_free(binding_op_impl->f_fault_refs, env);
         binding_op_impl->f_fault_refs = NULL;
     }
 
@@ -960,7 +960,7 @@ woden_binding_op_resolve_methods(
  *  Binding Operation  methods (the WSDL Component model)
  * ************************************************************/
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_binding_op_get_binding_msg_refs(
     void *binding_op,
     const axis2_env_t *env)
@@ -976,7 +976,7 @@ woden_binding_op_get_binding_msg_refs(
     return binding_op_impl->f_msg_refs;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_binding_op_get_binding_fault_refs(
     void *binding_op,
     const axis2_env_t *env)
@@ -1102,14 +1102,14 @@ woden_binding_op_add_binding_msg_ref_element(
 
     if (!binding_op_impl->f_msg_refs)
     {
-        binding_op_impl->f_msg_refs = axis2_array_list_create(env, 0);
+        binding_op_impl->f_msg_refs = axutil_array_list_create(env, 0);
         if (!binding_op_impl->f_msg_refs)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(binding_op_impl->f_msg_refs, env, msg_ref);
+    axutil_array_list_add(binding_op_impl->f_msg_refs, env, msg_ref);
 
     return AXIS2_SUCCESS;
 }
@@ -1130,13 +1130,13 @@ woden_binding_op_remove_binding_msg_ref_element(
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
 
-    index = axis2_array_list_index_of(binding_op_impl->f_msg_refs, env, msg_ref);
-    axis2_array_list_remove(binding_op_impl->f_msg_refs, env, index);
+    index = axutil_array_list_index_of(binding_op_impl->f_msg_refs, env, msg_ref);
+    axutil_array_list_remove(binding_op_impl->f_msg_refs, env, index);
     return AXIS2_SUCCESS;
 }
 
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_binding_op_get_binding_msg_ref_elements(
     void *binding_op,
     const axis2_env_t *env)
@@ -1169,14 +1169,14 @@ woden_binding_op_add_binding_fault_ref_element(
 
     if (!binding_op_impl->f_fault_refs)
     {
-        binding_op_impl->f_fault_refs = axis2_array_list_create(env, 0);
+        binding_op_impl->f_fault_refs = axutil_array_list_create(env, 0);
         if (!binding_op_impl->f_fault_refs)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    axis2_array_list_add(binding_op_impl->f_fault_refs, env, fault_ref);
+    axutil_array_list_add(binding_op_impl->f_fault_refs, env, fault_ref);
 
     return AXIS2_SUCCESS;
 }
@@ -1197,13 +1197,13 @@ woden_binding_op_remove_binding_fault_ref_element(
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
 
-    index = axis2_array_list_index_of(binding_op_impl->f_fault_refs, env, fault_ref);
-    axis2_array_list_remove(binding_op_impl->f_fault_refs, env, index);
+    index = axutil_array_list_index_of(binding_op_impl->f_fault_refs, env, fault_ref);
+    axutil_array_list_remove(binding_op_impl->f_fault_refs, env, index);
     return AXIS2_SUCCESS;
 }
 
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_binding_op_get_binding_fault_ref_elements(
     void *binding_op,
     const axis2_env_t *env)

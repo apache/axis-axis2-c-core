@@ -25,7 +25,7 @@
 #include <axis2_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axiom_children_qname_iterator.h>
 #include <axiom_children_with_specific_attribute_iterator.h>
 #include <axis2_hash.h>
@@ -95,11 +95,11 @@ extern "C"
      * @param header 
      * @param env envirbonment must not be null
      * @param ns_uri namespace uri 
-     * @return pointer to axis2_array_list_t, or null if no header_blocks with
+     * @return pointer to axutil_array_list_t, or null if no header_blocks with
      * given namespace uri exists
      * The returned array_list must be freed by the user.
      */
-    AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
     axiom_soap_header_get_header_blocks_with_namespace_uri(axiom_soap_header_t* header,
             const axis2_env_t *env,
             const axis2_char_t *ns_uri);

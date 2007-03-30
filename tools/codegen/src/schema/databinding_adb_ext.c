@@ -17,7 +17,7 @@
  
 #include <w2c_extension.h>
 #include <axis2_hash.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <xml_schema.h>
 #include <stdio.h>
 
@@ -181,8 +181,8 @@ w2c_databinding_adb_ext_invoke( const axis2_env_t *env,
 {
     axis2_char_t *doc_base_uri = NULL;
     axis2_char_t *wsdl_name = NULL;
-    axis2_array_list_t *list = NULL;
-    axis2_array_list_t *schema_list = NULL;
+    axutil_array_list_t *list = NULL;
+    axutil_array_list_t *schema_list = NULL;
     xml_schema_t *schema = NULL;
     int count = 0;
     int i = 0;
@@ -234,17 +234,17 @@ w2c_databinding_adb_ext_invoke( const axis2_env_t *env,
     }
     list = WODEN_TYPES_ELEMENT_GET_SCHEMAS( types_ele, env);
 
-    schema_list = axis2_array_list_create( env, 10);
-    count = axis2_array_list_size( list, env);
+    schema_list = axutil_array_list_create( env, 10);
+    count = axutil_array_list_size( list, env);
     for ( i = 0, non_null_schemas =0; i < count; i ++ )
     {
-        woden_schema = ( woden_schema_t*)axis2_array_list_get( list, env, i);
+        woden_schema = ( woden_schema_t*)axutil_array_list_get( list, env, i);
 
         schema =  WODEN_SCHEMA_GET_SCHEMA_DEF( woden_schema, env);
         if ( schema != NULL)
         {
             non_null_schemas ++;
-            axis2_array_list_add( schema_list, env, schema);
+            axutil_array_list_add( schema_list, env, schema);
         }
     }
     if( non_null_schemas == 0 )

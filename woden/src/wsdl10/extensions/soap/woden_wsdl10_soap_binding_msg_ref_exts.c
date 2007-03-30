@@ -62,12 +62,12 @@ woden_wsdl10_soap_binding_msg_ref_exts_get_base_impl(
     void *binding_msg_ref_exts,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_binding_msg_ref_exts_get_soap_modules(
     void *binding_msg_ref_exts,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_binding_msg_ref_exts_get_soap_headers(
     void *binding_msg_ref_exts,
     const axis2_env_t *env);
@@ -331,13 +331,13 @@ woden_wsdl10_soap_binding_msg_ref_exts_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_binding_msg_ref_exts_get_soap_modules(
     void *binding_msg_ref_exts,
     const axis2_env_t *env)
 {
     woden_wsdl10_soap_binding_msg_ref_exts_impl_t *binding_msg_ref_exts_impl = NULL;
-    axis2_array_list_t *soap_mods = NULL;
+    axutil_array_list_t *soap_mods = NULL;
     void *parent_element = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -355,13 +355,13 @@ woden_wsdl10_soap_binding_msg_ref_exts_get_soap_modules(
     return soap_mods;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_binding_msg_ref_exts_get_soap_headers(
     void *binding_msg_ref_exts,
     const axis2_env_t *env)
 {
     woden_wsdl10_soap_binding_msg_ref_exts_impl_t *binding_msg_ref_exts_impl = NULL;
-    axis2_array_list_t *soap_headers = NULL;
+    axutil_array_list_t *soap_headers = NULL;
     void *parent_element = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);

@@ -24,7 +24,7 @@ struct axis2_module_builder
     struct axis2_desc_builder *desc_builder;
 };
 
-static axis2_array_list_t *AXIS2_CALL
+static axutil_array_list_t *AXIS2_CALL
 axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *op_itr);
@@ -121,7 +121,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     axiom_element_t *out_fault_flow_element = NULL;
     axiom_node_t *out_fault_flow_node = NULL;
     axis2_conf_t *parent = NULL;
-    axis2_array_list_t *ops = NULL;
+    axutil_array_list_t *ops = NULL;
     axis2_param_container_t *parent_container = NULL;
     int size = 0;
     int i = 0;
@@ -321,32 +321,32 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_qname_free(qopst, env);
     }
     ops = axis2_module_builder_process_ops(module_builder, env, op_itr);
-    size = axis2_array_list_size(ops, env);
+    size = axutil_array_list_size(ops, env);
     for (i = 0; i < size; i++)
     {
         axis2_op_t *op_desc = NULL;
 
-        op_desc = (axis2_op_t *) axis2_array_list_get(ops, env, i);
+        op_desc = (axis2_op_t *) axutil_array_list_get(ops, env, i);
         axis2_module_desc_add_op(module_builder->module_desc, env, op_desc);
     }
-    axis2_array_list_free(ops, env);
+    axutil_array_list_free(ops, env);
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI,
         "axis2_module_builder_populate_module end");
     return AXIS2_SUCCESS;
 }
 
 
-static axis2_array_list_t *AXIS2_CALL
+static axutil_array_list_t *AXIS2_CALL
 axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
     const axis2_env_t *env,
     axiom_children_qname_iterator_t *op_itr)
 {
-    axis2_array_list_t *ops = NULL;
+    axutil_array_list_t *ops = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, op_itr, NULL);
 
-    ops = axis2_array_list_create(env, 0);
+    ops = axutil_array_list_create(env, 0);
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(op_itr, env))
     {
         axiom_element_t *op_element = NULL;
@@ -476,7 +476,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         axis2_phases_info_set_op_phases(info, env, op_desc);
 
         /* adding operation */
-        axis2_array_list_add(ops, env, op_desc);
+        axutil_array_list_add(ops, env, op_desc);
     }
     return ops;
 }

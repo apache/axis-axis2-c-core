@@ -31,7 +31,7 @@ struct woden_documentable_impl
     woden_wsdl_obj_t *wsdl_obj;
     axis2_hash_t *methods;
     axis2_hash_t *super;
-    axis2_array_list_t *f_doc_elems;
+    axutil_array_list_t *f_doc_elems;
 };
 
 #define INTF_TO_IMPL(documentable) ((woden_documentable_impl_t *) documentable)
@@ -57,7 +57,7 @@ woden_documentable_add_documentation_element(
     const axis2_env_t *env,
     woden_documentation_element_t *documentation);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_documentable_get_documentation_elements(
     void *documentable,
     const axis2_env_t *env);
@@ -194,7 +194,7 @@ woden_documentable_free(
 
     if (documentable_impl->f_doc_elems)
     {
-        axis2_array_list_free(documentable_impl->f_doc_elems, env);
+        axutil_array_list_free(documentable_impl->f_doc_elems, env);
         documentable_impl->f_doc_elems = NULL;
     }
 
@@ -307,18 +307,18 @@ woden_documentable_add_documentation_element(
 
     if (!documentable_impl->f_doc_elems)
     {
-        documentable_impl->f_doc_elems = axis2_array_list_create(env, 0);
+        documentable_impl->f_doc_elems = axutil_array_list_create(env, 0);
         if (!documentable_impl->f_doc_elems)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
-    return axis2_array_list_add(documentable_impl->f_doc_elems, env,
+    return axutil_array_list_add(documentable_impl->f_doc_elems, env,
             documentation);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_documentable_get_documentation_elements(
     void *documentable,
     const axis2_env_t *env)

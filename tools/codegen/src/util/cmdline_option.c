@@ -17,7 +17,7 @@
  
 #include <w2c_cmdline_option.h>
 #include <w2c_cmdline_option_consts.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
 
@@ -29,7 +29,7 @@ typedef struct w2c_cmdline_option_impl
     w2c_cmdline_option_t cmdline_option;
     
     axis2_char_t *type;
-    axis2_array_list_t *values_arr;
+    axutil_array_list_t *values_arr;
        
 } w2c_cmdline_option_impl_t;
 
@@ -50,7 +50,7 @@ axis2_char_t* AXIS2_CALL
 w2c_cmdline_option_get_value(w2c_cmdline_option_t *cmdline_option,
           const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 w2c_cmdline_option_get_values(w2c_cmdline_option_t *cmdline_option,
           const axis2_env_t *env);
 
@@ -103,7 +103,7 @@ w2c_cmdline_option_create (const axis2_env_t *env)
 AXIS2_EXTERN w2c_cmdline_option_t * AXIS2_CALL 
 w2c_cmdline_option_create_with_values (const axis2_env_t *env,
                           axis2_char_t *type,
-                          axis2_array_list_t *values_arr)
+                          axutil_array_list_t *values_arr)
 {
     w2c_cmdline_option_impl_t *cmdline_option_impl = NULL;
   
@@ -145,13 +145,13 @@ w2c_cmdline_option_free (w2c_cmdline_option_t *cmdline_option,
     }
     if( cmdline_option_impl-> values_arr )
     {
-        size = axis2_array_list_size ( cmdline_option_impl-> values_arr, env );
+        size = axutil_array_list_size ( cmdline_option_impl-> values_arr, env );
         for (i =0; i < size; i++ )
         {
-            value = axis2_array_list_get ( cmdline_option_impl-> values_arr, env, i );
+            value = axutil_array_list_get ( cmdline_option_impl-> values_arr, env, i );
             AXIS2_FREE ( env-> allocator, value );
         }
-        axis2_array_list_free ( cmdline_option_impl-> values_arr, env );
+        axutil_array_list_free ( cmdline_option_impl-> values_arr, env );
     }
     if(cmdline_option->ops)
     {
@@ -192,14 +192,14 @@ w2c_cmdline_option_get_value(w2c_cmdline_option_t *cmdline_option,
     cmdline_option_impl = W2C_INTF_TO_IMPL(cmdline_option);
     
    if ( cmdline_option_impl-> values_arr &&
-           axis2_array_list_size ( cmdline_option_impl-> values_arr, env) > 0)
+           axutil_array_list_size ( cmdline_option_impl-> values_arr, env) > 0)
    {
-       return axis2_array_list_get (cmdline_option_impl-> values_arr, env, 0);
+       return axutil_array_list_get (cmdline_option_impl-> values_arr, env, 0);
    }
    return NULL;
 }
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 w2c_cmdline_option_get_values(w2c_cmdline_option_t *cmdline_option,
           const axis2_env_t *env)
 {

@@ -124,7 +124,7 @@ axis2_desc_get_param(const axis2_desc_t *desc,
 	    param_name);
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_desc_get_all_params(const axis2_desc_t *desc,
     const axis2_env_t *env)
 {

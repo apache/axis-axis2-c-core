@@ -35,7 +35,7 @@
 
 #include <woden.h>
 #include <woden_component_exts.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 /** @defgroup woden_soap_binding_fault_ref_exts Soap Binding Fault Reference Extensions
   * @ingroup woden
@@ -77,7 +77,7 @@ struct woden_soap_binding_fault_ref_exts_ops
             void *soap_binding_fault_ref_exts,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_soap_modules) (
             void *binding_fault_ref_exts,
             const axis2_env_t *env);

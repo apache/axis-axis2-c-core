@@ -39,7 +39,7 @@ struct woden_svc_impl
     axis2_qname_t *f_qname;
     axis2_qname_t *f_interface_qname;
     void *f_interface;
-    axis2_array_list_t *f_endpoints;
+    axutil_array_list_t *f_endpoints;
 };
 
 #define INTF_TO_IMPL(svc) ((woden_svc_impl_t *) svc)
@@ -77,7 +77,7 @@ woden_svc_get_interface(
     void *svc,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_svc_get_endpoints(
     void *svc,
     const axis2_env_t *env);
@@ -113,7 +113,7 @@ woden_svc_add_endpoint_element(
     const axis2_env_t *env,
     void *endpoint);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_svc_get_endpoint_elements(
     void *svc,
     const axis2_env_t *env);
@@ -627,7 +627,7 @@ woden_svc_free(void *svc,
 
     if (svc_impl->f_endpoints)
     {
-        axis2_array_list_free(svc_impl->f_endpoints, env);
+        axutil_array_list_free(svc_impl->f_endpoints, env);
         svc_impl->f_endpoints = NULL;
     }
 
@@ -788,7 +788,7 @@ woden_svc_get_interface(
     return svc_impl->f_interface;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_svc_get_endpoints(
     void *svc,
     const axis2_env_t *env)
@@ -900,7 +900,7 @@ woden_svc_add_endpoint_element(
 
     if (!svc_impl->f_endpoints)
     {
-        svc_impl->f_endpoints = axis2_array_list_create(env, 0);
+        svc_impl->f_endpoints = axutil_array_list_create(env, 0);
         if (!svc_impl->f_endpoints)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -908,10 +908,10 @@ woden_svc_add_endpoint_element(
         }
     }
 
-    return axis2_array_list_add(svc_impl->f_endpoints, env, endpoint);
+    return axutil_array_list_add(svc_impl->f_endpoints, env, endpoint);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_svc_get_endpoint_elements(
     void *svc,
     const axis2_env_t *env)

@@ -49,7 +49,7 @@
 #include <axis2_svc_grp.h>
 #include <axis2_qname.h>
 #include <axis2_error.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_const.h>
 #include <axis2_phase_resolver.h>
 #include <axis2_module_desc.h>
@@ -206,7 +206,7 @@ extern "C"
      * @return pointer to array list of parameters, returns a reference,
      * not a cloned copy
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_get_all_params(const axis2_svc_t *svc,
         const axis2_env_t *env);
 
@@ -290,7 +290,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to array list containing all engaged modules
      */
-    /*AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    /*AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
       axis2_svc_get_all_engaged_modules(const axis2_svc_t *svc,
           const axis2_env_t *env);*/
 
@@ -613,7 +613,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to array list containing QNames
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_get_all_module_qnames(const axis2_svc_t *svc,
         const axis2_env_t *env);
 
@@ -769,7 +769,7 @@ extern "C"
      * not a cloned copy
      */
      /*
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
             axis2_svc_get_all_schemas(
                 const axis2_svc_t *svc,
                 const axis2_env_t *env);*/
@@ -801,7 +801,7 @@ extern "C"
             axis2_svc_add_all_schemas(
                 axis2_svc_t *svc,
                 const axis2_env_t *env,
-                axis2_array_list_t *schemas);*/
+                axutil_array_list_t *schemas);*/
 
     /**
      * Gets XML schema's target namespace.

@@ -83,7 +83,7 @@ struct woden_configurable_element_ops
             const axis2_env_t *env,
             struct woden_feature_element *feature);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_feature_elements) (
             void *conf_el,
             const axis2_env_t *env);
@@ -94,7 +94,7 @@ struct woden_configurable_element_ops
             const axis2_env_t *env,
             struct woden_property_element *feature);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_property_elements) (
             void *conf_el,
             const axis2_env_t *env);

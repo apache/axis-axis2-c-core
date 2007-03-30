@@ -80,12 +80,12 @@ struct woden_wsdl10_binding_op_ops
             void *binding_op,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_binding_msg_refs) (
             void *binding_op,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_binding_fault_refs) (
             void *binding_op,
             const axis2_env_t *env);

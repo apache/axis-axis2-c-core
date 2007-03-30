@@ -79,17 +79,17 @@ struct woden_interface_op_ops
             void *interface_op,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_interface_msg_refs) (
             void *interface_op,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_interface_fault_refs) (
             void *interface_op,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_style) (
             void *interface_op,
             const axis2_env_t *env);

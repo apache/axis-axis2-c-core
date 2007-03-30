@@ -39,7 +39,7 @@
 #include <axis2_env.h>
 #include <axis2_handler.h>
 #include <axis2_handler_desc.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_qname.h>
 
 /** 
@@ -251,7 +251,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to array list containing the list of handlers
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phase_get_all_handlers(const axis2_phase_t *phase,
         const axis2_env_t *env);
 

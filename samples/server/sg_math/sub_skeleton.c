@@ -16,7 +16,7 @@
  */
 #include "axis2_svc_skeleton.h"
 #include "sub.h"
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <stdio.h>
 
 int AXIS2_CALL
@@ -61,8 +61,8 @@ int AXIS2_CALL
 sub_init(axis2_svc_skeleton_t *svc_skeleton,
         const axis2_env_t *env)
 {
-    svc_skeleton->func_array = axis2_array_list_create(env, 0);
-    axis2_array_list_add(svc_skeleton->func_array, env, "sub");
+    svc_skeleton->func_array = axutil_array_list_create(env, 0);
+    axutil_array_list_add(svc_skeleton->func_array, env, "sub");
 
     /* Any initialization stuff of sub goes here */
     return AXIS2_SUCCESS;

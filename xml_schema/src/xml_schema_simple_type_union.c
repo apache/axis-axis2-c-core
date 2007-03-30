@@ -37,7 +37,7 @@ struct xml_schema_simple_type_union_impl
 
     axis2_char_t *member_types_source;
 
-    axis2_array_list_t *member_types_qnames;
+    axutil_array_list_t *member_types_qnames;
 
     xml_schema_obj_collection_t *base_types;
 };
@@ -79,7 +79,7 @@ xml_schema_simple_type_union_get_member_types_source
 (void *simple_type_union,
         const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 xml_schema_simple_type_union_get_member_types_qnames(
     void *simple_type_union,
     const axis2_env_t *env);
@@ -88,7 +88,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_set_member_types_qnames(
     void *simple_type_union,
     const axis2_env_t *env,
-    axis2_array_list_t *qns);
+    axutil_array_list_t *qns);
 
 /*************** function prototypes *****************************************/
 
@@ -353,7 +353,7 @@ xml_schema_simple_type_union_get_member_types_source
 }
 
 
-axis2_array_list_t* AXIS2_CALL
+axutil_array_list_t* AXIS2_CALL
 xml_schema_simple_type_union_get_member_types_qnames(void *simple_type_union,
         const axis2_env_t *env)
 {
@@ -380,7 +380,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_set_member_types_qnames(
     void *simple_type_union,
     const axis2_env_t *env,
-    axis2_array_list_t *qns)
+    axutil_array_list_t *qns)
 {
     xml_schema_simple_type_union_impl_t *sim_type_union_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, qns, AXIS2_FAILURE);

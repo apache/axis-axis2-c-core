@@ -29,7 +29,7 @@
 #include <axis2_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 
 #ifdef __cplusplus
@@ -54,7 +54,7 @@ typedef struct axiom_mime_output axiom_mime_output_t;
         axis2_byte_t **output_stream,
         int *output_stream_size,
         axis2_char_t *soap_body_buffer,
-        axis2_array_list_t *binary_node_list,
+        axutil_array_list_t *binary_node_list,
         axis2_char_t *boundary, 
         axis2_char_t *content_id,
         axis2_char_t *char_set_encoding,

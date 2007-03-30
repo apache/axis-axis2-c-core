@@ -35,7 +35,7 @@
 #include <xml_schema.h>
 #include <xml_schema_element.h>
 #include <xml_schema_type.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 
 /** @defgroup woden_types Types
@@ -130,7 +130,7 @@ struct woden_types_ops
  * whose target namespace does not match the imported namespace. Referenceability
  * is determined by validation.
  */
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_referenceable_schema_defs) (
             void *types,
             const axis2_env_t *env);

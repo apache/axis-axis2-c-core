@@ -23,7 +23,7 @@
 #include <axis2_wsdl4c_operation.h>
 #include <axis2_wsdl4c_port_type.h>
 #include <axis2_wsdl4c_message.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_env.h>
 #include <axutil_allocator.h>
 #include <stdio.h>
@@ -34,14 +34,14 @@ extern const void *
 extern int
     axis2_wsdl4c_port_type_get_num_ops(void *port_type);
 
-extern axis2_array_list_t *
+extern axutil_array_list_t *
     axis2_wsdl4c_port_type_get_operations(void *port_type);
 
 extern const void *
     axis2_wsdl4c_operation_get_message(void *operation,
             axis2_wsdl4c_msg_type_t type);
 
-extern axis2_array_list_t *
+extern axutil_array_list_t *
     axis2_wsdl4c_operation_get_faults(void *operation);
 
 extern char *
@@ -68,7 +68,7 @@ main(int argc, char *argv[])
     {
         switch (axis2_wsdl4c_parser_get_next_element(wp))
         {
-                axis2_array_list_t *msg_list = NULL;
+                axutil_array_list_t *msg_list = NULL;
                 void * port_type = NULL;
                 int i = 0;
                 int size = 0;
@@ -89,16 +89,16 @@ main(int argc, char *argv[])
                 printf("Port Type %s ", axis2_wsdl4c_port_type_get_name(port_type));
                 printf("has :%d operations \n", axis2_wsdl4c_port_type_get_num_ops(port_type));
                 msg_list = axis2_wsdl4c_port_type_get_operations(port_type);
-                size = axis2_array_list_size(msg_list, env);
+                size = axutil_array_list_size(msg_list, env);
                 printf("size:%d\n", size);
                 for (i = 0; i < size; i++)
                 {
                     const char *op_name = NULL;
                     const char *in_msg_name = NULL;
                     const char *out_msg_name = NULL;
-                    axis2_array_list_t *fault_list = NULL;
+                    axutil_array_list_t *fault_list = NULL;
 
-                    void *op = axis2_array_list_get(msg_list, env, i);
+                    void *op = axutil_array_list_get(msg_list, env, i);
                     if (!op)
                     {
                         return -1;
@@ -123,13 +123,13 @@ main(int argc, char *argv[])
                     {
                         int j = 0, sizej = 0;
 
-                        sizej = axis2_array_list_size(fault_list, env);
+                        sizej = axutil_array_list_size(fault_list, env);
                         printf("sizej:%d\n", sizej);
                         for (j = 0; j < sizej; j++)
                         {
                             char *fault_msg_name = NULL;
 
-                            void *fault_msg = axis2_array_list_get(fault_list, env, j);
+                            void *fault_msg = axutil_array_list_get(fault_list, env, j);
                             /*fault_msg_name = axis2_wsdl4c_message_get_name(fault_msg);
                             printf("Fault message name:%s\n", fault_msg_name);*/
                         }

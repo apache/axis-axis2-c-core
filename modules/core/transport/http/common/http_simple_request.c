@@ -16,7 +16,7 @@
  */
 
 #include <axis2_http_simple_request.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_http_transport.h>
 #include <axis2_string.h>
 #include <string.h>
@@ -25,7 +25,7 @@
 struct axis2_http_simple_request
 {
     axis2_http_request_line_t *request_line;
-    axis2_array_list_t *header_group;
+    axutil_array_list_t *header_group;
     axis2_stream_t *stream;
     axis2_bool_t owns_stream;
 };
@@ -72,12 +72,12 @@ axis2_http_simple_request_create(
     if (http_hdr_count > 0 &&  http_headers)
     {
         int i = 0;
-        simple_request->header_group = axis2_array_list_create(env,
+        simple_request->header_group = axutil_array_list_create(env,
                 http_hdr_count);
 
         for (i = 0; i < http_hdr_count; i++)
         {
-            axis2_array_list_add(simple_request->header_group, env,
+            axutil_array_list_add(simple_request->header_group, env,
                     (void *)http_headers[i]);
         }
     }
@@ -107,15 +107,15 @@ axis2_http_simple_request_free(
     {
         int i = 0;
         axis2_http_header_t *tmp = NULL;
-        for (i = 0; i < axis2_array_list_size(simple_request->header_group,
+        for (i = 0; i < axutil_array_list_size(simple_request->header_group,
                 env); i++)
         {
-            tmp = (axis2_http_header_t *)axis2_array_list_get(
+            tmp = (axis2_http_header_t *)axutil_array_list_get(
                         simple_request->header_group, env, i);
             AXIS2_HTTP_HEADER_FREE(tmp, env);
 
         }
-        axis2_array_list_free(simple_request->header_group, env);
+        axutil_array_list_free(simple_request->header_group, env);
     }
 
     AXIS2_FREE(env->allocator, simple_request);
@@ -163,7 +163,7 @@ axis2_http_simple_request_contains_header(
         return AXIS2_FALSE;
     }
 
-    count = axis2_array_list_size(simple_request->header_group, env);
+    count = axutil_array_list_size(simple_request->header_group, env);
 
     if (0 == count)
     {
@@ -173,7 +173,7 @@ axis2_http_simple_request_contains_header(
     for (i = 0; i < count; i++)
     {
         header_name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
-                axis2_array_list_get(simple_request->header_group,
+                axutil_array_list_get(simple_request->header_group,
                         env, i), env);
         if (0 == axis2_strcasecmp(name, header_name))
             return AXIS2_TRUE;
@@ -182,7 +182,7 @@ axis2_http_simple_request_contains_header(
 }
 
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_http_simple_request_get_headers(
     const axis2_http_simple_request_t *simple_request,
     const axis2_env_t *env)
@@ -197,7 +197,7 @@ axis2_http_simple_request_get_first_header(
     const axis2_env_t *env,
     const axis2_char_t *str)
 {
-    axis2_array_list_t *header_group = NULL;
+    axutil_array_list_t *header_group = NULL;
     int i = 0;
     int count = 0;
     axis2_http_header_t *tmp_header = NULL;
@@ -211,19 +211,19 @@ axis2_http_simple_request_get_first_header(
     {
         return NULL;
     }
-    if (0 == axis2_array_list_size(header_group, env))
+    if (0 == axutil_array_list_size(header_group, env))
     {
         return NULL;
     }
 
 
-    count = axis2_array_list_size(header_group, env);
+    count = axutil_array_list_size(header_group, env);
 
 
     for (i = 0; i < count; i++)
     {
 
-        tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
+        tmp_header = (axis2_http_header_t *)axutil_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
         if (0 == axis2_strcasecmp(str, tmp_name))
@@ -245,7 +245,7 @@ axis2_http_simple_request_remove_headers(
     axis2_char_t *tmp_name = NULL;
     int i = 0;
     int count = 0;
-    axis2_array_list_t *header_group = NULL;
+    axutil_array_list_t *header_group = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
@@ -261,17 +261,17 @@ axis2_http_simple_request_remove_headers(
         return AXIS2_SUCCESS;
     }
 
-    count = axis2_array_list_size(header_group, env);
+    count = axutil_array_list_size(header_group, env);
 
     for (i = 0; i < count; i++)
     {
-        tmp_header = (axis2_http_header_t *)axis2_array_list_get(header_group,
+        tmp_header = (axis2_http_header_t *)axutil_array_list_get(header_group,
                 env, i);
         tmp_name = AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env);
         if (0 == axis2_strcasecmp(str, tmp_name))
         {
             AXIS2_HTTP_HEADER_FREE(tmp_header, env);
-            axis2_array_list_remove(header_group, env, i);
+            axutil_array_list_remove(header_group, env, i);
             break;
         }
     }
@@ -290,9 +290,9 @@ axis2_http_simple_request_add_header(
 
     if (! simple_request->header_group)
     {
-        simple_request->header_group = axis2_array_list_create(env, 1);
+        simple_request->header_group = axutil_array_list_create(env, 1);
     }
-    return axis2_array_list_add(simple_request->header_group,
+    return axutil_array_list_add(simple_request->header_group,
             env, header);
 }
 

@@ -45,7 +45,7 @@ struct axis2_msg_info_headers
     /** message Id */
     axis2_char_t *message_id;
     /** reference parameters */
-    axis2_array_list_t *ref_params;
+    axutil_array_list_t *ref_params;
 };
 
 AXIS2_EXTERN axis2_msg_info_headers_t *AXIS2_CALL
@@ -255,7 +255,7 @@ axis2_msg_info_headers_set_relates_to(struct axis2_msg_info_headers *msg_info_he
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_msg_info_headers_get_all_ref_params(const axis2_msg_info_headers_t *msg_info_headers,
     const axis2_env_t *env)
 {
@@ -271,14 +271,14 @@ axis2_msg_info_headers_add_ref_param(struct axis2_msg_info_headers *msg_info_hea
 
     if (!(msg_info_headers->ref_params))
     {
-        msg_info_headers->ref_params = axis2_array_list_create(env, 10);
+        msg_info_headers->ref_params = axutil_array_list_create(env, 10);
         if (!(msg_info_headers->ref_params))
             return AXIS2_FAILURE;
     }
 
     if (ref_param)
     {
-        return axis2_array_list_add(msg_info_headers->ref_params, env, ref_param);
+        return axutil_array_list_add(msg_info_headers->ref_params, env, ref_param);
     }
 
     return AXIS2_SUCCESS;
@@ -315,7 +315,7 @@ axis2_msg_info_headers_free(
 
     if (msg_info_headers->ref_params)
     {
-        axis2_array_list_free(msg_info_headers->ref_params, env);
+        axutil_array_list_free(msg_info_headers->ref_params, env);
     }
     if (msg_info_headers->action)
     {

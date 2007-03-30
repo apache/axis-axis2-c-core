@@ -79,7 +79,7 @@ axis2_engine_send(
 {
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_op_ctx_t *op_ctx = NULL;
-    axis2_array_list_t *phases = NULL;
+    axutil_array_list_t *phases = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
 
@@ -117,7 +117,7 @@ axis2_engine_send(
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *global_out_phase =  axis2_conf_get_out_phases(conf, env);
+                axutil_array_list_t *global_out_phase =  axis2_conf_get_out_phases(conf, env);
                 if (global_out_phase)
                 {
                     axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);
@@ -140,7 +140,7 @@ axis2_engine_send(
             conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *global_out_phase =  axis2_conf_get_out_phases(conf, env);
+                axutil_array_list_t *global_out_phase =  axis2_conf_get_out_phases(conf, env);
                 if (global_out_phase)
                 {
                     axis2_engine_invoke_phases(engine, env, global_out_phase, msg_ctx);
@@ -191,8 +191,8 @@ axis2_engine_receive(
     axis2_conf_t *conf = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_op_t *op = NULL;
-    axis2_array_list_t *pre_calculated_phases = NULL;
-    axis2_array_list_t *op_specific_phases = NULL;
+    axutil_array_list_t *pre_calculated_phases = NULL;
+    axutil_array_list_t *op_specific_phases = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -319,7 +319,7 @@ axis2_engine_send_fault(
             axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *phases =  
+                axutil_array_list_t *phases =  
                     axis2_conf_get_out_fault_flow(conf, env);
                 if (phases)
                 {
@@ -368,7 +368,7 @@ axis2_engine_receive_fault(
             axis2_conf_t *conf =  axis2_conf_ctx_get_conf(conf_ctx, env);
             if (conf)
             {
-                axis2_array_list_t *phases =  
+                axutil_array_list_t *phases =  
                     axis2_conf_get_in_phases_upto_and_including_post_dispatch(conf, env);
                 if (phases)
                 {
@@ -391,7 +391,7 @@ axis2_engine_receive_fault(
     if (op_ctx)
     {
         axis2_op_t *op =  axis2_op_ctx_get_op(op_ctx, env);
-        axis2_array_list_t *phases = axis2_op_get_fault_in_flow(op, env);
+        axutil_array_list_t *phases = axis2_op_get_fault_in_flow(op, env);
         if ( axis2_msg_ctx_is_paused(msg_ctx, env))
         {
             axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
@@ -555,7 +555,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_invoke_phases(
     axis2_engine_t *engine,
     const axis2_env_t *env,
-    axis2_array_list_t *phases,
+    axutil_array_list_t *phases,
     axis2_msg_ctx_t *msg_ctx)
 {
     int i = 0;
@@ -567,11 +567,11 @@ axis2_engine_invoke_phases(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     if (phases)
-        count = axis2_array_list_size(phases, env);
+        count = axutil_array_list_size(phases, env);
     for (i = 0; (i < count && !( axis2_msg_ctx_is_paused(msg_ctx, env))); i++)
     {
         axis2_phase_t *phase = (axis2_phase_t *)
-                axis2_array_list_get(phases, env, i);
+                axutil_array_list_get(phases, env, i);
 
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                 "Invoking phase %s",  axis2_phase_get_name(phase, env));
@@ -590,7 +590,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_resume_invocation_phases(
     axis2_engine_t *engine,
     const axis2_env_t *env,
-    axis2_array_list_t *phases,
+    axutil_array_list_t *phases,
     axis2_msg_ctx_t *msg_ctx)
 {
     int i = 0;
@@ -603,11 +603,11 @@ axis2_engine_resume_invocation_phases(
 
      axis2_msg_ctx_set_paused(msg_ctx, env, AXIS2_FALSE);
 
-    count = axis2_array_list_size(phases, env);
+    count = axutil_array_list_size(phases, env);
 
     for (i = 0; i < count && !( axis2_msg_ctx_is_paused(msg_ctx, env)); i++)
     {
-        axis2_phase_t *phase = (axis2_phase_t *) axis2_array_list_get(phases,
+        axis2_phase_t *phase = (axis2_phase_t *) axutil_array_list_get(phases,
                 env, i);
         const axis2_char_t *phase_name =  axis2_phase_get_name(phase, env);
         const axis2_char_t *paused_phase_name =  
@@ -753,7 +753,7 @@ axis2_engine_resume_receive(
     axis2_status_t status = AXIS2_FAILURE;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
-    axis2_array_list_t *phases = NULL;
+    axutil_array_list_t *phases = NULL;
 
     /* find and invoke the phases */
     conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
@@ -805,7 +805,7 @@ axis2_engine_resume_send(
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;
-    axis2_array_list_t *phases = NULL;
+    axutil_array_list_t *phases = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     /* invoke the phases */

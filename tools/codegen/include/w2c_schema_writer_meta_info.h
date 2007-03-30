@@ -733,11 +733,11 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
                              const axis2_env_t *env,
                              axis2_qname_t *qname);
 
-    axis2_array_list_t* (AXIS2_CALL *
+    axutil_array_list_t* (AXIS2_CALL *
     get_qname_array)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                               const axis2_env_t *env);
 
-    axis2_array_list_t* (AXIS2_CALL *
+    axutil_array_list_t* (AXIS2_CALL *
     get_ordered_qname_array)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                               const axis2_env_t *env);
 

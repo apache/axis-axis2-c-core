@@ -146,7 +146,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
                 local_name = axiom_element_get_localname(op_element, env);
                 if (local_name)
                 {
-                    axis2_array_list_t *function_arr = NULL;
+                    axutil_array_list_t *function_arr = NULL;
                     int i = 0;
                     int size = 0;
                     axis2_bool_t matches = AXIS2_FALSE;
@@ -154,14 +154,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
                     function_arr = svc_obj->func_array;
                     if (function_arr)
                     {
-                        size = axis2_array_list_size(function_arr, env);
+                        size = axutil_array_list_size(function_arr, env);
                     }
 
                     for (i = 0; i < size; i++)
                     {
                         axis2_char_t *function_name = NULL;
 
-                        function_name = (axis2_char_t *) axis2_array_list_get(
+                        function_name = (axis2_char_t *) axutil_array_list_get(
                             function_arr, env, i);
                         if (0 == axis2_strcmp(function_name, local_name))
                         {

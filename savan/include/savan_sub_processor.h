@@ -33,7 +33,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_conf_ctx.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 #ifdef __cplusplus
 extern "C"

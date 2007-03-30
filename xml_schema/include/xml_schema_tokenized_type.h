@@ -55,7 +55,7 @@ struct xml_schema_tokenized_type_ops
     get_base_impl) (void *tokenized_type,
                     const axis2_env_t *env);
     
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_values)(void *tokenized_type,
                 const axis2_env_t *env);
                 

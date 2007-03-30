@@ -30,7 +30,7 @@ struct xml_schema_tokenized_type_impl
 
     xml_schema_enum_t *schema_enum;
 
-    axis2_array_list_t *members;
+    axutil_array_list_t *members;
 
     axis2_hash_t *ht_super;
 
@@ -50,7 +50,7 @@ xml_schema_enum_t *AXIS2_CALL
 xml_schema_tokenized_type_get_base_impl(void *tokenized_type,
         const axis2_env_t *env);
 
-axis2_array_list_t * AXIS2_CALL
+axutil_array_list_t * AXIS2_CALL
 xml_schema_tokenized_type_get_values(void *tokenized_type,
         const axis2_env_t *env);
 
@@ -110,33 +110,33 @@ xml_schema_tokenized_type_create(const axis2_env_t *env,
         xml_schema_tokenized_type_super_objs;
 
 
-    tokenized_type_impl->members = axis2_array_list_create(env, 0);
+    tokenized_type_impl->members = axutil_array_list_create(env, 0);
     if (!tokenized_type_impl->members)
         return NULL;
 
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "CDATA"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "IDREF"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "IDREFS"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "ENTITY"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "ENTITIES"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "NMTOKEN"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "NMTOKENS"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "NOTATION"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "ENUMERATION"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "QName"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "NCName"));
-    axis2_array_list_add(tokenized_type_impl->members, env,
+    axutil_array_list_add(tokenized_type_impl->members, env,
             axis2_strdup(env, "None"));
 
     tokenized_type_impl->schema_enum = xml_schema_enum_create(env, value);
@@ -175,7 +175,7 @@ xml_schema_tokenized_type_free(void *tokenized_type,
 
     if (tokenized_type_impl->members)
     {
-        axis2_array_list_free(tokenized_type_impl->members, env);
+        axutil_array_list_free(tokenized_type_impl->members, env);
         tokenized_type_impl->members = NULL;
     }
 
@@ -183,11 +183,11 @@ xml_schema_tokenized_type_free(void *tokenized_type,
     {
         int size = 0;
         int i    = 0;
-        size = axis2_array_list_size(tokenized_type_impl->members, env);
+        size = axutil_array_list_size(tokenized_type_impl->members, env);
         for (i = 0; i < size ; i++)
         {
             axis2_char_t *value = NULL;
-            value = (axis2_char_t*) axis2_array_list_get(tokenized_type_impl->members, env, i);
+            value = (axis2_char_t*) axutil_array_list_get(tokenized_type_impl->members, env, i);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);
@@ -219,7 +219,7 @@ xml_schema_tokenized_type_get_base_impl(void *tokenized_type,
     return AXIS2_INTF_TO_IMPL(tokenized_type)->schema_enum;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 xml_schema_tokenized_type_get_values(void *tokenized_type,
         const axis2_env_t *env)
 {

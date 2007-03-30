@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_ops
     get_value)(w2c_cmdline_option_t *cmdline_option,
           const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    axutil_array_list_t *(AXIS2_CALL *
     get_values)(w2c_cmdline_option_t *cmdline_option,
           const axis2_env_t *env);
     
@@ -83,7 +83,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option
 AXIS2_EXTERN w2c_cmdline_option_t* AXIS2_CALL
 w2c_cmdline_option_create_with_values( const axis2_env_t *env,
                    axis2_char_t *type,
-                   axis2_array_list_t *values_arr );
+                   axutil_array_list_t *values_arr );
 
 /*************************** Function macros **********************************/
 

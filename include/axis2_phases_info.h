@@ -30,7 +30,7 @@
 #include <axis2_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_op.h>
 #include <axis2_phase.h>
 
@@ -60,7 +60,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phases_info_set_in_phases(axis2_phases_info_t *phases_info,
         const axis2_env_t *env,
-        axis2_array_list_t *in_phases);
+        axutil_array_list_t *in_phases);
 
     /**
      * @param phases_info pointer to phases info
@@ -71,7 +71,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phases_info_set_out_phases(axis2_phases_info_t *phases_info,
         const axis2_env_t *env,
-        axis2_array_list_t *out_phases);
+        axutil_array_list_t *out_phases);
 
     /**
      * @param phases_info pointer to phases info
@@ -82,7 +82,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phases_info_set_in_faultphases(axis2_phases_info_t *phases_info,
         const axis2_env_t *env,
-        axis2_array_list_t *in_faultphases);
+        axutil_array_list_t *in_faultphases);
 
     /**
      * @param phases_info pointer to phases info
@@ -93,13 +93,13 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phases_info_set_out_faultphases(axis2_phases_info_t *phases_info,
         const axis2_env_t *env,
-        axis2_array_list_t *out_faultphases);
+        axutil_array_list_t *out_faultphases);
 
     /**
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_get_in_phases(const axis2_phases_info_t *phases_info,
         const axis2_env_t *env);
 
@@ -107,7 +107,7 @@ extern "C"
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_get_out_phases(const axis2_phases_info_t *phases_info,
         const axis2_env_t *env);
 
@@ -115,7 +115,7 @@ extern "C"
      * @param phases_info pointer to phases info
      * @parma env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_get_in_faultphases(const axis2_phases_info_t *phases_info,
         const axis2_env_t *env);
 
@@ -123,7 +123,7 @@ extern "C"
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_get_out_faultphases(const axis2_phases_info_t *phases_info,
         const axis2_env_t *env);
 
@@ -131,7 +131,7 @@ extern "C"
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_get_op_in_phases(const axis2_phases_info_t *phases_info,
         const axis2_env_t *env);
 
@@ -139,7 +139,7 @@ extern "C"
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_get_op_out_phases(const axis2_phases_info_t *phases_info,
         const axis2_env_t *env);
 
@@ -147,7 +147,7 @@ extern "C"
      * @param phases_info pointer to phases info 
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_get_op_in_faultphases(const axis2_phases_info_t *phases_info,
         const axis2_env_t *env);
 
@@ -155,7 +155,7 @@ extern "C"
      * @param phases_info pointer to phases info
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_get_op_out_faultphases(const axis2_phases_info_t *phases_info,
         const axis2_env_t *env);
 
@@ -177,9 +177,9 @@ extern "C"
     AXIS2_EXTERN axis2_phases_info_t *AXIS2_CALL
     axis2_phases_info_create(const axis2_env_t *env);
 
-    AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phases_info_copy_flow(const axis2_env_t *env,
-        const axis2_array_list_t *flow_to_copy);
+        const axutil_array_list_t *flow_to_copy);
 
 /** @} */
 #ifdef __cplusplus

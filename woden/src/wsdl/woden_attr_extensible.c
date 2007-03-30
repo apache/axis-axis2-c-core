@@ -32,7 +32,7 @@ struct woden_attr_extensible_impl
     axis2_hash_t *super;
     woden_obj_types_t obj_type;
     axis2_hash_t *f_ext_attrs;
-    axis2_array_list_t *temp_attrs;
+    axutil_array_list_t *temp_attrs;
 };
 
 #define INTF_TO_IMPL(extensible) \
@@ -66,12 +66,12 @@ woden_attr_extensible_get_ext_attr(
     const axis2_env_t *env,
     axis2_qname_t *attr_type);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs(
     void *extensible,
     const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs_for_namespace(
     void *extensible,
     const axis2_env_t *env,
@@ -154,15 +154,15 @@ woden_attr_extensible_free(
     if (extensible_impl->temp_attrs)
     {
         int size = 0, i = 0;
-        size = axis2_array_list_size(extensible_impl->temp_attrs, env);
+        size = axutil_array_list_size(extensible_impl->temp_attrs, env);
         for (i = 0; i < size; i++)
         {
             void *ext_el = NULL;
 
-            ext_el = axis2_array_list_get(extensible_impl->temp_attrs, env, i);
+            ext_el = axutil_array_list_get(extensible_impl->temp_attrs, env, i);
             WODEN_XML_ATTR_FREE(ext_el, env);
         }
-        axis2_array_list_free(extensible_impl->temp_attrs, env);
+        axutil_array_list_free(extensible_impl->temp_attrs, env);
         extensible_impl->temp_attrs = NULL;
     }
 
@@ -315,7 +315,7 @@ woden_attr_extensible_get_ext_attr(
             str_attr_type, AXIS2_HASH_KEY_STRING);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs(
     void *extensible,
     const axis2_env_t *env)
@@ -332,30 +332,30 @@ woden_attr_extensible_get_ext_attrs(
     if (extensible_impl->temp_attrs)
     {
         int size = 0, i = 0;
-        size = axis2_array_list_size(extensible_impl->temp_attrs, env);
+        size = axutil_array_list_size(extensible_impl->temp_attrs, env);
         for (i = 0; i < size; i++)
         {
             void *ext_el = NULL;
 
-            ext_el = axis2_array_list_get(extensible_impl->temp_attrs, env, i);
+            ext_el = axutil_array_list_get(extensible_impl->temp_attrs, env, i);
             WODEN_XML_ATTR_FREE(ext_el, env);
         }
-        axis2_array_list_free(extensible_impl->temp_attrs, env);
+        axutil_array_list_free(extensible_impl->temp_attrs, env);
         extensible_impl->temp_attrs = NULL;
     }
-    extensible_impl->temp_attrs = axis2_array_list_create(env, 0);
+    extensible_impl->temp_attrs = axutil_array_list_create(env, 0);
     for (index = axis2_hash_first(extensible_impl->f_ext_attrs, env); index;
             index = axis2_hash_next(env, index))
     {
         void *value = NULL;
 
         axis2_hash_this(index, NULL, NULL, &value);
-        axis2_array_list_add(extensible_impl->temp_attrs, env, value);
+        axutil_array_list_add(extensible_impl->temp_attrs, env, value);
     }
     return extensible_impl->temp_attrs;
 }
 
-axis2_array_list_t *AXIS2_CALL
+axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
         const axis2_env_t *env,
         axis2_uri_t *namespc)
@@ -375,26 +375,26 @@ woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
     if (extensible_impl->temp_attrs)
     {
         int size = 0, i = 0;
-        size = axis2_array_list_size(extensible_impl->temp_attrs, env);
+        size = axutil_array_list_size(extensible_impl->temp_attrs, env);
         for (i = 0; i < size; i++)
         {
             void *ext_el = NULL;
 
-            ext_el = axis2_array_list_get(extensible_impl->temp_attrs, env, i);
+            ext_el = axutil_array_list_get(extensible_impl->temp_attrs, env, i);
             WODEN_XML_ATTR_FREE(ext_el, env);
         }
-        axis2_array_list_free(extensible_impl->temp_attrs, env);
+        axutil_array_list_free(extensible_impl->temp_attrs, env);
         extensible_impl->temp_attrs = NULL;
     }
 
-    extensible_impl->temp_attrs = axis2_array_list_create(env, 0);
+    extensible_impl->temp_attrs = axutil_array_list_create(env, 0);
     for (index = axis2_hash_first(extensible_impl->f_ext_attrs, env); index;
             index = axis2_hash_next(env, index))
     {
         void *value = NULL;
 
         axis2_hash_this(index, NULL, NULL, &value);
-        axis2_array_list_add(extensible_impl->temp_attrs, env, value);
+        axutil_array_list_add(extensible_impl->temp_attrs, env, value);
     }
 
     return extensible_impl->temp_attrs;

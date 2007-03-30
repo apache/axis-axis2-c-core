@@ -17,7 +17,7 @@
 
 #include <w2c_cmdline_option_parser.h>
 #include <axis2_utils.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_hash.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_cmdline_option_consts.h>
@@ -72,14 +72,14 @@ w2c_validate_cmdline_options(w2c_cmdline_option_parser_t* cmd_opt_parser,
         const axis2_env_t*  env)
 {
     axis2_hash_t* h = NULL;
-    axis2_array_list_t* invalid_arr = NULL;
+    axutil_array_list_t* invalid_arr = NULL;
     w2c_cmdline_option_t* option = NULL;
     int size = 0;
     axis2_char_t* val = NULL;
 
     invalid_arr = W2C_CMDLINE_OPTION_PARSER_GET_INVALID_OPTIONS(cmd_opt_parser, env);
-    size  = axis2_array_list_size(invalid_arr, env);
-    axis2_array_list_free(invalid_arr, env);
+    size  = axutil_array_list_size(invalid_arr, env);
+    axutil_array_list_free(invalid_arr, env);
     if (size > 0)
     {
         w2c_print_usage(env);

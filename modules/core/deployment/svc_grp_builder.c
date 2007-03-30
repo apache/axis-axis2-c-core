@@ -177,7 +177,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *svc_grp_builder,
         {
             axis2_svc_t *axis_svc = NULL;
             axis2_arch_file_data_t *file_data = NULL;
-            axis2_array_list_t *deployable_svcs = NULL;
+            axutil_array_list_t *deployable_svcs = NULL;
             axis2_svc_builder_t *svc_builder = NULL;
 
             file_data = axis2_dep_engine_get_current_file_item(
@@ -198,7 +198,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *svc_grp_builder,
 
             deployable_svcs = axis2_arch_file_data_get_deployable_svcs(file_data,
                 env);
-            axis2_array_list_add(deployable_svcs, env, axis_svc);
+            axutil_array_list_add(deployable_svcs, env, axis_svc);
             axis2_svc_set_parent(axis_svc, env, svc_grp);
             svc_builder = axis2_svc_builder_create_with_dep_engine_and_svc(env,
                 axis2_desc_builder_get_dep_engine(svc_grp_builder->desc_builder, env), 

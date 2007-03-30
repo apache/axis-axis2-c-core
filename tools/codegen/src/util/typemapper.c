@@ -16,7 +16,7 @@
  */
  
 #include <w2c_typemapper.h>
-#include <axis2_array_list.h>
+#include <axutil_array_list.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
 #include <axiom_document.h>

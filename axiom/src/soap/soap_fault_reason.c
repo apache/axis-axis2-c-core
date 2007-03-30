@@ -27,7 +27,7 @@ struct axiom_soap_fault_reason
     /* corresponding om element node */
     axiom_node_t *om_ele_node;
 
-    axis2_array_list_t *fault_texts;
+    axutil_array_list_t *fault_texts;
     /* pointer to soap builder */
     axiom_soap_builder_t *soap_builder;
 
@@ -121,13 +121,13 @@ axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
     {
         int size = 0;
         int i    = 0;
-        size = axis2_array_list_size(fault_reason->fault_texts, env);
+        size = axutil_array_list_size(fault_reason->fault_texts, env);
 
         for (i = 0  ; i < size; i++)
         {
             axiom_soap_fault_text_t *fault_text = NULL;
             void *value = NULL;
-            value = axis2_array_list_get(fault_reason->fault_texts, env, i);
+            value = axutil_array_list_get(fault_reason->fault_texts, env, i);
             if (value)
             {
                 fault_text = (axiom_soap_fault_text_t *)value;
@@ -135,7 +135,7 @@ axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
                 fault_text = NULL;
             }
         }
-        axis2_array_list_free(fault_reason->fault_texts, env);
+        axutil_array_list_free(fault_reason->fault_texts, env);
         fault_reason->fault_texts = NULL;
     }
 
@@ -181,13 +181,13 @@ axiom_soap_fault_reason_get_soap_fault_text
         return NULL;
 
     /** iterate the array list */
-    size = axis2_array_list_size(fault_reason->fault_texts, env);
+    size = axutil_array_list_size(fault_reason->fault_texts, env);
     for (i = 0; i < size; i++)
     {
         axiom_soap_fault_text_t *fault_text = NULL;
         void *value = NULL;
 
-        value = axis2_array_list_get(fault_reason->fault_texts, env, i);
+        value = axutil_array_list_get(fault_reason->fault_texts, env, i);
         if (value)
         {
             axis2_char_t *fault_lang = NULL;
@@ -242,7 +242,7 @@ axiom_soap_fault_reason_set_builder(axiom_soap_fault_reason_t *fault_reason,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL
+AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
 axiom_soap_fault_reason_get_all_soap_fault_texts
 (axiom_soap_fault_reason_t *fault_reason,
         const axis2_env_t *env)
@@ -287,7 +287,7 @@ axiom_soap_fault_reason_get_first_soap_fault_text
     if (fault_reason->fault_texts)
     {
         void *value = NULL;
-        value = axis2_array_list_get(fault_reason->fault_texts, env, 0);
+        value = axutil_array_list_get(fault_reason->fault_texts, env, 0);
         if (value)
             return (axiom_soap_fault_text_t*)value;
     }
@@ -306,10 +306,10 @@ axiom_soap_fault_reason_add_soap_fault_text
 
     if (!(fault_reason->fault_texts))
     {
-        fault_reason->fault_texts = axis2_array_list_create(env, 1);
+        fault_reason->fault_texts = axutil_array_list_create(env, 1);
         if (!fault_reason->fault_texts)
             return AXIS2_FAILURE;
-        axis2_array_list_add(fault_reason->fault_texts, env, fault_text);
+        axutil_array_list_add(fault_reason->fault_texts, env, fault_text);
     }
     else
     {
@@ -323,7 +323,7 @@ axiom_soap_fault_reason_add_soap_fault_text
                 return AXIS2_FAILURE;
             /** this soap_fault text already exists */
         }
-        axis2_array_list_add(fault_reason->fault_texts, env, fault_text);
+        axutil_array_list_add(fault_reason->fault_texts, env, fault_text);
     }
     return AXIS2_SUCCESS;
 }
@@ -340,12 +340,12 @@ axiom_soap_fault_reason_lang_exists(axiom_soap_fault_reason_t *fault_reason,
     if (!lang || (axis2_strcmp(lang, "") == 0) || !fault_reason->fault_texts)
         return AXIS2_FALSE;
 
-    size = axis2_array_list_size(fault_reason->fault_texts, env);
+    size = axutil_array_list_size(fault_reason->fault_texts, env);
     for (i = 0; i < size; i++)
     {
         axiom_soap_fault_text_t *fault_text = NULL;
         void *value = NULL;
-        value = axis2_array_list_get(fault_reason->fault_texts, env, i);
+        value = axutil_array_list_get(fault_reason->fault_texts, env, i);
         if (value)
         {
             axis2_char_t *text_lang = NULL;

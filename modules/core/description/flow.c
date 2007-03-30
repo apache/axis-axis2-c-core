@@ -19,7 +19,7 @@
 
 struct axis2_flow
 {
-    axis2_array_list_t *list;
+    axutil_array_list_t *list;
 };
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
@@ -39,7 +39,7 @@ axis2_flow_create(const axis2_env_t *env)
 
     flow->list = NULL;
 
-    flow->list = axis2_array_list_create(env, 20);
+    flow->list = axutil_array_list_create(env, 20);
     if (!(flow->list))
     {
         axis2_flow_free(flow, env);
@@ -61,16 +61,16 @@ axis2_flow_free(axis2_flow_t *flow,
         int i = 0;
         int size = 0;
 
-        size = axis2_array_list_size(flow->list, env);
+        size = axutil_array_list_size(flow->list, env);
         for (i = 0; i < size; i++)
         {
             axis2_handler_desc_t *handler_desc = NULL;
 
             handler_desc = 
-			    (axis2_handler_desc_t *) axis2_array_list_get(flow->list, env, i);
+			    (axis2_handler_desc_t *) axutil_array_list_get(flow->list, env, i);
             axis2_handler_desc_free(handler_desc, env);
         }
-        axis2_array_list_free(flow->list, env);
+        axutil_array_list_free(flow->list, env);
     }
 
     if (flow)
@@ -103,7 +103,7 @@ axis2_flow_add_handler(axis2_flow_t *flow,
 
     if (!flow->list)
     {
-        flow->list = axis2_array_list_create(env, 0);
+        flow->list = axutil_array_list_create(env, 0);
         if (!flow->list)
         {
             axis2_flow_free(flow, env);
@@ -111,7 +111,7 @@ axis2_flow_add_handler(axis2_flow_t *flow,
             return AXIS2_FAILURE;
         }
     }
-    return axis2_array_list_add(flow->list, env, handler);
+    return axutil_array_list_add(flow->list, env, handler);
 }
 
 AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
@@ -119,13 +119,13 @@ axis2_flow_get_handler(const axis2_flow_t *flow,
     const axis2_env_t *env,
     const int index)
 {
-    return axis2_array_list_get(flow->list, env, index);
+    return axutil_array_list_get(flow->list, env, index);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_flow_get_handler_count(const axis2_flow_t *flow,
     const axis2_env_t *env)
 {
-    return axis2_array_list_size(flow->list, env);
+    return axutil_array_list_size(flow->list, env);
 }
 
