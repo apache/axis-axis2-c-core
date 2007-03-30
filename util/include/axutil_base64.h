@@ -19,8 +19,8 @@
  * @file axutil_base64.h
  * @brief AXIS2-UTIL Base64 Encoding
  */
-#ifndef AXIS2_BASE64_H
-#define AXIS2_BASE64_H
+#ifndef AXUTIL_BASE64_H
+#define AXUTIL_BASE64_H
 
 #ifdef __cplusplus
 extern "C" {

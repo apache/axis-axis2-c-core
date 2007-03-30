@@ -15,8 +15,8 @@
  * limitations under the License.
  */
  
-#ifndef AXIS2_CLASS_LOADER_H
-#define AXIS2_CLASS_LOADER_H
+#ifndef AXUTIL_CLASS_LOADER_H
+#define AXUTIL_CLASS_LOADER_H
 
 /**
   * @file axutil_class_loader.h

@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_ARRAY_LIST_H
-#define AXIS2_ARRAY_LIST_H
+#ifndef AXUTIL_ARRAY_LIST_H
+#define AXUTIL_ARRAY_LIST_H
 
 /**
  * @defgroup axutil_array_list array list

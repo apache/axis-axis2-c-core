@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_ALLOCATOR_H
-#define AXIS2_ALLOCATOR_H
+#ifndef AXUTIL_ALLOCATOR_H
+#define AXUTIL_ALLOCATOR_H
 
 /**
  * @file axutil_allocator.h
