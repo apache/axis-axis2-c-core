@@ -48,13 +48,13 @@ axis2_rand_with_range(unsigned int *seedp,
 AXIS2_EXTERN unsigned int AXIS2_CALL
 axis2_rand_get_seed_value_based_on_time(const axis2_env_t *env)
 {
-    axis2_date_time_t *date = axis2_date_time_create(env);
-    unsigned int rand_var =  axis2_date_time_get_year(date, env);
-    rand_var +=  axis2_date_time_get_month(date, env);
-    rand_var +=  axis2_date_time_get_date(date, env);
-    rand_var +=   axis2_date_time_get_hour(date, env);
-    rand_var +=  axis2_date_time_get_minute(date, env);
-    rand_var +=  axis2_date_time_get_second(date, env);
+    axutil_date_time_t *date = axutil_date_time_create(env);
+    unsigned int rand_var =  axutil_date_time_get_year(date, env);
+    rand_var +=  axutil_date_time_get_month(date, env);
+    rand_var +=  axutil_date_time_get_date(date, env);
+    rand_var +=   axutil_date_time_get_hour(date, env);
+    rand_var +=  axutil_date_time_get_minute(date, env);
+    rand_var +=  axutil_date_time_get_second(date, env);
     return rand_var;
 }
 

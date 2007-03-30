@@ -21,7 +21,7 @@
 #include <axutil_allocator.h>
 #include <axutil_array_list.h>
 #include <axutil_class_loader.h>
-#include <axis2_dir_handler.h>
+#include <axutil_dir_handler.h>
 #include <axis2_dll_desc.h>
 #include <axis2_env.h>
 #include <axis2_error.h>

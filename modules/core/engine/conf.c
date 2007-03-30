@@ -19,7 +19,7 @@
 #include <axis2_disp.h>
 #include "axis2_disp_checker.h"
 #include <axis2_conf.h>
-#include <axis2_dir_handler.h>
+#include <axutil_dir_handler.h>
 #include <axis2_dep_engine.h>
 #include <axis2_arch_reader.h>
 #include <axis2_core_utils.h>

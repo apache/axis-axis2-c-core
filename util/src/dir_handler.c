@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axis2_dir_handler.h>
+#include <axutil_dir_handler.h>
 #include <axis2_file.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_string.h>
@@ -36,7 +36,7 @@ int dir_select(struct dirent *entry);
  * @return array list of dll file names
  */
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
+axutil_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
         axis2_char_t *pathname)
 {
     axutil_array_list_t *file_list = NULL;
@@ -159,7 +159,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
  * @return array list of contents of services or modules folder
  */
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
+axutil_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
         axis2_char_t *pathname)
 {
     axutil_array_list_t *file_list = NULL;

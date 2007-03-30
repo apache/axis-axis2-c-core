@@ -30,8 +30,8 @@ int main(int argc, char** argv)
     axis2_echoDate_t* echo_in = NULL;
     axis2_echoDateResponse_t* echo_out = NULL;
 
-    axis2_date_time_t* echo_date = NULL;
-    axis2_date_time_t* return_echo_date = NULL;
+    axutil_date_time_t* echo_date = NULL;
+    axutil_date_time_t* return_echo_date = NULL;
 
     axis2_char_t* send_date_str = NULL;
     axis2_char_t* return_date_str = NULL;
@@ -51,8 +51,8 @@ int main(int argc, char** argv)
             client_home , endpoint_uri);
 
     /* create the struct */
-    echo_date = axis2_date_time_create(env); /* default to current date */
-    send_date_str =  axis2_date_time_seriasize_date_time(echo_date, env);
+    echo_date = axutil_date_time_create(env); /* default to current date */
+    send_date_str =  axutil_date_time_seriasize_date_time(echo_date, env);
     printf("sending date %s\n", send_date_str);
 
     /* create the input params using databinding */
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     /* return the output params using databinding */
     return_echo_date  = AXIS2_ECHODATERESPONSE_GET_ECHODATERETURN(echo_out, env);
 
-    return_date_str =  axis2_date_time_seriasize_date_time(return_echo_date, env);
+    return_date_str =  axutil_date_time_seriasize_date_time(return_echo_date, env);
     printf("returned date %s\n", return_date_str);
 
     return 0;

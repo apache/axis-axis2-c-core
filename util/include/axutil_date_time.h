@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_DATE_TIME_H
-#define AXIS2_DATE_TIME_H
+#ifndef AXUTIL_DATE_TIME_H
+#define AXUTIL_DATE_TIME_H
 
 #include <axis2_utils_defines.h>
 #include <axis2_env.h>
 
 /**
- * @file axis2_date_time.h
+ * @file axutil_date_time.h
  * @brief axis2-util
  */
 
@@ -32,12 +32,12 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axis2_date_time
+     * @defgroup axutil_date_time
      * @ingroup axis2_util
      * @{
      */
 
-    typedef struct axis2_date_time axis2_date_time_t;
+    typedef struct axutil_date_time axutil_date_time_t;
 
 
     typedef enum  {
@@ -46,36 +46,36 @@ extern "C"
         AXIS2_DATE_TIME_COMP_RES_EXPIRED,
         AXIS2_DATE_TIME_COMP_RES_EQUAL,
         AXIS2_DATE_TIME_COMP_RES_NOT_EXPIRED
-    }axis2_date_time_comp_result_t; 
+    }axutil_date_time_comp_result_t; 
 
     /**
-     * Creates axis2_date_time struct with current date time
+     * Creates axutil_date_time struct with current date time
      * @param env double pointer to environment struct. MUST NOT be NULL
-     * @return pointer to newly created axis2_date_time struct
+     * @return pointer to newly created axutil_date_time struct
      */
-    AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL
-    axis2_date_time_create(const axis2_env_t *env);
+    AXIS2_EXTERN axutil_date_time_t * AXIS2_CALL
+    axutil_date_time_create(const axis2_env_t *env);
 
     /*
-     * Creates axis2_date_time struct with an additional offset value
+     * Creates axutil_date_time struct with an additional offset value
      * If the offset is a positive value then the time will be in the future
      *        offset is 0, then the time will be the current time
      *        offset is a negative value then the time is in the past.
      * @param env double pointer to environment struct. MUST NOT be NULL
      * @param offset the offset from the current time in seconds
-     * @return pointer to newly created axis2_date_time struct
+     * @return pointer to newly created axutil_date_time struct
      **/
-    AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL
-    axis2_date_time_create_with_offset(const axis2_env_t *env, int offset);
+    AXIS2_EXTERN axutil_date_time_t * AXIS2_CALL
+    axutil_date_time_create_with_offset(const axis2_env_t *env, int offset);
 
     /**
-     * free the axis2_date_time.
+     * free the axutil_date_time.
      * @param date_time represet the type object
      * @param env pointer to environment struct. MUST NOT be NULL
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL 
-    axis2_date_time_free(axis2_date_time_t *date_time,
+    axutil_date_time_free(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -86,7 +86,7 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axis2_date_time_deserialize_time(axis2_date_time_t *date_time,
+    axutil_date_time_deserialize_time(axutil_date_time_t *date_time,
         const axis2_env_t *env,
         const axis2_char_t* time_str);
 
@@ -98,7 +98,7 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axis2_date_time_deserialize_date(axis2_date_time_t *date_time,
+    axutil_date_time_deserialize_date(axutil_date_time_t *date_time,
         const axis2_env_t *env,
         const axis2_char_t* date_str);
 
@@ -110,7 +110,7 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axis2_date_time_deserialize_date_time(axis2_date_time_t *date_time,
+    axutil_date_time_deserialize_date_time(axutil_date_time_t *date_time,
         const axis2_env_t *env,
         const axis2_char_t* date_time_str);
 
@@ -127,7 +127,7 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_date_time_set_date_time(axis2_date_time_t* date_time,
+    axutil_date_time_set_date_time(axutil_date_time_t* date_time,
         const axis2_env_t *env,
         int year, int month, int date,
         int hour, int min, int second, int milliseconds);
@@ -139,7 +139,7 @@ extern "C"
      * @return time as a string format HH:MM:SSZ
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
-    axis2_date_time_serialize_time(axis2_date_time_t *date_time,
+    axutil_date_time_serialize_time(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -149,7 +149,7 @@ extern "C"
      * @return date as a string  format YYYY-MM-DD
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
-    axis2_date_time_serialize_date(axis2_date_time_t *date_time,
+    axutil_date_time_serialize_date(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -159,7 +159,7 @@ extern "C"
      * @return time as a string format YYYY-MM-DDTHH:MM:SSZ
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
-    axis2_date_time_serialize_date_time(axis2_date_time_t *date_time,
+    axutil_date_time_serialize_date_time(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -169,7 +169,7 @@ extern "C"
      * @return year as an integer 
      */
     AXIS2_EXTERN int AXIS2_CALL 
-    axis2_date_time_get_year(axis2_date_time_t *date_time,
+    axutil_date_time_get_year(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -179,7 +179,7 @@ extern "C"
      * @return month as an integer 
      */
     AXIS2_EXTERN int AXIS2_CALL 
-    axis2_date_time_get_month(axis2_date_time_t *date_time,
+    axutil_date_time_get_month(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -189,7 +189,7 @@ extern "C"
      * @return date as an integer 
      */
     AXIS2_EXTERN int AXIS2_CALL 
-    axis2_date_time_get_date(axis2_date_time_t *date_time,
+    axutil_date_time_get_date(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -199,7 +199,7 @@ extern "C"
      * @return hour as an integer 
      */
     AXIS2_EXTERN int AXIS2_CALL 
-    axis2_date_time_get_hour(axis2_date_time_t *date_time,
+    axutil_date_time_get_hour(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -209,7 +209,7 @@ extern "C"
      * @return minute as an integer 
      */
     AXIS2_EXTERN int AXIS2_CALL 
-    axis2_date_time_get_minute(axis2_date_time_t *date_time,
+    axutil_date_time_get_minute(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     /**
@@ -219,11 +219,11 @@ extern "C"
      * @return second as an integer 
      */
     AXIS2_EXTERN int AXIS2_CALL 
-    axis2_date_time_get_second(axis2_date_time_t *date_time,
+    axutil_date_time_get_second(axutil_date_time_t *date_time,
         const axis2_env_t *env);
 
     AXIS2_EXTERN int AXIS2_CALL 
-    axis2_date_time_get_msec(axis2_date_time_t *date_time,
+    axutil_date_time_get_msec(axutil_date_time_t *date_time,
         const axis2_env_t *env);
     /**
      * Compare the date and time of @date_time with the reference @ref.
@@ -235,9 +235,9 @@ extern "C"
      * @ref the reference date time
      * @return NOT_EXPIRED/EXPIRED/EQUAL if valid otherwise return FAILURE
      */
-    AXIS2_EXTERN axis2_date_time_comp_result_t AXIS2_CALL
-    axis2_date_time_compare(axis2_date_time_t *date_time,   
-        const axis2_env_t *env, axis2_date_time_t *ref);
+    AXIS2_EXTERN axutil_date_time_comp_result_t AXIS2_CALL
+    axutil_date_time_compare(axutil_date_time_t *date_time,   
+        const axis2_env_t *env, axutil_date_time_t *ref);
 
 #ifdef __cplusplus
 }

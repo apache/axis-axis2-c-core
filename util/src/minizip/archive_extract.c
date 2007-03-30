@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axis2_dir_handler.h>
+#include <axutil_dir_handler.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_string.h>
 #include <zlib.h>

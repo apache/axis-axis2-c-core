@@ -71,12 +71,12 @@ axis2_echoDateResponse_t*axis2_InteropTestPortTypeDocService_echoDate(const axis
     axis2_echoDate_t* echo_in =  param4;
     axis2_echoDateResponse_t* echo_out = NULL;
 
-    axis2_date_time_t* echo_date = NULL;
+    axutil_date_time_t* echo_date = NULL;
     axis2_char_t* recieved_date_str  = NULL;
 
     echo_date = AXIS2_ECHODATE_GET_ARG_0_10(echo_in, env);
 
-    recieved_date_str =  axis2_date_time_seriasize_date_time(echo_date, env);
+    recieved_date_str =  axutil_date_time_seriasize_date_time(echo_date, env);
     printf("echoing date %s\n", recieved_date_str);
 
     echo_out = axis2_echoDateResponse_create(env);

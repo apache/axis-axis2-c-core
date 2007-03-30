@@ -31,7 +31,7 @@
 #include <axis2_qname.h>
 #include <axis2_conf.h>
 #include <axutil_array_list.h>
-#include <axis2_dir_handler.h>
+#include <axutil_dir_handler.h>
 #include <axis2_file.h>
 
 #ifdef __cplusplus

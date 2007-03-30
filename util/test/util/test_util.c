@@ -24,7 +24,7 @@
 #include <axis2_uuid_gen.h>
 #include <axis2_log_default.h>
 #include <axis2_log.h>
-#include <axis2_dir_handler.h>
+#include <axutil_dir_handler.h>
 #include <axis2_file.h>
 #include "axis2_log.h"
 #include "test_thread.h"
@@ -107,7 +107,7 @@ int test_hash_get(const axis2_env_t *env)
     return 0;
 }
 
-void test_axis2_dir_handler_list_service_or_module_dirs()
+void test_axutil_dir_handler_list_service_or_module_dirs()
 {
     int i, isize;
     axis2_file_t *file = NULL;
@@ -118,7 +118,7 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
 
     axis2_char_t *pathname = axis2_strdup(env, "/tmp/test/");
 
-    axutil_array_list_t *arr_folders = axis2_dir_handler_list_service_or_module_dirs(env, pathname);
+    axutil_array_list_t *arr_folders = axutil_dir_handler_list_service_or_module_dirs(env, pathname);
     if (arr_folders == NULL)
     {
         printf("List of folders is NULL\n");
@@ -135,7 +135,7 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
         filename =  axis2_file_get_name(file, env);
         printf("filename = %s \n", filename);
     }
-    printf("----end of test_axis2_dir_handler_list_service_or_module_dirs----\n");
+    printf("----end of test_axutil_dir_handler_list_service_or_module_dirs----\n");
 
 }
 
@@ -263,7 +263,7 @@ int main(void)
     test_array_list(env);
     test_uuid_gen(env);
     run_test_log();
-    test_axis2_dir_handler_list_service_or_module_dirs();
+    test_axutil_dir_handler_list_service_or_module_dirs();
     axutil_allocator_t *allocator = env->allocator;
 /*    axis2_env_free(env);*/
     axutil_allocator_free(allocator);

@@ -17,7 +17,7 @@
 
 #include <axis2_repos_listener.h>
 #include <axis2_ws_info_list.h>
-#include <axis2_dir_handler.h>
+#include <axutil_dir_handler.h>
 
 struct axis2_repos_listener
 {
@@ -226,7 +226,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, folder_name, AXIS2_FAILURE);
 
-    current_info_list = axis2_dir_handler_list_service_or_module_dirs(env,
+    current_info_list = axutil_dir_handler_list_service_or_module_dirs(env,
         folder_name);
     if (!current_info_list)
     {
