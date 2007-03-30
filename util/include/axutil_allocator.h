@@ -19,7 +19,7 @@
 #define AXIS2_ALLOCATOR_H
 
 /**
- * @file axis2_allocator.h
+ * @file axutil_allocator.h
  * @brief Axis2 memory allocator interface
  */
 
@@ -31,7 +31,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_allocator allocator
+ * @defgroup axutil_allocator allocator
  * @ingroup axis2_util 
 
  * @{
@@ -44,7 +44,7 @@ extern "C"
   *
   * Encapsulator for memory allocating routines
   */
-    typedef struct axis2_allocator
+    typedef struct axutil_allocator
     {
       /**
         * allocates memory
@@ -54,7 +54,7 @@ extern "C"
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-         void * (AXIS2_CALL *malloc_fn) (struct axis2_allocator *allocator, size_t size);
+         void * (AXIS2_CALL *malloc_fn) (struct axutil_allocator *allocator, size_t size);
       /**
         * re-llocates memory
         * @param allocator pointer to allocator struct. In the default 
@@ -64,7 +64,7 @@ extern "C"
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-         void * (AXIS2_CALL *realloc) (struct axis2_allocator *allocator, void *ptr, size_t size);
+         void * (AXIS2_CALL *realloc) (struct axutil_allocator *allocator, void *ptr, size_t size);
       /**
         * frees memory
         * @param allocator pointer to allocator struct. In the default 
@@ -72,30 +72,30 @@ extern "C"
         * when the allocator implementation is dealing with a memory pool.
         * @param ptr pointer to be freed
         */
-         void (AXIS2_CALL *free_fn) (struct axis2_allocator *allocator, void *ptr);
+         void (AXIS2_CALL *free_fn) (struct axutil_allocator *allocator, void *ptr);
         /** local memory pool */
          void *local_pool;
         /** global memory pool */
          void *global_pool;
          /** memory pool in use currently */
          void *current_pool;
-    } axis2_allocator_t;
+    } axutil_allocator_t;
 
   /**
     * Initializes (creates) an allocator.
     * @param allocator user defined allcator. Optional, can be NULL. If NULL, a default allocator will be returned.
     * @return initialized allocator. NULL on error.
     */
-    AXIS2_EXTERN axis2_allocator_t * AXIS2_CALL 
-    axis2_allocator_init (axis2_allocator_t *allocator);
+    AXIS2_EXTERN axutil_allocator_t * AXIS2_CALL 
+    axutil_allocator_init (axutil_allocator_t *allocator);
 
   /** 
     * This function should be used to deallocate memory if the default allocator provided by
-    * axis2_allocator_init() 
+    * axutil_allocator_init() 
     * @param allocator 
     */
     AXIS2_EXTERN void AXIS2_CALL 
-    axis2_allocator_free(axis2_allocator_t *allocator);
+    axutil_allocator_free(axutil_allocator_t *allocator);
 
   /** 
     * Swaps the local_pool and global_pool values. 
@@ -106,18 +106,18 @@ extern "C"
     * @param allocator allocator whose memory pools are to be switched
     */
     AXIS2_EXTERN void AXIS2_CALL 
-    axis2_allocator_switch_to_global_pool(axis2_allocator_t *allocator);
+    axutil_allocator_switch_to_global_pool(axutil_allocator_t *allocator);
 
   /** 
     * Swaps the local_pool and global_pool values. 
     * In case of using pools, local_pool is suppoed to hold the pool out of which
     * local values are allocated. In case of values that live beyond a request 
     * globle pool should be used. This method can be used to inverse the switching 
-    * done by axis2_allocator_switch_to_global_pool, to start using the local pool again.
+    * done by axutil_allocator_switch_to_global_pool, to start using the local pool again.
     * @param allocator allocator whose memory pools are to be switched
     */
     AXIS2_EXTERN void AXIS2_CALL 
-    axis2_allocator_switch_to_local_pool(axis2_allocator_t *allocator);
+    axutil_allocator_switch_to_local_pool(axutil_allocator_t *allocator);
 
 #define AXIS2_MALLOC(allocator, size) \
       ((allocator)->malloc_fn(allocator, size))

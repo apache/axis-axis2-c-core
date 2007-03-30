@@ -18,7 +18,7 @@
 #ifndef AXIS2_LOG_H
 #define AXIS2_LOG_H
 
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -82,7 +82,7 @@ extern "C"
          */
 
         void(AXIS2_CALL *
-        free)(axis2_allocator_t *allocator,
+        free)(axutil_allocator_t *allocator,
             struct axis2_log *log);
 
         /**
@@ -150,7 +150,7 @@ extern "C"
             const axis2_char_t *format, ...);
 
     AXIS2_EXTERN void AXIS2_CALL 
-    axis2_log_free(axis2_allocator_t *allocator,
+    axis2_log_free(axutil_allocator_t *allocator,
         struct axis2_log *log);
 
     AXIS2_EXTERN void AXIS2_CALL

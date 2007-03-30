@@ -19,7 +19,7 @@
 #define AXIS2_ERROR_DEFAULT_H
 
 #include <axis2_utils_defines.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_error.h>
 
 #ifdef __cplusplus
@@ -39,7 +39,7 @@ extern "C"
     * @param allocator allocator to be used. Mandatory, cannot be NULL    
     * @return pointer to the newly created error struct 
     */
-    AXIS2_EXTERN axis2_error_t *AXIS2_CALL axis2_error_create (axis2_allocator_t * allocator);
+    AXIS2_EXTERN axis2_error_t *AXIS2_CALL axis2_error_create (axutil_allocator_t * allocator);
 
 
 /** @} */

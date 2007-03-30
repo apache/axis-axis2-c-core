@@ -24,7 +24,7 @@
   * @brief axis2 thread api
   */
 
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_utils_defines.h>
 #include <axis2_error.h>
 
@@ -72,7 +72,7 @@ extern "C"
      * @return Newly created thread attribute
      */
     AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
-    axis2_threadattr_create(axis2_allocator_t *allocator);
+    axis2_threadattr_create(axutil_allocator_t *allocator);
 
     /**
      * Set if newly created threads should be created in detached state.
@@ -92,7 +92,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_threadattr_is_detach(axis2_threadattr_t *attr, 
-        axis2_allocator_t *allocator);
+        axutil_allocator_t *allocator);
 
 
     /**
@@ -104,7 +104,7 @@ extern "C"
      * @return The newly created thread handle.
      */
     AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
-    axis2_thread_create(axis2_allocator_t *allocator, 
+    axis2_thread_create(axutil_allocator_t *allocator, 
         axis2_threadattr_t *attr,
         axis2_thread_start_t func, void *data);
 
@@ -115,7 +115,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_thread_exit(axis2_thread_t *thd, 
-        axis2_allocator_t *allocator);
+        axutil_allocator_t *allocator);
 
     /**
      * Block until the desired thread stops executing.
@@ -137,7 +137,7 @@ extern "C"
      * @return The status of the operation
      */
     AXIS2_EXTERN axis2_thread_once_t* AXIS2_CALL
-    axis2_thread_once_init(axis2_allocator_t *allocator);
+    axis2_thread_once_init(axutil_allocator_t *allocator);
 
     /**
      * Run the specified function one time, regardless of how many threads
@@ -178,7 +178,7 @@ extern "C"
      * it will behave as either a nested or an unnested lock.
      */
     AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL
-    axis2_thread_mutex_create(axis2_allocator_t *allocator, 
+    axis2_thread_mutex_create(axutil_allocator_t *allocator, 
         unsigned int flags);
     /**
      * Acquire the lock for the given mutex. If the mutex is already locked,

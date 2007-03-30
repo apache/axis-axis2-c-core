@@ -19,7 +19,7 @@
 #define AXIS2_ERROR_H
 
 #include <axis2_utils_defines.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -615,7 +615,7 @@ extern "C"
     typedef struct axis2_error
     {
         /** error related ops */
-        axis2_allocator_t *allocator;
+        axutil_allocator_t *allocator;
         /** last error number */
         int error_number;
         int status_code;

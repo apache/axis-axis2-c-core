@@ -24,7 +24,7 @@
  *  allocator routines
  */
 
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_error.h>
 #include <axis2_log.h>
 #include <axis2_thread_pool.h>
@@ -59,7 +59,7 @@ extern "C"
     typedef struct axis2_env
     {
         /** Memory allocation routines */
-        axis2_allocator_t *allocator;
+        axutil_allocator_t *allocator;
         /** Error handling */
         axis2_error_t *error;
         /** Logging routines */
@@ -89,7 +89,7 @@ extern "C"
      * @return pointer to the newly created environment struct 
      */
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL 
-    axis2_env_create(axis2_allocator_t *allocator);
+    axis2_env_create(axutil_allocator_t *allocator);
 
     /**
       * Creates an environment struct
@@ -99,7 +99,7 @@ extern "C"
       * @return pointer to the newly created environment struct 
       */
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL 
-    axis2_env_create_with_error(axis2_allocator_t *allocator, 
+    axis2_env_create_with_error(axutil_allocator_t *allocator, 
         axis2_error_t *error);
 
     /**
@@ -111,7 +111,7 @@ extern "C"
      * @return pointer to the newly created environment struct 
      */
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL 
-    axis2_env_create_with_error_log(axis2_allocator_t *allocator, 
+    axis2_env_create_with_error_log(axutil_allocator_t *allocator, 
         axis2_error_t *error, 
         axis2_log_t *log);
 
@@ -125,7 +125,7 @@ extern "C"
     * @return pointer to the newly created environment struct 
     */
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL 
-    axis2_env_create_with_error_log_thread_pool(axis2_allocator_t *allocator, 
+    axis2_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
         axis2_error_t *error, 
         axis2_log_t *log, 
         axis2_thread_pool_t *pool);

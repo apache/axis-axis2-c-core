@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils_defines.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_thread.h>
 
 #ifdef __cplusplus
@@ -91,7 +91,7 @@ extern "C"
     * @return initialized thread_pool. NULL on error.
     */
     AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL 
-    axis2_thread_pool_init(axis2_allocator_t *allocator);
+    axis2_thread_pool_init(axutil_allocator_t *allocator);
 
     /**
      * This function can be used to initialize the environment in case of

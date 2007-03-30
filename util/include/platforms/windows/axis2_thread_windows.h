@@ -52,7 +52,7 @@ struct axis2_thread_once_t
 };
 
 AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
-axis2_threadattr_create(axis2_allocator_t *allocator);
+axis2_threadattr_create(axutil_allocator_t *allocator);
 
 /* Destroy the threadattr object */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -70,11 +70,11 @@ axis2_threadattr_stacksize_set(axis2_threadattr_t *attr, size_t stacksize);
 
 
 AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
-axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
+axis2_thread_create(axutil_allocator_t *allocator, axis2_threadattr_t *attr,
         axis2_thread_start_t func, void *data);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator);
+axis2_thread_exit(axis2_thread_t *thd, axutil_allocator_t *allocator);
 
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
 axis2_os_thread_current(void);
@@ -92,7 +92,7 @@ AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
 axis2_os_thread_get(axis2_thread_t *thd, const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_thread_once_t * AXIS2_CALL
-axis2_thread_once_init(axis2_allocator_t *allocator);
+axis2_thread_once_init(axutil_allocator_t *allocator);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_once(axis2_thread_once_t *control, void(*func)(void));

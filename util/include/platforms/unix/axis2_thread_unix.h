@@ -45,7 +45,7 @@ struct axis2_thread_once_t {
 
 /*************************Thread locking functions*****************************/
 struct axis2_thread_mutex_t {
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     pthread_mutex_t mutex;
 };
 

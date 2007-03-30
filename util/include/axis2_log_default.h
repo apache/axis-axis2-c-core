@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <axis2_log.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 
 
 #ifdef __cplusplus
@@ -44,12 +44,12 @@ extern "C"
     * @param allocator allocator to be used. Mandatory, cannot be NULL    
     * @return pointer to the newly created log struct 
     */
-    AXIS2_EXTERN axis2_log_t * AXIS2_CALL axis2_log_create (axis2_allocator_t * allocator,
+    AXIS2_EXTERN axis2_log_t * AXIS2_CALL axis2_log_create (axutil_allocator_t * allocator,
                      axis2_log_ops_t * ops, const axis2_char_t * stream_name);
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL  axis2_log_impl_get_time_str(void);
     
     AXIS2_EXTERN axis2_log_t * AXIS2_CALL 
-    axis2_log_create_default (axis2_allocator_t *allocator);
+    axis2_log_create_default (axutil_allocator_t *allocator);
 
 /** @} */
     
