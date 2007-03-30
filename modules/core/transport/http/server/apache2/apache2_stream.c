@@ -80,9 +80,9 @@ axis2_stream_create_apache2(
     stream_impl->request = request;
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
 
-    axis2_stream_set_read(stream_impl, env, apache2_stream_read);
-    axis2_stream_set_write(stream_impl, env, apache2_stream_write);
-    axis2_stream_set_skip(stream_impl, env, apache2_stream_skip);
+    axis2_stream_set_read(&(stream_impl->stream), env, apache2_stream_read);
+    axis2_stream_set_write(&(stream_impl->stream), env, apache2_stream_write);
+    axis2_stream_set_skip(&(stream_impl->stream), env, apache2_stream_skip);
 
     return &(stream_impl->stream);
 }
