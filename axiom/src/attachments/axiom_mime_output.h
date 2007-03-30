@@ -40,7 +40,6 @@ extern "C"
 /* This should be moved to header file later axis2_utils_defines.h*/    
 #define axis2_byte_t char
    
-typedef struct axiom_mime_output_ops axiom_mime_output_ops_t;
 typedef struct axiom_mime_output axiom_mime_output_t;   
    
 
@@ -49,27 +48,20 @@ typedef struct axiom_mime_output axiom_mime_output_t;
   * @{
   */
 
-/** 
- * @brief Flow ops struct
- * Encapsulator struct for ops of axiom_mime_output
- */
-struct axiom_mime_output_ops
-{
+    AXIS2_EXTERN axis2_byte_t* AXIS2_CALL
+    axiom_mime_output_complete(axiom_mime_output_t *mime_output,
+        const axis2_env_t *env, 
+        axis2_byte_t **output_stream,
+        int *output_stream_size,
+        axis2_char_t *soap_body_buffer,
+        axis2_array_list_t *binary_node_list,
+        axis2_char_t *boundary, 
+        axis2_char_t *content_id,
+        axis2_char_t *char_set_encoding,
+        const axis2_char_t *soap_content_type);
 
-    axis2_byte_t* (AXIS2_CALL *complete)(axiom_mime_output_t *mime_output,
-                            const axis2_env_t *env, 
-                            axis2_byte_t **output_stream,
-                     int *output_stream_size,
-                            axis2_char_t *soap_body_buffer,
-                            axis2_array_list_t *binary_node_list,
-                            axis2_char_t *boundary, 
-                            axis2_char_t *content_id,
-                            axis2_char_t *char_set_encoding,
-                            const axis2_char_t *soap_content_type);
-
-    const axis2_char_t *(AXIS2_CALL *
-    get_content_type_for_mime)(
-        axiom_mime_output_t *mime_output, 
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output, 
         const axis2_env_t *env, 
         axis2_char_t *boundary, 
         axis2_char_t *content_id, 
@@ -79,43 +71,24 @@ struct axiom_mime_output_ops
    /** Deallocate memory
      * @return status code
      */
-    void (AXIS2_CALL *free) (axiom_mime_output_t *mime_output,
-                            const axis2_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_output_free(axiom_mime_output_t *mime_output,
+        const axis2_env_t *env);
 
-};
+    /**
+     * Creates mime_output struct
+     * @return pointer to newly created mime_output
+     */
+    AXIS2_EXTERN axiom_mime_output_t * AXIS2_CALL 
+    axiom_mime_output_create (const axis2_env_t *env);
 
-/** 
- * @brief Flow struct
- *   Flow  
- */ 
-struct axiom_mime_output
-{
-   axiom_mime_output_ops_t *ops;
-};
-
-/**
- * Creates mime_output struct
- * @return pointer to newly created mime_output
- */
-AXIS2_EXTERN axiom_mime_output_t * AXIS2_CALL 
-axiom_mime_output_create (const axis2_env_t *env);
-
-AXIS2_EXTERN const axis2_char_t * AXIS2_CALL
-axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output,
-        const axis2_env_t *env,
-        axis2_char_t *boundary,
-        axis2_char_t *content_id,
-        axis2_char_t *char_set_encoding,
-        const axis2_char_t *soap_content_type);
-
-
-#define AXIOM_MIME_OUTPUT_FREE(mime_output, env) ((mime_output)->ops->free (mime_output, env))
+#define AXIOM_MIME_OUTPUT_FREE(mime_output, env) axiom_mime_output_free (mime_output, env)
 
 #define AXIOM_MIME_OUTPUT_COMPLETE(mime_output, env, output_stream, output_stream_size, soap_body_buffer, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type) \
-((mime_output)->ops->complete(mime_output, env, output_stream, output_stream_size, soap_body_buffer, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type))
+axiom_mime_output_complete(mime_output, env, output_stream, output_stream_size, soap_body_buffer, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type)
 
 #define AXIOM_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type) \
-((mime_output)->ops->get_content_type_for_mime(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type))
+axiom_mime_output_get_content_type_for_mime(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type)
 
 /** @} */
 
