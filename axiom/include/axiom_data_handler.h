@@ -44,78 +44,45 @@ extern "C"
     }axiom_data_handler_type_t;
 
 
-    /* This should be moved to header file later axis2_defines.h*/
-#define axis2_byte_t char
-
-    typedef struct axiom_data_handler_ops axiom_data_handler_ops_t;
     typedef struct axiom_data_handler axiom_data_handler_t;
-
-    /*
-          private final DataSource ds;
-          private final DataFlavor flavor;
-          private CommandMap commandMap;
-          private DataContentHandler dch;
-    */
 
     /** @defgroup axiom_data_handler Flow
       * @ingroup axiom_data_handler
       * @{
       */
 
-    /**
-     * @brief Flow ops struct
-     * Encapsulator struct for ops of axiom_data_handler
-     */
-    struct axiom_data_handler_ops
-    {
-        axis2_char_t *(AXIS2_CALL *
-                get_content_type)(axiom_data_handler_t *data_handler,
-                        const axis2_env_t *env);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_data_handler_get_content_type(axiom_data_handler_t *data_handler,
+        const axis2_env_t *env);
 
-        axis2_byte_t*(AXIS2_CALL *
-                get_input_stream)(axiom_data_handler_t *data_handler,
-                        const axis2_env_t *env);
+    AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
+    axiom_data_handler_get_input_stream(axiom_data_handler_t *data_handler,
+        const axis2_env_t *env);
 
-        axis2_status_t(AXIS2_CALL *
-                read_from)(axiom_data_handler_t *data_handler,
-                        const axis2_env_t *env,
-                        axis2_byte_t** output_stream,
-                        int *output_stream_size);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
+        const axis2_env_t *env,
+        axis2_byte_t** output_stream,
+        int *output_stream_size);
 
-        axis2_status_t(AXIS2_CALL *
-                set_binary_data)(axiom_data_handler_t *data_handler,
-                        const axis2_env_t *env,
-                        axis2_byte_t* input_stream,
-                        int input_stream_len);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_handler_set_binary_data(axiom_data_handler_t *data_handler,
+        const axis2_env_t *env,
+        axis2_byte_t* input_stream,
+        int input_stream_len);
 
-        axis2_status_t(AXIS2_CALL *
-                write_to)(axiom_data_handler_t *data_handler,
-                        const axis2_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_handler_write_to(axiom_data_handler_t *data_handler,
+        const axis2_env_t *env);
 
-        axis2_status_t(AXIS2_CALL *
-                set_file_name)(
-                    axiom_data_handler_t *data_handler,
-                    const axis2_env_t *env,
-                    axis2_char_t* file_name);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_data_handler_set_file_name(axiom_data_handler_t *data_handler,
+        const axis2_env_t *env,
+        axis2_char_t* file_name);
 
-        void (AXIS2_CALL *
-                free)(axiom_data_handler_t *data_handler,
-                        const axis2_env_t *env);
-    };
-
-    /**
-     * @brief Flow struct
-     *   Flow
-     */
-    struct axiom_data_handler
-    {
-        axiom_data_handler_ops_t *ops;
-
-        /*
-         axis2_char_t type;
-         *void handler;   
-        */
-    };
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_data_handler_free(axiom_data_handler_t *data_handler,
+        const axis2_env_t *env);
 
     /**
      * Creates data_handler struct
@@ -127,27 +94,25 @@ extern "C"
         const axis2_char_t *mime_type);
 
 #define AXIOM_DATA_HANDLER_FREE(data_handler, env) \
-    ((data_handler)->ops->free (data_handler, env))
+    axiom_data_handler_free (data_handler, env)
 
 #define AXIOM_DATA_HANDLER_GET_CONTENT_TYPE(data_handler, env) \
-    ((data_handler)->ops->get_content_type (data_handler, env))
+    axiom_data_handler_get_content_type (data_handler, env)
 
 #define AXIOM_DATA_HANDLER_GET_INPUT_STREAM(data_handler, env) \
-    ((data_handler)->ops->get_input_stream (data_handler, env))
+    axiom_data_handler_get_input_stream (data_handler, env)
 
 #define AXIOM_DATA_HANDLER_READ_FROM(data_handler, env, output_stream, output_stream_size) \
-    ((data_handler)->ops->read_from (data_handler, env, output_stream, output_stream_size))
+    axiom_data_handler_read_from (data_handler, env, output_stream, output_stream_size)
 
 #define AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env, input_stream, input_stream_size) \
-    ((data_handler)->ops->set_binary_data (data_handler, env, input_stream, input_stream_size))
+    axiom_data_handler_set_binary_data (data_handler, env, input_stream, input_stream_size)
 
 #define AXIOM_DATA_HANDLER_WRITE_TO(data_handler, env) \
-    ((data_handler)->ops->write_to (data_handler, env))
+    axiom_data_handler_write_to (data_handler, env)
 
 #define AXIOM_DATA_HANDLER_SET_FILE_NAME(data_handler, env, file_name) \
-    ((data_handler)->ops->set_file_name (data_handler, env, file_name))
-
-    /*************************** End of function macros ***************************/
+    axiom_data_handler_set_file_name (data_handler, env, file_name)
 
     /** @} */
 
