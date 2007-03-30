@@ -38,7 +38,7 @@ a;
 
 const axis2_env_t *test_init()
 {
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axis2_error_t *error = axis2_error_create(allocator);
     const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
     return env;
@@ -112,7 +112,7 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
     int i, isize;
     axis2_file_t *file = NULL;
     axis2_char_t *filename = NULL;
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axis2_error_t *error = axis2_error_create(allocator);
     const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
 
@@ -217,7 +217,7 @@ void test_log_write()
 {
     char msg[10];
     printf("start of test_log_write\n\n");
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     if (!allocator)
     {
         printf("allocator is NULL\n");
@@ -264,9 +264,9 @@ int main(void)
     test_uuid_gen(env);
     run_test_log();
     test_axis2_dir_handler_list_service_or_module_dirs();
-    axis2_allocator_t *allocator = env->allocator;
+    axutil_allocator_t *allocator = env->allocator;
 /*    axis2_env_free(env);*/
-    axis2_allocator_free(allocator);
+    axutil_allocator_free(allocator);
     run_test_string(env);
     return 0;
 }

@@ -37,7 +37,7 @@ static const axis2_char_t* w2c_config_test_input1[] =
 void test_writer(CuTest *tc)
 {
     axis2_env_t *env;
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     axis2_char_t* testing_lang = NULL;
     w2c_writer_t* writer = NULL;
     w2c_config_property_loader_t* loader = NULL;
@@ -53,7 +53,7 @@ void test_writer(CuTest *tc)
 
     int input_size = 0;
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
     axis2c_home = getenv("AXIS2C_HOME");

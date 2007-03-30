@@ -42,9 +42,9 @@ w2c_schema_compile( const axis2_env_t *env, axis2_char_t *schema_name,
 int main(int argc, char **argv )
 {
     axis2_env_t *env = NULL;
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
     if ( argc == 4 )

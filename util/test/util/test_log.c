@@ -19,12 +19,12 @@
 #include <axis2_error_default.h>
 #include <axis2_log.h>
 #include <axis2_log_default.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <test_log.h>
 #include <string.h>
 const axis2_env_t *create_env_with_error_log()
 {
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     if (!allocator)
     {
         printf("allocator is NULL\n");

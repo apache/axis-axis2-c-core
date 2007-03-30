@@ -219,7 +219,7 @@ axiom_xml_writer_create(const axis2_env_t *env,
 {
     guththila_xml_writer_wrapper_impl_t *writer_impl;
 
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = (guththila_xml_writer_wrapper_impl_t *)AXIS2_MALLOC(env->allocator,
@@ -231,7 +231,7 @@ axiom_xml_writer_create(const axis2_env_t *env,
         return NULL;
     }
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     writer_impl->parser = guththila_create((axis2_env_t *)env, NULL);
 
     if (!(writer_impl->parser))

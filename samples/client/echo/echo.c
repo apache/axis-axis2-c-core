@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     axiom_node_t *ret_node = NULL;
     axiom_node_t *payload2 = NULL;
     axiom_node_t *ret_node2 = NULL;
-    /*axis2_allocator_t *allocator = NULL;*/
+    /*axutil_allocator_t *allocator = NULL;*/
 
     /* Set up the environment */
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);

@@ -18,7 +18,7 @@
 #include <axis2_const.h>
 #include <axis2_env.h>
 #include <axis2_engine.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_svc_client.h>
 #include <axis2_options.h>
 #include <platforms/axis2_platform_auto_sense.h>
@@ -38,7 +38,7 @@ void axis2_test_svc_client_blocking()
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
 
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
     axiom_element_t *result_ele = NULL;
     const axis2_char_t* echo_text = "echo_text";

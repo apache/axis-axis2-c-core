@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <axis2_string_util.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <limits.h>
 #include <axis2_string.h>
 #include <axiom_util.h>

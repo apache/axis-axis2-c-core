@@ -48,11 +48,11 @@ int main(int argc, char** argv)
     axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     axis2_char_t *wsdl_uri_str = NULL;
 
     /* set up the envioronment with allocator and log*/
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL, "addr_echo.log");
     env = axis2_env_create_with_error_log(allocator, error, log);

@@ -21,7 +21,7 @@
 DWORD tls_axis2_thread = 0;
 
 AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
-axis2_threadattr_create(axis2_allocator_t *allocator)
+axis2_threadattr_create(axutil_allocator_t *allocator)
 {
     axis2_threadattr_t *new = NULL;
 
@@ -79,7 +79,7 @@ static void *dummy_worker(void *opaque)
 }
 
 AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
-axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
+axis2_thread_create(axutil_allocator_t *allocator, axis2_threadattr_t *attr,
         axis2_thread_start_t func, void *data)
 {
     HANDLE           handle;
@@ -120,7 +120,7 @@ axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator)
+axis2_thread_exit(axis2_thread_t *thd, axutil_allocator_t *allocator)
 {
     if (thd)
     {
@@ -204,7 +204,7 @@ axis2_os_thread_get(axis2_thread_t *thd, const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_thread_once_t * AXIS2_CALL
-axis2_thread_once_init(axis2_allocator_t *allocator)
+axis2_thread_once_init(axutil_allocator_t *allocator)
 {
     axis2_thread_once_t *control = NULL;
     control = AXIS2_MALLOC(allocator, sizeof(*control));

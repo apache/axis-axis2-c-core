@@ -33,7 +33,7 @@
    for both functions
 */
 
-axis2_allocator_t *allocator = NULL;
+axutil_allocator_t *allocator = NULL;
 axis2_env_t *environment = NULL;
 axis2_stream_t *stream = NULL;
 axis2_error_t *error = NULL;
@@ -305,7 +305,7 @@ main(int argc, char *argv[])
     const char *file_name = "../../resources/xml/om/test.xml";
     if (argc > 1)
         file_name = argv[1];
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     axis_log = axis2_log_create(allocator, NULL, NULL);
     error = axis2_error_create(allocator);
 

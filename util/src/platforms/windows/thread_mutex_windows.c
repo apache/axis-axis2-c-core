@@ -22,7 +22,7 @@
 static axis2_status_t thread_mutex_cleanup(void *data)
 {
     axis2_thread_mutex_t *lock = NULL;
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     if (!data)
         return AXIS2_FAILURE;
 
@@ -45,7 +45,7 @@ if (lock ->type == thread_mutex_critical_section)
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL axis2_thread_mutex_create(axis2_allocator_t *allocator,
+AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL axis2_thread_mutex_create(axutil_allocator_t *allocator,
         unsigned int flags)
 {
     axis2_thread_mutex_t *mutex = NULL;

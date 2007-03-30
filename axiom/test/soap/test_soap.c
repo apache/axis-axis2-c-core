@@ -398,7 +398,7 @@ int test_soap_fault_value(const axis2_env_t *env)
 int main(int argc, char *argv[])
 {
     axis2_env_t *env = NULL;
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     const axis2_char_t *uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
@@ -412,7 +412,7 @@ int main(int argc, char *argv[])
         else if (axis2_strcmp(argv[2], "1") == 0)
             uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     log = axis2_log_create(allocator, NULL, "test_soap.log");
     log->level = AXIS2_LOG_LEVEL_DEBUG;
     error = axis2_error_create(allocator);

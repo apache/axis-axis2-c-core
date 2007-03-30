@@ -21,7 +21,7 @@
 #include <axis2_module_desc.h>
 #include <axis2_phases_info.h>
 #include <axis2_env.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 
 struct axis2_module_desc *create_module_desc(const axis2_env_t *env);
 
@@ -36,7 +36,7 @@ int axis2_test_op_engage_module()
     printf("testing axis2_op_engage_module\n");
     printf("******************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axis2_env_t *env = axis2_env_create(allocator);
     axis2_op_t *op = axis2_op_create(env);
 
@@ -70,7 +70,7 @@ int axis2_test_svc_add_module_ops()
     printf("testing axis2_svc_add_module_ops\n");
     printf("******************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axis2_env_t *env = axis2_env_create(allocator);
     qname = axis2_qname_create(env, "name1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
@@ -105,7 +105,7 @@ int axis2_test_svc_engage_module()
     printf("testing axis2_svc_engage_module\n");
     printf("******************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axis2_env_t *env = axis2_env_create(allocator);
     qname = axis2_qname_create(env, "name1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
@@ -141,7 +141,7 @@ int axis2_test_svc_get_op()
     printf("testing axis2_svc_get_op\n");
     printf("******************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axis2_env_t *env = axis2_env_create(allocator);
     qname = axis2_qname_create(env, "op1", NULL, NULL);
     op = axis2_op_create_with_qname(env, qname);

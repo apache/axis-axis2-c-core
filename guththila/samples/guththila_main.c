@@ -22,12 +22,12 @@ int
 main(int argc, char *argv[])
 {
     int c;
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     guththila_reader_t *red;
     axis2_env_t *environment;
     guththila_t *parser;
     char *xml_buffer;
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     xml_buffer = "<?xml version = \"1.0\"?><test a=\"din\">addddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd123</test>";
     environment =
         axis2_env_create(allocator);

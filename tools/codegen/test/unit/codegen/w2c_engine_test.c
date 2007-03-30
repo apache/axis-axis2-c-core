@@ -44,7 +44,7 @@ static const axis2_char_t* w2c_config_test_input3[] =
 void test_engine_config_loader(CuTest *tc)
 {
     axis2_env_t *env;
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     w2c_cmdline_option_parser_t* parser = NULL;
     axis2_hash_index_t *hi;
     axis2_hash_t* hash = NULL;
@@ -56,7 +56,7 @@ void test_engine_config_loader(CuTest *tc)
     axis2_char_t* value;
     w2c_engine_configuration_t* conf = NULL;
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
     input_size = 4;
 

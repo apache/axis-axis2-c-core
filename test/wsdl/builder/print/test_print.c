@@ -25,7 +25,7 @@
 #include <axis2_wsdl4c_message.h>
 #include <axis2_array_list.h>
 #include <axis2_env.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <stdio.h>
 
 extern const void *
@@ -56,7 +56,7 @@ extern char *
 int
 main(int argc, char *argv[])
 {
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axis2_env_t *env = axis2_env_create(allocator);
     if (argc <= 1)
     {

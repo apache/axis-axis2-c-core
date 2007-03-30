@@ -21,7 +21,7 @@
 #include <guththila.h>
 int main()
 {
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axis2_env_t *env = axis2_env_create(allocator);
     guththila_t *parser = guththila_create(env, NULL);
     guththila_create_xml_stream_writer(env, parser, "w.xml");
@@ -43,7 +43,7 @@ int main()
     guththila_write_end_document(env, parser);
     guththila_xml_writer_free(env, parser);
     guththila_free(env, parser);
-    axis2_allocator_free(allocator);
+    axutil_allocator_free(allocator);
     axis2_env_free(env);
     return 0;
 }

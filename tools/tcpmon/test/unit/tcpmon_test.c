@@ -26,12 +26,12 @@
 void test_format_xml(CuTest *tc)
 {
     axis2_env_t *env;
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     axis2_char_t* input;
     axis2_char_t* actual;
     axis2_char_t* expected;
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
     input = (char*)axis2_strdup(env, "<input>check for one step</input>");

@@ -28,13 +28,13 @@ static axis2_char_t* read_file(axis2_char_t* filename);
 void test_typemapper(CuTest *tc)
 {
     axis2_env_t *env;
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     axis2_char_t *actual;
     axis2_char_t *expected;
     w2c_typemapper_t *typemapper;
     axis2_qname_t *qname;
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
     expected = "axiom_node_t*";
@@ -52,12 +52,12 @@ void test_typemapper(CuTest *tc)
 void test_namespace_to_package_name(CuTest *tc)
 {
     axis2_env_t *env;
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     axis2_char_t *input;
     axis2_char_t *actual;
     axis2_char_t *expected;
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
     input = (char*)axis2_strdup(env, "http://ws.apache.org/axis2/c/w2c");
@@ -80,7 +80,7 @@ void test_namespace_to_package_name(CuTest *tc)
 void test_template_parse(CuTest *tc)
 {
     axis2_env_t *env;
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     axis2_char_t *xml_stream;
     axis2_char_t *xslt_filename;
     axis2_char_t *out_filename;
@@ -88,7 +88,7 @@ void test_template_parse(CuTest *tc)
     axis2_char_t *cmp_out_content = NULL;
     int len = 0;
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
     xml_stream = read_file("../../resources/xml/atoms.xml");

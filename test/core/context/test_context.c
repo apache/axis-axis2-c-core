@@ -18,7 +18,7 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_svc_grp.h>
 #include <axis2_const.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_env.h>
 #include <stdio.h>
 
@@ -44,7 +44,7 @@ void axis2_test_conf_ctx_init()
     struct axis2_hash_t *svc_grp_ctx_map = NULL;
 
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axis2_env_t *env = axis2_env_create(allocator);
 
     conf = axis2_conf_create(env);

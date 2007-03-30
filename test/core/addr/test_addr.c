@@ -17,7 +17,7 @@
 
 #include <axis2_msg_info_headers.h>
 #include <axis2_env.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_endpoint_ref.h>
 #include <stdio.h>
 
@@ -30,7 +30,7 @@ int axis2_test_msg_info_headers()
     axis2_endpoint_ref_t *axis2_endpoint_ref = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_msg_info_headers_t *axis2_msg_info_headers = NULL;
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axis2_env_t *env = axis2_env_create(allocator);
     const axis2_char_t *action = "test action";
     const axis2_char_t *get_action = NULL;

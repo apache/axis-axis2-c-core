@@ -7,7 +7,7 @@
 void
 setup (void)
 {
-allocator = axis2_allocator_init(NULL);
+allocator = axutil_allocator_init(NULL);
 env = axis2_env_create(allocator);
 }
 

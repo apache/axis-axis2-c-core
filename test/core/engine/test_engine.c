@@ -25,7 +25,7 @@
 int   axis2_test_engine_send()
 {
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axis2_env_t *env = axis2_env_create(allocator);
     struct axis2_conf *conf = NULL;
     conf = axis2_conf_create(env);
@@ -82,7 +82,7 @@ int   axis2_test_engine_send()
 int   axis2_test_engine_receive()
 {
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axis2_env_t *env = axis2_env_create(allocator);
     axis2_conf_t *conf = NULL;
     conf = axis2_conf_create(env);

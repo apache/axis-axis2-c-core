@@ -23,7 +23,7 @@
 #include <axis2_op.h>
 #include <axis2_dep_engine.h>
 #include <axis2_env.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_class_loader.h>
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
@@ -327,11 +327,11 @@ int axis2_test_default_module_version()
 
 int main()
 {
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL, "test_deployment.log");
     env = axis2_env_create_with_error_log(allocator, error, log);

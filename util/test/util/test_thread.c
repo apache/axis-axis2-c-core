@@ -21,7 +21,7 @@
 #include <axis2_error_default.h>
 #include <axis2_log.h>
 #include <axis2_log_default.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_utils.h>
 #include "test_thread.h"
 #include <unistd.h>
@@ -47,7 +47,7 @@ void init_func(void)
 
 void thread_init(const axis2_env_t *env)
 {
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
 
     allocator = env->allocator;
 
@@ -83,7 +83,7 @@ void * AXIS2_CALL test_function(axis2_thread_t *td, void *param)
 void test_axis2_thread_create(const axis2_env_t *env)
 {
     axis2_status_t rv = AXIS2_FAILURE;
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     int *i = NULL, *j = NULL;
 
     allocator = env->allocator;
@@ -126,7 +126,7 @@ void * AXIS2_CALL test_function2(axis2_thread_t *td, void *param)
 void test_axis2_thread_detach(const axis2_env_t *env)
 {
     axis2_threadattr_t *attr = NULL;
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     axis2_status_t rv = AXIS2_FAILURE;
 
     allocator = env->allocator;
@@ -178,7 +178,7 @@ void test_axis2_thread_detach(const axis2_env_t *env)
 void test_axis2_thread_detach2(const axis2_env_t *env)
 {
     axis2_threadattr_t *attr = NULL;
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     axis2_status_t rv = AXIS2_FAILURE;
 
     allocator = env->allocator;
@@ -257,7 +257,7 @@ const axis2_env_t *create_env_with_error_log()
     axis2_error_t *error = NULL;
     axis2_log_t *log22 = NULL;
     const axis2_env_t *env = NULL;
-    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     if (!allocator)
     {
         printf("allocator is NULL\n");

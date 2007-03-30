@@ -25,12 +25,12 @@
 int main(int argc, char *argv[])
 {
     char *t;
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
     axis2_env_t *env ;
     guththila_t *parser ;
 	char *xml = NULL;
 	FILE *file = NULL;
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
     env = axis2_env_create(allocator);
     parser = guththila_create(env, NULL);
 	guththila_create_xml_stream_writer_for_memory(env, parser);

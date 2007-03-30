@@ -36,7 +36,7 @@ int on_error_func(const axis2_env_t *env,
 int main(int argc, char** argv)
 {
 		axis2_env_t* env = NULL;
-		axis2_allocator_t* allocator = NULL;
+		axutil_allocator_t* allocator = NULL;
 		axis2_error_t *error = NULL;
 		axis2_log_t *log = NULL;
 		axis2_thread_pool_t *thread_pool = NULL;
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
         int format_bit = 0;
 		int ii = 1;
 
-		allocator = axis2_allocator_init(NULL);
+		allocator = axutil_allocator_init(NULL);
 
 		error = axis2_error_create(allocator);
 		log = axis2_log_create(allocator, NULL, "axis2_tcpmon.log");
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
 		TCPMON_SESSION_STOP(session, env);
 		TCPMON_SESSION_FREE(session, env);
 		AXIS2_FREE(env-> allocator, target_host);
-		axis2_allocator_free(allocator);
+		axutil_allocator_free(allocator);
 		axis2_env_free(env);
 		return 0;
 }
