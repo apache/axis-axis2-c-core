@@ -18,7 +18,7 @@
 #include <axis2_conf_builder.h>
 #include <axis2_disp.h>
 #include <axis2_conf.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
 #include <axis2_utils.h>
@@ -415,8 +415,8 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         axis2_param_set_value(impl_info_param, env, dll_desc);
         axis2_param_set_value_free(impl_info_param, env, 
             axis2_dll_desc_free_void_arg);
-        axis2_class_loader_init(env);
-        disp_dll = (axis2_disp_t *) axis2_class_loader_create_dll(env,
+        axutil_class_loader_init(env);
+        disp_dll = (axis2_disp_t *) axutil_class_loader_create_dll(env,
             impl_info_param);
 
         handler = axis2_disp_get_base(disp_dll, env);
@@ -747,8 +747,8 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             axis2_param_set_value(impl_info_param, env, dll_desc);
             axis2_param_set_value_free(impl_info_param, env, 
                 axis2_dll_desc_free_void_arg);
-            axis2_class_loader_init(env);
-            transport_sender = axis2_class_loader_create_dll(env, impl_info_param);
+            axutil_class_loader_init(env);
+            transport_sender = axutil_class_loader_create_dll(env, impl_info_param);
             axis2_transport_out_desc_add_param(transport_out, env,
                 impl_info_param);
             status = axis2_transport_out_desc_set_sender(transport_out, env,
@@ -1006,9 +1006,9 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 axis2_param_set_value(impl_info_param, env, dll_desc);
                 axis2_param_set_value_free(impl_info_param, env, 
                     axis2_dll_desc_free_void_arg);
-                axis2_class_loader_init(env);
+                axutil_class_loader_init(env);
                 recv = (axis2_transport_receiver_t *)
-                    axis2_class_loader_create_dll(env, impl_info_param);
+                    axutil_class_loader_create_dll(env, impl_info_param);
                 axis2_transport_in_desc_add_param(transport_in, env,
                     impl_info_param);
                 stat = axis2_transport_in_desc_set_recv(transport_in, env,

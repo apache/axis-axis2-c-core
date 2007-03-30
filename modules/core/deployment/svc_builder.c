@@ -16,7 +16,7 @@
  */
 
 #include <axis2_svc_builder.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <axis2_utils.h>
 #include <axis2_property.h>
 

@@ -17,7 +17,7 @@
 
 #include <axis2_ws_info_list.h>
 #include <string.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 
 struct axis2_ws_info_list
 {

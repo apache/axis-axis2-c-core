@@ -18,7 +18,7 @@
 #include <axis2_msg_recv.h>
 #include <axis2_param.h>
 #include <axis2_description.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <axis2_engine.h>
 #include <axis2_core_utils.h>
 #include <axis2_property.h>
@@ -149,9 +149,9 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
 
     axutil_allocator_switch_to_global_pool(env->allocator);
     
-    axis2_class_loader_init(env);
+    axutil_class_loader_init(env);
 
-    impl_class = axis2_class_loader_create_dll(env, impl_info_param);
+    impl_class = axutil_class_loader_create_dll(env, impl_info_param);
     axis2_svc_set_impl_class(svc, env, impl_class);
 
     AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
@@ -255,7 +255,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
         return AXIS2_FAILURE;
     }
     dll_desc = axis2_param_get_value(impl_info_param, env);
-    return axis2_class_loader_delete_dll(env, dll_desc);
+    return axutil_class_loader_delete_dll(env, dll_desc);
 }
 
 static axis2_status_t AXIS2_CALL

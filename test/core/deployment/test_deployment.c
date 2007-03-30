@@ -24,7 +24,7 @@
 #include <axis2_dep_engine.h>
 #include <axis2_env.h>
 #include <axutil_allocator.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
 #include <axis2_transport_sender.h>
@@ -152,8 +152,8 @@ int axis2_test_transport_receiver_load()
      axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);
-    axis2_class_loader_init(env);
-    transport_recv = (axis2_transport_receiver_t *) axis2_class_loader_create_dll(env,
+    axutil_class_loader_init(env);
+    transport_recv = (axis2_transport_receiver_t *) axutil_class_loader_create_dll(env,
             impl_info_param);
     is_running = AXIS2_TRANSPORT_RECEIVER_IS_RUNNING(transport_recv, env);
     printf("is_running:%d\n", is_running);
@@ -186,8 +186,8 @@ int axis2_test_transport_sender_load()
      axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);
-    axis2_class_loader_init(env);
-    transport_sender = (axis2_transport_sender_t *) axis2_class_loader_create_dll(env,
+    axutil_class_loader_init(env);
+    transport_sender = (axis2_transport_sender_t *) axutil_class_loader_create_dll(env,
             impl_info_param);
 
     status = AXIS2_TRANSPORT_SENDER_CLEANUP(transport_sender, env, msg_ctx);

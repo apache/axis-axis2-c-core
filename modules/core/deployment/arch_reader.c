@@ -17,7 +17,7 @@
 
 #include <axis2_arch_reader.h>
 #include <string.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <axis2_svc_builder.h>
 #include <axis2_module_builder.h>
 #include <axis2_svc.h>

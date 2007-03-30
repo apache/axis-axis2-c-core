@@ -17,7 +17,7 @@
 
 #include <axis2_arch_file_data.h>
 #include <string.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 
 struct axis2_arch_file_data
 {

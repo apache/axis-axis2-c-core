@@ -15,26 +15,26 @@
  * limitations under the License.
  */
 
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 
 axis2_status_t
-axis2_class_loader_load_lib(const axis2_env_t *env,
+axutil_class_loader_load_lib(const axis2_env_t *env,
         axis2_dll_desc_t *dll_desc);
 
 axis2_status_t
-axis2_class_loader_unload_lib(const axis2_env_t *env,
+axutil_class_loader_unload_lib(const axis2_env_t *env,
         axis2_dll_desc_t *dll_desc);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_class_loader_init(const axis2_env_t *env)
+axutil_class_loader_init(const axis2_env_t *env)
 {
     AXIS2_PLATFORM_LOADLIBINIT();
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_class_loader_delete_dll(const axis2_env_t *env,
+axutil_class_loader_delete_dll(const axis2_env_t *env,
         axis2_dll_desc_t *dll_desc)
 {
     if (!dll_desc)
@@ -43,13 +43,13 @@ axis2_class_loader_delete_dll(const axis2_env_t *env,
                 AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    axis2_class_loader_unload_lib(env, dll_desc);
+    axutil_class_loader_unload_lib(env, dll_desc);
     AXIS2_PLATFORM_LOADLIBEXIT()
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_class_loader_create_dll(const axis2_env_t *env,
+axutil_class_loader_create_dll(const axis2_env_t *env,
         axis2_param_t *impl_info_param)
 {
     void *obj = NULL;
@@ -70,7 +70,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);
     if (! dl_handler)
     {
-        status = axis2_class_loader_load_lib(env, dll_desc);
+        status = axutil_class_loader_load_lib(env, dll_desc);
         if (AXIS2_SUCCESS != status)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,
@@ -92,7 +92,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
         status =  axis2_dll_desc_set_create_funct(dll_desc, env, create_funct);
         if (AXIS2_FAILURE == status)
         {
-            axis2_class_loader_unload_lib(env, dll_desc);
+            axutil_class_loader_unload_lib(env, dll_desc);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,
                     AXIS2_FAILURE);
             return NULL;
@@ -107,7 +107,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
         status =  axis2_dll_desc_set_delete_funct(dll_desc, env, delete_funct);
         if (AXIS2_FAILURE == status)
         {
-            axis2_class_loader_unload_lib(env, dll_desc);
+            axutil_class_loader_unload_lib(env, dll_desc);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,
                     AXIS2_FAILURE);
             return NULL;
@@ -125,7 +125,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
     create_funct(&obj, env);
     if (! obj)
     {
-        axis2_class_loader_unload_lib(env, dll_desc);
+        axutil_class_loader_unload_lib(env, dll_desc);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Object create function returned NULL");
         AXIS2_ERROR_SET(env->error, error_code, AXIS2_FAILURE);
         return NULL;
@@ -138,7 +138,7 @@ axis2_class_loader_create_dll(const axis2_env_t *env,
 }
 
 axis2_status_t
-axis2_class_loader_load_lib(const axis2_env_t *env,
+axutil_class_loader_load_lib(const axis2_env_t *env,
         axis2_dll_desc_t *dll_desc)
 {
     axis2_char_t *dll_name = NULL;
@@ -168,7 +168,7 @@ axis2_class_loader_load_lib(const axis2_env_t *env,
 }
 
 axis2_status_t
-axis2_class_loader_unload_lib(const axis2_env_t *env,
+axutil_class_loader_unload_lib(const axis2_env_t *env,
         axis2_dll_desc_t *dll_desc)
 {
     AXIS2_DLHANDLER dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);

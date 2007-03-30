@@ -19,7 +19,7 @@
 #define AXIS2_CLASS_LOADER_H
 
 /**
-  * @file axis2_class_loader.h
+  * @file axutil_class_loader.h
   * @brief axis2 class loader interface
   */
 
@@ -35,20 +35,20 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_class_loader class loader 
+/** @defgroup axutil_class_loader class loader 
  * @ingroup axis2_util
  * @{
  */
     
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_class_loader_init(const axis2_env_t *env);
+axutil_class_loader_init(const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_class_loader_delete_dll (const axis2_env_t *env,
+axutil_class_loader_delete_dll (const axis2_env_t *env,
                                     axis2_dll_desc_t *dll_desc);
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_class_loader_create_dll (const axis2_env_t *env,
+axutil_class_loader_create_dll (const axis2_env_t *env,
                                 axis2_param_t *impl_info_param);
     
  

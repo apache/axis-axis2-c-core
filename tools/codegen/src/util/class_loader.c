@@ -15,7 +15,7 @@
  * limitations under the License.
  */
  
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <w2c_class_loader.h>
 #include <w2c_string.h>
 #include <w2c_messages.h>
@@ -58,8 +58,8 @@ w2c_class_loader_get_object_from_class_name
     impl_info_param = axis2_param_create(env, NULL, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);
 
-    axis2_class_loader_init(env);
-	obj = axis2_class_loader_create_dll(env, impl_info_param);
+    axutil_class_loader_init(env);
+	obj = axutil_class_loader_create_dll(env, impl_info_param);
 
     AXIS2_FREE ( env->allocator, file_path);
     return obj;
@@ -73,7 +73,7 @@ w2c_class_loader_free_loaded_class(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dll_desc, AXIS2_FAILURE);
 
-    axis2_class_loader_delete_dll(env, dll_desc);
+    axutil_class_loader_delete_dll(env, dll_desc);
     /*axis2_dll_desc_free ( dll_desc, env );*/
 
     return AXIS2_SUCCESS;

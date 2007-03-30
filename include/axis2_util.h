@@ -20,7 +20,7 @@
 
 #include <axutil_allocator.h>
 #include <axutil_array_list.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <axis2_dir_handler.h>
 #include <axis2_dll_desc.h>
 #include <axis2_env.h>

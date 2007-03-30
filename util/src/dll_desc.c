@@ -16,7 +16,7 @@
  */
 
 #include <axis2_dll_desc.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 
 struct axis2_dll_desc
 {
@@ -70,7 +70,7 @@ axis2_dll_desc_free(axis2_dll_desc_t *dll_desc,
 
     if (dll_desc->dl_handler)
     {
-        axis2_class_loader_delete_dll(env, dll_desc);
+        axutil_class_loader_delete_dll(env, dll_desc);
     }
 
     if (dll_desc->dll_name)

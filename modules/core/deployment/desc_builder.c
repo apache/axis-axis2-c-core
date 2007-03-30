@@ -17,7 +17,7 @@
 
 #include <axis2_desc_builder.h>
 #include <axis2_string.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <axis2_utils.h>
 #include <axis2_generic_obj.h>
 #include <axis2_raw_xml_in_out_msg_recv.h>
@@ -913,8 +913,8 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
          axis2_conf_add_param(conf, env, impl_info_param);
     }
 
-    axis2_class_loader_init(env);
-    msg_recv = (axis2_msg_recv_t *) axis2_class_loader_create_dll(env,
+    axutil_class_loader_init(env);
+    msg_recv = (axis2_msg_recv_t *) axutil_class_loader_create_dll(env,
         impl_info_param);
     return msg_recv;
 }

@@ -26,7 +26,7 @@
 #include <axis2_svc_builder.h>
 #include <axis2_svc_grp_builder.h>
 #include <axiom_node.h>
-#include <axis2_class_loader.h>
+#include <axutil_class_loader.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axis2_core_utils.h>
@@ -1066,8 +1066,8 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     impl_info_param = axis2_param_create(env, read_in_dll, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);
     axis2_param_set_value_free(impl_info_param, env, axis2_dll_desc_free_void_arg);
-    axis2_class_loader_init(env);
-    module = (axis2_module_t *) axis2_class_loader_create_dll(env,
+    axutil_class_loader_init(env);
+    module = (axis2_module_t *) axutil_class_loader_create_dll(env,
         impl_info_param);
     /* We cannot free the created impl_info_param here because by freeing
      * so, it will free dll_desc which in turn unload the module. So we
@@ -1130,10 +1130,10 @@ axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
     /* TODO set fill dll path here instead of dll lib name only */
     axis2_dll_desc_set_name(dll_desc, env, dll_name);
     axis2_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
-    axis2_class_loader_init(env);
+    axutil_class_loader_init(env);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);
-    handler = (axis2_handler_t *) axis2_class_loader_create_dll(env,
+    handler = (axis2_handler_t *) axutil_class_loader_create_dll(env,
         impl_info_param);
 
     return handler;
