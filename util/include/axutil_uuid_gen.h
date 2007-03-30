@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_UUID_GEN_H
-#define AXIS2_UUID_GEN_H
+#ifndef AXUTIL_UUID_GEN_H
+#define AXUTIL_UUID_GEN_H
 
-#include <axis2_utils.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
@@ -30,7 +30,7 @@ extern "C"
 
 
     /**
-     * @defgroup axis2_uuid_gen UUID generator
+     * @defgroup axutil_uuid_gen UUID generator
      * @ingroup axis2_util
      * @{
      */
@@ -40,7 +40,7 @@ extern "C"
      * @return generated uuid as a string
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-    axis2_uuid_gen(const axutil_env_t *env);
+    axutil_uuid_gen(const axutil_env_t *env);
 
     /** @} */
 

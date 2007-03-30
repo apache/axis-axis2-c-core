@@ -23,7 +23,7 @@
  * @brief represents a qualified name
  */
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 
 #include <axutil_string.h>

@@ -25,7 +25,7 @@
 #include "axis2_apache2_worker.h"
 #include <axutil_error_default.h>
 #include <axutil_log_default.h>
-#include <axis2_thread_pool.h>
+#include <axutil_thread_pool.h>
 #include <axiom_xml_reader.h>
 
 /* Configuration structure populated by apache2.conf */
@@ -272,7 +272,7 @@ axis2_module_init(
     axutil_allocator_t *allocator = NULL;
     axutil_error_t *error = NULL;
     axutil_log_t *axutil_logger = NULL;
-    axis2_thread_pool_t *thread_pool = NULL;
+    axutil_thread_pool_t *thread_pool = NULL;
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                 svr_rec->module_config, &axis2_module);
 
@@ -328,7 +328,7 @@ axis2_module_init(
                      "[Axis2] Error creating mod_axis2 log structure");
         exit(APEXIT_CHILDFATAL);
     }
-    thread_pool = axis2_thread_pool_init(allocator);
+    thread_pool = axutil_thread_pool_init(allocator);
     if (! thread_pool)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,

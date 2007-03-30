@@ -19,7 +19,7 @@
 #define AXUTIL_BASE64_BINARY_H
 
 #include <axutil_base64.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 
 /**

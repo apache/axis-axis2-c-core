@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-#include <axis2_utils.h>
-#include <platforms/windows/axis2_thread_windows.h>
+#include <axutil_utils.h>
+#include <platforms/windows/axutil_thread_windows.h>
 
-DWORD tls_axis2_thread = 0;
+DWORD tls_axutil_thread = 0;
 
-AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
-axis2_threadattr_create(axutil_allocator_t *allocator)
+AXIS2_EXTERN axutil_threadattr_t* AXIS2_CALL
+axutil_threadattr_create(axutil_allocator_t *allocator)
 {
-    axis2_threadattr_t *new = NULL;
+    axutil_threadattr_t *new = NULL;
 
-    new = AXIS2_MALLOC(allocator, sizeof(axis2_threadattr_t));
+    new = AXIS2_MALLOC(allocator, sizeof(axutil_threadattr_t));
     if (! new)
     {
         /*AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)*/
@@ -41,13 +41,13 @@ axis2_threadattr_create(axutil_allocator_t *allocator)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 threadattr_cleanup(void *data)
 {
-    axis2_threadattr_t *attr = data;
+    axutil_threadattr_t *attr = data;
     /*nothing to clean up*/
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_threadattr_detach_set(
-    axis2_threadattr_t *attr,
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axutil_threadattr_detach_set(
+    axutil_threadattr_t *attr,
     axis2_bool_t detached)
 {
     attr->detach = detached;
@@ -55,7 +55,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_threadattr_detach_set(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axutil_env_t *env)
+axutil_threadattr_detach_get(axutil_threadattr_t *attr, const axutil_env_t *env)
 {
     if (1 == attr->detach)
     {
@@ -65,7 +65,7 @@ axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axutil_env_t *env)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_threadattr_stacksize_set(axis2_threadattr_t *attr, size_t stacksize)
+axutil_threadattr_stacksize_set(axutil_threadattr_t *attr, size_t stacksize)
 {
     attr->stacksize = stacksize;
     return AXIS2_SUCCESS;
@@ -73,21 +73,21 @@ axis2_threadattr_stacksize_set(axis2_threadattr_t *attr, size_t stacksize)
 
 static void *dummy_worker(void *opaque)
 {
-    axis2_thread_t *thd = (axis2_thread_t *)opaque;
-    TlsSetValue(tls_axis2_thread, thd->td);
+    axutil_thread_t *thd = (axutil_thread_t *)opaque;
+    TlsSetValue(tls_axutil_thread, thd->td);
     return thd->func(thd, thd->data);
 }
 
-AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
-axis2_thread_create(axutil_allocator_t *allocator, axis2_threadattr_t *attr,
-        axis2_thread_start_t func, void *data)
+AXIS2_EXTERN axutil_thread_t* AXIS2_CALL
+axutil_thread_create(axutil_allocator_t *allocator, axutil_threadattr_t *attr,
+        axutil_thread_start_t func, void *data)
 {
     HANDLE           handle;
     unsigned         temp;
-    axis2_thread_t   *new = NULL;
+    axutil_thread_t   *new = NULL;
 
-    new = (axis2_thread_t *)AXIS2_MALLOC(allocator,
-            sizeof(axis2_thread_t));
+    new = (axutil_thread_t *)AXIS2_MALLOC(allocator,
+            sizeof(axutil_thread_t));
 
     if (! new)
     {
@@ -120,7 +120,7 @@ axis2_thread_create(axutil_allocator_t *allocator, axis2_threadattr_t *attr,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_exit(axis2_thread_t *thd, axutil_allocator_t *allocator)
+axutil_thread_exit(axutil_thread_t *thd, axutil_allocator_t *allocator)
 {
     if (thd)
     {
@@ -134,7 +134,7 @@ axis2_thread_exit(axis2_thread_t *thd, axutil_allocator_t *allocator)
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
 axis2_os_thread_current(void)
 {
-    HANDLE hthread = (HANDLE)TlsGetValue(tls_axis2_thread);
+    HANDLE hthread = (HANDLE)TlsGetValue(tls_axutil_thread);
     HANDLE hproc;
 
     if (hthread)
@@ -150,7 +150,7 @@ axis2_os_thread_current(void)
     {
         return NULL;
     }
-    TlsSetValue(tls_axis2_thread, hthread);
+    TlsSetValue(tls_axutil_thread, hthread);
     return hthread;
 }
 
@@ -161,7 +161,7 @@ axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_join(axis2_thread_t *thd)
+axutil_thread_join(axutil_thread_t *thd)
 {
     axis2_status_t rv = AXIS2_SUCCESS, rv1;
 
@@ -184,7 +184,7 @@ axis2_thread_join(axis2_thread_t *thd)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_detach(axis2_thread_t *thd)
+axutil_thread_detach(axutil_thread_t *thd)
 {
     if (thd->td && CloseHandle(thd->td))
     {
@@ -198,21 +198,21 @@ axis2_thread_detach(axis2_thread_t *thd)
 }
 
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
-axis2_os_thread_get(axis2_thread_t *thd, const axutil_env_t *env)
+axis2_os_thread_get(axutil_thread_t *thd, const axutil_env_t *env)
 {
     return thd->td;
 }
 
-AXIS2_EXTERN axis2_thread_once_t * AXIS2_CALL
-axis2_thread_once_init(axutil_allocator_t *allocator)
+AXIS2_EXTERN axutil_thread_once_t * AXIS2_CALL
+axutil_thread_once_init(axutil_allocator_t *allocator)
 {
-    axis2_thread_once_t *control = NULL;
+    axutil_thread_once_t *control = NULL;
     control = AXIS2_MALLOC(allocator, sizeof(*control));
     return control;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_once(axis2_thread_once_t *control, void(*func)(void))
+axutil_thread_once(axutil_thread_once_t *control, void(*func)(void))
 {
     if (!InterlockedExchange(&control->value, 1))
     {

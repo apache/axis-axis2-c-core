@@ -26,7 +26,7 @@
 #include <axiom_children_qname_iterator.h>
 #include <axiom_child_element_iterator.h>
 #include <axutil_hash.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 #ifdef __cplusplus
 extern "C"

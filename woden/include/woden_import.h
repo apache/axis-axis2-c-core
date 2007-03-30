@@ -70,7 +70,7 @@ struct woden_import_ops
             void *import,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_namespace) (
             void *import,
             const axutil_env_t *env);
@@ -79,7 +79,7 @@ struct woden_import_ops
     set_namespace) (
             void *import,
             const axutil_env_t *env,
-            axis2_uri_t *ns_uri);
+            axutil_uri_t *ns_uri);
 
 };
 

@@ -18,7 +18,7 @@
 
 #include <axiom_xml_reader.h>
 #include <axutil_env.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <guththila.h>
 
 /**************** function prototypes ******************************************/

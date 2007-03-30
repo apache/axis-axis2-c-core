@@ -16,8 +16,8 @@
  */
 
 #include <axutil_string.h>
-#include <axis2_url.h>
-#include <axis2_uri.h>
+#include <axutil_url.h>
+#include <axutil_uri.h>
 #include <axutil_qname.h>
 #include <axis2_options.h>
 #include <axiom_util.h>
@@ -47,7 +47,7 @@
 
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
 axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
-    const axis2_uri_t *wsdl_uri,
+    const axutil_uri_t *wsdl_uri,
     const axutil_qname_t *wsdl_svc_qname,
     const axis2_char_t *ep_name,
     const axis2_char_t *doc_base_uri,
@@ -163,14 +163,14 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
         }
         if (AXIS2_TRUE == endpoint_found)
         {
-            axis2_uri_t *soap_address = NULL;
+            axutil_uri_t *soap_address = NULL;
             axis2_endpoint_ref_t *endpoint_ref = NULL;
             axis2_char_t *address = NULL;
 
             soap_address = WODEN_ENDPOINT_GET_ADDRESS(endpoint, env);
             if (soap_address)
             {
-                address = axis2_uri_to_string(soap_address, env,
+                address = axutil_uri_to_string(soap_address, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
                 endpoint_ref = axis2_endpoint_ref_create(env, address);
                 if (options)
@@ -203,7 +203,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
             axis2_bool_t in = AXIS2_FALSE;
             axis2_bool_t out = AXIS2_FALSE;
             axutil_qname_t *op_qname = NULL;
-            axis2_uri_t *mep_uri = NULL;
+            axutil_uri_t *mep_uri = NULL;
             axis2_char_t *mep_str = NULL;
 
             binding_op = axutil_array_list_get(binding_ops, env, i);
@@ -248,7 +248,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
                 env);
             if (mep_uri)
             {
-                mep_str = axis2_uri_to_string(mep_uri, env,
+                mep_str = axutil_uri_to_string(mep_uri, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
                 axis2_op_set_msg_exchange_pattern(axis2_op, env, mep_str);
             }
@@ -351,7 +351,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
             axutil_qname_t *ext_type = NULL;
             int j = 0, size = 0;
             axutil_array_list_t *ext_elements = NULL;
-            axis2_uri_t *soap_address_uri = NULL;
+            axutil_uri_t *soap_address_uri = NULL;
 
             endpoint = woden_wsdl10_endpoint_to_element_extensible(
                 endpoint, env);
@@ -386,7 +386,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
 
             if (soap_address_uri)
             {
-                address = axis2_uri_to_string(soap_address_uri, env,
+                address = axutil_uri_to_string(soap_address_uri, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
                 endpoint_ref = axis2_endpoint_ref_create(env, address);
                 if (options)
@@ -421,7 +421,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
             axutil_qname_t *ext_type = NULL;
             axutil_qname_t *ext_type_l = NULL;
             axutil_param_t *param = NULL;
-            axis2_uri_t *mep_uri = NULL;
+            axutil_uri_t *mep_uri = NULL;
             axis2_char_t *mep_str = NULL;
 
             binding_op = axutil_array_list_get(binding_ops, env, i);
@@ -461,7 +461,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
                 env);
             if (mep_uri)
             {
-                mep_str = axis2_uri_to_string(mep_uri, env,
+                mep_str = axutil_uri_to_string(mep_uri, env,
                     AXIS2_URI_UNP_OMITUSERINFO);
                 axis2_op_set_msg_exchange_pattern(axis2_op, env, mep_str);
             }
@@ -484,7 +484,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
                 if (AXIS2_TRUE == axutil_qname_equals(ext_type, env, ext_type_l))
                 {
                     void *soap_binding_op = NULL;
-                    axis2_uri_t *soap_action_uri = NULL;
+                    axutil_uri_t *soap_action_uri = NULL;
 
                     ext_element =
                         woden_wsdl10_soap_module_to_soap_module_element(ext_element, env);

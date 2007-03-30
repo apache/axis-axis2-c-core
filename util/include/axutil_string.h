@@ -18,7 +18,7 @@
 #ifndef AXUTIL_STRING_H
 #define AXUTIL_STRING_H
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_error.h>
 #include <axutil_env.h>
 #include <string.h>

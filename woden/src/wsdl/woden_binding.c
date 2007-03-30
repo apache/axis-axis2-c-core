@@ -42,7 +42,7 @@ struct woden_binding_impl
     axutil_qname_t *f_qname;
     axutil_qname_t *f_interface_qname;
     void *f_interface;
-    axis2_uri_t *f_type;
+    axutil_uri_t *f_type;
     /*
      * Binding faults and operations may be referred to specifically by the qname represented by
      * their 'ref' attribute. This typically suggests a Map implementation keyed by 'ref' qname. 
@@ -91,7 +91,7 @@ woden_binding_get_interface(
     void *binding,
     const axutil_env_t *env);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_binding_get_type(
     void *binding,
     const axutil_env_t *env);
@@ -140,7 +140,7 @@ axis2_status_t AXIS2_CALL
 woden_binding_set_type(
     void *binding,
     const axutil_env_t *env,
-    axis2_uri_t *type);
+    axutil_uri_t *type);
 
 axis2_status_t AXIS2_CALL
 woden_binding_add_binding_fault_element(
@@ -618,7 +618,7 @@ woden_binding_free(void *binding,
 
     if (binding_impl->f_type)
     {
-        axis2_uri_free(binding_impl->f_type, env);
+        axutil_uri_free(binding_impl->f_type, env);
         binding_impl->f_type = NULL;
     }
 
@@ -819,7 +819,7 @@ woden_binding_get_interface(
     return binding_impl->f_interface;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_binding_get_type(
     void *binding,
     const axutil_env_t *env)
@@ -971,7 +971,7 @@ axis2_status_t AXIS2_CALL
 woden_binding_set_type(
     void *binding,
     const axutil_env_t *env,
-    axis2_uri_t *type)
+    axutil_uri_t *type)
 {
     woden_binding_impl_t *binding_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -984,10 +984,10 @@ woden_binding_set_type(
 
     if (binding_impl->f_type)
     {
-        axis2_uri_free(binding_impl->f_type, env);
+        axutil_uri_free(binding_impl->f_type, env);
         binding_impl->f_type = NULL;
     }
-    binding_impl->f_type = axis2_uri_clone(type, env);
+    binding_impl->f_type = axutil_uri_clone(type, env);
 
     return AXIS2_SUCCESS;
 }

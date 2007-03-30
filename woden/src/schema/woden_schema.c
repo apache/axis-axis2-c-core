@@ -30,7 +30,7 @@ struct woden_schema_impl
     axutil_hash_t *super;
     woden_obj_types_t obj_type;
 
-    axis2_uri_t *f_namespc;
+    axutil_uri_t *f_namespc;
     xml_schema_t *f_schema_def;
     axis2_bool_t f_is_referenceable;
 };
@@ -56,9 +56,9 @@ axis2_status_t AXIS2_CALL
 woden_schema_set_namespace(
     void *schema,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_schema_get_namespace(
     void *schema,
     const axutil_env_t *env);
@@ -147,7 +147,7 @@ woden_schema_free(
 
     if (schema_impl->f_namespc)
     {
-        axis2_uri_free(schema_impl->f_namespc, env);
+        axutil_uri_free(schema_impl->f_namespc, env);
         schema_impl->f_namespc = NULL;
     }
 
@@ -265,7 +265,7 @@ axis2_status_t AXIS2_CALL
 woden_schema_set_namespace(
     void *schema,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_schema_impl_t *schema_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -278,15 +278,15 @@ woden_schema_set_namespace(
 
     if (schema_impl->f_namespc)
     {
-        axis2_uri_free(schema_impl->f_namespc, env);
+        axutil_uri_free(schema_impl->f_namespc, env);
         schema_impl->f_namespc = NULL;
     }
-    schema_impl->f_namespc = axis2_uri_clone(namespc, env);
+    schema_impl->f_namespc = axutil_uri_clone(namespc, env);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_schema_get_namespace(
     void *schema,
     const axutil_env_t *env)
@@ -392,6 +392,6 @@ woden_schema_get_namespace_as_string(
             "WODEN_SCHEMA", AXIS2_HASH_KEY_STRING));
 
     return schema_impl->f_namespc  ?
-            axis2_uri_to_string(schema_impl->f_namespc, env, AXIS2_URI_UNP_OMITUSERINFO) : NULL;
+            axutil_uri_to_string(schema_impl->f_namespc, env, AXIS2_URI_UNP_OMITUSERINFO) : NULL;
 }
 

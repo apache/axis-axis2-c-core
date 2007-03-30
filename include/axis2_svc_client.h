@@ -42,7 +42,7 @@
 
 #include <axis2_defines.h>
 #include <axutil_env.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axis2_svc.h>
 #include <axis2_options.h>
 #include <axutil_qname.h>
@@ -464,7 +464,7 @@ extern "C"
     AXIS2_EXTERN axis2_svc_client_t* AXIS2_CALL
     axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx,
-        const axis2_uri_t *wsdl_uri,
+        const axutil_uri_t *wsdl_uri,
         const axutil_qname_t *wsdl_svc_qname,
         const axis2_char_t *endpoint_name,
         const axis2_char_t *client_home);

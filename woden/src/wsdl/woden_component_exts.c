@@ -17,7 +17,7 @@
 
 #include <woden_component_exts.h>
 #include <woden_wsdl_element.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_hash.h>
 
 typedef struct woden_component_exts_impl woden_component_exts_impl_t;
@@ -30,7 +30,7 @@ struct woden_component_exts_impl
 {
     woden_component_exts_t component_exts;
     void *f_parent_element;
-    axis2_uri_t *f_namespc;
+    axutil_uri_t *f_namespc;
 };
 
 #define INTF_TO_IMPL(component_exts) ((woden_component_exts_impl_t *) component_exts)
@@ -40,7 +40,7 @@ woden_component_exts_free(
     void *component_exts,
     const axutil_env_t *envv);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_component_exts_get_namespace(
     void *component_exts,
     const axutil_env_t *env);
@@ -55,7 +55,7 @@ woden_component_exts_init(
     void *component_exts,
     const axutil_env_t *env,
     woden_wsdl_element_t *parent_el,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 AXIS2_EXTERN woden_component_exts_t * AXIS2_CALL
 woden_component_exts_create(
@@ -103,7 +103,7 @@ woden_component_exts_free(
 
     if (component_exts_impl->f_namespc)
     {
-        axis2_uri_free(component_exts_impl->f_namespc, env);
+        axutil_uri_free(component_exts_impl->f_namespc, env);
         component_exts_impl->f_namespc = NULL;
     }
 
@@ -149,7 +149,7 @@ woden_component_exts_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_component_exts_get_namespace(
     void *component_exts,
     const axutil_env_t *env)
@@ -178,7 +178,7 @@ woden_component_exts_init(
     void *component_exts,
     const axutil_env_t *env,
     woden_wsdl_element_t *parent_el,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_component_exts_impl_t *component_exts_impl = NULL;
 

@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_TYPES_H
-#define AXIS2_TYPES_H
+#ifndef AXUTIL_TYPES_H
+#define AXUTIL_TYPES_H
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_error.h>
 #include <axutil_env.h>
 
@@ -28,7 +28,7 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axis2_types type convertors
+     * @defgroup axutil_types type convertors
      * @ingroup axis2_util
      * @{
      */

@@ -21,7 +21,7 @@
 #include <axis2_relates_to.h>
 #include <axis2_addr.h>
 #include <axis2_http_transport.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 #include <axutil_property.h>
 #include <axis2_conf_ctx.h>
 
@@ -78,7 +78,7 @@ axis2_core_utils_create_out_msg_ctx(
          axis2_msg_ctx_set_msg_info_headers(new_msg_ctx, env, msg_info_headers);
     }
 
-    msg_uuid =  axis2_uuid_gen(env);
+    msg_uuid =  axutil_uuid_gen(env);
     axis2_msg_info_headers_set_message_id(msg_info_headers, env, msg_uuid);
     if (msg_uuid)
     {

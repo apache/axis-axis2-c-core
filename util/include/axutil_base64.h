@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 /*
  * @file axutil_base64.h
  * @brief AXIS2-UTIL Base64 Encoding

@@ -85,7 +85,7 @@ process_for_wsdl1(
 {
     axiom_node_t *payload = NULL;
     axiom_node_t *response = NULL;
-    axis2_uri_t *wsdl_uri = NULL;
+    axutil_uri_t *wsdl_uri = NULL;
     axutil_qname_t *op_qname = NULL;
     axis2_svc_client_t *svc_client = NULL;
     const axis2_char_t *client_home = NULL;
@@ -106,7 +106,7 @@ process_for_wsdl1(
 
     wsdl_svc_qname = axutil_qname_create(env, "Calculator",
             "http://localhost/axis/Calculator", NULL);
-    wsdl_uri = axis2_uri_parse_string(env, wsdl_uri_str);
+    wsdl_uri = axutil_uri_parse_string(env, wsdl_uri_str);
     svc_client =
         axis2_svc_client_create_for_dynamic_invocation(
             env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
@@ -148,7 +148,7 @@ process_for_wsdl2(
 {
     axiom_node_t *payload = NULL;
     axiom_node_t *response = NULL;
-    axis2_uri_t *wsdl_uri = NULL;
+    axutil_uri_t *wsdl_uri = NULL;
     axutil_qname_t *op_qname = NULL;
     axis2_svc_client_t *svc_client = NULL;
     const axis2_char_t *client_home = NULL;
@@ -168,7 +168,7 @@ process_for_wsdl2(
 
     wsdl_svc_qname = axutil_qname_create(env, "reservationService",
             "http://greath.example.com/2004/wsdl/resSvc", NULL);
-    wsdl_uri = axis2_uri_parse_string(env, wsdl_uri_str);
+    wsdl_uri = axutil_uri_parse_string(env, wsdl_uri_str);
     svc_client =
         axis2_svc_client_create_for_dynamic_invocation(
             env, NULL, wsdl_uri, wsdl_svc_qname, "reservationService", client_home);

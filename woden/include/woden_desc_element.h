@@ -36,10 +36,10 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <woden.h>
 #include <woden_documentable_element.h>
 #include <woden_nested_element.h>
@@ -77,9 +77,9 @@ struct woden_desc_element_ops
     set_document_base_uri) (
             void *desc_ele,
             const axutil_env_t *env,
-            axis2_uri_t *document_base_uri);
+            axutil_uri_t *document_base_uri);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_document_base_uri) (
             void *desc_ele,
             const axutil_env_t *env);
@@ -91,9 +91,9 @@ struct woden_desc_element_ops
     set_target_namespace) (
             void *desc_ele,
             const axutil_env_t *env,
-            axis2_uri_t *namespace_uri);
+            axutil_uri_t *namespace_uri);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_target_namespace) (
             void *desc_ele,
             const axutil_env_t *env);
@@ -116,7 +116,7 @@ struct woden_desc_element_ops
             void *desc_el,
             const axutil_env_t *env,
             axis2_char_t *prefix,
-            axis2_uri_t *namespc);
+            axutil_uri_t *namespc);
     
     axis2_status_t (AXIS2_CALL *
     remove_namespace) (
@@ -129,10 +129,10 @@ struct woden_desc_element_ops
      * there is no namespace URI associated with this prefix. This is
      * unrelated to the &lt;wsdl:import&gt; element.
      *
-     * @see #add_namespace(axis2_char_t , axis2_uri_t)
+     * @see #add_namespace(axis2_char_t , axutil_uri_t)
      * @see #get_prefix(axis2_char_t)
      */
-    axis2_uri_t *(AXIS2_CALL * 
+    axutil_uri_t *(AXIS2_CALL * 
     get_namespace) (
             void *desc_el,
             const axutil_env_t *env,

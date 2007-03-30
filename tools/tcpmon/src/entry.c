@@ -16,7 +16,7 @@
  */
 
 #include <stdio.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
 #include <axutil_network_handler.h>
@@ -363,7 +363,7 @@ tcpmon_entry_set_format_bit(tcpmon_entry_t *entry,
 /** implimentations for protected methods */
 
 /** executes as new entry arises */
-void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
+void* AXIS2_CALL tcpmon_entry_new_entry_funct(axutil_thread_t *thd, void* data)
 {
 	 tcpmon_entry_request_data_t* req_data = data;
 	 const axutil_env_t* env = NULL;

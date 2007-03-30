@@ -17,7 +17,7 @@
 
 #include <axutil_base64_binary.h>
 #include <string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 struct axutil_base64_binary
 {

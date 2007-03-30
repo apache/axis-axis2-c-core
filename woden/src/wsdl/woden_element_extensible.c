@@ -18,7 +18,7 @@
 #include <woden_element_extensible.h>
 #include <woden_ext_element.h>
 #include <woden_xml_attr.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_hash.h>
 
 typedef struct woden_element_extensible_impl woden_element_extensible_impl_t;
@@ -81,7 +81,7 @@ axis2_bool_t AXIS2_CALL
 woden_element_extensible_has_ext_elements_for_namespace(
     void *extensible,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 
 
@@ -372,7 +372,7 @@ axis2_bool_t AXIS2_CALL
 woden_element_extensible_has_ext_elements_for_namespace(
     void *extensible,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
     axis2_bool_t result = AXIS2_FALSE;
@@ -387,7 +387,7 @@ woden_element_extensible_has_ext_elements_for_namespace(
     extensible_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_ELEMENT_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    ext_ns = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    ext_ns = axutil_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     size = axutil_array_list_size(extensible_impl->f_ext_elements, env);
     for (i = 0; i < size; i++)
     {

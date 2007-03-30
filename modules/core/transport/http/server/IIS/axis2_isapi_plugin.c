@@ -25,7 +25,7 @@
 /* Axis headers */
 #include <axutil_error_default.h>
 #include <axutil_log_default.h>
-#include <axis2_thread_pool.h>
+#include <axutil_thread_pool.h>
 #include <axiom_xml_reader.h>
 #include <axutil_log.h>
 
@@ -119,7 +119,7 @@ axis2_status_t init_axis2()
 	*/		
     axutil_error_t *error = NULL;
     axutil_log_t *axutil_logger = NULL;
-    axis2_thread_pool_t *thread_pool = NULL;
+    axutil_thread_pool_t *thread_pool = NULL;
 	axis2_status_t status = FALSE;	
     // We need to init xml readers before we go into threaded env     
 	axiom_xml_reader_init();		

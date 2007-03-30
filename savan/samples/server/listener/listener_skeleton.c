@@ -24,7 +24,7 @@
 #include <axis2_engine.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_conf_init.h>
-#include <axis2_thread_pool.h>
+#include <axutil_thread_pool.h>
 #include <axis2_util.h>
 #include <axis2_svc_client.h>
 #include <axis2_options.h>

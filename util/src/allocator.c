@@ -16,7 +16,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <stdlib.h>
 
 void *AXIS2_CALL

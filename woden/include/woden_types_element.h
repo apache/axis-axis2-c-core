@@ -39,10 +39,10 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <woden.h>
 #include <woden_documentable_element.h>
 #include <xml_schema.h>
@@ -142,7 +142,7 @@ struct woden_types_element_ops
     get_schemas_with_namespace) (
             void *types_el,
             const axutil_env_t *env,
-            axis2_uri_t *namespc);
+            axutil_uri_t *namespc);
 
     /**
      * Return all schemas inlined within the &lt;types&gt; element, in the order

@@ -47,7 +47,7 @@ struct axis2_op_ctx
     /** service qname */
     axutil_qname_t *svc_qname;
     /* mutex to synchronize the read/write operations */
-    axis2_thread_mutex_t *mutex;
+    axutil_thread_mutex_t *mutex;
     axis2_bool_t response_written;
 };
 
@@ -77,7 +77,7 @@ axis2_op_ctx_create(const axutil_env_t *env,
     op_ctx->op_qname = NULL;
     op_ctx->svc_qname = NULL;
     op_ctx->response_written = AXIS2_FALSE;
-    op_ctx->mutex = axis2_thread_mutex_create(env->allocator,
+    op_ctx->mutex = axutil_thread_mutex_create(env->allocator,
             AXIS2_THREAD_MUTEX_DEFAULT);
 
     if (!op_ctx->mutex)
@@ -147,7 +147,7 @@ axis2_op_ctx_free(
 
     if (op_ctx->mutex)
     {
-        axis2_thread_mutex_destroy(op_ctx->mutex);
+        axutil_thread_mutex_destroy(op_ctx->mutex);
     }
 
     AXIS2_FREE(env->allocator, op_ctx);
@@ -221,7 +221,7 @@ axis2_op_ctx_add_msg_ctx(
     axis2_msg_ctx_t *in_msg_ctx = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    axis2_thread_mutex_lock(op_ctx->mutex);
+    axutil_thread_mutex_lock(op_ctx->mutex);
 
     out_msg_ctx = op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_OUT];
     in_msg_ctx = op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_IN];
@@ -229,7 +229,7 @@ axis2_op_ctx_add_msg_ctx(
     if (out_msg_ctx && in_msg_ctx)
     {
         /*TODO:error - completed*/
-        axis2_thread_mutex_unlock(op_ctx->mutex);
+        axutil_thread_mutex_unlock(op_ctx->mutex);
         return AXIS2_FAILURE;
     }
 
@@ -242,7 +242,7 @@ axis2_op_ctx_add_msg_ctx(
         op_ctx->msg_ctx_array[AXIS2_WSDL_MESSAGE_LABEL_IN] = msg_ctx;
     }
 
-    axis2_thread_mutex_unlock(op_ctx->mutex);
+    axutil_thread_mutex_unlock(op_ctx->mutex);
     return AXIS2_SUCCESS;
 }
 
@@ -252,15 +252,15 @@ axis2_op_ctx_get_msg_ctx(
     const axutil_env_t *env,
     const axis2_wsdl_msg_labels_t message_id)
 {
-    axis2_thread_mutex_lock(op_ctx->mutex);
+    axutil_thread_mutex_lock(op_ctx->mutex);
     if (op_ctx->msg_ctx_array)
     {
         axis2_msg_ctx_t *rv = NULL;
         rv = op_ctx->msg_ctx_array[message_id];
-        axis2_thread_mutex_unlock(op_ctx->mutex);
+        axutil_thread_mutex_unlock(op_ctx->mutex);
         return rv;
     }
-    axis2_thread_mutex_unlock(op_ctx->mutex);
+    axutil_thread_mutex_unlock(op_ctx->mutex);
     return NULL;
 }
 

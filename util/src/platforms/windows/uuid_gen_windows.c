@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-#include <platforms/windows/axis2_uuid_gen_windows.h>
+#include <platforms/windows/axutil_uuid_gen_windows.h>
 #include <rpc.h>
 #include <stdio.h>
 #include <string.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL

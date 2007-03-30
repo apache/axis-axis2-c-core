@@ -33,7 +33,7 @@ struct woden_type_def_impl
     axutil_hash_t *super;
     axutil_hash_t *methods;
     axutil_qname_t *f_qname;
-    axis2_uri_t *f_system;
+    axutil_uri_t *f_system;
     axis2_char_t *f_content_model;
     axutil_generic_obj_t *f_content;
 };
@@ -70,9 +70,9 @@ axis2_status_t AXIS2_CALL
 woden_type_def_set_system(
     void *type_def,
     const axutil_env_t *env,
-    axis2_uri_t *type_system_uri);
+    axutil_uri_t *type_system_uri);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_type_def_get_system(
     void *type_def,
     const axutil_env_t *env);
@@ -374,7 +374,7 @@ axis2_status_t AXIS2_CALL
 woden_type_def_set_system(
     void *type_def,
     const axutil_env_t *env,
-    axis2_uri_t *type_system_uri)
+    axutil_uri_t *type_system_uri)
 {
     woden_type_def_impl_t *type_def_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -393,7 +393,7 @@ woden_type_def_set_system(
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_type_def_get_system(
     void *type_def,
     const axutil_env_t *env)

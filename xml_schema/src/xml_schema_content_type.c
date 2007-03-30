@@ -16,7 +16,7 @@
  */
 #include <xml_schema_defines.h>
 #include <xml_schema_content_type.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 #include <axutil_string.h>
 

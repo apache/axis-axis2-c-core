@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_UUID_GEN_UNIX_H
-#define AXIS2_UUID_GEN_UNIX_H
+#ifndef AXUTIL_UUID_GEN_UNIX_H
+#define AXUTIL_UUID_GEN_UNIX_H
 
-#include <axis2_utils.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils.h>
+#include <axutil_utils_defines.h>
 
 
 #define UUIDS_PER_TICK 100
@@ -31,7 +31,7 @@ extern "C"
 
 
 /**
- * @defgroup axis2_uuid_gen UUID Generator
+ * @defgroup axutil_uuid_gen UUID Generator
  * @ingroup axis2_util 
  * @{
  */
@@ -71,7 +71,7 @@ axis2_uuid_get_mac_addr();
  * @return generated uuid as a axis2_uuid_t
  */ 
 axis2_uuid_t* AXIS2_CALL
-axis2_uuid_gen_v1();
+axutil_uuid_gen_v1();
 
 /**
  * Generates a uuid

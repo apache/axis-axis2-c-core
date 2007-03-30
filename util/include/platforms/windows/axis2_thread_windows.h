@@ -20,7 +20,7 @@
 
 #include <windows.h>
 #include <process.h>
-#include <axis2_thread.h>
+#include <axutil_thread.h>
 
 #define SHELL_PATH "cmd.exe"
 
@@ -28,53 +28,53 @@ typedef HANDLE axis2_os_thread_t; /* Native thread */
 /* Chosen for us by apr_initialize */
 
 
-struct axis2_thread_t 
+struct axutil_thread_t 
 {
    HANDLE *td;
     void *data;
-    axis2_thread_start_t func;
+    axutil_thread_start_t func;
 };
 
-struct axis2_threadattr_t 
+struct axutil_threadattr_t 
 {
     int detach;
     size_t stacksize;
 };
 
-struct axis2_threadkey_t 
+struct axutil_threadkey_t 
 {
    DWORD key;
 };
 
-struct axis2_thread_once_t 
+struct axutil_thread_once_t 
 {
    long value;
 };
 
-AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
-axis2_threadattr_create(axutil_allocator_t *allocator);
+AXIS2_EXTERN axutil_threadattr_t* AXIS2_CALL
+axutil_threadattr_create(axutil_allocator_t *allocator);
 
 /* Destroy the threadattr object */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 threadattr_cleanup(void *data);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_threadattr_detach_set(
-    axis2_threadattr_t *attr,
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axutil_threadattr_detach_set(
+    axutil_threadattr_t *attr,
     axis2_bool_t detached);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axutil_env_t *env);
+axutil_threadattr_detach_get(axutil_threadattr_t *attr, const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_threadattr_stacksize_set(axis2_threadattr_t *attr, size_t stacksize);
+axutil_threadattr_stacksize_set(axutil_threadattr_t *attr, size_t stacksize);
 
 
-AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
-axis2_thread_create(axutil_allocator_t *allocator, axis2_threadattr_t *attr,
-        axis2_thread_start_t func, void *data);
+AXIS2_EXTERN axutil_thread_t* AXIS2_CALL
+axutil_thread_create(axutil_allocator_t *allocator, axutil_threadattr_t *attr,
+        axutil_thread_start_t func, void *data);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_exit(axis2_thread_t *thd, axutil_allocator_t *allocator);
+axutil_thread_exit(axutil_thread_t *thd, axutil_allocator_t *allocator);
 
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
 axis2_os_thread_current(void);
@@ -83,18 +83,18 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_join(axis2_thread_t *thd);
+axutil_thread_join(axutil_thread_t *thd);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_detach(axis2_thread_t *thd);
+axutil_thread_detach(axutil_thread_t *thd);
 
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
-axis2_os_thread_get(axis2_thread_t *thd, const axutil_env_t *env);
+axis2_os_thread_get(axutil_thread_t *thd, const axutil_env_t *env);
 
-AXIS2_EXTERN axis2_thread_once_t * AXIS2_CALL
-axis2_thread_once_init(axutil_allocator_t *allocator);
+AXIS2_EXTERN axutil_thread_once_t * AXIS2_CALL
+axutil_thread_once_init(axutil_allocator_t *allocator);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_once(axis2_thread_once_t *control, void(*func)(void));
+axutil_thread_once(axutil_thread_once_t *control, void(*func)(void));
 
 #endif  /* AXIS2_THREAD_WINDOWS_H */

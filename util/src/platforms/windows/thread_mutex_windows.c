@@ -16,17 +16,17 @@
  */
 
 
-#include <axis2_thread.h>
-#include <platforms/windows/axis2_thread_mutex_windows.h>
+#include <axutil_thread.h>
+#include <platforms/windows/axutil_thread_mutex_windows.h>
 
 static axis2_status_t thread_mutex_cleanup(void *data)
 {
-    axis2_thread_mutex_t *lock = NULL;
+    axutil_thread_mutex_t *lock = NULL;
     axutil_allocator_t *allocator = NULL;
     if (!data)
         return AXIS2_FAILURE;
 
-    lock = (axis2_thread_mutex_t *)data;
+    lock = (axutil_thread_mutex_t *)data;
     allocator = lock ->allocator;
 
 if (lock ->type == thread_mutex_critical_section)
@@ -45,12 +45,12 @@ if (lock ->type == thread_mutex_critical_section)
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL axis2_thread_mutex_create(axutil_allocator_t *allocator,
+AXIS2_EXTERN axutil_thread_mutex_t * AXIS2_CALL axutil_thread_mutex_create(axutil_allocator_t *allocator,
         unsigned int flags)
 {
-    axis2_thread_mutex_t *mutex = NULL;
+    axutil_thread_mutex_t *mutex = NULL;
 
-    mutex = (axis2_thread_mutex_t *)AXIS2_MALLOC(allocator, sizeof(axis2_thread_mutex_t));
+    mutex = (axutil_thread_mutex_t *)AXIS2_MALLOC(allocator, sizeof(axutil_thread_mutex_t));
     mutex->allocator = allocator;
 
     if (flags == AXIS2_THREAD_MUTEX_DEFAULT) /*unnested*/
@@ -70,7 +70,7 @@ AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL axis2_thread_mutex_create(axutil_
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex)
+axutil_thread_mutex_lock(axutil_thread_mutex_t *mutex)
 {
     if (mutex->type == thread_mutex_critical_section)
     {
@@ -89,7 +89,7 @@ axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex)
+axutil_thread_mutex_trylock(axutil_thread_mutex_t *mutex)
 {
 
     if (mutex->type == thread_mutex_critical_section)
@@ -109,7 +109,7 @@ axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
+axutil_thread_mutex_unlock(axutil_thread_mutex_t *mutex)
 {
     if (mutex->type == thread_mutex_critical_section)
     {
@@ -135,7 +135,7 @@ axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex)
+axutil_thread_mutex_destroy(axutil_thread_mutex_t *mutex)
 {
     return thread_mutex_cleanup((void*)mutex);
 }

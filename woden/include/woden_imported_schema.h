@@ -73,9 +73,9 @@ struct woden_imported_schema_ops
     set_location) (
             void *schema,
             const axutil_env_t *env,
-            struct axis2_uri *location);
+            struct axutil_uri *location);
 
-    struct axis2_uri *(AXIS2_CALL *
+    struct axutil_uri *(AXIS2_CALL *
     get_location) (
             void *schema,
             const axutil_env_t *env);

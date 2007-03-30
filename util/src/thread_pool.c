@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-#include <axis2_thread_pool.h>
+#include <axutil_thread_pool.h>
 #include <axutil_env.h>
 #include <axutil_error_default.h>
 
-struct axis2_thread_pool
+struct axutil_thread_pool
 {
     axutil_allocator_t *allocator;
 };
 
-AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL
-axis2_thread_pool_init(axutil_allocator_t *allocator)
+AXIS2_EXTERN axutil_thread_pool_t * AXIS2_CALL
+axutil_thread_pool_init(axutil_allocator_t *allocator)
 {
-    axis2_thread_pool_t *pool = NULL;
+    axutil_thread_pool_t *pool = NULL;
 
-    pool = (axis2_thread_pool_t *)AXIS2_MALLOC(allocator,
-        sizeof(axis2_thread_pool_t));
+    pool = (axutil_thread_pool_t *)AXIS2_MALLOC(allocator,
+        sizeof(axutil_thread_pool_t));
 
     if (!pool)
     {
@@ -43,7 +43,7 @@ axis2_thread_pool_init(axutil_allocator_t *allocator)
 
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_thread_pool_free(axis2_thread_pool_t *pool)
+axutil_thread_pool_free(axutil_thread_pool_t *pool)
 {
     if (!pool)
     {
@@ -57,9 +57,9 @@ axis2_thread_pool_free(axis2_thread_pool_t *pool)
     return;
 }
 
-AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
-axis2_thread_pool_get_thread(axis2_thread_pool_t *pool,
-    axis2_thread_start_t func, void *data)
+AXIS2_EXTERN axutil_thread_t* AXIS2_CALL
+axutil_thread_pool_get_thread(axutil_thread_pool_t *pool,
+    axutil_thread_start_t func, void *data)
 {
     if (!pool)
     {
@@ -69,42 +69,42 @@ axis2_thread_pool_get_thread(axis2_thread_pool_t *pool,
     {
         return NULL;
     }
-    return axis2_thread_create(pool->allocator, NULL, func, data);
+    return axutil_thread_create(pool->allocator, NULL, func, data);
 }
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_pool_join_thread(axis2_thread_pool_t *pool,
-    axis2_thread_t *thd)
+axutil_thread_pool_join_thread(axutil_thread_pool_t *pool,
+    axutil_thread_t *thd)
 {
     if (!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
-    return axis2_thread_join(thd);
+    return axutil_thread_join(thd);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_pool_exit_thread(axis2_thread_pool_t *pool,
-    axis2_thread_t *thd)
+axutil_thread_pool_exit_thread(axutil_thread_pool_t *pool,
+    axutil_thread_t *thd)
 {
     if (!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
-    return axis2_thread_exit(thd, pool->allocator);
+    return axutil_thread_exit(thd, pool->allocator);
 }
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_pool_thread_detach(axis2_thread_pool_t *pool,
-    axis2_thread_t *thd)
+axutil_thread_pool_thread_detach(axutil_thread_pool_t *pool,
+    axutil_thread_t *thd)
 {
     if (!pool || !thd)
     {
         return AXIS2_FAILURE;
     }
-    return axis2_thread_detach(thd);
+    return axutil_thread_detach(thd);
 }
 
 AXIS2_EXTERN axutil_env_t *AXIS2_CALL

@@ -16,7 +16,7 @@
  */
 
 #include <CuTest.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <w2c_url_processor.h>
 #include <w2c_xslt_template_processor.h>
 #include "w2c_util_test.h"

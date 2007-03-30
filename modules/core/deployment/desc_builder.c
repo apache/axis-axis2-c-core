@@ -18,7 +18,7 @@
 #include <axis2_desc_builder.h>
 #include <axutil_string.h>
 #include <axutil_class_loader.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_generic_obj.h>
 #include <axis2_raw_xml_in_out_msg_recv.h>
 

@@ -23,7 +23,7 @@
  * @brief represent command line option
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <w2c_engine_configuration.h>
 #include <w2c_qname2name_maker.h>

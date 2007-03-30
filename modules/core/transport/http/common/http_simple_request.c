@@ -20,7 +20,7 @@
 #include <axis2_http_transport.h>
 #include <axutil_string.h>
 #include <string.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 
 struct axis2_http_simple_request
 {

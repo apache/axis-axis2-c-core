@@ -23,9 +23,9 @@
  * @brief axis2 mime_output interface
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_error.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axutil_string.h>
@@ -37,7 +37,7 @@ extern "C"
 {
 #endif
 
-/* This should be moved to header file later axis2_utils_defines.h*/    
+/* This should be moved to header file later axutil_utils_defines.h*/    
 #define axis2_byte_t char
    
 typedef struct axiom_mime_output axiom_mime_output_t;   

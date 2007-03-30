@@ -22,7 +22,7 @@
 #include <axis2_http_server.h>
 #include <axis2_transport_in_desc.h>
 #include <axutil_param_container.h>
-#include <axis2_url.h>
+#include <axutil_url.h>
 #include <axis2_conf_init.h>
 
 /**
@@ -273,21 +273,21 @@ axis2_http_server_get_reply_to_epr(
     axis2_endpoint_ref_t *epr = NULL;
     const axis2_char_t *host_address = NULL;
     axis2_char_t *svc_path = NULL;
-    axis2_url_t *url = NULL;
+    axutil_url_t *url = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
     host_address = "127.0.0.1"; /* TODO : get from axis2.xml */
     svc_path = axis2_stracat(env, "/axis2/services/", svc_name);
-    url = axis2_url_create(env, "http", host_address,
+    url = axutil_url_create(env, "http", host_address,
             AXIS2_INTF_TO_IMPL(server)->port, svc_path);
     AXIS2_FREE(env->allocator, svc_path);
     if (! url)
     {
         return NULL;
     }
-    epr = axis2_endpoint_ref_create(env, axis2_url_to_external_form(url, env));
-    axis2_url_free(url, env);
+    epr = axis2_endpoint_ref_create(env, axutil_url_to_external_form(url, env));
+    axutil_url_free(url, env);
     return epr;
 }
 

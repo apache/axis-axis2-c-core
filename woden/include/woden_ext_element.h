@@ -37,7 +37,7 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
 #include <woden.h>
@@ -50,7 +50,7 @@ extern "C"
 typedef struct woden_ext_element woden_ext_element_t;
 typedef struct woden_ext_element_ops woden_ext_element_ops_t;
 struct axis2_xml_ext_element;
-struct axis2_uri;
+struct axutil_uri;
 
 /** @defgroup woden_ext_element Extension Element
   * @ingroup woden

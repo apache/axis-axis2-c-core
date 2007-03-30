@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_UTILS_H
-#define AXIS2_UTILS_H
+#ifndef AXUTIL_UTILS_H
+#define AXUTIL_UTILS_H
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_error.h>
 #include <axutil_env.h>
 #include <axutil_date_time.h>
@@ -30,13 +30,13 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_utils utils
+ * @defgroup axutil_utils utils
  * @ingroup axis2_util
  * @{
  */
 
 /**
- * @file axis2_utils.h
+ * @file axutil_utils.h
  */
 
 

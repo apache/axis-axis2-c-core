@@ -17,7 +17,7 @@
 
 #include <axutil_string_util.h>
 #include <string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axis2_tokenize(const axutil_env_t *env,

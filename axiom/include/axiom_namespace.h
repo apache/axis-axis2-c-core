@@ -18,7 +18,7 @@
 #ifndef AXIOM_NAMESPACE_H
 #define AXIOM_NAMESPACE_H
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 #include <axiom_output.h>
 #include <axutil_string.h>

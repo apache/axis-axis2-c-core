@@ -19,16 +19,16 @@
 #define TEST_LOG_H
 
 #include <axutil_env.h>
-#include <axis2_thread.h>
+#include <axutil_thread.h>
 
 
 void init_func(void);
 void thread_init(const axutil_env_t *env);
-void * AXIS2_CALL test_function(axis2_thread_t *td,void *param);
-void test_axis2_thread_create(const axutil_env_t *env);
-void * AXIS2_CALL test_function2(axis2_thread_t *td,void *param);
-void test_axis2_thread_detach(const axutil_env_t *env);
-void test_axis2_thread_detach2(const axutil_env_t *env);
+void * AXIS2_CALL test_function(axutil_thread_t *td,void *param);
+void test_axutil_thread_create(const axutil_env_t *env);
+void * AXIS2_CALL test_function2(axutil_thread_t *td,void *param);
+void test_axutil_thread_detach(const axutil_env_t *env);
+void test_axutil_thread_detach2(const axutil_env_t *env);
 void check_locks();
 /*call this method from main*/
 void run_test_thread(const axutil_env_t *env);

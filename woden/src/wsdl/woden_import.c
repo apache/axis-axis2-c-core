@@ -36,7 +36,7 @@ struct woden_import_impl
     axutil_hash_t *super;
     axutil_hash_t *methods;
 
-    axis2_uri_t *f_namespc;
+    axutil_uri_t *f_namespc;
 };
 
 #define INTF_TO_IMPL(import) ((woden_import_impl_t *) import)
@@ -65,9 +65,9 @@ axis2_status_t AXIS2_CALL
 woden_import_set_namespace(
     void *import,
     const axutil_env_t *env,
-    axis2_uri_t *ns_uri);
+    axutil_uri_t *ns_uri);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_import_get_namespace(
     void *import,
     const axutil_env_t *env);
@@ -316,7 +316,7 @@ woden_import_free(void *import,
 
     if (import_impl->f_namespc)
     {
-        axis2_uri_free(import_impl->f_namespc, env);
+        axutil_uri_free(import_impl->f_namespc, env);
         import_impl->f_namespc = NULL;
     }
 
@@ -431,7 +431,7 @@ axis2_status_t AXIS2_CALL
 woden_import_set_namespace(
     void *import,
     const axutil_env_t *env,
-    axis2_uri_t *ns_uri)
+    axutil_uri_t *ns_uri)
 {
     woden_import_impl_t *import_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -444,15 +444,15 @@ woden_import_set_namespace(
 
     if (import_impl->f_namespc)
     {
-        axis2_uri_free(import_impl->f_namespc, env);
+        axutil_uri_free(import_impl->f_namespc, env);
         import_impl->f_namespc = NULL;
     }
-    import_impl->f_namespc = axis2_uri_clone(ns_uri, env);
+    import_impl->f_namespc = axutil_uri_clone(ns_uri, env);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_import_get_namespace(
     void *import,
     const axutil_env_t *env)

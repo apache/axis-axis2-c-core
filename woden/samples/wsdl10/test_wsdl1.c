@@ -19,7 +19,7 @@
 #include <axiom.h>
 #include <axiom_xml_reader.h>
 #include <axutil_env.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <woden_resolver.h>
 #include <woden_wsdl10_desc.h>

@@ -18,7 +18,7 @@
 #ifndef	AXIS2_ISAPI_PLUGIN_H
 #define AXIS2_ISAPI_PLUGIN_H
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #ifdef __cplusplus
 extern "C"
 {

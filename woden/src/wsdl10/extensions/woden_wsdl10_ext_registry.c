@@ -36,7 +36,7 @@
 #include <woden_uri_attr.h>
 #include <woden_qname_or_token_any_attr.h>
 #include <woden_qname_list_or_token_any_attr.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_hash.h>
 
 typedef struct woden_wsdl10_ext_registry_impl woden_wsdl10_ext_registry_impl_t;
@@ -151,7 +151,7 @@ woden_wsdl10_ext_registry_register_component_ext(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_class,
-    axis2_uri_t *ext_namespc,
+    axutil_uri_t *ext_namespc,
     void *comp_ext);
 
 void *AXIS2_CALL
@@ -159,7 +159,7 @@ woden_wsdl10_ext_registry_query_component_ext(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_class,
-    axis2_uri_t *ext_namespc);
+    axutil_uri_t *ext_namespc);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext_namespaces(
@@ -610,7 +610,7 @@ woden_wsdl10_ext_registry_register_component_ext(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_class,
-    axis2_uri_t *ext_namespc,
+    axutil_uri_t *ext_namespc,
     void *comp_ext)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
@@ -628,7 +628,7 @@ woden_wsdl10_ext_registry_register_component_ext(
         axutil_hash_set(registry_impl->comp_ext_reg, parent_class,
                 AXIS2_HASH_KEY_STRING, inner_comp_ext_reg);
     }
-    namespc = axis2_uri_to_string(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    namespc = axutil_uri_to_string(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     axutil_hash_set(inner_comp_ext_reg, namespc, AXIS2_HASH_KEY_STRING, comp_ext);
     return AXIS2_SUCCESS;
 }
@@ -646,7 +646,7 @@ woden_wsdl10_ext_registry_query_component_ext(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_class,
-    axis2_uri_t *ext_namespc)
+    axutil_uri_t *ext_namespc)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axutil_hash_t *inner_comp_ext_reg = NULL;
@@ -658,7 +658,7 @@ woden_wsdl10_ext_registry_query_component_ext(
 
     inner_comp_ext_reg = axutil_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    namespc = axis2_uri_to_string(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    namespc = axutil_uri_to_string(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (inner_comp_ext_reg)
     {
         comp_ext = axutil_hash_get(inner_comp_ext_reg, namespc,
@@ -719,7 +719,7 @@ woden_wsdl10_ext_registry_populate(
     axutil_qname_t *q_attr_soap_action = NULL;
     axutil_qname_t *q_elem_soap_module = NULL;
     axutil_qname_t *q_elem_soap_header = NULL;
-    axis2_uri_t *uri_ns_soap = NULL;
+    axutil_uri_t *uri_ns_soap = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
@@ -865,7 +865,7 @@ woden_wsdl10_ext_registry_populate(
     registry_impl->soap_binding_fault_ref_ext =
         woden_wsdl10_soap_binding_fault_ref_exts_create(env);
 
-    uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
+    uri_ns_soap = axutil_uri_parse_string(env, WODEN_URI_NS_SOAP);
 
     woden_wsdl10_ext_registry_register_component_ext(registry, env, "binding",
             uri_ns_soap,

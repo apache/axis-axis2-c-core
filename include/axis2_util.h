@@ -39,11 +39,11 @@
 #include <axutil_stream.h>
 #include <axutil_string.h>
 #include <axutil_string_util.h>
-#include <axis2_thread_pool.h>
-#include <axis2_types.h>
-#include <axis2_url.h>
-#include <axis2_utils.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_thread_pool.h>
+#include <axutil_types.h>
+#include <axutil_url.h>
+#include <axutil_utils.h>
+#include <axutil_uuid_gen.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
 #ifdef __cplusplus

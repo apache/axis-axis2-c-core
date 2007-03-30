@@ -23,7 +23,7 @@
 #include <axis2_const.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_addr.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 const axis2_char_t *AXIS2_ADDR_DISP_NAME = "addressing_based_dispatcher";
 

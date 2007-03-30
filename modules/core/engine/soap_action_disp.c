@@ -24,7 +24,7 @@
 #include <axis2_const.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_addr.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 const axis2_char_t *AXIS2_SOAP_ACTION_DISP_NAME = "soap_action_based_dispatcher";
 

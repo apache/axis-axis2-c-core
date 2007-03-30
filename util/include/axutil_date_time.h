@@ -18,7 +18,7 @@
 #ifndef AXUTIL_DATE_TIME_H
 #define AXUTIL_DATE_TIME_H
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 
 /**

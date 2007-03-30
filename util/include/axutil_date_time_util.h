@@ -17,8 +17,8 @@
 #ifndef AXUTIL_DATE_TIME_UTIL_H
 #define AXUTIL_DATE_TIME_UTIL_H
 
-#include <axis2_utils.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
@@ -30,7 +30,7 @@ extern "C"
 
 
 /**
- * @defgroup axis2_uuid_gen UUID generator
+ * @defgroup axutil_uuid_gen UUID generator
  * @ingroup axis2_util 
  * @{
  */

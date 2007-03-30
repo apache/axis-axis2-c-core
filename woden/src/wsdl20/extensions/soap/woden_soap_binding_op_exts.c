@@ -63,12 +63,12 @@ woden_soap_binding_op_exts_get_base_impl(
     void *binding_op_exts,
     const axutil_env_t *env);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_mep(
     void *binding_op_exts,
     const axutil_env_t *env);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_action(
     void *binding_op_exts,
     const axutil_env_t *env);
@@ -336,7 +336,7 @@ woden_soap_binding_op_exts_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_mep(
     void *binding_op_exts,
     const axutil_env_t *env)
@@ -360,7 +360,7 @@ woden_soap_binding_op_exts_get_soap_mep(
     return mep  ? WODEN_URI_ATTR_GET_URI(mep, env) : NULL;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_action(
     void *binding_op_exts,
     const axutil_env_t *env)

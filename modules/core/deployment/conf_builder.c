@@ -21,7 +21,7 @@
 #include <axutil_class_loader.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axis2_transport_receiver.h>
 
 struct axis2_conf_builder

@@ -20,7 +20,7 @@
 #include <woden_attr_extensible.h>
 #include <woden_ext_element.h>
 #include <woden_xml_attr.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_hash.h>
 
 typedef struct woden_wsdl_element_impl woden_wsdl_element_impl_t;
@@ -79,13 +79,13 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_attrs_for_namespace(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axis2_bool_t AXIS2_CALL
 woden_wsdl_element_has_ext_attrs_for_namespace(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl_element_add_ext_element(
@@ -114,7 +114,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl_element_has_ext_elements_for_namespace(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl_element_add_ext_element(
@@ -143,7 +143,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl_element_has_ext_elements_for_namespace(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 void *AXIS2_CALL
 woden_wsdl_element_get_element_extensible(
@@ -534,7 +534,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_attrs_for_namespace(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -553,7 +553,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl_element_has_ext_attrs_for_namespace(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -647,7 +647,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl_element_has_ext_elements_for_namespace(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axutil_hash_t *super = NULL;

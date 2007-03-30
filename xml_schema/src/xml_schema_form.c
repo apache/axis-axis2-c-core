@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_form.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 typedef struct xml_schema_form_impl
             xml_schema_form_impl_t;
 

@@ -17,7 +17,7 @@
 
 #include <xml_schema_content_processing.h>
 #include <xml_schema_use.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef struct xml_schema_content_processing_impl
             xml_schema_content_processing_impl_t;

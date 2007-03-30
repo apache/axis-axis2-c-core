@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 #include <axutil_stream.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axiom.h>
 
 #ifdef __cplusplus

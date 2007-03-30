@@ -20,7 +20,7 @@
 #include <woden_wsdl10_reader.h>
 #include <woden_schema_constants.h>
 #include <woden_qname_util.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_qname.h>
 
 #include "../wsdl20/woden_constants.h"
@@ -37,7 +37,7 @@
 #include <axiom_stax_builder.h>
 #include <axiom_xml_reader.h>
 #include <axiom_util.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 
 typedef struct woden_resolver_impl woden_resolver_impl_t;

@@ -76,7 +76,7 @@ struct woden_wsdl_ref_ops
             void *wsdl_ref,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_location) (
             void *wsdl_ref,
             const axutil_env_t *env);
@@ -85,7 +85,7 @@ struct woden_wsdl_ref_ops
     set_location) (
             void *wsdl_ref,
             const axutil_env_t *env,
-            axis2_uri_t *loc_uri);
+            axutil_uri_t *loc_uri);
 
     void *(AXIS2_CALL *
     get_desc_element) (

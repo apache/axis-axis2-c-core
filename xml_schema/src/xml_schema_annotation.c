@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_annotation.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 /**
  * @brief xml_schema_annotation struct

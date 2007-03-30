@@ -17,7 +17,7 @@
 
 #include <xml_schema_simple_type_restriction.h>
 #include <xml_schema_obj_collection.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef struct xml_schema_simple_type_restriction_impl
             xml_schema_simple_type_restriction_impl_t;

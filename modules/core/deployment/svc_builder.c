@@ -17,7 +17,7 @@
 
 #include <axis2_svc_builder.h>
 #include <axutil_class_loader.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_property.h>
 
 struct axis2_svc_builder

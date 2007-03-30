@@ -26,7 +26,7 @@ struct axis2_callback_recv
     axis2_bool_t base_deep_copy;
     /** callback map */
     axutil_hash_t *callback_map;
-    axis2_thread_mutex_t *mutex;
+    axutil_thread_mutex_t *mutex;
 };
 
 static axis2_status_t AXIS2_CALL
@@ -74,7 +74,7 @@ axis2_callback_recv_create(
         return NULL;
     }
 
-    callback_recv->mutex = axis2_thread_mutex_create(env->allocator,
+    callback_recv->mutex = axutil_thread_mutex_create(env->allocator,
                                  AXIS2_THREAD_MUTEX_DEFAULT);
     return callback_recv;
 }
@@ -97,7 +97,7 @@ axis2_callback_recv_free(
 
     if(callback_recv->mutex)
     {
-        axis2_thread_mutex_destroy(callback_recv->mutex);
+        axutil_thread_mutex_destroy(callback_recv->mutex);
     }
 
     if (callback_recv->callback_map)

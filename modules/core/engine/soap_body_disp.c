@@ -22,7 +22,7 @@
 #include <axis2_svc.h>
 #include <axis2_const.h>
 #include <axis2_conf_ctx.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_body.h>
 

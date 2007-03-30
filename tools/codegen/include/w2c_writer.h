@@ -23,7 +23,7 @@
  * @brief represent command line option
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axiom.h>
 #include <w2c_config_property_loader.h>
 #include <w2c_engine_configuration.h>

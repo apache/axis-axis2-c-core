@@ -18,7 +18,7 @@
 
 #include <guththila_xml_writer.h>
 #include <guththila.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_env.h>
 #include <axiom_xml_writer.h>
 

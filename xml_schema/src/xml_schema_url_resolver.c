@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_url_resolver.h>
-#include <axis2_url.h>
+#include <axutil_url.h>
 #include <axutil_file_handler.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
@@ -38,29 +38,29 @@ xml_schema_url_resolver_resolve_entity(
 {
     if (base_uri && NULL != schema_location)
     {
-        axis2_uri_t *uri1 = NULL;
-        axis2_uri_t *uri2 = NULL;
+        axutil_uri_t *uri1 = NULL;
+        axutil_uri_t *uri2 = NULL;
         axis2_char_t *abs_path = NULL;
         axis2_char_t *ref = NULL;
         /*
         if(axutil_file_handler_access(base_uri, AXIS2_F_OK))
         {
              abs_path = AXIS2_GETCWD(base_uri);
-            uri1 = axis2_uri_parse_string(env, get_file_url(env, bas));
+            uri1 = axutil_uri_parse_string(env, get_file_url(env, bas));
 
         }
         */
         abs_path = get_file_url(env, base_uri);
 
-        uri1 = axis2_uri_parse_string(env, abs_path);
+        uri1 = axutil_uri_parse_string(env, abs_path);
 
         if (uri1)
         {
-            uri2 = axis2_uri_parse_relative(env, uri1, schema_location);
+            uri2 = axutil_uri_parse_relative(env, uri1, schema_location);
             if (uri2)
             {
-                ref = axis2_uri_to_string(uri2, env, 1);
-                /* axis2_uri_free(uri2, env);  */
+                ref = axutil_uri_to_string(uri2, env, 1);
+                /* axutil_uri_free(uri2, env);  */
                 return xml_schema_input_source_create_with_system_id(env, ref);
             }
         }

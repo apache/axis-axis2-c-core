@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_complex_content_restriction.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef struct xml_schema_complex_content_restriction_impl
             xml_schema_complex_content_restriction_impl_t;

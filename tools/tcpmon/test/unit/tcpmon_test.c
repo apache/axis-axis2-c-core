@@ -16,7 +16,7 @@
  */
 
 #include <CuTest.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include "tcpmon_test.h"
 #include <stdlib.h>
 #include <axutil_string.h>

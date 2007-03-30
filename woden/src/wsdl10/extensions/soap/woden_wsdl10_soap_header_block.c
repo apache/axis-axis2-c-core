@@ -180,7 +180,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attrs_for_namespace(
     void *header_block,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attrs(
@@ -191,7 +191,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_has_ext_attrs_for_namespace(
     void *header_block,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_add_ext_element(
@@ -220,7 +220,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_has_ext_elements_for_namespace(
     void *header_block,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 /* ************************************************************
  *  Non-API implementation methods
@@ -1138,7 +1138,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attrs_for_namespace(
     void *header_block,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1174,7 +1174,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_has_ext_attrs_for_namespace(
     void *header_block,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1269,7 +1269,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_has_ext_elements_for_namespace(
     void *header_block,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axutil_hash_t *super = NULL;

@@ -82,9 +82,9 @@ struct woden_wsdl10_soap_address_exts_ops
     set_soap_address) (
             void *address_exts,
             const axutil_env_t *env,
-            axis2_uri_t *address);
+            axutil_uri_t *address);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_soap_address) (
             void *address_exts,
             const axutil_env_t *env); 

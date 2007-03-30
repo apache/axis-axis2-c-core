@@ -148,7 +148,7 @@ struct woden_types_ops
     is_namespace_in_scope_with_namespace_uri) (
             void *types,
             const axutil_env_t *env,
-            axis2_uri_t *namespc_uri);
+            axutil_uri_t *namespc_uri);
 
     /*
      * Indicates if the namespace represented by the specified QName

@@ -78,12 +78,12 @@ struct woden_soap_binding_op_exts_ops
             void *soap_binding_op_exts,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_soap_mep) (
             void *binding_op_exts,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_soap_action) (
             void *binding_op_exts,
             const axutil_env_t *env); 

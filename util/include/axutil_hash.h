@@ -23,7 +23,7 @@
  * @brief Axis2 Hash Tables
  */
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 
 #ifdef __cplusplus

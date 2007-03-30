@@ -84,12 +84,12 @@ struct woden_wsdl10_soap_binding_exts_ops
             void *binding_exts,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_soap_underlying_protocol) (
             void *binding_exts,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_soap_mep_default) (
             void *binding_exts,
             const axutil_env_t *env);

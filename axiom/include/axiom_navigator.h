@@ -18,7 +18,7 @@
 #ifndef AXIOM_NAVIGATOR_H
 #define AXIOM_NAVIGATOR_H
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_env.h>
 #include <axiom_node.h>
 

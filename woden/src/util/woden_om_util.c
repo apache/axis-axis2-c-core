@@ -18,7 +18,7 @@
 #include "woden_om_util.h"
 #include <axutil_qname.h>
 #include <axiom_element.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 
 
 AXIS2_EXTERN axutil_qname_t * AXIS2_CALL
@@ -65,14 +65,14 @@ woden_om_util_register_unique_prefix(
     axis2_char_t *namespc_uri_str,
     axutil_hash_t *namespcs)
 {
-    axis2_uri_t *ns_uri = NULL;
-    axis2_uri_t *uri = NULL;
+    axutil_uri_t *ns_uri = NULL;
+    axutil_uri_t *uri = NULL;
     axis2_char_t *ns_uri_str = NULL;
     axis2_char_t *tmp_prefix = NULL;
 
     ns_uri = axutil_hash_get(namespcs, prefix, AXIS2_HASH_KEY_STRING);
     if (ns_uri)
-        ns_uri_str = axis2_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+        ns_uri_str = axutil_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (ns_uri_str && 0 == axis2_strcmp(ns_uri_str, namespc_uri_str))
     {
         /* Namespace already registerd */
@@ -85,12 +85,12 @@ woden_om_util_register_unique_prefix(
 
         temp = axis2_stracat(env, tmp_prefix, "_");
         ns_uri = axutil_hash_get(namespcs, temp, AXIS2_HASH_KEY_STRING);
-        ns_uri_str = axis2_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+        ns_uri_str = axutil_uri_to_string(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
         AXIS2_FREE(env->allocator, tmp_prefix);
         tmp_prefix = axis2_strdup(env, temp);
         AXIS2_FREE(env->allocator, temp);
     }
-    uri = axis2_uri_parse_string(env, namespc_uri_str);
+    uri = axutil_uri_parse_string(env, namespc_uri_str);
     axutil_hash_set(namespcs, prefix, AXIS2_HASH_KEY_STRING, uri);
 
     return AXIS2_SUCCESS;

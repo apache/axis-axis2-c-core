@@ -24,7 +24,7 @@
  *          Constants for XML Schema elements, attributes and URIs.
  */
  
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_qname.h>
 
 #ifdef __cplusplus

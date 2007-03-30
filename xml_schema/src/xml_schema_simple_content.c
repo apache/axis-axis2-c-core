@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_simple_content.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef struct xml_schema_simple_content_impl
             xml_schema_simple_content_impl_t;

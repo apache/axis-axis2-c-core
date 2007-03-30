@@ -40,7 +40,7 @@ struct woden_wsdl10_endpoint_impl
       woden_nc_name_t *f_name;
       axutil_qname_t *f_binding_qname;
       void *f_binding;
-      axis2_uri_t *f_address;
+      axutil_uri_t *f_address;
 };
 
 #define INTF_TO_IMPL(endpoint) ((woden_wsdl10_endpoint_impl_t *) endpoint)
@@ -79,7 +79,7 @@ woden_wsdl10_endpoint_get_binding(
       void *endpoint,
       const axutil_env_t *env);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_endpoint_get_address(
       void *endpoint,
       const axutil_env_t *env);
@@ -113,7 +113,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_endpoint_set_address(
       void *endpoint,
       const axutil_env_t *env,
-      axis2_uri_t *uri);
+      axutil_uri_t *uri);
 
 /******************************************************************************
  *  Non-API implementation methods
@@ -783,7 +783,7 @@ woden_wsdl10_endpoint_free(void *endpoint,
 
       if (endpoint_impl->f_address)
       {
-	    axis2_uri_free(endpoint_impl->f_address, env);
+	    axutil_uri_free(endpoint_impl->f_address, env);
 	    endpoint_impl->f_address = NULL;
       }
 
@@ -944,7 +944,7 @@ woden_wsdl10_endpoint_get_binding(
       return endpoint_impl->f_binding;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_endpoint_get_address(
       void *endpoint,
       const axutil_env_t *env)
@@ -1044,7 +1044,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_endpoint_set_address(
       void *endpoint,
       const axutil_env_t *env,
-      axis2_uri_t *uri)
+      axutil_uri_t *uri)
 {
       woden_wsdl10_endpoint_impl_t *endpoint_impl = NULL;
       axutil_hash_t *super = NULL;
@@ -1056,11 +1056,11 @@ woden_wsdl10_endpoint_set_address(
 
       if (endpoint_impl->f_address)
       {
-	    axis2_uri_free(endpoint_impl->f_address, env);
+	    axutil_uri_free(endpoint_impl->f_address, env);
 	    endpoint_impl->f_address = NULL;
       }
 
-      endpoint_impl->f_address = axis2_uri_clone(uri, env);
+      endpoint_impl->f_address = axutil_uri_clone(uri, env);
       return AXIS2_SUCCESS;
 }
 

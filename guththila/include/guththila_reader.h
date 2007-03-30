@@ -27,7 +27,7 @@
 #include "guththila_defines.h"
 #include <axutil_env.h>
 #include "guththila_error.h"
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef enum guththila_reader_types
   {

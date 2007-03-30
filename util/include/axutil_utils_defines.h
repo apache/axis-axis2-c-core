@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_UTILS_DEFINES_H
-#define AXIS2_UTILS_DEFINES_H
+#ifndef AXUTIL_UTILS_DEFINES_H
+#define AXUTIL_UTILS_DEFINES_H
 
 #include <stddef.h>
 

@@ -16,7 +16,7 @@
  */
 
 #include <axutil_linked_list.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 struct axutil_linked_list
 {

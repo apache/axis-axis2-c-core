@@ -18,7 +18,7 @@
 #include <xml_schema_includes.h>
 #include <stdio.h>
 #include <axutil_env.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 
 axis2_status_t
 xml_schema_test(

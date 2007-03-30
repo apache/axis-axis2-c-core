@@ -22,9 +22,9 @@
 #include <stdlib.h>
 #include <axutil_error_default.h>
 #include <axutil_log_default.h>
-#include <axis2_thread_pool.h>
+#include <axutil_thread_pool.h>
 #include <signal.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 #include <ctype.h>
 #include <axiom_xml_reader.h>
 
@@ -56,7 +56,7 @@ init_syetem_env(
     axutil_log_t *log = axutil_log_create(allocator, NULL, log_file);
 	 /* if (!log) */
 /* 		  log = axutil_log_create_default (allocator); */
-    axis2_thread_pool_t *thread_pool = axis2_thread_pool_init(allocator);
+    axutil_thread_pool_t *thread_pool = axutil_thread_pool_init(allocator);
     /* We need to init the parser in main thread before spawning child
      * threads
      */

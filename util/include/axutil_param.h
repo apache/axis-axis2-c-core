@@ -23,7 +23,7 @@
  * @brief Axis2 param interface
  */
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 #include <axutil_hash.h>
 #include <axutil_array_list.h>

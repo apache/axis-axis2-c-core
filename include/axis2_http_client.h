@@ -35,7 +35,7 @@
 #include <axutil_env.h>
 #include <axis2_http_simple_response.h>
 #include <axis2_http_simple_request.h>
-#include <axis2_url.h>
+#include <axutil_url.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -83,13 +83,13 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_set_url(axis2_http_client_t *client,
         const axutil_env_t *env,
-        axis2_url_t *url);
+        axutil_url_t *url);
 
     /**
      * @param client pointer to client
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_url_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_url_t *AXIS2_CALL
     axis2_http_client_get_url(const axis2_http_client_t *client,
         const axutil_env_t *env);
 
@@ -192,7 +192,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_http_client_t *AXIS2_CALL
     axis2_http_client_create (const axutil_env_t *env,
-        axis2_url_t *url);
+        axutil_url_t *url);
 
     /**
      * Free http_client passed as void pointer. This will be

@@ -55,7 +55,7 @@
 
 #include "../wsdl20/woden_constants.h"
 #include <axutil_array_list.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 
 typedef struct woden_component_model_builder_impl
 {
@@ -101,7 +101,7 @@ build_element_decls(
     void *builder,
     const axutil_env_t *env,
     void *schema_def,
-    axis2_uri_t *type_system_uri);
+    axutil_uri_t *type_system_uri);
 
 /*
  * Extract the type definitions from the given schema.
@@ -111,7 +111,7 @@ build_type_defs(
     void *builder,
     const axutil_env_t *env,
     void *schema_def,
-    axis2_uri_t *type_system_uri);
+    axutil_uri_t *type_system_uri);
 
 /* *******************************************************************************
  *  INTERFACE
@@ -229,7 +229,7 @@ create_component_exts(
     const axutil_env_t *env,
     axis2_char_t *parent_class,
     void *parent_elem,
-    axis2_uri_t *ext_ns);
+    axutil_uri_t *ext_ns);
 
 /* *******************************************************************************
  *  SERVICE
@@ -393,7 +393,7 @@ build_elements_and_types(
 {
     woden_component_model_builder_impl_t *builder_impl = NULL;
     void *types = NULL;
-    axis2_uri_t *type_system_uri = NULL;
+    axutil_uri_t *type_system_uri = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
@@ -402,7 +402,7 @@ build_elements_and_types(
     desc = woden_desc_to_desc_element(desc, env);
     types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
 
-    type_system_uri = axis2_uri_parse_string(env, WODEN_TYPE_XSD_2001);
+    type_system_uri = axutil_uri_parse_string(env, WODEN_TYPE_XSD_2001);
 
     if (types)
     {
@@ -462,7 +462,7 @@ build_element_decls(
     void *builder,
     const axutil_env_t *env,
     void *schema_def,
-    axis2_uri_t *type_system_uri)
+    axutil_uri_t *type_system_uri)
 {
     woden_component_model_builder_impl_t *builder_impl = NULL;
     axis2_char_t *schema_tns = NULL;
@@ -519,7 +519,7 @@ build_type_defs(
     void *builder,
     const axutil_env_t *env,
     void *schema_def,
-    axis2_uri_t *type_system_uri)
+    axutil_uri_t *type_system_uri)
 {
     woden_component_model_builder_impl_t *builder_impl = NULL;
     axis2_char_t *schema_tns = NULL;
@@ -1014,7 +1014,7 @@ build_binding_exts(
     woden_ext_registry_t *er = NULL;
     axutil_array_list_t *ext_namespcs = NULL;
     int i = 0, size = 0;
-    axis2_uri_t *binding_type = NULL;
+    axutil_uri_t *binding_type = NULL;
     axis2_char_t *binding_type_str = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1033,7 +1033,7 @@ build_binding_exts(
     size = axutil_array_list_size(ext_namespcs, env);
     for (i = 0; i < size; i++)
     {
-        axis2_uri_t *ext_ns = NULL;
+        axutil_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
         void *configurable = NULL;
@@ -1072,18 +1072,18 @@ build_binding_exts(
      * extensions can be registered in some way and interpreted here at run time.
      */
     binding_type = WODEN_BINDING_GET_TYPE(binding, env);
-    binding_type_str = axis2_uri_to_string(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
+    binding_type_str = axutil_uri_to_string(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (0 == axis2_strcmp(WODEN_URI_NS_SOAP, binding_type_str))
     {
         void *sbe = NULL;
-        axis2_uri_t *uri_ns_soap = NULL;
+        axutil_uri_t *uri_ns_soap = NULL;
 
         /* If the binding type is SOAP, the {soap version} property defaults to "1.2" so if a
          * a SOAP Binding Extensions object has not already been created, create one now to handle
          * this default value.
          */
         binding = woden_binding_to_wsdl_component(binding, env);
-        uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
+        uri_ns_soap = axutil_uri_parse_string(env, WODEN_URI_NS_SOAP);
         if (! WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(binding,
                 env, uri_ns_soap))
         {
@@ -1114,7 +1114,7 @@ build_binding_fault_exts(
     axutil_array_list_t *ext_namespcs = NULL;
     int i = 0, size = 0;
     void *parent_element = NULL;
-    axis2_uri_t *binding_type = NULL;
+    axutil_uri_t *binding_type = NULL;
     axis2_char_t *binding_type_str = NULL;
 
 
@@ -1134,7 +1134,7 @@ build_binding_fault_exts(
     size = axutil_array_list_size(ext_namespcs, env);
     for (i = 0; i < size; i++)
     {
-        axis2_uri_t *ext_ns = NULL;
+        axutil_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
 
@@ -1170,10 +1170,10 @@ build_binding_fault_exts(
     parent_element = WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(bind_fault, env);
     parent_element = woden_binding_to_binding_element(parent_element, env);
     binding_type = WODEN_BINDING_ELEMENT_GET_TYPE(parent_element, env);
-    binding_type_str = axis2_uri_to_string(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
+    binding_type_str = axutil_uri_to_string(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (0 == axis2_strcmp(WODEN_URI_NS_SOAP, binding_type_str))
     {
-        axis2_uri_t *uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
+        axutil_uri_t *uri_ns_soap = axutil_uri_parse_string(env, WODEN_URI_NS_SOAP);
 
         /* If the binding type is SOAP, the {soap fault code} and {soap fault subcodes} properties
          * default to xs:token "#any", so if a SOAP Binding Fault Extensions object has not already 
@@ -1206,7 +1206,7 @@ build_binding_op_exts(
     axutil_array_list_t *ext_namespcs = NULL;
     int i = 0, size = 0;
     void *parent_element = NULL;
-    axis2_uri_t *binding_type = NULL;
+    axutil_uri_t *binding_type = NULL;
     axis2_char_t *binding_type_str = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1224,7 +1224,7 @@ build_binding_op_exts(
      */
     for (i = 0; i < size; i++)
     {
-        axis2_uri_t *ext_ns = NULL;
+        axutil_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
 
@@ -1260,10 +1260,10 @@ build_binding_op_exts(
     parent_element = WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(bind_op, env);
     parent_element = woden_binding_to_binding_element(parent_element, env);
     binding_type = WODEN_BINDING_ELEMENT_GET_TYPE(parent_element, env);
-    binding_type_str = axis2_uri_to_string(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
+    binding_type_str = axutil_uri_to_string(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (0 == axis2_strcmp(WODEN_URI_NS_SOAP, binding_type_str))
     {
-        axis2_uri_t *uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
+        axutil_uri_t *uri_ns_soap = axutil_uri_parse_string(env, WODEN_URI_NS_SOAP);
         /*
          * If the binding type is HTTP then the {http input serialization} and {http output serialization} 
          * properties have default values defined by the HTTP Binding rules in the WSDL 2.0 Part 2 Adjuncts
@@ -1311,7 +1311,7 @@ build_binding_msg_ref_exts(
         size = axutil_array_list_size(ext_namespcs, env);
     for (i = 0; i < size; i++)
     {
-        axis2_uri_t *ext_ns = NULL;
+        axutil_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
 
@@ -1360,7 +1360,7 @@ build_binding_fault_ref_exts(
         size = axutil_array_list_size(ext_namespcs, env);
     for (i = 0; i < size; i++)
     {
-        axis2_uri_t *ext_ns = NULL;
+        axutil_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
 
@@ -1397,7 +1397,7 @@ create_component_exts(
     const axutil_env_t *env,
     axis2_char_t *parent_class,
     void *parent_elem,
-    axis2_uri_t *ext_ns)
+    axutil_uri_t *ext_ns)
 {
     woden_component_model_builder_impl_t *builder_impl = NULL;
     woden_ext_registry_t *er = NULL;

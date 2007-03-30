@@ -32,7 +32,7 @@
 #include <woden.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 
 /** @defgroup woden_type_def Type Definition
   * @ingroup woden
@@ -88,9 +88,9 @@ struct woden_type_def_ops
     set_system) (
             void *type_def,
             const axutil_env_t *env,
-            axis2_uri_t *type_system_uri);
+            axutil_uri_t *type_system_uri);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_system) (
             void *type_def,
             const axutil_env_t *env);

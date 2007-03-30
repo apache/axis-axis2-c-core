@@ -23,10 +23,10 @@
   * @brief axis2 class loader interface
   */
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_qname.h>
 #include <axutil_error.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_dll_desc.h>
 #include <axutil_param.h>
 

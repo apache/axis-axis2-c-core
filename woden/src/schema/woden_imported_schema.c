@@ -17,7 +17,7 @@
 
 #include <woden_imported_schema.h>
 #include <xml_schema.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 
 typedef struct woden_imported_schema_impl woden_imported_schema_impl_t;
 
@@ -32,7 +32,7 @@ struct woden_imported_schema_impl
     woden_obj_types_t obj_type;
     axutil_hash_t *methods;
     axutil_hash_t *super;
-    axis2_uri_t *f_schema_location;
+    axutil_uri_t *f_schema_location;
 };
 
 #define INTF_TO_IMPL(schema) \
@@ -62,9 +62,9 @@ axis2_status_t AXIS2_CALL
 woden_imported_schema_set_location(
     void *schema,
     const axutil_env_t *env,
-    axis2_uri_t *location);
+    axutil_uri_t *location);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_imported_schema_get_location(
     void *schema,
     const axutil_env_t *env);
@@ -232,7 +232,7 @@ woden_imported_schema_free(
 
     if (schema_impl->f_schema_location)
     {
-        axis2_uri_free(schema_impl->f_schema_location, env);
+        axutil_uri_free(schema_impl->f_schema_location, env);
         schema_impl->f_schema_location = NULL;
     }
 
@@ -327,7 +327,7 @@ axis2_status_t AXIS2_CALL
 woden_imported_schema_set_location(
     void *schema,
     const axutil_env_t *env,
-    axis2_uri_t *location)
+    axutil_uri_t *location)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -336,14 +336,14 @@ woden_imported_schema_set_location(
 
     if (schema_impl->f_schema_location)
     {
-        axis2_uri_free(schema_impl->f_schema_location, env);
+        axutil_uri_free(schema_impl->f_schema_location, env);
         schema_impl->f_schema_location = NULL;
     }
-    schema_impl->f_schema_location = axis2_uri_clone(location, env);
+    schema_impl->f_schema_location = axutil_uri_clone(location, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_imported_schema_get_location(
     void *schema,
     const axutil_env_t *env)

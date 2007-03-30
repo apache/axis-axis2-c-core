@@ -20,7 +20,7 @@
 #include <axis2_const.h>
 #include <axutil_error.h>
 #include <axis2_defines.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_msg_ctx.h>

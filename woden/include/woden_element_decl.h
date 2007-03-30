@@ -38,10 +38,10 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_array_list.h>
 #include <axutil_generic_obj.h>
 #include <woden.h>
@@ -109,7 +109,7 @@ struct woden_element_decl_ops
      *  
      * @return the URI identifying the type system
      */
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_system) (
             void *decl,
             const axutil_env_t *env); 
@@ -162,7 +162,7 @@ struct woden_element_decl_ops
     set_system) (
             void *decl,
             const axutil_env_t *env,
-            axis2_uri_t *type_system_uri); 
+            axutil_uri_t *type_system_uri); 
 
     axis2_status_t (AXIS2_CALL *
     set_content_model) (

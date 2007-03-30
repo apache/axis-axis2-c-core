@@ -23,7 +23,7 @@
  * @brief Axis2 Xml Schema Constants
  */
  
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <xml_schema_defines.h>
 

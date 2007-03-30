@@ -45,7 +45,7 @@ struct woden_wsdl10_soap_module_impl
     axis2_bool_t f_required;
     void *f_attr_ext;
     void *f_elem_ext;
-    axis2_uri_t *f_ref;
+    axutil_uri_t *f_ref;
 };
 
 #define INTF_TO_IMPL(module) ((woden_wsdl10_soap_module_impl_t *) module)
@@ -69,7 +69,7 @@ woden_wsdl10_soap_module_type(
  *  Component model methods (SOAPHeaderBlock interface), some shared with Element model
  * ***********************************************************************/
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_soap_module_get_ref(
     void *module,
     axutil_env_t *env);
@@ -97,7 +97,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_module_set_ref(
     void *module,
     axutil_env_t *env,
-    axis2_uri_t *uri);
+    axutil_uri_t *uri);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_module_set_parent_element(
@@ -181,7 +181,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_module_get_ext_attrs_for_namespace(
     void *module,
     axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_module_get_ext_attrs(
@@ -192,7 +192,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_module_has_ext_attrs_for_namespace(
     void *module,
     axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_module_add_ext_element(
@@ -221,7 +221,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_module_has_ext_elements_for_namespace(
     void *module,
     axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 static woden_wsdl10_soap_module_t *
 create(const axutil_env_t *env);
@@ -629,7 +629,7 @@ woden_wsdl10_soap_module_free(void *module,
 
     if (module_impl->f_ref)
     {
-        axis2_uri_free(module_impl->f_ref, env);
+        axutil_uri_free(module_impl->f_ref, env);
         module_impl->f_ref = NULL;
     }
 
@@ -726,7 +726,7 @@ woden_wsdl10_soap_module_resolve_methods(
  *  Component model methods (SOAPHeaderBlock interface), some shared with Element model
  * ***********************************************************************/
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_soap_module_get_ref(
     void *module,
     axutil_env_t *env)
@@ -799,7 +799,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_module_set_ref(
     void *module,
     axutil_env_t *env,
-    axis2_uri_t *uri)
+    axutil_uri_t *uri)
 {
     woden_wsdl10_soap_module_impl_t *module_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -812,11 +812,11 @@ woden_wsdl10_soap_module_set_ref(
 
     if (module_impl->f_ref)
     {
-        axis2_uri_free(module_impl->f_ref, env);
+        axutil_uri_free(module_impl->f_ref, env);
         module_impl->f_ref = NULL;
     }
 
-    module_impl->f_ref = axis2_uri_clone(uri, env);
+    module_impl->f_ref = axutil_uri_clone(uri, env);
 
     return AXIS2_SUCCESS;
 
@@ -1087,7 +1087,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_module_get_ext_attrs_for_namespace(
     void *module,
     axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl10_soap_module_impl_t *module_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1123,7 +1123,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_module_has_ext_attrs_for_namespace(
     void *module,
     axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl10_soap_module_impl_t *module_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1218,7 +1218,7 @@ axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_module_has_ext_elements_for_namespace(
     void *module,
     axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl10_soap_module_impl_t *module_impl = NULL;
     axutil_hash_t *super = NULL;

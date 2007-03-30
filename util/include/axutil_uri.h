@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_URI_H
-#define AXIS2_URI_H
+#ifndef AXUTIL_URI_H
+#define AXUTIL_URI_H
 
 /**
- * @file axis2_uri.h
+ * @file axutil_uri.h
  * @brief AXIS2-UTIL URI Routines
- * axis2_uri.h: External Interface of axis2_uri.c
+ * axutil_uri.h: External Interface of axutil_uri.c
  */
 
 #include <axutil_string.h>
-#include <axis2_utils.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 
 #ifdef __cplusplus
@@ -35,7 +35,7 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axis2_uri URI
+     * @defgroup axutil_uri URI
      * @ingroup axis2_util
      * @{
      */
@@ -76,11 +76,11 @@ extern "C"
     /** Omit the "?queryarg" from the path */
 #define AXIS2_URI_UNP_OMITQUERY       (1U<<5)
 
-    /** @see axis2_uri_t */
+    /** @see axutil_uri_t */
     typedef  unsigned short  axis2_port_t;
-    /* axis2_uri.c */
+    /* axutil_uri.c */
 
-    typedef struct axis2_uri axis2_uri_t;
+    typedef struct axutil_uri axutil_uri_t;
 
     /**
      * Return the default port for a given scheme.  The schemes recognized are
@@ -89,39 +89,39 @@ extern "C"
      * @return The default port for this scheme
      */
     AXIS2_EXTERN axis2_port_t AXIS2_CALL
-    axis2_uri_port_of_scheme(
+    axutil_uri_port_of_scheme(
         const axis2_char_t *scheme_str);
 
     /**
-     * Parse a given URI, fill in all supplied fields of a axis2_uri_t
+     * Parse a given URI, fill in all supplied fields of a axutil_uri_t
      * structure. This eliminates the necessity of extracting host, port,
      * path, query info repeatedly in the modules.
      * @param uri The uri to parse
-     * @param uptr The axis2_uri_t to fill out
+     * @param uptr The axutil_uri_t to fill out
      * @return AXIS2_SUCCESS for success or error code
      */
-    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-    axis2_uri_parse_string(
+    AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
+    axutil_uri_parse_string(
         const axutil_env_t *env,
         const axis2_char_t *uri);
 
     /**
      * Special case for CONNECT parsing: it comes with the hostinfo part only
      * @param hostinfo The hostinfo string to parse
-     * @param uptr The axis2_uri_t to fill out
+     * @param uptr The axutil_uri_t to fill out
      * @return AXIS2_SUCCESS for success or error code
      */
-    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-    axis2_uri_parse_hostinfo(
+    AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
+    axutil_uri_parse_hostinfo(
         const axutil_env_t *env,
         const axis2_char_t *hostinfo);
 
     /** Resolve relative to a base.  This means host/etc, and (crucially) path */
-    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-    axis2_uri_resolve_relative(
+    AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
+    axutil_uri_resolve_relative(
         const axutil_env_t *env,
-        const axis2_uri_t* base,
-        axis2_uri_t* uptr);
+        const axutil_uri_t* base,
+        axutil_uri_t* uptr);
 
     /**
      * Return a URI created from a context URI and a relative URI.
@@ -135,18 +135,18 @@ extern "C"
      * absolute file path
      * @return the URIcreated from context_uri and uri
      */
-    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-    axis2_uri_parse_relative(
+    AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
+    axutil_uri_parse_relative(
         const axutil_env_t *env,
-        const axis2_uri_t* base,
+        const axutil_uri_t* base,
         const char* uri);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_uri_free(axis2_uri_t *uri,
+    axutil_uri_free(axutil_uri_t *uri,
             const axutil_env_t *env);
 
     /**
-     * Unparse a axis2_uri_t structure to an URI string.  Optionally 
+     * Unparse a axutil_uri_t structure to an URI string.  Optionally 
      * suppress the password for security reasons.
      * @param uptr All of the parts of the uri
      * @param flags How to unparse the uri.  One of:
@@ -162,28 +162,28 @@ extern "C"
      * @return The uri as a string
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_uri_to_string(const axis2_uri_t *uri,
+    axutil_uri_to_string(const axutil_uri_t *uri,
             const axutil_env_t *env,
             unsigned flags);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_uri_get_protocol(axis2_uri_t *uri,
+    axutil_uri_get_protocol(axutil_uri_t *uri,
             const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_uri_get_server(axis2_uri_t *uri,
+    axutil_uri_get_server(axutil_uri_t *uri,
             const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_port_t AXIS2_CALL
-    axis2_uri_get_port(axis2_uri_t *uri,
+    axutil_uri_get_port(axutil_uri_t *uri,
             const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_uri_get_path(axis2_uri_t *uri,
+    axutil_uri_get_path(axutil_uri_t *uri,
             const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_uri_t* AXIS2_CALL
-    axis2_uri_clone(const axis2_uri_t *uri,
+    AXIS2_EXTERN axutil_uri_t* AXIS2_CALL
+    axutil_uri_clone(const axutil_uri_t *uri,
             const axutil_env_t *env);
 
 

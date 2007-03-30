@@ -38,7 +38,7 @@ struct woden_interface_op_impl
     axutil_hash_t *super;
     axutil_hash_t *methods;
     axutil_qname_t *f_qname;
-    axis2_uri_t *f_msg_exchange_pattern;
+    axutil_uri_t *f_msg_exchange_pattern;
     axutil_array_list_t *f_style;
     axutil_array_list_t *f_msg_refs;
     axutil_array_list_t *f_fault_refs;
@@ -75,7 +75,7 @@ woden_interface_op_get_qname(
     void *interface_op,
     const axutil_env_t *env);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_interface_op_get_msg_exchange_pattern(
     void *interface_op,
     const axutil_env_t *env);
@@ -114,9 +114,9 @@ axis2_status_t AXIS2_CALL
 woden_interface_op_set_pattern(
     void *interface_op,
     const axutil_env_t *env,
-    axis2_uri_t *uri);
+    axutil_uri_t *uri);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_interface_op_get_pattern(
     void *interface_op,
     const axutil_env_t *env);
@@ -125,13 +125,13 @@ axis2_status_t AXIS2_CALL
 woden_interface_op_add_style_uri(
     void *interface_op,
     const axutil_env_t *env,
-    axis2_uri_t *uri);
+    axutil_uri_t *uri);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_remove_style_uri(
     void *interface_op,
     const axutil_env_t *env,
-    axis2_uri_t *uri);
+    axutil_uri_t *uri);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_add_interface_msg_ref_element(
@@ -730,7 +730,7 @@ woden_interface_op_free(
 
     if (interface_op_impl->f_msg_exchange_pattern)
     {
-        axis2_uri_free(interface_op_impl->f_msg_exchange_pattern, env);
+        axutil_uri_free(interface_op_impl->f_msg_exchange_pattern, env);
         interface_op_impl->f_msg_exchange_pattern = NULL;
     }
 
@@ -905,7 +905,7 @@ woden_interface_op_get_qname(
     return interface_op_impl->f_qname;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_interface_op_get_msg_exchange_pattern(
     void *interface_op,
     const axutil_env_t *env)
@@ -1018,7 +1018,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_op_set_pattern(
     void *interface_op,
     const axutil_env_t *env,
-    axis2_uri_t *uri)
+    axutil_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1031,16 +1031,16 @@ woden_interface_op_set_pattern(
 
     if (interface_op_impl->f_msg_exchange_pattern)
     {
-        axis2_uri_free(interface_op_impl->f_msg_exchange_pattern, env);
+        axutil_uri_free(interface_op_impl->f_msg_exchange_pattern, env);
         interface_op_impl->f_msg_exchange_pattern = NULL;
     }
-    interface_op_impl->f_msg_exchange_pattern = axis2_uri_clone(uri, env);
+    interface_op_impl->f_msg_exchange_pattern = axutil_uri_clone(uri, env);
 
 
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_interface_op_get_pattern(
     void *interface_op,
     const axutil_env_t *env)
@@ -1060,7 +1060,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_op_add_style_uri(
     void *interface_op,
     const axutil_env_t *env,
-    axis2_uri_t *uri)
+    axutil_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1080,7 +1080,7 @@ woden_interface_op_add_style_uri(
             return AXIS2_FAILURE;
         }
     }
-    axutil_array_list_add(interface_op_impl->f_style, env, axis2_uri_clone(uri, env));
+    axutil_array_list_add(interface_op_impl->f_style, env, axutil_uri_clone(uri, env));
     return AXIS2_SUCCESS;
 }
 
@@ -1088,7 +1088,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_op_remove_style_uri(
     void *interface_op,
     const axutil_env_t *env,
-    axis2_uri_t *uri)
+    axutil_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axutil_hash_t *super = NULL;

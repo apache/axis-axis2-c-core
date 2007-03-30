@@ -30,9 +30,9 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <woden.h>
 
 #ifdef __cplusplus
@@ -74,7 +74,7 @@ struct woden_wsdl_component_ops
     get_component_exts_for_namespace) (
             void *wsdl_component,
             const axutil_env_t *env,
-            axis2_uri_t *namespc);
+            axutil_uri_t *namespc);
 
 };
 

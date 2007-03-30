@@ -10,7 +10,7 @@
 #include <axiom_xml_writer.h>
 #include <axutil_property.h>
 #include <axutil_param.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 #include <axutil_generic_obj.h>
 #include <axis2_const.h>
 #include <axis2_util.h>

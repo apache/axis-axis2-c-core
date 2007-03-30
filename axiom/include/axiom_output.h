@@ -18,8 +18,8 @@
 #ifndef AXIOM_OUTPUT_H
 #define AXIOM_OUTPUT_H
 
-#include <axis2_utils_defines.h>
-#include <axis2_utils.h>
+#include <axutil_utils_defines.h>
+#include <axutil_utils.h>
 #include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_xml_writer.h>

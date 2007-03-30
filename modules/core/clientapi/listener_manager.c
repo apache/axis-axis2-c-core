@@ -48,7 +48,7 @@ typedef struct axis2_listener_manager_worker_func_args
 }axis2_listener_manager_worker_func_args_t;
 
 void *AXIS2_THREAD_FUNC
-axis2_listener_manager_worker_func(axis2_thread_t *thd,
+axis2_listener_manager_worker_func(axutil_thread_t *thd,
     void *data);
 
 AXIS2_EXTERN axis2_listener_manager_t *AXIS2_CALL
@@ -122,7 +122,7 @@ axis2_listener_manager_make_sure_started(axis2_listener_manager_t *listener_mana
                 listener = axis2_transport_in_desc_get_recv(transport_in, env);
                 if (listener)
                 {
-                    axis2_thread_t *worker_thread = NULL;
+                    axutil_thread_t *worker_thread = NULL;
                     axis2_listener_manager_worker_func_args_t *arg_list = NULL;
                     arg_list = AXIS2_MALLOC(env->allocator,
                             sizeof(axis2_listener_manager_worker_func_args_t));
@@ -259,7 +259,7 @@ axis2_listener_manager_get_conf_ctx(const axis2_listener_manager_t *listener_man
 }
 
 void *AXIS2_THREAD_FUNC
-axis2_listener_manager_worker_func(axis2_thread_t *thd,
+axis2_listener_manager_worker_func(axutil_thread_t *thd,
     void *data)
 {
     axis2_listener_manager_worker_func_args_t *args_list = NULL;

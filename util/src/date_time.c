@@ -20,7 +20,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <axutil_error.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_date_time_util.h>
 
 struct axutil_date_time

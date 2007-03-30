@@ -16,7 +16,7 @@
  */
 
 #include <woden_element_decl.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_hash.h>
 
 typedef struct woden_element_decl_impl woden_element_decl_impl_t;
@@ -32,7 +32,7 @@ struct woden_element_decl_impl
     axutil_hash_t *super;
 
     axutil_qname_t *f_qname;
-    axis2_uri_t *f_system;
+    axutil_uri_t *f_system;
     axis2_char_t *f_content_model;
     axutil_generic_obj_t *f_content;
 };
@@ -63,7 +63,7 @@ woden_element_decl_get_qname(
     void *decl,
     const axutil_env_t *env);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_element_decl_get_system(
     void *decl,
     const axutil_env_t *env);
@@ -92,7 +92,7 @@ axis2_status_t AXIS2_CALL
 woden_element_decl_set_system(
     void *decl,
     const axutil_env_t *env,
-    axis2_uri_t *type_system_uri);
+    axutil_uri_t *type_system_uri);
 
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_content_model(
@@ -310,7 +310,7 @@ woden_element_decl_get_qname(
     return decl_impl->f_qname;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_element_decl_get_system(
     void *decl,
     const axutil_env_t *env)
@@ -393,7 +393,7 @@ axis2_status_t AXIS2_CALL
 woden_element_decl_set_system(
     void *decl,
     const axutil_env_t *env,
-    axis2_uri_t *type_system_uri)
+    axutil_uri_t *type_system_uri)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -406,7 +406,7 @@ woden_element_decl_set_system(
 
     if (decl_impl->f_system)
     {
-        axis2_uri_free(decl_impl->f_system, env);
+        axutil_uri_free(decl_impl->f_system, env);
     }
     decl_impl->f_system = type_system_uri;
     return AXIS2_SUCCESS;

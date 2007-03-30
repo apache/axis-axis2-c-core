@@ -17,7 +17,7 @@
 
 #include <woden_inlined_schema.h>
 #include <xml_schema.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 
 typedef struct woden_inlined_schema_impl woden_inlined_schema_impl_t;
 

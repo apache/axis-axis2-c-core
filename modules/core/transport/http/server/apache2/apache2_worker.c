@@ -24,10 +24,10 @@
 #include <axis2_http_transport_utils.h>
 #include <axis2_op_ctx.h>
 #include <axis2_engine.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 #include <axis2_conf_init.h>
 #include "axis2_apache2_out_transport_info.h"
-#include <axis2_url.h>
+#include <axutil_url.h>
 #include <http_core.h>
 #include <http_protocol.h>
 
@@ -198,7 +198,7 @@ axis2_apache2_worker_process_request(
 
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
-    ctx_uuid = axis2_uuid_gen(env);
+    ctx_uuid = axutil_uuid_gen(env);
     if (ctx_uuid)
     {
         axutil_string_t *uuid_str = axutil_string_create_assume_ownership(env, &ctx_uuid);

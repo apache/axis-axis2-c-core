@@ -25,14 +25,14 @@
 #include <axiom_soap_builder.h>
 #include <axis2_engine.h>
 #include <axiom_soap_body.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axiom_namespace.h>
 #include <axiom_node.h>
 #include <axutil_hash.h>
 #include <axiom_soap_const.h>
 #include <axis2_http_header.h>
 #include <axutil_property.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axiom_mime_parser.h>
 #include <axis2_disp.h>
 #include <axis2_msg.h>

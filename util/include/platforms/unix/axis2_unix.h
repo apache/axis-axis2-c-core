@@ -111,7 +111,7 @@ extern "C"
 #include <strings.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "axis2_uuid_gen_unix.h" /* uuid_gen unix implementation */
+#include "axutil_uuid_gen_unix.h" /* uuid_gen unix implementation */
 #include <netinet/tcp.h>    /* TCP_NODELAY */
 #include <utime.h>
 #include <getopt.h>

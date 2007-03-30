@@ -17,7 +17,7 @@
  
 #include <w2c_url_processor.h>
 #include <w2c_string.h>
-#include <axis2_url.h>
+#include <axutil_url.h>
 #include <ctype.h>
 
 
@@ -42,7 +42,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     const axutil_env_t *env,
     axis2_char_t *namespace)
 {
-    axis2_url_t *url = NULL;
+    axutil_url_t *url = NULL;
     axis2_char_t *host_name = NULL;
     axis2_char_t *path = NULL;
     int index = 0;
@@ -52,13 +52,13 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_char_t *long_path_rev = NULL;
     axis2_char_t *ptr = NULL;
 
-    url = axis2_url_parse_string (env, namespace );
+    url = axutil_url_parse_string (env, namespace );
     if ( ! url )
     {
         return axis2_strdup(env, namespace);
     }
-    host_name = axis2_url_get_server ( url, env );
-    path = axis2_url_get_path ( url, env );
+    host_name = axutil_url_get_server ( url, env );
+    path = axutil_url_get_path ( url, env );
 
     if ( ! host_name )
     {

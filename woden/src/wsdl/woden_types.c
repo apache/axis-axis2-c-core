@@ -94,7 +94,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_types_get_schemas_with_namespace(
     void *types,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axutil_array_list_t *AXIS2_CALL
 woden_types_get_inlined_schemas(
@@ -133,7 +133,7 @@ axis2_bool_t AXIS2_CALL
 woden_types_is_namespace_in_scope_with_namespace_uri(
     void *types,
     const axutil_env_t *env,
-    axis2_uri_t *namespc_uri);
+    axutil_uri_t *namespc_uri);
 
 axis2_bool_t AXIS2_CALL
 woden_types_is_namespace_in_scope_with_qname(
@@ -817,7 +817,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_types_get_schemas_with_namespace(
     void *types,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_types_impl_t *types_impl = NULL;
     int i = 0, size = 0;
@@ -830,7 +830,7 @@ woden_types_get_schemas_with_namespace(
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     if (namespc)
-        str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+        str_namespc = axutil_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     size = axutil_array_list_size(types_impl->f_schemas, env);
     for (i = 0; i < size; i++)
     {
@@ -1077,7 +1077,7 @@ axis2_bool_t AXIS2_CALL
 woden_types_is_namespace_in_scope_with_namespace_uri(
     void *types,
     const axutil_env_t *env,
-    axis2_uri_t *namespc_uri)
+    axutil_uri_t *namespc_uri)
 {
     woden_types_impl_t *types_impl = NULL;
     axis2_char_t *str_uri = NULL;
@@ -1090,7 +1090,7 @@ woden_types_is_namespace_in_scope_with_namespace_uri(
     types_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
-    str_uri = axis2_uri_to_string(namespc_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_uri = axutil_uri_to_string(namespc_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     return woden_types_is_namespace_in_scope_with_namespace(types, env, str_uri);
 }
 
@@ -1102,7 +1102,7 @@ woden_types_is_namespace_in_scope_with_qname(
 {
     woden_types_impl_t *types_impl = NULL;
     axis2_char_t *str_uri = NULL;
-    axis2_uri_t *uri = NULL;
+    axutil_uri_t *uri = NULL;
     axutil_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1112,7 +1112,7 @@ woden_types_is_namespace_in_scope_with_qname(
             "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     str_uri = axutil_qname_get_uri(qname, env);
-    uri = axis2_uri_parse_string(env, str_uri);
+    uri = axutil_uri_parse_string(env, str_uri);
     return woden_types_is_namespace_in_scope_with_namespace_uri(types, env, uri);
 }
 

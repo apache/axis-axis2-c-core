@@ -41,7 +41,7 @@ struct woden_property_impl
     axutil_hash_t *super;
     axutil_hash_t *methods;
     /* WSDL Component model data */
-    axis2_uri_t *f_ref;
+    axutil_uri_t *f_ref;
     axutil_generic_obj_t *f_value;
     woden_type_def_t *f_value_constraint;
     void *f_parent;
@@ -77,9 +77,9 @@ axis2_status_t AXIS2_CALL
 woden_property_set_ref(
     void *property,
     const axutil_env_t *env,
-    axis2_uri_t *ref);
+    axutil_uri_t *ref);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_property_get_ref(
     void *property,
     const axutil_env_t *env);
@@ -633,7 +633,7 @@ woden_property_free(void *property,
 
     if (property_impl->f_ref)
     {
-        axis2_uri_free(property_impl->f_ref, env);
+        axutil_uri_free(property_impl->f_ref, env);
         property_impl->f_ref = NULL;
     }
 
@@ -768,7 +768,7 @@ axis2_status_t AXIS2_CALL
 woden_property_set_ref(
     void *property,
     const axutil_env_t *env,
-    axis2_uri_t *ref)
+    axutil_uri_t *ref)
 {
     woden_property_impl_t *property_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -780,14 +780,14 @@ woden_property_set_ref(
 
     if (property_impl->f_ref)
     {
-        axis2_uri_free(property_impl->f_ref, env);
+        axutil_uri_free(property_impl->f_ref, env);
         property_impl->f_ref = NULL;
     }
-    property_impl->f_ref = axis2_uri_clone(ref, env);
+    property_impl->f_ref = axutil_uri_clone(ref, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_property_get_ref(
     void *property,
     const axutil_env_t *env)

@@ -50,7 +50,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
     axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
-        const axis2_uri_t *wsdl_uri,
+        const axutil_uri_t *wsdl_uri,
         const axutil_qname_t *wsdl_svc_qname,
         const axis2_char_t *ep_name,
         const axis2_char_t *doc_base_uri,

@@ -23,7 +23,7 @@
  * @brief handles Axis2/C w2c command line option validation
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <w2c_cmdline_option.h>
 
 #ifdef __cplusplus

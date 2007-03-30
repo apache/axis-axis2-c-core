@@ -17,7 +17,7 @@
 
 #include <woden_attr_extensible.h>
 #include <woden_xml_attr.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_hash.h>
 
 typedef struct woden_attr_extensible_impl woden_attr_extensible_impl_t;
@@ -75,13 +75,13 @@ axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs_for_namespace(
     void *extensible,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axis2_bool_t AXIS2_CALL
 woden_attr_extensible_has_ext_attrs_for_namespace(
     void *extensible,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 
 
@@ -358,7 +358,7 @@ woden_attr_extensible_get_ext_attrs(
 axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
         const axutil_env_t *env,
-        axis2_uri_t *namespc)
+        axutil_uri_t *namespc)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
     axis2_char_t *str_namespc = NULL;
@@ -371,7 +371,7 @@ woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
     extensible_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_namespc = axutil_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (extensible_impl->temp_attrs)
     {
         int size = 0, i = 0;
@@ -403,7 +403,7 @@ woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
 axis2_bool_t AXIS2_CALL
 woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
         const axutil_env_t *env,
-        axis2_uri_t *namespc)
+        axutil_uri_t *namespc)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
     axis2_bool_t result = AXIS2_FALSE;
@@ -417,7 +417,7 @@ woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
     extensible_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_namespc = axutil_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     for (index = axutil_hash_first(extensible_impl->f_ext_attrs, env); index;
             index = axutil_hash_next(env, index))
     {

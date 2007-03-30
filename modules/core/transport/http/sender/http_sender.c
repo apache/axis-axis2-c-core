@@ -27,7 +27,7 @@
 #include <axiom_xml_writer.h>
 #include <axutil_property.h>
 #include <axutil_param.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 #include <axutil_generic_obj.h>
 #include <axis2_const.h>
 #include <axis2_util.h>
@@ -50,7 +50,7 @@ struct axis2_http_sender
 };
 
 static axis2_char_t *
-axis2_url_encode (
+axutil_url_encode (
 	const axutil_env_t *env, 
 	axis2_char_t *dest, 
 	axis2_char_t *buff, 
@@ -144,7 +144,7 @@ axis2_http_sender_send(
 
     axis2_http_simple_request_t *request = NULL;
     axis2_http_request_line_t *request_line = NULL;
-    axis2_url_t *url = NULL;
+    axutil_url_t *url = NULL;
     axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *buffer = NULL;
     unsigned int buffer_size = 0;
@@ -182,7 +182,7 @@ axis2_http_sender_send(
 	else
 		is_soap = AXIS2_TRUE;
 
-    url = axis2_url_parse_string(env, str_url);
+    url = axutil_url_parse_string(env, str_url);
 
 	if (!is_soap)
 	{
@@ -311,7 +311,7 @@ axis2_http_sender_send(
 		}
 
 		request_line = axis2_http_request_line_create(env, "POST",
-													  axis2_url_get_path(url, env),
+													  axutil_url_get_path(url, env),
 													  sender->http_version);
 	}
 	else
@@ -320,7 +320,7 @@ axis2_http_sender_send(
         axis2_char_t *path = NULL;
 
         request_params = axis2_http_sender_get_param_string( sender, env, msg_ctx);
-        path = axis2_strcat(env, axis2_url_get_path(url, env), "?",
+        path = axis2_strcat(env, axutil_url_get_path(url, env), "?",
 							request_params, NULL);
         request_line = axis2_http_request_line_create(env, "GET", path,
 													  sender->http_version);
@@ -465,10 +465,10 @@ axis2_http_sender_send(
     {
         axis2_char_t *header = NULL;
         header = AXIS2_MALLOC(env->allocator, axis2_strlen(
-								  axis2_url_get_server(url, env)) + 10 * sizeof(
+								  axutil_url_get_server(url, env)) + 10 * sizeof(
 									  axis2_char_t));
-        sprintf(header, "%s:%d", axis2_url_get_server(url, env),
-                axis2_url_get_port(url, env));
+        sprintf(header, "%s:%d", axutil_url_get_server(url, env),
+                axutil_url_get_port(url, env));
 		axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_HOST, header);
         AXIS2_FREE(env->allocator, header);
         header = NULL;
@@ -1036,7 +1036,7 @@ axis2_http_sender_get_param_string(
 			if(value){
 				encoded_value = (axis2_char_t *) AXIS2_MALLOC (env->allocator, strlen (value));
 				memset (encoded_value, 0, strlen (value));
-				encoded_value = axis2_url_encode (env, encoded_value, value, strlen (value));
+				encoded_value = axutil_url_encode (env, encoded_value, value, strlen (value));
 
 				axutil_array_list_add(param_list, env, axis2_strcat(env, name, "=",
 																   encoded_value, NULL));
@@ -1067,7 +1067,7 @@ axis2_http_sender_get_param_string(
 }
 
 static axis2_char_t *
-axis2_url_encode (
+axutil_url_encode (
 	const axutil_env_t *env, 
 	axis2_char_t *dest, 
 	axis2_char_t *buff, 

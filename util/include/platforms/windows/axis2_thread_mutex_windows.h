@@ -32,7 +32,7 @@ typedef enum thread_mutex_type
  * and nested_mutex on Win9x only.  Otherwise critical_section 
  * is used for NT nexted mutexes providing optimal performance.
  */
-struct axis2_thread_mutex_t 
+struct axutil_thread_mutex_t 
 {
     thread_mutex_type type;
     HANDLE            handle;

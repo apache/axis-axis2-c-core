@@ -21,7 +21,7 @@
 #include <axutil_array_list.h>
 #include <axutil_string.h>
 #include <axiom.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -185,7 +185,7 @@ extern "C"
     AXIS2_EXTERN axiom_document_t* AXIS2_CALL
     axiom_util_new_document(
         const axutil_env_t *env,
-        const axis2_uri_t *uri);
+        const axutil_uri_t *uri);
 
 #ifdef __cplusplus
 }

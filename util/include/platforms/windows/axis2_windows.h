@@ -23,7 +23,7 @@
   * @file axis2_unix.h
   * @brief axis2 unix platform specific interface
   */
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 
 #ifdef __cplusplus
 extern "C"

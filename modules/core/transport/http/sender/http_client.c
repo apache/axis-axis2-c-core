@@ -35,7 +35,7 @@ struct axis2_http_client
 {
     int sockfd;
     axutil_stream_t *data_stream;
-    axis2_url_t *url;
+    axutil_url_t *url;
     axis2_http_simple_response_t *response;
     axis2_bool_t request_sent;
     int timeout;
@@ -51,7 +51,7 @@ struct axis2_http_client
 AXIS2_EXTERN axis2_http_client_t *AXIS2_CALL
 axis2_http_client_create(
     const axutil_env_t *env,
-    axis2_url_t *url)
+    axutil_url_t *url)
 {
     axis2_http_client_t *http_client = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -92,7 +92,7 @@ axis2_http_client_free(
 
     if (http_client->url)
     {
-        axis2_url_free(http_client->url, env);
+        axutil_url_free(http_client->url, env);
     }
     if (http_client->response)
     {
@@ -168,8 +168,8 @@ axis2_http_client_send(
     else
     {
         client->sockfd = axutil_network_handler_open_socket(env,
-                axis2_url_get_server(client->url, env),
-                axis2_url_get_port(client->url, env));
+                axutil_url_get_server(client->url, env),
+                axutil_url_get_port(client->url, env));
     }
     if (client->sockfd < 0)
     {
@@ -191,15 +191,15 @@ axis2_http_client_send(
         axutil_network_handler_set_sock_option(env, client->sockfd,
                 SO_SNDTIMEO, client->timeout);
     }
-    if (0 == axis2_strcasecmp(axis2_url_get_protocol(client->url, env),
+    if (0 == axis2_strcasecmp(axutil_url_get_protocol(client->url, env),
             "HTTPS"))
     {
 #ifdef AXIS2_SSL_ENABLED
         if (AXIS2_TRUE == client->proxy_enabled)
         {
             if (AXIS2_SUCCESS != axis2_http_client_connect_ssl_host(client, env,
-                    axis2_url_get_server(client->url, env),
-                    axis2_url_get_port(client->url, env)))
+                    axutil_url_get_server(client->url, env),
+                    axutil_url_get_port(client->url, env)))
             {
                 return AXIS2_FAILURE;
             }
@@ -273,7 +273,7 @@ axis2_http_client_send(
          * POST http://host:port/path HTTP/1.x if we have enabled proxies
          */
         axis2_char_t *host_port_str = NULL;
-        axis2_char_t *server = axis2_url_get_server(client->url, env);
+        axis2_char_t *server = axutil_url_get_server(client->url, env);
         axis2_http_request_line_t *request_line =
             AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(request, env);
         axis2_char_t *path = AXIS2_HTTP_REQUEST_LINE_GET_URI(request_line, env);
@@ -287,7 +287,7 @@ axis2_http_client_send(
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
-        sprintf(host_port_str, "http://%s:%d%s", server, axis2_url_get_port(
+        sprintf(host_port_str, "http://%s:%d%s", server, axutil_url_get_port(
                     client->url, env), path);
         str_request_line = AXIS2_MALLOC(env->allocator,
                 axis2_strlen(host_port_str) + 20 * sizeof(axis2_char_t));
@@ -517,20 +517,20 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_client_set_url(
     axis2_http_client_t *client,
     const axutil_env_t *env,
-    axis2_url_t *url)
+    axutil_url_t *url)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, url, AXIS2_FAILURE);
     if (client->url)
     {
-        axis2_url_free(client->url, env);
+        axutil_url_free(client->url, env);
         client->url = NULL;
     }
     client->url = url;
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_url_t *AXIS2_CALL
+AXIS2_EXTERN axutil_url_t *AXIS2_CALL
 axis2_http_client_get_url(
     const axis2_http_client_t *client,
     const axutil_env_t *env)

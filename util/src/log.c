@@ -21,7 +21,7 @@
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axutil_log_default.h>
 #include <axutil_file_handler.h>
-#include <axis2_thread.h>
+#include <axutil_thread.h>
 
 typedef struct axutil_log_impl axutil_log_impl_t;
 
@@ -34,7 +34,7 @@ axutil_log_impl_write(axutil_log_t *log,
 
 AXIS2_EXTERN void AXIS2_CALL 
 axutil_log_impl_write_to_file(FILE *fd,
-    axis2_thread_mutex_t *mutex, 
+    axutil_thread_mutex_t *mutex, 
     axutil_log_levels_t level,
     const axis2_char_t * file, 
     const int line, 
@@ -48,7 +48,7 @@ struct axutil_log_impl
 {
     axutil_log_t          log;
     void                *stream;
-    axis2_thread_mutex_t    *mutex;
+    axutil_thread_mutex_t    *mutex;
 };
 
 #define AXIS2_INTF_TO_IMPL(log) ((axutil_log_impl_t*)(log))
@@ -70,7 +70,7 @@ axutil_log_impl_free(axutil_allocator_t *allocator, axutil_log_t *log)
 
         if (log_impl->mutex)
         {
-            axis2_thread_mutex_destroy(log_impl->mutex);
+            axutil_thread_mutex_destroy(log_impl->mutex);
         }
         if (AXIS2_INTF_TO_IMPL(log)->stream)
         {
@@ -104,7 +104,7 @@ axutil_log_create(axutil_allocator_t * allocator, axutil_log_ops_t * ops,
     if (!log_impl)
         return NULL;
 
-    log_impl->mutex = axis2_thread_mutex_create(allocator,
+    log_impl->mutex = axutil_thread_mutex_create(allocator,
             AXIS2_THREAD_MUTEX_DEFAULT);
 
     if (!log_impl->mutex)
@@ -150,11 +150,11 @@ axutil_log_create(axutil_allocator_t * allocator, axutil_log_ops_t * ops,
         AXIS2_SNPRINTF(log_file_name, 500, "%s", tmp_filename);
     }
 
-    axis2_thread_mutex_lock(log_impl->mutex);
+    axutil_thread_mutex_lock(log_impl->mutex);
 
     log_impl->stream = axutil_file_handler_open(log_file_name, "a+");
 
-    axis2_thread_mutex_unlock(log_impl->mutex);
+    axutil_thread_mutex_unlock(log_impl->mutex);
 
     if (!log_impl->stream)
         log_impl->stream = stderr;
@@ -215,7 +215,7 @@ axutil_log_impl_write(axutil_log_t *log, const axis2_char_t *buffer,
 
 
 AXIS2_EXTERN void AXIS2_CALL
-axutil_log_impl_write_to_file(FILE *fd, axis2_thread_mutex_t *mutex,
+axutil_log_impl_write_to_file(FILE *fd, axutil_thread_mutex_t *mutex,
         axutil_log_levels_t level, const axis2_char_t *file,
         const int line, const axis2_char_t *value)
 {
@@ -245,7 +245,7 @@ axutil_log_impl_write_to_file(FILE *fd, axis2_thread_mutex_t *mutex,
             level_str = "[...TRACE...] ";
             break;
     }
-    axis2_thread_mutex_lock(mutex);
+    axutil_thread_mutex_lock(mutex);
     if (file)
         fprintf(fd, "[%s] %s%s(%d) %s\n", axutil_log_impl_get_time_str(),
                 level_str, file, line, value);
@@ -253,7 +253,7 @@ axutil_log_impl_write_to_file(FILE *fd, axis2_thread_mutex_t *mutex,
         fprintf(fd, "[%s] %s %s\n", axutil_log_impl_get_time_str(),
                 level_str, value);
     fflush(fd);
-    axis2_thread_mutex_unlock(mutex);
+    axutil_thread_mutex_unlock(mutex);
 }
 
 
@@ -262,7 +262,7 @@ axutil_log_impl_log_debug(axutil_log_t *log, const axis2_char_t *filename,
         const int linenumber, const axis2_char_t *format, ...)
 {
     FILE *fd = NULL;
-    axis2_thread_mutex_t *mutex = NULL;
+    axutil_thread_mutex_t *mutex = NULL;
 
     if (log && format && log->enabled)
     {
@@ -297,7 +297,7 @@ AXIS2_EXTERN void AXIS2_CALL
 axutil_log_impl_log_info(axutil_log_t *log, const axis2_char_t *format, ...)
 {
     FILE *fd = NULL;
-    axis2_thread_mutex_t *mutex = NULL;
+    axutil_thread_mutex_t *mutex = NULL;
 
     if (log && format && log->enabled)
     {
@@ -333,7 +333,7 @@ axutil_log_impl_log_warning(axutil_log_t *log, const axis2_char_t *filename,
         const int linenumber, const axis2_char_t *format, ...)
 {
     FILE *fd = NULL;
-    axis2_thread_mutex_t *mutex = NULL;
+    axutil_thread_mutex_t *mutex = NULL;
 
     if (log && format && log->enabled)
     {
@@ -371,7 +371,7 @@ axutil_log_impl_log_error(axutil_log_t *log, const axis2_char_t *filename,
         const int linenumber, const axis2_char_t *format, ...)
 {
     FILE *fd = NULL;
-    axis2_thread_mutex_t *mutex = NULL;
+    axutil_thread_mutex_t *mutex = NULL;
 
     char value[AXIS2_LEN_VALUE+1];
     va_list ap;
@@ -407,7 +407,7 @@ axutil_log_impl_log_critical(axutil_log_t *log, const axis2_char_t *filename,
         const int linenumber, const axis2_char_t *format, ...)
 {
     FILE *fd = NULL;
-    axis2_thread_mutex_t *mutex = NULL;
+    axutil_thread_mutex_t *mutex = NULL;
 
     char value[AXIS2_LEN_VALUE+1];
     va_list ap;
@@ -472,7 +472,7 @@ axutil_log_create_default(axutil_allocator_t *allocator)
     if (!log_impl)
         return NULL;
 
-    log_impl->mutex = axis2_thread_mutex_create(allocator,
+    log_impl->mutex = axutil_thread_mutex_create(allocator,
             AXIS2_THREAD_MUTEX_DEFAULT);
 
     if (!log_impl->mutex)
@@ -481,9 +481,9 @@ axutil_log_create_default(axutil_allocator_t *allocator)
         return NULL;
     }
 
-    axis2_thread_mutex_lock(log_impl->mutex);
+    axutil_thread_mutex_lock(log_impl->mutex);
     log_impl->stream = stderr;
-    axis2_thread_mutex_unlock(log_impl->mutex);
+    axutil_thread_mutex_unlock(log_impl->mutex);
     /* by default, log is enabled */
     log_impl->log.enabled = 1;
     log_impl->log.level = AXIS2_LOG_LEVEL_DEBUG;
@@ -499,7 +499,7 @@ axutil_log_impl_log_trace(axutil_log_t *log, const axis2_char_t *filename,
         const int linenumber, const axis2_char_t *format, ...)
 {
     FILE *fd = NULL;
-    axis2_thread_mutex_t *mutex = NULL;
+    axutil_thread_mutex_t *mutex = NULL;
 
     if (log && format && log->enabled)
     {

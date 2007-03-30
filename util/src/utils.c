@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <stdlib.h>
 #include <axutil_string.h>
 #include <string.h>

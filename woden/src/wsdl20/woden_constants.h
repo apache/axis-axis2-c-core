@@ -24,7 +24,7 @@
  * Constants for WSDL 2.0 elements, attributes and URIs.
  */
  
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 #ifdef __cplusplus
 extern "C" 

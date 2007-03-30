@@ -30,10 +30,10 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <woden.h>
 #include <woden_documentable_element.h>
 #include <woden_configurable_element.h>
@@ -101,9 +101,9 @@ struct woden_wsdl10_endpoint_element_ops
     set_address) (
             void *endpoint_el,
             const axutil_env_t *env,
-            axis2_uri_t *uri);
+            axutil_uri_t *uri);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_address) (
             void *endpoint_el,
             const axutil_env_t *env);

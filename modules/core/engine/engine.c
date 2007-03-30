@@ -27,7 +27,7 @@
 #include <axis2_transport_sender.h>
 #include <axis2_http_transport.h>
 #include <axis2_addr.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 
 struct axis2_engine
 {
@@ -499,7 +499,7 @@ axis2_engine_create_fault_msg_ctx(
      axis2_msg_ctx_set_relates_to(fault_ctx, env, relates_to);
 
     /* set msg id */
-    msg_uuid =  axis2_uuid_gen(env);
+    msg_uuid =  axutil_uuid_gen(env);
     axis2_msg_ctx_set_message_id(fault_ctx, env, msg_uuid);
     if (msg_uuid)
     {

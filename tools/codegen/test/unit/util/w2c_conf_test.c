@@ -16,7 +16,7 @@
  */
 
 #include <CuTest.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_string.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_cmdline_option_parser.h>

@@ -113,7 +113,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_add_style_default_uri(
     void *interface,
     const axutil_env_t *env,
-    axis2_uri_t *uri);
+    axutil_uri_t *uri);
 
 void *AXIS2_CALL
 woden_interface_get_style_default(
@@ -831,7 +831,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_add_style_default_uri(
     void *interface,
     const axutil_env_t *env,
-    axis2_uri_t *uri)
+    axutil_uri_t *uri)
 {
     woden_interface_impl_t *interface_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -851,7 +851,7 @@ woden_interface_add_style_default_uri(
             return AXIS2_FAILURE;
         }
     }
-    axutil_array_list_add(interface_impl->f_style_default, env, axis2_uri_clone(
+    axutil_array_list_add(interface_impl->f_style_default, env, axutil_uri_clone(
                 uri, env));
 
     return AXIS2_SUCCESS;

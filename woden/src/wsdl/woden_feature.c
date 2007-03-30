@@ -35,7 +35,7 @@ struct woden_feature_impl
     woden_documentable_t *documentable;
     axutil_hash_t *super;
     axutil_hash_t *methods;
-    axis2_uri_t *f_ref;
+    axutil_uri_t *f_ref;
     axis2_bool_t f_required;
     void *f_parent;
 };
@@ -66,9 +66,9 @@ axis2_status_t AXIS2_CALL
 woden_feature_set_ref(
     void *feature,
     const axutil_env_t *env,
-    axis2_uri_t *ref);
+    axutil_uri_t *ref);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_feature_get_ref(
     void *feature,
     const axutil_env_t *env);
@@ -546,7 +546,7 @@ woden_feature_free(void *feature,
 
     if (feature_impl->f_ref)
     {
-        axis2_uri_free(feature_impl->f_ref, env);
+        axutil_uri_free(feature_impl->f_ref, env);
         feature_impl->f_ref = NULL;
     }
 
@@ -676,7 +676,7 @@ axis2_status_t AXIS2_CALL
 woden_feature_set_ref(
     void *feature,
     const axutil_env_t *env,
-    axis2_uri_t *ref)
+    axutil_uri_t *ref)
 {
     woden_feature_impl_t *feature_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -688,14 +688,14 @@ woden_feature_set_ref(
 
     if (feature_impl->f_ref)
     {
-        axis2_uri_free(feature_impl->f_ref, env);
+        axutil_uri_free(feature_impl->f_ref, env);
         feature_impl->f_ref = NULL;
     }
-    feature_impl->f_ref = axis2_uri_clone(ref, env);
+    feature_impl->f_ref = axutil_uri_clone(ref, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_feature_get_ref(
     void *feature,
     const axutil_env_t *env)

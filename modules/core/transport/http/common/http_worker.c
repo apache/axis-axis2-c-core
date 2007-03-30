@@ -27,8 +27,8 @@
 #include <axis2_http_transport_utils.h>
 #include <axis2_op_ctx.h>
 #include <axis2_engine.h>
-#include <axis2_uuid_gen.h>
-#include <axis2_url.h>
+#include <axutil_uuid_gen.h>
+#include <axutil_url.h>
 #include <axutil_property.h>
 
 struct axis2_http_worker
@@ -119,7 +119,7 @@ axis2_http_worker_process_request(
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_char_t *svr_ip = NULL;
     axis2_char_t *peer_ip = NULL;
-    axis2_url_t *request_url = NULL;
+    axutil_url_t *request_url = NULL;
     axis2_http_out_transport_info_t *http_out_transport_info = NULL;
     axutil_hash_t *headers = NULL;
     axis2_char_t *url_external_form = NULL;
@@ -212,18 +212,18 @@ axis2_http_worker_process_request(
 	AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
 	    simple_request, env), env);
 
-    request_url = axis2_url_create(env, "http", svr_ip,
+    request_url = axutil_url_create(env, "http", svr_ip,
 				   http_worker->svr_port,
 				   path);
 
-	url_external_form = axis2_url_to_external_form(request_url, env);
+	url_external_form = axutil_url_to_external_form(request_url, env);
     
     axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
     headers = axis2_http_worker_get_headers(http_worker, env, simple_request);
     axis2_msg_ctx_set_transport_headers(msg_ctx, env, headers);
 
-    svc_grp_uuid = axis2_uuid_gen(env);
+    svc_grp_uuid = axutil_uuid_gen(env);
     if (svc_grp_uuid)
     {
         axutil_string_t *svc_grp_uuid_str = axutil_string_create_assume_ownership(env, &svc_grp_uuid);
@@ -251,7 +251,7 @@ axis2_http_worker_process_request(
                 (env, msg_ctx, request_body, out_stream,
                         AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
                             simple_request, env) , soap_action_str,
-                        axis2_url_to_external_form(request_url, env),
+                        axutil_url_to_external_form(request_url, env),
                         conf_ctx,
                         axis2_http_transport_utils_get_request_params(env,
                                 AXIS2_HTTP_REQUEST_LINE_GET_URI(
@@ -407,7 +407,7 @@ axis2_http_worker_process_request(
     } /* Done freeing message contexts */
     
     msg_ctx = NULL;
-    axis2_url_free(request_url, env);
+    axutil_url_free(request_url, env);
     axutil_string_free(soap_action_str, env);
     request_url = NULL;
     return status;

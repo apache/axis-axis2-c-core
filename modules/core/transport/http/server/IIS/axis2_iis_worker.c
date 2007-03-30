@@ -24,9 +24,9 @@
 #include <axis2_http_transport_utils.h>
 #include <axis2_op_ctx.h>
 #include <axis2_engine.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 #include <axis2_conf_init.h>
-#include <axis2_url.h>
+#include <axutil_url.h>
 
 #include "axis2_iis_out_transport_info.h"
 #include "axis2_iis_stream.h"
@@ -171,7 +171,7 @@ axis2_iis_worker_process_request(
     axis2_char_t *body_string = NULL;
     int send_status = -1;
     axutil_property_t *property = NULL;
-    axis2_url_t *url = NULL;
+    axutil_url_t *url = NULL;
     axis2_http_out_transport_info_t *iis_out_transport_info = NULL;
     axutil_qname_t *transport_qname = NULL;
     axis2_char_t *ctx_uuid = NULL;
@@ -241,7 +241,7 @@ axis2_iis_worker_process_request(
 
 	axis2_msg_ctx_set_transport_out_stream(msg_ctx, env, out_stream);
 
-	ctx_uuid = axis2_uuid_gen(env);
+	ctx_uuid = axutil_uuid_gen(env);
 	if (ctx_uuid)
 	{
         axutil_string_t *uuid_str = axutil_string_create_assume_ownership(env, &ctx_uuid);

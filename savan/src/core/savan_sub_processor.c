@@ -20,7 +20,7 @@
 #include <axiom_node.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_body.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 
 #include <savan_sub_processor.h>
 #include <savan_constants.h>
@@ -355,7 +355,7 @@ savan_sub_processor_create_subscriber_from_msg(
     }
     
     /* Assign a unique id to subscriber */
-    sub_id = axis2_uuid_gen(env);
+    sub_id = axutil_uuid_gen(env);
     if (sub_id)
     {
         savan_subscriber_set_id(subscriber, env, sub_id);

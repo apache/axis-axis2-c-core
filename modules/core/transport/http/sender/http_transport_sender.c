@@ -26,7 +26,7 @@
 #include <axis2_http_transport.h>
 #include <axis2_http_sender.h>
 #include <axiom_soap_body.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 
 
 /**

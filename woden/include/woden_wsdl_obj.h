@@ -83,7 +83,7 @@ struct woden_wsdl_obj_ops
     get_component_exts_for_namespace) (
             void *wsdl_obj,
             const axutil_env_t *env,
-            axis2_uri_t *namespc);
+            axutil_uri_t *namespc);
     
     /*
      * Store the extensions in a map using the namespace string as the key.
@@ -94,7 +94,7 @@ struct woden_wsdl_obj_ops
     set_component_exts) (
             void *wsdl_obj,
             const axutil_env_t *env,
-            axis2_uri_t *namespc,
+            axutil_uri_t *namespc,
             struct woden_component_exts *exts);
 };
 

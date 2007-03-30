@@ -28,7 +28,7 @@
 #include <axiom_node.h>
 #include <axutil_class_loader.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axis2_core_utils.h>
 #include <axis2_module.h>
 

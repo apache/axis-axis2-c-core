@@ -17,7 +17,7 @@
 
 #include <xml_schema_obj.h>
 #include <axutil_hash.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 /**
  * @brief xml_schema_obj struct impl

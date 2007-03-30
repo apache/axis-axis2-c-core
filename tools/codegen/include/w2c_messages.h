@@ -23,7 +23,7 @@
  * @brief handles Axis2/C w2c messages
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_properties.h>
 

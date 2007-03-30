@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-#include "axis2_thread_unix.h"
+#include "axutil_thread_unix.h"
 
 
-AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
-axis2_threadattr_create(axutil_allocator_t* allocator)
+AXIS2_EXTERN axutil_threadattr_t* AXIS2_CALL
+axutil_threadattr_create(axutil_allocator_t* allocator)
 {
     int stat = 0;
-    axis2_threadattr_t *new = NULL;
+    axutil_threadattr_t *new = NULL;
 
-    new = AXIS2_MALLOC(allocator, sizeof(axis2_threadattr_t));
+    new = AXIS2_MALLOC(allocator, sizeof(axutil_threadattr_t));
     if (!new)
     {
         return NULL;
@@ -43,7 +43,7 @@ axis2_threadattr_create(axutil_allocator_t* allocator)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 threadattr_cleanup(void *data)
 {
-    axis2_threadattr_t *attr = data;
+    axutil_threadattr_t *attr = data;
     int rv;
 
     rv = pthread_attr_destroy(&(attr->attr));
@@ -58,7 +58,7 @@ threadattr_cleanup(void *data)
 #define DETACH_ARG(v) ((v) ? PTHREAD_CREATE_DETACHED : PTHREAD_CREATE_JOINABLE)
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_threadattr_detach_set(axis2_threadattr_t *attr, axis2_bool_t detached)
+axutil_threadattr_detach_set(axutil_threadattr_t *attr, axis2_bool_t detached)
 {
     if (0 == pthread_attr_setdetachstate(&(attr->attr), DETACH_ARG(detached)))
     {
@@ -68,7 +68,7 @@ axis2_threadattr_detach_set(axis2_threadattr_t *attr, axis2_bool_t detached)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_threadattr_detach_get(axis2_threadattr_t *attr)
+axutil_threadattr_detach_get(axutil_threadattr_t *attr)
 {
     int state = 0;
     pthread_attr_getdetachstate(&(attr->attr), &state);
@@ -81,19 +81,19 @@ axis2_threadattr_detach_get(axis2_threadattr_t *attr)
 
 static void *dummy_worker(void *opaque)
 {
-    axis2_thread_t *thread = (axis2_thread_t*)opaque;
+    axutil_thread_t *thread = (axutil_thread_t*)opaque;
     return thread->func(thread, thread->data);
 }
 
-AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
-axis2_thread_create(axutil_allocator_t* allocator, axis2_threadattr_t *attr,
-    axis2_thread_start_t func, void *data)
+AXIS2_EXTERN axutil_thread_t* AXIS2_CALL
+axutil_thread_create(axutil_allocator_t* allocator, axutil_threadattr_t *attr,
+    axutil_thread_start_t func, void *data)
 {
     axis2_status_t stat;
     pthread_attr_t *temp = NULL;
-    axis2_thread_t *new = NULL;
+    axutil_thread_t *new = NULL;
 
-    new = (axis2_thread_t *)AXIS2_MALLOC(allocator, sizeof(axis2_thread_t));
+    new = (axutil_thread_t *)AXIS2_MALLOC(allocator, sizeof(axutil_thread_t));
 
     if (!new)
     {
@@ -137,7 +137,7 @@ axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_exit(axis2_thread_t *thd, axutil_allocator_t *allocator)
+axutil_thread_exit(axutil_thread_t *thd, axutil_allocator_t *allocator)
 {
     if (thd)
     {
@@ -152,7 +152,7 @@ axis2_thread_exit(axis2_thread_t *thd, axutil_allocator_t *allocator)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_join(axis2_thread_t *thd)
+axutil_thread_join(axutil_thread_t *thd)
 {
     void *thread_stat;
     if (0 == pthread_join(*(thd->td), (void *)(&thread_stat)))
@@ -163,7 +163,7 @@ axis2_thread_join(axis2_thread_t *thd)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_detach(axis2_thread_t *thd)
+axutil_thread_detach(axutil_thread_t *thd)
 {
     if (0 == pthread_detach(*(thd->td)))
     {
@@ -172,7 +172,7 @@ axis2_thread_detach(axis2_thread_t *thd)
     return AXIS2_FAILURE;
 }
 
-void axis2_thread_yield(void)
+void axutil_thread_yield(void)
 {
     return;
 }
@@ -183,8 +183,8 @@ void axis2_thread_yield(void)
  * its copy of the value as it wishes.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_key_create(
-    axis2_threadkey_t *axis2_key,
+axutil_thread_key_create(
+    axutil_threadkey_t *axis2_key,
     void (*destructor)(void *))
 {
     int rc = -1;
@@ -201,8 +201,8 @@ axis2_thread_key_create(
  * @return void*. A key's value is simply a void pointer (void*)
  */
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_thread_getspecific(
-    axis2_threadkey_t *axis2_key)
+axutil_thread_getspecific(
+    axutil_threadkey_t *axis2_key)
 {
     void *value = NULL;
     pthread_key_t key = axis2_key->key;
@@ -216,8 +216,8 @@ axis2_thread_getspecific(
  *        store in it anything that we want
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_setspecific(
-    axis2_threadkey_t *axis2_key,
+axutil_thread_setspecific(
+    axutil_threadkey_t *axis2_key,
     void *value)
 {
     int rc = -1;
@@ -230,7 +230,7 @@ axis2_thread_setspecific(
 }
 
 AXIS2_EXTERN axis2_os_thread_t* AXIS2_CALL
-axis2_os_thread_get(axis2_thread_t *thd)
+axis2_os_thread_get(axutil_thread_t *thd)
 {
     if (!thd)
     {
@@ -239,12 +239,12 @@ axis2_os_thread_get(axis2_thread_t *thd)
     return thd->td;
 }
 
-AXIS2_EXTERN axis2_thread_once_t* AXIS2_CALL
-axis2_thread_once_init(axutil_allocator_t* allocator)
+AXIS2_EXTERN axutil_thread_once_t* AXIS2_CALL
+axutil_thread_once_init(axutil_allocator_t* allocator)
 {
     static const pthread_once_t once_init = PTHREAD_ONCE_INIT;
-    axis2_thread_once_t *control = AXIS2_MALLOC(allocator,
-            sizeof(axis2_thread_once_t));
+    axutil_thread_once_t *control = AXIS2_MALLOC(allocator,
+            sizeof(axutil_thread_once_t));
     if (!control)
     {
         return NULL;
@@ -255,18 +255,18 @@ axis2_thread_once_init(axutil_allocator_t* allocator)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_once(axis2_thread_once_t *control, void(*func)(void))
+axutil_thread_once(axutil_thread_once_t *control, void(*func)(void))
 {
     return pthread_once(&(control->once), func);
 }
 
 /*************************Thread locking functions*****************************/
-AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL
-axis2_thread_mutex_create(axutil_allocator_t *allocator, unsigned int flags)
+AXIS2_EXTERN axutil_thread_mutex_t * AXIS2_CALL
+axutil_thread_mutex_create(axutil_allocator_t *allocator, unsigned int flags)
 {
-    axis2_thread_mutex_t *new_mutex = NULL;
+    axutil_thread_mutex_t *new_mutex = NULL;
 
-    new_mutex = AXIS2_MALLOC(allocator, sizeof(axis2_thread_mutex_t));
+    new_mutex = AXIS2_MALLOC(allocator, sizeof(axutil_thread_mutex_t));
     new_mutex->allocator = allocator;
 
     if (pthread_mutex_init(&(new_mutex->mutex), NULL) != 0)
@@ -278,13 +278,13 @@ axis2_thread_mutex_create(axutil_allocator_t *allocator, unsigned int flags)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex)
+axutil_thread_mutex_lock(axutil_thread_mutex_t *mutex)
 {
     return pthread_mutex_lock(&(mutex->mutex));
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
+axutil_thread_mutex_unlock(axutil_thread_mutex_t *mutex)
 {
     if (pthread_mutex_unlock(&(mutex->mutex)) != 0)
     {
@@ -294,7 +294,7 @@ axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex)
+axutil_thread_mutex_destroy(axutil_thread_mutex_t *mutex)
 {
     if (0 != pthread_mutex_destroy(&(mutex->mutex)))
     {

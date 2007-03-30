@@ -16,7 +16,7 @@
  */
 
 #include <axutil_array_list.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <string.h>
 
 struct axutil_array_list

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axis2_types.h>
+#include <axutil_types.h>
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_atoi(const char *s)

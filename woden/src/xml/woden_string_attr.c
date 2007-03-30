@@ -17,7 +17,7 @@
 
 #include <woden_string_attr.h>
 #include <woden_xml_attr.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
 

@@ -17,10 +17,10 @@
 
 #include <stdio.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_error.h>
 #include <tcpmon_util.h>
-#include <axis2_thread.h>
+#include <axutil_thread.h>
 #include <axutil_network_handler.h>
 #include <axutil_array_list.h>
 
@@ -128,7 +128,7 @@ tcpmon_session_set_format_bit(tcpmon_session_t *session,
 /** internal implementations */
 
 void * AXIS2_THREAD_FUNC
-server_funct(axis2_thread_t *thd, void *data);
+server_funct(axutil_thread_t *thd, void *data);
 
 /************************** End of function prototypes ************************/
 
@@ -377,7 +377,7 @@ tcpmon_session_start(tcpmon_session_t *session,
         const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
-    axis2_thread_t* server_thread = NULL;
+    axutil_thread_t* server_thread = NULL;
     tcpmon_session_server_thread_data_t* thread_data = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -455,14 +455,14 @@ tcpmon_session_on_trans_fault(tcpmon_session_t *session,
 
 /** internal implementations */
 void * AXIS2_THREAD_FUNC
-server_funct(axis2_thread_t *thd, void *data)
+server_funct(axutil_thread_t *thd, void *data)
 {
     tcpmon_session_server_thread_data_t* thread_data = data;
     tcpmon_session_impl_t *session_impl = NULL;
     const axutil_env_t* env = NULL;
     int listen_socket = -1;
     int socket = -1;
-    axis2_thread_t* request_thread = NULL;
+    axutil_thread_t* request_thread = NULL;
     tcpmon_entry_request_data_t* request_thread_data = NULL;
 
     session_impl = thread_data -> session_impl;

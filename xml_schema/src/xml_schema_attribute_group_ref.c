@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_attribute_group_ref.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 
 typedef struct xml_schema_attribute_group_ref_impl

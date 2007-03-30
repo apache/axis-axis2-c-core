@@ -23,7 +23,7 @@
  * @brief represent command line option
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <w2c_cmdline_option_parser.h>
 
 #ifdef __cplusplus

@@ -16,7 +16,7 @@
  */
 
 #include <axutil_stack.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_env.h>
 #include <stdlib.h>
 #include <string.h>

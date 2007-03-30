@@ -19,7 +19,7 @@
 #include <axutil_string.h>
 #include <axis2_http_transport.h>
 #include <string.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 
 struct axis2_http_status_line
 {

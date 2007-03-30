@@ -5,7 +5,7 @@
 #include <string.h>
 #include <axis2_http_sender.h>
 #include <axutil_string.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 #include <axutil_generic_obj.h>
 #include <axis2_const.h>
 #include <axis2_util.h>

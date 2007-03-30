@@ -31,10 +31,10 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <woden.h>
 #include <woden_documentable_element.h>
 #include <woden_nested_element.h>
@@ -71,9 +71,9 @@ struct woden_import_element_ops
     axis2_status_t (AXIS2_CALL *
     set_namespace) (void *import_el,
             const axutil_env_t *env,
-            axis2_uri_t *ns_uri);
+            axutil_uri_t *ns_uri);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_namespace) (void *import_el,
             const axutil_env_t *env);
 
@@ -81,9 +81,9 @@ struct woden_import_element_ops
     axis2_status_t (AXIS2_CALL *
     set_location) (void *import_el,
             const axutil_env_t *env,
-            axis2_uri_t *loc_uri);
+            axutil_uri_t *loc_uri);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_location) (void *import_el,
             const axutil_env_t *env);
 

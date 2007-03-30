@@ -16,7 +16,7 @@
  */
 
 #include <w2c_cmdline_option_parser.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_array_list.h>
 #include <axutil_hash.h>
 #include <w2c_cmdline_option.h>

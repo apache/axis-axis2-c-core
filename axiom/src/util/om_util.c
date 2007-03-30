@@ -19,7 +19,7 @@
 #include <axiom_element.h>
 #include <axiom_document.h>
 #include <axutil_array_list.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axiom_util.h>
 
 AXIS2_EXTERN axiom_element_t *AXIS2_CALL
@@ -1041,7 +1041,7 @@ axiom_util_get_child_elements(axiom_element_t *om_ele,
 
 AXIS2_EXTERN axiom_document_t *AXIS2_CALL
 axiom_util_new_document(const axutil_env_t *env,
-    const axis2_uri_t *uri)
+    const axutil_uri_t *uri)
 {
     axis2_char_t *path = NULL;
     axiom_xml_reader_t *reader = NULL;
@@ -1054,7 +1054,7 @@ axiom_util_new_document(const axutil_env_t *env,
      */
     if (uri)
     {
-        path = axis2_uri_get_path((axis2_uri_t *) uri, env);
+        path = axutil_uri_get_path((axutil_uri_t *) uri, env);
     }
     else
     {

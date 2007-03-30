@@ -29,7 +29,7 @@ struct axis2_callback
     int error;
     /** to store callback specific data */
     void *data;
-    axis2_thread_mutex_t *mutex;
+    axutil_thread_mutex_t *mutex;
 
     /**
      * This function is called by invoke_on_complete.
@@ -89,7 +89,7 @@ axis2_callback_create(const axutil_env_t *env)
     callback->on_complete = axis2_callback_on_complete;
     callback->on_error = axis2_callback_on_error;
 
-    callback->mutex = axis2_thread_mutex_create(env->allocator,
+    callback->mutex = axutil_thread_mutex_create(env->allocator,
                                  AXIS2_THREAD_MUTEX_DEFAULT);
     return callback;
 }
@@ -175,7 +175,7 @@ axis2_callback_free(axis2_callback_t *callback,
 
     if(callback->mutex)
     {
-        axis2_thread_mutex_destroy(callback->mutex);
+        axutil_thread_mutex_destroy(callback->mutex);
     }
 
     AXIS2_FREE(env->allocator, callback);

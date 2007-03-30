@@ -30,7 +30,7 @@ axutil_env_create_all(const axis2_char_t *log_file,
     axutil_error_t *error = NULL;
     axutil_log_t *log = NULL;
     axutil_allocator_t *allocator = NULL;
-    axis2_thread_pool_t *thread_pool = NULL;
+    axutil_thread_pool_t *thread_pool = NULL;
 
     allocator = axutil_allocator_init(NULL);
     error = axutil_error_create(allocator);
@@ -43,7 +43,7 @@ axutil_env_create_all(const axis2_char_t *log_file,
     if (!log)
         log = axutil_log_create_default(allocator);
 
-    thread_pool = axis2_thread_pool_init(allocator);
+    thread_pool = axutil_thread_pool_init(allocator);
     env = axutil_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
     if (env->log)
     {
@@ -166,7 +166,7 @@ AXIS2_EXTERN axutil_env_t * AXIS2_CALL
 axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
     axutil_error_t *error, 
     axutil_log_t *log, 
-    axis2_thread_pool_t *pool)
+    axutil_thread_pool_t *pool)
 {
     axutil_env_t *environment;
     if (! allocator)

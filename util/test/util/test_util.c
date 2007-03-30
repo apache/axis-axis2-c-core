@@ -21,7 +21,7 @@
 #include <axutil_error_default.h>
 #include <axutil_array_list.h>
 #include <platforms/axis2_platform_auto_sense.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 #include <axutil_log_default.h>
 #include <axutil_log.h>
 #include <axutil_dir_handler.h>
@@ -204,10 +204,10 @@ void test_uuid_gen(const axutil_env_t *env)
 {
     char *uuid = NULL;
     printf("starting uuid_gen test...\n");
-    uuid = axis2_uuid_gen(env);
+    uuid = axutil_uuid_gen(env);
     printf("Generated UUID 1:%s\n", uuid);
     AXIS2_FREE(env->allocator, uuid);
-    uuid = axis2_uuid_gen(env);
+    uuid = axutil_uuid_gen(env);
     printf("Generated UUID 2:%s\n", uuid);
     AXIS2_FREE(env->allocator, uuid);
     printf("finished uuid_gen test...\n");

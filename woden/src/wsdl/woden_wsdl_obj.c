@@ -54,13 +54,13 @@ woden_component_exts_t *AXIS2_CALL
 woden_wsdl_obj_get_component_exts_for_namespace(
     void *wsdl_obj,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl_obj_set_component_exts(
     void *wsdl_obj,
     const axutil_env_t *env,
-    axis2_uri_t *namespc,
+    axutil_uri_t *namespc,
     woden_component_exts_t *exts);
 
 static woden_wsdl_obj_t *
@@ -220,7 +220,7 @@ woden_component_exts_t *AXIS2_CALL
 woden_wsdl_obj_get_component_exts_for_namespace(
     void *wsdl_obj,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
     axis2_char_t *str_namespc = NULL;
@@ -231,7 +231,7 @@ woden_wsdl_obj_get_component_exts_for_namespace(
     wsdl_obj_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_namespc = axutil_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     return (woden_component_exts_t *)axutil_hash_get(wsdl_obj_impl->
             f_comp_exts, str_namespc, AXIS2_HASH_KEY_STRING);
 }
@@ -240,7 +240,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl_obj_set_component_exts(
     void *wsdl_obj,
     const axutil_env_t *env,
-    axis2_uri_t *namespc,
+    axutil_uri_t *namespc,
     woden_component_exts_t *exts)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
@@ -253,7 +253,7 @@ woden_wsdl_obj_set_component_exts(
     wsdl_obj_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = axis2_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    str_namespc = axutil_uri_to_string(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if (str_namespc)
     {
         if (exts)

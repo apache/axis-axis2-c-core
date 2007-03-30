@@ -431,7 +431,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     int size = 0;
     axutil_array_list_t *ext_elements = NULL;
     void *soap_address = NULL;
-    axis2_uri_t *soap_address_uri = NULL;
+    axutil_uri_t *soap_address_uri = NULL;
     axiom_node_t *endpoint_node = NULL;
     void *ext_element = NULL;
     
@@ -451,7 +451,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     axiom_node_t *method = NULL;
     
     void *soap_binding_op = NULL;
-    axis2_uri_t *soap_action_uri = NULL;
+    axutil_uri_t *soap_action_uri = NULL;
     axis2_char_t *soap_action_str = NULL;
    
     axis2_char_t *given_name = NULL;
@@ -517,7 +517,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
 
     if(soap_address_uri)
     {
-        address = axis2_uri_to_string(soap_address_uri, env,
+        address = axutil_uri_to_string(soap_address_uri, env,
                 AXIS2_URI_UNP_OMITUSERINFO);
         endpoint_node = w2c_xslt_utils_add_child_node(env, "endpoint",
                                                         root);
@@ -602,7 +602,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
                 soap_action_uri = 
                         WODEN_WSDL10_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION
                                                            (soap_binding_op, env);
-                soap_action_str = axis2_uri_to_string 
+                soap_action_str = axutil_uri_to_string 
                                   ( soap_action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
                 w2c_xslt_utils_add_attribute (env, method, "soapaction", soap_action_str);
             }
@@ -726,7 +726,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
 
     axutil_array_list_t* endpoint_list = NULL;
     woden_endpoint_t * endpoint = NULL;
-    axis2_uri_t* endpoint_uri = NULL;
+    axutil_uri_t* endpoint_uri = NULL;
     axis2_char_t* endpoint_uri_str = NULL;
     axiom_node_t* endpoint_node = NULL;
     
@@ -745,7 +745,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
     axiom_node_t* method = NULL;
   
     /*void *soap_binding_op = NULL;*/
-    axis2_uri_t *soap_action_uri = NULL;
+    axutil_uri_t *soap_action_uri = NULL;
     axis2_char_t *soap_action_str = NULL;
     axutil_qname_t *ext_type_l = NULL;
     axutil_qname_t *ext_type = NULL;
@@ -781,7 +781,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
     }
     endpoint = axutil_array_list_get( endpoint_list, env, 0 );
     endpoint_uri = WODEN_ENDPOINT_GET_ADDRESS( endpoint, env);
-    endpoint_uri_str = axis2_uri_to_string ( endpoint_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+    endpoint_uri_str = axutil_uri_to_string ( endpoint_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     endpoint_node = w2c_xslt_utils_add_child_node(env, "endpoint",
                                                     root);
     /** here the endpoint adding */
@@ -864,7 +864,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
                 soap_action_uri = 
                         WODEN_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION
                                                            (soap_binding_op, env); */
-                soap_action_str = axis2_uri_to_string 
+                soap_action_str = axutil_uri_to_string 
                                   ( soap_action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
                 w2c_xslt_utils_add_attribute (env, method, "soapaction", soap_action_str);
             }

@@ -18,8 +18,8 @@
 #include <axiom_xml_reader.h>
 #include <libxml/xmlreader.h>
 #include <libxml/parser.h>
-#include <axis2_utils_defines.h>
-#include <axis2_utils.h>
+#include <axutil_utils_defines.h>
+#include <axutil_utils.h>
 #include <string.h>
 #include <axutil_string.h>
 

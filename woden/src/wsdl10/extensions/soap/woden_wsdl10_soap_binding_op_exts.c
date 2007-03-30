@@ -39,7 +39,7 @@ struct woden_wsdl10_soap_binding_op_exts_impl
     woden_obj_types_t obj_type;
 
     axutil_qname_t *qname;
-    axis2_uri_t *action;
+    axutil_uri_t *action;
 };
 
 #define INTF_TO_IMPL(binding_op_exts) ((woden_wsdl10_soap_binding_op_exts_impl_t *) binding_op_exts)
@@ -64,7 +64,7 @@ woden_wsdl10_soap_binding_op_exts_get_base_impl(
     void *binding_op_exts,
     const axutil_env_t *env);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_soap_binding_op_exts_get_soap_mep(
     void *binding_op_exts,
     const axutil_env_t *env);
@@ -73,9 +73,9 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_binding_op_exts_set_soap_action(
     void *binding_op_exts,
     const axutil_env_t *env,
-    axis2_uri_t *action);
+    axutil_uri_t *action);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_soap_binding_op_exts_get_soap_action(
     void *binding_op_exts,
     const axutil_env_t *env);
@@ -264,7 +264,7 @@ woden_wsdl10_soap_binding_op_exts_free(void *binding_op_exts,
 
     if (binding_op_exts_impl->action)
     {
-        axis2_uri_free(binding_op_exts_impl->action, env);
+        axutil_uri_free(binding_op_exts_impl->action, env);
         binding_op_exts_impl->action = NULL;
     }
 
@@ -357,7 +357,7 @@ woden_wsdl10_soap_binding_op_exts_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_soap_binding_op_exts_get_soap_mep(
     void *binding_op_exts,
     const axutil_env_t *env)
@@ -385,7 +385,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_binding_op_exts_set_soap_action(
     void *binding_op_exts,
     const axutil_env_t *env,
-    axis2_uri_t *action)
+    axutil_uri_t *action)
 {
     woden_wsdl10_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -393,13 +393,13 @@ woden_wsdl10_soap_binding_op_exts_set_soap_action(
     AXIS2_PARAM_CHECK(env->error, action, AXIS2_FAILURE);
     binding_op_exts_impl = INTF_TO_IMPL(binding_op_exts);
 
-    binding_op_exts_impl->action = axis2_uri_clone(action, env);
+    binding_op_exts_impl->action = axutil_uri_clone(action, env);
 
     return AXIS2_SUCCESS;
 }
 
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_soap_binding_op_exts_get_soap_action(
     void *binding_op_exts,
     const axutil_env_t *env)

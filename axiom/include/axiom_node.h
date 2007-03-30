@@ -36,7 +36,7 @@
  * @brief defines axiom_node struct and its ops
  */
 #include <axutil_env.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 
 #ifdef __cplusplus

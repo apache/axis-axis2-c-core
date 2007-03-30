@@ -33,7 +33,7 @@
  * @file axis2_handler_desc.h
  */
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_qname.h>
 #include <axutil_param.h>
 #include <axutil_param_container.h>

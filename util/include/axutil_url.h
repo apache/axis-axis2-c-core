@@ -15,19 +15,19 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_URL_H
-#define AXIS2_URL_H
+#ifndef AXUTIL_URL_H
+#define AXUTIL_URL_H
 
 
 /**
-  * @file axis2_url.h
+  * @file axutil_url.h
   * @brief axis2 URL container implementation
   */
 
-#include <axis2_utils.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -39,72 +39,72 @@ extern "C"
      * @{
      */
 
-    typedef struct axis2_url axis2_url_t;
+    typedef struct axutil_url axutil_url_t;
 
-    AXIS2_EXTERN axis2_url_t * AXIS2_CALL
-    axis2_url_create(
+    AXIS2_EXTERN axutil_url_t * AXIS2_CALL
+    axutil_url_create(
         const axutil_env_t *env,
         const axis2_char_t *protocol,
         const axis2_char_t *server,
         const int port,
         const axis2_char_t *path);
 
-    AXIS2_EXTERN axis2_url_t * AXIS2_CALL
-    axis2_url_parse_string(
+    AXIS2_EXTERN axutil_url_t * AXIS2_CALL
+    axutil_url_parse_string(
         const axutil_env_t *env,
         const axis2_char_t *str_url);
 
-    AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-    axis2_url_to_uri(
-        axis2_url_t *url,
+    AXIS2_EXTERN axutil_uri_t *AXIS2_CALL
+    axutil_url_to_uri(
+        axutil_url_t *url,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_url_to_external_form(axis2_url_t *url,
+    axutil_url_to_external_form(axutil_url_t *url,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_url_set_protocol(axis2_url_t *url,
+    axutil_url_set_protocol(axutil_url_t *url,
         const axutil_env_t *env,
         axis2_char_t *protocol);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_url_get_protocol(axis2_url_t *url,
+    axutil_url_get_protocol(axutil_url_t *url,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_url_set_server(axis2_url_t *url,
+    axutil_url_set_server(axutil_url_t *url,
         const axutil_env_t *env,
         axis2_char_t *server);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_url_get_server(axis2_url_t *url,
+    axutil_url_get_server(axutil_url_t *url,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_url_set_port(axis2_url_t *url,
+    axutil_url_set_port(axutil_url_t *url,
         const axutil_env_t *env,
         int port);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_url_get_port(axis2_url_t *url,
+    axutil_url_get_port(axutil_url_t *url,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_url_set_path(axis2_url_t *url,
+    axutil_url_set_path(axutil_url_t *url,
         const axutil_env_t *env,
         axis2_char_t *path);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_url_get_path(axis2_url_t *url,
+    axutil_url_get_path(axutil_url_t *url,
         const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_url_t* AXIS2_CALL
-    axis2_url_clone(axis2_url_t *url,
+    AXIS2_EXTERN axutil_url_t* AXIS2_CALL
+    axutil_url_clone(axutil_url_t *url,
         const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_url_free(axis2_url_t *url,
+    axutil_url_free(axutil_url_t *url,
         const axutil_env_t *env);
 
     /** @} */

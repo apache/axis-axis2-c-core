@@ -30,10 +30,10 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <axutil_array_list.h>
 #include <woden.h>
 #include <woden_ext_element.h>
@@ -74,9 +74,9 @@ struct woden_soap_module_element_ops
     set_ref) (
             void *soap_module_element,
             const axutil_env_t *env,
-            axis2_uri_t *uri);
+            axutil_uri_t *uri);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_ref) (
             void *soap_module_element,
             const axutil_env_t *env); 

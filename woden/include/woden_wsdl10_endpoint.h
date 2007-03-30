@@ -88,7 +88,7 @@ struct woden_wsdl10_endpoint_ops
             void *endpoint,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_address) (
             void *endpoint,
             const axutil_env_t *env);

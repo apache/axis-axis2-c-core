@@ -21,7 +21,7 @@
 /**
  * @file xml_schema_url_resolver.h
  */
-#include <axis2_url.h>
+#include <axutil_url.h>
 #include <xml_schema_input_source.h>
 
 #ifdef __cplusplus

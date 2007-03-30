@@ -17,7 +17,7 @@
 
 #include <axiom_attribute.h>
 #include <string.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 
 struct axiom_attribute
 {

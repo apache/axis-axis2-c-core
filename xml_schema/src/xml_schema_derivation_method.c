@@ -17,7 +17,7 @@
 
 #include <xml_schema_constants.h>
 #include <xml_schema_derivation_method.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef struct xml_schema_derivation_method_impl
             xml_schema_derivation_method_impl_t;

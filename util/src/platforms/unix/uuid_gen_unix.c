@@ -44,17 +44,17 @@
 # endif
 #endif
 
-#include <platforms/unix/axis2_uuid_gen_unix.h>
+#include <platforms/unix/axutil_uuid_gen_unix.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
 
 /* We need these static variables to track throughout the program execution */
-static axis2_bool_t axis2_uuid_gen_is_first = AXIS2_TRUE;
+static axis2_bool_t axutil_uuid_gen_is_first = AXIS2_TRUE;
 static struct axis2_uuid_st axis2_uuid_static;
 
 
 axis2_uuid_t* AXIS2_CALL
-axis2_uuid_gen_v1()
+axutil_uuid_gen_v1()
 {
     struct timeval time_now;
     struct timeval tv;
@@ -64,14 +64,14 @@ axis2_uuid_gen_v1()
     axis2_uuid_t *ret_uuid = NULL;
     unsigned short int time_high_version = 0;
 
-    if (AXIS2_TRUE == axis2_uuid_gen_is_first)
+    if (AXIS2_TRUE == axutil_uuid_gen_is_first)
     {
         char *mac_addr = axis2_uuid_get_mac_addr();
         memcpy(axis2_uuid_static.mac, mac_addr, 6);
         axis2_uuid_static.time_seq = 0;
         axis2_uuid_static.clock = 0;
         free(mac_addr);
-        axis2_uuid_gen_is_first = AXIS2_FALSE;
+        axutil_uuid_gen_is_first = AXIS2_FALSE;
     }
     /*
      *  GENERATE TIME
@@ -185,7 +185,7 @@ axis2_platform_uuid_gen(char *s)
     {
         return NULL;
     }
-    uuid_struct = axis2_uuid_gen_v1();
+    uuid_struct = axutil_uuid_gen_v1();
     if (! uuid_struct)
     {
         return NULL;

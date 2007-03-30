@@ -17,7 +17,7 @@
 
 #include <xml_schema_annotated.h>
 #include <xml_schema_annotation.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef struct xml_schema_annotated_impl
             xml_schema_annotated_impl_t;

@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_THREAD_POOL_H
-#define AXIS2_THREAD_POOL_H
+#ifndef AXUTIL_THREAD_POOL_H
+#define AXUTIL_THREAD_POOL_H
 
 /**
- * @file axis2_thread_pool.h
+ * @file axutil_thread_pool.h
  * @brief Axis2 thread pool interface
  */
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_allocator.h>
-#include <axis2_thread.h>
+#include <axutil_thread.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -33,12 +33,12 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axis2_thread_pool thread pool
+     * @defgroup axutil_thread_pool thread pool
      * @ingroup axis2_util
      * @{
      */
 
-    typedef struct axis2_thread_pool axis2_thread_pool_t;
+    typedef struct axutil_thread_pool axutil_thread_pool_t;
     struct axutil_env;
 
     /**
@@ -47,9 +47,9 @@ extern "C"
      * @param data arguments to be passed to the function
      * @return pointer to a thread in ready state.
      */
-    AXIS2_EXTERN axis2_thread_t *AXIS2_CALL
-    axis2_thread_pool_get_thread(axis2_thread_pool_t *pool,
-            axis2_thread_start_t func,
+    AXIS2_EXTERN axutil_thread_t *AXIS2_CALL
+    axutil_thread_pool_get_thread(axutil_thread_pool_t *pool,
+            axutil_thread_start_t func,
             void *data);
     /**
      * Blocks until the desired thread stops executing.
@@ -57,8 +57,8 @@ extern "C"
      * @return status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_thread_pool_join_thread(axis2_thread_pool_t *pool,
-            axis2_thread_t *thd);
+    axutil_thread_pool_join_thread(axutil_thread_pool_t *pool,
+            axutil_thread_t *thd);
 
     /**
      * Stop the execution of current thread
@@ -66,8 +66,8 @@ extern "C"
      * @return status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_thread_pool_exit_thread(axis2_thread_pool_t *pool,
-            axis2_thread_t *thd);
+    axutil_thread_pool_exit_thread(axutil_thread_pool_t *pool,
+            axutil_thread_t *thd);
     
     /**
      * Detaches a thread
@@ -75,23 +75,23 @@ extern "C"
      * @return status of the operation
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_thread_pool_thread_detach(axis2_thread_pool_t *pool,
-            axis2_thread_t *thd);
+    axutil_thread_pool_thread_detach(axutil_thread_pool_t *pool,
+            axutil_thread_t *thd);
 
     /**
      * Frees resources used by thread_pool
      * @param pool thread_pool to be freed
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_thread_pool_free(axis2_thread_pool_t *pool);
+    axutil_thread_pool_free(axutil_thread_pool_t *pool);
 
     /**
     * Initializes (creates) an thread_pool.
     * @param allocator user defined allocator for the memory allocation.
     * @return initialized thread_pool. NULL on error.
     */
-    AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL 
-    axis2_thread_pool_init(axutil_allocator_t *allocator);
+    AXIS2_EXTERN axutil_thread_pool_t * AXIS2_CALL 
+    axutil_thread_pool_init(axutil_allocator_t *allocator);
 
     /**
      * This function can be used to initialize the environment in case of
@@ -108,19 +108,19 @@ extern "C"
     axis2_free_thread_env(struct axutil_env *thread_env);
 
 #define AXIS2_THREAD_POOL_GET_THREAD(thread_pool, func, data) \
-      axis2_thread_pool_get_thread(thread_pool, func, data)
+      axutil_thread_pool_get_thread(thread_pool, func, data)
 
 #define AXIS2_THREAD_POOL_JOIN_THREAD(thread_pool, thd) \
-      axis2_thread_pool_join_thread(thread_pool, thd)
+      axutil_thread_pool_join_thread(thread_pool, thd)
 
 #define AXIS2_THREAD_POOL_EXIT_THREAD(thread_pool, thd) \
-      axis2_thread_pool_exit_thread(thread_pool, thd)
+      axutil_thread_pool_exit_thread(thread_pool, thd)
 
 #define AXIS2_THREAD_POOL_THREAD_DETACH(thread_pool, thd) \
-      axis2_thread_pool_thread_detach(thread_pool, thd)
+      axutil_thread_pool_thread_detach(thread_pool, thd)
 
 #define AXIS2_THREAD_POOL_FREE(thread_pool) \
-      axis2_thread_pool_free(thread_pool)
+      axutil_thread_pool_free(thread_pool)
 
     /** @} */
 

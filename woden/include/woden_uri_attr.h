@@ -25,7 +25,7 @@
  */
 
 #include <woden.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <woden_xml_attr.h>
 
 /** @defgroup woden_uri_attr URI Attribute
@@ -76,7 +76,7 @@ struct woden_uri_attr_ops
      *  QNameAttr interface declared methods 
      * ************************************************************/
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_uri) (
             void *uri_attr,
             const axutil_env_t *env);
@@ -86,7 +86,7 @@ struct woden_uri_attr_ops
      * ************************************************************/
     
     /*
-     * Convert a string of type xs:anyURI to a axis2_uri_t.
+     * Convert a string of type xs:anyURI to a axutil_uri_t.
      * An empty string argument will return an empty string URI.
      * A null argument will return a null value.
      * Any conversion error will be reported and a null value will be returned.

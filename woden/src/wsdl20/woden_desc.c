@@ -64,9 +64,9 @@ struct woden_desc_impl
     axutil_array_list_t *f_all_element_decls;
     axutil_array_list_t *f_all_type_defs;
     /* WSDL Element model data */
-    axis2_uri_t *f_doc_base_uri;
+    axutil_uri_t *f_doc_base_uri;
     /* <description> attributes */
-    axis2_uri_t *f_target_namespc;
+    axutil_uri_t *f_target_namespc;
     axutil_hash_t *f_namespcs;
     /* <description> child elements */
     axutil_array_list_t *f_import_elements;
@@ -161,9 +161,9 @@ axis2_status_t AXIS2_CALL
 woden_desc_set_document_base_uri(
     void *desc,
     const axutil_env_t *env,
-    axis2_uri_t *doc_base_uri);
+    axutil_uri_t *doc_base_uri);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_desc_get_document_base_uri(
     void *desc,
     const axutil_env_t *env);
@@ -172,9 +172,9 @@ axis2_status_t AXIS2_CALL
 woden_desc_set_target_namespace(
     void *desc,
     const axutil_env_t *env,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_desc_get_target_namespace(
     void *desc,
     const axutil_env_t *env);
@@ -184,7 +184,7 @@ woden_desc_add_namespace(
     void *desc,
     const axutil_env_t *env,
     axis2_char_t *prefix,
-    axis2_uri_t *namespc);
+    axutil_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_desc_remove_namespace(
@@ -192,7 +192,7 @@ woden_desc_remove_namespace(
     const axutil_env_t *env,
     axis2_char_t *prefix);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_desc_get_namespace(
     void *desc,
     const axutil_env_t *env,
@@ -231,7 +231,7 @@ woden_desc_set_types_element(
     const axutil_env_t *env,
     void *types_el);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_desc_get_types_element(
     void *desc,
     const axutil_env_t *env);
@@ -1005,12 +1005,12 @@ woden_desc_free(
     /* TODO free f_parent */
     if (desc_impl->f_target_namespc)
     {
-        axis2_uri_free(desc_impl->f_target_namespc, env);
+        axutil_uri_free(desc_impl->f_target_namespc, env);
         desc_impl->f_target_namespc = NULL;
     }
     if (desc_impl->f_doc_base_uri)
     {
-        axis2_uri_free(desc_impl->f_doc_base_uri, env);
+        axutil_uri_free(desc_impl->f_doc_base_uri, env);
         desc_impl->f_doc_base_uri = NULL;
     }
     /* TODO free f_namespcs */
@@ -1373,7 +1373,7 @@ axis2_status_t AXIS2_CALL
 woden_desc_set_document_base_uri(
     void *desc,
     const axutil_env_t *env,
-    axis2_uri_t *doc_base_uri)
+    axutil_uri_t *doc_base_uri)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1385,15 +1385,15 @@ woden_desc_set_document_base_uri(
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
     if (desc_impl->f_doc_base_uri)
     {
-        axis2_uri_free(desc_impl->f_doc_base_uri, env);
+        axutil_uri_free(desc_impl->f_doc_base_uri, env);
         desc_impl->f_doc_base_uri = NULL;
     }
 
-    desc_impl->f_doc_base_uri = axis2_uri_clone(doc_base_uri, env);
+    desc_impl->f_doc_base_uri = axutil_uri_clone(doc_base_uri, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_desc_get_document_base_uri(
     void *desc,
     const axutil_env_t *env)
@@ -1414,7 +1414,7 @@ axis2_status_t AXIS2_CALL
 woden_desc_set_target_namespace(
     void *desc,
     const axutil_env_t *env,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1426,15 +1426,15 @@ woden_desc_set_target_namespace(
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
     if (desc_impl->f_target_namespc)
     {
-        axis2_uri_free(desc_impl->f_target_namespc, env);
+        axutil_uri_free(desc_impl->f_target_namespc, env);
         desc_impl->f_target_namespc = NULL;
     }
 
-    desc_impl->f_target_namespc = axis2_uri_clone(namespc, env);
+    desc_impl->f_target_namespc = axutil_uri_clone(namespc, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_desc_get_target_namespace(
     void *desc,
     const axutil_env_t *env)
@@ -1455,7 +1455,7 @@ woden_desc_add_namespace(
     void *desc,
     const axutil_env_t *env,
     axis2_char_t *prefix,
-    axis2_uri_t *namespc)
+    axutil_uri_t *namespc)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1469,7 +1469,7 @@ woden_desc_add_namespace(
     pfx = (prefix) ? prefix : "";
     if (namespc)
         axutil_hash_set(desc_impl->f_namespcs, pfx, AXIS2_HASH_KEY_STRING,
-                axis2_uri_clone(namespc, env));
+                axutil_uri_clone(namespc, env));
     else
         axutil_hash_set(desc_impl->f_namespcs, pfx, AXIS2_HASH_KEY_STRING, NULL);
     return AXIS2_SUCCESS;
@@ -1495,7 +1495,7 @@ woden_desc_remove_namespace(
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_desc_get_namespace(
     void *desc,
     const axutil_env_t *env,
@@ -1621,7 +1621,7 @@ woden_desc_set_types_element(
     return AXIS2_SUCCESS;
 }
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_desc_get_types_element(
     void *desc,
     const axutil_env_t *env)

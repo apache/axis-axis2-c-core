@@ -20,7 +20,7 @@
 #define AXIS2_THREAD_MUTEX_H
 
 /**
- * @file axis2_thread_mutex.h
+ * @file axutil_thread_mutex.h
  * @brief AXIS2 Thread Mutex Routines
  */
 
@@ -39,7 +39,7 @@ extern "C" {
  */
 
 /** Opaque thread-local mutex structure */
-typedef struct axis2_thread_mutex_t axis2_thread_mutex_t;
+typedef struct axutil_thread_mutex_t axutil_thread_mutex_t;
 
 #define AXIS2_THREAD_MUTEX_DEFAULT  0x0   /**< platform-optimal lock behavior */
 #define AXIS2_THREAD_MUTEX_NESTED   0x1   /**< enable nested (recursive) locks */
@@ -61,8 +61,8 @@ typedef struct axis2_thread_mutex_t axis2_thread_mutex_t;
  * most optimial mutex based on a given platform's performance charateristics,
  * it will behave as either a nested or an unnested lock.
  */
-AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL 
-axis2_thread_mutex_create(axutil_allocator_t *allocator,
+AXIS2_EXTERN axutil_thread_mutex_t * AXIS2_CALL 
+axutil_thread_mutex_create(axutil_allocator_t *allocator,
                           unsigned int flags);
 /**
  * Acquire the lock for the given mutex. If the mutex is already locked,
@@ -70,7 +70,7 @@ axis2_thread_mutex_create(axutil_allocator_t *allocator,
  * @param mutex the mutex on which to acquire the lock.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex);
+axutil_thread_mutex_lock(axutil_thread_mutex_t *mutex);
 
 /**
  * Attempt to acquire the lock for the given mutex. If the mutex has already
@@ -78,21 +78,21 @@ axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex);
  * @param mutex the mutex on which to attempt the lock acquiring.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex);
+axutil_thread_mutex_trylock(axutil_thread_mutex_t *mutex);
 
 /**
  * Release the lock for the given mutex.
  * @param mutex the mutex from which to release the lock.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex);
+axutil_thread_mutex_unlock(axutil_thread_mutex_t *mutex);
 
 /**
  * Destroy the mutex and free the memory associated with the lock.
  * @param mutex the mutex to destroy.
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex);
+axutil_thread_mutex_destroy(axutil_thread_mutex_t *mutex);
 
 /** @} */
 

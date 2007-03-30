@@ -44,10 +44,10 @@
 #include <axutil_env.h>
 #include <axutil_error.h>
 #include <axutil_string.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_hash.h>
 #include <axutil_qname.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include <woden.h>
 
 #ifdef __cplusplus
@@ -89,7 +89,7 @@ struct woden_component_exts_ops
     type) (void *component_exts,
             const axutil_env_t *env);
     
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_namespace) (
             void *component_exts,
             const axutil_env_t *env);
@@ -99,7 +99,7 @@ struct woden_component_exts_ops
             void *component_exts,
             const axutil_env_t *env,
             struct woden_wsdl_element *parent_el,
-            axis2_uri_t *namespc);
+            axutil_uri_t *namespc);
 
     void *(AXIS2_CALL *
     get_parent_element) (

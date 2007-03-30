@@ -15,36 +15,36 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_THREAD_UNIX_H
-#define AXIS2_THREAD_UNIX_H
+#ifndef AXUTIL_THREAD_UNIX_H
+#define AXUTIL_THREAD_UNIX_H
 
-#include <axis2_thread.h>
+#include <axutil_thread.h>
 #include <pthread.h>
 
 #define SHELL_PATH "/bin/sh"
 
 typedef pthread_t axis2_os_thread_t; /* Native thread */
 
-struct axis2_thread_t {
+struct axutil_thread_t {
     pthread_t *td;
     void *data;
-    axis2_thread_start_t func;
+    axutil_thread_start_t func;
 };
 
-struct axis2_threadattr_t {
+struct axutil_threadattr_t {
     pthread_attr_t attr;
 };
 
-struct axis2_threadkey_t {
+struct axutil_threadkey_t {
     pthread_key_t key;
 };
 
-struct axis2_thread_once_t {
+struct axutil_thread_once_t {
     pthread_once_t once;
 };
 
 /*************************Thread locking functions*****************************/
-struct axis2_thread_mutex_t {
+struct axutil_thread_mutex_t {
     axutil_allocator_t *allocator;
     pthread_mutex_t mutex;
 };

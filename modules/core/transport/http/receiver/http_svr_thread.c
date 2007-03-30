@@ -23,7 +23,7 @@
 #include <axutil_network_handler.h>
 #include <axis2_http_simple_request.h>
 #include <axis2_simple_http_svr_conn.h>
-#include <axis2_url.h>
+#include <axutil_url.h>
 #include <axutil_error_default.h>
 #include <axiom_xml_reader.h>
 #include <signal.h>
@@ -50,7 +50,7 @@ typedef struct axis2_http_svr_thd_args
     axutil_env_t *env;
     axis2_socket_t socket;
     axis2_http_worker_t *worker;
-    axis2_thread_t *thread;
+    axutil_thread_t *thread;
 }
 axis2_http_svr_thd_args_t;
 
@@ -97,7 +97,7 @@ init_thread_env(
 
 void *AXIS2_THREAD_FUNC
 axis2_svr_thread_worker_func(
-    axis2_thread_t *thd,
+    axutil_thread_t *thd,
     void *data);
 
 /***************************** End of function headers ************************/
@@ -199,7 +199,7 @@ axis2_http_svr_thread_run(
     {
         int socket = -1;
         axis2_http_svr_thd_args_t *arg_list = NULL;
-        axis2_thread_t *worker_thread = NULL;
+        axutil_thread_t *worker_thread = NULL;
 
         socket = axutil_network_handler_svr_socket_accept(env,
                 svr_thread_impl->listen_socket);
@@ -300,7 +300,7 @@ axis2_http_svr_thread_set_worker(
  */
 void *AXIS2_THREAD_FUNC
 axis2_svr_thread_worker_func (
-    axis2_thread_t *thd,
+    axutil_thread_t *thd,
     void *data)
 {
     struct AXIS2_PLATFORM_TIMEB t1, t2;

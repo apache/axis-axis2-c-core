@@ -22,7 +22,7 @@
 #include <axiom_text.h>
 #include <axiom_soap_const.h>
 #include <axutil_array_list.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 #include <axiom_mime_output.h>
 
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"
@@ -322,7 +322,7 @@ axiom_output_get_next_content_id(axiom_output_t *om_output,
         om_output->next_content_id = NULL;
     }
 
-    uuid = axis2_uuid_gen(env);
+    uuid = axutil_uuid_gen(env);
     if (!uuid)
     {
         return NULL;
@@ -360,7 +360,7 @@ axiom_output_get_root_content_id(axiom_output_t *om_output,
     
     if (!om_output->root_content_id)
     {
-        uuid = axis2_uuid_gen(env);
+        uuid = axutil_uuid_gen(env);
 
         temp_str = axis2_stracat(env, "0.", uuid);
 
@@ -389,7 +389,7 @@ axiom_output_get_mime_boundry(axiom_output_t *om_output,
     axis2_char_t *uuid = NULL;
     if (!om_output->mime_boundary)
     {
-        uuid = axis2_uuid_gen(env);
+        uuid = axutil_uuid_gen(env);
 
         om_output->mime_boundary = axis2_stracat(env, "MIMEBoundary", uuid);
         if (uuid)

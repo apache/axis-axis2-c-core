@@ -80,7 +80,7 @@ struct woden_binding_ops
             void *binding,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_type) (
             void *binding,
             const axutil_env_t *env);

@@ -27,7 +27,7 @@
 #include <axutil_allocator.h>
 #include <axutil_error.h>
 #include <axutil_log.h>
-#include <axis2_thread_pool.h>
+#include <axutil_thread_pool.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -67,7 +67,7 @@ extern "C"
         /** This flag indicate whether logging is enabled or not */
         axis2_bool_t log_enabled;
         /** Thread pooling routines */
-        axis2_thread_pool_t *thread_pool;
+        axutil_thread_pool_t *thread_pool;
     }
     axutil_env_t;
 
@@ -128,7 +128,7 @@ extern "C"
     axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
         axutil_error_t *error, 
         axutil_log_t *log, 
-        axis2_thread_pool_t *pool);
+        axutil_thread_pool_t *pool);
 
     /**
       * Creates an environment struct

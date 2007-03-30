@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_error_default.h>
 #include <axutil_log_default.h>
-#include <axis2_thread_pool.h>
+#include <axutil_thread_pool.h>
 #include <tcpmon_session.h>
 #include <tcpmon_entry.h>
 #include <tcpmon_util.h>
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 		axutil_allocator_t* allocator = NULL;
 		axutil_error_t *error = NULL;
 		axutil_log_t *log = NULL;
-		axis2_thread_pool_t *thread_pool = NULL;
+		axutil_thread_pool_t *thread_pool = NULL;
 		tcpmon_session_t* session = NULL;
 		int c;
 		int listen_port = 0, target_port = 0;
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 
 		error = axutil_error_create(allocator);
 		log = axutil_log_create(allocator, NULL, "axis2_tcpmon.log");
-		thread_pool = axis2_thread_pool_init(allocator);
+		thread_pool = axutil_thread_pool_init(allocator);
 
 		env = axutil_env_create_with_error_log_thread_pool(allocator, error, log,
 																		  thread_pool);

@@ -19,7 +19,7 @@
 #include <axutil_string.h>
 #include <stdio.h>
 #include <string.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 
 #define AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE 2048
 

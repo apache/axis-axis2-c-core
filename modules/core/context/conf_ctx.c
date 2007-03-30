@@ -18,7 +18,7 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_svc_grp.h>
 #include <axis2_const.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 
 struct axis2_conf_ctx
 {
@@ -40,7 +40,7 @@ struct axis2_conf_ctx
     axutil_hash_t *svc_grp_ctx_map;
 
     /* Mutex to synchronize the read/write operations */
-    axis2_thread_mutex_t *mutex;
+    axutil_thread_mutex_t *mutex;
 };
 
 AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
@@ -65,7 +65,7 @@ axis2_conf_ctx_create(
     conf_ctx->op_ctx_map = NULL;
     conf_ctx->svc_ctx_map = NULL;
     conf_ctx->svc_grp_ctx_map = NULL;
-    conf_ctx->mutex = axis2_thread_mutex_create(env->allocator,
+    conf_ctx->mutex = axutil_thread_mutex_create(env->allocator,
             AXIS2_THREAD_MUTEX_DEFAULT);
     if (!conf_ctx->mutex)
     {
@@ -164,13 +164,13 @@ axis2_conf_ctx_register_op_ctx(
     const axis2_char_t *message_id,
     axis2_op_ctx_t *op_ctx)
 {
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->op_ctx_map)
     {
         axutil_hash_set(conf_ctx->op_ctx_map,
                 message_id, AXIS2_HASH_KEY_STRING, op_ctx);
     }
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return AXIS2_SUCCESS;
 }
 
@@ -185,13 +185,13 @@ axis2_conf_ctx_get_op_ctx(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, message_id, NULL);
 
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->op_ctx_map)
     {
         rv = (axis2_op_ctx_t*)axutil_hash_get(conf_ctx->op_ctx_map,
                 message_id, AXIS2_HASH_KEY_STRING);
     }
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return rv;
 }
 
@@ -202,13 +202,13 @@ axis2_conf_ctx_register_svc_ctx(
     const axis2_char_t *svc_id,
     axis2_svc_ctx_t *svc_ctx)
 {
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_ctx_map)
     {
         axutil_hash_set(conf_ctx->svc_ctx_map,
                 svc_id, AXIS2_HASH_KEY_STRING, svc_ctx);
     }
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return AXIS2_SUCCESS;
 }
 
@@ -220,13 +220,13 @@ axis2_conf_ctx_get_svc_ctx(
 {
     axis2_svc_ctx_t *rv = NULL;
 
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_ctx_map)
     {
         rv = (axis2_svc_ctx_t*)axutil_hash_get(conf_ctx->svc_ctx_map,
                 svc_id, AXIS2_HASH_KEY_STRING);
     }
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return rv;
 }
 
@@ -237,13 +237,13 @@ axis2_conf_ctx_register_svc_grp_ctx(
     const axis2_char_t *svc_grp_id,
     axis2_svc_grp_ctx_t *svc_grp_ctx)
 {
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_grp_ctx_map)
     {
         axutil_hash_set(conf_ctx->svc_grp_ctx_map,
                 svc_grp_id, AXIS2_HASH_KEY_STRING, svc_grp_ctx);
     }
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return AXIS2_SUCCESS;
 }
 
@@ -254,13 +254,13 @@ axis2_conf_ctx_get_svc_grp_ctx(
     const axis2_char_t *svc_grp_id)
 {
     axis2_svc_grp_ctx_t *rv = NULL;
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->svc_grp_ctx_map)
     {
         rv = (axis2_svc_grp_ctx_t*)axutil_hash_get(conf_ctx->svc_grp_ctx_map, 
             svc_grp_id, AXIS2_HASH_KEY_STRING);
     }
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return rv;
 }
 
@@ -270,9 +270,9 @@ axis2_conf_ctx_get_root_dir(
     const axutil_env_t *env)
 {
     axis2_char_t *rv = NULL;
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     rv = conf_ctx->root_dir;
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return rv;
 }
 
@@ -284,7 +284,7 @@ axis2_conf_ctx_set_root_dir(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     if (conf_ctx->root_dir)
     {
         AXIS2_FREE(env->allocator, conf_ctx->root_dir);
@@ -297,11 +297,11 @@ axis2_conf_ctx_set_root_dir(
         if (!(conf_ctx->root_dir))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            axis2_thread_mutex_unlock(conf_ctx->mutex);
+            axutil_thread_mutex_unlock(conf_ctx->mutex);
             return AXIS2_FAILURE;
         }
     }
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return AXIS2_SUCCESS;
 }
 
@@ -316,7 +316,7 @@ axis2_conf_ctx_init(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    axis2_thread_mutex_lock(conf_ctx->mutex);
+    axutil_thread_mutex_lock(conf_ctx->mutex);
     conf_ctx->conf = conf;
 
     for (hi = axutil_hash_first(conf_ctx->op_ctx_map, env);
@@ -351,7 +351,7 @@ axis2_conf_ctx_init(
              axis2_svc_grp_ctx_init(svc_grp_ctx, env, conf);
         }
     }
-    axis2_thread_mutex_unlock(conf_ctx->mutex);
+    axutil_thread_mutex_unlock(conf_ctx->mutex);
     return AXIS2_SUCCESS;
 }
 
@@ -431,7 +431,7 @@ axis2_conf_ctx_free(
     }
     if (conf_ctx->mutex)
     {
-        axis2_thread_mutex_destroy(conf_ctx->mutex);
+        axutil_thread_mutex_destroy(conf_ctx->mutex);
     }
 
     AXIS2_FREE(env->allocator, conf_ctx);
@@ -516,7 +516,7 @@ axis2_conf_ctx_fill_ctxs(
 
     if (!svc_grp_ctx_id)
     {
-        svc_grp_ctx_id = axis2_uuid_gen(env);
+        svc_grp_ctx_id = axutil_uuid_gen(env);
         if (svc_grp_ctx_id)
         {
             axutil_string_t *svc_grp_ctx_id_str = 

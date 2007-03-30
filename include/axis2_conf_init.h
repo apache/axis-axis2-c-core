@@ -24,7 +24,7 @@
  */
 
 #include <axutil_env.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axis2_conf_ctx.h>
 
 #ifdef __cplusplus

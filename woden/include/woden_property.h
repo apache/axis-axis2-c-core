@@ -75,7 +75,7 @@ struct woden_property_ops
             void *property,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_ref) (
             void *property,
             const axutil_env_t *env);

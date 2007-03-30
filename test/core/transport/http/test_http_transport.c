@@ -20,7 +20,7 @@
 #include <axis2_http_status_line.h>
 #include <axis2_http_header.h>
 #include <axutil_error_default.h>
-#include <axis2_url.h>
+#include <axutil_url.h>
 #include <axis2_http_client.h>
 
 typedef struct a
@@ -95,7 +95,7 @@ void test_http_header(const axutil_env_t *env)
 void test_url(const axutil_env_t *env)
 {
     const axis2_char_t *str_url = "http://ws.apache.org/axis2/";
-    axis2_url_t *url = axis2_url_parse_string(env, str_url);
+    axutil_url_t *url = axutil_url_parse_string(env, str_url);
     if (! url)
     {
         printf("URL is NULL\n");
@@ -103,10 +103,10 @@ void test_url(const axutil_env_t *env)
     }
     printf("Starting URL Test ....\n");
     printf("Parsed URL : \n Protocol :%s|\n Server :%s|\n Port :%d|\n Path : %s|\n",
-            axis2_url_get_protocol(url, env), axis2_url_get_server(url, env),
-            axis2_url_get_port(url, env), axis2_url_get_path(url, env));
+            axutil_url_get_protocol(url, env), axutil_url_get_server(url, env),
+            axutil_url_get_port(url, env), axutil_url_get_path(url, env));
     printf("End of URL Test ... \n");
-    axis2_url_free(url, env);
+    axutil_url_free(url, env);
 }
 
 void test_http_client(const axutil_env_t *env)
@@ -114,7 +114,7 @@ void test_http_client(const axutil_env_t *env)
     axis2_http_client_t *client = NULL;
     axis2_http_simple_request_t *request = NULL;
     axis2_http_request_line_t *request_line = NULL;
-    axis2_url_t *url = NULL;
+    axutil_url_t *url = NULL;
     axis2_http_header_t *header = NULL;
     axutil_stream_t *request_body = NULL;
     axis2_http_simple_response_t *response = NULL;
@@ -128,9 +128,9 @@ void test_http_client(const axutil_env_t *env)
     request_body = axutil_stream_create_basic(env);
     request = axis2_http_simple_request_create(env, request_line,
             NULL, 0, NULL);
-    url = axis2_url_create(env, "http", "localhost", 80,
+    url = axutil_url_create(env, "http", "localhost", 80,
             NULL);
-    header = axis2_http_header_create(env, "Host", axis2_url_get_server(url, env));
+    header = axis2_http_header_create(env, "Host", axutil_url_get_server(url, env));
     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, header);
     client = axis2_http_client_create(env, url);
 
@@ -175,7 +175,7 @@ void test_https_client(const axutil_env_t *env)
     axis2_http_client_t *client = NULL;
     axis2_http_simple_request_t *request = NULL;
     axis2_http_request_line_t *request_line = NULL;
-    axis2_url_t *url = NULL;
+    axutil_url_t *url = NULL;
     axis2_http_header_t *header = NULL;
     axutil_stream_t *request_body = NULL;
     axis2_http_simple_response_t *response = NULL;
@@ -189,11 +189,11 @@ void test_https_client(const axutil_env_t *env)
     request_body = axutil_stream_create_basic(env);
     request = axis2_http_simple_request_create(env, request_line,
             NULL, 0, NULL);
-    url = axis2_url_create(env, "https", "localhost", 9090,
+    url = axutil_url_create(env, "https", "localhost", 9090,
             NULL);
     /* Add an ssl certificate variable */
     /*setenv("AXIS2_SSL_CA_FILE", "cert.pem", 1);*/
-    header = axis2_http_header_create(env, "Host", axis2_url_get_server(url, env));
+    header = axis2_http_header_create(env, "Host", axutil_url_get_server(url, env));
     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, header);
     client = axis2_http_client_create(env, url);
 

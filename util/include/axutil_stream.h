@@ -17,8 +17,8 @@
 #ifndef AXUTIL_STREAM_H
 #define AXUTIL_STREAM_H
 
-#include <axis2_utils.h>
-#include <axis2_utils_defines.h>
+#include <axutil_utils.h>
+#include <axutil_utils_defines.h>
 #include <axutil_env.h>
 #include <stdio.h>
 

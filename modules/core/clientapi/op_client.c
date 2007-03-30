@@ -18,7 +18,7 @@
 #include <axis2_op_client.h>
 #include <axis2_const.h>
 #include <axutil_hash.h>
-#include <axis2_uuid_gen.h>
+#include <axutil_uuid_gen.h>
 #include <axis2_listener_manager.h>
 #include <axis2_engine.h>
 #include "axis2_callback_recv.h"
@@ -27,7 +27,7 @@
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_const.h>
 #include <axiom_soap_body.h>
-#include <axis2_types.h>
+#include <axutil_types.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
 struct axis2_op_client
@@ -69,7 +69,7 @@ axis2_op_client_worker_func_args_t;
 
 void *AXIS2_THREAD_FUNC
 axis2_op_client_worker_func(
-    axis2_thread_t *thd,
+    axutil_thread_t *thd,
     void *data);
 
 static axis2_char_t *AXIS2_CALL
@@ -392,7 +392,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
     {
         return AXIS2_FAILURE;
     }
-    msg_id = (axis2_char_t*)axis2_uuid_gen(env);
+    msg_id = (axis2_char_t*)axutil_uuid_gen(env);
      axis2_msg_ctx_set_message_id(msg_ctx, env, msg_id);
     if(msg_id)
     {
@@ -460,7 +460,7 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
         }
         else
         {
-            axis2_thread_t *worker_thread = NULL;
+            axutil_thread_t *worker_thread = NULL;
             axis2_op_client_worker_func_args_t *arg_list = NULL;
             arg_list = AXIS2_MALLOC(env->allocator,
                 sizeof(axis2_op_client_worker_func_args_t));
@@ -575,14 +575,14 @@ axis2_op_client_free(axis2_op_client_t *op_client,
 
 
 void *AXIS2_THREAD_FUNC
-axis2_op_client_worker_func(axis2_thread_t *thd,
+axis2_op_client_worker_func(axutil_thread_t *thd,
     void *data)
 {
     axis2_op_client_worker_func_args_t *args_list = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_msg_ctx_t *response = NULL;
     axutil_env_t *th_env = NULL;
-    axis2_thread_pool_t *th_pool = NULL;
+    axutil_thread_pool_t *th_pool = NULL;
 
     args_list = (axis2_op_client_worker_func_args_t *) data;
     if(!args_list)

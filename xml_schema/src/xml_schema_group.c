@@ -17,7 +17,7 @@
 
 #include <xml_schema_group.h>
 #include <xml_schema_group_base.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef struct xml_schema_group_impl
             xml_schema_group_impl_t;

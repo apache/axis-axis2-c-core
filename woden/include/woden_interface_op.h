@@ -74,7 +74,7 @@ struct woden_interface_op_ops
             void *interface_op,
             const axutil_env_t *env);
 
-    axis2_uri_t *(AXIS2_CALL *
+    axutil_uri_t *(AXIS2_CALL *
     get_msg_exchange_pattern) (
             void *interface_op,
             const axutil_env_t *env);

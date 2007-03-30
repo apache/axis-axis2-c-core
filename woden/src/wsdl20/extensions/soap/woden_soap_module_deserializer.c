@@ -344,7 +344,7 @@ woden_soap_module_deserializer_unmarshall(
             WODEN_ATTR_REF);
     if (ref)
     {
-        axis2_uri_t *uri = axis2_uri_parse_string(env, ref);
+        axutil_uri_t *uri = axutil_uri_parse_string(env, ref);
 
         soap_mod = woden_soap_module_to_soap_module_element(soap_mod, env);
         WODEN_SOAP_MODULE_ELEMENT_SET_REF(soap_mod, env, uri);

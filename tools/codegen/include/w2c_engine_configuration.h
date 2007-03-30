@@ -23,7 +23,7 @@
  * @brief represent command line option
  */
 
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 #include <axutil_array_list.h>
 #include <axutil_hash.h>
 #include <w2c_typemapper.h>

@@ -24,7 +24,7 @@
 #include <axis2_engine.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_conf_init.h>
-#include <axis2_thread_pool.h>
+#include <axutil_thread_pool.h>
 #include <axis2_util.h>
 #include <axis2_svc_client.h>
 #include <axis2_options.h>
@@ -70,7 +70,7 @@ publisher_on_fault(axis2_svc_skeleton_t *svc_skeli,
 
 static void * AXIS2_THREAD_FUNC
 publisher_worker_func(
-    axis2_thread_t *thrd,
+    axutil_thread_t *thrd,
     void* data);
     
 /*Create function */
@@ -130,7 +130,7 @@ publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
             axis2_msg_ctx_t *msg_ctx)
 {
 
-	axis2_thread_t *worker_thread = NULL;
+	axutil_thread_t *worker_thread = NULL;
 	publisher_data_t *data = NULL;
 
     printf("publisher invoke called.\n");
@@ -208,7 +208,7 @@ publisher_free(axis2_svc_skeleton_t *svc_skeleton,
 
 static void * AXIS2_THREAD_FUNC
 publisher_worker_func(
-    axis2_thread_t *thrd,
+    axutil_thread_t *thrd,
     void* data)
 {
     axutil_env_t *main_env = NULL;

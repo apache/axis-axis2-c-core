@@ -18,7 +18,7 @@
 #ifndef AXUTIL_ERROR_H
 #define AXUTIL_ERROR_H
 
-#include <axis2_utils_defines.h>
+#include <axutil_utils_defines.h>
 #include <axutil_allocator.h>
 
 #ifdef __cplusplus

@@ -17,7 +17,7 @@
 
 #include <xml_schema_enum.h>
 #include <axutil_hash.h>
-#include <axis2_utils.h>
+#include <axutil_utils.h>
 
 typedef struct xml_schema_enum_impl
             xml_schema_enum_impl_t;

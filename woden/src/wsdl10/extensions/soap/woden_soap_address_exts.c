@@ -39,7 +39,7 @@ struct woden_wsdl10_soap_address_exts_impl
     woden_obj_types_t obj_type;
 
     axutil_qname_t *qname;
-    axis2_uri_t *address;
+    axutil_uri_t *address;
 };
 
 #define INTF_TO_IMPL(address_exts) ((woden_wsdl10_soap_address_exts_impl_t *) address_exts)
@@ -68,9 +68,9 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_set_soap_address(
     void *address_exts,
     const axutil_env_t *env,
-    axis2_uri_t *address);
+    axutil_uri_t *address);
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_get_soap_address(
     void *address_exts,
     const axutil_env_t *env);
@@ -254,7 +254,7 @@ woden_wsdl10_soap_address_exts_free(void *address_exts,
 
     if (address_exts_impl->address)
     {
-        axis2_uri_free(address_exts_impl->address, env);
+        axutil_uri_free(address_exts_impl->address, env);
         address_exts_impl->address = NULL;
     }
 
@@ -351,7 +351,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_set_soap_address(
     void *address_exts,
     const axutil_env_t *env,
-    axis2_uri_t *address)
+    axutil_uri_t *address)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -359,13 +359,13 @@ woden_wsdl10_soap_address_exts_set_soap_address(
     AXIS2_PARAM_CHECK(env->error, address, AXIS2_FAILURE);
     address_exts_impl = INTF_TO_IMPL(address_exts);
 
-    address_exts_impl->address = axis2_uri_clone(address, env);
+    address_exts_impl->address = axutil_uri_clone(address, env);
 
     return AXIS2_SUCCESS;
 }
 
 
-axis2_uri_t *AXIS2_CALL
+axutil_uri_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_get_soap_address(
     void *address_exts,
     const axutil_env_t *env)

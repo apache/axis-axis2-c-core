@@ -19,7 +19,7 @@
 #include <axis2_phases_info.h>
 #include <axis2_const.h>
 #include <axutil_hash.h>
-#include <axis2_uri.h>
+#include <axutil_uri.h>
 #include "axis2_callback_recv.h"
 #include <axiom_soap_const.h>
 #include <axiom_soap_body.h>
@@ -102,7 +102,7 @@ axis2_svc_client_create(const axutil_env_t *env,
 AXIS2_EXTERN axis2_svc_client_t *AXIS2_CALL
 axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
-    const axis2_uri_t *wsdl_uri,
+    const axutil_uri_t *wsdl_uri,
     const axutil_qname_t *wsdl_svc_qname,
     const axis2_char_t *endpoint_name,
     const axis2_char_t *client_home)
@@ -594,7 +594,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
     axiom_node_t *soap_node = NULL;
     axis2_op_t *op = NULL;
     axutil_param_t *param = NULL;
-    axis2_uri_t *action_uri = NULL;
+    axutil_uri_t *action_uri = NULL;
     axis2_char_t *action_str = NULL;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
@@ -609,8 +609,8 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         param = axis2_op_get_param(op, env, AXIS2_SOAP_ACTION);
         if (param)
         {
-            action_uri = (axis2_uri_t *) axutil_param_get_value(param, env);
-            action_str = axis2_uri_to_string(action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+            action_uri = (axutil_uri_t *) axutil_param_get_value(param, env);
+            action_str = axutil_uri_to_string(action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
             axis2_options_set_action(svc_client->options, env, action_str);
         }
     }
