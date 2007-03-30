@@ -100,7 +100,7 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    status = axis2_file_handler_access(svcs_xml, AXIS2_F_OK);
+    status = axutil_file_handler_access(svcs_xml, AXIS2_F_OK);
     if (AXIS2_SUCCESS == status)
     {
         struct axis2_arch_file_data *arch_file_data = NULL;
@@ -250,7 +250,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    status = axis2_file_handler_access(module_xml, AXIS2_F_OK);
+    status = axutil_file_handler_access(module_xml, AXIS2_F_OK);
 
     if (AXIS2_SUCCESS == status)
     {

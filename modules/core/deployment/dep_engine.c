@@ -18,7 +18,7 @@
 #include "axis2_dep_engine.h"
 #include <axutil_array_list.h>
 #include <axis2_deployment.h>
-#include <axis2_file_handler.h>
+#include <axutil_file_handler.h>
 #include <axutil_dll_desc.h>
 #include <axis2_flow.h>
 #include <axis2_arch_reader.h>
@@ -227,7 +227,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env
         return NULL;
     }
 
-    status = axis2_file_handler_access(repos_path, AXIS2_F_OK);
+    status = axutil_file_handler_access(repos_path, AXIS2_F_OK);
     if (AXIS2_SUCCESS != status)
     {
         axis2_dep_engine_free(dep_engine, env);
@@ -261,7 +261,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_REPO_CAN_NOT_BE_NULL, AXIS2_FAILURE);
         return NULL;
     }
-    status = axis2_file_handler_access(dep_engine->conf_name, AXIS2_F_OK);
+    status = axutil_file_handler_access(dep_engine->conf_name, AXIS2_F_OK);
     if (AXIS2_SUCCESS != status)
     {
         axis2_dep_engine_free(dep_engine, env);
@@ -794,7 +794,7 @@ axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
             return AXIS2_FAILURE;
         }
     }
-    status = axis2_file_handler_access(dep_engine->conf_name, AXIS2_F_OK);
+    status = axutil_file_handler_access(dep_engine->conf_name, AXIS2_F_OK);
     if (AXIS2_SUCCESS != status)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CONFIG_NOT_FOUND,

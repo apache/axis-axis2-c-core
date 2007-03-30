@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_FILE_HANDLER_H
-#define AXIS2_FILE_HANDLER_H
+#ifndef AXUTIL_FILE_HANDLER_H
+#define AXUTIL_FILE_HANDLER_H
 
 #include <axis2_string.h>
 
@@ -26,7 +26,7 @@ extern "C"
 
 
 /**
- * @defgroup axis2_file_handler file handler
+ * @defgroup axutil_file_handler file handler
  * @ingroup axis2_util 
  * @{
  */
@@ -38,7 +38,7 @@ extern "C"
  * @return status code
  */ 
 AXIS2_EXTERN void * AXIS2_CALL 
-axis2_file_handler_open(const char *file_name, 
+axutil_file_handler_open(const char *file_name, 
                         const char *options);
 
 /**
@@ -47,7 +47,7 @@ axis2_file_handler_open(const char *file_name,
  * @return status code
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_file_handler_close (void *file_ptr);
+axutil_file_handler_close (void *file_ptr);
 
 /**
  * determine accessibility of file
@@ -66,7 +66,7 @@ axis2_file_handler_close (void *file_ptr);
  * @return status
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_file_handler_access(const axis2_char_t *path, 
+axutil_file_handler_access(const axis2_char_t *path, 
                             int mode);
 
 /** @} */

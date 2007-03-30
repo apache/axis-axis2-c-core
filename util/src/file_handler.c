@@ -20,10 +20,10 @@
 #include <stdio.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
-#include <axis2_file_handler.h>
+#include <axutil_file_handler.h>
 
 void* AXIS2_CALL
-axis2_file_handler_open(const axis2_char_t *file_name,
+axutil_file_handler_open(const axis2_char_t *file_name,
         const axis2_char_t *options)
 
 {
@@ -40,14 +40,14 @@ axis2_file_handler_open(const axis2_char_t *file_name,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_file_handler_close(void *file_ptr)
+axutil_file_handler_close(void *file_ptr)
 {
     if (!file_ptr) return -1;
     return (axis2_status_t) fclose(file_ptr);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_file_handler_access(const axis2_char_t *path,
+axutil_file_handler_access(const axis2_char_t *path,
         int mode)
 {
     int i = 0;

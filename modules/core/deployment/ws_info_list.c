@@ -179,7 +179,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *ws_info_list,
         case AXIS2_SVC:
         {
             /* check whether the file is already deployed */
-            /*status = axis2_file_handler_access(file->name, AXIS2_F_OK);
+            /*status = axutil_file_handler_access(file->name, AXIS2_F_OK);
             if(AXIS2_SUCCESS != status)
             {*/
             axis2_ws_info_t *ws_info = NULL;
@@ -212,7 +212,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *ws_info_list,
         case AXIS2_MODULE:
         {
             /* check whether the file is already deployed */
-            /*status = axis2_file_handler_access(file->name, AXIS2_F_OK);
+            /*status = axutil_file_handler_access(file->name, AXIS2_F_OK);
             if(AXIS2_SUCCESS != status)
             {*/
             axis2_ws_info_t *ws_info = NULL;

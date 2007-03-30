@@ -20,7 +20,7 @@
 #include <string.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_log_default.h>
-#include <axis2_file_handler.h>
+#include <axutil_file_handler.h>
 #include <axis2_thread.h>
 
 typedef struct axis2_log_impl axis2_log_impl_t;
@@ -76,7 +76,7 @@ axis2_log_impl_free(axutil_allocator_t *allocator, axis2_log_t *log)
         {
             if (log_impl->stream)
             {
-                axis2_file_handler_close(log_impl->stream);
+                axutil_file_handler_close(log_impl->stream);
             }
         }
         AXIS2_FREE(allocator, log_impl);
@@ -127,7 +127,7 @@ axis2_log_create(axutil_allocator_t * allocator, axis2_log_ops_t * ops,
         if ((path_home = AXIS2_GETENV("AXIS2C_HOME")))
         {
             AXIS2_SNPRINTF(log_dir, 500, "%s%c%s", path_home, AXIS2_PATH_SEP_CHAR, "logs");
-            if (AXIS2_SUCCESS == axis2_file_handler_access(log_dir, AXIS2_F_OK))
+            if (AXIS2_SUCCESS == axutil_file_handler_access(log_dir, AXIS2_F_OK))
             {
                 AXIS2_SNPRINTF(log_file_name, 500, "%s%c%s", log_dir, AXIS2_PATH_SEP_CHAR,
                         tmp_filename);
@@ -152,7 +152,7 @@ axis2_log_create(axutil_allocator_t * allocator, axis2_log_ops_t * ops,
 
     axis2_thread_mutex_lock(log_impl->mutex);
 
-    log_impl->stream = axis2_file_handler_open(log_file_name, "a+");
+    log_impl->stream = axutil_file_handler_open(log_file_name, "a+");
 
     axis2_thread_mutex_unlock(log_impl->mutex);
 

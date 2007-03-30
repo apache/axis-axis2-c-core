@@ -17,7 +17,7 @@
 
 #include <xml_schema_url_resolver.h>
 #include <axis2_url.h>
-#include <axis2_file_handler.h>
+#include <axutil_file_handler.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
 /*
@@ -43,7 +43,7 @@ xml_schema_url_resolver_resolve_entity(
         axis2_char_t *abs_path = NULL;
         axis2_char_t *ref = NULL;
         /*
-        if(axis2_file_handler_access(base_uri, AXIS2_F_OK))
+        if(axutil_file_handler_access(base_uri, AXIS2_F_OK))
         {
              abs_path = AXIS2_GETCWD(base_uri);
             uri1 = axis2_uri_parse_string(env, get_file_url(env, bas));

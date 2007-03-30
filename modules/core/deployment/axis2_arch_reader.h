@@ -33,7 +33,7 @@
 #include <axis2_deployment.h>
 #include <axis2_arch_file_data.h>
 #include <axis2_dep_engine.h>
-#include <axis2_file_handler.h>
+#include <axutil_file_handler.h>
 #include <axiom_element.h>
 #include <axis2_desc_builder.h>
 #include <axis2_svc_grp_builder.h>
