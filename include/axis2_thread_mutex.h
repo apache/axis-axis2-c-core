@@ -25,7 +25,7 @@
  */
 
 #include <axis2_const.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,7 +62,7 @@ typedef struct axis2_thread_mutex_t axis2_thread_mutex_t;
  * it will behave as either a nested or an unnested lock.
  */
 AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL 
-axis2_thread_mutex_create(axis2_allocator_t *allocator,
+axis2_thread_mutex_create(axutil_allocator_t *allocator,
                           unsigned int flags);
 /**
  * Acquire the lock for the given mutex. If the mutex is already locked,

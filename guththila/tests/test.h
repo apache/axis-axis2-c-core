@@ -4,7 +4,7 @@
 #include <guththila.h>
 #include "guththila_defines.h"
 
-axis2_allocator_t *allocator;
+axutil_allocator_t *allocator;
 guththila_reader_t *red;
 axis2_env_t *env;
 guththila_t *parser;

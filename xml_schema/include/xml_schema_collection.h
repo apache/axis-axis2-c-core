@@ -24,7 +24,7 @@
  *          Contains a cache of XML Schema definition language (XSD).
  */
 
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>

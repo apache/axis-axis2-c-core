@@ -22,7 +22,7 @@
 #include <axis2_defines.h>
 #include <axis2_utils_defines.h>
 #include <axis2_env.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_msg_ctx.h>
 
 #include <savan_constants.h>
