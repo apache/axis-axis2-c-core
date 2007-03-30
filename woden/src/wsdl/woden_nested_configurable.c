@@ -39,47 +39,47 @@ struct woden_nested_configurable_impl
 axis2_status_t AXIS2_CALL
 woden_nested_configurable_free(
     void *nested_configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_nested_configurable_super_objs(
     void *nested_configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_configurable_t *AXIS2_CALL
 woden_nested_configurable_get_base_impl(
     void *nested_configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_nested_configurable_get_parent(
     void *nested_configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_nested_configurable_set_parent_element(
     void *nested_configurable,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *parent);
 
 void *AXIS2_CALL
 woden_nested_configurable_get_parent_element(
     void *nested_configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_nested_configurable_t *
 create(
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_nested_configurable_free_ops(
     void *nested_configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 AXIS2_EXTERN woden_nested_configurable_t * AXIS2_CALL
 woden_nested_configurable_to_nested_element(
     void *nested_configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
 
@@ -104,7 +104,7 @@ woden_nested_configurable_to_nested_element(
 
 static woden_nested_configurable_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
 
@@ -160,7 +160,7 @@ create(
 
 AXIS2_EXTERN woden_nested_configurable_t * AXIS2_CALL
 woden_nested_configurable_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
     void *documentable = NULL;
@@ -191,7 +191,7 @@ woden_nested_configurable_create(
 axis2_status_t AXIS2_CALL
 woden_nested_configurable_free_ops(
     void *nested_configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
 
@@ -213,7 +213,7 @@ woden_nested_configurable_free_ops(
 axis2_status_t AXIS2_CALL
 woden_nested_configurable_free(
     void *nested_configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
 
@@ -258,7 +258,7 @@ woden_nested_configurable_free(
 axis2_hash_t *AXIS2_CALL
 woden_nested_configurable_super_objs(
     void *nested_configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
 
@@ -271,7 +271,7 @@ woden_nested_configurable_super_objs(
 woden_configurable_t *AXIS2_CALL
 woden_nested_configurable_get_base_impl(
     void *nested_configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
 
@@ -284,7 +284,7 @@ woden_nested_configurable_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_nested_configurable_resolve_methods(
     woden_nested_configurable_t *nested_configurable,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_nested_configurable_t *nested_configurable_impl,
     axis2_hash_t *methods)
 {
@@ -309,7 +309,7 @@ woden_nested_configurable_resolve_methods(
 void *AXIS2_CALL
 woden_nested_configurable_get_parent(
     void *nested_configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -325,7 +325,7 @@ woden_nested_configurable_get_parent(
 axis2_status_t AXIS2_CALL
 woden_nested_configurable_set_parent_element(
     void *nested_configurable,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *parent)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
@@ -349,7 +349,7 @@ woden_nested_configurable_set_parent_element(
 void *AXIS2_CALL
 woden_nested_configurable_get_parent_element(
     void *nested_configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
     axis2_hash_t *super = NULL;

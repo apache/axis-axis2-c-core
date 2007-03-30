@@ -29,7 +29,7 @@ struct axis2_http_header
 
 AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
 axis2_http_header_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *name,
     const axis2_char_t *value)
 {
@@ -55,7 +55,7 @@ axis2_http_header_create(
 
 AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
 axis2_http_header_create_by_str(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *str)
 {
     axis2_char_t *tmp_str = NULL;
@@ -99,7 +99,7 @@ axis2_http_header_create_by_str(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_header_free(
     axis2_http_header_t *http_header,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -120,7 +120,7 @@ axis2_http_header_free(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_header_to_external_form(
     axis2_http_header_t *http_header,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_ssize_t len = 0;
     axis2_char_t *external_form = NULL;
@@ -138,7 +138,7 @@ axis2_http_header_to_external_form(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_header_get_name(
     const axis2_http_header_t *http_header,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return http_header->name;
 }
@@ -148,7 +148,7 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 
 axis2_http_header_get_value(
     const axis2_http_header_t *http_header,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return http_header->value;
 }

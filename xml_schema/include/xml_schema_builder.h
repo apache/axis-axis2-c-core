@@ -59,20 +59,20 @@ struct xml_schema_builder_ops
     xml_schema_t* (AXIS2_CALL *
     build)(
             xml_schema_builder_t *builder,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_document_t *om_doc,
             axis2_char_t *uri);
            
     xml_schema_t* (AXIS2_CALL *
     build_with_root_node)(
             xml_schema_builder_t *builder,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *om_node,
             axis2_char_t *uri);
             
     axis2_status_t (AXIS2_CALL *
     free)(xml_schema_builder_t *builder,
-          const axis2_env_t *env);            
+          const axutil_env_t *env);            
 };
 
 struct xml_schema_builder
@@ -83,7 +83,7 @@ struct xml_schema_builder
 
 AXIS2_EXTERN xml_schema_builder_t * AXIS2_CALL
 xml_schema_builder_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_collection_t *sch_collection);
 
 /***************** Macros *****************************************************/

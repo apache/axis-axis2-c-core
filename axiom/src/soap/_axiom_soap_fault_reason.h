@@ -41,33 +41,33 @@ extern "C"
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_reason_set_builder(axiom_soap_fault_reason_t *fault_reason,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axiom_soap_builder *builder);    
     
     
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_reason_set_base_node
     (axiom_soap_fault_reason_t *fault_reason,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node);   
     
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_fault_reason_set_soap_fault_text
     (axiom_soap_fault_reason_t *fault_reason,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axiom_soap_fault_text *soap_text);
                                  
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_reason_set_soap_version(axiom_soap_fault_reason_t *fault_reason,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int soap_version);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_reason_get_soap_version(axiom_soap_fault_reason_t *fault_reason,
-    const axis2_env_t *env);                                         
+    const axutil_env_t *env);                                         
 
 AXIS2_EXTERN axiom_soap_fault_reason_t * AXIS2_CALL
-axiom_soap_fault_reason_create(const axis2_env_t *env);
+axiom_soap_fault_reason_create(const axutil_env_t *env);
 
 /** @} */
     

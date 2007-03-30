@@ -40,31 +40,31 @@ struct xml_schema_xpath_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_xpath_free(void *xpath,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_xpath_get_base_impl(void *xpath,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_xpath_get_type(void *xpath,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_xpath_super_objs(void *xpath,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 xml_schema_xpath_get_xpath(void *xpath,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_xpath_set_xpath(void *xpath,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *x_path);
 
 AXIS2_EXTERN xml_schema_xpath_t * AXIS2_CALL
-xml_schema_xpath_create(const axis2_env_t *env)
+xml_schema_xpath_create(const axutil_env_t *env)
 {
     xml_schema_xpath_impl_t *xpath_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -125,7 +125,7 @@ xml_schema_xpath_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_xpath_free(void *xpath,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_xpath_impl_t *xpath_impl = NULL;
 
@@ -165,7 +165,7 @@ xml_schema_xpath_free(void *xpath,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_xpath_get_base_impl(void *xpath,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_xpath_impl_t *xpath_impl = NULL;
 
@@ -179,7 +179,7 @@ xml_schema_xpath_get_base_impl(void *xpath,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_xpath_resolve_methods(
                                 xml_schema_xpath_t *xpath,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_xpath_t *xpath_impl,
                                 axis2_hash_t *methods)
 {
@@ -209,7 +209,7 @@ xml_schema_xpath_resolve_methods(
 
 axis2_char_t *AXIS2_CALL
 xml_schema_xpath_get_xpath(void *xpath,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(xpath)->x_path;
@@ -217,7 +217,7 @@ xml_schema_xpath_get_xpath(void *xpath,
 
 axis2_status_t AXIS2_CALL
 xml_schema_xpath_set_xpath(void *xpath,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *x_path)
 {
     xml_schema_xpath_impl_t *xpath_impl = NULL;
@@ -242,14 +242,14 @@ xml_schema_xpath_set_xpath(void *xpath,
 }
 xml_schema_types_t AXIS2_CALL
 xml_schema_xpath_get_type(void *xpath,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(xpath)->obj_type;
 }
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_xpath_super_objs(void *xpath,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(xpath)->ht_super;
 }

@@ -31,7 +31,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_http_simple_request.h>
 #include <axis2_http_simple_response.h>
 #include <axis2_http_response_writer.h>
@@ -60,7 +60,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 close)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * @param svr_conn pointer to server connection struct
@@ -69,7 +69,7 @@ extern "C"
         axis2_bool_t (AXIS2_CALL *
                 is_open)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * @param svr_conn pointer to server connection struct
@@ -80,7 +80,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 set_keep_alive)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_bool_t keep_alive);
 
         /**
@@ -90,7 +90,7 @@ extern "C"
         axis2_bool_t (AXIS2_CALL *
                 is_keep_alive)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * @param svr_conn pointer to server connection struct
@@ -99,7 +99,7 @@ extern "C"
         axis2_stream_t* (AXIS2_CALL *
                 get_stream)(
                     const axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * @param svr_conn pointer to server connection struct
@@ -108,7 +108,7 @@ extern "C"
         axis2_http_response_writer_t *(AXIS2_CALL *
                 get_writer)(
                     const axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * @param svr_conn pointer to server connection struct
@@ -117,7 +117,7 @@ extern "C"
         axis2_http_simple_request_t *(AXIS2_CALL *
                 read_request)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * @param svr_conn pointer to server connection struct
@@ -128,7 +128,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 write_response)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_http_simple_response_t *response);
 
         /**
@@ -140,7 +140,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 set_rcv_timeout)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     int timeout);
 
         /**
@@ -152,7 +152,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 set_snd_timeout)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     int timeout);
 
         /**
@@ -162,7 +162,7 @@ extern "C"
         axis2_char_t *(AXIS2_CALL *
                 get_svr_ip)(
                     const axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * @param svr_conn pointer to server connection struct
@@ -171,7 +171,7 @@ extern "C"
         axis2_char_t *(AXIS2_CALL *
                 get_peer_ip)(
                     const axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * @param svr_conn pointer to server connection struct
@@ -181,7 +181,7 @@ extern "C"
         void (AXIS2_CALL *
                 free)(
                     axis2_simple_http_svr_conn_t *svr_conn,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
     };
 
     /**
@@ -201,7 +201,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_simple_http_svr_conn_t *AXIS2_CALL
     axis2_simple_http_svr_conn_create(
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         int sockfd);
 
 /** Close.

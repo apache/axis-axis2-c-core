@@ -44,7 +44,7 @@ extern "C"
      * @return pointer to newly created description
      */
     AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
-    axis2_desc_create (const axis2_env_t *env);
+    axis2_desc_create (const axutil_env_t *env);
 
     /** 
      * Frees description struct.
@@ -54,7 +54,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_desc_free(axis2_desc_t *desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds given parameter to the list of parameters.
@@ -65,7 +65,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_add_param(axis2_desc_t *desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_param_t *param);
 
     /**
@@ -77,7 +77,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_desc_get_param(const axis2_desc_t *desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *param_name);
 
     /**
@@ -88,7 +88,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_desc_get_all_params(const axis2_desc_t *desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if a named parameter is locked.
@@ -99,7 +99,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_desc_is_param_locked(const axis2_desc_t *desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *param_name);
 
     /**
@@ -115,7 +115,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_add_child(const axis2_desc_t *desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key,
         const void *child);
 
@@ -127,7 +127,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_desc_get_all_children(const axis2_desc_t *desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets child with given key.
@@ -139,7 +139,7 @@ extern "C"
      */
     AXIS2_EXTERN void *AXIS2_CALL
     axis2_desc_get_child(const axis2_desc_t *desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key);
 
     /**
@@ -151,7 +151,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_remove_child(const axis2_desc_t *desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key);
     
 /** @} */

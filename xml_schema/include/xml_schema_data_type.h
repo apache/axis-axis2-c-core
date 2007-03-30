@@ -24,7 +24,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
@@ -52,20 +52,20 @@ struct xml_schema_data_type_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *data_type,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void * (AXIS2_CALL *
     parse_value) (void *data_type,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     void *input);
 
     void *(AXIS2_CALL *
     value_type) (void *data_type,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     struct xml_schema_tokenized_type *(AXIS2_CALL *
     tokenized_type) (void *data_type,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
 };
 
@@ -75,7 +75,7 @@ struct xml_schema_data_type
 };
 
 AXIS2_EXTERN xml_schema_data_type_t * AXIS2_CALL
-xml_schema_data_type_create(const axis2_env_t *env);
+xml_schema_data_type_create(const axutil_env_t *env);
 
 #define XML_SCHEMA_DATA_TYPE_FREE(data_type, env) \
       (((xml_schema_data_type_t *) data_type)->ops->free (data_type, env))

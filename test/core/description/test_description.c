@@ -20,10 +20,10 @@
 #include <axis2_conf.h>
 #include <axis2_module_desc.h>
 #include <axis2_phases_info.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 
-struct axis2_module_desc *create_module_desc(const axis2_env_t *env);
+struct axis2_module_desc *create_module_desc(const axutil_env_t *env);
 
 int axis2_test_op_engage_module()
 {
@@ -37,7 +37,7 @@ int axis2_test_op_engage_module()
     printf("******************************************\n");
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    axis2_env_t *env = axis2_env_create(allocator);
+    axutil_env_t *env = axutil_env_create(allocator);
     axis2_op_t *op = axis2_op_create(env);
 
     moduleref = axis2_module_desc_create(env);
@@ -52,7 +52,7 @@ int axis2_test_op_engage_module()
     }
 
     axis2_op_free(op, env);
-    axis2_env_free(env);
+    axutil_env_free(env);
     return 0;
 }
 
@@ -71,7 +71,7 @@ int axis2_test_svc_add_module_ops()
     printf("******************************************\n");
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axis2_env_t *env = axis2_env_create(allocator);
+    const axutil_env_t *env = axutil_env_create(allocator);
     qname = axis2_qname_create(env, "name1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
     module_desc = axis2_module_desc_create(env);
@@ -106,7 +106,7 @@ int axis2_test_svc_engage_module()
     printf("******************************************\n");
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axis2_env_t *env = axis2_env_create(allocator);
+    const axutil_env_t *env = axutil_env_create(allocator);
     qname = axis2_qname_create(env, "name1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
     moduleref = axis2_module_desc_create(env);
@@ -142,7 +142,7 @@ int axis2_test_svc_get_op()
     printf("******************************************\n");
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axis2_env_t *env = axis2_env_create(allocator);
+    const axutil_env_t *env = axutil_env_create(allocator);
     qname = axis2_qname_create(env, "op1", NULL, NULL);
     op = axis2_op_create_with_qname(env, qname);
     qname = axis2_qname_create(env, "svc1", NULL, NULL);

@@ -24,7 +24,7 @@
  * @brief axiom_soap_fault struct
  */
 #include <axiom_soap_const.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
 
@@ -63,7 +63,7 @@ extern "C"
      *  otherwise return NULL with error code set in environments error
      */
     AXIS2_EXTERN axiom_soap_fault_t * AXIS2_CALL
-    axiom_soap_fault_create_with_parent(const axis2_env_t *env,
+    axiom_soap_fault_create_with_parent(const axutil_env_t *env,
             struct axiom_soap_body *parent);
 
     /** create an returns a axiom_soap_fault_t struct with a soap fault detail
@@ -76,12 +76,12 @@ extern "C"
      * otherwise return NULL
      */
     AXIS2_EXTERN axiom_soap_fault_t * AXIS2_CALL
-    axiom_soap_fault_create_with_exception(const axis2_env_t *env,
+    axiom_soap_fault_create_with_exception(const axutil_env_t *env,
             struct axiom_soap_body *parent,
             axis2_char_t* exception);
 
     AXIS2_EXTERN axiom_soap_fault_t * AXIS2_CALL
-    axiom_soap_fault_create_default_fault(const axis2_env_t *env,
+    axiom_soap_fault_create_default_fault(const axutil_env_t *env,
             struct axiom_soap_body *parent,
             const axis2_char_t *code_value,
             const axis2_char_t *reason_text,
@@ -97,7 +97,7 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_free(axiom_soap_fault_t *fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
       * this function returns a axiom_soap_fault_code struct
       * if a fault code is associated with this soap fault
@@ -109,7 +109,7 @@ extern "C"
       */
     AXIS2_EXTERN struct axiom_soap_fault_code * AXIS2_CALL
     axiom_soap_fault_get_code(axiom_soap_fault_t *fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @param fault soap fault struct
      * @param env environment must not be NULL
@@ -119,7 +119,7 @@ extern "C"
 
     AXIS2_EXTERN struct axiom_soap_fault_reason * AXIS2_CALL
     axiom_soap_fault_get_reason(axiom_soap_fault_t *fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * @param fault soap fault struct
@@ -129,7 +129,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axiom_soap_fault_node* AXIS2_CALL
     axiom_soap_fault_get_node(axiom_soap_fault_t *fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * @param fault soap fault struct
@@ -139,7 +139,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axiom_soap_fault_role* AXIS2_CALL
     axiom_soap_fault_get_role(axiom_soap_fault_t *fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
       * @param fault soap fault struct
       * @param env environment must not be NULL
@@ -149,7 +149,7 @@ extern "C"
 
     AXIS2_EXTERN struct axiom_soap_fault_detail* AXIS2_CALL
     axiom_soap_fault_get_detail(axiom_soap_fault_t *fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
       * @param fault soap fault struct 
       * @param env enviroment must not be NULL
@@ -158,7 +158,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axiom_soap_fault_get_exception(axiom_soap_fault_t *fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
       * set an error string 
       * @param fualt soap fault struct
@@ -167,7 +167,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_fault_set_exception(axiom_soap_fault_t *fault,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *exception);
     /**
       * returns the axiom_node_t struct which is wrapped by
@@ -179,7 +179,7 @@ extern "C"
       */
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_soap_fault_get_base_node(axiom_soap_fault_t *fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /** @} */
 #ifdef __cplusplus

@@ -16,7 +16,7 @@
  */
 
 #include <xml_schema_includes.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 typedef struct xml_schema_input_source_impl
             xml_schema_input_source_impl_t;
@@ -38,44 +38,44 @@ struct xml_schema_input_source_impl
 axis2_char_t* AXIS2_CALL
 xml_schema_input_source_get_system_id(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_input_source_set_system_id(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *system_id);
 
 axis2_char_t* AXIS2_CALL
 xml_schema_input_source_get_public_id(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_input_source_set_public_id(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *public_id);
 
 axis2_status_t AXIS2_CALL
 xml_schema_input_source_set_encoding(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *encoding);
 
 axis2_char_t * AXIS2_CALL
 xml_schema_input_source_get_encoding(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_input_source_free
 (xml_schema_input_source_t *source,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
-xml_schema_input_source_create(const axis2_env_t *env)
+xml_schema_input_source_create(const axutil_env_t *env)
 {
     xml_schema_input_source_impl_t *input_source_impl = NULL;
 
@@ -121,7 +121,7 @@ xml_schema_input_source_create(const axis2_env_t *env)
 
 AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
 xml_schema_input_source_create_with_system_id(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *id)
 {
     xml_schema_input_source_impl_t *input_source_impl = NULL;
@@ -138,7 +138,7 @@ xml_schema_input_source_create_with_system_id(
 axis2_status_t AXIS2_CALL
 xml_schema_input_source_free
 (xml_schema_input_source_t *source,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_input_source_impl_t *input_source_impl = NULL;
     input_source_impl = AXIS2_INTF_TO_IMPL(source);
@@ -163,7 +163,7 @@ xml_schema_input_source_free
 axis2_char_t* AXIS2_CALL
 xml_schema_input_source_get_system_id(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_input_source_impl_t *input_source = NULL;
 
@@ -174,7 +174,7 @@ xml_schema_input_source_get_system_id(
 axis2_status_t AXIS2_CALL
 xml_schema_input_source_set_system_id(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *system_id)
 {
     xml_schema_input_source_impl_t *input_source = NULL;
@@ -191,7 +191,7 @@ xml_schema_input_source_set_system_id(
 axis2_char_t* AXIS2_CALL
 xml_schema_input_source_get_public_id(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_input_source_impl_t *input_source = NULL;
     input_source = AXIS2_INTF_TO_IMPL(source);
@@ -201,7 +201,7 @@ xml_schema_input_source_get_public_id(
 axis2_status_t AXIS2_CALL
 xml_schema_input_source_set_public_id(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *public_id)
 {
     xml_schema_input_source_impl_t *input_source = NULL;
@@ -218,7 +218,7 @@ xml_schema_input_source_set_public_id(
 axis2_status_t AXIS2_CALL
 xml_schema_input_source_set_encoding(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *encoding)
 {
     xml_schema_input_source_impl_t *input_source = NULL;
@@ -235,7 +235,7 @@ xml_schema_input_source_set_encoding(
 axis2_char_t * AXIS2_CALL
 xml_schema_input_source_get_encoding(
     xml_schema_input_source_t *source,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_input_source_impl_t *input_source_impl = NULL;
     input_source_impl = AXIS2_INTF_TO_IMPL(source);

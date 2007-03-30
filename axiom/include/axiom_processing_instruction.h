@@ -47,7 +47,7 @@ extern "C"
       * @return a pointer tonewly created processing instruction struct 
       */
     AXIS2_EXTERN axiom_processing_instruction_t * AXIS2_CALL
-    axiom_processing_instruction_create(const axis2_env_t *env,
+    axiom_processing_instruction_create(const axutil_env_t *env,
         axiom_node_t * parent,
         const axis2_char_t * target,
         const axis2_char_t * value,
@@ -61,7 +61,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_processing_instruction_free(struct axiom_processing_instruction * om_pi,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Set processing instruction data
@@ -71,7 +71,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_processing_instruction_set_value(struct axiom_processing_instruction *om_pi,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t* value);
 
     /**
@@ -84,7 +84,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_processing_instruction_set_target(struct axiom_processing_instruction *om_pi,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t* target);
 
     /**
@@ -95,7 +95,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_processing_instruction_get_target(struct axiom_processing_instruction *om_pi,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Get data part of processing_instruction
@@ -105,7 +105,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_processing_instruction_get_value(struct axiom_processing_instruction *om_pi,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Serialize function
@@ -117,7 +117,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_processing_instruction_serialize(struct axiom_processing_instruction *om_pi,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_output_t *om_output);
 
     /** @} */

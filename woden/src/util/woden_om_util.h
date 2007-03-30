@@ -26,7 +26,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -47,14 +47,14 @@ extern "C"
 
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
 woden_om_util_get_qname(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *context_el_node,
         axis2_char_t *prefixed_value,
         axis2_hash_t *namespcs);
  
 AXIS2_EXTERN axis2_status_t  AXIS2_CALL
 woden_om_util_register_unique_prefix(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *prefix,
         axis2_char_t *namespc_uri_str,
         axis2_hash_t *namespcs);

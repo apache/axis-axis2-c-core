@@ -24,7 +24,7 @@ struct axis2_param_container
 };
 
 AXIS2_EXTERN axis2_param_container_t * AXIS2_CALL
-axis2_param_container_create(const axis2_env_t *env)
+axis2_param_container_create(const axutil_env_t *env)
 {
     axis2_param_container_t *param_container = NULL;
 
@@ -56,7 +56,7 @@ axis2_param_container_create(const axis2_env_t *env)
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_param_container_free(axis2_param_container_t *param_container,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -95,7 +95,7 @@ axis2_param_container_free(axis2_param_container_t *param_container,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_param_container_free_void_arg(void *param_container,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_param_container_t *param_container_l = NULL;
 
@@ -107,7 +107,7 @@ axis2_param_container_free_void_arg(void *param_container,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_param_container_add_param(axis2_param_container_t *param_container,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_param_t *param)
 {
     axis2_char_t *param_name = NULL;
@@ -138,7 +138,7 @@ axis2_param_container_add_param(axis2_param_container_t *param_container,
 
 AXIS2_EXTERN axis2_param_t * AXIS2_CALL
 axis2_param_container_get_param(axis2_param_container_t *param_container,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *name)
 {
     return (axis2_param_t *)(axis2_hash_get(param_container->params, 
@@ -147,7 +147,7 @@ axis2_param_container_get_param(axis2_param_container_t *param_container,
 
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axis2_param_container_get_params(axis2_param_container_t *param_container,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_hash_index_t *index_i = 0;
     axis2_status_t status = AXIS2_FAILURE;
@@ -182,7 +182,7 @@ axis2_param_container_get_params(axis2_param_container_t *param_container,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_param_container_is_param_locked(axis2_param_container_t *param_container,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *param_name)
 {
     axis2_param_t *param = NULL;

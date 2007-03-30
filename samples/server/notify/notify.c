@@ -18,7 +18,7 @@
 #include <stdio.h>
 
 void
-axis2_notify_notify(const axis2_env_t *env, axiom_node_t *node)
+axis2_notify_notify(const axutil_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *text_node = NULL;
 

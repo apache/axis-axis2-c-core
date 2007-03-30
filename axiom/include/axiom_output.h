@@ -20,7 +20,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_utils.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_xml_writer.h>
 
@@ -49,7 +49,7 @@ extern "C"
      * @return a pointer to newly created output struct.
      */
     AXIS2_EXTERN axiom_output_t *AXIS2_CALL
-    axiom_output_create(const axis2_env_t *env,
+    axiom_output_create(const axutil_env_t *env,
         axiom_xml_writer_t *xml_writer);
 
     /**
@@ -63,13 +63,13 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_write(axiom_output_t * om_output,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_types_t type,
         int no_of_args, ...);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_write_optimized(axiom_output_t *om_output,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axiom_text *om_text);
 
     /**
@@ -81,7 +81,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_output_free(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * If the xml to be serialized is soap 11, this property is set to true
@@ -91,21 +91,21 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_output_is_soap11(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @returns true if the ignore_xml_declaration property is true   
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_output_is_ignore_xml_declaration(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the ignore_xml_declaration property is true
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_ignore_xml_declaration(axiom_output_t *om_output,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t ignore_xml_dec);
 
     /**
@@ -113,7 +113,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_soap11(axiom_output_t *om_output,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t soap11);
 
     /**
@@ -121,7 +121,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_xml_version(axiom_output_t *om_output,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *xml_version);
 
     /**
@@ -129,14 +129,14 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_xml_version(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the char set encoding property
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_char_set_encoding(axiom_output_t *om_output,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *char_set_encoding);
 
     /**
@@ -144,14 +144,14 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_char_set_encoding(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the do optimize property true
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_set_do_optimize(axiom_output_t *om_output,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t optimize);
 
     /**
@@ -159,7 +159,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_xml_writer_t *AXIS2_CALL
     axiom_output_get_xml_writer(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      *  Returns the content type
@@ -170,44 +170,44 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axiom_output_get_content_type(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Writes the xml versio encoding 
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_output_write_xml_version_encoding(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @returns whether the output is to be optimized 
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_output_is_optimized(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * Returns the next content id
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_next_content_id(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * root content id
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_root_content_id(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_output_get_mime_boundry(axiom_output_t *om_output,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
     axiom_output_flush(axiom_output_t *om_output,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_byte_t **output_stream,
         int *output_stream_size);
 

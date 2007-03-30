@@ -37,7 +37,7 @@ struct savan_subscriber_t
 
 AXIS2_EXTERN savan_subscriber_t * AXIS2_CALL
 savan_subscriber_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     savan_subscriber_t *subscriber = NULL;
     
@@ -67,7 +67,7 @@ savan_subscriber_create(
 axis2_char_t * AXIS2_CALL
 savan_subscriber_get_id(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -79,7 +79,7 @@ savan_subscriber_get_id(
 axis2_status_t AXIS2_CALL
 savan_subscriber_set_id(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *id)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -102,7 +102,7 @@ savan_subscriber_set_id(
 axis2_status_t AXIS2_CALL
 savan_subscriber_set_end_to(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *end_to)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -117,7 +117,7 @@ savan_subscriber_set_end_to(
 axis2_status_t AXIS2_CALL
 savan_subscriber_set_notify_to(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *notify_to)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -132,7 +132,7 @@ savan_subscriber_set_notify_to(
 axis2_status_t AXIS2_CALL
 savan_subscriber_set_delivery_mode(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *mode)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -155,7 +155,7 @@ savan_subscriber_set_delivery_mode(
 axis2_status_t AXIS2_CALL
 savan_subscriber_set_expires(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *expires)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -178,7 +178,7 @@ savan_subscriber_set_expires(
 axis2_char_t * AXIS2_CALL
 savan_subscriber_get_expires(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -190,7 +190,7 @@ savan_subscriber_get_expires(
 axis2_status_t AXIS2_CALL
 savan_subscriber_set_filter(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *filter)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -213,7 +213,7 @@ savan_subscriber_set_filter(
 axis2_status_t AXIS2_CALL
 savan_subscriber_publish(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -266,7 +266,7 @@ savan_subscriber_publish(
 axis2_status_t AXIS2_CALL
 savan_subscriber_set_renew_status(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t renewed)
 {
     subscriber->renewed = renewed;
@@ -279,7 +279,7 @@ savan_subscriber_set_renew_status(
 axis2_bool_t AXIS2_CALL
 savan_subscriber_get_renew_status(
     savan_subscriber_t *subscriber,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return subscriber->renewed;
 }

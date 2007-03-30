@@ -6,7 +6,7 @@
 
 axutil_allocator_t *allocator;
 guththila_reader_t *red;
-axis2_env_t *env;
+axutil_env_t *env;
 guththila_t *parser;
 
 void

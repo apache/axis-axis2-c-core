@@ -38,7 +38,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_hash.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_op.h>
 
@@ -61,7 +61,7 @@ extern "C"
      * @return pointer to newly created operation context
      */
     AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
-    axis2_op_ctx_create(const axis2_env_t *env,
+    axis2_op_ctx_create(const axutil_env_t *env,
        struct axis2_op *op,
        struct axis2_svc_ctx *svc_ctx);
 
@@ -73,7 +73,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
     axis2_op_ctx_get_base(const axis2_op_ctx_t *op_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * Frees operation context.
@@ -83,7 +83,7 @@ extern "C"
     */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_op_ctx_free(struct axis2_op_ctx *op_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Initializes operation context. This method traverses through all the 
@@ -95,7 +95,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_ctx_init(struct axis2_op_ctx *op_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_conf *conf);
 
     /**
@@ -106,7 +106,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op *AXIS2_CALL
     axis2_op_ctx_get_op(const axis2_op_ctx_t *op_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets parent which is of service context type. 
@@ -117,7 +117,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
     axis2_op_ctx_get_parent(const axis2_op_ctx_t *op_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds a message context. 
@@ -129,7 +129,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_ctx_add_msg_ctx(struct axis2_op_ctx *op_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -141,7 +141,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
     axis2_op_ctx_get_msg_ctx(const axis2_op_ctx_t *op_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_wsdl_msg_labels_t message_id);
 
     /**
@@ -154,7 +154,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_op_ctx_get_is_complete(const axis2_op_ctx_t *op_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating if the MEP is complete.
@@ -168,7 +168,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_ctx_set_complete(struct axis2_op_ctx *op_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t is_complete);
 
     /**
@@ -180,7 +180,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_ctx_cleanup(struct axis2_op_ctx *op_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets parent service context.
@@ -192,7 +192,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_ctx_set_parent(struct axis2_op_ctx *op_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc_ctx *svc_ctx);
 
     /**
@@ -203,7 +203,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_ctx_t **AXIS2_CALL
     axis2_op_ctx_get_msg_ctx_map(const axis2_op_ctx_t *op_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating the status of response.
@@ -215,7 +215,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_ctx_set_response_written(axis2_op_ctx_t *op_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t response_written);
 
 
@@ -227,7 +227,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #ifdef __cplusplus
 }

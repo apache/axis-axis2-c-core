@@ -27,7 +27,7 @@
 #include <unistd.h>
 
 
-const axis2_env_t *env = NULL;
+const axutil_env_t *env = NULL;
 static axis2_thread_mutex_t *thread_lock = NULL;
 static axis2_thread_once_t *control = NULL;
 static int x = 0;
@@ -45,7 +45,7 @@ void init_func(void)
     value++;
 }
 
-void thread_init(const axis2_env_t *env)
+void thread_init(const axutil_env_t *env)
 {
     axutil_allocator_t *allocator = NULL;
 
@@ -80,7 +80,7 @@ void * AXIS2_CALL test_function(axis2_thread_t *td, void *param)
 }
 
 
-void test_axis2_thread_create(const axis2_env_t *env)
+void test_axis2_thread_create(const axutil_env_t *env)
 {
     axis2_status_t rv = AXIS2_FAILURE;
     axutil_allocator_t *allocator = NULL;
@@ -123,7 +123,7 @@ void * AXIS2_CALL test_function2(axis2_thread_t *td, void *param)
     return (void*)1;
 }
 
-void test_axis2_thread_detach(const axis2_env_t *env)
+void test_axis2_thread_detach(const axutil_env_t *env)
 {
     axis2_threadattr_t *attr = NULL;
     axutil_allocator_t *allocator = NULL;
@@ -175,7 +175,7 @@ void test_axis2_thread_detach(const axis2_env_t *env)
     printf("success - test_axis2_thread_detach\n");
 }
 
-void test_axis2_thread_detach2(const axis2_env_t *env)
+void test_axis2_thread_detach2(const axutil_env_t *env)
 {
     axis2_threadattr_t *attr = NULL;
     axutil_allocator_t *allocator = NULL;
@@ -234,7 +234,7 @@ void check_thread_once()
     else printf("failure - check_thread_once \n");
 }
 
-void run_test_thread(const axis2_env_t *env)
+void run_test_thread(const axutil_env_t *env)
 {
     thread_init(env);
     test_axis2_thread_create(env);
@@ -252,11 +252,11 @@ void run_test_thread(const axis2_env_t *env)
     axis2_thread_mutex_destroy(thread_lock);
 }
 
-const axis2_env_t *create_env_with_error_log()
+const axutil_env_t *create_env_with_error_log()
 {
     axis2_error_t *error = NULL;
     axis2_log_t *log22 = NULL;
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     if (!allocator)
     {
@@ -281,7 +281,7 @@ const axis2_env_t *create_env_with_error_log()
       */
     log22->level = AXIS2_LOG_LEVEL_DEBUG;
     /*   log22->enabled = 0;*/
-    env = axis2_env_create_with_error_log(allocator, error, log22);
+    env = axutil_env_create_with_error_log(allocator, error, log22);
     if (!env)
     {
         printf("cannot create env with error and log\n");

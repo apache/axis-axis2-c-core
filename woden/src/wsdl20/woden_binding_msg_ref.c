@@ -50,22 +50,22 @@ struct woden_binding_msg_ref_impl
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_free(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_binding_msg_ref_super_objs(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_binding_msg_ref_type(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_nested_configurable_t *AXIS2_CALL
 woden_binding_msg_ref_get_base_impl(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Binding Message Reference  methods (the WSDL Component model)
@@ -73,12 +73,12 @@ woden_binding_msg_ref_get_base_impl(
 void *AXIS2_CALL
 woden_binding_msg_ref_get_interface_msg_ref(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_binding_msg_ref_to_element(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Binding Message Reference Element methods (the XML Element model)
@@ -88,24 +88,24 @@ woden_binding_msg_ref_to_element(
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_set_direction(
     void *binding_msg_ref,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *dir);
 
 void *AXIS2_CALL
 woden_binding_msg_ref_get_direction(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_set_msg_label(
     void *binding_msg_ref,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *msg_label);
 
 void *AXIS2_CALL
 woden_binding_msg_ref_get_msg_label(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Non-API implementation methods
@@ -114,23 +114,23 @@ woden_binding_msg_ref_get_msg_label(
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_set_interface_msg_ref_element(
     void *binding_msg_ref,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *int_msg_ref);
 
 
 static woden_binding_msg_ref_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_binding_msg_ref_free_ops(
     void *binding_msg_ref,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_binding_msg_ref_element(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -154,7 +154,7 @@ woden_binding_msg_ref_to_binding_msg_ref_element(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_nested_configurable(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -182,7 +182,7 @@ woden_binding_msg_ref_to_nested_configurable(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_configurable(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     void *configurable = NULL;
@@ -212,7 +212,7 @@ woden_binding_msg_ref_to_configurable(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_wsdl_obj(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     void *configurable = NULL;
@@ -249,7 +249,7 @@ woden_binding_msg_ref_to_wsdl_obj(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_nested_element(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -277,7 +277,7 @@ woden_binding_msg_ref_to_nested_element(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_wsdl_component(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -305,7 +305,7 @@ woden_binding_msg_ref_to_wsdl_component(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_configurable_element(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -334,7 +334,7 @@ woden_binding_msg_ref_to_configurable_element(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_documentable_element(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -363,7 +363,7 @@ woden_binding_msg_ref_to_documentable_element(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_documentable(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -392,7 +392,7 @@ woden_binding_msg_ref_to_documentable(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_attr_extensible(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -423,7 +423,7 @@ woden_binding_msg_ref_to_attr_extensible(
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
 woden_binding_msg_ref_to_element_extensible(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -452,7 +452,7 @@ woden_binding_msg_ref_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_binding_msg_ref_t *
-create (const axis2_env_t *env)
+create (const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -539,7 +539,7 @@ create (const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_binding_msg_ref_t * AXIS2_CALL
-woden_binding_msg_ref_create(const axis2_env_t *env)
+woden_binding_msg_ref_create(const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     void *configurable = NULL;
@@ -572,7 +572,7 @@ woden_binding_msg_ref_create(const axis2_env_t *env)
 static axis2_status_t
 woden_binding_msg_ref_free_ops(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -684,7 +684,7 @@ woden_binding_msg_ref_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_free(void *binding_msg_ref,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -747,7 +747,7 @@ woden_binding_msg_ref_free(void *binding_msg_ref,
 axis2_hash_t *AXIS2_CALL
 woden_binding_msg_ref_super_objs(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -760,7 +760,7 @@ woden_binding_msg_ref_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_binding_msg_ref_type(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -773,7 +773,7 @@ woden_binding_msg_ref_type(
 woden_nested_configurable_t *AXIS2_CALL
 woden_binding_msg_ref_get_base_impl(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
 
@@ -786,7 +786,7 @@ woden_binding_msg_ref_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_resolve_methods(
     woden_binding_msg_ref_t *binding_msg_ref,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_binding_msg_ref_t *binding_msg_ref_impl,
     axis2_hash_t *methods)
 {
@@ -831,7 +831,7 @@ woden_binding_msg_ref_resolve_methods(
 void *AXIS2_CALL
 woden_binding_msg_ref_get_interface_msg_ref(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -847,7 +847,7 @@ woden_binding_msg_ref_get_interface_msg_ref(
 void *AXIS2_CALL
 woden_binding_msg_ref_to_element(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -868,7 +868,7 @@ woden_binding_msg_ref_to_element(
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_set_direction(
     void *binding_msg_ref,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *dir)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
@@ -893,7 +893,7 @@ woden_binding_msg_ref_set_direction(
 void *AXIS2_CALL
 woden_binding_msg_ref_get_direction(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -909,7 +909,7 @@ woden_binding_msg_ref_get_direction(
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_set_msg_label(
     void *binding_msg_ref,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *msg_label)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
@@ -934,7 +934,7 @@ woden_binding_msg_ref_set_msg_label(
 void *AXIS2_CALL
 woden_binding_msg_ref_get_msg_label(
     void *binding_msg_ref,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -954,7 +954,7 @@ woden_binding_msg_ref_get_msg_label(
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_set_interface_msg_ref_element(
     void *binding_msg_ref,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *int_msg_ref)
 {
     woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;

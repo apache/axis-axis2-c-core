@@ -20,7 +20,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 
 #ifdef __cplusplus
@@ -35,12 +35,12 @@ struct axis2_iis_worker_ops
 {
     int (AXIS2_CALL *process_request)(
                 axis2_iis_worker_t *iis_worker,
-                const axis2_env_t *env, 
+                const axutil_env_t *env, 
                 void *r);
 
     axis2_status_t (AXIS2_CALL *free)(
                 axis2_iis_worker_t *iis_worker,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 };
 
 
@@ -52,7 +52,7 @@ struct axis2_iis_worker
 
 axis2_iis_worker_t * AXIS2_CALL
 axis2_iis_worker_create(
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     axis2_char_t *repo_path);
 
 

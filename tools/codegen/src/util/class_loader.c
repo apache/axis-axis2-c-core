@@ -22,7 +22,7 @@
 
 AXIS2_EXTERN void* AXIS2_CALL
 w2c_class_loader_get_object_from_class_name
-                         (const axis2_env_t *env,
+                         (const axutil_env_t *env,
                           char *class_name,
                           axis2_char_t *inter_path,
                           axutil_dll_desc_t **pdll_desc)
@@ -67,7 +67,7 @@ w2c_class_loader_get_object_from_class_name
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 w2c_class_loader_free_loaded_class(
-                          const axis2_env_t *env,
+                          const axutil_env_t *env,
                           axutil_dll_desc_t *dll_desc )
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

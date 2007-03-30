@@ -20,7 +20,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_error.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils.h>
 
 
@@ -42,34 +42,34 @@ extern "C"
      * @return generic_obj newly created generic_obj
      */
     AXIS2_EXTERN axis2_generic_obj_t * AXIS2_CALL
-    axis2_generic_obj_create(const axis2_env_t *env);
+    axis2_generic_obj_create(const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_generic_obj_free(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_generic_obj_set_free_func(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         AXIS2_FREE_VOID_ARG free_func);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_generic_obj_set_value(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *value);
 
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_generic_obj_set_type(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int type);
 
     AXIS2_EXTERN int AXIS2_CALL
     axis2_generic_obj_get_type(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 #ifdef __cplusplus

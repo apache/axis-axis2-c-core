@@ -54,48 +54,48 @@ struct woden_interface_fault_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *interface_fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *interface_fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *interface_fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_nested_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *interface_fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *interface_fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_element_decl) (
             void *interface_fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     to_element)  (
             void *interface_fault,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_element_decl) (
             void *interface_fault,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *element_decl);
 
     axis2_status_t (AXIS2_CALL *
     set_types) (
             void *interface_fault,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *types);
 };
 
@@ -113,54 +113,54 @@ struct woden_interface_fault
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_interface_fault_element(
         void *interface_fault,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_nested_configurable(
         void *interface_fault,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_configurable(
         void *interface_fault,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_configurable_element(
         void *interface_fault,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_documentable_element(
         void *interface_fault,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_documentable(
         void *interface_fault,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_attr_extensible(
         void *interface_fault,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_element_extensible(
         void *interface_fault,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_interface_fault_resolve_methods(
         woden_interface_fault_t *interface_fault,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_interface_fault_t *interface_fault_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

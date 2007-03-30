@@ -41,37 +41,37 @@ iis_stream_impl_t;
 axis2_stream_type_t AXIS2_CALL
 iis_stream_get_type(
     axis2_stream_t *stream,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 int AXIS2_CALL
 iis_stream_write(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count);
 
 int AXIS2_CALL
 iis_stream_read(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer,
     size_t count);
 
 int AXIS2_CALL
 iis_stream_skip(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int count);
 
 int AXIS2_CALL
 iis_stream_get_char(
     axis2_stream_t *stream,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 
 axis2_stream_t * AXIS2_CALL
 axis2_stream_create_iis(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     LPEXTENSION_CONTROL_BLOCK lpECB)
 {
     iis_stream_impl_t *stream_impl = NULL;
@@ -101,7 +101,7 @@ axis2_stream_create_iis(
 int AXIS2_CALL
 iis_stream_read(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer,
     size_t count)
 {
@@ -172,7 +172,7 @@ iis_stream_read(
 int AXIS2_CALL
 iis_stream_write(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buf,
     size_t count)
 {
@@ -200,7 +200,7 @@ iis_stream_write(
 int AXIS2_CALL
 iis_stream_skip(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int count)
 {
 	DWORD ret_val = TRUE;	
@@ -269,7 +269,7 @@ iis_stream_skip(
 int AXIS2_CALL
 iis_stream_get_char(
     axis2_stream_t *stream,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     int ret = -1;
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
@@ -280,7 +280,7 @@ iis_stream_get_char(
 axis2_stream_type_t AXIS2_CALL
 iis_stream_get_type(
     axis2_stream_t *stream,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(stream)->stream_type;

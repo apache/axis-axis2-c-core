@@ -28,7 +28,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -62,39 +62,39 @@ struct woden_import_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *import_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (void *import_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
      
     axis2_status_t (AXIS2_CALL *
     set_namespace) (void *import_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *ns_uri);
 
     axis2_uri_t *(AXIS2_CALL *
     get_namespace) (void *import_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
    
     axis2_status_t (AXIS2_CALL *
     set_location) (void *import_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *loc_uri);
 
     axis2_uri_t *(AXIS2_CALL *
     get_location) (void *import_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_desc_element) (void *import_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *desc);
 
     void *(AXIS2_CALL *
     get_desc_element) (void *import_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -109,7 +109,7 @@ struct woden_import_element
 axis2_status_t AXIS2_CALL
 woden_import_element_resolve_methods(
         woden_import_element_t *import_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

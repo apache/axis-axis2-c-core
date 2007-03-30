@@ -25,6 +25,6 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 
-axiom_node_t *axis2_sub_sub(const axis2_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_sub_sub(const axutil_env_t *env, axiom_node_t *node);
 
 #endif /* SUB_H*/

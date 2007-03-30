@@ -58,7 +58,7 @@ struct axis2_options
 };
 
 AXIS2_EXTERN axis2_options_t *AXIS2_CALL
-axis2_options_create(const axis2_env_t *env)
+axis2_options_create(const axutil_env_t *env)
 {
     axis2_options_t *options = NULL;
 
@@ -106,7 +106,7 @@ axis2_options_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_options_t *AXIS2_CALL
-axis2_options_create_with_parent(const axis2_env_t *env,
+axis2_options_create_with_parent(const axutil_env_t *env,
     axis2_options_t *parent)
 {
 
@@ -123,7 +123,7 @@ axis2_options_create_with_parent(const axis2_env_t *env,
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_options_get_action(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     const axis2_char_t *action = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -140,7 +140,7 @@ axis2_options_get_action(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
 axis2_options_get_fault_to(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_endpoint_ref_t *fault_to = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -158,7 +158,7 @@ axis2_options_get_fault_to(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
 axis2_options_get_from(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_endpoint_ref_t *from = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -175,7 +175,7 @@ axis2_options_get_from(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
 axis2_options_get_transport_receiver(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -189,7 +189,7 @@ axis2_options_get_transport_receiver(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
 axis2_options_get_transport_in(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -203,7 +203,7 @@ axis2_options_get_transport_in(const axis2_options_t *options,
 
 AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
 axis2_options_get_transport_in_protocol(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -217,7 +217,7 @@ axis2_options_get_transport_in_protocol(const axis2_options_t *options,
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_options_get_message_id(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     const axis2_char_t *message_id = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -234,7 +234,7 @@ axis2_options_get_message_id(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_options_get_properties(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -248,7 +248,7 @@ axis2_options_get_properties(const axis2_options_t *options,
 
 AXIS2_EXTERN void *AXIS2_CALL
 axis2_options_get_property(const axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *key)
 {
     void *property = NULL;
@@ -266,7 +266,7 @@ axis2_options_get_property(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_relates_to_t *AXIS2_CALL
 axis2_options_get_relates_to(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_relates_to_t *relates_to = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -283,7 +283,7 @@ axis2_options_get_relates_to(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
 axis2_options_get_reply_to(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_endpoint_ref_t *reply_to = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -300,7 +300,7 @@ axis2_options_get_reply_to(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_transport_out_desc_t *AXIS2_CALL
 axis2_options_get_transport_out(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -314,7 +314,7 @@ axis2_options_get_transport_out(const axis2_options_t *options,
 
 AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
 axis2_options_get_sender_transport_protocol(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -329,7 +329,7 @@ axis2_options_get_sender_transport_protocol(const axis2_options_t *options,
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_options_get_soap_version_uri(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -348,7 +348,7 @@ axis2_options_get_soap_version_uri(const axis2_options_t *options,
 
 AXIS2_EXTERN long AXIS2_CALL
 axis2_options_get_timeout_in_milli_seconds(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (options->timeout_in_milli_seconds == -1 && options->parent)
     {
@@ -366,7 +366,7 @@ axis2_options_get_timeout_in_milli_seconds(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL
 axis2_options_get_to(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_endpoint_ref_t *to = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -384,7 +384,7 @@ axis2_options_get_to(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_options_get_use_separate_listener(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (options->use_separate_listener == -1 && options->parent)
     {
@@ -401,14 +401,14 @@ axis2_options_get_use_separate_listener(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_options_t *AXIS2_CALL
 axis2_options_get_parent(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return options->parent;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_parent(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_options_t *parent)
 {
     options->parent = (axis2_options_t *)parent;
@@ -417,7 +417,7 @@ axis2_options_set_parent(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_action(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *action)
 {
     axis2_msg_info_headers_set_action(options->msg_info_headers, env, action);
@@ -426,7 +426,7 @@ axis2_options_set_action(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_fault_to(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *fault_to)
 {
     axis2_msg_info_headers_set_fault_to(options->msg_info_headers, env, fault_to);
@@ -435,7 +435,7 @@ axis2_options_set_fault_to(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_from(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *from)
 {
     axis2_msg_info_headers_set_from(options->msg_info_headers, env, from);
@@ -444,7 +444,7 @@ axis2_options_set_from(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_to(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *to)
 {
     axis2_msg_info_headers_set_to(options->msg_info_headers, env, to);
@@ -453,7 +453,7 @@ axis2_options_set_to(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_transport_receiver(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_transport_receiver_t *receiver)
 {
     options->receiver = receiver;
@@ -462,7 +462,7 @@ axis2_options_set_transport_receiver(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_transport_in(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_transport_in_desc_t *transport_in)
 {
     options->transport_in = transport_in;
@@ -471,7 +471,7 @@ axis2_options_set_transport_in(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_transport_in_protocol(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const AXIS2_TRANSPORT_ENUMS transport_in_protocol)
 {
     options->transport_in_protocol = transport_in_protocol;
@@ -480,7 +480,7 @@ axis2_options_set_transport_in_protocol(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_message_id(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *message_id)
 {
     axis2_msg_info_headers_set_message_id(options->msg_info_headers, env, message_id);
@@ -489,7 +489,7 @@ axis2_options_set_message_id(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_properties(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *properties)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -504,7 +504,7 @@ axis2_options_set_properties(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_property(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *property_key,
     const void *property)
 {
@@ -515,7 +515,7 @@ axis2_options_set_property(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_relates_to(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_relates_to_t *relates_to)
 {
     axis2_msg_info_headers_set_relates_to(options->msg_info_headers, env, relates_to);
@@ -524,7 +524,7 @@ axis2_options_set_relates_to(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_reply_to(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *reply_to)
 {
     axis2_msg_info_headers_set_reply_to(options->msg_info_headers, env, reply_to);
@@ -533,7 +533,7 @@ axis2_options_set_reply_to(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_transport_out(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_transport_out_desc_t *transport_out)
 {
     options->transport_out = transport_out;
@@ -542,7 +542,7 @@ axis2_options_set_transport_out(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_sender_transport(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const AXIS2_TRANSPORT_ENUMS sender_transport,
     axis2_conf_t *conf)
 {
@@ -560,7 +560,7 @@ axis2_options_set_sender_transport(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_soap_version_uri(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *soap_version_uri)
 {
     if (options->soap_version_uri)
@@ -579,7 +579,7 @@ axis2_options_set_soap_version_uri(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_timeout_in_milli_seconds(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     long timeout_in_milli_seconds)
 {
     options->timeout_in_milli_seconds = timeout_in_milli_seconds;
@@ -588,7 +588,7 @@ axis2_options_set_timeout_in_milli_seconds(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_transport_info(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const AXIS2_TRANSPORT_ENUMS sender_transport,
     const AXIS2_TRANSPORT_ENUMS receiver_transport,
     const axis2_bool_t use_separate_listener)
@@ -620,7 +620,7 @@ axis2_options_set_transport_info(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_use_separate_listener(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t use_separate_listener)
 {
     options->use_separate_listener = use_separate_listener;
@@ -629,7 +629,7 @@ axis2_options_set_use_separate_listener(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_add_reference_parameter(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *reference_parameter)
 {
     axis2_msg_info_headers_add_ref_param(options->msg_info_headers,
@@ -640,7 +640,7 @@ axis2_options_add_reference_parameter(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_manage_session(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t manage_session)
 {
     options->manage_session = manage_session;
@@ -649,7 +649,7 @@ axis2_options_set_manage_session(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_options_get_manage_session(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 
@@ -668,7 +668,7 @@ axis2_options_get_manage_session(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_msg_info_headers(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_info_headers_t *msg_info_headers)
 {
     options->msg_info_headers = msg_info_headers;
@@ -677,7 +677,7 @@ axis2_options_set_msg_info_headers(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_msg_info_headers_t *AXIS2_CALL
 axis2_options_get_msg_info_headers(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -686,7 +686,7 @@ axis2_options_get_msg_info_headers(const axis2_options_t *options,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_options_free(axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -733,7 +733,7 @@ axis2_options_free(axis2_options_t *options,
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_options_get_soap_version(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return options->soap_version;
 
@@ -741,7 +741,7 @@ axis2_options_get_soap_version(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_soap_version(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int soap_version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -763,7 +763,7 @@ axis2_options_set_soap_version(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_options_set_enable_mtom(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t enable_mtom)
 {
     options->enable_mtom = enable_mtom;
@@ -783,14 +783,14 @@ axis2_options_set_enable_mtom(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_options_get_enable_mtom(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return options->enable_mtom;
 }
 
 AXIS2_EXTERN axis2_string_t *AXIS2_CALL
 axis2_options_get_soap_action(const axis2_options_t *options,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -799,7 +799,7 @@ axis2_options_get_soap_action(const axis2_options_t *options,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_options_set_soap_action(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_string_t *soap_action)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -820,14 +820,14 @@ axis2_options_set_soap_action(axis2_options_t *options,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_options_get_xml_parser_reset(const axis2_options_t *options,
-	const axis2_env_t *env)
+	const axutil_env_t *env)
 {
     return options->xml_parser_reset;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_options_set_xml_parser_reset(axis2_options_t *options,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_bool_t xml_parser_reset)
 {
     options->xml_parser_reset = xml_parser_reset;

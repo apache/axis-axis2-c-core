@@ -53,22 +53,22 @@ struct woden_include_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *include,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *include,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *include,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_wsdl_ref *(AXIS2_CALL *
     get_base_impl) (
             void *include,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* No additional definitions required. This class inherits all of its behaviour 
      * from woden_wsdl_ref. We just need this subclass so we can create an
@@ -90,34 +90,34 @@ struct woden_include
 
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_to_include_element(
         void *include,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_to_wsdl_ref(
         void *include,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_to_attr_extensible(
         void *include,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_to_element_extensible(
         void *include,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_include_resolve_methods(
         woden_include_t *include,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_include_t *include_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

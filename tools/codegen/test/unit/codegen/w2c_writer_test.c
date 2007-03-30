@@ -36,7 +36,7 @@ static const axis2_char_t* w2c_config_test_input1[] =
 
 void test_writer(CuTest *tc)
 {
-    axis2_env_t *env;
+    axutil_env_t *env;
     axutil_allocator_t *allocator;
     axis2_char_t* testing_lang = NULL;
     w2c_writer_t* writer = NULL;
@@ -54,7 +54,7 @@ void test_writer(CuTest *tc)
     int input_size = 0;
 
     allocator = axutil_allocator_init(NULL);
-    env = axis2_env_create(allocator);
+    env = axutil_env_create(allocator);
 
     axis2c_home = getenv("AXIS2C_HOME");
     /* this is to load configuration from properties file */

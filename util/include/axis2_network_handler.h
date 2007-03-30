@@ -19,7 +19,7 @@
 
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <sys/types.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
@@ -44,7 +44,7 @@ extern "C"
      * @return opened socket
      */
     AXIS2_EXTERN axis2_socket_t AXIS2_CALL
-    axis2_network_handler_open_socket(const axis2_env_t *env,
+    axis2_network_handler_open_socket(const axutil_env_t *env,
             char *server,
             int port);
 
@@ -54,7 +54,7 @@ extern "C"
      * @return creates server socket
      */
     AXIS2_EXTERN axis2_socket_t AXIS2_CALL
-    axis2_network_handler_create_server_socket(const axis2_env_t *env,
+    axis2_network_handler_create_server_socket(const axutil_env_t *env,
             int port);
 
     /**
@@ -63,7 +63,7 @@ extern "C"
      * @return status code
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_network_handler_close_socket(const axis2_env_t *env,
+    axis2_network_handler_close_socket(const axutil_env_t *env,
             axis2_socket_t socket);
 
     /**
@@ -74,7 +74,7 @@ extern "C"
      * @return status of the operations as axis2_status_t
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_network_handler_set_sock_option(const axis2_env_t *env,
+    axis2_network_handler_set_sock_option(const axutil_env_t *env,
             axis2_socket_t socket,
             int option,
             int value);
@@ -84,7 +84,7 @@ extern "C"
      * @return created socket to handle the incoming client connection
      */
     AXIS2_EXTERN axis2_socket_t AXIS2_CALL
-    axis2_network_handler_svr_socket_accept(const axis2_env_t *env,
+    axis2_network_handler_svr_socket_accept(const axutil_env_t *env,
             axis2_socket_t socket);
 
     /**
@@ -93,11 +93,11 @@ extern "C"
      * @return ip address asoociated with the socket or NULL
      */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_network_handler_get_svr_ip(const axis2_env_t *env,
+    axis2_network_handler_get_svr_ip(const axutil_env_t *env,
             axis2_socket_t socket);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_network_handler_get_peer_ip(const axis2_env_t *env,
+    axis2_network_handler_get_peer_ip(const axutil_env_t *env,
             axis2_socket_t socket);
 
     /** @} */

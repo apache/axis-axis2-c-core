@@ -55,17 +55,17 @@ struct woden_documentable_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *documentable,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_documentable_free) (
             void *documentable,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *documentable,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * @return the base implementation class
@@ -73,18 +73,18 @@ struct woden_documentable_ops
     woden_wsdl_obj_t *(AXIS2_CALL *
     get_base_impl) (
             void *documentable,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     add_documentation_element) (
             void *types,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct woden_documentation_element *documentation);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_documentation_elements) (
             void *types,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
 };
@@ -103,19 +103,19 @@ struct woden_documentable
 
 AXIS2_EXTERN woden_documentable_t * AXIS2_CALL
 woden_documentable_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 
 AXIS2_EXTERN woden_documentable_t * AXIS2_CALL
 woden_documentable_to_documentable_element(
         void *documentable,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_documentable_resolve_methods(
         woden_documentable_t *documentable,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_documentable_t *documentable_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

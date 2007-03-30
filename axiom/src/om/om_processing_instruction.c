@@ -28,7 +28,7 @@ struct axiom_processing_instruction
 };
 
 AXIS2_EXTERN axiom_processing_instruction_t *AXIS2_CALL
-axiom_processing_instruction_create(const axis2_env_t *env,
+axiom_processing_instruction_create(const axutil_env_t *env,
     axiom_node_t * parent,
     const axis2_char_t * target,
     const axis2_char_t * value,
@@ -102,7 +102,7 @@ axiom_processing_instruction_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -124,7 +124,7 @@ axiom_processing_instruction_free(axiom_processing_instruction_t *om_pi,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_processing_instruction_set_value(axiom_processing_instruction_t *om_pi,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -136,7 +136,7 @@ axiom_processing_instruction_set_value(axiom_processing_instruction_t *om_pi,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_processing_instruction_set_target(axiom_processing_instruction_t *om_pi,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *target)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -147,13 +147,13 @@ axiom_processing_instruction_set_target(axiom_processing_instruction_t *om_pi,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_processing_instruction_get_value(axiom_processing_instruction_t *om_pi,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_pi->value;
 }
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_processing_instruction_get_target(axiom_processing_instruction_t *om_pi,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_pi->target;
 }
@@ -161,7 +161,7 @@ axiom_processing_instruction_get_target(axiom_processing_instruction_t *om_pi,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_processing_instruction_serialize(axiom_processing_instruction_t *om_pi,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

@@ -34,7 +34,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_const.h>
 #include <axutil_array_list.h>
 #include <axis2_any_content_type.h>
@@ -57,7 +57,7 @@ extern "C"
      * @return pointer to newly created endpoint reference
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
-    axis2_endpoint_ref_create(const axis2_env_t *env,
+    axis2_endpoint_ref_create(const axutil_env_t *env,
         const axis2_char_t *address);
 
     /**
@@ -69,7 +69,7 @@ extern "C"
      */
     void AXIS2_CALL
     axis2_endpoint_ref_free_void_arg(void *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets endpoint address. Address URI identifies the endpoint. 
@@ -80,7 +80,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_endpoint_ref_get_address(const axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets endpoint address. Address URI identifies the endpoint. 
@@ -92,7 +92,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_set_address(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *address);
 
     /**
@@ -105,7 +105,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
     axis2_endpoint_ref_get_interface_qname(const axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets interface QName. QName represents the primary portType of 
@@ -118,7 +118,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_set_interface_qname(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *interface_qname);
 
     /**
@@ -134,7 +134,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_ref_param_list(const axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the list of metadata. An endpoint can have different associated 
@@ -146,7 +146,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_metadata_list(const axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the list of reference attributes. 
@@ -157,7 +157,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_ref_attribute_list(const axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the list of metadata attributes.
@@ -168,7 +168,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_metadata_attribute_list(const axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the list of extensions. Extensions are a mechanism to allow 
@@ -180,7 +180,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_endpoint_ref_get_extension_list(const axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds a reference parameter in the form of an AXIOM node. 
@@ -193,7 +193,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_add_ref_param(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *ref_param_node);
 
     /**
@@ -208,7 +208,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_add_metadata(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *metadata_node);
 
     /**
@@ -221,7 +221,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_add_ref_attribute(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_attribute_t *attr);
 
     /**
@@ -234,7 +234,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_add_metadata_attribute(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_attribute_t *attr);
 
     /**
@@ -247,7 +247,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_add_extension(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *extension_node);
 
     /**
@@ -262,7 +262,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_name_t *AXIS2_CALL
     axis2_endpoint_ref_get_svc_name(const axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets service name. An endpoint in WS-Addressing has a QName 
@@ -277,7 +277,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_set_svc_name(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_svc_name_t *svc_name);
 
     /**
@@ -288,7 +288,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_endpoint_ref_free(axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /** @} */

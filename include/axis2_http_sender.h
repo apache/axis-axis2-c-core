@@ -30,7 +30,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_msg_ctx.h>
 #include <axiom_output.h>
 #include <axis2_http_simple_response.h>
@@ -61,7 +61,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_sender_send(axis2_http_sender_t *sender,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_msg_ctx_t *msg_ctx,
         axiom_soap_envelope_t *out,
         const axis2_char_t *str_url,
@@ -70,7 +70,7 @@ extern "C"
 #ifdef AXIS2_LIBCURL_ENABLED
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_libcurl_http_send(axis2_http_sender_t *sender,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_msg_ctx_t *msg_ctx,
         axiom_soap_envelope_t *out,
         const axis2_char_t *str_url,
@@ -86,7 +86,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_sender_set_chunked(axis2_http_sender_t *sender,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_bool_t chunked);
 
     /**
@@ -97,7 +97,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_sender_set_om_output(axis2_http_sender_t *sender,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axiom_output_t *om_output);
 
     /**
@@ -108,7 +108,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_sender_set_http_version(axis2_http_sender_t *sender,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_char_t *version);
 
     /**
@@ -118,7 +118,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_sender_free(axis2_http_sender_t *sender,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param sender soap over http sender
@@ -128,7 +128,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_sender_get_header_info(axis2_http_sender_t *sender,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_msg_ctx_t *msg_ctx,
         axis2_http_simple_response_t *response);
 
@@ -140,7 +140,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_sender_process_response(axis2_http_sender_t *sender,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_msg_ctx_t *msg_ctx,
         axis2_http_simple_response_t *response);
 
@@ -152,19 +152,19 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_sender_get_timeout_values(axis2_http_sender_t *sender,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_msg_ctx_t *msg_ctx);
 
 	AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 	axis2_http_sender_get_param_string(axis2_http_sender_t *sender,
-	const axis2_env_t *env,
+	const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
     /**
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
-    axis2_http_sender_create(const axis2_env_t *env);
+    axis2_http_sender_create(const axutil_env_t *env);
 
 /** Send. */
 #define AXIS2_HTTP_SENDER_SEND(sender, env, msg_ctx, output, url,soap_action)\

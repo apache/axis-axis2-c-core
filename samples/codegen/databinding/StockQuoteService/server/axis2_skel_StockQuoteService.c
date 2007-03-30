@@ -31,7 +31,7 @@
          
  * @param getStockQuote
  */
-axis2_getStockQuoteResponse_t* axis2_skel_StockQuoteService_getStockQuote (const axis2_env_t *env, 
+axis2_getStockQuoteResponse_t* axis2_skel_StockQuoteService_getStockQuote (const axutil_env_t *env, 
 																		   axis2_getStockQuote_t* getStockQuote )
 {
 	/* TODO fill this with the necessary business logic */

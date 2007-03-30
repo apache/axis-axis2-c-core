@@ -17,12 +17,12 @@
 
 #include "axis2_Calculator_stub.h"
 
-axiom_node_t* generate_request_xml(const  axis2_env_t* env);
-void handle_respone_xml(const  axis2_env_t* env, axiom_node_t* res);
+axiom_node_t* generate_request_xml(const  axutil_env_t* env);
+void handle_respone_xml(const  axutil_env_t* env, axiom_node_t* res);
 
 int main(int argc, char** argv)
 {
-    axis2_env_t* env = NULL;
+    axutil_env_t* env = NULL;
     axis2_char_t* operation = NULL;
     axis2_char_t* client_home = NULL;
 
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 
     endpoint_uri = "http://localhost:9090/axis2/services/Calculator";
 
-    env = axis2_env_create_all("codegen_utest_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("codegen_utest_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -54,7 +54,7 @@ int main(int argc, char** argv)
     return 0;
 }
 
-axiom_node_t* generate_request_xml(const  axis2_env_t* env)
+axiom_node_t* generate_request_xml(const  axutil_env_t* env)
 {
     axiom_node_t *op_node = NULL;
     axiom_element_t* op_ele = NULL;
@@ -87,7 +87,7 @@ axiom_node_t* generate_request_xml(const  axis2_env_t* env)
 
 }
 
-void handle_respone_xml(const  axis2_env_t* env, axiom_node_t* res)
+void handle_respone_xml(const  axutil_env_t* env, axiom_node_t* res)
 {
     axiom_node_t* node = NULL;
     axiom_element_t* ele = NULL;

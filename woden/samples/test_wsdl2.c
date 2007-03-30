@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <axiom.h>
 #include <axiom_xml_reader.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <woden_resolver.h>
@@ -33,12 +33,12 @@
 
 static axiom_document_t*
 get_root_element_from_filename(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *filename);
 
 int main(int argc, char *argv[])
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     axiom_stax_builder_t *om_builder = NULL;
     axis2_char_t *doc_base_uri = NULL;
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     om_doc = get_root_element_from_filename(env, filename);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -179,13 +179,13 @@ int main(int argc, char *argv[])
     om_builder = axiom_document_get_builder(om_doc, env);
     axiom_stax_builder_free(om_builder, env);
     WODEN_DESC_FREE(desc, env);
-    axis2_env_free(env);
+    axutil_env_free(env);
     return 0;
 }
 
 static axiom_document_t*
 get_root_element_from_filename(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *filename)
 {
     axiom_xml_reader_t *reader = NULL;

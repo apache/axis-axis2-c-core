@@ -40,21 +40,21 @@ extern "C"
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_body_set_base_node(axiom_soap_body_t *body,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *om_node);  
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_body_set_builder(axiom_soap_body_t *body,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axiom_soap_builder *builder);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_body_set_fault(axiom_soap_body_t *body,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axiom_soap_fault *soap_fault);
                           
 AXIS2_EXTERN axiom_soap_body_t * AXIS2_CALL
-axiom_soap_body_create(const axis2_env_t *env);     
+axiom_soap_body_create(const axutil_env_t *env);     
 /** @} */
     
 #ifdef __cplusplus

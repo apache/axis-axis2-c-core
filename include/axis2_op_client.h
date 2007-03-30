@@ -48,7 +48,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_options.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_callback.h>
@@ -73,7 +73,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_set_options(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_options_t *options);
 
     /**
@@ -85,7 +85,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_options_t* AXIS2_CALL
     axis2_op_client_get_options(const axis2_op_client_t *op_client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds a message context to the client for processing. 
@@ -98,7 +98,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_add_msg_ctx(
         axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -111,7 +111,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_add_out_msg_ctx(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
 
@@ -125,7 +125,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_msg_ctx_t* AXIS2_CALL
     axis2_op_client_get_msg_ctx(const axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_wsdl_msg_labels_t message_label);
 
     /**
@@ -138,7 +138,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_set_callback(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_callback_t *callback);
     /**
      * Gets the callback. 
@@ -148,7 +148,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_callback_t *AXIS2_CALL
     axis2_op_client_get_callback(axis2_op_client_t *op_client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Execute the op. What this does depends on the specific operation client.
@@ -163,7 +163,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_execute(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t block);
 
     /**
@@ -176,7 +176,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_reset(axis2_op_client_t *op_client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Completes the execution by closing the transports if necessary.
@@ -189,7 +189,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_complete(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -200,7 +200,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_op_ctx_t* AXIS2_CALL
     axis2_op_client_get_operation_context(const axis2_op_client_t *op_client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets callback receiver.
@@ -212,7 +212,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_set_callback_recv(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_callback_recv *callback_recv);
 
     /**
@@ -223,7 +223,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_op_client_free(axis2_op_client_t *op_client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates an operation client struct for the specified operation, service 
@@ -241,7 +241,7 @@ extern "C"
      * or NULL on error with error code set in environment's error
      */
     AXIS2_EXTERN axis2_op_client_t* AXIS2_CALL 
-    axis2_op_client_create(const axis2_env_t *env,
+    axis2_op_client_create(const axutil_env_t *env,
         axis2_op_t *op,
         axis2_svc_ctx_t *svc_ctx,
         axis2_options_t *options);
@@ -255,7 +255,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_string_t *AXIS2_CALL
     axis2_op_client_get_soap_action(const axis2_op_client_t *op_client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Prepares the message context for invocation. Here the properties kept
@@ -268,7 +268,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_prepare_invocation(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_op_t *op,
         axis2_msg_ctx_t *msg_ctx);
 
@@ -282,7 +282,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_ctx_t* AXIS2_CALL
     axis2_op_client_prepare_soap_envelope(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *to_send);
 
     /**
@@ -296,7 +296,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_transport_out_desc_t *AXIS2_CALL
     axis2_op_client_infer_transport(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *epr);
 
     /**
@@ -307,7 +307,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
     axis2_op_client_create_default_soap_envelope(axis2_op_client_t *op_client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Engage named module. The named module must have been configured in 
@@ -321,7 +321,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_engage_module(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname);
     
     /**
@@ -333,7 +333,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_set_soap_version_uri(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *soap_version_uri);
     
     /**
@@ -345,7 +345,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_set_soap_action(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *soap_action);
     
     /**
@@ -357,7 +357,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_set_wsa_action(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *wsa_action);
 
     /**
@@ -368,7 +368,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
     axis2_op_client_get_svc_ctx(const axis2_op_client_t *op_client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -380,7 +380,7 @@ extern "C"
      * @return message context representing the received response
      */    
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-    axis2_op_client_two_way_send(const axis2_env_t *env,
+    axis2_op_client_two_way_send(const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -392,7 +392,7 @@ extern "C"
      * @return message context representing the received response
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-    axis2_op_client_receive(const axis2_env_t *env,
+    axis2_op_client_receive(const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
 /** Sets the options to be used by operation client. */

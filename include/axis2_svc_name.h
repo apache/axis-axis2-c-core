@@ -34,7 +34,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_const.h>
 #include <axis2_qname.h>
 
@@ -55,7 +55,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_name_t *AXIS2_CALL
     axis2_svc_name_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname,
         const axis2_char_t *endpoint_name) ;
 
@@ -69,7 +69,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
     axis2_svc_name_get_qname(const axis2_svc_name_t *svc_name,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets QName. QName identifies the WSDL service element that contains 
@@ -81,7 +81,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_name_set_qname(struct axis2_svc_name *svc_name,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname);
 
     /**
@@ -94,7 +94,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_name_get_endpoint_name(const axis2_svc_name_t *svc_name,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets endpoint name. Endpoint name is a non-qualified name that 
@@ -107,7 +107,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *endpoint_name);
 
     /**
@@ -118,7 +118,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_name_free(struct axis2_svc_name *svc_name,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** @} */
 

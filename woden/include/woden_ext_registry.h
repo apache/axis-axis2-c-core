@@ -25,7 +25,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -58,7 +58,7 @@ struct woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *ext_registry,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     /**
     * Declare that the specified deserializer should be used to deserialize
@@ -78,7 +78,7 @@ struct woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     register_deserializer) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_type,
             axis2_qname_t *element_qtype,
             void *ed);
@@ -102,7 +102,7 @@ struct woden_ext_registry_ops
     void *(AXIS2_CALL *
     query_deserializer) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_type,
             axis2_qname_t *element_type);
 
@@ -122,7 +122,7 @@ struct woden_ext_registry_ops
     void *(AXIS2_CALL *
     query_ext_element_type) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_class,
             axis2_qname_t *elem_qn);
 
@@ -137,7 +137,7 @@ struct woden_ext_registry_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_allowable_exts) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_type);
 
     /**
@@ -159,7 +159,7 @@ struct woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     register_ext_element_type) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_type,
             axis2_qname_t *element_qtype,
             void *element);
@@ -181,7 +181,7 @@ struct woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     register_ext_attr_type) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *owner_class,
             axis2_qname_t *attr_qname,
             void *attr);
@@ -201,7 +201,7 @@ struct woden_ext_registry_ops
     void *(AXIS2_CALL *
     query_ext_attr_type) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_class,
             axis2_qname_t *attr_qn);
 
@@ -216,7 +216,7 @@ struct woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     register_component_ext) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_class,
             axis2_uri_t *ext_namespc,
             void *comp_ext);
@@ -232,7 +232,7 @@ struct woden_ext_registry_ops
     void *(AXIS2_CALL *
     query_component_ext) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_class,
             axis2_uri_t *ext_namespc);
 
@@ -245,7 +245,7 @@ struct woden_ext_registry_ops
     axutil_array_list_t *(AXIS2_CALL *
     query_component_ext_namespaces) (
             void *registry,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_class);
 };
 
@@ -255,7 +255,7 @@ struct woden_ext_registry
 };
 
 AXIS2_EXTERN woden_ext_registry_t * AXIS2_CALL
-woden_ext_registry_create(const axis2_env_t *env);
+woden_ext_registry_create(const axutil_env_t *env);
 
 #define WODEN_EXT_REGISTRY_FREE(ext_registry, env) \
       (((woden_ext_registry_t *) ext_registry)->ops->\

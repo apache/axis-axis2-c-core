@@ -18,7 +18,7 @@
 #ifndef AXIOM_TEXT_H
 #define AXIOM_TEXT_H
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_output.h>
 #include <axiom_data_handler.h>
@@ -49,7 +49,7 @@ extern "C"
       * @return pointer to newly created text struct 
       */
     AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-    axiom_text_create(const axis2_env_t *env,
+    axiom_text_create(const axutil_env_t *env,
         axiom_node_t *parent,
         const axis2_char_t *value,
         axiom_node_t ** node);
@@ -66,7 +66,7 @@ extern "C"
       * @return pointer to newly created text struct 
       */
     AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-    axiom_text_create_str(const axis2_env_t *env,
+    axiom_text_create_str(const axutil_env_t *env,
         axiom_node_t *parent,
         axis2_string_t *value,
         axiom_node_t ** node);
@@ -83,7 +83,7 @@ extern "C"
       * @return pointer to newly created text struct 
       */
     AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-    axiom_text_create_with_data_handler(const axis2_env_t *env,
+    axiom_text_create_with_data_handler(const axutil_env_t *env,
         axiom_node_t * parent,
         axiom_data_handler_t* data_handler,
         axiom_node_t **node);
@@ -97,7 +97,7 @@ extern "C"
       */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_text_free(struct axiom_text *om_text,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
       * Serialize op
@@ -109,7 +109,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_text_serialize(struct axiom_text *om_text,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_output_t *om_output);
 
    /**
@@ -122,7 +122,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_text_set_value(struct axiom_text *om_text,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *value);
 
    /**
@@ -133,7 +133,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axiom_text_get_value(struct axiom_text *om_text,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 	/**
      * Sets the text value
@@ -145,7 +145,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_text_set_value_str(struct axiom_text *om_text,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *value);
 
    /**
@@ -156,7 +156,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_string_t *AXIS2_CALL
     axiom_text_get_value_str(struct axiom_text *om_text,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
      * Sets optimized 
@@ -167,7 +167,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_text_set_optimize(struct axiom_text *om_text,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t optimize);
 
     /**
@@ -178,16 +178,16 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_text_set_is_binary(struct axiom_text *om_text,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t is_binary);
 
     AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
     axiom_text_get_data_handler(struct axiom_text *om_text,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_text_get_content_id(struct axiom_text *om_text,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** @} */
 

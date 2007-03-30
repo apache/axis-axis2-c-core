@@ -24,7 +24,7 @@
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_file_writer_create_classfile_name (
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *root_location,
     axis2_char_t *package_name,
     axis2_char_t *filename,

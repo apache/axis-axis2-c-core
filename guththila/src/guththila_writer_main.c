@@ -22,7 +22,7 @@
 int main()
 {
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    axis2_env_t *env = axis2_env_create(allocator);
+    axutil_env_t *env = axutil_env_create(allocator);
     guththila_t *parser = guththila_create(env, NULL);
     guththila_create_xml_stream_writer(env, parser, "w.xml");
     guththila_write_start_document(env, parser);
@@ -44,6 +44,6 @@ int main()
     guththila_xml_writer_free(env, parser);
     guththila_free(env, parser);
     axutil_allocator_free(allocator);
-    axis2_env_free(env);
+    axutil_env_free(env);
     return 0;
 }

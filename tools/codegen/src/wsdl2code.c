@@ -25,24 +25,24 @@
 #include <w2c_engine.h>
 
 static void
-w2c_print_message(const axis2_env_t* env, axis2_properties_t* messageh,
+w2c_print_message(const axutil_env_t* env, axis2_properties_t* messageh,
         axis2_char_t* key);
 
 static void
-w2c_print_usage(const axis2_env_t* env);
+w2c_print_usage(const axutil_env_t* env);
 
 static axis2_status_t
 w2c_validate_cmdline_options(w2c_cmdline_option_parser_t* cmd_opt_parser,
-        const axis2_env_t* env);
+        const axutil_env_t* env);
 
 int main(int argc, char** argv)
 {
     w2c_cmdline_option_parser_t* cmd_opt_parser = NULL;
-    axis2_env_t* env = NULL;
+    axutil_env_t* env = NULL;
     w2c_engine_t* engine = NULL;
     axis2_status_t status;
 
-	env = axis2_env_create_all("codegen.log", AXIS2_LOG_LEVEL_DEBUG);
+	env = axutil_env_create_all("codegen.log", AXIS2_LOG_LEVEL_DEBUG);
 
     cmd_opt_parser = w2c_cmdline_option_parser_create
             (env, argc - 1, argv + 1);/* ommit first arg */
@@ -63,13 +63,13 @@ int main(int argc, char** argv)
         }
     }
     W2C_CMDLINE_OPTION_PARSER_FREE(cmd_opt_parser, env);
-    axis2_env_free(env);
+    axutil_env_free(env);
     return 0;
 }
 
 static axis2_status_t
 w2c_validate_cmdline_options(w2c_cmdline_option_parser_t* cmd_opt_parser,
-        const axis2_env_t*  env)
+        const axutil_env_t*  env)
 {
     axis2_hash_t* h = NULL;
     axutil_array_list_t* invalid_arr = NULL;
@@ -107,7 +107,7 @@ w2c_validate_cmdline_options(w2c_cmdline_option_parser_t* cmd_opt_parser,
 }
 
 static void
-w2c_print_usage(const axis2_env_t* env)
+w2c_print_usage(const axutil_env_t* env)
 {
     axis2_properties_t* props = NULL;
 
@@ -127,7 +127,7 @@ w2c_print_usage(const axis2_env_t* env)
 }
 
 static void
-w2c_print_message(const axis2_env_t* env, axis2_properties_t* messageh, axis2_char_t* key)
+w2c_print_message(const axutil_env_t* env, axis2_properties_t* messageh, axis2_char_t* key)
 {
     axis2_char_t* message = NULL;
     message = (axis2_char_t*)

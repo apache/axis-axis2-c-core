@@ -38,34 +38,34 @@ struct woden_wsdl_obj_impl
 axis2_status_t AXIS2_CALL
 woden_wsdl_obj_free(
     void *wsdl_obj,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_wsdl_obj_super_objs(
     void *wsdl_obj,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_wsdl_element_t *AXIS2_CALL
 woden_wsdl_obj_get_base_impl(
     void *wsdl_obj,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_component_exts_t *AXIS2_CALL
 woden_wsdl_obj_get_component_exts_for_namespace(
     void *wsdl_obj,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl_obj_set_component_exts(
     void *wsdl_obj,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc,
     woden_component_exts_t *exts);
 
 static woden_wsdl_obj_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
 
@@ -97,7 +97,7 @@ create(
 
 AXIS2_EXTERN woden_wsdl_obj_t * AXIS2_CALL
 woden_wsdl_obj_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
 
@@ -122,7 +122,7 @@ woden_wsdl_obj_create(
 axis2_status_t AXIS2_CALL
 woden_wsdl_obj_free(
     void *wsdl_obj,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
 
@@ -158,7 +158,7 @@ woden_wsdl_obj_free(
 axis2_hash_t *AXIS2_CALL
 woden_wsdl_obj_super_objs(
     void *wsdl_obj,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
 
@@ -171,7 +171,7 @@ woden_wsdl_obj_super_objs(
 woden_wsdl_element_t *AXIS2_CALL
 woden_wsdl_obj_get_base_impl(
     void *wsdl_obj,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
 
@@ -184,7 +184,7 @@ woden_wsdl_obj_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_wsdl_obj_resolve_methods(
     woden_wsdl_obj_t *wsdl_obj,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl_obj_t *wsdl_obj_impl,
     axis2_hash_t *methods)
 {
@@ -219,7 +219,7 @@ woden_wsdl_obj_resolve_methods(
 woden_component_exts_t *AXIS2_CALL
 woden_wsdl_obj_get_component_exts_for_namespace(
     void *wsdl_obj,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
@@ -239,7 +239,7 @@ woden_wsdl_obj_get_component_exts_for_namespace(
 axis2_status_t AXIS2_CALL
 woden_wsdl_obj_set_component_exts(
     void *wsdl_obj,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc,
     woden_component_exts_t *exts)
 {

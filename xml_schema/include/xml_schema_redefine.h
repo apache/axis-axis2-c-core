@@ -50,40 +50,40 @@ struct xml_schema_redefine_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *redefine,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     xml_schema_external_t* (AXIS2_CALL *
     get_base_impl)(void *redefine,
-                   const axis2_env_t *env);            
+                   const axutil_env_t *env);            
 
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *redefine,
-                const axis2_env_t *env);            
+                const axutil_env_t *env);            
 
     xml_schema_types_t (AXIS2_CALL *
     get_type)(void *redefine,
-          const axis2_env_t *env);            
+          const axutil_env_t *env);            
 
     xml_schema_obj_table_t* (AXIS2_CALL *
     get_attribute_group)(void *redefine,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
                 
     axis2_status_t (AXIS2_CALL *
     set_attribute_group)(void *redefine,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_obj_table_t *group);
                    
     xml_schema_obj_collection_t* (AXIS2_CALL *
     get_items)(void *redefine,
-               const axis2_env_t *env);
+               const axutil_env_t *env);
                
     xml_schema_obj_table_t* (AXIS2_CALL *
     get_schema_types)(void *redefine,
-                      const axis2_env_t *env);
+                      const axutil_env_t *env);
                       
     xml_schema_obj_table_t* (AXIS2_CALL *
     get_group)(void *redefine, 
-               const axis2_env_t *env);                      
+               const axutil_env_t *env);                      
                       
 };
 
@@ -97,7 +97,7 @@ struct xml_schema_redefine
  * Creates new Xml Schema redefine
  */
 AXIS2_EXTERN xml_schema_redefine_t * AXIS2_CALL
-xml_schema_redefine_create(const axis2_env_t *env);
+xml_schema_redefine_create(const axutil_env_t *env);
 
 #define XML_SCHEMA_REDEFINE_FREE(redefine, env) \
       (((xml_schema_redefine_t *) redefine)->ops->\

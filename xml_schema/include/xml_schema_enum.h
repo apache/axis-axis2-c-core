@@ -24,7 +24,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils_defines.h>
@@ -51,38 +51,38 @@ struct xml_schema_enum_ops
     axis2_status_t (AXIS2_CALL *
     free)(
             void *schema_enum,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs)(
             void *schema_enum,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_types_t (AXIS2_CALL *
     get_type) (
             void *schema_enum,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_char_t* (AXIS2_CALL *
     get_value)(
             void *schema_enum,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_value)(
             void *schema_enum,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *value);
 
     axis2_bool_t (AXIS2_CALL *
     equals)(void *schema_enum,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *obj);
 
     axutil_array_list_t* (AXIS2_CALL *
     get_values)(
             void *schema_enum, 
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
 };
 
@@ -92,7 +92,7 @@ struct xml_schema_enum
 };
 
 AXIS2_EXTERN xml_schema_enum_t * AXIS2_CALL
-xml_schema_enum_create(const axis2_env_t *env,
+xml_schema_enum_create(const axutil_env_t *env,
                        const axis2_char_t *value);
 
 /**
@@ -100,7 +100,7 @@ xml_schema_enum_create(const axis2_env_t *env,
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_enum_resolve_methods(xml_schema_enum_t *schema_enum,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_enum_t *schema_enum_impl,
                                 XML_SCHEMA_SUPER_OBJS_FN super_objs,
                                 XML_SCHEMA_GET_TYPE_FN get_type,
@@ -108,7 +108,7 @@ xml_schema_enum_resolve_methods(xml_schema_enum_t *schema_enum,
 
 AXIS2_EXTERN int AXIS2_CALL
 xml_schema_enum_index(axis2_char_t *value,
-                            const axis2_env_t *env,
+                            const axutil_env_t *env,
                             axutil_array_list_t *values);
                             
 /***************** macros ****************************************************/                           

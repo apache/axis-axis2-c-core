@@ -85,49 +85,49 @@ struct axis2_dep_engine
 
 static axis2_status_t
 axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t
 axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *client_home);
 
 static axis2_status_t
 axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t
 axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t
 axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_grp_t *svc_metadata);
 
 static axis2_status_t
 axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_module_desc_t *module_desc);
 
 static axis2_status_t
 axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_flow_t *flow,
     axis2_hash_t *handler_create_func_map);
 
 static axis2_status_t
 axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_module_desc_t *module_metadata);
 
 static axis2_char_t *
 axis2_dep_engine_get_axis_svc_name(const axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *file_name);
 
 AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-axis2_dep_engine_create(const axis2_env_t *env)
+axis2_dep_engine_create(const axutil_env_t *env)
 {
     axis2_dep_engine_t *dep_engine = NULL;
 
@@ -182,7 +182,7 @@ axis2_dep_engine_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-axis2_dep_engine_create_with_repos_name(const axis2_env_t *env,
+axis2_dep_engine_create_with_repos_name(const axutil_env_t *env,
     const axis2_char_t *repos_path)
 {
     axis2_dep_engine_t *dep_engine = NULL;
@@ -201,7 +201,7 @@ axis2_dep_engine_create_with_repos_name(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
+axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env,
     const axis2_char_t *repos_path,
     const axis2_char_t *svr_xml_file)
 {
@@ -275,7 +275,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -455,7 +455,7 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *module_qname)
 {
     axis2_qname_t *qname = NULL;
@@ -478,7 +478,7 @@ axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
 
 struct axis2_module_desc *AXIS2_CALL
 axis2_dep_engine_get_module(const axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *module_name)
 {
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
@@ -488,14 +488,14 @@ axis2_dep_engine_get_module(const axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN struct axis2_arch_file_data *AXIS2_CALL
 axis2_dep_engine_get_current_file_item(const axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return dep_engine->curr_file;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_ws_to_deploy(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_arch_file_data_t *file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -506,7 +506,7 @@ axis2_dep_engine_add_ws_to_deploy(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_ws_to_undeploy(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_ws_info_t *file)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -520,14 +520,14 @@ axis2_dep_engine_add_ws_to_undeploy(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_phases_info_t *AXIS2_CALL
 axis2_dep_engine_get_phases_info(const axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return dep_engine->phases_info;
 }
 
 AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
 axis2_dep_engine_get_axis_conf(const axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return dep_engine->conf;
 }
@@ -537,7 +537,7 @@ axis2_dep_engine_get_axis_conf(const axis2_dep_engine_t *dep_engine,
  */
 static axis2_status_t
 axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_char_t *value = NULL;
     axis2_param_t *para_hot_dep = NULL;
@@ -571,7 +571,7 @@ axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
 axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     axutil_array_list_t *out_fault_phases = NULL;
@@ -681,7 +681,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_conf_t *AXIS2_CALL
 axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *client_home)
 {
     axis2_bool_t is_repos_exist = AXIS2_FALSE;
@@ -769,7 +769,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
 
 static axis2_status_t
 axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *client_home)
 {
     axis2_char_t *path_l = NULL;
@@ -807,7 +807,7 @@ axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
 
 static axis2_status_t
 axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     int size = 0;
     int i = 0;
@@ -841,7 +841,7 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
 
 static axis2_status_t
 axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axutil_array_list_t *in_phases = NULL;
     axis2_char_t *phase0 = NULL;
@@ -874,7 +874,7 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
 
 static axis2_status_t
 axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_grp_t *svc_metadata)
 {
     axutil_array_list_t *svcs = NULL;
@@ -1018,7 +1018,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
 
 static axis2_status_t
 axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_module_desc_t *module_desc)
 {
     axis2_char_t *read_in_dll = NULL;
@@ -1080,7 +1080,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
 
 static axis2_status_t
 axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_flow_t *flow,
     axis2_hash_t *handler_create_func_map)
 {
@@ -1112,7 +1112,7 @@ axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN void *AXIS2_CALL
 axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *class_name)
 {
     axutil_dll_desc_t *dll_desc = NULL;
@@ -1142,7 +1142,7 @@ axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
 
 static axis2_status_t
 axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_module_desc_t *module_metadata)
 {
     axis2_flow_t *in_flow = NULL;
@@ -1204,7 +1204,7 @@ axis2_dep_engine_add_new_module(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     int size = 0;
     axis2_status_t status = AXIS2_FAILURE;
@@ -1304,7 +1304,7 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     int size = 0;
     axis2_char_t *svc_name = NULL;
@@ -1346,14 +1346,14 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_dep_engine_is_hot_update(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return dep_engine->hot_update;
 }
 
 static axis2_char_t *
 axis2_dep_engine_get_axis_svc_name(const axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *file_name)
 {
     axis2_char_t name_sep = '.';
@@ -1378,7 +1378,7 @@ axis2_dep_engine_get_axis_svc_name(const axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_phases_info_t *phases_info)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1397,7 +1397,7 @@ axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
  */
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
 axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc,
     axis2_char_t *file_name)
 {
@@ -1427,7 +1427,7 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
  */
 AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
 axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_file_t *module_archive,
     axis2_conf_t *conf)
 {
@@ -1506,14 +1506,14 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_dep_engine_get_repos_path(const axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return dep_engine->folder_name;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_set_current_file_item(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_arch_file_data_t *file_data)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1530,7 +1530,7 @@ axis2_dep_engine_set_current_file_item(axis2_dep_engine_t *dep_engine,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_set_arch_reader(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_arch_reader_t *arch_reader)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1547,7 +1547,7 @@ axis2_dep_engine_set_arch_reader(axis2_dep_engine_t *dep_engine,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_module_builder(
     axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_module_builder_t *module_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1559,7 +1559,7 @@ axis2_dep_engine_add_module_builder(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_svc_builder(
     axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_builder_t *svc_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1571,7 +1571,7 @@ axis2_dep_engine_add_svc_builder(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_svc_grp_builder(
     axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_grp_builder_t *svc_grp_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1582,7 +1582,7 @@ axis2_dep_engine_add_svc_grp_builder(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_desc_builder(axis2_dep_engine_t *dep_engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_desc_builder *desc_builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

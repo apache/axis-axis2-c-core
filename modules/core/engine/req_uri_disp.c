@@ -30,24 +30,24 @@ const axis2_char_t *AXIS2_REQ_URI_DISP_NAME = "request_uri_based_dispatcher";
 axis2_status_t AXIS2_CALL
 axis2_req_uri_disp_invoke(
     axis2_handler_t * handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
 axis2_svc_t *AXIS2_CALL
 axis2_req_uri_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_op_t *AXIS2_CALL
 axis2_req_uri_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc);
 
 
 AXIS2_EXTERN axis2_disp_t *AXIS2_CALL
 axis2_req_uri_disp_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -83,7 +83,7 @@ axis2_req_uri_disp_create(
 axis2_svc_t *AXIS2_CALL
 axis2_req_uri_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_svc_t *svc = NULL;
@@ -139,7 +139,7 @@ axis2_req_uri_disp_find_svc(
 axis2_op_t *AXIS2_CALL
 axis2_req_uri_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc)
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
@@ -193,7 +193,7 @@ axis2_req_uri_disp_find_op(
 axis2_status_t AXIS2_CALL
 axis2_req_uri_disp_invoke(
     axis2_handler_t * handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

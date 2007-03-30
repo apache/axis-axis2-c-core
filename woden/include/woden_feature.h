@@ -58,42 +58,42 @@ struct woden_feature_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *feature,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *feature,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *feature,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_documentable *(AXIS2_CALL *
     get_base_impl) (
             void *feature,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_uri_t *(AXIS2_CALL *
     get_ref) (
             void *feature,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     is_required) (
             void *feature,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_parent) (
             void *feature,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     to_element)  (
             void *feature,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -112,60 +112,60 @@ struct woden_feature
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_feature_element(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_nested_element(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_documentable_element(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_documentable(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_wsdl_obj(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_nested_component(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_wsdl_component(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_element_extensible(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_attr_extensible(
         void *feature,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_feature_resolve_methods(
         woden_feature_t *feature,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_feature_t *feature_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

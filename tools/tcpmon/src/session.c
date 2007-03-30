@@ -49,7 +49,7 @@ tcpmon_session_impl_t;
 typedef struct tcpmon_session_server_thread_data
 {
     tcpmon_session_impl_t* session_impl;
-    const axis2_env_t* env;
+    const axutil_env_t* env;
 }
 tcpmon_session_server_thread_data_t;
 
@@ -60,69 +60,69 @@ tcpmon_session_server_thread_data_t;
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_free(tcpmon_session_t *session,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_listen_port(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int listen_port);
 
 int AXIS2_CALL
 tcpmon_session_get_listen_port(tcpmon_session_t *session,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_target_port(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int target_port);
 
 int AXIS2_CALL
 tcpmon_session_get_target_port(tcpmon_session_t *session,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_target_host(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t* target_host);
 
 axis2_char_t* AXIS2_CALL
 tcpmon_session_get_target_host(tcpmon_session_t *session,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_start(tcpmon_session_t *session,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_stop(tcpmon_session_t *session,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_on_new_entry(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry_funct);
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_on_trans_fault(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct);
 
 int AXIS2_CALL
 tcpmon_session_get_test_bit (tcpmon_session_t *session,
-									  const axis2_env_t *env);
+									  const axutil_env_t *env);
 
 int AXIS2_CALL
 tcpmon_session_set_test_bit (tcpmon_session_t *session,
-									  const axis2_env_t *env,
+									  const axutil_env_t *env,
 									  int test_bit);
 
 int AXIS2_CALL
 tcpmon_session_get_format_bit (tcpmon_session_t *session,
-                                      const axis2_env_t *env);
+                                      const axutil_env_t *env);
                                       
 int AXIS2_CALL 
 tcpmon_session_set_format_bit(tcpmon_session_t *session,
-                                      const axis2_env_t *env,
+                                      const axutil_env_t *env,
                                       int format_bit);
 
 /** internal implementations */
@@ -133,7 +133,7 @@ server_funct(axis2_thread_t *thd, void *data);
 /************************** End of function prototypes ************************/
 
 tcpmon_session_t * AXIS2_CALL
-tcpmon_session_create(const axis2_env_t *env)
+tcpmon_session_create(const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
@@ -192,7 +192,7 @@ tcpmon_session_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_free(tcpmon_session_t *session,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
     int entries_size = 0;
@@ -233,7 +233,7 @@ tcpmon_session_free(tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_test_bit (tcpmon_session_t *session,
-									  const axis2_env_t *env,
+									  const axutil_env_t *env,
 									  int test_bit)
 {
 	 tcpmon_session_impl_t *session_impl = NULL;
@@ -248,7 +248,7 @@ tcpmon_session_set_test_bit (tcpmon_session_t *session,
 
 int AXIS2_CALL
 tcpmon_session_get_test_bit (tcpmon_session_t *session,
-									  const axis2_env_t *env)
+									  const axutil_env_t *env)
 {
 	 tcpmon_session_impl_t *session_impl = NULL;
 
@@ -261,7 +261,7 @@ tcpmon_session_get_test_bit (tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_format_bit (tcpmon_session_t *session,
-                                     const axis2_env_t *env,
+                                     const axutil_env_t *env,
                                      int format_bit)
 {
     tcpmon_session_impl_t *session_impl = NULL;
@@ -277,7 +277,7 @@ tcpmon_session_set_format_bit (tcpmon_session_t *session,
 
 int AXIS2_CALL
 tcpmon_session_get_format_bit (tcpmon_session_t *session,
-                                     const axis2_env_t *env)
+                                     const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
@@ -290,7 +290,7 @@ tcpmon_session_get_format_bit (tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_listen_port(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int listen_port)
 {
     tcpmon_session_impl_t *session_impl = NULL;
@@ -305,7 +305,7 @@ tcpmon_session_set_listen_port(tcpmon_session_t *session,
 
 int AXIS2_CALL
 tcpmon_session_get_listen_port(tcpmon_session_t *session,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
@@ -318,7 +318,7 @@ tcpmon_session_get_listen_port(tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_target_port(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int target_port)
 {
     tcpmon_session_impl_t *session_impl = NULL;
@@ -333,7 +333,7 @@ tcpmon_session_set_target_port(tcpmon_session_t *session,
 
 int AXIS2_CALL
 tcpmon_session_get_target_port(tcpmon_session_t *session,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
@@ -346,7 +346,7 @@ tcpmon_session_get_target_port(tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_set_target_host(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t* target_host)
 {
     tcpmon_session_impl_t *session_impl = NULL;
@@ -361,7 +361,7 @@ tcpmon_session_set_target_host(tcpmon_session_t *session,
 
 axis2_char_t* AXIS2_CALL
 tcpmon_session_get_target_host(tcpmon_session_t *session,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
@@ -374,7 +374,7 @@ tcpmon_session_get_target_host(tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_start(tcpmon_session_t *session,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
     axis2_thread_t* server_thread = NULL;
@@ -409,7 +409,7 @@ tcpmon_session_start(tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_stop(tcpmon_session_t *session,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
@@ -423,7 +423,7 @@ tcpmon_session_stop(tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_on_new_entry(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry_funct)
 {
     tcpmon_session_impl_t *session_impl = NULL;
@@ -439,7 +439,7 @@ tcpmon_session_on_new_entry(tcpmon_session_t *session,
 
 axis2_status_t AXIS2_CALL
 tcpmon_session_on_trans_fault(tcpmon_session_t *session,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct)
 {
     tcpmon_session_impl_t *session_impl = NULL;
@@ -459,7 +459,7 @@ server_funct(axis2_thread_t *thd, void *data)
 {
     tcpmon_session_server_thread_data_t* thread_data = data;
     tcpmon_session_impl_t *session_impl = NULL;
-    const axis2_env_t* env = NULL;
+    const axutil_env_t* env = NULL;
     int listen_socket = -1;
     int socket = -1;
     axis2_thread_t* request_thread = NULL;
@@ -533,7 +533,7 @@ server_funct(axis2_thread_t *thd, void *data)
 
 axis2_status_t
 tcpmon_session_add_new_entry(tcpmon_session_t* session,
-        const axis2_env_t* env,
+        const axutil_env_t* env,
         tcpmon_entry_t* entry)
 {
     tcpmon_session_impl_t *session_impl = NULL;
@@ -551,7 +551,7 @@ tcpmon_session_add_new_entry(tcpmon_session_t* session,
 
 TCPMON_SESSION_TRANS_ERROR_FUNCT
 tcpmon_session_get_on_trans_fault(tcpmon_session_t *session,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
@@ -564,7 +564,7 @@ tcpmon_session_get_on_trans_fault(tcpmon_session_t *session,
 
 TCPMON_SESSION_NEW_ENTRY_FUNCT
 tcpmon_session_get_on_new_entry(tcpmon_session_t *session,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
 

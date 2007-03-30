@@ -54,7 +54,7 @@ extern "C"
       * @return a pointer to the newly created element struct
       */
     AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_element_create(const axis2_env_t *env,
+    axiom_element_create(const axutil_env_t *env,
             axiom_node_t *parent,
             const axis2_char_t *localname,
             axiom_namespace_t *ns,
@@ -71,7 +71,7 @@ extern "C"
       * @return a pointer to the newly created element struct
       */
     AXIS2_EXTERN axiom_element_t * AXIS2_CALL
-    axiom_element_create_with_qname(const axis2_env_t *env,
+    axiom_element_create_with_qname(const axutil_env_t *env,
             axiom_node_t *parent,
             const axis2_qname_t *qname,
             axiom_node_t ** node);
@@ -89,7 +89,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
     axiom_element_find_namespace(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *node,
             const axis2_char_t *uri,
             const axis2_char_t *prefix);
@@ -104,13 +104,13 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_declare_namespace(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *node,
             axiom_namespace_t * ns);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_declare_namespace_assume_param_ownership(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_namespace_t *ns);
             
     /**
@@ -125,7 +125,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL
     axiom_element_find_namespace_with_qname(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *node,
             axis2_qname_t *qname);
 
@@ -139,7 +139,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_add_attribute(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_attribute_t *attribute,
             axiom_node_t *node);
 
@@ -153,7 +153,7 @@ extern "C"
       */
     AXIS2_EXTERN axiom_attribute_t *AXIS2_CALL
     axiom_element_get_attribute(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t * qname);
 
     /**
@@ -166,7 +166,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axiom_element_get_attribute_value(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t * qname);
 
     /**
@@ -177,7 +177,7 @@ extern "C"
       */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_element_free(axiom_element_t *element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
       * Serializes the start part of the given element
@@ -188,7 +188,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_serialize_start_part(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_output_t * om_output,
             axiom_node_t *ele_node);
 
@@ -202,7 +202,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_serialize_end_part(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_output_t * om_output);
     /**
      *  finds a namespace in current elements scope
@@ -215,7 +215,7 @@ extern "C"
 
     AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
     axiom_element_find_declared_namespace(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *uri,
             const axis2_char_t *prefix);
 
@@ -228,7 +228,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_element_get_localname(axiom_element_t *om_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * set the localname of this element
      * @param om_element om_element_struct to with localname is set
@@ -239,7 +239,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_localname(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *localname);
     /**
      * get the namespace  of om_element 
@@ -251,7 +251,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL
     axiom_element_get_namespace(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *ele_node);
     /**
      * set the namespace of the element
@@ -263,13 +263,13 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_namespace(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_namespace_t *ns,
             axiom_node_t *node);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_namespace_assume_param_ownership(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_namespace_t *ns);
     /**
      * get  the attribute list of the element 
@@ -280,7 +280,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
     axiom_element_get_all_attributes(axiom_element_t *om_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * get the namespace list of the element
      * @param om_element om element
@@ -290,7 +290,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
     axiom_element_get_namespaces(axiom_element_t *om_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      *@return qname of this element
      * the returned qname should not be externaly freed
@@ -300,7 +300,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
     axiom_element_get_qname(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *ele_node);
 
     /**
@@ -309,7 +309,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_children_iterator_t* AXIS2_CALL
     axiom_element_get_children(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *element_node);
 
     /**
@@ -325,7 +325,7 @@ extern "C"
 
     AXIS2_EXTERN axiom_children_qname_iterator_t * AXIS2_CALL
     axiom_element_get_children_with_qname(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *element_qname,
             axiom_node_t* element_node);
     /**
@@ -334,7 +334,7 @@ extern "C"
 
     AXIS2_EXTERN axiom_element_t* AXIS2_CALL
     axiom_element_get_first_child_with_qname(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *element_qname,
             axiom_node_t* element_node,
             axiom_node_t **child_node);
@@ -350,7 +350,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_remove_attribute(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_attribute_t *om_attribute);
     /**
      * Sets the text of the given element.
@@ -359,7 +359,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_text(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *text,
             axiom_node_t *element_node);
     /**
@@ -370,7 +370,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_element_get_text(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *element_node);
 
     /**
@@ -381,7 +381,7 @@ extern "C"
     AXIS2_EXTERN axiom_element_t* AXIS2_CALL
     axiom_element_get_first_element(
         axiom_element_t *om_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *element_node,
         axiom_node_t **first_element_node);
     /**
@@ -391,7 +391,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_element_to_string(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *element_node);
     /**
      * returns an iterator with child elements of type AXIOM_ELEMENT
@@ -404,7 +404,7 @@ extern "C"
     AXIS2_EXTERN axiom_child_element_iterator_t* AXIS2_CALL
     axiom_element_get_child_elements(
         axiom_element_t *om_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *element_node);
     /**
      * builds this om_element_node completely, This is only possible 
@@ -418,19 +418,19 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_build(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *element_node);
 
     /**
      * retrieves the default namespace of this element , if available,
      * @param om_element pointer to om element
-     * @param env axis2_environment MUST Not be NULL
+     * @param env axutil_environment MUST Not be NULL
      * @returns pointer to default namespace if availale , NULL otherwise
      */
     AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
     axiom_element_get_default_namespace(
         axiom_element_t *om_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *element_node);
 
     /**
@@ -442,7 +442,7 @@ extern "C"
                                                  */
     AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
     axiom_element_declare_default_namespace(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *uri);
 
     /**
@@ -456,7 +456,7 @@ extern "C"
 
     AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
     axiom_element_find_namespace_uri(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *prefix,
             axiom_node_t *element_node);
     /**
@@ -468,7 +468,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_namespace_with_no_find_in_current_scope(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_namespace_t *om_ns);
 
     /**
@@ -477,16 +477,16 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
     axiom_element_extract_attributes(axiom_element_t *om_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *ele_node);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_element_get_attribute_value_by_name(axiom_element_t *om_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *attr_name);
 
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
-    axiom_element_create_str(const axis2_env_t *env,
+    axiom_element_create_str(const axutil_env_t *env,
         axiom_node_t *parent,
         axis2_string_t *localname,
         axiom_namespace_t *ns,
@@ -494,11 +494,11 @@ extern "C"
 
     AXIS2_EXTERN axis2_string_t* AXIS2_CALL
     axiom_element_get_localname_str(axiom_element_t *om_element,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_localname_str(axiom_element_t *om_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *localname);
 
 

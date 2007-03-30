@@ -51,7 +51,7 @@ struct axis2_http_sender
 
 static axis2_char_t *
 axis2_url_encode (
-	const axis2_env_t *env, 
+	const axutil_env_t *env, 
 	axis2_char_t *dest, 
 	axis2_char_t *buff, 
 	int len);
@@ -63,24 +63,24 @@ is_safe_or_unreserve (
 static axis2_status_t
 axis2_http_sender_configure_proxy(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 static axis2_status_t 
 axis2_http_sender_configure_server_cert(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 static axis2_status_t
 axis2_http_sender_configure_key_file(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
 axis2_http_sender_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_sender_t *sender = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -111,7 +111,7 @@ axis2_http_sender_create(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_sender_free(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -132,7 +132,7 @@ axis2_http_sender_free(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_send(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
 	axiom_soap_envelope_t *out,
     const axis2_char_t *str_url,
@@ -574,7 +574,7 @@ axis2_http_sender_send(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_set_chunked(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t chunked)
 {
     sender->chunked = chunked;
@@ -585,7 +585,7 @@ axis2_http_sender_set_chunked(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_set_om_output(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     sender->om_output = om_output;
@@ -596,7 +596,7 @@ axis2_http_sender_set_om_output(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_get_header_info(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_http_simple_response_t *response)
 {
@@ -714,7 +714,7 @@ axis2_http_sender_get_header_info(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_process_response(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_http_simple_response_t *response)
 {
@@ -748,7 +748,7 @@ axis2_http_sender_process_response(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_get_timeout_values(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *so_str = NULL;
@@ -786,7 +786,7 @@ axis2_http_sender_get_timeout_values(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_sender_set_http_version(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -801,7 +801,7 @@ axis2_http_sender_set_http_version(
 static axis2_status_t
 axis2_http_sender_configure_proxy(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -891,7 +891,7 @@ axis2_http_sender_configure_proxy(
 static axis2_status_t 
 axis2_http_sender_configure_server_cert(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
 	axis2_property_t *server_cert_property = NULL;
@@ -932,7 +932,7 @@ axis2_http_sender_configure_server_cert(
 static axis2_status_t
 axis2_http_sender_configure_key_file(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
 	axis2_property_t *key_file_property = NULL;
@@ -974,7 +974,7 @@ axis2_http_sender_configure_key_file(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_libcurl_http_send(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
 	axiom_soap_envelope_t *out,
     const axis2_char_t *str_url,
@@ -987,7 +987,7 @@ axis2_libcurl_http_send(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_sender_get_param_string(
     axis2_http_sender_t *sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axiom_soap_envelope_t *soap_env = NULL;
@@ -1068,7 +1068,7 @@ axis2_http_sender_get_param_string(
 
 static axis2_char_t *
 axis2_url_encode (
-	const axis2_env_t *env, 
+	const axutil_env_t *env, 
 	axis2_char_t *dest, 
 	axis2_char_t *buff, 
 	int len)

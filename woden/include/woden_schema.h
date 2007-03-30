@@ -25,7 +25,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -56,39 +56,39 @@ struct woden_schema_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_namespace) (
             void *schema,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *namespc);
 
     axis2_uri_t *(AXIS2_CALL *
     get_namespace) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_schema_def) (
             void *schema,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct xml_schema *schema_def);
 
     struct xml_schema *(AXIS2_CALL *
     get_schema_def) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* ************************************************************
      *  Non-API implementation methods
@@ -110,18 +110,18 @@ struct woden_schema_ops
     axis2_status_t (AXIS2_CALL *
     set_referenceable) (
             void *schema,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_bool_t referenceable);
 
     axis2_bool_t (AXIS2_CALL *
     is_referenceable) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_namespace_as_string) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
   
 };
@@ -132,13 +132,13 @@ struct woden_schema
 };
 
 AXIS2_EXTERN woden_schema_t * AXIS2_CALL
-woden_schema_create(const axis2_env_t *env);
+woden_schema_create(const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_schema_resolve_methods(
         woden_schema_t *schema,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_schema_t *schema_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

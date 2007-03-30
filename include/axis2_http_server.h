@@ -31,7 +31,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_transport_receiver.h>
 
@@ -44,14 +44,14 @@ extern "C"
 
     AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
     axis2_http_server_create (
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *repo,
         const int port);
 
     axis2_status_t AXIS2_CALL
     axis2_http_server_stop(
         axis2_transport_receiver_t *server,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /** @} */

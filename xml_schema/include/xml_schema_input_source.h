@@ -43,39 +43,39 @@ struct xml_schema_input_source_ops
     axis2_char_t* (AXIS2_CALL *
     get_system_id)(
             xml_schema_input_source_t *source,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                    
     axis2_status_t (AXIS2_CALL *                   
     set_system_id)(
             xml_schema_input_source_t *source,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *system_id);
             
     axis2_char_t* (AXIS2_CALL*
     get_public_id)(
             xml_schema_input_source_t *source,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     axis2_status_t (AXIS2_CALL*
     set_public_id)(
             xml_schema_input_source_t *source,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *public_id);
             
     axis2_status_t (AXIS2_CALL*
     set_encoding)(
             xml_schema_input_source_t *source,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *encoding);
             
     axis2_char_t * (AXIS2_CALL*
     get_encoding)(
             xml_schema_input_source_t *source,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                                         
     axis2_status_t (AXIS2_CALL *
     free)(xml_schema_input_source_t *source,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 };
 
 struct xml_schema_input_source
@@ -84,11 +84,11 @@ struct xml_schema_input_source
 };
 
 AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
-xml_schema_input_source_create(const axis2_env_t *env);
+xml_schema_input_source_create(const axutil_env_t *env);
 
 AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
 xml_schema_input_source_create_with_system_id(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *id);
                                         
 /************ Macros ************************************/

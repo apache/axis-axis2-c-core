@@ -35,7 +35,7 @@ struct axiom_mime_parser
 #define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
 
 AXIS2_EXTERN axiom_mime_parser_t * AXIS2_CALL
-axiom_mime_parser_create(const axis2_env_t *env)
+axiom_mime_parser_create(const axutil_env_t *env)
 {
     axiom_mime_parser_t *mime_parser = NULL;
 
@@ -65,7 +65,7 @@ axiom_mime_parser_create(const axis2_env_t *env)
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_mime_parser_free(axiom_mime_parser_t *mime_parser, 
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -83,7 +83,7 @@ axiom_mime_parser_free(axiom_mime_parser_t *mime_parser,
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     AXIS2_READ_INPUT_CALLBACK callback,
     void *callback_ctx,
     axis2_char_t *mime_boundary)
@@ -464,21 +464,21 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axiom_mime_parser_get_mime_parts_map(axiom_mime_parser_t *mime_parser,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return mime_parser->mime_parts_map;
 }
 
 AXIS2_EXTERN int AXIS2_CALL
 axiom_mime_parser_get_soap_body_len(axiom_mime_parser_t *mime_parser,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return mime_parser->soap_body_len;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_mime_parser_get_soap_body_str(axiom_mime_parser_t *mime_parser,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return mime_parser->soap_body_str;
 }

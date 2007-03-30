@@ -23,7 +23,7 @@
  *@brief this is the parser abstraction layer for axis2
  */
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -58,7 +58,7 @@ extern "C"
 
         void (AXIS2_CALL *
         free)(axiom_xml_writer_t *writer,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
         /**
          *  Write a start tag to output stream with localname.
          *  Internally the writer keeps track of the opened tags 
@@ -70,7 +70,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_start_element)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname);
         /**
          *  write an end tag to the output relying on the internal
@@ -83,7 +83,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 end_start_element)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
         /**
          * Write an element tag with localname and namespace uri 
          * @param writer pointer to xml writer struct
@@ -96,7 +96,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_start_element_with_namespace)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname,
                         axis2_char_t *namespace_uri);
 
@@ -112,7 +112,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_start_element_with_namespace_prefix)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname,
                         axis2_char_t *namespace_uri,
                         axis2_char_t *prefix);
@@ -126,7 +126,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_empty_element)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname);
         /**
          * write empty_element with localname and namespace uri.
@@ -140,7 +140,7 @@ extern "C"
 
         axis2_status_t(AXIS2_CALL *
                 write_empty_element_with_namespace)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname,
                         axis2_char_t *namespace_uri);
         /**
@@ -155,7 +155,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_empty_element_with_namespace_prefix)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname,
                         axis2_char_t *namespace_uri,
                         axis2_char_t *prefix);
@@ -168,7 +168,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_end_element)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
         /**
          * write end document
          * @param writer xml writer
@@ -178,7 +178,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_end_document)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
         /**
          * write attribute with localname and value
          * @param writer writer
@@ -190,7 +190,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_attribute)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname,
                         axis2_char_t *value);
         /**
@@ -204,7 +204,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_attribute_with_namespace)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname,
                         axis2_char_t *value,
                         axis2_char_t *namespace_uri);
@@ -218,7 +218,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_attribute_with_namespace_prefix)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *localname,
                         axis2_char_t *value,
                         axis2_char_t *namespace_uri,
@@ -234,7 +234,7 @@ extern "C"
 
         axis2_status_t(AXIS2_CALL *
                 write_namespace)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *prefix,
                         axis2_char_t *namespace_uri);
         /**
@@ -247,7 +247,7 @@ extern "C"
 
         axis2_status_t(AXIS2_CALL *
                 write_default_namespace)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *namespace_uri);
         /**
          * @param writer xml_writer
@@ -260,7 +260,7 @@ extern "C"
 
         axis2_status_t(AXIS2_CALL *
                 write_comment)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *value);
         /**
          * @param writer xml_writer
@@ -273,7 +273,7 @@ extern "C"
 
         axis2_status_t(AXIS2_CALL *
                 write_processing_instruction)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *target);
 
         /**
@@ -287,7 +287,7 @@ extern "C"
 
         axis2_status_t(AXIS2_CALL *
                 write_processing_instruction_data)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *target,
                         axis2_char_t *data);
 
@@ -300,7 +300,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_cdata)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *data);
 
 
@@ -313,7 +313,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_dtd)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *dtd);
 
 
@@ -326,7 +326,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_entity_ref)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *name);
 
         /**
@@ -337,7 +337,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_start_document)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
 
         /**
@@ -349,7 +349,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_start_document_with_version)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *version);
 
         /**
@@ -362,7 +362,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_start_document_with_version_encoding)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *version,
                         axis2_char_t *encoding);
 
@@ -375,7 +375,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_characters)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *text);
 
         /**
@@ -387,7 +387,7 @@ extern "C"
          */
         axis2_char_t*(AXIS2_CALL *
                 get_prefix)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *uri);
 
         /**
@@ -400,7 +400,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 set_prefix)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *prefix,
                         axis2_char_t *uri);
 
@@ -413,7 +413,7 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 set_default_prefix)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *uri);
 
         /**
@@ -426,29 +426,29 @@ extern "C"
          */
         axis2_status_t(AXIS2_CALL *
                 write_encoded)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *text,
                         int in_attr);
 
         void*(AXIS2_CALL *
                 get_xml)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
         axis2_status_t (AXIS2_CALL *
                 flush)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
         unsigned int(AXIS2_CALL *
                 get_xml_size)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
         int(AXIS2_CALL *
                 get_type)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
         axis2_status_t(AXIS2_CALL *
                 write_raw)(axiom_xml_writer_t *writer,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *content);
     };
 
@@ -467,14 +467,14 @@ extern "C"
      *
      */
     AXIS2_EXTERN axiom_xml_writer_t * AXIS2_CALL
-    axiom_xml_writer_create(const axis2_env_t *env,
+    axiom_xml_writer_create(const axutil_env_t *env,
             axis2_char_t *filename,
             axis2_char_t *encoding,
             int is_prefix_default,
             int compression);
 
     AXIS2_EXTERN axiom_xml_writer_t * AXIS2_CALL
-    axiom_xml_writer_create_for_memory(const axis2_env_t *env,
+    axiom_xml_writer_create_for_memory(const axutil_env_t *env,
             axis2_char_t *encoding,
             int is_prefix_default,
             int compression,

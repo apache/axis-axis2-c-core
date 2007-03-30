@@ -35,7 +35,7 @@ struct axiom_data_source
 };
 
 AXIS2_EXTERN axiom_data_source_t *AXIS2_CALL
-axiom_data_source_create(const axis2_env_t *env,
+axiom_data_source_create(const axutil_env_t *env,
     axiom_node_t * parent,
     axiom_node_t **node)
 {
@@ -85,7 +85,7 @@ axiom_data_source_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_data_source_free(axiom_data_source_t * data_source,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -101,7 +101,7 @@ axiom_data_source_free(axiom_data_source_t * data_source,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_data_source_serialize(axiom_data_source_t *data_source,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     int status = AXIS2_SUCCESS;
@@ -125,7 +125,7 @@ axiom_data_source_serialize(axiom_data_source_t *data_source,
 
 AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
 axiom_data_source_get_stream(axiom_data_source_t *data_source,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return data_source->stream;

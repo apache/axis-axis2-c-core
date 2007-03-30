@@ -40,7 +40,7 @@ struct axis2_msg_recv
      */
     axis2_status_t (AXIS2_CALL *
     invoke_business_logic)(axis2_msg_recv_t *msg_recv,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *in_msg_ctx,
         struct axis2_msg_ctx *out_msg_ctx);
 
@@ -59,19 +59,19 @@ struct axis2_msg_recv
      */
     axis2_status_t (AXIS2_CALL *
     receive)(axis2_msg_recv_t *msg_recv,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *in_msg_ctx,
         void *callback_recv_param);
 };
 
 static axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     void *callback_recv_param);
 
 AXIS2_EXPORT axis2_msg_recv_t *AXIS2_CALL
-axis2_msg_recv_create(const axis2_env_t *env)
+axis2_msg_recv_create(const axutil_env_t *env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
 
@@ -94,7 +94,7 @@ axis2_msg_recv_create(const axis2_env_t *env)
 
 AXIS2_EXPORT void AXIS2_CALL
 axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -113,7 +113,7 @@ axis2_msg_recv_free(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
 axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     struct axis2_svc *svc = NULL;
@@ -164,7 +164,7 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT axis2_svc_skeleton_t *AXIS2_CALL
 axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     struct axis2_svc *svc = NULL;
@@ -186,7 +186,7 @@ axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *scope)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -207,14 +207,14 @@ axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT axis2_char_t *AXIS2_CALL
 axis2_msg_recv_get_scope(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_recv->scope;
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_svc_t *svc = NULL;
@@ -260,7 +260,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
 
 static axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     void *callback_recv_param)
 {
@@ -356,7 +356,7 @@ axis2_msg_recv_receive_impl(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_invoke_business_logic(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *func)
 {
     msg_recv->invoke_business_logic = func;
@@ -365,7 +365,7 @@ axis2_msg_recv_set_invoke_business_logic(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL 
 axis2_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *in_msg_ctx,
     struct axis2_msg_ctx *out_msg_ctx)
 {
@@ -375,7 +375,7 @@ axis2_msg_recv_invoke_business_logic(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_derived(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *derived)
 {
     msg_recv->derived = derived;
@@ -384,14 +384,14 @@ axis2_msg_recv_set_derived(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT void *AXIS2_CALL
 axis2_msg_recv_get_derived(const axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_recv->derived; 
 }
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_receive(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *func)
 {
     msg_recv->receive = func;
@@ -400,7 +400,7 @@ axis2_msg_recv_set_receive(axis2_msg_recv_t *msg_recv,
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_msg_recv_receive(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     void *callback_recv_param)
 {

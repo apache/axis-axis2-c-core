@@ -29,7 +29,7 @@
 */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_svc_client.h>
 #include <axis2_hash.h>
@@ -50,12 +50,12 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     savan_publishing_client_publish(
         savan_publishing_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *payload);
     
     AXIS2_EXTERN savan_publishing_client_t * AXIS2_CALL
     savan_publishing_client_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx,
         axis2_svc_t *svc);
 

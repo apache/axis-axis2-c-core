@@ -43,32 +43,32 @@ xml_schema_import_impl_t;
 
 axis2_status_t AXIS2_CALL
 xml_schema_import_free(void *import,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_external_t *AXIS2_CALL
 xml_schema_import_get_base_impl(void *import,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_import_get_type(void *import,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_import_super_objs(void *import,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 axis2_char_t* AXIS2_CALL
 xml_schema_import_get_namespace(void *import,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_import_set_namespace(void *import,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *ns);
 
 /********************* end function prototypes ********************************/
 
 AXIS2_EXTERN xml_schema_import_t * AXIS2_CALL
-xml_schema_import_create(const axis2_env_t *env)
+xml_schema_import_create(const axutil_env_t *env)
 {
     xml_schema_import_impl_t *import_impl = NULL;
     xml_schema_annotated_t *annotated = NULL;
@@ -153,7 +153,7 @@ xml_schema_import_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_import_free(void *import,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_import_impl_t *import_impl = NULL;
 
@@ -188,7 +188,7 @@ xml_schema_import_free(void *import,
 
 xml_schema_external_t *AXIS2_CALL
 xml_schema_import_get_base_impl(void *import,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_import_impl_t *import_impl = NULL;
 
@@ -200,7 +200,7 @@ xml_schema_import_get_base_impl(void *import,
 
 axis2_char_t * AXIS2_CALL
 xml_schema_import_get_namespace(void *import,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(import)->ns;
@@ -208,7 +208,7 @@ xml_schema_import_get_namespace(void *import,
 
 axis2_status_t AXIS2_CALL
 xml_schema_import_set_namespace(void *import,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *ns)
 {
     xml_schema_import_impl_t *import_impl = NULL;
@@ -225,14 +225,14 @@ xml_schema_import_set_namespace(void *import,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_import_get_type(void *import,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(import)->obj_type;
 }
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_import_super_objs(void *import,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(import)->ht_super;
 }

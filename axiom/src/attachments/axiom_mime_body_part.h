@@ -26,7 +26,7 @@
 #include <axis2_utils.h>
 #include <axis2_error.h>
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
@@ -47,18 +47,18 @@ typedef struct axiom_mime_body_part axiom_mime_body_part_t;
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_mime_body_part_add_header(axiom_mime_body_part_t *mime_body_part, 
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         const axis2_char_t *name, 
         const axis2_char_t *value); 
    
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_mime_body_part_set_data_handler(axiom_mime_body_part_t *mime_body_part, 
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axiom_data_handler_t *data_handler); 
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part, 
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_byte_t **output_stream, 
         int *output_stream_size); 
 
@@ -67,13 +67,13 @@ typedef struct axiom_mime_body_part axiom_mime_body_part_t;
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part, 
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 /**
  * Creates mime_body_part struct
  * @return pointer to newly created mime_body_part
  */
 AXIS2_EXTERN axiom_mime_body_part_t * AXIS2_CALL 
-axiom_mime_body_part_create (const axis2_env_t *env);
+axiom_mime_body_part_create (const axutil_env_t *env);
 
 #define AXIOM_MIME_BODY_PART_FREE(mime_body_part, env) \
     axiom_mime_body_part_free (mime_body_part, env)

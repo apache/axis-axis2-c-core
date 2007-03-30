@@ -37,16 +37,16 @@ static woden_direction_t *WODEN_DIRECTION_OUT = NULL;
 axis2_status_t AXIS2_CALL
 woden_direction_free(
     void *direction,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 woden_direction_to_string(
     void *direction,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_direction_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_direction_impl_t *direction_impl = NULL;
 
@@ -69,7 +69,7 @@ create(
 
 AXIS2_EXTERN woden_direction_t * AXIS2_CALL
 woden_direction_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *value)
 {
     woden_direction_impl_t *direction_impl = NULL;
@@ -84,7 +84,7 @@ woden_direction_create(
 
 AXIS2_EXTERN woden_direction_t *AXIS2_CALL
 woden_direction_get_direction_in(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -96,7 +96,7 @@ woden_direction_get_direction_in(
 
 AXIS2_EXTERN woden_direction_t *AXIS2_CALL
 woden_direction_get_direction_out(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -108,7 +108,7 @@ woden_direction_get_direction_out(
 axis2_status_t AXIS2_CALL
 woden_direction_free(
     void *direction,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_direction_impl_t *direction_impl = NULL;
 
@@ -138,7 +138,7 @@ woden_direction_free(
 axis2_char_t *AXIS2_CALL
 woden_direction_to_string(
     void *direction,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_direction_impl_t *direction_impl = NULL;
 

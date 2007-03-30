@@ -62,49 +62,49 @@ typedef struct w2c_schema_property_loader_impl
 axis2_status_t AXIS2_CALL
 w2c_schema_property_loader_free(
     w2c_schema_property_loader_t *schema_property_loader, 
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_property_loader_set_filename(
           w2c_schema_property_loader_t *schema_property_loader,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_char_t *filename);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_property_loader_set_language(
           w2c_schema_property_loader_t *schema_property_loader,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_char_t *language);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_property_loader_reload(
     w2c_schema_property_loader_t *schema_property_loader, 
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 w2c_schema_property_loader_get_template_name(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 w2c_schema_writer_t* AXIS2_CALL
 w2c_schema_property_loader_get_writer_instance(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL 
 w2c_schema_property_loader_get_typemapper_name(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL 
 w2c_schema_property_loader_get_default_array(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL 
 w2c_schema_property_loader_get_default_class(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 
 
@@ -113,12 +113,12 @@ w2c_schema_property_loader_get_default_class(
 static void
 w2c_schema_property_loader_load_values(
                       w2c_schema_property_loader_impl_t *obj_impl,
-                      const axis2_env_t *env);
+                      const axutil_env_t *env);
 
 /************************** End of function prototypes ************************/
 
 AXIS2_EXTERN w2c_schema_property_loader_t * AXIS2_CALL 
-w2c_schema_property_loader_create (const axis2_env_t *env,
+w2c_schema_property_loader_create (const axutil_env_t *env,
                                  axis2_char_t *language)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
@@ -209,7 +209,7 @@ w2c_schema_property_loader_create (const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL 
 w2c_schema_property_loader_free (w2c_schema_property_loader_t *schema_property_loader, 
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
     
@@ -277,7 +277,7 @@ w2c_schema_property_loader_free (w2c_schema_property_loader_t *schema_property_l
 axis2_status_t AXIS2_CALL
 w2c_schema_property_loader_set_filename (
           w2c_schema_property_loader_t *schema_property_loader,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_char_t *filename)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
@@ -293,7 +293,7 @@ w2c_schema_property_loader_set_filename (
 axis2_status_t AXIS2_CALL
 w2c_schema_property_loader_set_language(
           w2c_schema_property_loader_t *schema_property_loader,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_char_t *language)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
@@ -308,7 +308,7 @@ w2c_schema_property_loader_set_language(
 axis2_status_t AXIS2_CALL
 w2c_schema_property_loader_reload (
     w2c_schema_property_loader_t *schema_property_loader, 
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
     /*
@@ -350,7 +350,7 @@ w2c_schema_property_loader_reload (
 axis2_char_t* AXIS2_CALL
 w2c_schema_property_loader_get_template_name(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
     
@@ -364,7 +364,7 @@ w2c_schema_property_loader_get_template_name(
 axis2_char_t* AXIS2_CALL
 w2c_schema_property_loader_get_default_class(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
     
@@ -378,7 +378,7 @@ w2c_schema_property_loader_get_default_class(
 axis2_char_t* AXIS2_CALL
 w2c_schema_property_loader_get_default_array(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
     
@@ -392,7 +392,7 @@ w2c_schema_property_loader_get_default_array(
 w2c_schema_writer_t* AXIS2_CALL
 w2c_schema_property_loader_get_writer_instance(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
     
@@ -407,7 +407,7 @@ w2c_schema_property_loader_get_writer_instance(
 axis2_char_t* AXIS2_CALL 
 w2c_schema_property_loader_get_typemapper_name(
     w2c_schema_property_loader_t *schema_property_loader,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     w2c_schema_property_loader_impl_t *schema_property_loader_impl = NULL;
     
@@ -423,7 +423,7 @@ w2c_schema_property_loader_get_typemapper_name(
 static void
 w2c_schema_property_loader_load_values(
                       w2c_schema_property_loader_impl_t *obj_impl,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
      axis2_hash_t *prop_hash = NULL;
      axis2_hash_index_t *hi = NULL;

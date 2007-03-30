@@ -26,11 +26,11 @@ struct axis2_module_builder
 
 static axutil_array_list_t *AXIS2_CALL
 axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *op_itr);
 
 AXIS2_EXTERN axis2_module_builder_t *AXIS2_CALL
-axis2_module_builder_create(const axis2_env_t *env)
+axis2_module_builder_create(const axutil_env_t *env)
 {
     axis2_module_builder_t *module_builder = NULL;
 
@@ -50,7 +50,7 @@ axis2_module_builder_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_module_builder_t *AXIS2_CALL
-axis2_module_builder_create_with_file_and_dep_engine_and_module(const axis2_env_t *env,
+axis2_module_builder_create_with_file_and_dep_engine_and_module(const axutil_env_t *env,
     axis2_char_t *file_name,
     axis2_dep_engine_t *dep_engine,
     axis2_module_desc_t *module_desc)
@@ -79,7 +79,7 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module(const axis2_env_
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_module_builder_free(axis2_module_builder_t *module_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -98,7 +98,7 @@ axis2_module_builder_free(axis2_module_builder_t *module_builder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_element_t *module_element = NULL;
     axiom_node_t *module_node = NULL;
@@ -338,7 +338,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
 static axutil_array_list_t *AXIS2_CALL
 axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *op_itr)
 {
     axutil_array_list_t *ops = NULL;

@@ -26,7 +26,7 @@ struct axis2_async_result
 };
 
 AXIS2_EXTERN axis2_async_result_t *AXIS2_CALL
-axis2_async_result_create(const axis2_env_t *env,
+axis2_async_result_create(const axutil_env_t *env,
     axis2_msg_ctx_t *result)
 {
     axis2_async_result_t *async_result = NULL;
@@ -53,7 +53,7 @@ axis2_async_result_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_async_result_get_envelope(axis2_async_result_t *async_result,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -67,14 +67,14 @@ axis2_async_result_get_envelope(axis2_async_result_t *async_result,
 
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_async_result_get_result(axis2_async_result_t *async_result,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return async_result->result;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_async_result_free(axis2_async_result_t *async_result,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 

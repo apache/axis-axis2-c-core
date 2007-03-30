@@ -25,15 +25,15 @@
 #include <axis2_module.h>
 
 axis2_status_t AXIS2_CALL
-axis2_init_modules(const axis2_env_t *env,
+axis2_init_modules(const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
 axis2_status_t AXIS2_CALL
-axis2_init_transports(const axis2_env_t *env,
+axis2_init_transports(const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
 AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
-axis2_build_conf_ctx(const axis2_env_t *env,
+axis2_build_conf_ctx(const axutil_env_t *env,
     const axis2_char_t *repo_name)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -75,7 +75,7 @@ axis2_build_conf_ctx(const axis2_env_t *env,
 }
 
 axis2_conf_ctx_t *AXIS2_CALL
-axis2_build_client_conf_ctx(const axis2_env_t *env,
+axis2_build_client_conf_ctx(const axutil_env_t *env,
     const axis2_char_t *axis2_home)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -121,7 +121,7 @@ axis2_build_client_conf_ctx(const axis2_env_t *env,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_init_modules(const axis2_env_t *env,
+axis2_init_modules(const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_conf_t *conf = NULL;
@@ -163,7 +163,7 @@ axis2_init_modules(const axis2_env_t *env,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_init_transports(const axis2_env_t *env,
+axis2_init_transports(const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_conf_t *conf = NULL;

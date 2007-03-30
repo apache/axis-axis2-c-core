@@ -26,7 +26,7 @@ struct axiom_doctype
 };
 
 AXIS2_EXTERN axiom_doctype_t *AXIS2_CALL
-axiom_doctype_create(const axis2_env_t *env,
+axiom_doctype_create(const axutil_env_t *env,
     axiom_node_t *parent,
     const axis2_char_t *value,
     axiom_node_t **node)
@@ -79,7 +79,7 @@ axiom_doctype_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_doctype_free(axiom_doctype_t *om_doctype,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (om_doctype)
     {
@@ -94,7 +94,7 @@ axiom_doctype_free(axiom_doctype_t *om_doctype,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_doctype_set_value(axiom_doctype_t *om_doctype,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -105,7 +105,7 @@ axiom_doctype_set_value(axiom_doctype_t *om_doctype,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_doctype_get_value(axiom_doctype_t *om_doctype,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return om_doctype->value;
@@ -113,7 +113,7 @@ axiom_doctype_get_value(axiom_doctype_t *om_doctype,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_doctype_serialize(axiom_doctype_t *om_doctype,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

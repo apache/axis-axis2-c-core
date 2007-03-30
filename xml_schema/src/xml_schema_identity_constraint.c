@@ -46,54 +46,54 @@ struct xml_schema_identity_constraint_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_free(void *id_constr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_identity_constraint_get_base_impl(void *id_constr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_identity_constraint_get_type(void *id_constr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_identity_constraint_super_objs(void *id_constr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 axis2_qname_t* AXIS2_CALL
 xml_schema_identity_constraint_get_refer(void *id_constr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_set_refer(void *id_constr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *refer);
 
 xml_schema_obj_collection_t *AXIS2_CALL
 xml_schema_identity_constraint_get_fields(void *id_constr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 xml_schema_identity_constraint_get_name(void *id_constr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_set_name(void *id_constr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name);
 
 xml_schema_xpath_t *AXIS2_CALL
 xml_schema_identity_constraint_get_selector(void *id_constr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_set_selector(void *id_constr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_xpath_t *selector);
 
 AXIS2_EXTERN xml_schema_identity_constraint_t * AXIS2_CALL
-xml_schema_identity_constraint_create(const axis2_env_t *env)
+xml_schema_identity_constraint_create(const axutil_env_t *env)
 {
     xml_schema_identity_constraint_impl_t *id_cns_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -181,7 +181,7 @@ xml_schema_identity_constraint_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN xml_schema_identity_constraint_t * AXIS2_CALL
-xml_schema_unique_create(const axis2_env_t *env)
+xml_schema_unique_create(const axutil_env_t *env)
 {
     xml_schema_identity_constraint_t *id_cns = NULL;
     id_cns = xml_schema_identity_constraint_create(env);
@@ -190,7 +190,7 @@ xml_schema_unique_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN xml_schema_identity_constraint_t * AXIS2_CALL
-xml_schema_keyref_create(const axis2_env_t *env)
+xml_schema_keyref_create(const axutil_env_t *env)
 {
     xml_schema_identity_constraint_t *id_cns = NULL;
     id_cns = xml_schema_identity_constraint_create(env);
@@ -199,7 +199,7 @@ xml_schema_keyref_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN xml_schema_identity_constraint_t * AXIS2_CALL
-xml_schema_key_create(const axis2_env_t *env)
+xml_schema_key_create(const axutil_env_t *env)
 {
     xml_schema_identity_constraint_t *id_cns = NULL;
     id_cns = xml_schema_identity_constraint_create(env);
@@ -208,10 +208,10 @@ xml_schema_key_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN xml_schema_identity_constraint_t * AXIS2_CALL
-xml_schema_keyref_create(const axis2_env_t *env);
+xml_schema_keyref_create(const axutil_env_t *env);
 
 AXIS2_EXTERN xml_schema_identity_constraint_t * AXIS2_CALL
-xml_schema_key_create(const axis2_env_t *env);
+xml_schema_key_create(const axutil_env_t *env);
 
 
 
@@ -219,7 +219,7 @@ xml_schema_key_create(const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_free(void *id_constr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_identity_constraint_impl_t *id_cns_impl = NULL;
 
@@ -275,7 +275,7 @@ xml_schema_identity_constraint_free(void *id_constr,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_identity_constraint_get_base_impl(void *id_constr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_identity_constraint_impl_t *id_cns_impl = NULL;
 
@@ -289,7 +289,7 @@ xml_schema_identity_constraint_get_base_impl(void *id_constr,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_resolve_methods(
                 xml_schema_identity_constraint_t *id_constr,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_identity_constraint_t *id_cns_impl,
                 axis2_hash_t *methods)
 {
@@ -329,14 +329,14 @@ xml_schema_identity_constraint_resolve_methods(
 */
 xml_schema_obj_collection_t *AXIS2_CALL
 xml_schema_identity_constraint_get_fields(void *id_constr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(id_constr)->fields;
 }
 axis2_char_t *AXIS2_CALL
 xml_schema_identity_constraint_get_name(void *id_constr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(id_constr)->name;
@@ -344,7 +344,7 @@ xml_schema_identity_constraint_get_name(void *id_constr,
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_set_name(void *id_constr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name)
 {
     xml_schema_identity_constraint_impl_t *id_cns_impl = NULL;
@@ -368,7 +368,7 @@ xml_schema_identity_constraint_set_name(void *id_constr,
 
 xml_schema_xpath_t *AXIS2_CALL
 xml_schema_identity_constraint_get_selector(void *id_constr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(id_constr)->selector;
@@ -376,7 +376,7 @@ xml_schema_identity_constraint_get_selector(void *id_constr,
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_set_selector(void *id_constr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_xpath_t *selector)
 {
     xml_schema_identity_constraint_impl_t *id_cns_impl = NULL;
@@ -392,7 +392,7 @@ xml_schema_identity_constraint_set_selector(void *id_constr,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_identity_constraint_get_type(void *id_constr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(id_constr)->obj_type;
 }
@@ -400,20 +400,20 @@ xml_schema_identity_constraint_get_type(void *id_constr,
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_identity_constraint_super_objs(void *id_constr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(id_constr)->ht_super;
 }
 axis2_qname_t* AXIS2_CALL
 xml_schema_identity_constraint_get_refer(void *id_constr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(id_constr)->refer;
 }
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_set_refer(void *id_constr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *refer)
 {
     xml_schema_identity_constraint_impl_t *id_cns_impl = NULL;

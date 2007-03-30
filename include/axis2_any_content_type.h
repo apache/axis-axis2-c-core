@@ -28,7 +28,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
@@ -47,7 +47,7 @@ extern "C"
      * @return pointer to the newly created any content type instance
      */
     AXIS2_EXTERN axis2_any_content_type_t *AXIS2_CALL
-    axis2_any_content_type_create(const axis2_env_t *env);
+    axis2_any_content_type_create(const axutil_env_t *env);
 
     /**
      * Adds given value to content value map with given QName.
@@ -59,7 +59,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname,
         const axis2_char_t *value);
 
@@ -74,7 +74,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_any_content_type_get_value(const axis2_any_content_type_t *any_content_type,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname);
     /**
      * Gets the map of all values.
@@ -85,7 +85,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_any_content_type_get_value_map(const axis2_any_content_type_t *any_content_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Frees any content type struct.
@@ -95,7 +95,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_any_content_type_free(axis2_any_content_type_t *any_content_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** @} */
 

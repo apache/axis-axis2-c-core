@@ -30,7 +30,7 @@ struct axis2_string
 };
 
 AXIS2_EXTERN axis2_string_t * AXIS2_CALL
-axis2_string_create(const axis2_env_t *env,
+axis2_string_create(const axutil_env_t *env,
     const axis2_char_t *str)
 {
     axis2_string_t *string = NULL;
@@ -80,7 +80,7 @@ axis2_string_create(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_string_t * AXIS2_CALL
-axis2_string_create_assume_ownership(const axis2_env_t *env,
+axis2_string_create_assume_ownership(const axutil_env_t *env,
     axis2_char_t **str)
 {
     axis2_string_t *string = NULL;
@@ -119,7 +119,7 @@ axis2_string_create_assume_ownership(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_string_t* AXIS2_CALL
-axis2_string_create_const(const axis2_env_t *env,
+axis2_string_create_const(const axutil_env_t *env,
     axis2_char_t **str)
 {
     axis2_string_t *string = NULL;
@@ -159,7 +159,7 @@ axis2_string_create_const(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_string_free(struct axis2_string *string,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -186,7 +186,7 @@ axis2_string_free(struct axis2_string *string,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_string_equals(const struct axis2_string *string,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const struct axis2_string *string1)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -201,7 +201,7 @@ axis2_string_equals(const struct axis2_string *string,
 
 AXIS2_EXTERN struct axis2_string *AXIS2_CALL
 axis2_string_clone(struct axis2_string *string,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -217,7 +217,7 @@ axis2_string_clone(struct axis2_string *string,
 
 AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
 axis2_string_get_buffer(const struct axis2_string *string,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (!string)
     {
@@ -229,7 +229,7 @@ axis2_string_get_buffer(const struct axis2_string *string,
 
 AXIS2_EXTERN unsigned int AXIS2_CALL
 axis2_string_get_length(const struct axis2_string *string,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (!string)
     {
@@ -246,7 +246,7 @@ axis2_string_get_length(const struct axis2_string *string,
 #define MAX_SAVED_LENGTHS  6
 
 AXIS2_EXTERN void* AXIS2_CALL
-axis2_strdup(const axis2_env_t *env,
+axis2_strdup(const axutil_env_t *env,
     const void *ptr)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -272,7 +272,7 @@ axis2_strdup(const axis2_env_t *env,
 AXIS2_EXTERN void * AXIS2_CALL
 axis2_strmemdup(const void *ptr,
     size_t n,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_char_t *str;
 
@@ -309,7 +309,7 @@ axis2_memchr(const void *ptr,
 }
 
 AXIS2_EXTERN void* AXIS2_CALL
-axis2_strndup(const axis2_env_t *env,
+axis2_strndup(const axutil_env_t *env,
     const void *ptr,
     int n)
 {
@@ -336,7 +336,7 @@ axis2_strndup(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_strcat(const axis2_env_t *env, ...)
+axis2_strcat(const axutil_env_t *env, ...)
 {
     axis2_char_t *cp, *argp, *str;
     size_t saved_lengths[MAX_SAVED_LENGTHS];
@@ -401,7 +401,7 @@ axis2_strcat(const axis2_env_t *env, ...)
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_stracat(const axis2_env_t *env,
+axis2_stracat(const axutil_env_t *env,
     const axis2_char_t *s1, 
     const axis2_char_t *s2)
 {
@@ -555,7 +555,7 @@ axis2_rindex(const axis2_char_t *_s,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_replace(const axis2_env_t *env,
+axis2_replace(const axutil_env_t *env,
     axis2_char_t *str,
     int s1,
     int s2)
@@ -578,7 +578,7 @@ axis2_replace(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strltrim(const axis2_env_t *env,
+axis2_strltrim(const axutil_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {
@@ -608,7 +608,7 @@ axis2_strltrim(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strrtrim(const axis2_env_t *env,
+axis2_strrtrim(const axutil_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {
@@ -637,7 +637,7 @@ axis2_strrtrim(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strtrim(const axis2_env_t *env,
+axis2_strtrim(const axutil_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {

@@ -22,7 +22,7 @@
 * @file axiom_soap_fault_reason.h
 * @brief axiom_soap_fault_reason 
 */
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_soap_fault.h>
 #include <axutil_array_list.h>
 
@@ -45,7 +45,7 @@ extern "C"
       * @param env Environment. MUST NOT be NULL
       */
     AXIS2_EXTERN axiom_soap_fault_reason_t * AXIS2_CALL
-    axiom_soap_fault_reason_create_with_parent(const axis2_env_t *env,
+    axiom_soap_fault_reason_create_with_parent(const axutil_env_t *env,
             axiom_soap_fault_t *fault);
 
     /**
@@ -58,29 +58,29 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN struct axiom_soap_fault_text* AXIS2_CALL
     axiom_soap_fault_reason_get_soap_fault_text(axiom_soap_fault_reason_t *fault_reason,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *lang);
 
     AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
     axiom_soap_fault_reason_get_all_soap_fault_texts(axiom_soap_fault_reason_t *fault_reason,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN struct axiom_soap_fault_text* AXIS2_CALL
     axiom_soap_fault_reason_get_first_soap_fault_text(axiom_soap_fault_reason_t *fault_reason,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_fault_reason_add_soap_fault_text(axiom_soap_fault_reason_t *fault_reason,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct axiom_soap_fault_text *fault_text);
 
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_soap_fault_reason_get_base_node(axiom_soap_fault_reason_t *fault_reason,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /** @} */
 

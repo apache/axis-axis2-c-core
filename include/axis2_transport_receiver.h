@@ -39,7 +39,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_ctx.h>
@@ -73,7 +73,7 @@ extern "C"
         void (AXIS2_CALL *
                 free)(
                     axis2_transport_receiver_t *transport_receiver,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
    /**
     * @param transport_receiver
@@ -82,7 +82,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 start)(
                     axis2_transport_receiver_t *transport_receiver,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
    /**
     * @param transport_receiver pointer to transport receiver
@@ -91,7 +91,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 stop)(
                     axis2_transport_receiver_t *transport_receiver,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
    /**
     * @param tranport_receiver pointer to transport receiver
@@ -101,7 +101,7 @@ extern "C"
         axis2_endpoint_ref_t* (AXIS2_CALL *
                 get_reply_to_epr)(
                     axis2_transport_receiver_t *transport_receiver,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     const axis2_char_t *svc_name);
 
    /**
@@ -113,7 +113,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 init) (
                     axis2_transport_receiver_t *transport_receiver,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     struct axis2_conf_ctx *conf_ctx,
                     struct axis2_transport_in_desc *transport_in);
 
@@ -125,7 +125,7 @@ extern "C"
         struct axis2_conf_ctx* (AXIS2_CALL *
                 get_conf_ctx)(
                     axis2_transport_receiver_t *server,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
 
    /**
@@ -135,7 +135,7 @@ extern "C"
         axis2_bool_t (AXIS2_CALL *
                 is_running)(
                     axis2_transport_receiver_t *server,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     };
 

@@ -18,10 +18,10 @@
 #include <stdio.h>
 
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env, axis2_char_t *text);
+build_om_programatically(const axutil_env_t *env, axis2_char_t *text);
 
 axiom_node_t *
-axis2_mtom_mtom(const axis2_env_t *env, axiom_node_t *node)
+axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *file_name_node = NULL;
     axiom_node_t *file_text_node = NULL;
@@ -128,7 +128,7 @@ axis2_mtom_mtom(const axis2_env_t *env, axiom_node_t *node)
 
 /* Builds the response content */
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env, axis2_char_t *text)
+build_om_programatically(const axutil_env_t *env, axis2_char_t *text)
 {
     axiom_node_t *mtom_om_node = NULL;
     axiom_element_t* mtom_om_ele = NULL;

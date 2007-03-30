@@ -39,7 +39,7 @@ struct axiom_document
 };
 
 AXIS2_EXTERN axiom_document_t *AXIS2_CALL
-axiom_document_create(const axis2_env_t *env,
+axiom_document_create(const axutil_env_t *env,
         axiom_node_t *root,
         axiom_stax_builder_t *builder)
 {
@@ -69,7 +69,7 @@ axiom_document_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_document_free(axiom_document_t *document,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -84,7 +84,7 @@ axiom_document_free(axiom_document_t *document,
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_document_build_next(axiom_document_t *document,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_node_t  *last_child = NULL;
 
@@ -119,7 +119,7 @@ axiom_document_build_next(axiom_document_t *document,
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_document_get_root_element(axiom_document_t *document,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_node_t *node = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -148,7 +148,7 @@ axiom_document_get_root_element(axiom_document_t *document,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_document_set_root_element(axiom_document_t *document,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -169,7 +169,7 @@ axiom_document_set_root_element(axiom_document_t *document,
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_document_build_all(struct axiom_document *document,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     if (!document)
@@ -209,7 +209,7 @@ axiom_document_build_all(struct axiom_document *document,
 
 AXIS2_EXTERN axiom_stax_builder_t* AXIS2_CALL
 axiom_document_get_builder(axiom_document_t *document,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return document->builder;
@@ -217,7 +217,7 @@ axiom_document_get_builder(axiom_document_t *document,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_document_serialize(axiom_document_t *document,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     if (!document)

@@ -27,7 +27,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_desc_builder.h>
@@ -50,7 +50,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_builder_free(axis2_svc_builder_t *svc_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * top most method that is used to populate service from corresponding OM
@@ -60,7 +60,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *svc_node);
 
     /** 
@@ -72,7 +72,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_children_qname_iterator_t *module_confs,
         axis2_param_container_t *parent,
         axis2_svc_t *svc);
@@ -85,12 +85,12 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_children_qname_iterator_t *module_refs);
 
     AXIS2_EXTERN struct axis2_desc_builder *AXIS2_CALL
     axis2_svc_builder_get_desc_builder(const axis2_svc_builder_t *svc_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates svc builder struct
@@ -98,7 +98,7 @@ extern "C"
      * @return pointer to newly created service builder
      */
     AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-    axis2_svc_builder_create(const axis2_env_t *env);
+    axis2_svc_builder_create(const axutil_env_t *env);
 
     /**
      * Creates svc builder struct
@@ -109,7 +109,7 @@ extern "C"
      * @return pointer to newly created service builder
      */
     AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-    axis2_svc_builder_create_with_file_and_dep_engine_and_svc(const axis2_env_t *env,
+    axis2_svc_builder_create_with_file_and_dep_engine_and_svc(const axutil_env_t *env,
         axis2_char_t *file_name,
         struct axis2_dep_engine *dep_engine,
         axis2_svc_t *svc);
@@ -122,7 +122,7 @@ extern "C"
      * @return pointer to newly created service builder
      */
     AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-    axis2_svc_builder_create_with_dep_engine_and_svc(const axis2_env_t *env,
+    axis2_svc_builder_create_with_dep_engine_and_svc(const axutil_env_t *env,
         struct axis2_dep_engine *dep_engine,
         axis2_svc_t *svc);
 

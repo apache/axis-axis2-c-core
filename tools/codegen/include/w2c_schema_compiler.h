@@ -52,7 +52,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_schema_compiler_t *schema_compiler,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * compiler single schema.
@@ -64,7 +64,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler_ops
     */
     axis2_status_t (AXIS2_CALL *
     compile)( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_t *xml_schema);
 
    /**
@@ -76,7 +76,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler_ops
     */
     w2c_typemapper_t *(AXIS2_CALL *
     compile_schema_list)( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axutil_array_list_t *schema_list);
 
 };
@@ -93,7 +93,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler
  * @return newly created schema_compiler obj
  */
 AXIS2_EXTERN w2c_schema_compiler_t* AXIS2_CALL
-w2c_schema_compiler_create( const axis2_env_t *env,
+w2c_schema_compiler_create( const axutil_env_t *env,
                 w2c_schema_compiler_options_t *options);
 
 /*************************** Function macros **********************************/

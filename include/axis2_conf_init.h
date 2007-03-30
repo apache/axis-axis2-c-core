@@ -23,7 +23,7 @@
  * @{
  */
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils_defines.h>
 #include <axis2_conf_ctx.h>
 
@@ -39,7 +39,7 @@ extern "C"
      * @return pointer to an instance of configuration context properly initialized
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL 
-    axis2_build_conf_ctx(const axis2_env_t *env,
+    axis2_build_conf_ctx(const axutil_env_t *env,
         const axis2_char_t *repo_name);
 
     /**
@@ -49,7 +49,7 @@ extern "C"
      * @return pointer to an instance of configuration context properly initialized
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL 
-    axis2_build_client_conf_ctx(const axis2_env_t *env,
+    axis2_build_client_conf_ctx(const axutil_env_t *env,
         const axis2_char_t *axis2_home);
 
 

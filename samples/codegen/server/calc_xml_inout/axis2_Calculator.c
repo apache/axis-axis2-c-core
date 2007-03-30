@@ -35,7 +35,7 @@
 
 */
 axiom_node_t *
-axis2_Calculator_add(const axis2_env_t * env, axiom_node_t* param0)
+axis2_Calculator_add(const axutil_env_t * env, axiom_node_t* param0)
 {
     /* Todo fill this with the necessary business logic */
     axiom_node_t* req = param0;
@@ -97,7 +97,7 @@ axis2_Calculator_add(const axis2_env_t * env, axiom_node_t* param0)
 
 */
 axiom_node_t *
-axis2_Calculator_div(const axis2_env_t * env, axiom_node_t* param2)
+axis2_Calculator_div(const axutil_env_t * env, axiom_node_t* param2)
 {
     /* Todo fill this with the necessary business logic */
     return NULL;
@@ -112,7 +112,7 @@ axis2_Calculator_div(const axis2_env_t * env, axiom_node_t* param2)
 
 */
 axiom_node_t *
-axis2_Calculator_sub(const axis2_env_t * env, axiom_node_t* param4)
+axis2_Calculator_sub(const axutil_env_t * env, axiom_node_t* param4)
 {
     /* Todo fill this with the necessary business logic */
     return NULL;
@@ -127,7 +127,7 @@ axis2_Calculator_sub(const axis2_env_t * env, axiom_node_t* param4)
 
 */
 axiom_node_t *
-axis2_Calculator_mul(const axis2_env_t * env, axiom_node_t* param6)
+axis2_Calculator_mul(const axutil_env_t * env, axiom_node_t* param6)
 {
     /* Todo fill this with the necessary business logic */
     return NULL;

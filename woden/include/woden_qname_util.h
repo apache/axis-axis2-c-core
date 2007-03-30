@@ -28,13 +28,13 @@ extern "C"
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_qname_util_matches(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *qname,
         axiom_node_t *node);
         
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
 axis2_qname_util_new_qname(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node);
 
 #ifdef __cplusplus

@@ -22,11 +22,11 @@
 #include <axis2_client.h>
 
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env);
+build_om_programatically(const axutil_env_t *env);
 
 int main(int argc, char** argv)
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     axis2_status_t status = AXIS2_FAILURE;
 
     /* Set up the environment */
-    env = axis2_env_create_all("notify.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("notify.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/notify";
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
 
     if (env)
     {
-        axis2_env_free((axis2_env_t *) env);
+        axutil_env_free((axutil_env_t *) env);
         env = NULL;
     }
 
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env)
+build_om_programatically(const axutil_env_t *env)
 {
     axiom_node_t *notify_om_node = NULL;
     axiom_element_t* notify_om_ele = NULL;

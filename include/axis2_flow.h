@@ -29,7 +29,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
@@ -50,7 +50,7 @@ extern "C"
      * @return pointer to newly created flow
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-    axis2_flow_create (const axis2_env_t *env);
+    axis2_flow_create (const axutil_env_t *env);
 
     /** 
      * Frees flow struct.
@@ -60,7 +60,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_flow_free(axis2_flow_t *flow,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds a handler description to flow.
@@ -71,7 +71,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_flow_add_handler(axis2_flow_t *flow,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_desc_t *handler);
 
     /**
@@ -83,7 +83,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
     axis2_flow_get_handler(const axis2_flow_t *flow,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int index);
 
     /**
@@ -94,7 +94,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_flow_get_handler_count(const axis2_flow_t *flow,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Frees flow passed as void pointer. This method would cast the void 
@@ -105,7 +105,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_flow_free_void_arg (void *flow,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** @} */
 

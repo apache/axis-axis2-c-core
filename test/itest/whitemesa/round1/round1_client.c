@@ -22,7 +22,7 @@
 #include <axis2_client.h>
 #include <string.h>
 
-axiom_node_t *build_soap_body_content(const axis2_env_t *env,
+axiom_node_t *build_soap_body_content(const axutil_env_t *env,
         const axis2_char_t * echo_operation,
         const axis2_char_t * echo_type,
         const axis2_char_t * word_to_echo);
@@ -30,7 +30,7 @@ axiom_node_t *build_soap_body_content(const axis2_env_t *env,
 int
 main(int argc, char **argv)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -77,7 +77,7 @@ main(int argc, char **argv)
 
 
     /* Set up the environment */
-    env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Create EPR with given address */
 
@@ -167,7 +167,7 @@ main(int argc, char **argv)
 }
 
 axiom_node_t *
-build_soap_body_content(const axis2_env_t *env,
+build_soap_body_content(const axutil_env_t *env,
         const axis2_char_t * echo_operation,
         const axis2_char_t * echo_type,
         const axis2_char_t * word_to_echo)

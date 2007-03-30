@@ -47,7 +47,7 @@ memory.
 /**************implmentations for w2c_extension_t methods**********************/
 axis2_status_t AXIS2_CALL
 w2c_c_qname2name_ext_free(w2c_extension_t *extension,
-       const axis2_env_t *env)
+       const axutil_env_t *env)
 {
     w2c_c_qname2name_ext_impl_t *impl = NULL;
     axis2_char_t *key = NULL;
@@ -93,7 +93,7 @@ w2c_c_qname2name_ext_free(w2c_extension_t *extension,
 
 axis2_status_t AXIS2_CALL
 w2c_c_qname2name_ext_engage(w2c_extension_t *extension,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        w2c_engine_configuration_t *conf)
 {
     w2c_c_qname2name_ext_impl_t *impl = NULL;
@@ -120,7 +120,7 @@ w2c_c_qname2name_ext_engage(w2c_extension_t *extension,
 
 axis2_char_t* AXIS2_CALL
 w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname)
 {
     w2c_c_qname2name_ext_impl_t *impl = NULL;
@@ -164,7 +164,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
 
 axis2_status_t AXIS2_CALL
 w2c_c_qname2name_ext_maker_free(w2c_qname2name_maker_t *qname2name_maker,
-       const axis2_env_t *env)
+       const axutil_env_t *env)
 {
     w2c_c_qname2name_ext_impl_t *impl = NULL;
     impl = W2C_QNAME2NAME_MAKER_INTF_TO_IMPL(qname2name_maker);
@@ -176,7 +176,7 @@ w2c_c_qname2name_ext_maker_free(w2c_qname2name_maker_t *qname2name_maker,
 /****************** standard create and delete for DLL ************************/
 AXIS2_EXPORT int
 axis2_get_instance(w2c_extension_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     w2c_c_qname2name_ext_impl_t *impl = NULL;
  
@@ -224,7 +224,7 @@ axis2_get_instance(w2c_extension_t **inst,
 
 AXIS2_EXPORT int
 axis2_remove_instance(w2c_extension_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 

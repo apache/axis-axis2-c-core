@@ -36,7 +36,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_const.h>
 #include <axutil_array_list.h>
 #include <axis2_endpoint_ref.h>
@@ -62,7 +62,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_info_headers_t *AXIS2_CALL
     axis2_msg_info_headers_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *to,
         const axis2_char_t *action);
 
@@ -76,7 +76,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
     axis2_msg_info_headers_get_to(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets to endpoint. to endpoint represents the address of the 
@@ -89,7 +89,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_to(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *to);
 
     /**
@@ -102,7 +102,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
     axis2_msg_info_headers_get_from(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets from endpoint. from endpoint represents the address of the 
@@ -115,7 +115,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_from(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *from);
 
     /**
@@ -128,7 +128,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
     axis2_msg_info_headers_get_reply_to(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets reply to endpoint. reply to endpoint identifies the intended 
@@ -141,7 +141,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_reply_to(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *reply_to);
 
     /**
@@ -157,7 +157,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_reply_to_none(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         const axis2_bool_t none);
 
     /**
@@ -173,7 +173,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_info_headers_get_reply_to_none(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating whether the reply to endpoint should 
@@ -191,7 +191,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_reply_to_anonymous(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         const axis2_bool_t anonymous);
 
     /**
@@ -208,7 +208,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_info_headers_get_reply_to_anonymous(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets fault to endpoint. fault to endpoint identifies the intended 
@@ -220,7 +220,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
     axis2_msg_info_headers_get_fault_to(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets fault to endpoint. fault to endpoint identifies the intended 
@@ -233,7 +233,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_fault_to(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *fault_to);
 
     /**
@@ -250,7 +250,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_fault_to_none(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         const axis2_bool_t none);
 
     /**
@@ -266,7 +266,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_info_headers_get_fault_to_none(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating whether the fault to endpoint should 
@@ -284,7 +284,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_fault_to_anonymous(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         const axis2_bool_t anonymous);
 
     /**
@@ -301,7 +301,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_info_headers_get_fault_to_anonymous(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WS-Addressing action. action is an absolute IRI 
@@ -313,7 +313,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_info_headers_get_action(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets WS-Addressing action. action is an absolute IRI 
@@ -326,7 +326,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *action);
 
     /**
@@ -338,7 +338,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_info_headers_get_message_id(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets message ID. message ID is an absolute IRI that uniquely 
@@ -350,7 +350,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_message_id(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *message_id);
 
     /**
@@ -363,7 +363,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_relates_to_t *AXIS2_CALL
     axis2_msg_info_headers_get_relates_to(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets relates to information. 
@@ -375,7 +375,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_set_relates_to(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_relates_to_t *relates_to);
 
     /**
@@ -387,7 +387,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_msg_info_headers_get_all_ref_params(const axis2_msg_info_headers_t *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds a reference parameter in the form of an AXIOM node.
@@ -400,7 +400,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_info_headers_add_ref_param(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *ref_param);
 
     /**
@@ -411,7 +411,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_msg_info_headers_free(struct axis2_msg_info_headers *msg_info_headers,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** @} */
 

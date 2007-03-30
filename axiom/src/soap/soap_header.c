@@ -41,12 +41,12 @@ struct axiom_soap_header
 };
 
 static axis2_bool_t AXIS2_CALL
-axiom_soap_header_qname_matches(const axis2_env_t *env,
+axiom_soap_header_qname_matches(const axutil_env_t *env,
         axis2_qname_t *element_qname,
         axis2_qname_t *qname_to_match);
 
 AXIS2_EXTERN axiom_soap_header_t * AXIS2_CALL
-axiom_soap_header_create(const axis2_env_t *env)
+axiom_soap_header_create(const axutil_env_t *env)
 {
     axiom_soap_header_t *soap_header = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -79,7 +79,7 @@ axiom_soap_header_create(const axis2_env_t *env)
 
 
 AXIS2_EXTERN axiom_soap_header_t * AXIS2_CALL
-axiom_soap_header_create_with_parent(const axis2_env_t *env,
+axiom_soap_header_create_with_parent(const axutil_env_t *env,
         axiom_soap_envelope_t *envelope)
 {
     axiom_soap_header_t *soap_header = NULL;
@@ -144,7 +144,7 @@ axiom_soap_header_create_with_parent(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_header_free(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -193,7 +193,7 @@ axiom_soap_header_free(axiom_soap_header_t *soap_header,
 
 AXIS2_EXTERN axiom_soap_header_block_t* AXIS2_CALL
 axiom_soap_header_add_header_block(axiom_soap_header_t* soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *localname,
         axiom_namespace_t *ns)
 {
@@ -254,7 +254,7 @@ axiom_soap_header_add_header_block(axiom_soap_header_t* soap_header,
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axiom_soap_header_examine_header_blocks
 (axiom_soap_header_t* soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t* param_role)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -266,7 +266,7 @@ axiom_soap_header_examine_header_blocks
 AXIS2_EXTERN axiom_children_qname_iterator_t* AXIS2_CALL
 axiom_soap_header_examine_all_header_blocks
 (axiom_soap_header_t* soap_header,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     axiom_element_t *om_ele = NULL;
 
@@ -289,7 +289,7 @@ axiom_soap_header_examine_all_header_blocks
 AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t *
 AXIS2_CALL axiom_soap_header_extract_header_blocks
 (axiom_soap_header_t *soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *role)
 {
     const axis2_char_t *localname = NULL;
@@ -344,7 +344,7 @@ AXIS2_CALL axiom_soap_header_extract_header_blocks
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_header_set_base_node(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -364,7 +364,7 @@ axiom_soap_header_set_base_node(axiom_soap_header_t *soap_header,
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_soap_header_get_base_node(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return soap_header->om_ele_node;
@@ -375,7 +375,7 @@ axiom_soap_header_get_base_node(axiom_soap_header_t *soap_header,
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_header_get_soap_version(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return soap_header->soap_version;
@@ -383,7 +383,7 @@ axiom_soap_header_get_soap_version(axiom_soap_header_t *soap_header,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_header_set_soap_version(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int soap_version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -394,7 +394,7 @@ axiom_soap_header_set_soap_version(axiom_soap_header_t *soap_header,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_header_set_header_block(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axiom_soap_header_block *header_block)
 {
     axis2_char_t *key = NULL ;
@@ -428,7 +428,7 @@ axiom_soap_header_set_header_block(axiom_soap_header_t *soap_header,
 }
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_header_set_builder(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axiom_soap_builder *builder)
 {
     AXIS2_PARAM_CHECK(env->error, builder, AXIS2_FAILURE);
@@ -440,7 +440,7 @@ axiom_soap_header_set_builder(axiom_soap_header_t *soap_header,
 AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
 axiom_soap_header_get_header_blocks_with_namespace_uri
 (axiom_soap_header_t* soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *ns_uri)
 {
     axutil_array_list_t *header_block_list = NULL;
@@ -516,14 +516,14 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axiom_soap_header_get_all_header_blocks(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return soap_header->header_blocks;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_char_t *qn_localname = NULL;
@@ -578,7 +578,7 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
 }
 
 static axis2_bool_t AXIS2_CALL
-axiom_soap_header_qname_matches(const axis2_env_t *env,
+axiom_soap_header_qname_matches(const axutil_env_t *env,
         axis2_qname_t *element_qname,
         axis2_qname_t *qname_to_match)
 {

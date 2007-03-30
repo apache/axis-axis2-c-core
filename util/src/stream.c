@@ -24,53 +24,53 @@
 /** basic stream operatons **/
 int AXIS2_CALL
 axis2_stream_write_basic(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer, size_t count);
 
 int AXIS2_CALL
 axis2_stream_read_basic(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer, size_t count);
 
 int AXIS2_CALL
 axis2_stream_skip_basic(axis2_stream_t *stream, 
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     int count);
 
 /** file stream operations **/
 int AXIS2_CALL
 axis2_stream_write_file(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer, size_t count);
 
 int AXIS2_CALL
 axis2_stream_read_file(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer, size_t count);
 
 int AXIS2_CALL
 axis2_stream_skip_file(axis2_stream_t *stream, 
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     int count);
 
 /** socket stream operations **/
 int AXIS2_CALL
 axis2_stream_write_socket(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer, size_t count);
 
 int AXIS2_CALL
 axis2_stream_read_socket(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer, size_t count);
 
 int AXIS2_CALL
 axis2_stream_skip_socket(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int count);
 
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-axis2_stream_create_internal(const axis2_env_t *env)
+axis2_stream_create_internal(const axutil_env_t *env)
 {
     axis2_stream_t *stream = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -97,7 +97,7 @@ axis2_stream_create_internal(const axis2_env_t *env)
 
 void AXIS2_CALL
 axis2_stream_free(axis2_stream_t *stream, 
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -140,7 +140,7 @@ axis2_stream_free(axis2_stream_t *stream,
 
 void AXIS2_CALL
 axis2_stream_free_void_arg(void *stream,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_stream_t *stream_l = NULL;
 
@@ -152,7 +152,7 @@ axis2_stream_free_void_arg(void *stream,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_stream_flush(axis2_stream_t *stream,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -168,7 +168,7 @@ axis2_stream_flush(axis2_stream_t *stream,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_stream_close(axis2_stream_t *stream,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -219,7 +219,7 @@ axis2_stream_close(axis2_stream_t *stream,
 
 /************************ Basic Stream Operations *****************************/
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-axis2_stream_create_basic(const axis2_env_t *env)
+axis2_stream_create_basic(const axutil_env_t *env)
 {
     axis2_stream_t *stream = NULL;
 
@@ -253,7 +253,7 @@ axis2_stream_create_basic(const axis2_env_t *env)
 
 
 int AXIS2_CALL
-axis2_stream_read_basic(axis2_stream_t *stream, const axis2_env_t *env,
+axis2_stream_read_basic(axis2_stream_t *stream, const axutil_env_t *env,
     void *buffer, size_t count)
 {
     int len = 0;
@@ -291,7 +291,7 @@ axis2_stream_read_basic(axis2_stream_t *stream, const axis2_env_t *env,
 
 int AXIS2_CALL
 axis2_stream_write_basic(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer, size_t count)
 {
     int new_len = 0;
@@ -334,14 +334,14 @@ axis2_stream_write_basic(axis2_stream_t *stream,
 
 int AXIS2_CALL
 axis2_stream_get_len(axis2_stream_t *stream, 
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return stream->len;
 }
 
 int AXIS2_CALL
 axis2_stream_skip_basic(axis2_stream_t *stream, 
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     int count)
 {
     int del_len = 0;
@@ -366,14 +366,14 @@ axis2_stream_skip_basic(axis2_stream_t *stream,
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_stream_get_buffer (const axis2_stream_t *stream, 
-                         const axis2_env_t *env)
+                         const axutil_env_t *env)
 {
     return stream->buffer;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_stream_flush_buffer (axis2_stream_t *stream, 
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     stream->len = 0;
@@ -385,7 +385,7 @@ axis2_stream_flush_buffer (axis2_stream_t *stream,
 
 /************************** File Stream Operations ****************************/
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-axis2_stream_create_file(const axis2_env_t *env, FILE *fp)
+axis2_stream_create_file(const axutil_env_t *env, FILE *fp)
 {
     axis2_stream_t *stream = NULL;
 
@@ -412,7 +412,7 @@ axis2_stream_create_file(const axis2_env_t *env, FILE *fp)
 
 int AXIS2_CALL
 axis2_stream_read_file(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer, size_t count)
 {
     FILE *fp = NULL;
@@ -433,7 +433,7 @@ axis2_stream_read_file(axis2_stream_t *stream,
 
 int AXIS2_CALL
 axis2_stream_write_file(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer, size_t count)
 {
     int len = 0;
@@ -454,7 +454,7 @@ axis2_stream_write_file(axis2_stream_t *stream,
 
 int AXIS2_CALL
 axis2_stream_skip_file(axis2_stream_t *stream, 
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     int count)
 {
     int c = -1;
@@ -476,7 +476,7 @@ axis2_stream_skip_file(axis2_stream_t *stream,
 
 /************************** Socket Stream Operations **************************/
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-axis2_stream_create_socket(const axis2_env_t *env, 
+axis2_stream_create_socket(const axutil_env_t *env, 
     int socket)
 {
     axis2_stream_t *stream = NULL;
@@ -506,7 +506,7 @@ axis2_stream_create_socket(const axis2_env_t *env,
 
 int AXIS2_CALL
 axis2_stream_read_socket(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer, size_t count)
 {
     int len = 0;
@@ -547,7 +547,7 @@ axis2_stream_read_socket(axis2_stream_t *stream,
 
 int AXIS2_CALL
 axis2_stream_write_socket(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer, size_t count)
 {
     int len = 0;
@@ -586,7 +586,7 @@ axis2_stream_write_socket(axis2_stream_t *stream,
 
 int AXIS2_CALL
 axis2_stream_skip_socket(axis2_stream_t *stream, 
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     int count)
 {
     int len = 0;
@@ -609,7 +609,7 @@ axis2_stream_skip_socket(axis2_stream_t *stream,
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_stream_peek_socket(axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer, size_t count)
 {
     int len = 0;
@@ -636,7 +636,7 @@ axis2_stream_peek_socket(axis2_stream_t *stream,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_stream_set_read(
     axis2_stream_t *stream,
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     void *func)
 {
     stream->read = func;
@@ -646,7 +646,7 @@ axis2_stream_set_read(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_stream_set_write(
     axis2_stream_t *stream,
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     void *func)
 {
     stream->write = func;
@@ -656,7 +656,7 @@ axis2_stream_set_write(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_stream_set_skip(
     axis2_stream_t *stream,
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     void *func)
 {
     stream->skip = func;
@@ -665,7 +665,7 @@ axis2_stream_set_skip(
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_stream_read(axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer,
     size_t count)
 {
@@ -674,7 +674,7 @@ axis2_stream_read(axis2_stream_t *stream,
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_stream_write(axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count)
 {
@@ -683,7 +683,7 @@ axis2_stream_write(axis2_stream_t *stream,
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_stream_skip(axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int count)
 {
     return stream->skip(stream, env, count);

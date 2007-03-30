@@ -51,7 +51,7 @@ AXIS2_DECLARE_DATA  struct w2c_qname2name_maker_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_qname2name_maker_t *qname2name_maker,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * suggest name for a qname.
@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA  struct w2c_qname2name_maker_ops
     */
     axis2_char_t* (AXIS2_CALL *
     suggest_name)(w2c_qname2name_maker_t *qname2name_maker,
-         const axis2_env_t *env,
+         const axutil_env_t *env,
          axis2_qname_t *qname);
 
 
@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA  struct w2c_qname2name_maker
  * @return newly created qname2name_maker obj
  */
 AXIS2_EXTERN w2c_qname2name_maker_t* AXIS2_CALL
-w2c_qname2name_maker_create( const axis2_env_t *env);
+w2c_qname2name_maker_create( const axutil_env_t *env);
 
 /*************************** Function macros **********************************/
 

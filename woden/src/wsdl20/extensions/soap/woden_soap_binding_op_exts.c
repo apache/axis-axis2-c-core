@@ -46,52 +46,52 @@ struct woden_soap_binding_op_exts_impl
 axis2_status_t AXIS2_CALL
 woden_soap_binding_op_exts_free(
     void *binding_op_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_soap_binding_op_exts_super_objs(
     void *binding_op_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_soap_binding_op_exts_type(
     void *binding_op_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_component_exts_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_base_impl(
     void *binding_op_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_uri_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_mep(
     void *binding_op_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_uri_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_action(
     void *binding_op_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_modules(
     void *binding_op_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_soap_binding_op_exts_t *
 create(
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t
 woden_soap_binding_op_exts_free_ops(
     void *binding_op_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_soap_binding_op_exts_t * AXIS2_CALL
 woden_soap_binding_op_exts_to_component_exts(
     void *binding_op_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -114,7 +114,7 @@ woden_soap_binding_op_exts_to_component_exts(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_soap_binding_op_exts_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -176,7 +176,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_soap_binding_op_exts_t * AXIS2_CALL
-woden_soap_binding_op_exts_create(const axis2_env_t *env)
+woden_soap_binding_op_exts_create(const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -202,7 +202,7 @@ woden_soap_binding_op_exts_create(const axis2_env_t *env)
 static axis2_status_t
 woden_soap_binding_op_exts_free_ops(
     void *binding_op_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -222,7 +222,7 @@ woden_soap_binding_op_exts_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_soap_binding_op_exts_free(void *binding_op_exts,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -271,7 +271,7 @@ woden_soap_binding_op_exts_free(void *binding_op_exts,
 axis2_hash_t *AXIS2_CALL
 woden_soap_binding_op_exts_super_objs(
     void *binding_op_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -284,7 +284,7 @@ woden_soap_binding_op_exts_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_soap_binding_op_exts_type(
     void *binding_op_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -297,7 +297,7 @@ woden_soap_binding_op_exts_type(
 woden_component_exts_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_base_impl(
     void *binding_op_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
 
@@ -310,7 +310,7 @@ woden_soap_binding_op_exts_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_soap_binding_op_exts_resolve_methods(
     woden_soap_binding_op_exts_t *binding_op_exts,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_soap_binding_op_exts_t *binding_op_exts_impl,
     axis2_hash_t *methods)
 {
@@ -339,7 +339,7 @@ woden_soap_binding_op_exts_resolve_methods(
 axis2_uri_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_mep(
     void *binding_op_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
     woden_uri_attr_t *mep = NULL;
@@ -363,7 +363,7 @@ woden_soap_binding_op_exts_get_soap_mep(
 axis2_uri_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_action(
     void *binding_op_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
     woden_uri_attr_t *action = NULL;
@@ -387,7 +387,7 @@ woden_soap_binding_op_exts_get_soap_action(
 axutil_array_list_t *AXIS2_CALL
 woden_soap_binding_op_exts_get_soap_modules(
     void *binding_op_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
     axutil_array_list_t *soap_mods = NULL;

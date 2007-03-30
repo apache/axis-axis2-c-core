@@ -65,7 +65,7 @@ static const axis2_char_t* w2c_util_test_input[] =
 
 void test_cmdline_option(CuTest *tc)
 {
-    axis2_env_t *env;
+    axutil_env_t *env;
     axutil_allocator_t *allocator;
     w2c_cmdline_option_parser_t *parser = NULL;
     w2c_cmdline_option_t *option = NULL;
@@ -78,7 +78,7 @@ void test_cmdline_option(CuTest *tc)
     axis2_char_t *expected;
 
     allocator = axutil_allocator_init(NULL);
-    env = axis2_env_create(allocator);
+    env = axutil_env_create(allocator);
 
     input_size = 9;
     parser = w2c_cmdline_option_parser_create
@@ -133,7 +133,7 @@ void test_cmdline_option(CuTest *tc)
 
 void test_config_property_loader(CuTest *tc)
 {
-    axis2_env_t *env;
+    axutil_env_t *env;
     axutil_allocator_t *allocator;
     w2c_config_property_loader_t *loader = NULL;
     axis2_char_t *actual = NULL;
@@ -147,7 +147,7 @@ void test_config_property_loader(CuTest *tc)
     axis2_char_t *key = NULL;
 
     allocator = axutil_allocator_init(NULL);
-    env = axis2_env_create(allocator);
+    env = axutil_env_create(allocator);
 
 
     loader = w2c_config_property_loader_create(env);
@@ -204,13 +204,13 @@ void test_config_property_loader(CuTest *tc)
 
 void test_messages(CuTest *tc)
 {
-    axis2_env_t *env;
+    axutil_env_t *env;
     axutil_allocator_t *allocator;
     axis2_char_t *key;
     axis2_char_t *actual = NULL;
     axis2_char_t *expected = NULL;
     allocator = axutil_allocator_init(NULL);
-    env = axis2_env_create(allocator);
+    env = axutil_env_create(allocator);
 
     key = axis2_strdup(env, "wsdl2code.arg1");
     expected = "Usage WSDL2Code -uri <Location of WSDL> : WSDL file location";

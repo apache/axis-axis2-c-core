@@ -47,7 +47,7 @@ struct woden_component_model_builder_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *component_model_builder,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -58,7 +58,7 @@ struct woden_component_model_builder
 
 AXIS2_EXTERN woden_component_model_builder_t *AXIS2_CALL 
 woden_component_model_builder_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *desc);
 
 

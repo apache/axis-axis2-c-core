@@ -33,7 +33,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
@@ -57,7 +57,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_flow_container_free(axis2_flow_container_t *flow_container,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets in flow.
@@ -67,7 +67,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
     axis2_flow_container_get_in_flow(const axis2_flow_container_t *flow_container,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets in flow.
@@ -79,7 +79,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_flow_container_set_in_flow(axis2_flow_container_t *flow_container,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_flow_t *in_flow);
 
     /**
@@ -90,7 +90,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
     axis2_flow_container_get_out_flow(const axis2_flow_container_t *flow_container,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets out flow.
@@ -102,7 +102,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_flow_container_set_out_flow(axis2_flow_container_t *flow_container,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_flow_t *out_flow);
 
     /**
@@ -113,7 +113,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
     axis2_flow_container_get_fault_in_flow(const axis2_flow_container_t *flow_container,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets fault in flow.
@@ -125,7 +125,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_flow_container_set_fault_in_flow(axis2_flow_container_t *flow_container,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_flow_t *falut_in_flow);
 
     /**
@@ -136,7 +136,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
     axis2_flow_container_get_fault_out_flow(const axis2_flow_container_t *flow_container,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets fault out flow.
@@ -148,7 +148,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_flow_container_set_fault_out_flow(axis2_flow_container_t *flow_container,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_flow_t *fault_out_flow);
 
     /**
@@ -157,7 +157,7 @@ extern "C"
      * @return pointer to newly created flow container
      */
     AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
-    axis2_flow_container_create (const axis2_env_t *env);
+    axis2_flow_container_create (const axutil_env_t *env);
 
 
 /** @} */

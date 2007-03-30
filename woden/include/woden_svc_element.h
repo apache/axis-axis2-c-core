@@ -26,7 +26,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -62,50 +62,50 @@ struct woden_svc_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *svc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *svc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_qname) (
             void *svc_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *svc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_interface_qname) (
             void *svc_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_interface_qname) (
             void *svc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_interface_element) (
             void *svc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     add_endpoint_element) (
             void *svc_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *endpoint);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_endpoint_elements) (
             void *svc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -126,7 +126,7 @@ struct woden_svc_element
 axis2_status_t AXIS2_CALL
 woden_svc_element_resolve_methods(
         woden_svc_element_t *svc_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

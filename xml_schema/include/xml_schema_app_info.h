@@ -54,40 +54,40 @@ struct xml_schema_app_info_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *app_info,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *app_info,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_types_t (AXIS2_CALL *
     get_type) (
             void *app_info,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_obj_t *(AXIS2_CALL *
     get_base_impl) (void *app_info,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
     
     axis2_char_t *(AXIS2_CALL *
     get_source)(void *app_info,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_source) (void *app_info,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_char_t *source);
 
     /* TODO replace (void *) mark up with node list */
     void *(AXIS2_CALL *
     get_markup) (void *app_info,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     /* TODO replace (void *) mark up with node list */
     axis2_status_t (AXIS2_CALL *
     set_markup) (void *app_info,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     void *markup);
 
 };
@@ -99,7 +99,7 @@ struct xml_schema_app_info
 };
 
 AXIS2_EXTERN xml_schema_app_info_t * AXIS2_CALL
-xml_schema_app_info_create(const axis2_env_t *env);
+xml_schema_app_info_create(const axutil_env_t *env);
 
 
 /*********************** macros ***********************************************/

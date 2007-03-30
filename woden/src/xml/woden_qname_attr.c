@@ -40,27 +40,27 @@ struct woden_qname_attr_impl
 axis2_status_t AXIS2_CALL
 woden_qname_attr_free(
     void *qname_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_qname_attr_type(
     void *qname_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_xml_attr_t *AXIS2_CALL
 woden_qname_attr_get_base_impl(
     void *qname_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_qname_t *AXIS2_CALL
 woden_qname_attr_get_qname(
     void *qname_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_qname_attr_convert(
     void *qname_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_char_t *attr_value);
@@ -71,7 +71,7 @@ woden_qname_attr_convert(
  */
 AXIS2_EXTERN woden_qname_attr_t * AXIS2_CALL
 woden_qname_attr_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_qname_t *attr_type,
@@ -126,7 +126,7 @@ woden_qname_attr_create(
 woden_obj_types_t AXIS2_CALL
 woden_qname_attr_type(
     void *qname_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_attr_impl_t *qname_attr_impl = NULL;
 
@@ -139,7 +139,7 @@ woden_qname_attr_type(
 axis2_status_t AXIS2_CALL
 woden_qname_attr_free(
     void *qname_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_attr_impl_t *qname_attr_impl = NULL;
 
@@ -175,7 +175,7 @@ woden_qname_attr_free(
 woden_xml_attr_t *AXIS2_CALL
 woden_qname_attr_get_base_impl(
     void *qname_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_attr_impl_t *qname_attr_impl = NULL;
 
@@ -188,7 +188,7 @@ woden_qname_attr_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_qname_attr_resolve_methods(
     woden_qname_attr_t *qname_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -211,7 +211,7 @@ woden_qname_attr_resolve_methods(
 axis2_qname_t *AXIS2_CALL
 woden_qname_attr_get_qname(
     void *qname_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_attr_impl_t *qname_attr_impl = NULL;
 
@@ -224,7 +224,7 @@ woden_qname_attr_get_qname(
 void *AXIS2_CALL
 woden_qname_attr_convert(
     void *qname_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_char_t *attr_value)

@@ -49,134 +49,134 @@ struct xml_schema_collection_impl
 axis2_status_t AXIS2_CALL
 xml_schema_collection_free(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_collection_set_base_uri(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *base_uri);
 
 axis2_char_t* AXIS2_CALL
 xml_schema_collection_get_base_uri(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_collection_init(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 
 xml_schema_t* AXIS2_CALL
 xml_schema_collection_read_with_reader(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_xml_reader_t *reader);
 
 xml_schema_t * AXIS2_CALL
 xml_schema_collection_read_document(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_document_t* document);
 
 xml_schema_t * AXIS2_CALL
 xml_schema_collection_read_element(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node);
 
 xml_schema_t* AXIS2_CALL
 xml_schema_collection_read_document_with_uri(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_document_t *document,
     axis2_char_t *uri);
 
 xml_schema_t * AXIS2_CALL
 xml_schema_collection_read_element_with_uri(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node,
     axis2_char_t *uri);
 
 xml_schema_element_t * AXIS2_CALL
 xml_schema_collection_get_element_by_qname(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname);
 
 xml_schema_type_t * AXIS2_CALL
 xml_schema_collection_get_type_by_qname(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *schema_type_qname);
 
 
 axis2_status_t AXIS2_CALL
 xml_schema_collection_add_unresolved_type(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qtype,
     void *receiver);
 
 axis2_status_t AXIS2_CALL
 xml_schema_collection_resolve_type(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *type_qname,
     xml_schema_type_t *type);
 
 axis2_char_t * AXIS2_CALL
 xml_schema_collection_get_namespace_for_prefix(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix);
 
 
 axis2_status_t AXIS2_CALL
 xml_schema_collection_map_namespace(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix,
     axis2_char_t *namespc_uri);
 
 static axis2_status_t
 add_simple_type(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_t* schema,
     axis2_char_t *type_name);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_collection_get_systemid2_schemas(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t* AXIS2_CALL
 xml_schema_collection_get_schemas(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_collection_set_schemas(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *schemas);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_collection_get_namespaces(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_t* AXIS2_CALL
 xml_schema_collection_get_schema(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *system_id);
 
 
 AXIS2_EXTERN xml_schema_collection_t * AXIS2_CALL
-xml_schema_collection_create(const axis2_env_t *env)
+xml_schema_collection_create(const axutil_env_t *env)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
 
@@ -299,7 +299,7 @@ xml_schema_collection_create(const axis2_env_t *env)
 axis2_status_t AXIS2_CALL
 xml_schema_collection_free(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_collection_impl_t *collec_impl = NULL;
 
@@ -337,7 +337,7 @@ xml_schema_collection_free(
 axis2_status_t AXIS2_CALL
 xml_schema_collection_set_base_uri(
     xml_schema_collection_t*collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *base_uri)
 {
     xml_schema_collection_impl_t *collec_impl = NULL;
@@ -358,7 +358,7 @@ xml_schema_collection_set_base_uri(
 axis2_status_t AXIS2_CALL
 xml_schema_collection_init(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -447,7 +447,7 @@ xml_schema_collection_init(
 xml_schema_t* AXIS2_CALL
 xml_schema_collection_read_with_reader(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_xml_reader_t *reader)
 {
     xml_schema_builder_t *sch_builder = NULL;
@@ -481,7 +481,7 @@ xml_schema_collection_read_with_reader(
 xml_schema_t * AXIS2_CALL
 xml_schema_collection_read_document(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_document_t* document)
 {
     xml_schema_builder_t *sch_builder = NULL;
@@ -496,7 +496,7 @@ xml_schema_collection_read_document(
 xml_schema_t * AXIS2_CALL
 xml_schema_collection_read_element(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node)
 {
     xml_schema_builder_t *sch_builder = NULL;
@@ -515,7 +515,7 @@ xml_schema_collection_read_element(
 xml_schema_t* AXIS2_CALL
 xml_schema_collection_read_document_with_uri(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_document_t *document,
     axis2_char_t *uri)
 {
@@ -532,7 +532,7 @@ xml_schema_collection_read_document_with_uri(
 xml_schema_t * AXIS2_CALL
 xml_schema_collection_read_element_with_uri(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node,
     axis2_char_t *uri)
 {
@@ -554,7 +554,7 @@ xml_schema_collection_read_element_with_uri(
 xml_schema_element_t * AXIS2_CALL
 xml_schema_collection_get_element_by_qname(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname)
 {
     axis2_char_t *uri = NULL;
@@ -578,7 +578,7 @@ xml_schema_collection_get_element_by_qname(
 xml_schema_type_t * AXIS2_CALL
 xml_schema_collection_get_type_by_qname(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *schema_type_qname)
 {
 
@@ -605,7 +605,7 @@ xml_schema_collection_get_type_by_qname(
 axis2_status_t AXIS2_CALL
 xml_schema_collection_add_unresolved_type(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qtype,
     void *obj)
 {
@@ -641,7 +641,7 @@ xml_schema_collection_add_unresolved_type(
 axis2_status_t AXIS2_CALL
 xml_schema_collection_resolve_type(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *type_qname,
     xml_schema_type_t *type)
 {
@@ -686,7 +686,7 @@ xml_schema_collection_resolve_type(
 axis2_char_t *AXIS2_CALL
 xml_schema_collection_get_namespace_for_prefix(
     xml_schema_collection_t  *collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
@@ -707,7 +707,7 @@ xml_schema_collection_get_namespace_for_prefix(
 axis2_status_t AXIS2_CALL
 xml_schema_collection_map_namespace(
     xml_schema_collection_t  *collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix,
     axis2_char_t *namespc_uri)
 {
@@ -725,7 +725,7 @@ xml_schema_collection_map_namespace(
 
 static axis2_status_t
 add_simple_type(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_t* schema,
     axis2_char_t *type_name)
 {
@@ -739,7 +739,7 @@ add_simple_type(
 axis2_hash_t* AXIS2_CALL
 xml_schema_collection_get_systemid2_schemas(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -750,7 +750,7 @@ xml_schema_collection_get_systemid2_schemas(
 axutil_array_list_t* AXIS2_CALL
 xml_schema_collection_get_schemas(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
@@ -760,7 +760,7 @@ xml_schema_collection_get_schemas(
 axis2_status_t AXIS2_CALL
 xml_schema_collection_set_schemas(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *schemas)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
@@ -776,7 +776,7 @@ xml_schema_collection_set_schemas(
 axis2_hash_t* AXIS2_CALL
 xml_schema_collection_get_namespaces(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
@@ -786,7 +786,7 @@ xml_schema_collection_get_namespaces(
 xml_schema_t* AXIS2_CALL
 xml_schema_collection_get_schema(
     xml_schema_collection_t *collection,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *system_id)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
@@ -799,7 +799,7 @@ xml_schema_collection_get_schema(
 axis2_char_t* AXIS2_CALL
 xml_schema_collection_get_base_uri(
     xml_schema_collection_t* collection,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
     collection_impl = AXIS2_INTF_TO_IMPL(collection);

@@ -23,7 +23,7 @@
 #include <stdlib.h>
 /* #include "guththila_environment.h" */
 #include "guththila_defines.h"
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 typedef struct guththila_buffer_s
 {
@@ -38,17 +38,17 @@ typedef struct guththila_buffer_s
 #define GUTHTHILA_BUFFER_SIZE 1024
 
 AXIS2_EXTERN guththila_buffer_t * AXIS2_CALL
-guththila_buffer_create (axis2_env_t * environment, int size);
+guththila_buffer_create (axutil_env_t * environment, int size);
 
 AXIS2_EXTERN guththila_buffer_t *
-guththila_buffer_create_for_buffer (axis2_env_t * environment, char *buffer, int size);
+guththila_buffer_create_for_buffer (axutil_env_t * environment, char *buffer, int size);
 
 AXIS2_EXTERN void
-guththila_buffer_free (axis2_env_t * environment,
+guththila_buffer_free (axutil_env_t * environment,
                        guththila_buffer_t * name);
 
 AXIS2_EXTERN guththila_buffer_t *
-guththila_buffer_grow (axis2_env_t * environment,
+guththila_buffer_grow (axutil_env_t * environment,
                        guththila_buffer_t * name,
 					   int buffer_length);
 

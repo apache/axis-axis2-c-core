@@ -41,26 +41,26 @@ extern "C"
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_header_set_base_node(axiom_soap_header_t *header,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_header_set_soap_version(axiom_soap_header_t *header,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int soap_version);                                                                                                                                                                                                       
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_header_set_header_block(axiom_soap_header_t *header,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axiom_soap_header_block *header_block);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_header_set_builder(axiom_soap_header_t *header,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axiom_soap_builder *builder); 
     
     
 AXIS2_EXTERN axiom_soap_header_t * AXIS2_CALL
-axiom_soap_header_create(const axis2_env_t *env);    
+axiom_soap_header_create(const axutil_env_t *env);    
     
 /** @} */
     

@@ -31,7 +31,7 @@
   */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 #include <axutil_array_list.h>
 
@@ -54,7 +54,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_sub_processor_subscribe(
         savan_sub_processor_t *sub_processor,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -69,7 +69,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_sub_processor_unsubscribe(
         savan_sub_processor_t *sub_processor,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -84,7 +84,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_sub_processor_renew_subscription(
         savan_sub_processor_t *sub_processor,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -98,7 +98,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_sub_processor_get_status(
         savan_sub_processor_t *sub_processor,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -108,7 +108,7 @@ extern "C"
     */
     AXIS2_EXTERN savan_sub_processor_t * AXIS2_CALL
     savan_sub_processor_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** @} */
 #ifdef __cplusplus

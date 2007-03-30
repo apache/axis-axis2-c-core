@@ -23,7 +23,7 @@
  * @brief axiom_soap_body struct
  */
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axiom_namespace.h>
@@ -62,7 +62,7 @@ extern "C"
       */
 
     AXIS2_EXTERN axiom_soap_body_t * AXIS2_CALL
-    axiom_soap_body_create_with_parent(const axis2_env_t *env,
+    axiom_soap_body_create_with_parent(const axutil_env_t *env,
             struct axiom_soap_envelope *envelope);
 
     /**
@@ -74,7 +74,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_body_free(axiom_soap_body_t *body,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Indicates whether a soap fault is available with this 
@@ -85,7 +85,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_soap_body_has_fault(axiom_soap_body_t *body,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * returns the soap fault in this soap_body 
@@ -97,7 +97,7 @@ extern "C"
     */
     AXIS2_EXTERN axiom_soap_fault_t* AXIS2_CALL
     axiom_soap_body_get_fault(axiom_soap_body_t *body,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * get the underlying om_node 
@@ -107,7 +107,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_soap_body_get_base_node(axiom_soap_body_t *body,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      *  return the soap version 
@@ -117,7 +117,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_soap_body_get_soap_version(axiom_soap_body_t *body,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     /**
@@ -126,19 +126,19 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_body_build(axiom_soap_body_t *body,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /** add an om node as the child to this soap_body
      * the child is added to as the first child 
      * @param body pointer to soap_body struct
-     * @param env axis2_environment struct MUST not be NULL
+     * @param env axutil_environment struct MUST not be NULL
      * @returns status code , AXIS2_SUCCESS on success , AXIS2_ERROR
      * otherwise
      */
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_body_add_child(axiom_soap_body_t *body,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *child);
 
 	/**
@@ -148,7 +148,7 @@ extern "C"
 	 */
 	AXIS2_EXTERN axis2_status_t AXIS2_CALL
 	axiom_soap_body_convert_fault_to_soap11(axiom_soap_body_t *soap_body,
-		const axis2_env_t *env);
+		const axutil_env_t *env);
 
 #ifdef __cplusplus
 }

@@ -67,71 +67,71 @@ struct xml_schema_type_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_type_free(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_type_get_base_impl(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_type_get_type(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t*  AXIS2_CALL
 xml_schema_type_super_objs(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 void *AXIS2_CALL
 xml_schema_type_get_base_schema_type(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_data_type_t *AXIS2_CALL
 xml_schema_type_get_data_type(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_derivation_method_t *AXIS2_CALL
 xml_schema_type_get_derive_by(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_derivation_method_t *AXIS2_CALL
 xml_schema_type_get_final(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_type_set_final(void *type,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_derivation_method_t *final_derivation);
 
 xml_schema_derivation_method_t *AXIS2_CALL
 xml_schema_type_get_final_resolved(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 xml_schema_type_is_mixed(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_type_set_mixed(void *type,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t is_mixed);
 
 axis2_char_t *AXIS2_CALL
 xml_schema_type_get_name(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_type_set_name(void *type,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name);
 
 axis2_qname_t *AXIS2_CALL
 xml_schema_type_get_qname(void *type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************** end       ****************************************/
 
 AXIS2_EXTERN xml_schema_type_t * AXIS2_CALL
-xml_schema_type_create(const axis2_env_t *env,
+xml_schema_type_create(const axutil_env_t *env,
         xml_schema_t *schema)
 {
     xml_schema_type_impl_t *type_impl = NULL;
@@ -251,7 +251,7 @@ xml_schema_type_create(const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 xml_schema_type_free(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
 
@@ -286,7 +286,7 @@ xml_schema_type_free(void *type,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_type_get_base_impl(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -297,7 +297,7 @@ xml_schema_type_get_base_impl(void *type,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_type_resolve_methods(
     xml_schema_type_t *type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_type_t *type_impl,
     XML_SCHEMA_SUPER_OBJS_FN super_objs,
     XML_SCHEMA_GET_TYPE_FN get_type,
@@ -360,7 +360,7 @@ xml_schema_type_resolve_methods(
 
 void *AXIS2_CALL
 xml_schema_type_get_base_schema_type(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -378,7 +378,7 @@ xml_schema_type_get_base_schema_type(void *type,
 
 xml_schema_data_type_t *AXIS2_CALL
 xml_schema_type_get_data_type(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -396,7 +396,7 @@ xml_schema_type_get_data_type(void *type,
 
 xml_schema_derivation_method_t *AXIS2_CALL
 xml_schema_type_get_derive_by(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -414,7 +414,7 @@ xml_schema_type_get_derive_by(void *type,
 
 xml_schema_derivation_method_t *AXIS2_CALL
 xml_schema_type_get_final(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -432,7 +432,7 @@ xml_schema_type_get_final(void *type,
 
 axis2_status_t AXIS2_CALL
 xml_schema_type_set_final(void *type,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_derivation_method_t *final_derivation)
 {
     xml_schema_type_impl_t *type_impl = NULL;
@@ -458,7 +458,7 @@ xml_schema_type_set_final(void *type,
 
 xml_schema_derivation_method_t *AXIS2_CALL
 xml_schema_type_get_final_resolved(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -477,7 +477,7 @@ xml_schema_type_get_final_resolved(void *type,
 
 axis2_bool_t AXIS2_CALL
 xml_schema_type_is_mixed(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -495,7 +495,7 @@ xml_schema_type_is_mixed(void *type,
 
 axis2_status_t AXIS2_CALL
 xml_schema_type_set_mixed(void *type,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t is_mixed)
 {
     xml_schema_type_impl_t *type_impl = NULL;
@@ -514,7 +514,7 @@ xml_schema_type_set_mixed(void *type,
 
 axis2_char_t *AXIS2_CALL
 xml_schema_type_get_name(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -532,7 +532,7 @@ xml_schema_type_get_name(void *type,
 
 axis2_status_t AXIS2_CALL
 xml_schema_type_set_name(void *type,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name)
 {
     xml_schema_type_impl_t *type_impl = NULL;
@@ -562,7 +562,7 @@ xml_schema_type_set_name(void *type,
 
 axis2_qname_t *AXIS2_CALL
 xml_schema_type_get_qname(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_type_impl_t *type_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -598,14 +598,14 @@ xml_schema_type_get_qname(void *type,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_type_get_type(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(type)->obj_type;
 }
 
 axis2_hash_t*  AXIS2_CALL
 xml_schema_type_super_objs(void *type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(type)->ht_super;
 }

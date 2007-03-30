@@ -36,7 +36,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_handler.h>
 #include <axis2_handler_desc.h>
 #include <axutil_array_list.h>
@@ -87,7 +87,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_add_handler_at(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int index,
         axis2_handler_t *handler);
     
@@ -101,7 +101,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_add_handler(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_t *handler);
                 
      /**
@@ -115,7 +115,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_invoke(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -126,7 +126,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_phase_get_name(const axis2_phase_t *phase,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets handler count in the handler list.
@@ -136,7 +136,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_phase_get_handler_count(const axis2_phase_t *phase,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the first handler in the handler list.
@@ -148,7 +148,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_set_first_handler(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_t *handler);
                 
     /**
@@ -161,7 +161,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_set_last_handler(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_t *handler);
                 
     /**
@@ -176,7 +176,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_add_handler_desc(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_desc_t *handler_desc);
                 
     /**
@@ -193,7 +193,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_insert_before(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_t *handler);
 
     /**
@@ -210,7 +210,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_insert_after(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_t *handler);
 
     /**
@@ -227,7 +227,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_insert_before_and_after(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_t *handler);
 
     /**
@@ -242,7 +242,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_insert_handler_desc(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_handler_desc_t *handler_desc);
 
     /**
@@ -253,7 +253,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_phase_get_all_handlers(const axis2_phase_t *phase,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Invokes handlers starting from the given handler index.
@@ -266,7 +266,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_invoke_start_from_handler(axis2_phase_t *phase,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int paused_handler_index,
         struct axis2_msg_ctx *msg_ctx);
 
@@ -278,7 +278,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_phase_free(axis2_phase_t *phase,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * creates phase struct instance.
@@ -287,7 +287,7 @@ extern "C"
      * @return pointer to newly created phase
      */
     AXIS2_EXTERN axis2_phase_t *AXIS2_CALL
-    axis2_phase_create(const axis2_env_t *env,
+    axis2_phase_create(const axutil_env_t *env,
             const axis2_char_t *phase_name);
 
 #ifdef __cplusplus

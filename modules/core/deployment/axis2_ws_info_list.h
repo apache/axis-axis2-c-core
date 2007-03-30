@@ -31,7 +31,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_conf.h>
@@ -61,7 +61,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_ws_info_list_free(axis2_ws_info_list_t *ws_info_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * This method is used to initialize the vector
@@ -71,7 +71,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ws_info_list_init(axis2_ws_info_list_t *info_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * First it check whether the file is already available in the
@@ -92,7 +92,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_file_t *file,
         int type);
 
@@ -105,7 +105,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_ws_info_t *AXIS2_CALL
     axis2_ws_info_list_get_file_item(axis2_ws_info_list_t *info_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *file_name);
 
     /**
@@ -118,7 +118,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_ws_info_list_is_modified(axis2_ws_info_list_t *info_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_file_t *file,
         struct axis2_ws_info *ws_info);
 
@@ -130,7 +130,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_ws_info_list_is_file_exist(axis2_ws_info_list_t *info_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *file_name);
 
     /**
@@ -145,7 +145,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param env pointer to environment struct
@@ -154,7 +154,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ws_info_list_update(axis2_ws_info_list_t *info_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates ws info list struct
@@ -163,7 +163,7 @@ extern "C"
      * @return pointer to newly created ws info list
      */
     AXIS2_EXTERN axis2_ws_info_list_t *AXIS2_CALL
-    axis2_ws_info_list_create_with_dep_engine(const axis2_env_t *env,
+    axis2_ws_info_list_create_with_dep_engine(const axutil_env_t *env,
         struct axis2_dep_engine *dep_engine);
 
 

@@ -27,7 +27,7 @@ struct axiom_children_iterator
 };
 
 AXIS2_EXTERN  axiom_children_iterator_t * AXIS2_CALL
-axiom_children_iterator_create(const axis2_env_t *env,
+axiom_children_iterator_create(const axutil_env_t *env,
     axiom_node_t *current_child)
 {
     axiom_children_iterator_t *iterator = NULL;
@@ -58,7 +58,7 @@ axiom_children_iterator_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_children_iterator_free(axiom_children_iterator_t *iterator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -68,7 +68,7 @@ axiom_children_iterator_free(axiom_children_iterator_t *iterator,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_children_iterator_remove(axiom_children_iterator_t *iterator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_node_t *om_node = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -103,7 +103,7 @@ axiom_children_iterator_remove(axiom_children_iterator_t *iterator,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_children_iterator_has_next(axiom_children_iterator_t *iterator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -112,7 +112,7 @@ axiom_children_iterator_has_next(axiom_children_iterator_t *iterator,
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_children_iterator_next(axiom_children_iterator_t *iterator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -130,7 +130,7 @@ axiom_children_iterator_next(axiom_children_iterator_t *iterator,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_children_iterator_reset(axiom_children_iterator_t *iterator,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 

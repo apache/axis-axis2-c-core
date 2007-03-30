@@ -57,22 +57,22 @@ struct woden_wsdl10_endpoint_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *endpoint,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *endpoint,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *endpoint,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_nested_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *endpoint,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* ************************************************************
      *  Endpoint interface methods (the WSDL Component model)
@@ -81,22 +81,22 @@ struct woden_wsdl10_endpoint_ops
     woden_nc_name_t *(AXIS2_CALL *
     get_name) (
             void *endpoint,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_binding) (
             void *endpoint,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_uri_t *(AXIS2_CALL *
     get_address) (
             void *endpoint,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_binding_element) (
         void *endpoint,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *binding);
 
 };
@@ -117,75 +117,75 @@ struct woden_wsdl10_endpoint
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_endpoint_element(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_nested_element(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_documentable_element(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_nested_configurable(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_configurable(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_nested_component(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_configurable_component(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_wsdl_component(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_configurable_element(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_documentable(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_attr_extensible(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_endpoint_t * AXIS2_CALL
 woden_wsdl10_endpoint_to_element_extensible(
         void *endpoint,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_wsdl10_endpoint_resolve_methods(
         woden_wsdl10_endpoint_t *endpoint,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_wsdl10_endpoint_t *endpoint_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

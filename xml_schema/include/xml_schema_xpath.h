@@ -53,27 +53,27 @@ struct xml_schema_xpath_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *xpath,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *xpath,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
                     
     xml_schema_types_t (AXIS2_CALL *
     get_type)(void *xpath,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *xpath,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_xpath)(void *xpath,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_xpath)(void *xpath,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_char_t *x_path);
 
 };
@@ -88,7 +88,7 @@ struct xml_schema_xpath
  * Creates new Xml Schema Xpath
  */
 AXIS2_EXTERN xml_schema_xpath_t * AXIS2_CALL
-xml_schema_xpath_create(const axis2_env_t *env);
+xml_schema_xpath_create(const axutil_env_t *env);
 
  
 #define XML_SCHEMA_XPATH_FREE(xpath, env) \

@@ -30,23 +30,23 @@ const axis2_char_t *AXIS2_ADDR_DISP_NAME = "addressing_based_dispatcher";
 static axis2_status_t AXIS2_CALL
 axis2_addr_disp_invoke(
     axis2_handler_t *handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
 static axis2_svc_t *AXIS2_CALL
 axis2_addr_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_op_t *AXIS2_CALL
 axis2_addr_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc);
 
 axis2_disp_t *AXIS2_CALL
 axis2_addr_disp_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -87,7 +87,7 @@ axis2_addr_disp_create(
 static axis2_svc_t *AXIS2_CALL
 axis2_addr_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_endpoint_ref_t *endpoint_ref = NULL;
     axis2_svc_t *svc = NULL;
@@ -157,7 +157,7 @@ axis2_addr_disp_find_svc(
 static axis2_op_t *AXIS2_CALL
 axis2_addr_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc)
 {
     const axis2_char_t *action = NULL;
@@ -189,7 +189,7 @@ axis2_addr_disp_find_op(
 static axis2_status_t AXIS2_CALL
 axis2_addr_disp_invoke(
     axis2_handler_t *handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     axis2_relates_to_t *relates_to = NULL;

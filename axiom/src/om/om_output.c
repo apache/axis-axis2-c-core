@@ -65,7 +65,7 @@ struct axiom_output
 };
 
 AXIS2_EXTERN axiom_output_t *AXIS2_CALL
-axiom_output_create(const axis2_env_t *env,
+axiom_output_create(const axutil_env_t *env,
     axiom_xml_writer_t *xml_writer)
 {
     axiom_output_t *om_output = NULL;
@@ -101,7 +101,7 @@ axiom_output_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_output_free(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -143,7 +143,7 @@ axiom_output_free(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_output_is_soap11(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return om_output->is_soap11;
@@ -151,7 +151,7 @@ axiom_output_is_soap11(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_output_is_ignore_xml_declaration(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return om_output->ignore_xml_declaration;
@@ -159,7 +159,7 @@ axiom_output_is_ignore_xml_declaration(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_output_set_ignore_xml_declaration(axiom_output_t *om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t ignore_xml_dec)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -169,7 +169,7 @@ axiom_output_set_ignore_xml_declaration(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_output_set_soap11(axiom_output_t *om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t soap11)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -179,7 +179,7 @@ axiom_output_set_soap11(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_output_set_xml_version(axiom_output_t *om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *xml_version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -202,14 +202,14 @@ axiom_output_set_xml_version(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_output_get_xml_version(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_output->xml_version;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_output_set_char_set_encoding(axiom_output_t *om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *char_set_encoding)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -219,14 +219,14 @@ axiom_output_set_char_set_encoding(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_output_get_char_set_encoding(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_output->char_set_encoding;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_output_set_do_optimize(axiom_output_t *om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t optimize)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -236,21 +236,21 @@ axiom_output_set_do_optimize(axiom_output_t *om_output,
 
 AXIS2_EXTERN axiom_xml_writer_t *AXIS2_CALL
 axiom_output_get_xml_writer(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_output->xml_writer;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_output_is_optimized(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_output->do_optimize;
 }
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axiom_output_get_content_type(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     const axis2_char_t *soap_content_type = NULL;
     if (AXIS2_TRUE == om_output->do_optimize)
@@ -285,7 +285,7 @@ axiom_output_get_content_type(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_output_write_optimized(axiom_output_t *om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_text_t *om_text)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -307,7 +307,7 @@ axiom_output_write_optimized(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_output_get_next_content_id(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_char_t *uuid = NULL;
     axis2_char_t *temp_str = NULL;
@@ -353,7 +353,7 @@ axiom_output_get_next_content_id(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_output_get_root_content_id(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_char_t *temp_str = NULL;
     axis2_char_t *uuid = NULL;
@@ -384,7 +384,7 @@ axiom_output_get_root_content_id(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_output_get_mime_boundry(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_char_t *uuid = NULL;
     if (!om_output->mime_boundary)
@@ -405,7 +405,7 @@ axiom_output_get_mime_boundry(axiom_output_t *om_output,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_output_write(axiom_output_t * om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_types_t type,
     int no_of_args, ...)
 {
@@ -545,7 +545,7 @@ axiom_output_write(axiom_output_t * om_output,
 
 axis2_status_t AXIS2_CALL
 axiom_output_write_xml_version_encoding(axiom_output_t *om_output,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIOM_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(     om_output->xml_writer,
@@ -557,7 +557,7 @@ axiom_output_write_xml_version_encoding(axiom_output_t *om_output,
 
 axis2_byte_t *AXIS2_CALL
 axiom_output_flush(axiom_output_t *om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_byte_t **output_stream,
     int *output_stream_size)
 {

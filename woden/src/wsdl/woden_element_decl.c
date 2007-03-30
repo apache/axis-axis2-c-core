@@ -43,17 +43,17 @@ struct woden_element_decl_impl
 axis2_status_t AXIS2_CALL
 woden_element_decl_free(
     void *decl,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 axis2_hash_t *AXIS2_CALL
 woden_element_decl_super_objs(
     void *decl,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_element_decl_type(
     void *decl,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 /* ************************************************************
  *  Element Declaration interface methods (the WSDL Component model)
@@ -61,22 +61,22 @@ woden_element_decl_type(
 axis2_qname_t *AXIS2_CALL
 woden_element_decl_get_qname(
     void *decl,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_uri_t *AXIS2_CALL
 woden_element_decl_get_system(
     void *decl,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 woden_element_decl_get_content_model(
     void *decl,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_generic_obj_t *AXIS2_CALL
 woden_element_decl_get_content(
     void *decl,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Non-API implementation methods
@@ -85,31 +85,31 @@ woden_element_decl_get_content(
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_qname(
     void *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_system(
     void *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *type_system_uri);
 
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_content_model(
     void *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *content_model);
 
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_content(
     void *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_generic_obj_t *element_content);
 
 
 AXIS2_EXTERN woden_element_decl_t * AXIS2_CALL
 woden_element_decl_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
 
@@ -166,7 +166,7 @@ woden_element_decl_create(
 
 axis2_status_t AXIS2_CALL
 woden_element_decl_free(void *decl,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
 
@@ -196,7 +196,7 @@ woden_element_decl_free(void *decl,
 axis2_hash_t *AXIS2_CALL
 woden_element_decl_super_objs(
     void *decl,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
 
@@ -209,7 +209,7 @@ woden_element_decl_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_element_decl_type(
     void *decl,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
 
@@ -222,7 +222,7 @@ woden_element_decl_type(
 axis2_status_t AXIS2_CALL
 woden_element_decl_resolve_methods(
     woden_element_decl_t *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_element_decl_t *decl_impl,
     axis2_hash_t *methods)
 {
@@ -297,7 +297,7 @@ woden_element_decl_resolve_methods(
 axis2_qname_t *AXIS2_CALL
 woden_element_decl_get_qname(
     void *decl,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -313,7 +313,7 @@ woden_element_decl_get_qname(
 axis2_uri_t *AXIS2_CALL
 woden_element_decl_get_system(
     void *decl,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -329,7 +329,7 @@ woden_element_decl_get_system(
 axis2_char_t *AXIS2_CALL
 woden_element_decl_get_content_model(
     void *decl,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -345,7 +345,7 @@ woden_element_decl_get_content_model(
 axis2_generic_obj_t *AXIS2_CALL
 woden_element_decl_get_content(
     void *decl,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -368,7 +368,7 @@ woden_element_decl_get_content(
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_qname(
     void *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
@@ -392,7 +392,7 @@ woden_element_decl_set_qname(
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_system(
     void *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *type_system_uri)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
@@ -415,7 +415,7 @@ woden_element_decl_set_system(
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_content_model(
     void *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *content_model)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
@@ -439,7 +439,7 @@ woden_element_decl_set_content_model(
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_content(
     void *decl,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_generic_obj_t *element_content)
 {
     woden_element_decl_impl_t *decl_impl = NULL;

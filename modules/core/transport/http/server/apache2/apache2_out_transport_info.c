@@ -34,7 +34,7 @@ typedef struct axis2_apache2_out_transport_info
 void AXIS2_CALL
 axis2_apache2_out_transport_info_free_void_arg(
     void *transport_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_out_transport_info_t *transport_info_l = NULL;
 
@@ -47,7 +47,7 @@ axis2_apache2_out_transport_info_free_void_arg(
 axis2_status_t AXIS2_CALL
 axis2_apache_out_transport_info_free(
     axis2_http_out_transport_info_t *out_transport_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_apache2_out_transport_info_t *info = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -68,7 +68,7 @@ axis2_apache_out_transport_info_free(
 axis2_status_t AXIS2_CALL
 axis2_apache_out_transport_info_set_content_type(
     axis2_http_out_transport_info_t *out_transport_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *content_type)
 {
     axis2_apache2_out_transport_info_t *info = NULL;
@@ -102,7 +102,7 @@ axis2_apache_out_transport_info_set_content_type(
 axis2_status_t AXIS2_CALL
 axis2_apache_out_transport_info_set_char_encoding(
     axis2_http_out_transport_info_t *info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *encoding)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -122,7 +122,7 @@ axis2_apache_out_transport_info_set_char_encoding(
 
 axis2_http_out_transport_info_t *AXIS2_CALL
 axis2_apache2_out_transport_info_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     request_rec *request)
 {
     axis2_apache2_out_transport_info_t *info = NULL;

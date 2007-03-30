@@ -1,10 +1,10 @@
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include "tcpmon_entry.h"
 #include "tcpmon_session_local.h"
 
 typedef struct tcpmon_entry_request_data
 {
-    const axis2_env_t* env;
+    const axutil_env_t* env;
     int socket;
     tcpmon_session_t* session;
 } tcpmon_entry_request_data_t;

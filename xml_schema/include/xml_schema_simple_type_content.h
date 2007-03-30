@@ -50,19 +50,19 @@ struct xml_schema_simple_type_content_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *sim_type_cont,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *sim_type_cont,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     xml_schema_types_t    (AXIS2_CALL *
     get_type)(void *sim_type_cont,
-              const axis2_env_t *env);
+              const axutil_env_t *env);
     
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *sim_type_cont,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
 };
 
@@ -81,7 +81,7 @@ struct xml_schema_simple_type_content
  * (any).
  */
 AXIS2_EXTERN xml_schema_simple_type_content_t * AXIS2_CALL
-xml_schema_simple_type_content_create(const axis2_env_t *env);
+xml_schema_simple_type_content_create(const axutil_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -89,7 +89,7 @@ xml_schema_simple_type_content_create(const axis2_env_t *env);
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_simple_type_content_resolve_methods(
                                 xml_schema_simple_type_content_t *sim_type_cont,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_simple_type_content_t *sim_type_cont_impl,
                                 XML_SCHEMA_SUPER_OBJS_FN super_objs,
                                 XML_SCHEMA_GET_TYPE_FN get_type,

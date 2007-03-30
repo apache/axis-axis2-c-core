@@ -26,7 +26,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_conf.h>
@@ -58,7 +58,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * To create a ServiceDescrption <code>AxisService</code>   using given wsdl.
@@ -70,7 +70,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
     axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_arch_file_data *file);
 
     /**
@@ -84,7 +84,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *file_name,
         struct axis2_dep_engine *dep_engine,
         axis2_svc_grp_t *svc_grp);
@@ -99,7 +99,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *file_path,
         struct axis2_dep_engine *dep_engine,
         struct axis2_svc_grp *svc_grp);
@@ -111,7 +111,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *file_path,
         struct axis2_dep_engine *dep_engine,
         axis2_module_desc_t *module);
@@ -123,7 +123,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_file_t *AXIS2_CALL
     axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *module_name);
 
     /**
@@ -132,7 +132,7 @@ extern "C"
      * @return pointer to newly created arch reader
      */
     AXIS2_EXTERN axis2_arch_reader_t *AXIS2_CALL
-    axis2_arch_reader_create(const axis2_env_t *env);
+    axis2_arch_reader_create(const axutil_env_t *env);
 
 /** @} */
 

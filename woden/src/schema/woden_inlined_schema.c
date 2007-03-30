@@ -41,47 +41,47 @@ struct woden_inlined_schema_impl
 axis2_status_t AXIS2_CALL
 woden_inlined_schema_free(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_inlined_schema_super_objs(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_inlined_schema_type(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_schema_t *AXIS2_CALL
 woden_inlined_schema_get_base_impl(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_inlined_schema_set_id(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *id);
 
 axis2_char_t *AXIS2_CALL
 woden_inlined_schema_get_id(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_inlined_schema_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_inlined_schema_free_ops(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_inlined_schema_t * AXIS2_CALL
 woden_inlined_schema_to_schema(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
     void *base_schema = NULL;
@@ -113,7 +113,7 @@ woden_inlined_schema_to_schema(
 
 static woden_inlined_schema_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
 
@@ -169,7 +169,7 @@ create(
 }
 AXIS2_EXTERN woden_inlined_schema_t * AXIS2_CALL
 woden_inlined_schema_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
 
@@ -194,7 +194,7 @@ woden_inlined_schema_create(
 woden_obj_types_t AXIS2_CALL
 woden_inlined_schema_type(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
 
@@ -207,7 +207,7 @@ woden_inlined_schema_type(
 static axis2_status_t
 woden_inlined_schema_free_ops(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
 
@@ -227,7 +227,7 @@ woden_inlined_schema_free_ops(
 axis2_status_t AXIS2_CALL
 woden_inlined_schema_free(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
 
@@ -271,7 +271,7 @@ woden_inlined_schema_free(
 woden_schema_t *AXIS2_CALL
 woden_inlined_schema_get_base_impl(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
 
@@ -284,7 +284,7 @@ woden_inlined_schema_get_base_impl(
 axis2_hash_t *AXIS2_CALL
 woden_inlined_schema_super_objs(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
 
@@ -297,7 +297,7 @@ woden_inlined_schema_super_objs(
 axis2_status_t AXIS2_CALL
 woden_inlined_schema_resolve_methods(
     woden_inlined_schema_t *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_inlined_schema_t *schema_impl,
     axis2_hash_t *methods)
 {
@@ -331,7 +331,7 @@ woden_inlined_schema_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_inlined_schema_set_id(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *id)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
@@ -351,7 +351,7 @@ woden_inlined_schema_set_id(
 axis2_char_t *AXIS2_CALL
 woden_inlined_schema_get_id(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
 

@@ -23,7 +23,7 @@
  *@brief this is the parser abstraction layer for axis2
  */
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils.h>
 
 #ifdef __cplusplus
@@ -73,35 +73,35 @@ extern "C"
          * causes the reader to read the next parse event. 
          * returns the event just read
          * @param parser axiom_xml_reader struct 
-         * @param env    axis2_environment, MUST NOT be NULL
+         * @param env    axutil_environment, MUST NOT be NULL
          * @returns one of the events defined in 
          *          axiom_xml_reader_event_types
          */
 
         int(AXIS2_CALL *
             next)(axiom_xml_reader_t *parser,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
         /**
         * free pull_parser
         * @param parser axiom_xml_reader struct 
-        * @param env    axis2_environment MUST NOT be NULL 
+        * @param env    axutil_environment MUST NOT be NULL 
         * @returns axis2_status_code
         */
 
         void (AXIS2_CALL *
         free)(axiom_xml_reader_t *parser,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
         /**
          * Get the Number of attributes in the current element 
          * @param parser axiom_xml_reader  
-         * @param env    axis2_environment, MUST NOT be NULL.
+         * @param env    axutil_environment, MUST NOT be NULL.
          * @returns Number of attributes , AXIS2_FAILURE on error 
          */
 
         int(AXIS2_CALL *
             get_attribute_count)(axiom_xml_reader_t *parser,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
 
         /** This is used to get an attribute's localname using an index relative to
@@ -115,7 +115,7 @@ extern "C"
           */
         axis2_char_t*(AXIS2_CALL *
             get_attribute_name_by_number)(axiom_xml_reader_t *parser,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 int i);
 
         /** This is used to get an attribute's prefix using an index relative to
@@ -130,7 +130,7 @@ extern "C"
 
         axis2_char_t*(AXIS2_CALL *
             get_attribute_prefix_by_number)(axiom_xml_reader_t *parser,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 int i);
 
         /** Gets an attribute's value using an index relative to
@@ -145,7 +145,7 @@ extern "C"
 
         axis2_char_t*(AXIS2_CALL *
             get_attribute_value_by_number)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env,
+                 const axutil_env_t *env,
                  int i);
 
         /** Gets an attribute's namespace uri using an index relative to
@@ -160,7 +160,7 @@ extern "C"
 
         axis2_char_t*(AXIS2_CALL *
             get_attribute_namespace_by_number)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env,
+                 const axutil_env_t *env,
                  int i);
 
         /** Returns the text value of current element
@@ -171,7 +171,7 @@ extern "C"
           */
         axis2_char_t*(AXIS2_CALL *
             get_value)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env);
+                 const axutil_env_t *env);
 
         /**
          * Returns the namespace count of current element 
@@ -181,7 +181,7 @@ extern "C"
          */
         int(AXIS2_CALL *
             get_namespace_count)(axiom_xml_reader_t *parser,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
         /**
          * Accesses the namespace uri of the namespaces declared in current element 
          * using an index 
@@ -193,7 +193,7 @@ extern "C"
          */
         axis2_char_t*(AXIS2_CALL *
             get_namespace_uri_by_number)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env,
+                 const axutil_env_t *env,
                  int i);
         /**
          * Accesses the namespace prefix of the namespaces declared in current element 
@@ -206,7 +206,7 @@ extern "C"
          */
         axis2_char_t*(AXIS2_CALL *
             get_namespace_prefix_by_number)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env,
+                 const axutil_env_t *env,
                  int i);
 
         /**
@@ -218,7 +218,7 @@ extern "C"
          */
         axis2_char_t*(AXIS2_CALL *
             get_prefix)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env);
+                 const axutil_env_t *env);
 
         /**
          * Used to obtain the current element localname
@@ -229,7 +229,7 @@ extern "C"
          */
         axis2_char_t*(AXIS2_CALL *
             get_name)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env);
+                 const axutil_env_t *env);
 
         /**
          * Used to get the processingInstruction target
@@ -240,7 +240,7 @@ extern "C"
          */
         axis2_char_t*(AXIS2_CALL *
              get_pi_target)(axiom_xml_reader_t *parser,
-                  const axis2_env_t *env);
+                  const axutil_env_t *env);
 
         /**
          * Gets the processingInstruction data
@@ -251,7 +251,7 @@ extern "C"
          */
         axis2_char_t*(AXIS2_CALL *
             get_pi_data)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env);
+                 const axutil_env_t *env);
 
         /**
          * Used to get the DTD 
@@ -262,7 +262,7 @@ extern "C"
          */
         axis2_char_t*(AXIS2_CALL *
             get_dtd)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env);
+                 const axutil_env_t *env);
 
         /**
          *  Free function , this function wraps the underlying parser's 
@@ -276,7 +276,7 @@ extern "C"
          */
         void(AXIS2_CALL *
             xml_free)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env,
+                 const axutil_env_t *env,
                  void *data);
 
         /**
@@ -288,16 +288,16 @@ extern "C"
 
         axis2_char_t*(AXIS2_CALL *
             get_char_set_encoding)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env);
+                 const axutil_env_t *env);
 
         /** Returns the namespace uri associated with current node */
         axis2_char_t*(AXIS2_CALL *
             get_namespace_uri)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env);
+                 const axutil_env_t *env);
 
         axis2_char_t*(AXIS2_CALL *
             get_namespace_uri_by_prefix)(axiom_xml_reader_t *parser,
-                 const axis2_env_t *env,
+                 const axutil_env_t *env,
                  axis2_char_t *prefix);
     };
 
@@ -319,7 +319,7 @@ extern "C"
      * NULL on error with error code set in the environment's error
      */
     AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
-    axiom_xml_reader_create_for_file(const axis2_env_t *env,
+    axiom_xml_reader_create_for_file(const axutil_env_t *env,
         char *filename,
         const axis2_char_t *encoding);
 
@@ -339,7 +339,7 @@ extern "C"
      * @param encoding encoding scheme of the xml stream
      */
     AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
-    axiom_xml_reader_create_for_io(const axis2_env_t *env,
+    axiom_xml_reader_create_for_io(const axutil_env_t *env,
         AXIS2_READ_INPUT_CALLBACK,
         AXIS2_CLOSE_INPUT_CALLBACK,
         void *ctx,
@@ -354,7 +354,7 @@ extern "C"
      * @return pointer to axiom_xml_reader_t struct on success , NULL otherwise
      */
     AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
-    axiom_xml_reader_create_for_memory(const axis2_env_t *env,
+    axiom_xml_reader_create_for_memory(const axutil_env_t *env,
         void *container,
         int size,
         const axis2_char_t *encoding,

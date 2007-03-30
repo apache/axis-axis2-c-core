@@ -22,7 +22,7 @@
  * @file axiom_soap_fault_node.h
  * @brief axiom_soap_fault_node struct
  */
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_soap_fault.h>
 
 #ifdef __cplusplus
@@ -42,7 +42,7 @@ extern "C"
       * @param env Environment. MUST NOT be NULL
       */
     AXIS2_EXTERN axiom_soap_fault_node_t * AXIS2_CALL
-    axiom_soap_fault_node_create_with_parent(const axis2_env_t *env,
+    axiom_soap_fault_node_create_with_parent(const axutil_env_t *env,
             axiom_soap_fault_t *fault);
 
     /**
@@ -55,20 +55,20 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_node_free(axiom_soap_fault_node_t *fault_node,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_fault_node_set_value(axiom_soap_fault_node_t *fault_node,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *fault_val);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_soap_fault_node_get_value(axiom_soap_fault_node_t *fault_node,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_soap_fault_node_get_base_node(axiom_soap_fault_node_t *fault_node,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /** @} */
 

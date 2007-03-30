@@ -49,44 +49,44 @@ struct xml_schema_complex_content_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *complex_content,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *complex_content,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
                     
     xml_schema_types_t (AXIS2_CALL *
     get_type) (void *complex_content,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *complex_content,
-                    const axis2_env_t *env);                                        
+                    const axutil_env_t *env);                                        
 
     void* (AXIS2_CALL *
     get_content)(
             void *complex_content,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_content)(
             void *complex_content,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *content);
     
     axis2_char_t* (AXIS2_CALL*
     to_string)(void *complex_content,
-               const axis2_env_t *env,
+               const axutil_env_t *env,
                axis2_char_t *prefix,
                int tab);
                
     axis2_bool_t (AXIS2_CALL *
     is_mixed)(void *complex_content,
-              const axis2_env_t *env);
+              const axutil_env_t *env);
               
     axis2_status_t (AXIS2_CALL *
     set_mixed)(void *complex_content,
-               const axis2_env_t *env,
+               const axutil_env_t *env,
                axis2_bool_t mixed);
 };
 
@@ -100,7 +100,7 @@ struct xml_schema_complex_content
  * Creates new Xml Schema Group
  */
 AXIS2_EXTERN xml_schema_complex_content_t * AXIS2_CALL
-xml_schema_complex_content_create(const axis2_env_t *env);
+xml_schema_complex_content_create(const axutil_env_t *env);
 
 #define XML_SCHEMA_COMPLEX_CONTENT_FREE(complex_content, env) \
       (((xml_schema_complex_content_t *) complex_content)->ops->\

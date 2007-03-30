@@ -181,7 +181,7 @@ unsigned dns_resolved:
 };
 
 AXIS2_EXTERN axis2_uri_t * AXIS2_CALL
-axis2_uri_create(const axis2_env_t *env)
+axis2_uri_create(const axutil_env_t *env)
 {
     axis2_uri_t *uri = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -210,7 +210,7 @@ axis2_uri_create(const axis2_env_t *env)
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_uri_free(axis2_uri_t *uri,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -283,7 +283,7 @@ axis2_uri_free(axis2_uri_t *uri,
  */
 
 AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-axis2_uri_parse_string(const axis2_env_t *env,
+axis2_uri_parse_string(const axutil_env_t *env,
     const axis2_char_t *uri_str)
 {
     axis2_uri_t *uri = NULL;
@@ -475,7 +475,7 @@ deal_with_host:
  * for the format of the "CONNECT host:port HTTP/1.0" request
  */
 AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-axis2_uri_parse_hostinfo(const axis2_env_t *env,
+axis2_uri_parse_hostinfo(const axutil_env_t *env,
     const axis2_char_t *hostinfo)
 {
     axis2_uri_t *uri = NULL;
@@ -536,7 +536,7 @@ axis2_uri_parse_hostinfo(const axis2_env_t *env,
 
 /* Resolve relative to a base.  This means host/etc, and (crucially) path */
 AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-axis2_uri_resolve_relative(const axis2_env_t *env,
+axis2_uri_resolve_relative(const axutil_env_t *env,
     const axis2_uri_t* base,
     axis2_uri_t* uri)
 {
@@ -638,7 +638,7 @@ axis2_uri_resolve_relative(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
-axis2_uri_parse_relative(const axis2_env_t *env,
+axis2_uri_parse_relative(const axutil_env_t *env,
     const axis2_uri_t* base,
     const char* uri)
 {
@@ -673,7 +673,7 @@ axis2_uri_port_of_scheme(const axis2_char_t *scheme_str)
 
 AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
 axis2_uri_clone(const axis2_uri_t* uri,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_uri_t *new_uri = NULL;
 
@@ -703,7 +703,7 @@ axis2_uri_clone(const axis2_uri_t* uri,
  */
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_uri_to_string(const axis2_uri_t *uri,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     unsigned flags)
 {
     axis2_char_t *ret = "";
@@ -797,28 +797,28 @@ axis2_uri_to_string(const axis2_uri_t *uri,
 
 axis2_char_t *AXIS2_CALL
 axis2_uri_get_protocol(axis2_uri_t *uri,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return uri->scheme;
 }
 
 axis2_char_t *AXIS2_CALL
 axis2_uri_get_server(axis2_uri_t *uri,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return uri->hostinfo;
 }
 
 axis2_port_t AXIS2_CALL
 axis2_uri_get_port(axis2_uri_t *uri,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return uri->port;
 }
 
 axis2_char_t *AXIS2_CALL
 axis2_uri_get_path(axis2_uri_t *uri,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return uri->path;
 }

@@ -41,7 +41,7 @@ struct axis2_callback
      */
     axis2_status_t (AXIS2_CALL *
     on_complete)(axis2_callback_t *callback,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * This function is called by report_error.
@@ -54,21 +54,21 @@ struct axis2_callback
      */
     axis2_status_t (AXIS2_CALL *
     on_error)(axis2_callback_t *callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int exception);
 };
 
 static axis2_status_t AXIS2_CALL
 axis2_callback_on_complete(axis2_callback_t *callback,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t AXIS2_CALL
 axis2_callback_on_error(axis2_callback_t *callback,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int exception);
 
 AXIS2_EXTERN axis2_callback_t *AXIS2_CALL
-axis2_callback_create(const axis2_env_t *env)
+axis2_callback_create(const axutil_env_t *env)
 {
     axis2_callback_t *callback = NULL;
 
@@ -96,7 +96,7 @@ axis2_callback_create(const axis2_env_t *env)
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_invoke_on_complete(axis2_callback_t *callback,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_async_result_t *result)
 {
     axis2_status_t status = AXIS2_FAILURE;
@@ -111,7 +111,7 @@ axis2_callback_invoke_on_complete(axis2_callback_t *callback,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_report_error(axis2_callback_t *callback,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int exception)
 {
     axis2_callback_set_error(callback, env, exception);
@@ -120,14 +120,14 @@ axis2_callback_report_error(axis2_callback_t *callback,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_callback_get_complete(const axis2_callback_t *callback,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return callback->complete;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_set_complete(axis2_callback_t *callback,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t complete)
 {
     callback->complete = complete;
@@ -136,7 +136,7 @@ axis2_callback_set_complete(axis2_callback_t *callback,
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_callback_get_envelope(const axis2_callback_t *callback,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return callback->envelope;
@@ -144,7 +144,7 @@ axis2_callback_get_envelope(const axis2_callback_t *callback,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_set_envelope(axis2_callback_t *callback,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_soap_envelope_t *envelope)
 {
     callback->envelope = envelope;
@@ -153,14 +153,14 @@ axis2_callback_set_envelope(axis2_callback_t *callback,
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_callback_get_error(const axis2_callback_t *callback,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return callback->error;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_set_error(axis2_callback_t *callback,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int error)
 {
     callback->error = error;
@@ -169,7 +169,7 @@ axis2_callback_set_error(axis2_callback_t *callback,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_callback_free(axis2_callback_t *callback,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -214,14 +214,14 @@ axis2_callback_set_on_error(axis2_callback_t *callback,
 
 static axis2_status_t AXIS2_CALL
 axis2_callback_on_complete(axis2_callback_t *callback,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_SUCCESS;
 }
 
 static axis2_status_t AXIS2_CALL
 axis2_callback_on_error(axis2_callback_t *callback,
-    const axis2_env_t *env, int exception)
+    const axutil_env_t *env, int exception)
 {
     return AXIS2_SUCCESS;
 }

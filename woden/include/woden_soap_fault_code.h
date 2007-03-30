@@ -33,7 +33,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -64,27 +64,27 @@ struct woden_soap_fault_code_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *soap_fault_code,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     is_qname) (
             void *soap_fault_code,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     is_token) (
             void *soap_fault_code,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *soap_fault_code,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_token) (
             void *soap_fault_code,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
 };
@@ -97,13 +97,13 @@ struct woden_soap_fault_code
 
 AXIS2_EXTERN woden_soap_fault_code_t * AXIS2_CALL
 woden_soap_fault_code_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *token,
         axis2_qname_t *code_qn);
 
 AXIS2_EXTERN void * AXIS2_CALL
 woden_soap_fault_code_get_soap_fault_code_any(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #define WODEN_SOAP_FAULT_CODE_FREE(soap_fault_code, env) \
       (((woden_soap_fault_code_t *) soap_fault_code)->ops->\

@@ -26,12 +26,12 @@ int main(int argc, char *argv[])
 {
     char *t;
     axutil_allocator_t *allocator;
-    axis2_env_t *env ;
+    axutil_env_t *env ;
     guththila_t *parser ;
 	char *xml = NULL;
 	FILE *file = NULL;
     allocator = axutil_allocator_init(NULL);
-    env = axis2_env_create(allocator);
+    env = axutil_env_create(allocator);
     parser = guththila_create(env, NULL);
 	guththila_create_xml_stream_writer_for_memory(env, parser);
 	guththila_write_start_element(env, parser, "two");
@@ -61,6 +61,6 @@ int main(int argc, char *argv[])
 	fclose (file);
     guththila_xml_writer_free(env, parser);
     guththila_free(env, parser);
-    axis2_env_free(env);
+    axutil_env_free(env);
     return 0;
 }

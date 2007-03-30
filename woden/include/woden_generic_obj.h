@@ -20,7 +20,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_error.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils.h>
 
 
@@ -48,30 +48,30 @@ typedef struct axis2_generic_obj_ops axis2_generic_obj_ops_t;
     axis2_status_t (AXIS2_CALL *
     free) (
             axis2_generic_obj_t *generic_obj, 
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_scope) (
             axis2_generic_obj_t *generic_obj,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_scope_t scope);
 
     axis2_status_t (AXIS2_CALL *
     set_free_func) (
             axis2_generic_obj_t *generic_obj,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             AXIS2_FREE_VOID_ARG free_func);
 
     axis2_status_t (AXIS2_CALL *
     set_value) (
             axis2_generic_obj_t *generic_obj,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *value);
     
     void *(AXIS2_CALL *
     get_value) (
             axis2_generic_obj_t *generic_obj,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
     
@@ -89,7 +89,7 @@ typedef struct axis2_generic_obj_ops axis2_generic_obj_ops_t;
  * @return generic_obj newly created generic_obj
  */
 AXIS2_EXTERN axis2_generic_obj_t * AXIS2_CALL
-axis2_generic_obj_create(const axis2_env_t *env);
+axis2_generic_obj_create(const axutil_env_t *env);
 
 /*************************** Function macros **********************************/
 

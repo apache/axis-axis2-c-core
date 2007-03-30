@@ -50,7 +50,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_schema_property_loader_t *schema_property_loader,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * change the filename of the loader
@@ -63,7 +63,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     */
     axis2_status_t (AXIS2_CALL *
     set_filename)(w2c_schema_property_loader_t *schema_property_loader,
-         const axis2_env_t *env, axis2_char_t *filename);
+         const axutil_env_t *env, axis2_char_t *filename);
 
    /**
     * change the language of the loader
@@ -76,7 +76,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     */
     axis2_status_t (AXIS2_CALL *
     set_language)(w2c_schema_property_loader_t *schema_property_loader,
-         const axis2_env_t *env, axis2_char_t *lang);
+         const axutil_env_t *env, axis2_char_t *lang);
 
 
     /**
@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     */
     axis2_status_t (AXIS2_CALL *
     reload )(w2c_schema_property_loader_t *schema_property_loader,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
     
     /**
      * retrieve schema template name.
@@ -99,7 +99,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     axis2_char_t* (AXIS2_CALL* 
     get_template_name)(
         w2c_schema_property_loader_t *schema_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * retrieve schema writer instance.
@@ -109,7 +109,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     w2c_schema_writer_t* (AXIS2_CALL*
     get_writer_instance)(
         w2c_schema_property_loader_t *schema_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * retrieve typemapper name.
@@ -119,7 +119,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     axis2_char_t* (AXIS2_CALL* 
     get_typemapper_name)(
         w2c_schema_property_loader_t *schema_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * retrieve default class.
@@ -129,7 +129,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     axis2_char_t* (AXIS2_CALL* 
     get_default_class)(
         w2c_schema_property_loader_t *schema_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * retrieve default array.
@@ -139,7 +139,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
     axis2_char_t* (AXIS2_CALL* 
     get_default_array)(
         w2c_schema_property_loader_t *schema_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 };
@@ -156,7 +156,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_property_loader
  * @return newly created schema_property_loader obj
  */
 AXIS2_EXTERN w2c_schema_property_loader_t* AXIS2_CALL
-w2c_schema_property_loader_create( const axis2_env_t *env, axis2_char_t *lang);
+w2c_schema_property_loader_create( const axutil_env_t *env, axis2_char_t *lang);
 
 /*************************** Function macros **********************************/
 

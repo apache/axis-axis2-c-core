@@ -49,7 +49,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
     axis2_disp_checker_get_base(const axis2_disp_checker_t *disp_checker,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -61,7 +61,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_string_t *AXIS2_CALL
     axis2_disp_checker_get_name(const axis2_disp_checker_t *disp_checker,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets QName.
@@ -72,7 +72,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_disp_checker_set_name(axis2_disp_checker_t *disp_checker,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_string_t *name);
 
     /**
@@ -83,7 +83,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_disp_checker_free(axis2_disp_checker_t *disp_checker,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates a dispatcher checker struct instance.
@@ -91,7 +91,7 @@ extern "C"
      * @return pointer to newly created dispatcher checker struct
      */
     AXIS2_EXTERN axis2_disp_checker_t *AXIS2_CALL
-    axis2_disp_checker_create(const axis2_env_t *env);
+    axis2_disp_checker_create(const axutil_env_t *env);
     
 #ifdef __cplusplus
 }

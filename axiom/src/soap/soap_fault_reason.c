@@ -36,11 +36,11 @@ struct axiom_soap_fault_reason
 
 static axis2_bool_t
 axiom_soap_fault_reason_lang_exists(axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *lang);
 
 AXIS2_EXTERN axiom_soap_fault_reason_t * AXIS2_CALL
-axiom_soap_fault_reason_create(const axis2_env_t *env)
+axiom_soap_fault_reason_create(const axutil_env_t *env)
 {
     axiom_soap_fault_reason_t *fault_reason = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -60,7 +60,7 @@ axiom_soap_fault_reason_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axiom_soap_fault_reason_t * AXIS2_CALL
-axiom_soap_fault_reason_create_with_parent(const axis2_env_t *env,
+axiom_soap_fault_reason_create_with_parent(const axutil_env_t *env,
         axiom_soap_fault_t *fault)
 {
     axiom_soap_fault_reason_t *fault_reason = NULL;
@@ -113,7 +113,7 @@ axiom_soap_fault_reason_create_with_parent(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -149,7 +149,7 @@ axiom_soap_fault_reason_free(axiom_soap_fault_reason_t *fault_reason,
 AXIS2_EXTERN axiom_soap_fault_text_t* AXIS2_CALL
 axiom_soap_fault_reason_get_soap_fault_text
 (axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *lang)
 {
     int status = AXIS2_SUCCESS;
@@ -205,7 +205,7 @@ axiom_soap_fault_reason_get_soap_fault_text
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_reason_set_base_node
 (axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -225,7 +225,7 @@ axiom_soap_fault_reason_set_base_node
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_soap_fault_reason_get_base_node
 (axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return fault_reason->om_ele_node;
@@ -233,7 +233,7 @@ axiom_soap_fault_reason_get_base_node
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_reason_set_builder(axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_soap_builder_t *builder)
 {
     AXIS2_PARAM_CHECK(env->error, builder, AXIS2_FAILURE);
@@ -245,7 +245,7 @@ axiom_soap_fault_reason_set_builder(axiom_soap_fault_reason_t *fault_reason,
 AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
 axiom_soap_fault_reason_get_all_soap_fault_texts
 (axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     int status = AXIS2_SUCCESS;
 
@@ -268,7 +268,7 @@ axiom_soap_fault_reason_get_all_soap_fault_texts
 AXIS2_EXTERN axiom_soap_fault_text_t* AXIS2_CALL
 axiom_soap_fault_reason_get_first_soap_fault_text
 (axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     int status = AXIS2_SUCCESS;
 
@@ -297,7 +297,7 @@ axiom_soap_fault_reason_get_first_soap_fault_text
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_reason_add_soap_fault_text
 (axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_soap_fault_text_t *fault_text)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -330,7 +330,7 @@ axiom_soap_fault_reason_add_soap_fault_text
 
 static axis2_bool_t
 axiom_soap_fault_reason_lang_exists(axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *lang)
 {
     int size = 0;
@@ -363,7 +363,7 @@ axiom_soap_fault_reason_lang_exists(axiom_soap_fault_reason_t *fault_reason,
 /** internal function */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_reason_set_soap_version(axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int soap_version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -373,7 +373,7 @@ axiom_soap_fault_reason_set_soap_version(axiom_soap_fault_reason_t *fault_reason
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_reason_get_soap_version(axiom_soap_fault_reason_t *fault_reason,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return fault_reason->soap_version;

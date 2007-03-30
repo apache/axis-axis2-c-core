@@ -19,7 +19,7 @@
  
  * @param add
  */
-axis2_addResponse_t* axis2_skel_Calculator_add (const axis2_env_t *env  ,
+axis2_addResponse_t* axis2_skel_Calculator_add (const axutil_env_t *env  ,
                                       axis2_add_t* add )
 {
     axis2_addResponse_t* add_res = NULL;
@@ -46,7 +46,7 @@ axis2_addResponse_t* axis2_skel_Calculator_add (const axis2_env_t *env  ,
  
  * @param div
  */
-axis2_divResponse_t* axis2_skel_Calculator_div (const axis2_env_t *env  ,
+axis2_divResponse_t* axis2_skel_Calculator_div (const axutil_env_t *env  ,
                                       axis2_div_t* div )
 {
     axis2_divResponse_t *div_res = NULL;
@@ -75,7 +75,7 @@ axis2_divResponse_t* axis2_skel_Calculator_div (const axis2_env_t *env  ,
  
  * @param sub
  */
-axis2_subResponse_t* axis2_skel_Calculator_sub (const axis2_env_t *env  ,
+axis2_subResponse_t* axis2_skel_Calculator_sub (const axutil_env_t *env  ,
                                       axis2_sub_t* sub )
 {
     axis2_subResponse_t *sub_res = NULL;
@@ -104,7 +104,7 @@ axis2_subResponse_t* axis2_skel_Calculator_sub (const axis2_env_t *env  ,
  
  * @param mul
  */
-axis2_mulResponse_t* axis2_skel_Calculator_mul (const axis2_env_t *env  ,
+axis2_mulResponse_t* axis2_skel_Calculator_mul (const axutil_env_t *env  ,
                                       axis2_mul_t* mul )
 {
     axis2_mulResponse_t *mul_res = NULL;

@@ -28,15 +28,15 @@
 #define W2C_ENGINE_CONFIG_LOADER_OUTPUT_DEFAULT "src"
 
 static w2c_cmdline_option_t*
-w2c_engine_config_loader_load_option(const axis2_env_t *env,
+w2c_engine_config_loader_load_option(const axutil_env_t *env,
                                     axis2_char_t *short_opt,axis2_char_t *long_opt,
                                      axis2_hash_t *options);
 static void
-w2c_engine_config_loader_free_hash(const axis2_env_t *env, axis2_hash_t *h );
+w2c_engine_config_loader_free_hash(const axutil_env_t *env, axis2_hash_t *h );
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 w2c_engine_config_loader_load_config(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     w2c_engine_configuration_t *conf,
     axis2_hash_t *option_map )
 {
@@ -379,7 +379,7 @@ w2c_engine_config_loader_load_config(
 }
 
 static w2c_cmdline_option_t*
-w2c_engine_config_loader_load_option(const axis2_env_t *env,
+w2c_engine_config_loader_load_option(const axutil_env_t *env,
                                     axis2_char_t *short_opt,axis2_char_t *long_opt,
                                      axis2_hash_t *options_map) 
 {
@@ -404,7 +404,7 @@ w2c_engine_config_loader_load_option(const axis2_env_t *env,
 }
 
 static void
-w2c_engine_config_loader_free_hash(const axis2_env_t *env, axis2_hash_t *h )
+w2c_engine_config_loader_free_hash(const axutil_env_t *env, axis2_hash_t *h )
 {
     axis2_hash_index_t *hi = NULL;
     axis2_char_t *key = NULL;

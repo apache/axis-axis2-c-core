@@ -41,53 +41,53 @@ struct woden_attr_extensible_impl
 axis2_status_t AXIS2_CALL
 woden_attr_extensible_free(
     void *extensible,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_attr_extensible_super_objs(
     void *extensible,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_attr_extensible_type(
     void *extensible,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_attr_extensible_set_ext_attr(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *attr_type,
     woden_xml_attr_t *attr);
 
 void *AXIS2_CALL
 woden_attr_extensible_get_ext_attr(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *attr_type);
 
 axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs(
     void *extensible,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs_for_namespace(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc);
 
 axis2_bool_t AXIS2_CALL
 woden_attr_extensible_has_ext_attrs_for_namespace(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc);
 
 
 
 AXIS2_EXTERN woden_attr_extensible_t * AXIS2_CALL
 woden_attr_extensible_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
 
@@ -138,7 +138,7 @@ woden_attr_extensible_create(
 axis2_status_t AXIS2_CALL
 woden_attr_extensible_free(
     void *extensible,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
 
@@ -189,7 +189,7 @@ woden_attr_extensible_free(
 axis2_hash_t *AXIS2_CALL
 woden_attr_extensible_super_objs(
     void *extensible,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
 
@@ -202,7 +202,7 @@ woden_attr_extensible_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_attr_extensible_type(
     void *extensible,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
 
@@ -215,7 +215,7 @@ woden_attr_extensible_type(
 axis2_status_t AXIS2_CALL
 woden_attr_extensible_resolve_methods(
     woden_attr_extensible_t *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_attr_extensible_t *extensible_impl,
     axis2_hash_t *methods)
 {
@@ -270,7 +270,7 @@ woden_attr_extensible_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_attr_extensible_set_ext_attr(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *attr_type,
     woden_xml_attr_t *attr)
 {
@@ -297,7 +297,7 @@ woden_attr_extensible_set_ext_attr(
 void *AXIS2_CALL
 woden_attr_extensible_get_ext_attr(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *attr_type)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
@@ -318,7 +318,7 @@ woden_attr_extensible_get_ext_attr(
 axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs(
     void *extensible,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
     axis2_hash_index_t *index = NULL;
@@ -357,7 +357,7 @@ woden_attr_extensible_get_ext_attrs(
 
 axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_uri_t *namespc)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
@@ -402,7 +402,7 @@ woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
 
 axis2_bool_t AXIS2_CALL
 woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_uri_t *namespc)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;

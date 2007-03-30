@@ -54,7 +54,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 free) (
                         void *annotation,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
         /**
          * returns a hashtable containing pointers to base struct instances
@@ -66,7 +66,7 @@ extern "C"
         axis2_hash_t *(AXIS2_CALL *
                 super_objs) (
                     void *annotation,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * get the type of the struct instance
@@ -77,7 +77,7 @@ extern "C"
         xml_schema_types_t (AXIS2_CALL *
                 get_type) (
                     void *annotation,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
         /**
          * get base type ( xml_schema_obj ) 
          * @param annotation xml_schema_annotation
@@ -87,7 +87,7 @@ extern "C"
         xml_schema_obj_t *(AXIS2_CALL *
                 get_base_impl) (
                     void *annotation,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * get the collection of items 
@@ -98,7 +98,7 @@ extern "C"
         xml_schema_obj_collection_t* (AXIS2_CALL *
                 get_items)(
                         void *annotation,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
     };
 
@@ -117,7 +117,7 @@ extern "C"
      * @returns pointer to newly created xml_schema_annotation struct
      */
     AXIS2_EXTERN xml_schema_annotation_t * AXIS2_CALL
-    xml_schema_annotation_create(const axis2_env_t *env);
+    xml_schema_annotation_create(const axutil_env_t *env);
 
     /** Free an xml_schema_annotation struct
         @sa xml_schema_annotation_ops#free */

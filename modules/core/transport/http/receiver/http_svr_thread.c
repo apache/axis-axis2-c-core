@@ -47,7 +47,7 @@ axis2_http_svr_thread_impl_t;
 
 typedef struct axis2_http_svr_thd_args
 {
-    axis2_env_t *env;
+    axutil_env_t *env;
     axis2_socket_t socket;
     axis2_http_worker_t *worker;
     axis2_thread_t *thread;
@@ -63,37 +63,37 @@ axis2_http_svr_thd_args_t;
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_run(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_destroy(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 int AXIS2_CALL
 axis2_http_svr_thread_get_local_port(
     const axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_http_svr_thread_is_running(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_set_worker(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_http_worker_t *worker);
 
 void AXIS2_CALL
 axis2_http_svr_thread_free(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
-AXIS2_EXTERN const axis2_env_t *AXIS2_CALL
+AXIS2_EXTERN const axutil_env_t *AXIS2_CALL
 init_thread_env(
-    const axis2_env_t **system_env);
+    const axutil_env_t **system_env);
 
 void *AXIS2_THREAD_FUNC
 axis2_svr_thread_worker_func(
@@ -104,7 +104,7 @@ axis2_svr_thread_worker_func(
 
 axis2_http_svr_thread_t *AXIS2_CALL
 axis2_http_svr_thread_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int port)
 {
     axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
@@ -160,7 +160,7 @@ axis2_http_svr_thread_create(
 void AXIS2_CALL
 axis2_http_svr_thread_free(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
@@ -188,7 +188,7 @@ axis2_http_svr_thread_free(
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_run(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
 
@@ -218,7 +218,7 @@ axis2_http_svr_thread_run(
                     "Memory allocation error in the svr thread loop");
             continue;
         }
-        arg_list->env = (axis2_env_t *)env;
+        arg_list->env = (axutil_env_t *)env;
         arg_list->socket = socket;
         arg_list->worker = svr_thread_impl->worker;
 #ifdef AXIS2_SVR_MULTI_THREADED
@@ -241,7 +241,7 @@ axis2_http_svr_thread_run(
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_destroy(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
 
@@ -267,7 +267,7 @@ axis2_http_svr_thread_destroy(
 int AXIS2_CALL
 axis2_http_svr_thread_get_local_port(
     const axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(svr_thread)->port;
@@ -276,7 +276,7 @@ axis2_http_svr_thread_get_local_port(
 axis2_bool_t AXIS2_CALL
 axis2_http_svr_thread_is_running(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(svr_thread)->port;
@@ -285,7 +285,7 @@ axis2_http_svr_thread_is_running(
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_set_worker(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_http_worker_t *worker)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -310,9 +310,9 @@ axis2_svr_thread_worker_func (
     double secs = 0;
     axis2_http_worker_t *tmp = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axis2_socket_t socket;
-    axis2_env_t *thread_env = NULL;
+    axutil_env_t *thread_env = NULL;
     axis2_http_svr_thd_args_t *arg_list = NULL;
 
 #ifndef WIN32

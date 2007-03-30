@@ -37,7 +37,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_hash.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_property.h>
 
 #ifdef __cplusplus
@@ -54,7 +54,7 @@ extern "C"
      * @return pointer to newly created context
      */
     AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL 
-    axis2_ctx_create(const axis2_env_t *env);
+    axis2_ctx_create(const axutil_env_t *env);
 
     /**
      * Sets a property with the given key.
@@ -70,7 +70,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t  AXIS2_CALL
     axis2_ctx_set_property(struct axis2_ctx *ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key,
         axis2_property_t *value);
 
@@ -86,7 +86,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_property_t *AXIS2_CALL
     axis2_ctx_get_property(const axis2_ctx_t *ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key);
 
     /**
@@ -98,7 +98,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_ctx_get_property_map(const axis2_ctx_t *ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets all properties stored within context. 
@@ -108,7 +108,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_ctx_get_all_properties(const axis2_ctx_t *ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -119,7 +119,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_ctx_free(axis2_ctx_t *ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets non-persistent map of properties.
@@ -130,7 +130,7 @@ extern "C"
      */ 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_ctx_set_property_map(struct axis2_ctx *ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *map);
 
 #ifdef __cplusplus

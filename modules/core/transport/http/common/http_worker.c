@@ -40,7 +40,7 @@ struct axis2_http_worker
 static axis2_status_t 
 axis2_http_worker_set_response_headers(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_simple_http_svr_conn_t *svr_conn,
     axis2_http_simple_request_t *simple_request,
     axis2_http_simple_response_t *simple_response,
@@ -49,19 +49,19 @@ axis2_http_worker_set_response_headers(
 static axis2_status_t 
 axis2_http_worker_set_transport_out_config(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_http_simple_response_t *simple_response);
 
 static axis2_hash_t *
 axis2_http_worker_get_headers(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_http_simple_request_t *request);
 
 AXIS2_EXTERN axis2_http_worker_t *AXIS2_CALL
 axis2_http_worker_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_http_worker_t *http_worker = NULL;
@@ -83,7 +83,7 @@ axis2_http_worker_create(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_worker_free(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -97,7 +97,7 @@ axis2_http_worker_free(
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_worker_process_request(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_simple_http_svr_conn_t *svr_conn,
     axis2_http_simple_request_t *simple_request)
 {
@@ -416,7 +416,7 @@ axis2_http_worker_process_request(
 static axis2_status_t 
 axis2_http_worker_set_response_headers(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_simple_http_svr_conn_t *svr_conn,
     axis2_http_simple_request_t *simple_request,
     axis2_http_simple_response_t *simple_response,
@@ -509,7 +509,7 @@ axis2_http_worker_set_response_headers(
 static axis2_status_t 
 axis2_http_worker_set_transport_out_config(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_http_simple_response_t *simple_response)
 {
@@ -530,7 +530,7 @@ axis2_http_worker_set_transport_out_config(
 static axis2_hash_t *
 axis2_http_worker_get_headers(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_http_simple_request_t *request)
 {
     axutil_array_list_t *header_list = NULL;
@@ -576,7 +576,7 @@ axis2_http_worker_get_headers(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_worker_set_svr_port(
     axis2_http_worker_t *worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int port)
 {
     worker->svr_port = port;

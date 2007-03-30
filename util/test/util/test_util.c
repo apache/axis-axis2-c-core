@@ -36,15 +36,15 @@ typedef struct a
 }
 a;
 
-const axis2_env_t *test_init()
+const axutil_env_t *test_init()
 {
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axis2_error_t *error = axis2_error_create(allocator);
-    const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
+    const axutil_env_t *env = axutil_env_create_with_error(allocator, error);
     return env;
 }
 
-int test_hash_get(const axis2_env_t *env)
+int test_hash_get(const axutil_env_t *env)
 {
     axis2_hash_t *ht;
     a *a1, *a2, *a3, *a4;
@@ -114,7 +114,7 @@ void test_axutil_dir_handler_list_service_or_module_dirs()
     axis2_char_t *filename = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axis2_error_t *error = axis2_error_create(allocator);
-    const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
+    const axutil_env_t *env = axutil_env_create_with_error(allocator, error);
 
     axis2_char_t *pathname = axis2_strdup(env, "/tmp/test/");
 
@@ -144,14 +144,14 @@ void test_axutil_dir_handler_list_service_or_module_dirs()
   * This test is intended to test whether given two files are equal or not.
   * Spaces and new lines are ignored in comparing
   */
-int test_file_diff(const axis2_env_t *env)
+int test_file_diff(const axutil_env_t *env)
 {
   /*  axis2_char_t *expected_file_name = axis2_strdup("expected", env);
     axis2_char_t *actual_file_name = axis2_strdup("actual", env);*/
     return 0;
 }
 
-void test_array_list(const axis2_env_t *env)
+void test_array_list(const axutil_env_t *env)
 {
     axutil_array_list_t *al;
     a *entry = NULL;
@@ -200,7 +200,7 @@ void test_array_list(const axis2_env_t *env)
 }
 
 
-void test_uuid_gen(const axis2_env_t *env)
+void test_uuid_gen(const axutil_env_t *env)
 {
     char *uuid = NULL;
     printf("starting uuid_gen test...\n");
@@ -237,7 +237,7 @@ void test_log_write()
     }
     log22->level = AXIS2_LOG_LEVEL_DEBUG;
 
-    const axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log22);
+    const axutil_env_t *env = axutil_env_create_with_error_log(allocator, error, log22);
     if (!env)
     {
         printf("cannot create env with error and log\n");
@@ -257,7 +257,7 @@ void test_log_write()
 
 int main(void)
 {
-    const axis2_env_t *env = test_init();
+    const axutil_env_t *env = test_init();
     test_file_diff(env);
     test_hash_get(env);
     test_array_list(env);
@@ -265,7 +265,7 @@ int main(void)
     run_test_log();
     test_axutil_dir_handler_list_service_or_module_dirs();
     axutil_allocator_t *allocator = env->allocator;
-/*    axis2_env_free(env);*/
+/*    axutil_env_free(env);*/
     axutil_allocator_free(allocator);
     run_test_string(env);
     return 0;

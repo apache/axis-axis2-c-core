@@ -42,36 +42,36 @@ struct woden_include_impl
 axis2_status_t AXIS2_CALL
 woden_include_free(
     void *include,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_include_super_objs(
     void *include,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_include_type(
     void *include,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_wsdl_ref_t *AXIS2_CALL
 woden_include_get_base_impl(
     void *include,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_include_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_include_free_ops(
     void *include,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_to_include_element(
     void *include,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -96,7 +96,7 @@ woden_include_to_include_element(
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_to_wsdl_ref(
     void *include,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -121,7 +121,7 @@ woden_include_to_wsdl_ref(
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_to_attr_extensible(
     void *include,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -149,7 +149,7 @@ woden_include_to_attr_extensible(
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
 woden_include_to_element_extensible(
     void *include,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -174,7 +174,7 @@ woden_include_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_include_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -216,7 +216,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_include_t * AXIS2_CALL
-woden_include_create(const axis2_env_t *env)
+woden_include_create(const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -242,7 +242,7 @@ woden_include_create(const axis2_env_t *env)
 static axis2_status_t
 woden_include_free_ops(
     void *include,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -284,7 +284,7 @@ woden_include_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_include_free(void *include,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -328,7 +328,7 @@ woden_include_free(void *include,
 axis2_hash_t *AXIS2_CALL
 woden_include_super_objs(
     void *include,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -341,7 +341,7 @@ woden_include_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_include_type(
     void *include,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -353,7 +353,7 @@ woden_include_type(
 
 woden_wsdl_ref_t *AXIS2_CALL
 woden_include_get_base_impl(void *include,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
 
@@ -366,7 +366,7 @@ woden_include_get_base_impl(void *include,
 axis2_status_t AXIS2_CALL
 woden_include_resolve_methods(
     woden_include_t *include,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_include_t *include_impl,
     axis2_hash_t *methods)
 {

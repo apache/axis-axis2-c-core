@@ -52,17 +52,17 @@ struct woden_uri_attr_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *uri_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_uri_attr_free) (
             void *uri_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *uri_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * @return the base implementation class
@@ -70,7 +70,7 @@ struct woden_uri_attr_ops
     woden_xml_attr_t *(AXIS2_CALL *
     get_base_impl) (
             void *uri_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* ************************************************************
      *  QNameAttr interface declared methods 
@@ -79,7 +79,7 @@ struct woden_uri_attr_ops
     axis2_uri_t *(AXIS2_CALL *
     get_uri) (
             void *uri_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* ************************************************************
      *  Non-API implementation methods 
@@ -94,7 +94,7 @@ struct woden_uri_attr_ops
     void *(AXIS2_CALL *
     convert) (
             void *uri_attr,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct axiom_element *owner_el,
             struct axiom_node *owner_node,
             axis2_char_t *attr_value);
@@ -114,7 +114,7 @@ struct woden_uri_attr
  */
 AXIS2_EXTERN woden_uri_attr_t * AXIS2_CALL
 woden_uri_attr_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
         axis2_qname_t *attr_type,
@@ -125,7 +125,7 @@ woden_uri_attr_create(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_uri_attr_resolve_methods(
         woden_uri_attr_t *uri_attr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

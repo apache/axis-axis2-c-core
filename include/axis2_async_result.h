@@ -32,7 +32,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_msg_ctx.h>
 #include <axiom_soap_envelope.h>
 
@@ -52,7 +52,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
     axis2_async_result_get_envelope(axis2_async_result_t *async_result,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -63,7 +63,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
     axis2_async_result_get_result(axis2_async_result_t *async_result,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Frees the async result.
@@ -73,7 +73,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_async_result_free(axis2_async_result_t *async_result,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** Creates an async result struct to help deal with results of asynchronous
      * invocations.
@@ -83,7 +83,7 @@ extern "C"
      * @return newly created async_result struct
      */
     AXIS2_EXTERN axis2_async_result_t *AXIS2_CALL
-    axis2_async_result_create(const axis2_env_t *env,
+    axis2_async_result_create(const axutil_env_t *env,
         axis2_msg_ctx_t *result);
 
 

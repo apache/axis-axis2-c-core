@@ -33,7 +33,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -67,22 +67,22 @@ struct woden_wsdl10_desc_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_document_base_uri) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *document_base_uri);
 
     axis2_uri_t *(AXIS2_CALL *
     get_document_base_uri) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /*
      * Attributes and namespaces
@@ -90,13 +90,13 @@ struct woden_wsdl10_desc_element_ops
     axis2_status_t (AXIS2_CALL *
     set_target_namespace) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *namespace_uri);
 
     axis2_uri_t *(AXIS2_CALL *
     get_target_namespace) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * This is a way to add a namespace association to a definition.
@@ -114,14 +114,14 @@ struct woden_wsdl10_desc_element_ops
     axis2_status_t (AXIS2_CALL *
     add_namespace) (
             void *desc_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *prefix,
             axis2_uri_t *namespc);
     
     axis2_status_t (AXIS2_CALL *
     remove_namespace) (
             void *desc_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *prefix);
     
     /**
@@ -135,13 +135,13 @@ struct woden_wsdl10_desc_element_ops
     axis2_uri_t *(AXIS2_CALL * 
     get_namespace) (
             void *desc_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *prefix);
     
     axis2_hash_t *(AXIS2_CALL * 
     get_namespaces) (
             void *desc_el,
-            const axis2_env_t *env);/* TODO return arrays instead of Map? */
+            const axutil_env_t *env);/* TODO return arrays instead of Map? */
     
     /*
      * Element factory methods
@@ -150,102 +150,102 @@ struct woden_wsdl10_desc_element_ops
     void *(AXIS2_CALL *
     create_documentation_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     void *(AXIS2_CALL *
     create_import_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     void *(AXIS2_CALL *
     create_include_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     void *(AXIS2_CALL *
     create_types_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_msg_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_part_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_interface_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_interface_fault_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_interface_op_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_interface_fault_ref_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_interface_msg_ref_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     void *(AXIS2_CALL *
     create_binding_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_binding_fault_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_binding_op_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_binding_fault_ref_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_binding_msg_ref_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_feature_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_svc_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_endpoint_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     create_property_element) (
             void *desc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /*
      * Element accessor and modifier methods
@@ -256,90 +256,90 @@ struct woden_wsdl10_desc_element_ops
     axis2_status_t (AXIS2_CALL *
     add_import_element) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *import_el);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_import_elements) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     add_include_element) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *include_el);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_include_elements) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_types_element) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *types_el);
     
     void *(AXIS2_CALL *
     get_types_element) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     add_msg_element) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *msg_el);
     
     axis2_status_t (AXIS2_CALL *
     add_interface_element) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *interface_el);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_msg_elements) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_interface_elements) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     add_binding_element) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *binding_el);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_binding_elements) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     add_svc_element) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *svc_el);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_svc_elements) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_ext_registry) (
             void *desc_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *ext_reg);
     
     void *(AXIS2_CALL *
     get_ext_registry) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * @return the Description component for this Description Element.
@@ -347,7 +347,7 @@ struct woden_wsdl10_desc_element_ops
     void *(AXIS2_CALL *
     to_component) (
             void *desc_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
 
 };
@@ -362,7 +362,7 @@ struct woden_wsdl10_desc_element
 axis2_status_t AXIS2_CALL
 woden_wsdl10_desc_element_resolve_methods(
         woden_wsdl10_desc_element_t *desc_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

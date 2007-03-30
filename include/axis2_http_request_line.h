@@ -31,7 +31,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 
 #ifdef __cplusplus
@@ -48,7 +48,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 	axis2_http_request_line_get_method(const axis2_http_request_line_t *request_line,
-		const axis2_env_t *env);
+		const axutil_env_t *env);
 
     /**
      * @param request_line pointer to request line
@@ -56,7 +56,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_request_line_get_http_version(const axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param request_line pointer to request line
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_request_line_get_uri(const axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param request_line pointer to request line
@@ -72,7 +72,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param request_line pointer to request line
@@ -81,7 +81,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_request_line_free(axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 	/**
      * @param env pointer to environment struct
@@ -90,7 +90,7 @@ extern "C"
      * @param http_version pointer to http version
      */
     AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
-    axis2_http_request_line_create(const axis2_env_t *env,
+    axis2_http_request_line_create(const axutil_env_t *env,
         const axis2_char_t *method,
         const axis2_char_t *uri,
         const axis2_char_t *http_version);
@@ -100,7 +100,7 @@ extern "C"
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
-    axis2_http_request_line_parse_line(const axis2_env_t *env,
+    axis2_http_request_line_parse_line(const axutil_env_t *env,
         const axis2_char_t *str);
 
 /** Get method. */

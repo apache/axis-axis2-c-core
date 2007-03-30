@@ -21,21 +21,21 @@
 
 axis2_status_t AXIS2_CALL
 axis2_mod_log_shutdown(axis2_module_t *module,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_mod_log_init(
         axis2_module_t *module,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx,
         axis2_module_desc_t *module_desc);
 
 axis2_status_t AXIS2_CALL
 axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
-                                            const axis2_env_t *env);
+                                            const axutil_env_t *env);
 
 axis2_module_t *
-axis2_mod_log_create(const axis2_env_t *env)
+axis2_mod_log_create(const axutil_env_t *env)
 {
     axis2_module_t *module = NULL;
     module = AXIS2_MALLOC(env->allocator, 
@@ -56,7 +56,7 @@ axis2_mod_log_create(const axis2_env_t *env)
 axis2_status_t AXIS2_CALL
 axis2_mod_log_init(
         axis2_module_t *module,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx,
         axis2_module_desc_t *module_desc)
 {
@@ -66,7 +66,7 @@ axis2_mod_log_init(
 
 axis2_status_t AXIS2_CALL
 axis2_mod_log_shutdown(axis2_module_t *module,
-                        const axis2_env_t *env)
+                        const axutil_env_t *env)
 {
     if(module->ops)
     {
@@ -93,7 +93,7 @@ axis2_mod_log_shutdown(axis2_module_t *module,
 
 axis2_status_t AXIS2_CALL
 axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
-                                            const axis2_env_t *env)
+                                            const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -120,7 +120,7 @@ axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
 
 AXIS2_EXPORT int 
 axis2_get_instance(axis2_module_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
    *inst = axis2_mod_log_create(env);
     if(!(*inst))
@@ -133,7 +133,7 @@ axis2_get_instance(axis2_module_t **inst,
 
 AXIS2_EXPORT int 
 axis2_remove_instance(axis2_module_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
    if (inst)

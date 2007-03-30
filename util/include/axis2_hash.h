@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -79,7 +79,7 @@ extern "C"
      * @return The hash table just created
       */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL 
-    axis2_hash_make(const axis2_env_t *env);
+    axis2_hash_make(const axutil_env_t *env);
 
     /**
      * Create a hash table with a custom hash function
@@ -88,7 +88,7 @@ extern "C"
      * @return The hash table just created
       */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL 
-    axis2_hash_make_custom(const axis2_env_t *env,
+    axis2_hash_make_custom(const axutil_env_t *env,
         axis2_hashfunc_t hash_func);
 
     /**
@@ -100,7 +100,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL 
     axis2_hash_copy(const axis2_hash_t *ht,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Associate a value with a key in a hash table.
@@ -143,7 +143,7 @@ extern "C"
     /**
      * <PRE>
      *
-     * int sum_values(const axis2_env_t *env, axis2_hash_t *ht)
+     * int sum_values(const axutil_env_t *env, axis2_hash_t *ht)
      * {
      *     axis2_hash_index_t *hi;
      *     void *val;
@@ -158,7 +158,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_index_t* AXIS2_CALL 
     axis2_hash_first(axis2_hash_t *ht,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Continue iterating over the entries in a hash table.
@@ -167,7 +167,7 @@ extern "C"
      *         entries.
      */
     AXIS2_EXTERN axis2_hash_index_t* AXIS2_CALL 
-    axis2_hash_next(const axis2_env_t *env,
+    axis2_hash_next(const axutil_env_t *env,
         axis2_hash_index_t *hi);
 
     /**
@@ -204,7 +204,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL 
     axis2_hash_overlay(const axis2_hash_t *overlay,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         const axis2_hash_t *base);
 
     /**
@@ -223,9 +223,9 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL 
     axis2_hash_merge(const axis2_hash_t *h1,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         const axis2_hash_t *h2,
-        void *(*merger)(const axis2_env_t *env, 
+        void *(*merger)(const axutil_env_t *env, 
             const void *key,
             axis2_ssize_t klen, 
             const void *h1_val, 
@@ -242,7 +242,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_hash_contains_key(axis2_hash_t *ht,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key);
 
     /**
@@ -254,7 +254,7 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL 
     axis2_hash_free(axis2_hash_t *ht,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Free a hash table with hash table given as void
@@ -265,7 +265,7 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_hash_free_void_arg(void *ht_void, 
-        const axis2_env_t* env);
+        const axutil_env_t* env);
 
     /** @} */
 

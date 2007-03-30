@@ -41,27 +41,27 @@ struct woden_string_attr_impl
 axis2_status_t AXIS2_CALL
 woden_string_attr_free(
     void *string_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_string_attr_type(
     void *string_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_xml_attr_t *AXIS2_CALL
 woden_string_attr_get_base_impl(
     void *string_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 woden_string_attr_get_string(
     void *string_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_string_attr_convert(
     void *string_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_char_t *attr_value);
@@ -72,7 +72,7 @@ woden_string_attr_convert(
  */
 AXIS2_EXTERN woden_string_attr_t * AXIS2_CALL
 woden_string_attr_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_qname_t *attr_type,
@@ -127,7 +127,7 @@ woden_string_attr_create(
 axis2_status_t AXIS2_CALL
 woden_string_attr_free(
     void *string_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_string_attr_impl_t *string_attr_impl = NULL;
 
@@ -163,7 +163,7 @@ woden_string_attr_free(
 woden_obj_types_t AXIS2_CALL
 woden_string_attr_type(
     void *string_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_string_attr_impl_t *string_attr_impl = NULL;
 
@@ -176,7 +176,7 @@ woden_string_attr_type(
 woden_xml_attr_t *AXIS2_CALL
 woden_string_attr_get_base_impl(
     void *string_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_string_attr_impl_t *string_attr_impl = NULL;
 
@@ -189,7 +189,7 @@ woden_string_attr_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_string_attr_resolve_methods(
     woden_string_attr_t *string_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -212,7 +212,7 @@ woden_string_attr_resolve_methods(
 axis2_char_t *AXIS2_CALL
 woden_string_attr_get_string(
     void *string_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_string_attr_impl_t *string_attr_impl = NULL;
 
@@ -225,7 +225,7 @@ woden_string_attr_get_string(
 void *AXIS2_CALL
 woden_string_attr_convert(
     void *string_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_char_t *attr_value)

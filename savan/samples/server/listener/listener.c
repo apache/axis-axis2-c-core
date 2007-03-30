@@ -20,7 +20,7 @@
 #include "listener.h"
 
 axiom_node_t *
-axis2_listener_notify(const axis2_env_t *env, axiom_node_t *node)
+axis2_listener_notify(const axutil_env_t *env, axiom_node_t *node)
 {
     axis2_char_t *str = NULL;
 

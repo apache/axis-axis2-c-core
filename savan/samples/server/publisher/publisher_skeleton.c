@@ -37,36 +37,36 @@
 
 typedef struct publisher_data
 {
-    axis2_env_t *env;
+    axutil_env_t *env;
     axis2_svc_t *svc;
     axis2_conf_ctx_t *conf_ctx;
 }publisher_data_t;
 
 int AXIS2_CALL
 publisher_free(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 publisher_free_void_arg(void *svc_skeleton,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
 /*
  * This method invokes the right service method 
  */
 axiom_node_t* AXIS2_CALL 
 publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *node,
             axis2_msg_ctx_t *msg_ctx);
             
 
 int AXIS2_CALL 
 publisher_init(axis2_svc_skeleton_t *svc_skeleton,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
 axiom_node_t* AXIS2_CALL
 publisher_on_fault(axis2_svc_skeleton_t *svc_skeli, 
-              const axis2_env_t *env, axiom_node_t *node);
+              const axutil_env_t *env, axiom_node_t *node);
 
 static void * AXIS2_THREAD_FUNC
 publisher_worker_func(
@@ -75,7 +75,7 @@ publisher_worker_func(
     
 /*Create function */
 axis2_svc_skeleton_t *
-axis2_publisher_create(const axis2_env_t *env)
+axis2_publisher_create(const axutil_env_t *env)
 {
 
 	axis2_svc_skeleton_t *svc_skeleton = NULL;
@@ -105,7 +105,7 @@ axis2_publisher_create(const axis2_env_t *env)
 /* Initialize the service */
 int AXIS2_CALL
 publisher_init(axis2_svc_skeleton_t *svc_skeleton,
-                        const axis2_env_t *env)
+                        const axutil_env_t *env)
 {
     svc_skeleton->func_array = axutil_array_list_create(env, 0);
 
@@ -125,7 +125,7 @@ publisher_init(axis2_svc_skeleton_t *svc_skeleton,
  */
 axiom_node_t* AXIS2_CALL
 publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *node,
             axis2_msg_ctx_t *msg_ctx)
 {
@@ -140,7 +140,7 @@ publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
      */
 
     data = AXIS2_MALLOC(env->allocator, sizeof(publisher_data_t));
-    data->env = (axis2_env_t*)env;
+    data->env = (axutil_env_t*)env;
     data->svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     data->conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     
@@ -159,7 +159,7 @@ publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
 /* On fault, handle the fault */
 axiom_node_t* AXIS2_CALL
 publisher_on_fault(axis2_svc_skeleton_t *svc_skeli, 
-              const axis2_env_t *env, axiom_node_t *node)
+              const axutil_env_t *env, axiom_node_t *node)
 {
    /* Here we are just setting a simple error message inside an element 
     * called 'EchoServiceError' 
@@ -177,7 +177,7 @@ publisher_on_fault(axis2_svc_skeleton_t *svc_skeli,
 /* Free the resources used */
 int AXIS2_CALL
 publisher_free(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env)
+            const axutil_env_t *env)
 {
     printf("free called.\n");
 
@@ -211,8 +211,8 @@ publisher_worker_func(
     axis2_thread_t *thrd,
     void* data)
 {
-    axis2_env_t *main_env = NULL;
-    axis2_env_t *env = NULL;
+    axutil_env_t *main_env = NULL;
+    axutil_env_t *env = NULL;
     axiom_namespace_t *test_ns = NULL;
     axiom_node_t *test_node = NULL;
     axiom_element_t* test_elem = NULL;
@@ -253,7 +253,7 @@ publisher_worker_func(
  */
 AXIS2_EXPORT int 
 axis2_get_instance(axis2_svc_skeleton_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     printf("get instance called.\n");
    *inst = axis2_publisher_create(env);
@@ -267,7 +267,7 @@ axis2_get_instance(axis2_svc_skeleton_t **inst,
 
 AXIS2_EXPORT int 
 axis2_remove_instance(axis2_svc_skeleton_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
 	axis2_status_t status = AXIS2_FAILURE;
 

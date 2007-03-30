@@ -20,7 +20,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_error.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
 #include <axis2_utils.h>
@@ -42,7 +42,7 @@ extern "C"
      * @return array list of dll file names
      */
     AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-    axutil_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
+    axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
             axis2_char_t *pathname);
 
     /**
@@ -52,7 +52,7 @@ extern "C"
      * @return array list of contents of services or modules folder
      */
     AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-    axutil_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
+    axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
             axis2_char_t *pathname);
 
     /*

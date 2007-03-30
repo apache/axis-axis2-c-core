@@ -24,19 +24,19 @@
  *        - endpoint_uri : service endpoint uri( optional ) - if NULL default picked from wsdl used
  */
 axis2_stub_t*
-axis2_stub_interop_test_port_type_doc_service_create (const axis2_env_t *env,
+axis2_stub_interop_test_port_type_doc_service_create (const axutil_env_t *env,
                                 axis2_char_t *client_home,
                                 axis2_char_t *endpoint_uri);
 /**
  * axis2_stub_interop_test_port_type_doc_service_populate_services
  * populate the svc in stub with the service and operations
  */
-void axis2_stub_interop_test_port_type_doc_service_populate_services( axis2_stub_t *stub, const axis2_env_t *env);
+void axis2_stub_interop_test_port_type_doc_service_populate_services( axis2_stub_t *stub, const axutil_env_t *env);
 /**
  * axis2_stub_interop_test_port_type_doc_service_get_endpoint_uri_from_wsdl
  * return the endpoint URI picked from wsdl
  */
-axis2_char_t *axis2_stub_interop_test_port_type_doc_service_get_endpoint_uri_from_wsdl ( const axis2_env_t *env );
+axis2_char_t *axis2_stub_interop_test_port_type_doc_service_get_endpoint_uri_from_wsdl ( const axutil_env_t *env );
 
 
 /**
@@ -45,7 +45,7 @@ axis2_char_t *axis2_stub_interop_test_port_type_doc_service_get_endpoint_uri_fro
  * @param content0
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content0);
 
 /**
@@ -54,7 +54,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string( axis2_s
  * @param content2
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content2);
 
 /**
@@ -63,7 +63,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array( a
  * @param content4
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content4);
 
 /**
@@ -72,7 +72,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer( axis2_
  * @param content6
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content6);
 
 /**
@@ -81,7 +81,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array( 
  * @param content8
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content8);
 
 /**
@@ -90,7 +90,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float( axis2_st
  * @param content10
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content10);
 
 /**
@@ -99,7 +99,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array( ax
  * @param content12
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content12);
 
 /**
@@ -108,7 +108,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct( axis2_s
  * @param content14
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content14);
 
 /**
@@ -117,7 +117,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array( a
  * @param content16
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content16);
 
 /**
@@ -126,7 +126,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void( axis2_stu
  * @param content18
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content18);
 
 /**
@@ -135,7 +135,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64( axis2_s
  * @param content20
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content20);
 
 /**
@@ -144,7 +144,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date( axis2_stu
  * @param content22
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content22);
 
 /**
@@ -153,7 +153,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary( axi
  * @param content24
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content24);
 
 /**
@@ -162,7 +162,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal( axis2_
  * @param content26
  */
 
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean( axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean( axis2_stub_t *stub, const axutil_env_t *env  ,
                                         axiom_node_t* content26);
 
 /**
@@ -174,9 +174,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean( axis2_
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_string_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content0,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_string_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content0,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -188,9 +188,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_start( axis2_stub
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content2,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content2,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -202,9 +202,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start( axis
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_integer_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content4,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_integer_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content4,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -216,9 +216,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_start( axis2_stu
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content6,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content6,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -230,9 +230,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start( axi
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_float_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content8,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_float_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content8,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -244,9 +244,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_start( axis2_stub_
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content10,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content10,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -258,9 +258,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start( axis2
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_struct_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content12,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_struct_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content12,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -272,9 +272,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_start( axis2_stub
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content14,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content14,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -286,9 +286,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start( axis
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_void_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content16,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_void_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content16,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -300,9 +300,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_void_start( axis2_stub_t
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_base64_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content18,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_base64_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content18,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -314,9 +314,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_base64_start( axis2_stub
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_date_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content20,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_date_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content20,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -328,9 +328,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_date_start( axis2_stub_t
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content22,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content22,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -342,9 +342,9 @@ void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start( axis2_
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content24,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content24,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 
 /**
@@ -356,8 +356,8 @@ void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start( axis2_stu
  */
 
 
-void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start( axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content26,
-                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axis2_env_t* ) ,
-                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axis2_env_t*, int ) );
+void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start( axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content26,
+                                            axis2_status_t ( AXIS2_CALL *on_complete ) (struct axis2_callback *, const axutil_env_t* ) ,
+                                            axis2_status_t ( AXIS2_CALL *on_error ) (struct axis2_callback *, const axutil_env_t*, int ) );
 
 

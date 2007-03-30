@@ -24,13 +24,13 @@ main(int argc, char *argv[])
     int c;
     axutil_allocator_t *allocator;
     guththila_reader_t *red;
-    axis2_env_t *environment;
+    axutil_env_t *environment;
     guththila_t *parser;
     char *xml_buffer;
     allocator = axutil_allocator_init(NULL);
     xml_buffer = "<?xml version = \"1.0\"?><test a=\"din\">addddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd123</test>";
     environment =
-        axis2_env_create(allocator);
+        axutil_env_create(allocator);
 
     if (argc > 1)
         red = guththila_reader_create_for_file(environment, argv[1]);
@@ -187,6 +187,6 @@ main(int argc, char *argv[])
     }
     guththila_reader_free(environment, red);
     guththila_free(environment, parser);
-    axis2_env_free(environment);
+    axutil_env_free(environment);
     return 0;
 }

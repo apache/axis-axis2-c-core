@@ -37,7 +37,7 @@ extern "C"
 
 axis2_http_out_transport_info_t *AXIS2_CALL 
 axis2_iis_out_transport_info_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
 	LPEXTENSION_CONTROL_BLOCK lpECB);
 
 /**
@@ -48,7 +48,7 @@ axis2_iis_out_transport_info_create(
 void AXIS2_CALL 
 axis2_iis_out_transport_info_free_void_arg(
     void *transport_info,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t *axis2_iis_out_transport_get_content(axis2_http_out_transport_info_t *out_transport_info);
 

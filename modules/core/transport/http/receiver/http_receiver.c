@@ -48,44 +48,44 @@ axis2_http_server_impl_t;
 axis2_status_t AXIS2_CALL
 axis2_http_server_init(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_transport_in_desc_t *in_desc);
 
 axis2_status_t AXIS2_CALL
 axis2_http_server_start(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_http_server_stop(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_conf_ctx_t *AXIS2_CALL
 axis2_http_server_get_conf_ctx(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_endpoint_ref_t *AXIS2_CALL
 axis2_http_server_get_reply_to_epr(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *svc_name);
 
 axis2_bool_t AXIS2_CALL
 axis2_http_server_is_running(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void AXIS2_CALL
 axis2_http_server_free(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
 axis2_http_server_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *repo,
     const int port)
 {
@@ -145,7 +145,7 @@ axis2_http_server_create(
 void AXIS2_CALL
 axis2_http_server_free(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
@@ -179,7 +179,7 @@ axis2_http_server_free(
 axis2_status_t AXIS2_CALL
 axis2_http_server_init(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_transport_in_desc_t *in_desc)
 {
@@ -209,7 +209,7 @@ axis2_http_server_init(
 axis2_status_t AXIS2_CALL
 axis2_http_server_start(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
 
     axis2_http_server_impl_t *server_impl = NULL;
@@ -240,7 +240,7 @@ axis2_http_server_start(
 axis2_status_t AXIS2_CALL
 axis2_http_server_stop(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -258,7 +258,7 @@ axis2_http_server_stop(
 axis2_conf_ctx_t *AXIS2_CALL
 axis2_http_server_get_conf_ctx(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(server)->conf_ctx;
@@ -267,7 +267,7 @@ axis2_http_server_get_conf_ctx(
 axis2_endpoint_ref_t *AXIS2_CALL
 axis2_http_server_get_reply_to_epr(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *svc_name)
 {
     axis2_endpoint_ref_t *epr = NULL;
@@ -294,7 +294,7 @@ axis2_http_server_get_reply_to_epr(
 axis2_bool_t AXIS2_CALL
 axis2_http_server_is_running(
     axis2_transport_receiver_t *server,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -315,7 +315,7 @@ axis2_http_server_is_running(
  */
 AXIS2_EXPORT int axis2_get_instance(
     struct axis2_transport_receiver **inst,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     *inst = axis2_http_server_create(env, NULL, -1);
     if (!(*inst))
@@ -328,7 +328,7 @@ AXIS2_EXPORT int axis2_get_instance(
 
 AXIS2_EXPORT int axis2_remove_instance(
     axis2_transport_receiver_t *inst,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (inst)
     {

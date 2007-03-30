@@ -36,7 +36,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -70,11 +70,11 @@ struct woden_types_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *types_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (void *types_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * Indicates the type system used within the &lt;types&gt; element. 
@@ -84,7 +84,7 @@ struct woden_types_element_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_type_system) (void *types_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *type_system);
 
     /**
@@ -93,7 +93,7 @@ struct woden_types_element_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_type_system) (void *types_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Add a Schema object for a schema inlined or imported within 
@@ -103,7 +103,7 @@ struct woden_types_element_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_schema) (void *types_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *schema);
 
     /**
@@ -112,7 +112,7 @@ struct woden_types_element_ops
     axis2_status_t (AXIS2_CALL *
     remove_schema) (
             void *types_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct xml_schema *schema);
     
     /**
@@ -124,7 +124,7 @@ struct woden_types_element_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_schemas) (
             void *types_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * Return all Schemas where the specified namespace argument is either the
@@ -141,7 +141,7 @@ struct woden_types_element_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_schemas_with_namespace) (
             void *types_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *namespc);
 
     /**
@@ -153,7 +153,7 @@ struct woden_types_element_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_inlined_schemas) (
             void *types_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * Return all schema imports from within the &lt;types&gt; element, in the order
@@ -164,7 +164,7 @@ struct woden_types_element_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_imported_schemas) (
             void *types_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 };
 
 struct woden_types_element
@@ -177,7 +177,7 @@ struct woden_types_element
 axis2_status_t AXIS2_CALL
 woden_types_element_resolve_methods(
         woden_types_element_t *types_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

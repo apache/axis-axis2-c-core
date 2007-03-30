@@ -23,7 +23,7 @@
 #include <axutil_class_loader.h>
 #include <axutil_dir_handler.h>
 #include <axutil_dll_desc.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_file.h>
 #include <axis2_file_handler.h>

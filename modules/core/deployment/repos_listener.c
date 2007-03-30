@@ -35,12 +35,12 @@ struct axis2_repos_listener
 
 static axis2_status_t
 axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *folder_name,
     int type);
 
 AXIS2_EXTERN axis2_repos_listener_t *AXIS2_CALL
-axis2_repos_listener_create(const axis2_env_t *env)
+axis2_repos_listener_create(const axutil_env_t *env)
 {
     axis2_repos_listener_t *repos_listener = NULL;
 
@@ -71,7 +71,7 @@ axis2_repos_listener_create(const axis2_env_t *env)
  */
 
 AXIS2_EXTERN axis2_repos_listener_t *AXIS2_CALL
-axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *env,
+axis2_repos_listener_create_with_folder_name_and_dep_engine(const axutil_env_t *env,
     axis2_char_t *folder_name,
     axis2_dep_engine_t *dep_engine)
 {
@@ -111,7 +111,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *e
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -132,7 +132,7 @@ axis2_repos_listener_free(axis2_repos_listener_t *repos_listener,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_repos_listener_check_modules(axis2_repos_listener_t *repos_listener,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_char_t *module_path = NULL;
     axis2_char_t *temp_path = NULL;
@@ -150,7 +150,7 @@ axis2_repos_listener_check_modules(axis2_repos_listener_t *repos_listener,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_repos_listener_check_svcs(axis2_repos_listener_t *repos_listener,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_char_t *svc_path = NULL;
     axis2_char_t *temp_path = NULL;
@@ -168,14 +168,14 @@ axis2_repos_listener_check_svcs(axis2_repos_listener_t *repos_listener,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_repos_listener_update(axis2_repos_listener_t *repos_listener,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return axis2_ws_info_list_update(repos_listener->info_list, env);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_repos_listener_init(axis2_repos_listener_t *repos_listener,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 
@@ -201,7 +201,7 @@ axis2_repos_listener_init(axis2_repos_listener_t *repos_listener,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_repos_listener_start_listen(axis2_repos_listener_t *repos_listener,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -214,7 +214,7 @@ axis2_repos_listener_start_listen(axis2_repos_listener_t *repos_listener,
 
 static axis2_status_t
 axis2_repos_listener_search(axis2_repos_listener_t *repos_listener,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *folder_name,
     int type)
 {

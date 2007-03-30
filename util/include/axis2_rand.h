@@ -18,7 +18,7 @@
 #define AXIS2_RAND_H
 
 #include <axis2_error.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_date_time.h>
 #include <axutil_base64_binary.h>
 
@@ -68,7 +68,7 @@ axis2_rand_with_range(unsigned int *seedp,
  */
 AXIS2_EXTERN unsigned int AXIS2_CALL
 axis2_rand_get_seed_value_based_on_time(
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /** @} */
     

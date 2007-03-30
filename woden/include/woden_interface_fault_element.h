@@ -28,7 +28,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -64,12 +64,12 @@ struct woden_interface_fault_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *interface_fault_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *interface_fault_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Set the QName that represens the 'name' attribute of the interface 
@@ -80,13 +80,13 @@ struct woden_interface_fault_element_ops
     axis2_status_t (AXIS2_CALL *
     set_qname) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
     
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * Set the QName that represents the 'element' attribute of the interface 
@@ -97,13 +97,13 @@ struct woden_interface_fault_element_ops
     axis2_status_t (AXIS2_CALL *
     set_element_qname) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_element_qname) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * Returns the Schema element declaration identified by the QName in the 'element' 
@@ -118,7 +118,7 @@ struct woden_interface_fault_element_ops
     void *(AXIS2_CALL *
     get_element) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -137,13 +137,13 @@ struct woden_interface_fault_element
 
 AXIS2_EXTERN woden_interface_fault_element_t * AXIS2_CALL
 woden_interface_fault_element_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_interface_fault_element_resolve_methods(
         woden_interface_fault_element_t *interface_fault_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

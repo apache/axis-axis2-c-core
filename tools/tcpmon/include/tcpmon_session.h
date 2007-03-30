@@ -18,7 +18,7 @@
 #ifndef TCPMON_SESSION_H
 #define TCPMON_SESSION_H
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <tcpmon_entry.h>
 #include <axis2_string.h>
  
@@ -45,12 +45,12 @@ typedef struct tcpmon_session tcpmon_session_t;
  * callback functions for the tcpmon session
  */
 typedef int (*TCPMON_SESSION_NEW_ENTRY_FUNCT) 
-                 ( const axis2_env_t *env,
+                 ( const axutil_env_t *env,
                    tcpmon_entry_t* entry,
                    int status);   /* 0-started, 1-finished */
 
 typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT) 
-                   ( const axis2_env_t *env,
+                   ( const axutil_env_t *env,
                      axis2_char_t* error_message);
 
 
@@ -64,25 +64,25 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_status_t (AXIS2_CALL * 
     free)(tcpmon_session_t *session,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
 	 axis2_status_t (AXIS2_CALL *
 						  set_test_bit) (tcpmon_session_t *session,
-											  const axis2_env_t *env,
+											  const axutil_env_t *env,
 											  int test_bit);
 
 	 axis2_status_t (AXIS2_CALL *
 						  get_test_bit) (tcpmon_session_t *session,
-											  axis2_env_t *env);
+											  axutil_env_t *env);
     axis2_status_t (AXIS2_CALL *
                           set_format_bit) (tcpmon_session_t *session,
-                                              const axis2_env_t *env,
+                                              const axutil_env_t *env,
                                               int format_bit);
 
     int (AXIS2_CALL *
                     get_format_bit) (tcpmon_session_t *session,
-                                              const axis2_env_t *env);
+                                              const axutil_env_t *env);
    /**
     * configure the listening port.
     * @param session represet the type object.
@@ -92,7 +92,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_status_t (AXIS2_CALL *
 						  set_listen_port) (tcpmon_session_t *session,
-								const axis2_env_t *env,
+								const axutil_env_t *env,
 								int listen_port);
 
    /**
@@ -102,7 +102,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     int (AXIS2_CALL *
     get_listen_port) (tcpmon_session_t *session,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
   
    /**
     * configure the target port
@@ -113,7 +113,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_status_t (AXIS2_CALL *
     set_target_port) (tcpmon_session_t *session,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         int target_port);
 
    /**
@@ -123,7 +123,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     int (AXIS2_CALL *
     get_target_port) (tcpmon_session_t *session,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
    /**
     * configure the target host
@@ -134,7 +134,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_status_t (AXIS2_CALL *
     set_target_host) (tcpmon_session_t *session,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t* target_host);
 
    /**
@@ -144,7 +144,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_char_t* (AXIS2_CALL *
     get_target_host) (tcpmon_session_t *session,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
    /**
     * start the session
@@ -153,7 +153,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_status_t (AXIS2_CALL *
     start) (tcpmon_session_t *session,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
    /**
     * stop the session.
@@ -162,7 +162,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_status_t (AXIS2_CALL *
     stop) (tcpmon_session_t *session,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
  
    /**
     * set on new entry.
@@ -172,7 +172,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_status_t (AXIS2_CALL *
     on_new_entry) (tcpmon_session_t *session,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry_funct);
 
    /**
@@ -183,7 +183,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     */
     axis2_status_t (AXIS2_CALL *
     on_trans_fault) (tcpmon_session_t *session,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct);
 
 
@@ -200,7 +200,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
  * @return pointer to newly created tcpmon_session struct
  */
 tcpmon_session_t * AXIS2_CALL
-tcpmon_session_create(const axis2_env_t *env );
+tcpmon_session_create(const axutil_env_t *env );
 
 /*************************** Function macros **********************************/
 

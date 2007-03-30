@@ -28,7 +28,7 @@ struct axis2_ctx
 };
 
 AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
-axis2_ctx_create(const axis2_env_t *env)
+axis2_ctx_create(const axutil_env_t *env)
 {
     axis2_ctx_t *ctx = NULL;
 
@@ -56,7 +56,7 @@ axis2_ctx_create(const axis2_env_t *env)
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_ctx_set_property(struct axis2_ctx *ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *key,
     axis2_property_t *value)
 {
@@ -90,7 +90,7 @@ axis2_ctx_set_property(struct axis2_ctx *ctx,
 
 AXIS2_EXTERN axis2_property_t *AXIS2_CALL
 axis2_ctx_get_property(const axis2_ctx_t *ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *key)
 {
     axis2_property_t *ret = NULL;
@@ -110,7 +110,7 @@ axis2_ctx_get_property(const axis2_ctx_t *ctx,
 
 AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_ctx_get_all_properties(const axis2_ctx_t *ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return ctx->property_map;
 }
@@ -118,14 +118,14 @@ axis2_ctx_get_all_properties(const axis2_ctx_t *ctx,
 
 AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_ctx_get_property_map(const axis2_ctx_t *ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return ctx->property_map;
 }
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_ctx_free(struct axis2_ctx *ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -157,7 +157,7 @@ axis2_ctx_free(struct axis2_ctx *ctx,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_ctx_set_property_map(struct axis2_ctx *ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *map)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

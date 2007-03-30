@@ -30,7 +30,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_desc_builder.h>
@@ -52,7 +52,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /** 
      * @param grp_builder pointer to group builder
@@ -61,7 +61,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_svc_grp_t *svc_grp);
 
     /**
@@ -74,13 +74,13 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_children_qname_iterator_t *module_refs ,
                 axis2_svc_grp_t *svc_grp);
 
     AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
     axis2_svc_grp_builder_get_desc_builder(const axis2_svc_grp_builder_t *svc_grp_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates svc_grp builder struct
@@ -88,7 +88,7 @@ extern "C"
      * @return pointer to newly created service group builder
      */
     AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-    axis2_svc_grp_builder_create (const axis2_env_t *env);
+    axis2_svc_grp_builder_create (const axutil_env_t *env);
 
     /**
      * Creates svc_grp builder struct
@@ -98,7 +98,7 @@ extern "C"
      * @return pointer to newly created service group builder
      */
     AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-    axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axis2_env_t *env,
+    axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axutil_env_t *env,
         axiom_node_t *svc,
         axis2_dep_engine_t *dep_engine);
 

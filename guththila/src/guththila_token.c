@@ -24,7 +24,7 @@
 
 
 AXIS2_EXTERN guththila_token_t *
-guththila_token_create_token_buffer(axis2_env_t *environment,
+guththila_token_create_token_buffer(axutil_env_t *environment,
         int size)
 {
     guththila_token_t *tok =
@@ -36,7 +36,7 @@ guththila_token_create_token_buffer(axis2_env_t *environment,
 
 
 AXIS2_EXTERN void
-guththila_token_free (axis2_env_t * environment,
+guththila_token_free (axutil_env_t * environment,
 					  guththila_token_t * tok)
 {
     if (tok)
@@ -62,7 +62,7 @@ guththila_token_exception()
 
 
 AXIS2_EXTERN int
-guththila_token_length(axis2_env_t * environment,
+guththila_token_length(axutil_env_t * environment,
         guththila_token_t * tok)
 {
     if (tok->end)
@@ -74,7 +74,7 @@ guththila_token_length(axis2_env_t * environment,
 
 
 AXIS2_EXTERN guththila_token_t *
-guththila_token_grow(axis2_env_t * environment,
+guththila_token_grow(axutil_env_t * environment,
         guththila_token_t * tok)
 {
 	guththila_token_t *dest;
@@ -92,7 +92,7 @@ guththila_token_grow(axis2_env_t * environment,
 
 
 AXIS2_EXTERN guththila_token_t *
-guththila_token_append(axis2_env_t * environment,
+guththila_token_append(axutil_env_t * environment,
         guththila_token_t * tok)
 {
     if (++(tok->last) > (tok->size))
@@ -102,7 +102,7 @@ guththila_token_append(axis2_env_t * environment,
 
 
 AXIS2_EXTERN guththila_token_t *
-guththila_token_last(axis2_env_t * environment,
+guththila_token_last(axutil_env_t * environment,
         guththila_token_t * tok)
 {
     if (tok->last < 0)
@@ -112,14 +112,14 @@ guththila_token_last(axis2_env_t * environment,
 
 
 AXIS2_EXTERN int
-guththila_token_count(axis2_env_t * environment,
+guththila_token_count(axutil_env_t * environment,
         guththila_token_t * tok)
 {
     return tok->last;
 }
 
 AXIS2_EXTERN guththila_char_t *
-guththila_token_char_ref(axis2_env_t * environment,
+guththila_token_char_ref(axutil_env_t * environment,
         guththila_char_t * buffer)
 {
     int len = 0;
@@ -183,7 +183,7 @@ guththila_token_char_ref(axis2_env_t * environment,
 
 
 AXIS2_EXTERN guththila_char_t *
-guththila_token_to_string(axis2_env_t * environment,
+guththila_token_to_string(axutil_env_t * environment,
         guththila_token_t * tok, int unicode)
 {
     if (tok)
@@ -223,7 +223,7 @@ guththila_token_to_string(axis2_env_t * environment,
 
 
 AXIS2_EXTERN void
-guththila_token_relocate(axis2_env_t * environment,
+guththila_token_relocate(axutil_env_t * environment,
         guththila_token_t * tok, int offset)
 {
     tok->start -= offset;
@@ -232,7 +232,7 @@ guththila_token_relocate(axis2_env_t * environment,
 
 
 AXIS2_EXTERN int
-guththila_token_compare(axis2_env_t * environment,
+guththila_token_compare(axutil_env_t * environment,
         guththila_token_t * tok, const guththila_char_t * s,
         int n, int unicode_state)
 {
@@ -248,7 +248,7 @@ guththila_token_compare(axis2_env_t * environment,
 
 
 AXIS2_EXTERN int
-guththila_token_length_utf16(axis2_env_t * environment,
+guththila_token_length_utf16(axutil_env_t * environment,
         unsigned int utf16_ch)
 {
     int length;
@@ -271,7 +271,7 @@ guththila_token_length_utf16(axis2_env_t * environment,
 
 
 AXIS2_EXTERN guththila_char_t *
-guththila_token_build_utf8(axis2_env_t * environment,
+guththila_token_build_utf8(axutil_env_t * environment,
         unsigned int utf16_ch, int length)
 {
     guththila_UTF8_char mask = 0;
@@ -320,7 +320,7 @@ guththila_token_build_utf8(axis2_env_t * environment,
 
 
 AXIS2_EXTERN guththila_char_t *
-guththila_token_convert_utf16_to_utf8(axis2_env_t * environment,
+guththila_token_convert_utf16_to_utf8(axutil_env_t * environment,
         guththila_char_t * buffer, int length)
 {
     unsigned int utf16_char = 0;
@@ -347,7 +347,7 @@ guththila_token_convert_utf16_to_utf8(axis2_env_t * environment,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-guththila_relocate_tokens(axis2_env_t *environment,
+guththila_relocate_tokens(axutil_env_t *environment,
 						  axis2_stack_t *stack,
 						  int offset)
 {

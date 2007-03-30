@@ -55,23 +55,23 @@ typedef struct w2c_engine_impl
 
 axis2_status_t AXIS2_CALL 
 w2c_engine_free (w2c_engine_t *engine, 
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 w2c_engine_generate(w2c_engine_t *engine, 
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
 /* private methods */
 static axis2_status_t
 w2c_engine_load_extension (w2c_engine_impl_t *engine_impl,
-                   const axis2_env_t *env);
+                   const axutil_env_t *env);
 static axis2_char_t*
-w2c_engine_get_base_uri ( axis2_char_t *current_uri, const axis2_env_t *env);
+w2c_engine_get_base_uri ( axis2_char_t *current_uri, const axutil_env_t *env);
 
 /************************** End of function prototypes ************************/
 
 AXIS2_EXTERN w2c_engine_t* AXIS2_CALL 
-w2c_engine_create_with_parser (const axis2_env_t *env,
+w2c_engine_create_with_parser (const axutil_env_t *env,
                            w2c_cmdline_option_parser_t *parser)
 {
     w2c_engine_impl_t *engine_impl = NULL;
@@ -155,7 +155,7 @@ w2c_engine_create_with_parser (const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL 
 w2c_engine_free (w2c_engine_t *engine, 
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     w2c_engine_impl_t *engine_impl = NULL;
     
@@ -194,7 +194,7 @@ w2c_engine_free (w2c_engine_t *engine,
 
 axis2_status_t AXIS2_CALL 
 w2c_engine_generate(w2c_engine_t *engine, 
-           const axis2_env_t *env)
+           const axutil_env_t *env)
 {
     w2c_engine_impl_t *engine_impl = NULL;
     int size  = 0;
@@ -303,7 +303,7 @@ w2c_engine_generate(w2c_engine_t *engine,
 /* private methods */
 static axis2_status_t
 w2c_engine_load_extension (w2c_engine_impl_t *engine_impl,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     axutil_array_list_t *extension_names = NULL;
     w2c_config_property_loader_t *prop_loader = NULL;
@@ -377,7 +377,7 @@ w2c_engine_load_extension (w2c_engine_impl_t *engine_impl,
 }
 
 static axis2_char_t*
-w2c_engine_get_base_uri ( axis2_char_t *current_uri, const axis2_env_t *env)
+w2c_engine_get_base_uri ( axis2_char_t *current_uri, const axutil_env_t *env)
 {
     axis2_char_t *base_uri = NULL;
     int index = 0;

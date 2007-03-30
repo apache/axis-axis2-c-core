@@ -22,7 +22,7 @@
 /************************* overrided functions ********************************/
 axis2_char_t* AXIS2_CALL
 w2c_cskel_header_writer_create_out_file(w2c_writer_t *writer,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        axis2_char_t* package_name,
        axis2_char_t* file_name)
 {
@@ -48,7 +48,7 @@ w2c_cskel_header_writer_create_out_file(w2c_writer_t *writer,
 /****************** standard create and delete for DLL ************************/
 AXIS2_EXPORT int
 axis2_get_instance(w2c_writer_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     w2c_writer_impl_t* writer_impl = NULL;
  
@@ -70,7 +70,7 @@ axis2_get_instance(w2c_writer_t **inst,
 
 AXIS2_EXPORT int
 axis2_remove_instance(w2c_writer_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
    axis2_status_t status = AXIS2_FAILURE;
 

@@ -47,53 +47,53 @@ struct woden_wsdl10_soap_address_exts_impl
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_free(
     void *address_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_super_objs(
     void *address_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_type(
     void *address_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_component_exts_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_get_base_impl(
     void *address_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_set_soap_address(
     void *address_exts,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *address);
 
 axis2_uri_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_get_soap_address(
     void *address_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_get_soap_modules(
     void *address_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_wsdl10_soap_address_exts_t *
 create(
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t
 woden_wsdl10_soap_address_exts_free_ops(
     void *address_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_wsdl10_soap_address_exts_t * AXIS2_CALL
 woden_wsdl10_soap_address_exts_to_component_exts(
     void *address_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -118,7 +118,7 @@ woden_wsdl10_soap_address_exts_to_component_exts(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_wsdl10_soap_address_exts_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -181,7 +181,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_wsdl10_soap_address_exts_t * AXIS2_CALL
-woden_wsdl10_soap_address_exts_create(const axis2_env_t *env)
+woden_wsdl10_soap_address_exts_create(const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -207,7 +207,7 @@ woden_wsdl10_soap_address_exts_create(const axis2_env_t *env)
 static axis2_status_t
 woden_wsdl10_soap_address_exts_free_ops(
     void *address_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -227,7 +227,7 @@ woden_wsdl10_soap_address_exts_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_free(void *address_exts,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -282,7 +282,7 @@ woden_wsdl10_soap_address_exts_free(void *address_exts,
 axis2_hash_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_super_objs(
     void *address_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -295,7 +295,7 @@ woden_wsdl10_soap_address_exts_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_type(
     void *address_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -308,7 +308,7 @@ woden_wsdl10_soap_address_exts_type(
 woden_component_exts_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_get_base_impl(
     void *address_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -321,7 +321,7 @@ woden_wsdl10_soap_address_exts_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_resolve_methods(
     woden_wsdl10_soap_address_exts_t *address_exts,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl10_soap_address_exts_t *address_exts_impl,
     axis2_hash_t *methods)
 {
@@ -350,7 +350,7 @@ woden_wsdl10_soap_address_exts_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_address_exts_set_soap_address(
     void *address_exts,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *address)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
@@ -368,7 +368,7 @@ woden_wsdl10_soap_address_exts_set_soap_address(
 axis2_uri_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_get_soap_address(
     void *address_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
 
@@ -381,7 +381,7 @@ woden_wsdl10_soap_address_exts_get_soap_address(
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_address_exts_get_soap_modules(
     void *address_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_address_exts_impl_t *address_exts_impl = NULL;
     axutil_array_list_t *soap_mods = NULL;

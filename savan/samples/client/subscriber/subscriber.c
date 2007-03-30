@@ -20,19 +20,19 @@
 #include <axiom_soap.h>
 #include <axis2_client.h>
 #include <axis2_svc_client.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #include <savan_client.h>
 #include <savan_constants.h>
 
-void init_event_source(axis2_env_t* env, axis2_char_t *home);
+void init_event_source(axutil_env_t* env, axis2_char_t *home);
 
 axiom_node_t *
-build_om_payload_for_echo_svc(const axis2_env_t *env);
+build_om_payload_for_echo_svc(const axutil_env_t *env);
 
 int main(int argc, char** argv)
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -44,14 +44,14 @@ int main(int argc, char** argv)
     axis2_char_t *expire_time = NULL;
 
     /* Set up the environment */
-    env = axis2_env_create_all("subscriber.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("subscriber.log", AXIS2_LOG_LEVEL_TRACE);
 
     printf("\n***************************************\n");
     printf("Starting Savan subscriber...\n");
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     
-    init_event_source((axis2_env_t*)env, client_home);
+    init_event_source((axutil_env_t*)env, client_home);
     
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/publisher";
@@ -145,7 +145,7 @@ int main(int argc, char** argv)
 }
 
 
-void init_event_source(axis2_env_t* env, axis2_char_t *home)
+void init_event_source(axutil_env_t* env, axis2_char_t *home)
 {
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
@@ -209,7 +209,7 @@ void init_event_source(axis2_env_t* env, axis2_char_t *home)
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_payload_for_echo_svc(const axis2_env_t *env)
+build_om_payload_for_echo_svc(const axutil_env_t *env)
 {
     axiom_node_t *echo_om_node = NULL;
     axiom_element_t* echo_om_ele = NULL;

@@ -55,49 +55,49 @@ struct xml_schema_documentation_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *documentation,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *documentation,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_types_t (AXIS2_CALL *
     get_type) (
             void *documentation,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_obj_t *(AXIS2_CALL *
     get_base_impl) (void *documentation,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
     
     axis2_char_t *(AXIS2_CALL *
     get_source)(void *documentation,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_source) (void *documentation,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_char_t *source);
 
     axiom_child_element_iterator_t *(AXIS2_CALL *
     get_markup) (void *documentation,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_markup) (void *documentation,
-                 const axis2_env_t *env,
+                 const axutil_env_t *env,
                  axiom_child_element_iterator_t *markup);
                  
     axis2_char_t *(AXIS2_CALL *
     get_language)(
             void *documentation,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     axis2_status_t (AXIS2_CALL *
     set_language)(
             void *documentation,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *language);            
 };
 
@@ -108,7 +108,7 @@ struct xml_schema_documentation
 };
 
 AXIS2_EXTERN xml_schema_documentation_t * AXIS2_CALL
-xml_schema_documentation_create(const axis2_env_t *env);
+xml_schema_documentation_create(const axutil_env_t *env);
 
 
 /*********************** macros ***********************************************/

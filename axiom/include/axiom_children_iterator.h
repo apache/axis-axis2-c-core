@@ -47,7 +47,7 @@ extern "C"
      */
 
     AXIS2_EXTERN  axiom_children_iterator_t * AXIS2_CALL
-    axiom_children_iterator_create(const axis2_env_t *env,
+    axiom_children_iterator_create(const axutil_env_t *env,
             axiom_node_t *current_child);
 
     /**
@@ -55,7 +55,7 @@ extern "C"
     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_children_iterator_free(axiom_children_iterator_t *iterator,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
     * Removes from the underlying collection the last element returned by the
@@ -66,7 +66,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_children_iterator_remove(axiom_children_iterator_t *iterator,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * @returns true if the iteration has more elements. In other
@@ -76,7 +76,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_children_iterator_has_next(axiom_children_iterator_t *iterator,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Returns the next element in the iteration. Returns null if there are
@@ -84,7 +84,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_children_iterator_next(axiom_children_iterator_t *iterator,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Resets the Iterator. This moves the cursor back to the initial.
@@ -94,7 +94,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_children_iterator_reset(axiom_children_iterator_t *iterator,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     /************ Macros *********************************************/

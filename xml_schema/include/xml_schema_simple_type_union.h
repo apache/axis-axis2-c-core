@@ -47,48 +47,48 @@ typedef struct xml_schema_simple_type_union_ops
 struct xml_schema_simple_type_union_ops
 {
     axis2_status_t (AXIS2_CALL *
-    free)(void *sim_type_union, const axis2_env_t *env);
+    free)(void *sim_type_union, const axutil_env_t *env);
 
     xml_schema_simple_type_content_t *(AXIS2_CALL *
     get_base_impl)(
             void *sim_type_union,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                     
     axis2_hash_t*(AXIS2_CALL *
     super_objs)(
             void *sim_type_union,
-            const axis2_env_t *env);                    
+            const axutil_env_t *env);                    
     
     xml_schema_types_t (AXIS2_CALL *
     get_type)(
             void *sim_type_union,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_obj_collection_t*(AXIS2_CALL *
     get_base_types)(
             void *sim_type_union,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_member_types_source)(
             void *sim_type_union,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *member_types_source);
     
     axis2_char_t* (AXIS2_CALL *
     get_member_types_source)(
             void *sim_type_union,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                     
     axutil_array_list_t* (AXIS2_CALL *
     get_member_types_qnames)(
             void *sim_type_union,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                 
     axis2_status_t (AXIS2_CALL *
     set_member_types_qnames)(
             void *sim_type_union,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axutil_array_list_t *qns);                
                 
 };
@@ -108,7 +108,7 @@ struct xml_schema_simple_type_union
  * (any).
  */
 AXIS2_EXTERN xml_schema_simple_type_union_t * AXIS2_CALL
-xml_schema_simple_type_union_create(const axis2_env_t *env);
+xml_schema_simple_type_union_create(const axutil_env_t *env);
 
 #define XML_SCHEMA_SIMPLE_TYPE_UNION_FREE(sim_type_union, env) \
       (((xml_schema_simple_type_union_t *) sim_type_union)->ops->\

@@ -18,7 +18,7 @@
 #ifndef TCPMON_UTIL_H
 #define TCPMON_UTIL_H
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_string.h>
 
 /**
@@ -43,7 +43,7 @@ extern "C"
  * @param data to be formatted
  */
 axis2_char_t* 
-tcpmon_util_format_as_xml (const axis2_env_t *env, axis2_char_t *data, int format);
+tcpmon_util_format_as_xml (const axutil_env_t *env, axis2_char_t *data, int format);
 
 /** @} */
 

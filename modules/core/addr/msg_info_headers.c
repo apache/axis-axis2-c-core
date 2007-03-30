@@ -49,7 +49,7 @@ struct axis2_msg_info_headers
 };
 
 AXIS2_EXTERN axis2_msg_info_headers_t *AXIS2_CALL
-axis2_msg_info_headers_create(const axis2_env_t *env,
+axis2_msg_info_headers_create(const axutil_env_t *env,
     axis2_endpoint_ref_t *to,
     const axis2_char_t *action)
 {
@@ -105,7 +105,7 @@ axis2_msg_info_headers_create(const axis2_env_t *env,
  */
 AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
 axis2_msg_info_headers_get_to(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->to;
 }
@@ -113,7 +113,7 @@ axis2_msg_info_headers_get_to(const axis2_msg_info_headers_t *msg_info_headers,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_to(
     struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *to)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -131,14 +131,14 @@ axis2_msg_info_headers_set_to(
 
 AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
 axis2_msg_info_headers_get_from(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->from;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_from(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *from)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -148,14 +148,14 @@ axis2_msg_info_headers_set_from(struct axis2_msg_info_headers *msg_info_headers,
 
 AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
 axis2_msg_info_headers_get_reply_to(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->reply_to;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_reply_to(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *reply_to)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -165,14 +165,14 @@ axis2_msg_info_headers_set_reply_to(struct axis2_msg_info_headers *msg_info_head
 
 AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
 axis2_msg_info_headers_get_fault_to(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->fault_to;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_fault_to(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_endpoint_ref_t *fault_to)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -182,14 +182,14 @@ axis2_msg_info_headers_set_fault_to(struct axis2_msg_info_headers *msg_info_head
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_msg_info_headers_get_action(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->action;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *action)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -207,14 +207,14 @@ axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_header
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_msg_info_headers_get_message_id(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->message_id;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_message_id(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *message_id)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -240,14 +240,14 @@ axis2_msg_info_headers_set_message_id(struct axis2_msg_info_headers *msg_info_he
 
 AXIS2_EXTERN axis2_relates_to_t *AXIS2_CALL
 axis2_msg_info_headers_get_relates_to(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->relates_to;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_relates_to(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_relates_to_t *relates_to)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -257,14 +257,14 @@ axis2_msg_info_headers_set_relates_to(struct axis2_msg_info_headers *msg_info_he
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_msg_info_headers_get_all_ref_params(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->ref_params;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_add_ref_param(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ref_param)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -287,7 +287,7 @@ axis2_msg_info_headers_add_ref_param(struct axis2_msg_info_headers *msg_info_hea
 AXIS2_EXTERN void AXIS2_CALL
 axis2_msg_info_headers_free(
     struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -334,7 +334,7 @@ axis2_msg_info_headers_free(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_reply_to_none(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_bool_t none)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -344,14 +344,14 @@ axis2_msg_info_headers_set_reply_to_none(struct axis2_msg_info_headers *msg_info
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_msg_info_headers_get_reply_to_none(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->reply_to_none;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_reply_to_anonymous(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_bool_t anonymous)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -361,14 +361,14 @@ axis2_msg_info_headers_set_reply_to_anonymous(struct axis2_msg_info_headers *msg
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_msg_info_headers_get_reply_to_anonymous(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->reply_to_anonymous;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_fault_to_none(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_bool_t none)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -378,14 +378,14 @@ axis2_msg_info_headers_set_fault_to_none(struct axis2_msg_info_headers *msg_info
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_msg_info_headers_get_fault_to_none(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->fault_to_none;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_info_headers_set_fault_to_anonymous(struct axis2_msg_info_headers *msg_info_headers,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_bool_t anonymous)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -395,7 +395,7 @@ axis2_msg_info_headers_set_fault_to_anonymous(struct axis2_msg_info_headers *msg
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_msg_info_headers_get_fault_to_anonymous(const axis2_msg_info_headers_t *msg_info_headers,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return msg_info_headers->fault_to_anonymous;
 }

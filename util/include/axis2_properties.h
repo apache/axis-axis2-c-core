@@ -20,7 +20,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_error.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_hash.h>
 #include <stdio.h>
 
@@ -42,7 +42,7 @@ extern "C"
      * @return properties newly created properties
      */
     AXIS2_EXTERN axis2_properties_t * AXIS2_CALL
-    axis2_properties_create(const axis2_env_t *env);
+    axis2_properties_create(const axutil_env_t *env);
 
     /**
      * free w2c_properties.
@@ -53,7 +53,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_properties_free(axis2_properties_t *properties,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * get string value for property with specified key.
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_properties_get_property(axis2_properties_t *properties,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *key);
     /**
      * set a property ( key, value) pair.
@@ -77,7 +77,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_properties_set_property(axis2_properties_t *properties,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *key,
         axis2_char_t *value);
     /**
@@ -88,7 +88,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
     axis2_properties_get_all(axis2_properties_t *properties,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * load properties
@@ -100,7 +100,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_properties_load(axis2_properties_t *properties,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *input_filename);
 
     /**
@@ -113,7 +113,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_properties_store(axis2_properties_t *properites,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         FILE *output);
     
     /*************************** End of function macros ***************************/

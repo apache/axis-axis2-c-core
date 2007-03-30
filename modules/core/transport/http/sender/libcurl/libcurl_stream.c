@@ -17,37 +17,37 @@ libcurl_stream_impl_t;
 axis2_status_t AXIS2_CALL
 libcurl_stream_free(
     axis2_stream_t *stream,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_stream_type_t AXIS2_CALL
 libcurl_stream_get_type(
     axis2_stream_t *stream,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 int AXIS2_CALL
 libcurl_stream_write(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count);
 
 int AXIS2_CALL
 libcurl_stream_read(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer,
     size_t count);
 
 int AXIS2_CALL
 libcurl_stream_skip(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int count);
 
 int AXIS2_CALL
 libcurl_stream_get_char(
     axis2_stream_t *stream,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************* End of function headers ****************************/
 /*
@@ -55,7 +55,7 @@ libcurl_stream_get_char(
  */
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_libcurl(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *buffer,
 	unsigned int size)
 {
@@ -88,7 +88,7 @@ axis2_stream_create_libcurl(
 void AXIS2_CALL
 libcurl_stream_free(
     axis2_stream_t *stream,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     libcurl_stream_impl_t *stream_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
@@ -106,7 +106,7 @@ libcurl_stream_free(
 int AXIS2_CALL
 libcurl_stream_read(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer,
     size_t count)
 {
@@ -154,7 +154,7 @@ libcurl_stream_read(
 int AXIS2_CALL
 libcurl_stream_write(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count)
 {
@@ -165,7 +165,7 @@ libcurl_stream_write(
 int AXIS2_CALL
 libcurl_stream_skip(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int count)
 {
 	return 0;
@@ -174,7 +174,7 @@ libcurl_stream_skip(
 int AXIS2_CALL
 libcurl_stream_get_char(
     axis2_stream_t *stream,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
 	return 0;
 }

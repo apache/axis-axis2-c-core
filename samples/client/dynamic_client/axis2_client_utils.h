@@ -26,7 +26,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 
@@ -49,7 +49,7 @@ extern "C"
      * @return axis2_svc pointer to newly created service
      */
     AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-    axis2_client_utils_create_axis2_svc(const axis2_env_t *env,
+    axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
         const axis2_uri_t *wsdl_uri,
         const axis2_qname_t *wsdl_svc_qname,
         const axis2_char_t *ep_name,

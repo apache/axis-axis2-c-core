@@ -144,25 +144,25 @@ struct woden_wsdl10_reader_impl
 axis2_status_t AXIS2_CALL
 woden_wsdl10_reader_free(
     void *reader,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_wsdl10_reader_read_wsdl(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *root_node,
     const axis2_char_t *uri);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_reader_set_ext_registry(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl10_ext_registry_t *ext_reg);
 
 woden_wsdl10_ext_registry_t *AXIS2_CALL
 woden_wsdl10_reader_get_ext_registry(
     void *reader,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* Parse the attributes and child elements of the <description> element.
  * As per the WSDL 2.0 spec, the child elements must be in the
@@ -176,7 +176,7 @@ woden_wsdl10_reader_get_ext_registry(
 static void *
 parse_desc(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *document_base_uri,
     axiom_node_t *desc_el_node,
     axis2_hash_t *wsdl_modules);
@@ -184,14 +184,14 @@ parse_desc(
 static void *
 parse_documentation(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *doc_el_node,
     void *desc);
 
 static void *
 parse_import(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *import_el_node,
     void *desc,
     axis2_hash_t *wsdl_modules);
@@ -199,7 +199,7 @@ parse_import(
 static void *
 parse_include(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *include_el_node,
     void *desc,
     axis2_hash_t *wsdl_modules);
@@ -213,14 +213,14 @@ parse_include(
 static void *
 parse_types(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *types_el_node,
     void *desc);
 
 static void *
 parse_schema_inline(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *schema_el_node,
     void *desc);
 
@@ -240,14 +240,14 @@ parse_schema_inline(
 static void *
 parse_schema_import(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *import_el_node,
     void *desc);
 
 static void *
 parse_part(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *part_el_node,
     void *desc,
     void *parent);
@@ -255,21 +255,21 @@ parse_part(
 static void *
 parse_msg_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *msg_el_node,
     void *desc);
 
 static void *
 parse_interface(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *interface_el_node,
     void *desc);
 
 static void *
 parse_interface_op(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *op_el_node,
     void *desc,
     void *parent);
@@ -277,7 +277,7 @@ parse_interface_op(
 static void *
 parse_interface_fault_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *fault_ref_el_node,
     void *desc,
     void *parent);
@@ -285,7 +285,7 @@ parse_interface_fault_ref(
 static void *
 parse_interface_msg_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *msg_ref_el_node,
     void *desc,
     void *parent);
@@ -293,14 +293,14 @@ parse_interface_msg_ref(
 static void *
 parse_binding(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *binding_el_node,
     void *desc);
 
 static void *
 parse_binding_op(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *op_el_node,
     void *desc,
     void *parent);
@@ -308,7 +308,7 @@ parse_binding_op(
 static void *
 parse_binding_fault_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *fault_ref_el_node,
     void *desc,
     void *parent);
@@ -316,7 +316,7 @@ parse_binding_fault_ref(
 static void *
 parse_binding_msg_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *msg_ref_el_node,
     void *desc,
     void *parent);
@@ -324,14 +324,14 @@ parse_binding_msg_ref(
 static void *
 parse_svc(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *svc_el_node,
     void *desc);
 
 static void *
 parse_endpoint(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *endpoint_el_node,
     void *desc,
     void *parent);
@@ -339,7 +339,7 @@ parse_endpoint(
 static void *
 parse_feature(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *feature_el_node,
     void *desc,
     void *parent);
@@ -371,7 +371,7 @@ parse_feature(
 static void *
 parse_property(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *property_el_node,
     void *desc,
     void *parent);
@@ -385,7 +385,7 @@ parse_property(
 static axis2_status_t
 parse_ext_attributes(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *om_el_node,
     axis2_char_t *wsdl_class,
     void *wsdl_obj,
@@ -394,7 +394,7 @@ parse_ext_attributes(
 static void *
 parse_ext_element(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     void *parent,
     axiom_node_t *el_node,
@@ -413,7 +413,7 @@ parse_ext_element(
 static axis2_status_t
 check_element_qname(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *el_node,
     axis2_qname_t *qname);
 
@@ -426,7 +426,7 @@ check_element_qname(
 static void *
 get_wsdl_from_location(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *location_uri_str,
     void *desc,
     axis2_hash_t *wsdl_modules);
@@ -438,12 +438,12 @@ get_wsdl_from_location(
  */
 static axis2_uri_t *
 get_uri(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *uri_str);
 
 static woden_wsdl10_reader_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_reader_impl_t *reader_impl = NULL;
 
@@ -474,7 +474,7 @@ create(
 
 AXIS2_EXTERN woden_wsdl10_reader_t * AXIS2_CALL
 woden_wsdl10_reader_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_reader_impl_t *reader_impl = NULL;
 
@@ -487,7 +487,7 @@ woden_wsdl10_reader_create(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_reader_free(
     void *reader,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_reader_impl_t *reader_impl = NULL;
 
@@ -526,7 +526,7 @@ woden_wsdl10_reader_free(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_reader_set_ext_registry(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl10_ext_registry_t *ext_reg)
 {
     woden_wsdl10_reader_impl_t *reader_impl = NULL;
@@ -547,7 +547,7 @@ woden_wsdl10_reader_set_ext_registry(
 woden_wsdl10_ext_registry_t *AXIS2_CALL
 woden_wsdl10_reader_get_ext_registry(
     void *reader,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_reader_impl_t *reader_impl = NULL;
 
@@ -560,7 +560,7 @@ woden_wsdl10_reader_get_ext_registry(
 void *AXIS2_CALL
 woden_wsdl10_reader_read_wsdl(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *root_node,
     const axis2_char_t *uri)
 {
@@ -599,7 +599,7 @@ woden_wsdl10_reader_read_wsdl(
 static void *
 parse_desc(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *document_base_uri,
     axiom_node_t *desc_el_node,
     axis2_hash_t *wsdl_modules)
@@ -889,7 +889,7 @@ parse_desc(
 static void *
 parse_documentation(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *doc_el_node,
     void *desc)
 {
@@ -942,7 +942,7 @@ parse_documentation(
 static void *
 parse_import(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *import_el_node,
     void *desc,
     axis2_hash_t *wsdl_modules)
@@ -998,7 +998,7 @@ parse_import(
 static void *
 parse_include(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *include_el_node,
     void *desc,
     axis2_hash_t *wsdl_modules)
@@ -1047,7 +1047,7 @@ parse_include(
 static void *
 parse_types(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *types_el_node,
     void *desc)
 {
@@ -1141,7 +1141,7 @@ parse_types(
 static void *
 parse_schema_inline(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *schema_el_node,
     void *desc)
 {
@@ -1220,7 +1220,7 @@ parse_schema_inline(
 static void *
 parse_schema_import(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *import_el_node,
     void *desc)
 {
@@ -1357,7 +1357,7 @@ parse_schema_import(
 static void *
 parse_msg_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *msg_el_node,
     void *desc)
 {
@@ -1462,7 +1462,7 @@ parse_msg_ref(
 static void *
 parse_part(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *part_el_node,
     void *desc,
     void *parent)
@@ -1582,7 +1582,7 @@ parse_part(
 static void *
 parse_interface(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *interface_el_node,
     void *desc)
 {
@@ -1735,7 +1735,7 @@ parse_interface(
 static void *
 parse_interface_op(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *op_el_node,
     void *desc,
     void *parent)
@@ -1939,7 +1939,7 @@ parse_interface_op(
 static void *
 parse_interface_fault_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *fault_ref_el_node,
     void *desc,
     void *parent)
@@ -2069,7 +2069,7 @@ parse_interface_fault_ref(
 static void *
 parse_interface_msg_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *msg_ref_el_node,
     void *desc,
     void *parent)
@@ -2236,7 +2236,7 @@ parse_interface_msg_ref(
 static void *
 parse_binding(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *binding_el_node,
     void *desc)
 {
@@ -2416,7 +2416,7 @@ parse_binding(
 static void *
 parse_binding_op(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *op_el_node,
     void *desc,
     void *parent)
@@ -2605,7 +2605,7 @@ parse_binding_op(
 static void *
 parse_binding_fault_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *fault_ref_el_node,
     void *desc,
     void *parent)
@@ -2833,7 +2833,7 @@ parse_binding_fault_ref(
 static void *
 parse_binding_msg_ref(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *msg_ref_el_node,
     void *desc,
     void *parent)
@@ -3021,7 +3021,7 @@ parse_binding_msg_ref(
 static void *
 parse_svc(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *svc_el_node,
     void *desc)
 
@@ -3185,7 +3185,7 @@ parse_svc(
 static void *
 parse_endpoint(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *endpoint_el_node,
     void *desc,
     void *parent)
@@ -3346,7 +3346,7 @@ parse_endpoint(
 static void *
 parse_feature(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *feature_el_node,
     void *desc,
     void *parent)
@@ -3475,7 +3475,7 @@ parse_feature(
 static void *
 parse_property(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *property_el_node,
     void *desc,
     void *parent)
@@ -3624,7 +3624,7 @@ parse_property(
 static axis2_status_t
 parse_ext_attributes(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *om_el_node,
     axis2_char_t *wsdl_class,
     void *wsdl_obj,
@@ -3717,7 +3717,7 @@ parse_ext_attributes(
 static void *
 parse_ext_element(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     void *parent,
     axiom_node_t *el_node,
@@ -3777,7 +3777,7 @@ parse_ext_element(
 static axis2_status_t
 check_element_qname(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *el_node,
     axis2_qname_t *qname)
 {
@@ -3798,7 +3798,7 @@ check_element_qname(
 static void *
 get_wsdl_from_location(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *location_uri_str,
     void *desc,
     axis2_hash_t *wsdl_modules)
@@ -3871,7 +3871,7 @@ get_wsdl_from_location(
  */
 static axis2_uri_t *
 get_uri(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *uri_str)
 {
     AXIS2_ENV_CHECK(env, NULL);

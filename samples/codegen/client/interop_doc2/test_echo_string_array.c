@@ -19,7 +19,7 @@
 
 int main(int argc, char** argv)
 {
-    axis2_env_t* env = NULL;
+    axutil_env_t* env = NULL;
     axis2_char_t* client_home = NULL;
 
     axis2_char_t* endpoint_uri = NULL;
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 
     endpoint_uri = "http://localhost:9090/axis2/services/interop_doc2";
 
-    env = axis2_env_create_all("codegen_utest_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("codegen_utest_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");

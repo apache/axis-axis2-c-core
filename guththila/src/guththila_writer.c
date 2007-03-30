@@ -19,7 +19,7 @@
 
 
 AXIS2_EXTERN guththila_writer_t * AXIS2_CALL
-guththila_writer_create_for_file(axis2_env_t *env, char *fp)
+guththila_writer_create_for_file(axutil_env_t *env, char *fp)
 {
     guththila_writer_impl_t *wt = NULL;
     if (!fp)
@@ -33,7 +33,7 @@ guththila_writer_create_for_file(axis2_env_t *env, char *fp)
 }
 
 AXIS2_EXTERN guththila_writer_t * AXIS2_CALL
-guththila_writer_create_for_memory(axis2_env_t *env)
+guththila_writer_create_for_memory(axutil_env_t *env)
 {
     guththila_writer_impl_t *wt = NULL;
 
@@ -51,7 +51,7 @@ guththila_writer_create_for_memory(axis2_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-guththila_writer_free(axis2_env_t *env, guththila_writer_t *wt)
+guththila_writer_free(axutil_env_t *env, guththila_writer_t *wt)
 {
     if (wt)
     {
@@ -73,7 +73,7 @@ guththila_writer_free(axis2_env_t *env, guththila_writer_t *wt)
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-guththila_writer_write(axis2_env_t *env,
+guththila_writer_write(axutil_env_t *env,
 					   char *buffer, int offset,
 					   int length, guththila_writer_t *wt)
 {
@@ -106,7 +106,7 @@ guththila_writer_write(axis2_env_t *env,
 
 
 AXIS2_EXTERN char * AXIS2_CALL
-guththila_writer_get_buffer(axis2_env_t *env,
+guththila_writer_get_buffer(axutil_env_t *env,
         guththila_writer_t *wt)
 {
     guththila_writer_impl_t *writer_impl = NULL;
@@ -121,7 +121,7 @@ guththila_writer_get_buffer(axis2_env_t *env,
 }
 
 AXIS2_EXTERN unsigned int AXIS2_CALL
-guththila_writer_get_buffer_size (axis2_env_t *env,
+guththila_writer_get_buffer_size (axutil_env_t *env,
 								  guththila_writer_t *wt)
 {
 	guththila_writer_impl_t *writer_impl = NULL;

@@ -20,7 +20,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_error.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <string.h>
 
 #ifdef __cplusplus
@@ -44,7 +44,7 @@ extern "C"
      * @return a pointer to newly created string struct
      */
     AXIS2_EXTERN axis2_string_t * AXIS2_CALL
-    axis2_string_create(const axis2_env_t *env,
+    axis2_string_create(const axutil_env_t *env,
         const axis2_char_t *str);
     
     /**
@@ -55,7 +55,7 @@ extern "C"
      * @return a pointer to newly created string struct
      */
     AXIS2_EXTERN axis2_string_t * AXIS2_CALL
-    axis2_string_create_assume_ownership(const axis2_env_t *env,
+    axis2_string_create_assume_ownership(const axutil_env_t *env,
         axis2_char_t **str);
 
     /**
@@ -66,7 +66,7 @@ extern "C"
      * @return a pointer to newly created string struct     
      */
     AXIS2_EXTERN axis2_string_t* AXIS2_CALL
-    axis2_string_create_const(const axis2_env_t *env,
+    axis2_string_create_const(const axutil_env_t *env,
         axis2_char_t **str);
 
     /**
@@ -77,7 +77,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_string_free(struct axis2_string *string,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Compares two strings. Checks if the two strings point to the same buffer.
@@ -89,7 +89,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_string_equals(const struct axis2_string *string,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const struct axis2_string *string1);
 
     /**
@@ -102,7 +102,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_string *AXIS2_CALL
     axis2_string_clone(struct axis2_string *string,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets string buffer.
@@ -112,7 +112,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
     axis2_string_get_buffer(const struct axis2_string *string,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets string length.
@@ -122,7 +122,7 @@ extern "C"
      */
     AXIS2_EXTERN unsigned int AXIS2_CALL
     axis2_string_get_length(const struct axis2_string *string,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /** @} */
 
@@ -133,7 +133,7 @@ extern "C"
      */
 
     AXIS2_EXTERN void* AXIS2_CALL
-    axis2_strdup(const axis2_env_t *env,
+    axis2_strdup(const axutil_env_t *env,
 	    const void *ptr);
 
     /**
@@ -144,7 +144,7 @@ extern "C"
      * @return The new string
      */
     AXIS2_EXTERN void* AXIS2_CALL
-    axis2_strndup(const axis2_env_t *env,
+    axis2_strndup(const axutil_env_t *env,
 	    const void *ptr,
         int n);
 
@@ -162,7 +162,7 @@ extern "C"
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_strmemdup(const void *ptr,
         size_t n,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_memchr(const void *ptr,
@@ -196,7 +196,7 @@ extern "C"
      * memory for the return value
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_stracat(const axis2_env_t *env,
+    axis2_stracat(const axutil_env_t *env,
 	    const axis2_char_t *s1,
         const axis2_char_t *s2);
 
@@ -206,7 +206,7 @@ extern "C"
      * @return The new string
      */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_strcat(const axis2_env_t *env, ...);
+    axis2_strcat(const axutil_env_t *env, ...);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_strstr(const axis2_char_t *heystack,
@@ -218,23 +218,23 @@ extern "C"
 
     /* replaces s1 with s2 */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_replace(const axis2_env_t *env,
+    axis2_replace(const axutil_env_t *env,
         axis2_char_t *str,
         int s1,
         int s2);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_strltrim(const axis2_env_t *env,
+    axis2_strltrim(const axutil_env_t *env,
         const axis2_char_t *_s,
         const axis2_char_t *_trim);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_strrtrim(const axis2_env_t *env,
+    axis2_strrtrim(const axutil_env_t *env,
         const axis2_char_t *_s,
         const axis2_char_t *_trim);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_strtrim(const axis2_env_t *env,
+    axis2_strtrim(const axutil_env_t *env,
         const axis2_char_t *_s,
         const axis2_char_t *_trim);
 

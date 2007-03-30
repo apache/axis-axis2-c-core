@@ -3,7 +3,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_stream.h>
 
 #ifdef __cplusplus
@@ -16,7 +16,7 @@ extern "C"
   * @return axis2_stream (libcurl)
   */
 	AXIS2_EXTERN axis2_stream_t * AXIS2_CALL axis2_stream_create_libcurl
-	(const axis2_env_t *env, axis2_char_t *buffer, unsigned int size);
+	(const axutil_env_t *env, axis2_char_t *buffer, unsigned int size);
 
 /** @} */
     

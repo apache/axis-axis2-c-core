@@ -43,16 +43,16 @@ extern "C"
       * @param env Environment. MUST NOT be NULL
       */
     AXIS2_EXTERN axiom_soap12_builder_helper_t* AXIS2_CALL
-    axiom_soap12_builder_helper_create(const axis2_env_t *env,
+    axiom_soap12_builder_helper_create(const axutil_env_t *env,
         axiom_soap_builder_t *soap_builder);
     
     AXIS2_EXTERN void AXIS2_CALL 
     axiom_soap12_builder_helper_free(axiom_soap12_builder_helper_t *builder_helper,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_helper,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *om_element_node,
         int element_level);
 

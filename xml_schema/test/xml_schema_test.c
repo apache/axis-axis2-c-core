@@ -19,12 +19,12 @@
 #include <stdio.h>
 #include <axiom.h>
 #include <xml_schema_includes.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include "xml_schema_test.h"
 
 
 static axiom_document_t*
-get_document_from_filename(const axis2_env_t *env,
+get_document_from_filename(const axutil_env_t *env,
         axis2_char_t *filename);
 
 void test_simple_type_schema_generation(CuTest *tc);
@@ -67,7 +67,7 @@ CuSuite* xml_schema_GetSuite()
 
 void test_simple_type_schema_generation(CuTest *tc)
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -79,7 +79,7 @@ void test_simple_type_schema_generation(CuTest *tc)
     void *sch_type = NULL;
     axis2_char_t *filename = "./..//test-resources/allSimpleTypes.xsd";
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
     om_doc = get_document_from_filename(env, filename);
     sch_collection = xml_schema_collection_create(env);
     schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
@@ -113,7 +113,7 @@ void test_simple_type_schema_generation(CuTest *tc)
 
 void test_any_attribute(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -126,7 +126,7 @@ void test_any_attribute(CuTest *tc)
 
     axis2_char_t *filename = "./..//test-resources/anyAttTest.xsd";
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     om_doc = get_document_from_filename(env, filename);
 
@@ -161,7 +161,7 @@ void test_any_attribute(CuTest *tc)
 
 void test_block_content(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -172,7 +172,7 @@ void test_block_content(CuTest *tc)
 
     axis2_char_t *filename = "./..//test-resources/block.xsd";
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     om_doc = get_document_from_filename(env, filename);
 
@@ -200,14 +200,14 @@ void test_block_content(CuTest *tc)
 
 void test_circular_schema(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
     axis2_char_t *filename = NULL;
     axutil_array_list_t *schemas = NULL;
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     sch_collection = xml_schema_collection_create(env);
 
@@ -235,13 +235,13 @@ void test_circular_schema(CuTest *tc)
 }
 void test_schema_import1(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
     axis2_char_t *filename = NULL;
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     sch_collection = xml_schema_collection_create(env);
 
@@ -268,7 +268,7 @@ void test_schema_import1(CuTest *tc)
 
 void test_mixed_content(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -278,7 +278,7 @@ void test_mixed_content(CuTest *tc)
     axis2_char_t *filename = "./..//test-resources/mixedContent.xsd";
     ;
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     qn = axis2_qname_create(env, "complexElt",
             "http://soapinterop.org/xsd", NULL);
@@ -300,7 +300,7 @@ void test_mixed_content(CuTest *tc)
 
 void test_local_elements(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -320,7 +320,7 @@ void test_local_elements(CuTest *tc)
 
     axis2_char_t *filename = "./..//test-resources/elementForm.xsd";
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     om_doc = get_document_from_filename(env, filename);
 
@@ -377,7 +377,7 @@ void test_local_elements(CuTest *tc)
 
 void test_element_refs(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -392,7 +392,7 @@ void test_element_refs(CuTest *tc)
 
     filename = "./..//test-resources/elementreferences.xsd";
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     om_doc = get_document_from_filename(env, filename);
 
@@ -437,7 +437,7 @@ void test_element_refs(CuTest *tc)
 
 void test_forward_refs(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -450,7 +450,7 @@ void test_forward_refs(CuTest *tc)
 
     filename = "./..//test-resources/forwardRef.xsd";
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
 
     om_doc = get_document_from_filename(env, filename);
@@ -484,7 +484,7 @@ void test_forward_refs(CuTest *tc)
 
 void test_local_unnamed_simple_type(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -513,7 +513,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
             "</element>\n"
             "</schema>";
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     reader = axiom_xml_reader_create_for_memory(env, xml, axis2_strlen(xml), NULL,
             AXIS2_XML_PARSER_TYPE_BUFFER);
@@ -533,7 +533,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
 
 void test_simple_restriction(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -543,7 +543,7 @@ void test_simple_restriction(CuTest *tc)
     void *simple_type = NULL;
 
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     om_doc = get_document_from_filename(env,
             "./../test-resources/SimpleContentRestriction.xsd");
@@ -573,7 +573,7 @@ void test_simple_restriction(CuTest *tc)
 
 void test_unqualified_schemas(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
@@ -592,7 +592,7 @@ void test_unqualified_schemas(CuTest *tc)
     void *particle = NULL;
 
 
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
 
     om_doc = get_document_from_filename(env,
             "./../test-resources/unqualifiedTypes.xsd");
@@ -641,7 +641,7 @@ void test_two_schmes(CuTest *tc)
 {}
 
 static axiom_document_t*
-get_document_from_filename(const axis2_env_t *env,
+get_document_from_filename(const axutil_env_t *env,
         axis2_char_t *filename)
 {
     axiom_xml_reader_t *reader = NULL;

@@ -31,7 +31,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_http_simple_response.h>
 #include <axis2_http_simple_request.h>
@@ -54,7 +54,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_http_worker_process_request(axis2_http_worker_t *http_worker,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_simple_http_svr_conn_t *svr_conn,
         axis2_http_simple_request_t *simple_request);
 
@@ -66,7 +66,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_worker_set_svr_port(axis2_http_worker_t *http_worker,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int port);
 
     /**
@@ -76,14 +76,14 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_worker_free(axis2_http_worker_t *http_worker,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param env pointer to environment struct
      * @param conf_ctx pointer to configuration context
      */
     AXIS2_EXTERN axis2_http_worker_t * AXIS2_CALL
-    axis2_http_worker_create (const axis2_env_t *env,
+    axis2_http_worker_create (const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx);
 
 /** Process the request. */

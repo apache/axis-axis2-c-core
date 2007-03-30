@@ -22,16 +22,16 @@
 #include <axis2_client.h>
 
 axiom_node_t *
-build_soap_body_content(const axis2_env_t *env,
+build_soap_body_content(const axutil_env_t *env,
         const axis2_char_t *operation,
         const axis2_char_t *google_key,
         const axis2_char_t *word_to_spell);
 
-void print_invalid_om(const axis2_env_t *env, axiom_node_t *ret_node);
+void print_invalid_om(const axutil_env_t *env, axiom_node_t *ret_node);
 
 int main(int argc, char** argv)
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
     word_to_spell = "salvasion";
 
     /* Set up the environment */
-    env = axis2_env_create_all("google_client.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("google_client.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of google service */
     address = "http://api.google.com/search/beta2";
@@ -178,7 +178,7 @@ int main(int argc, char** argv)
 }
 
 axiom_node_t *
-build_soap_body_content(const axis2_env_t *env,
+build_soap_body_content(const axutil_env_t *env,
         const axis2_char_t *operation,
         const axis2_char_t *google_key,
         const axis2_char_t *word_to_spell)
@@ -218,7 +218,7 @@ build_soap_body_content(const axis2_env_t *env,
     return google_om_node;
 }
 
-void print_invalid_om(const axis2_env_t *env, axiom_node_t *ret_node)
+void print_invalid_om(const axutil_env_t *env, axiom_node_t *ret_node)
 {
     axis2_char_t *buffer = NULL;
     buffer = AXIOM_NODE_TO_STRING(ret_node, env);

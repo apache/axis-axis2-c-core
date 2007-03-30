@@ -24,7 +24,7 @@ struct axis2_svc_grp_builder
 };
 
 AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-axis2_svc_grp_builder_create(const axis2_env_t *env)
+axis2_svc_grp_builder_create(const axutil_env_t *env)
 {
     axis2_svc_grp_builder_t *svc_grp_builder = NULL;
 
@@ -46,7 +46,7 @@ axis2_svc_grp_builder_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_svc_grp_builder_t *AXIS2_CALL
-axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axis2_env_t *env,
+axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axutil_env_t *env,
     axiom_node_t *svc_grp,
     axis2_dep_engine_t *dep_engine)
 {
@@ -73,7 +73,7 @@ axis2_svc_grp_builder_create_with_svc_and_dep_engine(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -92,7 +92,7 @@ axis2_svc_grp_builder_free(axis2_svc_grp_builder_t *svc_grp_builder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *svc_grp_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_grp_t *svc_grp)
 {
     axiom_children_qname_iterator_t *itr = NULL;
@@ -213,7 +213,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *svc_grp_builder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *svc_grp_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *module_refs ,
     axis2_svc_grp_t *svc_grp)
 {
@@ -266,7 +266,7 @@ axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *svc_grp_build
 
 AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
 axis2_svc_grp_builder_get_desc_builder(const axis2_svc_grp_builder_t *svc_grp_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return svc_grp_builder->desc_builder;
 }

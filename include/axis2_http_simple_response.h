@@ -31,7 +31,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_array_list.h>
 #include <axis2_http_status_line.h>
 #include <axis2_http_header.h>
@@ -56,7 +56,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_simple_response_set_status_line(struct axis2_http_simple_response *simple_response,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *http_ver,
         const int status_code,
         const axis2_char_t *phrase);
@@ -67,7 +67,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_http_simple_response_get_phrase(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -75,7 +75,7 @@ extern "C"
     */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_http_simple_response_get_status_code(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -83,7 +83,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_http_simple_response_get_http_version(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -91,7 +91,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_http_simple_response_get_status_line(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -100,7 +100,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_http_simple_response_contains_header(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
    /**
@@ -109,7 +109,7 @@ extern "C"
     */
     AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
     axis2_http_simple_response_get_headers(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -118,7 +118,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_http_header_t* AXIS2_CALL
     axis2_http_simple_response_get_first_header(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *str);
 
    /**
@@ -129,7 +129,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_simple_response_remove_headers(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *str);
 
    /**
@@ -140,7 +140,7 @@ extern "C"
     */
 	AXIS2_EXTERN axis2_status_t AXIS2_CALL
 	axis2_http_simple_response_set_header(axis2_http_simple_response_t *simple_response,
-		const axis2_env_t *env,
+		const axutil_env_t *env,
 		axis2_http_header_t* header);
 
    /**
@@ -152,7 +152,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_simple_response_set_headers(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_http_header_t** headers,
         axis2_ssize_t array_size);
 
@@ -162,7 +162,7 @@ extern "C"
     */
     AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
     axis2_http_simple_response_get_charset(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -170,7 +170,7 @@ extern "C"
     */
 	AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 	axis2_http_simple_response_get_content_length(axis2_http_simple_response_t *simple_response,
-		const axis2_env_t *env);
+		const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -178,7 +178,7 @@ extern "C"
     */
     AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
     axis2_http_simple_response_get_content_type(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -188,7 +188,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_simple_response_set_body_string(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *str);
 
    /**
@@ -199,7 +199,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_simple_response_set_body_stream(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_stream_t *stream);
 
    /**
@@ -208,7 +208,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_stream_t* AXIS2_CALL
     axis2_http_simple_response_get_body(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * @param simple_response pointer to simple response struct
@@ -217,7 +217,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
     axis2_http_simple_response_get_body_bytes(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t **buf);
 
    /**
@@ -227,7 +227,7 @@ extern "C"
     */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_simple_response_free(axis2_http_simple_response_t *simple_response,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param env pointer to environment struct
@@ -238,7 +238,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_http_simple_response_t * AXIS2_CALL
     axis2_http_simple_response_create (
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_http_status_line_t *status_line,
             const axis2_http_header_t **http_headers,
             const axis2_ssize_t http_hdr_count,
@@ -249,7 +249,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_http_simple_response_t * AXIS2_CALL
     axis2_http_simple_response_create_default(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** Sets the status line. */
 #define AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(\

@@ -42,31 +42,31 @@ extern "C"
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_set_base_node(axiom_soap_envelope_t *envelope,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *om_node);  
   
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_envelope_set_body(axiom_soap_envelope_t *envelope,
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     struct axiom_soap_body *body);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_envelope_set_header(axiom_soap_envelope_t *envelope,
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     struct axiom_soap_header *header);
     
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_envelope_set_builder(axiom_soap_envelope_t *envelope,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axiom_soap_builder *soap_builder); 
                                 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_soap_envelope_set_soap_version_internal(axiom_soap_envelope_t *envelope,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int soap_version);                                
 
 AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-axiom_soap_envelope_create_null(const axis2_env_t *env);
+axiom_soap_envelope_create_null(const axutil_env_t *env);
     
 /** @} */
     

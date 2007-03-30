@@ -49,38 +49,38 @@ struct xml_schema_group_ref_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *group_ref,
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *group_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_types_t (AXIS2_CALL *
     get_type) (
             void *group_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_particle_t *(AXIS2_CALL *
     get_base_impl) (void *group_ref,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     axis2_qname_t *(AXIS2_CALL *
     get_ref_qname)(void *group_ref,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_ref_qname)(void *group_ref,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_qname_t *ref_qname);
     
     void *(AXIS2_CALL *
     get_particle)(void *group_ref,
-                  const axis2_env_t *env);
+                  const axutil_env_t *env);
                     
     axis2_status_t (AXIS2_CALL *
     set_particle)(void *group_ref,
-                  const axis2_env_t *env,
+                  const axutil_env_t *env,
                   void *particle);
                         
     
@@ -96,7 +96,7 @@ struct xml_schema_group_ref
  * Creates new Xml Schema Group Ref
  */
 AXIS2_EXTERN xml_schema_group_ref_t * AXIS2_CALL
-xml_schema_group_ref_create(const axis2_env_t *env);
+xml_schema_group_ref_create(const axutil_env_t *env);
 
 /******************* Macros ******************************************************/ 
 #define XML_SCHEMA_GROUP_REF_FREE(group_ref, env) \

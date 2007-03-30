@@ -39,7 +39,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
 #include <axis2_conf.h>
@@ -72,7 +72,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 init) (
                     axis2_module_t *module,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     struct axis2_conf_ctx *conf_ctx,
                     axis2_module_desc_t *module_desc);
 
@@ -85,7 +85,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 shutdown)(
                     axis2_module_t *module,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * Fills the hash map of handler create functions for the module.
@@ -96,7 +96,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 fill_handler_create_func_map)(
                     axis2_module_t *module,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
 
     };
@@ -119,7 +119,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_module_t * AXIS2_CALL
     axis2_module_create (
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** Initializes module.
     @sa axis2_module_ops#init */

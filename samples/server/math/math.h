@@ -25,9 +25,9 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 
-axiom_node_t *axis2_math_add(const axis2_env_t *env, axiom_node_t *node);
-axiom_node_t *axis2_math_sub(const axis2_env_t *env, axiom_node_t *node);
-axiom_node_t *axis2_math_mul(const axis2_env_t *env, axiom_node_t *node);
-axiom_node_t *axis2_math_div(const axis2_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_math_add(const axutil_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_math_sub(const axutil_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_math_mul(const axutil_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_math_div(const axutil_env_t *env, axiom_node_t *node);
 
 #endif /* MATH_H*/

@@ -48,34 +48,34 @@ struct woden_binding_fault_impl
 axis2_status_t AXIS2_CALL
 woden_binding_fault_free(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_binding_fault_super_objs(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_binding_fault_type(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_nested_configurable_t *AXIS2_CALL
 woden_binding_fault_get_base_impl(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 /* ************************************************************
  *  Binding Fault interface methods (the WSDL Component model)
  * ************************************************************/
 void *AXIS2_CALL
 woden_binding_fault_get_interface_fault(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_binding_fault_to_element(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Binding Fault Element interface methods (the XML Element model)
@@ -83,18 +83,18 @@ woden_binding_fault_to_element(
 axis2_status_t AXIS2_CALL
 woden_binding_fault_set_ref(
     void *binding_fault,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname);
 
 axis2_qname_t *AXIS2_CALL
 woden_binding_fault_get_ref(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_binding_fault_get_interface_fault_element(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Non-API implementation methods
@@ -103,23 +103,23 @@ woden_binding_fault_get_interface_fault_element(
 axis2_status_t AXIS2_CALL
 woden_binding_fault_set_interface_fault_element(
     void *binding_fault,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *in_fault);
 
 
 static woden_binding_fault_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_binding_fault_free_ops(
     void *binding_fault,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_binding_fault_element(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -146,7 +146,7 @@ woden_binding_fault_to_binding_fault_element(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_nested_configurable(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -174,7 +174,7 @@ woden_binding_fault_to_nested_configurable(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_configurable(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
     void *configurable = NULL;
@@ -204,7 +204,7 @@ woden_binding_fault_to_configurable(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_wsdl_obj(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
     void *configurable = NULL;
@@ -241,7 +241,7 @@ woden_binding_fault_to_wsdl_obj(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_nested_element(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -269,7 +269,7 @@ woden_binding_fault_to_nested_element(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_documentable_element(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -298,7 +298,7 @@ woden_binding_fault_to_documentable_element(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_documentable(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -328,7 +328,7 @@ woden_binding_fault_to_documentable(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_wsdl_component(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -356,7 +356,7 @@ woden_binding_fault_to_wsdl_component(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_configurable_element(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -385,7 +385,7 @@ woden_binding_fault_to_configurable_element(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_attr_extensible(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -414,7 +414,7 @@ woden_binding_fault_to_attr_extensible(
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
 woden_binding_fault_to_element_extensible(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -443,7 +443,7 @@ woden_binding_fault_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_binding_fault_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -527,7 +527,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_binding_fault_t * AXIS2_CALL
-woden_binding_fault_create(const axis2_env_t *env)
+woden_binding_fault_create(const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
     void *configurable = NULL;
@@ -560,7 +560,7 @@ woden_binding_fault_create(const axis2_env_t *env)
 static axis2_status_t
 woden_binding_fault_free_ops(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -675,7 +675,7 @@ woden_binding_fault_free_ops(
 axis2_status_t AXIS2_CALL
 woden_binding_fault_free(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -733,7 +733,7 @@ woden_binding_fault_free(
 axis2_hash_t *AXIS2_CALL
 woden_binding_fault_super_objs(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -746,7 +746,7 @@ woden_binding_fault_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_binding_fault_type(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -759,7 +759,7 @@ woden_binding_fault_type(
 woden_nested_configurable_t *AXIS2_CALL
 woden_binding_fault_get_base_impl(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
 
@@ -772,7 +772,7 @@ woden_binding_fault_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_binding_fault_resolve_methods(
     woden_binding_fault_t *binding_fault,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_binding_fault_t *binding_fault_impl,
     axis2_hash_t *methods)
 {
@@ -816,7 +816,7 @@ woden_binding_fault_resolve_methods(
 void *AXIS2_CALL
 woden_binding_fault_get_interface_fault(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -832,7 +832,7 @@ woden_binding_fault_get_interface_fault(
 void *AXIS2_CALL
 woden_binding_fault_to_element(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -851,7 +851,7 @@ woden_binding_fault_to_element(
 axis2_status_t AXIS2_CALL
 woden_binding_fault_set_ref(
     void *binding_fault,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
@@ -874,7 +874,7 @@ woden_binding_fault_set_ref(
 axis2_qname_t *AXIS2_CALL
 woden_binding_fault_get_ref(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -890,7 +890,7 @@ woden_binding_fault_get_ref(
 void *AXIS2_CALL
 woden_binding_fault_get_interface_fault_element(
     void *binding_fault,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -910,7 +910,7 @@ woden_binding_fault_get_interface_fault_element(
 axis2_status_t AXIS2_CALL
 woden_binding_fault_set_interface_fault_element(
     void *binding_fault,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *in_fault)
 {
     woden_binding_fault_impl_t *binding_fault_impl = NULL;

@@ -45,29 +45,29 @@ struct xml_schema_content_type_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_content_type_free(void *content_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_enum_t *AXIS2_CALL
 xml_schema_content_type_get_base_impl(void *content_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_content_type_get_values(void *content_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_content_type_get_type(void *content_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_content_type_super_objs(void *content_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 
 
 AXIS2_EXTERN xml_schema_content_type_t * AXIS2_CALL
-xml_schema_content_type_create(const axis2_env_t *env,
+xml_schema_content_type_create(const axutil_env_t *env,
         axis2_char_t *value)
 {
     xml_schema_content_type_impl_t *content_type_impl = NULL;
@@ -156,7 +156,7 @@ xml_schema_content_type_create(const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 xml_schema_content_type_free(void *content_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_content_type_impl_t *content_type_impl = NULL;
 
@@ -204,7 +204,7 @@ xml_schema_content_type_free(void *content_type,
 
 xml_schema_enum_t *AXIS2_CALL
 xml_schema_content_type_get_base_impl(void *content_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_content_type_impl_t *content_type_impl = NULL;
 
@@ -215,21 +215,21 @@ xml_schema_content_type_get_base_impl(void *content_type,
 
 axutil_array_list_t* AXIS2_CALL
 xml_schema_content_type_get_values(void *content_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(content_type)->members;
 }
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_content_type_get_type(void *content_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(content_type)->obj_type;
 }
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_content_type_super_objs(void *content_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(content_type)->ht_super;
 }

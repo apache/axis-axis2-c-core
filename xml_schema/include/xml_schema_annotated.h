@@ -60,7 +60,7 @@ struct xml_schema_annotated_ops
      */
     axis2_status_t (AXIS2_CALL *
     free)(void *annotated,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
     
     /**
      * Get hashtable of struct instances .
@@ -71,7 +71,7 @@ struct xml_schema_annotated_ops
     axis2_hash_t *(AXIS2_CALL *
     super_objs)(
             void *annotated,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * Type of struct instance , can be XML_SCHEMA_ANNOTATED or 
@@ -83,7 +83,7 @@ struct xml_schema_annotated_ops
     xml_schema_types_t (AXIS2_CALL *
     get_type)(
             void *annotated,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * Get pointer to xml_schema_obj struct 
      * @param annotated pointer to xml_schema_annoated struct instance
@@ -93,7 +93,7 @@ struct xml_schema_annotated_ops
     xml_schema_obj_t *(AXIS2_CALL *
     get_base_impl)(
             void *annotated,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Get id .
@@ -103,7 +103,7 @@ struct xml_schema_annotated_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_id) (void *annotated,
-             const axis2_env_t *env);
+             const axutil_env_t *env);
 
     
     /** 
@@ -116,7 +116,7 @@ struct xml_schema_annotated_ops
     axis2_status_t (AXIS2_CALL *
     set_id) (
             void *annotated,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *id);
 
     /**
@@ -128,7 +128,7 @@ struct xml_schema_annotated_ops
     struct xml_schema_annotation *(AXIS2_CALL *
     get_annotation) (
             void *annotated,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * Set annotation struct instance.
      * @param annotated pointer to xml_schema_annotated
@@ -139,7 +139,7 @@ struct xml_schema_annotated_ops
     axis2_status_t (AXIS2_CALL *
     set_annotation)(
             void *annotated,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct xml_schema_annotation *annotation);
 
     /**
@@ -153,7 +153,7 @@ struct xml_schema_annotated_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_unhandled_attrs) (
             void *annotated,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
    /** Set qualified attributes that do not belong
     * to the schema target namespace.
     * @param annotated pointer to xml_schema_annotated instance
@@ -164,7 +164,7 @@ struct xml_schema_annotated_ops
     axis2_status_t (AXIS2_CALL *
     set_unhandled_attrs) (
             void *annotated,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axutil_array_list_t *unhandled_attrs);
 };
 
@@ -184,7 +184,7 @@ struct xml_schema_annotated
  * @returns pointer to xml_schema_annotated_t 
  */
 AXIS2_EXTERN xml_schema_annotated_t * AXIS2_CALL
-xml_schema_annotated_create(const axis2_env_t *env);
+xml_schema_annotated_create(const axutil_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -192,7 +192,7 @@ xml_schema_annotated_create(const axis2_env_t *env);
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_annotated_resolve_methods(
                                 xml_schema_annotated_t *annotated,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_annotated_t *annotated_impl,
                                 XML_SCHEMA_SUPER_OBJS_FN super_objs,
                                 XML_SCHEMA_GET_TYPE_FN get_type,

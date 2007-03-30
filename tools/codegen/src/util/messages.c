@@ -25,7 +25,7 @@
 
 AXIS2_EXTERN axis2_properties_t* AXIS2_CALL
 w2c_messages_get_message_properties(
-    const axis2_env_t *env )
+    const axutil_env_t *env )
 {
     axis2_properties_t *props = NULL;
     axis2_char_t *axis2c_home = NULL;
@@ -58,7 +58,7 @@ w2c_messages_get_message_properties(
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-w2c_messages_get_message( const axis2_env_t *env, axis2_char_t *key )
+w2c_messages_get_message( const axutil_env_t *env, axis2_char_t *key )
 {
      axis2_properties_t *props = NULL;
      axis2_char_t *message = NULL;
@@ -75,7 +75,7 @@ w2c_messages_get_message( const axis2_env_t *env, axis2_char_t *key )
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-w2c_messages_print_n_log_error( const axis2_env_t *env, axis2_char_t *key )
+w2c_messages_print_n_log_error( const axutil_env_t *env, axis2_char_t *key )
 {
      axis2_char_t *msg = NULL;
      msg = w2c_messages_get_message( env, key );
@@ -89,7 +89,7 @@ w2c_messages_print_n_log_error( const axis2_env_t *env, axis2_char_t *key )
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-w2c_messages_print_n_log_error_from_properties( const axis2_env_t *env, 
+w2c_messages_print_n_log_error_from_properties( const axutil_env_t *env, 
                                           axis2_properties_t *props,
                                           axis2_char_t *key )
 {

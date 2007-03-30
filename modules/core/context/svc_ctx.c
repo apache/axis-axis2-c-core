@@ -36,7 +36,7 @@ struct axis2_svc_ctx
 
 AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
 axis2_svc_ctx_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc,
     struct axis2_svc_grp_ctx *svc_grp_ctx)
 {
@@ -85,7 +85,7 @@ axis2_svc_ctx_create(
 axis2_ctx_t *AXIS2_CALL
 axis2_svc_ctx_get_base(
     const axis2_svc_ctx_t *svc_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return svc_ctx->base;
 }
@@ -94,7 +94,7 @@ axis2_svc_ctx_get_base(
 struct axis2_svc_grp_ctx *AXIS2_CALL
             axis2_svc_ctx_get_parent(
                 const axis2_svc_ctx_t *svc_ctx,
-                const axis2_env_t *env)
+                const axutil_env_t *env)
 {
     return svc_ctx->parent;
 }
@@ -102,7 +102,7 @@ struct axis2_svc_grp_ctx *AXIS2_CALL
 axis2_status_t AXIS2_CALL
             axis2_svc_ctx_set_parent(
                 axis2_svc_ctx_t *svc_ctx,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_svc_grp_ctx_t *parent)
 {
     svc_ctx->parent = parent;
@@ -112,7 +112,7 @@ axis2_status_t AXIS2_CALL
 void AXIS2_CALL
 axis2_svc_ctx_free(
     struct axis2_svc_ctx *svc_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -128,7 +128,7 @@ axis2_svc_ctx_free(
 axis2_status_t AXIS2_CALL
 axis2_svc_ctx_init(
     struct axis2_svc_ctx *svc_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_t *conf)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -145,7 +145,7 @@ axis2_svc_ctx_init(
 const axis2_char_t *AXIS2_CALL
 axis2_svc_ctx_get_svc_id(
     const axis2_svc_ctx_t *svc_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return svc_ctx->svc_id;
 }
@@ -154,7 +154,7 @@ axis2_svc_ctx_get_svc_id(
 axis2_svc_t *AXIS2_CALL
 axis2_svc_ctx_get_svc(
     const axis2_svc_ctx_t *svc_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return svc_ctx->svc;
 }
@@ -162,7 +162,7 @@ axis2_svc_ctx_get_svc(
 axis2_status_t AXIS2_CALL
 axis2_svc_ctx_set_svc(
     axis2_svc_ctx_t *svc_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -181,7 +181,7 @@ axis2_svc_ctx_set_svc(
 struct axis2_conf_ctx *AXIS2_CALL
             axis2_svc_ctx_get_conf_ctx(
                 const axis2_svc_ctx_t *svc_ctx,
-                const axis2_env_t *env)
+                const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return  axis2_svc_grp_ctx_get_parent(svc_ctx->parent, env);
@@ -190,7 +190,7 @@ struct axis2_conf_ctx *AXIS2_CALL
 axis2_op_ctx_t *AXIS2_CALL
 axis2_svc_ctx_create_op_ctx(
     struct axis2_svc_ctx *svc_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_qname_t *qname)
 {
     axis2_op_t *op = NULL;

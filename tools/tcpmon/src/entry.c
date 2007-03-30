@@ -54,49 +54,49 @@ tcpmon_entry_impl_t;
 
 axis2_status_t AXIS2_CALL
 tcpmon_entry_free(tcpmon_entry_t *entry,
-						const axis2_env_t *env);
+						const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_arrived_time( tcpmon_entry_t *entry,
-	 const axis2_env_t *env);
+	 const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_sent_time(tcpmon_entry_t *entry,
-							  const axis2_env_t *env);
+							  const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_time_diff(tcpmon_entry_t *entry,
-							  const axis2_env_t *env);
+							  const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_sent_data(tcpmon_entry_t *entry,
-							  const axis2_env_t *env);
+							  const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_sent_headers(tcpmon_entry_t *entry,
-								  const axis2_env_t *env);
+								  const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_arrived_data(tcpmon_entry_t *entry,
-								  const axis2_env_t *env);
+								  const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_arrived_headers(tcpmon_entry_t *entry,
-									  const axis2_env_t *env);
+									  const axutil_env_t *env);
 
 
 axis2_bool_t AXIS2_CALL
 tcpmon_entry_is_success(tcpmon_entry_t *entry,
-								const axis2_env_t *env);
+								const axutil_env_t *env);
 
 axis2_char_t*
 get_current_stream_to_buffer(axis2_stream_t* stream,
-									  const axis2_env_t* env,
+									  const axutil_env_t* env,
 									  int* stream_size);
 
 axis2_char_t*
 read_current_stream(axis2_stream_t *stream,
-						  const axis2_env_t *env,
+						  const axutil_env_t *env,
 						  int *stream_size,
 						  axis2_char_t** header,
 						  axis2_char_t** data);
@@ -107,15 +107,15 @@ write_to_file (char *filename,
 
 int AXIS2_CALL
 tcpmon_entry_get_format_bit(tcpmon_entry_t *entry,
-                            const axis2_env_t *env);
+                            const axutil_env_t *env);
 axis2_status_t AXIS2_CALL
 tcpmon_entry_set_format_bit(tcpmon_entry_t *entry,
-                            const axis2_env_t *env,
+                            const axutil_env_t *env,
                             int format_bit);
 /************************** End of function prototypes ************************/
 
 tcpmon_entry_t * AXIS2_CALL
-tcpmon_entry_create(const axis2_env_t *env)
+tcpmon_entry_create(const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -169,7 +169,7 @@ tcpmon_entry_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 tcpmon_entry_free(tcpmon_entry_t *entry,
-						const axis2_env_t *env)
+						const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -230,7 +230,7 @@ tcpmon_entry_free(tcpmon_entry_t *entry,
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_arrived_time(tcpmon_entry_t *entry,
-								  const axis2_env_t *env)
+								  const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -243,7 +243,7 @@ tcpmon_entry_arrived_time(tcpmon_entry_t *entry,
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_sent_time(tcpmon_entry_t *entry,
-							  const axis2_env_t *env)
+							  const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -256,7 +256,7 @@ tcpmon_entry_sent_time(tcpmon_entry_t *entry,
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_time_diff(tcpmon_entry_t *entry,
-							  const axis2_env_t *env)
+							  const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -269,7 +269,7 @@ tcpmon_entry_time_diff(tcpmon_entry_t *entry,
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_sent_data(tcpmon_entry_t *entry,
-							  const axis2_env_t *env)
+							  const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -282,7 +282,7 @@ tcpmon_entry_sent_data(tcpmon_entry_t *entry,
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_sent_headers(tcpmon_entry_t *entry,
-								  const axis2_env_t *env)
+								  const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -295,7 +295,7 @@ tcpmon_entry_sent_headers(tcpmon_entry_t *entry,
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_arrived_data(tcpmon_entry_t *entry,
-								  const axis2_env_t *env)
+								  const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -308,7 +308,7 @@ tcpmon_entry_arrived_data(tcpmon_entry_t *entry,
 
 axis2_char_t* AXIS2_CALL
 tcpmon_entry_arrived_headers(tcpmon_entry_t *entry,
-									  const axis2_env_t *env)
+									  const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -321,7 +321,7 @@ tcpmon_entry_arrived_headers(tcpmon_entry_t *entry,
 
 axis2_bool_t AXIS2_CALL
 tcpmon_entry_is_success(tcpmon_entry_t *entry,
-								const axis2_env_t *env)
+								const axutil_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -334,7 +334,7 @@ tcpmon_entry_is_success(tcpmon_entry_t *entry,
 
 int AXIS2_CALL
 tcpmon_entry_get_format_bit(tcpmon_entry_t *entry,
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     tcpmon_entry_impl_t *entry_impl = NULL;
 
@@ -347,7 +347,7 @@ tcpmon_entry_get_format_bit(tcpmon_entry_t *entry,
 
 axis2_status_t AXIS2_CALL
 tcpmon_entry_set_format_bit(tcpmon_entry_t *entry,
-                            const axis2_env_t *env,
+                            const axutil_env_t *env,
                             int format_bit)
 {
     tcpmon_entry_impl_t *entry_impl = NULL;
@@ -366,7 +366,7 @@ tcpmon_entry_set_format_bit(tcpmon_entry_t *entry,
 void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 {
 	 tcpmon_entry_request_data_t* req_data = data;
-	 const axis2_env_t* env = NULL;
+	 const axutil_env_t* env = NULL;
 	 int client_socket = -1;
 	 int host_socket = -1;
 	 tcpmon_session_t* session;
@@ -566,7 +566,7 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 
 axis2_char_t*
 read_current_stream(axis2_stream_t *stream,
-						  const axis2_env_t *env,
+						  const axutil_env_t *env,
 						  int *stream_size,
 						  axis2_char_t **header,
 						  axis2_char_t **data)

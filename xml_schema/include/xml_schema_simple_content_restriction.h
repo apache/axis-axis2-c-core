@@ -54,65 +54,65 @@ struct xml_schema_simple_content_restriction_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *sim_content_res,
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl)(
             void *sim_content_res,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(
             void *sim_content_res,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     xml_schema_types_t (AXIS2_CALL *
     get_type)(
             void *sim_content_res,
-            const axis2_env_t *env);                        
+            const axutil_env_t *env);                        
 
     xml_schema_any_attribute_t* (AXIS2_CALL *
     get_any_attribute)(
             void *sim_content_res,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_any_attribute)(
             void *sim_content_res,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             xml_schema_any_attribute_t *any_attr);
     
     xml_schema_obj_collection_t* (AXIS2_CALL *
     get_attributes)(
             void *sim_content_res,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     axis2_qname_t* (AXIS2_CALL*
     get_base_type_name)(
             void *sim_content_res,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     axis2_status_t (AXIS2_CALL *
     set_base_type_name)(
             void *sim_content_res,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname); 
             
     xml_schema_simple_type_t* (AXIS2_CALL*
     get_base_type)(
             void *sim_content_res,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                    
     axis2_status_t (AXIS2_CALL *
     set_base_type)(
             void *sim_content_res,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             xml_schema_simple_type_t *base_type); 
                    
     xml_schema_obj_collection_t* (AXIS2_CALL *
     get_facets)(
             void *sim_content_res,
-            const axis2_env_t *env);                   
+            const axutil_env_t *env);                   
 };
 
 struct xml_schema_simple_content_restriction
@@ -125,7 +125,7 @@ struct xml_schema_simple_content_restriction
  * Creates new Xml Schema Group
  */
 AXIS2_EXTERN xml_schema_simple_content_restriction_t * AXIS2_CALL
-xml_schema_simple_content_restriction_create(const axis2_env_t *env);
+xml_schema_simple_content_restriction_create(const axutil_env_t *env);
 
 
 

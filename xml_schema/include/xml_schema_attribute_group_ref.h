@@ -56,32 +56,32 @@ struct xml_schema_attribute_group_ref_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *grp_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     xml_schema_types_t (AXIS2_CALL *
     get_type)(
             void *grp_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(
             void *grp_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                                       
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl)(
             void *grp_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
 
     axis2_qname_t* (AXIS2_CALL *
     get_ref_qname)(void *grp_ref,
-              const axis2_env_t *env);
+              const axutil_env_t *env);
               
     axis2_status_t (AXIS2_CALL *
     set_ref_qname)(void *grp_ref,
-              const axis2_env_t *env,
+              const axutil_env_t *env,
               axis2_qname_t *ref_name);
               
 };
@@ -93,7 +93,7 @@ struct xml_schema_attribute_group_ref
 };
 
 AXIS2_EXTERN xml_schema_attribute_group_ref_t * AXIS2_CALL
-xml_schema_attribute_group_ref_create(const axis2_env_t *env);
+xml_schema_attribute_group_ref_create(const axutil_env_t *env);
 
 /******************************* Macros *************************************************/ 
  

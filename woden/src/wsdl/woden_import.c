@@ -44,47 +44,47 @@ struct woden_import_impl
 axis2_status_t AXIS2_CALL
 woden_import_free(
     void *import,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_import_super_objs(
     void *import,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_import_type(
     void *import,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_wsdl_ref_t *AXIS2_CALL
 woden_import_get_base_impl(
     void *import,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_import_set_namespace(
     void *import,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *ns_uri);
 
 axis2_uri_t *AXIS2_CALL
 woden_import_get_namespace(
     void *import,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_import_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_import_free_ops(
     void *import,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_import_t * AXIS2_CALL
 woden_import_to_import_element(
     void *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -109,7 +109,7 @@ woden_import_to_import_element(
 AXIS2_EXTERN woden_import_t * AXIS2_CALL
 woden_import_to_wsdl_ref(
     void *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -133,7 +133,7 @@ woden_import_to_wsdl_ref(
 AXIS2_EXTERN woden_import_t * AXIS2_CALL
 woden_import_to_attr_extensible(
     void *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -161,7 +161,7 @@ woden_import_to_attr_extensible(
 AXIS2_EXTERN woden_import_t * AXIS2_CALL
 woden_import_to_element_extensible(
     void *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -186,7 +186,7 @@ woden_import_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_import_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -239,7 +239,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_import_t * AXIS2_CALL
-woden_import_create(const axis2_env_t *env)
+woden_import_create(const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -265,7 +265,7 @@ woden_import_create(const axis2_env_t *env)
 static axis2_status_t
 woden_import_free_ops(
     void *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -307,7 +307,7 @@ woden_import_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_import_free(void *import,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -357,7 +357,7 @@ woden_import_free(void *import,
 axis2_hash_t *AXIS2_CALL
 woden_import_super_objs(
     void *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -370,7 +370,7 @@ woden_import_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_import_type(
     void *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -382,7 +382,7 @@ woden_import_type(
 
 woden_wsdl_ref_t *AXIS2_CALL
 woden_import_get_base_impl(void *import,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
 
@@ -395,7 +395,7 @@ woden_import_get_base_impl(void *import,
 axis2_status_t AXIS2_CALL
 woden_import_resolve_methods(
     woden_import_t *import,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_import_t *import_impl,
     axis2_hash_t *methods)
 {
@@ -430,7 +430,7 @@ woden_import_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_import_set_namespace(
     void *import,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *ns_uri)
 {
     woden_import_impl_t *import_impl = NULL;
@@ -455,7 +455,7 @@ woden_import_set_namespace(
 axis2_uri_t *AXIS2_CALL
 woden_import_get_namespace(
     void *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_import_impl_t *import_impl = NULL;
     axis2_hash_t *super = NULL;

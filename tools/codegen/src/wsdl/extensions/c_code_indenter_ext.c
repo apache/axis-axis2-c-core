@@ -30,12 +30,12 @@ typedef struct w2c_c_code_indenter_ext_impl
         ((w2c_c_code_indenter_ext_impl_t*) extension)
 
 void format_file( axis2_char_t *filename,
-                  const axis2_env_t *env);
+                  const axutil_env_t *env);
 
 /************************* implmentations ********************************/
 axis2_status_t AXIS2_CALL
 w2c_c_code_indenter_ext_free(w2c_extension_t *extension,
-       const axis2_env_t *env)
+       const axutil_env_t *env)
 {
     w2c_c_code_indenter_ext_impl_t *extension_impl = NULL;
 
@@ -57,7 +57,7 @@ w2c_c_code_indenter_ext_free(w2c_extension_t *extension,
 
 axis2_status_t AXIS2_CALL
 w2c_c_code_indenter_ext_engage(w2c_extension_t *extension,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        w2c_engine_configuration_t *conf)
 {
     w2c_c_code_indenter_ext_impl_t *extension_impl = NULL;
@@ -97,7 +97,7 @@ w2c_c_code_indenter_ext_engage(w2c_extension_t *extension,
 /****************** standard create and delete for DLL ************************/
 AXIS2_EXPORT int
 axis2_get_instance(w2c_extension_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     w2c_c_code_indenter_ext_impl_t *extension_impl = NULL;
  
@@ -131,7 +131,7 @@ axis2_get_instance(w2c_extension_t **inst,
 
 AXIS2_EXPORT int
 axis2_remove_instance(w2c_extension_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 
@@ -147,12 +147,12 @@ axis2_remove_instance(w2c_extension_t *inst,
 
 /* function declarations */
 void format_file( axis2_char_t *filename,
-                  const axis2_env_t *env);
+                  const axutil_env_t *env);
 axis2_char_t* read_file ( axis2_char_t *filename,
-                  const axis2_env_t *env);
+                  const axutil_env_t *env);
 void write_file ( axis2_char_t *filename,
                   axis2_char_t *buffer,
-                  const axis2_env_t *env);
+                  const axutil_env_t *env);
 
 typedef struct custom_allocator
 {
@@ -161,11 +161,11 @@ typedef struct custom_allocator
      char* buffer;
 } custom_allocator_t;
 
-void add_string( const axis2_env_t* env,
+void add_string( const axutil_env_t* env,
                       custom_allocator_t* allocator,
                       char* string);
 
-void add_char( const axis2_env_t* env,
+void add_char( const axutil_env_t* env,
                       custom_allocator_t* allocator,
                       char c,
                       int turns);
@@ -174,7 +174,7 @@ void add_char( const axis2_env_t* env,
 
 /* implementations */
 void format_file( axis2_char_t *filename,
-                  const axis2_env_t *env)
+                  const axutil_env_t *env)
 {
     custom_allocator_t * allocator  = NULL;
     axis2_char_t* in_buffer = NULL;
@@ -366,7 +366,7 @@ void format_file( axis2_char_t *filename,
 }
 
 axis2_char_t* read_file ( axis2_char_t *filename,
-                  const axis2_env_t *env)
+                  const axutil_env_t *env)
 {
     const int MAX_SIZE=100;
     int nread = 0;
@@ -407,14 +407,14 @@ axis2_char_t* read_file ( axis2_char_t *filename,
 
 void write_file ( axis2_char_t *filename,
                   axis2_char_t *buffer,
-                  const axis2_env_t *env)
+                  const axutil_env_t *env)
 {
     FILE *f = NULL;
     f = fopen( filename, "w+");
     fprintf( f, "%s",buffer);
 }
 
-void add_string( const axis2_env_t* env,
+void add_string( const axutil_env_t* env,
                       custom_allocator_t* allocator,
                       char* string)
 {
@@ -450,7 +450,7 @@ void add_string( const axis2_env_t* env,
 }
 
 
-void add_char( const axis2_env_t* env,
+void add_char( const axutil_env_t* env,
                       custom_allocator_t* allocator,
                       char c,
                       int turns)

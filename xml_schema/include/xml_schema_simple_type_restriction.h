@@ -47,45 +47,45 @@ struct xml_schema_simple_type_restriction_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *simple_type_restriction,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_simple_type_content_t *(AXIS2_CALL *
     get_base_impl) (void *simple_type_restriction,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
                     
     xml_schema_types_t (AXIS2_CALL *
     get_type)(void *simple_type_restriction,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
                 
     axis2_hash_t *(AXIS2_CALL *
     super_objs)(void *simple_type_restriction,
-                const axis2_env_t *env);                                    
+                const axutil_env_t *env);                                    
 
     xml_schema_simple_type_t *(AXIS2_CALL *
     get_base_type)(void *simple_type_restriction,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_base_type)(void *simple_type_restriction,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     xml_schema_simple_type_t *base_type);
     
     axis2_qname_t* (AXIS2_CALL *
     get_base_type_name)(void *simple_type_restriction,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_base_type_name)(void *simple_type_restriction,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_qname_t *qname);
                     
     xml_schema_obj_collection_t* (AXIS2_CALL *
     get_facets)(void *simple_type_restriction,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
                 
     axis2_char_t* (AXIS2_CALL *
     to_string)(void *simple_type_restriction,
-               const axis2_env_t *env,
+               const axutil_env_t *env,
                axis2_char_t *prefix,
                int tab);
                
@@ -107,7 +107,7 @@ struct xml_schema_simple_type_restriction
  * (any).
  */
 AXIS2_EXTERN xml_schema_simple_type_restriction_t * AXIS2_CALL
-xml_schema_simple_type_restriction_create(const axis2_env_t *env);
+xml_schema_simple_type_restriction_create(const axutil_env_t *env);
 
 #define XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_FREE(simple_type_restriction, env) \
       (((xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\

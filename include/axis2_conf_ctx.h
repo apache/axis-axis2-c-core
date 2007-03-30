@@ -35,7 +35,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_hash.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_ctx.h>
 #include <axis2_svc_grp_ctx.h>
 
@@ -57,7 +57,7 @@ extern "C"
      * @return pointer to newly created configuration context 
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
-    axis2_conf_ctx_create(const axis2_env_t *env, 
+    axis2_conf_ctx_create(const axutil_env_t *env, 
         struct axis2_conf *conf);
 
     /**
@@ -69,7 +69,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t  AXIS2_CALL 
     axis2_conf_ctx_set_conf(axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_conf *conf);
     /**
      * Gets the base struct, which is of type context
@@ -80,7 +80,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_ctx_t * AXIS2_CALL
     axis2_conf_ctx_get_base(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the configuration of the engine.
@@ -91,7 +91,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_conf_t * AXIS2_CALL
     axis2_conf_ctx_get_conf(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the hash map of operation context instances.
@@ -101,7 +101,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
     axis2_conf_ctx_get_op_ctx_map(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the hash map of service context instances.
@@ -111,7 +111,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
     axis2_conf_ctx_get_svc_ctx_map(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the hash map of service group context instances.
@@ -121,7 +121,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
     axis2_conf_ctx_get_svc_grp_ctx_map(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Registers an operation context with the given message ID.
@@ -134,7 +134,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t  AXIS2_CALL
     axis2_conf_ctx_register_op_ctx(axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *message_id,
         axis2_op_ctx_t *op_ctx);
 
@@ -147,7 +147,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_op_ctx_t * AXIS2_CALL
     axis2_conf_ctx_get_op_ctx(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *message_id);
 
     /**
@@ -160,7 +160,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t  AXIS2_CALL
     axis2_conf_ctx_register_svc_ctx(axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_id,
         axis2_svc_ctx_t *svc_ctx);
 
@@ -173,7 +173,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_ctx * AXIS2_CALL
     axis2_conf_ctx_get_svc_ctx(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_id);
 
     /**
@@ -186,7 +186,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t  AXIS2_CALL
     axis2_conf_ctx_register_svc_grp_ctx(axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_grp_id,
         axis2_svc_grp_ctx_t *svc_grp_ctx);
 
@@ -199,7 +199,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_grp_ctx_t * AXIS2_CALL
     axis2_conf_ctx_get_svc_grp_ctx(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_grp_id);
 
     /**
@@ -212,7 +212,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t * AXIS2_CALL
     axis2_conf_ctx_get_root_dir(const axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the root working directory. It is in this directory that the 
@@ -225,7 +225,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t  AXIS2_CALL
     axis2_conf_ctx_set_root_dir(axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *path);
 
     /**
@@ -239,7 +239,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t  AXIS2_CALL
     axis2_conf_ctx_init(axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_conf_t *conf);
 
     /**
@@ -250,7 +250,7 @@ extern "C"
      */
     AXIS2_EXTERN void  AXIS2_CALL
     axis2_conf_ctx_free(axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * This method fills the context hierarchy (service group, service and 
@@ -266,7 +266,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_grp_ctx_t * AXIS2_CALL
     axis2_conf_ctx_fill_ctxs(axis2_conf_ctx_t *conf_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
 #ifdef __cplusplus

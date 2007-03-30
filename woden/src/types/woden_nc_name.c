@@ -35,28 +35,28 @@ struct woden_nc_name_impl
 axis2_status_t AXIS2_CALL
 woden_nc_name_free(
     void *nc_name,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 axis2_bool_t AXIS2_CALL
 woden_nc_name_is_valid(
     void *nc_name,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *st_value);
 
 axis2_status_t AXIS2_CALL
 woden_nc_name_set_value(
     void *nc_name,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *value);
 
 axis2_char_t *AXIS2_CALL
 woden_nc_name_to_string(
     void *nc_name,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 AXIS2_EXTERN woden_nc_name_t * AXIS2_CALL
 woden_nc_name_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *value)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
@@ -83,7 +83,7 @@ woden_nc_name_create(
 axis2_status_t AXIS2_CALL
 woden_nc_name_free(
     void *nc_name,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
 
@@ -113,7 +113,7 @@ woden_nc_name_free(
 axis2_bool_t AXIS2_CALL
 woden_nc_name_is_valid(
     void *nc_name,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *st_value)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
@@ -138,7 +138,7 @@ woden_nc_name_is_valid(
 axis2_status_t AXIS2_CALL
 woden_nc_name_set_value(
     void *nc_name,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *value)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
@@ -164,7 +164,7 @@ woden_nc_name_set_value(
 axis2_char_t *AXIS2_CALL
 woden_nc_name_to_string(
     void *nc_name,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
 

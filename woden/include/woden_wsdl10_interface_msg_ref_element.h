@@ -26,7 +26,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -62,56 +62,56 @@ struct woden_wsdl10_interface_msg_ref_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *interface_msg_ref_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *interface_msg_ref_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_qname) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
      
     axis2_status_t (AXIS2_CALL *
     set_msg) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *msg);
 
     void *(AXIS2_CALL *
     get_msg) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_msg_qname) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *element);
 
     axis2_qname_t *(AXIS2_CALL *
     get_msg_qname) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_direction) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *dir);
 
     void *(AXIS2_CALL *
     get_direction) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
 
 };
@@ -131,13 +131,13 @@ struct woden_wsdl10_interface_msg_ref_element
 
 AXIS2_EXTERN woden_wsdl10_interface_msg_ref_element_t * AXIS2_CALL
 woden_wsdl10_interface_msg_ref_element_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_wsdl10_interface_msg_ref_element_resolve_methods(
         woden_wsdl10_interface_msg_ref_element_t *interface_msg_ref_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

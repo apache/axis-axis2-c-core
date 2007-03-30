@@ -24,6 +24,6 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 
-axiom_node_t *axis2_listener_notify(const axis2_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_listener_notify(const axutil_env_t *env, axiom_node_t *node);
 
 #endif /* LISTNER_H*/

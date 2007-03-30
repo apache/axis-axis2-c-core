@@ -30,7 +30,7 @@
 
 axis2_char_t* AXIS2_CALL
 w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_char_t *fully_qualified_class_name = NULL;
@@ -76,7 +76,7 @@ w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer
 
 axis2_status_t AXIS2_CALL
 w2c_schema_c_writer_write_batch( w2c_schema_writer_t *writer,
-                 const axis2_env_t *env)
+                 const axutil_env_t *env)
 {
     w2c_schema_writer_impl_t *writer_impl = NULL;
     axis2_char_t *out = NULL;
@@ -108,7 +108,7 @@ w2c_schema_c_writer_write_batch( w2c_schema_writer_t *writer,
 
 axis2_char_t*
 w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_qname_t *qname,
                         w2c_schema_writer_meta_info_t *meta_info,
                         axis2_hash_t *typemap,
@@ -176,7 +176,7 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_char_t*
 w2c_schema_c_writer_create_out_file( w2c_schema_writer_impl_t *writer_impl,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_char_t *package_name, /* here it is NULL */
                     axis2_char_t *name,
                     axis2_char_t *extension)
@@ -193,7 +193,7 @@ w2c_schema_c_writer_create_out_file( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_bool_t 
 w2c_schema_c_writer_is_default_class( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *c_class_name4element)
 {
     return !(axis2_strcmp( c_class_name4element, W2C_SCHEMA_C_DEFAULT_CLASS));
@@ -202,7 +202,7 @@ w2c_schema_c_writer_is_default_class( w2c_schema_writer_impl_t *writer_impl,
 /****************** standard create and delete for DLL ************************/
 AXIS2_EXPORT int
 axis2_get_instance(w2c_schema_writer_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     w2c_schema_writer_t *writer = NULL;
     
@@ -228,7 +228,7 @@ axis2_get_instance(w2c_schema_writer_t **inst,
 
 AXIS2_EXPORT int
 axis2_remove_instance(w2c_schema_writer_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 

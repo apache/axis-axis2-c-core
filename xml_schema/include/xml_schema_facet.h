@@ -53,41 +53,41 @@ struct xml_schema_facet_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *facet,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *facet,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
     
     xml_schema_types_t (AXIS2_CALL*
     get_type)(void *facet,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *facet,
-                const axis2_env_t *env);          
+                const axutil_env_t *env);          
 
     axis2_bool_t (AXIS2_CALL *
     is_fixed)(void *facet,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_fixed)(void *facet,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_bool_t fixed);
     
     axis2_char_t *(AXIS2_CALL *
     get_value)(void *facet,
-               const axis2_env_t *env);
+               const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_value)(void *facet,
-               const axis2_env_t *env,
+               const axutil_env_t *env,
                axis2_char_t *value);
     
     axis2_status_t (AXIS2_CALL *
     set_facet_type)(void *facet,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     int facet_type);                    
     
 };
@@ -102,13 +102,13 @@ struct xml_schema_facet
  * Creates new Xml Schema Facet
  */
 AXIS2_EXTERN xml_schema_facet_t * AXIS2_CALL
-xml_schema_facet_create(const axis2_env_t *env,
+xml_schema_facet_create(const axutil_env_t *env,
                               axis2_char_t *value,
                               axis2_bool_t fixed,
                               xml_schema_types_t type);
 
 AXIS2_EXTERN xml_schema_facet_t * AXIS2_CALL
-xml_schema_facet_construct(const axis2_env_t *env,
+xml_schema_facet_construct(const axutil_env_t *env,
                                  axiom_node_t *node);
                                                                  
 /************************* macros *********************************************/

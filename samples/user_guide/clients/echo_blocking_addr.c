@@ -22,7 +22,7 @@
 
 int main(int argc, char** argv)
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
     axiom_node_t *ret_node = NULL;
 
     /* Set up the environment */
-    env = axis2_env_create_all("echo_blocking_addr.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("echo_blocking_addr.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
 
     if (env)
     {
-        axis2_env_free((axis2_env_t *) env);
+        axutil_env_free((axutil_env_t *) env);
         env = NULL;
     }
     

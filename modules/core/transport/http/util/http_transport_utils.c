@@ -44,7 +44,7 @@ const axis2_char_t * AXIS2_TRANS_UTIL_DEFAULT_CHAR_ENCODING =  AXIS2_HTTP_HEADER
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_process_http_post_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_stream_t *in_stream,
     axis2_stream_t *out_stream,
@@ -55,7 +55,7 @@ axis2_http_transport_utils_process_http_post_request(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_transport_utils_process_http_get_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_stream_t *in_stream,
     axis2_stream_t *out_stream,
@@ -67,7 +67,7 @@ axis2_http_transport_utils_process_http_get_request(
 
 AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
 axis2_http_transport_utils_select_builder_for_mime(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *request_uri,
     axis2_msg_ctx_t *msg_ctx,
     axis2_stream_t *in_stream,
@@ -75,27 +75,27 @@ axis2_http_transport_utils_select_builder_for_mime(
 
 AXIS2_EXTERN axis2_bool_t  AXIS2_CALL
 axis2_http_transport_utils_is_optimized(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *om_element);
 
 AXIS2_EXTERN axis2_bool_t  AXIS2_CALL
 axis2_http_transport_utils_do_write_mtom(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 AXIS2_EXTERN axis2_bool_t  AXIS2_CALL
 axis2_http_transport_utils_is_doing_rest(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_transport_utils_is_doing_rest_through_post(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_strdecode(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *dest,
     axis2_char_t *src);
 
@@ -105,12 +105,12 @@ axis2_http_transport_utils_hexit(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_services_html(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
 
 AXIS2_EXTERN axis2_string_t *AXIS2_CALL
 axis2_http_transport_utils_get_charset_enc(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *content_type);
 
 int AXIS2_CALL
@@ -121,24 +121,24 @@ axis2_http_transport_utils_on_data_request(
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_http_transport_utils_create_soap_msg(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     const axis2_char_t *soap_ns_uri);
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_value_from_content_type(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *content_type,
     const axis2_char_t *key);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_dispatch_and_verify(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 /*AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_http_transport_utils_handle_media_type_url_encoded(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_hash_t *param_map,
     axis2_char_t *method,
@@ -146,7 +146,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_http_transport_utils_handle_media_type_url_encoded(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_hash_t *param_map,
     axis2_char_t *method);
@@ -155,7 +155,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
 
 AXIS2_EXTERN axis2_status_t  AXIS2_CALL
 axis2_http_transport_utils_process_http_post_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_stream_t *in_stream,
     axis2_stream_t *out_stream,
@@ -512,7 +512,7 @@ axis2_http_transport_utils_process_http_post_request(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_transport_utils_process_http_get_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_stream_t *in_stream,
     axis2_stream_t *out_stream,
@@ -570,7 +570,7 @@ axis2_http_transport_utils_process_http_get_request(
 
 AXIS2_EXTERN axiom_stax_builder_t *AXIS2_CALL
 axis2_http_transport_utils_select_builder_for_mime(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *request_uri,
     axis2_msg_ctx_t *msg_ctx,
     axis2_stream_t *in_stream,
@@ -584,7 +584,7 @@ axis2_http_transport_utils_select_builder_for_mime(
 
 AXIS2_EXTERN axis2_bool_t  AXIS2_CALL
 axis2_http_transport_utils_is_optimized(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *om_element)
 {
     /*
@@ -595,7 +595,7 @@ axis2_http_transport_utils_is_optimized(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_transport_utils_do_write_mtom(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     /*axis2_property_t *property = NULL;
@@ -625,7 +625,7 @@ axis2_http_transport_utils_do_write_mtom(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_transport_utils_is_doing_rest(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     /*
@@ -637,7 +637,7 @@ axis2_http_transport_utils_is_doing_rest(
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_transport_utils_is_doing_rest_through_post(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     /*
@@ -648,7 +648,7 @@ axis2_http_transport_utils_is_doing_rest_through_post(
 
 AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
 axis2_http_transport_utils_get_request_params(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *request_uri)
 {
 
@@ -712,7 +712,7 @@ axis2_http_transport_utils_get_request_params(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_strdecode(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *dest,
     axis2_char_t *src)
 {
@@ -760,7 +760,7 @@ axis2_http_transport_utils_hexit(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_services_html(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_hash_t *services_map = NULL;
@@ -885,7 +885,7 @@ axis2_http_transport_utils_get_services_html(
 
 AXIS2_EXTERN axis2_string_t *AXIS2_CALL
 axis2_http_transport_utils_get_charset_enc(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *content_type)
 {
     axis2_char_t *tmp = NULL;
@@ -960,7 +960,7 @@ axis2_http_transport_utils_on_data_request(
     int size,
     void *ctx)
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     int len = -1;
     axis2_callback_info_t *cb_ctx = (axis2_callback_info_t *)ctx;
 
@@ -1020,7 +1020,7 @@ axis2_http_transport_utils_on_data_request(
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_http_transport_utils_create_soap_msg(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     const axis2_char_t *soap_ns_uri)
 {
@@ -1256,7 +1256,7 @@ axis2_http_transport_utils_create_soap_msg(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_value_from_content_type(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *content_type,
     const axis2_char_t *key)
 {
@@ -1306,7 +1306,7 @@ axis2_http_transport_utils_get_value_from_content_type(
 
 /*AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_http_transport_utils_handle_media_type_url_encoded(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_hash_t *param_map,
     axis2_char_t *method,
@@ -1436,7 +1436,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
 
 AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
 axis2_http_transport_utils_handle_media_type_url_encoded(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_hash_t *param_map,
     axis2_char_t *method)
@@ -1489,7 +1489,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_dispatch_and_verify(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_disp_t *req_uri_disp = NULL;

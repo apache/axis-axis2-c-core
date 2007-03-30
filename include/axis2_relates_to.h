@@ -36,7 +36,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_const.h>
 
 #ifdef __cplusplus
@@ -54,7 +54,7 @@ extern "C"
      * @param relationship_type relationship type string 
      */
     AXIS2_EXTERN axis2_relates_to_t *AXIS2_CALL
-    axis2_relates_to_create(const axis2_env_t *env,
+    axis2_relates_to_create(const axutil_env_t *env,
         const axis2_char_t *value,
         const axis2_char_t *relationship_type);
 
@@ -68,7 +68,7 @@ extern "C"
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_relates_to_get_value(
         const axis2_relates_to_t *relates_to,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets value. The value field represents the URI that corresponds to the 
@@ -80,7 +80,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *value);
 
     /**
@@ -91,7 +91,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_relates_to_get_relationship_type(const axis2_relates_to_t *relates_to,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets relationship type. 
@@ -102,7 +102,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *relationship_type);
 
     /**
@@ -113,7 +113,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_relates_to_free(struct axis2_relates_to *relates_to,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** @} */
 

@@ -54,97 +54,97 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler_options_ops
 
     axis2_status_t (AXIS2_CALL *
     free)(w2c_schema_compiler_options_t *schema_compiler_options,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_output_location)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *output_location);
 
     axis2_char_t* (AXIS2_CALL *
     get_output_location)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_mapper_class_package)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *mapper_class_package);
 
     axis2_char_t* (AXIS2_CALL *
     get_mapper_class_package)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_package_name)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *package_name);
 
     axis2_char_t* (AXIS2_CALL *
     get_package_name)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_helper_mode)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t helper_mode);
 
     axis2_bool_t (AXIS2_CALL *
     get_helper_mode)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_write_out)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t write_out);
 
     axis2_bool_t (AXIS2_CALL *
     get_write_out)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_wrap_classes)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t wrap_classes);
 
     axis2_bool_t (AXIS2_CALL *
     get_wrap_classes)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_ns2package_map)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *ns2package_map);
 
     axis2_hash_t* (AXIS2_CALL *
     get_ns2package_map)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_language)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *language);
 
     axis2_char_t* (AXIS2_CALL *
     get_language)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_qname2name_maker)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         w2c_qname2name_maker_t *maker);
 
     w2c_qname2name_maker_t* (AXIS2_CALL *
     get_qname2name_maker)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_name_maker_func)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         W2C_ENGINE_CONFIGURATION_NAMEMAKER maker);
 
     W2C_ENGINE_CONFIGURATION_NAMEMAKER (AXIS2_CALL *
     get_name_maker_func)( w2c_schema_compiler_options_t *schema_compiler_options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 
@@ -161,7 +161,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler_options
  * @return newly created schema_compiler_options obj
  */
 AXIS2_EXTERN w2c_schema_compiler_options_t* AXIS2_CALL
-w2c_schema_compiler_options_create( const axis2_env_t *env);
+w2c_schema_compiler_options_create( const axutil_env_t *env);
 
 /*************************** Function macros **********************************/
 

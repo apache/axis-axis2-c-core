@@ -20,29 +20,29 @@
 
 int AXIS2_CALL
 notify_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /*
  * This method invokes the right service method
  */
 axiom_node_t* AXIS2_CALL
 notify_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node,
         axis2_msg_ctx_t *msg_ctx);
 
 
 int AXIS2_CALL
 notify_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axiom_node_t* AXIS2_CALL
 notify_on_fault(axis2_svc_skeleton_t *svc_skeli,
-        const axis2_env_t *env, axiom_node_t *node);
+        const axutil_env_t *env, axiom_node_t *node);
 
 /*Create function */
 axis2_svc_skeleton_t *
-axis2_notify_create(const axis2_env_t *env)
+axis2_notify_create(const axutil_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
     /* Allocate memory for the structs */
@@ -66,7 +66,7 @@ axis2_notify_create(const axis2_env_t *env)
 /* Initialize the service */
 int AXIS2_CALL
 notify_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     svc_skeleton->func_array = axutil_array_list_create(env, 0);
     /* Add the implemented operation names of the service to
@@ -82,7 +82,7 @@ notify_init(axis2_svc_skeleton_t *svc_skeleton,
  */
 axiom_node_t* AXIS2_CALL
 notify_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node,
         axis2_msg_ctx_t *msg_ctx)
 {
@@ -99,7 +99,7 @@ notify_invoke(axis2_svc_skeleton_t *svc_skeleton,
 /* On fault, handle the fault */
 axiom_node_t* AXIS2_CALL
 notify_on_fault(axis2_svc_skeleton_t *svc_skeli,
-        const axis2_env_t *env, axiom_node_t *node)
+        const axutil_env_t *env, axiom_node_t *node)
 {
     /* Here we are just setting a simple error message inside an element
      * called 'EchoServiceError' 
@@ -117,7 +117,7 @@ notify_on_fault(axis2_svc_skeleton_t *svc_skeli,
 /* Free the resources used */
 int AXIS2_CALL
 notify_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     /* Free the function array */
     if (svc_skeleton->func_array)
@@ -149,7 +149,7 @@ notify_free(axis2_svc_skeleton_t *svc_skeleton,
  */
 AXIS2_EXPORT int
 axis2_get_instance(axis2_svc_skeleton_t **inst,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     *inst = axis2_notify_create(env);
     if (!(*inst))
@@ -162,7 +162,7 @@ axis2_get_instance(axis2_svc_skeleton_t **inst,
 
 AXIS2_EXPORT int
 axis2_remove_instance(axis2_svc_skeleton_t *inst,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)

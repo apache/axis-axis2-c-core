@@ -25,7 +25,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -61,12 +61,12 @@ struct woden_binding_fault_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *binding_fault_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *binding_fault_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Set the 'ref' attribute to the specified QName, which identifies the
@@ -77,13 +77,13 @@ struct woden_binding_fault_element_ops
     axis2_status_t (AXIS2_CALL *
     set_ref) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
     
     axis2_qname_t *(AXIS2_CALL *
     get_ref) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * Get the Interface Fault Element identified by the QName specified in the
@@ -94,7 +94,7 @@ struct woden_binding_fault_element_ops
     void *(AXIS2_CALL *
     get_interface_fault_element) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -113,13 +113,13 @@ struct woden_binding_fault_element
 
 AXIS2_EXTERN woden_binding_fault_element_t * AXIS2_CALL
 woden_binding_fault_element_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_binding_fault_element_resolve_methods(
         woden_binding_fault_element_t *binding_fault_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

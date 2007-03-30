@@ -48,7 +48,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svr_callback_free(axis2_svr_callback_t *svr_callback,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Handle result
@@ -59,7 +59,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -71,7 +71,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -80,7 +80,7 @@ extern "C"
      * @return newly created server callback object
      */
     AXIS2_EXTERN axis2_svr_callback_t *AXIS2_CALL
-    axis2_svr_callback_create(const axis2_env_t *env);
+    axis2_svr_callback_create(const axutil_env_t *env);
 
 
 /** @} */

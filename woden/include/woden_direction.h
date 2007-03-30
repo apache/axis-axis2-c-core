@@ -48,7 +48,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -79,12 +79,12 @@ struct woden_direction_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *direction,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_char_t *(AXIS2_CALL *
     to_string) (
             void *direction,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
 };
@@ -97,11 +97,11 @@ struct woden_direction
 
 AXIS2_EXTERN woden_direction_t *AXIS2_CALL
 woden_direction_get_direction_in(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_direction_t *AXIS2_CALL
 woden_direction_get_direction_out(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #define WODEN_DIRECTION_FREE(direction, env) \
       (((woden_direction_t *) direction)->ops->\

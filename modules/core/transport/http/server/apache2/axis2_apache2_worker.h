@@ -35,7 +35,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 #include "apache2_stream.h"
 
@@ -55,13 +55,13 @@ extern "C"
         int (AXIS2_CALL *
                 process_request)(
                     axis2_apache2_worker_t *apache2_worker,
-                    const axis2_env_t *env, 
+                    const axutil_env_t *env, 
                     request_rec *r);
 
         void (AXIS2_CALL *
                 free)(
                     axis2_apache2_worker_t *apache2_worker,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
     };
 
     /**
@@ -76,7 +76,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_apache2_worker_t * AXIS2_CALL
     axis2_apache2_worker_create(
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_char_t *repo_path);
 
 /************************** Start of function macros **************************/

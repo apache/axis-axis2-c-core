@@ -28,7 +28,7 @@ struct axis2_http_response_writer
 
 AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
 axis2_http_response_writer_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_stream_t *stream)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -39,7 +39,7 @@ axis2_http_response_writer_create(
 
 AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
 axis2_http_response_writer_create_with_encoding(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_stream_t *stream,
     const axis2_char_t *encoding)
 {
@@ -66,7 +66,7 @@ axis2_http_response_writer_create_with_encoding(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_response_writer_free(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_FREE(env->allocator,
@@ -80,7 +80,7 @@ axis2_http_response_writer_free(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_response_writer_get_encoding(
     const axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return response_writer->encoding;
@@ -90,7 +90,7 @@ axis2_http_response_writer_get_encoding(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_close(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_SUCCESS;
@@ -100,7 +100,7 @@ axis2_http_response_writer_close(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_flush(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     /*
@@ -113,7 +113,7 @@ axis2_http_response_writer_flush(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_write_char(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     char c)
 {
     int write = -1;
@@ -135,7 +135,7 @@ axis2_http_response_writer_write_char(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_write_buf(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     char *buf,
     int offset,
     axis2_ssize_t len)
@@ -163,7 +163,7 @@ axis2_http_response_writer_write_buf(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_print_str(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const char *str)
 {
     int write = -1;
@@ -189,7 +189,7 @@ axis2_http_response_writer_print_str(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_print_int(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int i)
 {
     axis2_char_t int_str[10];
@@ -202,7 +202,7 @@ axis2_http_response_writer_print_int(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_println_str(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const char *str)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -221,7 +221,7 @@ axis2_http_response_writer_println_str(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_response_writer_println(
     axis2_http_response_writer_t *response_writer,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return axis2_http_response_writer_print_str(response_writer, env,

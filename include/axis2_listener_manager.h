@@ -37,7 +37,7 @@
   */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 
 #ifdef __cplusplus
@@ -62,7 +62,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_listener_manager_make_sure_started(axis2_listener_manager_t *listener_manager,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const AXIS2_TRANSPORT_ENUMS transport,
         axis2_conf_ctx_t *conf_ctx);
 
@@ -75,7 +75,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_listener_manager_stop(axis2_listener_manager_t *listener_manager,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const AXIS2_TRANSPORT_ENUMS transport);
 
     /**
@@ -90,7 +90,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL
     axis2_listener_manager_get_reply_to_epr(const axis2_listener_manager_t *listener_manager,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_name,
         const AXIS2_TRANSPORT_ENUMS transport);
 
@@ -102,7 +102,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
     axis2_listener_manager_get_conf_ctx(const axis2_listener_manager_t *listener_manager,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
      * Frees listener manager struct.
@@ -112,7 +112,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_listener_manager_free(axis2_listener_manager_t *listener_manager,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -122,7 +122,7 @@ extern "C"
      *         or NULL on error with error code set in environment's error
      */
     AXIS2_EXTERN axis2_listener_manager_t *AXIS2_CALL
-    axis2_listener_manager_create(const axis2_env_t *env);
+    axis2_listener_manager_create(const axutil_env_t *env);
 
 
     /** @} */

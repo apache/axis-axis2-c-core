@@ -23,7 +23,7 @@
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_out_transport_info_impl_set_content_type(
     axis2_http_out_transport_info_t *http_out_transport_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *content_type)
 {
     axis2_char_t *tmp1 = NULL;
@@ -65,7 +65,7 @@ axis2_http_out_transport_info_impl_set_content_type(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_out_transport_info_impl_set_char_encoding(
     axis2_http_out_transport_info_t *http_out_transport_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *encoding)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -82,7 +82,7 @@ axis2_http_out_transport_info_impl_set_char_encoding(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_impl_free(
     axis2_http_out_transport_info_t *http_out_transport_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
     if(http_out_transport_info->response)
@@ -99,7 +99,7 @@ axis2_http_out_transport_info_impl_free(
 
 AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL
 axis2_http_out_transport_info_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_http_simple_response_t *response)
 {
     axis2_http_out_transport_info_t *http_out_transport_info = NULL;
@@ -133,7 +133,7 @@ axis2_http_out_transport_info_create(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_free(
     axis2_http_out_transport_info_t *http_out_transport_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     http_out_transport_info->free_function(http_out_transport_info, env);
     return;
@@ -142,7 +142,7 @@ axis2_http_out_transport_info_free(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_free_void_arg(
     void *transport_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_out_transport_info_t *transport_info_l = NULL;
 
@@ -155,7 +155,7 @@ axis2_http_out_transport_info_free_void_arg(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_out_transport_info_set_content_type(
     axis2_http_out_transport_info_t *http_out_transport_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *content_type)
 {
 	return http_out_transport_info->set_content_type(http_out_transport_info, env, content_type);
@@ -165,7 +165,7 @@ axis2_http_out_transport_info_set_content_type(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_out_transport_info_set_char_encoding(
     axis2_http_out_transport_info_t *http_out_transport_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *encoding)
 {
 	return http_out_transport_info->set_char_encoding(http_out_transport_info, env, encoding);
@@ -174,9 +174,9 @@ axis2_http_out_transport_info_set_char_encoding(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_set_char_encoding_func(
 		axis2_http_out_transport_info_t *out_transport_info,
-		const axis2_env_t *env,
+		const axutil_env_t *env,
 		axis2_status_t (AXIS2_CALL *set_char_encoding)
-		(axis2_http_out_transport_info_t *,	const axis2_env_t *,const axis2_char_t *))
+		(axis2_http_out_transport_info_t *,	const axutil_env_t *,const axis2_char_t *))
 {
 	out_transport_info->set_char_encoding = set_char_encoding;
 }
@@ -184,10 +184,10 @@ axis2_http_out_transport_info_set_char_encoding_func(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_set_content_type_func(
 	axis2_http_out_transport_info_t *out_transport_info,
-	const axis2_env_t *env,
+	const axutil_env_t *env,
 	axis2_status_t (AXIS2_CALL *set_content_type)(
 		axis2_http_out_transport_info_t *,
-		const axis2_env_t*,const axis2_char_t *))
+		const axutil_env_t*,const axis2_char_t *))
 {
 	out_transport_info->set_content_type = set_content_type;
 }
@@ -195,8 +195,8 @@ axis2_http_out_transport_info_set_content_type_func(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_out_transport_info_set_free_func(
     axis2_http_out_transport_info_t *out_transport_info,
-    const axis2_env_t *env,
-    void (AXIS2_CALL *free_function)(axis2_http_out_transport_info_t *,const axis2_env_t*)
+    const axutil_env_t *env,
+    void (AXIS2_CALL *free_function)(axis2_http_out_transport_info_t *,const axutil_env_t*)
     )
 {
 	out_transport_info->free_function = free_function;

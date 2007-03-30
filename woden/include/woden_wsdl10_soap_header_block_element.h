@@ -26,7 +26,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -62,12 +62,12 @@ struct woden_wsdl10_soap_header_block_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *soap_header_block_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *soap_header_block_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Set the QName that identifies the Schema element declaration
@@ -78,13 +78,13 @@ struct woden_wsdl10_soap_header_block_element_ops
     axis2_status_t (AXIS2_CALL *
     set_element_qname) (
             void *soap_header_block_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_element_qname) (
             void *soap_header_block_element,
-            const axis2_env_t *env); 
+            const axutil_env_t *env); 
  
     /**
      * Returns the Schema element declaration identified by the QName in the 'element' 
@@ -99,40 +99,40 @@ struct woden_wsdl10_soap_header_block_element_ops
     void *(AXIS2_CALL *
     get_element) (
             void *soap_header_block_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_must_understand) (
             void *soap_header_block_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_bool_t understood); 
 
     axis2_bool_t (AXIS2_CALL *
     must_understand) (
             void *soap_header_block_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
   
     axis2_status_t (AXIS2_CALL *
     set_parent_element) (
             void *soap_header_block_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *wsdl_el);
 
     void *(AXIS2_CALL *
     get_parent_element) (
             void *soap_header_block_element,
-            const axis2_env_t *env); 
+            const axutil_env_t *env); 
   
     axis2_status_t (AXIS2_CALL *
     add_documentation_element) (
             void *soap_header_block_element,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *doc_el);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_documentation_elements) (
             void *soap_header_block_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
 };
 
@@ -151,13 +151,13 @@ struct woden_wsdl10_soap_header_block_element
 
 AXIS2_EXTERN woden_wsdl10_soap_header_block_element_t * AXIS2_CALL
 woden_wsdl10_soap_header_block_element_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_element_resolve_methods(
         woden_wsdl10_soap_header_block_element_t *soap_header_block_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

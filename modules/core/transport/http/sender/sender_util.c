@@ -13,7 +13,7 @@
 #include <axis2_generic_obj.h>
 
 void
-axis2_http_sender_util_add_header (const axis2_env_t *env,
+axis2_http_sender_util_add_header (const axutil_env_t *env,
 				   axis2_http_simple_request_t *request,
 				   axis2_char_t *header_name,
 				   const axis2_char_t *header_value)

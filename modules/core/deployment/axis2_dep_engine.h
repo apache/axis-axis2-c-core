@@ -32,7 +32,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include "axis2_arch_file_data.h"
 #include "axis2_ws_info.h"
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -78,7 +78,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *module_qname);
 
     /** 
@@ -88,7 +88,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
     axis2_dep_engine_get_module(const axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *module_name);
 
     /** 
@@ -97,7 +97,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_arch_file_data *AXIS2_CALL
     axis2_dep_engine_get_current_file_item(const axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * @param dep_engine pointer to deployment engine
@@ -107,7 +107,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_add_ws_to_deploy(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_arch_file_data *file);
 
     /** 
@@ -118,7 +118,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_add_ws_to_undeploy(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_ws_info *file);
 
     /** 
@@ -127,7 +127,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_phases_info *AXIS2_CALL
     axis2_dep_engine_get_phases_info(const axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param dep_engine pointer to deployment engine
@@ -136,7 +136,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
     axis2_dep_engine_get_axis_conf(const axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * @param dep_engine pointer to deployment engine
@@ -144,7 +144,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
     axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * @param dep_engine pointer to deployment engine
@@ -152,7 +152,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
     axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *client_home);
 
     /** 
@@ -162,7 +162,7 @@ extern "C"
      */
     AXIS2_EXTERN void *AXIS2_CALL
     axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *dll_name);
 
     /** 
@@ -172,7 +172,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * @param dep_engine pointer to deployment engine
@@ -181,7 +181,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * @param dep_engine pointer to deployment engine
@@ -189,7 +189,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_dep_engine_is_hot_update(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * @param dep_engine pointer to deployment engine
@@ -199,7 +199,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_phases_info *phases_info);
 
     /**
@@ -214,7 +214,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
     axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc *svc,
         axis2_char_t *file_name);
 
@@ -227,7 +227,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
     axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_file_t *module_archive,
         struct axis2_conf *conf);
 
@@ -237,7 +237,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_dep_engine_get_repos_path(const axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * @param dep_engine pointer to deployment engine
@@ -247,7 +247,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_set_current_file_item(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_arch_file_data *file_data);
 
     /** 
@@ -258,7 +258,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_set_arch_reader(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_arch_reader *arch_reader);
 
     /**
@@ -267,7 +267,7 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-    axis2_dep_engine_create(const axis2_env_t *env);
+    axis2_dep_engine_create(const axutil_env_t *env);
 
     /**
      * Creates description builder struct
@@ -278,7 +278,7 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-    axis2_dep_engine_create_with_repos_name(const axis2_env_t *env,
+    axis2_dep_engine_create_with_repos_name(const axutil_env_t *env,
         const axis2_char_t *repos_path);
 
     /**
@@ -289,28 +289,28 @@ extern "C"
      * @return pointer to newly created deployment engine
      */
     AXIS2_EXTERN axis2_dep_engine_t *AXIS2_CALL
-    axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
+    axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axutil_env_t *env,
         const axis2_char_t *repos_path,
         const axis2_char_t *svr_xml_file);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_add_desc_builder(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_desc_builder *desc_builder);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_add_module_builder(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_module_builder *module_builder);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_add_svc_builder(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc_builder *svc_builder);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_add_svc_grp_builder(axis2_dep_engine_t *dep_engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc_grp_builder *svc_grp_builder);
 
 

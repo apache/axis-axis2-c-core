@@ -35,7 +35,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -72,30 +72,30 @@ struct woden_property_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *doc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *doc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_ref) (void *doc_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *uri);
 
     axis2_uri_t *(AXIS2_CALL *
     get_ref) (void *doc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_value) (void *doc_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_generic_obj_t *value);
 
     axis2_generic_obj_t *(AXIS2_CALL *
     get_value) (void *doc_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Set the QName represented by the &lt;constraint&gt; element within the
@@ -108,13 +108,13 @@ struct woden_property_element_ops
     axis2_status_t (AXIS2_CALL *
     set_constraint_qname) (
             void *property_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
    
     axis2_qname_t *(AXIS2_CALL *
     get_constraint_qname) (
             void *property_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Returns the Schema type definition identified by the QName in the &lt;
@@ -129,7 +129,7 @@ struct woden_property_element_ops
     struct xml_schema_type *(AXIS2_CALL *
     get_constraint) (
             void *property_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Set to true if &lt;constraint&gt; specifies the NMToken <code>"#value"
@@ -141,7 +141,7 @@ struct woden_property_element_ops
     axis2_status_t (AXIS2_CALL *
     set_has_value_token) (
             void *property_el,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_bool_t b);
     
     /**
@@ -153,7 +153,7 @@ struct woden_property_element_ops
     axis2_bool_t (AXIS2_CALL * 
     has_value_token) (
             void *property_el,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -173,7 +173,7 @@ struct woden_property_element
 axis2_status_t AXIS2_CALL
 woden_property_element_resolve_methods(
         woden_property_element_t *property_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

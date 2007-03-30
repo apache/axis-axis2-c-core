@@ -68,130 +68,130 @@ struct xml_schema_complex_type_impl
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_free(
     void *complex_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 
 xml_schema_type_t* AXIS2_CALL
 xml_schema_complex_type_get_base_impl(
     void *complex_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_complex_type_get_type(
     void *complex_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_complex_type_super_objs(
     void *complex_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_any_attribute_t* AXIS2_CALL
 xml_schema_complex_type_get_any_attribute(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t  AXIS2_CALL
 xml_schema_complex_type_set_any_attribute(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_any_attribute_t *any_attr);
 
 xml_schema_obj_collection_t* AXIS2_CALL
 xml_schema_complex_type_get_attributes(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_obj_table_t* AXIS2_CALL
 xml_schema_complex_type_get_attribute_use(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_any_attribute_t* AXIS2_CALL
 xml_schema_complex_type_get_attribute_wildcard(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_derivation_method_t* AXIS2_CALL
 xml_schema_complex_type_get_block(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_block(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_derivation_method_t *block);
 
 xml_schema_derivation_method_t* AXIS2_CALL
 xml_schema_complex_type_get_block_resolved(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void* AXIS2_CALL
 xml_schema_complex_type_get_content_model(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_content_model(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *content_model);
 
 xml_schema_content_type_t* AXIS2_CALL
 xml_schema_complex_type_get_content_type(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_content_type(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_content_type_t *content_type);
 
 xml_schema_particle_t * AXIS2_CALL
 xml_schema_complex_type_get_content_type_particle(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 xml_schema_complex_type_is_abstract(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_abstract(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t b);
 
 axis2_bool_t AXIS2_CALL
 xml_schema_complex_type_is_mixed(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_mixed(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t b);
 
 void* AXIS2_CALL
 xml_schema_complex_type_get_particle(
     void *cmp_type,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_particle(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *particle);
 
 axis2_char_t* AXIS2_CALL
 xml_schema_complex_type_to_string(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix,
     int tab);
 
@@ -200,7 +200,7 @@ xml_schema_complex_type_to_string(
 
 AXIS2_EXTERN xml_schema_complex_type_t * AXIS2_CALL
 xml_schema_complex_type_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_t *schema)
 {
     xml_schema_complex_type_impl_t *complex_type_impl = NULL;
@@ -352,7 +352,7 @@ xml_schema_complex_type_create(
 
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_free(void *complex_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_complex_type_impl_t *complex_type_impl = NULL;
 
@@ -383,7 +383,7 @@ xml_schema_complex_type_free(void *complex_type,
 xml_schema_type_t *AXIS2_CALL
 xml_schema_complex_type_get_base_impl(
     void *complex_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_complex_type_impl_t *complex_type_impl = NULL;
 
@@ -396,7 +396,7 @@ xml_schema_complex_type_get_base_impl(
 xml_schema_any_attribute_t* AXIS2_CALL
 xml_schema_complex_type_get_any_attribute(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->any_attr;
 }
@@ -404,7 +404,7 @@ xml_schema_complex_type_get_any_attribute(
 axis2_status_t  AXIS2_CALL
 xml_schema_complex_type_set_any_attribute(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_any_attribute_t *any_attr)
 {
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
@@ -421,7 +421,7 @@ xml_schema_complex_type_set_any_attribute(
 xml_schema_obj_collection_t* AXIS2_CALL
 xml_schema_complex_type_get_attributes(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->attributes;
 }
@@ -429,7 +429,7 @@ xml_schema_complex_type_get_attributes(
 xml_schema_obj_table_t* AXIS2_CALL
 xml_schema_complex_type_get_attribute_use(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->attr_uses;
 }
@@ -437,7 +437,7 @@ xml_schema_complex_type_get_attribute_use(
 xml_schema_any_attribute_t* AXIS2_CALL
 xml_schema_complex_type_get_attribute_wildcard(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->attr_wildcard;
 }
@@ -445,7 +445,7 @@ xml_schema_complex_type_get_attribute_wildcard(
 xml_schema_derivation_method_t* AXIS2_CALL
 xml_schema_complex_type_get_block(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->block;
 }
@@ -453,7 +453,7 @@ xml_schema_complex_type_get_block(
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_block(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_derivation_method_t *block)
 {
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
@@ -470,7 +470,7 @@ xml_schema_complex_type_set_block(
 xml_schema_derivation_method_t* AXIS2_CALL
 xml_schema_complex_type_get_block_resolved(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->block_resolved;
 
@@ -479,7 +479,7 @@ xml_schema_complex_type_get_block_resolved(
 void* AXIS2_CALL
 xml_schema_complex_type_get_content_model(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->content_model;
 
@@ -488,7 +488,7 @@ xml_schema_complex_type_get_content_model(
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_content_model(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *content_model)
 {
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
@@ -505,7 +505,7 @@ xml_schema_complex_type_set_content_model(
 xml_schema_content_type_t* AXIS2_CALL
 xml_schema_complex_type_get_content_type(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->content_type;
 }
@@ -513,7 +513,7 @@ xml_schema_complex_type_get_content_type(
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_content_type(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_content_type_t *content_type)
 {
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
@@ -530,7 +530,7 @@ xml_schema_complex_type_set_content_type(
 xml_schema_particle_t * AXIS2_CALL
 xml_schema_complex_type_get_content_type_particle(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->particle_type;
 }
@@ -538,7 +538,7 @@ xml_schema_complex_type_get_content_type_particle(
 axis2_bool_t AXIS2_CALL
 xml_schema_complex_type_is_abstract(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->is_abstract;
 }
@@ -546,7 +546,7 @@ xml_schema_complex_type_is_abstract(
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_abstract(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t b)
 {
     AXIS2_INTF_TO_IMPL(cmp_type)->is_abstract = b;
@@ -556,7 +556,7 @@ xml_schema_complex_type_set_abstract(
 axis2_bool_t AXIS2_CALL
 xml_schema_complex_type_is_mixed(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->is_mixed;
 }
@@ -564,7 +564,7 @@ xml_schema_complex_type_is_mixed(
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_mixed(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t b)
 {
     AXIS2_INTF_TO_IMPL(cmp_type)->is_mixed = b;
@@ -574,7 +574,7 @@ xml_schema_complex_type_set_mixed(
 void* AXIS2_CALL
 xml_schema_complex_type_get_particle(
     void *cmp_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(cmp_type)->particle;
 }
@@ -582,7 +582,7 @@ xml_schema_complex_type_get_particle(
 axis2_status_t AXIS2_CALL
 xml_schema_complex_type_set_particle(
     void *cmp_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *particle)
 {
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
@@ -600,7 +600,7 @@ xml_schema_complex_type_set_particle(
 axis2_char_t* AXIS2_CALL
 xml_schema_complex_type_to_string(
     void *complex_type,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix,
     int tab)
 {
@@ -614,7 +614,7 @@ xml_schema_complex_type_to_string(
 xml_schema_types_t AXIS2_CALL
 xml_schema_complex_type_get_type(
     void *complex_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(complex_type)->obj_type;
 }
@@ -622,7 +622,7 @@ xml_schema_complex_type_get_type(
 axis2_hash_t* AXIS2_CALL
 xml_schema_complex_type_super_objs(
     void *complex_type,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(complex_type)->ht_super;
 }

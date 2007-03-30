@@ -40,30 +40,30 @@ typedef struct w2c_cmdline_option_impl
 
 axis2_status_t AXIS2_CALL 
 w2c_cmdline_option_free (w2c_cmdline_option_t *cmdline_option, 
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 w2c_cmdline_option_get_type(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 w2c_cmdline_option_get_value(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
 axutil_array_list_t* AXIS2_CALL
 w2c_cmdline_option_get_values(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
 /* internal functions */
 axis2_char_t*
 w2c_cmdline_option_set_type(
                w2c_cmdline_option_impl_t *cmdline_option_impl,
-               const axis2_env_t *env,
+               const axutil_env_t *env,
                axis2_char_t *type );
 /************************** End of function prototypes ************************/
 
 AXIS2_EXTERN w2c_cmdline_option_t * AXIS2_CALL 
-w2c_cmdline_option_create (const axis2_env_t *env)
+w2c_cmdline_option_create (const axutil_env_t *env)
 {
     w2c_cmdline_option_impl_t *cmdline_option_impl = NULL;
    
@@ -101,7 +101,7 @@ w2c_cmdline_option_create (const axis2_env_t *env)
 }
 
 AXIS2_EXTERN w2c_cmdline_option_t * AXIS2_CALL 
-w2c_cmdline_option_create_with_values (const axis2_env_t *env,
+w2c_cmdline_option_create_with_values (const axutil_env_t *env,
                           axis2_char_t *type,
                           axutil_array_list_t *values_arr)
 {
@@ -128,7 +128,7 @@ w2c_cmdline_option_create_with_values (const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL 
 w2c_cmdline_option_free (w2c_cmdline_option_t *cmdline_option, 
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     w2c_cmdline_option_impl_t *cmdline_option_impl = NULL;
     int i = 0;
@@ -169,7 +169,7 @@ w2c_cmdline_option_free (w2c_cmdline_option_t *cmdline_option,
 
 axis2_char_t* AXIS2_CALL
 w2c_cmdline_option_get_type(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env)
+          const axutil_env_t *env)
 {
     w2c_cmdline_option_impl_t *cmdline_option_impl = NULL;
     
@@ -183,7 +183,7 @@ w2c_cmdline_option_get_type(w2c_cmdline_option_t *cmdline_option,
 
 axis2_char_t* AXIS2_CALL
 w2c_cmdline_option_get_value(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env)
+          const axutil_env_t *env)
 {
     w2c_cmdline_option_impl_t *cmdline_option_impl = NULL;
     
@@ -201,7 +201,7 @@ w2c_cmdline_option_get_value(w2c_cmdline_option_t *cmdline_option,
 
 axutil_array_list_t* AXIS2_CALL
 w2c_cmdline_option_get_values(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env)
+          const axutil_env_t *env)
 {
     w2c_cmdline_option_impl_t *cmdline_option_impl = NULL;
     
@@ -217,7 +217,7 @@ w2c_cmdline_option_get_values(w2c_cmdline_option_t *cmdline_option,
 axis2_char_t*
 w2c_cmdline_option_set_type(
                w2c_cmdline_option_impl_t *cmdline_option_impl,
-               const axis2_env_t *env,
+               const axutil_env_t *env,
                axis2_char_t *type )
 {
     int index = 0;

@@ -52,7 +52,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_config_property_loader_t *config_property_loader,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * change the filename of the loader
@@ -64,7 +64,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     */
     axis2_status_t (AXIS2_CALL *
     set_filename)(w2c_config_property_loader_t *config_property_loader,
-         const axis2_env_t *env, axis2_char_t *filename);
+         const axutil_env_t *env, axis2_char_t *filename);
 
     /**
     * reload the properties.
@@ -75,7 +75,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     */
     axis2_status_t (AXIS2_CALL *
     reload )(w2c_config_property_loader_t *config_property_loader,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
     
     /**
      * Gets the test object support template. This is used in the
@@ -86,7 +86,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axis2_char_t* (AXIS2_CALL* 
     get_test_object_template_name )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the databinder template name. This is the template that has the
@@ -97,7 +97,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axis2_char_t* (AXIS2_CALL*
     get_db_supporter_template_name )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     /**
      * Gets the extension class names.
      * @param  env Environment. MUST NOT be NULL
@@ -106,7 +106,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axutil_array_list_t* (AXIS2_CALL* 
     get_extension_class_names )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
      /**
      * Gets the post extension class names.
      * @param  env Environment. MUST NOT be NULL
@@ -115,7 +115,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axutil_array_list_t* (AXIS2_CALL* 
     get_post_extension_class_names )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the third party schema names list.
@@ -125,7 +125,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axutil_array_list_t* (AXIS2_CALL* 
     get_third_party_schema_names )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the language type names.
@@ -135,7 +135,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axutil_array_list_t* (AXIS2_CALL* 
     get_language_types )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the emitter names map keys with the language name.
@@ -145,7 +145,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axis2_hash_t* (AXIS2_CALL* 
     get_language_emitter_map )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the default language name.
@@ -155,7 +155,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axis2_char_t* (AXIS2_CALL* 
     get_default_language )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the language specific properties.
@@ -165,7 +165,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axis2_hash_t* (AXIS2_CALL* 
     get_language_specific_properties_map )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the databinding framework names.
@@ -175,7 +175,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axutil_array_list_t* (AXIS2_CALL* 
     get_databinding_framework_names )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the extensions map for the databinding frameworks.
@@ -186,7 +186,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axis2_hash_t* (AXIS2_CALL* 
     get_databinding_framework_name_to_extension_map )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Gets the default DB framwork name.
@@ -196,7 +196,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
     axis2_char_t* (AXIS2_CALL* 
     get_default_db_framework_name )(
         w2c_config_property_loader_t *config_property_loader,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 };
 
 AXIS2_DECLARE_DATA  struct w2c_config_property_loader
@@ -210,7 +210,7 @@ AXIS2_DECLARE_DATA  struct w2c_config_property_loader
  * @return newly created config_property_loader obj
  */
 AXIS2_EXTERN w2c_config_property_loader_t* AXIS2_CALL
-w2c_config_property_loader_create( const axis2_env_t *env);
+w2c_config_property_loader_create( const axutil_env_t *env);
 
 /*************************** Function macros **********************************/
 

@@ -26,7 +26,7 @@ struct axutil_base64_binary
 };
 
 AXIS2_EXTERN axutil_base64_binary_t * AXIS2_CALL
-axutil_base64_binary_create(const axis2_env_t *env)
+axutil_base64_binary_create(const axutil_env_t *env)
 {
     axutil_base64_binary_t *base64_binary = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -44,7 +44,7 @@ axutil_base64_binary_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axutil_base64_binary_t * AXIS2_CALL
-axutil_base64_binary_create_with_plain_binary(const axis2_env_t *env,
+axutil_base64_binary_create_with_plain_binary(const axutil_env_t *env,
         const unsigned char* plain_binary,
         int plain_binary_len)
 {
@@ -75,7 +75,7 @@ axutil_base64_binary_create_with_plain_binary(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axutil_base64_binary_t * AXIS2_CALL
-axutil_base64_binary_create_with_encoded_binary(const axis2_env_t *env,
+axutil_base64_binary_create_with_encoded_binary(const axutil_env_t *env,
         const char* encoded_binary)
 {
     axutil_base64_binary_t *base64_binary = NULL;
@@ -110,7 +110,7 @@ axutil_base64_binary_create_with_encoded_binary(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axutil_base64_binary_free(axutil_base64_binary_t *base64_binary,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -129,7 +129,7 @@ axutil_base64_binary_free(axutil_base64_binary_t *base64_binary,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_base64_binary_set_plain_binary(axutil_base64_binary_t *base64_binary,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const unsigned char* plain_binary,
         int plain_binary_len)
 {
@@ -150,7 +150,7 @@ axutil_base64_binary_set_plain_binary(axutil_base64_binary_t *base64_binary,
 
 AXIS2_EXTERN unsigned char* AXIS2_CALL
 axutil_base64_binary_get_plain_binary(axutil_base64_binary_t *base64_binary,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int* plain_binary_len)
 {
     *plain_binary_len = base64_binary->plain_binary_len;
@@ -159,7 +159,7 @@ axutil_base64_binary_get_plain_binary(axutil_base64_binary_t *base64_binary,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_base64_binary_set_encoded_binary(axutil_base64_binary_t *base64_binary,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const char* encoded_binary)
 {
     int plain_binary_len = 0;
@@ -185,7 +185,7 @@ axutil_base64_binary_set_encoded_binary(axutil_base64_binary_t *base64_binary,
 
 AXIS2_EXTERN char* AXIS2_CALL
 axutil_base64_binary_get_encoded_binary(axutil_base64_binary_t *base64_binary,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     char* encoded_binary = NULL;
     int encoded_binary_len = 0;
@@ -210,7 +210,7 @@ axutil_base64_binary_get_encoded_binary(axutil_base64_binary_t *base64_binary,
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_base64_binary_get_encoded_binary_len(axutil_base64_binary_t *base64_binary,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     int encoded_binary_len = 0;
     encoded_binary_len = axutil_base64_encode_len(
@@ -220,7 +220,7 @@ axutil_base64_binary_get_encoded_binary_len(axutil_base64_binary_t *base64_binar
 
 AXIS2_EXTERN int AXIS2_CALL
 axutil_base64_binary_get_decoded_binary_len(axutil_base64_binary_t *base64_binary,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return base64_binary -> plain_binary_len;
 }

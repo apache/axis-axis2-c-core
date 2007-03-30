@@ -23,7 +23,7 @@
 #include <axis2_client.h>
 
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env,
+build_om_programatically(const axutil_env_t *env,
         const axis2_char_t *operation,
         const axis2_char_t *param1,
         const axis2_char_t *param2);
@@ -33,7 +33,7 @@ int main(int argc, char** argv)
     axis2_stub_t *stub = NULL;
     axiom_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     const axis2_char_t *client_home = NULL;
     axiom_node_t *ret_node = NULL;
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     const axis2_char_t *param1 = "40";
     const axis2_char_t *param2 = "8";
 
-    env = axis2_env_create_all("math_blocking.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("math_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home || !strcmp (client_home, ""))
@@ -127,7 +127,7 @@ int main(int argc, char** argv)
 
     if (env)
     {
-        axis2_env_free((axis2_env_t *) env);
+        axutil_env_free((axutil_env_t *) env);
         env = NULL;
     }
     
@@ -135,7 +135,7 @@ int main(int argc, char** argv)
 }
 
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env,
+build_om_programatically(const axutil_env_t *env,
         const axis2_char_t *operation,
         const axis2_char_t *param1,
         const axis2_char_t *param2)

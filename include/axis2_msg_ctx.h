@@ -41,7 +41,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_ctx.h>
 #include <axis2_relates_to.h>
 #include <axis2_param.h>
@@ -128,7 +128,7 @@ extern "C"
      * @return pointer to newly created message context instance
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
-    axis2_msg_ctx_create (const axis2_env_t *env,
+    axis2_msg_ctx_create (const axutil_env_t *env,
         struct axis2_conf_ctx *conf_ctx,
         struct axis2_transport_in_desc *transport_in_desc,
         struct axis2_transport_out_desc *transport_out_des);
@@ -141,7 +141,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
     axis2_msg_ctx_get_base(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets parent. Parent of a message context is of type operation.
@@ -151,7 +151,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
     axis2_msg_ctx_get_parent(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets parent. Parent of a message context is of type operation.
@@ -162,7 +162,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_parent(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_op_ctx *parent);
 
     /**
@@ -173,7 +173,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_msg_ctx_free(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Initializes the message context. Based on the transport, service and
@@ -187,7 +187,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_init(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_conf *conf);
 
     /**
@@ -200,7 +200,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
     axis2_msg_ctx_get_fault_to(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WS-Addressing from endpoint. From address tells where the 
@@ -212,7 +212,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
     axis2_msg_ctx_get_from(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if there is a SOAP fault on in flow.
@@ -222,7 +222,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_in_fault_flow(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the SOAP envelope. This SOAP envelope could be either request
@@ -234,12 +234,12 @@ extern "C"
      */
     AXIS2_EXTERN struct axiom_soap_envelope *AXIS2_CALL
     axis2_msg_ctx_get_soap_envelope(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     AXIS2_EXTERN struct axiom_soap_envelope *AXIS2_CALL
     axis2_msg_ctx_get_response_soap_envelope(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets fault SOAP envelope.
@@ -249,7 +249,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axiom_soap_envelope *AXIS2_CALL
     axis2_msg_ctx_get_fault_soap_envelope(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets message ID.
@@ -261,7 +261,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_msg_id(
         const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *msg_id);
 
     /**
@@ -273,7 +273,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_ctx_get_msg_id(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets process fault status.
@@ -283,7 +283,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_process_fault(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets relates to information for the message context.
@@ -293,7 +293,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_relates_to_t *AXIS2_CALL
     axis2_msg_ctx_get_relates_to(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WS-Addressing reply to endpoint. Reply to address tells where 
@@ -305,7 +305,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
     axis2_msg_ctx_get_reply_to(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if it is on the server side that the message is being dealt 
@@ -317,7 +317,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_server_side(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WS-Addressing to endpoint. To address tells where message should 
@@ -329,7 +329,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t *AXIS2_CALL
     axis2_msg_ctx_get_to(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets WS-Addressing fault to endpoint. Fault to address tells where 
@@ -342,7 +342,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_fault_to(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *reference);
 
     /**
@@ -356,7 +356,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_from(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *reference);
 
     /**
@@ -369,7 +369,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_in_fault_flow(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t in_fault_flow);
 
     /**
@@ -384,12 +384,12 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_soap_envelope(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axiom_soap_envelope *soap_envelope);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_response_soap_envelope(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axiom_soap_envelope *soap_envelope);
 
 
@@ -403,7 +403,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_fault_soap_envelope(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axiom_soap_envelope *soap_envelope);
 
     /**
@@ -415,7 +415,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_message_id(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *message_id);
 
     /**
@@ -428,7 +428,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_process_fault(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t process_fault);
 
     /**
@@ -441,7 +441,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_relates_to(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_relates_to_t *reference);
 
     /**
@@ -455,7 +455,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_reply_to(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *referance);
 
     /**
@@ -469,7 +469,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_server_side(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t server_side);
 
     /**
@@ -483,7 +483,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_to(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *referance);
 
     /**
@@ -495,7 +495,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_new_thread_required(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating if it is required to have a new thread
@@ -508,7 +508,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_new_thread_required(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t new_thread_required);
 
     /**
@@ -520,7 +520,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_wsa_action(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *action_uri);
 
     /**
@@ -531,7 +531,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_ctx_get_wsa_action(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets WS-Addressing message ID.
@@ -542,7 +542,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_wsa_message_id(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *message_id);
 
     /**
@@ -553,7 +553,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_ctx_get_wsa_message_id(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WS-Addressing message information headers.
@@ -564,7 +564,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_info_headers_t *AXIS2_CALL
     axis2_msg_ctx_get_msg_info_headers(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the bool value indicating the paused status. It is possible 
@@ -576,7 +576,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_paused(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating the paused status of invocation.
@@ -587,7 +587,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_paused(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t paused);
 
     /**
@@ -600,7 +600,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_is_keep_alive(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating the keep alive status of invocation.
@@ -613,7 +613,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_keep_alive(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t keep_alive);
 
 
@@ -626,7 +626,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_transport_in_desc *AXIS2_CALL
     axis2_msg_ctx_get_transport_in_desc(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets transport out description.
@@ -637,7 +637,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_transport_out_desc *AXIS2_CALL
     axis2_msg_ctx_get_transport_out_desc(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets transport in description.
@@ -649,7 +649,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_transport_in_desc(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_transport_in_desc *transport_in_desc);
 
     /**
@@ -662,7 +662,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_transport_out_desc(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_transport_out_desc *transport_out_desc);
 
     /**
@@ -674,7 +674,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
     axis2_msg_ctx_get_op_ctx(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets operation context related to the operation that this message
@@ -687,7 +687,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_op_ctx(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_op_ctx *op_ctx);
 
     /**
@@ -698,7 +698,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_output_written(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating the output written status. 
@@ -709,7 +709,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_output_written(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t output_written);
 
     /**
@@ -721,7 +721,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_ctx_get_svc_ctx_id(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the ID of service context that relates to the service that is 
@@ -733,7 +733,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_svc_ctx_id(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_ctx_id);
 
     /**
@@ -744,7 +744,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
     axis2_msg_ctx_get_conf_ctx(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets service context that relates to the service that the message 
@@ -755,7 +755,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
     axis2_msg_ctx_get_svc_ctx(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets configuration context.
@@ -767,7 +767,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_conf_ctx(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_conf_ctx *conf_ctx);
  
     /**
@@ -780,7 +780,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_svc_ctx(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc_ctx *svc_ctx);
 
     /**
@@ -793,7 +793,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_msg_info_headers(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_info_headers_t *msg_info_headers);
 
     /**
@@ -813,7 +813,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_msg_ctx_get_parameter(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key);
 
     /**
@@ -838,7 +838,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_msg_ctx_get_module_parameter(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key,
         const axis2_char_t *module_name,
         axis2_handler_desc_t *handler_desc);
@@ -855,7 +855,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_property_t *AXIS2_CALL
     axis2_msg_ctx_get_property(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key);
 
     /**
@@ -871,7 +871,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_property(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key,
         axis2_property_t *value);
     /**
@@ -882,7 +882,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
     axis2_msg_ctx_get_paused_handler_name(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the name of the phase at which the invocation was paused.
@@ -892,7 +892,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_ctx_get_paused_phase_name(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the name of the phase at which the invocation was paused.
@@ -903,7 +903,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_paused_phase_name(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *paused_phase_name);
 
     /**
@@ -914,7 +914,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_string_t *AXIS2_CALL
       axis2_msg_ctx_get_soap_action(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets SOAP action.
@@ -925,7 +925,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_soap_action(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *soap_action);
 
     /**
@@ -936,7 +936,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_doing_mtom(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the boolean value indicating if MTOM is enabled or not.
@@ -947,7 +947,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_doing_mtom(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t doing_mtom);
 
     /**
@@ -958,7 +958,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_doing_rest(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the boolean value indicating if REST is enabled or not.
@@ -969,7 +969,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_doing_rest(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t doing_rest);
 
     /**
@@ -983,7 +983,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_do_rest_through_post(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t do_rest_through_post);
 
 
@@ -997,7 +997,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_do_rest_through_post(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the bool value indicating the SOAP version being used either
@@ -1009,7 +1009,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_get_is_soap_11(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the bool value indicating the SOAP version being used either
@@ -1022,7 +1022,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_is_soap_11(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t is_soap11);
 
     /**
@@ -1035,7 +1035,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_grp_ctx *AXIS2_CALL
     axis2_msg_ctx_get_svc_grp_ctx(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets service group context. The returned service group context 
@@ -1048,7 +1048,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_svc_grp_ctx(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc_grp_ctx *svc_grp_ctx);
 
 
@@ -1060,7 +1060,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op *AXIS2_CALL
     axis2_msg_ctx_get_op(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -1073,7 +1073,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_op(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_op *op);
 
 
@@ -1085,7 +1085,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
     axis2_msg_ctx_get_svc(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -1098,7 +1098,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_svc(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc *svc);
 
     /**
@@ -1110,7 +1110,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_grp *AXIS2_CALL
      axis2_msg_ctx_get_svc_grp(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the service group to which the service to be invoked belongs.
@@ -1122,7 +1122,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_svc_grp(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc_grp *svc_grp);
 
 
@@ -1134,7 +1134,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
     axis2_msg_ctx_get_svc_grp_ctx_id(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the service group context ID.
@@ -1145,7 +1145,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_svc_grp_ctx_id(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *svc_grp_ctx_id);
 
     /**
@@ -1157,7 +1157,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_find_svc(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void* func);
     /**
      * Finds the operation to be invoked in the given service. This function 
@@ -1169,7 +1169,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_find_op(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *func);
     /**
      * Finds the service to be invoked. This function is used by dispatchers 
@@ -1180,7 +1180,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc * AXIS2_CALL
     axis2_msg_ctx_find_svc(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     /**
      * Finds the operation to be invoked in the given service. This function 
      * is used by dispatchers to locate the operation to be invoked.
@@ -1191,7 +1191,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op * AXIS2_CALL
     axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc *svc);
    /**
      * Gets the options to be used in invocation.
@@ -1203,7 +1203,7 @@ extern "C"
     AXIS2_EXTERN struct axis2_options *AXIS2_CALL
         axis2_msg_ctx_get_options(
             axis2_msg_ctx_t *msg_ctx,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Gets the bool value indicating the paused status.
@@ -1213,7 +1213,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_ctx_is_paused(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
         
     /**
      * Sets the options to be used in invocation.
@@ -1225,7 +1225,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_options *options);
     
     /**
@@ -1237,7 +1237,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_flow (axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int flow);
 
     /**
@@ -1248,7 +1248,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_msg_ctx_get_flow (const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the execution chain to be invoked. The execution chain is a 
@@ -1262,7 +1262,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_execution_chain(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *execution_chain);
 
     /**
@@ -1276,7 +1276,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_msg_ctx_get_execution_chain(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets current handler index, indicating which handler is currently 
@@ -1288,7 +1288,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_current_handler_index(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int index);
 
     /**
@@ -1300,7 +1300,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_msg_ctx_get_current_handler_index(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
     * Gets paused handler index, indicating at which handler the execution 
@@ -1311,7 +1311,7 @@ extern "C"
     */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_msg_ctx_get_paused_handler_index(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -1323,7 +1323,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_current_phase_index(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int index);
 
     /**
@@ -1334,7 +1334,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_msg_ctx_get_current_phase_index(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the phase at which the invocation was paused.
@@ -1344,7 +1344,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_msg_ctx_get_paused_phase_index(const axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets character set encoding to be used.
@@ -1354,7 +1354,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_string_t* AXIS2_CALL
     axis2_msg_ctx_get_charset_encoding(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets character set encoding to be used.
@@ -1365,60 +1365,60 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_charset_encoding(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *str);
 
     AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
     axis2_msg_ctx_get_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_stream_t *stream);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_reset_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN struct axis2_http_out_transport_info *AXIS2_CALL
     axis2_msg_ctx_get_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_http_out_transport_info *http_out_transport_info);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_reset_http_out_transport_info(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_msg_ctx_get_transport_headers(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_transport_headers(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *transport_headers);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_msg_ctx_get_transfer_encoding(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_transfer_encoding(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *str);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_msg_ctx_get_transport_url(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_transport_url(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *str);
 
 #ifdef __cplusplus

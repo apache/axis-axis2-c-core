@@ -19,7 +19,7 @@
 
 static void
 axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 struct axiom_navigator
 {
@@ -40,7 +40,7 @@ struct axiom_navigator
 };
 
 AXIS2_EXTERN axiom_navigator_t *AXIS2_CALL
-axiom_navigator_create(const axis2_env_t *env,
+axiom_navigator_create(const axutil_env_t *env,
     axiom_node_t *om_node)
 {
     axiom_navigator_t *om_navigator = NULL;
@@ -72,7 +72,7 @@ axiom_navigator_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_navigator_free(axiom_navigator_t *om_navigator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env , AXIS2_FAILURE);
     AXIS2_FREE(env->allocator, om_navigator);
@@ -81,7 +81,7 @@ axiom_navigator_free(axiom_navigator_t *om_navigator,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (AXIS2_TRUE == om_navigator->end)
     {
@@ -99,7 +99,7 @@ axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_navigator->end;
 }
@@ -107,14 +107,14 @@ axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_navigator_visited(axiom_navigator_t *om_navigator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_navigator->visited;
 }
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axiom_navigator_next(axiom_navigator_t *om_navigator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -147,7 +147,7 @@ axiom_navigator_next(axiom_navigator_t *om_navigator,
 /** this method encapsulate searching logic */
 static void
 axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (!om_navigator)
     {

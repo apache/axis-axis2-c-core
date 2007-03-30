@@ -55,7 +55,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_threadattr_detach_set(
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axis2_env_t *env)
+axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axutil_env_t *env)
 {
     if (1 == attr->detach)
     {
@@ -198,7 +198,7 @@ axis2_thread_detach(axis2_thread_t *thd)
 }
 
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
-axis2_os_thread_get(axis2_thread_t *thd, const axis2_env_t *env)
+axis2_os_thread_get(axis2_thread_t *thd, const axutil_env_t *env)
 {
     return thd->td;
 }

@@ -41,30 +41,30 @@ typedef struct w2c_cmdline_option_parser_impl
 axis2_status_t AXIS2_CALL 
 w2c_cmdline_option_parser_free (
            w2c_cmdline_option_parser_t *cmdline_option_parser, 
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
 
 axis2_hash_t* AXIS2_CALL
 w2c_cmdline_option_parser_get_options (
           w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
 axutil_array_list_t* AXIS2_CALL 
 w2c_cmdline_option_parser_get_invalid_options (
           w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
 /** private method */
 void
 w2c_cmdline_option_parser_parse( w2c_cmdline_option_parser_impl_t *parser,
-                          const axis2_env_t *env,
+                          const axutil_env_t *env,
                           int argv, axis2_char_t **argc);
    
 
 /************************** End of function prototypes ************************/
 
 AXIS2_EXTERN w2c_cmdline_option_parser_t* AXIS2_CALL 
-w2c_cmdline_option_parser_create (const axis2_env_t *env,
+w2c_cmdline_option_parser_create (const axutil_env_t *env,
                                   int argc,
                                   axis2_char_t **argv)
 {
@@ -109,7 +109,7 @@ w2c_cmdline_option_parser_create (const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL 
 w2c_cmdline_option_parser_free (w2c_cmdline_option_parser_t *cmdline_option_parser, 
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     w2c_cmdline_option_parser_impl_t *cmdline_option_parser_impl = NULL;
     axis2_hash_index_t *hi;
@@ -148,7 +148,7 @@ w2c_cmdline_option_parser_free (w2c_cmdline_option_parser_t *cmdline_option_pars
 axis2_hash_t* AXIS2_CALL
 w2c_cmdline_option_parser_get_options (
           w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env)
+          const axutil_env_t *env)
 {
     w2c_cmdline_option_parser_impl_t *cmdline_option_parser_impl = NULL;
   
@@ -161,7 +161,7 @@ w2c_cmdline_option_parser_get_options (
 axutil_array_list_t* AXIS2_CALL
 w2c_cmdline_option_parser_get_invalid_options (
           w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env)
+          const axutil_env_t *env)
 {
     w2c_cmdline_option_parser_impl_t *cmdline_option_parser_impl = NULL;
     axutil_array_list_t *invalid_arr = NULL;
@@ -189,7 +189,7 @@ w2c_cmdline_option_parser_get_invalid_options (
 /** private method */
 void
 w2c_cmdline_option_parser_parse( w2c_cmdline_option_parser_impl_t *parser,
-                          const axis2_env_t *env,
+                          const axutil_env_t *env,
                           int argc, axis2_char_t **argv)
 {
     int i = 0;

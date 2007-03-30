@@ -31,7 +31,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
@@ -60,7 +60,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_module_desc_free(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets flow representing in flow.
@@ -71,7 +71,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
     axis2_module_desc_get_in_flow(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets flow representing in flow.
@@ -83,7 +83,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_set_in_flow(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_flow_t *in_flow);
 
     /**
@@ -95,7 +95,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
     axis2_module_desc_get_out_flow(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets flow representing out flow.
@@ -107,7 +107,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_set_out_flow(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_flow_t *out_flow);
 
     /**
@@ -119,7 +119,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
     axis2_module_desc_get_fault_in_flow(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets flow representing fault in flow.
@@ -131,7 +131,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_set_fault_in_flow(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_flow_t *falut_in_flow);
 
     /**
@@ -143,7 +143,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
     axis2_module_desc_get_fault_out_flow(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets flow representing fault out flow.
@@ -155,7 +155,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_set_fault_out_flow(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_flow_t *fault_out_flow);
 
     /**
@@ -166,7 +166,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
     axis2_module_desc_get_qname(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets module QName.
@@ -177,7 +177,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_set_qname(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname);
 
     /**
@@ -189,7 +189,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_add_op(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_op *op);
 
     /**
@@ -200,7 +200,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_module_desc_get_all_ops(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets parent which is of type configuration.
@@ -211,7 +211,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
     axis2_module_desc_get_parent(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets parent which is of type configuration.
@@ -223,7 +223,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_set_parent(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_conf *parent);
 
     /**
@@ -235,7 +235,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_param_t *param);
 
     /**
@@ -247,7 +247,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_module_desc_get_param(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
     /**
@@ -258,7 +258,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_module_desc_get_all_params(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if a given parameter is locked.
@@ -269,7 +269,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_module_desc_is_param_locked(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *param_name);
 
     /**
@@ -280,7 +280,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_module *AXIS2_CALL
     axis2_module_desc_get_module(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param module_desc pointer to module description
@@ -291,16 +291,16 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_set_module(axis2_module_desc_t *module_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_module *module);
 
     AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
     axis2_module_desc_get_param_container(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
     axis2_module_desc_get_flow_container(const axis2_module_desc_t *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates module description struct instance.
@@ -308,7 +308,7 @@ extern "C"
      * @return pointer to newly created module description
      */
     AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
-    axis2_module_desc_create (const axis2_env_t *env);
+    axis2_module_desc_create (const axutil_env_t *env);
 
     /**
      * Creates module description struct instance with given QName.
@@ -317,7 +317,7 @@ extern "C"
      * @return pointer to newly created module description
      */
     AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
-    axis2_module_desc_create_with_qname(const axis2_env_t *env,
+    axis2_module_desc_create_with_qname(const axutil_env_t *env,
         const axis2_qname_t *qname);
 
     /**
@@ -330,7 +330,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_module_desc_free_void_arg(void *module_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /** @} */

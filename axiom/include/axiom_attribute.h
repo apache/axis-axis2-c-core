@@ -22,7 +22,7 @@
 * @file axiom_attribute.h
 * @brief om attribute struct represents an xml attribute
 */
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_qname.h>
 #include <axiom_namespace.h>
 #include <axiom_output.h>
@@ -51,7 +51,7 @@ extern "C"
       *           error code set in environment's error. 
       */
     AXIS2_EXTERN axiom_attribute_t * AXIS2_CALL
-    axiom_attribute_create(const axis2_env_t *env,
+    axiom_attribute_create(const axutil_env_t *env,
             const axis2_char_t *localname,
             const axis2_char_t *value,
             axiom_namespace_t *ns);
@@ -63,7 +63,7 @@ extern "C"
     AXIS2_EXTERN void AXIS2_CALL
     axiom_attribute_free_void_arg(
         void *om_attribute,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
       * Free an axiom_attribute struct
@@ -75,7 +75,7 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axiom_attribute_free(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
       * Creates and returns a qname struct for this attribute
@@ -87,7 +87,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
     axiom_attribute_get_qname(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
       * Serialize op
@@ -99,7 +99,7 @@ extern "C"
 
     AXIS2_EXTERN int AXIS2_CALL
     axiom_attribute_serialize(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_output_t *om_output);
 
     /**  returns the localname of this attribute
@@ -109,7 +109,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_attribute_get_localname(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * returns value of this attribute 
      *@param om_attribute pointer to om_attribute struct 
@@ -118,7 +118,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_attribute_get_value(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * returns namespace of this attribute 
      *@param om_attribute
@@ -127,7 +127,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
     axiom_attribute_get_namespace(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /** sets the localname of the attribute
      *@param om_attribute pointer to om attribute struct. 
@@ -137,7 +137,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_localname(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *localname);
 
     /** set the attribute value
@@ -149,7 +149,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_value(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *value);
 
     /** set namespace of the attribute
@@ -161,7 +161,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_namespace(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_namespace_t *om_namespace);
 
     /**
@@ -173,34 +173,34 @@ extern "C"
      */
     AXIS2_EXTERN struct axiom_attribute* AXIS2_CALL
                 axiom_attribute_clone(struct axiom_attribute *om_attribute,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_increment_ref(struct axiom_attribute *om_attribute,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axiom_attribute_t* AXIS2_CALL
-    axiom_attribute_create_str(const axis2_env_t *env,
+    axiom_attribute_create_str(const axutil_env_t *env,
         axis2_string_t * localname,
         axis2_string_t * value,
         axiom_namespace_t * ns);
 
     AXIS2_EXTERN axis2_string_t* AXIS2_CALL
     axiom_attribute_get_localname_str(axiom_attribute_t *attribute,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_string_t* AXIS2_CALL
     axiom_attribute_get_value_str(axiom_attribute_t *attribute,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_localname_str(axiom_attribute_t *attribute,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *localname);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_value_str(axiom_attribute_t *attribute,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *value);
 
     /** @} */

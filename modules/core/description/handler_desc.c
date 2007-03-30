@@ -37,7 +37,7 @@ struct axis2_handler_desc
 };
 
 AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
-axis2_handler_desc_create(const axis2_env_t *env,
+axis2_handler_desc_create(const axutil_env_t *env,
     axis2_string_t *name)
 {
     axis2_handler_desc_t *handler_desc = NULL;
@@ -86,14 +86,14 @@ axis2_handler_desc_create(const axis2_env_t *env,
 
 AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
 axis2_handler_desc_get_name(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return handler_desc->name;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_set_name(axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_string_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -113,14 +113,14 @@ axis2_handler_desc_set_name(axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
 axis2_handler_desc_get_rules(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return handler_desc->rules;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_set_rules(axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_phase_rule_t *phase_rule)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -144,7 +144,7 @@ axis2_handler_desc_set_rules(axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN axis2_param_t *AXIS2_CALL
 axis2_handler_desc_get_param(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *name)
 {
     return axis2_param_container_get_param(handler_desc->param_container, env, name);
@@ -152,7 +152,7 @@ axis2_handler_desc_get_param(const axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_add_param(axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_param_t *param)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -171,7 +171,7 @@ axis2_handler_desc_add_param(axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_handler_desc_get_all_params(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return axis2_param_container_get_params(handler_desc->param_container, 
         env);
@@ -179,7 +179,7 @@ axis2_handler_desc_get_all_params(const axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_handler_desc_is_param_locked(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *param_name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -197,14 +197,14 @@ axis2_handler_desc_is_param_locked(const axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
 axis2_handler_desc_get_handler(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return handler_desc->handler;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_set_handler(axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     /* handler description is the place where the handler really lives.
@@ -225,14 +225,14 @@ axis2_handler_desc_set_handler(axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_handler_desc_get_class_name(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return handler_desc->class_name;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_set_class_name(axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *class_name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -257,14 +257,14 @@ axis2_handler_desc_set_class_name(axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
 axis2_handler_desc_get_parent(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return handler_desc->parent;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_set_parent(axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_param_container_t *parent)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -275,7 +275,7 @@ axis2_handler_desc_set_parent(axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -313,7 +313,7 @@ axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
 
 AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
 axis2_handler_desc_get_param_container(const axis2_handler_desc_t *handler_desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return handler_desc->param_container;
 }

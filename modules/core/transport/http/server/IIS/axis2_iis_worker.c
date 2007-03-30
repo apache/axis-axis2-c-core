@@ -62,18 +62,18 @@ axis2_iis_worker_impl_t;
 int AXIS2_CALL
 axis2_iis_worker_process_request(
     axis2_iis_worker_t *iis_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     LPEXTENSION_CONTROL_BLOCK lpECB);
 
 axis2_char_t *AXIS2_CALL
 axis2_iis_worker_get_bytes(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_stream_t *stream);
 
 void AXIS2_CALL
 axis2_iis_worker_free(
     axis2_iis_worker_t *iis_worker,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t axis2_worker_get_original_url(char url[], char ret_url[]);
 axis2_status_t write_response(LPEXTENSION_CONTROL_BLOCK lpECB, const void *b, unsigned int l);
@@ -87,7 +87,7 @@ char *status_reason(int status);
 
 axis2_iis_worker_t * AXIS2_CALL
 axis2_iis_worker_create(
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     axis2_char_t *repo_path)
 {
     axis2_iis_worker_impl_t *iis_worker_impl = NULL;
@@ -131,7 +131,7 @@ axis2_iis_worker_create(
 void AXIS2_CALL
 axis2_iis_worker_free(
     axis2_iis_worker_t *iis_worker,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_iis_worker_impl_t *worker_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
@@ -154,7 +154,7 @@ axis2_iis_worker_free(
 int AXIS2_CALL
 axis2_iis_worker_process_request(
     axis2_iis_worker_t *iis_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     LPEXTENSION_CONTROL_BLOCK lpECB)
 {
 	axis2_iis_worker_impl_t *iis_worker_impl = NULL;
@@ -560,7 +560,7 @@ axis2_status_t axis2_worker_get_original_url(char url[], char ret_url[])
 
 axis2_char_t *AXIS2_CALL
 axis2_iis_worker_get_bytes(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_stream_t *stream)
 {
 

@@ -33,20 +33,20 @@ struct savan_client_t
 axis2_status_t AXIS2_CALL
 savan_client_add_sub_id_to_soap_header(
     savan_client_t *client,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_client_t *svc_client);
 
 axis2_char_t * AXIS2_CALL
 savan_client_get_sub_id_from_response(
     axiom_element_t *response_elem, 
     axiom_node_t *response_node,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /******************************************************************************/
 
 AXIS2_EXTERN savan_client_t * AXIS2_CALL
 savan_client_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     savan_client_t *client = NULL;
     
@@ -70,7 +70,7 @@ savan_client_create(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 savan_client_subscribe(
     savan_client_t *client,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_client_t *svc_client,
     axis2_hash_t *options)
 {
@@ -179,7 +179,7 @@ savan_client_subscribe(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 savan_client_renew(
     savan_client_t *client,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_client_t *svc_client,
     axis2_hash_t *options)
 {
@@ -238,7 +238,7 @@ savan_client_renew(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 savan_client_unsubscribe(
     savan_client_t *client,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_client_t *svc_client)
 {
     axis2_options_t *wsa_options = NULL;
@@ -285,7 +285,7 @@ savan_client_unsubscribe(
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 savan_client_get_status(
     savan_client_t *client,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_client_t *svc_client)
 {
     axis2_options_t *wsa_options = NULL;
@@ -369,7 +369,7 @@ savan_client_get_sub_id(
 axis2_status_t AXIS2_CALL
 savan_client_add_sub_id_to_soap_header(
     savan_client_t *client,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_client_t *svc_client)
 {
     axiom_namespace_t *ns = NULL;
@@ -404,7 +404,7 @@ axis2_char_t * AXIS2_CALL
 savan_client_get_sub_id_from_response(
     axiom_element_t *response_elem, 
     axiom_node_t *response_node,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_qname_t *qname = NULL;
     axiom_element_t *submgr_elem = NULL;

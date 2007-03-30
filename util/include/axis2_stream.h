@@ -19,7 +19,7 @@
 
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -75,7 +75,7 @@ extern "C"
         */
         int(AXIS2_CALL *
         read)(axis2_stream_t *stream,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *buffer,
             size_t count);
 
@@ -87,7 +87,7 @@ extern "C"
          */
         int(AXIS2_CALL *
         write)(axis2_stream_t *stream,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const void *buffer,
             size_t count);
 
@@ -98,7 +98,7 @@ extern "C"
         */
         int(AXIS2_CALL *
         skip)(axis2_stream_t *stream,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             int count);
     };
 
@@ -108,11 +108,11 @@ extern "C"
     */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_stream_free(axis2_stream_t *stream,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN void  AXIS2_CALL
     axis2_stream_free_void_arg(void *stream,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * reads from stream
@@ -122,7 +122,7 @@ extern "C"
     */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_stream_read(axis2_stream_t *stream,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *buffer,
         size_t count);
 
@@ -134,7 +134,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_stream_write(axis2_stream_t *stream,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const void *buffer,
         size_t count);
 
@@ -145,7 +145,7 @@ extern "C"
     */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_stream_skip(axis2_stream_t *stream,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int count);
 
     /**
@@ -155,33 +155,33 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_stream_get_len(axis2_stream_t *stream,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** \brief Constructor for creating an in memory stream
       * @return axis2_stream (in memory)
       */
     AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-    axis2_stream_create_basic(const axis2_env_t *env);
+    axis2_stream_create_basic(const axutil_env_t *env);
 
     /** \brief Constructor for creating a file stream
       * @param valid file pointer (opened file)
       * @return axis2_stream (file)
       */
     AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-    axis2_stream_create_file(const axis2_env_t *env, FILE *fp);
+    axis2_stream_create_file(const axutil_env_t *env, FILE *fp);
 
     /** \brief Constructor for creating a file stream
       * @param valid socket (opened socket)
       * @return axis2_stream (socket)
       */
     AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
-    axis2_stream_create_socket(const axis2_env_t *env, int socket);
+    axis2_stream_create_socket(const axutil_env_t *env, int socket);
 
     /**
 	 *Free stream
 	 */
 	AXIS2_EXTERN void AXIS2_CALL
-	axis2_stream_free(axis2_stream_t *stream, const axis2_env_t *env);	
+	axis2_stream_free(axis2_stream_t *stream, const axutil_env_t *env);	
 	
 	/**
      * Free stream passed as void pointer. This will be
@@ -191,44 +191,44 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_stream_free_void_arg(void *stream,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the buffer
      */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_stream_get_buffer(const axis2_stream_t *stream,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stream_flush_buffer(axis2_stream_t *stream,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_stream_peek_socket(axis2_stream_t *stream, const axis2_env_t *env,
+    axis2_stream_peek_socket(axis2_stream_t *stream, const axutil_env_t *env,
         void *buffer, size_t count);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stream_flush(axis2_stream_t *stream,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stream_close(axis2_stream_t *stream,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stream_set_read(axis2_stream_t *stream,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         void *func);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stream_set_write(axis2_stream_t *stream,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         void *func);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stream_set_skip(axis2_stream_t *stream,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         void *func);
 
 

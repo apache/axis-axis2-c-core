@@ -32,7 +32,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_http_simple_response.h>
 #include <axis2_http_simple_request.h>
 #include <axis2_url.h>
@@ -54,7 +54,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_send(axis2_http_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_http_simple_request_t *request,
         axis2_char_t *ssl_pp);
 
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_http_client_recieve_header(axis2_http_client_t *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param client pointer to client
@@ -72,7 +72,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_http_simple_response_t *AXIS2_CALL
     axis2_http_client_get_response(const axis2_http_client_t *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param client pointer to client
@@ -82,7 +82,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_set_url(axis2_http_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_url_t *url);
 
     /**
@@ -91,7 +91,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_url_t *AXIS2_CALL
     axis2_http_client_get_url(const axis2_http_client_t *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param client pointer to client
@@ -101,7 +101,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_set_timeout(axis2_http_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int timeout_ms);
 
     /**
@@ -110,7 +110,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_http_client_get_timeout(const axis2_http_client_t *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param client pointer to client
@@ -121,7 +121,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_set_proxy(axis2_http_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *proxy_host,
         int proxy_port);
 
@@ -131,11 +131,11 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_client_get_proxy(const axis2_http_client_t *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_set_dump_input_msg(axis2_http_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t dump_input_msg);
 
     /**
@@ -146,7 +146,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_set_server_cert(axis2_http_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *server_cert);
 
     /**
@@ -155,7 +155,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_client_get_server_cert(const axis2_http_client_t *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param client pointer to client
@@ -165,7 +165,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_client_set_key_file(axis2_http_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *key_file);
 
     /**
@@ -174,7 +174,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_client_get_key_file(const axis2_http_client_t *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -184,14 +184,14 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_client_free(axis2_http_client_t *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param env pointer to environment struct
      * @param url pointer to url
      */
     AXIS2_EXTERN axis2_http_client_t *AXIS2_CALL
-    axis2_http_client_create (const axis2_env_t *env,
+    axis2_http_client_create (const axutil_env_t *env,
         axis2_url_t *url);
 
     /**
@@ -203,7 +203,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_client_free_void_arg (void *client,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** Send. */
 #define AXIS2_HTTP_CLIENT_SEND(client, env, request, ssl_passphrase) \

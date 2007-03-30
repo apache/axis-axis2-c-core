@@ -36,35 +36,35 @@
 /* On fault, handle the fault */
 axiom_node_t* AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_on_fault(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env, axiom_node_t *node);
+        const axutil_env_t *env, axiom_node_t *node);
 
 /* Free the service */
 int AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /* This method invokes the right service method */
 axiom_node_t* AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node,
         axis2_msg_ctx_t *msg_ctx);
 
 /* Initializing the environment  */
 int AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /* Create the service  */
 axis2_svc_skeleton_t* AXIS2_CALL
-axis2_svc_skel_interop_test_port_type_doc_service_create(const axis2_env_t *env);
+axis2_svc_skel_interop_test_port_type_doc_service_create(const axutil_env_t *env);
 
 /**
  * Implementations for the functions
  */
 
 axis2_svc_skeleton_t* AXIS2_CALL
-axis2_svc_skel_interop_test_port_type_doc_service_create(const axis2_env_t *env)
+axis2_svc_skel_interop_test_port_type_doc_service_create(const axutil_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
     svc_skeleton = AXIS2_MALLOC(env->allocator,
@@ -87,7 +87,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_create(const axis2_env_t *env)
 
 int AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     svc_skeleton->func_array = axutil_array_list_create(env, 10);
 
@@ -126,7 +126,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_init(axis2_svc_skeleton_t *svc
 
 int AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     if (svc_skeleton->func_array)
     {
@@ -154,7 +154,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_free(axis2_svc_skeleton_t *svc
  */
 axiom_node_t* AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *content_node,
         axis2_msg_ctx_t *msg_ctx)
 {
@@ -311,7 +311,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_invoke(axis2_svc_skeleton_t *s
 
 axiom_node_t* AXIS2_CALL
 axis2_svc_skel_interop_test_port_type_doc_service_on_fault(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env, axiom_node_t *node)
+        const axutil_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *error_node = NULL;
     axiom_node_t* text_node = NULL;
@@ -330,7 +330,7 @@ axis2_svc_skel_interop_test_port_type_doc_service_on_fault(axis2_svc_skeleton_t 
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_get_instance(struct axis2_svc_skeleton **inst,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     *inst = axis2_svc_skel_interop_test_port_type_doc_service_create(env);
 
@@ -344,7 +344,7 @@ axis2_get_instance(struct axis2_svc_skeleton **inst,
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_remove_instance(axis2_svc_skeleton_t *inst,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)

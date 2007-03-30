@@ -21,7 +21,7 @@
 #include <axis2_error.h>
 #include <axis2_defines.h>
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_msg_ctx.h>
 
@@ -42,7 +42,7 @@ extern "C"
     savan_message_types_t AXIS2_CALL
     savan_util_get_message_type(
         axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
     * Extracts the subscription ID from the given messsage
@@ -53,7 +53,7 @@ extern "C"
     */
     axis2_char_t * AXIS2_CALL
     savan_util_get_subscription_id_from_msg(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -66,7 +66,7 @@ extern "C"
     */
     savan_subscriber_t * AXIS2_CALL
     savan_util_get_subscriber_from_msg(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axis2_char_t *sub_id);
 
@@ -78,7 +78,7 @@ extern "C"
     */
     axis2_hash_t * AXIS2_CALL
     savan_util_get_subscriber_store(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -88,7 +88,7 @@ extern "C"
     */
     axis2_char_t * AXIS2_CALL
     savan_util_get_expiry_time(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
      /**
     * Calculate and return a new expiry time for the subscription based on the
@@ -99,7 +99,7 @@ extern "C"
     */
     axis2_char_t * AXIS2_CALL
     savan_util_get_renewed_expiry_time(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *expiry);
 
 /** @} */

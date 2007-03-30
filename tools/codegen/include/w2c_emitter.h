@@ -52,7 +52,7 @@ AXIS2_DECLARE_DATA  struct w2c_emitter_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_emitter_t *emitter,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * pass configurations and properties.
@@ -65,7 +65,7 @@ AXIS2_DECLARE_DATA  struct w2c_emitter_ops
     */
     axis2_status_t (AXIS2_CALL *
     set_config)(w2c_emitter_t *emitter,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           w2c_engine_configuration_t *config,
           w2c_config_property_loader_t *loader );
  
@@ -76,7 +76,7 @@ AXIS2_DECLARE_DATA  struct w2c_emitter_ops
     */
     axis2_status_t (AXIS2_CALL *
     emit_skel)(w2c_emitter_t *emitter,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
   
    /**
     * emit stub code.
@@ -85,7 +85,7 @@ AXIS2_DECLARE_DATA  struct w2c_emitter_ops
     */
     axis2_status_t (AXIS2_CALL *
     emit_stub)(w2c_emitter_t *emitter,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
 };
 

@@ -23,7 +23,7 @@ struct axis2_phase_holder
 };
 
 AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
-axis2_phase_holder_create(const axis2_env_t *env)
+axis2_phase_holder_create(const axutil_env_t *env)
 {
     axis2_phase_holder_t *phase_holder = NULL;
 
@@ -44,7 +44,7 @@ axis2_phase_holder_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
-axis2_phase_holder_create_with_phases(const axis2_env_t *env,
+axis2_phase_holder_create_with_phases(const axutil_env_t *env,
     axutil_array_list_t *phases)
 {
     axis2_phase_holder_t *phase_holder = NULL;
@@ -64,7 +64,7 @@ axis2_phase_holder_create_with_phases(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_phase_holder_free(axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -78,7 +78,7 @@ axis2_phase_holder_free(axis2_phase_holder_t *phase_holder,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *phase_name)
 {
     int size = 0;
@@ -107,7 +107,7 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_desc_t *handler)
 {
     const axis2_char_t *phase_name = NULL;
@@ -142,7 +142,7 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
 
 AXIS2_EXTERN axis2_phase_t *AXIS2_CALL
 axis2_phase_holder_get_phase(const axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *phase_name)
 {
     int size = 0;
@@ -170,7 +170,7 @@ axis2_phase_holder_get_phase(const axis2_phase_holder_t *phase_holder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_phase_t *phase,
     axutil_array_list_t *handlers)
 {

@@ -52,7 +52,7 @@ struct axis2_op_ctx
 };
 
 AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
-axis2_op_ctx_create(const axis2_env_t *env,
+axis2_op_ctx_create(const axutil_env_t *env,
     axis2_op_t *op,
     struct axis2_svc_ctx *svc_ctx)
 {
@@ -117,7 +117,7 @@ axis2_op_ctx_create(const axis2_env_t *env,
 AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
 axis2_op_ctx_get_base(
     const axis2_op_ctx_t *op_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return op_ctx->base;
 }
@@ -126,7 +126,7 @@ axis2_op_ctx_get_base(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_op_ctx_free(
     struct axis2_op_ctx *op_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     int i = 0;
     AXIS2_ENV_CHECK(env, void);
@@ -158,7 +158,7 @@ axis2_op_ctx_free(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_init(
     struct axis2_op_ctx *op_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_conf *conf)
 {
     int i = 0;
@@ -198,7 +198,7 @@ axis2_op_ctx_init(
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
 axis2_op_ctx_get_op(
     const axis2_op_ctx_t *op_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return op_ctx->op;
 }
@@ -206,7 +206,7 @@ axis2_op_ctx_get_op(
 AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
             axis2_op_ctx_get_parent(
                 const axis2_op_ctx_t *op_ctx,
-                const axis2_env_t *env)
+                const axutil_env_t *env)
 {
     return op_ctx->parent;
 }
@@ -214,7 +214,7 @@ AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_add_msg_ctx(
     struct axis2_op_ctx *op_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_msg_ctx_t *out_msg_ctx = NULL;
@@ -249,7 +249,7 @@ axis2_op_ctx_add_msg_ctx(
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_op_ctx_get_msg_ctx(
     const axis2_op_ctx_t *op_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_wsdl_msg_labels_t message_id)
 {
     axis2_thread_mutex_lock(op_ctx->mutex);
@@ -267,7 +267,7 @@ axis2_op_ctx_get_msg_ctx(
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_op_ctx_get_is_complete(
     const axis2_op_ctx_t *op_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return op_ctx->is_complete;
 }
@@ -275,7 +275,7 @@ axis2_op_ctx_get_is_complete(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_set_complete(
     struct axis2_op_ctx *op_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t is_complete)
 {
     op_ctx->is_complete = is_complete;
@@ -285,7 +285,7 @@ axis2_op_ctx_set_complete(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_cleanup(
     struct axis2_op_ctx *op_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     int i = 0;
 
@@ -306,7 +306,7 @@ axis2_op_ctx_cleanup(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_set_parent(
     struct axis2_op_ctx *op_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_svc_ctx *svc_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -335,14 +335,14 @@ axis2_op_ctx_set_parent(
 AXIS2_EXTERN axis2_msg_ctx_t **AXIS2_CALL
 axis2_op_ctx_get_msg_ctx_map(
     const axis2_op_ctx_t *op_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return (axis2_msg_ctx_t **)(op_ctx->msg_ctx_array);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (op_ctx)
         return op_ctx->response_written;
@@ -353,7 +353,7 @@ axis2_op_ctx_get_response_written(const axis2_op_ctx_t *op_ctx,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_ctx_set_response_written(axis2_op_ctx_t *op_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_bool_t written)
 {
     if (op_ctx)

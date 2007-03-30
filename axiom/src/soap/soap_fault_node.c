@@ -26,7 +26,7 @@ struct axiom_soap_fault_node
 };
 
 AXIS2_EXTERN axiom_soap_fault_node_t * AXIS2_CALL
-axiom_soap_fault_node_create(const axis2_env_t *env)
+axiom_soap_fault_node_create(const axutil_env_t *env)
 {
     axiom_soap_fault_node_t *fault_node = NULL;
 
@@ -45,7 +45,7 @@ axiom_soap_fault_node_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axiom_soap_fault_node_t * AXIS2_CALL
-axiom_soap_fault_node_create_with_parent(const axis2_env_t *env,
+axiom_soap_fault_node_create_with_parent(const axutil_env_t *env,
     axiom_soap_fault_t *fault)
 {
     axiom_soap_fault_node_t *fault_node = NULL;
@@ -104,7 +104,7 @@ axiom_soap_fault_node_create_with_parent(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_fault_node_free(axiom_soap_fault_node_t *fault_node,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, fault_node);
@@ -113,7 +113,7 @@ axiom_soap_fault_node_free(axiom_soap_fault_node_t *fault_node,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_node_set_value(axiom_soap_fault_node_t *fault_node,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *uri)
 {
     axiom_element_t *om_ele = NULL;
@@ -138,7 +138,7 @@ axiom_soap_fault_node_set_value(axiom_soap_fault_node_t *fault_node,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_soap_fault_node_get_value(axiom_soap_fault_node_t *fault_node,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_element_t *om_ele =  NULL;
 
@@ -159,7 +159,7 @@ axiom_soap_fault_node_get_value(axiom_soap_fault_node_t *fault_node,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_node_set_base_node(axiom_soap_fault_node_t *fault_node,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node)
 {
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
@@ -177,7 +177,7 @@ axiom_soap_fault_node_set_base_node(axiom_soap_fault_node_t *fault_node,
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_soap_fault_node_get_base_node(axiom_soap_fault_node_t *fault_node,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return fault_node->om_ele_node;

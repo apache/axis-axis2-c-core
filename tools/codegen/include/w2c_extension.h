@@ -51,7 +51,7 @@ AXIS2_DECLARE_DATA  struct w2c_extension_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_extension_t *extension,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * engage the extension.
@@ -63,7 +63,7 @@ AXIS2_DECLARE_DATA  struct w2c_extension_ops
     */
     axis2_status_t (AXIS2_CALL *
     engage)(w2c_extension_t *extension,
-         const axis2_env_t *env,
+         const axutil_env_t *env,
          w2c_engine_configuration_t *conf);
 
 

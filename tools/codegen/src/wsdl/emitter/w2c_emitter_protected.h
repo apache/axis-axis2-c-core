@@ -46,7 +46,7 @@
 #define W2C_EMITTER_WRITER_DIR W2C_CLASS_LOADER_WRITER_PATH
 
 typedef axis2_char_t* (*W2C_EMITTER_NAME_MAKER)
-              ( axis2_char_t *name, const axis2_env_t *env);
+              ( axis2_char_t *name, const axutil_env_t *env);
 
 /** 
  * @brief
@@ -73,67 +73,67 @@ typedef struct w2c_emitter_impl
 
 axis2_status_t AXIS2_CALL
 w2c_emitter_free(w2c_emitter_t *emitter,
-       const axis2_env_t *env);
+       const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_emitter_set_config(w2c_emitter_t *emitter,
-       const axis2_env_t* env,
+       const axutil_env_t* env,
        w2c_engine_configuration_t* config,
        w2c_config_property_loader_t* loader );
 
 axis2_status_t AXIS2_CALL
 w2c_emitter_emit_stub(w2c_emitter_t *emitter,
-       const axis2_env_t* env);
+       const axutil_env_t* env);
 
 axis2_status_t AXIS2_CALL
 w2c_emitter_emit_skel(w2c_emitter_t *emitter,
-       const axis2_env_t* env);
+       const axutil_env_t* env);
 
 /* implementations for protected functions */
 
 axis2_status_t
 w2c_emitter_write_class(w2c_emitter_impl_t* emitter_impl,
-                      const axis2_env_t* env,
+                      const axutil_env_t* env,
                       axiom_node_t* root,
                       w2c_writer_t* writer);
 
 axis2_status_t
 w2c_emitter_init( w2c_emitter_impl_t* emitter_impl,
-                  const axis2_env_t *env);
+                  const axutil_env_t *env);
 
 w2c_emitter_impl_t*
-w2c_emitter_create_impl( const axis2_env_t *env);
+w2c_emitter_create_impl( const axutil_env_t *env);
 
 axiom_document_t*
 get_root_element_from_filename(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *filename);
 
 axis2_status_t
 w2c_emitter_parse_wsdl( w2c_emitter_impl_t* emitter_impl,
-                        const axis2_env_t* env);
+                        const axutil_env_t* env);
 
 axis2_qname_t*
 w2c_emitter_pick_service_name ( w2c_emitter_impl_t* emitter_impl,
-                               const axis2_env_t* env);
+                               const axutil_env_t* env);
 
 axis2_status_t
 w2c_emitter_load_services( w2c_emitter_impl_t* emitter_impl,
-                            const axis2_env_t* env,
+                            const axutil_env_t* env,
                             axiom_node_t* doc);
 
 axis2_status_t
 w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
-                            const axis2_env_t *env,
+                            const axutil_env_t *env,
                             axiom_node_t *param_direction,
                             axis2_qname_t *msg_qname);
 
 axis2_char_t* w2c_emitter_default_namemaker( axis2_char_t *name,
-                            const axis2_env_t *env);
+                            const axutil_env_t *env);
 
 axis2_status_t
 w2c_emitter_init( w2c_emitter_impl_t* emitter_impl,
-                  const axis2_env_t *env);
+                  const axutil_env_t *env);
 
 /************************** End of function prototypes ************************/
 

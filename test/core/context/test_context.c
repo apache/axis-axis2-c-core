@@ -19,7 +19,7 @@
 #include <axis2_svc_grp.h>
 #include <axis2_const.h>
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <stdio.h>
 
 void axis2_test_conf_ctx_init()
@@ -45,7 +45,7 @@ void axis2_test_conf_ctx_init()
 
     axis2_status_t status = AXIS2_FAILURE;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axis2_env_t *env = axis2_env_create(allocator);
+    const axutil_env_t *env = axutil_env_create(allocator);
 
     conf = axis2_conf_create(env);
 

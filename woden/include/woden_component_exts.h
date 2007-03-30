@@ -41,7 +41,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -79,32 +79,32 @@ struct woden_component_exts_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *component_exts,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
       
     axis2_status_t (AXIS2_CALL *
     to_component_exts_free) (void *component_exts,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (void *component_exts,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_uri_t *(AXIS2_CALL *
     get_namespace) (
             void *component_exts,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     init) (
             void *component_exts,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct woden_wsdl_element *parent_el,
             axis2_uri_t *namespc);
 
     void *(AXIS2_CALL *
     get_parent_element) (
            void *component_exts,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 };
 
 struct woden_component_exts
@@ -113,7 +113,7 @@ struct woden_component_exts
 };
 
 AXIS2_EXTERN woden_component_exts_t * AXIS2_CALL
-woden_component_exts_create(const axis2_env_t *env);
+woden_component_exts_create(const axutil_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
@@ -122,7 +122,7 @@ woden_component_exts_create(const axis2_env_t *env);
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_component_exts_resolve_methods(
         woden_component_exts_t *component_exts,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 
 #define WODEN_COMPONENT_EXTS_FREE(component_exts, env) \

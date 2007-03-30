@@ -26,7 +26,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_module_desc.h>
@@ -49,7 +49,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_module_builder_free(axis2_module_builder_t *module_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param module_builder pointer to module builder
@@ -58,7 +58,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates module builder struct
@@ -66,7 +66,7 @@ extern "C"
      * @return pointer to newly created module builder
      */
     AXIS2_EXTERN axis2_module_builder_t *AXIS2_CALL
-    axis2_module_builder_create(const axis2_env_t *env);
+    axis2_module_builder_create(const axutil_env_t *env);
 
     /**
      * Creates module builder struct
@@ -76,7 +76,7 @@ extern "C"
      * @return pointer to newly created module builder
      */
     AXIS2_EXTERN axis2_module_builder_t *AXIS2_CALL
-    axis2_module_builder_create_with_file_and_dep_engine_and_module(const axis2_env_t *env,
+    axis2_module_builder_create_with_file_and_dep_engine_and_module(const axutil_env_t *env,
         axis2_char_t *file_name,
         struct axis2_dep_engine *dep_engine,
         axis2_module_desc_t *module);

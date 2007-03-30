@@ -23,12 +23,12 @@
 #include <stdio.h>
 
 void
-handle_response(axis2_getStockQuoteResponse_t *res, axis2_env_t *env);
+handle_response(axis2_getStockQuoteResponse_t *res, axutil_env_t *env);
 
 int
 main(int argc, char *argv[])
 {
-	axis2_env_t *env = NULL;
+	axutil_env_t *env = NULL;
 	axis2_char_t *client_home = NULL;
 	axis2_char_t *endpoint_uri = NULL;
 	axis2_stub_t *stub = NULL;
@@ -49,7 +49,7 @@ main(int argc, char *argv[])
 	}
 
 	endpoint_uri = "http://localhost:9090/axis2/services/StockQuoteService";
-	env = axis2_env_create_all("codegen_sample_stock_quote.log", AXIS2_LOG_LEVEL_TRACE);
+	env = axutil_env_create_all("codegen_sample_stock_quote.log", AXIS2_LOG_LEVEL_TRACE);
 	/* Set up deploy folder.*/
 	client_home = AXIS2_GETENV("AXIS2C_HOME");
 	if (!client_home)
@@ -75,7 +75,7 @@ main(int argc, char *argv[])
 }
 
 void
-handle_response(axis2_getStockQuoteResponse_t *res, axis2_env_t *env)
+handle_response(axis2_getStockQuoteResponse_t *res, axutil_env_t *env)
 {
 	
 	axis2_quote_t *quote = NULL;

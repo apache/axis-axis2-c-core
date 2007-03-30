@@ -26,7 +26,7 @@ struct axiom_soap_fault_role
 };
 
 AXIS2_EXTERN axiom_soap_fault_role_t * AXIS2_CALL
-axiom_soap_fault_role_create(const axis2_env_t *env)
+axiom_soap_fault_role_create(const axutil_env_t *env)
 {
     axiom_soap_fault_role_t *fault_role = NULL;
 
@@ -48,7 +48,7 @@ axiom_soap_fault_role_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axiom_soap_fault_role_t * AXIS2_CALL
-axiom_soap_fault_role_create_with_parent(const axis2_env_t *env,
+axiom_soap_fault_role_create_with_parent(const axutil_env_t *env,
     axiom_soap_fault_t *fault)
 {
     axiom_soap_fault_role_t *fault_role = NULL;
@@ -108,7 +108,7 @@ axiom_soap_fault_role_create_with_parent(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_fault_role_free(axiom_soap_fault_role_t *fault_role,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, fault_role);
@@ -118,7 +118,7 @@ axiom_soap_fault_role_free(axiom_soap_fault_role_t *fault_role,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_role_set_role_value
 (axiom_soap_fault_role_t *fault_role,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t* uri)
 {
     axiom_element_t *role_ele = NULL;
@@ -143,7 +143,7 @@ axiom_soap_fault_role_set_role_value
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_soap_fault_role_get_role_value
 (axiom_soap_fault_role_t *fault_role,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_element_t *role_ele = NULL;
 
@@ -164,7 +164,7 @@ axiom_soap_fault_role_get_role_value
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_fault_role_set_base_node
 (axiom_soap_fault_role_t *fault_role,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -182,7 +182,7 @@ axiom_soap_fault_role_set_base_node
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_soap_fault_role_get_base_node
 (axiom_soap_fault_role_t *fault_role,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return fault_role->om_ele_node;
 }

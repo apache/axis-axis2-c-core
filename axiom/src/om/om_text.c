@@ -27,15 +27,15 @@
 
 static const axis2_char_t *AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_bool_t AXIS2_CALL
 axiom_text_get_is_binary(axiom_text_t *om_text,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t AXIS2_CALL
 axiom_text_serialize_start_part(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output);
 
 struct axiom_text
@@ -54,7 +54,7 @@ struct axiom_text
 };
 
 AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-axiom_text_create(const axis2_env_t *env,
+axiom_text_create(const axutil_env_t *env,
     axiom_node_t * parent,
     const axis2_char_t * value,
     axiom_node_t **node)
@@ -110,7 +110,7 @@ axiom_text_create(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-axiom_text_create_with_data_handler(const axis2_env_t *env,
+axiom_text_create_with_data_handler(const axutil_env_t *env,
     axiom_node_t * parent,
     axiom_data_handler_t* data_handler,
     axiom_node_t **node)
@@ -133,7 +133,7 @@ axiom_text_create_with_data_handler(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_text_free(axiom_text_t * om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -168,7 +168,7 @@ axiom_text_free(axiom_text_t * om_text,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_serialize(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     int status = AXIS2_SUCCESS;
@@ -232,7 +232,7 @@ axiom_text_serialize(axiom_text_t *om_text,
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axiom_text_get_value(axiom_text_t *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
 	if (om_text->value)
     {
@@ -243,7 +243,7 @@ axiom_text_get_value(axiom_text_t *om_text,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_value(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -269,14 +269,14 @@ axiom_text_set_value(axiom_text_t *om_text,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_text_get_mime_type(axiom_text_t *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_text->mime_type;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_mime_type(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *mime_type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -291,14 +291,14 @@ axiom_text_set_mime_type(axiom_text_t *om_text,
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_text_get_optimize(axiom_text_t *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_text->optimize;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_optimize(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_bool_t optimize)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -309,14 +309,14 @@ axiom_text_set_optimize(axiom_text_t *om_text,
 
 static axis2_bool_t AXIS2_CALL
 axiom_text_get_is_binary(axiom_text_t *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_text->is_binary;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_is_binary(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_bool_t is_binary)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -327,21 +327,21 @@ axiom_text_set_is_binary(axiom_text_t *om_text,
 
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axiom_text_get_localname(axiom_text_t *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_text->localname;
 }
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_text_get_content_id(axiom_text_t *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_text->content_id;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_content_id(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *content_id)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -356,7 +356,7 @@ axiom_text_set_content_id(axiom_text_t *om_text,
 
 static axis2_status_t AXIS2_CALL
 axiom_text_serialize_start_part(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     axis2_char_t *namespace_uri = NULL;
@@ -411,7 +411,7 @@ axiom_text_serialize_start_part(axiom_text_t *om_text,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_serialize_attribute(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output,
     axiom_attribute_t *om_attribute)
 {
@@ -456,7 +456,7 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_serialize_namespace(axiom_text_t *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axiom_namespace_t *om_namespace,
     axiom_output_t *om_output)
 {
@@ -482,7 +482,7 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
 
 static const axis2_char_t *AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (om_text->value)
     {
@@ -517,13 +517,13 @@ axiom_text_get_text(axiom_text_t *om_text,
 
 AXIS2_EXTERN axiom_data_handler_t *AXIS2_CALL
 axiom_text_get_data_handler(axiom_text_t *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return om_text->data_handler;
 }
 
 AXIS2_EXTERN axiom_text_t *AXIS2_CALL
-    axiom_text_create_str(const axis2_env_t *env,
+    axiom_text_create_str(const axutil_env_t *env,
         axiom_node_t *parent,
         axis2_string_t *value,
         axiom_node_t ** node)
@@ -581,7 +581,7 @@ AXIS2_EXTERN axiom_text_t *AXIS2_CALL
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_text_set_value_str(struct axiom_text *om_text,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_string_t *value)
 {
 	if (om_text->value)
@@ -598,7 +598,7 @@ axiom_text_set_value_str(struct axiom_text *om_text,
 
 AXIS2_EXTERN axis2_string_t *AXIS2_CALL
 axiom_text_get_value_str(struct axiom_text *om_text,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
 	return om_text->value;
 }

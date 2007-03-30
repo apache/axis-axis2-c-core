@@ -26,12 +26,12 @@ is_absolute_url(const axis2_char_t *url);
 */
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-get_file_url(const axis2_env_t *env,
+get_file_url(const axutil_env_t *env,
         axis2_char_t *path);
 
 AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
 xml_schema_url_resolver_resolve_entity(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *ns,
     axis2_char_t *schema_location,
     axis2_char_t *base_uri)
@@ -81,7 +81,7 @@ is_absolute_url(const axis2_char_t *url)
 }
 */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-get_file_url(const axis2_env_t *env,
+get_file_url(const axutil_env_t *env,
         axis2_char_t *path)
 {
     axis2_char_t *modified_path = NULL;

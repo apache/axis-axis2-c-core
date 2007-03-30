@@ -53,7 +53,7 @@ AXIS2_DECLARE_DATA  struct w2c_properties_ops
  
      axis2_status_t (AXIS2_CALL *
      free)(w2c_properties_t *properties,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
     
     /**
      * parse the properties file and return hash
@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA  struct w2c_properties_ops
      */
      axis2_hash_t* (AXIS2_CALL *
      get_hash)(w2c_properties_t *properties,
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 };
 
 AXIS2_DECLARE_DATA  struct w2c_properties
@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA  struct w2c_properties
  * @return newly created w2c_properties object..
  */
 AXIS2_EXTERN w2c_properties_t* AXIS2_CALL
-w2c_properties_create( const axis2_env_t *env,
+w2c_properties_create( const axutil_env_t *env,
                     axis2_char_t *filename,
                     axis2_char_t seperator);
 

@@ -86,27 +86,27 @@ struct woden_desc_impl
 axis2_status_t AXIS2_CALL
 woden_desc_free(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t AXIS2_CALL
 woden_desc_free_ops(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_desc_super_objs(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_desc_type(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_documentable_t *AXIS2_CALL
 woden_desc_get_base_impl(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Description interface methods (the WSDL Component model)
@@ -114,44 +114,44 @@ woden_desc_get_base_impl(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_interfaces(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_bindings(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_svcs(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_element_decls(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_get_element_decl(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_type_defs(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_get_type_def(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname);
 
 void *AXIS2_CALL
 woden_desc_to_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Description Element interface methods (the XML Element model)
@@ -160,222 +160,222 @@ woden_desc_to_element(
 axis2_status_t AXIS2_CALL
 woden_desc_set_document_base_uri(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *doc_base_uri);
 
 axis2_uri_t *AXIS2_CALL
 woden_desc_get_document_base_uri(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_set_target_namespace(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc);
 
 axis2_uri_t *AXIS2_CALL
 woden_desc_get_target_namespace(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_namespace(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix,
     axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_desc_remove_namespace(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix);
 
 axis2_uri_t *AXIS2_CALL
 woden_desc_get_namespace(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix);
 
 axis2_hash_t *AXIS2_CALL
 woden_desc_get_namespaces(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_import_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *import_el);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_import_elements(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_include_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *include_el);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_include_elements(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_set_types_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *types_el);
 
 axis2_uri_t *AXIS2_CALL
 woden_desc_get_types_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_interface_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *interface_el);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_interface_elements(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_binding_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *binding_el);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_binding_elements(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_svc_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *svc_el);
 
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_svc_elements(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* Creator methods */
 
 void *AXIS2_CALL
 woden_desc_create_documentation_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_import_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_include_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_types_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_interface_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_interface_fault_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_interface_op_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_interface_fault_ref_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_interface_msg_ref_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_binding_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_binding_fault_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_binding_op_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_binding_fault_ref_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_binding_msg_ref_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_svc_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_endpoint_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_feature_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_create_property_element(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_desc_set_ext_registry(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *ext_reg);
 
 void *AXIS2_CALL
 woden_desc_get_ext_registry(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_desc_to_component(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 /* ************************************************************
  *  Non-API implementation methods
  * ************************************************************/
@@ -393,46 +393,46 @@ woden_desc_to_component(
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_interfaces(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *interface);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_bindings(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *binding);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_svcs(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *svc);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_element_decls(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *element_decl);
 
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_type_defs(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *type_def);
 
 static axis2_status_t AXIS2_CALL
 woden_desc_init_components(
     void *desc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_desc_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_desc_t * AXIS2_CALL
 woden_desc_to_desc_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -459,7 +459,7 @@ woden_desc_to_desc_element(
 AXIS2_EXTERN woden_desc_t * AXIS2_CALL
 woden_desc_to_documentable_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -487,7 +487,7 @@ woden_desc_to_documentable_element(
 AXIS2_EXTERN woden_desc_t * AXIS2_CALL
 woden_desc_to_documentable(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -515,7 +515,7 @@ woden_desc_to_documentable(
 AXIS2_EXTERN woden_desc_t * AXIS2_CALL
 woden_desc_to_wsdl_obj(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     void *wsdl_obj = NULL;
@@ -545,7 +545,7 @@ woden_desc_to_wsdl_obj(
 AXIS2_EXTERN woden_desc_t * AXIS2_CALL
 woden_desc_to_wsdl_component(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -572,7 +572,7 @@ woden_desc_to_wsdl_component(
 AXIS2_EXTERN woden_desc_t * AXIS2_CALL
 woden_desc_to_attr_extensible(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -602,7 +602,7 @@ woden_desc_to_attr_extensible(
 AXIS2_EXTERN woden_desc_t * AXIS2_CALL
 woden_desc_to_element_extensible(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -631,7 +631,7 @@ woden_desc_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_desc_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -897,7 +897,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_desc_t * AXIS2_CALL
-woden_desc_create(const axis2_env_t *env)
+woden_desc_create(const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -923,7 +923,7 @@ woden_desc_create(const axis2_env_t *env)
 static axis2_status_t AXIS2_CALL
 woden_desc_free_ops(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -995,7 +995,7 @@ woden_desc_free_ops(
 axis2_status_t AXIS2_CALL
 woden_desc_free(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -1051,7 +1051,7 @@ woden_desc_free(
 axis2_hash_t *AXIS2_CALL
 woden_desc_super_objs(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -1064,7 +1064,7 @@ woden_desc_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_desc_type(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -1077,7 +1077,7 @@ woden_desc_type(
 woden_documentable_t *AXIS2_CALL
 woden_desc_get_base_impl(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
 
@@ -1090,7 +1090,7 @@ woden_desc_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_desc_resolve_methods(
     woden_desc_t *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_desc_t *desc_impl,
     axis2_hash_t *methods)
 {
@@ -1194,7 +1194,7 @@ woden_desc_resolve_methods(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_interfaces(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1212,7 +1212,7 @@ woden_desc_get_interfaces(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_bindings(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1230,7 +1230,7 @@ woden_desc_get_bindings(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_svcs(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1248,7 +1248,7 @@ woden_desc_get_svcs(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_element_decls(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1266,7 +1266,7 @@ woden_desc_get_element_decls(
 void *AXIS2_CALL
 woden_desc_get_element_decl(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1300,7 +1300,7 @@ woden_desc_get_element_decl(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_type_defs(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1318,7 +1318,7 @@ woden_desc_get_type_defs(
 void *AXIS2_CALL
 woden_desc_get_type_def(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1352,7 +1352,7 @@ woden_desc_get_type_def(
 void *AXIS2_CALL
 woden_desc_to_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1372,7 +1372,7 @@ woden_desc_to_element(
 axis2_status_t AXIS2_CALL
 woden_desc_set_document_base_uri(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *doc_base_uri)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1396,7 +1396,7 @@ woden_desc_set_document_base_uri(
 axis2_uri_t *AXIS2_CALL
 woden_desc_get_document_base_uri(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1413,7 +1413,7 @@ woden_desc_get_document_base_uri(
 axis2_status_t AXIS2_CALL
 woden_desc_set_target_namespace(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1437,7 +1437,7 @@ woden_desc_set_target_namespace(
 axis2_uri_t *AXIS2_CALL
 woden_desc_get_target_namespace(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1453,7 +1453,7 @@ woden_desc_get_target_namespace(
 axis2_status_t AXIS2_CALL
 woden_desc_add_namespace(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix,
     axis2_uri_t *namespc)
 {
@@ -1478,7 +1478,7 @@ woden_desc_add_namespace(
 axis2_status_t AXIS2_CALL
 woden_desc_remove_namespace(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1498,7 +1498,7 @@ woden_desc_remove_namespace(
 axis2_uri_t *AXIS2_CALL
 woden_desc_get_namespace(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1517,7 +1517,7 @@ woden_desc_get_namespace(
 axis2_hash_t *AXIS2_CALL
 woden_desc_get_namespaces(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1533,7 +1533,7 @@ woden_desc_get_namespaces(
 axis2_status_t AXIS2_CALL
 woden_desc_add_import_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *import_el)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1551,7 +1551,7 @@ woden_desc_add_import_element(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_import_elements(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1567,7 +1567,7 @@ woden_desc_get_import_elements(
 axis2_status_t AXIS2_CALL
 woden_desc_add_include_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *include_el)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1585,7 +1585,7 @@ woden_desc_add_include_element(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_include_elements(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1601,7 +1601,7 @@ woden_desc_get_include_elements(
 axis2_status_t AXIS2_CALL
 woden_desc_set_types_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *types_el)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1624,7 +1624,7 @@ woden_desc_set_types_element(
 axis2_uri_t *AXIS2_CALL
 woden_desc_get_types_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1640,7 +1640,7 @@ woden_desc_get_types_element(
 axis2_status_t AXIS2_CALL
 woden_desc_add_interface_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *intface)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1658,7 +1658,7 @@ woden_desc_add_interface_element(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_interface_elements(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1674,7 +1674,7 @@ woden_desc_get_interface_elements(
 axis2_status_t AXIS2_CALL
 woden_desc_add_binding_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *binding)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1692,7 +1692,7 @@ woden_desc_add_binding_element(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_binding_elements(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1708,7 +1708,7 @@ woden_desc_get_binding_elements(
 axis2_status_t AXIS2_CALL
 woden_desc_add_svc_element(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *svc_el)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1726,7 +1726,7 @@ woden_desc_add_svc_element(
 axutil_array_list_t *AXIS2_CALL
 woden_desc_get_svc_elements(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1744,7 +1744,7 @@ woden_desc_get_svc_elements(
 void *AXIS2_CALL
 woden_desc_create_documentation_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_documentation_create(env);
 }
@@ -1752,7 +1752,7 @@ woden_desc_create_documentation_element(
 void *AXIS2_CALL
 woden_desc_create_import_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_import_create(env);
 }
@@ -1760,7 +1760,7 @@ woden_desc_create_import_element(
 void *AXIS2_CALL
 woden_desc_create_include_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_include_create(env);
 }
@@ -1768,7 +1768,7 @@ woden_desc_create_include_element(
 void *AXIS2_CALL
 woden_desc_create_types_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_types_create(env);
 }
@@ -1776,7 +1776,7 @@ woden_desc_create_types_element(
 void *AXIS2_CALL
 woden_desc_create_interface_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_interface_create(env);
 }
@@ -1784,7 +1784,7 @@ woden_desc_create_interface_element(
 void *AXIS2_CALL
 woden_desc_create_interface_fault_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_interface_fault_create(env);
 }
@@ -1792,7 +1792,7 @@ woden_desc_create_interface_fault_element(
 void *AXIS2_CALL
 woden_desc_create_interface_op_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_interface_op_create(env);
 }
@@ -1800,7 +1800,7 @@ woden_desc_create_interface_op_element(
 void *AXIS2_CALL
 woden_desc_create_interface_fault_ref_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_interface_fault_ref_create(env);
 }
@@ -1808,7 +1808,7 @@ woden_desc_create_interface_fault_ref_element(
 void *AXIS2_CALL
 woden_desc_create_interface_msg_ref_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_interface_msg_ref_create(env);
 }
@@ -1816,7 +1816,7 @@ woden_desc_create_interface_msg_ref_element(
 void *AXIS2_CALL
 woden_desc_create_binding_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_binding_create(env);
 }
@@ -1824,7 +1824,7 @@ woden_desc_create_binding_element(
 void *AXIS2_CALL
 woden_desc_create_binding_fault_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_binding_fault_create(env);
 }
@@ -1832,7 +1832,7 @@ woden_desc_create_binding_fault_element(
 void *AXIS2_CALL
 woden_desc_create_binding_op_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_binding_op_create(env);
 }
@@ -1840,7 +1840,7 @@ woden_desc_create_binding_op_element(
 void *AXIS2_CALL
 woden_desc_create_binding_fault_ref_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_binding_fault_ref_create(env);
 }
@@ -1848,7 +1848,7 @@ woden_desc_create_binding_fault_ref_element(
 void *AXIS2_CALL
 woden_desc_create_binding_msg_ref_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_binding_msg_ref_create(env);
 }
@@ -1856,7 +1856,7 @@ woden_desc_create_binding_msg_ref_element(
 void *AXIS2_CALL
 woden_desc_create_svc_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_svc_create(env);
 }
@@ -1864,7 +1864,7 @@ woden_desc_create_svc_element(
 void *AXIS2_CALL
 woden_desc_create_endpoint_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_endpoint_create(env);
 }
@@ -1872,7 +1872,7 @@ woden_desc_create_endpoint_element(
 void *AXIS2_CALL
 woden_desc_create_feature_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_feature_create(env);
 }
@@ -1880,7 +1880,7 @@ woden_desc_create_feature_element(
 void *AXIS2_CALL
 woden_desc_create_property_element(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return woden_property_create(env);
 }
@@ -1888,7 +1888,7 @@ woden_desc_create_property_element(
 axis2_status_t AXIS2_CALL
 woden_desc_set_ext_registry(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *ext_reg)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1911,7 +1911,7 @@ woden_desc_set_ext_registry(
 void *AXIS2_CALL
 woden_desc_get_ext_registry(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1927,7 +1927,7 @@ woden_desc_get_ext_registry(
 void *AXIS2_CALL
 woden_desc_to_component(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1958,7 +1958,7 @@ woden_desc_to_component(
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_interfaces(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *interface)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1976,7 +1976,7 @@ woden_desc_add_to_all_interfaces(
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_bindings(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *binding)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -1994,7 +1994,7 @@ woden_desc_add_to_all_bindings(
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_svcs(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *svc)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -2012,7 +2012,7 @@ woden_desc_add_to_all_svcs(
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_element_decls(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *element_decl)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -2039,7 +2039,7 @@ woden_desc_add_to_all_element_decls(
 axis2_status_t AXIS2_CALL
 woden_desc_add_to_all_type_defs(
     void *desc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *type_def)
 {
     woden_desc_impl_t *desc_impl = NULL;
@@ -2067,7 +2067,7 @@ woden_desc_add_to_all_type_defs(
 static axis2_status_t AXIS2_CALL
 woden_desc_init_components(
     void *desc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;

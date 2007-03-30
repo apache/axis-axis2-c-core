@@ -47,22 +47,22 @@ struct woden_svc_impl
 axis2_status_t AXIS2_CALL
 woden_svc_free(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_svc_super_objs(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_svc_type(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_configurable_t *AXIS2_CALL
 woden_svc_get_base_impl(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 /* ************************************************************
  *  Service interface methods (the WSDL Component model)
  * ************************************************************/
@@ -70,17 +70,17 @@ woden_svc_get_base_impl(
 axis2_qname_t *AXIS2_CALL
 woden_svc_get_qname(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_svc_get_interface(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_svc_get_endpoints(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 /* ************************************************************
  *  Service Element interface methods (the XML Element model)
  * ************************************************************/
@@ -88,35 +88,35 @@ woden_svc_get_endpoints(
 axis2_status_t AXIS2_CALL
 woden_svc_set_qname(
     void *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_svc_set_interface_qname(
     void *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *interface_qname);
 
 axis2_qname_t *AXIS2_CALL
 woden_svc_get_interface_qname(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_svc_get_interface_element(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_svc_add_endpoint_element(
     void *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *endpoint);
 
 axutil_array_list_t *AXIS2_CALL
 woden_svc_get_endpoint_elements(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /******************************************************************************
  *  Non-API implementation methods
@@ -125,23 +125,23 @@ woden_svc_get_endpoint_elements(
 axis2_status_t AXIS2_CALL
 woden_svc_set_interface_element(
     void *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *interface);
 
 
 static woden_svc_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_svc_free_ops(
     void *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_svc_element(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -166,7 +166,7 @@ woden_svc_to_svc_element(
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_documentable_element(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -194,7 +194,7 @@ woden_svc_to_documentable_element(
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_configurable(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -222,7 +222,7 @@ woden_svc_to_configurable(
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_configurable_component(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -249,7 +249,7 @@ woden_svc_to_configurable_component(
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_wsdl_component(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -277,7 +277,7 @@ woden_svc_to_wsdl_component(
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_configurable_element(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -304,7 +304,7 @@ woden_svc_to_configurable_element(
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_documentable(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -332,7 +332,7 @@ woden_svc_to_documentable(
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_attr_extensible(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -362,7 +362,7 @@ woden_svc_to_attr_extensible(
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_element_extensible(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -391,7 +391,7 @@ woden_svc_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_svc_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -485,7 +485,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
-woden_svc_create(const axis2_env_t *env)
+woden_svc_create(const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -511,7 +511,7 @@ woden_svc_create(const axis2_env_t *env)
 static axis2_status_t
 woden_svc_free_ops(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -600,7 +600,7 @@ woden_svc_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_svc_free(void *svc,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -670,7 +670,7 @@ woden_svc_free(void *svc,
 axis2_hash_t *AXIS2_CALL
 woden_svc_super_objs(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -683,7 +683,7 @@ woden_svc_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_svc_type(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -696,7 +696,7 @@ woden_svc_type(
 woden_configurable_t *AXIS2_CALL
 woden_svc_get_base_impl(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
 
@@ -709,7 +709,7 @@ woden_svc_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_svc_resolve_methods(
     woden_svc_t *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_svc_t *svc_impl,
     axis2_hash_t *methods)
 {
@@ -759,7 +759,7 @@ woden_svc_resolve_methods(
 axis2_qname_t *AXIS2_CALL
 woden_svc_get_qname(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -775,7 +775,7 @@ woden_svc_get_qname(
 void *AXIS2_CALL
 woden_svc_get_interface(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -791,7 +791,7 @@ woden_svc_get_interface(
 axutil_array_list_t *AXIS2_CALL
 woden_svc_get_endpoints(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -810,7 +810,7 @@ woden_svc_get_endpoints(
 axis2_status_t AXIS2_CALL
 woden_svc_set_qname(
     void *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname)
 {
     woden_svc_impl_t *svc_impl = NULL;
@@ -832,7 +832,7 @@ woden_svc_set_qname(
 axis2_status_t AXIS2_CALL
 woden_svc_set_interface_qname(
     void *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *interface_qname)
 {
     woden_svc_impl_t *svc_impl = NULL;
@@ -855,7 +855,7 @@ woden_svc_set_interface_qname(
 axis2_qname_t *AXIS2_CALL
 woden_svc_get_interface_qname(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -871,7 +871,7 @@ woden_svc_get_interface_qname(
 void *AXIS2_CALL
 woden_svc_get_interface_element(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -887,7 +887,7 @@ woden_svc_get_interface_element(
 axis2_status_t AXIS2_CALL
 woden_svc_add_endpoint_element(
     void *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *endpoint)
 {
     woden_svc_impl_t *svc_impl = NULL;
@@ -914,7 +914,7 @@ woden_svc_add_endpoint_element(
 axutil_array_list_t *AXIS2_CALL
 woden_svc_get_endpoint_elements(
     void *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -933,7 +933,7 @@ woden_svc_get_endpoint_elements(
 axis2_status_t AXIS2_CALL
 woden_svc_set_interface_element(
     void *svc,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *interface)
 {
     woden_svc_impl_t *svc_impl = NULL;

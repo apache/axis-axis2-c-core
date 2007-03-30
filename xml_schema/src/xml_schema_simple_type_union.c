@@ -49,51 +49,51 @@ struct xml_schema_simple_type_union_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_free(void *simple_type_union,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_simple_type_union_get_type(void *simple_type_union,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_simple_type_union_super_objs(void *simple_type_union,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 xml_schema_simple_type_content_t *AXIS2_CALL
 xml_schema_simple_type_union_get_base_impl(void *simple_type_union,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 xml_schema_obj_collection_t* AXIS2_CALL
 xml_schema_simple_type_union_get_base_types(void *simple_type_union,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_set_member_types_source(void *simple_type_union,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *member_types_source);
 
 axis2_char_t* AXIS2_CALL
 xml_schema_simple_type_union_get_member_types_source
 (void *simple_type_union,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axutil_array_list_t* AXIS2_CALL
 xml_schema_simple_type_union_get_member_types_qnames(
     void *simple_type_union,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_set_member_types_qnames(
     void *simple_type_union,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *qns);
 
 /*************** function prototypes *****************************************/
 
 AXIS2_EXTERN xml_schema_simple_type_union_t * AXIS2_CALL
-xml_schema_simple_type_union_create(const axis2_env_t *env)
+xml_schema_simple_type_union_create(const axutil_env_t *env)
 {
     xml_schema_simple_type_union_impl_t *simple_type_union_impl = NULL;
     xml_schema_annotated_t *annotated = NULL;
@@ -214,7 +214,7 @@ xml_schema_simple_type_union_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_free(void *simple_type_union,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_simple_type_union_impl_t *simple_type_union_impl = NULL;
 
@@ -257,7 +257,7 @@ xml_schema_simple_type_union_free(void *simple_type_union,
 
 xml_schema_simple_type_content_t *AXIS2_CALL
 xml_schema_simple_type_union_get_base_impl(void *simple_type_union,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_simple_type_union_impl_t *simple_type_union_impl = NULL;
 
@@ -271,7 +271,7 @@ xml_schema_simple_type_union_get_base_impl(void *simple_type_union,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_resolve_methods(
                     xml_schema_simple_type_union_t *simple_type_union,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     xml_schema_simple_type_union_t *simple_type_union_impl,
                     axis2_hash_t *methods)
 {
@@ -316,7 +316,7 @@ xml_schema_simple_type_union_resolve_methods(
 
 xml_schema_obj_collection_t* AXIS2_CALL
 xml_schema_simple_type_union_get_base_types(void *simple_type_union,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return
@@ -325,7 +325,7 @@ xml_schema_simple_type_union_get_base_types(void *simple_type_union,
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_set_member_types_source(void *simple_type_union,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *member_types_source)
 
 {
@@ -346,7 +346,7 @@ xml_schema_simple_type_union_set_member_types_source(void *simple_type_union,
 axis2_char_t* AXIS2_CALL
 xml_schema_simple_type_union_get_member_types_source
 (void *simple_type_union,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(simple_type_union)->member_types_source;
@@ -355,7 +355,7 @@ xml_schema_simple_type_union_get_member_types_source
 
 axutil_array_list_t* AXIS2_CALL
 xml_schema_simple_type_union_get_member_types_qnames(void *simple_type_union,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_simple_type_union_impl_t *sim_type_res_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -364,14 +364,14 @@ xml_schema_simple_type_union_get_member_types_qnames(void *simple_type_union,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_simple_type_union_get_type(void *simple_type_union,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(simple_type_union)->obj_type;
 }
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_simple_type_union_super_objs(void *simple_type_union,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(simple_type_union)->ht_super;
 }
@@ -379,7 +379,7 @@ xml_schema_simple_type_union_super_objs(void *simple_type_union,
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_union_set_member_types_qnames(
     void *simple_type_union,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *qns)
 {
     xml_schema_simple_type_union_impl_t *sim_type_union_impl = NULL;

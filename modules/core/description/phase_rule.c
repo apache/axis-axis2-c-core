@@ -36,7 +36,7 @@ struct axis2_phase_rule
 };
 
 AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
-axis2_phase_rule_create(const axis2_env_t *env,
+axis2_phase_rule_create(const axutil_env_t *env,
     const axis2_char_t *name)
 {
     axis2_phase_rule_t *phase_rule = NULL;
@@ -67,14 +67,14 @@ axis2_phase_rule_create(const axis2_env_t *env,
 
 const axis2_char_t *AXIS2_CALL
 axis2_phase_rule_get_before(const axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return phase_rule->before;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_phase_rule_set_before(axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *before)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -100,14 +100,14 @@ axis2_phase_rule_set_before(axis2_phase_rule_t *phase_rule,
 
 const axis2_char_t *AXIS2_CALL
 axis2_phase_rule_get_after(const axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return phase_rule->after;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_phase_rule_set_after(axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *after)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -133,14 +133,14 @@ axis2_phase_rule_set_after(axis2_phase_rule_t *phase_rule,
 
 const axis2_char_t *AXIS2_CALL
 axis2_phase_rule_get_name(const axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return phase_rule->name;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_phase_rule_set_name(axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -166,7 +166,7 @@ axis2_phase_rule_set_name(axis2_phase_rule_t *phase_rule,
 
 axis2_bool_t AXIS2_CALL
 axis2_phase_rule_is_first(const axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return phase_rule->first;
@@ -174,7 +174,7 @@ axis2_phase_rule_is_first(const axis2_phase_rule_t *phase_rule,
 
 axis2_status_t AXIS2_CALL
 axis2_phase_rule_set_first(axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t first)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -184,7 +184,7 @@ axis2_phase_rule_set_first(axis2_phase_rule_t *phase_rule,
 
 axis2_bool_t AXIS2_CALL
 axis2_phase_rule_is_last(const axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return phase_rule->last;
@@ -192,7 +192,7 @@ axis2_phase_rule_is_last(const axis2_phase_rule_t *phase_rule,
 
 axis2_status_t AXIS2_CALL
 axis2_phase_rule_set_last(axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t last)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -202,7 +202,7 @@ axis2_phase_rule_set_last(axis2_phase_rule_t *phase_rule,
 
 void AXIS2_CALL
 axis2_phase_rule_free(axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -228,7 +228,7 @@ axis2_phase_rule_free(axis2_phase_rule_t *phase_rule,
 
 axis2_phase_rule_t *AXIS2_CALL
 axis2_phase_rule_clone(axis2_phase_rule_t *phase_rule,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_phase_rule_t *phase_rule_new = NULL;
     AXIS2_ENV_CHECK(env, NULL);

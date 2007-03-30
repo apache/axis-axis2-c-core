@@ -20,7 +20,7 @@
 #include <axis2_log.h>
 #include <axis2_string.h>
 
-void test_strltrim(const axis2_env_t *env)
+void test_strltrim(const axutil_env_t *env)
 {
     axis2_char_t *s = axis2_strdup(env, "    abcd efgh    ");
     axis2_char_t *trimmed = NULL;
@@ -35,7 +35,7 @@ void test_strltrim(const axis2_env_t *env)
         AXIS2_FREE(env->allocator, s);
 }
 
-void test_strrtrim(const axis2_env_t *env)
+void test_strrtrim(const axutil_env_t *env)
 {
     axis2_char_t *s = axis2_strdup(env, "abcd efgh    ");
     axis2_char_t *trimmed = NULL;
@@ -50,7 +50,7 @@ void test_strrtrim(const axis2_env_t *env)
         AXIS2_FREE(env->allocator, s);
 }
 
-void test_strtrim(const axis2_env_t *env)
+void test_strtrim(const axutil_env_t *env)
 {
     axis2_char_t *s = axis2_strdup(env, "    abcd efgh    ");
     axis2_char_t *trimmed = NULL;
@@ -65,7 +65,7 @@ void test_strtrim(const axis2_env_t *env)
         AXIS2_FREE(env->allocator, s);
 }
 
-void run_test_string(axis2_env_t *env)
+void run_test_string(axutil_env_t *env)
 {
     if (!env)
         return;

@@ -27,7 +27,7 @@ w2c_url_processor_is_token ( axis2_char_t *str );
 static axis2_char_t* axis2_add_word_to_package_name
               ( axis2_char_t *package_name ,
                 axis2_char_t *long_path,
-                const axis2_env_t *env );
+                const axutil_env_t *env );
 
 static const axis2_char_t *w2c_url_processor_c_tokens[]={ 
                       "auto", "break", "case", "axis2_char_t", "const", "continue",
@@ -39,7 +39,7 @@ static const axis2_char_t *w2c_url_processor_c_tokens[]={
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     w2c_url_processor_make_package_name(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *namespace)
 {
     axis2_url_t *url = NULL;
@@ -159,7 +159,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 static axis2_char_t* axis2_add_word_to_package_name
               ( axis2_char_t *package_name ,
                 axis2_char_t *long_path,
-                const axis2_env_t *env )
+                const axutil_env_t *env )
 {
     /** make non keyword */
     if ( w2c_url_processor_is_token( long_path) )

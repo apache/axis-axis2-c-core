@@ -31,7 +31,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_stream.h>
 
 #ifdef __cplusplus
@@ -49,7 +49,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_response_writer_get_encoding(const axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param response_writer pointer to response writer
@@ -58,7 +58,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_response_writer_close(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param response_writer pointer to response writer
@@ -67,7 +67,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_response_writer_flush(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param response_writer pointer to response writer
@@ -77,7 +77,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_response_writer_write_char(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         char c);
 
     /**
@@ -90,7 +90,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_response_writer_write_buf(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         char *buf,
         int offset,
         axis2_ssize_t len);
@@ -103,7 +103,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_response_writer_print_str(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const char *str);
 
     /**
@@ -114,7 +114,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_response_writer_print_int(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int i);
 
     /**
@@ -125,7 +125,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_response_writer_println_str(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const char *str);
 
     /**
@@ -135,7 +135,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_response_writer_println(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param response_writer pointer to response writer
@@ -144,7 +144,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_response_writer_free(axis2_http_response_writer_t *response_writer,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param env pointer to environment struct
@@ -152,7 +152,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
     axis2_http_response_writer_create (
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_stream_t *stream);
 
     /**
@@ -162,7 +162,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
     axis2_http_response_writer_create_with_encoding(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_stream_t *stream,
         const axis2_char_t *encoding);
 

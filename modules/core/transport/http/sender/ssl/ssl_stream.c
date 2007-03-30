@@ -41,19 +41,19 @@ struct ssl_stream_impl
 void AXIS2_CALL
 axis2_ssl_stream_free(
     axis2_stream_t *stream, 
-    const axis2_env_t *env
+    const axutil_env_t *env
     );
 
 axis2_stream_type_t AXIS2_CALL
 axis2_ssl_stream_get_type(
     axis2_stream_t *stream, 
-    const axis2_env_t *env
+    const axutil_env_t *env
     );
 
 int AXIS2_CALL
 axis2_ssl_stream_write(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buffer,
     size_t count
     );
@@ -61,7 +61,7 @@ axis2_ssl_stream_write(
 int AXIS2_CALL
 axis2_ssl_stream_read(
     axis2_stream_t *stream, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer,
     size_t count
     );
@@ -69,20 +69,20 @@ axis2_ssl_stream_read(
 int AXIS2_CALL
 axis2_ssl_stream_skip(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int count
     );
 
 int AXIS2_CALL
 axis2_ssl_stream_get_char(
     axis2_stream_t *stream,
-    const axis2_env_t *env
+    const axutil_env_t *env
     );
 
 
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_ssl(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_socket_t socket,
     axis2_char_t *server_cert,
     axis2_char_t *key_file,
@@ -132,7 +132,7 @@ axis2_stream_create_ssl(
 
 void AXIS2_CALL
 axis2_ssl_stream_free(axis2_stream_t *stream,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     ssl_stream_impl_t *stream_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
@@ -151,7 +151,7 @@ axis2_ssl_stream_free(axis2_stream_t *stream,
 int AXIS2_CALL
 axis2_ssl_stream_read(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *buffer,
     size_t count
     )
@@ -188,7 +188,7 @@ axis2_ssl_stream_read(
 int AXIS2_CALL
 axis2_ssl_stream_write(
     axis2_stream_t *stream,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const void *buf,
     size_t count
     )
@@ -217,7 +217,7 @@ axis2_ssl_stream_write(
 int AXIS2_CALL
 axis2_ssl_stream_skip(
     axis2_stream_t *stream, 
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     int count
     )
 {
@@ -243,7 +243,7 @@ axis2_ssl_stream_skip(
 int AXIS2_CALL
 axis2_ssl_stream_get_char(
     axis2_stream_t *stream, 
-    const axis2_env_t *env
+    const axutil_env_t *env
     )
 {
     int ret = -1;
@@ -256,7 +256,7 @@ axis2_ssl_stream_get_char(
 axis2_stream_type_t AXIS2_CALL
 axis2_ssl_stream_get_type(
     axis2_stream_t *stream,
-    const axis2_env_t *env
+    const axutil_env_t *env
     )
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);

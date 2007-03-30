@@ -30,7 +30,7 @@
  */
 
 axis2_stub_t*
-axis2_stub_interop_test_port_type_doc_service_create(const axis2_env_t *env,
+axis2_stub_interop_test_port_type_doc_service_create(const axutil_env_t *env,
         axis2_char_t *client_home,
         axis2_char_t *endpoint_uri)
 {
@@ -51,7 +51,7 @@ axis2_stub_interop_test_port_type_doc_service_create(const axis2_env_t *env,
 }
 
 
-void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_t *stub, const axis2_env_t *env)
+void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_t *stub, const axutil_env_t *env)
 {
     axis2_svc_client_t *svc_client = NULL;
     axis2_qname_t *svc_qname =  NULL;
@@ -242,7 +242,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
  *return end point picked from wsdl
  */
 axis2_char_t*
-axis2_stub_interop_test_port_type_doc_service_get_endpoint_uri_from_wsdl(const axis2_env_t *env)
+axis2_stub_interop_test_port_type_doc_service_get_endpoint_uri_from_wsdl(const axutil_env_t *env)
 {
     axis2_char_t *endpoint_uri = NULL;
     /* set the address from here */
@@ -259,7 +259,7 @@ axis2_stub_interop_test_port_type_doc_service_get_endpoint_uri_from_wsdl(const a
  * for "echoString|http://soapinterop.org" operation.
  * @param content0
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content0)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -311,9 +311,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_st
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_string_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content0,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_string_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content0,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -363,7 +363,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_start(axis2_stub_
  * for "echoStringArray|http://soapinterop.org" operation.
  * @param content2
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content2)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -415,9 +415,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(ax
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content2,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content2,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -467,7 +467,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_string_array_start(axis2
  * for "echoInteger|http://soapinterop.org" operation.
  * @param content4
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content4)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -519,9 +519,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_s
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_integer_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content4,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_integer_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content4,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -571,7 +571,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_start(axis2_stub
  * for "echoIntegerArray|http://soapinterop.org" operation.
  * @param content6
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content6)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -623,9 +623,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(a
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content6,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content6,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -675,7 +675,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_integer_array_start(axis
  * for "echoFloat|http://soapinterop.org" operation.
  * @param content8
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content8)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -727,9 +727,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stu
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_float_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content8,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_float_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content8,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -779,7 +779,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_start(axis2_stub_t
  * for "echoFloatArray|http://soapinterop.org" operation.
  * @param content10
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content10)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -831,9 +831,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axi
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content10,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content10,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -883,7 +883,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_float_array_start(axis2_
  * for "echoStruct|http://soapinterop.org" operation.
  * @param content12
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content12)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -935,9 +935,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_st
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_struct_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content12,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_struct_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content12,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -987,7 +987,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_start(axis2_stub_
  * for "echoStructArray|http://soapinterop.org" operation.
  * @param content14
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content14)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -1039,9 +1039,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(ax
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content14,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content14,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -1091,7 +1091,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_struct_array_start(axis2
  * for "echoVoid|http://soapinterop.org" operation.
  * @param content16
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content16)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -1143,9 +1143,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_void_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content16,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_void_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content16,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -1195,7 +1195,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_void_start(axis2_stub_t 
  * for "echoBase64|http://soapinterop.org" operation.
  * @param content18
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content18)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -1247,9 +1247,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_st
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_base64_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content18,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_base64_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content18,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -1299,7 +1299,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_base64_start(axis2_stub_
  * for "echoDate|http://soapinterop.org" operation.
  * @param content20
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content20)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -1351,9 +1351,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_date_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content20,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_date_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content20,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -1403,7 +1403,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_date_start(axis2_stub_t 
  * for "echoHexBinary|http://soapinterop.org" operation.
  * @param content22
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content22)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -1455,9 +1455,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content22,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content22,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -1507,7 +1507,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_hex_binary_start(axis2_s
  * for "echoDecimal|http://soapinterop.org" operation.
  * @param content24
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content24)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -1559,9 +1559,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_s
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content24,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content24,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;
@@ -1611,7 +1611,7 @@ void axis2_stub_interop_test_port_type_doc_service_echo_decimal_start(axis2_stub
  * for "echoBoolean|http://soapinterop.org" operation.
  * @param content26
  */
-axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_stub_t *stub, const axis2_env_t *env  ,
+axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_stub_t *stub, const axutil_env_t *env  ,
         axiom_node_t* content26)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -1663,9 +1663,9 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_s
   * @param on_error callback to handle on error
   */
 
-void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start(axis2_stub_t *stub, const axis2_env_t *env, axiom_node_t* content26,
-        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axis2_env_t *) ,
-        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axis2_env_t *, int))
+void axis2_stub_interop_test_port_type_doc_service_echo_boolean_start(axis2_stub_t *stub, const axutil_env_t *env, axiom_node_t* content26,
+        axis2_status_t(AXIS2_CALL *on_complete)(struct axis2_callback *, const axutil_env_t *) ,
+        axis2_status_t(AXIS2_CALL *on_error)(struct axis2_callback *, const axutil_env_t *, int))
 {
 
     axis2_callback_t *callback = NULL;

@@ -24,7 +24,7 @@
 
 static axis2_status_t
 axis2_phase_add_unique(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *list,
     axis2_handler_t *handler);
 
@@ -51,7 +51,7 @@ struct axis2_phase
 
 AXIS2_EXTERN axis2_phase_t *AXIS2_CALL
 axis2_phase_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *phase_name)
 {
     axis2_phase_t *phase = NULL;
@@ -98,7 +98,7 @@ axis2_phase_create(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_add_handler_at(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int index,
     axis2_handler_t *handler)
 {
@@ -116,7 +116,7 @@ axis2_phase_add_handler_at(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_add_handler(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -130,7 +130,7 @@ axis2_phase_add_handler(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_invoke(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     int index = 0, size = 0;
@@ -213,7 +213,7 @@ axis2_phase_invoke(
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_phase_get_name(
     const axis2_phase_t *phase,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return phase->name;
 }
@@ -221,7 +221,7 @@ axis2_phase_get_name(
 AXIS2_EXTERN int AXIS2_CALL
 axis2_phase_get_handler_count(
     const axis2_phase_t *phase,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return axutil_array_list_size(phase->handlers, env);
 }
@@ -230,7 +230,7 @@ axis2_phase_get_handler_count(
 AXIS2_EXTERN int AXIS2_CALL
 _axis2_phase_get_before_after(
     axis2_handler_t *handler,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     const axis2_char_t *before = NULL, *after = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -281,7 +281,7 @@ _axis2_phase_get_before_after(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_set_first_handler(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -308,7 +308,7 @@ axis2_phase_set_first_handler(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_set_last_handler(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -335,7 +335,7 @@ axis2_phase_set_last_handler(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_add_handler_desc(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_desc_t *handler_desc)
 {
     axis2_phase_rule_t *rules = NULL;
@@ -420,7 +420,7 @@ axis2_phase_add_handler_desc(
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 _axis2_phase_is_valid_before(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     axis2_phase_rule_t *rules = NULL;
@@ -464,7 +464,7 @@ _axis2_phase_is_valid_before(
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 _axis2_phase_is_valid_after(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     axis2_phase_rule_t *rules = NULL;
@@ -508,7 +508,7 @@ _axis2_phase_is_valid_after(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_insert_before(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     axis2_phase_rule_t *rules = NULL;
@@ -598,7 +598,7 @@ axis2_phase_insert_before(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_insert_after(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     axis2_phase_rule_t *rules = NULL;
@@ -697,7 +697,7 @@ axis2_phase_insert_after(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_insert_before_and_after(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_t *handler)
 {
     int before = -1;
@@ -848,7 +848,7 @@ axis2_phase_insert_before_and_after(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_insert_handler_desc(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_handler_desc_t *handler_desc)
 {
     int type = 0;
@@ -905,7 +905,7 @@ axis2_phase_insert_handler_desc(
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phase_get_all_handlers(
     const axis2_phase_t *phase,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return phase->handlers;
 }
@@ -913,7 +913,7 @@ axis2_phase_get_all_handlers(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phase_invoke_start_from_handler(
     axis2_phase_t *phase,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int paused_handler_index,
     axis2_msg_ctx_t *msg_ctx)
 {
@@ -951,7 +951,7 @@ axis2_phase_invoke_start_from_handler(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_phase_free(
     axis2_phase_t *phase,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -970,7 +970,7 @@ axis2_phase_free(
 
 static axis2_status_t
 axis2_phase_add_unique(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *list,
     axis2_handler_t *handler)
 {

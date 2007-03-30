@@ -27,7 +27,7 @@ typedef struct axis2_libcurl
 	axis2_char_t *memory;
 	axutil_array_list_t *alist;
 	unsigned int size;
-	const axis2_env_t *env;
+	const axutil_env_t *env;
 }axis2_libcurl_t;
 
 size_t 
@@ -46,19 +46,19 @@ axis2_libcurl_header_callback(
 
 axis2_libcurl_t *
 axis2_libcurl_create (
-	const axis2_env_t *env);
+	const axutil_env_t *env);
 
 void
 axis2_libcurl_free (
 	void *curl,
-	const axis2_env_t *env);
+	const axutil_env_t *env);
 
 
 
 axis2_status_t AXIS2_CALL
 axis2_libcurl_send (
     axiom_output_t *om_output,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
 	axiom_soap_envelope_t *out,
     const axis2_char_t *str_url,
@@ -352,7 +352,7 @@ axis2_libcurl_header_callback(void *ptr, size_t size, size_t nmemb, void *data)
 }
 
 axis2_libcurl_t *
-axis2_libcurl_create (const axis2_env_t *env)
+axis2_libcurl_create (const axutil_env_t *env)
 {
 	axis2_libcurl_t *curl = NULL;
 	curl = (axis2_libcurl_t *) AXIS2_MALLOC (env->allocator, sizeof (axis2_libcurl_t));
@@ -363,7 +363,7 @@ axis2_libcurl_create (const axis2_env_t *env)
 }
 
 void
-axis2_libcurl_free (void *curl, const axis2_env_t *env)
+axis2_libcurl_free (void *curl, const axutil_env_t *env)
 {
 	AXIS2_FREE (env->allocator, curl);
 /* 	curl_slist_free_all (headers); */

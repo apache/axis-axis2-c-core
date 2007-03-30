@@ -24,7 +24,7 @@ struct axis2_svr_callback
 };
 
 AXIS2_EXPORT axis2_svr_callback_t *AXIS2_CALL
-axis2_svr_callback_create(const axis2_env_t *env)
+axis2_svr_callback_create(const axutil_env_t *env)
 {
     axis2_svr_callback_t *svr_callback = NULL;
 
@@ -44,7 +44,7 @@ axis2_svr_callback_create(const axis2_env_t *env)
 
 AXIS2_EXPORT void AXIS2_CALL
 axis2_svr_callback_free(axis2_svr_callback_t *svr_callback,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -58,7 +58,7 @@ axis2_svr_callback_free(axis2_svr_callback_t *svr_callback,
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
@@ -82,7 +82,7 @@ axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
 
 AXIS2_EXPORT axis2_status_t AXIS2_CALL
 axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;

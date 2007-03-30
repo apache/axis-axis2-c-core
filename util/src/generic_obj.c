@@ -25,7 +25,7 @@ struct axis2_generic_obj
 };
 
 AXIS2_EXTERN axis2_generic_obj_t *AXIS2_CALL
-axis2_generic_obj_create(const axis2_env_t *env)
+axis2_generic_obj_create(const axutil_env_t *env)
 {
     axis2_generic_obj_t *generic_obj = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -46,7 +46,7 @@ axis2_generic_obj_create(const axis2_env_t *env)
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_generic_obj_free(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -72,7 +72,7 @@ axis2_generic_obj_free(axis2_generic_obj_t *generic_obj,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_free_func(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         AXIS2_FREE_VOID_ARG free_func)
 {
     generic_obj->free_func = free_func;
@@ -81,7 +81,7 @@ axis2_generic_obj_set_free_func(axis2_generic_obj_t *generic_obj,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_value(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *value)
 {
     generic_obj->value = value;
@@ -90,7 +90,7 @@ axis2_generic_obj_set_value(axis2_generic_obj_t *generic_obj,
 
 AXIS2_EXTERN void *AXIS2_CALL
 axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return generic_obj->value;
 }
@@ -98,7 +98,7 @@ axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_type(
     axis2_generic_obj_t *generic_obj,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     int type)
 {
     generic_obj->type = type;
@@ -108,7 +108,7 @@ axis2_generic_obj_set_type(
 AXIS2_EXTERN int AXIS2_CALL
 axis2_generic_obj_get_type(
     axis2_generic_obj_t *generic_obj,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return generic_obj->type;
 }

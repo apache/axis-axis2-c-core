@@ -27,12 +27,12 @@
 static axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx);
 
 AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
-axis2_raw_xml_in_out_msg_recv_create(const axis2_env_t *env)
+axis2_raw_xml_in_out_msg_recv_create(const axutil_env_t *env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -58,7 +58,7 @@ axis2_raw_xml_in_out_msg_recv_create(const axis2_env_t *env)
 
 static axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx)
 {
@@ -340,7 +340,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
 }
 
 AXIS2_EXPORT int axis2_get_instance(struct axis2_msg_recv **inst,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     *inst = axis2_raw_xml_in_out_msg_recv_create(env);
     if (!(*inst))
@@ -352,7 +352,7 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_msg_recv **inst,
 }
 
 AXIS2_EXPORT int axis2_remove_instance(struct axis2_msg_recv *inst,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (inst)
     {

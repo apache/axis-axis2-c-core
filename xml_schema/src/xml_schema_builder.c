@@ -52,90 +52,90 @@ xml_schema_builder_impl_t;
 xml_schema_t* AXIS2_CALL
 xml_schema_builder_build(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_document_t *om_doc,
     axis2_char_t *uri);
 
 xml_schema_t* AXIS2_CALL
 xml_schema_builder_build_with_root_node(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *root,
     axis2_char_t *uri);
 
 axis2_status_t AXIS2_CALL
 xml_schema_builder_free(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 
 static xml_schema_t*
 handle_xml_schema_element(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node,
     axis2_char_t  *uri);
 
 static xml_schema_annotation_t*
 handle_annotation(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ann_node,
     axiom_node_t *sch_node);
 
 static xml_schema_redefine_t*
 handle_redefine(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *redefine_node,
     axiom_node_t *sch_node);
 
 static axis2_status_t
 set_namespace_attributes(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_t *schema,
     axiom_node_t *sch_node);
 
 static axis2_status_t
 put_namespace(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix,
     axis2_char_t *ns);
 
 static xml_schema_simple_type_t*
 handle_simple_type(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *simple_node,
     axiom_node_t *sch_node);
 
 static xml_schema_complex_type_t*
 handle_complex_type(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *complex_node,
     axiom_node_t *schema_node);
 
 static xml_schema_simple_content_t*
 handle_simple_content(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *simple_node,
     axiom_node_t *schema_node);
 
 static xml_schema_complex_content_t*
 handle_complex_content(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *complex_node,
     axiom_node_t *schema_node);
 
 static xml_schema_simple_content_restriction_t*
 handle_simple_content_restriction(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *res_node,
     axiom_node_t *schema_node);
 
@@ -143,98 +143,98 @@ handle_simple_content_restriction(
 static xml_schema_simple_content_extension_t*
 handle_simple_content_extension(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *sim_ext_node,
     axiom_node_t *schema_node);
 
 static xml_schema_complex_content_restriction_t*
 handle_complex_content_restriction(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *res_node,
     axiom_node_t *schema_node);
 
 static xml_schema_complex_content_extension_t*
 handle_complex_content_extension(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *cmp_ext_node,
     axiom_node_t *schema_node);
 
 static xml_schema_attribute_group_ref_t*
 handle_attribute_group_ref(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *attr_grp_node,
     axiom_node_t *schema_node);
 
 static xml_schema_group_base_t*
 handle_sequence(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *seq_node,
     axiom_node_t *schema_node);
 
 static xml_schema_any_t*
 handle_any(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *any_node,
     axiom_node_t *schema_node);
 
 static xml_schema_group_base_t*
 handle_choice(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *choice_node,
     axiom_node_t *schema_node);
 
 static xml_schema_group_base_t*
 handle_all(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *all_node,
     axiom_node_t *schema_node);
 
 static xml_schema_group_t*
 handle_group(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *group_node,
     axiom_node_t *schema_node);
 
 static xml_schema_attribute_group_t*
 handle_attribute_group(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *attr_grp_node,
     axiom_node_t *schema_node);
 
 static xml_schema_any_attribute_t*
 handle_any_attribute(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *any_attr_node,
     axiom_node_t *schema_node);
 
 static xml_schema_group_ref_t*
 handle_group_ref(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *grp_ref_node,
     axiom_node_t *schema_node);
 
 static xml_schema_attribute_t*
 handle_attribute(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *attr_node,
     axiom_node_t *schema_node);
 
 static xml_schema_element_t*
 handle_element(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node,
     axiom_node_t *schema_node,
     axis2_bool_t is_global);
@@ -242,14 +242,14 @@ handle_element(
 static axis2_status_t
 populate_element_namespaces(
         xml_schema_builder_t *builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *ele_node,
         axis2_hash_t* ele_to_ns_map);
 */
 static xml_schema_identity_constraint_t*
 handle_constraint(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *attr_node,
     axiom_node_t *schema_node,
     int type);
@@ -257,14 +257,14 @@ handle_constraint(
 static xml_schema_import_t*
 handle_import(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *import_node,
     axiom_node_t *schema_node);
 
 static xml_schema_external_t *
 handle_include(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *include_node,
     axiom_node_t *schema_node);
 
@@ -272,69 +272,69 @@ handle_include(
 static xml_schema_app_info_t*
 handle_app_info(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *content);
 
 static xml_schema_documentation_t*
 handle_documentation(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *content);
 
 static long
 get_min_occurs(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *content);
 
 static long
 get_max_occurs(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *content);
 
 static xml_schema_derivation_method_t*
 get_derivation(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node,
     axis2_char_t *attr_name);
 
 static axis2_char_t *
 get_enum_string(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *om_ele,
     axis2_char_t *attr_name);
 
 xml_schema_t* AXIS2_CALL
 xml_schema_builder_resolve_xml_schema(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *target_namespace,
     axis2_char_t *schema_location,
     axis2_char_t *base_uri);
 
 static axis2_bool_t
 value_exist_in_hash(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *ht,
     axis2_char_t *value);
 
 static xml_schema_form_t*
 get_from_default(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node,
     axis2_char_t *attr_name);
 
 static xml_schema_t *
 resolve_xml_schema(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *target_namespace,
     axis2_char_t *schema_location);
 
 static xml_schema_t *
 resolve_xml_schema_with_uri(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *target_namespace,
     axis2_char_t *schema_location,
     axis2_char_t *base_uri);
@@ -342,12 +342,12 @@ resolve_xml_schema_with_uri(
 static xml_schema_annotation_t*
 handle_annotation_with_element(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ann_node);
 
 AXIS2_EXTERN xml_schema_builder_t * AXIS2_CALL
 xml_schema_builder_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_collection_t *sch_collection)
 {
     xml_schema_builder_impl_t *builder_impl = NULL;
@@ -412,7 +412,7 @@ xml_schema_builder_create(
 xml_schema_t* AXIS2_CALL
 xml_schema_builder_build(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_document_t *om_doc,
     axis2_char_t *uri)
 {
@@ -436,7 +436,7 @@ xml_schema_builder_build(
 xml_schema_t* AXIS2_CALL
 xml_schema_builder_build_with_root_node(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *root,
     axis2_char_t *uri)
 {
@@ -446,7 +446,7 @@ xml_schema_builder_build_with_root_node(
 axis2_status_t AXIS2_CALL
 xml_schema_builder_free(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_builder_impl_t *builder_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -472,7 +472,7 @@ xml_schema_builder_free(
 static xml_schema_t*
 handle_xml_schema_element(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node,
     axis2_char_t  *uri)
 {
@@ -763,7 +763,7 @@ handle_xml_schema_element(
 static xml_schema_annotation_t*
 handle_annotation(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ann_node,
     axiom_node_t *sch_node)
 {
@@ -819,7 +819,7 @@ handle_annotation(
 static xml_schema_redefine_t*
 handle_redefine(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *redefine_node,
     axiom_node_t *sch_node)
 {
@@ -935,7 +935,7 @@ handle_redefine(
 static axis2_status_t
 set_namespace_attributes(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_t *schema,
     axiom_node_t *sch_node)
 {
@@ -1035,7 +1035,7 @@ set_namespace_attributes(
 static axis2_status_t
 put_namespace(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *prefix,
     axis2_char_t *ns)
 {
@@ -1064,7 +1064,7 @@ put_namespace(
 static xml_schema_simple_type_t*
 handle_simple_type(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *simple_node,
     axiom_node_t *sch_node)
 {
@@ -1426,7 +1426,7 @@ handle_simple_type(
 static xml_schema_complex_type_t*
 handle_complex_type(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *complex_node,
     axiom_node_t *schema_node)
 {
@@ -1619,7 +1619,7 @@ handle_complex_type(
 static xml_schema_simple_content_t*
 handle_simple_content(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *simple_node,
     axiom_node_t *schema_node)
 {
@@ -1676,7 +1676,7 @@ handle_simple_content(
 static xml_schema_complex_content_t*
 handle_complex_content(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *complex_node,
     axiom_node_t *schema_node)
 {
@@ -1732,7 +1732,7 @@ handle_complex_content(
 static xml_schema_simple_content_restriction_t*
 handle_simple_content_restriction(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *res_node,
     axiom_node_t *schema_node)
 {
@@ -1879,7 +1879,7 @@ handle_simple_content_restriction(
 static xml_schema_simple_content_extension_t*
 handle_simple_content_extension(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ext_node,
     axiom_node_t *schema_node)
 {
@@ -1981,7 +1981,7 @@ handle_simple_content_extension(
 static xml_schema_complex_content_restriction_t*
 handle_complex_content_restriction(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *res_node,
     axiom_node_t *schema_node)
 {
@@ -2099,7 +2099,7 @@ handle_complex_content_restriction(
 static xml_schema_complex_content_extension_t*
 handle_complex_content_extension(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ext_node,
     axiom_node_t *schema_node)
 {
@@ -2219,7 +2219,7 @@ handle_complex_content_extension(
 static xml_schema_attribute_group_ref_t*
 handle_attribute_group_ref(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *attr_grp_node,
     axiom_node_t *schema_node)
 {
@@ -2291,7 +2291,7 @@ handle_attribute_group_ref(
 static xml_schema_group_base_t*
 handle_sequence(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *seq_node,
     axiom_node_t *schema_node)
 {
@@ -2362,7 +2362,7 @@ handle_sequence(
 static xml_schema_any_t*
 handle_any(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *any_node,
     axiom_node_t *schema_node)
 {
@@ -2417,7 +2417,7 @@ handle_any(
 static xml_schema_group_base_t*
 handle_choice(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *choice_node,
     axiom_node_t *schema_node)
 {
@@ -2502,7 +2502,7 @@ handle_choice(
 static xml_schema_group_base_t*
 handle_all(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *all_node,
     axiom_node_t *schema_node)
 {
@@ -2545,7 +2545,7 @@ handle_all(
 static xml_schema_group_t*
 handle_group(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *group_node,
     axiom_node_t *schema_node)
 {
@@ -2611,7 +2611,7 @@ handle_group(
 static xml_schema_attribute_group_t*
 handle_attribute_group(
     xml_schema_builder_t* builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *attr_grp_node,
     axiom_node_t *schema_node)
 {
@@ -2686,7 +2686,7 @@ handle_attribute_group(
 static xml_schema_any_attribute_t*
 handle_any_attribute(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *any_attr_node,
     axiom_node_t *schema_node)
 {
@@ -2750,7 +2750,7 @@ handle_any_attribute(
 static xml_schema_group_ref_t*
 handle_group_ref(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *grp_ref_node,
     axiom_node_t *schema_node)
 {
@@ -2848,7 +2848,7 @@ handle_group_ref(
 static xml_schema_attribute_t*
 handle_attribute(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *attr_node,
     axiom_node_t *schema_node)
 {
@@ -3085,7 +3085,7 @@ handle_attribute(
 static xml_schema_element_t*
 handle_element(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node,
     axiom_node_t *schema_node,
     axis2_bool_t is_global)
@@ -3462,7 +3462,7 @@ handle_element(
 static axis2_status_t
 populate_element_namespaces(
         xml_schema_builder_t *builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *ele_node,
         axis2_hash_t* ele_to_ns_map)
 {
@@ -3503,7 +3503,7 @@ populate_element_namespaces(
 static xml_schema_identity_constraint_t*
 handle_constraint(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *cnst_node,
     axiom_node_t *schema_node,
     int type)
@@ -3659,7 +3659,7 @@ handle_constraint(
 static xml_schema_import_t*
 handle_import(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *import_node,
     axiom_node_t *schema_node)
 {
@@ -3720,7 +3720,7 @@ handle_import(
 static xml_schema_external_t *
 handle_include(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *include_node,
     axiom_node_t *schema_node)
 {
@@ -3770,7 +3770,7 @@ handle_include(
 static xml_schema_annotation_t*
 handle_annotation_with_element(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ann_node)
 {
     xml_schema_obj_collection_t *content = NULL;
@@ -3824,7 +3824,7 @@ handle_annotation_with_element(
 static xml_schema_app_info_t*
 handle_app_info(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *content)
 {
     void *app_info = NULL;
@@ -3851,7 +3851,7 @@ handle_app_info(
 static xml_schema_documentation_t*
 handle_documentation(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *content)
 {
     void *documentation = NULL;
@@ -3884,7 +3884,7 @@ handle_documentation(
 
 static long
 get_min_occurs(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node)
 {
     axis2_char_t *attr_value = NULL;
@@ -3908,7 +3908,7 @@ get_min_occurs(
 
 static long
 get_max_occurs(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node)
 {
     axiom_element_t *om_ele = NULL;
@@ -3934,7 +3934,7 @@ get_max_occurs(
 
 static xml_schema_derivation_method_t*
 get_derivation(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node,
     axis2_char_t *attr_name)
 {
@@ -3963,7 +3963,7 @@ get_derivation(
 static axis2_char_t *
 get_enum_string(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *om_ele,
     axis2_char_t *attr_name)
 {
@@ -3983,7 +3983,7 @@ get_enum_string(
 
 static axis2_bool_t
 value_exist_in_hash(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *ht,
     axis2_char_t *value)
 {
@@ -4008,7 +4008,7 @@ value_exist_in_hash(
 
 static xml_schema_form_t*
 get_from_default(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *ele_node,
     axis2_char_t *attr_name)
 {
@@ -4030,7 +4030,7 @@ get_from_default(
 static xml_schema_t *
 resolve_xml_schema(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *target_namespace,
     axis2_char_t *schema_location)
 {
@@ -4050,7 +4050,7 @@ resolve_xml_schema(
 static xml_schema_t *
 resolve_xml_schema_with_uri(
     xml_schema_builder_t *builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *target_namespace,
     axis2_char_t *schema_location,
     axis2_char_t *base_uri)

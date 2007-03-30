@@ -47,22 +47,22 @@ axis2_apache2_worker_impl_t;
 int AXIS2_CALL
 axis2_apache2_worker_process_request(
     axis2_apache2_worker_t *apache2_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     request_rec *req);
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_apache2_worker_get_bytes(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_stream_t *stream);
 
 void AXIS2_CALL
 axis2_apache2_worker_free(
     axis2_apache2_worker_t *apache2_worker,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_apache2_worker_t *AXIS2_CALL
 axis2_apache2_worker_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *repo_path)
 {
     axis2_apache2_worker_impl_t *apache2_worker_impl = NULL;
@@ -104,7 +104,7 @@ axis2_apache2_worker_create(
 void AXIS2_CALL
 axis2_apache2_worker_free(
     axis2_apache2_worker_t *apache2_worker,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_apache2_worker_impl_t *worker_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
@@ -127,7 +127,7 @@ axis2_apache2_worker_free(
 int AXIS2_CALL
 axis2_apache2_worker_process_request(
     axis2_apache2_worker_t *apache2_worker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     request_rec *request)
 {
     axis2_apache2_worker_impl_t *apache2_worker_impl = NULL;
@@ -308,7 +308,7 @@ axis2_apache2_worker_process_request(
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_apache2_worker_get_bytes(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_stream_t *stream)
 {
 

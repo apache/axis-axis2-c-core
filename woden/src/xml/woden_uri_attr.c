@@ -41,27 +41,27 @@ struct woden_uri_attr_impl
 axis2_status_t AXIS2_CALL
 woden_uri_attr_free(
     void *uri_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_uri_attr_type(
     void *uri_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_xml_attr_t *AXIS2_CALL
 woden_uri_attr_get_base_impl(
     void *uri_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_uri_t *AXIS2_CALL
 woden_uri_attr_get_uri(
     void *uri_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_uri_attr_convert(
     void *uri_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_char_t *attr_value);
@@ -72,7 +72,7 @@ woden_uri_attr_convert(
  */
 AXIS2_EXTERN woden_uri_attr_t * AXIS2_CALL
 woden_uri_attr_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_qname_t *attr_type,
@@ -127,7 +127,7 @@ woden_uri_attr_create(
 woden_obj_types_t AXIS2_CALL
 woden_uri_attr_type(
     void *uri_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
@@ -140,7 +140,7 @@ woden_uri_attr_type(
 axis2_status_t AXIS2_CALL
 woden_uri_attr_free(
     void *uri_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
@@ -176,7 +176,7 @@ woden_uri_attr_free(
 woden_xml_attr_t *AXIS2_CALL
 woden_uri_attr_get_base_impl(
     void *uri_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
@@ -189,7 +189,7 @@ woden_uri_attr_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_uri_attr_resolve_methods(
     woden_uri_attr_t *uri_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -212,7 +212,7 @@ woden_uri_attr_resolve_methods(
 axis2_uri_t *AXIS2_CALL
 woden_uri_attr_get_uri(
     void *uri_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
@@ -225,7 +225,7 @@ woden_uri_attr_get_uri(
 void *AXIS2_CALL
 woden_uri_attr_convert(
     void *uri_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_char_t *attr_value)

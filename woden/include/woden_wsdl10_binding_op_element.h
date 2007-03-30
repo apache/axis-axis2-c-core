@@ -26,7 +26,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -62,12 +62,12 @@ struct woden_wsdl10_binding_op_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *binding_op_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *binding_op_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /**
      * Set the 'qname' attribute to the specified QName, which identifies the
@@ -78,13 +78,13 @@ struct woden_wsdl10_binding_op_element_ops
     axis2_status_t (AXIS2_CALL *
     set_qname) (
             void *iface_op_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *iface_op_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     /**
      * Get the Interface Operation Element identified by the QName specified in the
@@ -95,41 +95,41 @@ struct woden_wsdl10_binding_op_element_ops
     void *(AXIS2_CALL *
     get_interface_op_element) (
             void *iface_op_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     axis2_status_t (AXIS2_CALL *
     add_binding_msg_ref_element) (
             void *iface_op_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *msg_ref);
 
     axis2_status_t (AXIS2_CALL *
     remove_binding_msg_ref_element) (
             void *iface_op_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *msg_ref);
  
     axutil_array_list_t *(AXIS2_CALL *
     get_binding_msg_ref_elements) (
             void *iface_op_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
      
     axis2_status_t (AXIS2_CALL *
     add_binding_fault_ref_element) (
             void *iface_op_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *fault_ref);
 
     axis2_status_t (AXIS2_CALL *
     remove_binding_fault_ref_element) (
             void *iface_op_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *fault_ref);
  
     axutil_array_list_t *(AXIS2_CALL *
     get_binding_fault_ref_elements) (
             void *iface_op_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
 
 };
@@ -149,13 +149,13 @@ struct woden_wsdl10_binding_op_element
 
 AXIS2_EXTERN woden_wsdl10_binding_op_element_t * AXIS2_CALL
 woden_wsdl10_binding_op_element_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_wsdl10_binding_op_element_resolve_methods(
         woden_wsdl10_binding_op_element_t *binding_op_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

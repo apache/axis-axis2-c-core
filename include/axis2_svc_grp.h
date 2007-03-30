@@ -67,7 +67,7 @@ extern "C"
       */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_grp_free(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets service group name.
@@ -78,7 +78,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_set_name(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_grp_name);
 
     /**
@@ -89,7 +89,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_grp_get_name(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env) ;
+        const axutil_env_t *env) ;
 
     /**
      * Adds given service to service group.
@@ -101,7 +101,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_add_svc(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc *svc) ;
 
     /**
@@ -114,7 +114,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
     axis2_svc_grp_get_svc(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *svc_qname);
 
     /**
@@ -126,7 +126,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_svc_grp_get_all_svcs(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Removes named service from service group.
@@ -137,7 +137,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_remove_svc(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *svc_qname);
 
     /**
@@ -150,7 +150,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_add_param(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_param_t *param);
 
     /**
@@ -163,7 +163,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_svc_grp_get_param(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
     /**
@@ -175,7 +175,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_grp_get_all_params(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if the named parameter is locked.
@@ -186,7 +186,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_svc_grp_is_param_locked(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *param_name);
 
     /**
@@ -198,7 +198,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_add_module_qname(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *module_qname);
 
     /**
@@ -210,7 +210,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_conf *AXIS2_CALL
     axis2_svc_grp_get_parent(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets parent which is of type configuration.
@@ -222,7 +222,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_set_parent(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_conf *parent);
 
     /**
@@ -236,7 +236,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_engage_module(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *module_qname);
 
     /**
@@ -248,7 +248,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_grp_get_all_module_qnames(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds module reference.
@@ -259,7 +259,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_add_module_ref(axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *moduleref);
 
     /**
@@ -271,7 +271,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_grp_get_all_module_refs(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets service group context related to this service group.
@@ -284,12 +284,12 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_grp_ctx *AXIS2_CALL
     axis2_svc_grp_get_svc_grp_ctx(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_conf_ctx *parent);
 
     AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
     axis2_svc_grp_get_param_container(const axis2_svc_grp_t *svc_grp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates a service group struct instance.
@@ -297,7 +297,7 @@ extern "C"
      * @return pointer to newly created service group
      */
     AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
-    axis2_svc_grp_create(const axis2_env_t *env);
+    axis2_svc_grp_create(const axutil_env_t *env);
 
     /**
      * Creates service group with given configuration as the parent.
@@ -307,7 +307,7 @@ extern "C"
      * @return pointer to newly created service group
      */
     AXIS2_EXTERN axis2_svc_grp_t *AXIS2_CALL
-    axis2_svc_grp_create_with_conf(const axis2_env_t *env,
+    axis2_svc_grp_create_with_conf(const axutil_env_t *env,
         struct axis2_conf *conf);
 
 #ifdef __cplusplus

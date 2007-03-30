@@ -18,7 +18,7 @@
 #include <guththila.h>
 
 AXIS2_EXTERN guththila_t * AXIS2_CALL
-guththila_create(axis2_env_t * environment,
+guththila_create(axutil_env_t * environment,
 				 guththila_reader_t * r)
 {
     guththila_t *parser =
@@ -65,7 +65,7 @@ guththila_create(axis2_env_t * environment,
 
 
 AXIS2_EXTERN  void AXIS2_CALL
-guththila_free(axis2_env_t * environment,
+guththila_free(axutil_env_t * environment,
 			   guththila_t * parser)
 {
 	int ii = 0;
@@ -164,7 +164,7 @@ guththila_exception(guththila_char_t * file, int line, int error_code)
 
 
 void AXIS2_CALL
-guththila_shift(axis2_env_t * environment,
+guththila_shift(axutil_env_t * environment,
 				guththila_t * parser)
 {
     memmove(parser->buffer->buff, parser->buffer->buff + (parser->offset),
@@ -176,7 +176,7 @@ guththila_shift(axis2_env_t * environment,
 
 
 AXIS2_EXTERN int AXIS2_CALL
-guththila_read(axis2_env_t * environment,
+guththila_read(axutil_env_t * environment,
 			   guththila_t * parser)
 {
     int c = 0;
@@ -211,7 +211,7 @@ guththila_read(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_from_utf16(axis2_env_t * environment,
+guththila_from_utf16(axutil_env_t * environment,
 					 guththila_t * parser,
 					 int eof)
 {
@@ -231,7 +231,7 @@ guththila_from_utf16(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_next_char(axis2_env_t * environment,
+guththila_next_char(axutil_env_t * environment,
 					guththila_t * parser,
 					int eof)
 {
@@ -291,7 +291,7 @@ guththila_next_char(axis2_env_t * environment,
 
 
 guththila_char_t * AXIS2_CALL
-guththila_last_char(axis2_env_t * environment,
+guththila_last_char(axutil_env_t * environment,
 					guththila_t * parser)
 {
     return parser->buffer->buff + (parser->_next - 1);
@@ -299,7 +299,7 @@ guththila_last_char(axis2_env_t * environment,
 
 
 void AXIS2_CALL
-guththila_open_token(axis2_env_t * environment,
+guththila_open_token(axutil_env_t * environment,
 					 guththila_t * parser)
 {
     guththila_token_t *t =
@@ -312,7 +312,7 @@ guththila_open_token(axis2_env_t * environment,
 
 
 void AXIS2_CALL
-guththila_close_token(axis2_env_t * environment,
+guththila_close_token(axutil_env_t * environment,
 					  guththila_t * parser,
 					  int t, int refer)
 {
@@ -326,7 +326,7 @@ guththila_close_token(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_skip_spaces(axis2_env_t * environment,
+guththila_skip_spaces(axutil_env_t * environment,
 					  guththila_t * parser,
 					  int c)
 {
@@ -337,7 +337,7 @@ guththila_skip_spaces(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_process_eq(axis2_env_t * environment,
+guththila_process_eq(axutil_env_t * environment,
 					 guththila_t * parser,
 					 int c)
 {
@@ -356,7 +356,7 @@ guththila_process_eq(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_process_version_info(axis2_env_t *
+guththila_process_version_info(axutil_env_t *
 							   environment,
 							   guththila_t *
 							   parser)
@@ -410,7 +410,7 @@ guththila_process_version_info(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_process_encoding_decl(axis2_env_t *
+guththila_process_encoding_decl(axutil_env_t *
 								environment,
 								guththila_t *
 								parser)
@@ -450,7 +450,7 @@ guththila_process_encoding_decl(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_process_sd_decl(axis2_env_t *
+guththila_process_sd_decl(axutil_env_t *
 						  environment,
 						  guththila_t *
 						  parser)
@@ -508,7 +508,7 @@ guththila_process_sd_decl(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_process_xml_decl(axis2_env_t *
+guththila_process_xml_decl(axutil_env_t *
 						   environment,
 						   guththila_t *
 						   parser)
@@ -550,7 +550,7 @@ guththila_process_xml_decl(axis2_env_t *
 
 
 void AXIS2_CALL
-guththila_reset(axis2_env_t * environment,
+guththila_reset(axutil_env_t * environment,
 				guththila_t * parser)
 {
     int ii;
@@ -600,7 +600,7 @@ guththila_reset(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_is_space(axis2_env_t * environment,
+guththila_is_space(axutil_env_t * environment,
 				   int c)
 {
     if (0x20 == c || 0xD == c || 0xA == c || 0x9 == c)
@@ -611,7 +611,7 @@ guththila_is_space(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_is_valid_starting_char(axis2_env_t *
+guththila_is_valid_starting_char(axutil_env_t *
 								 environment,
 								 guththila_t
 								 * parser, int c)
@@ -624,7 +624,7 @@ guththila_is_valid_starting_char(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_process_name(axis2_env_t * environment,
+guththila_process_name(axutil_env_t * environment,
 					   guththila_t * parser)
 {
     int c;
@@ -657,7 +657,7 @@ guththila_process_name(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_process_attribute_value(axis2_env_t *
+guththila_process_attribute_value(axutil_env_t *
 								  environment,
 								  guththila_t
 								  * parser, int quote)
@@ -687,7 +687,7 @@ guththila_process_attribute_value(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_process_attribute(axis2_env_t *
+guththila_process_attribute(axutil_env_t *
 							environment,
 							guththila_t *
 							parser, int c)
@@ -703,7 +703,7 @@ guththila_process_attribute(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_processSTagOrEmptyElem(axis2_env_t *
+guththila_processSTagOrEmptyElem(axutil_env_t *
 								 environment,
 								 guththila_t
 								 * parser)
@@ -737,7 +737,7 @@ guththila_processSTagOrEmptyElem(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_process_char_data(axis2_env_t *
+guththila_process_char_data(axutil_env_t *
 							environment,
 							guththila_t *
 							parser)
@@ -794,7 +794,7 @@ guththila_process_char_data(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_process_end_tag(axis2_env_t *
+guththila_process_end_tag(axutil_env_t *
 						  environment,
 						  guththila_t *
 						  parser)
@@ -812,7 +812,7 @@ guththila_process_end_tag(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_process_pi(axis2_env_t * environment,
+guththila_process_pi(axutil_env_t * environment,
 					 guththila_t * parser)
 {
     int c;
@@ -825,7 +825,7 @@ guththila_process_pi(axis2_env_t * environment,
 
 
 int AXIS2_CALL
-guththila_process_comment(axis2_env_t *
+guththila_process_comment(axutil_env_t *
 						  environment,
 						  guththila_t *
 						  parser)
@@ -876,7 +876,7 @@ guththila_process_comment(axis2_env_t *
 
 
 int AXIS2_CALL
-guththila_tokenize(axis2_env_t * environment,
+guththila_tokenize(axutil_env_t * environment,
 				   guththila_t * parser)
 {
     do
@@ -970,7 +970,7 @@ guththila_tokenize(axis2_env_t * environment,
 
 
 AXIS2_EXTERN  int AXIS2_CALL
-guththila_next(axis2_env_t * environment,
+guththila_next(axutil_env_t * environment,
 			   guththila_t * parser)
 {
     int ix;
@@ -1120,7 +1120,7 @@ guththila_next(axis2_env_t * environment,
 
 
 void AXIS2_CALL
-guththila_open_element(axis2_env_t * environment,
+guththila_open_element(axutil_env_t * environment,
 					   guththila_t * parser)
 {
     int ii;
@@ -1150,7 +1150,7 @@ guththila_open_element(axis2_env_t * environment,
 
 
 void AXIS2_CALL
-guththila_close_element(axis2_env_t *
+guththila_close_element(axutil_env_t *
 						environment,
 						guththila_t * parser)
 {
@@ -1180,7 +1180,7 @@ guththila_close_element(axis2_env_t *
 
 
 void AXIS2_CALL
-guththila_add_attribute(axis2_env_t *
+guththila_add_attribute(axutil_env_t *
 						environment,
 						guththila_t * parser,
 						guththila_token_t * name,
@@ -1193,7 +1193,7 @@ guththila_add_attribute(axis2_env_t *
 
 
 void AXIS2_CALL
-guththila_add_attribute_with_prefix(axis2_env_t *
+guththila_add_attribute_with_prefix(axutil_env_t *
 									environment,
 									guththila_t
 									* parser,
@@ -1209,7 +1209,7 @@ guththila_add_attribute_with_prefix(axis2_env_t *
 }
 
 void AXIS2_CALL
-guththila_add_namespace(axis2_env_t *
+guththila_add_namespace(axutil_env_t *
 						environment,
 						guththila_t * parser,
 						guththila_token_t * name,
@@ -1231,7 +1231,7 @@ guththila_add_namespace(axis2_env_t *
 
 
 AXIS2_EXTERN  int AXIS2_CALL
-guththila_get_attribute_count(axis2_env_t *
+guththila_get_attribute_count(axutil_env_t *
 							  environment,
 							  guththila_t *
 							  parser)
@@ -1241,7 +1241,7 @@ guththila_get_attribute_count(axis2_env_t *
 
 
 AXIS2_EXTERN  guththila_attribute_t * AXIS2_CALL
-guththila_get_attribute(axis2_env_t *
+guththila_get_attribute(axutil_env_t *
 						environment,
 						guththila_t * parser)
 {
@@ -1255,7 +1255,7 @@ guththila_get_attribute(axis2_env_t *
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_attribute_name(axis2_env_t *
+guththila_get_attribute_name(axutil_env_t *
 							 environment,
 							 guththila_t *
 							 parser,
@@ -1271,7 +1271,7 @@ guththila_get_attribute_name(axis2_env_t *
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_attribute_value(axis2_env_t *
+guththila_get_attribute_value(axutil_env_t *
 							  environment,
 							  guththila_t *
 							  parser,
@@ -1287,7 +1287,7 @@ guththila_get_attribute_value(axis2_env_t *
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_attribute_prefix(axis2_env_t *
+guththila_get_attribute_prefix(axutil_env_t *
 							   environment,
 							   guththila_t *
 							   parser,
@@ -1303,7 +1303,7 @@ guththila_get_attribute_prefix(axis2_env_t *
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_attribute_prefix_by_number(axis2_env_t * environment, guththila_t * parser, int i)
+guththila_get_attribute_prefix_by_number(axutil_env_t * environment, guththila_t * parser, int i)
 {
     int ix = axis2_stack_size(parser->attrib, environment);
     guththila_attribute_t *attribute = NULL;
@@ -1319,7 +1319,7 @@ guththila_get_attribute_prefix_by_number(axis2_env_t * environment, guththila_t 
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_attribute_name_by_number(axis2_env_t * environment, guththila_t * parser, int i)
+guththila_get_attribute_name_by_number(axutil_env_t * environment, guththila_t * parser, int i)
 {
     int ix = axis2_stack_size(parser->attrib, environment);
     guththila_attribute_t *attribute = NULL;
@@ -1335,7 +1335,7 @@ guththila_get_attribute_name_by_number(axis2_env_t * environment, guththila_t * 
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_attribute_value_by_number(axis2_env_t * environment,
+guththila_get_attribute_value_by_number(axutil_env_t * environment,
 										guththila_t * parser, int i)
 {
     int ix = axis2_stack_size(parser->attrib, environment);
@@ -1352,7 +1352,7 @@ guththila_get_attribute_value_by_number(axis2_env_t * environment,
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_name(axis2_env_t * environment,
+guththila_get_name(axutil_env_t * environment,
 				   guththila_t * parser)
 {
     if (parser->name->end)
@@ -1363,7 +1363,7 @@ guththila_get_name(axis2_env_t * environment,
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_value(axis2_env_t * environment,
+guththila_get_value(axutil_env_t * environment,
 					guththila_t * parser)
 {
     if (parser->value->end)
@@ -1375,7 +1375,7 @@ guththila_get_value(axis2_env_t * environment,
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_prefix(axis2_env_t * environment,
+guththila_get_prefix(axutil_env_t * environment,
 					 guththila_t * parser)
 {
     if (parser->prefix)
@@ -1387,7 +1387,7 @@ guththila_get_prefix(axis2_env_t * environment,
 
 AXIS2_EXTERN  int AXIS2_CALL
 guththila_get_namespace_count(
-	axis2_env_t *
+	axutil_env_t *
 	environment,
 	guththila_t *
 	parser)
@@ -1401,7 +1401,7 @@ guththila_get_namespace_count(
 
 AXIS2_EXTERN  guththila_namespace_t * AXIS2_CALL
 guththila_get_namespace(
-	axis2_env_t * environment,
+	axutil_env_t * environment,
 	guththila_t * parser)
 {
     guththila_namespace_t *namespace;
@@ -1414,7 +1414,7 @@ guththila_get_namespace(
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_namespace_prefix(axis2_env_t *
+guththila_get_namespace_prefix(axutil_env_t *
 							   environment,
 							   guththila_t *
 							   parser,
@@ -1428,7 +1428,7 @@ guththila_get_namespace_prefix(axis2_env_t *
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_namespace_uri(axis2_env_t *
+guththila_get_namespace_uri(axutil_env_t *
 							environment,
 							guththila_t *
 							parser,
@@ -1442,7 +1442,7 @@ guththila_get_namespace_uri(axis2_env_t *
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_namespace_prefix_by_number(axis2_env_t * environment,
+guththila_get_namespace_prefix_by_number(axutil_env_t * environment,
 										 guththila_t * parser,
 										 int i)
 {
@@ -1459,7 +1459,7 @@ guththila_get_namespace_prefix_by_number(axis2_env_t * environment,
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_namespace_uri_by_number(axis2_env_t
+guththila_get_namespace_uri_by_number(axutil_env_t
 									  * environment,
 									  guththila_t
 									  * parser, int i)
@@ -1477,7 +1477,7 @@ guththila_get_namespace_uri_by_number(axis2_env_t
 
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_attribute_namespace_by_number(axis2_env_t * environment,
+guththila_get_attribute_namespace_by_number(axutil_env_t * environment,
 											guththila_t * parser,
 											int i)
 {
@@ -1507,7 +1507,7 @@ guththila_get_attribute_namespace_by_number(axis2_env_t * environment,
 }
 
 AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
-guththila_get_encoding(axis2_env_t *environment,
+guththila_get_encoding(axutil_env_t *environment,
 					   guththila_t *parser)
 {
     /* parser will find character encoding base on Byte Order Mark

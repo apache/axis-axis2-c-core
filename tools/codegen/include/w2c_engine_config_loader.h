@@ -47,7 +47,7 @@ extern "C"
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 w2c_engine_config_loader_load_config( 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     w2c_engine_configuration_t *conf,
     axis2_hash_t *option_map );
 

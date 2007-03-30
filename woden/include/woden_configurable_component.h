@@ -27,7 +27,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -59,27 +59,27 @@ struct woden_configurable_component_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *configurable_component,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_configurable_component_free) (
             void *configurable_component,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *configurable_component,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_features) (
             void *configurable_component,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_properties) (
             void *configurable_component,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -93,7 +93,7 @@ struct woden_configurable_component
 axis2_status_t AXIS2_CALL
 woden_configurable_component_resolve_methods(
         woden_configurable_component_t *configurable_component,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

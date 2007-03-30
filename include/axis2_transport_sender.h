@@ -32,7 +32,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_transport_out_desc.h>
 #include <axis2_ctx.h>
@@ -66,7 +66,7 @@ extern "C"
         void (AXIS2_CALL *
                 free)(
                     axis2_transport_sender_t *transport_sender,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * Initialize
@@ -79,7 +79,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 init)(
                     axis2_transport_sender_t *transport_sender,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     struct axis2_conf_ctx *conf_ctx,
                     struct axis2_transport_out_desc *transport_out);
 
@@ -93,7 +93,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 cleanup)(
                     axis2_transport_sender_t *transport_sender,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     struct axis2_msg_ctx *msg_ctx);
 
         /**
@@ -106,7 +106,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 invoke)(
                     axis2_transport_sender_t *transport_sender,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     struct axis2_msg_ctx *msg_ctx);
 
     };
@@ -129,7 +129,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_transport_sender_t * AXIS2_CALL
     axis2_transport_sender_create (
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /*************************** Function macros **********************************/
 

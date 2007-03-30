@@ -32,7 +32,7 @@
  * for "echoString|http://soapinterop.org" operation.
  * @param content0
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string(const axutil_env_t *env  ,
         axiom_node_t* content0)
 {
     /* TODO fill this with the necessary business logic */
@@ -72,7 +72,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string(const ax
  * for "echoStringArray|http://soapinterop.org" operation.
  * @param content2
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string_array(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string_array(const axutil_env_t *env  ,
         axiom_node_t* content2)
 {
     /* TODO fill this with the necessary business logic */
@@ -84,7 +84,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_string_array(co
  * for "echoInteger|http://soapinterop.org" operation.
  * @param content4
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer(const axutil_env_t *env  ,
         axiom_node_t* content4)
 {
     /* TODO fill this with the necessary business logic */
@@ -124,7 +124,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer(const a
  * for "echoIntegerArray|http://soapinterop.org" operation.
  * @param content6
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer_array(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer_array(const axutil_env_t *env  ,
         axiom_node_t* content6)
 {
     /* TODO fill this with the necessary business logic */
@@ -136,7 +136,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_integer_array(c
  * for "echoFloat|http://soapinterop.org" operation.
  * @param content8
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float(const axutil_env_t *env  ,
         axiom_node_t* content8)
 {
     /* TODO fill this with the necessary business logic */
@@ -176,7 +176,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float(const axi
  * for "echoFloatArray|http://soapinterop.org" operation.
  * @param content10
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float_array(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float_array(const axutil_env_t *env  ,
         axiom_node_t* content10)
 {
     /* TODO fill this with the necessary business logic */
@@ -188,7 +188,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_float_array(con
  * for "echoStruct|http://soapinterop.org" operation.
  * @param content12
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_struct(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_struct(const axutil_env_t *env  ,
         axiom_node_t* content12)
 {
     /* TODO fill this with the necessary business logic */
@@ -200,7 +200,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_struct(const ax
  * for "echoStructArray|http://soapinterop.org" operation.
  * @param content14
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_struct_array(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_struct_array(const axutil_env_t *env  ,
         axiom_node_t* content14)
 {
     /* TODO fill this with the necessary business logic */
@@ -212,7 +212,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_struct_array(co
  * for "echoVoid|http://soapinterop.org" operation.
  * @param content16
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_void(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_void(const axutil_env_t *env  ,
         axiom_node_t* content16)
 {
     /* TODO fill this with the necessary business logic */
@@ -224,7 +224,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_void(const axis
  * for "echoBase64|http://soapinterop.org" operation.
  * @param content18
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_base64(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_base64(const axutil_env_t *env  ,
         axiom_node_t* content18)
 {
     /* TODO fill this with the necessary business logic */
@@ -236,7 +236,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_base64(const ax
  * for "echoDate|http://soapinterop.org" operation.
  * @param content20
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_date(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_date(const axutil_env_t *env  ,
         axiom_node_t* content20)
 {
     /* TODO fill this with the necessary business logic */
@@ -248,7 +248,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_date(const axis
  * for "echoHexBinary|http://soapinterop.org" operation.
  * @param content22
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_hex_binary(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_hex_binary(const axutil_env_t *env  ,
         axiom_node_t* content22)
 {
     /* TODO fill this with the necessary business logic */
@@ -260,7 +260,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_hex_binary(cons
  * for "echoDecimal|http://soapinterop.org" operation.
  * @param content24
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_decimal(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_decimal(const axutil_env_t *env  ,
         axiom_node_t* content24)
 {
     /* TODO fill this with the necessary business logic */
@@ -272,7 +272,7 @@ axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_decimal(const a
  * for "echoBoolean|http://soapinterop.org" operation.
  * @param content26
  */
-axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_boolean(const axis2_env_t *env  ,
+axiom_node_t* axis2_skel_interop_test_port_type_doc_service_echo_boolean(const axutil_env_t *env  ,
         axiom_node_t* content26)
 {
     /* TODO fill this with the necessary business logic */

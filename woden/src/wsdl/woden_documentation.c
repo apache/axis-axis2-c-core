@@ -43,47 +43,47 @@ struct woden_documentation_impl
 axis2_status_t AXIS2_CALL
 woden_documentation_free(
     void *documentation,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_documentation_super_objs(
     void *documentation,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_documentation_type(
     void *documentation,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_wsdl_element_t *AXIS2_CALL
 woden_documentation_get_base_impl(
     void *documentation,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_documentation_set_content(
     void *documentation,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *doc_el);
 
 void *AXIS2_CALL
 woden_documentation_get_content(
     void *documentation,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_documentation_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_documentation_free_ops(
     void *documentation,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_documentation_t * AXIS2_CALL
 woden_documentation_to_documentation_element(
     void *documentation,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -109,7 +109,7 @@ woden_documentation_to_documentation_element(
 AXIS2_EXTERN woden_documentation_t * AXIS2_CALL
 woden_documentation_to_attr_extensible(
     void *documentation,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -137,7 +137,7 @@ woden_documentation_to_attr_extensible(
 AXIS2_EXTERN woden_documentation_t * AXIS2_CALL
 woden_documentation_to_element_extensible(
     void *documentation,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -165,7 +165,7 @@ woden_documentation_to_element_extensible(
 /************************End of Woden C Internal Methods***********************/
 static woden_documentation_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -217,7 +217,7 @@ create(
 
 AXIS2_EXTERN woden_documentation_t * AXIS2_CALL
 woden_documentation_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -242,7 +242,7 @@ woden_documentation_create(
 static axis2_status_t
 woden_documentation_free_ops(
     void *documentation,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -282,7 +282,7 @@ woden_documentation_free_ops(
 axis2_status_t AXIS2_CALL
 woden_documentation_free(
     void *documentation,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -332,7 +332,7 @@ woden_documentation_free(
 axis2_hash_t *AXIS2_CALL
 woden_documentation_super_objs(
     void *documentation,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -344,7 +344,7 @@ woden_documentation_super_objs(
 
 woden_obj_types_t AXIS2_CALL
 woden_documentation_type(void *documentation,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -357,7 +357,7 @@ woden_documentation_type(void *documentation,
 woden_wsdl_element_t *AXIS2_CALL
 woden_documentation_get_base_impl(
     void *documentation,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
@@ -370,7 +370,7 @@ woden_documentation_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_documentation_resolve_methods(
     woden_documentation_t *documentation,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_documentation_t *documentation_impl,
     axis2_hash_t *methods)
 {
@@ -396,7 +396,7 @@ woden_documentation_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_documentation_set_content(
     void *documentation,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *doc_el)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
@@ -419,7 +419,7 @@ woden_documentation_set_content(
 void *AXIS2_CALL
 woden_documentation_get_content(
     void *documentation,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
     axis2_hash_t *super = NULL;

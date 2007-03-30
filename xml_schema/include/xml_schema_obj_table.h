@@ -34,7 +34,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -71,7 +71,7 @@ struct xml_schema_obj_table_ops
     axis2_status_t (AXIS2_CALL *
     free)(
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     /**
      * Get number of elements in the table 
@@ -82,7 +82,7 @@ struct xml_schema_obj_table_ops
     int (AXIS2_CALL *
     get_count)(
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * Get an item in the table by giving matching qname 
      * @param obj_table pointer to obj_table struct instance 
@@ -92,7 +92,7 @@ struct xml_schema_obj_table_ops
     void *(AXIS2_CALL *
     get_item)(
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_qname_t *qname);
 
     /**
@@ -105,7 +105,7 @@ struct xml_schema_obj_table_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_names)(
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Get an array list of values stored in the table 
@@ -117,7 +117,7 @@ struct xml_schema_obj_table_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_values)(
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /** 
      * Checks whether there is a value stored with a qiven qname 
@@ -129,31 +129,31 @@ struct xml_schema_obj_table_ops
     axis2_bool_t (AXIS2_CALL *
     contains)(
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_status_t (AXIS2_CALL *
     add) (
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname,
             void *value);
           
     axis2_status_t (AXIS2_CALL *
     put)(
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *key,
             void *value);
          
     axis2_hash_t* (AXIS2_CALL *
     get_hash_table)(
             xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     void* (AXIS2_CALL*
     get)(   xml_schema_obj_table_t *obj_table,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *key);            
             
                                            
@@ -165,7 +165,7 @@ struct xml_schema_obj_table
 };
 
 AXIS2_EXTERN xml_schema_obj_table_t * AXIS2_CALL
-xml_schema_obj_table_create(const axis2_env_t *env);
+xml_schema_obj_table_create(const axutil_env_t *env);
 
 /********************* macros ************************************************/
 #define XML_SCHEMA_OBJ_TABLE_FREE(obj_table, env) \

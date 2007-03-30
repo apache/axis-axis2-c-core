@@ -44,28 +44,28 @@ struct xml_schema_tokenized_type_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_tokenized_type_free(void *tokenized_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_enum_t *AXIS2_CALL
 xml_schema_tokenized_type_get_base_impl(void *tokenized_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axutil_array_list_t * AXIS2_CALL
 xml_schema_tokenized_type_get_values(void *tokenized_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_tokenized_type_get_type(void *tokenized_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_tokenized_type_super_objs(void *tokenized_type,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /***************************** end macros **************************************/
 
 AXIS2_EXTERN xml_schema_tokenized_type_t * AXIS2_CALL
-xml_schema_tokenized_type_create(const axis2_env_t *env,
+xml_schema_tokenized_type_create(const axutil_env_t *env,
         axis2_char_t *value)
 {
     xml_schema_tokenized_type_impl_t *tokenized_type_impl = NULL;
@@ -166,7 +166,7 @@ xml_schema_tokenized_type_create(const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 xml_schema_tokenized_type_free(void *tokenized_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_tokenized_type_impl_t *tokenized_type_impl = NULL;
 
@@ -214,14 +214,14 @@ xml_schema_tokenized_type_free(void *tokenized_type,
 
 xml_schema_enum_t *AXIS2_CALL
 xml_schema_tokenized_type_get_base_impl(void *tokenized_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(tokenized_type)->schema_enum;
 }
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_tokenized_type_get_values(void *tokenized_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     /*
     xml_schema_tokenized_type_impl_t *tokenized_impl = NULL;
@@ -243,14 +243,14 @@ xml_schema_tokenized_type_get_values(void *tokenized_type,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_tokenized_type_get_type(void *tokenized_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(tokenized_type)->obj_type;
 }
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_tokenized_type_super_objs(void *tokenized_type,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(tokenized_type)->ht_super;
 }

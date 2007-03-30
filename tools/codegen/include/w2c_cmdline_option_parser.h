@@ -52,7 +52,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_parser_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_cmdline_option_parser_t *cmdline_option_parser,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * retrieve all options hash.
@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_parser_ops
     */
     axis2_hash_t* (AXIS2_CALL *
     get_options)(w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
     
    /**
     * retrieve list of invalid optoins.
@@ -72,7 +72,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_parser_ops
     */
     axutil_array_list_t* (AXIS2_CALL *
     get_invalid_options)(w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
 };
 
@@ -89,7 +89,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_parser
  * @return newly created cmdline_option_parser obj
  */
 AXIS2_EXTERN w2c_cmdline_option_parser_t* AXIS2_CALL
-w2c_cmdline_option_parser_create(const axis2_env_t *env,
+w2c_cmdline_option_parser_create(const axutil_env_t *env,
                    int argc,
                    axis2_char_t **argv);
 

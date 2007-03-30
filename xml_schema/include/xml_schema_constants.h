@@ -103,11 +103,11 @@ extern "C"
 
 
 typedef axis2_hash_t* (AXIS2_CALL *XML_SCHEMA_SUPER_OBJS_FN)(void *obj,
-                                    const axis2_env_t *env);
+                                    const axutil_env_t *env);
                                     
-typedef xml_schema_types_t (AXIS2_CALL *XML_SCHEMA_GET_TYPE_FN)(void *obj, const axis2_env_t *env);
+typedef xml_schema_types_t (AXIS2_CALL *XML_SCHEMA_GET_TYPE_FN)(void *obj, const axutil_env_t *env);
 
-typedef int (AXIS2_CALL *XML_SCHEMA_FREE_FN)(void *obj, const axis2_env_t *env);                                   
+typedef int (AXIS2_CALL *XML_SCHEMA_FREE_FN)(void *obj, const axutil_env_t *env);                                   
 
 #ifdef __cplusplus
 }

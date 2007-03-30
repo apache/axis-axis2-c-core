@@ -46,25 +46,25 @@ typedef struct w2c_databinding_adb_ext_impl
 #define W2C_DATABINDING_DEFAULT_EXT_FILENAME "c.default.typemap.xml"
 
 axis2_status_t
-w2c_databinding_adb_ext_invoke( const axis2_env_t * env,
+w2c_databinding_adb_ext_invoke( const axutil_env_t * env,
         w2c_engine_configuration_t *conf);
 
 axis2_status_t
 populate_default_options(
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            w2c_schema_compiler_options_t *options,
            w2c_engine_configuration_t *config);
 
 
 axiom_document_t*
 get_root_element_from_filename(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *filename);
 
 /************************* implmentations ********************************/
 axis2_status_t AXIS2_CALL
 w2c_databinding_adb_ext_free(w2c_extension_t *extension,
-       const axis2_env_t *env)
+       const axutil_env_t *env)
 {
     w2c_databinding_adb_ext_impl_t *extension_impl = NULL;
 
@@ -86,7 +86,7 @@ w2c_databinding_adb_ext_free(w2c_extension_t *extension,
 
 axis2_status_t AXIS2_CALL
 w2c_databinding_adb_ext_engage(w2c_extension_t *extension,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        w2c_engine_configuration_t *conf)
 {
     w2c_databinding_adb_ext_impl_t *extension_impl = NULL;
@@ -127,7 +127,7 @@ w2c_databinding_adb_ext_engage(w2c_extension_t *extension,
 /****************** standard create and delete for DLL ************************/
 AXIS2_EXPORT int
 axis2_get_instance(w2c_extension_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     w2c_databinding_adb_ext_impl_t *extension_impl = NULL;
  
@@ -161,7 +161,7 @@ axis2_get_instance(w2c_extension_t **inst,
 
 AXIS2_EXPORT int
 axis2_remove_instance(w2c_extension_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 
@@ -176,7 +176,7 @@ axis2_remove_instance(w2c_extension_t *inst,
 /** the following part will handle schema compiler */
 
 axis2_status_t
-w2c_databinding_adb_ext_invoke( const axis2_env_t *env,
+w2c_databinding_adb_ext_invoke( const axutil_env_t *env,
         w2c_engine_configuration_t *conf)
 {
     axis2_char_t *doc_base_uri = NULL;
@@ -297,7 +297,7 @@ w2c_databinding_adb_ext_invoke( const axis2_env_t *env,
 
 axiom_document_t*
 get_root_element_from_filename(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *filename)
 {
     axiom_xml_reader_t *reader = NULL;
@@ -319,7 +319,7 @@ get_root_element_from_filename(
 
 axis2_status_t
 populate_default_options(
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            w2c_schema_compiler_options_t *options,
            w2c_engine_configuration_t *config)
 {

@@ -53,22 +53,22 @@ struct woden_wsdl10_soap_module_deserializer_impl
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_free(
     void *mod_deser,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_type(
     void *mod_deser,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_super_objs(
     void *mod_deser,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_unmarshall(
     void *mod_deser,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     void *parent,
     axis2_qname_t *element_type,
@@ -79,24 +79,24 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
 static void *
 parse_documentation(
     void *reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *doc_el_node,
     void *desc);
 
 static woden_wsdl10_soap_module_deserializer_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_wsdl10_soap_module_deserializer_free_ops(
     void *mod_deser,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 
 AXIS2_EXTERN woden_wsdl10_soap_module_deserializer_t * AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_to_ext_deserializer(
     void *mod_deser,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
 
@@ -122,7 +122,7 @@ woden_wsdl10_soap_module_deserializer_to_ext_deserializer(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_wsdl10_soap_module_deserializer_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
 
@@ -170,7 +170,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_wsdl10_soap_module_deserializer_t * AXIS2_CALL
-woden_wsdl10_soap_module_deserializer_create(const axis2_env_t *env)
+woden_wsdl10_soap_module_deserializer_create(const axutil_env_t *env)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
 
@@ -192,7 +192,7 @@ woden_wsdl10_soap_module_deserializer_create(const axis2_env_t *env)
 static axis2_status_t
 woden_wsdl10_soap_module_deserializer_free_ops(
     void *mod_deser,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
 
@@ -214,7 +214,7 @@ woden_wsdl10_soap_module_deserializer_free_ops(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_free(
     void *mod_deser,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
 
@@ -252,7 +252,7 @@ woden_wsdl10_soap_module_deserializer_free(
 axis2_hash_t *AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_super_objs(
     void *mod_deser,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
 
@@ -265,7 +265,7 @@ woden_wsdl10_soap_module_deserializer_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_type(
     void *mod_deser,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
 
@@ -278,7 +278,7 @@ woden_wsdl10_soap_module_deserializer_type(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_resolve_methods(
     woden_wsdl10_soap_module_deserializer_t *mod_deser,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl10_soap_module_deserializer_t *mod_deser_impl,
     axis2_hash_t *methods)
 {
@@ -307,7 +307,7 @@ woden_wsdl10_soap_module_deserializer_resolve_methods(
 void *AXIS2_CALL
 woden_wsdl10_soap_module_deserializer_unmarshall(
     void *mod_deser,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     void *parent,
     axis2_qname_t *element_type,
@@ -448,7 +448,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
 static void *
 parse_documentation(
     void *mod_deser,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *doc_el_node,
     void *desc)
 {

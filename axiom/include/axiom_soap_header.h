@@ -22,7 +22,7 @@
  * @file axiom_soap_header.h
  * @brief axiom_soap_header struct
  */
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axutil_array_list.h>
@@ -49,7 +49,7 @@ extern "C"
      */
 
     AXIS2_EXTERN axiom_soap_header_t * AXIS2_CALL
-    axiom_soap_header_create_with_parent(const axis2_env_t *env,
+    axiom_soap_header_create_with_parent(const axutil_env_t *env,
             struct axiom_soap_envelope *envelope);
 
     /**
@@ -61,7 +61,7 @@ extern "C"
       */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_header_free(axiom_soap_header_t *header,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * create a new axiom_soap_header_block_t struct initialized  with the
@@ -73,7 +73,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axiom_soap_header_block* AXIS2_CALL
     axiom_soap_header_add_header_block(axiom_soap_header_t* header,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *localname,
             axiom_namespace_t *ns);
     /**
@@ -88,7 +88,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
     axiom_soap_header_examine_header_blocks(axiom_soap_header_t* header,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t* param_role);
     /**
      * returns an arraylist of header_blocks which has a given namesapce uri
@@ -101,7 +101,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
     axiom_soap_header_get_header_blocks_with_namespace_uri(axiom_soap_header_t* header,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *ns_uri);
     /**
      * returns an iterator to iterate through all soap header block's om nodes 
@@ -112,7 +112,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_children_qname_iterator_t* AXIS2_CALL
     axiom_soap_header_examine_all_header_blocks(axiom_soap_header_t* header,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * returns an iterator to iterate through all  header blocks om_nodes 
      * with the matching role attribute
@@ -124,7 +124,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t * AXIS2_CALL
     axiom_soap_header_extract_header_blocks(axiom_soap_header_t *header,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *role);
 
     /**
@@ -135,7 +135,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_soap_header_get_base_node(axiom_soap_header_t *header,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      *  return the soap_version of this soap_header
      *  @param header soap_header
@@ -144,7 +144,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_soap_header_get_soap_version(axiom_soap_header_t *header,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * @returns a hash table of all header_blocks in this header
@@ -152,7 +152,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
     axiom_soap_header_get_all_header_blocks(axiom_soap_header_t *header,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * remove header block that matches to the given qname
      * qname should not be null
@@ -160,7 +160,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_header_remove_header_block(axiom_soap_header_t *header,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     /** @} */

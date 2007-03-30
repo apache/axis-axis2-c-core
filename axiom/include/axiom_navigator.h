@@ -19,7 +19,7 @@
 #define AXIOM_NAVIGATOR_H
 
 #include <axis2_utils.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_node.h>
 
 #ifdef __cplusplus
@@ -43,7 +43,7 @@ extern "C"
      * or returns NULL on error
      */
     AXIS2_EXTERN axiom_navigator_t *AXIS2_CALL
-    axiom_navigator_create(const axis2_env_t *env,
+    axiom_navigator_create(const axutil_env_t *env,
         axiom_node_t *node);
 
     /**
@@ -54,7 +54,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_navigator_free(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Returns the navigable status 
@@ -65,7 +65,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_navigator_is_navigable(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Returns the build status of this node 
@@ -78,7 +78,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_navigator_is_completed(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * gets the next node 
@@ -92,7 +92,7 @@ extern "C"
 
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_navigator_next(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * method visited 
@@ -103,7 +103,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_navigator_visited(axiom_navigator_t *om_navigator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** @} */
 

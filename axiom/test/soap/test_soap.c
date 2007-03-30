@@ -69,7 +69,7 @@ int close_soap(void *ctx)
     return AXIS2_TRUE;
 }
 
-int printnode(axiom_node_t *om_node, const axis2_env_t *env)
+int printnode(axiom_node_t *om_node, const axutil_env_t *env)
 {
     axiom_element_t *om_ele = NULL;
     axis2_char_t *localname = NULL;
@@ -102,7 +102,7 @@ int printnode(axiom_node_t *om_node, const axis2_env_t *env)
     return 0;
 }
 
-int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t *uri)
+int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t *uri)
 {
     axiom_stax_builder_t *om_builder = NULL;
 
@@ -257,7 +257,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
 }
 
 
-int build_soap_programatically(const axis2_env_t *env)
+int build_soap_programatically(const axutil_env_t *env)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_body_t *soap_body = NULL;
@@ -337,7 +337,7 @@ int build_soap_programatically(const axis2_env_t *env)
     return AXIS2_SUCCESS;
 }
 
-int create_soap_fault(const axis2_env_t *env)
+int create_soap_fault(const axutil_env_t *env)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_body_t *soap_body = NULL;
@@ -367,7 +367,7 @@ int create_soap_fault(const axis2_env_t *env)
     return 0;
 }
 
-int test_soap_fault_value(const axis2_env_t *env)
+int test_soap_fault_value(const axutil_env_t *env)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_body_t *soap_body = NULL;
@@ -397,7 +397,7 @@ int test_soap_fault_value(const axis2_env_t *env)
 }
 int main(int argc, char *argv[])
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axutil_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
@@ -416,13 +416,13 @@ int main(int argc, char *argv[])
     log = axis2_log_create(allocator, NULL, "test_soap.log");
     log->level = AXIS2_LOG_LEVEL_DEBUG;
     error = axis2_error_create(allocator);
-    env = axis2_env_create_with_error_log(allocator, error,  log);
+    env = axutil_env_create_with_error_log(allocator, error,  log);
 
     axis2_error_init();
     /*build_soap_programatically(env);   */
     build_soap(env, filename, uri);
     /*create_soap_fault(env);
     test_soap_fault_value(env); */
-    axis2_env_free(env);
+    axutil_env_free(env);
     return 0;
 }

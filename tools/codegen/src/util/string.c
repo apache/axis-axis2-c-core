@@ -71,7 +71,7 @@ w2c_string_indexof_cs( axis2_char_t* str, axis2_char_t* cs )
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_string_add_string ( axis2_char_t* string1, axis2_char_t* string2,
-                        const axis2_env_t* env)
+                        const axutil_env_t* env)
 {
     int current_len = 0;
     int additional_len = 0;
@@ -106,7 +106,7 @@ w2c_string_add_string ( axis2_char_t* string1, axis2_char_t* string2,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_string_make_c_simple_name( axis2_char_t *name,
-                               const axis2_env_t *env)
+                               const axutil_env_t *env)
 {
     char *p = NULL;
     int len = 0;
@@ -142,7 +142,7 @@ w2c_string_make_c_simple_name( axis2_char_t *name,
     
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_string_make_c_macro_name( axis2_char_t *name,
-                               const axis2_env_t *env)
+                               const axutil_env_t *env)
 {
     char *p = NULL;
     char *ret_val = NULL;
@@ -158,7 +158,7 @@ w2c_string_make_c_macro_name( axis2_char_t *name,
 
 AXIS2_EXTERN axis2_char_t*
 w2c_string_make_key_from_qname( axis2_qname_t *qname, 
-                                     const axis2_env_t *env)
+                                     const axutil_env_t *env)
 {
     axis2_char_t *local = NULL;
     axis2_char_t *uri = NULL;

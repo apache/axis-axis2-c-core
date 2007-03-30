@@ -30,7 +30,7 @@
   */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_msg_recv.h>
 #include <axis2_callback.h>
 
@@ -51,7 +51,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
     axis2_callback_recv_get_base(axis2_callback_recv_t *callback_recv,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Frees the callback receiver struct.
@@ -61,7 +61,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_callback_recv_free(axis2_callback_recv_t *callback_recv,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds a callback corresponding to given WSA message ID to message
@@ -76,7 +76,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *msg_id,
         axis2_callback_t *callback);
 
@@ -87,7 +87,7 @@ extern "C"
      *         or NULL on error with error code set in environment's error
      */
     AXIS2_EXTERN axis2_callback_recv_t *AXIS2_CALL
-    axis2_callback_recv_create(const axis2_env_t *env);
+    axis2_callback_recv_create(const axutil_env_t *env);
 
 /** Gets the base message receiver. */
 #define AXIS2_CALLBACK_RECV_GET_BASE(callback_recv, env) \

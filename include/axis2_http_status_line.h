@@ -31,7 +31,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 
 #ifdef __cplusplus
@@ -48,7 +48,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_http_status_line_get_status_code(const axis2_http_status_line_t *status_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param status_line pointer to status line
@@ -56,7 +56,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_status_line_get_http_version(const axis2_http_status_line_t *status_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param status_line pointer to status line
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_status_line_get_reason_phrase(const axis2_http_status_line_t *status_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param status_line pointer to status line
@@ -72,7 +72,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_http_status_line_starts_with_http(axis2_http_status_line_t *status_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param status_line pointer to status line
@@ -80,7 +80,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_status_line_to_string(axis2_http_status_line_t *status_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param status_line pointer to status line
@@ -89,14 +89,14 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_status_line_free(axis2_http_status_line_t *status_line,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param env pointer to environment struct
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_status_line_t *AXIS2_CALL
-    axis2_http_status_line_create(const axis2_env_t *env,
+    axis2_http_status_line_create(const axutil_env_t *env,
         const axis2_char_t *str);
 
 /** Gets the status code. */

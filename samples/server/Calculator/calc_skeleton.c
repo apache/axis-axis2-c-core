@@ -21,23 +21,23 @@
 
 int AXIS2_CALL
 calc_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /*
  * This method invokes the right service method
  */
 axiom_node_t* AXIS2_CALL
 calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node,
         axis2_msg_ctx_t *msg_ctx);
 
 int AXIS2_CALL calc_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL
-axis2_calc_create(const axis2_env_t *env)
+axis2_calc_create(const axutil_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
     svc_skeleton = AXIS2_MALLOC(env->allocator,
@@ -59,7 +59,7 @@ axis2_calc_create(const axis2_env_t *env)
 
 int AXIS2_CALL
 calc_init(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     svc_skeleton->func_array = axutil_array_list_create(env, 0);
     axutil_array_list_add(svc_skeleton->func_array, env, "add");
@@ -73,7 +73,7 @@ calc_init(axis2_svc_skeleton_t *svc_skeleton,
 
 int AXIS2_CALL
 calc_free(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     /*if(svc_skeleton->func_array)
     {
@@ -100,7 +100,7 @@ calc_free(axis2_svc_skeleton_t *svc_skeleton,
  */
 axiom_node_t* AXIS2_CALL
 calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *node,
         axis2_msg_ctx_t *msg_ctx)
 {
@@ -142,7 +142,7 @@ calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
  */
 
 AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     *inst = axis2_calc_create(env);
     /*if( *inst)
@@ -158,7 +158,7 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
 }
 
 AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)

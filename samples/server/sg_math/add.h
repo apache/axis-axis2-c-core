@@ -25,7 +25,7 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 
-axiom_node_t *axis2_add_add(const axis2_env_t *env, 
+axiom_node_t *axis2_add_add(const axutil_env_t *env, 
     axiom_node_t *node, 
     axis2_msg_ctx_t *msg_ctx);
 

@@ -43,42 +43,42 @@ struct woden_qname_list_or_token_any_attr_impl
 axis2_status_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_free(
     void *list_token_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_type(
     void *list_token_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_xml_attr_t *AXIS2_CALL
 woden_qname_list_or_token_any_attr_get_base_impl(
     void *list_token_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_is_qname_list(
     void *list_token_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_is_token(
     void *list_token_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_qname_list_or_token_any_attr_get_qnames(
     void *list_token_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 woden_qname_list_or_token_any_attr_get_token(
     void *list_token_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_qname_list_or_token_any_attr_convert(
     void *list_token_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_char_t *attr_value);
@@ -89,7 +89,7 @@ woden_qname_list_or_token_any_attr_convert(
  */
 AXIS2_EXTERN woden_qname_list_or_token_any_attr_t * AXIS2_CALL
 woden_qname_list_or_token_any_attr_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_qname_t *attr_type,
@@ -162,7 +162,7 @@ woden_qname_list_or_token_any_attr_create(
 woden_obj_types_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_type(
     void *list_token_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_list_or_token_any_attr_impl_t *
     list_token_attr_impl = NULL;
@@ -176,7 +176,7 @@ woden_qname_list_or_token_any_attr_type(
 axis2_status_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_free(
     void *list_token_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_list_or_token_any_attr_impl_t *
     list_token_attr_impl = NULL;
@@ -216,7 +216,7 @@ woden_qname_list_or_token_any_attr_free(
 woden_xml_attr_t *AXIS2_CALL
 woden_qname_list_or_token_any_attr_get_base_impl(
     void *list_token_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_list_or_token_any_attr_impl_t *
     list_token_attr_impl = NULL;
@@ -231,7 +231,7 @@ woden_qname_list_or_token_any_attr_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_resolve_methods(
     woden_qname_list_or_token_any_attr_t *list_token_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -262,7 +262,7 @@ woden_qname_list_or_token_any_attr_resolve_methods(
 axis2_bool_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_is_qname_list(
     void *list_token_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_list_or_token_any_attr_impl_t *
     list_token_attr_impl = NULL;
@@ -281,7 +281,7 @@ woden_qname_list_or_token_any_attr_is_qname_list(
 axis2_bool_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_is_token(
     void *list_token_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_list_or_token_any_attr_impl_t *
     list_token_attr_impl = NULL;
@@ -304,7 +304,7 @@ woden_qname_list_or_token_any_attr_is_token(
 axutil_array_list_t *AXIS2_CALL
 woden_qname_list_or_token_any_attr_get_qnames(
     void *list_token_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_list_or_token_any_attr_impl_t *
     list_token_attr_impl = NULL;
@@ -318,7 +318,7 @@ woden_qname_list_or_token_any_attr_get_qnames(
 axis2_char_t *AXIS2_CALL
 woden_qname_list_or_token_any_attr_get_token(
     void *list_token_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_qname_list_or_token_any_attr_impl_t *
     list_token_attr_impl = NULL;
@@ -341,7 +341,7 @@ woden_qname_list_or_token_any_attr_get_token(
 void *AXIS2_CALL
 woden_qname_list_or_token_any_attr_convert(
     void *list_token_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_char_t *attr_value)

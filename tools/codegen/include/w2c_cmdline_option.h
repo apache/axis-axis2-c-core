@@ -52,19 +52,19 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_ops
 
     axis2_status_t (AXIS2_CALL *
     free)(w2c_cmdline_option_t *cmdline_option,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_type)(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
     
     axis2_char_t *(AXIS2_CALL *
     get_value)(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_values)(w2c_cmdline_option_t *cmdline_option,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
     
 };
 
@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option
  * @return newly created cmdline_option obj
  */
 AXIS2_EXTERN w2c_cmdline_option_t* AXIS2_CALL
-w2c_cmdline_option_create_with_values( const axis2_env_t *env,
+w2c_cmdline_option_create_with_values( const axutil_env_t *env,
                    axis2_char_t *type,
                    axutil_array_list_t *values_arr );
 

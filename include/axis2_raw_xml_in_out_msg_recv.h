@@ -31,7 +31,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_msg_recv.h>
@@ -48,7 +48,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
     axis2_raw_xml_in_out_msg_recv_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** @} */
 

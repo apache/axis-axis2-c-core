@@ -31,7 +31,7 @@ typedef struct guththila_attribute_s
 
 AXIS2_EXTERN guththila_attribute_t * AXIS2_CALL
 guththila_attribute_create (
-	axis2_env_t *env, 
+	axutil_env_t *env, 
 	guththila_token_t *prefix, 
 	guththila_token_t *name, 
 	guththila_token_t *value,
@@ -40,7 +40,7 @@ guththila_attribute_create (
 
 AXIS2_EXTERN void AXIS2_CALL
 guththila_attribute_free (
-	axis2_env_t *env,
+	axutil_env_t *env,
 	guththila_attribute_t *attribute);
 
 

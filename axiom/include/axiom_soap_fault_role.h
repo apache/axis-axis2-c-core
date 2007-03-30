@@ -23,7 +23,7 @@
  * @file axiom_soap_fault_role.h
  * @brief axiom_soap_fault_role 
  */
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_soap_fault.h>
 
 #ifdef __cplusplus
@@ -43,7 +43,7 @@ extern "C"
       * @param env Environment. MUST NOT be NULL
       */
     AXIS2_EXTERN axiom_soap_fault_role_t * AXIS2_CALL
-    axiom_soap_fault_role_create_with_parent(const axis2_env_t *env,
+    axiom_soap_fault_role_create_with_parent(const axutil_env_t *env,
             axiom_soap_fault_t *fault);
 
     /**
@@ -56,20 +56,20 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_role_free(axiom_soap_fault_role_t *fault_role,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_fault_role_set_role_value(axiom_soap_fault_role_t *fault_role,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t* uri);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_soap_fault_role_get_role_value(axiom_soap_fault_role_t *fault_role,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_soap_fault_role_get_base_node(axiom_soap_fault_role_t *fault_role,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /** @} */
 

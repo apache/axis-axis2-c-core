@@ -26,7 +26,7 @@
 #include <axis2_utils.h>
 #include <axis2_error.h>
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
@@ -53,43 +53,43 @@ extern "C"
 
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axiom_data_handler_get_content_type(axiom_data_handler_t *data_handler,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_byte_t *AXIS2_CALL
     axiom_data_handler_get_input_stream(axiom_data_handler_t *data_handler,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_handler_read_from(axiom_data_handler_t *data_handler,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_byte_t** output_stream,
         int *output_stream_size);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_handler_set_binary_data(axiom_data_handler_t *data_handler,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_byte_t* input_stream,
         int input_stream_len);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_handler_write_to(axiom_data_handler_t *data_handler,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_handler_set_file_name(axiom_data_handler_t *data_handler,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t* file_name);
 
     AXIS2_EXTERN void AXIS2_CALL
     axiom_data_handler_free(axiom_data_handler_t *data_handler,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates data_handler struct
      * @return pointer to newly created data_handler
      */
     AXIS2_EXTERN axiom_data_handler_t * AXIS2_CALL
-    axiom_data_handler_create(const axis2_env_t *env,
+    axiom_data_handler_create(const axutil_env_t *env,
         const axis2_char_t *file_name,
         const axis2_char_t *mime_type);
 

@@ -43,24 +43,24 @@ struct xml_schema_simple_type_content_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_content_free(void *sim_type_cont,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_simple_type_content_get_base_impl(void *sim_type_cont,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_simple_type_content_get_type(void *sim_type_cont,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_simple_type_content_super_objs(void *sim_type_cont,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /*************** function prototypes *****************************************/
 
 AXIS2_EXTERN xml_schema_simple_type_content_t * AXIS2_CALL
-xml_schema_simple_type_content_create(const axis2_env_t *env)
+xml_schema_simple_type_content_create(const axutil_env_t *env)
 {
     xml_schema_simple_type_content_impl_t *sim_type_cont_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -139,7 +139,7 @@ xml_schema_simple_type_content_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_content_free(void *sim_type_cont,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_simple_type_content_impl_t *sim_type_cont_impl = NULL;
 
@@ -180,7 +180,7 @@ xml_schema_simple_type_content_free(void *sim_type_cont,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_simple_type_content_get_base_impl(void *sim_type_cont,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_simple_type_content_impl_t *sim_type_cont_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -191,7 +191,7 @@ xml_schema_simple_type_content_get_base_impl(void *sim_type_cont,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_simple_type_content_resolve_methods(
     xml_schema_simple_type_content_t *sim_type_cont,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_simple_type_content_t *sim_type_cont_impl,
     XML_SCHEMA_SUPER_OBJS_FN super_objs,
     XML_SCHEMA_GET_TYPE_FN get_type,
@@ -224,14 +224,14 @@ xml_schema_simple_type_content_resolve_methods(
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_simple_type_content_get_type(void *sim_type_cont,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(sim_type_cont)->obj_type;
 }
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_simple_type_content_super_objs(void *sim_type_cont,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(sim_type_cont)->ht_super;
 }

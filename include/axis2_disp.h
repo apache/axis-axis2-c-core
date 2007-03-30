@@ -59,7 +59,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
     axis2_disp_get_base(const axis2_disp_t *disp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the name of the dispatcher.
@@ -70,7 +70,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_string_t *AXIS2_CALL
     axis2_disp_get_name(const axis2_disp_t *disp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the name of the dispatcher.
@@ -82,7 +82,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_disp_set_name(axis2_disp_t *disp,
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         axis2_string_t *name);
 
     /**
@@ -93,7 +93,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_disp_free(axis2_disp_t *disp,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates a dispatcher struct instance.
@@ -102,13 +102,13 @@ extern "C"
      * @return pointer to newly created dispatcher
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
-    axis2_disp_create(const axis2_env_t *env, 
+    axis2_disp_create(const axutil_env_t *env, 
         const axis2_string_t *name);
 
     axis2_status_t AXIS2_CALL
     axis2_disp_find_svc_and_op(
         struct axis2_handler *handler,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -118,7 +118,7 @@ extern "C"
      * methods implemented based on WS-Addressing
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
-    axis2_addr_disp_create(const axis2_env_t *env);
+    axis2_addr_disp_create(const axutil_env_t *env);
 
     /**
      * Creates a request URI based dispatcher.
@@ -127,7 +127,7 @@ extern "C"
      * methods implemented based on request URI processing.
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
-    axis2_req_uri_disp_create(const axis2_env_t *env);
+    axis2_req_uri_disp_create(const axutil_env_t *env);
 
     /**
      * Creates a SOAP body based dispatcher.
@@ -136,7 +136,7 @@ extern "C"
      * methods implemented based on SOAP body processing.
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
-    axiom_soap_body_disp_create(const axis2_env_t *env);
+    axiom_soap_body_disp_create(const axutil_env_t *env);
 
     /**
      * Creates a SOAP action based dispatcher.
@@ -145,7 +145,7 @@ extern "C"
      * methods implemented based on SOAP action processing
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
-    axiom_soap_action_disp_create(const axis2_env_t *env);
+    axiom_soap_action_disp_create(const axutil_env_t *env);
 
 #ifdef __cplusplus
 }

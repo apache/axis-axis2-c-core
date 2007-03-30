@@ -36,19 +36,19 @@ typedef struct tcpmon_util_allocator
 }
 tcpmon_util_allocator_t;
 
-axis2_char_t* tcpmon_strcat(char *dest, char *source, int *cur_buf_s, const axis2_env_t *env);
+axis2_char_t* tcpmon_strcat(char *dest, char *source, int *cur_buf_s, const axutil_env_t *env);
 
-static void add_string(const axis2_env_t* env,
+static void add_string(const axutil_env_t* env,
 		       tcpmon_util_allocator_t* allocator,
 		       axis2_char_t* string);
 
-static void add_axis2_char_t(const axis2_env_t* env,
+static void add_axis2_char_t(const axutil_env_t* env,
 			     tcpmon_util_allocator_t* allocator,
 			     axis2_char_t c,
 			     int turns);
 
 axis2_char_t* 
-tcpmon_util_format_as_xml(const axis2_env_t* env, axis2_char_t* data, int format)
+tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int format)
 {
     if(format)
     {
@@ -337,7 +337,7 @@ tcpmon_util_format_as_xml(const axis2_env_t* env, axis2_char_t* data, int format
     return data;
 }
 
-void add_string(const axis2_env_t* env,
+void add_string(const axutil_env_t* env,
 		tcpmon_util_allocator_t* allocator,
 		axis2_char_t* string)
 {
@@ -372,7 +372,7 @@ void add_string(const axis2_env_t* env,
   allocator-> index += count - 1;
 }
 
-void add_axis2_char_t(const axis2_env_t* env,
+void add_axis2_char_t(const axutil_env_t* env,
 		      tcpmon_util_allocator_t* allocator,
 		      axis2_char_t c,
 		      int turns)
@@ -403,7 +403,7 @@ void add_axis2_char_t(const axis2_env_t* env,
 
 }
 
-axis2_char_t* tcpmon_strcat(axis2_char_t *dest, axis2_char_t *source, int *buff_size, const axis2_env_t* env)
+axis2_char_t* tcpmon_strcat(axis2_char_t *dest, axis2_char_t *source, int *buff_size, const axutil_env_t* env)
 {
     int cur_len = 0;
     int source_len = 0;

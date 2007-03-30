@@ -45,79 +45,79 @@ struct woden_feature_impl
 axis2_status_t AXIS2_CALL
 woden_feature_free(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_feature_super_objs(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_feature_type(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_documentable_t *AXIS2_CALL
 woden_feature_get_base_impl(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_feature_set_ref(
     void *feature,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *ref);
 
 axis2_uri_t *AXIS2_CALL
 woden_feature_get_ref(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_feature_set_required(
     void *feature,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t required);
 
 axis2_bool_t AXIS2_CALL
 woden_feature_is_required(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_feature_set_parent_element(
     void *feature,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl_element_t *parent);
 
 void *AXIS2_CALL
 woden_feature_get_parent_element(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_feature_get_parent(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_feature_to_element(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_feature_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_feature_free_ops(
     void *feature,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_feature_element(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -141,7 +141,7 @@ woden_feature_to_feature_element(
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_nested_element(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -165,7 +165,7 @@ woden_feature_to_nested_element(
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_documentable_element(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -190,7 +190,7 @@ woden_feature_to_documentable_element(
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_documentable(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -215,7 +215,7 @@ woden_feature_to_documentable(
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_wsdl_obj(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
     void *wsdl_obj = NULL;
@@ -242,7 +242,7 @@ woden_feature_to_wsdl_obj(
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_nested_component(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -266,7 +266,7 @@ woden_feature_to_nested_component(
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_wsdl_component(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -290,7 +290,7 @@ woden_feature_to_wsdl_component(
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_attr_extensible(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -318,7 +318,7 @@ woden_feature_to_attr_extensible(
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
 woden_feature_to_element_extensible(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -343,7 +343,7 @@ woden_feature_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_feature_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -427,7 +427,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_feature_t * AXIS2_CALL
-woden_feature_create(const axis2_env_t *env)
+woden_feature_create(const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -453,7 +453,7 @@ woden_feature_create(const axis2_env_t *env)
 static axis2_status_t
 woden_feature_free_ops(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -537,7 +537,7 @@ woden_feature_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_feature_free(void *feature,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -589,7 +589,7 @@ woden_feature_free(void *feature,
 axis2_hash_t *AXIS2_CALL
 woden_feature_super_objs(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -602,7 +602,7 @@ woden_feature_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_feature_type(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -615,7 +615,7 @@ woden_feature_type(
 woden_documentable_t *AXIS2_CALL
 woden_feature_get_base_impl(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
 
@@ -628,7 +628,7 @@ woden_feature_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_feature_resolve_methods(
     woden_feature_t *feature,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_feature_t *feature_impl,
     axis2_hash_t *methods)
 {
@@ -675,7 +675,7 @@ woden_feature_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_feature_set_ref(
     void *feature,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *ref)
 {
     woden_feature_impl_t *feature_impl = NULL;
@@ -698,7 +698,7 @@ woden_feature_set_ref(
 axis2_uri_t *AXIS2_CALL
 woden_feature_get_ref(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -714,7 +714,7 @@ woden_feature_get_ref(
 axis2_status_t AXIS2_CALL
 woden_feature_set_required(
     void *feature,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t required)
 {
     woden_feature_impl_t *feature_impl = NULL;
@@ -732,7 +732,7 @@ woden_feature_set_required(
 axis2_bool_t AXIS2_CALL
 woden_feature_is_required(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -748,7 +748,7 @@ woden_feature_is_required(
 axis2_status_t AXIS2_CALL
 woden_feature_set_parent_element(
     void *feature,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl_element_t *parent)
 {
     woden_feature_impl_t *feature_impl = NULL;
@@ -770,7 +770,7 @@ woden_feature_set_parent_element(
 void *AXIS2_CALL
 woden_feature_get_parent_element(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -786,7 +786,7 @@ woden_feature_get_parent_element(
 void *AXIS2_CALL
 woden_feature_get_parent(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -803,7 +803,7 @@ woden_feature_get_parent(
 void *AXIS2_CALL
 woden_feature_to_element(
     void *feature,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_feature_impl_t *feature_impl = NULL;
     axis2_hash_t *super = NULL;

@@ -22,7 +22,7 @@
 * @file axiom_soap_fault_value.h
 * @brief axiom_soap_fault_value 
 */
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_soap_fault.h>
 #include <axiom_soap_fault_sub_code.h>
 
@@ -43,11 +43,11 @@ extern "C"
       * @param env Environment. MUST NOT be NULL
       */
     AXIS2_EXTERN axiom_soap_fault_value_t * AXIS2_CALL
-    axiom_soap_fault_value_create_with_subcode(const axis2_env_t *env,
+    axiom_soap_fault_value_create_with_subcode(const axutil_env_t *env,
             axiom_soap_fault_sub_code_t *parent);
 
     AXIS2_EXTERN axiom_soap_fault_value_t * AXIS2_CALL
-    axiom_soap_fault_value_create_with_code(const axis2_env_t *env,
+    axiom_soap_fault_value_create_with_code(const axutil_env_t *env,
             axiom_soap_fault_code_t *parent);
 
     /**
@@ -60,7 +60,7 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_value_free(axiom_soap_fault_value_t *fault_value,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
       * Get the text value of the env:Value element directly under env:Code element
@@ -70,7 +70,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_soap_fault_value_get_text(axiom_soap_fault_value_t *fault_value,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
       * Set the text value of the env:Value element directly under env:Code element
@@ -80,7 +80,7 @@ extern "C"
       */
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_soap_fault_value_get_base_node(axiom_soap_fault_value_t *fault_value,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * set the text value of soap_fault_value element 
      * @param fault_value pointer to soap fault value struct
@@ -90,7 +90,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_fault_value_set_text(axiom_soap_fault_value_t *fault_value,
-            const axis2_env_t *env, axis2_char_t *text);
+            const axutil_env_t *env, axis2_char_t *text);
 
     /** @} */
 

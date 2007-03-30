@@ -38,28 +38,28 @@ struct savan_sub_processor_t
 axis2_status_t AXIS2_CALL 
 savan_sub_processor_set_sub_store(
     axis2_svc_t *svc,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
     
 savan_subscriber_t * AXIS2_CALL 
 savan_sub_processor_create_subscriber_from_msg(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL
 savan_sub_processor_set_sub_id_to_msg_ctx(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_char_t *id);
 
 axis2_status_t AXIS2_CALL
 savan_sub_processor_remove_subscriber(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     savan_subscriber_t *subscriber);
 
 axis2_bool_t AXIS2_CALL
 savan_sub_processor_is_subscription_renewable(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 /* End of Function Prototypes *************************************************/
@@ -68,7 +68,7 @@ savan_sub_processor_is_subscription_renewable(
 
 AXIS2_EXTERN savan_sub_processor_t *AXIS2_CALL
 savan_sub_processor_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     savan_sub_processor_t *sub_processor = NULL;
     
@@ -90,7 +90,7 @@ savan_sub_processor_create(
 axis2_status_t AXIS2_CALL 
 savan_sub_processor_subscribe(
     savan_sub_processor_t *sub_processor,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_svc_t *svc = NULL;
@@ -158,7 +158,7 @@ savan_sub_processor_subscribe(
 axis2_status_t AXIS2_CALL 
 savan_sub_processor_unsubscribe(
     savan_sub_processor_t *sub_processor,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     savan_subscriber_t *subscriber = NULL;
@@ -199,7 +199,7 @@ savan_sub_processor_unsubscribe(
 axis2_status_t AXIS2_CALL 
 savan_sub_processor_renew_subscription(
     savan_sub_processor_t *sub_processor,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     savan_subscriber_t *subscriber = NULL;
@@ -250,7 +250,7 @@ savan_sub_processor_renew_subscription(
 axis2_status_t AXIS2_CALL 
 savan_sub_processor_get_status(
     savan_sub_processor_t *sub_processor,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *id = NULL;
@@ -273,7 +273,7 @@ savan_sub_processor_get_status(
 axis2_status_t AXIS2_CALL 
 savan_sub_processor_set_sub_store(
     axis2_svc_t *svc,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_hash_t *store = NULL;
     axis2_param_t *param = NULL;
@@ -308,7 +308,7 @@ savan_sub_processor_set_sub_store(
 
 savan_subscriber_t * AXIS2_CALL 
 savan_sub_processor_create_subscriber_from_msg(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     savan_subscriber_t *subscriber = NULL;
@@ -448,7 +448,7 @@ savan_sub_processor_create_subscriber_from_msg(
 
 axis2_status_t AXIS2_CALL
 savan_sub_processor_set_sub_id_to_msg_ctx(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_char_t *id)
 {
@@ -471,7 +471,7 @@ savan_sub_processor_set_sub_id_to_msg_ctx(
 
 axis2_status_t AXIS2_CALL
 savan_sub_processor_remove_subscriber(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     savan_subscriber_t *subscriber)
 {
@@ -504,7 +504,7 @@ savan_sub_processor_remove_subscriber(
 
 axis2_bool_t AXIS2_CALL
 savan_sub_processor_is_subscription_renewable(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     /* TODO: */

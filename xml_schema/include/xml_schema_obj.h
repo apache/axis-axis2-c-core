@@ -34,7 +34,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils_defines.h>
@@ -67,7 +67,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 free) (
                     void *obj,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
         /**
          * returns a hashtable containing pointers to base struct instances
          * @param obj xml_schema_obj struct 
@@ -79,7 +79,7 @@ extern "C"
         axis2_hash_t *(AXIS2_CALL *
                 super_objs) (
                     void *obj,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * get the type of the derived struct instance
@@ -94,7 +94,7 @@ extern "C"
         xml_schema_types_t (AXIS2_CALL *
                 get_type) (
                     void *obj,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * get the line number in xml document corresponding to 
@@ -106,7 +106,7 @@ extern "C"
         int (AXIS2_CALL *
                 get_line_num) (
                         void *obj,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
         /**
          * set the line number in xml document corresponding to
          * this struct instance
@@ -117,7 +117,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 set_line_num) (
                         void *obj,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         int line_num);
 
         /**
@@ -130,7 +130,7 @@ extern "C"
         int (AXIS2_CALL *
                 get_line_pos) (
                         void *obj,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
         /**
          * set line position in xml document corresponding to
@@ -143,7 +143,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 set_line_pos) (
                         void *obj,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         int line_pos);
         /**
          * get the source uri of xml schema obj
@@ -155,7 +155,7 @@ extern "C"
         axis2_char_t * (AXIS2_CALL *
                 get_source_uri) (
                         void *obj,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
         /**
          * get the source uri of xml schema obj
@@ -167,7 +167,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 set_source_uri) (
                         void *obj,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *source_uri);
 
         /**
@@ -180,7 +180,7 @@ extern "C"
         axis2_bool_t (AXIS2_CALL *
                 equals) (
                         void *obj,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         void *obj_comp);
 
         /**
@@ -196,7 +196,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 add_meta_info)(
                         void *obj,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *key,
                         void *value);
 
@@ -210,7 +210,7 @@ extern "C"
         axis2_hash_t* (AXIS2_CALL *
                 get_meta_info)(
                         void *obj,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
     };
 
@@ -231,7 +231,7 @@ extern "C"
      */
 
     AXIS2_EXTERN xml_schema_obj_t * AXIS2_CALL
-    xml_schema_obj_create(const axis2_env_t *env);
+    xml_schema_obj_create(const axutil_env_t *env);
 
     /**
      * This method is internal to Axis2 C. 
@@ -239,7 +239,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     xml_schema_obj_resolve_methods(xml_schema_obj_t *schema_obj,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             xml_schema_obj_t *schema_obj_impl,
             XML_SCHEMA_SUPER_OBJS_FN super_objs,
             XML_SCHEMA_GET_TYPE_FN get_type,

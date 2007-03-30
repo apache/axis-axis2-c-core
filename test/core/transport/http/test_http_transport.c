@@ -29,15 +29,15 @@ typedef struct a
 }
 a;
 
-axis2_env_t *test_init()
+axutil_env_t *test_init()
 {
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     axis2_error_t *error = axis2_error_create(allocator);
-    axis2_env_t *env = axis2_env_create_with_error(allocator, error);
+    axutil_env_t *env = axutil_env_create_with_error(allocator, error);
     return env;
 }
 
-void test_http_request_line(const axis2_env_t *env)
+void test_http_request_line(const axutil_env_t *env)
 {
     const char *request_line_str = "POST http://ws.apache.org/axis2/c/services/test_svc/test_op?x=1 HTTP/1.1\r\n";
     axis2_http_request_line_t *request_line;
@@ -52,7 +52,7 @@ void test_http_request_line(const axis2_env_t *env)
 }
 
 
-void test_http_status_line(const axis2_env_t *env)
+void test_http_status_line(const axutil_env_t *env)
 {
     const char *status_line_str = "HTTP/1.1 202 Accepted\r\n";
     axis2_http_status_line_t *status_line;
@@ -70,7 +70,7 @@ void test_http_status_line(const axis2_env_t *env)
     printf("Finished http_status_line tests ..........\n\n");
 }
 
-void test_http_header(const axis2_env_t *env)
+void test_http_header(const axutil_env_t *env)
 {
     const char *header_name = "Content-Type";
     const char *header_value = "text/xml";
@@ -92,7 +92,7 @@ void test_http_header(const axis2_env_t *env)
     printf("Finished http_header tests ..........\n\n");
 }
 
-void test_url(const axis2_env_t *env)
+void test_url(const axutil_env_t *env)
 {
     const axis2_char_t *str_url = "http://ws.apache.org/axis2/";
     axis2_url_t *url = axis2_url_parse_string(env, str_url);
@@ -109,7 +109,7 @@ void test_url(const axis2_env_t *env)
     axis2_url_free(url, env);
 }
 
-void test_http_client(const axis2_env_t *env)
+void test_http_client(const axutil_env_t *env)
 {
     axis2_http_client_t *client = NULL;
     axis2_http_simple_request_t *request = NULL;
@@ -167,7 +167,7 @@ void test_http_client(const axis2_env_t *env)
     printf("Finished http_client tests ..........\n\n");
 }
 
-void test_https_client(const axis2_env_t *env)
+void test_https_client(const axutil_env_t *env)
 {
 #ifndef AXIS2_SSL_ENABLED
     return;
@@ -235,7 +235,7 @@ void test_https_client(const axis2_env_t *env)
 
 int main(void)
 {
-    axis2_env_t *env = test_init();
+    axutil_env_t *env = test_init();
     test_http_request_line(env);
     test_http_status_line(env);
     test_http_header(env);
@@ -243,6 +243,6 @@ int main(void)
     test_https_client(env);
     test_url(env);
 
-    axis2_env_free(env);
+    axutil_env_free(env);
     return 0;
 }

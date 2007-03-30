@@ -26,7 +26,7 @@ struct axiom_comment
 };
 
 AXIS2_EXTERN axiom_comment_t *AXIS2_CALL
-axiom_comment_create(const axis2_env_t *env,
+axiom_comment_create(const axutil_env_t *env,
     axiom_node_t *parent,
     const axis2_char_t *value,
     axiom_node_t **node)
@@ -79,7 +79,7 @@ axiom_comment_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_comment_free(axiom_comment_t *comment,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -93,7 +93,7 @@ axiom_comment_free(axiom_comment_t *comment,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axiom_comment_get_value(axiom_comment_t *comment,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return comment->value;
@@ -101,7 +101,7 @@ axiom_comment_get_value(axiom_comment_t *comment,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_comment_set_value(axiom_comment_t *comment,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -123,7 +123,7 @@ axiom_comment_set_value(axiom_comment_t *comment,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_comment_serialize(axiom_comment_t *comment,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

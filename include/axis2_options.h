@@ -32,7 +32,7 @@
   */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_hash.h>
@@ -65,7 +65,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
     axis2_options_get_action(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WSA fault to address.
@@ -76,7 +76,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL
     axis2_options_get_fault_to( const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WSA from address.
@@ -87,7 +87,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL
     axis2_options_get_from(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets transport receiver.
@@ -97,7 +97,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_transport_receiver_t* AXIS2_CALL
     axis2_options_get_transport_receiver(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -108,7 +108,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_transport_in_desc_t* AXIS2_CALL
     axis2_options_get_transport_in(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets transport in protocol.
@@ -118,7 +118,7 @@ extern "C"
      */
     AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
     axis2_options_get_transport_in_protocol(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets message ID.
@@ -128,7 +128,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
     axis2_options_get_message_id(const axis2_options_t *options_t,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the properties hash map.
@@ -138,7 +138,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
     axis2_options_get_properties(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets a property corresponding to the given key.
@@ -149,7 +149,7 @@ extern "C"
      */
     AXIS2_EXTERN void* AXIS2_CALL
     axis2_options_get_property(const axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *key);
 
     /**
@@ -160,7 +160,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_relates_to_t* AXIS2_CALL
     axis2_options_get_relates_to(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WSA reply to address.
@@ -171,7 +171,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL
     axis2_options_get_reply_to(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets transport out.
@@ -181,7 +181,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_transport_out_desc_t* AXIS2_CALL
     axis2_options_get_transport_out(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets transport out protocol.
@@ -191,7 +191,7 @@ extern "C"
      */
     AXIS2_EXTERN AXIS2_TRANSPORT_ENUMS AXIS2_CALL
     axis2_options_get_sender_transport_protocol(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets SOAP version URI.
@@ -201,7 +201,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
     axis2_options_get_soap_version_uri(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -213,7 +213,7 @@ extern "C"
      */
     AXIS2_EXTERN long AXIS2_CALL
     axis2_options_get_timeout_in_milli_seconds(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets WSA to address.
@@ -224,7 +224,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL
     axis2_options_get_to(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets use separate listener status.
@@ -234,7 +234,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_options_get_use_separate_listener(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets the parent options.
@@ -244,7 +244,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_options_t *AXIS2_CALL
     axis2_options_get_parent(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the parent options.
@@ -255,7 +255,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_parent(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_options_t *parent);
 
     /**
@@ -267,7 +267,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_action(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *action);
 
     /**
@@ -280,7 +280,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_fault_to(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *fault_to);
 
     /**
@@ -293,7 +293,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_from(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *from);
 
     /**
@@ -306,7 +306,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_to(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *to);
 
     /**
@@ -319,7 +319,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_transport_receiver(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_transport_receiver_t *receiver);
 
     /**
@@ -332,7 +332,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_transport_in(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_transport_in_desc_t *transport_in);
 
     /**
@@ -344,7 +344,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_transport_in_protocol(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const AXIS2_TRANSPORT_ENUMS transport_in_protocol);
 
     /**
@@ -356,7 +356,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_message_id(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *message_id);
 
 
@@ -370,7 +370,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_properties(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *properties);
 
     /**
@@ -383,7 +383,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_property(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *property_key,
         const void *property);
 
@@ -397,7 +397,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_relates_to(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_relates_to_t *relates_to);
 
     /**
@@ -410,7 +410,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_reply_to(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *reply_to);
 
     /**
@@ -423,7 +423,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_transport_out(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_transport_out_desc_t *transport_out);
 
     /**
@@ -437,7 +437,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_sender_transport(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const AXIS2_TRANSPORT_ENUMS sender_transport,
         axis2_conf_t *conf);
 
@@ -452,7 +452,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_soap_version_uri(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *soap_version_uri);
 
     /**
@@ -464,7 +464,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_timeout_in_milli_seconds(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const long timeout_in_milli_seconds);
 
     /**
@@ -481,7 +481,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_transport_info(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const AXIS2_TRANSPORT_ENUMS sender_transport,
         const AXIS2_TRANSPORT_ENUMS receiver_transport,
         const axis2_bool_t use_separate_listener);
@@ -496,7 +496,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_use_separate_listener(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t use_separate_listener);
 
     /**
@@ -509,7 +509,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_add_reference_parameter(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *reference_parameter);
 
     /**
@@ -520,7 +520,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_options_get_manage_session(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets manage session bool value.
@@ -531,7 +531,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_manage_session(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t manage_session);
 
     /**
@@ -543,7 +543,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_msg_info_headers(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_info_headers_t *msg_info_headers);
 
     /**
@@ -555,7 +555,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_info_headers_t* AXIS2_CALL
     axis2_options_get_msg_info_headers(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * Gets SOAP version.
@@ -565,7 +565,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_options_get_soap_version(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets SOAP version.
@@ -576,7 +576,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_soap_version(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int soap_version);
 
     /**
@@ -589,7 +589,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_enable_mtom(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t enable_mtom);
 
     /**
@@ -600,7 +600,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_options_get_enable_mtom(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets SOAP action.
@@ -610,7 +610,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_string_t* AXIS2_CALL
     axis2_options_get_soap_action(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets SOAP action
@@ -621,7 +621,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_soap_action(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_string_t *soap_action);
 
     /**
@@ -633,7 +633,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_xml_parser_reset(axis2_options_t *options,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t paser_reset_flag);
 
     /**
@@ -644,7 +644,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_options_get_xml_parser_reset(const axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Frees options struct.
@@ -654,7 +654,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_options_free(axis2_options_t *options,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates the options struct.
@@ -663,7 +663,7 @@ extern "C"
      * with error code set in environment's error.
      */
     AXIS2_EXTERN axis2_options_t* AXIS2_CALL 
-    axis2_options_create(const axis2_env_t *env);
+    axis2_options_create(const axutil_env_t *env);
     
     /**
      * Creates the options struct with given parent.
@@ -674,7 +674,7 @@ extern "C"
      * or NULL on error with error code set in environment's error.
      */
     AXIS2_EXTERN axis2_options_t* AXIS2_CALL 
-    axis2_options_create_with_parent(const axis2_env_t *env,
+    axis2_options_create_with_parent(const axutil_env_t *env,
         axis2_options_t *parent);
 
 

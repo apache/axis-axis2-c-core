@@ -28,7 +28,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -65,27 +65,27 @@ struct woden_wsdl_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *wsdl_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *wsdl_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     void *(AXIS2_CALL *
     get_element_extensible) (
             void *wsdl_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_attr_extensible) (
             void *wsdl_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
    
 };
@@ -104,23 +104,23 @@ struct woden_wsdl_element
 
 AXIS2_EXTERN woden_wsdl_element_t * AXIS2_CALL
 woden_wsdl_element_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_wsdl_element_t * AXIS2_CALL
 woden_wsdl_element_to_attr_extensible(
         void *wsdl_element,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl_element_t * AXIS2_CALL
 woden_wsdl_element_to_element_extensible(
         void *wsdl_element,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_wsdl_element_resolve_methods(
         woden_wsdl_element_t *wsdl_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_wsdl_element_t *wsdl_element_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

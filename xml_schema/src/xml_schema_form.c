@@ -44,36 +44,36 @@ struct xml_schema_form_impl
 axis2_status_t AXIS2_CALL
 xml_schema_form_free(
     void *form,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_form_super_objs(
     void *form,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_form_get_type(
     void *form,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_enum_t *AXIS2_CALL
 xml_schema_form_get_base_impl(void *form,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_form_resolve_methods(
     xml_schema_form_t *form,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_form_t *form_impl,
     axis2_hash_t *methods);
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_form_get_values(void *form,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN xml_schema_form_t * AXIS2_CALL
-xml_schema_form_create(const axis2_env_t *env,
+xml_schema_form_create(const axutil_env_t *env,
         axis2_char_t *value)
 {
     xml_schema_form_impl_t *form_impl = NULL;
@@ -171,7 +171,7 @@ xml_schema_form_create(const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 xml_schema_form_free(void *form,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_form_impl_t *form_impl = NULL;
 
@@ -231,7 +231,7 @@ xml_schema_form_free(void *form,
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_form_super_objs(void *form,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_form_impl_t *form_impl = NULL;
 
@@ -242,7 +242,7 @@ xml_schema_form_super_objs(void *form,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_form_get_type(void *form,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_form_impl_t *form_impl = NULL;
 
@@ -253,7 +253,7 @@ xml_schema_form_get_type(void *form,
 
 xml_schema_enum_t *AXIS2_CALL
 xml_schema_form_get_base_impl(void *form,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_form_impl_t *form_impl = NULL;
 
@@ -265,7 +265,7 @@ xml_schema_form_get_base_impl(void *form,
 
 axutil_array_list_t* AXIS2_CALL
 xml_schema_form_get_values(void *form,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_form_impl_t *form_impl = NULL;
     axis2_hash_t *super = NULL;

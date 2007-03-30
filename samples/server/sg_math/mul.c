@@ -18,7 +18,7 @@
 #include <stdio.h>
 
 axiom_node_t *
-axis2_mul_mul(const axis2_env_t *env, axiom_node_t *node)
+axis2_mul_mul(const axutil_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *param1_node = NULL;
     axiom_node_t *param1_text_node = NULL;

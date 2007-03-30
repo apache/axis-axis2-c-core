@@ -19,11 +19,11 @@
 /* #include "guththila_environment.h" */
 #include <string.h>
 #include "guththila_buffer.h"
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <stdio.h>
 
 AXIS2_EXTERN guththila_buffer_t * AXIS2_CALL
-guththila_buffer_create(axis2_env_t * environment, int size)
+guththila_buffer_create(axutil_env_t * environment, int size)
 {
     guththila_buffer_t *name;
     name = NULL;
@@ -48,7 +48,7 @@ guththila_buffer_create(axis2_env_t * environment, int size)
 }
 
 AXIS2_EXTERN guththila_buffer_t *
-guththila_buffer_create_for_buffer(axis2_env_t * environment, char *buffer, int size)
+guththila_buffer_create_for_buffer(axutil_env_t * environment, char *buffer, int size)
 {
     guththila_buffer_t *name;
     name = NULL;
@@ -69,7 +69,7 @@ guththila_buffer_create_for_buffer(axis2_env_t * environment, char *buffer, int 
 }
 
 AXIS2_EXTERN void
-guththila_buffer_free(axis2_env_t * environment,
+guththila_buffer_free(axutil_env_t * environment,
         guththila_buffer_t * name)
 {
     if (name)
@@ -86,7 +86,7 @@ guththila_buffer_free(axis2_env_t * environment,
 
 
 AXIS2_EXTERN guththila_buffer_t *
-guththila_buffer_grow(axis2_env_t * environment,
+guththila_buffer_grow(axutil_env_t * environment,
 					  guththila_buffer_t * name,
 					  int buffer_length)
 {

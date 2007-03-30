@@ -33,7 +33,7 @@ struct axiom_attribute
 };
 
 AXIS2_EXTERN axiom_attribute_t* AXIS2_CALL
-axiom_attribute_create(const axis2_env_t *env,
+axiom_attribute_create(const axutil_env_t *env,
     const axis2_char_t * localname,
     const axis2_char_t * value,
     axiom_namespace_t * ns)
@@ -85,7 +85,7 @@ axiom_attribute_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_attribute_free(axiom_attribute_t *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (--attribute->ref > 0)
     {
@@ -114,7 +114,7 @@ axiom_attribute_free(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_attribute_free_void_arg(void *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_attribute_t *om_attribute_l = NULL;
 
@@ -126,7 +126,7 @@ axiom_attribute_free_void_arg(void *attribute,
 
 AXIS2_EXTERN axis2_qname_t *AXIS2_CALL
 axiom_attribute_get_qname(axiom_attribute_t *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_qname_t *qname = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -153,7 +153,7 @@ axiom_attribute_get_qname(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_attribute_serialize(axiom_attribute_t *attribute,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_output_t *om_output)
 {
     int status = AXIS2_SUCCESS;
@@ -195,7 +195,7 @@ axiom_attribute_serialize(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_attribute_get_localname(axiom_attribute_t *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (attribute->localname)
     {
@@ -206,7 +206,7 @@ axiom_attribute_get_localname(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_attribute_get_value(axiom_attribute_t *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (attribute->value)
     {
@@ -217,7 +217,7 @@ axiom_attribute_get_value(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axiom_namespace_t* AXIS2_CALL
 axiom_attribute_get_namespace(axiom_attribute_t *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return attribute->ns;
@@ -225,7 +225,7 @@ axiom_attribute_get_namespace(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_attribute_set_localname(axiom_attribute_t *attribute,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *localname)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -250,7 +250,7 @@ axiom_attribute_set_localname(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_attribute_set_value(axiom_attribute_t *attribute,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -273,7 +273,7 @@ axiom_attribute_set_value(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_attribute_set_namespace(axiom_attribute_t *attribute,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_namespace_t *om_namespace)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -284,7 +284,7 @@ axiom_attribute_set_namespace(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axiom_attribute_t* AXIS2_CALL
 axiom_attribute_clone(axiom_attribute_t *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_attribute_t *cloned_attr    = NULL;
     if (!attribute) return NULL;
@@ -304,7 +304,7 @@ axiom_attribute_clone(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axiom_attribute_increment_ref(struct axiom_attribute *om_attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_attribute->ref++;
@@ -312,7 +312,7 @@ axiom_attribute_increment_ref(struct axiom_attribute *om_attribute,
 }
 
 AXIS2_EXTERN axiom_attribute_t* AXIS2_CALL
-axiom_attribute_create_str(const axis2_env_t *env,
+axiom_attribute_create_str(const axutil_env_t *env,
     axis2_string_t * localname,
     axis2_string_t * value,
     axiom_namespace_t * ns)
@@ -363,21 +363,21 @@ axiom_attribute_create_str(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_string_t* AXIS2_CALL
 axiom_attribute_get_localname_str(axiom_attribute_t *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return attribute->localname;
 }
 
 AXIS2_EXTERN axis2_string_t* AXIS2_CALL
 axiom_attribute_get_value_str(axiom_attribute_t *attribute,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return attribute->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_attribute_set_localname_str(axiom_attribute_t *attribute,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_string_t *localname)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -396,7 +396,7 @@ axiom_attribute_set_localname_str(axiom_attribute_t *attribute,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_attribute_set_value_str(axiom_attribute_t *attribute,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_string_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

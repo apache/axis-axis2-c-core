@@ -40,64 +40,64 @@ struct woden_configurable_impl
 axis2_status_t AXIS2_CALL
 woden_configurable_free(
     void *configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_configurable_super_objs(
     void *configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_documentable_t *AXIS2_CALL
 woden_configurable_get_base_impl(
     void *configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_features(
     void *configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_properties(
     void *configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_configurable_add_feature_element(
     void *configurable,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *feature);
 
 axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_feature_elements(
     void *configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_configurable_add_property_element(
     void *configurable,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *property);
 
 axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_property_elements(
     void *configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 
 static woden_configurable_t *
 create(
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static axis2_status_t
 woden_configurable_free_ops(
     void *configurable,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 AXIS2_EXTERN woden_configurable_t * AXIS2_CALL
 woden_configurable_to_configurable_element(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
 
@@ -121,7 +121,7 @@ woden_configurable_to_configurable_element(
 
 static woden_configurable_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
 
@@ -164,7 +164,7 @@ create(
 
 AXIS2_EXTERN woden_configurable_t * AXIS2_CALL
 woden_configurable_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
 
@@ -190,7 +190,7 @@ woden_configurable_create(
 static axis2_status_t
 woden_configurable_free_ops(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
 
@@ -211,7 +211,7 @@ woden_configurable_free_ops(
 axis2_status_t AXIS2_CALL
 woden_configurable_free(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
 
@@ -259,7 +259,7 @@ woden_configurable_free(
 axis2_hash_t *AXIS2_CALL
 woden_configurable_super_objs(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
 
@@ -272,7 +272,7 @@ woden_configurable_super_objs(
 woden_documentable_t *AXIS2_CALL
 woden_configurable_get_base_impl(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
 
@@ -285,7 +285,7 @@ woden_configurable_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_configurable_resolve_methods(
     woden_configurable_t *configurable,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_configurable_t *configurable_impl,
     axis2_hash_t *methods)
 {
@@ -310,7 +310,7 @@ woden_configurable_resolve_methods(
 axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_features(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -326,7 +326,7 @@ woden_configurable_get_features(
 axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_properties(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -342,7 +342,7 @@ woden_configurable_get_properties(
 axis2_status_t AXIS2_CALL
 woden_configurable_add_feature_element(
     void *configurable,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *feature)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
@@ -370,7 +370,7 @@ woden_configurable_add_feature_element(
 axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_feature_elements(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -386,7 +386,7 @@ woden_configurable_get_feature_elements(
 axis2_status_t AXIS2_CALL
 woden_configurable_add_property_element(
     void *configurable,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *property)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
@@ -414,7 +414,7 @@ woden_configurable_add_property_element(
 axutil_array_list_t *AXIS2_CALL
 woden_configurable_get_property_elements(
     void *configurable,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
     axis2_hash_t *super = NULL;

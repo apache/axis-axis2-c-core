@@ -25,12 +25,12 @@
 /* my on_complete callback function */
 axis2_status_t AXIS2_CALL
 echo_callback_on_complete(struct axis2_callback *callback,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /* my on_error callback function */
 axis2_status_t AXIS2_CALL
 echo_callback_on_error(struct axis2_callback *callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int exception);
 
 /* to check whether the callback is completed */
@@ -38,7 +38,7 @@ int isComplete = 0;
 
 int main(int argc, char** argv)
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_endpoint_ref_t* reply_to = NULL;
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     int count = 0;
 
     /* Set up the environment */
-    env = axis2_env_create_all("echo_non_blocking_dual.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("echo_non_blocking_dual.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";
@@ -151,7 +151,7 @@ int main(int argc, char** argv)
 
     if (env)
     {
-        axis2_env_free((axis2_env_t *) env);
+        axutil_env_free((axutil_env_t *) env);
         env = NULL;
     }
 
@@ -160,7 +160,7 @@ int main(int argc, char** argv)
 
 axis2_status_t AXIS2_CALL
 echo_callback_on_complete(struct axis2_callback *callback,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     /** SOAP response has arrived here; get the soap envelope
       from the callback object and do whatever you want to do with it */
@@ -209,7 +209,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
 
 axis2_status_t AXIS2_CALL
 echo_callback_on_error(struct axis2_callback *callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int exception)
 {
     /** take necessary action on error */

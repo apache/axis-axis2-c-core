@@ -24,7 +24,7 @@
 
 
 AXIS2_EXTERN guththila_reader_t * AXIS2_CALL
-guththila_reader_create_for_file(axis2_env_t * environment,
+guththila_reader_create_for_file(axutil_env_t * environment,
         char *filename)
 {
     guththila_reader_impl_t *file_reader = NULL;
@@ -52,7 +52,7 @@ guththila_reader_create_for_file(axis2_env_t * environment,
 
 AXIS2_EXTERN guththila_reader_t * AXIS2_CALL
 guththila_reader_create_for_io(
-    axis2_env_t *environment,
+    axutil_env_t *environment,
     AXIS2_READ_INPUT_CALLBACK input_read_callback, void* ctx)
 {
     guththila_reader_impl_t *io_reader =
@@ -72,7 +72,7 @@ guththila_reader_create_for_io(
 
 AXIS2_EXTERN guththila_reader_t * AXIS2_CALL
 guththila_reader_create_for_memory(
-    axis2_env_t *environment,
+    axutil_env_t *environment,
     void *buffer,
     int size,
     void* ctx)
@@ -97,7 +97,7 @@ guththila_reader_create_for_memory(
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-guththila_reader_free(axis2_env_t * environment,
+guththila_reader_free(axutil_env_t * environment,
         guththila_reader_t * r)
 {
 
@@ -115,7 +115,7 @@ guththila_reader_free(axis2_env_t * environment,
 
 
 AXIS2_EXTERN int AXIS2_CALL
-guththila_reader_read(axis2_env_t * environment,
+guththila_reader_read(axutil_env_t * environment,
         guththila_char_t * buffer,
         int offset,
         int length,

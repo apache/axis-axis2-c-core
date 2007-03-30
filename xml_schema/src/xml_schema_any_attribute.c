@@ -48,42 +48,42 @@ struct xml_schema_any_attribute_impl
 /******************* function prototypes **********************************/
 axis2_status_t AXIS2_CALL
 xml_schema_any_attribute_free(void *any_attr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_any_attribute_get_base_impl(void *any_attr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_any_attribute_get_type(void *any_attr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_any_attribute_super_objs(void *any_attr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 xml_schema_any_attribute_get_namespace(void *any_attr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_attribute_set_namespace(void *any_attr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *ns);
 
 xml_schema_content_processing_t *AXIS2_CALL
 xml_schema_any_attribute_get_process_content(void *any_attr,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_attribute_set_process_content(void *any_attr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_content_processing_t *process_content);
 
 /************************ end function prototypes ******************************/
 
 AXIS2_EXTERN xml_schema_any_attribute_t * AXIS2_CALL
-xml_schema_any_attribute_create(const axis2_env_t *env)
+xml_schema_any_attribute_create(const axutil_env_t *env)
 {
     xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
 
@@ -180,7 +180,7 @@ xml_schema_any_attribute_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_attribute_free(void *any_attr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
 
@@ -227,7 +227,7 @@ xml_schema_any_attribute_free(void *any_attr,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_any_attribute_get_base_impl(void *any_attr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
 
@@ -238,7 +238,7 @@ xml_schema_any_attribute_get_base_impl(void *any_attr,
 
 axis2_char_t *AXIS2_CALL
 xml_schema_any_attribute_get_namespace(void *any_attr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
@@ -248,7 +248,7 @@ xml_schema_any_attribute_get_namespace(void *any_attr,
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_attribute_set_namespace(void *any_attr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *namespc)
 {
     xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
@@ -269,7 +269,7 @@ xml_schema_any_attribute_set_namespace(void *any_attr,
 
 xml_schema_content_processing_t *AXIS2_CALL
 xml_schema_any_attribute_get_process_content(void *any_attr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(any_attr)->process_content;
 }
@@ -278,7 +278,7 @@ xml_schema_any_attribute_get_process_content(void *any_attr,
 axis2_status_t AXIS2_CALL
 xml_schema_any_attribute_set_process_content(
     void *any_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_content_processing_t *process_content)
 {
     xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
@@ -299,14 +299,14 @@ xml_schema_any_attribute_set_process_content(
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_any_attribute_get_type(void *any_attr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(any_attr)->obj_type;
 }
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_any_attribute_super_objs(void *any_attr,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(any_attr)->ht_super;
 }

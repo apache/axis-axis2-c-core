@@ -65,22 +65,22 @@ struct woden_types_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *types,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *types,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *types,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_documentable *(AXIS2_CALL *
     get_base_impl) (
             void *types,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     /* ************************************************************
      *  Non-API implementation methods
@@ -102,7 +102,7 @@ struct woden_types_ops
     void *(AXIS2_CALL * 
     get_element_declaration) (
             void *types,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     /*
@@ -121,7 +121,7 @@ struct woden_types_ops
     void *(AXIS2_CALL * 
     get_type_definition) (
             void *types,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 /*
  * Returns a List of Xml Schema objects for all schemas that are referenceable 
@@ -133,7 +133,7 @@ struct woden_types_ops
     axutil_array_list_t *(AXIS2_CALL *
     get_referenceable_schema_defs) (
             void *types,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /*
      * Indicates if the namespace represented by the specified URI
@@ -147,7 +147,7 @@ struct woden_types_ops
     axis2_bool_t (AXIS2_CALL * 
     is_namespace_in_scope_with_namespace_uri) (
             void *types,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *namespc_uri);
 
     /*
@@ -160,7 +160,7 @@ struct woden_types_ops
     axis2_bool_t (AXIS2_CALL * 
     is_namespace_in_scope_with_qname) (
             void *types,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     /*
@@ -174,7 +174,7 @@ struct woden_types_ops
     axis2_bool_t (AXIS2_CALL * 
     is_namespace_in_scope_with_namespace) (
             void *types,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *namespc);
 
 
@@ -195,60 +195,60 @@ struct woden_types
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_types_element(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_nested_element(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_documentable_element(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_documentable(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_wsdl_obj(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_nested_component(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_wsdl_component(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_element_extensible(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_types_t * AXIS2_CALL
 woden_types_to_attr_extensible(
         void *types,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_types_resolve_methods(
         woden_types_t *types,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_types_t *types_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

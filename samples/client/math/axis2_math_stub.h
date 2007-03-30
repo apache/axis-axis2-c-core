@@ -32,27 +32,27 @@ extern "C"
 
 axiom_node_t *
 axis2_math_stub_add(axis2_stub_t *stub,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axiom_node_t *node);
 
 axiom_node_t *
 axis2_math_stub_sub(axis2_stub_t *stub,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axiom_node_t *node);
 
 axiom_node_t *
 axis2_math_stub_mul(axis2_stub_t *stub,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axiom_node_t *node);
 
 axiom_node_t *
 axis2_math_stub_div(axis2_stub_t *stub,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axiom_node_t *node);
 /**
  * populate services
  */
-void axis2_populate_axis_service( axis2_stub_t* stub, const axis2_env_t *env);
+void axis2_populate_axis_service( axis2_stub_t* stub, const axutil_env_t *env);
 
 /**
  * Creates axis2_stub struct
@@ -60,7 +60,7 @@ void axis2_populate_axis_service( axis2_stub_t* stub, const axis2_env_t *env);
  * @return pointer to newly created axis2_stub struct
  */
 axis2_stub_t *
-axis2_math_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
+axis2_math_stub_create_with_endpoint_ref_and_client_home(const axutil_env_t *env,
                                             axis2_endpoint_ref_t *endpoint_ref,
                                             axis2_char_t *client_home);
 
@@ -70,7 +70,7 @@ axis2_math_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
  * @return pointer to newly created axis2_stub struct
  */
 axis2_stub_t *
-axis2_math_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
+axis2_math_stub_create_with_endpoint_uri_and_client_home(const axutil_env_t *env,
                                             const axis2_char_t *endpoint_uri,
                                             const axis2_char_t *client_home);
 /** @} */

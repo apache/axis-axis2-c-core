@@ -49,17 +49,17 @@ struct woden_soap_module_impl
 axis2_status_t AXIS2_CALL
 woden_soap_module_free(
     void *module,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_soap_module_super_objs(
     void *module,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_soap_module_type(
     void *module,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ***********************************************************************
  *  Component model methods (SOAPHeaderBlock interface), some shared with Element model
@@ -68,22 +68,22 @@ woden_soap_module_type(
 axis2_uri_t *AXIS2_CALL
 woden_soap_module_get_ref(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 woden_soap_module_is_required(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_soap_module_get_parent(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_soap_module_to_element(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 /* ***********************************************************************
  *  Element model-only methods (SOAPHeaderBlockElement interface)
@@ -92,46 +92,46 @@ woden_soap_module_to_element(
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_ref(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_uri_t *uri);
 
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_parent_element(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     void *wsdl_el);
 
 void *AXIS2_CALL
 woden_soap_module_get_parent_element(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_soap_module_add_documentation_element(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     void *doc_el);
 
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_documentation_elements(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_extension_type(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_qname_t *qname);
 
 axis2_qname_t *AXIS2_CALL
 woden_soap_module_get_extension_type(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_required(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_bool_t required);
 
 /* ***********************************************************************
@@ -141,75 +141,75 @@ woden_soap_module_set_required(
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_ext_attr(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_qname_t *attr_type,
     void *attr);
 
 void *AXIS2_CALL
 woden_soap_module_get_ext_attr(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_qname_t *attr_type);
 
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_attrs_for_namespace(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_uri_t *namespc);
 
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_attrs(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 woden_soap_module_has_ext_attrs_for_namespace(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 woden_soap_module_add_ext_element(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     void *ext_el);
 
 axis2_status_t AXIS2_CALL
 woden_soap_module_remove_ext_element(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     void *ext_el);
 
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_elements(
     void *module,
-    axis2_env_t *env);
+    axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_elements_of_type(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_qname_t *ext_type);
 
 axis2_bool_t AXIS2_CALL
 woden_soap_module_has_ext_elements_for_namespace(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_uri_t *namespc);
 
 static woden_soap_module_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_soap_module_free_ops(
     void *module,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_to_soap_module_element(
     void *module,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -233,7 +233,7 @@ woden_soap_module_to_soap_module_element(
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_to_ext_element(
     void *module,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -257,7 +257,7 @@ woden_soap_module_to_ext_element(
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_to_attr_extensible(
     void *module,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -281,7 +281,7 @@ woden_soap_module_to_attr_extensible(
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_to_element_extensible(
     void *module,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -304,7 +304,7 @@ woden_soap_module_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_soap_module_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -455,7 +455,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
-woden_soap_module_create(const axis2_env_t *env)
+woden_soap_module_create(const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -477,7 +477,7 @@ woden_soap_module_create(const axis2_env_t *env)
 static axis2_status_t
 woden_soap_module_free_ops(
     void *module,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -518,7 +518,7 @@ woden_soap_module_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_soap_module_free(void *module,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -592,7 +592,7 @@ woden_soap_module_free(void *module,
 axis2_hash_t *AXIS2_CALL
 woden_soap_module_super_objs(
     void *module,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -605,7 +605,7 @@ woden_soap_module_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_soap_module_type(
     void *module,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
@@ -618,7 +618,7 @@ woden_soap_module_type(
 axis2_status_t AXIS2_CALL
 woden_soap_module_resolve_methods(
     woden_soap_module_t *module,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_soap_module_t *module_impl,
     axis2_hash_t *methods)
 {
@@ -669,7 +669,7 @@ woden_soap_module_resolve_methods(
 axis2_uri_t *AXIS2_CALL
 woden_soap_module_get_ref(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -685,7 +685,7 @@ woden_soap_module_get_ref(
 axis2_bool_t AXIS2_CALL
 woden_soap_module_is_required(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -701,7 +701,7 @@ woden_soap_module_is_required(
 void *AXIS2_CALL
 woden_soap_module_get_parent(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -717,7 +717,7 @@ woden_soap_module_get_parent(
 void *AXIS2_CALL
 woden_soap_module_to_element(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -738,7 +738,7 @@ woden_soap_module_to_element(
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_ref(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_uri_t *uri)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -765,7 +765,7 @@ woden_soap_module_set_ref(
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_parent_element(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     void *wsdl_el)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -789,7 +789,7 @@ woden_soap_module_set_parent_element(
 void *AXIS2_CALL
 woden_soap_module_get_parent_element(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -805,7 +805,7 @@ woden_soap_module_get_parent_element(
 axis2_status_t AXIS2_CALL
 woden_soap_module_add_documentation_element(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     void *doc_el)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -834,7 +834,7 @@ woden_soap_module_add_documentation_element(
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_documentation_elements(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -850,7 +850,7 @@ woden_soap_module_get_documentation_elements(
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_extension_type(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_qname_t *qname)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -875,7 +875,7 @@ woden_soap_module_set_extension_type(
 axis2_qname_t *AXIS2_CALL
 woden_soap_module_get_extension_type(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -891,7 +891,7 @@ woden_soap_module_get_extension_type(
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_required(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_bool_t required)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -914,7 +914,7 @@ woden_soap_module_set_required(
 axis2_status_t AXIS2_CALL
 woden_soap_module_set_ext_attr(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_qname_t *attr_type,
     void *attr)
 {
@@ -935,7 +935,7 @@ woden_soap_module_set_ext_attr(
 void *AXIS2_CALL
 woden_soap_module_get_ext_attr(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_qname_t *attr_type)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -954,7 +954,7 @@ woden_soap_module_get_ext_attr(
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_attrs_for_namespace(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_uri_t *namespc)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -973,7 +973,7 @@ woden_soap_module_get_ext_attrs_for_namespace(
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_attrs(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -990,7 +990,7 @@ woden_soap_module_get_ext_attrs(
 axis2_bool_t AXIS2_CALL
 woden_soap_module_has_ext_attrs_for_namespace(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_uri_t *namespc)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -1009,7 +1009,7 @@ woden_soap_module_has_ext_attrs_for_namespace(
 axis2_status_t AXIS2_CALL
 woden_soap_module_add_ext_element(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     void *ext_el)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -1028,7 +1028,7 @@ woden_soap_module_add_ext_element(
 axis2_status_t AXIS2_CALL
 woden_soap_module_remove_ext_element(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     void *ext_el)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -1049,7 +1049,7 @@ woden_soap_module_remove_ext_element(
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_elements(
     void *module,
-    axis2_env_t *env)
+    axutil_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1066,7 +1066,7 @@ woden_soap_module_get_ext_elements(
 axutil_array_list_t *AXIS2_CALL
 woden_soap_module_get_ext_elements_of_type(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_qname_t *ext_type)
 {
     woden_soap_module_impl_t *module_impl = NULL;
@@ -1085,7 +1085,7 @@ woden_soap_module_get_ext_elements_of_type(
 axis2_bool_t AXIS2_CALL
 woden_soap_module_has_ext_elements_for_namespace(
     void *module,
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_uri_t *namespc)
 {
     woden_soap_module_impl_t *module_impl = NULL;

@@ -8,7 +8,7 @@ void
 setup (void)
 {
 allocator = axutil_allocator_init(NULL);
-env = axis2_env_create(allocator);
+env = axutil_env_create(allocator);
 }
 
 void
@@ -16,7 +16,7 @@ teardown (void)
 {
  guththila_reader_free(env, red);
  guththila_free(env, parser);
- axis2_env_free(env);
+ axutil_env_free(env);
 }
 
 START_TEST (test_guththila)

@@ -53,44 +53,44 @@ struct xml_schema_particle_impl
 axis2_status_t AXIS2_CALL
 xml_schema_particle_free(
     void *particle,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_particle_super_objs(
     void *particle,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_particle_get_type(
     void *particle,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_particle_get_base_impl(void *particle,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 long AXIS2_CALL
 xml_schema_particle_get_max_occurs(void *particle,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_particle_set_max_occurs(void *particle,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         long max_occurs);
 
 long AXIS2_CALL
 xml_schema_particle_get_min_occurs(void *particle,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_particle_set_min_occurs(void *particle,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         long min_occurs);
 
 /*************** function prototypes *****************************************/
 
 AXIS2_EXTERN xml_schema_particle_t * AXIS2_CALL
-xml_schema_particle_create(const axis2_env_t *env)
+xml_schema_particle_create(const axutil_env_t *env)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -180,7 +180,7 @@ xml_schema_particle_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_particle_free(void *particle,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;
 
@@ -222,7 +222,7 @@ xml_schema_particle_free(void *particle,
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_particle_super_objs(void *particle,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -232,7 +232,7 @@ xml_schema_particle_super_objs(void *particle,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_particle_get_type(void *particle,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -242,7 +242,7 @@ xml_schema_particle_get_type(void *particle,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_particle_get_base_impl(void *particle,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -253,7 +253,7 @@ xml_schema_particle_get_base_impl(void *particle,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_particle_resolve_methods(
     xml_schema_particle_t *particle,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_particle_t *particle_impl,
     XML_SCHEMA_SUPER_OBJS_FN super_objs,
     XML_SCHEMA_GET_TYPE_FN get_type,
@@ -297,7 +297,7 @@ xml_schema_particle_resolve_methods(
 
 long AXIS2_CALL
 xml_schema_particle_get_max_occurs(void *particle,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -316,7 +316,7 @@ xml_schema_particle_get_max_occurs(void *particle,
 
 axis2_status_t AXIS2_CALL
 xml_schema_particle_set_max_occurs(void *particle,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         long max_occurs)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;
@@ -338,7 +338,7 @@ xml_schema_particle_set_max_occurs(void *particle,
 
 long AXIS2_CALL
 xml_schema_particle_get_min_occurs(void *particle,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -358,7 +358,7 @@ xml_schema_particle_get_min_occurs(void *particle,
 
 axis2_status_t AXIS2_CALL
 xml_schema_particle_set_min_occurs(void *particle,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         long min_occurs)
 {
     xml_schema_particle_impl_t *particle_impl = NULL;

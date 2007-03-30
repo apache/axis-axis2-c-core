@@ -51,38 +51,38 @@ struct xml_schema_simple_type_list_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *simple_type_list,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_simple_type_content_t *(AXIS2_CALL *
     get_base_impl) (void *simple_type_list,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     xml_schema_types_t (AXIS2_CALL *
     get_type)(void *simple_type_list,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
     
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *simple_type_list,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
           
 
     xml_schema_simple_type_t *(AXIS2_CALL *
     get_item_type)(void *simple_type_list,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
     /** */
     axis2_status_t (AXIS2_CALL *
     set_item_type)(void *simple_type_list,
-                   const axis2_env_t *env,
+                   const axutil_env_t *env,
                    xml_schema_simple_type_t *base_type);
     
     axis2_qname_t* (AXIS2_CALL *
     get_item_type_name)(void *simple_type_list,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_item_type_name)(void *simple_type_list,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_qname_t *qname);
 };
 
@@ -101,7 +101,7 @@ struct xml_schema_simple_type_list
  * (any).
  */
 AXIS2_EXTERN xml_schema_simple_type_list_t * AXIS2_CALL
-xml_schema_simple_type_list_create(const axis2_env_t *env);
+xml_schema_simple_type_list_create(const axutil_env_t *env);
 
  /********************** Macros ***********************************************/
  

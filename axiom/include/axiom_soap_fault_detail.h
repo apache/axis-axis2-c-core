@@ -23,7 +23,7 @@
  * @brief axiom_soap_fault_detail struct
  */
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_soap_fault.h>
 #include <axiom_children_iterator.h>
 
@@ -46,7 +46,7 @@ extern "C"
       */
     AXIS2_EXTERN axiom_soap_fault_detail_t * AXIS2_CALL
     axiom_soap_fault_detail_create_with_parent
-    (const axis2_env_t *env,
+    (const axutil_env_t *env,
             axiom_soap_fault_t *fault);
 
     /**
@@ -59,20 +59,20 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axiom_soap_fault_detail_free(axiom_soap_fault_detail_t *fault_detail,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_fault_detail_add_detail_entry(axiom_soap_fault_detail_t *fault_detail,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *ele_node);
 
     AXIS2_EXTERN axiom_children_iterator_t* AXIS2_CALL
     axiom_soap_fault_detail_get_all_detail_entries(axiom_soap_fault_detail_t *fault_detail,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_soap_fault_detail_get_base_node(axiom_soap_fault_detail_t *fault_code,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     /** @} */

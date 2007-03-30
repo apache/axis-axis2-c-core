@@ -34,7 +34,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_async_result.h>
 #include <axiom_soap_envelope.h>
 
@@ -48,11 +48,11 @@ extern "C"
     /** Type name for function pointer to be called on complete of callback  */
     typedef axis2_status_t AXIS2_CALL
             axis2_on_complete_func_ptr(axis2_callback_t *,
-                    const axis2_env_t *);
+                    const axutil_env_t *);
     /** Type name for function pointer to be called on error of callback  */
     typedef axis2_status_t AXIS2_CALL
             axis2_on_error_func_ptr(axis2_callback_t *,
-                    const axis2_env_t *, int);
+                    const axutil_env_t *, int);
 
     /**
      * This function is called once the asynchronous operation is successfully 
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_callback_invoke_on_complete(axis2_callback_t *callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_async_result_t *result);
 
     /**
@@ -77,7 +77,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_callback_report_error(axis2_callback_t *callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int exception);
 
     /**
@@ -99,7 +99,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_callback_get_complete(const axis2_callback_t *callback,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the complete status.
@@ -110,7 +110,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_callback_set_complete(axis2_callback_t *callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_bool_t complete);
 
     /**
@@ -121,7 +121,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_soap_envelope_t *AXIS2_CALL
     axis2_callback_get_envelope(const axis2_callback_t *callback,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the SOAP envelope.
@@ -132,7 +132,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_callback_set_envelope(axis2_callback_t *callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_soap_envelope_t *envelope);
 
     /**
@@ -143,7 +143,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_callback_get_error(const axis2_callback_t *callback,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the error code.
@@ -154,7 +154,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_callback_set_error(axis2_callback_t *callback,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int error);
 
     /**
@@ -201,7 +201,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_callback_free(axis2_callback_t *callback,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates a callback struct.
@@ -209,7 +209,7 @@ extern "C"
      * @return pointer to newly created callback struct
      */
     AXIS2_EXTERN axis2_callback_t *AXIS2_CALL 
-    axis2_callback_create(const axis2_env_t *env);
+    axis2_callback_create(const axutil_env_t *env);
 
 
 /** @} */

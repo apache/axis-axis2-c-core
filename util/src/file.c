@@ -26,7 +26,7 @@ struct axis2_file
 };
 
 AXIS2_EXTERN axis2_file_t *AXIS2_CALL
-axis2_file_create(const axis2_env_t *env)
+axis2_file_create(const axutil_env_t *env)
 {
     axis2_file_t *file = NULL;
 
@@ -49,7 +49,7 @@ axis2_file_create(const axis2_env_t *env)
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_file_free(axis2_file_t *file,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -72,7 +72,7 @@ axis2_file_free(axis2_file_t *file,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_file_set_name(axis2_file_t *file,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -94,7 +94,7 @@ axis2_file_set_name(axis2_file_t *file,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_file_get_name(axis2_file_t *file,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     if (!file->name)
     {
@@ -107,7 +107,7 @@ axis2_file_get_name(axis2_file_t *file,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_file_set_path(axis2_file_t *file,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *path)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -132,7 +132,7 @@ axis2_file_set_path(axis2_file_t *file,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_file_get_path(axis2_file_t *file,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     if (!(file->path))
     {
@@ -146,7 +146,7 @@ axis2_file_get_path(axis2_file_t *file,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_file_set_timestamp(axis2_file_t *file,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         AXIS2_TIME_T timestamp)
 {
     file->timestamp = timestamp;
@@ -155,14 +155,14 @@ axis2_file_set_timestamp(axis2_file_t *file,
 
 AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
 axis2_file_get_timestamp(axis2_file_t *file,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return file->timestamp;
 }
 
 AXIS2_EXTERN axis2_file_t *AXIS2_CALL
 axis2_file_clone(axis2_file_t *file,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     axis2_file_t *new_file = NULL;
     axis2_status_t status = AXIS2_FAILURE;

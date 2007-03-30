@@ -52,32 +52,32 @@ struct woden_interface_msg_ref_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_nested_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_msg_label) (
             void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_direction) (
             void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Indicates the type of message content.#any means any single element, 
@@ -89,17 +89,17 @@ struct woden_interface_msg_ref_ops
     axis2_char_t *(AXIS2_CALL *
     get_msg_content_model) (
             void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_element_declaration) (
             void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     to_element)  (
             void *interface_msg_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 /* ************************************************************
  *  Non-API implementation methods
@@ -107,13 +107,13 @@ struct woden_interface_msg_ref_ops
     axis2_status_t (AXIS2_CALL *
     set_element_declaration) (
             void *interface_msg_ref,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *element);
 
     axis2_status_t (AXIS2_CALL *
     set_types) (
             void *interface_msg_ref,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *types);
 };
 
@@ -131,60 +131,60 @@ struct woden_interface_msg_ref
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_interface_msg_ref_element(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_nested_configurable(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_configurable(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_nested_element(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_configurable_element(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_documentable_element(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_documentable(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_attr_extensible(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_msg_ref_t * AXIS2_CALL
 woden_interface_msg_ref_to_element_extensible(
         void *interface_msg_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_interface_msg_ref_resolve_methods(
         woden_interface_msg_ref_t *interface_msg_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_interface_msg_ref_t *interface_msg_ref_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

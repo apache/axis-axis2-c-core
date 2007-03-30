@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #include <axis2_string.h>
 
@@ -55,7 +55,7 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
-    axis2_qname_create(const axis2_env_t *env,
+    axis2_qname_create(const axutil_env_t *env,
         const axis2_char_t * localpart,
         const axis2_char_t * namespace_uri,
         const axis2_char_t * prefix);
@@ -68,7 +68,7 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
-    axis2_qname_create_from_string(const axis2_env_t *env,
+    axis2_qname_create_from_string(const axutil_env_t *env,
         const axis2_char_t *string);
 
     /**
@@ -77,7 +77,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_qname_free(struct axis2_qname * qname,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Compare two qnames
@@ -88,7 +88,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_qname_equals(const struct axis2_qname * qname,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const struct axis2_qname * qname1);
     /**
     * clones a given qname
@@ -99,19 +99,19 @@ extern "C"
 
     AXIS2_EXTERN struct axis2_qname* AXIS2_CALL
     axis2_qname_clone(struct axis2_qname *qname,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_qname_get_uri(const struct axis2_qname *qname,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_qname_get_prefix(const struct axis2_qname *qname,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_qname_get_localpart(const struct axis2_qname *qname,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * returns a unique string created by concatanting namespace uri 
@@ -121,7 +121,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_qname_to_string(struct axis2_qname *qname,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** @} */
 

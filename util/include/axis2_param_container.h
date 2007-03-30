@@ -31,7 +31,7 @@
 #include <axis2_utils.h>
 #include <axis2_error.h>
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_string.h>
 #include <axutil_array_list.h>
@@ -53,7 +53,7 @@ extern "C"
      */
     typedef void (AXIS2_CALL *
     AXIS2_PARAM_VALUE_FREE)(void *param, 
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     typedef struct axis2_param_container axis2_param_container_t;
 
@@ -62,7 +62,7 @@ extern "C"
      * @return pointer to newly created param container
      */
     AXIS2_EXTERN axis2_param_container_t * AXIS2_CALL
-    axis2_param_container_create(const axis2_env_t *env);
+    axis2_param_container_create(const axutil_env_t *env);
 
     /**
      * Free param_container passed as void pointer. This will be
@@ -71,14 +71,14 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_param_container_free_void_arg(void *param_container,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** De-allocate memory
        * @return status code
        */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_param_container_free(axis2_param_container_t *param_container,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** Add a param
       * @param param param to be added
@@ -86,7 +86,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_container_add_param(axis2_param_container_t *param_container,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_param_t *param);
 
     /** To get a param in a given description
@@ -95,7 +95,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_param_t * AXIS2_CALL
     axis2_param_container_get_param(axis2_param_container_t *param_container,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
 
@@ -104,7 +104,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
     axis2_param_container_get_params(axis2_param_container_t *param_container,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** To check whether the paramter is locked at any level
      * @param param_name name of the param
@@ -112,7 +112,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_param_container_is_param_locked(axis2_param_container_t *param_container,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *param_name) ;
 
 

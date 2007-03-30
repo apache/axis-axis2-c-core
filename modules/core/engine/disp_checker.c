@@ -40,7 +40,7 @@ struct axis2_disp_checker
 
 axis2_disp_checker_t *AXIS2_CALL
 axis2_disp_checker_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_disp_checker_t *disp_checker = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -89,7 +89,7 @@ axis2_disp_checker_create(
 axis2_handler_t *AXIS2_CALL
 axis2_disp_checker_get_base(
     const axis2_disp_checker_t *disp_checker,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return disp_checker->base;
 }
@@ -97,7 +97,7 @@ axis2_disp_checker_get_base(
 axis2_string_t *AXIS2_CALL
 axis2_disp_checker_get_name(
     const axis2_disp_checker_t *disp_checker,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return disp_checker->name;
 }
@@ -105,7 +105,7 @@ axis2_disp_checker_get_name(
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_set_name(
     axis2_disp_checker_t *disp_checker,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_string_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -129,7 +129,7 @@ axis2_disp_checker_set_name(
 void AXIS2_CALL
 axis2_disp_checker_free(
     axis2_disp_checker_t *disp_checker,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -146,7 +146,7 @@ axis2_disp_checker_free(
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_invoke(
     axis2_handler_t *handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_t *op = NULL;

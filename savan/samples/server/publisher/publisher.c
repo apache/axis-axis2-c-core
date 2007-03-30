@@ -20,10 +20,10 @@
 #include "publisher.h"
 
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env, axis2_char_t *text);
+build_om_programatically(const axutil_env_t *env, axis2_char_t *text);
 
 axiom_node_t *
-axis2_publisher_start(const axis2_env_t *env, axiom_node_t *node)
+axis2_publisher_start(const axutil_env_t *env, axiom_node_t *node)
 {
 	axiom_node_t *ret_node = NULL;
 
@@ -38,7 +38,7 @@ axis2_publisher_start(const axis2_env_t *env, axiom_node_t *node)
 
 /* Builds the response content */
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env, axis2_char_t *text)
+build_om_programatically(const axutil_env_t *env, axis2_char_t *text)
 {
     axiom_node_t *echo_om_node = NULL;
     axiom_element_t* echo_om_ele = NULL;

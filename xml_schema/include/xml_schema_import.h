@@ -48,30 +48,30 @@ struct xml_schema_import_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *import,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_external_t* (AXIS2_CALL *
     get_base_impl)(void *import,
-                   const axis2_env_t *env);
+                   const axutil_env_t *env);
 
 
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *import,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
                 
     xml_schema_types_t (AXIS2_CALL *
     get_type)(void *import,
-                const axis2_env_t *env);                
+                const axutil_env_t *env);                
     
     axis2_char_t* (AXIS2_CALL *
     get_namespace)(void *import,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
                 
                 
                 
     axis2_status_t (AXIS2_CALL *
     set_namespace)(void *import,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_char_t *ns);
 
 };
@@ -86,7 +86,7 @@ struct xml_schema_import
  * Creates new Xml Schema import
  */
 AXIS2_EXTERN xml_schema_import_t * AXIS2_CALL
-xml_schema_import_create(const axis2_env_t *env);
+xml_schema_import_create(const axutil_env_t *env);
 
 
 #define XML_SCHEMA_IMPORT_FREE(import, env) \

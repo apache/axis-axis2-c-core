@@ -60,19 +60,19 @@ struct woden_resolver_impl
 axis2_status_t AXIS2_CALL
 woden_resolver_free(
     void *resolver,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_resolver_read(
     void *resolver,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_document_t *om_doc,
     const axis2_char_t *doc_base_uri);
 
 int AXIS2_CALL
 woden_resolver_get_spec(
     void *resolver,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* Parse the attributes and child elements of the <description> element.
  * As per the WSDL 2.0 spec, the child elements must be in the
@@ -86,7 +86,7 @@ woden_resolver_get_spec(
 static void *
 yomu(
     void *resolver,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *desc_el_node,
     const axis2_char_t *doc_base_uri);
 
@@ -103,13 +103,13 @@ yomu(
 static axis2_status_t
 check_element_qname(
     void *resolver,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *el_node,
     axis2_qname_t *qname);
 
 static woden_resolver_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_resolver_impl_t *resolver_impl = NULL;
 
@@ -133,7 +133,7 @@ create(
 
 AXIS2_EXTERN woden_resolver_t * AXIS2_CALL
 woden_resolver_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_resolver_impl_t *resolver_impl = NULL;
 
@@ -146,7 +146,7 @@ woden_resolver_create(
 axis2_status_t AXIS2_CALL
 woden_resolver_free(
     void *resolver,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_resolver_impl_t *resolver_impl = NULL;
 
@@ -173,7 +173,7 @@ woden_resolver_free(
 void *AXIS2_CALL
 woden_resolver_read(
     void *resolver,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_document_t *om_doc,
     const axis2_char_t *doc_base_uri)
 {
@@ -194,7 +194,7 @@ woden_resolver_read(
 int AXIS2_CALL
 woden_resolver_get_spec(
     void *resolver,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_resolver_impl_t *resolver_impl = NULL;
 
@@ -207,7 +207,7 @@ woden_resolver_get_spec(
 static void *
 yomu(
     void *resolver,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *desc_el_node,
     const axis2_char_t *doc_base_uri)
 {
@@ -262,7 +262,7 @@ yomu(
 static axis2_status_t
 check_element_qname(
     void *resolver,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *el_node,
     axis2_qname_t *qname)
 {

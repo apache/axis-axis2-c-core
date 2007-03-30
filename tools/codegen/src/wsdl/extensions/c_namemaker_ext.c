@@ -32,7 +32,7 @@ typedef struct w2c_c_namemaker_ext_impl
 /************************* implmentations ********************************/
 axis2_status_t AXIS2_CALL
 w2c_c_namemaker_ext_free(w2c_extension_t *extension,
-       const axis2_env_t *env)
+       const axutil_env_t *env)
 {
     w2c_c_namemaker_ext_impl_t *extension_impl = NULL;
 
@@ -54,7 +54,7 @@ w2c_c_namemaker_ext_free(w2c_extension_t *extension,
 
 axis2_status_t AXIS2_CALL
 w2c_c_namemaker_ext_engage(w2c_extension_t *extension,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        w2c_engine_configuration_t *conf)
 {
     w2c_c_namemaker_ext_impl_t *extension_impl = NULL;
@@ -80,7 +80,7 @@ w2c_c_namemaker_ext_engage(w2c_extension_t *extension,
 /****************** standard create and delete for DLL ************************/
 AXIS2_EXPORT int
 axis2_get_instance(w2c_extension_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     w2c_c_namemaker_ext_impl_t *extension_impl = NULL;
  
@@ -114,7 +114,7 @@ axis2_get_instance(w2c_extension_t **inst,
 
 AXIS2_EXPORT int
 axis2_remove_instance(w2c_extension_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 

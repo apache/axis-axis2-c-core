@@ -49,48 +49,48 @@ xml_schema_redefine_impl_t;
 
 axis2_status_t AXIS2_CALL
 xml_schema_redefine_free(void *redefine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_external_t *AXIS2_CALL
 xml_schema_redefine_get_base_impl(void *redefine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_redefine_get_type(void *redefine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_redefine_super_objs(void *redefine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_obj_table_t* AXIS2_CALL
 xml_schema_redefine_get_attribute_group(void *redefine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_redefine_set_attribute_group(void *redefine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_obj_table_t *group);
 
 
 
 xml_schema_obj_collection_t* AXIS2_CALL
 xml_schema_redefine_get_items(void *redefine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_obj_table_t* AXIS2_CALL
 xml_schema_redefine_get_schema_types(void *redefine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_obj_table_t* AXIS2_CALL
 xml_schema_redefine_get_group(void *redefine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /********************* end function prototypes ********************************/
 
 AXIS2_EXTERN xml_schema_redefine_t * AXIS2_CALL
-xml_schema_redefine_create(const axis2_env_t *env)
+xml_schema_redefine_create(const axutil_env_t *env)
 {
     xml_schema_redefine_impl_t *redefine_impl = NULL;
     xml_schema_annotated_t *annotated = NULL;
@@ -185,7 +185,7 @@ xml_schema_redefine_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_redefine_free(void *redefine,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_redefine_impl_t *redefine_impl = NULL;
 
@@ -222,7 +222,7 @@ xml_schema_redefine_free(void *redefine,
 
 xml_schema_external_t *AXIS2_CALL
 xml_schema_redefine_get_base_impl(void *redefine,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_redefine_impl_t *redefine_impl = NULL;
 
@@ -237,7 +237,7 @@ xml_schema_redefine_get_base_impl(void *redefine,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_redefine_resolve_methods(
                                 xml_schema_redefine_t *redefine,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_redefine_t *redefine_impl,
                                 axis2_hash_t *methods)
 {
@@ -268,14 +268,14 @@ xml_schema_redefine_resolve_methods(
 */
 xml_schema_obj_table_t* AXIS2_CALL
 xml_schema_redefine_get_attribute_group(void *redefine,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(redefine)->attr_groups;
 }
 
 axis2_status_t AXIS2_CALL
 xml_schema_redefine_set_attribute_group(void *redefine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_obj_table_t *group)
 {
     xml_schema_redefine_impl_t *red_impl = NULL;
@@ -292,28 +292,28 @@ xml_schema_redefine_set_attribute_group(void *redefine,
 
 xml_schema_obj_collection_t* AXIS2_CALL
 xml_schema_redefine_get_items(void *redefine,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(redefine)->items;
 }
 
 xml_schema_obj_table_t* AXIS2_CALL
 xml_schema_redefine_get_schema_types(void *redefine,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(redefine)->schema_types;
 }
 
 xml_schema_obj_table_t* AXIS2_CALL
 xml_schema_redefine_get_group(void *redefine,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(redefine)->groups;
 }
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_redefine_get_type(void *redefine,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(redefine)->obj_type;
 }
@@ -321,7 +321,7 @@ xml_schema_redefine_get_type(void *redefine,
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_redefine_super_objs(void *redefine,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(redefine)->ht_super;
 }

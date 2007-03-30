@@ -33,12 +33,12 @@ const axis2_char_t *AXIS2_CTX_HANDLER_NAME = "context_handler";
 axis2_status_t AXIS2_CALL
 axis2_ctx_handler_invoke(
     axis2_handler_t *handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
 axis2_handler_t *AXIS2_CALL
 axis2_ctx_handler_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_string_t *string)
 {
     axis2_handler_t *handler = NULL;
@@ -94,7 +94,7 @@ axis2_ctx_handler_create(
 axis2_status_t AXIS2_CALL
 axis2_ctx_handler_invoke(
     axis2_handler_t *handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     axis2_op_t *op = NULL;

@@ -22,7 +22,7 @@
 #include <axutil_allocator.h>
 #include <test_log.h>
 #include <string.h>
-const axis2_env_t *create_env_with_error_log()
+const axutil_env_t *create_env_with_error_log()
 {
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     if (!allocator)
@@ -48,7 +48,7 @@ const axis2_env_t *create_env_with_error_log()
       */
     log22->level = AXIS2_LOG_LEVEL_DEBUG;
     /*   log22->enabled = 0;*/
-    const axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log22);
+    const axutil_env_t *env = axutil_env_create_with_error_log(allocator, error, log22);
     if (!env)
     {
         printf("cannot create env with error and log\n");
@@ -57,7 +57,7 @@ const axis2_env_t *create_env_with_error_log()
     return env;
 }
 
-void test_axis2_log_write(const axis2_env_t *env)
+void test_axis2_log_write(const axutil_env_t *env)
 {
     char msg[10];
     printf("\n####start of test_axis2_log_write\n\n");
@@ -66,7 +66,7 @@ void test_axis2_log_write(const axis2_env_t *env)
     printf("\n####end of test_axis2_log_write\n\n");
 }
 
-void test_axis2_log_debug(const axis2_env_t *env)
+void test_axis2_log_debug(const axutil_env_t *env)
 {
     printf("\n####start of test_axis2_log_degug\n\n");
     env->log->level = AXIS2_LOG_LEVEL_DEBUG;
@@ -74,7 +74,7 @@ void test_axis2_log_debug(const axis2_env_t *env)
     printf("\n####end of test_axis2_log_debug\n\n");
 }
 
-void test_axis2_log_debug_off(const axis2_env_t *env)
+void test_axis2_log_debug_off(const axutil_env_t *env)
 {
     printf("\n####start of test_axis2_log_degug_off\n\n");
     env->log->level = AXIS2_LOG_LEVEL_ERROR;/*log only ERROR's and CRITICAL's*/
@@ -82,7 +82,7 @@ void test_axis2_log_debug_off(const axis2_env_t *env)
     printf("\n####end of test_axis2_log_debug_off\n\n");
 }
 
-void test_axis2_log_info(const axis2_env_t *env)
+void test_axis2_log_info(const axutil_env_t *env)
 {
     printf("\n####start of test_axis2_log_info\n\n");
     env->log->level = AXIS2_LOG_LEVEL_DEBUG;
@@ -91,7 +91,7 @@ void test_axis2_log_info(const axis2_env_t *env)
 }
 
 
-void test_axis2_log_info_off(const axis2_env_t *env)
+void test_axis2_log_info_off(const axutil_env_t *env)
 {
     printf("\n####start of test_axis2_log_info_off\n\n");
     env->log->level = AXIS2_LOG_LEVEL_ERROR;/*log only ERROR's and CRITICAL's*/
@@ -100,7 +100,7 @@ void test_axis2_log_info_off(const axis2_env_t *env)
 }
 
 
-void test_axis2_log_warning(const axis2_env_t *env)
+void test_axis2_log_warning(const axutil_env_t *env)
 {
     printf("\n####start of test_axis2_log_warning\n\n");
     env->log->level = AXIS2_LOG_LEVEL_DEBUG;
@@ -109,7 +109,7 @@ void test_axis2_log_warning(const axis2_env_t *env)
 }
 
 
-void test_axis2_log_warning_off(const axis2_env_t *env)
+void test_axis2_log_warning_off(const axutil_env_t *env)
 {
     printf("\n####start of test_axis2_log_warning_off\n\n");
     env->log->level = AXIS2_LOG_LEVEL_ERROR;/*log only ERROR's and CRITICAL's*/
@@ -118,7 +118,7 @@ void test_axis2_log_warning_off(const axis2_env_t *env)
 }
 
 /*no need to sent log level, should always log*/
-void test_axis2_log_error(const axis2_env_t *env)
+void test_axis2_log_error(const axutil_env_t *env)
 {
     printf("\n####start of test_axis2_log_error\n\n");
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "log_error test %s %d", "foo", 1);
@@ -126,7 +126,7 @@ void test_axis2_log_error(const axis2_env_t *env)
 }
 
 /*no need to sent log level, should always log*/
-void test_axis2_log_critical(const axis2_env_t *env)
+void test_axis2_log_critical(const axutil_env_t *env)
 {
     printf("\n####start of test_axis2_log_critical\n\n");
     AXIS2_LOG_CRITICAL(env->log, AXIS2_LOG_SI, "log_critical test %s %d", "foo", 1);
@@ -136,7 +136,7 @@ void test_axis2_log_critical(const axis2_env_t *env)
 void run_test_log()
 {
     printf("\n####start of run_test_log test suite\n\n");
-    const axis2_env_t *env = create_env_with_error_log();
+    const axutil_env_t *env = create_env_with_error_log();
     if (!env)
         return;
     test_axis2_log_write(env);

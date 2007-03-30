@@ -49,7 +49,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -80,22 +80,22 @@ struct woden_msg_label_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *msg_label,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     to_string) (
             void *msg_label,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     is_valid) (
             void *msg_label,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     equals) (
             void *msg_label,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             woden_msg_label_t *other);
 
 
@@ -109,15 +109,15 @@ struct woden_msg_label
 
 AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
 woden_msg_label_get_msg_label_in(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
 woden_msg_label_get_msg_label_out(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
 woden_msg_label_get_invalid_value(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *value);
 
 #define WODEN_MSG_LABEL_FREE(msg_label, env) \

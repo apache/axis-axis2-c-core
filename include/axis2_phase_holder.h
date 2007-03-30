@@ -34,7 +34,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axutil_array_list.h>
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_phase_holder_free(axis2_phase_holder_t *phase_holder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if the named phase exist.
@@ -75,7 +75,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *phase_name);
 
     /**
@@ -87,7 +87,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_handler_desc *handler);
 
     /**
@@ -100,7 +100,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_phase *AXIS2_CALL
     axis2_phase_holder_get_phase(const axis2_phase_holder_t *phase_holder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *phase_name);
 
     /**
@@ -116,7 +116,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_holder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_phase *phase,
         axutil_array_list_t *handlers);
 
@@ -126,7 +126,7 @@ extern "C"
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
-    axis2_phase_holder_create (const axis2_env_t *env);
+    axis2_phase_holder_create (const axutil_env_t *env);
 
     /**
      * Creates phase holder struct with given list of phases.
@@ -135,7 +135,7 @@ extern "C"
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
-    axis2_phase_holder_create_with_phases(const axis2_env_t *env,
+    axis2_phase_holder_create_with_phases(const axutil_env_t *env,
         axutil_array_list_t *phases);
 
 /** @} */

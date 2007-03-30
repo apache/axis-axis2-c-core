@@ -52,25 +52,25 @@ struct woden_wsdl10_reader_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *reader,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     void *(AXIS2_CALL *
     read_wsdl) (
             void *reader,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_node_t *root_node,
             const axis2_char_t *uri);
 
     axis2_status_t (AXIS2_CALL *
     set_ext_registry) (
             void *reader,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             woden_wsdl10_ext_registry_t *ext_reg);
 
     woden_wsdl10_ext_registry_t *(AXIS2_CALL *
     get_ext_registry) (
             void *reader,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
    
 };
@@ -82,7 +82,7 @@ struct woden_wsdl10_reader
 
 AXIS2_EXTERN woden_wsdl10_reader_t * AXIS2_CALL
 woden_wsdl10_reader_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #define WODEN_WSDL10_READER_FREE(reader, env) \
       (((woden_wsdl10_reader_t *) reader)->ops->free(reader, env))

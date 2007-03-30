@@ -21,7 +21,7 @@
 #include <axiom_node.h>
 #include <axiom_xml_reader.h>
 #include <axiom_document.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -43,7 +43,7 @@ extern "C"
       * @return a pointer to the newly created builder struct. 
       */
     AXIS2_EXTERN axiom_stax_builder_t * AXIS2_CALL
-    axiom_stax_builder_create(const axis2_env_t *env,
+    axiom_stax_builder_create(const axutil_env_t *env,
         axiom_xml_reader_t *parser);
 
     /**
@@ -56,7 +56,7 @@ extern "C"
       */
     AXIS2_EXTERN axiom_node_t* AXIS2_CALL
     axiom_stax_builder_next(struct axiom_stax_builder *builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
       * Discards the element that is being built currently.
@@ -66,7 +66,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_stax_builder_discard_current_element(struct axiom_stax_builder *builder,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
    
    /**
      * Free op
@@ -77,7 +77,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_stax_builder_free(struct axiom_stax_builder *builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /** Gets the document associated with the builder
      * @param builder axiom_stax_builder 
@@ -88,7 +88,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_document_t *AXIS2_CALL
     axiom_stax_builder_get_document(struct axiom_stax_builder *builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
      * builder is finished building om structure
@@ -96,7 +96,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_stax_builder_is_complete(struct axiom_stax_builder* builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
    /**
      * moves the reader to next event and returns the token returned
@@ -104,7 +104,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axiom_stax_builder_next_with_token(struct axiom_stax_builder *builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** @} */
 

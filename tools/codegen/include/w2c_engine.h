@@ -51,7 +51,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_engine_t *engine,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * signal to generate the code.
@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_ops
     */
     axis2_status_t (AXIS2_CALL *
     generate)(w2c_engine_t *engine,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
     
 
 };
@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine
  * @return newly created engine obj
  */
 AXIS2_EXTERN w2c_engine_t* AXIS2_CALL
-w2c_engine_create_with_parser( const axis2_env_t *env,
+w2c_engine_create_with_parser( const axutil_env_t *env,
                    w2c_cmdline_option_parser_t *parser );
 
 /*************************** Function macros **********************************/

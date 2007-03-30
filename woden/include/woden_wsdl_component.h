@@ -27,7 +27,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -58,22 +58,22 @@ struct woden_wsdl_component_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *wsdl_component,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_wsdl_component_free) (
             void *wsdl_component,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_component,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     void *(AXIS2_CALL *
     get_component_exts_for_namespace) (
             void *wsdl_component,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *namespc);
 
 };
@@ -87,7 +87,7 @@ struct woden_wsdl_component
 axis2_status_t AXIS2_CALL
 woden_wsdl_component_resolve_methods(
         woden_wsdl_component_t *wsdl_component,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

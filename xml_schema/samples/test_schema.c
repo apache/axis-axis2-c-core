@@ -17,12 +17,12 @@
 
 #include <xml_schema_includes.h>
 #include <stdio.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils_defines.h>
 
 axis2_status_t
 xml_schema_test(
-    axis2_env_t *env,
+    axutil_env_t *env,
     axis2_char_t *filename)
 {
     axiom_xml_reader_t *xml_reader      = NULL;
@@ -67,7 +67,7 @@ xml_schema_test(
 
 int main(int argc, char *argv[])
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axis2_char_t *filename = NULL;
     if (argc > 1)
     {
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     {
         printf("Give an XML schema file as the first argument\n");
     }
-    env = axis2_env_create_all("test.log", 1);
+    env = axutil_env_create_all("test.log", 1);
     xml_schema_test(env, filename);
     return 0;
 }

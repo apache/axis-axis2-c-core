@@ -22,14 +22,14 @@
 #include <axis2_client.h>
 
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env,
+build_om_programatically(const axutil_env_t *env,
         const axis2_char_t *image_name,
         const axis2_char_t *to_save_name,
         axis2_bool_t optimized);
 
 int main(int argc, char** argv)
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
 
     /* Set up the environment */
-    env = axis2_env_create_all("mtom.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("mtom.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of mtom service */
     address = "http://localhost:9090/axis2/services/mtom";
@@ -137,7 +137,7 @@ int main(int argc, char** argv)
 
     if (env)
     {
-        axis2_env_free((axis2_env_t *) env);
+        axutil_env_free((axutil_env_t *) env);
         env = NULL;
     }
 
@@ -147,7 +147,7 @@ int main(int argc, char** argv)
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env,
+build_om_programatically(const axutil_env_t *env,
         const axis2_char_t *image_name,
         const axis2_char_t *to_save_name,
         axis2_bool_t optimized)

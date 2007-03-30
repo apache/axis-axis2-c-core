@@ -28,7 +28,7 @@ struct axis2_arch_reader
 };
 
 AXIS2_EXTERN axis2_arch_reader_t *AXIS2_CALL
-axis2_arch_reader_create(const axis2_env_t *env)
+axis2_arch_reader_create(const axutil_env_t *env)
 {
     axis2_arch_reader_t *arch_reader = NULL;
 
@@ -50,7 +50,7 @@ axis2_arch_reader_create(const axis2_env_t *env)
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -66,7 +66,7 @@ axis2_arch_reader_free(axis2_arch_reader_t *arch_reader,
 
 AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
 axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_arch_file_data *file)
 {
     axis2_svc_t *svc = NULL;
@@ -76,7 +76,7 @@ axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *file_name,
     struct axis2_dep_engine *dep_engine,
     axis2_svc_grp_t *svc_grp)
@@ -128,7 +128,7 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *svc_xml,
     axis2_dep_engine_t *dep_engine,
     axis2_svc_grp_t *svc_grp)
@@ -227,7 +227,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *file_name,
     axis2_dep_engine_t *dep_engine,
     axis2_module_desc_t *module_desc)
@@ -273,7 +273,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
 
 AXIS2_EXTERN axis2_file_t *AXIS2_CALL
 axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *module_name)
 {
     axis2_file_t *file = NULL;

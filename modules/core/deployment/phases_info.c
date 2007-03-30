@@ -31,7 +31,7 @@ struct axis2_phases_info
 };
 
 AXIS2_EXTERN axis2_phases_info_t *AXIS2_CALL
-axis2_phases_info_create(const axis2_env_t *env)
+axis2_phases_info_create(const axutil_env_t *env)
 {
     axis2_phases_info_t *phases_info = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -59,7 +59,7 @@ axis2_phases_info_create(const axis2_env_t *env)
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_phases_info_free(axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -165,7 +165,7 @@ axis2_phases_info_free(axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phases_info_set_in_phases(axis2_phases_info_t *phases_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *in_phases)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -182,7 +182,7 @@ axis2_phases_info_set_in_phases(axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phases_info_set_out_phases(axis2_phases_info_t *phases_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *out_phases)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -199,7 +199,7 @@ axis2_phases_info_set_out_phases(axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phases_info_set_in_faultphases(axis2_phases_info_t *phases_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *in_faultphases)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -216,7 +216,7 @@ axis2_phases_info_set_in_faultphases(axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phases_info_set_out_faultphases(axis2_phases_info_t *phases_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *out_faultphases)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -233,7 +233,7 @@ axis2_phases_info_set_out_faultphases(axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_in_phases(const axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -242,28 +242,28 @@ axis2_phases_info_get_in_phases(const axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_out_phases(const axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return phases_info->out_phases;
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_in_faultphases(const axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return phases_info->in_faultphases;
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_out_faultphases(const axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return phases_info->out_faultphases;
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_op_in_phases(const axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     struct axis2_phase *phase = NULL;
     int i = 0;
@@ -333,7 +333,7 @@ axis2_phases_info_get_op_in_phases(const axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_op_out_phases(const axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     struct axis2_phase *phase = NULL;
     int i = 0;
@@ -391,7 +391,7 @@ axis2_phases_info_get_op_out_phases(const axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_op_in_faultphases(const axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     int i = 0;
     int size = 0;
@@ -455,7 +455,7 @@ axis2_phases_info_get_op_in_faultphases(const axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_phases_info_get_op_out_faultphases(const axis2_phases_info_t *phases_info,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     int i = 0;
     int size = 0;
@@ -520,7 +520,7 @@ axis2_phases_info_get_op_out_faultphases(const axis2_phases_info_t *phases_info,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_phases_info_set_op_phases(axis2_phases_info_t *phases_info,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_op_t *op_desc)
 {
     axis2_status_t status = AXIS2_FAILURE;
@@ -569,7 +569,7 @@ axis2_phases_info_set_op_phases(axis2_phases_info_t *phases_info,
 }
 
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
-axis2_phases_info_copy_flow(const axis2_env_t *env,
+axis2_phases_info_copy_flow(const axutil_env_t *env,
     const axutil_array_list_t *flow_to_copy)
 {
     int size = 0, i = 0;

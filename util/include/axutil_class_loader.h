@@ -41,14 +41,14 @@ extern "C"
  */
     
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_class_loader_init(const axis2_env_t *env);
+axutil_class_loader_init(const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_class_loader_delete_dll (const axis2_env_t *env,
+axutil_class_loader_delete_dll (const axutil_env_t *env,
                                     axutil_dll_desc_t *dll_desc);
 
 AXIS2_EXTERN void * AXIS2_CALL
-axutil_class_loader_create_dll (const axis2_env_t *env,
+axutil_class_loader_create_dll (const axutil_env_t *env,
                                 axis2_param_t *impl_info_param);
     
  

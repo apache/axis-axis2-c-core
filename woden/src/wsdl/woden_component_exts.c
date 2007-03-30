@@ -38,28 +38,28 @@ struct woden_component_exts_impl
 axis2_status_t AXIS2_CALL
 woden_component_exts_free(
     void *component_exts,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 axis2_uri_t *AXIS2_CALL
 woden_component_exts_get_namespace(
     void *component_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_component_exts_get_parent_element(
     void *component_exts,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_component_exts_init(
     void *component_exts,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl_element_t *parent_el,
     axis2_uri_t *namespc);
 
 AXIS2_EXTERN woden_component_exts_t * AXIS2_CALL
 woden_component_exts_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_component_exts_impl_t *component_exts_impl = NULL;
 
@@ -88,7 +88,7 @@ woden_component_exts_create(
 axis2_status_t AXIS2_CALL
 woden_component_exts_free(
     void *component_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_component_exts_impl_t *component_exts_impl = NULL;
 
@@ -124,7 +124,7 @@ woden_component_exts_free(
 axis2_status_t AXIS2_CALL
 woden_component_exts_resolve_methods(
     woden_component_exts_t *component_exts,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -152,7 +152,7 @@ woden_component_exts_resolve_methods(
 axis2_uri_t *AXIS2_CALL
 woden_component_exts_get_namespace(
     void *component_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_component_exts_impl_t *component_exts_impl = NULL;
 
@@ -164,7 +164,7 @@ woden_component_exts_get_namespace(
 void *AXIS2_CALL
 woden_component_exts_get_parent_element(
     void *component_exts,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_component_exts_impl_t *component_exts_impl = NULL;
 
@@ -176,7 +176,7 @@ woden_component_exts_get_parent_element(
 axis2_status_t AXIS2_CALL
 woden_component_exts_init(
     void *component_exts,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_wsdl_element_t *parent_el,
     axis2_uri_t *namespc)
 {

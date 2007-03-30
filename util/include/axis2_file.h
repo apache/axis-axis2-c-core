@@ -20,7 +20,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_error.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
@@ -43,45 +43,45 @@ extern "C"
      * @return file newly created file
      */
     AXIS2_EXTERN axis2_file_t * AXIS2_CALL
-    axis2_file_create(const axis2_env_t *env);
+    axis2_file_create(const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_file_free(axis2_file_t *file,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_file_set_name(axis2_file_t *file,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_file_get_name(axis2_file_t *file,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_file_set_path(axis2_file_t *file,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *path);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_file_get_path(axis2_file_t *file,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_file_set_timestamp(axis2_file_t *file,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         AXIS2_TIME_T timestamp);
 
     AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
     axis2_file_get_timestamp(axis2_file_t *file,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * create a newly allocated clone of the argument file
      */
     AXIS2_EXTERN axis2_file_t * AXIS2_CALL
     axis2_file_clone(axis2_file_t *file,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #ifdef __cplusplus
 }

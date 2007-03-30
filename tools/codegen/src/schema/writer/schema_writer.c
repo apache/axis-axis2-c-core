@@ -24,7 +24,7 @@
  * to 'c'
  */
 AXIS2_EXTERN w2c_schema_writer_t * AXIS2_CALL
-w2c_schema_writer_create (const axis2_env_t *env)
+w2c_schema_writer_create (const axutil_env_t *env)
 {
     w2c_schema_writer_impl_t *writer_impl = NULL;
 
@@ -107,7 +107,7 @@ w2c_schema_writer_create (const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL 
 w2c_schema_writer_free (w2c_schema_writer_t *schema_writer, 
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     w2c_schema_writer_impl_t *writer_impl = NULL;
     
@@ -170,7 +170,7 @@ w2c_schema_writer_free (w2c_schema_writer_t *schema_writer,
 
 axis2_hash_t* AXIS2_CALL
 w2c_schema_writer_get_model_map( w2c_schema_writer_t *writer,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     w2c_schema_writer_impl_t *writer_impl = NULL;
 
@@ -183,7 +183,7 @@ w2c_schema_writer_get_model_map( w2c_schema_writer_t *writer,
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_init( w2c_schema_writer_t *writer,
-         const axis2_env_t *env,
+         const axutil_env_t *env,
          w2c_schema_compiler_options_t *options,
          axis2_char_t* template_name,
          axis2_hash_t* base_type_map)
@@ -258,7 +258,7 @@ w2c_schema_writer_init( w2c_schema_writer_t *writer,
 
 axis2_char_t* AXIS2_CALL
 w2c_schema_writer_write_element( w2c_schema_writer_t *writer,
-         const axis2_env_t *env,
+         const axutil_env_t *env,
          xml_schema_element_t *element,
          axis2_hash_t *typemap,
          w2c_schema_writer_meta_info_t *meta_info)
@@ -275,7 +275,7 @@ w2c_schema_writer_write_element( w2c_schema_writer_t *writer,
 
 axis2_char_t* AXIS2_CALL
 w2c_schema_writer_write_complex_type( w2c_schema_writer_t *writer,
-         const axis2_env_t *env,
+         const axutil_env_t *env,
          xml_schema_complex_type_t *complex_type,
          axis2_hash_t *typemap,
          w2c_schema_writer_meta_info_t *meta_info)
@@ -297,7 +297,7 @@ w2c_schema_writer_write_complex_type( w2c_schema_writer_t *writer,
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_write_batch( w2c_schema_writer_t *writer,
-                 const axis2_env_t *env)
+                 const axutil_env_t *env)
 {
     w2c_schema_writer_impl_t *writer_impl = NULL;
     axis2_char_t *temp_package = NULL;
@@ -338,7 +338,7 @@ w2c_schema_writer_write_batch( w2c_schema_writer_t *writer,
 
 axis2_char_t* AXIS2_CALL
 w2c_schema_writer_write_simple_type( w2c_schema_writer_t *writer,
-         const axis2_env_t *env,
+         const axutil_env_t *env,
          xml_schema_complex_type_t *type,
          axis2_hash_t *typemap,
          w2c_schema_writer_meta_info_t *meta_info)
@@ -350,7 +350,7 @@ w2c_schema_writer_write_simple_type( w2c_schema_writer_t *writer,
 
 axis2_status_t
 w2c_schema_writer_init_with_file( w2c_schema_writer_impl_t *writer_impl,
-         const axis2_env_t *env,
+         const axutil_env_t *env,
          axis2_char_t *root_dir)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -368,7 +368,7 @@ w2c_schema_writer_init_with_file( w2c_schema_writer_impl_t *writer_impl,
 /** this should be overrided in laguage specific writer */
 axis2_char_t* AXIS2_CALL
 w2c_schema_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_char_t *ns_uri = NULL;
@@ -437,7 +437,7 @@ w2c_schema_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
 
 axis2_char_t*
 w2c_schema_writer_get_package( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *namespace_uri)
 {
     axis2_char_t *base_package_name = NULL;
@@ -465,7 +465,7 @@ w2c_schema_writer_get_package( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_char_t*
 w2c_schema_writer_process( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_qname_t *qname,
                         w2c_schema_writer_meta_info_t *meta_info,
                         axis2_hash_t *typemap,
@@ -535,7 +535,7 @@ w2c_schema_writer_process( w2c_schema_writer_impl_t *writer_impl,
 
 axiom_node_t*
 w2c_schema_writer_make_element( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *class_name,
                         axis2_char_t *original_name,
                         axis2_qname_t *qname,
@@ -609,7 +609,7 @@ w2c_schema_writer_make_element( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_status_t 
 w2c_schema_writer_populate_info( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         w2c_schema_writer_meta_info_t *meta_info,
                         axiom_node_t *model,
                         axis2_hash_t *property_names,
@@ -631,7 +631,7 @@ w2c_schema_writer_populate_info( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_status_t 
 w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         w2c_schema_writer_meta_info_t *meta_info,
                         axiom_node_t *model,
                         axis2_hash_t *property_names,
@@ -805,7 +805,7 @@ w2c_schema_writer_add_property_entries( w2c_schema_writer_impl_t *writer_impl,
 /** this should be overidden by some language specific class */
 axis2_bool_t 
 w2c_schema_writer_is_default_class( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *java_class_name4element)
 {
     return !(axis2_strcmp( java_class_name4element, "DEFAULT_CLASS_NAME")) ||
@@ -814,7 +814,7 @@ w2c_schema_writer_is_default_class( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_char_t*
 w2c_schema_writer_make_unique_class_name( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_hash_t *list_of_names,
                         axis2_char_t *xml_name)
 {
@@ -840,7 +840,7 @@ w2c_schema_writer_make_unique_class_name( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_status_t
 w2c_schema_writer_load_template( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env)
+                        const axutil_env_t *env)
 {
     if ( writer_impl-> template_name == NULL)
     {
@@ -852,7 +852,7 @@ w2c_schema_writer_load_template( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_char_t*
 w2c_schema_writer_create_out_file( w2c_schema_writer_impl_t *writer_impl,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_char_t *package_name,
                     axis2_char_t *name,
                     axis2_char_t *extension)
@@ -863,7 +863,7 @@ w2c_schema_writer_create_out_file( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_status_t
 w2c_schema_writer_parse( w2c_schema_writer_impl_t *writer_impl,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axiom_node_t *root,
                     axis2_char_t *out_file,
                     axis2_char_t *template_name)
@@ -894,7 +894,7 @@ w2c_schema_writer_parse( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_char_t*
 w2c_schema_writer_get_prefix4uri( w2c_schema_writer_impl_t *writer_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_char_t *uri,
                         axis2_char_t *default_prefix)
 {
@@ -929,7 +929,7 @@ w2c_schema_writer_get_prefix4uri( w2c_schema_writer_impl_t *writer_impl,
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_register_extension_mapper_packagename(w2c_schema_writer_t *writer,
-                                        const axis2_env_t *env,
+                                        const axutil_env_t *env,
                                         axis2_char_t *packagename)
 {
     w2c_schema_writer_impl_t *writer_impl = NULL;
@@ -941,7 +941,7 @@ w2c_schema_writer_register_extension_mapper_packagename(w2c_schema_writer_t *wri
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_write_extension_mapper( w2c_schema_writer_t *writer,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 axis2_hash_t *meta_info_array)
 {
     return AXIS2_SUCCESS;
@@ -949,7 +949,7 @@ w2c_schema_writer_write_extension_mapper( w2c_schema_writer_t *writer,
 
 axis2_char_t* AXIS2_CALL
 w2c_schema_writer_get_extension_mapper_package_name(w2c_schema_writer_t *writer,
-                                        const axis2_env_t *env)
+                                        const axutil_env_t *env)
 {
     w2c_schema_writer_impl_t *writer_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);

@@ -40,59 +40,59 @@ struct woden_schema_impl
 axis2_status_t AXIS2_CALL
 woden_schema_free(
     void *schema,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 axis2_hash_t *AXIS2_CALL
 woden_schema_super_objs(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_schema_type(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_schema_set_namespace(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc);
 
 axis2_uri_t *AXIS2_CALL
 woden_schema_get_namespace(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_schema_set_schema_def(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_t *schema_def);
 
 xml_schema_t *AXIS2_CALL
 woden_schema_get_schema_def(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_schema_set_referenceable(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t referenceable);
 
 axis2_bool_t AXIS2_CALL
 woden_schema_is_referenceable(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 woden_schema_get_namespace_as_string(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 AXIS2_EXTERN woden_schema_t * AXIS2_CALL
 woden_schema_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_schema_impl_t *schema_impl = NULL;
 
@@ -138,7 +138,7 @@ woden_schema_create(
 axis2_status_t AXIS2_CALL
 woden_schema_free(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_schema_impl_t *schema_impl = NULL;
 
@@ -174,7 +174,7 @@ woden_schema_free(
 axis2_hash_t *AXIS2_CALL
 woden_schema_super_objs(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_schema_impl_t *schema_impl = NULL;
 
@@ -187,7 +187,7 @@ woden_schema_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_schema_type(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_schema_impl_t *schema_impl = NULL;
 
@@ -201,7 +201,7 @@ woden_schema_type(
 axis2_status_t AXIS2_CALL
 woden_schema_resolve_methods(
     woden_schema_t *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_schema_t *schema_impl,
     axis2_hash_t *methods)
 {
@@ -264,7 +264,7 @@ woden_schema_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_schema_set_namespace(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc)
 {
     woden_schema_impl_t *schema_impl = NULL;
@@ -289,7 +289,7 @@ woden_schema_set_namespace(
 axis2_uri_t *AXIS2_CALL
 woden_schema_get_namespace(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_schema_impl_t *schema_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -305,7 +305,7 @@ woden_schema_get_namespace(
 axis2_status_t AXIS2_CALL
 woden_schema_set_schema_def(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_t *schema_def)
 {
     woden_schema_impl_t *schema_impl = NULL;
@@ -330,7 +330,7 @@ woden_schema_set_schema_def(
 xml_schema_t *AXIS2_CALL
 woden_schema_get_schema_def(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_schema_impl_t *schema_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -346,7 +346,7 @@ woden_schema_get_schema_def(
 axis2_status_t AXIS2_CALL
 woden_schema_set_referenceable(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t referenceable)
 {
     woden_schema_impl_t *schema_impl = NULL;
@@ -365,7 +365,7 @@ woden_schema_set_referenceable(
 axis2_bool_t AXIS2_CALL
 woden_schema_is_referenceable(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_schema_impl_t *schema_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -381,7 +381,7 @@ woden_schema_is_referenceable(
 axis2_char_t *AXIS2_CALL
 woden_schema_get_namespace_as_string(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_schema_impl_t *schema_impl = NULL;
     axis2_hash_t *super = NULL;

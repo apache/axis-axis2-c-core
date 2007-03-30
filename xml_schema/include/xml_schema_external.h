@@ -52,44 +52,44 @@ struct xml_schema_external_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *external,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     xml_schema_annotated_t* (AXIS2_CALL *
     get_base_impl)(
             void *external,
-            const axis2_env_t *env);            
+            const axutil_env_t *env);            
 
     xml_schema_types_t (AXIS2_CALL *
     get_type)(
             void *external,
-            const axis2_env_t *env);            
+            const axutil_env_t *env);            
 
 
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(
             void *external,
-            const axis2_env_t *env);            
+            const axutil_env_t *env);            
 
     struct xml_schema* (AXIS2_CALL *
     get_schema)(
             void *external,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                 
     axis2_status_t (AXIS2_CALL *
     set_schema)(
             void *external,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct xml_schema* schema);
                 
     axis2_char_t* (AXIS2_CALL *
     get_schema_location)(
             void *external,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
                                
     axis2_status_t (AXIS2_CALL *
     set_schema_location)(
             void *external,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *location);
 
 };
@@ -104,10 +104,10 @@ struct xml_schema_external
  * Creates new Xml Schema external
  */
 AXIS2_EXTERN xml_schema_external_t * AXIS2_CALL
-xml_schema_external_create(const axis2_env_t *env);
+xml_schema_external_create(const axutil_env_t *env);
 
 AXIS2_EXTERN xml_schema_external_t * AXIS2_CALL
-xml_schema_include_create(const axis2_env_t *env);
+xml_schema_include_create(const axutil_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -115,7 +115,7 @@ xml_schema_include_create(const axis2_env_t *env);
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_external_resolve_methods(
                                 xml_schema_external_t *external,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_external_t *external_impl,
                                 XML_SCHEMA_SUPER_OBJS_FN super_objs,
                                 XML_SCHEMA_GET_TYPE_FN get_type,

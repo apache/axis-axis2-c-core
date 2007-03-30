@@ -50,35 +50,35 @@ struct woden_inlined_schema_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     woden_schema_t *(AXIS2_CALL *
     get_base_impl) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_id) (
             void *schema,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *id);
 
     axis2_char_t *(AXIS2_CALL *
     get_id) (
             void *schema,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
   
 };
@@ -91,18 +91,18 @@ struct woden_inlined_schema
 
 AXIS2_EXTERN woden_inlined_schema_t * AXIS2_CALL
 woden_inlined_schema_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_inlined_schema_t * AXIS2_CALL
 woden_inlined_schema_to_schema(
         void *schema,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_inlined_schema_resolve_methods(
         woden_inlined_schema_t *schema,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_inlined_schema_t *schema_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

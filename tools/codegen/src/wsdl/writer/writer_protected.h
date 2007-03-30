@@ -47,52 +47,52 @@ typedef struct w2c_writer_impl
 /************************* Function prototypes ********************************/
 
 w2c_writer_impl_t * AXIS2_CALL 
-w2c_writer_create_impl (const axis2_env_t *env);
+w2c_writer_create_impl (const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_writer_free(w2c_writer_t *writer,
-       const axis2_env_t *env);
+       const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_writer_initialize(w2c_writer_t *writer,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        w2c_config_property_loader_t* loader,
        w2c_engine_configuration_t* config);
 
 axis2_char_t* AXIS2_CALL
 w2c_writer_create_out_file(w2c_writer_t *writer,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        axis2_char_t* package_name,
        axis2_char_t* file_name);
 
 axis2_status_t AXIS2_CALL
 w2c_writer_parse(w2c_writer_t *writer,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        axiom_node_t* root);
 
 /** protected methods */
 
 axis2_char_t* 
 w2c_writer_find_template ( w2c_writer_impl_t* writer_impl,
-                           const axis2_env_t* env,
+                           const axutil_env_t* env,
                            axis2_hash_t* lang_speci_map);
 
 axis2_char_t*
 w2c_writer_get_extension( w2c_writer_impl_t* writer_impl,
-             const axis2_env_t* env);
+             const axutil_env_t* env);
 
 axis2_status_t
 w2c_writer_set_self_name( w2c_writer_impl_t* writer_impl,
-             const axis2_env_t* env,
+             const axutil_env_t* env,
              axis2_char_t* self_name);
 
 axis2_status_t 
 w2c_writer_set_language(w2c_writer_impl_t *writer_impl,
-       const axis2_env_t *env);
+       const axutil_env_t *env);
 
 axis2_status_t
 w2c_writer_load_template(w2c_writer_impl_t *writer_impl,
-       const axis2_env_t *env);
+       const axutil_env_t *env);
 
 
 /************************** End of function prototypes ************************/

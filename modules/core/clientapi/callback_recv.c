@@ -32,13 +32,13 @@ struct axis2_callback_recv
 static axis2_status_t AXIS2_CALL
 axis2_callback_recv_receive(
     axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     void *callback_recv_param);
     
 AXIS2_EXTERN axis2_callback_recv_t *AXIS2_CALL
 axis2_callback_recv_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_callback_recv_t *callback_recv = NULL;
 
@@ -82,7 +82,7 @@ axis2_callback_recv_create(
 AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
 axis2_callback_recv_get_base(
     axis2_callback_recv_t *callback_recv,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     callback_recv->base_deep_copy = AXIS2_FALSE;
     return callback_recv->base;
@@ -91,7 +91,7 @@ axis2_callback_recv_get_base(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_callback_recv_free(
     axis2_callback_recv_t *callback_recv,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -134,7 +134,7 @@ axis2_callback_recv_free(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_callback_recv_add_callback(
     axis2_callback_recv_t *callback_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *msg_id,
     axis2_callback_t *callback)
 {
@@ -152,7 +152,7 @@ axis2_callback_recv_add_callback(
 static axis2_status_t AXIS2_CALL
 axis2_callback_recv_receive(
     axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     void *callback_recv_param)
 {

@@ -55,42 +55,42 @@ struct woden_interface_fault_ref_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *interface_fault_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *interface_fault_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *interface_fault_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_nested_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *interface_fault_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_interface_fault) (
             void *interface_fault_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_msg_label) (
             void *interface_fault_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_direction) (
             void *interface_fault_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     to_element)  (
             void *interface_fault_ref,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* ************************************************************
      *  Non-API implementation methods
@@ -98,7 +98,7 @@ struct woden_interface_fault_ref_ops
     axis2_status_t (AXIS2_CALL *
     set_interface_fault) (
         void *interface_fault_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *fault);
 
 };
@@ -117,60 +117,60 @@ struct woden_interface_fault_ref
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_interface_fault_ref_element(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_nested_configurable(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_configurable(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_nested_element(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_configurable_element(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_documentable_element(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_documentable(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_attr_extensible(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_ref_t * AXIS2_CALL
 woden_interface_fault_ref_to_element_extensible(
         void *interface_fault_ref,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_interface_fault_ref_resolve_methods(
         woden_interface_fault_ref_t *interface_fault_ref,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_interface_fault_ref_t *interface_fault_ref_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

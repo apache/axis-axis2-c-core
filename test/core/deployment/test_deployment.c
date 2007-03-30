@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <axis2_op.h>
 #include <axis2_dep_engine.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axutil_class_loader.h>
 #include <axis2_error_default.h>
@@ -31,7 +31,7 @@
 #include <axis2_transport_receiver.h>
 #include <axis2_core_utils.h>
 
-const axis2_env_t *env = NULL;
+const axutil_env_t *env = NULL;
 
 int axis2_test_dep_engine_load()
 {
@@ -334,7 +334,7 @@ int main()
     allocator = axutil_allocator_init(NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL, "test_deployment.log");
-    env = axis2_env_create_with_error_log(allocator, error, log);
+    env = axutil_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_INFO;
     /*axis2_test_transport_receiver_load();
     axis2_test_transport_sender_load();*/

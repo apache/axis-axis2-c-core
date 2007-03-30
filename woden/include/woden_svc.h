@@ -58,22 +58,22 @@ struct woden_svc_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *svc,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *svc,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *svc,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *svc,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /* ************************************************************
      *  Service interface methods (the WSDL Component model)
      * ************************************************************/
@@ -81,17 +81,17 @@ struct woden_svc_ops
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *svc,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_interface) (
             void *svc,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_endpoints) (
             void *svc,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /******************************************************************************
      *  Non-API implementation methods
      *****************************************************************************/  
@@ -99,7 +99,7 @@ struct woden_svc_ops
     axis2_status_t (AXIS2_CALL *
     set_interface_element) (
             void *svc,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *winterface);
 
 
@@ -120,60 +120,60 @@ struct woden_svc
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_svc_element(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_documentable_element(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_configurable(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_configurable_component(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_wsdl_component(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_configurable_element(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_documentable(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_attr_extensible(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_svc_t * AXIS2_CALL
 woden_svc_to_element_extensible(
         void *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_svc_resolve_methods(
         woden_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_svc_t *svc_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

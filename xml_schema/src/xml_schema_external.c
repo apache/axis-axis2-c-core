@@ -45,44 +45,44 @@ xml_schema_external_impl_t;
 
 axis2_status_t AXIS2_CALL
 xml_schema_external_free(void *external,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_external_get_base_impl(void *external,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_external_super_objs(void *external,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_external_get_type(void *external,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 xml_schema_t* AXIS2_CALL
 xml_schema_external_get_schema(void *external,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_external_set_schema(void *external,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_t *schema);
 
 axis2_char_t* AXIS2_CALL
 xml_schema_external_get_schema_location(void *external,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_external_set_schema_location(void *external,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t* location);
 
 
 /********************* end function prototypes ********************************/
 
 AXIS2_EXTERN xml_schema_external_t * AXIS2_CALL
-xml_schema_external_create(const axis2_env_t *env)
+xml_schema_external_create(const axutil_env_t *env)
 {
     xml_schema_external_impl_t *external_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -164,7 +164,7 @@ xml_schema_external_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN xml_schema_external_t * AXIS2_CALL
-xml_schema_include_create(const axis2_env_t *env)
+xml_schema_include_create(const axutil_env_t *env)
 {
     xml_schema_external_t *include = NULL;
     include = xml_schema_external_create(env);
@@ -174,7 +174,7 @@ xml_schema_include_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_external_free(void *external,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_external_impl_t *external_impl = NULL;
 
@@ -209,7 +209,7 @@ xml_schema_external_free(void *external,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_external_get_base_impl(void *external,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_external_impl_t *external_impl = NULL;
 
@@ -222,7 +222,7 @@ xml_schema_external_get_base_impl(void *external,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_external_resolve_methods(
     xml_schema_external_t *external,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_external_t *external_impl,
     XML_SCHEMA_SUPER_OBJS_FN super_objs,
     XML_SCHEMA_GET_TYPE_FN get_type,
@@ -256,7 +256,7 @@ xml_schema_external_resolve_methods(
 
 xml_schema_t * AXIS2_CALL
 xml_schema_external_get_schema(void *external,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_external_impl_t *ext_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -275,7 +275,7 @@ xml_schema_external_get_schema(void *external,
 
 axis2_status_t AXIS2_CALL
 xml_schema_external_set_schema(void *external,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_t *schema)
 {
     xml_schema_external_impl_t *ext_impl = NULL;
@@ -303,21 +303,21 @@ xml_schema_external_set_schema(void *external,
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_external_super_objs(void *external,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(external)->ht_super;
 }
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_external_get_type(void *external,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(external)->obj_type;
 }
 
 axis2_char_t* AXIS2_CALL
 xml_schema_external_get_schema_location(void *external,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_external_impl_t *ext_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -336,7 +336,7 @@ xml_schema_external_get_schema_location(void *external,
 
 axis2_status_t AXIS2_CALL
 xml_schema_external_set_schema_location(void *external,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t* location)
 {
     xml_schema_external_impl_t *ext_impl = NULL;

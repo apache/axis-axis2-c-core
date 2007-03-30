@@ -41,36 +41,36 @@ struct xml_schema_use_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_use_free(void *use,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_use_super_objs(
     void *use,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_use_get_type(
     void *use,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_enum_t *AXIS2_CALL
 xml_schema_use_get_base_impl(void *use,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_use_resolve_methods(
     xml_schema_use_t *use,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_use_t *use_impl,
     axis2_hash_t *methods);
 
 axutil_array_list_t * AXIS2_CALL
 xml_schema_use_get_values(void *use,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN xml_schema_use_t * AXIS2_CALL
-xml_schema_use_create(const axis2_env_t *env,
+xml_schema_use_create(const axutil_env_t *env,
         axis2_char_t *value)
 {
     xml_schema_use_impl_t *use_impl = NULL;
@@ -146,7 +146,7 @@ xml_schema_use_create(const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 xml_schema_use_free(void *use,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_use_impl_t *use_impl = NULL;
 
@@ -205,7 +205,7 @@ xml_schema_use_free(void *use,
 axis2_hash_t *AXIS2_CALL
 xml_schema_use_super_objs(
     void *use,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_use_impl_t *use_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -216,7 +216,7 @@ xml_schema_use_super_objs(
 xml_schema_types_t AXIS2_CALL
 xml_schema_use_get_type(
     void *use,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_use_impl_t *use_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -226,7 +226,7 @@ xml_schema_use_get_type(
 
 xml_schema_enum_t *AXIS2_CALL
 xml_schema_use_get_base_impl(void *use,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_use_impl_t *use_impl = NULL;
 
@@ -238,7 +238,7 @@ xml_schema_use_get_base_impl(void *use,
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_use_get_values(void *use,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_use_impl_t *use_impl = NULL;
     axis2_hash_t *super = NULL;

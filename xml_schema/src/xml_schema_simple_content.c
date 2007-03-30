@@ -44,38 +44,38 @@ struct xml_schema_simple_content_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_content_free(void *sim_content,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_simple_content_get_base_impl(void *sim_content,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 void* AXIS2_CALL
 xml_schema_simple_content_get_content(void *sim_content,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_simple_content_get_type(void *sim_content,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_simple_content_super_objs(void *sim_content,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_content_set_content(void *sim_content,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void* content);
 
 axis2_char_t* AXIS2_CALL
 xml_schema_simple_content_to_string(void *sim_content,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *prefix,
         int tab);
 
 
 AXIS2_EXTERN xml_schema_simple_content_t * AXIS2_CALL
-xml_schema_simple_content_create(const axis2_env_t *env)
+xml_schema_simple_content_create(const axutil_env_t *env)
 {
     xml_schema_simple_content_impl_t *sim_cnt_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -153,7 +153,7 @@ xml_schema_simple_content_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_content_free(void *sim_content,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_simple_content_impl_t *sim_cnt_impl = NULL;
 
@@ -194,7 +194,7 @@ xml_schema_simple_content_free(void *sim_content,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_simple_content_get_base_impl(void *sim_content,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_simple_content_impl_t *sim_cnt_impl = NULL;
 
@@ -205,7 +205,7 @@ xml_schema_simple_content_get_base_impl(void *sim_content,
 
 void* AXIS2_CALL
 xml_schema_simple_content_get_content(void *sim_content,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(sim_content)->content;
@@ -213,7 +213,7 @@ xml_schema_simple_content_get_content(void *sim_content,
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_content_set_content(void *sim_content,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *content)
 {
     xml_schema_simple_content_impl_t *sim_cnt_impl = NULL;
@@ -234,7 +234,7 @@ xml_schema_simple_content_set_content(void *sim_content,
 
 axis2_char_t* AXIS2_CALL
 xml_schema_simple_content_to_string(void *sim_content,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *prefix,
         int tab)
 {
@@ -252,14 +252,14 @@ xml_schema_simple_content_to_string(void *sim_content,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_simple_content_get_type(void *sim_content,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(sim_content)->obj_type;
 }
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_simple_content_super_objs(void *sim_content,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(sim_content)->ht_super;
 }

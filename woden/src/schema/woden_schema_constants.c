@@ -16,7 +16,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -29,7 +29,7 @@
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_schema(
     axis2_qname_t *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_qname_t *q1999 = NULL;
     axis2_qname_t *q2000 = NULL;
@@ -59,7 +59,7 @@ woden_schema_constants_compare_schema(
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_include(
     axis2_qname_t *include,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_qname_t *q1999 = NULL;
     axis2_qname_t *q2000 = NULL;
@@ -89,7 +89,7 @@ woden_schema_constants_compare_include(
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_import(
     axis2_qname_t *import,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_qname_t *q1999 = NULL;
     axis2_qname_t *q2000 = NULL;
@@ -119,7 +119,7 @@ woden_schema_constants_compare_import(
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_redefine(
     axis2_qname_t *redefine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_qname_t *q1999 = NULL;
     axis2_qname_t *q2000 = NULL;

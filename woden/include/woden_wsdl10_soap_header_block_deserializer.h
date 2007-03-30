@@ -56,27 +56,27 @@ struct woden_wsdl10_soap_header_block_deserializer_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *mod_deser,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *mod_deser,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *mod_deser,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_wsdl10_ext_deserializer *(AXIS2_CALL *
     get_base_impl) (
             void *mod_deser,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     marshall) (
             void *mod_deser,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_type,
             void *parent,
             axis2_qname_t *element_type,
@@ -94,19 +94,19 @@ struct woden_wsdl10_soap_header_block_deserializer
 
 AXIS2_EXTERN woden_wsdl10_soap_header_block_deserializer_t * AXIS2_CALL
 woden_wsdl10_soap_header_block_deserializer_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_wsdl10_soap_header_block_deserializer_t * AXIS2_CALL
 woden_wsdl10_soap_header_block_deserializer_to_ext_deserializer(
         void *mod_deser,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_deserializer_resolve_methods(
         woden_wsdl10_soap_header_block_deserializer_t *mod_deser,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_wsdl10_soap_header_block_deserializer_t *mod_deser_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

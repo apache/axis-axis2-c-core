@@ -56,67 +56,67 @@ struct woden_type_def_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *type_def,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *type_def,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (void *type_def,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     void *(AXIS2_CALL *
     get_base_impl) (
             void *type_def,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_qname) (
             void *type_def,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *type_def,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_system) (
             void *type_def,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *type_system_uri);
 
     axis2_uri_t *(AXIS2_CALL *
     get_system) (
             void *type_def,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_content_model) (
             void *type_def,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *content_model);
 
     axis2_char_t *(AXIS2_CALL *
     get_content_model) (
             void *type_def,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     axis2_status_t (AXIS2_CALL *
     set_content) (
             void *type_def,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *type_def_content);
 
     void *(AXIS2_CALL *
     get_content) (
             void *type_def,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 };
 
@@ -127,28 +127,28 @@ struct woden_type_def
 
 AXIS2_EXTERN woden_type_def_t * AXIS2_CALL
 woden_type_def_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_type_def_t * AXIS2_CALL
 woden_type_def_to_type_def_element(
         void *type_def,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_type_def_t * AXIS2_CALL
 woden_type_def_to_attr_extensible(
         void *type_def,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_type_def_t * AXIS2_CALL
 woden_type_def_to_element_extensible(
         void *type_def,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_type_def_resolve_methods(
         woden_type_def_t *type_def,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_type_def_t *type_def_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

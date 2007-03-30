@@ -104,162 +104,162 @@ typedef struct w2c_engine_configuration_impl
 
 axis2_status_t AXIS2_CALL 
 w2c_engine_configuration_free (w2c_engine_configuration_t *engine_configuration, 
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_base_uri (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_wsdl_uri (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_repository_path (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_type_mapping_file (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_uri2packagemap (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_params_wrapped (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_output_location (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_output_language (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_databinding_type (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_advanced_codegen_enabled (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_async_on (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_sync_on (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_server_side (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_generate_deployement_descriptor (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_write_testcase (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_write_message_receiver (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_package_name (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_pack_classes (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_generate_all (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_port_name (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_service_name (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_serverside_interface (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_policy_map (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_configuration_properties (
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_wsdl_version(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_flatten_files(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 w2c_typemapper_t* AXIS2_CALL
 w2c_engine_configuration_get_typemapper(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_convert_names(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 W2C_ENGINE_CONFIGURATION_NAMEMAKER AXIS2_CALL
 w2c_engine_configuration_get_namemaker_func(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 w2c_qname2name_maker_t* AXIS2_CALL
 w2c_engine_configuration_get_qname2name(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_indent_code(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env );
+          const axutil_env_t* env );
 
 
 
@@ -268,206 +268,206 @@ w2c_engine_configuration_get_indent_code(
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_base_uri (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* base_uri );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_wsdl_uri (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* wsdl_uri );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_repository_path (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* repository_path );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_type_mapping_file (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* type_mapping_file );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_uri2packagemap (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_hash_t* uri2packagemap );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_params_wrapped (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t params_wrapped );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_output_location (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* output_location );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_output_language (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* output_language );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_databinding_type (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* databinding_type );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_advanced_codegen_enabled (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t advanced_codegen_enabled );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_async_on (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t async_on );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_sync_on (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t sync_on );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_server_side (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t server_side );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_generate_deployement_descriptor (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t generate_deployement_descriptor );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_write_testcase (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t write_testcase );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_write_message_receiver (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t write_message_receiver );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_package_name (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* package_name );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_pack_classes (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t pack_classes );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_generate_all (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t generate_all );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_port_name (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* port_name );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_service_name (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* service_name );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_serverside_interface (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t serverside_interface );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_policy_map (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_hash_t* policy_map );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_configuration_properties (
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_hash_t* configuration_properties );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_wsdl_version(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t* wsdl_version );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_flatten_files(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t flatten_files );
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_typemapper(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            w2c_typemapper_t *typemapper);
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_convert_names(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t convert_names);
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_namemaker_func(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            W2C_ENGINE_CONFIGURATION_NAMEMAKER namemaker_func);
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_qname2name(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            w2c_qname2name_maker_t *qname2name);
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_indent_code(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t indent_code);
 
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_add_filename(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t *filename);
 
 axutil_array_list_t *AXIS2_CALL
 w2c_engine_configuration_get_filenames(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env);
+           const axutil_env_t* env);
 
 
 
 /************************** End of function prototypes ************************/
 
 AXIS2_EXTERN w2c_engine_configuration_t * AXIS2_CALL 
-w2c_engine_configuration_create (const axis2_env_t *env)
+w2c_engine_configuration_create (const axutil_env_t *env)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
    
@@ -660,7 +660,7 @@ w2c_engine_configuration_create (const axis2_env_t *env)
 }
 
 AXIS2_EXTERN w2c_engine_configuration_t * AXIS2_CALL 
-w2c_engine_configuration_create_with_options (const axis2_env_t *env,
+w2c_engine_configuration_create_with_options (const axutil_env_t *env,
                      axis2_hash_t* options)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -685,7 +685,7 @@ w2c_engine_configuration_create_with_options (const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL 
 w2c_engine_configuration_free (w2c_engine_configuration_t *engine_configuration, 
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -759,7 +759,7 @@ w2c_engine_configuration_free (w2c_engine_configuration_t *engine_configuration,
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_base_uri (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -773,7 +773,7 @@ w2c_engine_configuration_get_base_uri (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_wsdl_uri (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -787,7 +787,7 @@ w2c_engine_configuration_get_wsdl_uri (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_repository_path (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -801,7 +801,7 @@ w2c_engine_configuration_get_repository_path (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_type_mapping_file (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -815,7 +815,7 @@ w2c_engine_configuration_get_type_mapping_file (
 axis2_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_uri2packagemap (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -829,7 +829,7 @@ w2c_engine_configuration_get_uri2packagemap (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_params_wrapped (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -843,7 +843,7 @@ w2c_engine_configuration_get_params_wrapped (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_output_location (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -857,7 +857,7 @@ w2c_engine_configuration_get_output_location (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_output_language (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -871,7 +871,7 @@ w2c_engine_configuration_get_output_language (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_databinding_type (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -885,7 +885,7 @@ w2c_engine_configuration_get_databinding_type (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_advanced_codegen_enabled (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -899,7 +899,7 @@ w2c_engine_configuration_get_advanced_codegen_enabled (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_async_on (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -913,7 +913,7 @@ w2c_engine_configuration_get_async_on (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_sync_on (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -927,7 +927,7 @@ w2c_engine_configuration_get_sync_on (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_server_side (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -941,7 +941,7 @@ w2c_engine_configuration_get_server_side (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_generate_deployement_descriptor (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -955,7 +955,7 @@ w2c_engine_configuration_get_generate_deployement_descriptor (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_write_testcase (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -969,7 +969,7 @@ w2c_engine_configuration_get_write_testcase (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_write_message_receiver (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -983,7 +983,7 @@ w2c_engine_configuration_get_write_message_receiver (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_package_name (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -997,7 +997,7 @@ w2c_engine_configuration_get_package_name (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_pack_classes (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1011,7 +1011,7 @@ w2c_engine_configuration_get_pack_classes (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_generate_all (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1025,7 +1025,7 @@ w2c_engine_configuration_get_generate_all (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_port_name (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1039,7 +1039,7 @@ w2c_engine_configuration_get_port_name (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_service_name (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1053,7 +1053,7 @@ w2c_engine_configuration_get_service_name (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_serverside_interface (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1067,7 +1067,7 @@ w2c_engine_configuration_get_serverside_interface (
 axis2_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_policy_map (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1081,7 +1081,7 @@ w2c_engine_configuration_get_policy_map (
 axis2_hash_t* AXIS2_CALL
 w2c_engine_configuration_get_configuration_properties (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1095,7 +1095,7 @@ w2c_engine_configuration_get_configuration_properties (
 axis2_char_t* AXIS2_CALL
 w2c_engine_configuration_get_wsdl_version (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1109,7 +1109,7 @@ w2c_engine_configuration_get_wsdl_version (
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_flatten_files (
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1123,7 +1123,7 @@ w2c_engine_configuration_get_flatten_files (
 w2c_typemapper_t* AXIS2_CALL
 w2c_engine_configuration_get_typemapper(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env )
+          const axutil_env_t* env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1137,7 +1137,7 @@ w2c_engine_configuration_get_typemapper(
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_convert_names(
           w2c_engine_configuration_t  *engine_configuration,
-          const axis2_env_t *env )
+          const axutil_env_t *env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1151,7 +1151,7 @@ w2c_engine_configuration_get_convert_names(
 W2C_ENGINE_CONFIGURATION_NAMEMAKER AXIS2_CALL
 w2c_engine_configuration_get_namemaker_func(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env )
+          const axutil_env_t* env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1165,7 +1165,7 @@ w2c_engine_configuration_get_namemaker_func(
 w2c_qname2name_maker_t *AXIS2_CALL
 w2c_engine_configuration_get_qname2name(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env )
+          const axutil_env_t* env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1179,7 +1179,7 @@ w2c_engine_configuration_get_qname2name(
 axis2_bool_t AXIS2_CALL
 w2c_engine_configuration_get_indent_code(
           w2c_engine_configuration_t * engine_configuration,
-          const axis2_env_t* env )
+          const axutil_env_t* env )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
@@ -1195,7 +1195,7 @@ w2c_engine_configuration_get_indent_code(
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_base_uri (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *base_uri )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1211,7 +1211,7 @@ w2c_engine_configuration_set_base_uri (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_wsdl_uri (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *wsdl_uri )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1227,7 +1227,7 @@ w2c_engine_configuration_set_wsdl_uri (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_repository_path (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *repository_path )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1243,7 +1243,7 @@ w2c_engine_configuration_set_repository_path (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_type_mapping_file (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *type_mapping_file )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1259,7 +1259,7 @@ w2c_engine_configuration_set_type_mapping_file (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_uri2packagemap (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_hash_t *uri2packagemap )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1275,7 +1275,7 @@ w2c_engine_configuration_set_uri2packagemap (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_params_wrapped (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t params_wrapped )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1291,7 +1291,7 @@ w2c_engine_configuration_set_params_wrapped (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_output_location (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *output_location )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1307,7 +1307,7 @@ w2c_engine_configuration_set_output_location (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_output_language (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *output_language )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1323,7 +1323,7 @@ w2c_engine_configuration_set_output_language (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_databinding_type (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *databinding_type )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1339,7 +1339,7 @@ w2c_engine_configuration_set_databinding_type (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_advanced_codegen_enabled (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t advanced_codegen_enabled )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1355,7 +1355,7 @@ w2c_engine_configuration_set_advanced_codegen_enabled (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_async_on (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t async_on )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1371,7 +1371,7 @@ w2c_engine_configuration_set_async_on (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_sync_on (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t sync_on )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1387,7 +1387,7 @@ w2c_engine_configuration_set_sync_on (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_server_side (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t server_side )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1403,7 +1403,7 @@ w2c_engine_configuration_set_server_side (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_generate_deployement_descriptor (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t generate_deployement_descriptor )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1419,7 +1419,7 @@ w2c_engine_configuration_set_generate_deployement_descriptor (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_write_testcase (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t write_testcase )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1435,7 +1435,7 @@ w2c_engine_configuration_set_write_testcase (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_write_message_receiver (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t write_message_receiver )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1451,7 +1451,7 @@ w2c_engine_configuration_set_write_message_receiver (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_package_name (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *package_name )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1467,7 +1467,7 @@ w2c_engine_configuration_set_package_name (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_pack_classes (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t pack_classes )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1483,7 +1483,7 @@ w2c_engine_configuration_set_pack_classes (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_generate_all (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t generate_all )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1499,7 +1499,7 @@ w2c_engine_configuration_set_generate_all (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_port_name (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *port_name )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1515,7 +1515,7 @@ w2c_engine_configuration_set_port_name (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_service_name (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *service_name )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1531,7 +1531,7 @@ w2c_engine_configuration_set_service_name (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_serverside_interface (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t serverside_interface )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1547,7 +1547,7 @@ w2c_engine_configuration_set_serverside_interface (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_policy_map (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_hash_t *policy_map )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1563,7 +1563,7 @@ w2c_engine_configuration_set_policy_map (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_configuration_properties (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_hash_t *configuration_properties )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1579,7 +1579,7 @@ w2c_engine_configuration_set_configuration_properties (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_wsdl_version (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_char_t *wsdl_version )
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1595,7 +1595,7 @@ w2c_engine_configuration_set_wsdl_version (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_flatten_files (
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t flatten_files)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1611,7 +1611,7 @@ w2c_engine_configuration_set_flatten_files (
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_typemapper(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            w2c_typemapper_t *typemapper)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1627,7 +1627,7 @@ w2c_engine_configuration_set_typemapper(
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_convert_names(
            w2c_engine_configuration_t *engine_configuration,
-           const axis2_env_t *env,
+           const axutil_env_t *env,
            axis2_bool_t convert_names)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1643,7 +1643,7 @@ w2c_engine_configuration_set_convert_names(
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_namemaker_func(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            W2C_ENGINE_CONFIGURATION_NAMEMAKER namemaker_func)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1659,7 +1659,7 @@ w2c_engine_configuration_set_namemaker_func(
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_qname2name(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            w2c_qname2name_maker_t *qname2name)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1675,7 +1675,7 @@ w2c_engine_configuration_set_qname2name(
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_set_indent_code(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_bool_t indent_code)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1692,7 +1692,7 @@ w2c_engine_configuration_set_indent_code(
 axis2_status_t AXIS2_CALL
 w2c_engine_configuration_add_filename(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env,
+           const axutil_env_t* env,
            axis2_char_t *filename)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
@@ -1708,7 +1708,7 @@ w2c_engine_configuration_add_filename(
 axutil_array_list_t* AXIS2_CALL
 w2c_engine_configuration_get_filenames(
            w2c_engine_configuration_t* engine_configuration,
-           const axis2_env_t* env)
+           const axutil_env_t* env)
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     

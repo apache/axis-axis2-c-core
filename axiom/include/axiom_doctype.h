@@ -53,7 +53,7 @@ extern "C"
       * @return pointer to newly created doctype struct 
       */
     AXIS2_EXTERN axiom_doctype_t * AXIS2_CALL
-    axiom_doctype_create(const axis2_env_t *env,
+    axiom_doctype_create(const axutil_env_t *env,
             axiom_node_t * parent,
             const axis2_char_t * value,
             axiom_node_t ** node);
@@ -66,7 +66,7 @@ extern "C"
       */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_doctype_free(struct axiom_doctype *om_doctype,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @param om_doctype pointer to a axiom_doctype_t struct
      * @param env environment must not be null   
@@ -74,7 +74,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axiom_doctype_get_value(struct axiom_doctype *om_doctype,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @param om_doctype pointer to axiom doctype_t struct
      * @param env environment , MUST NOT be NULL.
@@ -85,7 +85,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_doctype_set_value(struct axiom_doctype *om_doctype,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             const axis2_char_t *value);
     /**
      * serialize op 
@@ -98,7 +98,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_doctype_serialize(struct axiom_doctype *om_doctype,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_output_t *om_output);
 
     /** @} */

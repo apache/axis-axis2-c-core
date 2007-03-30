@@ -16,7 +16,7 @@
  */
 
 #include <axis2_thread_pool.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error_default.h>
 
 struct axis2_thread_pool
@@ -107,16 +107,16 @@ axis2_thread_pool_thread_detach(axis2_thread_pool_t *pool,
     return axis2_thread_detach(thd);
 }
 
-AXIS2_EXTERN axis2_env_t *AXIS2_CALL
-axis2_init_thread_env(const axis2_env_t *system_env)
+AXIS2_EXTERN axutil_env_t *AXIS2_CALL
+axis2_init_thread_env(const axutil_env_t *system_env)
 {
     axis2_error_t *error = axis2_error_create(system_env->allocator);
-    return axis2_env_create_with_error_log_thread_pool(system_env->allocator, error,
+    return axutil_env_create_with_error_log_thread_pool(system_env->allocator, error,
         system_env->log, system_env->thread_pool);
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_free_thread_env(struct axis2_env *thread_env)
+axis2_free_thread_env(struct axutil_env *thread_env)
 {
     if (!thread_env)
     {

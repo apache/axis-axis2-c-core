@@ -93,12 +93,12 @@ struct woden_wsdl10_ext_registry_impl
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_free(
     void *registry,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_deserializer(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     axis2_qname_t *element_qtype,
     void *ed);
@@ -106,27 +106,27 @@ woden_wsdl10_ext_registry_register_deserializer(
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_deserializer(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     axis2_qname_t *element_type);
 
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_element_type(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class,
     axis2_qname_t *elem_qn);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_get_allowable_exts(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_ext_element_type(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     axis2_qname_t *element_qtype,
     void *element);
@@ -134,7 +134,7 @@ woden_wsdl10_ext_registry_register_ext_element_type(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_ext_attr_type(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *owner_class,
     axis2_qname_t *attr_qname,
     void *attr);
@@ -142,14 +142,14 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_attr_type(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class,
     axis2_qname_t *attr_qn);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_component_ext(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class,
     axis2_uri_t *ext_namespc,
     void *comp_ext);
@@ -157,24 +157,24 @@ woden_wsdl10_ext_registry_register_component_ext(
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class,
     axis2_uri_t *ext_namespc);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext_namespaces(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class);
 
 static axis2_status_t
 woden_wsdl10_ext_registry_populate(
     void *registry,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_ext_registry_t * AXIS2_CALL
 woden_wsdl10_ext_registry_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
 
@@ -260,7 +260,7 @@ woden_wsdl10_ext_registry_create(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_free(
     void *registry,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
 
@@ -319,7 +319,7 @@ woden_wsdl10_ext_registry_free(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_deserializer(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     axis2_qname_t *element_qtype,
     void *ed)
@@ -364,7 +364,7 @@ woden_wsdl10_ext_registry_register_deserializer(
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_deserializer(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     axis2_qname_t *element_type)
 {
@@ -410,7 +410,7 @@ woden_wsdl10_ext_registry_query_deserializer(
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_element_type(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class,
     axis2_qname_t *elem_qn)
 {
@@ -444,7 +444,7 @@ woden_wsdl10_ext_registry_query_ext_element_type(
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_get_allowable_exts(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
@@ -491,7 +491,7 @@ woden_wsdl10_ext_registry_get_allowable_exts(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_ext_element_type(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_type,
     axis2_qname_t *element_qtype,
     void *element)
@@ -534,7 +534,7 @@ woden_wsdl10_ext_registry_register_ext_element_type(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_ext_attr_type(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *owner_class,
     axis2_qname_t *attr_qname,
     void *attr)
@@ -574,7 +574,7 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_attr_type(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class,
     axis2_qname_t *attr_qn)
 {
@@ -608,7 +608,7 @@ woden_wsdl10_ext_registry_query_ext_attr_type(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_component_ext(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class,
     axis2_uri_t *ext_namespc,
     void *comp_ext)
@@ -644,7 +644,7 @@ woden_wsdl10_ext_registry_register_component_ext(
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class,
     axis2_uri_t *ext_namespc)
 {
@@ -676,7 +676,7 @@ woden_wsdl10_ext_registry_query_component_ext(
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext_namespaces(
     void *registry,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *parent_class)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
@@ -707,7 +707,7 @@ woden_wsdl10_ext_registry_query_component_ext_namespaces(
 static axis2_status_t
 woden_wsdl10_ext_registry_populate(
     void *registry,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_qname_t *q_attr_soap_version = NULL;

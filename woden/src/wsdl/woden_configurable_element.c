@@ -20,7 +20,7 @@
 axis2_status_t AXIS2_CALL
 woden_configurable_element_resolve_methods(
     woden_configurable_element_t *configurable_element,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

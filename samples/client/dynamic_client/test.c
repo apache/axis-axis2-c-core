@@ -25,11 +25,11 @@
 #include <stdio.h>
 
 axiom_node_t *
-build_om_programatically(axis2_env_t *env);
+build_om_programatically(axutil_env_t *env);
 
 int main(int argc, char** argv)
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axutil_allocator_t *allocator = NULL;
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     allocator = axutil_allocator_init(NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL, "addr_echo.log");
-    env = axis2_env_create_with_error_log(allocator, error, log);
+    env = axutil_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axis2_error_init();
 
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_programatically(axis2_env_t *env)
+build_om_programatically(axutil_env_t *env)
 {
     axiom_node_t *add_om_node = NULL;
     axiom_element_t* add_om_ele = NULL;

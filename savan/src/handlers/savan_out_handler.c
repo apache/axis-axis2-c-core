@@ -42,14 +42,14 @@
 axis2_status_t AXIS2_CALL
 savan_out_handler_invoke(
     struct axis2_handler *handler, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
 /* End of Function Prototypes *************************************************/
                          
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
 savan_out_handler_create(
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     axis2_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
@@ -76,7 +76,7 @@ savan_out_handler_create(
 axis2_status_t AXIS2_CALL
 savan_out_handler_invoke(
     struct axis2_handler *handler, 
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     savan_message_types_t msg_type = SAVAN_MSG_TYPE_UNKNOWN;

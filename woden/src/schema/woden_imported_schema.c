@@ -41,47 +41,47 @@ struct woden_imported_schema_impl
 axis2_status_t AXIS2_CALL
 woden_imported_schema_free(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_imported_schema_super_objs(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_imported_schema_type(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_schema_t *AXIS2_CALL
 woden_imported_schema_get_base_impl(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_imported_schema_set_location(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *location);
 
 axis2_uri_t *AXIS2_CALL
 woden_imported_schema_get_location(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_imported_schema_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_imported_schema_free_ops(
     void *schema,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_imported_schema_t * AXIS2_CALL
 woden_imported_schema_to_schema(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -109,7 +109,7 @@ woden_imported_schema_to_schema(
 /************************End of Woden C Internal Methods***********************/
 
 static woden_imported_schema_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -172,7 +172,7 @@ create(const axis2_env_t *env)
 }
 AXIS2_EXTERN woden_imported_schema_t * AXIS2_CALL
 woden_imported_schema_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -190,7 +190,7 @@ woden_imported_schema_create(
 woden_obj_types_t AXIS2_CALL
 woden_imported_schema_type(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -203,7 +203,7 @@ woden_imported_schema_type(
 static axis2_status_t
 woden_imported_schema_free_ops(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -223,7 +223,7 @@ woden_imported_schema_free_ops(
 axis2_status_t AXIS2_CALL
 woden_imported_schema_free(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -267,7 +267,7 @@ woden_imported_schema_free(
 axis2_hash_t *AXIS2_CALL
 woden_imported_schema_super_objs(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -280,7 +280,7 @@ woden_imported_schema_super_objs(
 woden_schema_t *AXIS2_CALL
 woden_imported_schema_get_base_impl(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -293,7 +293,7 @@ woden_imported_schema_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_imported_schema_resolve_methods(
     woden_imported_schema_t *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_imported_schema_t *schema_impl,
     axis2_hash_t *methods)
 {
@@ -326,7 +326,7 @@ woden_imported_schema_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_imported_schema_set_location(
     void *schema,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *location)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
@@ -346,7 +346,7 @@ woden_imported_schema_set_location(
 axis2_uri_t *AXIS2_CALL
 woden_imported_schema_get_location(
     void *schema,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 

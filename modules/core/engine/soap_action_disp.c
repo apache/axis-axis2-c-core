@@ -31,23 +31,23 @@ const axis2_char_t *AXIS2_SOAP_ACTION_DISP_NAME = "soap_action_based_dispatcher"
 axis2_status_t AXIS2_CALL
 axiom_soap_action_disp_invoke(
     axis2_handler_t *handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
 axis2_svc_t *AXIS2_CALL
 axiom_soap_action_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_op_t *AXIS2_CALL
 axiom_soap_action_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc);
 
 axis2_disp_t *AXIS2_CALL
 axiom_soap_action_disp_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -82,7 +82,7 @@ axiom_soap_action_disp_create(
 
 axis2_svc_t *AXIS2_CALL
 axiom_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_LOG_DEBUG(env->log, 
          AXIS2_LOG_SI, "Checking for service using SOAPAction is a TODO item");
@@ -92,7 +92,7 @@ axiom_soap_action_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
 axis2_op_t *AXIS2_CALL
 axiom_soap_action_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc)
 {
     const axis2_char_t *action = NULL;
@@ -138,7 +138,7 @@ axiom_soap_action_disp_find_op(
 axis2_status_t AXIS2_CALL
 axiom_soap_action_disp_invoke(
     axis2_handler_t * handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

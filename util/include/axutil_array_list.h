@@ -31,7 +31,7 @@
  */
 
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -52,7 +52,7 @@ extern "C"
      * @param capacity initial capacity of this array_list
      */
     AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL axutil_array_list_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int capacity);
 
     /**
@@ -63,7 +63,7 @@ extern "C"
     AXIS2_EXTERN void AXIS2_CALL
     axutil_array_list_free_void_arg(
         void *array_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Guarantees that this list will have at least enough capacity to
@@ -77,7 +77,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axutil_array_list_ensure_capacity(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int min_capacity);
 
     /**
@@ -89,7 +89,7 @@ extern "C"
     AXIS2_EXTERN int AXIS2_CALL 
     axutil_array_list_size(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if the list is empty.
@@ -100,7 +100,7 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axutil_array_list_is_empty(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Returns true iff element is in this array_list.
@@ -112,7 +112,7 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axutil_array_list_contains(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *e);
 
     /**
@@ -127,7 +127,7 @@ extern "C"
     AXIS2_EXTERN int AXIS2_CALL 
     axutil_array_list_index_of(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *e);
 
     /**
@@ -139,7 +139,7 @@ extern "C"
      */
     AXIS2_EXTERN void* AXIS2_CALL 
     axutil_array_list_get(struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index);
 
     /**
@@ -154,7 +154,7 @@ extern "C"
     AXIS2_EXTERN void* AXIS2_CALL 
     axutil_array_list_set(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index,
         void* e);
 
@@ -169,7 +169,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axutil_array_list_add(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const void* e);
 
     /**
@@ -185,7 +185,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axutil_array_list_add_at(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const int index,
         const void* e);
 
@@ -198,7 +198,7 @@ extern "C"
      */
     AXIS2_EXTERN void* AXIS2_CALL 
     axutil_array_list_remove(struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index);
 
     /**
@@ -211,7 +211,7 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axutil_array_list_check_bound_inclusive(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index);
 
     /**
@@ -224,7 +224,7 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axutil_array_list_check_bound_exclusive(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index);
 
     /**
@@ -235,7 +235,7 @@ extern "C"
     AXIS2_EXTERN void AXIS2_CALL 
     axutil_array_list_free(
         struct axutil_array_list *array_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #ifdef __cplusplus
 }

@@ -31,25 +31,25 @@
 
 axis2_status_t AXIS2_CALL
 axis2_addr_in_handler_invoke(struct axis2_handler *handler,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *msg_ctx);
 
 axis2_bool_t
-axis2_addr_in_check_element(const axis2_env_t *env, axis2_qname_t *expected_qname,
+axis2_addr_in_check_element(const axutil_env_t *env, axis2_qname_t *expected_qname,
         axis2_qname_t *actual_qname);
 
 axis2_status_t
-axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env,
+axis2_addr_in_extract_svc_grp_ctx_id(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t
-axis2_addr_in_extract_ref_params(const axis2_env_t *env,
+axis2_addr_in_extract_ref_params(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t *msg_info_headers);
 
 axis2_status_t
-axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
+axis2_addr_in_extract_addr_final_info(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
         axutil_array_list_t *addr_headers,
@@ -57,33 +57,33 @@ axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
 
 
 axis2_status_t
-axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
+axis2_addr_in_extract_to_epr_ref_params(const axutil_env_t *env,
         axis2_endpoint_ref_t * to_epr,
         axiom_soap_header_t *soap_header,
         const axis2_char_t *addr_ns);
 
 axis2_status_t
-axis2_addr_in_extract_epr_information(const axis2_env_t *env,
+axis2_addr_in_extract_epr_information(const axutil_env_t *env,
         axiom_soap_header_block_t *soap_header_block,
         axis2_endpoint_ref_t *endpoint_ref,
         const axis2_char_t *addr_ns);
 
 axis2_status_t
-axis2_addr_in_extract_addr_params(const axis2_env_t *env,
+axis2_addr_in_extract_addr_params(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
         axutil_array_list_t *addr_headers,
         const axis2_char_t *addr_ns,
         axis2_msg_ctx_t *msg_ctx);
 
-axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env,
+axis2_status_t axis2_addr_in_extract_addr_submission_info(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
         axutil_array_list_t *addr_headers,
         axis2_msg_ctx_t *msg_ctx);
 
 void
-axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
+axis2_addr_in_create_fault_envelope(const axutil_env_t *env,
         const axis2_char_t *header_name,
         const axis2_char_t *addr_ns_str,
         axis2_msg_ctx_t *msg_ctx);
@@ -91,7 +91,7 @@ axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
 /******************************************************************************/
 
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
-axis2_addr_in_handler_create(const axis2_env_t *env,
+axis2_addr_in_handler_create(const axutil_env_t *env,
         axis2_string_t *name)
 {
     axis2_handler_t *handler = NULL;
@@ -116,7 +116,7 @@ axis2_addr_in_handler_create(const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 axis2_addr_in_handler_invoke(struct axis2_handler *handler,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *msg_ctx)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
@@ -194,7 +194,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
 }
 
 axis2_status_t
-axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env,
+axis2_addr_in_extract_svc_grp_ctx_id(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_ctx_t *msg_ctx)
 {
@@ -245,7 +245,7 @@ axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env,
 
 
 axis2_status_t
-axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
+axis2_addr_in_extract_addr_final_info(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
         axutil_array_list_t *addr_headers,
@@ -259,7 +259,7 @@ axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
             msg_ctx);
 }
 
-axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env,
+axis2_status_t axis2_addr_in_extract_addr_submission_info(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
         axutil_array_list_t *addr_headers,
@@ -274,7 +274,7 @@ axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env
 }
 
 axis2_status_t
-axis2_addr_in_extract_addr_params(const axis2_env_t *env,
+axis2_addr_in_extract_addr_params(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers_p,
         axutil_array_list_t *addr_headers,
@@ -499,7 +499,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
 }
 
 axis2_status_t
-axis2_addr_in_extract_epr_information(const axis2_env_t *env,
+axis2_addr_in_extract_epr_information(const axutil_env_t *env,
         axiom_soap_header_block_t *soap_header_block,
         axis2_endpoint_ref_t *endpoint_ref,
         const axis2_char_t *addr_ns_str)
@@ -567,7 +567,7 @@ axis2_addr_in_extract_epr_information(const axis2_env_t *env,
 }
 
 axis2_status_t
-axis2_addr_in_extract_ref_params(const axis2_env_t *env,
+axis2_addr_in_extract_ref_params(const axutil_env_t *env,
         axiom_soap_header_t *soap_header,
         axis2_msg_info_headers_t* msg_info_headers)
 {
@@ -623,7 +623,7 @@ axis2_addr_in_extract_ref_params(const axis2_env_t *env,
 
 
 axis2_status_t
-axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
+axis2_addr_in_extract_to_epr_ref_params(const axutil_env_t *env,
         axis2_endpoint_ref_t * to_epr,
         axiom_soap_header_t *soap_header,
         const axis2_char_t *addr_ns_str)
@@ -680,7 +680,7 @@ axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
 
 
 axis2_bool_t
-axis2_addr_in_check_element(const axis2_env_t *env,
+axis2_addr_in_check_element(const axutil_env_t *env,
         axis2_qname_t *expected_qname,
         axis2_qname_t *actual_qname)
 {
@@ -704,7 +704,7 @@ axis2_addr_in_check_element(const axis2_env_t *env,
 }
 
 void
-axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
+axis2_addr_in_create_fault_envelope(const axutil_env_t *env,
         const axis2_char_t *header_name,
         const axis2_char_t *addr_ns_str,
         axis2_msg_ctx_t *msg_ctx)

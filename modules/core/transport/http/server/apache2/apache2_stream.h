@@ -19,7 +19,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_stream.h>
 #include <httpd.h>
 
@@ -33,7 +33,7 @@ extern "C"
   * @return axis2_stream (apache2)
   */
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL axis2_stream_create_apache2
-                        (const axis2_env_t *env, request_rec *req);
+                        (const axutil_env_t *env, request_rec *req);
 
 /** @} */
     

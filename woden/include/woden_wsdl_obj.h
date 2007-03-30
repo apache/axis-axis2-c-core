@@ -59,17 +59,17 @@ struct woden_wsdl_obj_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *wsdl_obj,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *wsdl_obj,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_obj,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * @return the base implementation class
@@ -77,12 +77,12 @@ struct woden_wsdl_obj_ops
     woden_wsdl_element_t *(AXIS2_CALL *
     get_base_impl) (
             void *wsdl_obj,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     struct woden_component_exts *(AXIS2_CALL *
     get_component_exts_for_namespace) (
             void *wsdl_obj,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *namespc);
     
     /*
@@ -93,7 +93,7 @@ struct woden_wsdl_obj_ops
     axis2_status_t (AXIS2_CALL *
     set_component_exts) (
             void *wsdl_obj,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_uri_t *namespc,
             struct woden_component_exts *exts);
 };
@@ -112,13 +112,13 @@ struct woden_wsdl_obj
 
 AXIS2_EXTERN woden_wsdl_obj_t * AXIS2_CALL
 woden_wsdl_obj_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_wsdl_obj_resolve_methods(
         woden_wsdl_obj_t *wsdl_obj,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_wsdl_obj_t *wsdl_obj_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

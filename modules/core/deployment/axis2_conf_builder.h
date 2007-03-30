@@ -27,7 +27,7 @@
 #include <axis2_const.h>
 #include <axis2_error.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include "axis2_desc_builder.h"
@@ -53,7 +53,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_conf_builder_free(axis2_conf_builder_t *conf_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * @param conf_builder pointer to configuration builder
@@ -62,7 +62,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * To get the list og modules that is requird to be engage globally
@@ -73,7 +73,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_children_qname_iterator_t *module_refs);
 
     /**
@@ -82,7 +82,7 @@ extern "C"
      * @return pointer to newly created conf builder
      */
     AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
-    axis2_conf_builder_create (const axis2_env_t *env);
+    axis2_conf_builder_create (const axutil_env_t *env);
 
     /**
      * Creates conf builder struct
@@ -94,7 +94,7 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
-    axis2_conf_builder_create_with_file_and_dep_engine_and_conf(const axis2_env_t *env,
+    axis2_conf_builder_create_with_file_and_dep_engine_and_conf(const axutil_env_t *env,
         axis2_char_t *file,
         struct axis2_dep_engine *dep_engine,
         axis2_conf_t *conf);

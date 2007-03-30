@@ -27,7 +27,7 @@ struct axis2_property
 };
 
 axis2_property_t *AXIS2_CALL
-axis2_property_create(const axis2_env_t *env)
+axis2_property_create(const axutil_env_t *env)
 {
     axis2_property_t *property = NULL;
 
@@ -50,7 +50,7 @@ axis2_property_create(const axis2_env_t *env)
 }
 /*****************************************************************************/
 axis2_property_t *AXIS2_CALL
-axis2_property_create_with_args(const axis2_env_t *env,
+axis2_property_create_with_args(const axutil_env_t *env,
     axis2_scope_t scope,
     axis2_bool_t own_value,
     AXIS2_FREE_VOID_ARG free_func,
@@ -77,7 +77,7 @@ axis2_property_create_with_args(const axis2_env_t *env,
 
 void AXIS2_CALL
 axis2_property_free(axis2_property_t *property,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -105,7 +105,7 @@ axis2_property_free(axis2_property_t *property,
 
 axis2_status_t AXIS2_CALL
 axis2_property_set_scope(axis2_property_t *property,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_scope_t scope)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -116,7 +116,7 @@ axis2_property_set_scope(axis2_property_t *property,
 
 axis2_status_t AXIS2_CALL
 axis2_property_set_free_func(axis2_property_t *property,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     AXIS2_FREE_VOID_ARG free_func)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -127,7 +127,7 @@ axis2_property_set_free_func(axis2_property_t *property,
 
 axis2_status_t AXIS2_CALL
 axis2_property_set_value(axis2_property_t *property,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -153,14 +153,14 @@ axis2_property_set_value(axis2_property_t *property,
 
 void *AXIS2_CALL
 axis2_property_get_value(axis2_property_t *property,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return property->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_property_set_own_value(axis2_property_t *property,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t own_value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -172,7 +172,7 @@ axis2_property_set_own_value(axis2_property_t *property,
 
 axis2_property_t* AXIS2_CALL
 axis2_property_clone(axis2_property_t *property,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_property_t *new_property = NULL;
     AXIS2_ENV_CHECK(env, NULL);

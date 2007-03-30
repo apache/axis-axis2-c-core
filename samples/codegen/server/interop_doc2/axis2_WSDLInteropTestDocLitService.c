@@ -34,7 +34,7 @@
   * @param param0
 
  */
-axis2_echoVoidResponse_t*axis2_WSDLInteropTestDocLitService_echoVoid(const axis2_env_t* env  , axis2_echoVoid_t* param0)
+axis2_echoVoidResponse_t*axis2_WSDLInteropTestDocLitService_echoVoid(const axutil_env_t* env  , axis2_echoVoid_t* param0)
 
 {
     /* Todo fill this with the necessary business logic */
@@ -49,7 +49,7 @@ axis2_echoVoidResponse_t*axis2_WSDLInteropTestDocLitService_echoVoid(const axis2
   * @param param2
 
  */
-axis2_echoStringArrayResponse_t*axis2_WSDLInteropTestDocLitService_echoStringArray(const axis2_env_t* env  , axis2_echoStringArray_t* param2)
+axis2_echoStringArrayResponse_t*axis2_WSDLInteropTestDocLitService_echoStringArray(const axutil_env_t* env  , axis2_echoStringArray_t* param2)
 
 {
     /* Todo fill this with the necessary business logic */
@@ -83,7 +83,7 @@ axis2_echoStringArrayResponse_t*axis2_WSDLInteropTestDocLitService_echoStringArr
   * @param param4
 
  */
-axis2_echoStructResponse_t*axis2_WSDLInteropTestDocLitService_echoStruct(const axis2_env_t* env  , axis2_echoStruct_t* param4)
+axis2_echoStructResponse_t*axis2_WSDLInteropTestDocLitService_echoStruct(const axutil_env_t* env  , axis2_echoStruct_t* param4)
 
 {
     /* Todo fill this with the necessary business logic */
@@ -121,7 +121,7 @@ axis2_echoStructResponse_t*axis2_WSDLInteropTestDocLitService_echoStruct(const a
   * @param param6
 
  */
-axis2_echoStringResponse_t*axis2_WSDLInteropTestDocLitService_echoString(const axis2_env_t* env  , axis2_echoString_t* param6)
+axis2_echoStringResponse_t*axis2_WSDLInteropTestDocLitService_echoString(const axutil_env_t* env  , axis2_echoString_t* param6)
 
 {
     /* Todo fill this with the necessary business logic */

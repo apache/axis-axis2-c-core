@@ -34,12 +34,12 @@ struct axis2_desc_builder
 
 static axis2_status_t
 set_attrs_and_value(axis2_param_t *param,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *param_element,
     axiom_node_t *param_node);
 
 AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
-axis2_desc_builder_create(const axis2_env_t *env)
+axis2_desc_builder_create(const axutil_env_t *env)
 {
     axis2_desc_builder_t *desc_builder = NULL;
 
@@ -62,7 +62,7 @@ axis2_desc_builder_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
-axis2_desc_builder_create_with_file_and_dep_engine(const axis2_env_t *env,
+axis2_desc_builder_create_with_file_and_dep_engine(const axutil_env_t *env,
     axis2_char_t *file_name,
     axis2_dep_engine_t *engine)
 {
@@ -92,7 +92,7 @@ axis2_desc_builder_create_with_file_and_dep_engine(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
-axis2_desc_builder_create_with_dep_engine(const axis2_env_t *env,
+axis2_desc_builder_create_with_dep_engine(const axutil_env_t *env,
     struct axis2_dep_engine *engine)
 {
     axis2_desc_builder_t *desc_builder = NULL;
@@ -115,7 +115,7 @@ axis2_desc_builder_create_with_dep_engine(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_desc_builder_free(axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -141,7 +141,7 @@ axis2_desc_builder_free(axis2_desc_builder_t *desc_builder,
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 axis2_desc_builder_build_om(axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_xml_reader_t *reader = NULL;
     axiom_document_t *document = NULL;
@@ -195,7 +195,7 @@ axis2_desc_builder_build_om(axis2_desc_builder_t *desc_builder,
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
 axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *flow_element,
     axis2_param_container_t *parent,
     axiom_node_t *flow_node)
@@ -252,7 +252,7 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
 
 struct axis2_handler_desc *AXIS2_CALL
 axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *handler_node,
     struct axis2_param_container *parent)
 {
@@ -479,7 +479,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
 
 static axis2_status_t
 set_attrs_and_value(axis2_param_t *param,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *param_element,
     axiom_node_t *param_node)
 {
@@ -592,7 +592,7 @@ set_attrs_and_value(axis2_param_t *param,
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_action_mappings(axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *op_node,
     axis2_op_t *op_desc)
 {
@@ -658,7 +658,7 @@ axis2_desc_builder_process_action_mappings(axis2_desc_builder_t *desc_builder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *params,
     axis2_param_container_t *param_container,
     axis2_param_container_t *parent)
@@ -800,7 +800,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *module_refs,
     axis2_op_t *op)
 {
@@ -855,7 +855,7 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
 
 AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
 axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axiom_element *recv_element)
 {
     axiom_attribute_t *recv_name = NULL;
@@ -920,7 +920,7 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
 }
 
 AXIS2_EXTERN struct axis2_msg_recv *AXIS2_CALL
-axis2_desc_builder_load_default_msg_recv(const axis2_env_t *env)
+axis2_desc_builder_load_default_msg_recv(const axutil_env_t *env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
 
@@ -930,7 +930,7 @@ axis2_desc_builder_load_default_msg_recv(const axis2_env_t *env)
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_short_file_name(const axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *file_name)
 {
     const axis2_char_t *separator = NULL;
@@ -959,7 +959,7 @@ axis2_desc_builder_get_short_file_name(const axis2_desc_builder_t *desc_builder,
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_file_name_without_prefix(const axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *short_file_name)
 {
     axis2_char_t *file_name_l = NULL;
@@ -981,7 +981,7 @@ axis2_desc_builder_get_file_name_without_prefix(const axis2_desc_builder_t *desc
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_value(const axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *in)
 {
     const axis2_char_t *separator = ":";
@@ -1005,7 +1005,7 @@ axis2_desc_builder_get_value(const axis2_desc_builder_t *desc_builder,
 
 AXIS2_EXTERN struct axis2_dep_engine *AXIS2_CALL
 axis2_desc_builder_get_dep_engine(const axis2_desc_builder_t *desc_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return desc_builder->engine;
 }

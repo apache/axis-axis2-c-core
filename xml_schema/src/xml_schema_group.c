@@ -40,42 +40,42 @@ struct xml_schema_group_impl
 axis2_status_t AXIS2_CALL
 xml_schema_group_free(
     void *group,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_group_super_objs(
     void *group,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_group_get_type(
     void *group,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_group_get_base_impl(void *group,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 xml_schema_group_get_name(void *group,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_group_set_name(void *group,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name);
 
 xml_schema_group_base_t *AXIS2_CALL
 xml_schema_group_get_particle(void *group,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_group_set_particle(void *group,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_group_base_t *particle);
 
 AXIS2_EXTERN xml_schema_group_t * AXIS2_CALL
-xml_schema_group_create(const axis2_env_t *env)
+xml_schema_group_create(const axutil_env_t *env)
 {
     xml_schema_group_impl_t *group_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -154,7 +154,7 @@ xml_schema_group_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_group_free(void *group,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_group_impl_t *group_impl = NULL;
 
@@ -203,7 +203,7 @@ xml_schema_group_free(void *group,
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_group_super_objs(void *group,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_group_impl_t *group_impl = NULL;
 
@@ -214,7 +214,7 @@ xml_schema_group_super_objs(void *group,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_group_get_type(void *group,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_group_impl_t *group_impl = NULL;
 
@@ -225,7 +225,7 @@ xml_schema_group_get_type(void *group,
 
 xml_schema_annotated_t *AXIS2_CALL
 xml_schema_group_get_base_impl(void *group,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_group_impl_t *group_impl = NULL;
 
@@ -236,7 +236,7 @@ xml_schema_group_get_base_impl(void *group,
 
 axis2_char_t *AXIS2_CALL
 xml_schema_group_get_name(void *group,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(group)->name;
@@ -244,7 +244,7 @@ xml_schema_group_get_name(void *group,
 
 axis2_status_t AXIS2_CALL
 xml_schema_group_set_name(void *group,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name)
 {
     xml_schema_group_impl_t *group_impl = NULL;
@@ -267,14 +267,14 @@ xml_schema_group_set_name(void *group,
 
 xml_schema_group_base_t *AXIS2_CALL
 xml_schema_group_get_particle(void *group,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(group)->particle;
 }
 
 axis2_status_t AXIS2_CALL
 xml_schema_group_set_particle(void *group,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_group_base_t *particle)
 {
     xml_schema_group_impl_t *group_impl = NULL;

@@ -80,7 +80,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_free(axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds operation.
@@ -92,7 +92,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_add_op(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_op *op);
 
     /**
@@ -104,7 +104,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op *AXIS2_CALL
     axis2_svc_get_op_with_qname(const axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *op_qname);
 
     /**
@@ -116,7 +116,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op *AXIS2_CALL
     axis2_svc_get_op_with_name(const axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *op_name);
 
     /**
@@ -127,7 +127,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_svc_get_all_ops(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets parent which is of type service group.
@@ -138,7 +138,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_parent(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc_grp *svc_grp);
 
     /**
@@ -149,7 +149,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_grp *AXIS2_CALL
     axis2_svc_get_parent(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets QName.
@@ -160,7 +160,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_qname(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname);
 
     /**
@@ -171,7 +171,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
     axis2_svc_get_qname(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Adds given parameter to operation.
@@ -183,7 +183,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_add_param(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_param_t *param);
 
     /**
@@ -196,7 +196,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_svc_get_param(const axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
     /**
@@ -208,7 +208,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_get_all_params(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if the named parameter is locked.
@@ -219,7 +219,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_svc_is_param_locked(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *param_name);
 
     /**
@@ -234,7 +234,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_engage_module(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_module_desc *module_desc,
         struct axis2_conf *conf);
         
@@ -247,7 +247,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axis2_svc_is_module_engaged (axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *module_qname);
 
     /**
@@ -267,7 +267,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axis2_svc_add_module_ops(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_module_desc *module_desc,
         struct axis2_conf *axis2_config);
 
@@ -281,7 +281,7 @@ extern "C"
      */
     /*AXIS2_EXTERN axis2_status_t AXIS2_CALL
       axis2_svc_add_to_engaged_module_list(axis2_svc_t *svc,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           struct axis2_module_desc *module_desc);*/
 
     /**
@@ -292,7 +292,7 @@ extern "C"
      */
     /*AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
       axis2_svc_get_all_engaged_modules(const axis2_svc_t *svc,
-          const axis2_env_t *env);*/
+          const axutil_env_t *env);*/
 
     /**
      * Sets style. Style can be either RPC or document literal.
@@ -303,7 +303,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_style(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *style);
 
     /**
@@ -314,7 +314,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_get_style(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets in flow. In flow is the list of phases invoked
@@ -325,7 +325,7 @@ extern "C"
      */
     /*AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
       axis2_svc_get_in_flow(const axis2_svc_t *svc,
-          const axis2_env_t *env);*/
+          const axutil_env_t *env);*/
 
     /**
      * Sets in flow. In flow is the list of phases invoked
@@ -337,7 +337,7 @@ extern "C"
      */
     /*AXIS2_EXTERN axis2_status_t AXIS2_CALL
       axis2_svc_set_in_flow(axis2_svc_t *svc,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           struct axis2_flow *in_flow);*/
 
     /**
@@ -350,7 +350,7 @@ extern "C"
     /*AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
             axis2_svc_get_out_flow(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets out flow. Out flow is the list of phases invoked
@@ -363,7 +363,7 @@ extern "C"
     /*AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_out_flow(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 struct axis2_flow *out_flow);*/
 
     /**
@@ -376,7 +376,7 @@ extern "C"
     /*AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
             axis2_svc_get_fault_in_flow(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets fault in flow. Fault in flow is the list of phases invoked
@@ -389,7 +389,7 @@ extern "C"
     /*AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_fault_in_flow(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 struct axis2_flow *fault_flow);*/
 
     /**
@@ -402,7 +402,7 @@ extern "C"
     /*AXIS2_EXTERN struct axis2_flow *AXIS2_CALL
             axis2_svc_get_fault_out_flow(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets fault out flow. Fault out flow is the list of phases invoked
@@ -415,7 +415,7 @@ extern "C"
     /*AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_fault_out_flow(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 struct axis2_flow *fault_flow);*/
 
     /**
@@ -428,7 +428,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op *AXIS2_CALL
     axis2_svc_get_op_by_soap_action(const axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *soap_action);
 
     /**
@@ -443,7 +443,7 @@ extern "C"
     /*AXIS2_EXTERN struct axis2_op *AXIS2_CALL
             axis2_svc_get_op_by_soap_action_and_endpoint(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 const axis2_char_t *soap_action,
                 const axis2_qname_t *endpoint);*/
 
@@ -455,7 +455,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_get_name(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets service name.
@@ -466,7 +466,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_name(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_name);
 
     /**
@@ -477,7 +477,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_last_update(axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets last update time of the service.
@@ -487,7 +487,7 @@ extern "C"
      */
     AXIS2_EXTERN long AXIS2_CALL
     axis2_svc_get_last_update(const axis2_svc_t *svc,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
     /**
      * Get the description of the services, which is in the
@@ -498,7 +498,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_get_svc_desc(const axis2_svc_t *svc,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
     /**
      * Set the description of the service which is in service.xml
@@ -508,7 +508,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_svc_desc(axis2_svc_t *svc,
-         const axis2_env_t *env,
+         const axutil_env_t *env,
          const axis2_char_t *svc_desc);
 
     /**
@@ -522,7 +522,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_get_file_name(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the name of the file that holds the implementation of the 
@@ -536,7 +536,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_file_name(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *file_name);
 
     /**
@@ -548,7 +548,7 @@ extern "C"
     /*AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
             axis2_svc_get_all_endpoints(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets the list of endpoints associated with the service. 
@@ -560,7 +560,7 @@ extern "C"
     /*AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_all_endpoints(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_hash_t *endpoints);*/
 
     /**
@@ -572,7 +572,7 @@ extern "C"
     /*AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
             axis2_svc_get_namespace(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     */
 
     /**
@@ -590,7 +590,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_add_mapping(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *wsa_action ,
         struct axis2_op *axis2_op);
 
@@ -604,7 +604,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_add_module_qname(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *module_qname);
 
     /**
@@ -615,7 +615,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_svc_get_all_module_qnames(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if the XML schema location is adjusted.
@@ -626,7 +626,7 @@ extern "C"
     /*AXIS2_EXTERN axis2_bool_t AXIS2_CALL
             axis2_svc_is_schema_location_adjusted(
                 axis2_svc_t *svc,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     */
 
     /**
@@ -640,7 +640,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_schema_location_adjusted(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 const axis2_bool_t adjusted);*/
 
     /**
@@ -654,7 +654,7 @@ extern "C"
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
             axis2_svc_axis2_svc_get_schema_mapping_table(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets XML schema mapping table for service. 
@@ -667,7 +667,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_schema_mapping_table(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_hash_t *table);*/
 
     /**
@@ -679,7 +679,7 @@ extern "C"
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
             axis2_svc_get_custom_schema_prefix(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets custom schema prefix.
@@ -691,7 +691,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_custom_schema_prefix(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 const axis2_char_t *prefix);*/
 
     /**
@@ -704,7 +704,7 @@ extern "C"
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
             axis2_svc_get_custom_schema_suffix(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets custom schema suffix.
@@ -717,7 +717,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_custom_schema_suffix(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 const axis2_char_t *suffix);*/
 
     /**
@@ -730,7 +730,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_print_schema(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_stream_t *out_stream);*/
 
     /**
@@ -743,7 +743,7 @@ extern "C"
     /*AXIS2_EXTERN xml_schema_t *AXIS2_CALL
             axis2_svc_get_schema(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 const int index);*/
 
     /**
@@ -758,7 +758,7 @@ extern "C"
 /*        AXIS2_EXTERN xml_schema_t *AXIS2_CALL
             axis2_svc_add_all_namespaces(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 int index);*/
 
     /**
@@ -772,7 +772,7 @@ extern "C"
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
             axis2_svc_get_all_schemas(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Adds the given XML schema to the list of XML schemas associated 
@@ -787,7 +787,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_add_schema(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_t *schema);*/
 
     /**
@@ -800,7 +800,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_add_all_schemas(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axutil_array_list_t *schemas);*/
 
     /**
@@ -812,7 +812,7 @@ extern "C"
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
             axis2_svc_get_schema_target_ns(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets XML schema's target namespace.
@@ -824,7 +824,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_schema_target_ns(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 const axis2_char_t *ns);*/
 
     /**
@@ -836,7 +836,7 @@ extern "C"
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
             axis2_svc_get_schema_target_ns_prefix(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     /**
      * Sets XML schema's target namespace prefix.
@@ -848,7 +848,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_set_schema_target_ns_prefix(
                 axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 const axis2_char_t *prefix);*/
 
     /**
@@ -859,7 +859,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_get_target_ns(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets target namespace.
@@ -870,7 +870,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     saxis2_svc_et_target_ns(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *ns);
 
     /**
@@ -881,7 +881,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_get_target_ns_prefix(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets target namespace prefix.
@@ -892,7 +892,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_target_ns_prefix(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *prefix);
 
     /**
@@ -906,7 +906,7 @@ extern "C"
     /*AXIS2_EXTERN xml_schema_element_t *AXIS2_CALL
             axis2_svc_get_schema_element(
                 const axis2_svc_t *svc,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 const axis2_qname_t *qname);*/
 
     /**
@@ -918,7 +918,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     gaxis2_svc_et_ns_map(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the namespace map with all namespaces related to service.
@@ -929,7 +929,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_ns_map(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *ns_map);
 
     /**
@@ -943,15 +943,15 @@ extern "C"
     /*AXIS2_EXTERN axis2_status_t AXIS2_CALL
             axis2_svc_populate_schema_mappings(
                 axis2_svc_t *svc,
-                const axis2_env_t *env);*/
+                const axutil_env_t *env);*/
 
     AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
     axis2_svc_get_param_container(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
     axis2_svc_get_flow_container(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates a service struct instance.
@@ -959,7 +959,7 @@ extern "C"
      * @return pointer to newly created service
      */
     AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-    axis2_svc_create(const axis2_env_t *env);
+    axis2_svc_create(const axutil_env_t *env);
 
     /**
      * Creates a service struct with given QName.
@@ -968,16 +968,16 @@ extern "C"
      * @return pointer to newly created service
      */
     AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
-    axis2_svc_create_with_qname(const axis2_env_t *env,
+    axis2_svc_create_with_qname(const axutil_env_t *env,
         const axis2_qname_t *qname);
 
     AXIS2_EXTERN void *AXIS2_CALL
     axis2_svc_get_impl_class(const axis2_svc_t *svc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_impl_class(axis2_svc_t *svc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *impl_class);
 
 

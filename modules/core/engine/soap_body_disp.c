@@ -31,25 +31,25 @@ const axis2_char_t *AXIS2_SOAP_MESSAGE_BODY_DISP_NAME  = "soap_message_body_base
 axis2_status_t AXIS2_CALL
 axiom_soap_body_disp_invoke(
     axis2_handler_t *handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
 axis2_svc_t *AXIS2_CALL
 axiom_soap_body_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 
 axis2_op_t *AXIS2_CALL
 axiom_soap_body_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc);
 
 
 axis2_disp_t *AXIS2_CALL
 axiom_soap_body_disp_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -86,7 +86,7 @@ axiom_soap_body_disp_create(
 axis2_svc_t *AXIS2_CALL
 axiom_soap_body_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axis2_svc_t *svc = NULL;
@@ -177,7 +177,7 @@ using SOAP message body's first child's namespace URI");
 axis2_op_t *AXIS2_CALL
 axiom_soap_body_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_svc_t *svc)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
@@ -240,7 +240,7 @@ message body's first child's local name");
 axis2_status_t AXIS2_CALL
 axiom_soap_body_disp_invoke(
     axis2_handler_t * handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

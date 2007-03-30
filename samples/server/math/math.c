@@ -18,7 +18,7 @@
 #include <stdio.h>
 
 axiom_node_t *
-axis2_math_add(const axis2_env_t *env, axiom_node_t *node)
+axis2_math_add(const axutil_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *param1_node = NULL;
     axiom_node_t *param1_text_node = NULL;
@@ -130,7 +130,7 @@ axis2_math_add(const axis2_env_t *env, axiom_node_t *node)
 }
 
 axiom_node_t *
-axis2_math_sub(const axis2_env_t *env, axiom_node_t *node)
+axis2_math_sub(const axutil_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *param1_node = NULL;
     axiom_node_t *param1_text_node = NULL;
@@ -243,7 +243,7 @@ axis2_math_sub(const axis2_env_t *env, axiom_node_t *node)
 
 
 axiom_node_t *
-axis2_math_mul(const axis2_env_t *env, axiom_node_t *node)
+axis2_math_mul(const axutil_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *param1_node = NULL;
     axiom_node_t *param1_text_node = NULL;
@@ -356,7 +356,7 @@ axis2_math_mul(const axis2_env_t *env, axiom_node_t *node)
 
 
 axiom_node_t *
-axis2_math_div(const axis2_env_t *env, axiom_node_t *node)
+axis2_math_div(const axutil_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *param1_node = NULL;
     axiom_node_t *param1_text_node = NULL;

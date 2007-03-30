@@ -21,20 +21,20 @@
 #include <axis2_http_transport.h>
 
 axiom_node_t *
-build_yahoo_rest_payload (const axis2_env_t *env, axis2_char_t *string);
+build_yahoo_rest_payload (const axutil_env_t *env, axis2_char_t *string);
 
 void 
-format_output (const axis2_env_t *env, axiom_node_t *ret_node);
+format_output (const axutil_env_t *env, axiom_node_t *ret_node);
 
 void 
-format_output_one (const axis2_env_t *env, axiom_node_t *child_node);
+format_output_one (const axutil_env_t *env, axiom_node_t *child_node);
 
 int
 print_help ();
 
 int main (int argc, char *argv[])
 {
-    const axis2_env_t *env = NULL;
+    const axutil_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -57,7 +57,7 @@ int main (int argc, char *argv[])
 			search_string = argv[1];
 	}
 
-    env = axis2_env_create_all("yahoo_rest_search.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axutil_env_create_all("yahoo_rest_search.log", AXIS2_LOG_LEVEL_TRACE);
 	address = "http://search.yahooapis.com/WebSearchService/V1/webSearch";
 
 	printf ("using endpoint %s \n", address);
@@ -121,7 +121,7 @@ int main (int argc, char *argv[])
 }
 
 axiom_node_t *
-build_yahoo_rest_payload (const axis2_env_t *env, axis2_char_t *string)
+build_yahoo_rest_payload (const axutil_env_t *env, axis2_char_t *string)
 {
 	axiom_node_t *root_node;
 	axiom_node_t *appid_node;
@@ -144,7 +144,7 @@ build_yahoo_rest_payload (const axis2_env_t *env, axis2_char_t *string)
 }
 
 void 
-format_output (const axis2_env_t *env, axiom_node_t *node)
+format_output (const axutil_env_t *env, axiom_node_t *node)
 {
 	axiom_node_t *child_node;
 	child_node = AXIOM_NODE_GET_FIRST_CHILD (node, env);
@@ -159,7 +159,7 @@ format_output (const axis2_env_t *env, axiom_node_t *node)
 }
 
 void
-format_output_one (const axis2_env_t *env, axiom_node_t *node)
+format_output_one (const axutil_env_t *env, axiom_node_t *node)
 {
 	axiom_node_t *child_node;
 	child_node = AXIOM_NODE_GET_FIRST_CHILD (node, env);

@@ -35,37 +35,37 @@
 axis2_status_t AXIS2_CALL
 savan_msg_recv_invoke_business_logic_sync(
     axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx);
     
 axis2_status_t AXIS2_CALL
 savan_msg_recv_handle_sub_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx);
     
 axis2_status_t AXIS2_CALL
 savan_msg_recv_handle_unsub_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx);
     
 axis2_status_t AXIS2_CALL
 savan_msg_recv_handle_renew_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx);
 
 axis2_status_t AXIS2_CALL
 savan_msg_recv_handle_get_status_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx);
 
 axiom_soap_envelope_t * AXIS2_CALL
 savan_msg_recv_build_soap_envelope(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t **body_node);
 
 /* End of Function Prototypes *************************************************/
@@ -74,7 +74,7 @@ savan_msg_recv_build_soap_envelope(
 
 AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
 savan_msg_recv_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -109,7 +109,7 @@ savan_msg_recv_create(
 axis2_status_t AXIS2_CALL
 savan_msg_recv_invoke_business_logic_sync(
     axis2_msg_recv_t *msg_recv,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx)
 {
@@ -154,7 +154,7 @@ savan_msg_recv_invoke_business_logic_sync(
 
 axis2_status_t AXIS2_CALL
 savan_msg_recv_handle_sub_request(
-    const axis2_env_t *env, 
+    const axutil_env_t *env, 
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx)
 {
@@ -247,7 +247,7 @@ savan_msg_recv_handle_sub_request(
  
 axis2_status_t AXIS2_CALL
 savan_msg_recv_handle_unsub_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx)
 {
@@ -308,7 +308,7 @@ savan_msg_recv_handle_unsub_request(
  
 axis2_status_t AXIS2_CALL
 savan_msg_recv_handle_renew_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx)
 {
@@ -382,7 +382,7 @@ savan_msg_recv_handle_renew_request(
  
 axis2_status_t AXIS2_CALL
 savan_msg_recv_handle_get_status_request(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_msg_ctx_t *new_msg_ctx)
 {
@@ -440,7 +440,7 @@ savan_msg_recv_handle_get_status_request(
 
 axiom_soap_envelope_t *AXIS2_CALL
 savan_msg_recv_build_soap_envelope(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t **body_node)
 {
     axiom_namespace_t *soap_ns = NULL;
@@ -487,7 +487,7 @@ savan_msg_recv_build_soap_envelope(
 /*
 AXIS2_EXPORT int axis2_get_instance(
     struct axis2_msg_recv **inst,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     *inst = savan_msg_recv_create(env);
     if (!(*inst))
@@ -502,7 +502,7 @@ AXIS2_EXPORT int axis2_get_instance(
 /*
 AXIS2_EXPORT int axis2_remove_instance(
     struct axis2_msg_recv *inst,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)

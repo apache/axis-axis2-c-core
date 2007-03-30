@@ -37,7 +37,7 @@ struct axis2_engine
 
 AXIS2_EXTERN axis2_engine_t *AXIS2_CALL
 axis2_engine_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_engine_t *engine = NULL;
@@ -64,7 +64,7 @@ axis2_engine_create(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_engine_free(
     axis2_engine_t *engine,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
     AXIS2_FREE(env->allocator, engine);
@@ -74,7 +74,7 @@ axis2_engine_free(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_send(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_status_t status = AXIS2_SUCCESS;
@@ -184,7 +184,7 @@ axis2_engine_send(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_receive(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -297,7 +297,7 @@ axis2_engine_receive(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_send_fault(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;
@@ -348,7 +348,7 @@ axis2_engine_send_fault(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_receive_fault(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;
@@ -407,7 +407,7 @@ axis2_engine_receive_fault(
 AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
 axis2_engine_create_fault_msg_ctx(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *processing_context)
 {
     axis2_msg_ctx_t *fault_ctx = NULL;
@@ -554,7 +554,7 @@ axis2_engine_create_fault_msg_ctx(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_invoke_phases(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *phases,
     axis2_msg_ctx_t *msg_ctx)
 {
@@ -589,7 +589,7 @@ axis2_engine_invoke_phases(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_resume_invocation_phases(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axutil_array_list_t *phases,
     axis2_msg_ctx_t *msg_ctx)
 {
@@ -644,7 +644,7 @@ axis2_engine_resume_invocation_phases(
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_engine_get_receiver_fault_code(
     const axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *soap_namespace)
 {
     if (axis2_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
@@ -656,7 +656,7 @@ axis2_engine_get_receiver_fault_code(
 
 axis2_status_t
 axis2_engine_check_must_understand_headers(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
@@ -747,7 +747,7 @@ axis2_engine_check_must_understand_headers(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_resume_receive(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_status_t status = AXIS2_FAILURE;
@@ -801,7 +801,7 @@ axis2_engine_resume_receive(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_engine_resume_send(
     axis2_engine_t *engine,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;

@@ -46,7 +46,7 @@ axis2_rand_with_range(unsigned int *seedp,
 }
 
 AXIS2_EXTERN unsigned int AXIS2_CALL
-axis2_rand_get_seed_value_based_on_time(const axis2_env_t *env)
+axis2_rand_get_seed_value_based_on_time(const axutil_env_t *env)
 {
     axutil_date_time_t *date = axutil_date_time_create(env);
     unsigned int rand_var =  axutil_date_time_get_year(date, env);

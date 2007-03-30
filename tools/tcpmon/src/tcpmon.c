@@ -27,15 +27,15 @@
 
 #define SIZE 1024
 
-int on_new_entry(const axis2_env_t *env,
+int on_new_entry(const axutil_env_t *env,
 					  tcpmon_entry_t* entry,
 					  int status);
-int on_error_func(const axis2_env_t *env,
+int on_error_func(const axutil_env_t *env,
 						char* error_message);
 
 int main(int argc, char** argv)
 {
-		axis2_env_t* env = NULL;
+		axutil_env_t* env = NULL;
 		axutil_allocator_t* allocator = NULL;
 		axis2_error_t *error = NULL;
 		axis2_log_t *log = NULL;
@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 		log = axis2_log_create(allocator, NULL, "axis2_tcpmon.log");
 		thread_pool = axis2_thread_pool_init(allocator);
 
-		env = axis2_env_create_with_error_log_thread_pool(allocator, error, log,
+		env = axutil_env_create_with_error_log_thread_pool(allocator, error, log,
 																		  thread_pool);
 
 		if (argc < 2 || !axis2_strcmp(argv[1], "-h"))
@@ -140,11 +140,11 @@ int main(int argc, char** argv)
 		TCPMON_SESSION_FREE(session, env);
 		AXIS2_FREE(env-> allocator, target_host);
 		axutil_allocator_free(allocator);
-		axis2_env_free(env);
+		axutil_env_free(env);
 		return 0;
 }
 
-int on_new_entry(const axis2_env_t *env,
+int on_new_entry(const axutil_env_t *env,
 					  tcpmon_entry_t* entry,
 					  int status)
 {
@@ -196,7 +196,7 @@ int on_new_entry(const axis2_env_t *env,
 		return 0;
 }
 
-int on_error_func(const axis2_env_t *env,
+int on_error_func(const axutil_env_t *env,
 						char* error_message)
 {
 		fprintf(stderr, "ERROR: %s\n", error_message);

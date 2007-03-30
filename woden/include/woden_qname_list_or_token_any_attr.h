@@ -56,17 +56,17 @@ struct woden_qname_list_or_token_any_attr_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *list_token_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_qname_list_or_token_any_attr_free) (
             void *list_token_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *list_token_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * @return the base implementation class
@@ -74,7 +74,7 @@ struct woden_qname_list_or_token_any_attr_ops
     woden_xml_attr_t *(AXIS2_CALL *
     get_base_impl) (
             void *list_token_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* ************************************************************
      *  QNameAttr interface declared methods 
@@ -83,23 +83,23 @@ struct woden_qname_list_or_token_any_attr_ops
     axis2_bool_t (AXIS2_CALL *
     is_qname_list) (
             void *list_token_attr,
-            const axis2_env_t *env); 
+            const axutil_env_t *env); 
 
     axis2_bool_t (AXIS2_CALL *
     is_token) (
             void *list_token_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     axutil_array_list_t *(AXIS2_CALL *
     get_qnames) (
             void *list_token_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_token) (
             void *list_token_attr,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* ************************************************************
      *  Non-API implementation methods 
@@ -114,7 +114,7 @@ struct woden_qname_list_or_token_any_attr_ops
     void *(AXIS2_CALL *
     convert) (
             void *list_token_attr,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             struct axiom_element *owner_el,
             struct axiom_node *owner_node,
             axis2_char_t *attr_value);
@@ -133,7 +133,7 @@ struct woden_qname_list_or_token_any_attr
  */
 AXIS2_EXTERN woden_qname_list_or_token_any_attr_t * AXIS2_CALL
 woden_qname_list_or_token_any_attr_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
         axis2_qname_t *attr_type,
@@ -144,7 +144,7 @@ woden_qname_list_or_token_any_attr_create(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_qname_list_or_token_any_attr_resolve_methods(
         woden_qname_list_or_token_any_attr_t *list_token_attr,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

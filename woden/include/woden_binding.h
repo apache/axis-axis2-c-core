@@ -53,52 +53,52 @@ struct woden_binding_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_interface) (
             void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_uri_t *(AXIS2_CALL *
     get_type) (
             void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_binding_faults) (
             void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_binding_ops) (
             void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     to_element)  (
             void *binding,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**************************************************************************
      *                      Non-API implementation methods
      **************************************************************************/
@@ -114,7 +114,7 @@ struct woden_binding_ops
     void *(AXIS2_CALL *
     get_binding_fault_element) (
             void *binding,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     /*
@@ -129,13 +129,13 @@ struct woden_binding_ops
     void *(AXIS2_CALL *
     get_binding_op_element) (
             void *binding,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_qname_t *qname);
 
     axis2_status_t (AXIS2_CALL *
     set_interface_element) (
             void *binding,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *intface);
 };
 
@@ -153,54 +153,54 @@ struct woden_binding
 
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_to_binding_element(
         void *binding,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_to_configurable_element(
         void *binding,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_to_documentable_element(
         void *binding,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_to_documentable(
         void *binding,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_to_configurable(
         void *binding,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_to_wsdl_obj(
         void *binding,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_to_nested_element(
         void *binding,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_binding_t * AXIS2_CALL
 woden_binding_to_wsdl_component(
         void *binding,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_binding_resolve_methods(
         woden_binding_t *binding,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_binding_t *binding_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

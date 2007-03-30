@@ -20,7 +20,7 @@
 #define XML_STREAMWRITER_H
 #include "guththila_writer.h"
 #include "guththila_buffer.h"
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_stack.h>
 
 typedef struct guththila_xml_writer_s

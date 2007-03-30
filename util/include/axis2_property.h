@@ -20,7 +20,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_error.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils.h>
 
 
@@ -43,7 +43,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_property_t * AXIS2_CALL
     axis2_property_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * create new property
@@ -60,7 +60,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_property_t * AXIS2_CALL
     axis2_property_create_with_args(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_scope_t scope,
         axis2_bool_t own_value,
         AXIS2_FREE_VOID_ARG free_func,
@@ -68,40 +68,40 @@ extern "C"
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_property_free(axis2_property_t *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Default scope is AXIS2_SCOPE_REQUEST
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_property_set_scope(axis2_property_t *property,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_scope_t scope);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_property_set_free_func(axis2_property_t *property,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         AXIS2_FREE_VOID_ARG free_func);
 
 /*************************** Function macros **********************************/
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_property_set_value(axis2_property_t *property,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *value);
         
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_property_get_value(axis2_property_t *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_property_set_own_value(
         axis2_property_t *property,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t own_value);
 
     AXIS2_EXTERN axis2_property_t* AXIS2_CALL
     axis2_property_clone(axis2_property_t *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /*************************** End of function macros ***************************/

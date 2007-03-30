@@ -58,47 +58,47 @@ struct woden_property_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL *
     type) (void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     /**
      * @return the base implementation class
      */
     struct woden_documentable *(AXIS2_CALL *
     get_base_impl) (
             void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_uri_t *(AXIS2_CALL *
     get_ref) (
             void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_value_constraint) (
             void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_value) (
             void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_parent) (
             void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     to_element) (
             void *property,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /* ****************************************************************************
      * Non-API implementation methods
@@ -106,13 +106,13 @@ struct woden_property_ops
     axis2_status_t (AXIS2_CALL *
     set_value_constraint) (
             void *property,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *type_def);
 
     axis2_status_t (AXIS2_CALL *
     set_types) (
             void *property,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *types);
 
 };
@@ -132,60 +132,60 @@ struct woden_property
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_property_element(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_nested_element(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_documentable_element(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_documentable(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_wsdl_obj(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_nested_component(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_wsdl_component(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_element_extensible(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_property_t * AXIS2_CALL
 woden_property_to_attr_extensible(
         void *property,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_property_resolve_methods(
         woden_property_t *property,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_property_t *property_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

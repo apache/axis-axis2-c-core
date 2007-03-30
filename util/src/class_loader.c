@@ -18,23 +18,23 @@
 #include <axutil_class_loader.h>
 
 axis2_status_t
-axutil_class_loader_load_lib(const axis2_env_t *env,
+axutil_class_loader_load_lib(const axutil_env_t *env,
         axutil_dll_desc_t *dll_desc);
 
 axis2_status_t
-axutil_class_loader_unload_lib(const axis2_env_t *env,
+axutil_class_loader_unload_lib(const axutil_env_t *env,
         axutil_dll_desc_t *dll_desc);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_class_loader_init(const axis2_env_t *env)
+axutil_class_loader_init(const axutil_env_t *env)
 {
     AXIS2_PLATFORM_LOADLIBINIT();
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axutil_class_loader_delete_dll(const axis2_env_t *env,
+axutil_class_loader_delete_dll(const axutil_env_t *env,
         axutil_dll_desc_t *dll_desc)
 {
     if (!dll_desc)
@@ -49,7 +49,7 @@ axutil_class_loader_delete_dll(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axutil_class_loader_create_dll(const axis2_env_t *env,
+axutil_class_loader_create_dll(const axutil_env_t *env,
         axis2_param_t *impl_info_param)
 {
     void *obj = NULL;
@@ -138,7 +138,7 @@ axutil_class_loader_create_dll(const axis2_env_t *env,
 }
 
 axis2_status_t
-axutil_class_loader_load_lib(const axis2_env_t *env,
+axutil_class_loader_load_lib(const axutil_env_t *env,
         axutil_dll_desc_t *dll_desc)
 {
     axis2_char_t *dll_name = NULL;
@@ -168,7 +168,7 @@ axutil_class_loader_load_lib(const axis2_env_t *env,
 }
 
 axis2_status_t
-axutil_class_loader_unload_lib(const axis2_env_t *env,
+axutil_class_loader_unload_lib(const axutil_env_t *env,
         axutil_dll_desc_t *dll_desc)
 {
     AXIS2_DLHANDLER dl_handler =  axutil_dll_desc_get_dl_handler(dll_desc, env);

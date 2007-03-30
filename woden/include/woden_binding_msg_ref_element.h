@@ -26,7 +26,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -62,34 +62,34 @@ struct woden_binding_msg_ref_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *binding_msg_ref_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *binding_msg_ref_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_msg_label) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *msg_label);
 
     void *(AXIS2_CALL *
     get_msg_label) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     axis2_status_t (AXIS2_CALL *
     set_direction) (
             void *iface_fault_ele,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *dir);
 
     void *(AXIS2_CALL *
     get_direction) (
             void *iface_fault_ele,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
 
 };
@@ -109,13 +109,13 @@ struct woden_binding_msg_ref_element
 
 AXIS2_EXTERN woden_binding_msg_ref_element_t * AXIS2_CALL
 woden_binding_msg_ref_element_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_element_resolve_methods(
         woden_binding_msg_ref_element_t *binding_msg_ref_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

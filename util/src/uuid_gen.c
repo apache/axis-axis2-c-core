@@ -20,7 +20,7 @@
 
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_uuid_gen(const axis2_env_t *env)
+axis2_uuid_gen(const axutil_env_t *env)
 {
 
     axis2_char_t *str = AXIS2_MALLOC(env->allocator, 40 * sizeof(char));

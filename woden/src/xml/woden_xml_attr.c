@@ -41,12 +41,12 @@ struct woden_xml_attr_impl
 axis2_status_t AXIS2_CALL
 woden_xml_attr_free(
     void *xml_attr,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 axis2_status_t AXIS2_CALL
 woden_xml_attr_init(
     void *xml_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_qname_t *attr_type,
@@ -55,32 +55,32 @@ woden_xml_attr_init(
 axis2_qname_t *AXIS2_CALL
 woden_xml_attr_get_attribute_type(
     void *xml_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_generic_obj_t *AXIS2_CALL
 woden_xml_attr_get_content(
     void *xml_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 woden_xml_attr_to_external_form(
     void *xml_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 woden_xml_attr_is_valid(
     void *xml_attr,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_xml_attr_set_valid(
     void *xml_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t validity);
 
 AXIS2_EXTERN woden_xml_attr_t * AXIS2_CALL
 woden_xml_attr_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_qname_t *attr_type,
@@ -119,7 +119,7 @@ woden_xml_attr_create(
 axis2_status_t AXIS2_CALL
 woden_xml_attr_free(
     void *xml_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -155,7 +155,7 @@ woden_xml_attr_free(
 axis2_status_t AXIS2_CALL
 woden_xml_attr_resolve_methods(
     woden_xml_attr_t *xml_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -186,7 +186,7 @@ woden_xml_attr_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_xml_attr_init(
     void *xml_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
     axis2_qname_t *attr_type,
@@ -224,7 +224,7 @@ woden_xml_attr_init(
 axis2_qname_t *AXIS2_CALL
 woden_xml_attr_get_attribute_type(
     void *xml_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -237,7 +237,7 @@ woden_xml_attr_get_attribute_type(
 axis2_generic_obj_t *AXIS2_CALL
 woden_xml_attr_get_content(
     void *xml_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -249,7 +249,7 @@ woden_xml_attr_get_content(
 axis2_char_t *AXIS2_CALL
 woden_xml_attr_to_external_form(
     void *xml_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -261,7 +261,7 @@ woden_xml_attr_to_external_form(
 axis2_bool_t AXIS2_CALL
 woden_xml_attr_is_valid(
     void *xml_attr,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -273,7 +273,7 @@ woden_xml_attr_is_valid(
 axis2_status_t AXIS2_CALL
 woden_xml_attr_set_valid(
     void *xml_attr,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_bool_t validity)
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;

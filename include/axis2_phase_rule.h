@@ -54,7 +54,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_phase_rule_get_before(const axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the name of the handler before which the handler associated with 
@@ -66,7 +66,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_rule_set_before(axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *before);
 
     /**
@@ -78,7 +78,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_phase_rule_get_after(const axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets the name of the handler after which the handler associated with 
@@ -90,7 +90,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_rule_set_after(axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *after);
 
     /**
@@ -101,7 +101,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_phase_rule_get_name(const axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets name.
@@ -112,7 +112,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_rule_set_name(axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
     /**
@@ -124,7 +124,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_phase_rule_is_first(const axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets handler to be the first in phase.
@@ -136,7 +136,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_rule_set_first(axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t first);
 
     /**
@@ -148,7 +148,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_phase_rule_is_last(const axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets handler to be the last in phase.
@@ -160,7 +160,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_rule_set_last(axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t last);
 
     /**
@@ -171,7 +171,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_phase_rule_free(axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Clones phase rule.
@@ -181,7 +181,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
     axis2_phase_rule_clone(axis2_phase_rule_t *phase_rule,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates a phase rule struct instance.
@@ -190,7 +190,7 @@ extern "C"
      * @return pointer to newly created phase rule
      */
     AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
-    axis2_phase_rule_create(const axis2_env_t *env,
+    axis2_phase_rule_create(const axutil_env_t *env,
         const axis2_char_t *name);
 
 /** @} */

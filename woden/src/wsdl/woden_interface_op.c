@@ -49,22 +49,22 @@ struct woden_interface_op_impl
 axis2_status_t AXIS2_CALL
 woden_interface_op_free(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_interface_op_super_objs(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_interface_op_type(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_nested_configurable_t *AXIS2_CALL
 woden_interface_op_get_base_impl(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Interface Operation  methods (the WSDL Component model)
@@ -73,32 +73,32 @@ woden_interface_op_get_base_impl(
 axis2_qname_t *AXIS2_CALL
 woden_interface_op_get_qname(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_uri_t *AXIS2_CALL
 woden_interface_op_get_msg_exchange_pattern(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_msg_refs(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_fault_refs(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_style(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_interface_op_to_element(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Interface Operation Element methods (the XML Element model)
@@ -107,79 +107,79 @@ woden_interface_op_to_element(
 axis2_status_t AXIS2_CALL
 woden_interface_op_set_qname(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_set_pattern(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *uri);
 
 axis2_uri_t *AXIS2_CALL
 woden_interface_op_get_pattern(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_add_style_uri(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *uri);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_remove_style_uri(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *uri);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_add_interface_msg_ref_element(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *msg_ref);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_remove_interface_msg_ref_element(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *msg_ref);
 
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_msg_ref_elements(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_add_interface_fault_ref_element(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *fault_ref);
 
 axis2_status_t AXIS2_CALL
 woden_interface_op_remove_interface_fault_ref_element(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *fault_ref);
 
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_fault_ref_elements(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 static woden_interface_op_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_interface_op_free_ops(
     void *interface_op,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_interface_op_element(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -204,7 +204,7 @@ woden_interface_op_to_interface_op_element(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_nested_configurable(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -230,7 +230,7 @@ woden_interface_op_to_nested_configurable(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_nested_component(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -255,7 +255,7 @@ woden_interface_op_to_nested_component(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_configurable(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     void *configurable = NULL;
@@ -283,7 +283,7 @@ woden_interface_op_to_configurable(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_nested_element(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -309,7 +309,7 @@ woden_interface_op_to_nested_element(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_configurable_element(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -334,7 +334,7 @@ woden_interface_op_to_configurable_element(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_documentable_element(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -360,7 +360,7 @@ woden_interface_op_to_documentable_element(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_documentable(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     woden_configurable_t *configurable = NULL;
@@ -393,7 +393,7 @@ woden_interface_op_to_documentable(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_attr_extensible(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -421,7 +421,7 @@ woden_interface_op_to_attr_extensible(
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_element_extensible(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -448,7 +448,7 @@ woden_interface_op_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_interface_op_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -574,7 +574,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
-woden_interface_op_create(const axis2_env_t *env)
+woden_interface_op_create(const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     void *configurable = NULL;
@@ -611,7 +611,7 @@ woden_interface_op_create(const axis2_env_t *env)
 static axis2_status_t
 woden_interface_op_free_ops(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -715,7 +715,7 @@ woden_interface_op_free_ops(
 axis2_status_t AXIS2_CALL
 woden_interface_op_free(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -790,7 +790,7 @@ woden_interface_op_free(
 axis2_hash_t *AXIS2_CALL
 woden_interface_op_super_objs(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -803,7 +803,7 @@ woden_interface_op_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_interface_op_type(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -816,7 +816,7 @@ woden_interface_op_type(
 woden_nested_configurable_t *AXIS2_CALL
 woden_interface_op_get_base_impl(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
 
@@ -829,7 +829,7 @@ woden_interface_op_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_interface_op_resolve_methods(
     woden_interface_op_t *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_interface_op_t *interface_op_impl,
     axis2_hash_t *methods)
 {
@@ -892,7 +892,7 @@ woden_interface_op_resolve_methods(
 axis2_qname_t *AXIS2_CALL
 woden_interface_op_get_qname(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -908,7 +908,7 @@ woden_interface_op_get_qname(
 axis2_uri_t *AXIS2_CALL
 woden_interface_op_get_msg_exchange_pattern(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -924,7 +924,7 @@ woden_interface_op_get_msg_exchange_pattern(
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_msg_refs(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -940,7 +940,7 @@ woden_interface_op_get_interface_msg_refs(
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_fault_refs(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -956,7 +956,7 @@ woden_interface_op_get_interface_fault_refs(
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_style(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -972,7 +972,7 @@ woden_interface_op_get_style(
 void *AXIS2_CALL
 woden_interface_op_to_element(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -992,7 +992,7 @@ woden_interface_op_to_element(
 axis2_status_t AXIS2_CALL
 woden_interface_op_set_qname(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *qname)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
@@ -1017,7 +1017,7 @@ woden_interface_op_set_qname(
 axis2_status_t AXIS2_CALL
 woden_interface_op_set_pattern(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
@@ -1043,7 +1043,7 @@ woden_interface_op_set_pattern(
 axis2_uri_t *AXIS2_CALL
 woden_interface_op_get_pattern(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1059,7 +1059,7 @@ woden_interface_op_get_pattern(
 axis2_status_t AXIS2_CALL
 woden_interface_op_add_style_uri(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
@@ -1087,7 +1087,7 @@ woden_interface_op_add_style_uri(
 axis2_status_t AXIS2_CALL
 woden_interface_op_remove_style_uri(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *uri)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
@@ -1108,7 +1108,7 @@ woden_interface_op_remove_style_uri(
 axis2_status_t AXIS2_CALL
 woden_interface_op_add_interface_msg_ref_element(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *msg_ref)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
@@ -1137,7 +1137,7 @@ woden_interface_op_add_interface_msg_ref_element(
 axis2_status_t AXIS2_CALL
 woden_interface_op_remove_interface_msg_ref_element(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *msg_ref)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
@@ -1159,7 +1159,7 @@ woden_interface_op_remove_interface_msg_ref_element(
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_msg_ref_elements(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1175,7 +1175,7 @@ woden_interface_op_get_interface_msg_ref_elements(
 axis2_status_t AXIS2_CALL
 woden_interface_op_add_interface_fault_ref_element(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *fault_ref)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
@@ -1204,7 +1204,7 @@ woden_interface_op_add_interface_fault_ref_element(
 axis2_status_t AXIS2_CALL
 woden_interface_op_remove_interface_fault_ref_element(
     void *interface_op,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *fault_ref)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
@@ -1226,7 +1226,7 @@ woden_interface_op_remove_interface_fault_ref_element(
 axutil_array_list_t *AXIS2_CALL
 woden_interface_op_get_interface_fault_ref_elements(
     void *interface_op,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;

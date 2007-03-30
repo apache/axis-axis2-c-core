@@ -33,7 +33,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -49,7 +49,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_header_to_external_form(axis2_http_header_t *header,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param header pointer to header
@@ -57,7 +57,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_header_get_name(const axis2_http_header_t *header,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param header pointer to header
@@ -65,7 +65,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL
     axis2_http_header_get_value(const axis2_http_header_t *header,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param header pointer to header
@@ -74,7 +74,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_http_header_free(axis2_http_header_t *header,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param env pointer to environment struct
@@ -82,7 +82,7 @@ extern "C"
      * @param value pointer to value
      */
     AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
-    axis2_http_header_create (const axis2_env_t *env,
+    axis2_http_header_create (const axutil_env_t *env,
         const axis2_char_t *name,
         const axis2_char_t *value);
 
@@ -91,7 +91,7 @@ extern "C"
      * @param str pointer to str
      */
     AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL
-    axis2_http_header_create_by_str (const axis2_env_t *env,
+    axis2_http_header_create_by_str (const axutil_env_t *env,
         const axis2_char_t *str);
 
 /** To external from. */

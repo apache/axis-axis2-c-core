@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "guththila_buffer.h"
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include "guththila_defines.h"
 #include "guththila_error.h"
 
@@ -45,15 +45,15 @@ typedef struct guththila_writer_impl_t
 }guththila_writer_impl_t; 
 
 AXIS2_EXTERN guththila_writer_t* AXIS2_CALL
-guththila_writer_create_for_file(axis2_env_t *env, 
+guththila_writer_create_for_file(axutil_env_t *env, 
     char *fp);
 
 AXIS2_EXTERN guththila_writer_t* AXIS2_CALL
-guththila_writer_create_for_memory (axis2_env_t *env);
+guththila_writer_create_for_memory (axutil_env_t *env);
 
 
 AXIS2_EXTERN int AXIS2_CALL
-guththila_writer_write(axis2_env_t *env, 
+guththila_writer_write(axutil_env_t *env, 
 		       char *buffer, 
 		       int offset, 
 		       int length, 
@@ -61,15 +61,15 @@ guththila_writer_write(axis2_env_t *env,
 
 
 AXIS2_EXTERN void AXIS2_CALL
-guththila_writer_free (axis2_env_t *env, 
+guththila_writer_free (axutil_env_t *env, 
 		       guththila_writer_t *wt);
 
 AXIS2_EXTERN char * AXIS2_CALL
-guththila_writer_get_buffer (axis2_env_t *env, 
+guththila_writer_get_buffer (axutil_env_t *env, 
 		       guththila_writer_t *wt);
 
 AXIS2_EXTERN unsigned int AXIS2_CALL
-guththila_writer_get_buffer_size (axis2_env_t *env,
+guththila_writer_get_buffer_size (axutil_env_t *env,
 								  guththila_writer_t *wt);
 
 #endif	/* GUTHTHILA_WRITE_H */

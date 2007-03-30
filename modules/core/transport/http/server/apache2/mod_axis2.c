@@ -38,7 +38,7 @@ typedef struct axis2_config_rec
 axis2_config_rec_t;
 
 axis2_apache2_worker_t *axis2_worker = NULL;
-const axis2_env_t *axis2_env = NULL;
+const axutil_env_t *axutil_env = NULL;
 
 /******************************Function Headers********************************/
 static void *
@@ -231,8 +231,8 @@ axis2_handler(
     }
     ap_should_client_block(req);
 
-    axis2_env->allocator->current_pool = (void*) req->pool;
-    rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axis2_env, req);
+    axutil_env->allocator->current_pool = (void*) req->pool;
+    rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, req);
 
     if (AXIS2_CRITICAL_FAILURE == rv)
     {
@@ -335,9 +335,9 @@ axis2_module_init(
                      "[Axis2] Error initializing mod_axis2 thread pool");
         exit(APEXIT_CHILDFATAL);
     }
-    axis2_env = axis2_env_create_with_error_log_thread_pool(allocator, error,
+    axutil_env = axutil_env_create_with_error_log_thread_pool(allocator, error,
             axis2_logger, thread_pool);
-    if (! axis2_env)
+    if (! axutil_env)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error creating mod_axis2 environment");
@@ -347,10 +347,10 @@ axis2_module_init(
     {
 
         axis2_logger->level = conf->log_level;
-        AXIS2_LOG_INFO(axis2_env->log, "Starting log with log level %d",
+        AXIS2_LOG_INFO(axutil_env->log, "Starting log with log level %d",
                 conf->log_level);
     }
-    axis2_worker = axis2_apache2_worker_create(axis2_env,
+    axis2_worker = axis2_apache2_worker_create(axutil_env,
             conf->axis2_repo_path);
     if (! axis2_worker)
     {

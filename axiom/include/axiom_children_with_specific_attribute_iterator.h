@@ -47,7 +47,7 @@ extern "C"
     */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_children_with_specific_attribute_iterator_free(axiom_children_with_specific_attribute_iterator_t *iterator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * Removes from the underlying collection the last element returned by the
@@ -58,7 +58,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_children_with_specific_attribute_iterator_remove(axiom_children_with_specific_attribute_iterator_t *iterator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Returns true< if the iteration has more elements. (In other
@@ -68,7 +68,7 @@ extern "C"
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axiom_children_with_specific_attribute_iterator_has_next(axiom_children_with_specific_attribute_iterator_t *iterator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Returns the next element in the iteration. returns null if there is no 
@@ -76,7 +76,7 @@ extern "C"
      */
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axiom_children_with_specific_attribute_iterator_next(axiom_children_with_specific_attribute_iterator_t *iterator,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * @param current child
@@ -86,7 +86,7 @@ extern "C"
 
     AXIS2_EXTERN  axiom_children_with_specific_attribute_iterator_t * AXIS2_CALL
     axiom_children_with_specific_attribute_iterator_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *current_child,
         axis2_qname_t *attr_qname,
         axis2_char_t *attr_value,

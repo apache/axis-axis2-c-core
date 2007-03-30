@@ -27,7 +27,7 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -102,7 +102,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
     axis2_uri_parse_string(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *uri);
 
     /**
@@ -113,13 +113,13 @@ extern "C"
      */
     AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
     axis2_uri_parse_hostinfo(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *hostinfo);
 
     /** Resolve relative to a base.  This means host/etc, and (crucially) path */
     AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
     axis2_uri_resolve_relative(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_uri_t* base,
         axis2_uri_t* uptr);
 
@@ -137,13 +137,13 @@ extern "C"
      */
     AXIS2_EXTERN axis2_uri_t *AXIS2_CALL
     axis2_uri_parse_relative(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_uri_t* base,
         const char* uri);
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_uri_free(axis2_uri_t *uri,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
      * Unparse a axis2_uri_t structure to an URI string.  Optionally 
@@ -163,28 +163,28 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_uri_to_string(const axis2_uri_t *uri,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             unsigned flags);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_uri_get_protocol(axis2_uri_t *uri,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_uri_get_server(axis2_uri_t *uri,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_port_t AXIS2_CALL
     axis2_uri_get_port(axis2_uri_t *uri,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_uri_get_path(axis2_uri_t *uri,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_uri_t* AXIS2_CALL
     axis2_uri_clone(const axis2_uri_t *uri,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     /** @} */

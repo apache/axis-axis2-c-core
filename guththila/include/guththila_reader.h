@@ -25,7 +25,7 @@
 #include <string.h>
 #include "guththila_buffer.h"
 #include "guththila_defines.h"
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include "guththila_error.h"
 #include <axis2_utils.h>
 
@@ -56,28 +56,28 @@ typedef struct guththila_reader_impl_t
 
 
 AXIS2_EXTERN guththila_reader_t * AXIS2_CALL
-guththila_reader_create_for_file (axis2_env_t * environment,
+guththila_reader_create_for_file (axutil_env_t * environment,
                                   char* filename);
 
 AXIS2_EXTERN guththila_reader_t * AXIS2_CALL 
-guththila_reader_create_for_io(axis2_env_t *environment,
+guththila_reader_create_for_io(axutil_env_t *environment,
 							   AXIS2_READ_INPUT_CALLBACK input_read_callback, void *ctx);
 
 AXIS2_EXTERN guththila_reader_t * AXIS2_CALL
-guththila_reader_create_for_memory(axis2_env_t *environment,
+guththila_reader_create_for_memory(axutil_env_t *environment,
                                    void *buffer,
                                     int size,
 				   void *ctx); 
 
 
 AXIS2_EXTERN int AXIS2_CALL
-guththila_reader_read (axis2_env_t * environment,
+guththila_reader_read (axutil_env_t * environment,
                        guththila_char_t * buffer, int offset, int length,
                        guththila_reader_t * r);
 
                        
 AXIS2_EXTERN void AXIS2_CALL
-guththila_reader_free (axis2_env_t * environment,
+guththila_reader_free (axutil_env_t * environment,
                        guththila_reader_t * r);
 
 #endif /* GUTHTHILA_READER_H */

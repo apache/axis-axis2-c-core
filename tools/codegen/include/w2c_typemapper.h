@@ -54,7 +54,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_typemapper_t *typemapper,
-         const axis2_env_t *env);
+         const axutil_env_t *env);
 
    /**
     * retrieve the parameter name to the given qname in wsdl
@@ -66,7 +66,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     */   
     axis2_char_t* (AXIS2_CALL *
     get_parameter_name)(w2c_typemapper_t *typemapper,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_qname_t *qname);
 
    /**
@@ -78,7 +78,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     */
     axis2_char_t* (AXIS2_CALL *
     get_type_name)(w2c_typemapper_t *typemapper,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_qname_t *qname);
 
    /**
@@ -91,7 +91,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     */
     axis2_status_t (AXIS2_CALL *
     add_typemapping_name)(w2c_typemapper_t *typemapper,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_qname_t *qname,
           axis2_char_t *name);
 
@@ -103,7 +103,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     */
     axis2_char_t* (AXIS2_CALL *
     get_default_mapping_name)(w2c_typemapper_t *typemapper,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
    /**
     * retrieve the default qname.
@@ -113,7 +113,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     */
     axis2_qname_t* (AXIS2_CALL *
     get_default_qname)(w2c_typemapper_t *typemapper,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
 
    /**
     * retrieve the qname 2 typename hash.
@@ -123,7 +123,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     */
     axis2_hash_t* (AXIS2_CALL *
     get_all)(w2c_typemapper_t *typemapper,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
    
    /**
     * retrieve whether the type is primitive.
@@ -134,7 +134,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     */
     axis2_bool_t (AXIS2_CALL *
     is_primitive)(w2c_typemapper_t *typemapper,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_qname_t *qname);
 
 };
@@ -151,7 +151,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper
  * @return newly created typemapper obj
  */
 AXIS2_EXTERN w2c_typemapper_t* AXIS2_CALL
-w2c_typemapper_create_from_file( const axis2_env_t *env,
+w2c_typemapper_create_from_file( const axutil_env_t *env,
                    axis2_char_t *filename);
 
 /*************************** Function macros **********************************/

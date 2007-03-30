@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_hash.h>
 #include <axutil_array_list.h>
 
@@ -56,7 +56,7 @@ extern "C"
      * creates param struct
      */
     AXIS2_EXTERN axis2_param_t* AXIS2_CALL
-    axis2_param_create(const axis2_env_t *env,
+    axis2_param_create(const axutil_env_t *env,
         axis2_char_t *name,
         void *value);
 
@@ -66,7 +66,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_param_get_name(struct axis2_param *param,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Parameter value accessor
@@ -74,7 +74,7 @@ extern "C"
      */
     AXIS2_EXTERN void* AXIS2_CALL
     axis2_param_get_value(struct axis2_param *param,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * param name mutator
@@ -82,7 +82,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_set_name(struct axis2_param *param,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
     /**
@@ -92,7 +92,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_set_value(struct axis2_param *param,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const void *value);
 
     /**
@@ -102,7 +102,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_param_is_locked(struct axis2_param *param,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Method setLocked
@@ -111,7 +111,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_set_locked(struct axis2_param *param,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t value);
 
     /**
@@ -121,42 +121,42 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_param_get_param_type(struct axis2_param *param,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_set_param_type(struct axis2_param *param,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int type);
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_param_free(struct axis2_param *param,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_set_attributes(struct axis2_param *param,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *attrs);
 
     AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
     axis2_param_get_attributes(struct axis2_param *param,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_set_value_list(struct axis2_param *param,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *value_list);
 
     AXIS2_EXTERN axutil_array_list_t* AXIS2_CALL
     axis2_param_get_value_list(struct axis2_param *param,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_param_value_free(void *param_value,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_param_set_value_free(struct axis2_param *param,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *free_fn);
 
     /** @} */

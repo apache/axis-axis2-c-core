@@ -53,26 +53,26 @@ axis2_http_transport_sender_impl_t;
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_invoke(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_clean_up(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_init(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_transport_out_desc_t *out_desc);
 
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_write_message(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_endpoint_ref_t *epr,
     axiom_soap_envelope_t *out,
@@ -81,11 +81,11 @@ axis2_http_transport_sender_write_message(
 void AXIS2_CALL
 axis2_http_transport_sender_free(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_transport_sender_t *AXIS2_CALL
 axis2_http_transport_sender_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -130,7 +130,7 @@ axis2_http_transport_sender_create(
 void AXIS2_CALL
 axis2_http_transport_sender_free(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -153,7 +153,7 @@ axis2_http_transport_sender_free(
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_invoke(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     const axis2_char_t *char_set_enc = NULL;
@@ -416,7 +416,7 @@ axis2_http_transport_sender_invoke(
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_clean_up(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -432,7 +432,7 @@ axis2_http_transport_sender_clean_up(
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_init(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_transport_out_desc_t *out_desc)
 {
@@ -529,7 +529,7 @@ axis2_http_transport_sender_init(
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_write_message(
     axis2_transport_sender_t *transport_sender,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_endpoint_ref_t *epr,
     axiom_soap_envelope_t *out,
@@ -638,7 +638,7 @@ axis2_get_instance(
 axis2_http_transport_sender_get_instance(
 #endif
     struct axis2_transport_sender **inst,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     *inst = axis2_http_transport_sender_create(env);
     if (!(*inst))
@@ -656,7 +656,7 @@ axis2_remove_instance(
 axis2_http_transport_sender_remove_instance(
 #endif
     axis2_transport_sender_t *inst,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (inst)
     {

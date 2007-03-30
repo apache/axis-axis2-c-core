@@ -25,7 +25,7 @@
 */
 
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -41,7 +41,7 @@ extern "C"
     typedef struct axis2_stack axis2_stack_t;
 
     AXIS2_EXTERN axis2_stack_t * AXIS2_CALL
-    axis2_stack_create(const axis2_env_t *env);
+    axis2_stack_create(const axutil_env_t *env);
 
     /**
      * Free function of the stack
@@ -50,31 +50,31 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_stack_free(axis2_stack_t *stack,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN void* AXIS2_CALL
     axis2_stack_pop(axis2_stack_t *stack,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_stack_push(axis2_stack_t *stack,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void* value);
 
     AXIS2_EXTERN int AXIS2_CALL
     axis2_stack_size(axis2_stack_t *stack,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     /**
      * returns the last put value from the stack
      * without removing it from stack
      */
     AXIS2_EXTERN void* AXIS2_CALL
     axis2_stack_get(axis2_stack_t *stack,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN void* AXIS2_CALL
     axis2_stack_get_at(axis2_stack_t *stack,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int i);
 
     /** @} */

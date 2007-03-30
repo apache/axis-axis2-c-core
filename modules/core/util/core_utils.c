@@ -27,7 +27,7 @@
 
 AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
 axis2_core_utils_create_out_msg_ctx(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *in_msg_ctx)
 {
     axis2_ctx_t *ctx = NULL;
@@ -149,7 +149,7 @@ axis2_core_utils_create_out_msg_ctx(
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
+axis2_core_utils_reset_out_msg_ctx(const axutil_env_t *env,
         axis2_msg_ctx_t *out_msg_ctx)
 {
     axis2_msg_info_headers_t *msg_info_headers = NULL;
@@ -175,7 +175,7 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
-axis2_core_utils_get_module_qname(const axis2_env_t *env,
+axis2_core_utils_get_module_qname(const axutil_env_t *env,
         const axis2_char_t *name,
         const axis2_char_t *version)
 {
@@ -209,7 +209,7 @@ axis2_core_utils_get_module_qname(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
+axis2_core_utils_calculate_default_module_version(const axutil_env_t *env,
         axis2_hash_t *modules_map, axis2_conf_t *axis_conf)
 {
     axis2_hash_t *default_modules = NULL;
@@ -320,7 +320,7 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_core_utils_get_module_name(const axis2_env_t *env, axis2_char_t *module_name)
+axis2_core_utils_get_module_name(const axutil_env_t *env, axis2_char_t *module_name)
 {
     axis2_char_t version_seperator = '-';
     axis2_char_t *name = NULL;
@@ -343,7 +343,7 @@ axis2_core_utils_get_module_name(const axis2_env_t *env, axis2_char_t *module_na
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_core_utils_get_module_version(const axis2_env_t *env, axis2_char_t *module_name)
+axis2_core_utils_get_module_version(const axutil_env_t *env, axis2_char_t *module_name)
 {
     axis2_char_t version_seperator = '-';
     axis2_char_t *version_sep_loc = NULL;
@@ -360,7 +360,7 @@ axis2_core_utils_get_module_version(const axis2_env_t *env, axis2_char_t *module
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_core_utils_is_latest_mod_ver(const axis2_env_t *env,
+axis2_core_utils_is_latest_mod_ver(const axutil_env_t *env,
         axis2_char_t *module_ver, axis2_char_t *current_def_ver)
 {
     double cur_ver = 0.0;

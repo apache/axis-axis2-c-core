@@ -29,7 +29,7 @@
 */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 
 #ifdef __cplusplus
@@ -48,7 +48,7 @@ extern "C"
     axis2_char_t * AXIS2_CALL
     savan_subscriber_get_id(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
     /**
      * Set id.
@@ -59,7 +59,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_subscriber_set_id(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *id);
     
     /**
@@ -71,7 +71,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_subscriber_set_end_to(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *end_to);
                 
     /**
@@ -83,7 +83,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_subscriber_set_notify_to(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_endpoint_ref_t *notify_to);
 
     /**
@@ -95,7 +95,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_subscriber_set_delivery_mode(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *mode);
 
     /**
@@ -107,7 +107,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_subscriber_set_expires(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *expires);
 
     /**
@@ -119,7 +119,7 @@ extern "C"
     axis2_char_t * AXIS2_CALL
     savan_subscriber_get_expires(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Set filter.
@@ -130,7 +130,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_subscriber_set_filter(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *filter);
 
     /**
@@ -143,7 +143,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_subscriber_publish(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -156,7 +156,7 @@ extern "C"
     axis2_status_t AXIS2_CALL
     savan_subscriber_set_renew_status(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t renewed);
 
     /**
@@ -169,7 +169,7 @@ extern "C"
     axis2_bool_t AXIS2_CALL
     savan_subscriber_get_renew_status(
         savan_subscriber_t *subscriber,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates a subscriber instance.
@@ -178,7 +178,7 @@ extern "C"
      */
     AXIS2_EXTERN savan_subscriber_t * AXIS2_CALL
     savan_subscriber_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     
 /** @} */
 #ifdef __cplusplus

@@ -78,7 +78,7 @@ extern "C"
      * @return pointer to newly created operation
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_op_create(const axis2_env_t *env);
+    axis2_op_create(const axutil_env_t *env);
 
 
     /**
@@ -89,7 +89,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_op_free(axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Frees operation given as a void pointer.
@@ -99,7 +99,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_op_free_void_arg(void *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -112,7 +112,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_add_param(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_param_t *param);
 
     /**
@@ -125,7 +125,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_op_get_param(const axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
     /**
@@ -137,7 +137,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_op_get_all_params(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Checks if the named parameter is locked.
@@ -148,7 +148,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_op_is_param_locked(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *param_name);
 
     /**
@@ -161,7 +161,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_parent(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc *svc);
 
     /**
@@ -173,7 +173,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
     axis2_op_get_parent(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets operation QName.
@@ -186,7 +186,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_qname(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname);
 
     /**
@@ -197,7 +197,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
     axis2_op_get_qname(void *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets operation message exchange pattern (MEP).
@@ -208,7 +208,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_msg_exchange_pattern(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *pattern);
 
     /**
@@ -219,7 +219,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_op_get_msg_exchange_pattern(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets message receiver. message receiver is responsible for invoking
@@ -232,7 +232,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_msg_recv(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_recv *msg_recv);
 
     /**
@@ -245,7 +245,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_msg_recv *AXIS2_CALL
     axis2_op_get_msg_recv(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets style of operation. Style is that mentioned in WSDL, either 
@@ -256,7 +256,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_op_get_style(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets style of operation. Style is that mentioned in WSDL, either 
@@ -268,7 +268,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_style(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *style);
 
     /**
@@ -283,7 +283,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_engage_module(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_module_desc *module_desc,
         struct axis2_conf *conf);
 
@@ -297,7 +297,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_add_to_engaged_module_list(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_module_desc *module_dec);
 
     /**
@@ -308,7 +308,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_op_get_all_modules(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets Axis specific MEP constant. This method simply maps the string 
@@ -319,7 +319,7 @@ extern "C"
      */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets fault in flow. Fault in flow is the list of phases invoked
@@ -331,7 +331,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_op_get_fault_in_flow(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -344,7 +344,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_op_get_fault_out_flow(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets out flow. Out flow is the list of phases invoked
@@ -356,7 +356,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_op_get_out_flow(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets in flow. In flow is the list of phases 
@@ -368,7 +368,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_op_get_in_flow(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets fault in flow. Fault in flow is the list of phases invoked
@@ -381,7 +381,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_fault_in_flow(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *list);
 
     /**
@@ -395,7 +395,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_fault_out_flow(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *list);
 
     /**
@@ -409,7 +409,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_out_flow(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *list);
 
     /**
@@ -423,7 +423,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_in_flow(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *list);
 
     /**
@@ -436,7 +436,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_add_module_qname(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *module_qname);
 
     /**
@@ -448,7 +448,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_op_get_all_module_qnames(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Finds operation context related to this operation using given message
@@ -463,7 +463,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
     axis2_op_find_op_ctx(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *msg_ctx,
         struct axis2_svc_ctx *svc_ctx);
 
@@ -480,7 +480,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
     axis2_op_find_existing_op_ctx(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -496,7 +496,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_register_op_ctx(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *msg_ctx,
         struct axis2_op_ctx *op_ctx);
 
@@ -509,7 +509,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_msg *AXIS2_CALL
     axis2_op_get_msg(const axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *label);
 
     /**
@@ -522,7 +522,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_add_msg(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *label,
         const struct axis2_msg *msg);
 
@@ -534,7 +534,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_op_is_from_module(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Set the wsamapping list.
@@ -545,7 +545,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_wsamapping_list(axis2_op_t *op,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *mapping_list);
 
     /**
@@ -556,11 +556,11 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_op_get_wsamapping_list(axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
     axis2_op_get_param_container(const axis2_op_t *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates operation struct for an operation defined in a module.
@@ -568,7 +568,7 @@ extern "C"
      * @return pointer to newly created operation
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_op_create_from_module(const axis2_env_t *env);
+    axis2_op_create_from_module(const axutil_env_t *env);
 
     /**
      * Creates operation struct with given QName.
@@ -577,7 +577,7 @@ extern "C"
      * @return pointer to newly created operation
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
-    axis2_op_create_with_qname(const axis2_env_t *env,
+    axis2_op_create_with_qname(const axutil_env_t *env,
         const axis2_qname_t *name);
 
     /**
@@ -589,7 +589,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_op_free_void_arg(void *op,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /** @} */
 #ifdef __cplusplus

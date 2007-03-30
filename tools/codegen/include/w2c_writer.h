@@ -55,7 +55,7 @@ AXIS2_DECLARE_DATA  struct w2c_writer_ops
     */
     axis2_status_t (AXIS2_CALL *
     free)(w2c_writer_t *writer,
-          const axis2_env_t *env);
+          const axutil_env_t *env);
   
    /**
     * create the file to output.
@@ -67,7 +67,7 @@ AXIS2_DECLARE_DATA  struct w2c_writer_ops
     */  
     axis2_char_t* (AXIS2_CALL *
     create_out_file)(w2c_writer_t *writer,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axis2_char_t *package_name,
           axis2_char_t *file_name);
    
@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA  struct w2c_writer_ops
     */  
     axis2_status_t (AXIS2_CALL *
     parse)(w2c_writer_t *writer,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           axiom_node_t *root);
  
    /**
@@ -95,7 +95,7 @@ AXIS2_DECLARE_DATA  struct w2c_writer_ops
     */
     axis2_status_t (AXIS2_CALL *
     initialize)(w2c_writer_t *writer,
-          const axis2_env_t *env,
+          const axutil_env_t *env,
           w2c_config_property_loader_t *loader,
           w2c_engine_configuration_t *config);
 

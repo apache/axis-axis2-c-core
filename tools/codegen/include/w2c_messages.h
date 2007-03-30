@@ -49,7 +49,7 @@ extern "C"
  */
 AXIS2_EXTERN axis2_properties_t* AXIS2_CALL
 w2c_messages_get_message_properties( 
-    const axis2_env_t *env );
+    const axutil_env_t *env );
 
 /**
  * return the message for specified key.
@@ -58,7 +58,7 @@ w2c_messages_get_message_properties(
  * @return the message
  */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-w2c_messages_get_message( const axis2_env_t *env, axis2_char_t *key );
+w2c_messages_get_message( const axutil_env_t *env, axis2_char_t *key );
 
 
 /**
@@ -67,7 +67,7 @@ w2c_messages_get_message( const axis2_env_t *env, axis2_char_t *key );
  * @param key key for the message
  */
 AXIS2_EXTERN void AXIS2_CALL
-w2c_messages_print_n_log_error( const axis2_env_t *env,
+w2c_messages_print_n_log_error( const axutil_env_t *env,
                                  axis2_char_t *key );
 
 /**
@@ -77,7 +77,7 @@ w2c_messages_print_n_log_error( const axis2_env_t *env,
  * @param key key for the message
  */
 AXIS2_EXTERN void AXIS2_CALL
-w2c_messages_print_n_log_error_from_properties( const axis2_env_t *env,
+w2c_messages_print_n_log_error_from_properties( const axutil_env_t *env,
                                           axis2_properties_t *props,
                                           axis2_char_t *key );
 

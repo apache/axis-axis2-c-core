@@ -77,12 +77,12 @@ woden_wsdl10_component_model_builder_impl_t;
 axis2_status_t AXIS2_CALL
 woden_wsdl10_component_model_builder_free(
       void *builder,
-      const axis2_env_t *env);
+      const axutil_env_t *env);
 
 static axis2_status_t
 init_components(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc);
 
 /*
@@ -92,7 +92,7 @@ init_components(
 static axis2_status_t
 build_elements_and_types(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc);
 
 /*
@@ -101,7 +101,7 @@ build_elements_and_types(
 static axis2_status_t
 build_element_decls(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *schema_def,
       axis2_uri_t *type_system_uri);
 
@@ -111,7 +111,7 @@ build_element_decls(
 static axis2_status_t
 build_type_defs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *schema_def,
       axis2_uri_t *type_system_uri);
 
@@ -126,13 +126,13 @@ build_type_defs(
 static axis2_status_t
 build_msg_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       axutil_array_list_t *msg_els);
 
 static axis2_status_t
 build_parts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *msg);
 /* *******************************************************************************
  *  INTERFACE
@@ -145,25 +145,25 @@ build_parts(
 static axis2_status_t
 build_interfaces(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc);
 
 static axis2_status_t
 build_interface_ops(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *interface);
 
 static axis2_status_t
 build_interface_fault_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *op);
 
 static axis2_status_t
 build_interface_msg_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *op);
 
 /* *******************************************************************************
@@ -177,49 +177,49 @@ build_interface_msg_refs(
 static axis2_status_t
 build_bindings(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc);
 
 static axis2_status_t
 build_binding_ops(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *binding);
 
 static axis2_status_t
 build_binding_fault_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *op);
 
 static axis2_status_t
 build_binding_msg_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *op);
 
 static axis2_status_t
 build_binding_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *binding);
 
 static axis2_status_t
 build_binding_op_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *bind_op);
 
 static axis2_status_t
 build_binding_msg_ref_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *bind_msg_ref);
 
 static axis2_status_t
 build_binding_fault_ref_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *bind_fault_ref);
 
 /*
@@ -229,7 +229,7 @@ build_binding_fault_ref_exts(
 static void *
 create_component_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       axis2_char_t *parent_class,
       void *parent_elem,
       axis2_uri_t *ext_ns);
@@ -240,7 +240,7 @@ create_component_exts(
 static axis2_status_t
 build_svcs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc);
 
 /* *******************************************************************************
@@ -250,7 +250,7 @@ build_svcs(
 static axis2_status_t
 build_properties(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       axutil_array_list_t *prop_els,
       void *parent);
 
@@ -258,7 +258,7 @@ build_properties(
 
 AXIS2_EXTERN woden_wsdl10_component_model_builder_t *AXIS2_CALL
 woden_wsdl10_component_model_builder_create(
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -305,7 +305,7 @@ woden_wsdl10_component_model_builder_create(
 axis2_status_t AXIS2_CALL
 woden_wsdl10_component_model_builder_free(
       void *builder,
-      const axis2_env_t *env)
+      const axutil_env_t *env)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -329,7 +329,7 @@ woden_wsdl10_component_model_builder_free(
 static axis2_status_t
 init_components(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc)
 {
       axutil_array_list_t *includes = NULL;
@@ -392,7 +392,7 @@ init_components(
 static axis2_status_t
 build_elements_and_types(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -464,7 +464,7 @@ build_elements_and_types(
 static axis2_status_t
 build_element_decls(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *schema_def,
       axis2_uri_t *type_system_uri)
 {
@@ -521,7 +521,7 @@ build_element_decls(
 static axis2_status_t
 build_type_defs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *schema_def,
       axis2_uri_t *type_system_uri)
 {
@@ -583,7 +583,7 @@ build_type_defs(
 static axis2_status_t
 build_msg_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       axutil_array_list_t *msg_els)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -622,7 +622,7 @@ build_msg_refs(
 static axis2_status_t
 build_parts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *msg)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -660,7 +660,7 @@ build_parts(
 static axis2_status_t
 build_interfaces(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -714,7 +714,7 @@ build_interfaces(
 static axis2_status_t
 build_interface_ops(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *interface)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -753,7 +753,7 @@ build_interface_ops(
 static axis2_status_t
 build_interface_fault_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -797,7 +797,7 @@ build_interface_fault_refs(
 static axis2_status_t
 build_interface_msg_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -845,7 +845,7 @@ build_interface_msg_refs(
 static axis2_status_t
 build_bindings(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -896,7 +896,7 @@ build_bindings(
 static axis2_status_t
 build_binding_ops(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *binding)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -932,7 +932,7 @@ build_binding_ops(
 static axis2_status_t
 build_binding_fault_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -962,7 +962,7 @@ build_binding_fault_refs(
 static axis2_status_t
 build_binding_msg_refs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -991,7 +991,7 @@ build_binding_msg_refs(
 static axis2_status_t
 build_binding_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *binding)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -1090,7 +1090,7 @@ build_binding_exts(
 static axis2_status_t
 build_binding_op_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *bind_op)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -1184,7 +1184,7 @@ build_binding_op_exts(
 static axis2_status_t
 build_binding_msg_ref_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *bind_msg_ref)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -1233,7 +1233,7 @@ build_binding_msg_ref_exts(
 static axis2_status_t
 build_binding_fault_ref_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *bind_fault_ref)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -1286,7 +1286,7 @@ build_binding_fault_ref_exts(
 static void *
 create_component_exts(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       axis2_char_t *parent_class,
       void *parent_elem,
       axis2_uri_t *ext_ns)
@@ -1317,7 +1317,7 @@ create_component_exts(
 static axis2_status_t
 build_svcs(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       void *desc)
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
@@ -1366,7 +1366,7 @@ build_svcs(
 static axis2_status_t
 build_properties(
       void *builder,
-      const axis2_env_t *env,
+      const axutil_env_t *env,
       axutil_array_list_t *prop_els,
       void *parent)
 {

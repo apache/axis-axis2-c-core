@@ -48,45 +48,45 @@ struct xml_schema_any_impl
 axis2_status_t AXIS2_CALL
 xml_schema_any_free(
     void *any,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 xml_schema_any_super_objs(
     void *any,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_any_get_type(
     void *any,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 xml_schema_particle_t *AXIS2_CALL
 xml_schema_any_get_base_impl(void *any,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 xml_schema_any_get_namespace(void *any,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_set_namespace(void *any,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *namespc);
 
 xml_schema_content_processing_t *AXIS2_CALL
 xml_schema_any_get_process_content(void *any,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_set_process_content(
     void *any,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_content_processing_t *process_content);
 
 /************************ end function prototypes ******************************/
 
 AXIS2_EXTERN xml_schema_any_t * AXIS2_CALL
-xml_schema_any_create(const axis2_env_t *env)
+xml_schema_any_create(const axutil_env_t *env)
 {
     xml_schema_any_impl_t *any_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -187,7 +187,7 @@ xml_schema_any_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_free(void *any,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_any_impl_t *any_impl = NULL;
 
@@ -236,7 +236,7 @@ xml_schema_any_free(void *any,
 
 xml_schema_types_t AXIS2_CALL
 xml_schema_any_get_type(void *any,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_any_impl_t *any_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -247,7 +247,7 @@ xml_schema_any_get_type(void *any,
 axis2_hash_t *AXIS2_CALL
 xml_schema_any_super_objs(
     void *any,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_any_impl_t *any_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -257,7 +257,7 @@ xml_schema_any_super_objs(
 
 xml_schema_particle_t *AXIS2_CALL
 xml_schema_any_get_base_impl(void *any,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_any_impl_t *any_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -268,7 +268,7 @@ xml_schema_any_get_base_impl(void *any,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_any_resolve_methods(
     xml_schema_any_t *any,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     xml_schema_any_t *any_impl,
     XML_SCHEMA_SUPER_OBJS_FN super_objs,
     XML_SCHEMA_GET_TYPE_FN get_type,
@@ -311,7 +311,7 @@ xml_schema_any_resolve_methods(
 
 axis2_char_t *AXIS2_CALL
 xml_schema_any_get_namespace(void *any,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_any_impl_t *any_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -329,7 +329,7 @@ xml_schema_any_get_namespace(void *any,
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_set_namespace(void *any,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *namespc)
 {
     xml_schema_any_impl_t *any_impl = NULL;
@@ -355,7 +355,7 @@ xml_schema_any_set_namespace(void *any,
 
 xml_schema_content_processing_t *AXIS2_CALL
 xml_schema_any_get_process_content(void *any,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_any_impl_t *any_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -373,7 +373,7 @@ xml_schema_any_get_process_content(void *any,
 
 axis2_status_t AXIS2_CALL
 xml_schema_any_set_process_content(void *any,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         xml_schema_content_processing_t *
         process_content)
 {

@@ -23,7 +23,7 @@
  * @brief Axis2 AXIOM XML data_source
  */
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_output.h>
 #include <axis2_stream.h>
@@ -59,7 +59,7 @@ extern "C"
       * @return pointer to newly created data_source struct 
       */
     AXIS2_EXTERN axiom_data_source_t * AXIS2_CALL
-    axiom_data_source_create(const axis2_env_t *env,
+    axiom_data_source_create(const axutil_env_t *env,
             axiom_node_t *parent,
             axiom_node_t ** node);
 
@@ -72,7 +72,7 @@ extern "C"
       */
     AXIS2_EXTERN void AXIS2_CALL
     axiom_data_source_free(struct axiom_data_source *om_data_source,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     /**
       * Serialize op
@@ -84,7 +84,7 @@ extern "C"
       */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_data_source_serialize(struct axiom_data_source *om_data_source,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_output_t *om_output);
     /**
      *  set the data_source value
@@ -96,7 +96,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
     axiom_data_source_get_stream(struct axiom_data_source *om_data_source,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     /** @} */

@@ -28,16 +28,16 @@
 #include <ctype.h>
 #include <axiom_xml_reader.h>
 
-axis2_env_t *system_env = NULL;
+axutil_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 /***************************** Function headers *******************************/
-axis2_env_t *
+axutil_env_t *
 init_syetem_env(
     axutil_allocator_t *allocator,
     const axis2_char_t *log_file);
 
 void system_exit(
-    axis2_env_t *env,
+    axutil_env_t *env,
     int status);
 
 void usage(
@@ -47,7 +47,7 @@ void sig_handler(
     int signal);
 
 /***************************** End of function headers ************************/
-axis2_env_t *
+axutil_env_t *
 init_syetem_env(
     axutil_allocator_t *allocator,
     const axis2_char_t *log_file)
@@ -61,12 +61,12 @@ init_syetem_env(
      * threads
      */
     axiom_xml_reader_init();
-    return axis2_env_create_with_error_log_thread_pool(allocator, error, log,
+    return axutil_env_create_with_error_log_thread_pool(allocator, error, log,
             thread_pool);
 }
 
 void system_exit(
-    axis2_env_t *env,
+    axutil_env_t *env,
     int status)
 {
     axutil_allocator_t *allocator = NULL;
@@ -77,7 +77,7 @@ void system_exit(
     if (env)
     {
         allocator = env->allocator;
-        axis2_env_free(env);
+        axutil_env_free(env);
     }
     /*axutil_allocator_free(allocator);*/
     axiom_xml_reader_cleanup();
@@ -89,7 +89,7 @@ int main(
     char *argv[])
 {
     axutil_allocator_t *allocator = NULL;
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     extern char *optarg;
     extern int optopt;
     int c;

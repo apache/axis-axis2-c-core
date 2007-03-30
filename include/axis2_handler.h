@@ -70,7 +70,7 @@ extern "C"
         void (AXIS2_CALL *
                 free)(
                     axis2_handler_t *handler,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
 
         /**
@@ -83,7 +83,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 init)(
                     axis2_handler_t *handler,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     struct axis2_handler_desc *handler_desc);
 
         /**
@@ -100,7 +100,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
                 invoke)(
                     axis2_handler_t *handler,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     struct axis2_msg_ctx *msg_ctx);
 
         /**
@@ -112,7 +112,7 @@ extern "C"
         const axis2_string_t *(AXIS2_CALL *
                 get_name)(
                     const axis2_handler_t *handler,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * Gets the named parameter.
@@ -123,7 +123,7 @@ extern "C"
         axis2_param_t *(AXIS2_CALL *
                 get_param)(
                     const axis2_handler_t *handler,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     const axis2_char_t *name);
 
         /**
@@ -135,7 +135,7 @@ extern "C"
         struct axis2_handler_desc *(AXIS2_CALL *
                 get_handler_desc)(
                     const axis2_handler_t *handler,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
         
     };
 
@@ -156,7 +156,7 @@ extern "C"
      */
     typedef axis2_handler_t *(AXIS2_CALL *
     AXIS2_HANDLER_CREATE_FUNC)(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_string_t *name);
 
     /**
@@ -166,7 +166,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
     axis2_handler_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Creates a handler with invoke method implemented to fill in the service 
@@ -177,7 +177,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
     axis2_ctx_handler_create(
-        const axis2_env_t *env, 
+        const axutil_env_t *env, 
         const axis2_string_t *qname);
 
 /** Frees handler.

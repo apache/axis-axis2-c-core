@@ -37,32 +37,32 @@ static void *WODEN_SOAP_FAULT_SUBCODES_ANY = NULL;
 axis2_status_t AXIS2_CALL
 woden_soap_fault_subcodes_free(
     void *soap_fault_subcodes,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 woden_soap_fault_subcodes_is_qnames(
     void *soap_fault_subcodes,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 woden_soap_fault_subcodes_is_token(
     void *soap_fault_subcodes,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_soap_fault_subcodes_get_qnames(
     void *soap_fault_subcodes,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 woden_soap_fault_subcodes_get_token(
     void *soap_fault_subcodes,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 
 static woden_soap_fault_subcodes_t *
 create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
 
@@ -93,7 +93,7 @@ create(
 
 AXIS2_EXTERN woden_soap_fault_subcodes_t * AXIS2_CALL
 woden_soap_fault_subcodes_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *token,
     axutil_array_list_t *subcode_qns)
 {
@@ -111,7 +111,7 @@ woden_soap_fault_subcodes_create(
 axis2_status_t AXIS2_CALL
 woden_soap_fault_subcodes_free(
     void *soap_fault_subcodes,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
 
@@ -156,7 +156,7 @@ woden_soap_fault_subcodes_free(
 
 void *AXIS2_CALL
 woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -170,7 +170,7 @@ woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
 axis2_bool_t AXIS2_CALL
 woden_soap_fault_subcodes_is_qnames(
     void *soap_fault_subcodes,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
     int size = 0;
@@ -185,7 +185,7 @@ woden_soap_fault_subcodes_is_qnames(
 axis2_bool_t AXIS2_CALL
 woden_soap_fault_subcodes_is_token(
     void *soap_fault_subcodes,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
 
@@ -198,7 +198,7 @@ woden_soap_fault_subcodes_is_token(
 axutil_array_list_t *AXIS2_CALL
 woden_soap_fault_subcodes_get_qnames(
     void *soap_fault_subcodes,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
 
@@ -211,7 +211,7 @@ woden_soap_fault_subcodes_get_qnames(
 axis2_char_t *AXIS2_CALL
 woden_soap_fault_subcodes_get_token(
     void *soap_fault_subcodes,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
 

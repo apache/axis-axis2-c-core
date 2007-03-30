@@ -28,24 +28,24 @@
 
 static axis2_status_t
 axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *parent,
         axiom_node_t *om_element_node,
         axis2_bool_t is_soap_envelope);
 
 static axis2_status_t
 axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t* soap_version_uri_from_transport);
 
 static axis2_status_t
 axiom_soap_builder_parse_headers(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 static axis2_status_t
 axiom_soap_builder_construct_node_for_empty_element
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *parent,
         axiom_node_t *om_element_node);
 
@@ -94,7 +94,7 @@ typedef enum axis2_builder_last_node_states
 #define AXIS2_MAX_EVENT 100
 
 AXIS2_EXTERN axiom_soap_builder_t * AXIS2_CALL
-axiom_soap_builder_create(const axis2_env_t *env,
+axiom_soap_builder_create(const axutil_env_t *env,
         axiom_stax_builder_t *stax_builder,
         const axis2_char_t *soap_version)
 {
@@ -146,7 +146,7 @@ axiom_soap_builder_create(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axiom_soap_builder_free(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
     if (!soap_builder)
@@ -208,7 +208,7 @@ axiom_soap_builder_free(axiom_soap_builder_t *soap_builder,
 AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axiom_soap_builder_get_soap_envelope
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     int status = AXIS2_SUCCESS ;
 
@@ -233,7 +233,7 @@ axiom_soap_builder_get_soap_envelope
 AXIS2_EXTERN axiom_document_t* AXIS2_CALL
 axiom_soap_builder_get_document
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     if (!soap_builder)
@@ -248,7 +248,7 @@ axiom_soap_builder_get_document
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_builder_next(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     axiom_node_t *lastnode = NULL;
     int current_event = AXIS2_MAX_EVENT;
@@ -296,7 +296,7 @@ axiom_soap_builder_next(axiom_soap_builder_t *soap_builder,
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axiom_soap_builder_get_document_element
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     if (soap_builder->soap_envelope)
@@ -312,7 +312,7 @@ axiom_soap_builder_get_document_element
 axis2_status_t
 axiom_soap_builder_create_om_element
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *current_node,
         int current_event)
 {
@@ -352,7 +352,7 @@ axiom_soap_builder_create_om_element
 
 static axis2_status_t
 axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *parent,
         axiom_node_t *om_element_node,
         axis2_bool_t is_soap_envelope)
@@ -633,7 +633,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_builder_process_namespace_data
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *om_node,
         int is_soap_element)
 {
@@ -675,7 +675,7 @@ axiom_soap_builder_process_namespace_data
 
 static axis2_status_t
 axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t* soap_version_uri_from_transport)
 {
     axiom_namespace_t *om_ns = NULL;
@@ -752,7 +752,7 @@ axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
 
 static axis2_status_t
 axiom_soap_builder_parse_headers(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     axiom_node_t *om_node = NULL;
     axiom_soap_header_t *soap_header = NULL;
@@ -791,7 +791,7 @@ axiom_soap_builder_parse_headers(axiom_soap_builder_t *soap_builder,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_builder_set_bool_processing_mandatory_fault_elements
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
@@ -802,7 +802,7 @@ axiom_soap_builder_set_bool_processing_mandatory_fault_elements
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_builder_set_processing_detail_elements
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_bool_t value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
@@ -813,7 +813,7 @@ axiom_soap_builder_set_processing_detail_elements
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axiom_soap_builder_is_processing_detail_elements
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return soap_builder->processing_detail_elements ;
@@ -821,7 +821,7 @@ axiom_soap_builder_is_processing_detail_elements
 
 AXIS2_EXTERN int AXIS2_CALL
 axiom_soap_builder_get_soap_version(axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return soap_builder->soap_version ;
@@ -830,7 +830,7 @@ axiom_soap_builder_get_soap_version(axiom_soap_builder_t *soap_builder,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_builder_set_mime_body_parts
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *map)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -841,7 +841,7 @@ axiom_soap_builder_set_mime_body_parts
 static axis2_status_t
 axiom_soap_builder_construct_node_for_empty_element
 (axiom_soap_builder_t *soap_builder,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *parent,
         axiom_node_t *om_element_node)
 {

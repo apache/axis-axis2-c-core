@@ -23,7 +23,7 @@
  * @brief Axis2c specific global declarations
  */
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_utils.h>
 
 #ifdef __cplusplus

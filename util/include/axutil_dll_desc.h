@@ -42,9 +42,9 @@ extern "C"
 
     typedef struct axutil_dll_desc axutil_dll_desc_t;
 
-    typedef int(*CREATE_FUNCT)(void **inst, const axis2_env_t *env);
+    typedef int(*CREATE_FUNCT)(void **inst, const axutil_env_t *env);
 
-    typedef int(*DELETE_FUNCT)(void *inst, const axis2_env_t *env);
+    typedef int(*DELETE_FUNCT)(void *inst, const axutil_env_t *env);
 
     typedef enum axis2_dll_type
     {
@@ -69,22 +69,22 @@ extern "C"
      * @param qname qname, can be NULL
      */
     AXIS2_EXTERN axutil_dll_desc_t* AXIS2_CALL
-    axutil_dll_desc_create(const axis2_env_t *env);
+    axutil_dll_desc_create(const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
     axutil_dll_desc_free_void_arg(void *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
     axutil_dll_desc_free(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Set path qualified platform specific dll name
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_name(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *name);
 
     /**
@@ -92,71 +92,71 @@ extern "C"
      */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axutil_dll_desc_get_name(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_type(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_dll_type_t type);
 
     AXIS2_EXTERN axis2_dll_type_t AXIS2_CALL
     axutil_dll_desc_get_type(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_load_options(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int options);
 
     AXIS2_EXTERN int AXIS2_CALL
     axutil_dll_desc_get_load_options(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_dl_handler(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         AXIS2_DLHANDLER dl_handler);
 
     AXIS2_EXTERN AXIS2_DLHANDLER AXIS2_CALL
     axutil_dll_desc_get_dl_handler(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_create_funct(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         CREATE_FUNCT funct);
 
     AXIS2_EXTERN CREATE_FUNCT AXIS2_CALL
     axutil_dll_desc_get_create_funct(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_delete_funct(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         DELETE_FUNCT funct);
 
     AXIS2_EXTERN DELETE_FUNCT AXIS2_CALL
     axutil_dll_desc_get_delete_funct(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_timestamp(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         AXIS2_TIME_T timestamp);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_error_code(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_error_codes_t error_code);
 
     AXIS2_EXTERN axis2_error_codes_t AXIS2_CALL
     axutil_dll_desc_get_error_code(
         axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     AXIS2_EXTERN AXIS2_TIME_T AXIS2_CALL
     axutil_dll_desc_get_timestamp(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
     /**
     * This function will accept the library name without any platform
     * dependant prefixes or suffixes. It then prefix and suffix
@@ -168,7 +168,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL 
     axutil_dll_desc_create_platform_specific_dll_name(axutil_dll_desc_t *dll_desc,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *class_name);
 
 #ifdef __cplusplus

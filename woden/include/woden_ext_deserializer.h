@@ -27,7 +27,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -59,17 +59,17 @@ struct woden_ext_deserializer_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *ext_deserializer,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *ext_deserializer,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     void *(AXIS2_CALL *
     unmarshall) (
             void *ext_deserializer,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axis2_char_t *parent_type,
             void *parent,
             axis2_qname_t *ext_type,
@@ -86,13 +86,13 @@ struct woden_ext_deserializer
 
 AXIS2_EXTERN woden_ext_deserializer_t * AXIS2_CALL
 woden_ext_deserializer_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_ext_deserializer_resolve_methods(
         woden_ext_deserializer_t *ext_deserializer,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

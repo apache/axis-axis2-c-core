@@ -33,60 +33,60 @@
 /**********************fucntion prototypes ***********************************/
 axis2_status_t
 w2c_c_emitter_write_skel_header( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env);
+                                        const axutil_env_t *env);
 
 axis2_status_t
 w2c_c_emitter_write_stub_header( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env);
+                                        const axutil_env_t *env);
 axis2_status_t AXIS2_CALL
 w2c_c_emitter_set_config(w2c_emitter_t *emitter,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        w2c_engine_configuration_t *config,
        w2c_config_property_loader_t *loader);
 
 axis2_status_t AXIS2_CALL
 w2c_c_emitter_emit_stub( w2c_emitter_t *emitter,
-                         const axis2_env_t *env);
+                         const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_c_emitter_emit_skel( w2c_emitter_t *emitter,
-                         const axis2_env_t *env);
+                         const axutil_env_t *env);
 axis2_status_t
 w2c_c_emitter_write_stub_source( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env);
+                                        const axutil_env_t *env);
 axis2_status_t
 w2c_c_emitter_write_stub_source( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env);
+                                        const axutil_env_t *env);
 axis2_status_t
 w2c_c_emitter_write_skel_source( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env);
+                                        const axutil_env_t *env);
 axis2_status_t
 w2c_c_emitter_write_skel_source( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env);
+                                        const axutil_env_t *env);
 axis2_status_t
 w2c_c_emitter_write_svc_skel( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env);
+                                        const axutil_env_t *env);
 axis2_status_t
 w2c_c_emitter_write_svc_xml( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env);
+                                        const axutil_env_t *env);
 
 axiom_node_t*
 w2c_c_emitter_create_for_stub (w2c_emitter_impl_t *emitter_impl,
-                                   const axis2_env_t *env );
+                                   const axutil_env_t *env );
 axiom_node_t*
 w2c_c_emitter_create_for_skel(w2c_emitter_impl_t *emitter_impl,
-                                   const axis2_env_t *env );
+                                   const axutil_env_t *env );
 axiom_node_t*
 w2c_c_emitter_create_for_svc_skel(w2c_emitter_impl_t *emitter_impl,
-                                   const axis2_env_t *env );
+                                   const axutil_env_t *env );
 axiom_node_t*
 w2c_c_emitter_create_for_svc_xml(w2c_emitter_impl_t *emitter_impl,
-                                   const axis2_env_t *env );
+                                   const axutil_env_t *env );
 
 /******************standard create and delete for DLL ************************/
 AXIS2_EXPORT int
 axis2_get_instance(w2c_emitter_t **inst,
-                   const axis2_env_t *env)
+                   const axutil_env_t *env)
 {
     w2c_emitter_impl_t *emitter_impl = NULL;
  
@@ -110,7 +110,7 @@ axis2_get_instance(w2c_emitter_t **inst,
 
 AXIS2_EXPORT int
 axis2_remove_instance(w2c_emitter_t *inst,
-                      const axis2_env_t *env)
+                      const axutil_env_t *env)
 {
    axis2_status_t status = AXIS2_FAILURE;
 
@@ -127,7 +127,7 @@ axis2_remove_instance(w2c_emitter_t *inst,
 
 axis2_status_t AXIS2_CALL
 w2c_c_emitter_set_config(w2c_emitter_t *emitter,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        w2c_engine_configuration_t *config,
        w2c_config_property_loader_t *loader)
 {
@@ -179,7 +179,7 @@ w2c_c_emitter_set_config(w2c_emitter_t *emitter,
     
 axis2_status_t AXIS2_CALL
 w2c_c_emitter_emit_stub( w2c_emitter_t *emitter,
-                         const axis2_env_t *env)
+                         const axutil_env_t *env)
 {
     w2c_emitter_impl_t *emitter_impl = NULL;
     axis2_status_t status;
@@ -209,7 +209,7 @@ w2c_c_emitter_emit_stub( w2c_emitter_t *emitter,
 
 axis2_status_t AXIS2_CALL
 w2c_c_emitter_emit_skel( w2c_emitter_t *emitter,
-                         const axis2_env_t *env)
+                         const axutil_env_t *env)
 {
     w2c_emitter_impl_t *emitter_impl = NULL;
     axis2_status_t status;
@@ -258,7 +258,7 @@ w2c_c_emitter_emit_skel( w2c_emitter_t *emitter,
 
 axis2_status_t
 w2c_c_emitter_write_stub_source( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env)
+                                        const axutil_env_t *env)
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
@@ -281,7 +281,7 @@ w2c_c_emitter_write_stub_source( w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t
 w2c_c_emitter_write_stub_header( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env)
+                                        const axutil_env_t *env)
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
@@ -304,7 +304,7 @@ w2c_c_emitter_write_stub_header( w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t
 w2c_c_emitter_write_skel_source( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env)
+                                        const axutil_env_t *env)
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
@@ -327,7 +327,7 @@ w2c_c_emitter_write_skel_source( w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t
 w2c_c_emitter_write_skel_header( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env)
+                                        const axutil_env_t *env)
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
@@ -350,7 +350,7 @@ w2c_c_emitter_write_skel_header( w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t
 w2c_c_emitter_write_svc_skel( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env)
+                                        const axutil_env_t *env)
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
@@ -373,7 +373,7 @@ w2c_c_emitter_write_svc_skel( w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t
 w2c_c_emitter_write_svc_xml( w2c_emitter_impl_t *emitter_impl,
-                                        const axis2_env_t *env)
+                                        const axutil_env_t *env)
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
@@ -396,7 +396,7 @@ w2c_c_emitter_write_svc_xml( w2c_emitter_impl_t *emitter_impl,
 
 axiom_node_t*
 w2c_c_emitter_create_for_stub (w2c_emitter_impl_t *emitter_impl,
-                                   const axis2_env_t *env )
+                                   const axutil_env_t *env )
 {
     axiom_node_t *root = NULL;
     axis2_bool_t flag = AXIS2_FALSE;
@@ -456,7 +456,7 @@ w2c_c_emitter_create_for_stub (w2c_emitter_impl_t *emitter_impl,
 
 axiom_node_t*
 w2c_c_emitter_create_for_skel(w2c_emitter_impl_t *emitter_impl,
-                                   const axis2_env_t *env )
+                                   const axutil_env_t *env )
 {
     axiom_node_t *root = NULL;
     axis2_char_t *full_name = NULL;
@@ -492,7 +492,7 @@ w2c_c_emitter_create_for_skel(w2c_emitter_impl_t *emitter_impl,
 
 axiom_node_t*
 w2c_c_emitter_create_for_svc_skel(w2c_emitter_impl_t *emitter_impl,
-                                   const axis2_env_t *env )
+                                   const axutil_env_t *env )
 {
     axiom_node_t *root = NULL;
     axis2_char_t *skel_name = NULL;
@@ -541,7 +541,7 @@ w2c_c_emitter_create_for_svc_skel(w2c_emitter_impl_t *emitter_impl,
 
 axiom_node_t*
 w2c_c_emitter_create_for_svc_xml(w2c_emitter_impl_t *emitter_impl,
-                                   const axis2_env_t *env )
+                                   const axutil_env_t *env )
 {
     axiom_node_t *root = NULL;
     axis2_char_t *svc_name = NULL;

@@ -54,7 +54,7 @@
 static int is_inited = FALSE;
 
 static axis2_iis_worker_t*	axis2_worker = NULL;
-static const axis2_env_t*	axis2_env = NULL;
+static const axutil_env_t*	axutil_env = NULL;
 static axis2_char_t			repo_path[MAX_FILE_PATH] = "c:\\axis2c";
 static axis2_char_t			log_file[MAX_FILE_PATH] = "axis2.log";
 static axis2_log_levels_t	log_level = AXIS2_LOG_LEVEL_CRITICAL;
@@ -101,7 +101,7 @@ DWORD WINAPI HttpExtensionProc(LPEXTENSION_CONTROL_BLOCK lpECB)
     lpECB->dwHttpStatusCode = HTTP_INTERNAL_SERVER_ERROR;
 
 	if (axis2_worker)
-		AXIS2_IIS_WORKER_PROCESS_REQUEST(axis2_worker, axis2_env, lpECB);
+		AXIS2_IIS_WORKER_PROCESS_REQUEST(axis2_worker, axutil_env, lpECB);
 	else
 		return HSE_STATUS_ERROR;
 
@@ -128,12 +128,12 @@ axis2_status_t init_axis2()
  
 	axis2_error_init();
 
-	axis2_env = axis2_env_create_all(log_file, log_level);
-	if (axis2_env == NULL){
+	axutil_env = axutil_env_create_all(log_file, log_level);
+	if (axutil_env == NULL){
 		return FALSE;
 	}
 	
-	axis2_worker = axis2_iis_worker_create(axis2_env, repo_path);
+	axis2_worker = axis2_iis_worker_create(axutil_env, repo_path);
 	if (axis2_worker == NULL){
 		return FALSE;
 	}	
@@ -150,9 +150,9 @@ axis2_status_t axis2_terminate()
 {
 //	axiom_xml_reader_cleanup();
 
-//	AXIS2_IIS_WORKER_FREE(axis2_worker, axis2_env);
+//	AXIS2_IIS_WORKER_FREE(axis2_worker, axutil_env);
 
-//	axis2_env_free(axis2_env);
+//	axutil_env_free(axutil_env);
 	return TRUE;
 }
 

@@ -25,7 +25,7 @@
 savan_message_types_t AXIS2_CALL
 savan_util_get_message_type(
     axis2_msg_ctx_t *msg_ctx,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     const axis2_char_t *action = NULL;
     axis2_msg_info_headers_t *info_header = NULL;
@@ -71,7 +71,7 @@ savan_util_get_message_type(
 
 axis2_char_t * AXIS2_CALL
 savan_util_get_subscription_id_from_msg(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *sub_id = NULL;
@@ -126,7 +126,7 @@ savan_util_get_subscription_id_from_msg(
 
 savan_subscriber_t * AXIS2_CALL
 savan_util_get_subscriber_from_msg(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
         axis2_char_t *sub_id)
 {
@@ -159,7 +159,7 @@ savan_util_get_subscriber_from_msg(
 
 axis2_hash_t * AXIS2_CALL
 savan_util_get_subscriber_store(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_svc_t *svc = NULL;
@@ -196,7 +196,7 @@ savan_util_get_subscriber_store(
 
 axis2_char_t * AXIS2_CALL
 savan_util_get_expiry_time(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     /* TODO: decide how to set expiry time */
     
@@ -207,7 +207,7 @@ savan_util_get_expiry_time(
 
 axis2_char_t * AXIS2_CALL
 savan_util_get_renewed_expiry_time(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *expiry)
 {
     /* TODO: decide how to renew expiry time */

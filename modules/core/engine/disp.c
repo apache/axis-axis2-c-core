@@ -38,7 +38,7 @@ struct axis2_disp
 
 axis2_disp_t *AXIS2_CALL
 axis2_disp_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_string_t *name)
 {
     axis2_disp_t *disp = NULL;
@@ -100,7 +100,7 @@ axis2_disp_create(
 axis2_handler_t *AXIS2_CALL
 axis2_disp_get_base(
     const axis2_disp_t *disp,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return disp->base;
 }
@@ -108,7 +108,7 @@ axis2_disp_get_base(
 axis2_string_t *AXIS2_CALL
 axis2_disp_get_name(
     const axis2_disp_t *disp,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return disp->name;
 }
@@ -116,7 +116,7 @@ axis2_disp_get_name(
 axis2_status_t AXIS2_CALL
 axis2_disp_set_name(
     struct axis2_disp *disp,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_string_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -139,7 +139,7 @@ axis2_disp_set_name(
 axis2_status_t AXIS2_CALL
 axis2_disp_find_svc_and_op(
     struct axis2_handler *handler,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
     axis2_svc_t *axis_service = NULL;
@@ -175,7 +175,7 @@ axis2_disp_find_svc_and_op(
 void AXIS2_CALL
 axis2_disp_free(
     struct axis2_disp *disp,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
     if (disp->name)

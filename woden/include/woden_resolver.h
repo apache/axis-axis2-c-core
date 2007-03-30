@@ -55,19 +55,19 @@ struct woden_resolver_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *resolver,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
  
     void *(AXIS2_CALL *
     read) (
             void *resolver,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             axiom_document_t *om_doc,
             const axis2_char_t *doc_base_uri);
 
     int (AXIS2_CALL *
     get_spec) (
             void *resolver,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
    
 };
@@ -79,7 +79,7 @@ struct woden_resolver
 
 AXIS2_EXTERN woden_resolver_t * AXIS2_CALL
 woden_resolver_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #define WODEN_RESOLVER_FREE(resolver, env) \
       (((woden_resolver_t *) resolver)->ops->free(resolver, env))

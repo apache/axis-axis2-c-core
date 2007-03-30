@@ -28,12 +28,12 @@
 
 axis2_status_t AXIS2_CALL
 axis2_addr_out_handler_invoke(struct axis2_handler *handler,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_msg_ctx *msg_ctx);
 
 
 axis2_status_t
-axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
+axis2_addr_out_handler_add_to_soap_header(const axutil_env_t *env,
         axis2_endpoint_ref_t *
         endpoint_ref,
         const axis2_char_t * type,
@@ -42,20 +42,20 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
 
 
 axis2_status_t
-axis2_addr_out_handler_add_to_header(const axis2_env_t *env,
+axis2_addr_out_handler_add_to_header(const axutil_env_t *env,
         axis2_endpoint_ref_t * epr,
         axiom_node_t ** parent_node,
         const axis2_char_t * addr_ns);
 
 axis2_status_t
-axis2_addr_out_handler_process_any_content_type(const axis2_env_t *env,
+axis2_addr_out_handler_process_any_content_type(const axutil_env_t *env,
         axis2_any_content_type_t *
         reference_values,
         axiom_node_t *
         parent_ele_node,
         const axis2_char_t * addr_ns);
 
-axiom_node_t *axis2_addr_out_handler_process_string_info(const axis2_env_t *env,
+axiom_node_t *axis2_addr_out_handler_process_string_info(const axutil_env_t *env,
         const axis2_char_t *value,
         const axis2_char_t *type,
         axiom_soap_header_t **soap_header,
@@ -63,7 +63,7 @@ axiom_node_t *axis2_addr_out_handler_process_string_info(const axis2_env_t *env,
 
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-axis2_addr_out_handler_create(const axis2_env_t *env, axis2_string_t * name)
+axis2_addr_out_handler_create(const axutil_env_t *env, axis2_string_t * name)
 {
     axis2_handler_t *handler = NULL;
     /*axis2_qname_t *handler_qname = NULL;*/
@@ -109,7 +109,7 @@ axis2_addr_out_handler_create(const axis2_env_t *env, axis2_string_t * name)
 
 axis2_status_t AXIS2_CALL
 axis2_addr_out_handler_invoke(struct axis2_handler * handler,
-        const axis2_env_t *env, axis2_msg_ctx_t * msg_ctx)
+        const axutil_env_t *env, axis2_msg_ctx_t * msg_ctx)
 {
     axis2_char_t *addressing_version_from_msg_ctx = NULL;
     const axis2_char_t *addr_ns = NULL;
@@ -467,7 +467,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
 
 axiom_node_t *
-axis2_addr_out_handler_process_string_info(const axis2_env_t *env,
+axis2_addr_out_handler_process_string_info(const axutil_env_t *env,
         const axis2_char_t * value,
         const axis2_char_t * type,
         axiom_soap_header_t **
@@ -519,7 +519,7 @@ axis2_addr_out_handler_process_string_info(const axis2_env_t *env,
 }
 
 axis2_status_t
-axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
+axis2_addr_out_handler_add_to_soap_header(const axutil_env_t *env,
         axis2_endpoint_ref_t *
         endpoint_ref,
         const axis2_char_t * type,
@@ -691,7 +691,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
 }
 
 axis2_status_t
-axis2_addr_out_handler_add_to_header(const axis2_env_t *env,
+axis2_addr_out_handler_add_to_header(const axutil_env_t *env,
         axis2_endpoint_ref_t * epr,
         axiom_node_t ** parent_node_p,
         const axis2_char_t * addr_ns)
@@ -765,7 +765,7 @@ axis2_addr_out_handler_add_to_header(const axis2_env_t *env,
 
 
 axis2_status_t
-axis2_addr_out_handler_process_any_content_type(const axis2_env_t *env,
+axis2_addr_out_handler_process_any_content_type(const axutil_env_t *env,
         axis2_any_content_type_t *
         reference_values,
         axiom_node_t *

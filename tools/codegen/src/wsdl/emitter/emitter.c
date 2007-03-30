@@ -63,22 +63,22 @@
 
 axis2_status_t
 w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
-                            const axis2_env_t *env,
+                            const axutil_env_t *env,
                             axiom_node_t *root);
 axis2_status_t
 w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
-                            const axis2_env_t* env,
+                            const axutil_env_t* env,
                             axiom_node_t* root);
 
 axis2_status_t
 w2c_emitter_load_operations( w2c_emitter_impl_t *emitter_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     axiom_node_t *method, 
                                     void *interface_op, int wsdl_version);
 /***************************Function implementation****************************/
 
 w2c_emitter_impl_t*
-w2c_emitter_create_impl( const axis2_env_t *env)
+w2c_emitter_create_impl( const axutil_env_t *env)
 {
     w2c_emitter_impl_t *emitter_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -98,7 +98,7 @@ w2c_emitter_create_impl( const axis2_env_t *env)
 
 axis2_status_t
 w2c_emitter_init( w2c_emitter_impl_t *emitter_impl,
-                  const axis2_env_t *env)
+                  const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -134,7 +134,7 @@ w2c_emitter_init( w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t AXIS2_CALL
 w2c_emitter_free(w2c_emitter_t *emitter,
-       const axis2_env_t *env)
+       const axutil_env_t *env)
 {
     w2c_emitter_impl_t *emitter_impl = NULL;
     
@@ -179,7 +179,7 @@ w2c_emitter_free(w2c_emitter_t *emitter,
 
 axis2_status_t AXIS2_CALL
 w2c_emitter_set_config(w2c_emitter_t *emitter,
-       const axis2_env_t *env,
+       const axutil_env_t *env,
        w2c_engine_configuration_t *config,
        w2c_config_property_loader_t *loader)
 {
@@ -230,14 +230,14 @@ w2c_emitter_set_config(w2c_emitter_t *emitter,
 
 axis2_status_t AXIS2_CALL
 w2c_emitter_emit_stub(w2c_emitter_t *emitter,
-       const axis2_env_t *env)
+       const axutil_env_t *env)
 {
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
 w2c_emitter_emit_skel(w2c_emitter_t *emitter,
-       const axis2_env_t *env)
+       const axutil_env_t *env)
 {
     return AXIS2_SUCCESS;
 }
@@ -246,7 +246,7 @@ w2c_emitter_emit_skel(w2c_emitter_t *emitter,
 
 axis2_status_t
 w2c_emitter_write_class(w2c_emitter_impl_t *emitter_impl,
-                      const axis2_env_t *env,
+                      const axutil_env_t *env,
                       axiom_node_t *root,
                       w2c_writer_t *writer)
 {
@@ -289,7 +289,7 @@ w2c_emitter_write_class(w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t
 w2c_emitter_parse_wsdl( w2c_emitter_impl_t *emitter_impl,
-                        const axis2_env_t *env)
+                        const axutil_env_t *env)
 {
     axiom_document_t *om_doc = NULL;
     axis2_char_t *doc_base_uri = NULL;
@@ -334,7 +334,7 @@ w2c_emitter_parse_wsdl( w2c_emitter_impl_t *emitter_impl,
 
 axiom_document_t*
 get_root_element_from_filename(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_char_t *filename)
 {
     axiom_xml_reader_t *reader = NULL;
@@ -355,7 +355,7 @@ get_root_element_from_filename(
 
 axis2_qname_t*
 w2c_emitter_pick_service_name ( w2c_emitter_impl_t *emitter_impl,
-                               const axis2_env_t *env)
+                               const axutil_env_t *env)
 {
     axutil_array_list_t *svc_list = NULL;
     void  *svc = NULL;
@@ -395,7 +395,7 @@ w2c_emitter_pick_service_name ( w2c_emitter_impl_t *emitter_impl,
                    
 axis2_status_t
 w2c_emitter_load_services( w2c_emitter_impl_t *emitter_impl,
-                            const axis2_env_t *env,
+                            const axutil_env_t *env,
                             axiom_node_t *root)
 {
     axis2_status_t status = AXIS2_FAILURE;
@@ -416,7 +416,7 @@ w2c_emitter_load_services( w2c_emitter_impl_t *emitter_impl,
                    
 axis2_status_t
 w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
-                            const axis2_env_t *env,
+                            const axutil_env_t *env,
                             axiom_node_t *root)
 {
     axutil_array_list_t *svc_list = NULL;
@@ -615,7 +615,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t
 w2c_emitter_load_operations( w2c_emitter_impl_t *emitter_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     axiom_node_t *method, 
                                     void *interface_op, int wsdl_version)
 {
@@ -718,7 +718,7 @@ w2c_emitter_load_operations( w2c_emitter_impl_t *emitter_impl,
 
 axis2_status_t
 w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
-                            const axis2_env_t* env,
+                            const axutil_env_t* env,
                             axiom_node_t* root)
 {
     axutil_array_list_t* svc_list = NULL;
@@ -877,7 +877,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
 }
 axis2_status_t
 w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
-                            const axis2_env_t *env,
+                            const axutil_env_t *env,
                             axiom_node_t *param_direction,
                             axis2_qname_t *msg_qname)
 {
@@ -918,13 +918,13 @@ w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
 
 /** do nothing just echo the value*/
 axis2_char_t* w2c_emitter_default_namemaker( axis2_char_t *name, 
-                             const axis2_env_t *env)
+                             const axutil_env_t *env)
 {
     return axis2_strdup(env, name);
 }
 
 axis2_char_t* w2c_emitter_default_qname2name( axis2_qname_t *qname,
-                             const axis2_env_t *env)
+                             const axutil_env_t *env)
 {
     return axis2_qname_get_localpart( qname, env);
 }

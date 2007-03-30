@@ -28,11 +28,11 @@ struct axis2_svc_builder
 
 static axutil_array_list_t *
 axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *op_itr);
 
 AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-axis2_svc_builder_create(const axis2_env_t *env)
+axis2_svc_builder_create(const axutil_env_t *env)
 {
     axis2_svc_builder_t *svc_builder = NULL;
 
@@ -55,7 +55,7 @@ axis2_svc_builder_create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-axis2_svc_builder_create_with_file_and_dep_engine_and_svc(const axis2_env_t *env,
+axis2_svc_builder_create_with_file_and_dep_engine_and_svc(const axutil_env_t *env,
     axis2_char_t *file_name,
     struct axis2_dep_engine *dep_engine,
     axis2_svc_t *svc)
@@ -84,7 +84,7 @@ axis2_svc_builder_create_with_file_and_dep_engine_and_svc(const axis2_env_t *env
 }
 
 AXIS2_EXTERN axis2_svc_builder_t *AXIS2_CALL
-axis2_svc_builder_create_with_dep_engine_and_svc(const axis2_env_t *env,
+axis2_svc_builder_create_with_dep_engine_and_svc(const axutil_env_t *env,
     axis2_dep_engine_t *dep_engine,
     axis2_svc_t *svc)
 {
@@ -111,7 +111,7 @@ axis2_svc_builder_create_with_dep_engine_and_svc(const axis2_env_t *env,
 
 AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_builder_free(axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
 
     AXIS2_ENV_CHECK(env, void);
@@ -133,7 +133,7 @@ axis2_svc_builder_free(axis2_svc_builder_t *svc_builder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *svc_node)
 {
     axiom_element_t *svc_element = NULL;
@@ -364,7 +364,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
 
 static axutil_array_list_t *
 axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *op_itr)
 {
     axutil_array_list_t *ops = NULL;
@@ -500,7 +500,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *module_confs,
     axis2_param_container_t *parent,
     axis2_svc_t *svc)
@@ -533,7 +533,7 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_children_qname_iterator_t *
     module_refs)
 {
@@ -581,7 +581,7 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
 
 AXIS2_EXTERN struct axis2_desc_builder *AXIS2_CALL
 axis2_svc_builder_get_desc_builder(const axis2_svc_builder_t *svc_builder,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return svc_builder->desc_builder;
 }

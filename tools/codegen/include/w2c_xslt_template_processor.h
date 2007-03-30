@@ -48,7 +48,7 @@ extern "C"
  */
 AXIS2_EXTERN void AXIS2_CALL
 w2c_xslt_template_processor_parse(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *xml_stream,
     axis2_char_t *xslt_filename,
     axis2_char_t *out_filename);

@@ -20,7 +20,7 @@
 
 #include <axis2_const.h>
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_stream.h>
 #include <httpext.h>
 
@@ -34,7 +34,7 @@ extern "C"
   * @return axis2_stream (IIS)
   */
 axis2_stream_t * AXIS2_CALL axis2_stream_create_iis
-                        (const axis2_env_t *env, 
+                        (const axutil_env_t *env, 
 						LPEXTENSION_CONTROL_BLOCK lpECB);
     
 #ifdef __cplusplus

@@ -27,14 +27,14 @@
 #include <axiom_xml_reader.h>
 #include <stdio.h>
 #include <axiom_xml_writer.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 /**
    Define the environment related variables globaly so that they are available
    for both functions
 */
 
 axutil_allocator_t *allocator = NULL;
-axis2_env_t *environment = NULL;
+axutil_env_t *environment = NULL;
 axis2_stream_t *stream = NULL;
 axis2_error_t *error = NULL;
 axis2_log_t *axis_log     = NULL;
@@ -309,11 +309,11 @@ main(int argc, char *argv[])
     axis_log = axis2_log_create(allocator, NULL, NULL);
     error = axis2_error_create(allocator);
 
-    environment = axis2_env_create_with_error_log(allocator, error,  axis_log);
+    environment = axutil_env_create_with_error_log(allocator, error,  axis_log);
     test_om_build(file_name);
     test_om_serialize();
 
-    axis2_env_free(environment);
+    axutil_env_free(environment);
     return 0;
 }
 

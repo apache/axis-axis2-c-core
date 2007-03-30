@@ -24,7 +24,7 @@
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 w2c_cmdline_option_validator_isinvalid(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     w2c_cmdline_option_t *option)
 {
     axis2_bool_t isinvalid = AXIS2_FALSE;

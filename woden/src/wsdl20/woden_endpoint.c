@@ -48,22 +48,22 @@ struct woden_endpoint_impl
 axis2_status_t AXIS2_CALL
 woden_endpoint_free(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 woden_endpoint_super_objs(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_endpoint_type(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_nested_configurable_t *AXIS2_CALL
 woden_endpoint_get_base_impl(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /* ************************************************************
  *  Endpoint interface methods (the WSDL Component model)
@@ -72,17 +72,17 @@ woden_endpoint_get_base_impl(
 woden_nc_name_t *AXIS2_CALL
 woden_endpoint_get_name(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_endpoint_get_binding(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_uri_t *AXIS2_CALL
 woden_endpoint_get_address(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 /* ************************************************************
  *  Endpoint Element interface methods (the XML Element model)
  * ************************************************************/
@@ -90,29 +90,29 @@ woden_endpoint_get_address(
 axis2_status_t AXIS2_CALL
 woden_endpoint_set_name(
     void *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_nc_name_t *name);
 
 axis2_status_t AXIS2_CALL
 woden_endpoint_set_binding_qname(
     void *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *binding_qname);
 
 axis2_qname_t *AXIS2_CALL
 woden_endpoint_get_binding_qname(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 void *AXIS2_CALL
 woden_endpoint_get_binding_element(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 woden_endpoint_set_address(
     void *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *uri);
 
 /******************************************************************************
@@ -122,22 +122,22 @@ woden_endpoint_set_address(
 axis2_status_t AXIS2_CALL
 woden_endpoint_set_binding_element(
     void *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *binding);
 
 static woden_endpoint_t *
-create(const axis2_env_t *env);
+create(const axutil_env_t *env);
 
 static axis2_status_t
 woden_endpoint_free_ops(
     void *endpoint,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_endpoint_element(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -162,7 +162,7 @@ woden_endpoint_to_endpoint_element(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_nested_element(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -190,7 +190,7 @@ woden_endpoint_to_nested_element(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_documentable_element(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -219,7 +219,7 @@ woden_endpoint_to_documentable_element(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_nested_configurable(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -247,7 +247,7 @@ woden_endpoint_to_nested_configurable(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_configurable(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     void *configurable = NULL;
@@ -278,7 +278,7 @@ woden_endpoint_to_configurable(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_nested_component(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -305,7 +305,7 @@ woden_endpoint_to_nested_component(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_configurable_component(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -332,7 +332,7 @@ woden_endpoint_to_configurable_component(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_wsdl_component(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -360,7 +360,7 @@ woden_endpoint_to_wsdl_component(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_configurable_element(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -387,7 +387,7 @@ woden_endpoint_to_configurable_element(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_documentable(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -415,7 +415,7 @@ woden_endpoint_to_documentable(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_attr_extensible(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -445,7 +445,7 @@ woden_endpoint_to_attr_extensible(
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
 woden_endpoint_to_element_extensible(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -473,7 +473,7 @@ woden_endpoint_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_endpoint_t *
-create(const axis2_env_t *env)
+create(const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -567,7 +567,7 @@ create(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
-woden_endpoint_create(const axis2_env_t *env)
+woden_endpoint_create(const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -593,7 +593,7 @@ woden_endpoint_create(const axis2_env_t *env)
 static axis2_status_t
 woden_endpoint_free_ops(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -705,7 +705,7 @@ woden_endpoint_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_endpoint_free(void *endpoint,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -775,7 +775,7 @@ woden_endpoint_free(void *endpoint,
 axis2_hash_t *AXIS2_CALL
 woden_endpoint_super_objs(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -788,7 +788,7 @@ woden_endpoint_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_endpoint_type(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -801,7 +801,7 @@ woden_endpoint_type(
 woden_nested_configurable_t *AXIS2_CALL
 woden_endpoint_get_base_impl(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -814,7 +814,7 @@ woden_endpoint_get_base_impl(
 axis2_status_t AXIS2_CALL
 woden_endpoint_resolve_methods(
     woden_endpoint_t *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_endpoint_t *endpoint_impl,
     axis2_hash_t *methods)
 {
@@ -864,7 +864,7 @@ woden_endpoint_resolve_methods(
 woden_nc_name_t *AXIS2_CALL
 woden_endpoint_get_name(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -880,7 +880,7 @@ woden_endpoint_get_name(
 void *AXIS2_CALL
 woden_endpoint_get_binding(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -896,7 +896,7 @@ woden_endpoint_get_binding(
 axis2_uri_t *AXIS2_CALL
 woden_endpoint_get_address(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -915,7 +915,7 @@ woden_endpoint_get_address(
 axis2_status_t AXIS2_CALL
 woden_endpoint_set_name(
     void *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_nc_name_t *name)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
@@ -937,7 +937,7 @@ woden_endpoint_set_name(
 axis2_status_t AXIS2_CALL
 woden_endpoint_set_binding_qname(
     void *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *binding_qname)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
@@ -960,7 +960,7 @@ woden_endpoint_set_binding_qname(
 axis2_qname_t *AXIS2_CALL
 woden_endpoint_get_binding_qname(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -976,7 +976,7 @@ woden_endpoint_get_binding_qname(
 void *AXIS2_CALL
 woden_endpoint_get_binding_element(
     void *endpoint,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -992,7 +992,7 @@ woden_endpoint_get_binding_element(
 axis2_status_t AXIS2_CALL
 woden_endpoint_set_address(
     void *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *uri)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
@@ -1020,7 +1020,7 @@ woden_endpoint_set_address(
 axis2_status_t AXIS2_CALL
 woden_endpoint_set_binding_element(
     void *endpoint,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     void *binding)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;

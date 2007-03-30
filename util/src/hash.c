@@ -62,7 +62,7 @@ struct axis2_hash_index_t
  */
 struct axis2_hash_t
 {
-    const axis2_env_t *env;
+    const axutil_env_t *env;
     axis2_hash_entry_t **array;
     axis2_hash_index_t iterator;    /* For axis2_hash_first(NULL, ...) */
     unsigned int count, max;
@@ -86,7 +86,7 @@ axis2_hash_alloc_array(axis2_hash_t *ht, unsigned int max)
 }
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
-axis2_hash_make(const axis2_env_t *env)
+axis2_hash_make(const axutil_env_t *env)
 {
     axis2_hash_t *ht;
     AXIS2_ENV_CHECK(env, NULL);
@@ -102,7 +102,7 @@ axis2_hash_make(const axis2_env_t *env)
 }
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
-axis2_hash_make_custom(const axis2_env_t *env,
+axis2_hash_make_custom(const axutil_env_t *env,
         axis2_hashfunc_t hash_func)
 {
     axis2_hash_t *ht;
@@ -118,7 +118,7 @@ axis2_hash_make_custom(const axis2_env_t *env,
  */
 
 AXIS2_EXTERN axis2_hash_index_t* AXIS2_CALL
-axis2_hash_next(const axis2_env_t *env, axis2_hash_index_t *hi)
+axis2_hash_next(const axutil_env_t *env, axis2_hash_index_t *hi)
 {
     hi->this = hi->next;
     while (!hi->this)
@@ -137,7 +137,7 @@ axis2_hash_next(const axis2_env_t *env, axis2_hash_index_t *hi)
 }
 
 AXIS2_EXTERN axis2_hash_index_t* AXIS2_CALL
-axis2_hash_first(axis2_hash_t *ht, const axis2_env_t *env)
+axis2_hash_first(axis2_hash_t *ht, const axutil_env_t *env)
 {
     axis2_hash_index_t *hi;
     if (env)
@@ -303,7 +303,7 @@ axis2_hash_find_entry(axis2_hash_t * ht,
 }
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
-axis2_hash_copy(const axis2_hash_t *orig, const axis2_env_t *env)
+axis2_hash_copy(const axis2_hash_t *orig, const axutil_env_t *env)
 {
     axis2_hash_t *ht;
     axis2_hash_entry_t *new_vals;
@@ -392,7 +392,7 @@ axis2_hash_count(axis2_hash_t * ht)
 }
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
-axis2_hash_overlay(const axis2_hash_t *overlay, const axis2_env_t *env
+axis2_hash_overlay(const axis2_hash_t *overlay, const axutil_env_t *env
         , const axis2_hash_t * base)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -400,8 +400,8 @@ axis2_hash_overlay(const axis2_hash_t *overlay, const axis2_env_t *env
 }
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
-axis2_hash_merge(const axis2_hash_t *overlay, const axis2_env_t *env
-        , const axis2_hash_t * base, void *(*merger)(const axis2_env_t * env
+axis2_hash_merge(const axis2_hash_t *overlay, const axutil_env_t *env
+        , const axis2_hash_t * base, void *(*merger)(const axutil_env_t * env
                 , const void *key, axis2_ssize_t klen, const void *h1_val
                 , const void *h2_val, const void *data), const void *data)
 {
@@ -417,13 +417,13 @@ axis2_hash_merge(const axis2_hash_t *overlay, const axis2_env_t *env
      * overlay->a.env and base->a.env have a life span at least
      * as long as p
      */
-    if (!axis2_env_is_ancestor(overlay->env, p))
+    if (!axutil_env_is_ancestor(overlay->env, p))
     {
         fprintf(stderr,
                 "axis2_hash_merge: overlay's env is not an ancestor of p\n");
         abort();
     }
-    if (!axis2_env_is_ancestor(base->env, p))
+    if (!axutil_env_is_ancestor(base->env, p))
     {
         fprintf(stderr,
                 "axis2_hash_merge: base's env is not an ancestor of p\n");
@@ -507,7 +507,7 @@ axis2_hash_merge(const axis2_hash_t *overlay, const axis2_env_t *env
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_hash_contains_key(
     axis2_hash_t *ht,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *key)
 {
     axis2_hash_index_t *i = NULL;
@@ -529,7 +529,7 @@ axis2_hash_contains_key(
 }
 
 static void
-axis2_hash_entry_free(const axis2_env_t *env, axis2_hash_entry_t *hash_entry)
+axis2_hash_entry_free(const axutil_env_t *env, axis2_hash_entry_t *hash_entry)
 {
     AXIS2_ENV_CHECK(env, void);
     if (!hash_entry)
@@ -543,7 +543,7 @@ axis2_hash_entry_free(const axis2_env_t *env, axis2_hash_entry_t *hash_entry)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_hash_free(axis2_hash_t *ht, const axis2_env_t* env)
+axis2_hash_free(axis2_hash_t *ht, const axutil_env_t* env)
 {
     int i = 0;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -580,7 +580,7 @@ axis2_hash_free(axis2_hash_t *ht, const axis2_env_t* env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_hash_free_void_arg(void *ht_void, const axis2_env_t* env)
+axis2_hash_free_void_arg(void *ht_void, const axutil_env_t* env)
 {
     int i = 0;
     axis2_hash_t *ht = (axis2_hash_t*)ht_void;

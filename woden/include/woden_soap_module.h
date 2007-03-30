@@ -52,22 +52,22 @@ struct woden_soap_module_ops
     axis2_status_t (AXIS2_CALL * 
     free) (
             void *module,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL * 
     super_objs) (
             void *module,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     woden_obj_types_t (AXIS2_CALL * 
     type) (
             void *module,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     struct woden_component_exts *(AXIS2_CALL *
     get_base_impl) (
             void *module,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     /* ***********************************************************************
@@ -77,22 +77,22 @@ struct woden_soap_module_ops
     axis2_uri_t *(AXIS2_CALL *
     get_ref) (
             void *module,
-            axis2_env_t *env);
+            axutil_env_t *env);
 
     axis2_bool_t (AXIS2_CALL * 
     is_required) (
             void *module,
-            axis2_env_t *env);
+            axutil_env_t *env);
 
     void *(AXIS2_CALL *
     get_parent) (
             void *module,
-            axis2_env_t *env);
+            axutil_env_t *env);
 
     void *(AXIS2_CALL *
     to_element) (
             void *module,
-            axis2_env_t *env);
+            axutil_env_t *env);
 
 };
 
@@ -104,34 +104,34 @@ struct woden_soap_module
 
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_to_soap_module_element(
         void *module,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_to_ext_element(
         void *module,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_to_attr_extensible(
         void *module,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN woden_soap_module_t * AXIS2_CALL
 woden_soap_module_to_element_extensible(
         void *module,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_soap_module_resolve_methods(
         woden_soap_module_t *soap_module,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         woden_soap_module_t *soap_module_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

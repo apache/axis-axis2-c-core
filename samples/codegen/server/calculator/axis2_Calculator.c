@@ -35,7 +35,7 @@
   * @param param0
 
  */
-axis2_addResponse20_t*axis2_Calculator_add(const axis2_env_t* env  , axis2_add_t* param0)
+axis2_addResponse20_t*axis2_Calculator_add(const axutil_env_t* env  , axis2_add_t* param0)
 
 {
     /* Todo fill this with the necessary business logic */
@@ -74,7 +74,7 @@ axis2_addResponse20_t*axis2_Calculator_add(const axis2_env_t* env  , axis2_add_t
   * @param param2
 
  */
-axis2_divResponse16_t*axis2_Calculator_div(const axis2_env_t* env  , axis2_div_t* param2)
+axis2_divResponse16_t*axis2_Calculator_div(const axutil_env_t* env  , axis2_div_t* param2)
 
 {
     /* Todo fill this with the necessary business logic */
@@ -114,7 +114,7 @@ axis2_divResponse16_t*axis2_Calculator_div(const axis2_env_t* env  , axis2_div_t
   * @param param4
 
  */
-axis2_subResponse12_t*axis2_Calculator_sub(const axis2_env_t* env  , axis2_sub_t* param4)
+axis2_subResponse12_t*axis2_Calculator_sub(const axutil_env_t* env  , axis2_sub_t* param4)
 
 {
     /* Todo fill this with the necessary business logic */
@@ -154,7 +154,7 @@ axis2_subResponse12_t*axis2_Calculator_sub(const axis2_env_t* env  , axis2_sub_t
   * @param param6
 
  */
-axis2_mulResponse14_t*axis2_Calculator_mul(const axis2_env_t* env  , axis2_mul_t* param6)
+axis2_mulResponse14_t*axis2_Calculator_mul(const axutil_env_t* env  , axis2_mul_t* param6)
 
 {
     /* Todo fill this with the necessary business logic */

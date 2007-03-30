@@ -32,7 +32,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_svc_ctx.h>
 #include <axis2_svc_grp.h>
 
@@ -57,7 +57,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_grp_ctx_t *AXIS2_CALL
     axis2_svc_grp_ctx_create(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_svc_grp *svc_grp,
         struct axis2_conf_ctx *conf_ctx);
 
@@ -70,7 +70,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
     axis2_svc_grp_ctx_get_base(const axis2_svc_grp_ctx_t *svc_grp_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -82,7 +82,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL
     axis2_svc_grp_ctx_get_parent(const axis2_svc_grp_ctx_t *svc_grp_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 
     /**
@@ -93,7 +93,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_grp_ctx_free(struct axis2_svc_grp_ctx *svc_grp_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Initializes service group context. In this method, it pics the 
@@ -106,7 +106,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_ctx_init(struct axis2_svc_grp_ctx *svc_grp_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         struct axis2_conf *conf);
 
     /**
@@ -117,7 +117,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_svc_grp_ctx_get_id(const axis2_svc_grp_ctx_t *svc_grp_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Sets service group context ID.
@@ -128,7 +128,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_ctx_set_id(struct axis2_svc_grp_ctx *svc_grp_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *id);
 
     /** 
@@ -140,7 +140,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_ctx *AXIS2_CALL
     axis2_svc_grp_ctx_get_svc_ctx(const axis2_svc_grp_ctx_t *svc_grp_ctx,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *svc_name);
 
     /**
@@ -152,7 +152,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_ctx_fill_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets service group related to this service context. 
@@ -163,7 +163,7 @@ extern "C"
      */
     AXIS2_EXTERN struct axis2_svc_grp *AXIS2_CALL
     axis2_svc_grp_ctx_get_svc_grp(const axis2_svc_grp_ctx_t *svc_grp_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets service context map containing all service contexts.
@@ -173,7 +173,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
     axis2_svc_grp_ctx_get_svc_ctx_map(const axis2_svc_grp_ctx_t *svc_grp_ctx,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #ifdef __cplusplus
 }

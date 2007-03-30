@@ -29,23 +29,23 @@
 #define DEFAULT_DIR "src"
 
 static void
-w2c_schema_print_message( const axis2_env_t *env, axis2_properties_t *messageh,
+w2c_schema_print_message( const axutil_env_t *env, axis2_properties_t *messageh,
                    axis2_char_t *key);
 
 static void 
-w2c_schema_print_usage( const axis2_env_t *env );
+w2c_schema_print_usage( const axutil_env_t *env );
 
 static void
-w2c_schema_compile( const axis2_env_t *env, axis2_char_t *schema_name,
+w2c_schema_compile( const axutil_env_t *env, axis2_char_t *schema_name,
         axis2_char_t *output, axis2_char_t *language);
 
 int main(int argc, char **argv )
 {
-    axis2_env_t *env = NULL;
+    axutil_env_t *env = NULL;
     axutil_allocator_t *allocator = NULL;
 
     allocator = axutil_allocator_init(NULL);
-    env = axis2_env_create(allocator);
+    env = axutil_env_create(allocator);
 
     if ( argc == 4 )
     {
@@ -64,12 +64,12 @@ int main(int argc, char **argv )
         w2c_schema_print_usage( env);
     }
 
-    axis2_env_free( env );
+    axutil_env_free( env );
     return 0;
 }
 
 static void
-w2c_schema_compile( const axis2_env_t *env, axis2_char_t *schema_name,
+w2c_schema_compile( const axutil_env_t *env, axis2_char_t *schema_name,
         axis2_char_t *output, axis2_char_t *language)
 {
     axiom_xml_reader_t *reader = NULL;
@@ -104,7 +104,7 @@ w2c_schema_compile( const axis2_env_t *env, axis2_char_t *schema_name,
 }
  
 static void 
-w2c_schema_print_usage( const axis2_env_t *env )
+w2c_schema_print_usage( const axutil_env_t *env )
 {
     axis2_properties_t *props = NULL;
    
@@ -117,7 +117,7 @@ w2c_schema_print_usage( const axis2_env_t *env )
 }
 
 static void
-w2c_schema_print_message( const axis2_env_t *env,
+w2c_schema_print_message( const axutil_env_t *env,
         axis2_properties_t *messagep, axis2_char_t *key)
 {
    axis2_char_t *message = NULL;

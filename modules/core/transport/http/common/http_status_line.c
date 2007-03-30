@@ -31,7 +31,7 @@ struct axis2_http_status_line
 
 AXIS2_EXTERN axis2_http_status_line_t *AXIS2_CALL
 axis2_http_status_line_create(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     const axis2_char_t *str)
 {
     axis2_char_t *tmp_status_line = NULL;
@@ -134,7 +134,7 @@ axis2_http_status_line_create(
 AXIS2_EXTERN void AXIS2_CALL
 axis2_http_status_line_free(
     axis2_http_status_line_t *status_line,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, void);
 
@@ -162,7 +162,7 @@ axis2_http_status_line_free(
 AXIS2_EXTERN int AXIS2_CALL
 axis2_http_status_line_get_status_code(
     const axis2_http_status_line_t *status_line,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     if (status_line->status_code)
@@ -179,7 +179,7 @@ axis2_http_status_line_get_status_code(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_status_line_get_http_version(
     const axis2_http_status_line_t *status_line,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return status_line->http_version;
 }
@@ -187,7 +187,7 @@ axis2_http_status_line_get_http_version(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_status_line_get_reason_phrase(
     const axis2_http_status_line_t *status_line,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return status_line->reason_phrase;
 }
@@ -196,7 +196,7 @@ axis2_http_status_line_get_reason_phrase(
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_http_status_line_starts_with_http(
     axis2_http_status_line_t *status_line,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     if (0 == axis2_strncasecmp(status_line->line, "HTTP", 4))
     {
@@ -208,7 +208,7 @@ axis2_http_status_line_starts_with_http(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_status_line_to_string(
     axis2_http_status_line_t *status_line,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     return status_line->line;
 }

@@ -53,23 +53,23 @@ struct xml_schema_content_type_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *content_type,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
             
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *content_type,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_types_t (AXIS2_CALL *
     get_type) (void *content_type,
-            const axis2_env_t *env);                
+            const axutil_env_t *env);                
 
     xml_schema_enum_t *(AXIS2_CALL *
     get_base_impl) (void *content_type,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
     
     axutil_array_list_t *(AXIS2_CALL *
     get_values)(void *content_type,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
 };
 
@@ -80,7 +80,7 @@ struct xml_schema_content_type
 };
 
 AXIS2_EXTERN xml_schema_content_type_t * AXIS2_CALL
-xml_schema_content_type_create(const axis2_env_t *env,
+xml_schema_content_type_create(const axutil_env_t *env,
                                     axis2_char_t* value);
 
 /************************* Macros ************************************************/

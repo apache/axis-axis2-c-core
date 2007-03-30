@@ -34,7 +34,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -65,31 +65,31 @@ struct woden_ext_element_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *ext_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
             void *ext_element,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
 
     axis2_status_t (AXIS2_CALL *
     set_ext_type) (void *ext_element,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_ext_type) (void *ext_element,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_required) (void *ext_element,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         axis2_bool_t required);
 
     axis2_bool_t (AXIS2_CALL *
     is_required) (void *ext_element,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
 };
 
@@ -99,7 +99,7 @@ struct woden_ext_element
 };
 
 AXIS2_EXTERN woden_ext_element_t * AXIS2_CALL
-woden_ext_element_create(const axis2_env_t *env);
+woden_ext_element_create(const axutil_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
@@ -108,7 +108,7 @@ woden_ext_element_create(const axis2_env_t *env);
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_ext_element_resolve_methods(
         woden_ext_element_t *ext_element,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_hash_t *methods);
 
 #define WODEN_EXT_ELEMENT_FREE(ext_element, env) \

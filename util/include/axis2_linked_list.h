@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -60,11 +60,11 @@ extern "C"
     * Create an empty linked list.
     */
     AXIS2_EXTERN axis2_linked_list_t* AXIS2_CALL 
-    axis2_linked_list_create(const axis2_env_t *env);
+    axis2_linked_list_create(const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
     axis2_linked_list_free(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * Obtain the Entry at a given position in a list. This method of course
@@ -80,7 +80,7 @@ extern "C"
     */
     AXIS2_EXTERN entry_t * AXIS2_CALL
     axis2_linked_list_get_entry(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int n);
 
     /**
@@ -91,7 +91,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_linked_list_remove_entry(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         entry_t *e);
 
 
@@ -102,7 +102,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_linked_list_check_bounds_inclusive(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index);
 
     /**
@@ -112,7 +112,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_linked_list_check_bounds_exclusive(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index);
 
     /**
@@ -122,7 +122,7 @@ extern "C"
     */
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_linked_list_get_first(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * Returns the last element in the list.
@@ -131,7 +131,7 @@ extern "C"
     */
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_linked_list_get_last(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * Remove and return the first element in the list.
@@ -140,7 +140,7 @@ extern "C"
     */
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_linked_list_remove_first(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * Remove and return the last element in the list.
@@ -149,7 +149,7 @@ extern "C"
     */
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_linked_list_remove_last(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * Insert an element at the first of the list.
@@ -158,7 +158,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_linked_list_add_first(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *o);
 
     /**
@@ -168,7 +168,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_linked_list_add_last(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *o);
 
     /**
@@ -180,7 +180,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_linked_list_contains(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *o);
 
     /**
@@ -190,7 +190,7 @@ extern "C"
     */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_linked_list_size(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * Adds an element to the end of the list.
@@ -200,7 +200,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_linked_list_add(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *o);
 
     /**
@@ -212,7 +212,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_linked_list_remove(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *o);
 
     /**
@@ -220,7 +220,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_linked_list_clear(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
     * Return the element at index.
@@ -230,7 +230,7 @@ extern "C"
     */
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_linked_list_get(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index);
 
     /**
@@ -242,7 +242,7 @@ extern "C"
     */
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_linked_list_set(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index, 
         void *o);
 
@@ -254,7 +254,7 @@ extern "C"
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_linked_list_add_at_index(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index,
         void *o);
 
@@ -266,7 +266,7 @@ extern "C"
     */
     AXIS2_EXTERN void * AXIS2_CALL
     axis2_linked_list_remove_at_index(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         int index);
 
     /**
@@ -277,7 +277,7 @@ extern "C"
     */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_linked_list_index_of(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *o);
 
     /**
@@ -288,7 +288,7 @@ extern "C"
     */
     AXIS2_EXTERN int AXIS2_CALL
     axis2_linked_list_last_index_of(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         void *o);
 
     /**
@@ -298,7 +298,7 @@ extern "C"
     */
     AXIS2_EXTERN void ** AXIS2_CALL
     axis2_linked_list_to_array(axis2_linked_list_t *linked_list,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 #ifdef __cplusplus
 }

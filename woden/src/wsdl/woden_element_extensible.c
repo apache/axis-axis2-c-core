@@ -42,52 +42,52 @@ struct woden_element_extensible_impl
 axis2_status_t AXIS2_CALL
 woden_element_extensible_free(
     void *extensible,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 axis2_hash_t *AXIS2_CALL
 woden_element_extensible_super_objs(
     void *extensible,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 woden_obj_types_t AXIS2_CALL
 woden_element_extensible_type(
     void *extensible,
-    const axis2_env_t *envv);
+    const axutil_env_t *envv);
 
 axis2_status_t AXIS2_CALL
 woden_element_extensible_add_ext_element(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_ext_element_t *ext_el);
 
 axis2_status_t AXIS2_CALL
 woden_element_extensible_remove_ext_element(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_ext_element_t *ext_el);
 
 axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements(
     void *extensible,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements_of_type(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_qname_t *ext_type);
 
 axis2_bool_t AXIS2_CALL
 woden_element_extensible_has_ext_elements_for_namespace(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc);
 
 
 
 AXIS2_EXTERN woden_element_extensible_t * AXIS2_CALL
 woden_element_extensible_create(
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
 
@@ -137,7 +137,7 @@ woden_element_extensible_create(
 
 axis2_status_t AXIS2_CALL
 woden_element_extensible_free(void *extensible,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
 
@@ -188,7 +188,7 @@ woden_element_extensible_free(void *extensible,
 axis2_hash_t *AXIS2_CALL
 woden_element_extensible_super_objs(
     void *extensible,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
 
@@ -201,7 +201,7 @@ woden_element_extensible_super_objs(
 woden_obj_types_t AXIS2_CALL
 woden_element_extensible_type(
     void *extensible,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
 
@@ -214,7 +214,7 @@ woden_element_extensible_type(
 axis2_status_t AXIS2_CALL
 woden_element_extensible_resolve_methods(
     woden_element_extensible_t *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_element_extensible_t *extensible_impl,
     axis2_hash_t *methods)
 {
@@ -267,7 +267,7 @@ woden_element_extensible_resolve_methods(
 axis2_status_t AXIS2_CALL
 woden_element_extensible_add_ext_element(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_ext_element_t *ext_el)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
@@ -286,7 +286,7 @@ woden_element_extensible_add_ext_element(
 axis2_status_t AXIS2_CALL
 woden_element_extensible_remove_ext_element(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     woden_ext_element_t *ext_el)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
@@ -306,7 +306,7 @@ woden_element_extensible_remove_ext_element(
 
 axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements(void *extensible,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -321,7 +321,7 @@ woden_element_extensible_get_ext_elements(void *extensible,
 
 axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements_of_type(void *extensible,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *ext_type)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
@@ -371,7 +371,7 @@ woden_element_extensible_get_ext_elements_of_type(void *extensible,
 axis2_bool_t AXIS2_CALL
 woden_element_extensible_has_ext_elements_for_namespace(
     void *extensible,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_uri_t *namespc)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;

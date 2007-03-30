@@ -53,36 +53,36 @@ struct xml_schema_group_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *group,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *group,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_types_t (AXIS2_CALL *
     get_type) (void *group,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *group,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_name)(void *group,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_name)(void *group,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axis2_char_t *name);
     
     struct xml_schema_group_base *(AXIS2_CALL *
     get_particle)(void *group,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_particle)(void *group,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     struct xml_schema_group_base *particle);
 };
 
@@ -96,7 +96,7 @@ struct xml_schema_group
  * Creates new Xml Schema Group
  */
 AXIS2_EXTERN xml_schema_group_t * AXIS2_CALL
-xml_schema_group_create(const axis2_env_t *env);
+xml_schema_group_create(const axutil_env_t *env);
 
 /**************************** Macros *************************************/
 #define XML_SCHEMA_GROUP_FREE(group, env) \

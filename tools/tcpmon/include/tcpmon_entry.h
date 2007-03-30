@@ -18,7 +18,7 @@
 #ifndef TCPMON_ENTRY_H
 #define TCPMON_ENTRY_H
 
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_string.h>
  
 /**
@@ -50,7 +50,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_status_t (AXIS2_CALL * 
     free)(tcpmon_entry_t *entry,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
    
    /**
     * retrieve the arrived_time
@@ -59,7 +59,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_char_t* (AXIS2_CALL *
     arrived_time) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
    /**
     * retrieve the sent_time
@@ -68,7 +68,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_char_t* (AXIS2_CALL *
     sent_time) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
    /**
     * retrieve the arrived_time - sent_time ( in seconds)
@@ -77,7 +77,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_char_t* (AXIS2_CALL *
     time_diff) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
    /**
     * retrieve the sent data
@@ -86,7 +86,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_char_t* (AXIS2_CALL *
     sent_data) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
  
    /**
     * retrieve the arrived data
@@ -95,7 +95,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_char_t* (AXIS2_CALL *
     arrived_data) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
     /**
     * retrieve the sent headers 
@@ -104,7 +104,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_char_t* (AXIS2_CALL *
     sent_headers) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
  
    /**
     * retrieve the arrived headers
@@ -113,7 +113,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_char_t* (AXIS2_CALL *
     arrived_headers) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
    /**
     * retrieve whether the transportation success
@@ -122,15 +122,15 @@ typedef struct tcpmon_entry tcpmon_entry_t;
     */
     axis2_bool_t (AXIS2_CALL *
     is_success) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env);
+                        const axutil_env_t *env);
 
     int (AXIS2_CALL *
     get_format_bit) (tcpmon_entry_t *entry,
-	                    axis2_env_t *env);
+	                    axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_format_bit) (tcpmon_entry_t *entry,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         int format_bit);
 };
 
@@ -145,7 +145,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
  * @return pointer to newly created tcpmon_entry struct
  */
 tcpmon_entry_t * AXIS2_CALL
-tcpmon_entry_create(const axis2_env_t *env );
+tcpmon_entry_create(const axutil_env_t *env );
 
 /*************************** Function macros **********************************/
 

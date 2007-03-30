@@ -68,7 +68,7 @@ extern "C"
         int (AXIS2_CALL *
                 init)(
                     axis2_svc_skeleton_t *svc_skeleton,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * Frees service implementation.
@@ -79,7 +79,7 @@ extern "C"
         int (AXIS2_CALL *
                 free)(
                     axis2_svc_skeleton_t *svc_skeli,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
         /**
          * Invokes the service. This function should be used to call up the
@@ -96,7 +96,7 @@ extern "C"
         axiom_node_t *(AXIS2_CALL*
                 invoke)(
                     axis2_svc_skeleton_t *svc_skeli,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axiom_node_t *node,
                     axis2_msg_ctx_t *msg_ctx);
 
@@ -110,7 +110,7 @@ extern "C"
         axiom_node_t *(AXIS2_CALL*
                 on_fault)(
                     axis2_svc_skeleton_t *svc_skeli,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     axiom_node_t *node);
 
 

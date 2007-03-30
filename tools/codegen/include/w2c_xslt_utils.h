@@ -48,7 +48,7 @@ extern "C"
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 w2c_xslt_utils_add_attribute(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *om_node,
     axis2_char_t *attribute,
     axis2_char_t *attrib_value);
@@ -62,7 +62,7 @@ w2c_xslt_utils_add_attribute(
  */
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 w2c_xslt_utils_add_child_node(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *element_name,
     axiom_node_t *parent_node);
 
@@ -74,7 +74,7 @@ w2c_xslt_utils_add_child_node(
  */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_xslt_utils_serialize(
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axiom_node_t *root);
 
 /**
@@ -86,7 +86,7 @@ w2c_xslt_utils_serialize(
  */
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 w2c_xslt_utils_add_text(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *node,
     axis2_char_t *text);
 
@@ -99,7 +99,7 @@ w2c_xslt_utils_add_text(
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
     w2c_xslt_utils_copy_node_tree(
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axiom_node_t *to,
     axiom_node_t *from );
 

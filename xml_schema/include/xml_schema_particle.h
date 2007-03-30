@@ -52,38 +52,38 @@ struct xml_schema_particle_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *particle,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *particle,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_types_t (AXIS2_CALL *
     get_type) (
             void *particle,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *particle,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
 
     long (AXIS2_CALL *
     get_max_occurs)(void *particle,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_max_occurs)(void *particle,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     long max_occurs);
     
     long (AXIS2_CALL *
     get_min_occurs)(void *particle,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_min_occurs)(void *particle,
-                    const axis2_env_t *env,
+                    const axutil_env_t *env,
                     long min_occurs);
 };
 
@@ -102,7 +102,7 @@ struct xml_schema_particle
  * (any).
  */
 AXIS2_EXTERN xml_schema_particle_t * AXIS2_CALL
-xml_schema_particle_create(const axis2_env_t *env);
+xml_schema_particle_create(const axutil_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -110,7 +110,7 @@ xml_schema_particle_create(const axis2_env_t *env);
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_particle_resolve_methods(
                                 xml_schema_particle_t *particle,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_particle_t *particle_impl,
                                 XML_SCHEMA_SUPER_OBJS_FN super_objs,
                                 XML_SCHEMA_GET_TYPE_FN get_type,

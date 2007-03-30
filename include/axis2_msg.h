@@ -54,7 +54,7 @@ extern "C"
      * @return pointer to newly created message
      */
     AXIS2_EXTERN axis2_msg_t *AXIS2_CALL
-    axis2_msg_create(const axis2_env_t *env);
+    axis2_msg_create(const axutil_env_t *env);
 
     /** 
      * Frees message.
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_msg_free(axis2_msg_t *msg,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * Adds a parameter.
@@ -76,7 +76,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_add_param(axis2_msg_t *msg,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_param_t *param);
 
     /**
@@ -89,7 +89,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_param_t *AXIS2_CALL
     axis2_msg_get_param(const axis2_msg_t *msg,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
     /** 
@@ -101,7 +101,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_msg_get_all_params(const axis2_msg_t *msg,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * Checks if the named parameter is locked.
@@ -112,7 +112,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_msg_is_param_locked(axis2_msg_t *msg,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *param_name);
 
     /** 
@@ -125,7 +125,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_parent(axis2_msg_t *msg,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_op_t *op);
 
     /** 
@@ -137,7 +137,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
     axis2_msg_get_parent(const axis2_msg_t *msg,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Gets flow of execution associated with the message.
@@ -148,7 +148,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
     axis2_msg_get_flow( const axis2_msg_t *msg,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * Sets flow of execution associated with the message.
@@ -160,7 +160,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_flow(axis2_msg_t *msg,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *flow);
 
     /** 
@@ -171,7 +171,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_get_direction(const axis2_msg_t *msg,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * Sets direction of message.
@@ -182,7 +182,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_direction(axis2_msg_t *msg,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *direction);
 
     /** 
@@ -193,7 +193,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
     axis2_msg_get_element_qname(const axis2_msg_t *msg,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * Sets QName representing message.
@@ -205,7 +205,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_element_qname(axis2_msg_t *msg,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *element_qname);
 
     /** 
@@ -216,7 +216,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_msg_get_name(const axis2_msg_t *msg,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /** 
      * Sets message name.
@@ -227,7 +227,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_name(axis2_msg_t *msg,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *name);
 
 /** @} */

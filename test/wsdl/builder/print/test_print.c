@@ -24,7 +24,7 @@
 #include <axis2_wsdl4c_port_type.h>
 #include <axis2_wsdl4c_message.h>
 #include <axutil_array_list.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <stdio.h>
 
@@ -57,7 +57,7 @@ int
 main(int argc, char *argv[])
 {
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    const axis2_env_t *env = axis2_env_create(allocator);
+    const axutil_env_t *env = axutil_env_create(allocator);
     if (argc <= 1)
     {
         printf("Usage: print <wsdl_File_Name>\n");

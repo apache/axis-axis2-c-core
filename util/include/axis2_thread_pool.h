@@ -39,7 +39,7 @@ extern "C"
      */
 
     typedef struct axis2_thread_pool axis2_thread_pool_t;
-    struct axis2_env;
+    struct axutil_env;
 
     /**
      * Retrives a thread from the thread pool
@@ -97,15 +97,15 @@ extern "C"
      * This function can be used to initialize the environment in case of
      * spawning a new thread via a thread function
      */
-    AXIS2_EXTERN struct axis2_env * AXIS2_CALL
-    axis2_init_thread_env(const struct axis2_env *system_env);
+    AXIS2_EXTERN struct axutil_env * AXIS2_CALL
+    axis2_init_thread_env(const struct axutil_env *system_env);
 
     /**
      * This function can be used to free the environment that was used
      * in a thread function
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_free_thread_env(struct axis2_env *thread_env);
+    axis2_free_thread_env(struct axutil_env *thread_env);
 
 #define AXIS2_THREAD_POOL_GET_THREAD(thread_pool, func, data) \
       axis2_thread_pool_get_thread(thread_pool, func, data)

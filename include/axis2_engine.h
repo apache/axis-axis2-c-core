@@ -36,7 +36,7 @@
 
 #include <axis2_defines.h>
 #include <axutil_array_list.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 
 #ifdef __cplusplus
@@ -64,7 +64,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_send(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
     
     /**
@@ -81,7 +81,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_receive(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
     
     /**
@@ -94,7 +94,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_send_fault(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
                 
     /**
@@ -107,7 +107,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_receive_fault(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
                 
     /**
@@ -121,7 +121,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
     axis2_engine_create_fault_msg_ctx(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *processing_context);
      
 
@@ -140,7 +140,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_invoke_phases(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *phases,
         axis2_msg_ctx_t *msg_ctx);
 
@@ -162,7 +162,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_resume_invocation_phases(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axutil_array_list_t *phases,
         axis2_msg_ctx_t *msg_ctx);
 
@@ -175,7 +175,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_engine_get_sender_fault_code(const axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *soap_namespace);
 
 
@@ -187,7 +187,7 @@ extern "C"
      */
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_engine_get_receiver_fault_code(const axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_char_t *soap_namespace);
 
     /**
@@ -198,7 +198,7 @@ extern "C"
      */
     AXIS2_EXTERN void AXIS2_CALL
     axis2_engine_free(axis2_engine_t *engine,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
     /**
      * Resumes receive operation. It could be the case that receive was 
@@ -211,7 +211,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_resume_receive(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -225,7 +225,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_engine_resume_send(axis2_engine_t *engine,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
     /**
@@ -235,7 +235,7 @@ extern "C"
      * @return pointer to newly created engine struct
      */
     AXIS2_EXTERN axis2_engine_t *AXIS2_CALL
-    axis2_engine_create(const axis2_env_t *env,
+    axis2_engine_create(const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx);
 
 #ifdef __cplusplus

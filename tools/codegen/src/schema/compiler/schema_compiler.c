@@ -66,37 +66,37 @@ typedef struct w2c_schema_compiler_impl
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_free (w2c_schema_compiler_t *schema_compiler,
-                            const axis2_env_t *env);
+                            const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_compile( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_t *xml_schema);
 
 w2c_typemapper_t *AXIS2_CALL
 w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axutil_array_list_t * schema_list);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_get_processed_element_map( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_get_processed_model_map( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
 /* set of private methods */
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_t *xml_schema,
                 axis2_bool_t is_part_of_group);
 
 axis2_status_t
 w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         xml_schema_element_t *ele,
                         axis2_bool_t is_outer,
                         axis2_hash_t *inner_element_map,
@@ -105,51 +105,51 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
 
 axis2_status_t
 w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_element_t *element);
 
 axis2_status_t
 w2c_schema_compiler_finalize_compilation(w2c_schema_compiler_impl_t *compiler_impl,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
 
 axis2_char_t*
 w2c_schema_compiler_find_class_name(w2c_schema_compiler_impl_t *compiler_impl,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_qname_t *qname,
                 axis2_bool_t is_array);
 
 axis2_bool_t
 w2c_schema_compiler_is_array(w2c_schema_compiler_impl_t *compiler_impl,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_particle_t *particle);
 
 xml_schema_t*
 w2c_schema_compiler_resolve_parent_schema( w2c_schema_compiler_impl_t *compiler_impl,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 axis2_qname_t *schema_type_qname,
                                 xml_schema_t *current_schema);
 
 axis2_qname_t*
 w2c_schema_compiler_generate_type_qname(  w2c_schema_compiler_impl_t *compiler_impl,
-                                        const axis2_env_t *env,
+                                        const axutil_env_t *env,
                                         axis2_qname_t *ref_ele_qname,
                                         xml_schema_t *parent_schema );
 
 axis2_bool_t
 w2c_schema_compiler_is_already_processed(  w2c_schema_compiler_impl_t *compiler_impl,
-                                           const axis2_env_t *env,
+                                           const axutil_env_t *env,
                                            axis2_qname_t *qname );
 
 
 axis2_char_t*
 w2c_schema_compiler_find_ref_classname( w2c_schema_compiler_impl_t *compiler_impl,
-                                        const axis2_env_t *env,
+                                        const axutil_env_t *env,
                                         axis2_qname_t *qname,
                                         axis2_bool_t is_array );
 
 axis2_status_t
 w2c_schema_compiler_process_schema(  w2c_schema_compiler_impl_t *compiler_impl,
-                                     const axis2_env_t *env,
+                                     const axutil_env_t *env,
                                      xml_schema_element_t *ele,
                                      xml_schema_type_t *schema_type,
                                      xml_schema_t *parent_schema);
@@ -157,7 +157,7 @@ w2c_schema_compiler_process_schema(  w2c_schema_compiler_impl_t *compiler_impl,
 axis2_status_t
 w2c_schema_compiler_process_anonymous_complex_schema_type( 
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_element_t *ele,
                                     xml_schema_complex_type_t *complex_type,
                                     xml_schema_t *parent_schema );
@@ -165,28 +165,28 @@ w2c_schema_compiler_process_anonymous_complex_schema_type(
 axis2_status_t
 w2c_schema_compiler_process_named_complex_schema_type(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_complex_type_t *complex_type,
                                     xml_schema_t *parent_schema );
 
 axis2_status_t
 w2c_schema_compiler_write_complex_type(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_complex_type_t *complex_type,
                                     w2c_schema_writer_meta_info_t *meta_info );
 
 w2c_schema_writer_meta_info_t*
 w2c_schema_compiler_process_complex_type( 
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_complex_type_t *complex_type,
                                     xml_schema_t *parent_schema);
 
 axis2_status_t
 w2c_schema_compiler_process_content_model(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     void *content_model,
                                     w2c_schema_writer_meta_info_t *meta_info, 
                                     xml_schema_t *parent_schema);
@@ -194,7 +194,7 @@ w2c_schema_compiler_process_content_model(
 axis2_status_t
 w2c_schema_compiler_process_complex_content(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_complex_content_t *complex_content,
                                     w2c_schema_writer_meta_info_t *meta_info, 
                                     xml_schema_t *parent_schema);
@@ -202,7 +202,7 @@ w2c_schema_compiler_process_complex_content(
 axis2_status_t
 w2c_schema_compiler_copy_meta_info(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     w2c_schema_writer_meta_info_t *meta_info_child,
                                     axis2_qname_t *base_type_qname,
                                     xml_schema_t *parent_schema );
@@ -210,7 +210,7 @@ w2c_schema_compiler_copy_meta_info(
 axis2_status_t
 w2c_schema_compiler_process_simple_content(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_simple_content_t *simple_content,
                                     w2c_schema_writer_meta_info_t *meta_info,
                                     xml_schema_t *parent_schema );
@@ -218,48 +218,48 @@ w2c_schema_compiler_process_simple_content(
 axis2_status_t
 w2c_schema_compiler_process_simple_extension_base_type(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     axis2_qname_t *ext_base_type,
                                     w2c_schema_writer_meta_info_t *meta_info);
 
 axis2_status_t
 w2c_schema_compiler_process_simple_restriction_base_type(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     axis2_qname_t *res_base_type,
                                     w2c_schema_writer_meta_info_t *meta_info);
 
 axis2_status_t
 w2c_schema_compiler_process_facet(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_obj_collection_t *facet,
                                     w2c_schema_writer_meta_info_t *meta_info);
 
 axis2_status_t
 w2c_schema_compiler_process_any_attributes(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     w2c_schema_writer_meta_info_t *meta_info,
                                     xml_schema_any_attribute_t *any_attri );
 
 axis2_status_t
 w2c_schema_compiler_process_attribute(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_attribute_t *attri, 
                                     w2c_schema_writer_meta_info_t *meta_info);
 
 axis2_status_t
 w2c_schema_compiler_process_particle(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     w2c_schema_writer_meta_info_t *meta_info,
                                     xml_schema_particle_t *particle,
                                     xml_schema_t *parent_schema );
 axis2_status_t
 w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_obj_collection_t *items,
                                     w2c_schema_writer_meta_info_t *meta_info,
                                     axis2_bool_t order,
@@ -267,19 +267,19 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
 
 axis2_bool_t
 w2c_schema_compiler_is_binary(  w2c_schema_compiler_impl_t *compiler_impl,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_element_t *ele );
 
 axis2_status_t
 w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_simple_type_t *simple_type,
                                     xml_schema_element_t *ele,
                                     xml_schema_t *parent_schema );
 
 
 AXIS2_EXTERN w2c_schema_compiler_t * AXIS2_CALL
-w2c_schema_compiler_create( const axis2_env_t *env,
+w2c_schema_compiler_create( const axutil_env_t *env,
         w2c_schema_compiler_options_t *compiler_options)
 {
     w2c_schema_compiler_impl_t *compiler_impl = NULL;
@@ -359,7 +359,7 @@ w2c_schema_compiler_create( const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_free (w2c_schema_compiler_t *schema_compiler,
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     w2c_schema_compiler_impl_t *schema_compiler_impl = NULL;
 
@@ -444,7 +444,7 @@ w2c_schema_compiler_free (w2c_schema_compiler_t *schema_compiler,
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_t *xml_schema,
                 axis2_bool_t is_part_of_group)
 {
@@ -557,7 +557,7 @@ w2c_schema_compiler_compile_inner( w2c_schema_compiler_t *compiler,
 
 axis2_status_t
 w2c_schema_compiler_finalize_compilation(w2c_schema_compiler_impl_t *compiler_impl,
-                        const axis2_env_t *env)
+                        const axutil_env_t *env)
 {
     W2C_SCHEMA_WRITER_WRITE_EXTENSION_MAPPER( compiler_impl-> writer, 
             env, compiler_impl-> processed_type_meta_info_map );
@@ -571,7 +571,7 @@ w2c_schema_compiler_finalize_compilation(w2c_schema_compiler_impl_t *compiler_im
 
 axis2_status_t
 w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_element_t *element)
 {
     axis2_qname_t *qname = NULL;
@@ -678,7 +678,7 @@ w2c_schema_compiler_write_element(w2c_schema_compiler_impl_t *compiler_impl,
 
 axis2_char_t*
 w2c_schema_compiler_find_class_name(w2c_schema_compiler_impl_t *compiler_impl,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axis2_qname_t *qname,
                 axis2_bool_t is_array)
 {
@@ -717,7 +717,7 @@ w2c_schema_compiler_find_class_name(w2c_schema_compiler_impl_t *compiler_impl,
 
 axis2_bool_t
 w2c_schema_compiler_is_array(w2c_schema_compiler_impl_t *compiler_impl,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_particle_t *particle)
 {
     int min_occurs = 0;
@@ -738,7 +738,7 @@ w2c_schema_compiler_is_array(w2c_schema_compiler_impl_t *compiler_impl,
 
 axis2_status_t
 w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
-                        const axis2_env_t *env,
+                        const axutil_env_t *env,
                         xml_schema_element_t *ele,
                         axis2_bool_t is_outer,
                         axis2_hash_t *inner_ele_map,
@@ -961,7 +961,7 @@ w2c_schema_compiler_process_element(w2c_schema_compiler_impl_t *compiler_impl,
 
 w2c_typemapper_t *AXIS2_CALL
 w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 axutil_array_list_t * schema_list)
 {
     w2c_schema_compiler_impl_t *compiler_impl = NULL;
@@ -1059,7 +1059,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
 
 xml_schema_t*
 w2c_schema_compiler_resolve_parent_schema( w2c_schema_compiler_impl_t *compiler_impl,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 axis2_qname_t *schema_type_qname,
                                 xml_schema_t *current_schema)
 {
@@ -1087,7 +1087,7 @@ w2c_schema_compiler_resolve_parent_schema( w2c_schema_compiler_impl_t *compiler_
 
 axis2_qname_t*
 w2c_schema_compiler_generate_type_qname(  w2c_schema_compiler_impl_t *compiler_impl,
-                                        const axis2_env_t *env,
+                                        const axutil_env_t *env,
                                         axis2_qname_t *ref_ele_qname,
                                         xml_schema_t *parent_schema )
 {
@@ -1118,7 +1118,7 @@ w2c_schema_compiler_generate_type_qname(  w2c_schema_compiler_impl_t *compiler_i
 
 axis2_bool_t
 w2c_schema_compiler_is_already_processed(  w2c_schema_compiler_impl_t *compiler_impl,
-                                           const axis2_env_t *env,
+                                           const axutil_env_t *env,
                                            axis2_qname_t *qname )
 {
     axis2_char_t *qname_str = w2c_string_make_key_from_qname( qname, env );
@@ -1133,7 +1133,7 @@ w2c_schema_compiler_is_already_processed(  w2c_schema_compiler_impl_t *compiler_
 
 axis2_char_t*
 w2c_schema_compiler_find_ref_classname( w2c_schema_compiler_impl_t *compiler_impl,
-                                        const axis2_env_t *env,
+                                        const axutil_env_t *env,
                                         axis2_qname_t *qname,
                                         axis2_bool_t is_array )
 {
@@ -1153,7 +1153,7 @@ w2c_schema_compiler_find_ref_classname( w2c_schema_compiler_impl_t *compiler_imp
 
 axis2_status_t
 w2c_schema_compiler_process_schema(  w2c_schema_compiler_impl_t *compiler_impl,
-                                     const axis2_env_t *env,
+                                     const axutil_env_t *env,
                                      xml_schema_element_t *ele,
                                      xml_schema_type_t *schema_type,
                                      xml_schema_t *parent_schema)
@@ -1189,7 +1189,7 @@ w2c_schema_compiler_process_schema(  w2c_schema_compiler_impl_t *compiler_impl,
 axis2_status_t
 w2c_schema_compiler_process_anonymous_complex_schema_type( 
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_element_t *ele,
                                     xml_schema_complex_type_t *complex_type,
                                     xml_schema_t *parent_schema )
@@ -1210,7 +1210,7 @@ w2c_schema_compiler_process_anonymous_complex_schema_type(
 axis2_status_t
 w2c_schema_compiler_process_named_complex_schema_type(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_complex_type_t *complex_type,
                                     xml_schema_t *parent_schema )
 {
@@ -1260,7 +1260,7 @@ w2c_schema_compiler_process_named_complex_schema_type(
 axis2_status_t
 w2c_schema_compiler_write_complex_type(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_complex_type_t *complex_type,
                                     w2c_schema_writer_meta_info_t *meta_info )
 {
@@ -1284,7 +1284,7 @@ w2c_schema_compiler_write_complex_type(
 w2c_schema_writer_meta_info_t*
 w2c_schema_compiler_process_complex_type( 
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_complex_type_t *complex_type,
                                     xml_schema_t *parent_schema)
 {
@@ -1339,7 +1339,7 @@ w2c_schema_compiler_process_complex_type(
 axis2_status_t
 w2c_schema_compiler_process_content_model(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     void *content_model,
                                     w2c_schema_writer_meta_info_t *meta_info, 
                                     xml_schema_t *parent_schema)
@@ -1366,7 +1366,7 @@ w2c_schema_compiler_process_content_model(
 axis2_status_t
 w2c_schema_compiler_process_complex_content(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_complex_content_t *complex_content,
                                     w2c_schema_writer_meta_info_t *meta_info, 
                                     xml_schema_t *parent_schema)
@@ -1491,7 +1491,7 @@ w2c_schema_compiler_process_complex_content(
 axis2_status_t
 w2c_schema_compiler_copy_meta_info(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     w2c_schema_writer_meta_info_t *meta_info_child,
                                     axis2_qname_t *base_type_qname,
                                     xml_schema_t *parent_schema )
@@ -1571,7 +1571,7 @@ w2c_schema_compiler_copy_meta_info(
 axis2_status_t
 w2c_schema_compiler_process_simple_content(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_simple_content_t *simple_content,
                                     w2c_schema_writer_meta_info_t *meta_info,
                                     xml_schema_t *parent_schema )
@@ -1708,7 +1708,7 @@ w2c_schema_compiler_process_simple_content(
 axis2_status_t
 w2c_schema_compiler_process_simple_extension_base_type(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     axis2_qname_t *ext_base_type,
                                     w2c_schema_writer_meta_info_t *meta_info)
 {
@@ -1737,7 +1737,7 @@ w2c_schema_compiler_process_simple_extension_base_type(
 axis2_status_t
 w2c_schema_compiler_process_simple_restriction_base_type(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     axis2_qname_t *res_base_type,
                                     w2c_schema_writer_meta_info_t *meta_info)
 {
@@ -1768,7 +1768,7 @@ w2c_schema_compiler_process_simple_restriction_base_type(
 axis2_status_t
 w2c_schema_compiler_process_facet(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_obj_collection_t *facets,
                                     w2c_schema_writer_meta_info_t *meta_info)
 {
@@ -1870,7 +1870,7 @@ w2c_schema_compiler_process_facet(
 axis2_status_t
 w2c_schema_compiler_process_any_attributes(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     w2c_schema_writer_meta_info_t *meta_info,
                                     xml_schema_any_attribute_t *any_attri )
 {
@@ -1893,7 +1893,7 @@ w2c_schema_compiler_process_any_attributes(
 axis2_status_t
 w2c_schema_compiler_process_attribute(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_attribute_t *attri,
                                     w2c_schema_writer_meta_info_t *meta_info)
 {
@@ -1927,7 +1927,7 @@ w2c_schema_compiler_process_attribute(
 axis2_status_t
 w2c_schema_compiler_process_particle(
                                     w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     w2c_schema_writer_meta_info_t *meta_info,
                                     xml_schema_particle_t *particle,
                                     xml_schema_t *parent_schema )
@@ -1965,7 +1965,7 @@ w2c_schema_compiler_process_particle(
 
 axis2_status_t
 w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_obj_collection_t *items,
                                     w2c_schema_writer_meta_info_t *meta_info,
                                     axis2_bool_t order,
@@ -2186,7 +2186,7 @@ w2c_schema_compiler_process( w2c_schema_compiler_impl_t *compiler_impl,
 
 axis2_bool_t
 w2c_schema_compiler_is_binary(  w2c_schema_compiler_impl_t *compiler_impl,
-                                const axis2_env_t *env,
+                                const axutil_env_t *env,
                                 xml_schema_element_t *ele )
 {
     xml_schema_type_t *schema_type = NULL;
@@ -2209,7 +2209,7 @@ w2c_schema_compiler_is_binary(  w2c_schema_compiler_impl_t *compiler_impl,
 
 axis2_status_t
 w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *compiler_impl,
-                                    const axis2_env_t *env,
+                                    const axutil_env_t *env,
                                     xml_schema_simple_type_t *simple_type,
                                     xml_schema_element_t *ele,
                                     xml_schema_t *parent_schema )
@@ -2325,7 +2325,7 @@ w2c_schema_compiler_process_simple_schema_type( w2c_schema_compiler_impl_t *comp
 
 axis2_status_t AXIS2_CALL
 w2c_schema_compiler_compile( w2c_schema_compiler_t *compiler,
-                const axis2_env_t *env,
+                const axutil_env_t *env,
                 xml_schema_t *xml_schema)
 {
     return w2c_schema_compiler_compile_inner( compiler, env, xml_schema, AXIS2_FALSE);

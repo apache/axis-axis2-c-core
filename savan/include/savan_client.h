@@ -30,7 +30,7 @@
 */
 
 #include <axis2_defines.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_svc_client.h>
 #include <axis2_hash.h>
@@ -53,7 +53,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     savan_client_subscribe(
         savan_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_svc_client_t *svc_client,
         axis2_hash_t *options);
     
@@ -68,7 +68,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     savan_client_renew(
         savan_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_svc_client_t *svc_client,
         axis2_hash_t *options);
             
@@ -82,7 +82,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     savan_client_unsubscribe(
         savan_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_svc_client_t *svc_client); 
 
     /**
@@ -95,7 +95,7 @@ extern "C"
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     savan_client_get_status(
         savan_client_t *client,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_svc_client_t *svc_client);
 
     /**
@@ -115,7 +115,7 @@ extern "C"
      */
     AXIS2_EXTERN savan_client_t * AXIS2_CALL
     savan_client_create(
-        const axis2_env_t *env);
+        const axutil_env_t *env);
             
     
 /** @} */

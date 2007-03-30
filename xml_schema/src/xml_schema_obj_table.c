@@ -42,58 +42,58 @@ struct xml_schema_obj_table_impl
 
 axis2_status_t AXIS2_CALL
 xml_schema_obj_table_free(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 int AXIS2_CALL
 xml_schema_obj_table_get_count(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 void *AXIS2_CALL
 xml_schema_obj_table_get_item(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname);
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_obj_table_get_names(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_obj_table_get_values(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env);
+        const axutil_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 xml_schema_obj_table_contains(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 xml_schema_obj_table_add(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *qname,
         void *value);
 
 axis2_status_t AXIS2_CALL
 xml_schema_obj_table_put(
     xml_schema_obj_table_t *obj_table,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *key,
     void *value);
 
 void* AXIS2_CALL
 xml_schema_obj_table_get(
     xml_schema_obj_table_t *obj_table,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *key);
 
 axis2_hash_t* AXIS2_CALL
 xml_schema_obj_table_get_hash_table(
     xml_schema_obj_table_t *obj_table,
-    const axis2_env_t *env);
+    const axutil_env_t *env);
 
 /******************** end function pointers ***********************************/
 
 AXIS2_EXTERN xml_schema_obj_table_t * AXIS2_CALL
-xml_schema_obj_table_create(const axis2_env_t *env)
+xml_schema_obj_table_create(const axutil_env_t *env)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
 
@@ -151,7 +151,7 @@ xml_schema_obj_table_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 xml_schema_obj_table_free(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
 
@@ -188,7 +188,7 @@ xml_schema_obj_table_free(xml_schema_obj_table_t *obj_table,
 
 int AXIS2_CALL
 xml_schema_obj_table_get_count(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -203,7 +203,7 @@ xml_schema_obj_table_get_count(xml_schema_obj_table_t *obj_table,
 
 void *AXIS2_CALL
 xml_schema_obj_table_get_item(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         const axis2_qname_t *qname)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
@@ -225,7 +225,7 @@ xml_schema_obj_table_get_item(xml_schema_obj_table_t *obj_table,
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_obj_table_get_names(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
     axis2_hash_index_t *hi = NULL;
@@ -262,7 +262,7 @@ xml_schema_obj_table_get_names(xml_schema_obj_table_t *obj_table,
 
 axutil_array_list_t *AXIS2_CALL
 xml_schema_obj_table_get_values(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env)
+        const axutil_env_t *env)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
     axis2_hash_index_t *hi = NULL;
@@ -295,7 +295,7 @@ xml_schema_obj_table_get_values(xml_schema_obj_table_t *obj_table,
 
 axis2_bool_t AXIS2_CALL
 xml_schema_obj_table_contains(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *qname)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
@@ -319,7 +319,7 @@ xml_schema_obj_table_contains(xml_schema_obj_table_t *obj_table,
 
 axis2_status_t AXIS2_CALL
 xml_schema_obj_table_add(xml_schema_obj_table_t *obj_table,
-        const axis2_env_t *env,
+        const axutil_env_t *env,
         axis2_qname_t *qname,
         void *value)
 {
@@ -343,7 +343,7 @@ xml_schema_obj_table_add(xml_schema_obj_table_t *obj_table,
 axis2_status_t AXIS2_CALL
 xml_schema_obj_table_put(
     xml_schema_obj_table_t *obj_table,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *key,
     void *value)
 {
@@ -361,7 +361,7 @@ xml_schema_obj_table_put(
 void* AXIS2_CALL
 xml_schema_obj_table_get(
     xml_schema_obj_table_t *obj_table,
-    const axis2_env_t *env,
+    const axutil_env_t *env,
     axis2_char_t *key)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
@@ -374,7 +374,7 @@ xml_schema_obj_table_get(
 axis2_hash_t* AXIS2_CALL
 xml_schema_obj_table_get_hash_table(
     xml_schema_obj_table_t *obj_table,
-    const axis2_env_t *env)
+    const axutil_env_t *env)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);

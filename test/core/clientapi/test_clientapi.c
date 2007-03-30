@@ -16,7 +16,7 @@
  */
 
 #include <axis2_const.h>
-#include <axis2_env.h>
+#include <axutil_env.h>
 #include <axis2_engine.h>
 #include <axutil_allocator.h>
 #include <axis2_svc_client.h>
@@ -24,12 +24,12 @@
 #include <platforms/axis2_platform_auto_sense.h>
 
 axiom_node_t *
-build_om_payload_for_echo_svc(const axis2_env_t *env,
+build_om_payload_for_echo_svc(const axutil_env_t *env,
         const axis2_char_t* echo_str);
 
 void axis2_test_svc_client_blocking()
 {
-    axis2_env_t* env = NULL;
+    axutil_env_t* env = NULL;
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
@@ -39,7 +39,7 @@ void axis2_test_svc_client_blocking()
     axis2_endpoint_ref_t* endpoint_ref = NULL;
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    env = axis2_env_create(allocator);
+    env = axutil_env_create(allocator);
     axiom_element_t *result_ele = NULL;
     const axis2_char_t* echo_text = "echo_text";
     axis2_char_t* result = NULL;
@@ -76,7 +76,7 @@ void axis2_test_svc_client_blocking()
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_payload_for_echo_svc(const axis2_env_t *env,
+build_om_payload_for_echo_svc(const axutil_env_t *env,
         const axis2_char_t* echo_text)
 {
     axiom_node_t *echo_om_node = NULL;

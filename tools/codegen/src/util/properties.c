@@ -39,19 +39,19 @@ typedef struct w2c_properties_impl
 
 axis2_status_t AXIS2_CALL 
 w2c_properties_free (w2c_properties_t *properties, 
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 w2c_properties_get_hash(w2c_properties_t *properties,
-           const axis2_env_t *env);
+           const axutil_env_t *env);
 
 axis2_char_t*
 w2c_properties_trunk_and_dup( axis2_char_t *start, axis2_char_t *end,
-                                   const axis2_env_t *env );
+                                   const axutil_env_t *env );
 /************************** End of function prototypes ************************/
 
 AXIS2_EXTERN w2c_properties_t * AXIS2_CALL 
-w2c_properties_create (const axis2_env_t *env,
+w2c_properties_create (const axutil_env_t *env,
                         axis2_char_t *filename,
                         axis2_char_t seperator)
 {
@@ -146,7 +146,7 @@ w2c_properties_create (const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL 
 w2c_properties_free (w2c_properties_t *properties, 
-                            const axis2_env_t *env)
+                            const axutil_env_t *env)
 {
     w2c_properties_impl_t *properties_impl = NULL;
     axutil_array_list_t *values_arr = NULL;
@@ -200,7 +200,7 @@ w2c_properties_free (w2c_properties_t *properties,
 
 axis2_hash_t* AXIS2_CALL
 w2c_properties_get_hash(w2c_properties_t *properties,
-           const axis2_env_t *env)
+           const axutil_env_t *env)
 {
     w2c_properties_impl_t *properties_impl = NULL;
     
@@ -213,7 +213,7 @@ w2c_properties_get_hash(w2c_properties_t *properties,
 
 axis2_char_t*
 w2c_properties_trunk_and_dup( axis2_char_t* start, axis2_char_t* end,
-                                   const axis2_env_t* env )
+                                   const axutil_env_t* env )
 {
     for ( ; *start == ' '; start ++ ); /* remove front spaces */
     for ( end --; *end == ' '; end -- ); /* remove rear spaces */

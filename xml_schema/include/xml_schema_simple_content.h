@@ -52,34 +52,34 @@ struct xml_schema_simple_content_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *sim_content,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
 
     xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *sim_content,
-                    const axis2_env_t *env);
+                    const axutil_env_t *env);
                     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *sim_content,
-                const axis2_env_t *env);
+                const axutil_env_t *env);
                     
     xml_schema_types_t (AXIS2_CALL *
     get_type) (void *sim_content,
-           const axis2_env_t *env);                                        
+           const axutil_env_t *env);                                        
 
     void* (AXIS2_CALL *
     get_content)(
             void *sim_content,
-            const axis2_env_t *env);
+            const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_content)(
             void *sim_content,
-            const axis2_env_t *env,
+            const axutil_env_t *env,
             void *content);
     
     axis2_char_t* (AXIS2_CALL*
     to_string)(void *sim_content,
-               const axis2_env_t *env,
+               const axutil_env_t *env,
                axis2_char_t *prefix,
                int tab);
     
@@ -95,7 +95,7 @@ struct xml_schema_simple_content
  * Creates new Xml Schema Group
  */
 AXIS2_EXTERN xml_schema_simple_content_t * AXIS2_CALL
-xml_schema_simple_content_create(const axis2_env_t *env);
+xml_schema_simple_content_create(const axutil_env_t *env);
 
  
 #define XML_SCHEMA_SIMPLE_CONTENT_FREE(sim_content, env) \
