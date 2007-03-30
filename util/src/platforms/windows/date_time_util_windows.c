@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-#include <platforms/windows/axis2_date_time_util_windows.h>
+#include <platforms/windows/axutil_date_time_util_windows.h>
 
-AXIS2_EXTERN int AXIS2_CALL axutil_platform_get_milliseconds() 
+AXIS2_EXTERN int AXIS2_CALL axis2_platform_get_milliseconds() 
 {
    struct _timeb timebuffer;
    char *timeline;
