@@ -15,34 +15,34 @@
  * limitations under the License.
  */
 
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_utils.h>
 #include <stdlib.h>
 
 void *AXIS2_CALL
-axis2_allocator_malloc_impl(axis2_allocator_t *allocator, size_t size);
+axutil_allocator_malloc_impl(axutil_allocator_t *allocator, size_t size);
 
 void *AXIS2_CALL
-axis2_allocator_realloc_impl(axis2_allocator_t *allocator, void *ptr, size_t size);
+axutil_allocator_realloc_impl(axutil_allocator_t *allocator, void *ptr, size_t size);
 
 void AXIS2_CALL
-axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr);
+axutil_allocator_free_impl(axutil_allocator_t *allocator, void *ptr);
 
 
-AXIS2_EXTERN axis2_allocator_t * AXIS2_CALL
-axis2_allocator_init(axis2_allocator_t *allocator)
+AXIS2_EXTERN axutil_allocator_t * AXIS2_CALL
+axutil_allocator_init(axutil_allocator_t *allocator)
 {
     if (allocator)
         return allocator;
 
     else
     {
-        allocator = (axis2_allocator_t *) malloc(sizeof(axis2_allocator_t));
+        allocator = (axutil_allocator_t *) malloc(sizeof(axutil_allocator_t));
         if (allocator)
         {
-            allocator->malloc_fn = axis2_allocator_malloc_impl;
-            allocator->realloc = axis2_allocator_realloc_impl;
-            allocator->free_fn = axis2_allocator_free_impl;
+            allocator->malloc_fn = axutil_allocator_malloc_impl;
+            allocator->realloc = axutil_allocator_realloc_impl;
+            allocator->free_fn = axutil_allocator_free_impl;
             return allocator;
         }
     }
@@ -50,7 +50,7 @@ axis2_allocator_init(axis2_allocator_t *allocator)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_allocator_free(axis2_allocator_t *allocator)
+axutil_allocator_free(axutil_allocator_t *allocator)
 {
     if (allocator)
     {
@@ -60,26 +60,26 @@ axis2_allocator_free(axis2_allocator_t *allocator)
 }
 
 void *AXIS2_CALL
-axis2_allocator_malloc_impl(axis2_allocator_t *allocator, size_t size)
+axutil_allocator_malloc_impl(axutil_allocator_t *allocator, size_t size)
 {
     return malloc(size);
 }
 
 void *AXIS2_CALL
-axis2_allocator_realloc_impl(axis2_allocator_t *allocator, void *ptr, size_t size)
+axutil_allocator_realloc_impl(axutil_allocator_t *allocator, void *ptr, size_t size)
 {
     return realloc(ptr, size);
 }
 
 void AXIS2_CALL
-axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr)
+axutil_allocator_free_impl(axutil_allocator_t *allocator, void *ptr)
 {
     free(ptr);
 }
 
 
 AXIS2_EXTERN void AXIS2_CALL 
-axis2_allocator_switch_to_global_pool(axis2_allocator_t *allocator)
+axutil_allocator_switch_to_global_pool(axutil_allocator_t *allocator)
 {   
     if (!allocator)
         return;
@@ -88,7 +88,7 @@ axis2_allocator_switch_to_global_pool(axis2_allocator_t *allocator)
 }
 
 AXIS2_EXTERN void AXIS2_CALL 
-axis2_allocator_switch_to_local_pool(axis2_allocator_t *allocator)
+axutil_allocator_switch_to_local_pool(axutil_allocator_t *allocator)
 {
     if (!allocator)
         return;

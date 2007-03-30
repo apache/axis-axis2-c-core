@@ -19,7 +19,7 @@
 
 
 AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
-axis2_threadattr_create(axis2_allocator_t* allocator)
+axis2_threadattr_create(axutil_allocator_t* allocator)
 {
     int stat = 0;
     axis2_threadattr_t *new = NULL;
@@ -86,7 +86,7 @@ static void *dummy_worker(void *opaque)
 }
 
 AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
-axis2_thread_create(axis2_allocator_t* allocator, axis2_threadattr_t *attr,
+axis2_thread_create(axutil_allocator_t* allocator, axis2_threadattr_t *attr,
     axis2_thread_start_t func, void *data)
 {
     axis2_status_t stat;
@@ -137,7 +137,7 @@ axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator)
+axis2_thread_exit(axis2_thread_t *thd, axutil_allocator_t *allocator)
 {
     if (thd)
     {
@@ -240,7 +240,7 @@ axis2_os_thread_get(axis2_thread_t *thd)
 }
 
 AXIS2_EXTERN axis2_thread_once_t* AXIS2_CALL
-axis2_thread_once_init(axis2_allocator_t* allocator)
+axis2_thread_once_init(axutil_allocator_t* allocator)
 {
     static const pthread_once_t once_init = PTHREAD_ONCE_INIT;
     axis2_thread_once_t *control = AXIS2_MALLOC(allocator,
@@ -262,7 +262,7 @@ axis2_thread_once(axis2_thread_once_t *control, void(*func)(void))
 
 /*************************Thread locking functions*****************************/
 AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL
-axis2_thread_mutex_create(axis2_allocator_t *allocator, unsigned int flags)
+axis2_thread_mutex_create(axutil_allocator_t *allocator, unsigned int flags)
 {
     axis2_thread_mutex_t *new_mutex = NULL;
 

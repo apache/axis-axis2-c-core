@@ -27,7 +27,7 @@
 #include <axis2_error.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_conf.h>
 #include <axis2_deployment.h>

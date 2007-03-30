@@ -487,7 +487,7 @@ axis2_error_free(axis2_error_t *error)
 }
 
 AXIS2_EXTERN axis2_error_t* AXIS2_CALL
-axis2_error_create(axis2_allocator_t * allocator)
+axis2_error_create(axutil_allocator_t * allocator)
 {
     axis2_error_t *error;
     if (!allocator)

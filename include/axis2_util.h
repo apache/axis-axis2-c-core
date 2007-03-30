@@ -18,7 +18,7 @@
 #ifndef AXIS2_UTIL_H
 #define AXIS2_UTIL_H
 
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_array_list.h>
 #include <axis2_class_loader.h>
 #include <axis2_dir_handler.h>

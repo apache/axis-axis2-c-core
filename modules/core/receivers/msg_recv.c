@@ -147,7 +147,7 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
         return NULL;
     }
 
-    axis2_allocator_switch_to_global_pool(env->allocator);
+    axutil_allocator_switch_to_global_pool(env->allocator);
     
     axis2_class_loader_init(env);
 
@@ -156,7 +156,7 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
 
     AXIS2_SVC_SKELETON_INIT((axis2_svc_skeleton_t *)impl_class, env);
 
-    axis2_allocator_switch_to_local_pool(env->allocator);
+    axutil_allocator_switch_to_local_pool(env->allocator);
 
     return impl_class;
 }

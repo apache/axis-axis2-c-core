@@ -40,7 +40,7 @@
 #include <axis2_error.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_ctx.h>
 #include <axis2_conf_ctx.h>

@@ -21,11 +21,11 @@
 
 struct axis2_thread_pool
 {
-    axis2_allocator_t *allocator;
+    axutil_allocator_t *allocator;
 };
 
 AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL
-axis2_thread_pool_init(axis2_allocator_t *allocator)
+axis2_thread_pool_init(axutil_allocator_t *allocator)
 {
     axis2_thread_pool_t *pool = NULL;
 

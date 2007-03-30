@@ -33,7 +33,7 @@ axis2_transport_receiver_t *server = NULL;
 /***************************** Function headers *******************************/
 axis2_env_t *
 init_syetem_env(
-    axis2_allocator_t *allocator,
+    axutil_allocator_t *allocator,
     const axis2_char_t *log_file);
 
 void system_exit(
@@ -49,7 +49,7 @@ void sig_handler(
 /***************************** End of function headers ************************/
 axis2_env_t *
 init_syetem_env(
-    axis2_allocator_t *allocator,
+    axutil_allocator_t *allocator,
     const axis2_char_t *log_file)
 {
     axis2_error_t *error = axis2_error_create(allocator);
@@ -69,7 +69,7 @@ void system_exit(
     axis2_env_t *env,
     int status)
 {
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     if (server)
     {
         AXIS2_TRANSPORT_RECEIVER_FREE(server,  system_env);
@@ -79,7 +79,7 @@ void system_exit(
         allocator = env->allocator;
         axis2_env_free(env);
     }
-    /*axis2_allocator_free(allocator);*/
+    /*axutil_allocator_free(allocator);*/
     axiom_xml_reader_cleanup();
     _exit(status);
 }
@@ -88,7 +88,7 @@ int main(
     int argc,
     char *argv[])
 {
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     axis2_env_t *env = NULL;
     extern char *optarg;
     extern int optopt;
@@ -139,7 +139,7 @@ int main(
         }
     }
 
-    allocator = axis2_allocator_init(NULL);
+    allocator = axutil_allocator_init(NULL);
 
     if (! allocator)
     {

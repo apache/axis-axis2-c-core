@@ -70,15 +70,15 @@ axis2_handler(
 
 void *AXIS2_CALL
 axis2_module_malloc(
-    axis2_allocator_t *allocator, size_t size);
+    axutil_allocator_t *allocator, size_t size);
 
 void *AXIS2_CALL
 axis2_module_realloc(
-    axis2_allocator_t *allocator, void *ptr, size_t size);
+    axutil_allocator_t *allocator, void *ptr, size_t size);
 
 void AXIS2_CALL
 axis2_module_free(
-    axis2_allocator_t *allocator, void *ptr);
+    axutil_allocator_t *allocator, void *ptr);
 
 static void
 axis2_module_init(
@@ -243,14 +243,14 @@ axis2_handler(
 
 void * AXIS2_CALL
 axis2_module_malloc(
-    axis2_allocator_t *allocator, size_t size)
+    axutil_allocator_t *allocator, size_t size)
 {
     return apr_palloc((apr_pool_t*) (allocator->current_pool), size);
 }
 
 void * AXIS2_CALL
 axis2_module_realloc(
-    axis2_allocator_t *allocator, void *ptr, size_t size)
+    axutil_allocator_t *allocator, void *ptr, size_t size)
 {
     /* can't be easily implemented */
     return NULL;
@@ -258,7 +258,7 @@ axis2_module_realloc(
 
 void AXIS2_CALL
 axis2_module_free(
-    axis2_allocator_t *allocator, void *ptr)
+    axutil_allocator_t *allocator, void *ptr)
 {
 }
 
@@ -269,7 +269,7 @@ axis2_module_init(
 {
     apr_pool_t *pool;
     apr_status_t status;
-    axis2_allocator_t *allocator = NULL;
+    axutil_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *axis2_logger = NULL;
     axis2_thread_pool_t *thread_pool = NULL;
@@ -290,8 +290,8 @@ axis2_module_init(
                      "[Axis2] Error allocating mod_axis2 memory pool");
         exit(APEXIT_CHILDFATAL);
     }
-    allocator = (axis2_allocator_t*) apr_palloc(pool,
-                                                sizeof(axis2_allocator_t));
+    allocator = (axutil_allocator_t*) apr_palloc(pool,
+                                                sizeof(axutil_allocator_t));
     if (! allocator)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_ENOMEM, svr_rec,

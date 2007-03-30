@@ -41,7 +41,7 @@ axis2_log_impl_write_to_file(FILE *fd,
     const axis2_char_t * value);
 
 static void AXIS2_CALL
-axis2_log_impl_free(axis2_allocator_t *allocator, 
+axis2_log_impl_free(axutil_allocator_t *allocator, 
     axis2_log_t *log);
 
 struct axis2_log_impl
@@ -60,7 +60,7 @@ static const axis2_log_ops_t axis2_log_ops_var = {
 
 
 static void AXIS2_CALL
-axis2_log_impl_free(axis2_allocator_t *allocator, axis2_log_t *log)
+axis2_log_impl_free(axutil_allocator_t *allocator, axis2_log_t *log)
 {
     axis2_log_impl_t *log_impl = NULL;
 
@@ -86,7 +86,7 @@ axis2_log_impl_free(axis2_allocator_t *allocator, axis2_log_t *log)
 
 
 AXIS2_EXTERN axis2_log_t * AXIS2_CALL
-axis2_log_create(axis2_allocator_t * allocator, axis2_log_ops_t * ops,
+axis2_log_create(axutil_allocator_t * allocator, axis2_log_ops_t * ops,
         const axis2_char_t * stream_name)
 {
     axis2_log_impl_t *log_impl;
@@ -459,7 +459,7 @@ axis2_log_impl_get_time_str(void)
 
 
 AXIS2_EXTERN axis2_log_t * AXIS2_CALL
-axis2_log_create_default(axis2_allocator_t *allocator)
+axis2_log_create_default(axutil_allocator_t *allocator)
 {
     axis2_log_impl_t *log_impl;
 
@@ -538,7 +538,7 @@ AXIS2_EXTERN void AXIS2_CALL axis2_log_impl_log_trace(axis2_log_t *log,
 #endif
 
 AXIS2_EXTERN void AXIS2_CALL 
-axis2_log_free(axis2_allocator_t *allocator,
+axis2_log_free(axutil_allocator_t *allocator,
     struct axis2_log *log)
 {
     log->ops->free(allocator, log);

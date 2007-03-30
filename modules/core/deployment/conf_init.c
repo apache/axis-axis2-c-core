@@ -20,7 +20,7 @@
 #include <axis2_transport_receiver.h>
 #include <axis2_const.h>
 #include <axis2_error.h>
-#include <axis2_allocator.h>
+#include <axutil_allocator.h>
 #include <axis2_dep_engine.h>
 #include <axis2_module.h>
 
