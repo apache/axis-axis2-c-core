@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_DATE_TIME_UTIL_H
-#define AXIS2_DATE_TIME_UTIL_H
+#ifndef AXUTIL_DATE_TIME_UTIL_H
+#define AXUTIL_DATE_TIME_UTIL_H
 
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>

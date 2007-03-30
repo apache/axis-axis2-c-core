@@ -30,8 +30,8 @@ extern "C"
 
 
 /**
- * @defgroup axis2_date_time_util
- * @ingroup axis2_date_time_util 
+ * @defgroup axutil_date_time_util
+ * @ingroup axutil_date_time_util 
  * @{
  */
 AXIS2_EXTERN int AXIS2_CALL axis2_platform_get_milliseconds();

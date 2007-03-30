@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axis2_date_time_util.h>
+#include <axutil_date_time_util.h>
 
 
 
