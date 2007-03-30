@@ -16,7 +16,6 @@
  */
 
 #include <axiom_soap_builder.h>
-#include <axiom_soap_message.h>
 #include "_axiom_soap_envelope.h"
 #include "_axiom_soap_header.h"
 #include "axiom_soap11_builder_helper.h"
@@ -53,8 +52,6 @@ axiom_soap_builder_construct_node_for_empty_element
 struct axiom_soap_builder
 {
     axiom_stax_builder_t *om_builder;
-
-    axiom_soap_message_t *soap_message;
 
     axiom_soap_envelope_t *soap_envelope;
 
@@ -129,7 +126,6 @@ axiom_soap_builder_create(const axis2_env_t *env,
     soap_builder->last_node_status = -1;
     soap_builder->envelope_ns = NULL;
     soap_builder->soap_envelope = NULL;
-    soap_builder->soap_message = NULL;
     soap_builder->mime_body_parts = NULL;
     soap_builder->om_builder = stax_builder;
 

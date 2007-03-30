@@ -33,7 +33,6 @@
 #include <axiom_soap_fault_value.h>
 #include <axiom_soap_header_block.h>
 #include <axiom_soap_header.h>
-#include <axiom_soap_message.h>
 
 /**
 * @file axiom_soap.h

@@ -20,7 +20,6 @@
 #include "_axiom_soap_body.h"
 #include "_axiom_soap_fault.h"
 #include "_axiom_soap_envelope.h"
-#include <axiom_soap_message.h>
 #include "_axiom_soap_fault_code.h"
 #include "_axiom_soap_fault_sub_code.h"
 #include "_axiom_soap_fault_node.h"
