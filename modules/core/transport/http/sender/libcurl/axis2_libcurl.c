@@ -11,7 +11,7 @@
 #include <axis2_property.h>
 #include <axis2_param.h>
 #include <axis2_types.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 #include <axis2_const.h>
 #include <axis2_util.h>
 #include <stdlib.h>

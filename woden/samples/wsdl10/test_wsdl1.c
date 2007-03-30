@@ -164,7 +164,7 @@ int main(int argc, char *argv[])
     if (ed)
     {
         axis2_char_t *content_model = NULL;
-        axis2_generic_obj_t *obj = NULL;
+        axutil_generic_obj_t *obj = NULL;
 
         axis2_qname_t *ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
         if (ed_qname)
@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
         {
             void *value = NULL;
 
-            value =  axis2_generic_obj_get_value(obj, env);
+            value =  axutil_generic_obj_get_value(obj, env);
             printf("Content is:\n");
         }
     }

@@ -19,16 +19,16 @@
 #include <string.h>
 #include <axutil_env.h>
 #include <axutil_error_default.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axis2_string.h>
 
 AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
 axutil_env_create_all(const axis2_char_t *log_file,
-    const axis2_log_levels_t log_level)
+    const axutil_log_levels_t log_level)
 {
     axutil_env_t *env = NULL;
     axutil_error_t *error = NULL;
-    axis2_log_t *log = NULL;
+    axutil_log_t *log = NULL;
     axutil_allocator_t *allocator = NULL;
     axis2_thread_pool_t *thread_pool = NULL;
 
@@ -36,12 +36,12 @@ axutil_env_create_all(const axis2_char_t *log_file,
     error = axutil_error_create(allocator);
 
     if (log_file)
-        log = axis2_log_create(allocator, NULL, log_file);
+        log = axutil_log_create(allocator, NULL, log_file);
     else
-        log = axis2_log_create_default(allocator);
+        log = axutil_log_create_default(allocator);
 
     if (!log)
-        log = axis2_log_create_default(allocator);
+        log = axutil_log_create_default(allocator);
 
     thread_pool = axis2_thread_pool_init(allocator);
     env = axutil_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
@@ -95,7 +95,7 @@ AXIS2_EXTERN axutil_env_t* AXIS2_CALL
 axutil_env_create(axutil_allocator_t *allocator)
 {
     axutil_env_t *environment;
-    axis2_log_t *log = NULL;
+    axutil_log_t *log = NULL;
 
     if (! allocator)
         return NULL;
@@ -106,7 +106,7 @@ axutil_env_create(axutil_allocator_t *allocator)
     if (! environment)
         return NULL;
 
-    log = axis2_log_create_default(allocator);
+    log = axutil_log_create_default(allocator);
 
     environment->allocator = allocator;
 
@@ -130,7 +130,7 @@ axutil_env_create_with_error(axutil_allocator_t *allocator,
 AXIS2_EXTERN axutil_env_t * AXIS2_CALL
 axutil_env_create_with_error_log(axutil_allocator_t *allocator, 
     axutil_error_t *error, 
-    axis2_log_t *log)
+    axutil_log_t *log)
 {
     axutil_env_t *environment;
     if (! allocator)
@@ -165,7 +165,7 @@ axutil_env_create_with_error_log(axutil_allocator_t *allocator,
 AXIS2_EXTERN axutil_env_t * AXIS2_CALL
 axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
     axutil_error_t *error, 
-    axis2_log_t *log, 
+    axutil_log_t *log, 
     axis2_thread_pool_t *pool)
 {
     axutil_env_t *environment;

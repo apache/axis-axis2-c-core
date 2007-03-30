@@ -74,7 +74,7 @@ extern "C"
 #define AXIS2_PLATFORM_CHANNEL_PATH        "http_channel.dll"
 #define AXIS2_PLATFORM_SSLCHANNEL_PATH     "Unknown"
 
-#define AXIS2_PLATFORM_LOG_PATH            ""  /*/usr/local/axis2/log/axis2_log*/
+#define AXIS2_PLATFORM_LOG_PATH            ""  /*/usr/local/axis2/log/axutil_log*/
 #define AXIS2_PLATFORM_CLIENTLOG_PATH      "" /* /usr/local/axis2/log/axis2_client_log*/
 #define AXIS2_PLATFORM_CONFIG_PATH         "" /* /etc/axiscpp.conf */
 #define AXIS2_PLATFORM_SECUREINFO          "" 

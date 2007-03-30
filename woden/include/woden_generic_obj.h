@@ -29,11 +29,11 @@ extern "C"
 {
 #endif
     
-typedef struct axis2_generic_obj axis2_generic_obj_t;
-typedef struct axis2_generic_obj_ops axis2_generic_obj_ops_t;
+typedef struct axutil_generic_obj axutil_generic_obj_t;
+typedef struct axutil_generic_obj_ops axutil_generic_obj_ops_t;
     
 /**
- * @defgroup axis2_generic_obj Generic Obj
+ * @defgroup axutil_generic_obj Generic Obj
  * @ingroup woden_util 
  * @{
  */
@@ -42,35 +42,35 @@ typedef struct axis2_generic_obj_ops axis2_generic_obj_ops_t;
  * @brief Generic Obj ops struct
  * Encapsulator struct for ops of woden_generic_obj
  */
- struct axis2_generic_obj_ops
+ struct axutil_generic_obj_ops
 {
 
     axis2_status_t (AXIS2_CALL *
     free) (
-            axis2_generic_obj_t *generic_obj, 
+            axutil_generic_obj_t *generic_obj, 
             const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_scope) (
-            axis2_generic_obj_t *generic_obj,
+            axutil_generic_obj_t *generic_obj,
             const axutil_env_t *env,
             axis2_scope_t scope);
 
     axis2_status_t (AXIS2_CALL *
     set_free_func) (
-            axis2_generic_obj_t *generic_obj,
+            axutil_generic_obj_t *generic_obj,
             const axutil_env_t *env,
             AXIS2_FREE_VOID_ARG free_func);
 
     axis2_status_t (AXIS2_CALL *
     set_value) (
-            axis2_generic_obj_t *generic_obj,
+            axutil_generic_obj_t *generic_obj,
             const axutil_env_t *env,
             void *value);
     
     void *(AXIS2_CALL *
     get_value) (
-            axis2_generic_obj_t *generic_obj,
+            axutil_generic_obj_t *generic_obj,
             const axutil_env_t *env);
 
 };
@@ -79,33 +79,33 @@ typedef struct axis2_generic_obj_ops axis2_generic_obj_ops_t;
 /** 
      * @brief
      */ 
- struct axis2_generic_obj
+ struct axutil_generic_obj
 {
-   axis2_generic_obj_ops_t *ops;
+   axutil_generic_obj_ops_t *ops;
 };
 
 /**
  * create new generic_obj
  * @return generic_obj newly created generic_obj
  */
-AXIS2_EXTERN axis2_generic_obj_t * AXIS2_CALL
-axis2_generic_obj_create(const axutil_env_t *env);
+AXIS2_EXTERN axutil_generic_obj_t * AXIS2_CALL
+axutil_generic_obj_create(const axutil_env_t *env);
 
 /*************************** Function macros **********************************/
 
-#define  axis2_generic_obj_free(generic_obj, env) \
+#define  axutil_generic_obj_free(generic_obj, env) \
       ((generic_obj)->ops->free (generic_obj, env))
 
-#define axis2_generic_obj_set_free_func(generic_obj, env, free_func) \
+#define axutil_generic_obj_set_free_func(generic_obj, env, free_func) \
       ((generic_obj)->ops->set_free_func (generic_obj, env, free_func))  
 
 #define AXIS2_GENERIC_OBJ_SET_SCOPE(generic_obj, env, scope) \
       ((generic_obj)->ops->set_scope (generic_obj, env, scope)) 
 
-#define  axis2_generic_obj_set_value(generic_obj, env, value) \
+#define  axutil_generic_obj_set_value(generic_obj, env, value) \
       ((generic_obj)->ops->set_value (generic_obj, env, value))
 
-#define  axis2_generic_obj_get_value(generic_obj, env) \
+#define  axutil_generic_obj_get_value(generic_obj, env) \
         ((generic_obj)->ops->get_value(generic_obj, env))
                                         
 /*************************** End of function macros ***************************/

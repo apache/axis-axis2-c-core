@@ -32,12 +32,12 @@
 #include <axis2_property.h>
 
 axis2_status_t AXIS2_CALL
-axis2_log_out_handler_invoke(struct axis2_handler *handler, 
+axutil_log_out_handler_invoke(struct axis2_handler *handler, 
                          const axutil_env_t *env,
                          struct axis2_msg_ctx *msg_ctx);
 
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
-axis2_log_out_handler_create(const axutil_env_t *env, 
+axutil_log_out_handler_create(const axutil_env_t *env, 
                          axis2_string_t *name) 
 {
     axis2_handler_t *handler = NULL;
@@ -54,14 +54,14 @@ axis2_log_out_handler_create(const axutil_env_t *env,
     
     /* set the base struct's invoke op */
     if (handler->ops) 
-        handler->ops->invoke = axis2_log_out_handler_invoke;
+        handler->ops->invoke = axutil_log_out_handler_invoke;
 
     return handler;
 }
 
 
 axis2_status_t AXIS2_CALL
-axis2_log_out_handler_invoke(struct axis2_handler *handler, 
+axutil_log_out_handler_invoke(struct axis2_handler *handler, 
                          const axutil_env_t *env,
                          struct axis2_msg_ctx *msg_ctx)
 {

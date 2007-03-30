@@ -105,11 +105,11 @@ axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
         return AXIS2_FAILURE;
     }
     axutil_hash_set(module->handler_create_func_map, "LoggingInHandler", 
-        AXIS2_HASH_KEY_STRING, axis2_log_in_handler_create);
+        AXIS2_HASH_KEY_STRING, axutil_log_in_handler_create);
 
 
     axutil_hash_set(module->handler_create_func_map, "LoggingOutHandler", 
-        AXIS2_HASH_KEY_STRING, axis2_log_out_handler_create);
+        AXIS2_HASH_KEY_STRING, axutil_log_out_handler_create);
     
     return AXIS2_SUCCESS;
 }

@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_GENERIC_OBJ_H
-#define AXIS2_GENERIC_OBJ_H
+#ifndef AXUTIL_GENERIC_OBJ_H
+#define AXUTIL_GENERIC_OBJ_H
 
 #include <axis2_utils_defines.h>
 #include <axutil_error.h>
@@ -29,10 +29,10 @@ extern "C"
 {
 #endif
 
-    typedef struct axis2_generic_obj axis2_generic_obj_t;
+    typedef struct axutil_generic_obj axutil_generic_obj_t;
 
     /**
-     * @defgroup axis2_generic_obj generic object
+     * @defgroup axutil_generic_obj generic object
      * @ingroup axis2_util
      * @{
      */
@@ -41,34 +41,34 @@ extern "C"
      * create new generic_obj
      * @return generic_obj newly created generic_obj
      */
-    AXIS2_EXTERN axis2_generic_obj_t * AXIS2_CALL
-    axis2_generic_obj_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_generic_obj_t * AXIS2_CALL
+    axutil_generic_obj_create(const axutil_env_t *env);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_generic_obj_free(axis2_generic_obj_t *generic_obj,
+    axutil_generic_obj_free(axutil_generic_obj_t *generic_obj,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_generic_obj_set_free_func(axis2_generic_obj_t *generic_obj,
+    axutil_generic_obj_set_free_func(axutil_generic_obj_t *generic_obj,
         const axutil_env_t *env,
         AXIS2_FREE_VOID_ARG free_func);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_generic_obj_set_value(axis2_generic_obj_t *generic_obj,
+    axutil_generic_obj_set_value(axutil_generic_obj_t *generic_obj,
         const axutil_env_t *env,
         void *value);
 
     AXIS2_EXTERN void * AXIS2_CALL
-    axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
+    axutil_generic_obj_get_value(axutil_generic_obj_t *generic_obj,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_generic_obj_set_type(axis2_generic_obj_t *generic_obj,
+    axutil_generic_obj_set_type(axutil_generic_obj_t *generic_obj,
         const axutil_env_t *env,
         int type);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_generic_obj_get_type(axis2_generic_obj_t *generic_obj,
+    axutil_generic_obj_get_type(axutil_generic_obj_t *generic_obj,
         const axutil_env_t *env);
 
 

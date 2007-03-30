@@ -19,8 +19,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <axutil_error_default.h>
-#include <axis2_log.h>
-#include <axis2_log_default.h>
+#include <axutil_log.h>
+#include <axutil_log_default.h>
 #include <axutil_allocator.h>
 #include <axis2_utils.h>
 #include "test_thread.h"
@@ -255,7 +255,7 @@ void run_test_thread(const axutil_env_t *env)
 const axutil_env_t *create_env_with_error_log()
 {
     axutil_error_t *error = NULL;
-    axis2_log_t *log22 = NULL;
+    axutil_log_t *log22 = NULL;
     const axutil_env_t *env = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     if (!allocator)
@@ -270,7 +270,7 @@ const axutil_env_t *create_env_with_error_log()
         return NULL;
     }
 
-    log22  = axis2_log_create(allocator, NULL, "test123.log");
+    log22  = axutil_log_create(allocator, NULL, "test123.log");
     if (!log22)
     {
         printf("cannot create log\n");

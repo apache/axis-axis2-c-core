@@ -25,7 +25,7 @@
 #include <woden_type_def.h>
 #include <woden_generic_obj.h>
 #include <xml_schema_type.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 
 typedef struct woden_property_impl woden_property_impl_t;
 
@@ -42,7 +42,7 @@ struct woden_property_impl
     axutil_hash_t *methods;
     /* WSDL Component model data */
     axis2_uri_t *f_ref;
-    axis2_generic_obj_t *f_value;
+    axutil_generic_obj_t *f_value;
     woden_type_def_t *f_value_constraint;
     void *f_parent;
     /* XML Element data */
@@ -109,7 +109,7 @@ axis2_status_t AXIS2_CALL
 woden_property_set_value(
     void *property,
     const axutil_env_t *env,
-    axis2_generic_obj_t *value);
+    axutil_generic_obj_t *value);
 
 void *AXIS2_CALL
 woden_property_get_value(
@@ -877,7 +877,7 @@ axis2_status_t AXIS2_CALL
 woden_property_set_value(
     void *property,
     const axutil_env_t *env,
-    axis2_generic_obj_t *value)
+    axutil_generic_obj_t *value)
 {
     woden_property_impl_t *property_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -889,7 +889,7 @@ woden_property_set_value(
 
     if (property_impl->f_value)
     {
-         axis2_generic_obj_free(property_impl->f_value, env);
+         axutil_generic_obj_free(property_impl->f_value, env);
         property_impl->f_value = NULL;
     }
     property_impl->f_value = value;

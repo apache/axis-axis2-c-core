@@ -18,7 +18,7 @@
 #include <axiom_element.h>
 #include <axiom_text.h>
 #include <axis2_stream.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axutil_error_default.h>
 #include <axis2_svc_client.h>
 #include <stdlib.h>
@@ -31,13 +31,13 @@ int main(int argc, char** argv)
 {
     axutil_env_t *env = NULL;
     axutil_error_t *error = NULL;
-    axis2_log_t *log = NULL;
+    axutil_log_t *log = NULL;
     axutil_allocator_t *allocator = NULL;
 
     /* set up the envioronment with allocator and log*/
     allocator = axutil_allocator_init(NULL);
     error = axutil_error_create(allocator);
-    log = axis2_log_create(allocator, NULL, "addr_echo.log");
+    log = axutil_log_create(allocator, NULL, "addr_echo.log");
     env = axutil_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axutil_error_init();

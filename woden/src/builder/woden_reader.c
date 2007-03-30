@@ -116,7 +116,7 @@
 #include <axiom_xml_reader.h>
 #include <axiom_util.h>
 #include <axis2_utils.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 
 #include <axis2_string_util.h>
 
@@ -3727,13 +3727,13 @@ parse_property(
                 q_elem_value, temp_el_node))
         {
             axiom_child_element_iterator_t *node_list = NULL;
-            axis2_generic_obj_t *node_list_obj = NULL;
+            axutil_generic_obj_t *node_list_obj = NULL;
 
             /* The property value consists of the child info items of <value> */
             node_list = axiom_element_get_child_elements(temp_el, env, temp_el_node);
-            node_list_obj = axis2_generic_obj_create(env);
-             axis2_generic_obj_set_value(node_list_obj, env, node_list);
-            axis2_generic_obj_set_free_func(node_list_obj, env, node_list->ops->free_fn);
+            node_list_obj = axutil_generic_obj_create(env);
+             axutil_generic_obj_set_value(node_list_obj, env, node_list);
+            axutil_generic_obj_set_free_func(node_list_obj, env, node_list->ops->free_fn);
             property = woden_property_to_property_element(property, env);
             WODEN_PROPERTY_ELEMENT_SET_VALUE(property, env, node_list_obj);
         }

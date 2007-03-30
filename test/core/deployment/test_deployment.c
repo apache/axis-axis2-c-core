@@ -26,7 +26,7 @@
 #include <axutil_allocator.h>
 #include <axutil_class_loader.h>
 #include <axutil_error_default.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axis2_transport_sender.h>
 #include <axis2_transport_receiver.h>
 #include <axis2_core_utils.h>
@@ -329,11 +329,11 @@ int main()
 {
     axutil_allocator_t *allocator = NULL;
     axutil_error_t *error = NULL;
-    axis2_log_t *log = NULL;
+    axutil_log_t *log = NULL;
 
     allocator = axutil_allocator_init(NULL);
     error = axutil_error_create(allocator);
-    log = axis2_log_create(allocator, NULL, "test_deployment.log");
+    log = axutil_log_create(allocator, NULL, "test_deployment.log");
     env = axutil_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_INFO;
     /*axis2_test_transport_receiver_load();

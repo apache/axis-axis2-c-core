@@ -17,7 +17,7 @@
 
 #include <stdio.h>
 #include <axutil_error_default.h>
-#include <axis2_log.h>
+#include <axutil_log.h>
 #include <axis2_string.h>
 
 void test_strltrim(const axutil_env_t *env)

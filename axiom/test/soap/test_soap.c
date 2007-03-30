@@ -22,7 +22,7 @@
 #include <axiom_element.h>
 #include <axiom_text.h>
 #include <axis2_stream.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axutil_error_default.h>
 #include <axiom_xml_reader.h>
 #include <stdio.h>
@@ -400,7 +400,7 @@ int main(int argc, char *argv[])
     axutil_env_t *env = NULL;
     axutil_allocator_t *allocator = NULL;
     axutil_error_t *error = NULL;
-    axis2_log_t *log = NULL;
+    axutil_log_t *log = NULL;
     const axis2_char_t *uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     const char *filename = "./../../resources/xml/soap/test.xml";
     if (argc > 1)
@@ -413,7 +413,7 @@ int main(int argc, char *argv[])
             uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
     allocator = axutil_allocator_init(NULL);
-    log = axis2_log_create(allocator, NULL, "test_soap.log");
+    log = axutil_log_create(allocator, NULL, "test_soap.log");
     log->level = AXIS2_LOG_LEVEL_DEBUG;
     error = axutil_error_create(allocator);
     env = axutil_env_create_with_error_log(allocator, error,  log);

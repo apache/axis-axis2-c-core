@@ -265,7 +265,7 @@ woden_qname_or_token_any_attr_is_qname(
 {
     woden_qname_or_token_any_attr_impl_t *
     token_attr_impl = NULL;
-    axis2_generic_obj_t *content = NULL;
+    axutil_generic_obj_t *content = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     token_attr_impl = INTF_TO_IMPL(token_attr);
@@ -276,7 +276,7 @@ woden_qname_or_token_any_attr_is_qname(
             env))
         return AXIS2_TRUE;
     content = WODEN_XML_ATTR_GET_CONTENT(token_attr_impl->xml_attr, env);
-    if (AXIS2_QNAME ==  axis2_generic_obj_get_type(content, env))
+    if (AXIS2_QNAME ==  axutil_generic_obj_get_type(content, env))
         return AXIS2_TRUE;
     return AXIS2_FALSE;
 }

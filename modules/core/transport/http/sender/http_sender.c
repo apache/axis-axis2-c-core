@@ -28,7 +28,7 @@
 #include <axis2_property.h>
 #include <axis2_param.h>
 #include <axis2_types.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 #include <axis2_const.h>
 #include <axis2_util.h>
 #include <axiom_soap.h>
@@ -838,7 +838,7 @@ axis2_http_sender_configure_proxy(
         transport_attrs = axis2_param_get_attributes(proxy_param, env);
         if (transport_attrs)
         {
-            axis2_generic_obj_t *obj = NULL;
+            axutil_generic_obj_t *obj = NULL;
             axiom_attribute_t *host_attr = NULL;
             axiom_attribute_t *port_attr = NULL;
             axis2_char_t *proxy_host = NULL;
@@ -850,7 +850,7 @@ axis2_http_sender_configure_proxy(
             {
                 return AXIS2_FAILURE;
             }
-            host_attr = (axiom_attribute_t *) axis2_generic_obj_get_value(obj,
+            host_attr = (axiom_attribute_t *) axutil_generic_obj_get_value(obj,
 																		 env);
             if (! host_attr)
             {
@@ -866,7 +866,7 @@ axis2_http_sender_configure_proxy(
 
             obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
 								 AXIS2_HASH_KEY_STRING);
-            port_attr = (axiom_attribute_t*) axis2_generic_obj_get_value(obj,
+            port_attr = (axiom_attribute_t*) axutil_generic_obj_get_value(obj,
 																		env);
             if (! port_attr)
             {

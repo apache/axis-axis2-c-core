@@ -28,7 +28,7 @@
  * (&lt;xs:element&gt;), that describes the content of WSDL input, output
  * and fault messages.  However, it does not impose XML Schema as the type system.  
  * It returns a String representing the content model or type system 
- * (e.g. "http://www.w3.org/2001/XMLSchema") and a axis2_generic_obj_t type 
+ * (e.g. "http://www.w3.org/2001/XMLSchema") and a axutil_generic_obj_t type 
  * representing the content of the element declaration. This Object may
  * be cast to a type appropriate for the content model.
  * 
@@ -43,7 +43,7 @@
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 #include <woden.h>
 
 #ifdef __cplusplus
@@ -143,7 +143,7 @@ struct woden_element_decl_ops
      * 
      * @return the Object representing the content of the element declaration
      */
-    axis2_generic_obj_t *(AXIS2_CALL *
+    axutil_generic_obj_t *(AXIS2_CALL *
     get_content) (
             void *decl,
             const axutil_env_t *env); 
@@ -174,7 +174,7 @@ struct woden_element_decl_ops
     set_content) (
             void *decl,
             const axutil_env_t *env,
-            axis2_generic_obj_t *element_content);
+            axutil_generic_obj_t *element_content);
 
 
 };

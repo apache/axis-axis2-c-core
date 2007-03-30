@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <axutil_error_default.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axis2_thread_pool.h>
 #include <signal.h>
 #include <axis2_types.h>
@@ -53,9 +53,9 @@ init_syetem_env(
     const axis2_char_t *log_file)
 {
     axutil_error_t *error = axutil_error_create(allocator);
-    axis2_log_t *log = axis2_log_create(allocator, NULL, log_file);
+    axutil_log_t *log = axutil_log_create(allocator, NULL, log_file);
 	 /* if (!log) */
-/* 		  log = axis2_log_create_default (allocator); */
+/* 		  log = axutil_log_create_default (allocator); */
     axis2_thread_pool_t *thread_pool = axis2_thread_pool_init(allocator);
     /* We need to init the parser in main thread before spawning child
      * threads
@@ -93,7 +93,7 @@ int main(
     extern char *optarg;
     extern int optopt;
     int c;
-    axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
+    axutil_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
     const axis2_char_t *log_file = "axis2.log";
     int port = 9090;
     const axis2_char_t *repo_path = "../";

@@ -19,7 +19,7 @@
 #include <axis2_string.h>
 #include <axutil_class_loader.h>
 #include <axis2_utils.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 #include <axis2_raw_xml_in_out_msg_recv.h>
 
 struct axis2_desc_builder
@@ -503,7 +503,7 @@ set_attrs_and_value(axis2_param_t *param,
         {
             void *v = NULL;
             axiom_attribute_t *value = NULL;
-            axis2_generic_obj_t *obj = NULL;
+            axutil_generic_obj_t *obj = NULL;
             axis2_qname_t *attr_qname = NULL;
             axis2_char_t *attr_name = NULL;
 
@@ -513,7 +513,7 @@ set_attrs_and_value(axis2_param_t *param,
                 axis2_param_free(param, env);
                 return AXIS2_FAILURE;
             }
-            obj = axis2_generic_obj_create(env);
+            obj = axutil_generic_obj_create(env);
             if (!obj)
             {
                 axis2_param_free(param, env);
@@ -522,8 +522,8 @@ set_attrs_and_value(axis2_param_t *param,
                 return AXIS2_FAILURE;
             }
             value = (axiom_attribute_t *) v;
-             axis2_generic_obj_set_value(obj, env, value);
-            axis2_generic_obj_set_free_func(obj, env,
+             axutil_generic_obj_set_value(obj, env, value);
+            axutil_generic_obj_set_free_func(obj, env,
                 axiom_attribute_free_void_arg);
             attr_qname = axiom_attribute_get_qname(value, env);
             attr_name = axis2_qname_to_string(attr_qname, env);

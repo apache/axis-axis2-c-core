@@ -24,10 +24,10 @@
 
 /* Axis headers */
 #include <axutil_error_default.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axis2_thread_pool.h>
 #include <axiom_xml_reader.h>
-#include <axis2_log.h>
+#include <axutil_log.h>
 
 #include "axis2_isapi_plugin.h"
 
@@ -57,7 +57,7 @@ static axis2_iis_worker_t*	axis2_worker = NULL;
 static const axutil_env_t*	axutil_env = NULL;
 static axis2_char_t			repo_path[MAX_FILE_PATH] = "c:\\axis2c";
 static axis2_char_t			log_file[MAX_FILE_PATH] = "axis2.log";
-static axis2_log_levels_t	log_level = AXIS2_LOG_LEVEL_CRITICAL;
+static axutil_log_levels_t	log_level = AXIS2_LOG_LEVEL_CRITICAL;
 static axis2_char_t			redirect_word[INTERNET_MAX_URL_LENGTH] = "/axis2/mod_axis2_IIS.dll\?";
 
 /*
@@ -74,7 +74,7 @@ static axis2_status_t get_registry_config_parameter(HKEY hkey,
 /*
 Parse the given string and return the corresponding log_level
 */
-axis2_log_levels_t axis2_iis_parse_log_level(char level[]);
+axutil_log_levels_t axis2_iis_parse_log_level(char level[]);
 
 
 /*
@@ -118,7 +118,7 @@ axis2_status_t init_axis2()
 	These are the varibles required to initialize axis.
 	*/		
     axutil_error_t *error = NULL;
-    axis2_log_t *axis2_logger = NULL;
+    axutil_log_t *axutil_logger = NULL;
     axis2_thread_pool_t *thread_pool = NULL;
 	axis2_status_t status = FALSE;	
     // We need to init xml readers before we go into threaded env     
@@ -232,7 +232,7 @@ axis2_status_t read_registery_init_data()
 
 
 
-axis2_log_levels_t axis2_iis_parse_log_level(char level[])
+axutil_log_levels_t axis2_iis_parse_log_level(char level[])
 {
     if (0 == stricmp(level, AXIS2_IIS_LOG_TRACE_VERB)) {
         return AXIS2_LOG_LEVEL_TRACE;

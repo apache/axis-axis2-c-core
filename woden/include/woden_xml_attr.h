@@ -32,7 +32,7 @@
 #include <axis2_utils.h>
 #include <axutil_hash.h>
 #include <axis2_qname.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 #include <woden.h>
 
 #ifdef __cplusplus
@@ -80,7 +80,7 @@ struct woden_xml_attr_ops
             void *xml_attr,
             const axutil_env_t *env);
 
-    axis2_generic_obj_t *(AXIS2_CALL *
+    axutil_generic_obj_t *(AXIS2_CALL *
     get_content) (
             void *xml_attr,
             const axutil_env_t *env);

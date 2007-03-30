@@ -22,7 +22,7 @@
 #include <axiom_text.h>
 #include <axiom_data_source.h>
 #include <axis2_stream.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axutil_error_default.h>
 #include <axiom_xml_reader.h>
 #include <stdio.h>
@@ -37,7 +37,7 @@ axutil_allocator_t *allocator = NULL;
 axutil_env_t *environment = NULL;
 axis2_stream_t *stream = NULL;
 axutil_error_t *error = NULL;
-axis2_log_t *axis_log     = NULL;
+axutil_log_t *axis_log     = NULL;
 FILE *f = NULL;
 /** a method that demonstrate creating a om model using an xml file */
 
@@ -306,7 +306,7 @@ main(int argc, char *argv[])
     if (argc > 1)
         file_name = argv[1];
     allocator = axutil_allocator_init(NULL);
-    axis_log = axis2_log_create(allocator, NULL, NULL);
+    axis_log = axutil_log_create(allocator, NULL, NULL);
     error = axutil_error_create(allocator);
 
     environment = axutil_env_create_with_error_log(allocator, error,  axis_log);

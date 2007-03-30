@@ -10,7 +10,7 @@
 #include <axis2_property.h>
 #include <axis2_param.h>
 #include <axis2_types.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 
 void
 axis2_http_sender_util_add_header (const axutil_env_t *env,

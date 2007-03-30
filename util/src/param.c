@@ -18,7 +18,7 @@
 #include <axis2_param.h>
 #include <axis2_utils.h>
 #include <axis2_string.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 
 struct axis2_param
 {
@@ -168,7 +168,7 @@ axis2_param_set_attributes(axis2_param_t *param,
             i = axutil_hash_next(env, i))
         {
             axutil_hash_this(i, NULL, NULL, &v);
-            axis2_generic_obj_free(v, env);
+            axutil_generic_obj_free(v, env);
         }
         axutil_hash_free(param->attrs, env);
     }
@@ -250,7 +250,7 @@ axis2_param_free(axis2_param_t *param,
             i = axutil_hash_next(env, i))
         {
             axutil_hash_this(i, NULL, NULL, &v);
-            axis2_generic_obj_free(v, env);
+            axutil_generic_obj_free(v, env);
         }
         axutil_hash_free(param->attrs, env);
     }

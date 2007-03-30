@@ -22,11 +22,11 @@
 #include <axutil_array_list.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_uuid_gen.h>
-#include <axis2_log_default.h>
-#include <axis2_log.h>
+#include <axutil_log_default.h>
+#include <axutil_log.h>
 #include <axutil_dir_handler.h>
 #include <axutil_file.h>
-#include "axis2_log.h"
+#include "axutil_log.h"
 #include "test_thread.h"
 #include <test_log.h>
 
@@ -229,7 +229,7 @@ void test_log_write()
         printf("cannot create error\n");
         return;
     }
-    axis2_log_t *log22  = axis2_log_create(allocator, NULL, NULL);
+    axutil_log_t *log22  = axutil_log_create(allocator, NULL, NULL);
     if (!log22)
     {
         printf("cannot create log\n");

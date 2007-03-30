@@ -30,7 +30,7 @@
 #include <axis2_property.h>
 #include <axis2_param.h>
 #include <axis2_types.h>
-#include <axis2_generic_obj.h>
+#include <axutil_generic_obj.h>
 
 #ifdef __cplusplus
 extern "C"

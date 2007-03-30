@@ -31,7 +31,7 @@ struct woden_xml_attr_impl
 {
     woden_xml_attr_t xml_attr;
     axis2_qname_t *f_attr_type;
-    axis2_generic_obj_t *f_content;
+    axutil_generic_obj_t *f_content;
     axis2_char_t *f_external_form;
     axis2_bool_t f_valid;
 };
@@ -57,7 +57,7 @@ woden_xml_attr_get_attribute_type(
     void *xml_attr,
     const axutil_env_t *env);
 
-axis2_generic_obj_t *AXIS2_CALL
+axutil_generic_obj_t *AXIS2_CALL
 woden_xml_attr_get_content(
     void *xml_attr,
     const axutil_env_t *env);
@@ -234,7 +234,7 @@ woden_xml_attr_get_attribute_type(
     return xml_attr_impl->f_attr_type;
 }
 
-axis2_generic_obj_t *AXIS2_CALL
+axutil_generic_obj_t *AXIS2_CALL
 woden_xml_attr_get_content(
     void *xml_attr,
     const axutil_env_t *env)

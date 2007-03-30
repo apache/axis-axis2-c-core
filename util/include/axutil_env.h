@@ -26,7 +26,7 @@
 
 #include <axutil_allocator.h>
 #include <axutil_error.h>
-#include <axis2_log.h>
+#include <axutil_log.h>
 #include <axis2_thread_pool.h>
 
 #ifdef __cplusplus
@@ -63,7 +63,7 @@ extern "C"
         /** Error handling */
         axutil_error_t *error;
         /** Logging routines */
-        axis2_log_t *log;
+        axutil_log_t *log;
         /** This flag indicate whether logging is enabled or not */
         axis2_bool_t log_enabled;
         /** Thread pooling routines */
@@ -80,7 +80,7 @@ extern "C"
     */
     AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
     axutil_env_create_all(const axis2_char_t *log_file,
-        const axis2_log_levels_t log_level);
+        const axutil_log_levels_t log_level);
 
     /**
      * Creates an environment struct. Users of axis2 should not use this function
@@ -113,7 +113,7 @@ extern "C"
     AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
     axutil_env_create_with_error_log(axutil_allocator_t *allocator, 
         axutil_error_t *error, 
-        axis2_log_t *log);
+        axutil_log_t *log);
 
     /**
     * Creates an environment struct
@@ -127,7 +127,7 @@ extern "C"
     AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
     axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
         axutil_error_t *error, 
-        axis2_log_t *log, 
+        axutil_log_t *log, 
         axis2_thread_pool_t *pool);
 
     /**

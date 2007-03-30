@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-#include <axis2_linked_list.h>
+#include <axutil_linked_list.h>
 #include <axis2_utils.h>
 
-struct axis2_linked_list
+struct axutil_linked_list
 {
     /**The number of elements in this list. */
     int size;
@@ -48,14 +48,14 @@ struct axis2_linked_list
     int mod_count;
 };
 
-AXIS2_EXTERN axis2_linked_list_t *AXIS2_CALL
-axis2_linked_list_create(const axutil_env_t *env)
+AXIS2_EXTERN axutil_linked_list_t *AXIS2_CALL
+axutil_linked_list_create(const axutil_env_t *env)
 {
-    axis2_linked_list_t *linked_list = NULL;
+    axutil_linked_list_t *linked_list = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    linked_list = AXIS2_MALLOC(env->allocator, sizeof(axis2_linked_list_t));
+    linked_list = AXIS2_MALLOC(env->allocator, sizeof(axutil_linked_list_t));
     if (!linked_list)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -71,7 +71,7 @@ axis2_linked_list_create(const axutil_env_t *env)
 }
 
 static entry_t *
-axis2_linked_list_create_entry(const axutil_env_t *env, void *data)
+axutil_linked_list_create_entry(const axutil_env_t *env, void *data)
 {
     entry_t *entry = (entry_t *) AXIS2_MALLOC(env->allocator, sizeof(entry_t));
     if (!entry)
@@ -87,7 +87,7 @@ axis2_linked_list_create_entry(const axutil_env_t *env, void *data)
 }
 
 static axis2_status_t
-axis2_linked_list_add_last_entry(axis2_linked_list_t *linked_list,
+axutil_linked_list_add_last_entry(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         entry_t *e)
 {
@@ -111,7 +111,7 @@ axis2_linked_list_add_last_entry(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN void AXIS2_CALL 
-axis2_linked_list_free(axis2_linked_list_t *linked_list,
+axutil_linked_list_free(axutil_linked_list_t *linked_list,
     const axutil_env_t *env)
 {
     entry_t *current = NULL, *next = NULL;
@@ -129,7 +129,7 @@ axis2_linked_list_free(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN entry_t * AXIS2_CALL
-axis2_linked_list_get_entry(axis2_linked_list_t *linked_list,
+axutil_linked_list_get_entry(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         int n)
 {
@@ -158,7 +158,7 @@ axis2_linked_list_get_entry(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_linked_list_remove_entry(axis2_linked_list_t *linked_list,
+axutil_linked_list_remove_entry(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         entry_t *e)
 {
@@ -192,7 +192,7 @@ axis2_linked_list_remove_entry(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_linked_list_check_bounds_inclusive(axis2_linked_list_t *linked_list,
+axutil_linked_list_check_bounds_inclusive(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         int index)
 {
@@ -207,7 +207,7 @@ axis2_linked_list_check_bounds_inclusive(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_linked_list_check_bounds_exclusive(axis2_linked_list_t *linked_list,
+axutil_linked_list_check_bounds_exclusive(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         int index)
 {
@@ -221,7 +221,7 @@ axis2_linked_list_check_bounds_exclusive(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_linked_list_get_first(axis2_linked_list_t *linked_list,
+axutil_linked_list_get_first(axutil_linked_list_t *linked_list,
         const axutil_env_t *env)
 {
     if (linked_list->size == 0)
@@ -234,7 +234,7 @@ axis2_linked_list_get_first(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_linked_list_get_last(axis2_linked_list_t *linked_list,
+axutil_linked_list_get_last(axutil_linked_list_t *linked_list,
         const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -249,7 +249,7 @@ axis2_linked_list_get_last(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_linked_list_remove_first(axis2_linked_list_t *linked_list,
+axutil_linked_list_remove_first(axutil_linked_list_t *linked_list,
         const axutil_env_t *env)
 {
     void *r;
@@ -281,7 +281,7 @@ axis2_linked_list_remove_first(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_linked_list_remove_last(axis2_linked_list_t *linked_list,
+axutil_linked_list_remove_last(axutil_linked_list_t *linked_list,
         const axutil_env_t *env)
 {
     void *r = NULL;
@@ -312,7 +312,7 @@ axis2_linked_list_remove_last(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_linked_list_add_first(axis2_linked_list_t *linked_list,
+axutil_linked_list_add_first(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         void *o)
 {
@@ -320,7 +320,7 @@ axis2_linked_list_add_first(axis2_linked_list_t *linked_list,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, o, AXIS2_FAILURE);
 
-    e = axis2_linked_list_create_entry(env, o);
+    e = axutil_linked_list_create_entry(env, o);
 
     linked_list->mod_count++;
     if (linked_list->size == 0)
@@ -339,7 +339,7 @@ axis2_linked_list_add_first(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_linked_list_add_last(axis2_linked_list_t *linked_list,
+axutil_linked_list_add_last(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         void *o)
 {
@@ -347,12 +347,12 @@ axis2_linked_list_add_last(axis2_linked_list_t *linked_list,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, o, AXIS2_FAILURE);
 
-    e = axis2_linked_list_create_entry(env, o);
-    return axis2_linked_list_add_last_entry(linked_list, env, e);
+    e = axutil_linked_list_create_entry(env, o);
+    return axutil_linked_list_add_last_entry(linked_list, env, e);
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_linked_list_contains(axis2_linked_list_t *linked_list,
+axutil_linked_list_contains(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         void *o)
 {
@@ -371,27 +371,27 @@ axis2_linked_list_contains(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_linked_list_size(axis2_linked_list_t *linked_list,
+axutil_linked_list_size(axutil_linked_list_t *linked_list,
         const axutil_env_t *env)
 {
     return linked_list->size;
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_linked_list_add(axis2_linked_list_t *linked_list,
+axutil_linked_list_add(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         void *o)
 {
     entry_t *e;
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, o, AXIS2_FALSE);
-    e = axis2_linked_list_create_entry(env, o);
-    return axis2_linked_list_add_last_entry(linked_list, env, e);
+    e = axutil_linked_list_create_entry(env, o);
+    return axutil_linked_list_add_last_entry(linked_list, env, e);
 }
 
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_linked_list_remove(axis2_linked_list_t *linked_list,
+axutil_linked_list_remove(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         void *o)
 {
@@ -404,7 +404,7 @@ axis2_linked_list_remove(axis2_linked_list_t *linked_list,
     {
         if (o == e->data)
         {
-            return axis2_linked_list_remove_entry(linked_list, env, e);
+            return axutil_linked_list_remove_entry(linked_list, env, e);
         }
         e = e->next;
     }
@@ -413,7 +413,7 @@ axis2_linked_list_remove(axis2_linked_list_t *linked_list,
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_linked_list_clear(axis2_linked_list_t *linked_list,
+axutil_linked_list_clear(axutil_linked_list_t *linked_list,
         const axutil_env_t *env)
 {
     if (linked_list->size > 0)
@@ -429,18 +429,18 @@ axis2_linked_list_clear(axis2_linked_list_t *linked_list,
 
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_linked_list_get(axis2_linked_list_t *linked_list,
+axutil_linked_list_get(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         int index)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    axis2_linked_list_check_bounds_exclusive(linked_list, env, index);
-    return axis2_linked_list_get_entry(linked_list, env, index)->data;
+    axutil_linked_list_check_bounds_exclusive(linked_list, env, index);
+    return axutil_linked_list_get_entry(linked_list, env, index)->data;
 }
 
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_linked_list_set(axis2_linked_list_t *linked_list,
+axutil_linked_list_set(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         int index, void *o)
 {
@@ -448,15 +448,15 @@ axis2_linked_list_set(axis2_linked_list_t *linked_list,
     void *old;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, o, NULL);
-    axis2_linked_list_check_bounds_exclusive(linked_list, env, index);
-    e = axis2_linked_list_get_entry(linked_list, env, index);
+    axutil_linked_list_check_bounds_exclusive(linked_list, env, index);
+    e = axutil_linked_list_get_entry(linked_list, env, index);
     old = e->data;
     e->data = o;
     return old;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_linked_list_add_at_index(axis2_linked_list_t *linked_list,
+axutil_linked_list_add_at_index(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         int index,
         void *o)
@@ -466,13 +466,13 @@ axis2_linked_list_add_at_index(axis2_linked_list_t *linked_list,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, o, AXIS2_FAILURE);
 
-    axis2_linked_list_check_bounds_inclusive(linked_list, env, index);
-    e = axis2_linked_list_create_entry(env, o);
+    axutil_linked_list_check_bounds_inclusive(linked_list, env, index);
+    e = axutil_linked_list_create_entry(env, o);
 
     if (index < linked_list->size)
     {
         linked_list->mod_count++;
-        after = axis2_linked_list_get_entry(linked_list, env, index);
+        after = axutil_linked_list_get_entry(linked_list, env, index);
         e->next = after;
         e->previous = after->previous;
         if (after->previous == NULL)
@@ -484,28 +484,28 @@ axis2_linked_list_add_at_index(axis2_linked_list_t *linked_list,
     }
     else
     {
-        axis2_linked_list_add_last_entry(linked_list, env, e);
+        axutil_linked_list_add_last_entry(linked_list, env, e);
     }
 
     return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_linked_list_remove_at_index(axis2_linked_list_t *linked_list,
+axutil_linked_list_remove_at_index(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         int index)
 {
     entry_t *e;
     AXIS2_ENV_CHECK(env, NULL);
-    axis2_linked_list_check_bounds_exclusive(linked_list, env, index);
-    e = axis2_linked_list_get_entry(linked_list, env, index);
-    axis2_linked_list_remove_entry(linked_list, env, e);
+    axutil_linked_list_check_bounds_exclusive(linked_list, env, index);
+    e = axutil_linked_list_get_entry(linked_list, env, index);
+    axutil_linked_list_remove_entry(linked_list, env, e);
     return e->data;
 }
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_linked_list_index_of(axis2_linked_list_t *linked_list,
+axutil_linked_list_index_of(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         void *o)
 {
@@ -527,7 +527,7 @@ axis2_linked_list_index_of(axis2_linked_list_t *linked_list,
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_linked_list_last_index_of(axis2_linked_list_t *linked_list,
+axutil_linked_list_last_index_of(axutil_linked_list_t *linked_list,
         const axutil_env_t *env,
         void *o)
 {
@@ -549,7 +549,7 @@ axis2_linked_list_last_index_of(axis2_linked_list_t *linked_list,
 }
 
 AXIS2_EXTERN void ** AXIS2_CALL
-axis2_linked_list_to_array(axis2_linked_list_t *linked_list,
+axutil_linked_list_to_array(axutil_linked_list_t *linked_list,
         const axutil_env_t *env)
 {
     int i = 0;

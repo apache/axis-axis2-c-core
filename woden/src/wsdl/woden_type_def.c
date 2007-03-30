@@ -35,7 +35,7 @@ struct woden_type_def_impl
     axis2_qname_t *f_qname;
     axis2_uri_t *f_system;
     axis2_char_t *f_content_model;
-    axis2_generic_obj_t *f_content;
+    axutil_generic_obj_t *f_content;
 };
 
 #define INTF_TO_IMPL(type_def) ((woden_type_def_impl_t *) type_def)

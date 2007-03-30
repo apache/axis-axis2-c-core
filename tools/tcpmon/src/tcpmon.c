@@ -17,7 +17,7 @@
 
 #include <axis2_utils.h>
 #include <axutil_error_default.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axis2_thread_pool.h>
 #include <tcpmon_session.h>
 #include <tcpmon_entry.h>
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 		axutil_env_t* env = NULL;
 		axutil_allocator_t* allocator = NULL;
 		axutil_error_t *error = NULL;
-		axis2_log_t *log = NULL;
+		axutil_log_t *log = NULL;
 		axis2_thread_pool_t *thread_pool = NULL;
 		tcpmon_session_t* session = NULL;
 		int c;
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 		allocator = axutil_allocator_init(NULL);
 
 		error = axutil_error_create(allocator);
-		log = axis2_log_create(allocator, NULL, "axis2_tcpmon.log");
+		log = axutil_log_create(allocator, NULL, "axis2_tcpmon.log");
 		thread_pool = axis2_thread_pool_init(allocator);
 
 		env = axutil_env_create_with_error_log_thread_pool(allocator, error, log,

@@ -24,16 +24,16 @@
 #include <apr_strings.h>
 #include "axis2_apache2_worker.h"
 #include <axutil_error_default.h>
-#include <axis2_log_default.h>
+#include <axutil_log_default.h>
 #include <axis2_thread_pool.h>
 #include <axiom_xml_reader.h>
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
 {
-    char * axis2_log_file;
+    char * axutil_log_file;
     char * axis2_repo_path;
-    axis2_log_levels_t log_level;
+    axutil_log_levels_t log_level;
 }
 axis2_config_rec_t;
 
@@ -120,7 +120,7 @@ axis2_create_svr(
     server_rec *s)
 {
     axis2_config_rec_t *conf = apr_palloc(p, sizeof(*conf));
-    conf->axis2_log_file = NULL;
+    conf->axutil_log_file = NULL;
     conf->axis2_repo_path = NULL;
     conf->log_level = AXIS2_LOG_LEVEL_DEBUG;
     return conf;
@@ -160,7 +160,7 @@ axis2_set_log_file(
 
     conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
-    conf->axis2_log_file = apr_pstrdup(cmd->pool, arg);
+    conf->axutil_log_file = apr_pstrdup(cmd->pool, arg);
     return NULL;
 }
 
@@ -171,7 +171,7 @@ axis2_set_log_level(
     const char *arg)
 {
     char *str;
-    axis2_log_levels_t level = AXIS2_LOG_LEVEL_DEBUG;
+    axutil_log_levels_t level = AXIS2_LOG_LEVEL_DEBUG;
 	axis2_config_rec_t *conf = NULL;
 	const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
     if (err != NULL)
@@ -271,7 +271,7 @@ axis2_module_init(
     apr_status_t status;
     axutil_allocator_t *allocator = NULL;
     axutil_error_t *error = NULL;
-    axis2_log_t *axis2_logger = NULL;
+    axutil_log_t *axutil_logger = NULL;
     axis2_thread_pool_t *thread_pool = NULL;
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                 svr_rec->module_config, &axis2_module);
@@ -321,8 +321,8 @@ axis2_module_init(
                      "[Axis2] Error creating mod_axis2 error structure");
         exit(APEXIT_CHILDFATAL);
     }
-    axis2_logger = axis2_log_create(allocator, NULL, conf->axis2_log_file);
-    if (! axis2_logger)
+    axutil_logger = axutil_log_create(allocator, NULL, conf->axutil_log_file);
+    if (! axutil_logger)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error creating mod_axis2 log structure");
@@ -336,17 +336,17 @@ axis2_module_init(
         exit(APEXIT_CHILDFATAL);
     }
     axutil_env = axutil_env_create_with_error_log_thread_pool(allocator, error,
-            axis2_logger, thread_pool);
+            axutil_logger, thread_pool);
     if (! axutil_env)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,
                      "[Axis2] Error creating mod_axis2 environment");
         exit(APEXIT_CHILDFATAL);
     }
-    if (axis2_logger)
+    if (axutil_logger)
     {
 
-        axis2_logger->level = conf->log_level;
+        axutil_logger->level = conf->log_level;
         AXIS2_LOG_INFO(axutil_env->log, "Starting log with log level %d",
                 conf->log_level);
     }

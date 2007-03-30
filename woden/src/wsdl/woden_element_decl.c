@@ -34,7 +34,7 @@ struct woden_element_decl_impl
     axis2_qname_t *f_qname;
     axis2_uri_t *f_system;
     axis2_char_t *f_content_model;
-    axis2_generic_obj_t *f_content;
+    axutil_generic_obj_t *f_content;
 };
 
 #define INTF_TO_IMPL(decl) \
@@ -73,7 +73,7 @@ woden_element_decl_get_content_model(
     void *decl,
     const axutil_env_t *env);
 
-axis2_generic_obj_t *AXIS2_CALL
+axutil_generic_obj_t *AXIS2_CALL
 woden_element_decl_get_content(
     void *decl,
     const axutil_env_t *env);
@@ -104,7 +104,7 @@ axis2_status_t AXIS2_CALL
 woden_element_decl_set_content(
     void *decl,
     const axutil_env_t *env,
-    axis2_generic_obj_t *element_content);
+    axutil_generic_obj_t *element_content);
 
 
 AXIS2_EXTERN woden_element_decl_t * AXIS2_CALL
@@ -342,7 +342,7 @@ woden_element_decl_get_content_model(
     return decl_impl->f_content_model;
 }
 
-axis2_generic_obj_t *AXIS2_CALL
+axutil_generic_obj_t *AXIS2_CALL
 woden_element_decl_get_content(
     void *decl,
     const axutil_env_t *env)
@@ -440,7 +440,7 @@ axis2_status_t AXIS2_CALL
 woden_element_decl_set_content(
     void *decl,
     const axutil_env_t *env,
-    axis2_generic_obj_t *element_content)
+    axutil_generic_obj_t *element_content)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
     axutil_hash_t *super = NULL;
