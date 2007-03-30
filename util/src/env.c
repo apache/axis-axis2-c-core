@@ -27,13 +27,13 @@ axutil_env_create_all(const axis2_char_t *log_file,
     const axis2_log_levels_t log_level)
 {
     axutil_env_t *env = NULL;
-    axis2_error_t *error = NULL;
+    axutil_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axutil_allocator_t *allocator = NULL;
     axis2_thread_pool_t *thread_pool = NULL;
 
     allocator = axutil_allocator_init(NULL);
-    error = axis2_error_create(allocator);
+    error = axutil_error_create(allocator);
 
     if (log_file)
         log = axis2_log_create(allocator, NULL, log_file);
@@ -49,7 +49,7 @@ axutil_env_create_all(const axis2_char_t *log_file,
     {
         env->log->level = log_level;
     }
-    axis2_error_init();
+    axutil_error_init();
 
     return env;
 }
@@ -111,7 +111,7 @@ axutil_env_create(axutil_allocator_t *allocator)
     environment->allocator = allocator;
 
     /* Create default error */
-    environment->error = axis2_error_create(allocator);
+    environment->error = axutil_error_create(allocator);
     if (! environment->error)
         return NULL;
     environment->log = log;
@@ -122,14 +122,14 @@ axutil_env_create(axutil_allocator_t *allocator)
 
 AXIS2_EXTERN axutil_env_t* AXIS2_CALL
 axutil_env_create_with_error(axutil_allocator_t *allocator, 
-    axis2_error_t *error)
+    axutil_error_t *error)
 {
     return axutil_env_create_with_error_log(allocator, error, NULL);
 }
 
 AXIS2_EXTERN axutil_env_t * AXIS2_CALL
 axutil_env_create_with_error_log(axutil_allocator_t *allocator, 
-    axis2_error_t *error, 
+    axutil_error_t *error, 
     axis2_log_t *log)
 {
     axutil_env_t *environment;
@@ -158,13 +158,13 @@ axutil_env_create_with_error_log(axutil_allocator_t *allocator,
     }
 
     environment->thread_pool = NULL;
-    axis2_error_init();
+    axutil_error_init();
     return environment;
 }
 
 AXIS2_EXTERN axutil_env_t * AXIS2_CALL
 axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
-    axis2_error_t *error, 
+    axutil_error_t *error, 
     axis2_log_t *log, 
     axis2_thread_pool_t *pool)
 {

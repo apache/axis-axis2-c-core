@@ -32,7 +32,7 @@ a;
 axutil_env_t *test_init()
 {
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    axis2_error_t *error = axis2_error_create(allocator);
+    axutil_error_t *error = axutil_error_create(allocator);
     axutil_env_t *env = axutil_env_create_with_error(allocator, error);
     return env;
 }

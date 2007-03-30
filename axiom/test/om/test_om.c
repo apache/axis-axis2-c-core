@@ -36,7 +36,7 @@
 axutil_allocator_t *allocator = NULL;
 axutil_env_t *environment = NULL;
 axis2_stream_t *stream = NULL;
-axis2_error_t *error = NULL;
+axutil_error_t *error = NULL;
 axis2_log_t *axis_log     = NULL;
 FILE *f = NULL;
 /** a method that demonstrate creating a om model using an xml file */
@@ -307,7 +307,7 @@ main(int argc, char *argv[])
         file_name = argv[1];
     allocator = axutil_allocator_init(NULL);
     axis_log = axis2_log_create(allocator, NULL, NULL);
-    error = axis2_error_create(allocator);
+    error = axutil_error_create(allocator);
 
     environment = axutil_env_create_with_error_log(allocator, error,  axis_log);
     test_om_build(file_name);

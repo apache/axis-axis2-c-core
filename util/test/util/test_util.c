@@ -39,7 +39,7 @@ a;
 const axutil_env_t *test_init()
 {
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    axis2_error_t *error = axis2_error_create(allocator);
+    axutil_error_t *error = axutil_error_create(allocator);
     const axutil_env_t *env = axutil_env_create_with_error(allocator, error);
     return env;
 }
@@ -113,7 +113,7 @@ void test_axutil_dir_handler_list_service_or_module_dirs()
     axis2_file_t *file = NULL;
     axis2_char_t *filename = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
-    axis2_error_t *error = axis2_error_create(allocator);
+    axutil_error_t *error = axutil_error_create(allocator);
     const axutil_env_t *env = axutil_env_create_with_error(allocator, error);
 
     axis2_char_t *pathname = axis2_strdup(env, "/tmp/test/");
@@ -223,7 +223,7 @@ void test_log_write()
         printf("allocator is NULL\n");
         return;
     }
-    axis2_error_t *error = axis2_error_create(allocator);
+    axutil_error_t *error = axutil_error_create(allocator);
     if (!error)
     {
         printf("cannot create error\n");

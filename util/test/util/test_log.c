@@ -30,7 +30,7 @@ const axutil_env_t *create_env_with_error_log()
         printf("allocator is NULL\n");
         return NULL;
     }
-    axis2_error_t *error = axis2_error_create(allocator);
+    axutil_error_t *error = axutil_error_create(allocator);
     if (!error)
     {
         printf("cannot create error\n");

@@ -48,7 +48,7 @@
 #include <axis2_op.h>
 #include <axis2_svc_grp.h>
 #include <axis2_qname.h>
-#include <axis2_error.h>
+#include <axutil_error.h>
 #include <axutil_array_list.h>
 #include <axis2_const.h>
 #include <axis2_phase_resolver.h>

@@ -25,7 +25,7 @@
  */
 
 #include <axutil_allocator.h>
-#include <axis2_error.h>
+#include <axutil_error.h>
 #include <axis2_log.h>
 #include <axis2_thread_pool.h>
 
@@ -61,7 +61,7 @@ extern "C"
         /** Memory allocation routines */
         axutil_allocator_t *allocator;
         /** Error handling */
-        axis2_error_t *error;
+        axutil_error_t *error;
         /** Logging routines */
         axis2_log_t *log;
         /** This flag indicate whether logging is enabled or not */
@@ -100,7 +100,7 @@ extern "C"
       */
     AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
     axutil_env_create_with_error(axutil_allocator_t *allocator, 
-        axis2_error_t *error);
+        axutil_error_t *error);
 
     /**
      * Creates an environment struct
@@ -112,7 +112,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
     axutil_env_create_with_error_log(axutil_allocator_t *allocator, 
-        axis2_error_t *error, 
+        axutil_error_t *error, 
         axis2_log_t *log);
 
     /**
@@ -126,7 +126,7 @@ extern "C"
     */
     AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
     axutil_env_create_with_error_log_thread_pool(axutil_allocator_t *allocator, 
-        axis2_error_t *error, 
+        axutil_error_t *error, 
         axis2_log_t *log, 
         axis2_thread_pool_t *pool);
 

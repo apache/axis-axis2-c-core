@@ -17,7 +17,7 @@
 #ifndef AXIS2_RAND_H
 #define AXIS2_RAND_H
 
-#include <axis2_error.h>
+#include <axutil_error.h>
 #include <axutil_env.h>
 #include <axutil_date_time.h>
 #include <axutil_base64_binary.h>

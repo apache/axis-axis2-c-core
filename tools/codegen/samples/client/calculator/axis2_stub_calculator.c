@@ -158,7 +158,7 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axutil_env_t *
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axutil_error_get_message(env->error));
         return NULL;
     }
     svc_client = axis2_stub_get_svc_client(stub, env);
@@ -213,7 +213,7 @@ void axis2_stub_calculator_add_start(axis2_stub_t *stub, const axutil_env_t *env
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axutil_error_get_message(env->error));
         return;
     }
     svc_client = axis2_stub_get_svc_client(stub, env);
@@ -262,7 +262,7 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axutil_env_t *
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axutil_error_get_message(env->error));
         return NULL;
     }
     svc_client = axis2_stub_get_svc_client(stub, env);
@@ -317,7 +317,7 @@ void axis2_stub_calculator_sub_start(axis2_stub_t *stub, const axutil_env_t *env
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axutil_error_get_message(env->error));
         return;
     }
     svc_client = axis2_stub_get_svc_client(stub, env);
@@ -366,7 +366,7 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axutil_env_t *
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axutil_error_get_message(env->error));
         return NULL;
     }
     svc_client = axis2_stub_get_svc_client(stub, env);
@@ -421,7 +421,7 @@ void axis2_stub_calculator_mul_start(axis2_stub_t *stub, const axutil_env_t *env
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axutil_error_get_message(env->error));
         return;
     }
     svc_client = axis2_stub_get_svc_client(stub, env);
@@ -470,7 +470,7 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axutil_env_t *
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axutil_error_get_message(env->error));
         return NULL;
     }
     svc_client = axis2_stub_get_svc_client(stub, env);
@@ -525,7 +525,7 @@ void axis2_stub_calculator_div_start(axis2_stub_t *stub, const axutil_env_t *env
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "options is null in stub: Error code:"
                 " %d :: %s", env->error->error_number,
-                axis2_error_get_message(env->error));
+                axutil_error_get_message(env->error));
         return;
     }
     svc_client = axis2_stub_get_svc_client(stub, env);

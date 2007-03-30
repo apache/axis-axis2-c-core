@@ -52,7 +52,7 @@ init_syetem_env(
     axutil_allocator_t *allocator,
     const axis2_char_t *log_file)
 {
-    axis2_error_t *error = axis2_error_create(allocator);
+    axutil_error_t *error = axutil_error_create(allocator);
     axis2_log_t *log = axis2_log_create(allocator, NULL, log_file);
 	 /* if (!log) */
 /* 		  log = axis2_log_create_default (allocator); */
@@ -149,7 +149,7 @@ int main(
     env = init_syetem_env(allocator, log_file);
     env->log->level = log_level;
 
-    axis2_error_init();
+    axutil_error_init();
     system_env = env;
 
 #ifndef WIN32

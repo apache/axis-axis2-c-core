@@ -17,7 +17,7 @@
 #ifndef SAVAN_ERROR_H
 #define SAVAN_ERROR_H
 
-#include <axis2_error.h>
+#include <axutil_error.h>
 
 #ifdef __cplusplus
 extern "C"

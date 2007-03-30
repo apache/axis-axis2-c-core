@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 {
 		axutil_env_t* env = NULL;
 		axutil_allocator_t* allocator = NULL;
-		axis2_error_t *error = NULL;
+		axutil_error_t *error = NULL;
 		axis2_log_t *log = NULL;
 		axis2_thread_pool_t *thread_pool = NULL;
 		tcpmon_session_t* session = NULL;
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 
 		allocator = axutil_allocator_init(NULL);
 
-		error = axis2_error_create(allocator);
+		error = axutil_error_create(allocator);
 		log = axis2_log_create(allocator, NULL, "axis2_tcpmon.log");
 		thread_pool = axis2_thread_pool_init(allocator);
 

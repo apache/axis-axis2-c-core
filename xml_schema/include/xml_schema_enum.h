@@ -25,7 +25,7 @@
 
 #include <axutil_allocator.h>
 #include <axutil_env.h>
-#include <axis2_error.h>
+#include <axutil_error.h>
 #include <axis2_string.h>
 #include <axis2_utils_defines.h>
 #include <axutil_array_list.h>

@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
-#include <axis2_error.h>
+#include <axutil_error.h>
 #include <tcpmon_util.h>
 #include <axis2_thread.h>
 #include <axis2_network_handler.h>

@@ -133,7 +133,7 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
     xml_reader = axiom_xml_reader_create_for_io(env, read_soap, close_soap , NULL, NULL);
     if (!xml_reader)
     {
-        printf("%s \n", axis2_error_get_message(env->error));
+        printf("%s \n", axutil_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
 
@@ -142,21 +142,21 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
     if (!om_builder)
     {
         AXIOM_XML_READER_FREE(xml_reader, env);
-        printf("%s \n", axis2_error_get_message(env->error));
+        printf("%s \n", axutil_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
 
     soap_builder = axiom_soap_builder_create(env, om_builder, uri);
     if (!soap_builder)
     {
-        printf("%s \n", axis2_error_get_message(env->error));
+        printf("%s \n", axutil_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
     soap_envelope = axiom_soap_builder_get_soap_envelope(soap_builder, env);
     if (!soap_envelope)
     {
         axiom_soap_builder_free(soap_builder, env);
-        printf("%s \n", axis2_error_get_message(env->error));
+        printf("%s \n", axutil_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
 
@@ -196,7 +196,7 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
     }
     else
     {
-        printf("%s \n", axis2_error_get_message(env->error));
+        printf("%s \n", axutil_error_get_message(env->error));
         printf("\n\n ERROR soap_body NULL.\n\n");
         return AXIS2_FAILURE;
     }
@@ -215,7 +215,7 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
             status = axiom_soap_builder_next(soap_builder, env);
             if (status == AXIS2_FAILURE)
             {
-                printf("failure %s" , axis2_error_get_message(env->error));
+                printf("failure %s" , axutil_error_get_message(env->error));
                 return AXIS2_FAILURE;
             }
         }
@@ -399,7 +399,7 @@ int main(int argc, char *argv[])
 {
     axutil_env_t *env = NULL;
     axutil_allocator_t *allocator = NULL;
-    axis2_error_t *error = NULL;
+    axutil_error_t *error = NULL;
     axis2_log_t *log = NULL;
     const axis2_char_t *uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     const char *filename = "./../../resources/xml/soap/test.xml";
@@ -415,10 +415,10 @@ int main(int argc, char *argv[])
     allocator = axutil_allocator_init(NULL);
     log = axis2_log_create(allocator, NULL, "test_soap.log");
     log->level = AXIS2_LOG_LEVEL_DEBUG;
-    error = axis2_error_create(allocator);
+    error = axutil_error_create(allocator);
     env = axutil_env_create_with_error_log(allocator, error,  log);
 
-    axis2_error_init();
+    axutil_error_init();
     /*build_soap_programatically(env);   */
     build_soap(env, filename, uri);
     /*create_soap_fault(env);

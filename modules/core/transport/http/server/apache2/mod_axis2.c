@@ -270,7 +270,7 @@ axis2_module_init(
     apr_pool_t *pool;
     apr_status_t status;
     axutil_allocator_t *allocator = NULL;
-    axis2_error_t *error = NULL;
+    axutil_error_t *error = NULL;
     axis2_log_t *axis2_logger = NULL;
     axis2_thread_pool_t *thread_pool = NULL;
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
@@ -312,9 +312,9 @@ axis2_module_init(
         exit(APEXIT_CHILDFATAL);
     }
     
-    axis2_error_init();
+    axutil_error_init();
     
-    error = axis2_error_create(allocator);
+    error = axutil_error_create(allocator);
     if (! error)
     {
         ap_log_error(APLOG_MARK, APLOG_EMERG, APR_EGENERAL, svr_rec,

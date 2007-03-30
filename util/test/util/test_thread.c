@@ -254,7 +254,7 @@ void run_test_thread(const axutil_env_t *env)
 
 const axutil_env_t *create_env_with_error_log()
 {
-    axis2_error_t *error = NULL;
+    axutil_error_t *error = NULL;
     axis2_log_t *log22 = NULL;
     const axutil_env_t *env = NULL;
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
@@ -263,7 +263,7 @@ const axutil_env_t *create_env_with_error_log()
         printf("allocator is NULL\n");
         return NULL;
     }
-    error = axis2_error_create(allocator);
+    error = axutil_error_create(allocator);
     if (!error)
     {
         printf("cannot create error\n");

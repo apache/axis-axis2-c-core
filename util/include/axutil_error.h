@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_ERROR_H
-#define AXIS2_ERROR_H
+#ifndef AXUTIL_ERROR_H
+#define AXUTIL_ERROR_H
 
 #include <axis2_utils_defines.h>
 #include <axutil_allocator.h>
@@ -44,7 +44,7 @@ extern "C"
 	 *
 	 * Set of error codes for Axis2
 	 */
-    enum axis2_error_codes
+    enum axutil_error_codes
     {
         /** No error. 
             This must be the first error all the time and the assigned value of 0 
@@ -558,12 +558,12 @@ extern "C"
         AXIS2_ERROR_LAST
     };
         
-    struct axis2_error;
+    struct axutil_error;
 	typedef enum axis2_status_codes axis2_status_codes_t;
-	typedef enum axis2_error_codes axis2_error_codes_t;
+	typedef enum axutil_error_codes axutil_error_codes_t;
 
 /**
- * @defgroup axis2_error error
+ * @defgroup axutil_error error
  * @ingroup axis2_util 
  * @{
  */
@@ -573,14 +573,14 @@ extern "C"
 	 * @return axis2_status_t status code
 	 */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_error_free(struct axis2_error *error);
+    axutil_error_free(struct axutil_error *error);
     
 	/**
 	 * get error message for the last error
 	 * @return error message for the last error. NULL on error.
 	 */
 	AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_error_get_message(const struct axis2_error *error);
+    axutil_error_get_message(const struct axutil_error *error);
   
 	/**
 	 * This fucntion is supposed to be overridden in an extended error structure.
@@ -590,21 +590,21 @@ extern "C"
 	 * @return error message for the extended struct.
 	 */
 	AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
-    axis2_error_get_extended_message(const struct axis2_error *error);
+    axutil_error_get_extended_message(const struct axutil_error *error);
   
 	AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_error_set_error_number(struct axis2_error *error,
-        axis2_error_codes_t error_number);
+    axutil_error_set_error_number(struct axutil_error *error,
+        axutil_error_codes_t error_number);
 	
 	AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_error_set_status_code(struct axis2_error *error, 
+    axutil_error_set_status_code(struct axutil_error *error, 
         axis2_status_codes_t status_code);
   
 	AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_error_get_status_code(struct axis2_error *error);
+    axutil_error_get_status_code(struct axutil_error *error);
 
 	AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_error_set_error_message(struct axis2_error *error,
+    axutil_error_set_error_message(struct axutil_error *error,
         axis2_char_t *message);
           
 	/** 
@@ -612,7 +612,7 @@ extern "C"
 	 *
 	 * Error holds the last errorno
 	 */
-    typedef struct axis2_error
+    typedef struct axutil_error
     {
         /** error related ops */
         axutil_allocator_t *allocator;
@@ -620,26 +620,26 @@ extern "C"
         int error_number;
         int status_code;
 		axis2_char_t *message;
-    } axis2_error_t;
+    } axutil_error_t;
 
 	AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-    axis2_error_init();
+    axutil_error_init();
 
-#define AXIS2_ERROR_FREE(error) axis2_error_free(error)
+#define AXIS2_ERROR_FREE(error) axutil_error_free(error)
 
 #define AXIS2_ERROR_GET_MESSAGE(error) \
-    axis2_error_get_message(error)
+    axutil_error_get_message(error)
 
 #define AXIS2_ERROR_SET_MESSAGE(error, message) \
-    axis2_error_set_error_message(error, message)
+    axutil_error_set_error_message(error, message)
 
 #define AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number) \
-        axis2_error_set_error_number(error, error_number)
+        axutil_error_set_error_number(error, error_number)
    
 #define AXIS2_ERROR_SET_STATUS_CODE(error, status_code) \
-        axis2_error_set_status_code(error, status_code)
+        axutil_error_set_status_code(error, status_code)
         
-#define AXIS2_ERROR_GET_STATUS_CODE(error) axis2_error_get_status_code(error)
+#define AXIS2_ERROR_GET_STATUS_CODE(error) axutil_error_get_status_code(error)
 
 
 

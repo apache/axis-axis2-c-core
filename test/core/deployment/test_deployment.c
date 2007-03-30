@@ -328,11 +328,11 @@ int axis2_test_default_module_version()
 int main()
 {
     axutil_allocator_t *allocator = NULL;
-    axis2_error_t *error = NULL;
+    axutil_error_t *error = NULL;
     axis2_log_t *log = NULL;
 
     allocator = axutil_allocator_init(NULL);
-    error = axis2_error_create(allocator);
+    error = axutil_error_create(allocator);
     log = axis2_log_create(allocator, NULL, "test_deployment.log");
     env = axutil_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_INFO;

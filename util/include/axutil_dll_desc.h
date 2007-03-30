@@ -25,7 +25,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_qname.h>
-#include <axis2_error.h>
+#include <axutil_error.h>
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
@@ -147,9 +147,9 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axutil_dll_desc_set_error_code(axutil_dll_desc_t *dll_desc,
         const axutil_env_t *env,
-        axis2_error_codes_t error_code);
+        axutil_error_codes_t error_code);
 
-    AXIS2_EXTERN axis2_error_codes_t AXIS2_CALL
+    AXIS2_EXTERN axutil_error_codes_t AXIS2_CALL
     axutil_dll_desc_get_error_code(
         axutil_dll_desc_t *dll_desc,
         const axutil_env_t *env);

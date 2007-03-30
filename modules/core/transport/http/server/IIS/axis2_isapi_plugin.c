@@ -117,7 +117,7 @@ axis2_status_t init_axis2()
 	/*
 	These are the varibles required to initialize axis.
 	*/		
-    axis2_error_t *error = NULL;
+    axutil_error_t *error = NULL;
     axis2_log_t *axis2_logger = NULL;
     axis2_thread_pool_t *thread_pool = NULL;
 	axis2_status_t status = FALSE;	
@@ -126,7 +126,7 @@ axis2_status_t init_axis2()
 	
 	status = read_registery_init_data();
  
-	axis2_error_init();
+	axutil_error_init();
 
 	axutil_env = axutil_env_create_all(log_file, log_level);
 	if (axutil_env == NULL){

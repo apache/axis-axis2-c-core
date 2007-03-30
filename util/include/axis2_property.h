@@ -19,7 +19,7 @@
 #define AXIS2_PROPERTY_H
 
 #include <axis2_utils_defines.h>
-#include <axis2_error.h>
+#include <axutil_error.h>
 #include <axutil_env.h>
 #include <axis2_utils.h>
 

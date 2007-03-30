@@ -58,7 +58,7 @@ axutil_class_loader_create_dll(const axutil_env_t *env,
     AXIS2_DLHANDLER dl_handler = NULL;
     axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_error_codes_t error_code = AXIS2_ERROR_NONE;
+    axutil_error_codes_t error_code = AXIS2_ERROR_NONE;
 
     dll_desc = axis2_param_get_value(impl_info_param, env);
     if (!dll_desc)

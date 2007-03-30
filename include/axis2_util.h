@@ -24,7 +24,7 @@
 #include <axutil_dir_handler.h>
 #include <axutil_dll_desc.h>
 #include <axutil_env.h>
-#include <axis2_error.h>
+#include <axutil_error.h>
 #include <axis2_file.h>
 #include <axis2_file_handler.h>
 #include <axis2_hash.h>
