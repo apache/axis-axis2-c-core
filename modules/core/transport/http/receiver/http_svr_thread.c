@@ -24,7 +24,7 @@
 #include <axis2_http_simple_request.h>
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_url.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axiom_xml_reader.h>
 #include <signal.h>
 

@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <axis2_hash.h>
 #include <axis2_string.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axutil_array_list.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_uuid_gen.h>

@@ -19,7 +19,7 @@
 
 #include <axis2_svc_skeleton.h>
 #include <axis2_log_default.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axiom_text.h>
 #include <axiom_node.h>
 #include <axiom_element.h>

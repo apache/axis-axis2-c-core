@@ -25,7 +25,7 @@
 #include <axutil_env.h>
 #include <axutil_allocator.h>
 #include <axutil_class_loader.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axis2_log_default.h>
 #include <axis2_transport_sender.h>
 #include <axis2_transport_receiver.h>

@@ -20,7 +20,7 @@
 #include <platforms/axis2_platform_auto_sense.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axis2_log_default.h>
 #include <axis2_thread_pool.h>
 #include <signal.h>

@@ -17,7 +17,7 @@
 
 #include <axis2_thread_pool.h>
 #include <axutil_env.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 
 struct axis2_thread_pool
 {

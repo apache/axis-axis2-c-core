@@ -16,7 +16,7 @@
  */
 
 #include <stdlib.h>
-#include "axis2_error_default.h"
+#include "axutil_error_default.h"
 
 /* array to hold error messages */
 const axis2_char_t* axis2_error_messages[AXIS2_ERROR_LAST];

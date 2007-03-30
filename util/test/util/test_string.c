@@ -16,7 +16,7 @@
  */
 
 #include <stdio.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axis2_log.h>
 #include <axis2_string.h>
 

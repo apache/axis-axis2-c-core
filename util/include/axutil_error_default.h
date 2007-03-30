@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_ERROR_DEFAULT_H
-#define AXIS2_ERROR_DEFAULT_H
+#ifndef AXUTIL_ERROR_DEFAULT_H
+#define AXUTIL_ERROR_DEFAULT_H
 
 #include <axis2_utils_defines.h>
 #include <axutil_allocator.h>

@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <axutil_env.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axis2_log_default.h>
 #include <axis2_string.h>
 

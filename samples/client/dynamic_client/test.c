@@ -19,7 +19,7 @@
 #include <axiom_text.h>
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axis2_svc_client.h>
 #include <stdlib.h>
 #include <stdio.h>

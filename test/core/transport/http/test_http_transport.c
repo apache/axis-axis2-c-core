@@ -19,7 +19,7 @@
 #include <axis2_http_request_line.h>
 #include <axis2_http_status_line.h>
 #include <axis2_http_header.h>
-#include <axis2_error_default.h>
+#include <axutil_error_default.h>
 #include <axis2_url.h>
 #include <axis2_http_client.h>
 
