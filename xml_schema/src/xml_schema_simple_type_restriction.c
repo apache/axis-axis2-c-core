@@ -38,7 +38,7 @@ struct xml_schema_simple_type_restriction_impl
 
     xml_schema_simple_type_t *base_type;
 
-    axis2_qname_t *base_type_name;
+    axutil_qname_t *base_type_name;
 
     xml_schema_obj_collection_t *facets;
 };
@@ -74,14 +74,14 @@ xml_schema_simple_type_restriction_set_base_type(void *simple_type_restriction,
         const axutil_env_t *env,
         xml_schema_simple_type_t *base_type);
 
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 xml_schema_simple_type_restriction_get_base_type_name(void *simple_type_restriction,
         const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_restriction_set_base_type_name(void *simple_type_restriction,
         const axutil_env_t *env,
-        axis2_qname_t *base_type_name);
+        axutil_qname_t *base_type_name);
 
 xml_schema_obj_collection_t* AXIS2_CALL
 xml_schema_simple_type_restriction_get_facets(void *simple_type_restriction,
@@ -334,7 +334,7 @@ xml_schema_simple_type_restriction_set_base_type(void *simple_type_restriction,
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 xml_schema_simple_type_restriction_get_base_type_name(void *simple_type_restriction,
         const axutil_env_t *env)
 {
@@ -345,7 +345,7 @@ xml_schema_simple_type_restriction_get_base_type_name(void *simple_type_restrict
 axis2_status_t AXIS2_CALL
 xml_schema_simple_type_restriction_set_base_type_name(void *simple_type_restriction,
         const axutil_env_t *env,
-        axis2_qname_t *base_type_name)
+        axutil_qname_t *base_type_name)
 {
     xml_schema_simple_type_restriction_impl_t *sim_type_res_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -354,7 +354,7 @@ xml_schema_simple_type_restriction_set_base_type_name(void *simple_type_restrict
     sim_type_res_impl = AXIS2_INTF_TO_IMPL(simple_type_restriction);
     if (sim_type_res_impl->base_type_name)
     {
-        axis2_qname_free(sim_type_res_impl->base_type_name, env);
+        axutil_qname_free(sim_type_res_impl->base_type_name, env);
         sim_type_res_impl->base_type_name = NULL;
     }
     sim_type_res_impl->base_type_name = base_type_name;

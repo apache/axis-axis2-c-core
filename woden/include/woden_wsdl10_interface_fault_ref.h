@@ -27,7 +27,7 @@
 #include <woden.h>
 #include <woden_wsdl10_interface_fault_ref_element.h>
 #include <woden_nested_configurable.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup woden_wsdl10_interface_fault_ref Interface Message Reference
   * @ingroup woden

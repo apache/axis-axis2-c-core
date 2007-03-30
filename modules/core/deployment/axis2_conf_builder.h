@@ -29,7 +29,7 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include "axis2_desc_builder.h"
 #include <axis2_conf.h>
 #include "axis2_dep_engine.h"

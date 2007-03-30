@@ -16,9 +16,9 @@
  */
  
 #include <w2c_schema_property_loader.h>
-#include <axis2_properties.h>
+#include <axutil_properties.h>
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 #include <axutil_hash.h>
 #include <stdlib.h>
@@ -46,7 +46,7 @@ typedef struct w2c_schema_property_loader_impl
     w2c_schema_writer_t *writer_instance;
     axis2_char_t *typemapper_name;
 
-    axis2_properties_t *prop_set;
+    axutil_properties_t *prop_set;
     axis2_char_t *prop_filename;
     axis2_char_t *language;
     axis2_char_t *default_class;
@@ -175,8 +175,8 @@ w2c_schema_property_loader_create (const axutil_env_t *env,
         return NULL;
     }
 	*/
-    schema_property_loader_impl-> prop_set =  axis2_properties_create( env);
-	axis2_properties_load( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
+    schema_property_loader_impl-> prop_set =  axutil_properties_create( env);
+	axutil_properties_load( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
 
     if ( schema_property_loader_impl-> prop_set != NULL )
     {
@@ -236,7 +236,7 @@ w2c_schema_property_loader_free (w2c_schema_property_loader_t *schema_property_l
 
     if (schema_property_loader_impl-> prop_set)
     {
-        axis2_properties_free( schema_property_loader_impl-> prop_set, env);
+        axutil_properties_free( schema_property_loader_impl-> prop_set, env);
     }
 
     if (schema_property_loader_impl-> prop_filename)
@@ -320,7 +320,7 @@ w2c_schema_property_loader_reload (
     
     if (schema_property_loader_impl-> prop_set)
     {
-         axis2_properties_free ( schema_property_loader_impl->prop_set, env );
+         axutil_properties_free ( schema_property_loader_impl->prop_set, env );
     }
 	/*
     f = fopen ( schema_property_loader_impl-> prop_filename, "r+");
@@ -331,8 +331,8 @@ w2c_schema_property_loader_reload (
         return AXIS2_FAILURE;
     }
 	*/
-    schema_property_loader_impl-> prop_set =  axis2_properties_create( env);
-	axis2_properties_load( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
+    schema_property_loader_impl-> prop_set =  axutil_properties_create( env);
+	axutil_properties_load( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
 
     if ( schema_property_loader_impl-> prop_set != NULL )
     {
@@ -434,7 +434,7 @@ w2c_schema_property_loader_load_values(
      w2c_schema_writer_t *writer = NULL;
      axutil_dll_desc_t *dll_desc = NULL;
 
-     prop_hash = axis2_properties_get_all( obj_impl-> prop_set, env);
+     prop_hash = axutil_properties_get_all( obj_impl-> prop_set, env);
      language = obj_impl-> language;
 
      /**

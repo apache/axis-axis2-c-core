@@ -16,18 +16,18 @@
  */
  
 #include <w2c_messages.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 #include <axutil_hash.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
 #define W2C_MESSAGES_FILENAME "resource.properties"
 
-AXIS2_EXTERN axis2_properties_t* AXIS2_CALL
+AXIS2_EXTERN axutil_properties_t* AXIS2_CALL
 w2c_messages_get_message_properties(
     const axutil_env_t *env )
 {
-    axis2_properties_t *props = NULL;
+    axutil_properties_t *props = NULL;
     axis2_char_t *axis2c_home = NULL;
     axis2_char_t *filename = NULL;
     axis2_char_t *filepath= NULL;
@@ -51,8 +51,8 @@ w2c_messages_get_message_properties(
     filepath = AXIS2_MALLOC ( env-> allocator, path_len* sizeof(axis2_char_t) );
     sprintf ( filepath, "%s%s%s", axis2c_home, inter_path, filename );
   
-    props = axis2_properties_create(env);
-	axis2_properties_load( props, env, filepath); 
+    props = axutil_properties_create(env);
+	axutil_properties_load( props, env, filepath); 
 
     return props;
 }
@@ -60,16 +60,16 @@ w2c_messages_get_message_properties(
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_messages_get_message( const axutil_env_t *env, axis2_char_t *key )
 {
-     axis2_properties_t *props = NULL;
+     axutil_properties_t *props = NULL;
      axis2_char_t *message = NULL;
      
      props = w2c_messages_get_message_properties( env);
-     message = axis2_properties_get_property( props, env, key);
+     message = axutil_properties_get_property( props, env, key);
      if ( message )
      {
          message = axis2_strdup (env, message);
      }
-     axis2_properties_free( props, env);
+     axutil_properties_free( props, env);
 
      return  message;
 }
@@ -90,11 +90,11 @@ w2c_messages_print_n_log_error( const axutil_env_t *env, axis2_char_t *key )
 
 AXIS2_EXTERN void AXIS2_CALL
 w2c_messages_print_n_log_error_from_properties( const axutil_env_t *env, 
-                                          axis2_properties_t *props,
+                                          axutil_properties_t *props,
                                           axis2_char_t *key )
 {
      axis2_char_t *msg = NULL;
-     msg = axis2_properties_get_property( props, env, key);
+     msg = axutil_properties_get_property( props, env, key);
      if ( msg )
      {
          fprintf ( stderr, "%s\n", msg );

@@ -16,14 +16,14 @@
  */
 
 #include <axis2_handler_desc.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_svc.h>
 #include <axiom_soap_header.h>
 #include <axiom_soap_body.h>
 #include <axis2_addr.h>
 #include <axiom_soap_header_block.h>
 #include <axis2_endpoint_ref.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 #include <stdio.h>
 
 axis2_status_t AXIS2_CALL
@@ -63,16 +63,16 @@ axiom_node_t *axis2_addr_out_handler_process_string_info(const axutil_env_t *env
 
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-axis2_addr_out_handler_create(const axutil_env_t *env, axis2_string_t * name)
+axis2_addr_out_handler_create(const axutil_env_t *env, axutil_string_t * name)
 {
     axis2_handler_t *handler = NULL;
-    /*axis2_qname_t *handler_qname = NULL;*/
+    /*axutil_qname_t *handler_qname = NULL;*/
 
     AXIS2_ENV_CHECK(env, NULL);
 
     /*if (qname)
     {
-        handler_qname = axis2_qname_clone(qname, env);
+        handler_qname = axutil_qname_clone(qname, env);
         if (!(handler_qname))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
@@ -83,7 +83,7 @@ axis2_addr_out_handler_create(const axutil_env_t *env, axis2_string_t * name)
     else
     {
          create default qname 
-        handler_qname = axis2_qname_create(env, "addr_out_handler",
+        handler_qname = axutil_qname_create(env, "addr_out_handler",
                 "http://axis.ws.apache.org",
                 NULL);
         if (!handler_qname)
@@ -102,7 +102,7 @@ axis2_addr_out_handler_create(const axutil_env_t *env, axis2_string_t * name)
     if (handler->ops)
         handler->ops->invoke = axis2_addr_out_handler_invoke;
 
-    /*axis2_qname_free(handler_qname, env);*/
+    /*axutil_qname_free(handler_qname, env);*/
 
     return handler;
 }
@@ -121,7 +121,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
     axiom_node_t *soap_header_node = NULL;
     axiom_element_t *soap_header_ele = NULL;
     axis2_endpoint_ref_t *epr = NULL;
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
 	 const axis2_char_t *wsa_action = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -139,7 +139,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
          axis2_ctx_get_property(ctx, env, AXIS2_WSA_VERSION);
     if (property)
     {
-        addressing_version_from_msg_ctx = axis2_property_get_value(property,
+        addressing_version_from_msg_ctx = axutil_property_get_value(property,
                 env);
         property = NULL;
     }
@@ -181,7 +181,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                  axis2_ctx_get_property(in_ctx, env, AXIS2_WSA_VERSION);
             if (property)
             {
-                addr_ns = axis2_property_get_value(property, env);
+                addr_ns = axutil_property_get_value(property, env);
                 property = NULL;
             }
 
@@ -326,7 +326,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
 
         /* add the service group id as a reference parameter */
-        svc_group_context_id = axis2_string_get_buffer(
+        svc_group_context_id = axutil_string_get_buffer(
              axis2_msg_ctx_get_svc_grp_ctx_id(msg_ctx, env), env);
 
         axis2_addr_out_handler_add_to_soap_header(env, epr,
@@ -697,7 +697,7 @@ axis2_addr_out_handler_add_to_header(const axutil_env_t *env,
         const axis2_char_t * addr_ns)
 {
     axiom_node_t *parent_node = NULL;
-    const axis2_qname_t *interface_qname = NULL;
+    const axutil_qname_t *interface_qname = NULL;
     axiom_node_t *interface_node = NULL;
     axiom_element_t *interface_ele = NULL;
     const axis2_char_t *element_localname = NULL;
@@ -734,8 +734,8 @@ axis2_addr_out_handler_add_to_header(const axutil_env_t *env,
                 element_localname,
                 addr_ns_obj,
                 &interface_node);
-        qname_prefix = axis2_qname_get_prefix(interface_qname, env);
-        qname_localpart = axis2_qname_get_localpart(interface_qname, env);
+        qname_prefix = axutil_qname_get_prefix(interface_qname, env);
+        qname_localpart = axutil_qname_get_localpart(interface_qname, env);
 
         text =
             AXIS2_MALLOC(env->allocator,

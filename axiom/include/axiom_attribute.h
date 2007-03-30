@@ -23,7 +23,7 @@
 * @brief om attribute struct represents an xml attribute
 */
 #include <axutil_env.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axiom_namespace.h>
 #include <axiom_output.h>
 
@@ -85,7 +85,7 @@ extern "C"
       * @return returns qname for given attribute.NULL on error 
       */
 
-    AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
+    AXIS2_EXTERN axutil_qname_t * AXIS2_CALL
     axiom_attribute_get_qname(struct axiom_attribute *om_attribute,
             const axutil_env_t *env);
 
@@ -181,27 +181,27 @@ extern "C"
 
     AXIS2_EXTERN axiom_attribute_t* AXIS2_CALL
     axiom_attribute_create_str(const axutil_env_t *env,
-        axis2_string_t * localname,
-        axis2_string_t * value,
+        axutil_string_t * localname,
+        axutil_string_t * value,
         axiom_namespace_t * ns);
 
-    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t* AXIS2_CALL
     axiom_attribute_get_localname_str(axiom_attribute_t *attribute,
         const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t* AXIS2_CALL
     axiom_attribute_get_value_str(axiom_attribute_t *attribute,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_localname_str(axiom_attribute_t *attribute,
         const axutil_env_t *env,
-        axis2_string_t *localname);
+        axutil_string_t *localname);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_attribute_set_value_str(axiom_attribute_t *attribute,
         const axutil_env_t *env,
-        axis2_string_t *value);
+        axutil_string_t *value);
 
     /** @} */
 

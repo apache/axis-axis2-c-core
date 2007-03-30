@@ -28,10 +28,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
 #include <woden.h>
@@ -94,7 +94,7 @@ struct woden_element_extensible_ops
     get_ext_elements_of_type) (
             void *extensible,
             const axutil_env_t *env,
-            axis2_qname_t *ext_type);
+            axutil_qname_t *ext_type);
 
     axis2_bool_t (AXIS2_CALL *
     has_ext_elements_for_namespace) (

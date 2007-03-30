@@ -27,10 +27,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
 #include <woden.h>
@@ -80,7 +80,7 @@ struct woden_ext_registry_ops
             void *registry,
             const axutil_env_t *env,
             axis2_char_t *parent_type,
-            axis2_qname_t *element_qtype,
+            axutil_qname_t *element_qtype,
             void *ed);
 
     /**
@@ -104,7 +104,7 @@ struct woden_ext_registry_ops
             void *registry,
             const axutil_env_t *env,
             axis2_char_t *parent_type,
-            axis2_qname_t *element_type);
+            axutil_qname_t *element_type);
 
     /**
     * Look up the type of the extensibility element with the specified qname, which
@@ -124,7 +124,7 @@ struct woden_ext_registry_ops
             void *registry,
             const axutil_env_t *env,
             axis2_char_t *parent_class,
-            axis2_qname_t *elem_qn);
+            axutil_qname_t *elem_qn);
 
     /**
     * Returns a set of QNames representing the extensibility elements
@@ -161,7 +161,7 @@ struct woden_ext_registry_ops
             void *registry,
             const axutil_env_t *env,
             axis2_char_t *parent_type,
-            axis2_qname_t *element_qtype,
+            axutil_qname_t *element_qtype,
             void *element);
 
 
@@ -183,7 +183,7 @@ struct woden_ext_registry_ops
             void *registry,
             const axutil_env_t *env,
             axis2_char_t *owner_class,
-            axis2_qname_t *attr_qname,
+            axutil_qname_t *attr_qname,
             void *attr);
 
     /**
@@ -203,7 +203,7 @@ struct woden_ext_registry_ops
             void *registry,
             const axutil_env_t *env,
             axis2_char_t *parent_class,
-            axis2_qname_t *attr_qn);
+            axutil_qname_t *attr_qn);
 
     /**
     * Register the object that will represent extensions from a specified 

@@ -31,7 +31,7 @@ struct woden_element_decl_impl
     woden_obj_types_t obj_type;
     axutil_hash_t *super;
 
-    axis2_qname_t *f_qname;
+    axutil_qname_t *f_qname;
     axis2_uri_t *f_system;
     axis2_char_t *f_content_model;
     axutil_generic_obj_t *f_content;
@@ -58,7 +58,7 @@ woden_element_decl_type(
 /* ************************************************************
  *  Element Declaration interface methods (the WSDL Component model)
  * ************************************************************/
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_element_decl_get_qname(
     void *decl,
     const axutil_env_t *env);
@@ -86,7 +86,7 @@ axis2_status_t AXIS2_CALL
 woden_element_decl_set_qname(
     void *decl,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_element_decl_set_system(
@@ -294,7 +294,7 @@ woden_element_decl_resolve_methods(
 /* ************************************************************
  *  Element Declaration interface methods (the WSDL Component model)
  * ************************************************************/
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_element_decl_get_qname(
     void *decl,
     const axutil_env_t *env)
@@ -369,7 +369,7 @@ axis2_status_t AXIS2_CALL
 woden_element_decl_set_qname(
     void *decl,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_element_decl_impl_t *decl_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -382,10 +382,10 @@ woden_element_decl_set_qname(
 
     if (decl_impl->f_qname)
     {
-        axis2_qname_free(decl_impl->f_qname, env);
+        axutil_qname_free(decl_impl->f_qname, env);
         decl_impl->f_qname = NULL;
     }
-    decl_impl->f_qname = axis2_qname_clone(qname, env);
+    decl_impl->f_qname = axutil_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 

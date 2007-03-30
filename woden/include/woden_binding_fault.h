@@ -29,7 +29,7 @@
 #include <woden.h>
 #include <woden_binding_fault_element.h>
 #include <woden_nested_configurable.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup woden_binding_fault Binding Fault
   * @ingroup woden

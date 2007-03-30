@@ -26,7 +26,7 @@
  *          World Wide Web Consortium (W3C) any element.
  *
  */
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <xml_schema_particle.h>
 #include <xml_schema_form.h>
 #include <xml_schema_use.h>
@@ -108,14 +108,14 @@ struct xml_schema_attribute_ops
                      const axutil_env_t *env,
                      xml_schema_form_t *schema_form);
                      
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_qname)(void *attr,
                const axutil_env_t *env);
                
     axis2_status_t (AXIS2_CALL *
     set_qname)(void *attr,
                const axutil_env_t *env,
-               axis2_qname_t *qualified_name);
+               axutil_qname_t *qualified_name);
                
     axis2_char_t* (AXIS2_CALL *
     get_name)(void *attr,
@@ -126,14 +126,14 @@ struct xml_schema_attribute_ops
               const axutil_env_t *env,
               axis2_char_t *name);
               
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_ref_name)(void *attr,
                   const axutil_env_t *env);
                                               
     axis2_status_t (AXIS2_CALL *
     set_ref_name)(void *attr,
                   const axutil_env_t *env,
-                  axis2_qname_t *ref_name);
+                  axutil_qname_t *ref_name);
                   
     xml_schema_simple_type_t* (AXIS2_CALL *
     get_schema_type)(void *attr,
@@ -144,7 +144,7 @@ struct xml_schema_attribute_ops
                      const axutil_env_t *env,
                      xml_schema_simple_type_t* sch_type);                     
                      
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_schema_type_name)(void *attr,
                           const axutil_env_t *env);
                           
@@ -152,7 +152,7 @@ struct xml_schema_attribute_ops
     axis2_status_t (AXIS2_CALL *
     set_schema_type_name)(void *attr,
                           const axutil_env_t *env,
-                          axis2_qname_t *sch_type_name);
+                          axutil_qname_t *sch_type_name);
                           
     xml_schema_use_t* (AXIS2_CALL *
     get_use)(void *attr,

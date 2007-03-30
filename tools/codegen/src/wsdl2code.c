@@ -25,7 +25,7 @@
 #include <w2c_engine.h>
 
 static void
-w2c_print_message(const axutil_env_t* env, axis2_properties_t* messageh,
+w2c_print_message(const axutil_env_t* env, axutil_properties_t* messageh,
         axis2_char_t* key);
 
 static void
@@ -109,7 +109,7 @@ w2c_validate_cmdline_options(w2c_cmdline_option_parser_t* cmd_opt_parser,
 static void
 w2c_print_usage(const axutil_env_t* env)
 {
-    axis2_properties_t* props = NULL;
+    axutil_properties_t* props = NULL;
 
     props = w2c_messages_get_message_properties(env);
     w2c_print_message(env, props, "wsdl2code.arg1");
@@ -123,14 +123,14 @@ w2c_print_usage(const axutil_env_t* env)
     w2c_print_message(env, props, "wsdl2code.arg9");
     w2c_print_message(env, props, "wsdl2code.arg10");
 
-    axis2_properties_free(props, env);
+    axutil_properties_free(props, env);
 }
 
 static void
-w2c_print_message(const axutil_env_t* env, axis2_properties_t* messageh, axis2_char_t* key)
+w2c_print_message(const axutil_env_t* env, axutil_properties_t* messageh, axis2_char_t* key)
 {
     axis2_char_t* message = NULL;
     message = (axis2_char_t*)
-            axis2_properties_get_property(messageh, env, key);
+            axutil_properties_get_property(messageh, env, key);
     printf("%s\n", message);
 }

@@ -16,7 +16,7 @@
  */
 
 #include <axiom_mime_parser.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axiom_data_handler.h>
 #include <stdio.h>
 

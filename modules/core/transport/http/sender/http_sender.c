@@ -16,7 +16,7 @@
  */
 
 #include <axis2_http_sender.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_http_transport.h>
 #include <string.h>
 #include <axiom_output.h>
@@ -25,8 +25,8 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_http_client.h>
 #include <axiom_xml_writer.h>
-#include <axis2_property.h>
-#include <axis2_param.h>
+#include <axutil_property.h>
+#include <axutil_param.h>
 #include <axis2_types.h>
 #include <axutil_generic_obj.h>
 #include <axis2_const.h>
@@ -149,20 +149,20 @@ axis2_http_sender_send(
     axis2_char_t *buffer = NULL;
     unsigned int buffer_size = 0;
     const axis2_char_t *char_set_enc = NULL;
-    axis2_string_t *char_set_enc_str = NULL;
+    axutil_string_t *char_set_enc_str = NULL;
     int status_code = -1;
 	axis2_http_simple_response_t *response = NULL;
     axis2_char_t *content_type = NULL;
     axis2_byte_t *output_stream = NULL;
     int output_stream_size = 0;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
-    axis2_property_t *dump_property = NULL;
-    axis2_param_t *ssl_pp_param = NULL; /* ssl passphrase */
+    axutil_property_t *dump_property = NULL;
+    axutil_param_t *ssl_pp_param = NULL; /* ssl passphrase */
     axis2_char_t *ssl_pp = NULL;
-	axis2_property_t *content_type_property = NULL;
+	axutil_property_t *content_type_property = NULL;
 	axutil_hash_t *content_type_hash = NULL;
 	axis2_char_t *content_type_value = NULL;
-	axis2_property_t *method = NULL;
+	axutil_property_t *method = NULL;
 	axis2_char_t *method_value = NULL;
 	axis2_bool_t send_via_get = AXIS2_FALSE;
 	axiom_node_t *data_out = NULL;
@@ -202,10 +202,10 @@ axis2_http_sender_send(
         }
         data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
 
-		method = (axis2_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
+		method = (axutil_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_HTTP_METHOD);
 		if (method)
-			method_value = (axis2_char_t *) axis2_property_get_value (method, env);
+			method_value = (axis2_char_t *) axutil_property_get_value (method, env);
 
 		/* The default is POST */
 		if (method_value && 0 == axis2_strcmp(method_value, AXIS2_HTTP_HEADER_GET))
@@ -238,15 +238,15 @@ axis2_http_sender_send(
 
 	if (!send_via_get)
 	{
-        axis2_property_t *property = NULL;
+        axutil_property_t *property = NULL;
 
 		/* We put the client into msg_ctx so that we can free it once the processing
 		 * is done at client side
 		 */
-        property = axis2_property_create(env);
-        axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-        axis2_property_set_free_func(property, env, axis2_http_client_free_void_arg);
-        axis2_property_set_value(property, env, sender->client);
+        property = axutil_property_create(env);
+        axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
+        axutil_property_set_free_func(property, env, axis2_http_client_free_void_arg);
+        axutil_property_set_value(property, env, sender->client);
         axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_HTTP_CLIENT, property);
 
 		doing_mtom =  axis2_msg_ctx_get_doing_mtom(msg_ctx, env);
@@ -266,7 +266,7 @@ axis2_http_sender_send(
 		}
 		else
 		{
-			char_set_enc = axis2_string_get_buffer(char_set_enc_str, env);
+			char_set_enc = axutil_string_get_buffer(char_set_enc_str, env);
 		}
 
 		if (is_soap)
@@ -275,7 +275,7 @@ axis2_http_sender_send(
                 AXIS2_DUMP_INPUT_MSG_TRUE);
 			if(dump_property)
 			{
-				axis2_char_t *dump_true = axis2_property_get_value(dump_property, env);
+				axis2_char_t *dump_true = axutil_property_get_value(dump_property, env);
 				if(0 == axis2_strcmp(dump_true, AXIS2_VALUE_TRUE))
 				{
 					AXIS2_HTTP_CLIENT_SET_DUMP_INPUT_MSG(sender->client, env, AXIS2_TRUE);
@@ -433,13 +433,13 @@ axis2_http_sender_send(
 		}
 		else
 		{
-			content_type_property  = (axis2_property_t *) axis2_msg_ctx_get_property(
+			content_type_property  = (axutil_property_t *) axis2_msg_ctx_get_property(
 				msg_ctx, env,
 				AXIS2_USER_DEFINED_HTTP_HEADER_CONTENT_TYPE);
 		
 			if (content_type_property)
 			{
-				content_type_hash = (axutil_hash_t *) axis2_property_get_value (content_type_property, env);
+				content_type_hash = (axutil_hash_t *) axutil_property_get_value (content_type_property, env);
 				if (content_type_hash)
 					content_type_value = (char *) axutil_hash_get (content_type_hash, 
 																  AXIS2_HTTP_HEADER_CONTENT_TYPE, 
@@ -476,7 +476,7 @@ axis2_http_sender_send(
 
     if (doing_mtom)
     {
-        axis2_stream_t *stream = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(request, env);
+        axutil_stream_t *stream = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(request, env);
         if (stream)
         {
             AXIS2_STREAM_WRITE(stream, env, output_stream, output_stream_size);
@@ -499,7 +499,7 @@ axis2_http_sender_send(
 
     if (ssl_pp_param)
     {
-        ssl_pp = axis2_param_get_value(ssl_pp_param, env);
+        ssl_pp = axutil_param_get_value(ssl_pp_param, env);
     }
 
     status_code = AXIS2_HTTP_CLIENT_SEND(sender->client, env, request, ssl_pp);
@@ -605,7 +605,7 @@ axis2_http_sender_get_header_info(
     int i = 0;
     axis2_bool_t response_chunked = AXIS2_FALSE;
     int *content_length = NULL;
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
     axis2_char_t *content_type = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -635,9 +635,9 @@ axis2_http_sender_get_header_info(
 /*                transfer_encoding = */
 /*                     axis2_strdup(AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED, */
 /* 								 env); */
-/*                 property = axis2_property_create(env); */
-/*                 axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST); */
-/*                 axis2_property_set_value(property, env, transfer_encoding); */
+/*                 property = axutil_property_create(env); */
+/*                 axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST); */
+/*                 axutil_property_set_value(property, env, transfer_encoding); */
 /*                  axis2_msg_ctx_set_property(msg_ctx, env, */
 /* 										   AXIS2_HTTP_HEADER_TRANSFER_ENCODING, */
 /* 										   property); */
@@ -672,9 +672,9 @@ axis2_http_sender_get_header_info(
         {
             axis2_ctx_t *axis_ctx = axis2_op_ctx_get_base(
 				 axis2_msg_ctx_get_op_ctx(msg_ctx, env), env);
-            property = axis2_property_create(env);
-            axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-            axis2_property_set_value(property, env, axis2_strdup(env, content_type));
+            property = axutil_property_create(env);
+            axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
+            axutil_property_set_value(property, env, axis2_strdup(env, content_type));
             axis2_ctx_set_property(axis_ctx, env, MTOM_RECIVED_CONTENT_TYPE,
 								   property);
         }
@@ -685,9 +685,9 @@ axis2_http_sender_get_header_info(
 														  msg_ctx, env), env);
         if (axis_ctx)
         {
-            property = axis2_property_create(env);
-            axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-            axis2_property_set_value(property, env, charset);
+            property = axutil_property_create(env);
+            axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
+            axutil_property_set_value(property, env, charset);
             axis2_ctx_set_property(axis_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
 								   property);
         }
@@ -702,9 +702,9 @@ axis2_http_sender_get_header_info(
         }
         tmp_len = AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_LENGTH(response, env);
         memcpy(content_length, &tmp_len, sizeof(int));
-        property = axis2_property_create(env);
-        axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-        axis2_property_set_value(property, env, content_length);
+        property = axutil_property_create(env);
+        axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
+        axutil_property_set_value(property, env, content_length);
          axis2_msg_ctx_set_property(msg_ctx, env,
 								   AXIS2_HTTP_HEADER_CONTENT_LENGTH, property);
     }
@@ -718,8 +718,8 @@ axis2_http_sender_process_response(
     axis2_msg_ctx_t *msg_ctx,
     axis2_http_simple_response_t *response)
 {
-    axis2_stream_t *in_stream = NULL;
-    axis2_property_t *property = NULL;
+    axutil_stream_t *in_stream = NULL;
+    axutil_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -736,10 +736,10 @@ axis2_http_sender_process_response(
     axis2_http_sender_get_header_info(sender, env, msg_ctx, response);
     /*axis_ctx = axis2_op_ctx_get_base( axis2_msg_ctx_get_op_ctx(msg_ctx, env),
 	  env);*/
-    property = axis2_property_create(env);
-    axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-    axis2_property_set_free_func(property, env, axis2_stream_free_void_arg);
-    axis2_property_set_value(property, env, in_stream);
+    property = axutil_property_create(env);
+    axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
+    axutil_property_set_free_func(property, env, axutil_stream_free_void_arg);
+    axutil_property_set_value(property, env, in_stream);
     /*axis2_ctx_set_property(axis_ctx, env, AXIS2_TRANSPORT_IN, property);*/
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, property);
     return AXIS2_SUCCESS;
@@ -753,7 +753,7 @@ axis2_http_sender_get_timeout_values(
 {
     axis2_char_t *so_str = NULL;
     axis2_char_t *connection_str = NULL;
-    axis2_param_t *tmp_param = NULL;
+    axutil_param_t *tmp_param = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -763,7 +763,7 @@ axis2_http_sender_get_timeout_values(
 
     if (tmp_param)
     {
-        so_str = (axis2_char_t *)axis2_param_get_value(tmp_param, env);
+        so_str = (axis2_char_t *)axutil_param_get_value(tmp_param, env);
         if (so_str)
         {
             sender->so_timeout = AXIS2_ATOI(so_str);
@@ -773,7 +773,7 @@ axis2_http_sender_get_timeout_values(
 											AXIS2_HTTP_CONNECTION_TIMEOUT);
     if (tmp_param)
     {
-        connection_str = (axis2_char_t *)axis2_param_get_value(tmp_param, env);
+        connection_str = (axis2_char_t *)axutil_param_get_value(tmp_param, env);
         if (connection_str)
         {
             sender->connection_timeout =
@@ -807,7 +807,7 @@ axis2_http_sender_configure_proxy(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
     axis2_transport_out_desc_t *trans_desc = NULL;
-    axis2_param_t *proxy_param = NULL;
+    axutil_param_t *proxy_param = NULL;
     axutil_hash_t *transport_attrs = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -830,12 +830,12 @@ axis2_http_sender_configure_proxy(
         return AXIS2_FAILURE;
     }
 
-    proxy_param = axis2_param_container_get_param(
+    proxy_param = axutil_param_container_get_param(
         axis2_transport_out_desc_param_container(trans_desc, env), 
 	    env, AXIS2_HTTP_PROXY);
     if (proxy_param)
     {
-        transport_attrs = axis2_param_get_attributes(proxy_param, env);
+        transport_attrs = axutil_param_get_attributes(proxy_param, env);
         if (transport_attrs)
         {
             axutil_generic_obj_t *obj = NULL;
@@ -894,8 +894,8 @@ axis2_http_sender_configure_server_cert(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
-	axis2_property_t *server_cert_property = NULL;
-	axis2_param_t *server_cert_param = NULL;
+	axutil_property_t *server_cert_property = NULL;
+	axutil_param_t *server_cert_param = NULL;
 	axis2_char_t *server_cert = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
 
@@ -906,7 +906,7 @@ axis2_http_sender_configure_server_cert(
         AXIS2_SSL_SERVER_CERT);
     if(server_cert_property)
     {
-		server_cert = (axis2_char_t *) axis2_property_get_value(
+		server_cert = (axis2_char_t *) axutil_property_get_value(
 			server_cert_property, env);
     }
     else
@@ -915,7 +915,7 @@ axis2_http_sender_configure_server_cert(
 														AXIS2_SSL_SERVER_CERT);
         if(server_cert_param)
         {
-            server_cert = (axis2_char_t *) axis2_param_get_value(
+            server_cert = (axis2_char_t *) axutil_param_get_value(
 				server_cert_param, env);
         }
     }
@@ -935,8 +935,8 @@ axis2_http_sender_configure_key_file(
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
-	axis2_property_t *key_file_property = NULL;
-	axis2_param_t *key_file_param = NULL;
+	axutil_property_t *key_file_property = NULL;
+	axutil_param_t *key_file_param = NULL;
     axis2_char_t *key_file = NULL;
 	axis2_status_t status = AXIS2_FAILURE;
 
@@ -947,7 +947,7 @@ axis2_http_sender_configure_key_file(
         AXIS2_SSL_KEY_FILE);
     if(key_file_property)
     {
-		key_file = (axis2_char_t *) axis2_property_get_value(
+		key_file = (axis2_char_t *) axutil_property_get_value(
 			key_file_property, env);
     }
     else
@@ -956,7 +956,7 @@ axis2_http_sender_configure_key_file(
 													 AXIS2_SSL_KEY_FILE);
         if(key_file_param)
         {
-            key_file = (axis2_char_t *) axis2_param_get_value(
+            key_file = (axis2_char_t *) axutil_param_get_value(
 				key_file_param, env);
         }
     }

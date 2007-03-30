@@ -75,7 +75,7 @@ struct woden_qname_attr_ops
      *  QNameAttr interface declared methods 
      * ************************************************************/
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *qname_attr,
             const axutil_env_t *env);
@@ -85,7 +85,7 @@ struct woden_qname_attr_ops
      * ************************************************************/
 
     /*
-     * Convert a string of type xs:QName to a axis2_qname_t.
+     * Convert a string of type xs:QName to a axutil_qname_t.
      * A a null argument will return a null value.
      * Any conversion error will be reported and a null value will be returned.
      */
@@ -115,7 +115,7 @@ woden_qname_attr_create(
         const axutil_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
-        axis2_qname_t *attr_type,
+        axutil_qname_t *attr_type,
         axis2_char_t *attr_value);
 
 

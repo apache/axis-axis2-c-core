@@ -103,7 +103,7 @@ extern "C"
      * @return pointer to interface QName, returns a reference, not a cloned
      * copy
      */
-    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
     axis2_endpoint_ref_get_interface_qname(const axis2_endpoint_ref_t *endpoint_ref,
         const axutil_env_t *env);
 
@@ -119,7 +119,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_endpoint_ref_set_interface_qname(axis2_endpoint_ref_t *endpoint_ref,
         const axutil_env_t *env,
-        const axis2_qname_t *interface_qname);
+        const axutil_qname_t *interface_qname);
 
     /**
      * Gets reference parameter list. A reference may contain a number 

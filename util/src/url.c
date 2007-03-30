@@ -16,10 +16,10 @@
  */
 
 #include <axis2_url.h>
-#include <axis2_string.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
+#include <axutil_string.h>
 #include <axutil_file_handler.h>
-#include <axis2_network_handler.h>
+#include <axutil_network_handler.h>
 #include <axis2_types.h>
 
 struct axis2_url

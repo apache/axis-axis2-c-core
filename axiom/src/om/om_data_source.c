@@ -17,7 +17,7 @@
 
 #include <axiom_data_source.h>
 #include <axiom_output.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include "axiom_node_internal.h"
 #include <axiom_xml_writer.h>
 #include <axiom_output.h>
@@ -31,7 +31,7 @@
 struct axiom_data_source
 {
     /** stream holding serialized XML string */
-    axis2_stream_t *stream;
+    axutil_stream_t *stream;
 };
 
 AXIS2_EXTERN axiom_data_source_t *AXIS2_CALL
@@ -66,7 +66,7 @@ axiom_data_source_create(const axutil_env_t *env,
 
     data_source->stream = NULL;
     
-    data_source->stream = axis2_stream_create_basic(env);
+    data_source->stream = axutil_stream_create_basic(env);
     if (!(data_source->stream))
     {
         AXIS2_FREE(env->allocator, *node);
@@ -112,7 +112,7 @@ axiom_data_source_serialize(axiom_data_source_t *data_source,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
-    data = axis2_stream_get_buffer(data_source->stream, env);
+    data = axutil_stream_get_buffer(data_source->stream, env);
     data_len = AXIS2_STREAM_BASIC_GET_LEN(data_source->stream, env);
     if (data)
     {
@@ -123,7 +123,7 @@ axiom_data_source_serialize(axiom_data_source_t *data_source,
     return status;
 }
 
-AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
+AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axiom_data_source_get_stream(axiom_data_source_t *data_source,
     const axutil_env_t *env)
 {

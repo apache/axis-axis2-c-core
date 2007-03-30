@@ -440,7 +440,7 @@ axiom_soap_fault_get_exception(axiom_soap_fault_t *soap_fault,
     axiom_element_t *detail_ele = NULL;
     axiom_node_t *exception_node = NULL;
     axiom_element_t *exception_ele = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     axis2_char_t *excep = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -453,14 +453,14 @@ axiom_soap_fault_get_exception(axiom_soap_fault_t *soap_fault,
         detail_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                     detail_node, env);
 
-        qn = axis2_qname_create(env,
+        qn = axutil_qname_create(env,
                 AXIOM_SOAP_FAULT_DETAIL_EXCEPTION_ENTRY, NULL, NULL);
         if (qn)
         {
             exception_ele = axiom_element_get_first_child_with_qname(
                         detail_ele, env,
                         qn, detail_node, &exception_node);
-            axis2_qname_free(qn, env);
+            axutil_qname_free(qn, env);
             if (exception_ele &&
                     (excep = axiom_element_get_text(exception_ele, env, exception_node)))
             {

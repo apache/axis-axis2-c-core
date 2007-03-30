@@ -16,7 +16,7 @@
  */
 
 #include <axis2_phase_resolver.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 
 struct axis2_phase_resolver
 {
@@ -180,7 +180,7 @@ axis2_phase_resolver_build_module_op(
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
 
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s",
-        axis2_qname_get_localpart(axis2_op_get_qname(op, env),
+        axutil_qname_get_localpart(axis2_op_get_qname(op, env),
         env));
     for (i = 1; i < 5; i++)
     {
@@ -223,13 +223,13 @@ axis2_phase_resolver_build_execution_chains(
 
     for (i = 0; i < size; i++)
     {
-        axis2_qname_t *modulename = NULL;
+        axutil_qname_t *modulename = NULL;
         axis2_module_desc_t *module_desc = NULL;
 
-        modulename = (axis2_qname_t *) axutil_array_list_get(moduleqnames, env,
+        modulename = (axutil_qname_t *) axutil_array_list_get(moduleqnames, env,
             i);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "module name is:%s",
-            axis2_qname_get_localpart(modulename, env));
+            axutil_qname_get_localpart(modulename, env));
         module_desc =  axis2_conf_get_module(phase_resolver->axis2_config, env,
             modulename);
         if (module_desc)
@@ -870,7 +870,7 @@ axis2_phase_resolver_engage_module_globally(
         axis2_svc_grp_t *svc_grp = NULL;
         void *v = NULL;
         axutil_hash_index_t *index_j = NULL;
-        const axis2_qname_t *mod_name = NULL;
+        const axutil_qname_t *mod_name = NULL;
 
         axutil_hash_this(index_i, NULL, NULL, &v);
         svc_grp = (axis2_svc_grp_t *) v;
@@ -946,13 +946,13 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
         int j = 0;
         axutil_array_list_t *modules = NULL;
         axis2_flow_t *flow = NULL;
-        const axis2_qname_t *module_desc_qname = NULL;
+        const axutil_qname_t *module_desc_qname = NULL;
         int size = 0;
 
         axutil_hash_this(index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s",
-            axis2_qname_get_localpart(axis2_op_get_qname(op_desc, env), env));
+            axutil_qname_get_localpart(axis2_op_get_qname(op_desc, env), env));
         modules = axis2_op_get_all_modules(op_desc, env);
         module_desc_qname = axis2_module_desc_get_qname(module_desc, env);
         if (modules)
@@ -962,14 +962,14 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
         for (j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
-            const axis2_qname_t *module_desc_qname_l = NULL;
+            const axutil_qname_t *module_desc_qname_l = NULL;
 
             module_desc_l = (axis2_module_desc_t *)
                 axutil_array_list_get(modules, env, j);
 
             module_desc_qname_l = axis2_module_desc_get_qname(module_desc_l ,
                 env);
-            if (axis2_qname_equals(module_desc_qname_l, env, module_desc_qname))
+            if (axutil_qname_equals(module_desc_qname_l, env, module_desc_qname))
             {
                 engaged = AXIS2_TRUE;
                 break;
@@ -1250,7 +1250,7 @@ axis2_phase_resolver_engage_module_to_svc(
     axutil_hash_t *ops = NULL;
     axutil_hash_index_t *index_i = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    const axis2_qname_t *module_d_qname = NULL;
+    const axutil_qname_t *module_d_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -1287,18 +1287,18 @@ axis2_phase_resolver_engage_module_to_svc(
         for (j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
-            const axis2_qname_t *module_d_qname_l = NULL;
+            const axutil_qname_t *module_d_qname_l = NULL;
 
             module_desc_l = axutil_array_list_get(modules, env, j);
             module_d_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
-            if (AXIS2_TRUE == axis2_qname_equals(module_d_qname, env,
+            if (AXIS2_TRUE == axutil_qname_equals(module_d_qname, env,
                 module_d_qname_l))
             {
                 engaged = AXIS2_TRUE;
                 status = AXIS2_FAILURE;
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Module %s already engaged.", 
-                    axis2_qname_get_localpart(module_d_qname, env));
+                    axutil_qname_get_localpart(module_d_qname, env));
                 break;
             }
         }

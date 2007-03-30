@@ -26,7 +26,7 @@
 
 #include <xml_schema_annotated.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defidentity_constraint xml_schema_identity_constraint Xml Schema 
   *  Identity Constraint
@@ -70,14 +70,14 @@ struct xml_schema_identity_constraint_ops
             const axutil_env_t *env);   
         
     /** xml schema keyref method */            
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_refer)(void *id_constr,
                const axutil_env_t *env);
 
     /** xml schema keyref method */               
     axis2_status_t (AXIS2_CALL *                                                                    set_refer)(void *id_constr,
                const axutil_env_t *env,
-               axis2_qname_t *refer);
+               axutil_qname_t *refer);
 
     struct xml_schema_obj_collection *(AXIS2_CALL *
     get_fields)(void *id_constr,

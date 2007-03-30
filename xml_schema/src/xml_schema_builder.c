@@ -19,10 +19,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <axis2_string_util.h>
+#include <axutil_string_util.h>
 #include <axutil_allocator.h>
 #include <limits.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axiom_util.h>
 #include <xml_schema_complex_content_restriction.h>
 
@@ -598,7 +598,7 @@ handle_xml_schema_element(
         {
             void *type = NULL;
             void *t = NULL;
-            axis2_qname_t *qn = NULL;
+            axutil_qname_t *qn = NULL;
 
 
             type = handle_simple_type(builder, env, child_ele_node, ele_node);
@@ -615,8 +615,8 @@ handle_xml_schema_element(
                 axis2_char_t *u = NULL;
                 axis2_char_t *p = NULL;
 
-                u = axis2_qname_get_uri(qn, env);
-                p = axis2_qname_get_localpart(qn, env);
+                u = axutil_qname_get_uri(qn, env);
+                p = axutil_qname_get_localpart(qn, env);
                 XML_SCHEMA_COLLECTION_RESOLVE_TYPE(builder_impl->collection,
                         env, qn, type);
             }
@@ -626,7 +626,7 @@ handle_xml_schema_element(
         else if (axis2_strcmp(localname, "complexType") == 0)
         {
             void *type = NULL;
-            axis2_qname_t *qn = NULL;
+            axutil_qname_t *qn = NULL;
             type = handle_complex_type(builder, env, child_ele_node, ele_node);
 
             XML_SCHEMA_ADD_TYPE(builder_impl->schema, env, type);
@@ -648,9 +648,9 @@ handle_xml_schema_element(
             sch_ele = handle_element(builder, env, child_ele_node, ele_node, AXIS2_TRUE);
             if (sch_ele)
             {
-                axis2_qname_t *qualified_qname = NULL;
+                axutil_qname_t *qualified_qname = NULL;
                 axis2_char_t *qname_uri = NULL; /* for debuging */
-                axis2_qname_t *ref_qname = NULL;
+                axutil_qname_t *ref_qname = NULL;
                 xml_schema_obj_table_t *elements = NULL;
 
                 elements = XML_SCHEMA_GET_ELEMENTS(builder_impl->schema, env);
@@ -660,7 +660,7 @@ handle_xml_schema_element(
 
                 if (qualified_qname && NULL != elements)
                 {
-                    qname_uri = axis2_qname_get_uri(qualified_qname, env);
+                    qname_uri = axutil_qname_get_uri(qualified_qname, env);
                     XML_SCHEMA_OBJ_TABLE_ADD(elements, env,
                             qualified_qname, sch_ele);
                 }
@@ -730,7 +730,7 @@ handle_xml_schema_element(
             attr_tbl = XML_SCHEMA_GET_ATTRS(builder_impl->schema, env);
             if (attr)
             {
-                axis2_qname_t *qn = NULL;
+                axutil_qname_t *qn = NULL;
                 qn = XML_SCHEMA_ATTRIBUTE_GET_QNAME(attr, env);
                 XML_SCHEMA_OBJ_TABLE_ADD(attr_tbl, env, qn, attr);
                 XML_SCHEMA_OBJ_COLLECTION_ADD(items, env, attr);
@@ -867,7 +867,7 @@ handle_redefine(
         if (axis2_strcmp(localname, "simpleType") == 0)
         {
             void *type = NULL;
-            axis2_qname_t *qn = NULL;
+            axutil_qname_t *qn = NULL;
 
             type = handle_simple_type(builder, env, child_ele_node, sch_node);
 
@@ -881,7 +881,7 @@ handle_redefine(
         else if (axis2_strcmp(localname, "complexType") == 0)
         {
             void *type = NULL;
-            axis2_qname_t *qn = NULL;
+            axutil_qname_t *qn = NULL;
 
             type = handle_complex_type(builder, env, child_ele_node, sch_node);
 
@@ -946,7 +946,7 @@ set_namespace_attributes(
     axiom_element_t *om_ele = NULL;
 
     axutil_hash_t *ht_sch_ns = NULL;
-    axis2_qname_t *target_ns_qn = NULL;
+    axutil_qname_t *target_ns_qn = NULL;
     axis2_char_t *contain = NULL;
 
     AXIS2_PARAM_CHECK(env->error, schema, AXIS2_FAILURE);
@@ -1008,12 +1008,12 @@ set_namespace_attributes(
         }
     }
     /** note: targetNamespace may availabe even though namespace declarations not available */ 
-    target_ns_qn = axis2_qname_create(env, "targetNamespace", NULL, NULL);
+    target_ns_qn = axutil_qname_create(env, "targetNamespace", NULL, NULL);
 
     contain = axiom_element_get_attribute_value(om_ele, env, target_ns_qn);
 
     if (target_ns_qn)
-        axis2_qname_free(target_ns_qn, env);
+        axutil_qname_free(target_ns_qn, env);
 
     if (contain &&
             (value_exist_in_hash(env, ht_sch_ns, contain)) == AXIS2_FALSE)
@@ -1171,7 +1171,7 @@ handle_simple_type(
             axis2_char_t *namesp          = NULL;
             axutil_array_list_t *last_list = NULL;
             axis2_char_t *name            = NULL;
-            axis2_qname_t *qn              = NULL;
+            axutil_qname_t *qn              = NULL;
 
             temp_list = axis2_tokenize(env, attribute_value, ':');
 
@@ -1187,7 +1187,7 @@ handle_simple_type(
 
             name = axutil_array_list_get(last_list, env, ':');
 
-            qn = axis2_qname_create(env, name, namesp, NULL);
+            qn = axutil_qname_create(env, name, namesp, NULL);
 
             XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_SET_BASE_TYPE_NAME(restriction, env, qn);
         }
@@ -1256,7 +1256,7 @@ handle_simple_type(
             axutil_array_list_t *namespaces_form_ele = NULL;
             axutil_array_list_t *last_list = NULL;
             axis2_char_t *name = NULL;
-            axis2_qname_t *item_type_qn = NULL;
+            axutil_qname_t *item_type_qn = NULL;
             axis2_char_t *ns = NULL;
             axis2_char_t *key = NULL;
             axutil_hash_t *ht_ns = NULL;
@@ -1284,7 +1284,7 @@ handle_simple_type(
 
             name = axutil_array_list_get(last_list, env, 1);
 
-            item_type_qn = axis2_qname_create(env, name, ns, NULL);
+            item_type_qn = axutil_qname_create(env, name, ns, NULL);
 
             XML_SCHEMA_SIMPLE_TYPE_LIST_SET_ITEM_TYPE_NAME(list, env, item_type_qn);
         }
@@ -1350,7 +1350,7 @@ handle_simple_type(
                 axis2_char_t *member = NULL;
                 axis2_char_t *mem_dup = NULL;
                 axis2_char_t *index = NULL;
-                axis2_qname_t *qn = NULL;
+                axutil_qname_t *qn = NULL;
                 member = axutil_array_list_get(v, env, i);
                 mem_dup = axis2_strdup(env, member);
 
@@ -1366,7 +1366,7 @@ handle_simple_type(
                     localname = mem_dup;
                 }
                 uri = axutil_hash_get(ht_namespaces, prefix, AXIS2_HASH_KEY_STRING);
-                qn = axis2_qname_create(env, localname, uri, prefix);
+                qn = axutil_qname_create(env, localname, uri, prefix);
                 /*
                 AXIS2_FREE(env->allocator, mem_dup);
                 AXIS2_FFRE(env->allocator, localname);
@@ -1769,7 +1769,7 @@ handle_simple_content_restriction(
 
         axis2_char_t *name = NULL;
 
-        axis2_qname_t *qn = NULL;
+        axutil_qname_t *qn = NULL;
 
         if (strchr(attr_value, ':'))
         {
@@ -1791,7 +1791,7 @@ handle_simple_content_restriction(
         if (last_list && axutil_array_list_size(last_list, env) >= 2)
             name = (axis2_char_t *)axutil_array_list_get(last_list, env, 1);
 
-        qn = axis2_qname_create(env, name, result, NULL);
+        qn = axutil_qname_create(env, name, result, NULL);
 
         XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_BASE_TYPE_NAME(sim_cnt_res, env, qn);
         attr_value = NULL;
@@ -1909,7 +1909,7 @@ handle_simple_content_extension(
         axis2_char_t *result = NULL;
         axutil_array_list_t* last_list = NULL;
         axis2_char_t *name = NULL;
-        axis2_qname_t *qn = NULL;
+        axutil_qname_t *qn = NULL;
 
         if (strchr(attr_value, ':'))
         {
@@ -1932,7 +1932,7 @@ handle_simple_content_extension(
         if (last_list && axutil_array_list_size(last_list, env) >= 2)
             name = (axis2_char_t *)axutil_array_list_get(last_list, env, 1);
 
-        qn = axis2_qname_create(env, name, result, NULL);
+        qn = axutil_qname_create(env, name, result, NULL);
 
         XML_SCHEMA_SIMPLE_CONTENT_EXTENSION_SET_BASE_TYPE_NAME(sim_cnt_ext, env, qn);
 
@@ -2011,7 +2011,7 @@ handle_complex_content_restriction(
         axis2_char_t *result = NULL;
         axutil_array_list_t* last_list = NULL;
         axis2_char_t *name = NULL;
-        axis2_qname_t *qn = NULL;
+        axutil_qname_t *qn = NULL;
 
         if (strchr(attr_value, ':'))
         {
@@ -2033,7 +2033,7 @@ handle_complex_content_restriction(
         if (last_list && axutil_array_list_size(last_list, env) >= 2)
             name = (axis2_char_t *)axutil_array_list_get(last_list, env, 1);
 
-        qn = axis2_qname_create(env, name, result, NULL);
+        qn = axutil_qname_create(env, name, result, NULL);
 
         XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_SET_BASE_TYPE_NAME(cmp_cnt_res, env, qn);
 
@@ -2129,7 +2129,7 @@ handle_complex_content_extension(
         axis2_char_t *result = NULL;
         axutil_array_list_t* last_list = NULL;
         axis2_char_t *name = NULL;
-        axis2_qname_t *qn = NULL;
+        axutil_qname_t *qn = NULL;
 
         if (strchr(attr_value, ':'))
         {
@@ -2152,7 +2152,7 @@ handle_complex_content_extension(
         if (last_list && axutil_array_list_size(last_list, env) >= 2)
             name = (axis2_char_t *)axutil_array_list_get(last_list, env, 1);
 
-        qn = axis2_qname_create(env, name, result, NULL);
+        qn = axutil_qname_create(env, name, result, NULL);
 
         XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_SET_BASE_TYPE_NAME(cmp_cnt_ext, env, qn);
 
@@ -2247,7 +2247,7 @@ handle_attribute_group_ref(
         axis2_char_t *uri = NULL;
         axis2_char_t *ref = NULL;
         axutil_array_list_t *last_list = NULL;
-        axis2_qname_t *ref_qname = NULL;
+        axutil_qname_t *ref_qname = NULL;
         parts = axis2_tokenize(env, attr_value, ':');
 
         if (parts && axutil_array_list_size(parts, env) > 1)
@@ -2267,7 +2267,7 @@ handle_attribute_group_ref(
         last_list = axis2_last_token(env, attr_value, ':');
         ref = axutil_array_list_get(last_list, env, 1);
         /** check this */
-        ref_qname = axis2_qname_create(env, ref, uri, NULL);
+        ref_qname = axutil_qname_create(env, ref, uri, NULL);
         XML_SCHEMA_ATTRIBUTE_GROUP_REF_SET_REF_QNAME(attr_grp_ref, env, ref_qname);
     }
 
@@ -2792,7 +2792,7 @@ handle_group_ref(
         axis2_char_t *result  = NULL;
         axutil_array_list_t *last_list = NULL;
         axis2_char_t *ref = NULL;
-        axis2_qname_t *ref_qname = NULL;
+        axutil_qname_t *ref_qname = NULL;
 
         parts = axis2_tokenize(env, attr_value, ':');
         ht_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(
@@ -2810,7 +2810,7 @@ handle_group_ref(
         }
         last_list = axis2_last_token(env, attr_value, ':');
         ref = axutil_array_list_get(last_list, env, 1);
-        ref_qname = axis2_qname_create(env, ref, XML_SCHEMA_NS, NULL);
+        ref_qname = axutil_qname_create(env, ref, XML_SCHEMA_NS, NULL);
         return group;
     }
 
@@ -2877,9 +2877,9 @@ handle_attribute(
 
     if (attr_value)
     {
-        axis2_qname_t *qn = NULL;
+        axutil_qname_t *qn = NULL;
         XML_SCHEMA_ATTRIBUTE_SET_NAME(attr, env, attr_value);
-        qn = axis2_qname_create(env, attr_value, target_namespace, NULL);
+        qn = axutil_qname_create(env, attr_value, target_namespace, NULL);
         XML_SCHEMA_ATTRIBUTE_SET_QNAME(attr, env, qn);
     }
 
@@ -2893,7 +2893,7 @@ handle_attribute(
         axis2_char_t *prefix = NULL;
         axutil_array_list_t *last_list = NULL;
         axis2_char_t *name = NULL;
-        axis2_qname_t *qn = NULL;
+        axutil_qname_t *qn = NULL;
 
         args = axis2_tokenize(env, attr_value, ':');
 
@@ -2931,7 +2931,7 @@ handle_attribute(
         last_list = axis2_last_token(env, attr_value, ':');
         name = axutil_array_list_get(last_list, env, 1);
 
-        qn = axis2_qname_create(env, name, namesp, NULL);
+        qn = axutil_qname_create(env, name, namesp, NULL);
         XML_SCHEMA_ATTRIBUTE_SET_SCHEMA_TYPE_NAME(attr, env, qn);
     }
 
@@ -2987,7 +2987,7 @@ handle_attribute(
         axis2_char_t *namesp        = NULL;
         axutil_array_list_t *last_list = NULL;
         axis2_char_t *name          = NULL;
-        axis2_qname_t *ref_name     = NULL;
+        axutil_qname_t *ref_name     = NULL;
 
         ns_list = axis2_tokenize(env, attr_value, ':');
         if (axutil_array_list_size(ns_list, env) > 1)
@@ -3018,7 +3018,7 @@ handle_attribute(
 
         last_list = axis2_last_token(env, attr_value, ':');
         name = axutil_array_list_get(last_list, env, 1);
-        ref_name = axis2_qname_create(env, name, namesp, NULL);
+        ref_name = axutil_qname_create(env, name, namesp, NULL);
 
         XML_SCHEMA_ATTRIBUTE_SET_REF_NAME(attr, env, ref_name);
         XML_SCHEMA_ATTRIBUTE_SET_NAME(attr, env, name);
@@ -3175,8 +3175,8 @@ handle_element(
 
     if (element_name)
     {
-        axis2_qname_t *qn = NULL;
-        qn = axis2_qname_create(env, element_name, ns , NULL);
+        axutil_qname_t *qn = NULL;
+        qn = axutil_qname_create(env, element_name, ns , NULL);
         XML_SCHEMA_ELEMENT_SET_QNAME(sch_ele, env, qn);
     }
 
@@ -3201,7 +3201,7 @@ handle_element(
         axis2_char_t *prefix = NULL;
         axutil_array_list_t *last_list = NULL;
         axis2_char_t *type_name = NULL;
-        axis2_qname_t *type_qname = NULL;
+        axutil_qname_t *type_qname = NULL;
         void *type = NULL;
 
         args = axis2_tokenize(env, attr_value, ':');
@@ -3239,7 +3239,7 @@ handle_element(
 
         last_list = axis2_last_token(env, attr_value, ':');
         type_name = axutil_array_list_get(last_list, env, 1);
-        type_qname = axis2_qname_create(env, type_name, namesp, NULL);
+        type_qname = axutil_qname_create(env, type_name, namesp, NULL);
         XML_SCHEMA_ELEMENT_SET_SCHEMA_TYPE_QNAME(sch_ele, env, type_qname);
 
         type = XML_SCHEMA_COLLECTION_GET_TYPE_BY_QNAME(
@@ -3272,7 +3272,7 @@ handle_element(
         axis2_char_t *args0      = NULL;
         axis2_char_t *namesp     = NULL;
         axutil_hash_t *ht_ns      = NULL;
-        axis2_qname_t *qn        = NULL;
+        axutil_qname_t *qn        = NULL;
 
         args = axis2_tokenize(env, attr_value, ':');
         ht_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
@@ -3297,7 +3297,7 @@ handle_element(
 
         last_list = axis2_last_token(env, attr_value, ':');
         ref_name = axutil_array_list_get(last_list, env, 1);
-        qn = axis2_qname_create(env, ref_name, namesp, NULL);
+        qn = axutil_qname_create(env, ref_name, namesp, NULL);
 
         XML_SCHEMA_ELEMENT_SET_REF_NAME(sch_ele, env, qn);
         XML_SCHEMA_ELEMENT_SET_NAME(sch_ele, env, ref_name);
@@ -3308,7 +3308,7 @@ handle_element(
                 om_ele, env, ele_node, "simpleType", XML_SCHEMA_NS, &sim_type_node)))
     {
         void *sim_type = NULL;
-        axis2_qname_t *qn = NULL;
+        axutil_qname_t *qn = NULL;
 
         sim_type = handle_simple_type(builder, env, sim_type_node, ele_node);
 
@@ -3356,7 +3356,7 @@ handle_element(
             axis2_char_t *args0      = NULL;
             axis2_char_t *namesp     = NULL;
             axutil_hash_t *ht_ns      = NULL;
-            axis2_qname_t *qn        = NULL;
+            axutil_qname_t *qn        = NULL;
 
             args = axis2_tokenize(env, attr_val, ':');
             ht_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
@@ -3381,7 +3381,7 @@ handle_element(
 
             last_list = axis2_last_token(env, attr_val, ':');
             ref_name = axutil_array_list_get(last_list, env, 1);
-            qn = axis2_qname_create(env, ref_name, namesp, NULL);
+            qn = axutil_qname_create(env, ref_name, namesp, NULL);
 
             XML_SCHEMA_IDENTITY_CONSTRAINT_SET_REFER(keyref, env, qn);
         }
@@ -3553,7 +3553,7 @@ handle_constraint(
         axutil_array_list_t *last_list = NULL;
         axis2_char_t *ns = NULL;
         axis2_char_t *name = NULL;
-        axis2_qname_t *qname = NULL;
+        axutil_qname_t *qname = NULL;
 
         ns_from_ele = axis2_tokenize(env, attr_value, ':');
         /** check this */
@@ -3579,7 +3579,7 @@ handle_constraint(
 
         XML_SCHEMA_IDENTITY_CONSTRAINT_SET_NAME(constraint, env, name);
 
-        qname = axis2_qname_create(env, name, ns, NULL);
+        qname = axutil_qname_create(env, name, ns, NULL);
 
         XML_SCHEMA_IDENTITY_CONSTRAINT_SET_REFER(constraint, env, qname);
     }

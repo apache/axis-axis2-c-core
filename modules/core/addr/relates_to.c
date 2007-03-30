@@ -16,7 +16,7 @@
  */
 
 #include <axis2_relates_to.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 struct axis2_relates_to
 {

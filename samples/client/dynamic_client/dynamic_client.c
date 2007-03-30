@@ -17,7 +17,7 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axiom_text.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 #include <axutil_log_default.h>
 #include <axutil_error_default.h>
 #include <axis2_svc_client.h>
@@ -86,10 +86,10 @@ process_for_wsdl1(
     axiom_node_t *payload = NULL;
     axiom_node_t *response = NULL;
     axis2_uri_t *wsdl_uri = NULL;
-    axis2_qname_t *op_qname = NULL;
+    axutil_qname_t *op_qname = NULL;
     axis2_svc_client_t *svc_client = NULL;
     const axis2_char_t *client_home = NULL;
-    axis2_qname_t *wsdl_svc_qname = NULL;
+    axutil_qname_t *wsdl_svc_qname = NULL;
 
 
     /* Set up deploy folder. It is from the deploy folder, the configuration
@@ -104,7 +104,7 @@ process_for_wsdl1(
     if (!client_home || !strcmp (client_home, ""))
         client_home = "../..";
 
-    wsdl_svc_qname = axis2_qname_create(env, "Calculator",
+    wsdl_svc_qname = axutil_qname_create(env, "Calculator",
             "http://localhost/axis/Calculator", NULL);
     wsdl_uri = axis2_uri_parse_string(env, wsdl_uri_str);
     svc_client =
@@ -117,7 +117,7 @@ process_for_wsdl1(
         return 1;
     }
     payload = build_om_programatically_for_wsdl1(env);
-    op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator",
+    op_qname = axutil_qname_create(env, "add", "http://localhost/axis/Calculator",
             NULL);
     response = axis2_svc_client_send_receive_with_op_qname(svc_client, env,
             op_qname, payload);
@@ -149,10 +149,10 @@ process_for_wsdl2(
     axiom_node_t *payload = NULL;
     axiom_node_t *response = NULL;
     axis2_uri_t *wsdl_uri = NULL;
-    axis2_qname_t *op_qname = NULL;
+    axutil_qname_t *op_qname = NULL;
     axis2_svc_client_t *svc_client = NULL;
     const axis2_char_t *client_home = NULL;
-    axis2_qname_t *wsdl_svc_qname = NULL;
+    axutil_qname_t *wsdl_svc_qname = NULL;
 
     /* Set up deploy folder. It is from the deploy folder, the configuration
      * is picked up using the axis2.xml file.
@@ -166,7 +166,7 @@ process_for_wsdl2(
     if (!client_home || !strcmp (client_home, ""))
         client_home = "../..";
 
-    wsdl_svc_qname = axis2_qname_create(env, "reservationService",
+    wsdl_svc_qname = axutil_qname_create(env, "reservationService",
             "http://greath.example.com/2004/wsdl/resSvc", NULL);
     wsdl_uri = axis2_uri_parse_string(env, wsdl_uri_str);
     svc_client =
@@ -179,7 +179,7 @@ process_for_wsdl2(
         return -1;
     }
     payload = build_om_programatically_for_wsdl2(env);
-    op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator",
+    op_qname = axutil_qname_create(env, "add", "http://localhost/axis/Calculator",
             NULL);
     response = axis2_svc_client_send_receive_with_op_qname(svc_client, env,
             op_qname, payload);

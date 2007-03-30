@@ -76,14 +76,14 @@ struct xml_schema_simple_type_list_ops
                    const axutil_env_t *env,
                    xml_schema_simple_type_t *base_type);
     
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_item_type_name)(void *simple_type_list,
                 const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_item_type_name)(void *simple_type_list,
                     const axutil_env_t *env,
-                    axis2_qname_t *qname);
+                    axutil_qname_t *qname);
 };
 
 struct xml_schema_simple_type_list

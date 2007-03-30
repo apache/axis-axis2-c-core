@@ -21,7 +21,7 @@
 #include <axutil_array_list.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_messages.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 #include <w2c_properties.h>
 
@@ -368,7 +368,7 @@ w2c_engine_config_loader_load_config(
                h = axutil_hash_make ( env );   
            }
            len = axis2_strlen (W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX );
-           tmp_key = axis2_string_substring_starting_at ( tmp_key, len);
+           tmp_key = axutil_string_substring_starting_at ( tmp_key, len);
            axutil_hash_set( h, tmp_key, AXIS2_HASH_KEY_STRING, tmp_string );
            axutil_array_list_free ( tmp_array, env);
         }

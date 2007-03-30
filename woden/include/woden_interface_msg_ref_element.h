@@ -28,10 +28,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
 #include <woden.h>
@@ -102,9 +102,9 @@ struct woden_interface_msg_ref_element_ops
     set_element_qname) (
             void *iface_fault_ele,
             const axutil_env_t *env,
-            axis2_qname_t *element);
+            axutil_qname_t *element);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_element_qname) (
             void *iface_fault_ele,
             const axutil_env_t *env);

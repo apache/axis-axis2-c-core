@@ -94,7 +94,7 @@ savan_sub_processor_subscribe(
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_svc_t *svc = NULL;
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
     axutil_hash_t *store = NULL;
     savan_subscriber_t *subscriber = NULL;
     axis2_char_t *expires = NULL;
@@ -134,7 +134,7 @@ savan_sub_processor_subscribe(
         param = axis2_svc_get_param(svc, env, SUBSCRIBER_STORE);
     }
     
-    store = (axutil_hash_t*)axis2_param_get_value(param, env);
+    store = (axutil_hash_t*)axutil_param_get_value(param, env);
          
     /* Set the expiry time on the subscription */
     /* TODO : For now we are ignoring the Expiry sent by the client. Add support
@@ -276,7 +276,7 @@ savan_sub_processor_set_sub_store(
     const axutil_env_t *env)
 {
     axutil_hash_t *store = NULL;
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -292,7 +292,7 @@ savan_sub_processor_set_sub_store(
     }
     
     /* Add the hash map as a parameter to the given service */
-    param = axis2_param_create(env, SUBSCRIBER_STORE, (void*)store);
+    param = axutil_param_create(env, SUBSCRIBER_STORE, (void*)store);
     if (!param)
     {
         /* TODO : error reporting */
@@ -315,7 +315,7 @@ savan_sub_processor_create_subscriber_from_msg(
     axis2_char_t *sub_id = NULL;
     axiom_soap_envelope_t *envelope = NULL;
     axiom_soap_body_t *body = NULL;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     
     axiom_node_t *body_node = NULL;
     axiom_node_t *sub_node = NULL;
@@ -385,18 +385,18 @@ savan_sub_processor_create_subscriber_from_msg(
     body_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(body_node, env);
     
     /* Get Subscribe element from Body */
-    qname = axis2_qname_create(env, ELEM_NAME_SUBSCRIBE, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_SUBSCRIBE, EVENTING_NAMESPACE, NULL);
     sub_elem = axiom_element_get_first_child_with_qname(body_elem, env, qname,
         body_node, &sub_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     /* Now read each sub element of Subscribe element */
         
     /* EndTo */
-    qname = axis2_qname_create(env, ELEM_NAME_ENDTO, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_ENDTO, EVENTING_NAMESPACE, NULL);
     endto_elem = axiom_element_get_first_child_with_qname(sub_elem, env, qname,
         sub_node, &endto_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     endto = axiom_element_get_text(endto_elem, env, endto_node);
     
@@ -405,15 +405,15 @@ savan_sub_processor_create_subscriber_from_msg(
     savan_subscriber_set_end_to(subscriber, env, endto_epr);
     
     /* Get Delivery element and read NotifyTo */
-    qname = axis2_qname_create(env, ELEM_NAME_DELIVERY, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_DELIVERY, EVENTING_NAMESPACE, NULL);
     delivery_elem = axiom_element_get_first_child_with_qname(sub_elem, env, qname,
         sub_node, &delivery_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
-    qname = axis2_qname_create(env, ELEM_NAME_NOTIFYTO, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_NOTIFYTO, EVENTING_NAMESPACE, NULL);
     notify_elem = axiom_element_get_first_child_with_qname(delivery_elem, env, qname,
         delivery_node, &notify_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     notify = axiom_element_get_text(notify_elem, env, notify_node);
     
@@ -422,20 +422,20 @@ savan_sub_processor_create_subscriber_from_msg(
     savan_subscriber_set_notify_to(subscriber, env, notify_epr);
     
     /* Expires */
-    qname = axis2_qname_create(env, ELEM_NAME_EXPIRES, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_EXPIRES, EVENTING_NAMESPACE, NULL);
     expires_elem = axiom_element_get_first_child_with_qname(sub_elem, env, qname,
         sub_node, &expires_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     expires = axiom_element_get_text(expires_elem, env, expires_node);
     
     savan_subscriber_set_expires(subscriber, env, expires);
     
     /* Filter */
-    qname = axis2_qname_create(env, ELEM_NAME_FILTER, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_FILTER, EVENTING_NAMESPACE, NULL);
     filter_elem = axiom_element_get_first_child_with_qname(sub_elem, env, qname,
         sub_node, &filter_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     filter = axiom_element_get_text(filter_elem, env, filter_node);
     
@@ -452,15 +452,15 @@ savan_sub_processor_set_sub_id_to_msg_ctx(
     axis2_msg_ctx_t *msg_ctx,
     axis2_char_t *id)
 {
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     /* Set the subscription id as a property in the msg_ctx. We use this inside
      * savan_msg_recv to send the wse:Identifier
      * Pass a copy because msg ctx free function frees all properties */
-    property = axis2_property_create(env);
-    axis2_property_set_value(property, env, (void*)axis2_strdup(env, id));
+    property = axutil_property_create(env);
+    axutil_property_set_value(property, env, (void*)axis2_strdup(env, id));
      axis2_msg_ctx_set_property(msg_ctx, env, SAVAN_KEY_SUB_ID, property,
         AXIS2_FALSE);
 

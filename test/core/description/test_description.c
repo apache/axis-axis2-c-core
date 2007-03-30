@@ -59,7 +59,7 @@ int axis2_test_op_engage_module()
 int axis2_test_svc_add_module_ops()
 {
     struct axis2_svc *svc = NULL;
-    struct axis2_qname *qname = NULL;
+    struct axutil_qname *qname = NULL;
     struct axis2_module_desc *module_desc = NULL;
     struct axis2_conf *axis2_config = NULL;
 
@@ -72,7 +72,7 @@ int axis2_test_svc_add_module_ops()
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axutil_env_t *env = axutil_env_create(allocator);
-    qname = axis2_qname_create(env, "name1", NULL, NULL);
+    qname = axutil_qname_create(env, "name1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
     module_desc = axis2_module_desc_create(env);
     axis2_config = axis2_conf_create(env);
@@ -85,7 +85,7 @@ int axis2_test_svc_add_module_ops()
         printf("axis2_test_add_module_ops SUCCESS\n");
 
     axis2_svc_free(svc, env);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     axis2_module_desc_free(module_desc, env);
      axis2_conf_free(axis2_config, env);
 
@@ -95,7 +95,7 @@ int axis2_test_svc_add_module_ops()
 int axis2_test_svc_engage_module()
 {
     axis2_svc_t *svc = NULL;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     axis2_module_desc_t *moduleref = NULL;
     axis2_conf_t *axis2_config = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -107,7 +107,7 @@ int axis2_test_svc_engage_module()
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axutil_env_t *env = axutil_env_create(allocator);
-    qname = axis2_qname_create(env, "name1", NULL, NULL);
+    qname = axutil_qname_create(env, "name1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
     moduleref = axis2_module_desc_create(env);
     axis2_config = axis2_conf_create(env);
@@ -122,7 +122,7 @@ int axis2_test_svc_engage_module()
         printf("axis2_test_svc_engage_module SUCCESS\n");
 
     axis2_svc_free(svc, env);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
      axis2_conf_free(axis2_config, env);
 
     return 0;
@@ -131,7 +131,7 @@ int axis2_test_svc_engage_module()
 int axis2_test_svc_get_op()
 {
     struct axis2_svc *svc = NULL;
-    struct axis2_qname *qname = NULL;
+    struct axutil_qname *qname = NULL;
     struct axutil_hash_t *ops = NULL;
     struct axis2_op *op = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
@@ -143,14 +143,14 @@ int axis2_test_svc_get_op()
 
     axutil_allocator_t *allocator = axutil_allocator_init(NULL);
     const axutil_env_t *env = axutil_env_create(allocator);
-    qname = axis2_qname_create(env, "op1", NULL, NULL);
+    qname = axutil_qname_create(env, "op1", NULL, NULL);
     op = axis2_op_create_with_qname(env, qname);
-    qname = axis2_qname_create(env, "svc1", NULL, NULL);
+    qname = axutil_qname_create(env, "svc1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
 
     status = axis2_svc_add_op(svc, env, op);
 
-    qname = axis2_qname_create(env, "op2", NULL, NULL);
+    qname = axutil_qname_create(env, "op2", NULL, NULL);
     op = axis2_op_create_with_qname(env, qname);
     status = axis2_svc_add_op(svc, env, op);
 
@@ -182,9 +182,9 @@ int axis2_test_svc_get_op()
             axutil_hash_this(hi2, NULL, NULL, &op2);
             if (op2)
             {
-                const axis2_qname_t *qname = NULL;
+                const axutil_qname_t *qname = NULL;
                 qname = axis2_op_get_qname((axis2_op_t *)op2, env);
-                oname = axis2_qname_get_localpart(qname, env);
+                oname = axutil_qname_get_localpart(qname, env);
                 printf("op name = %s\n", oname);
             }
         }

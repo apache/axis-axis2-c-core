@@ -28,10 +28,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
 #include <woden.h>
@@ -80,14 +80,14 @@ struct woden_attr_extensible_ops
     set_ext_attr) (
             void *extensible,
             const axutil_env_t *env,
-            axis2_qname_t *attr_type,
+            axutil_qname_t *attr_type,
             struct woden_xml_attr *attr); 
 
     void *(AXIS2_CALL *
     get_ext_attr) (
             void *extensible,
             const axutil_env_t *env,
-            axis2_qname_t *attr_type); 
+            axutil_qname_t *attr_type); 
 
     axutil_array_list_t *(AXIS2_CALL *
     get_ext_attrs) (

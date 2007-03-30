@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <axis2_stack.h>
+#include <axutil_stack.h>
 #include <axis2_utils.h>
 #include <axutil_env.h>
 #include <stdlib.h>
@@ -23,7 +23,7 @@
 
 #define AXIS2_STACK_DEFAULT_CAPACITY 10
 
-struct axis2_stack
+struct axutil_stack
 {
     void **data;
     /** current number of elements */
@@ -33,15 +33,15 @@ struct axis2_stack
     axis2_bool_t is_empty_stack;
 };
 
-AXIS2_EXTERN axis2_stack_t * AXIS2_CALL
-axis2_stack_create(const axutil_env_t *env)
+AXIS2_EXTERN axutil_stack_t * AXIS2_CALL
+axutil_stack_create(const axutil_env_t *env)
 {
-    axis2_stack_t *stack = NULL;
+    axutil_stack_t *stack = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    stack = (axis2_stack_t*)AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_stack_t));
+    stack = (axutil_stack_t*)AXIS2_MALLOC(env->allocator,
+        sizeof(axutil_stack_t));
 
     if (!stack)
     {
@@ -59,7 +59,7 @@ axis2_stack_create(const axutil_env_t *env)
     if (!stack->data)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_stack_free(stack , env);
+        axutil_stack_free(stack , env);
         return NULL;
     }
 
@@ -67,7 +67,7 @@ axis2_stack_create(const axutil_env_t *env)
 }
 
 void AXIS2_CALL
-axis2_stack_free(axis2_stack_t *stack,
+axutil_stack_free(axutil_stack_t *stack,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -81,7 +81,7 @@ axis2_stack_free(axis2_stack_t *stack,
 }
 
 void* AXIS2_CALL
-axis2_stack_pop(axis2_stack_t *stack,
+axutil_stack_pop(axutil_stack_t *stack,
     const axutil_env_t *env)
 {
     void *value = NULL;
@@ -106,7 +106,7 @@ axis2_stack_pop(axis2_stack_t *stack,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stack_push(axis2_stack_t *stack,
+axutil_stack_push(axutil_stack_t *stack,
     const axutil_env_t *env,
     void* value)
 {
@@ -143,7 +143,7 @@ axis2_stack_push(axis2_stack_t *stack,
 }
 
 int AXIS2_CALL
-axis2_stack_size(axis2_stack_t *stack,
+axutil_stack_size(axutil_stack_t *stack,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -151,7 +151,7 @@ axis2_stack_size(axis2_stack_t *stack,
 }
 
 void * AXIS2_CALL
-axis2_stack_get(axis2_stack_t *stack,
+axutil_stack_get(axutil_stack_t *stack,
     const axutil_env_t *env)
 {
     if (stack->size > 0)
@@ -162,7 +162,7 @@ axis2_stack_get(axis2_stack_t *stack,
 }
 
 void* AXIS2_CALL
-axis2_stack_get_at(axis2_stack_t *stack,
+axutil_stack_get_at(axutil_stack_t *stack,
     const axutil_env_t *env,
     int i)
 {

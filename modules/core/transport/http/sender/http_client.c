@@ -18,9 +18,9 @@
 
 #include <axis2_http_client.h>
 #include <axis2_http_transport.h>
-#include <axis2_stream.h>
-#include <axis2_string.h>
-#include <axis2_network_handler.h>
+#include <axutil_stream.h>
+#include <axutil_string.h>
+#include <axutil_network_handler.h>
 #include <axis2_http_request_line.h>
 #include <axis2_http_header.h>
 #include <axis2_http_status_line.h>
@@ -34,7 +34,7 @@
 struct axis2_http_client
 {
     int sockfd;
-    axis2_stream_t *data_stream;
+    axutil_stream_t *data_stream;
     axis2_url_t *url;
     axis2_http_simple_response_t *response;
     axis2_bool_t request_sent;
@@ -100,7 +100,7 @@ axis2_http_client_free(
     }
     if (-1 != http_client->sockfd)
     {
-        axis2_network_handler_close_socket(env, http_client->sockfd);
+        axutil_network_handler_close_socket(env, http_client->sockfd);
         http_client->sockfd = -1;
     }
 
@@ -162,12 +162,12 @@ axis2_http_client_send(
         {
             return AXIS2_FAILURE;
         }
-        client->sockfd = axis2_network_handler_open_socket(env,
+        client->sockfd = axutil_network_handler_open_socket(env,
                 client->proxy_host, client->proxy_port);
     }
     else
     {
-        client->sockfd = axis2_network_handler_open_socket(env,
+        client->sockfd = axutil_network_handler_open_socket(env,
                 axis2_url_get_server(client->url, env),
                 axis2_url_get_port(client->url, env));
     }
@@ -181,14 +181,14 @@ axis2_http_client_send(
         return AXIS2_FAILURE;
     }
     /* ONLY FOR TESTING
-     * client->data_stream = axis2_stream_create_file(env, 
+     * client->data_stream = axutil_stream_create_file(env, 
      *            stdout);
      */
     if (client->timeout > 0)
     {
-        axis2_network_handler_set_sock_option(env, client->sockfd,
+        axutil_network_handler_set_sock_option(env, client->sockfd,
                 SO_RCVTIMEO, client->timeout);
-        axis2_network_handler_set_sock_option(env, client->sockfd,
+        axutil_network_handler_set_sock_option(env, client->sockfd,
                 SO_SNDTIMEO, client->timeout);
     }
     if (0 == axis2_strcasecmp(axis2_url_get_protocol(client->url, env),
@@ -204,7 +204,7 @@ axis2_http_client_send(
                 return AXIS2_FAILURE;
             }
         }
-        client->data_stream = axis2_stream_create_ssl(env,
+        client->data_stream = axutil_stream_create_ssl(env,
                 client->sockfd, 
                 AXIS2_HTTP_CLIENT_GET_SERVER_CERT(client, env),
                 AXIS2_HTTP_CLIENT_GET_KEY_FILE(client, env),
@@ -217,13 +217,13 @@ axis2_http_client_send(
     }
     else
     {
-        client->data_stream = axis2_stream_create_socket(env,
+        client->data_stream = axutil_stream_create_socket(env,
                 client->sockfd);
     }
 
     if (! client->data_stream)
     {
-        axis2_network_handler_close_socket(env, client->sockfd);
+        axutil_network_handler_close_socket(env, client->sockfd);
         return AXIS2_FAILURE;
     }
 
@@ -611,7 +611,7 @@ axis2_http_client_connect_ssl_host(
     axis2_char_t *host,
     int port)
 {
-    axis2_stream_t *tmp_stream = NULL;
+    axutil_stream_t *tmp_stream = NULL;
     axis2_char_t *connect_string = NULL;
     axis2_char_t str_status_line[512];
     axis2_char_t tmp_buf[3];
@@ -628,7 +628,7 @@ axis2_http_client_connect_ssl_host(
         return AXIS2_FAILURE;
     }
 
-    tmp_stream = axis2_stream_create_socket(env, client->sockfd);
+    tmp_stream = axutil_stream_create_socket(env, client->sockfd);
     if (! tmp_stream)
     {
         return AXIS2_FAILURE;

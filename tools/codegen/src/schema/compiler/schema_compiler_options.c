@@ -16,7 +16,7 @@
  */
 
 #include <w2c_schema_compiler_options.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 /**
  * @brief

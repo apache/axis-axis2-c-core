@@ -16,14 +16,14 @@
  */
 
 #include <axis2_handler_desc.h>
-#include <axis2_param_container.h>
-#include <axis2_string.h>
+#include <axutil_param_container.h>
+#include <axutil_string.h>
 #include <axis2_handler.h>
 
 struct axis2_handler_desc
 {
     /** name */
-    axis2_string_t *name;
+    axutil_string_t *name;
     /** phase rules */
     axis2_phase_rule_t *rules;
     /** handler represented by meta information*/
@@ -31,14 +31,14 @@ struct axis2_handler_desc
     /** class name */
     axis2_char_t *class_name;
     /** parent param container */
-    axis2_param_container_t *parent;
+    axutil_param_container_t *parent;
     /** parameter container */
-    axis2_param_container_t *param_container;
+    axutil_param_container_t *param_container;
 };
 
 AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
 axis2_handler_desc_create(const axutil_env_t *env,
-    axis2_string_t *name)
+    axutil_string_t *name)
 {
     axis2_handler_desc_t *handler_desc = NULL;
 
@@ -60,7 +60,7 @@ axis2_handler_desc_create(const axutil_env_t *env,
     handler_desc->parent = NULL;
 
     handler_desc->param_container  =
-        axis2_param_container_create(env);
+        axutil_param_container_create(env);
     if (!handler_desc->param_container)
     {
         /** error code is already set by last param container create */
@@ -78,13 +78,13 @@ axis2_handler_desc_create(const axutil_env_t *env,
 
     if (name)
     {
-        handler_desc->name = axis2_string_clone(name, env);
+        handler_desc->name = axutil_string_clone(name, env);
     }
 
     return handler_desc;
 }
 
-AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
+AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
 axis2_handler_desc_get_name(const axis2_handler_desc_t *handler_desc,
     const axutil_env_t *env)
 {
@@ -94,18 +94,18 @@ axis2_handler_desc_get_name(const axis2_handler_desc_t *handler_desc,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_set_name(axis2_handler_desc_t *handler_desc,
     const axutil_env_t *env,
-    axis2_string_t *name)
+    axutil_string_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if (handler_desc->name)
     {
-        axis2_string_free(handler_desc->name, env);
+        axutil_string_free(handler_desc->name, env);
         handler_desc->name = NULL;
     }
 
     if (name)
     {
-        handler_desc->name = axis2_string_clone(name, env);
+        handler_desc->name = axutil_string_clone(name, env);
     }
 
     return AXIS2_SUCCESS;
@@ -142,30 +142,30 @@ axis2_handler_desc_set_rules(axis2_handler_desc_t *handler_desc,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+AXIS2_EXTERN axutil_param_t *AXIS2_CALL
 axis2_handler_desc_get_param(const axis2_handler_desc_t *handler_desc,
     const axutil_env_t *env,
     const axis2_char_t *name)
 {
-    return axis2_param_container_get_param(handler_desc->param_container, env, name);
+    return axutil_param_container_get_param(handler_desc->param_container, env, name);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_add_param(axis2_handler_desc_t *handler_desc,
     const axutil_env_t *env,
-    axis2_param_t *param)
+    axutil_param_t *param)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (axis2_param_container_is_param_locked(handler_desc->parent, env,
-        axis2_param_get_name(param, env)))
+    if (axutil_param_container_is_param_locked(handler_desc->parent, env,
+        axutil_param_get_name(param, env)))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
-    return axis2_param_container_add_param(handler_desc->param_container, 
+    return axutil_param_container_add_param(handler_desc->param_container, 
         env, param);
 }
 
@@ -173,7 +173,7 @@ AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_handler_desc_get_all_params(const axis2_handler_desc_t *handler_desc,
     const axutil_env_t *env)
 {
-    return axis2_param_container_get_params(handler_desc->param_container, 
+    return axutil_param_container_get_params(handler_desc->param_container, 
         env);
 }
 
@@ -185,13 +185,13 @@ axis2_handler_desc_is_param_locked(const axis2_handler_desc_t *handler_desc,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     /* see if it is locked in parent */
-    if (axis2_param_container_is_param_locked(handler_desc->parent, env,
+    if (axutil_param_container_is_param_locked(handler_desc->parent, env,
         param_name))
     {
         return AXIS2_TRUE;
     }
 
-    return axis2_param_container_is_param_locked(handler_desc->param_container,
+    return axutil_param_container_is_param_locked(handler_desc->param_container,
         env, param_name);
 }
 
@@ -255,7 +255,7 @@ axis2_handler_desc_set_class_name(axis2_handler_desc_t *handler_desc,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
 axis2_handler_desc_get_parent(const axis2_handler_desc_t *handler_desc,
     const axutil_env_t *env)
 {
@@ -265,7 +265,7 @@ axis2_handler_desc_get_parent(const axis2_handler_desc_t *handler_desc,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_desc_set_parent(axis2_handler_desc_t *handler_desc,
     const axutil_env_t *env,
-    axis2_param_container_t *parent)
+    axutil_param_container_t *parent)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     handler_desc->parent = parent; /* shallow copy, because
@@ -281,12 +281,12 @@ axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
 
     if (handler_desc->param_container)
     {
-        axis2_param_container_free(handler_desc-> param_container, env);
+        axutil_param_container_free(handler_desc-> param_container, env);
     }
 
     if (handler_desc->name)
     {
-        axis2_string_free(handler_desc->name, env);
+        axutil_string_free(handler_desc->name, env);
     }
 
     if (handler_desc->rules)
@@ -311,7 +311,7 @@ axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
     return;
 }
 
-AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
 axis2_handler_desc_get_param_container(const axis2_handler_desc_t *handler_desc,
     const axutil_env_t *env)
 {

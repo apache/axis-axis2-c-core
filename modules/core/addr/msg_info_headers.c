@@ -16,7 +16,7 @@
  */
 
 #include <axis2_msg_info_headers.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 struct axis2_msg_info_headers
 {

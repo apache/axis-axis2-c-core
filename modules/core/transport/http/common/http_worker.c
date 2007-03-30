@@ -17,10 +17,10 @@
 
 
 #include <axis2_http_worker.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_http_transport.h>
 #include <axis2_conf.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_http_request_line.h>
 #include <axis2_http_out_transport_info.h>
@@ -29,7 +29,7 @@
 #include <axis2_engine.h>
 #include <axis2_uuid_gen.h>
 #include <axis2_url.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 
 struct axis2_http_worker
 {
@@ -103,14 +103,14 @@ axis2_http_worker_process_request(
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-    axis2_stream_t *request_body = NULL;
-    axis2_stream_t *out_stream = axis2_stream_create_basic(env);
+    axutil_stream_t *request_body = NULL;
+    axutil_stream_t *out_stream = axutil_stream_create_basic(env);
     axis2_http_simple_response_t *response = NULL;
     axis2_transport_out_desc_t *out_desc = NULL;
     axis2_transport_in_desc_t *in_desc = NULL;
     axis2_char_t *http_version = NULL;
     axis2_char_t *soap_action = NULL;
-    axis2_string_t *soap_action_str = NULL;
+    axutil_string_t *soap_action_str = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
     axis2_status_t status = AXIS2_FAILURE;
     int content_length = -1;
@@ -125,7 +125,7 @@ axis2_http_worker_process_request(
     axis2_char_t *url_external_form = NULL;
     axis2_char_t *svc_grp_uuid = NULL;
     axis2_char_t *path = NULL;
-    axis2_property_t *peer_property = NULL;
+    axutil_property_t *peer_property = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FAILURE);
@@ -203,8 +203,8 @@ axis2_http_worker_process_request(
 
     if (peer_ip)
     {
-        peer_property = axis2_property_create (env);
-        axis2_property_set_value (peer_property, env, axis2_strdup (env, peer_ip));
+        peer_property = axutil_property_create (env);
+        axutil_property_set_value (peer_property, env, axis2_strdup (env, peer_ip));
         axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR, peer_property); 
     }
 
@@ -226,9 +226,9 @@ axis2_http_worker_process_request(
     svc_grp_uuid = axis2_uuid_gen(env);
     if (svc_grp_uuid)
     {
-        axis2_string_t *svc_grp_uuid_str = axis2_string_create_assume_ownership(env, &svc_grp_uuid);
+        axutil_string_t *svc_grp_uuid_str = axutil_string_create_assume_ownership(env, &svc_grp_uuid);
          axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_uuid_str);
-        axis2_string_free(svc_grp_uuid_str, env);
+        axutil_string_free(svc_grp_uuid_str, env);
     }
 
     http_out_transport_info = axis2_http_out_transport_info_create(env, response);
@@ -241,7 +241,7 @@ axis2_http_worker_process_request(
                     AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(
                         simple_request, env, AXIS2_HTTP_HEADER_SOAP_ACTION),
                     env);
-        soap_action_str = axis2_string_create(env, soap_action);
+        soap_action_str = axutil_string_create(env, soap_action);
     }
     if (0 == axis2_strcasecmp(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
                 AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
@@ -299,7 +299,7 @@ axis2_http_worker_process_request(
             axis2_http_request_line_t *req_line = NULL;
             axis2_http_status_line_t *tmp_stat_line = NULL;
             axis2_char_t status_line_str[100];
-            axis2_property_t *http_error_property = NULL;
+            axutil_property_t *http_error_property = NULL;
             axis2_char_t *http_error_value = NULL;
             if (! engine)
             {
@@ -310,7 +310,7 @@ axis2_http_worker_process_request(
                 AXIS2_HTTP_TRANSPORT_ERROR);
 
             if (http_error_property)
-                http_error_value = (axis2_char_t *)axis2_property_get_value(
+                http_error_value = (axis2_char_t *)axutil_property_get_value(
                     http_error_property, env);
 
             fault_ctx =  axis2_engine_create_fault_msg_ctx(engine, env, msg_ctx);
@@ -408,7 +408,7 @@ axis2_http_worker_process_request(
     
     msg_ctx = NULL;
     axis2_url_free(request_url, env);
-    axis2_string_free(soap_action_str, env);
+    axutil_string_free(soap_action_str, env);
     request_url = NULL;
     return status;
 }

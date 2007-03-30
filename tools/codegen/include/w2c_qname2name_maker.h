@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -63,7 +63,7 @@ AXIS2_DECLARE_DATA  struct w2c_qname2name_maker_ops
     axis2_char_t* (AXIS2_CALL *
     suggest_name)(w2c_qname2name_maker_t *qname2name_maker,
          const axutil_env_t *env,
-         axis2_qname_t *qname);
+         axutil_qname_t *qname);
 
 
 };

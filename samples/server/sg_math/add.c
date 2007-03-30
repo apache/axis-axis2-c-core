@@ -132,19 +132,19 @@ axis2_add_add(const axutil_env_t *env, axiom_node_t *node, axis2_msg_ctx_t *msg_
             ctx =  axis2_svc_grp_ctx_get_base(svc_grp_ctx, env);
             if (ctx)
             {
-                axis2_property_t* prop = NULL;
+                axutil_property_t* prop = NULL;
                 /* get value */
                 prop =  axis2_ctx_get_property(ctx, env, "ADD_RESULT");
                 if (prop)
                 {
-                    axis2_char_t *val = (axis2_char_t*)axis2_property_get_value(prop, env);
+                    axis2_char_t *val = (axis2_char_t*)axutil_property_get_value(prop, env);
                     printf("Previous result = %s\n", val);
                 }
                 /* set value */
-                prop = axis2_property_create(env);
+                prop = axutil_property_create(env);
                 if (prop)
                 {
-                    axis2_property_set_value(prop, env, axis2_strdup(env, result_str));
+                    axutil_property_set_value(prop, env, axis2_strdup(env, result_str));
                     axis2_ctx_set_property(ctx, env, "ADD_RESULT", prop);
                 }
             }

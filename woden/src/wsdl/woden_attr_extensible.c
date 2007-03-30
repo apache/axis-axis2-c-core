@@ -57,14 +57,14 @@ axis2_status_t AXIS2_CALL
 woden_attr_extensible_set_ext_attr(
     void *extensible,
     const axutil_env_t *env,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     woden_xml_attr_t *attr);
 
 void *AXIS2_CALL
 woden_attr_extensible_get_ext_attr(
     void *extensible,
     const axutil_env_t *env,
-    axis2_qname_t *attr_type);
+    axutil_qname_t *attr_type);
 
 axutil_array_list_t *AXIS2_CALL
 woden_attr_extensible_get_ext_attrs(
@@ -271,7 +271,7 @@ axis2_status_t AXIS2_CALL
 woden_attr_extensible_set_ext_attr(
     void *extensible,
     const axutil_env_t *env,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     woden_xml_attr_t *attr)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
@@ -284,7 +284,7 @@ woden_attr_extensible_set_ext_attr(
     extensible_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    str_attr_type = axis2_qname_to_string(attr_type, env);
+    str_attr_type = axutil_qname_to_string(attr_type, env);
     if (attr)
         axutil_hash_set(extensible_impl->f_ext_attrs, str_attr_type,
                 AXIS2_HASH_KEY_STRING, attr);
@@ -298,7 +298,7 @@ void *AXIS2_CALL
 woden_attr_extensible_get_ext_attr(
     void *extensible,
     const axutil_env_t *env,
-    axis2_qname_t *attr_type)
+    axutil_qname_t *attr_type)
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
     axis2_char_t *str_attr_type = NULL;
@@ -310,7 +310,7 @@ woden_attr_extensible_get_ext_attr(
     extensible_impl = INTF_TO_IMPL(axutil_hash_get(super,
             "WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING));
 
-    str_attr_type = axis2_qname_to_string(attr_type, env);
+    str_attr_type = axutil_qname_to_string(attr_type, env);
     return (woden_xml_attr_t *)axutil_hash_get(extensible_impl->f_ext_attrs,
             str_attr_type, AXIS2_HASH_KEY_STRING);
 }
@@ -422,12 +422,12 @@ woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
             index = axutil_hash_next(env, index))
     {
         const void *v = NULL;
-        axis2_qname_t *key = NULL;
+        axutil_qname_t *key = NULL;
         axis2_char_t *str_ns = NULL;
 
         axutil_hash_this(index, &v, NULL, NULL);
-        key = (axis2_qname_t *) v;
-        str_ns = axis2_qname_get_uri(key, env);
+        key = (axutil_qname_t *) v;
+        str_ns = axutil_qname_get_uri(key, env);
         if (0 == axis2_strcmp(str_ns, str_namespc))
         {
             result = AXIS2_TRUE;

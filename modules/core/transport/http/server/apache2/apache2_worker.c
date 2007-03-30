@@ -18,7 +18,7 @@
 #include "axis2_apache2_worker.h"
 #include <axis2_http_transport.h>
 #include <axis2_conf.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport_utils.h>
@@ -53,7 +53,7 @@ axis2_apache2_worker_process_request(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_apache2_worker_get_bytes(
     const axutil_env_t *env,
-    axis2_stream_t *stream);
+    axutil_stream_t *stream);
 
 void AXIS2_CALL
 axis2_apache2_worker_free(
@@ -133,12 +133,12 @@ axis2_apache2_worker_process_request(
     axis2_apache2_worker_impl_t *apache2_worker_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-    axis2_stream_t *request_body = NULL;
-    axis2_stream_t *out_stream = NULL;
+    axutil_stream_t *request_body = NULL;
+    axutil_stream_t *out_stream = NULL;
     axis2_transport_out_desc_t *out_desc = NULL;
     axis2_transport_in_desc_t *in_desc = NULL;
     axis2_char_t *http_version = NULL;
-    axis2_string_t *soap_action = NULL;
+    axutil_string_t *soap_action = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
     int content_length = -1;
     axis2_char_t *encoding_header_value = NULL;
@@ -180,7 +180,7 @@ axis2_apache2_worker_process_request(
                 AXIS2_FAILURE);
         return AXIS2_CRITICAL_FAILURE;
     }
-    out_stream = axis2_stream_create_basic(env);
+    out_stream = axutil_stream_create_basic(env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Client HTTP version %s",
             http_version);
 
@@ -201,19 +201,19 @@ axis2_apache2_worker_process_request(
     ctx_uuid = axis2_uuid_gen(env);
     if (ctx_uuid)
     {
-        axis2_string_t *uuid_str = axis2_string_create_assume_ownership(env, &ctx_uuid);
+        axutil_string_t *uuid_str = axutil_string_create_assume_ownership(env, &ctx_uuid);
          axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, uuid_str);
-        axis2_string_free(uuid_str, env);
+        axutil_string_free(uuid_str, env);
     }
 
     apache2_out_transport_info = axis2_apache2_out_transport_info_create(env,
             request);
     axis2_msg_ctx_set_http_out_transport_info(msg_ctx, env, apache2_out_transport_info);
 
-    soap_action = axis2_string_create(env, 
+    soap_action = axutil_string_create(env, 
             (axis2_char_t *)apr_table_get(request->headers_in,
             AXIS2_HTTP_HEADER_SOAP_ACTION));
-    request_body = axis2_stream_create_apache2(env, request);
+    request_body = axutil_stream_create_apache2(env, request);
     if (! request_body)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
@@ -262,7 +262,7 @@ axis2_apache2_worker_process_request(
             axis2_engine_send_fault(engine, env, fault_ctx);
             if (out_stream)
             {
-                body_string = axis2_stream_get_buffer(out_stream, env);
+                body_string = axutil_stream_get_buffer(out_stream, env);
                 body_string_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
             }
             send_status =  HTTP_INTERNAL_SERVER_ERROR;
@@ -277,7 +277,7 @@ axis2_apache2_worker_process_request(
             send_status = OK;
             if (out_stream)
             {
-                body_string = axis2_stream_get_buffer(out_stream, env);
+                body_string = axutil_stream_get_buffer(out_stream, env);
                 body_string_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
             }
         }
@@ -300,7 +300,7 @@ axis2_apache2_worker_process_request(
         request_body = NULL;
     }
 
-    axis2_string_free(soap_action, env);
+    axutil_string_free(soap_action, env);
 
     msg_ctx = NULL;
     return send_status;
@@ -309,17 +309,17 @@ axis2_apache2_worker_process_request(
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_apache2_worker_get_bytes(
     const axutil_env_t *env,
-    axis2_stream_t *stream)
+    axutil_stream_t *stream)
 {
 
-    axis2_stream_t *tmp_stream = NULL;
+    axutil_stream_t *tmp_stream = NULL;
     int return_size = -1;
     axis2_char_t *buffer = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, stream, NULL);
 
-    tmp_stream = axis2_stream_create_basic(env);
+    tmp_stream = axutil_stream_create_basic(env);
     while (1)
     {
         int read = 0;

@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_STRING_UTIL_H
-#define AXIS2_STRING_UTIL_H
+#ifndef AXUTIL_STRING_UTIL_H
+#define AXUTIL_STRING_UTIL_H
 
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #ifdef __cplusplus
 extern "C"
 {

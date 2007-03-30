@@ -20,7 +20,7 @@
 #include <axutil_env.h>
 #include <axutil_error_default.h>
 #include <axutil_log_default.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 AXIS2_EXTERN axutil_env_t * AXIS2_CALL 
 axutil_env_create_all(const axis2_char_t *log_file,

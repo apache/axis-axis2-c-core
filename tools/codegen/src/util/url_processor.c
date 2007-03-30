@@ -66,13 +66,13 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
         if ( index > -1 )
         {
             host_name = 
-              axis2_string_substring_starting_at ( host_name, index );
+              axutil_string_substring_starting_at ( host_name, index );
         
             index =  w2c_string_indexof ( host_name, '/');
             if ( index > -1 )
             {
                 host_name =
-                 axis2_string_substring_ending_at ( host_name, index);
+                 axutil_string_substring_ending_at ( host_name, index);
             }
         }
         else
@@ -131,8 +131,8 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
         }
         
         long_path = ( axis2_char_t* )axis2_strdup(env, path);
-        long_path = axis2_string_replace ( long_path, '-', '_' );
-        long_path = axis2_string_replace ( long_path, ':', '_' );
+        long_path = axutil_string_replace ( long_path, '-', '_' );
+        long_path = axutil_string_replace ( long_path, ':', '_' );
 
         for ( ptr = long_path_rev = long_path; 
                          path_length ; ptr ++, path_length -- )
@@ -173,7 +173,7 @@ static axis2_char_t* axis2_add_word_to_package_name
         package_name = w2c_string_add_string ( package_name,
                                 "_", env );
     }
-    long_path = axis2_string_replace ( long_path, '.', '_' );
+    long_path = axutil_string_replace ( long_path, '.', '_' );
     package_name = w2c_string_add_string ( package_name, long_path, env );
    
     return package_name;

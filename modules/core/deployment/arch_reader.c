@@ -176,12 +176,12 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         svc = axis2_arch_file_data_get_svc(file_data, env, svc_name);
         if (!svc)
         {
-            axis2_qname_t *svc_qname = NULL;
+            axutil_qname_t *svc_qname = NULL;
 
-            svc_qname = axis2_qname_create(env, svc_name, NULL, NULL);
+            svc_qname = axutil_qname_create(env, svc_name, NULL, NULL);
             svc = axis2_svc_create_with_qname(env, svc_qname);
             status = axis2_arch_file_data_add_svc(file_data, env, svc);
-            axis2_qname_free(svc_qname, env);
+            axutil_qname_free(svc_qname, env);
             if (AXIS2_SUCCESS != status)
             {
                 axis2_svc_free(svc, env);

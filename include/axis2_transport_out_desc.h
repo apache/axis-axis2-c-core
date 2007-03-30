@@ -233,7 +233,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_transport_out_desc_add_param(axis2_transport_out_desc_t *transport_out_desc,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets named parameter. 
@@ -241,7 +241,7 @@ extern "C"
      * @param env pointer to environment struct
      * @param param_name parameter name string
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_transport_out_desc_get_param(const axis2_transport_out_desc_t *transport_out_desc,
         const axutil_env_t *env,
         const axis2_char_t *param_name);
@@ -257,7 +257,7 @@ extern "C"
         const axutil_env_t *env,
         const axis2_char_t *param_name);
 
-    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_transport_out_desc_param_container(const axis2_transport_out_desc_t *transport_out_desc,
         const axutil_env_t *env);
 

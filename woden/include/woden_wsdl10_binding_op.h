@@ -29,7 +29,7 @@
 #include <woden.h>
 #include <woden_wsdl10_binding_op_element.h>
 #include <woden_nested_configurable.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup woden_wsdl10_binding_op Binding Operation
   * @ingroup woden

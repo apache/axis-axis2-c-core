@@ -17,7 +17,7 @@
  
 #include <w2c_emitter.h>
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 #include <w2c_engine_configuration.h>
 #include <w2c_config_property_loader.h>
@@ -113,7 +113,7 @@ axis2_status_t
 w2c_emitter_parse_wsdl( w2c_emitter_impl_t* emitter_impl,
                         const axutil_env_t* env);
 
-axis2_qname_t*
+axutil_qname_t*
 w2c_emitter_pick_service_name ( w2c_emitter_impl_t* emitter_impl,
                                const axutil_env_t* env);
 
@@ -126,7 +126,7 @@ axis2_status_t
 w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
                             const axutil_env_t *env,
                             axiom_node_t *param_direction,
-                            axis2_qname_t *msg_qname);
+                            axutil_qname_t *msg_qname);
 
 axis2_char_t* w2c_emitter_default_namemaker( axis2_char_t *name,
                             const axutil_env_t *env);

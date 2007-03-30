@@ -16,7 +16,7 @@
  */
 
 #include <axiom_doctype.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include "axiom_node_internal.h"
 
 struct axiom_doctype

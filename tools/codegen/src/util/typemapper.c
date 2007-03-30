@@ -17,7 +17,7 @@
  
 #include <w2c_typemapper.h>
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 #include <axiom_document.h>
 #include <axiom_xml_reader.h>
@@ -42,7 +42,7 @@ typedef struct w2c_typemapper_impl
     axis2_char_t *mapper_name;
     axutil_hash_t *qname2name;
     axis2_char_t *default_type;
-    axis2_qname_t *default_qname;
+    axutil_qname_t *default_qname;
     axutil_hash_t *primitive_map;
 
     axutil_hash_t *qname2prefix;
@@ -62,24 +62,24 @@ w2c_typemapper_free (w2c_typemapper_t *typemapper,
 axis2_char_t* AXIS2_CALL
 w2c_typemapper_get_parameter_name(w2c_typemapper_t *typemapper,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
 axis2_char_t* AXIS2_CALL
 w2c_typemapper_get_type_name(w2c_typemapper_t *typemapper,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 w2c_typemapper_add_typemapping_name(w2c_typemapper_t *typemapper,
             const axutil_env_t *env,
-            axis2_qname_t *qname,
+            axutil_qname_t *qname,
             axis2_char_t *name);
 
 axis2_char_t* AXIS2_CALL
 w2c_typemapper_get_default_mapping_name(w2c_typemapper_t *typemapper,
             const axutil_env_t *env);
 
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 w2c_typemapper_get_default_qname(w2c_typemapper_t *typemapper,
             const axutil_env_t *env);
 
@@ -90,7 +90,7 @@ w2c_typemapper_get_all(w2c_typemapper_t *typemapper,
 axis2_bool_t AXIS2_CALL
 w2c_typemapper_is_primitive(w2c_typemapper_t *typemapper,
                     const axutil_env_t *env,
-                    axis2_qname_t *qname);
+                    axutil_qname_t *qname);
 
  /************************** End of function prototypes ************************/
 
@@ -250,7 +250,7 @@ w2c_typemapper_create_from_file(const axutil_env_t *env,
             local_name = axis2_strdup(env, local_name);
             prefix = axis2_strdup(env, prefix);
             typemapper_impl-> default_qname = 
-                axis2_qname_create( env, local_name, uri, prefix);
+                axutil_qname_create( env, local_name, uri, prefix);
             typemapper_impl-> default_type = axis2_strdup(env, type_val);
         }
         axutil_hash_set( typemapper_impl-> qname2name, qname2str,
@@ -331,7 +331,7 @@ w2c_typemapper_free (w2c_typemapper_t *typemapper,
     }
     if (typemapper_impl-> default_qname)
     {
-        axis2_qname_free( typemapper_impl-> default_qname, env);
+        axutil_qname_free( typemapper_impl-> default_qname, env);
     }
     if(typemapper->ops)
     {
@@ -351,7 +351,7 @@ w2c_typemapper_free (w2c_typemapper_t *typemapper,
 axis2_char_t* AXIS2_CALL
 w2c_typemapper_get_parameter_name(w2c_typemapper_t *typemapper,
             const axutil_env_t *env,
-            axis2_qname_t *qname)
+            axutil_qname_t *qname)
 {
     axis2_char_t *local= NULL;
     static int counter = 0;
@@ -376,7 +376,7 @@ w2c_typemapper_get_parameter_name(w2c_typemapper_t *typemapper,
 axis2_char_t* AXIS2_CALL
 w2c_typemapper_get_type_name(w2c_typemapper_t *typemapper,
             const axutil_env_t *env,
-            axis2_qname_t *qname)
+            axutil_qname_t *qname)
 {
     w2c_typemapper_impl_t *typemapper_impl = NULL;
  
@@ -410,7 +410,7 @@ w2c_typemapper_get_type_name(w2c_typemapper_t *typemapper,
 axis2_status_t AXIS2_CALL
 w2c_typemapper_add_typemapping_name(w2c_typemapper_t *typemapper,
             const axutil_env_t *env,
-            axis2_qname_t *qname,
+            axutil_qname_t *qname,
             axis2_char_t *name)
 {
     w2c_typemapper_impl_t *typemapper_impl = NULL;
@@ -421,7 +421,7 @@ w2c_typemapper_add_typemapping_name(w2c_typemapper_t *typemapper,
     
     typemapper_impl = W2C_INTF_TO_IMPL(typemapper);
 
-    prefix = axis2_qname_get_prefix( qname, env);
+    prefix = axutil_qname_get_prefix( qname, env);
     key = w2c_string_make_key_from_qname( qname, env);
     key = axis2_strdup(env, key);
     name = axis2_strdup(env, name);
@@ -451,7 +451,7 @@ w2c_typemapper_get_default_mapping_name(w2c_typemapper_t *typemapper,
 }
 
 
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 w2c_typemapper_get_default_qname(w2c_typemapper_t *typemapper,
             const axutil_env_t *env)
 {
@@ -480,7 +480,7 @@ w2c_typemapper_get_all(w2c_typemapper_t *typemapper,
 axis2_bool_t AXIS2_CALL
 w2c_typemapper_is_primitive(w2c_typemapper_t *typemapper,
                     const axutil_env_t *env,
-                    axis2_qname_t *qname)
+                    axutil_qname_t *qname)
 {
     w2c_typemapper_impl_t *typemapper_impl = NULL;
     axis2_char_t *key = NULL;

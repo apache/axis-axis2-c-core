@@ -17,7 +17,7 @@
 #ifndef AXUTIL_FILE_HANDLER_H
 #define AXUTIL_FILE_HANDLER_H
 
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 #ifdef __cplusplus
 extern "C"

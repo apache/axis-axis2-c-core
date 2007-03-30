@@ -47,13 +47,13 @@ int main(int argc, char *argv[])
     void *desc = NULL;
     void *intface = NULL;
     axutil_array_list_t *intfaces = NULL;
-    axis2_qname_t *intface_qname = NULL;
+    axutil_qname_t *intface_qname = NULL;
     axis2_char_t *filename = NULL;
     axutil_array_list_t *svc_list = NULL;
     axutil_array_list_t *binding_list = NULL;
     axutil_array_list_t *ed_list = NULL;
     void *ed = NULL;
-    axis2_qname_t *ed_qname = NULL;
+    axutil_qname_t *ed_qname = NULL;
 
     if (argc > 1)
     {
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
         intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);
     }
     if (intface_qname)
-        printf("Interface qname is %s\n", axis2_qname_to_string(intface_qname,
+        printf("Interface qname is %s\n", axutil_qname_to_string(intface_qname,
                 env));
     svc_list = WODEN_WSDL10_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
     if (svc_list)
@@ -103,10 +103,10 @@ int main(int argc, char *argv[])
         svc = axutil_array_list_get(svc_list, env, 0);
         if (svc)
         {
-            axis2_qname_t *svc_qname = WODEN_SVC_GET_QNAME(svc, env);
+            axutil_qname_t *svc_qname = WODEN_SVC_GET_QNAME(svc, env);
             if (svc_qname)
             {
-                printf("First service qname is %s\n", axis2_qname_to_string(
+                printf("First service qname is %s\n", axutil_qname_to_string(
                             svc_qname, env));
             }
             endpoints = WODEN_SVC_GET_ENDPOINTS(svc, env);
@@ -143,10 +143,10 @@ int main(int argc, char *argv[])
         binding = axutil_array_list_get(binding_list, env, 0);
         if (binding)
         {
-            axis2_qname_t *binding_qname = WODEN_BINDING_GET_QNAME(binding, env);
+            axutil_qname_t *binding_qname = WODEN_BINDING_GET_QNAME(binding, env);
             if (binding_qname)
             {
-                printf("First binding qname is %s\n", axis2_qname_to_string(
+                printf("First binding qname is %s\n", axutil_qname_to_string(
                             binding_qname, env));
             }
         }
@@ -166,10 +166,10 @@ int main(int argc, char *argv[])
         axis2_char_t *content_model = NULL;
         axutil_generic_obj_t *obj = NULL;
 
-        axis2_qname_t *ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
+        axutil_qname_t *ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
         if (ed_qname)
         {
-            printf("Element declaration qname is %s\n", axis2_qname_to_string(ed_qname, env));
+            printf("Element declaration qname is %s\n", axutil_qname_to_string(ed_qname, env));
         }
         content_model = WODEN_ELEMENT_DECL_GET_CONTENT_MODEL(ed, env);
         if (content_model)

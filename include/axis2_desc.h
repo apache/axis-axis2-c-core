@@ -26,7 +26,7 @@
  * @{
  */
 
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axutil_hash.h>
 #include <axis2_description.h>
 
@@ -66,7 +66,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_add_param(axis2_desc_t *desc,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets named parameter.
@@ -75,7 +75,7 @@ extern "C"
      * @param param_name parameter name string
      * @return pointer to named parameter, NULL if it does not exist
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_desc_get_param(const axis2_desc_t *desc,
         const axutil_env_t *env,
         const axis2_char_t *param_name);

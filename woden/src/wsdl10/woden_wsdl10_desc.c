@@ -143,7 +143,7 @@ void *AXIS2_CALL
 woden_wsdl10_desc_get_element_decl(
       void *desc,
       const axutil_env_t *env,
-      axis2_qname_t *qname);
+      axutil_qname_t *qname);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_desc_get_type_defs(
@@ -154,7 +154,7 @@ void *AXIS2_CALL
 woden_wsdl10_desc_get_type_def(
       void *desc,
       const axutil_env_t *env,
-      axis2_qname_t *qname);
+      axutil_qname_t *qname);
 
 void *AXIS2_CALL
 woden_wsdl10_desc_to_element(
@@ -1382,7 +1382,7 @@ void *AXIS2_CALL
 woden_wsdl10_desc_get_element_decl(
       void *desc,
       const axutil_env_t *env,
-      axis2_qname_t *qname)
+      axutil_qname_t *qname)
 {
       woden_wsdl10_desc_impl_t *desc_impl = NULL;
       axutil_hash_t *super = NULL;
@@ -1401,10 +1401,10 @@ woden_wsdl10_desc_get_element_decl(
 	    size = axutil_array_list_size(desc_impl->f_all_element_decls, env);
       for (i = 0; i < size; i++)
       {
-	    axis2_qname_t *qname_l = NULL;
+	    axutil_qname_t *qname_l = NULL;
 	    void *ed = axutil_array_list_get(desc_impl->f_all_element_decls, env, i);
 	    qname_l = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
-	    if (0 == axis2_qname_equals(qname, env, qname_l))
+	    if (0 == axutil_qname_equals(qname, env, qname_l))
 	    {
 		  el_decl = ed;
 		  break;
@@ -1435,7 +1435,7 @@ void *AXIS2_CALL
 woden_wsdl10_desc_get_type_def(
       void *desc,
       const axutil_env_t *env,
-      axis2_qname_t *qname)
+      axutil_qname_t *qname)
 {
       woden_wsdl10_desc_impl_t *desc_impl = NULL;
       axutil_hash_t *super = NULL;
@@ -1453,10 +1453,10 @@ woden_wsdl10_desc_get_type_def(
       size = axutil_array_list_size(desc_impl->f_all_element_decls, env);
       for (i = 0; i < size; i++)
       {
-	    axis2_qname_t *qname_l = NULL;
+	    axutil_qname_t *qname_l = NULL;
 	    void *ed = axutil_array_list_get(desc_impl->f_all_element_decls, env, i);
 	    qname_l = WODEN_TYPE_DEF_GET_QNAME(ed, env);
-	    if (0 == axis2_qname_equals(qname, env, qname_l))
+	    if (0 == axutil_qname_equals(qname, env, qname_l))
 	    {
 		  type_def = ed;
 		  break;

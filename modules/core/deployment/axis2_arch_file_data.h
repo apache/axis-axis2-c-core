@@ -28,7 +28,7 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_conf.h>
 #include <axutil_array_list.h>
 #include <axutil_dir_handler.h>

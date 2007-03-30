@@ -16,13 +16,13 @@
  */
 
 #include <axis2_core_utils.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_conf.h>
 #include <axis2_relates_to.h>
 #include <axis2_addr.h>
 #include <axis2_http_transport.h>
 #include <axis2_uuid_gen.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 #include <axis2_conf_ctx.h>
 
 AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
@@ -50,7 +50,7 @@ axis2_core_utils_create_out_msg_ctx(
     axis2_bool_t server_side = AXIS2_FALSE;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_char_t *msg_uuid = NULL;
-    axis2_stream_t *out_stream = NULL;
+    axutil_stream_t *out_stream = NULL;
 
     AXIS2_PARAM_CHECK(env->error, in_msg_ctx, NULL);
 
@@ -174,12 +174,12 @@ axis2_core_utils_reset_out_msg_ctx(const axutil_env_t *env,
     return;
 }
 
-AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
+AXIS2_EXTERN axutil_qname_t* AXIS2_CALL
 axis2_core_utils_get_module_qname(const axutil_env_t *env,
         const axis2_char_t *name,
         const axis2_char_t *version)
 {
-    axis2_qname_t *ret_qname = NULL;
+    axutil_qname_t *ret_qname = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
@@ -199,12 +199,12 @@ axis2_core_utils_get_module_qname(const axutil_env_t *env,
             mod_name1 = NULL;
             return NULL;
         }
-        ret_qname = axis2_qname_create(env, mod_name, NULL, NULL);
+        ret_qname = axutil_qname_create(env, mod_name, NULL, NULL);
         AXIS2_FREE(env->allocator, mod_name);
         AXIS2_FREE(env->allocator, mod_name1);
         return ret_qname;
     }
-    ret_qname = axis2_qname_create(env, name, NULL, NULL);
+    ret_qname = axutil_qname_create(env, name, NULL, NULL);
     return ret_qname;
 }
 
@@ -234,12 +234,12 @@ axis2_core_utils_calculate_default_module_version(const axutil_env_t *env,
         mod_desc = (axis2_module_desc_t *) val;
         if (mod_desc)
         {
-            const axis2_qname_t *module_qname = NULL;
+            const axutil_qname_t *module_qname = NULL;
             module_qname = axis2_module_desc_get_qname(mod_desc, env);
             if (module_qname)
             {
                 axis2_char_t *mod_name_with_ver = NULL;
-                mod_name_with_ver = axis2_qname_get_localpart(module_qname, env);
+                mod_name_with_ver = axutil_qname_get_localpart(module_qname, env);
                 if (mod_name_with_ver)
                 {
                     axis2_char_t *module_name_str = NULL;

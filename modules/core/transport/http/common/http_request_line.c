@@ -16,7 +16,7 @@
  */
 
 #include <axis2_http_request_line.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <string.h>
 #include <axis2_http_transport.h>
 #include <stdio.h>

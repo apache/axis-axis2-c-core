@@ -125,7 +125,7 @@ main(int argc, char *argv[])
                         AXIS2_FREE(allocator, p);
                     }
                 }
-                depth = (guththila_depth_t *) axis2_stack_get(parser->dep, environment);
+                depth = (guththila_depth_t *) axutil_stack_get(parser->dep, environment);
                 d = depth->count;
                 for (; d > 0; d--)
                 {

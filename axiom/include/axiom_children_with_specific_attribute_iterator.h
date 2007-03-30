@@ -25,7 +25,7 @@
 
 #include <axiom_node.h>
 #include <axiom_text.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 
 #ifdef __cplusplus
@@ -88,7 +88,7 @@ extern "C"
     axiom_children_with_specific_attribute_iterator_create(
         const axutil_env_t *env,
         axiom_node_t *current_child,
-        axis2_qname_t *attr_qname,
+        axutil_qname_t *attr_qname,
         axis2_char_t *attr_value,
         axis2_bool_t detach);
 

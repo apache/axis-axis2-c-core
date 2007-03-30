@@ -16,7 +16,7 @@
  */
  
 #include <w2c_xslt_utils.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 w2c_xslt_utils_add_attribute(
@@ -97,7 +97,7 @@ w2c_xslt_utils_copy_node_tree(
     axiom_node_t *from_child = NULL;
     axiom_element_t *from_child_ele = NULL;
     axiom_children_iterator_t *it = NULL;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     axis2_char_t *text = NULL;
 
     axutil_hash_t *attr_ht = NULL;
@@ -123,7 +123,7 @@ w2c_xslt_utils_copy_node_tree(
         {
             from_child_ele = AXIOM_NODE_GET_DATA_ELEMENT ( from_child, env );
             qname = axiom_element_get_qname ( from_child_ele, env, from_child );
-            qname = axis2_qname_clone ( qname, env );
+            qname = axutil_qname_clone ( qname, env );
     
             axiom_element_create_with_qname ( env, to, qname, &to_child );
             w2c_xslt_utils_copy_node_tree ( env, to_child, from_child );

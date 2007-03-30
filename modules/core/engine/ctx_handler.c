@@ -17,7 +17,7 @@
 
 
 #include <axis2_handler_desc.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_svc.h>
 #include <axis2_conf_ctx.h>
 
@@ -39,17 +39,17 @@ axis2_ctx_handler_invoke(
 axis2_handler_t *AXIS2_CALL
 axis2_ctx_handler_create(
     const axutil_env_t *env,
-    const axis2_string_t *string)
+    const axutil_string_t *string)
 {
     axis2_handler_t *handler = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
-    axis2_string_t *handler_string = NULL;
+    axutil_string_t *handler_string = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     if (string)
     {
-        handler_string = axis2_string_clone((axis2_string_t *)string, env);
+        handler_string = axutil_string_clone((axutil_string_t *)string, env);
         if (!(handler_string))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -59,7 +59,7 @@ axis2_ctx_handler_create(
     else
     {
         /* create default string */
-        handler_string = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_CTX_HANDLER_NAME);
+        handler_string = axutil_string_create_const(env, (axis2_char_t**)&AXIS2_CTX_HANDLER_NAME);
         if (!handler_string)
         {
             return NULL;
@@ -74,7 +74,7 @@ axis2_ctx_handler_create(
 
     /* handler desc of base handler */
     handler_desc = axis2_handler_desc_create(env, handler_string);
-    axis2_string_free(handler_string, env);
+    axutil_string_free(handler_string, env);
     if (!handler_desc)
     {
         AXIS2_HANDLER_FREE(handler, env);
@@ -113,10 +113,10 @@ axis2_ctx_handler_invoke(
         svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
         if (svc_grp_ctx)
         {
-            axis2_string_t *svc_grp_ctx_id_str = 
-                axis2_string_create(env,  axis2_svc_grp_ctx_get_id(svc_grp_ctx, env));
+            axutil_string_t *svc_grp_ctx_id_str = 
+                axutil_string_create(env,  axis2_svc_grp_ctx_get_id(svc_grp_ctx, env));
              axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
-            axis2_string_free(svc_grp_ctx_id_str, env);
+            axutil_string_free(svc_grp_ctx_id_str, env);
         }
         return AXIS2_SUCCESS;
     }
@@ -131,15 +131,15 @@ axis2_ctx_handler_invoke(
         svc_ctx =  axis2_op_ctx_get_parent(op_ctx, env);
         if (svc_ctx)
         {
-            axis2_string_t *svc_grp_ctx_id_str = NULL;
+            axutil_string_t *svc_grp_ctx_id_str = NULL;
 
             svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
              axis2_msg_ctx_set_svc_ctx(msg_ctx, env, svc_ctx);
              axis2_msg_ctx_set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx);
 
-            svc_grp_ctx_id_str = axis2_string_create(env,  axis2_svc_grp_ctx_get_id(svc_grp_ctx, env));
+            svc_grp_ctx_id_str = axutil_string_create(env,  axis2_svc_grp_ctx_get_id(svc_grp_ctx, env));
              axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
-            axis2_string_free(svc_grp_ctx_id_str, env);
+            axutil_string_free(svc_grp_ctx_id_str, env);
         }
         return AXIS2_SUCCESS;
     }

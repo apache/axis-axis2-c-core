@@ -38,7 +38,7 @@
 #include <axis2_defines.h>
 #include <axutil_hash.h>
 #include <axutil_env.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -72,7 +72,7 @@ extern "C"
     axis2_ctx_set_property(struct axis2_ctx *ctx,
         const axutil_env_t *env,
         const axis2_char_t *key,
-        axis2_property_t *value);
+        axutil_property_t *value);
 
     /**
      * Gets the property with the given key.
@@ -84,7 +84,7 @@ extern "C"
      * retrieved from the non-persistent store
      * @return pointer to property struct corresponding to the given key
      */
-    AXIS2_EXTERN axis2_property_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_property_t *AXIS2_CALL
     axis2_ctx_get_property(const axis2_ctx_t *ctx,
         const axutil_env_t *env,
         const axis2_char_t *key);

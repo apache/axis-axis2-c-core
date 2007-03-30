@@ -32,7 +32,7 @@ struct woden_type_def_impl
     woden_obj_types_t obj_type;
     axutil_hash_t *super;
     axutil_hash_t *methods;
-    axis2_qname_t *f_qname;
+    axutil_qname_t *f_qname;
     axis2_uri_t *f_system;
     axis2_char_t *f_content_model;
     axutil_generic_obj_t *f_content;
@@ -59,9 +59,9 @@ axis2_status_t AXIS2_CALL
 woden_type_def_set_qname(
     void *type_def,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_type_def_get_qname(
     void *type_def,
     const axutil_env_t *env);
@@ -334,7 +334,7 @@ axis2_status_t AXIS2_CALL
 woden_type_def_set_qname(
     void *type_def,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_type_def_impl_t *type_def_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -347,14 +347,14 @@ woden_type_def_set_qname(
 
     if (type_def_impl->f_qname)
     {
-        axis2_qname_free(type_def_impl->f_qname, env);
+        axutil_qname_free(type_def_impl->f_qname, env);
         type_def_impl->f_qname = NULL;
     }
-    type_def_impl->f_qname = axis2_qname_clone(qname, env);
+    type_def_impl->f_qname = axutil_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_type_def_get_qname(
     void *type_def,
     const axutil_env_t *env)

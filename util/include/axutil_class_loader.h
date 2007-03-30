@@ -24,11 +24,11 @@
   */
 
 #include <axis2_utils_defines.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axutil_error.h>
 #include <axis2_utils.h>
 #include <axutil_dll_desc.h>
-#include <axis2_param.h>
+#include <axutil_param.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -49,7 +49,7 @@ axutil_class_loader_delete_dll (const axutil_env_t *env,
 
 AXIS2_EXTERN void * AXIS2_CALL
 axutil_class_loader_create_dll (const axutil_env_t *env,
-                                axis2_param_t *impl_info_param);
+                                axutil_param_t *impl_info_param);
     
  
 /** @} */

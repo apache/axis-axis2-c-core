@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_PROPERTIES_H
-#define AXIS2_PROPERTIES_H
+#ifndef AXUTIL_PROPERTIES_H
+#define AXUTIL_PROPERTIES_H
 
 #include <axis2_utils_defines.h>
 #include <axutil_error.h>
@@ -30,19 +30,19 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axis2_properties properties
+     * @defgroup axutil_properties properties
      * @ingroup axis2_util
      * @{
      */
 
-    typedef struct axis2_properties axis2_properties_t;
+    typedef struct axutil_properties axutil_properties_t;
 
     /**
      * create new properties
      * @return properties newly created properties
      */
-    AXIS2_EXTERN axis2_properties_t * AXIS2_CALL
-    axis2_properties_create(const axutil_env_t *env);
+    AXIS2_EXTERN axutil_properties_t * AXIS2_CALL
+    axutil_properties_create(const axutil_env_t *env);
 
     /**
      * free w2c_properties.
@@ -52,7 +52,7 @@ extern "C"
      *     else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_properties_free(axis2_properties_t *properties,
+    axutil_properties_free(axutil_properties_t *properties,
         const axutil_env_t *env);
 
     /**
@@ -63,7 +63,7 @@ extern "C"
      * @return value of the property
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_properties_get_property(axis2_properties_t *properties,
+    axutil_properties_get_property(axutil_properties_t *properties,
         const axutil_env_t *env,
         axis2_char_t *key);
     /**
@@ -76,7 +76,7 @@ extern "C"
      *     else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_properties_set_property(axis2_properties_t *properties,
+    axutil_properties_set_property(axutil_properties_t *properties,
         const axutil_env_t *env,
         axis2_char_t *key,
         axis2_char_t *value);
@@ -87,7 +87,7 @@ extern "C"
      * @return hash (key,value)
      */
     AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
-    axis2_properties_get_all(axis2_properties_t *properties,
+    axutil_properties_get_all(axutil_properties_t *properties,
         const axutil_env_t *env);
 
     /**
@@ -99,7 +99,7 @@ extern "C"
      *     else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_properties_load(axis2_properties_t *properties,
+    axutil_properties_load(axutil_properties_t *properties,
         const axutil_env_t *env,
         axis2_char_t *input_filename);
 
@@ -112,7 +112,7 @@ extern "C"
      *     else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_properties_store(axis2_properties_t *properites,
+    axutil_properties_store(axutil_properties_t *properites,
         const axutil_env_t *env,
         FILE *output);
     

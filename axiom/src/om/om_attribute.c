@@ -22,13 +22,13 @@
 struct axiom_attribute
 {
     /** localname of this attribute  */
-    axis2_string_t *localname;
+    axutil_string_t *localname;
     /** value of this attribute */
-    axis2_string_t *value;
+    axutil_string_t *value;
     /** attribute namespace */
     axiom_namespace_t *ns;
     /** store qname here */
-    axis2_qname_t *qname;
+    axutil_qname_t *qname;
     int ref;
 };
 
@@ -57,7 +57,7 @@ axiom_attribute_create(const axutil_env_t *env,
     attribute->ns        = NULL;
     attribute->qname = NULL;
 
-    attribute->localname = axis2_string_create(env, localname);
+    attribute->localname = axutil_string_create(env, localname);
     if (!(attribute->localname))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -66,11 +66,11 @@ axiom_attribute_create(const axutil_env_t *env,
     }
     if (value)
     {
-        attribute->value = axis2_string_create(env, value);
+        attribute->value = axutil_string_create(env, value);
         if (!(attribute->value))
         {
             AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            axis2_string_free(attribute->localname, env);
+            axutil_string_free(attribute->localname, env);
             AXIS2_FREE(env->allocator, attribute);
             return NULL;
         }
@@ -96,15 +96,15 @@ axiom_attribute_free(axiom_attribute_t *attribute,
 
     if (attribute->localname)
     {
-        axis2_string_free(attribute->localname, env);
+        axutil_string_free(attribute->localname, env);
     }
     if (attribute->value)
     {
-        axis2_string_free(attribute->value, env);
+        axutil_string_free(attribute->value, env);
     }
     if (attribute->qname)
     {
-        axis2_qname_free(attribute->qname, env);
+        axutil_qname_free(attribute->qname, env);
     }
     
     AXIS2_FREE(env->allocator, attribute);
@@ -124,25 +124,25 @@ axiom_attribute_free_void_arg(void *attribute,
     return;
 }
 
-AXIS2_EXTERN axis2_qname_t *AXIS2_CALL
+AXIS2_EXTERN axutil_qname_t *AXIS2_CALL
 axiom_attribute_get_qname(axiom_attribute_t *attribute,
     const axutil_env_t *env)
 {
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     if (!(attribute->qname))
     {
         if (attribute->ns)
         {
-            qname = axis2_qname_create(env,
-                axis2_string_get_buffer(attribute->localname, env),
+            qname = axutil_qname_create(env,
+                axutil_string_get_buffer(attribute->localname, env),
                 axiom_namespace_get_uri(attribute->ns, env),
                 axiom_namespace_get_prefix(attribute->ns, env));
         }
         else
         {
-            qname = axis2_qname_create(env, 
-                axis2_string_get_buffer(attribute->localname, env),
+            qname = axutil_qname_create(env, 
+                axutil_string_get_buffer(attribute->localname, env),
                 NULL,  NULL);
         }
         attribute->qname = qname;
@@ -172,23 +172,23 @@ axiom_attribute_serialize(axiom_attribute_t *attribute,
         if ((uri) && (NULL != prefix) && (axis2_strcmp(prefix, "") != 0))
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 4,
-                axis2_string_get_buffer(attribute->localname, env),
-                axis2_string_get_buffer(attribute->value, env),
+                axutil_string_get_buffer(attribute->localname, env),
+                axutil_string_get_buffer(attribute->value, env),
                 uri , prefix);
         }
         else if (uri)
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 3,
-                axis2_string_get_buffer(attribute->localname, env), 
-                axis2_string_get_buffer(attribute->value, env),
+                axutil_string_get_buffer(attribute->localname, env), 
+                axutil_string_get_buffer(attribute->value, env),
                 uri);
         }
     }
     else
     {
         status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 2,
-            axis2_string_get_buffer(attribute->localname, env), 
-            axis2_string_get_buffer(attribute->value, env));
+            axutil_string_get_buffer(attribute->localname, env), 
+            axutil_string_get_buffer(attribute->value, env));
     }
     return status;
 }
@@ -199,7 +199,7 @@ axiom_attribute_get_localname(axiom_attribute_t *attribute,
 {
     if (attribute->localname)
     {
-        return (axis2_char_t *)axis2_string_get_buffer(attribute->localname, env);
+        return (axis2_char_t *)axutil_string_get_buffer(attribute->localname, env);
     }
     return NULL;
 }
@@ -210,7 +210,7 @@ axiom_attribute_get_value(axiom_attribute_t *attribute,
 {
     if (attribute->value)
     {
-        return (axis2_char_t *)axis2_string_get_buffer(attribute->value, env);
+        return (axis2_char_t *)axutil_string_get_buffer(attribute->value, env);
     }
     return NULL;
 }
@@ -233,11 +233,11 @@ axiom_attribute_set_localname(axiom_attribute_t *attribute,
 
     if (attribute->localname)
     {
-        axis2_string_free(attribute->localname, env);
+        axutil_string_free(attribute->localname, env);
         attribute->localname = NULL;
     }
 
-    attribute->localname = axis2_string_create(env, localname);
+    attribute->localname = axutil_string_create(env, localname);
 
     if (!(attribute->localname))
     {
@@ -258,11 +258,11 @@ axiom_attribute_set_value(axiom_attribute_t *attribute,
 
     if (attribute->value)
     {
-        axis2_string_free(attribute->value, env);
+        axutil_string_free(attribute->value, env);
         attribute->value = NULL;
     }
 
-    attribute->value = axis2_string_create(env, value);
+    attribute->value = axutil_string_create(env, value);
     if (!(attribute->value))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -313,8 +313,8 @@ axiom_attribute_increment_ref(struct axiom_attribute *om_attribute,
 
 AXIS2_EXTERN axiom_attribute_t* AXIS2_CALL
 axiom_attribute_create_str(const axutil_env_t *env,
-    axis2_string_t * localname,
-    axis2_string_t * value,
+    axutil_string_t * localname,
+    axutil_string_t * value,
     axiom_namespace_t * ns)
 {
     axiom_attribute_t *attribute = NULL;
@@ -336,7 +336,7 @@ axiom_attribute_create_str(const axutil_env_t *env,
     attribute->ns        = NULL;
     attribute->qname = NULL;
 
-    attribute->localname = axis2_string_clone(localname, env);
+    attribute->localname = axutil_string_clone(localname, env);
     if (!(attribute->localname))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -345,11 +345,11 @@ axiom_attribute_create_str(const axutil_env_t *env,
     }
     if (value)
     {
-        attribute->value = axis2_string_clone(value, env);
+        attribute->value = axutil_string_clone(value, env);
         if (!(attribute->value))
         {
             AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            axis2_string_free(attribute->localname, env);
+            axutil_string_free(attribute->localname, env);
             AXIS2_FREE(env->allocator, attribute);
             return NULL;
         }
@@ -361,14 +361,14 @@ axiom_attribute_create_str(const axutil_env_t *env,
     return attribute;
 }
 
-AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+AXIS2_EXTERN axutil_string_t* AXIS2_CALL
 axiom_attribute_get_localname_str(axiom_attribute_t *attribute,
     const axutil_env_t *env)
 {
     return attribute->localname;
 }
 
-AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+AXIS2_EXTERN axutil_string_t* AXIS2_CALL
 axiom_attribute_get_value_str(axiom_attribute_t *attribute,
     const axutil_env_t *env)
 {
@@ -378,18 +378,18 @@ axiom_attribute_get_value_str(axiom_attribute_t *attribute,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_attribute_set_localname_str(axiom_attribute_t *attribute,
     const axutil_env_t *env,
-    axis2_string_t *localname)
+    axutil_string_t *localname)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
 
     if (attribute->localname)
     {
-        axis2_string_free(attribute->localname, env);
+        axutil_string_free(attribute->localname, env);
         attribute->localname = NULL;
     }
 
-    attribute->localname = axis2_string_clone(localname, env);
+    attribute->localname = axutil_string_clone(localname, env);
 
     return AXIS2_SUCCESS;
 }
@@ -397,18 +397,18 @@ axiom_attribute_set_localname_str(axiom_attribute_t *attribute,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_attribute_set_value_str(axiom_attribute_t *attribute,
     const axutil_env_t *env,
-    axis2_string_t *value)
+    axutil_string_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
     if (attribute->value)
     {
-        axis2_string_free(attribute->value, env);
+        axutil_string_free(attribute->value, env);
         attribute->value = NULL;
     }
 
-    attribute->value = axis2_string_clone(value, env);
+    attribute->value = axutil_string_clone(value, env);
     if (!(attribute->value))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

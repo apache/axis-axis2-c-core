@@ -18,7 +18,7 @@
 #include <axutil_dir_handler.h>
 #include <axutil_file.h>
 #include <platforms/axis2_platform_auto_sense.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #ifndef S_ISDIR
 #   define S_ISDIR(m) ((m & S_IFMT) == S_IFDIR)
 #endif

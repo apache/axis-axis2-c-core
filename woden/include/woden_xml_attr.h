@@ -28,10 +28,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axutil_generic_obj.h>
 #include <woden.h>
 
@@ -72,10 +72,10 @@ struct woden_xml_attr_ops
             const axutil_env_t *env,
             struct axiom_element *owner_el,
             struct axiom_node *owner_node,
-            axis2_qname_t *attr_type, 
+            axutil_qname_t *attr_type, 
             axis2_char_t *attr_value);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_attribute_type) (
             void *xml_attr,
             const axutil_env_t *env);
@@ -133,7 +133,7 @@ woden_xml_attr_create(
         const axutil_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
-        axis2_qname_t *attr_type, 
+        axutil_qname_t *attr_type, 
         axis2_char_t *attr_value);
 
 /************************Woden C Internal Methods******************************/

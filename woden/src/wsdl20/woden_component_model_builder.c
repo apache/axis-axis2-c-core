@@ -485,12 +485,12 @@ build_element_decls(
             size = axutil_array_list_size(qnames, env);
         for (i = 0; i < size; i++)
         {
-            axis2_qname_t *qname = NULL;
+            axutil_qname_t *qname = NULL;
             axis2_char_t *namespc = NULL;
 
-            qname = (axis2_qname_t *) axutil_array_list_get(qnames, env, i);
+            qname = (axutil_qname_t *) axutil_array_list_get(qnames, env, i);
             if (qname)
-                namespc = axis2_qname_get_uri(qname, env);
+                namespc = axutil_qname_get_uri(qname, env);
             if (0 == axis2_strcmp(namespc, schema_tns))
             {
                 void *ed = NULL;
@@ -542,12 +542,12 @@ build_type_defs(
             size = axutil_array_list_size(qnames, env);
         for (i = 0; i < size; i++)
         {
-            axis2_qname_t *qname = NULL;
+            axutil_qname_t *qname = NULL;
             axis2_char_t *namespc = NULL;
 
-            qname = (axis2_qname_t *) axutil_array_list_get(qnames, env, i);
+            qname = (axutil_qname_t *) axutil_array_list_get(qnames, env, i);
             if (qname)
-                namespc = axis2_qname_get_uri(qname, env);
+                namespc = axutil_qname_get_uri(qname, env);
             if (0 == axis2_strcmp(namespc, schema_tns))
             {
                 void *td = NULL;
@@ -653,7 +653,7 @@ build_interface_faults(
     {
         void *fault = NULL;
         axutil_array_list_t *property_elements = NULL;
-        axis2_qname_t *qname = NULL;
+        axutil_qname_t *qname = NULL;
 
         fault = axutil_array_list_get(faults, env, i);
         fault = woden_interface_fault_to_configurable_element(fault, env);
@@ -732,7 +732,7 @@ build_interface_fault_refs(
     {
         void *fault_ref = NULL;
         axutil_array_list_t *property_elements = NULL;
-        axis2_qname_t *qname = NULL;
+        axutil_qname_t *qname = NULL;
 
         fault_ref = axutil_array_list_get(fault_refs, env, i);
         fault_ref = woden_interface_fault_ref_to_configurable_element(fault_ref, env);
@@ -790,7 +790,7 @@ build_interface_msg_refs(
                     msg, env);
         if (0 == axis2_strcmp(WODEN_NMTOKEN_ELEMENT, msg_content_model))
         {
-            axis2_qname_t *qname = NULL;
+            axutil_qname_t *qname = NULL;
             msg = woden_interface_msg_ref_to_interface_msg_ref_element(msg, env);
             qname = WODEN_INTERFACE_MSG_REF_ELEMENT_GET_ELEMENT_QNAME(msg, env);
             if (qname)
@@ -1490,7 +1490,7 @@ build_properties(
     for (i = 0; i < size; i++)
     {
         void *prop = NULL;
-        axis2_qname_t *qname = NULL;
+        axutil_qname_t *qname = NULL;
 
         prop = axutil_array_list_get(prop_els, env, i);
         prop = woden_property_to_property_element(prop, env);

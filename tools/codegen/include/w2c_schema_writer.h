@@ -30,7 +30,7 @@
 #include <w2c_schema_writer_meta_info.h>
 #include <xml_schema_complex_type.h>
 #include <xml_schema_simple_type.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_ops
     axis2_char_t* (AXIS2_CALL *
     make_fully_qualified_class_name)( w2c_schema_writer_t *writer,
         const axutil_env_t *env,
-        axis2_qname_t *qname);
+        axutil_qname_t *qname);
 
 
     axis2_status_t (AXIS2_CALL *

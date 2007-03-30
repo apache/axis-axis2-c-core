@@ -19,7 +19,7 @@
 #include <axis2_utils.h>
 #include "tcpmon_test.h"
 #include <stdlib.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 #include <tcpmon_util.h>
 

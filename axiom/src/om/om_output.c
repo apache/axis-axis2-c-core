@@ -17,7 +17,7 @@
 
 #include <axiom_output.h>
 #include <stdarg.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axiom_xml_writer.h>
 #include <axiom_text.h>
 #include <axiom_soap_const.h>

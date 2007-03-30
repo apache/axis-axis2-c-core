@@ -253,7 +253,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return a pointer to SOAP action string
      */
-    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t *AXIS2_CALL
     axis2_op_client_get_soap_action(const axis2_op_client_t *op_client,
         const axutil_env_t *env);
     
@@ -322,7 +322,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_engage_module(axis2_op_client_t *op_client,
         const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
     
     /**
      * Sets SOAP version URI.
@@ -346,7 +346,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_client_set_soap_action(axis2_op_client_t *op_client,
         const axutil_env_t *env,
-        axis2_string_t *soap_action);
+        axutil_string_t *soap_action);
     
     /**
      * Sets WSA action.

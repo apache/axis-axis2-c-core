@@ -28,10 +28,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_uri.h>
 #include <woden.h>
 #include <woden_documentable_element.h>
@@ -73,9 +73,9 @@ struct woden_svc_element_ops
     set_qname) (
             void *svc_el,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *svc_el,
             const axutil_env_t *env);
@@ -84,9 +84,9 @@ struct woden_svc_element_ops
     set_interface_qname) (
             void *svc_el,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_interface_qname) (
             void *svc_el,
             const axutil_env_t *env);

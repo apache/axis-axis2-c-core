@@ -29,7 +29,7 @@
 #include <xml_schema_defines.h>
 #include <xml_schema_particle.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup_ref xml_schema_group_ref Xml Schema Group Ref
   * @ingroup_ref xml_schema
@@ -65,14 +65,14 @@ struct xml_schema_group_ref_ops
     get_base_impl) (void *group_ref,
                     const axutil_env_t *env);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_ref_qname)(void *group_ref,
                     const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_ref_qname)(void *group_ref,
                     const axutil_env_t *env,
-                    axis2_qname_t *ref_qname);
+                    axutil_qname_t *ref_qname);
     
     void *(AXIS2_CALL *
     get_particle)(void *group_ref,

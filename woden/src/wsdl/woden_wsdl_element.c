@@ -61,14 +61,14 @@ axis2_status_t AXIS2_CALL
 woden_wsdl_element_set_ext_attr(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     woden_xml_attr_t *attr);
 
 void *AXIS2_CALL
 woden_wsdl_element_get_ext_attr(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_qname_t *attr_type);
+    axutil_qname_t *attr_type);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_attrs(
@@ -108,7 +108,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements_of_type(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_qname_t *elem_type);
+    axutil_qname_t *elem_type);
 
 axis2_bool_t AXIS2_CALL
 woden_wsdl_element_has_ext_elements_for_namespace(
@@ -137,7 +137,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements_of_type(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_qname_t *ext_type);
+    axutil_qname_t *ext_type);
 
 axis2_bool_t AXIS2_CALL
 woden_wsdl_element_has_ext_elements_for_namespace(
@@ -477,7 +477,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl_element_set_ext_attr(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     woden_xml_attr_t *attr)
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
@@ -498,7 +498,7 @@ void *AXIS2_CALL
 woden_wsdl_element_get_ext_attr(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_qname_t *attr_type)
+    axutil_qname_t *attr_type)
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -627,7 +627,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_wsdl_element_get_ext_elements_of_type(
     void *wsdl_element,
     const axutil_env_t *env,
-    axis2_qname_t *ext_type)
+    axutil_qname_t *ext_type)
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axutil_hash_t *super = NULL;

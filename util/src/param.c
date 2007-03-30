@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-#include <axis2_param.h>
+#include <axutil_param.h>
 #include <axis2_utils.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axutil_generic_obj.h>
 
-struct axis2_param
+struct axutil_param
 {
     /** Parameter name */
     axis2_char_t *name;
@@ -37,16 +37,16 @@ struct axis2_param
         const axutil_env_t *env);
 };
 
-AXIS2_EXTERN axis2_param_t* AXIS2_CALL
-axis2_param_create(const axutil_env_t *env,
+AXIS2_EXTERN axutil_param_t* AXIS2_CALL
+axutil_param_create(const axutil_env_t *env,
     axis2_char_t *name, 
     void *value)
 {
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    param = AXIS2_MALLOC(env->allocator, sizeof(axis2_param_t));
+    param = AXIS2_MALLOC(env->allocator, sizeof(axutil_param_t));
     if (!param)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
@@ -66,21 +66,21 @@ axis2_param_create(const axutil_env_t *env,
 }
 
 axis2_char_t* AXIS2_CALL
-axis2_param_get_name(axis2_param_t *param,
+axutil_param_get_name(axutil_param_t *param,
     const axutil_env_t *env)
 {
     return param->name;
 }
 
 void* AXIS2_CALL
-axis2_param_get_value(axis2_param_t *param,
+axutil_param_get_value(axutil_param_t *param,
     const axutil_env_t *env)
 {
     return param->value;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_param_set_name(axis2_param_t *param,
+axutil_param_set_name(axutil_param_t *param,
     const axutil_env_t *env,
     const axis2_char_t *name)
 {
@@ -91,14 +91,14 @@ axis2_param_set_name(axis2_param_t *param,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_param_set_value(axis2_param_t *param,
+axutil_param_set_value(axutil_param_t *param,
     const axutil_env_t *env,
     const void *value)
 {
     void *param_value = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    param_value = axis2_param_get_value(param, env);
+    param_value = axutil_param_get_value(param, env);
     if (param_value)
     {
         if (param && param->value_free)
@@ -115,7 +115,7 @@ axis2_param_set_value(axis2_param_t *param,
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_param_is_locked(axis2_param_t *param,
+axutil_param_is_locked(axutil_param_t *param,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -123,7 +123,7 @@ axis2_param_is_locked(axis2_param_t *param,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_param_set_locked(axis2_param_t *param,
+axutil_param_set_locked(axutil_param_t *param,
     const axutil_env_t *env,
     axis2_bool_t value)
 {
@@ -134,14 +134,14 @@ axis2_param_set_locked(axis2_param_t *param,
 }
 
 int AXIS2_CALL
-axis2_param_get_param_type(axis2_param_t *param,
+axutil_param_get_param_type(axutil_param_t *param,
     const axutil_env_t *env)
 {
     return param->type;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_param_set_param_type(axis2_param_t *param,
+axutil_param_set_param_type(axutil_param_t *param,
     const axutil_env_t *env,
     int type)
 {
@@ -152,7 +152,7 @@ axis2_param_set_param_type(axis2_param_t *param,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_param_set_attributes(axis2_param_t *param,
+axutil_param_set_attributes(axutil_param_t *param,
     const axutil_env_t *env,
     axutil_hash_t *attrs)
 {
@@ -178,14 +178,14 @@ axis2_param_set_attributes(axis2_param_t *param,
 }
 
 axutil_hash_t* AXIS2_CALL
-axis2_param_get_attributes(axis2_param_t *param,
+axutil_param_get_attributes(axutil_param_t *param,
     const axutil_env_t *env)
 {
     return param->attrs;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_param_set_value_list(axis2_param_t *param,
+axutil_param_set_value_list(axutil_param_t *param,
     const axutil_env_t *env,
     axutil_array_list_t *value_list)
 {
@@ -199,11 +199,11 @@ axis2_param_set_value_list(axis2_param_t *param,
         size = axutil_array_list_size(param->value_list, env);
         for (i = 0; i < size; i++)
         {
-            axis2_param_t *param = NULL;
+            axutil_param_t *param = NULL;
 
-            param = (axis2_param_t *) axutil_array_list_get(
+            param = (axutil_param_t *) axutil_array_list_get(
                 param->value_list, env, i);
-            axis2_param_free(param, env);
+            axutil_param_free(param, env);
         }
         axutil_array_list_free(param->value_list, env);
     }
@@ -213,14 +213,14 @@ axis2_param_set_value_list(axis2_param_t *param,
 }
 
 axutil_array_list_t* AXIS2_CALL
-axis2_param_get_value_list(axis2_param_t *param,
+axutil_param_get_value_list(axutil_param_t *param,
     const axutil_env_t *env)
 {
     return param->value_list;
 }
 
 void AXIS2_CALL
-axis2_param_free(axis2_param_t *param,
+axutil_param_free(axutil_param_t *param,
     const axutil_env_t *env)
 {
     void *param_value = NULL;
@@ -228,7 +228,7 @@ axis2_param_free(axis2_param_t *param,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    param_value = axis2_param_get_value(param, env);
+    param_value = axutil_param_get_value(param, env);
     if (param_value)
     {
         if (param && param->value_free)
@@ -262,25 +262,25 @@ axis2_param_free(axis2_param_t *param,
         size = axutil_array_list_size(param->value_list, env);
         for (i = 0; i < size; i++)
         {
-            axis2_param_t *param_l = NULL;
+            axutil_param_t *param_l = NULL;
 
-            param_l = (axis2_param_t *) axutil_array_list_get(
+            param_l = (axutil_param_t *) axutil_array_list_get(
                 param->value_list, env, i);
             if (param_l)
             {
-                axis2_param_free(param_l, env);
+                axutil_param_free(param_l, env);
             }
         }
         axutil_array_list_free(param->value_list, env);
     }
-    param_name = axis2_param_get_name(param, env);
+    param_name = axutil_param_get_name(param, env);
     AXIS2_FREE(env->allocator, param_name);
     AXIS2_FREE(env->allocator, param);
     return;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_param_set_value_free(axis2_param_t *param,
+axutil_param_set_value_free(axutil_param_t *param,
     const axutil_env_t *env,
     void *free_fn)
 {

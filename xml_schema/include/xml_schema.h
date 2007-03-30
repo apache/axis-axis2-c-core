@@ -139,13 +139,13 @@ struct xml_schema_ops
     get_element_by_qname)(
             void *schema,
             const axutil_env_t *env,
-            const axis2_qname_t *qname); 
+            const axutil_qname_t *qname); 
 
     struct xml_schema_type *(AXIS2_CALL *
     get_type_by_qname)(
             void *schema,
             const axutil_env_t *env,
-            axis2_qname_t *qname); 
+            axutil_qname_t *qname); 
 
     struct xml_schema_derivation_method *(AXIS2_CALL *
     get_final_default)(

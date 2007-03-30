@@ -18,7 +18,7 @@
 #include <axis2_http_simple_request.h>
 #include <axutil_array_list.h>
 #include <axis2_http_transport.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <string.h>
 #include <axis2_types.h>
 
@@ -26,7 +26,7 @@ struct axis2_http_simple_request
 {
     axis2_http_request_line_t *request_line;
     axutil_array_list_t *header_group;
-    axis2_stream_t *stream;
+    axutil_stream_t *stream;
     axis2_bool_t owns_stream;
 };
 
@@ -36,7 +36,7 @@ axis2_http_simple_request_create(
     axis2_http_request_line_t *request_line,
     axis2_http_header_t **http_headers,
     axis2_ssize_t http_hdr_count,
-    axis2_stream_t *content)
+    axutil_stream_t *content)
 {
     axis2_http_simple_request_t *simple_request = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -58,7 +58,7 @@ axis2_http_simple_request_create(
 
     if (!(simple_request->stream))
     {
-        simple_request->stream = axis2_stream_create_basic(env);
+        simple_request->stream = axutil_stream_create_basic(env);
         if (! simple_request->stream)
         {
             axis2_http_simple_request_free((axis2_http_simple_request_t *)
@@ -355,7 +355,7 @@ axis2_http_simple_request_get_content_length(
 }
 
 
-AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
+AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axis2_http_simple_request_get_body(
     const axis2_http_simple_request_t *simple_request,
     const axutil_env_t *env)
@@ -370,7 +370,7 @@ axis2_http_simple_request_get_body_bytes(
     const axutil_env_t *env,
     char **buf)
 {
-    axis2_stream_t *body = NULL;
+    axutil_stream_t *body = NULL;
     char *tmp_buf = NULL;
     char *tmp_buf2 = NULL;
     char *tmp_buf3 = NULL;
@@ -423,14 +423,14 @@ axis2_http_simple_request_set_body_string(
     void *str,
     unsigned int str_len)
 {
-    axis2_stream_t *body_stream = NULL;
+    axutil_stream_t *body_stream = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     body_stream = simple_request->stream;
     if (! body_stream)
     {
-        body_stream = axis2_stream_create_basic(env);
+        body_stream = axutil_stream_create_basic(env);
         if (! body_stream)
         {
             return AXIS2_FAILURE;

@@ -50,7 +50,7 @@ axutil_class_loader_delete_dll(const axutil_env_t *env,
 
 AXIS2_EXTERN void * AXIS2_CALL
 axutil_class_loader_create_dll(const axutil_env_t *env,
-        axis2_param_t *impl_info_param)
+        axutil_param_t *impl_info_param)
 {
     void *obj = NULL;
     CREATE_FUNCT create_funct = NULL;
@@ -60,7 +60,7 @@ axutil_class_loader_create_dll(const axutil_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
     axutil_error_codes_t error_code = AXIS2_ERROR_NONE;
 
-    dll_desc = axis2_param_get_value(impl_info_param, env);
+    dll_desc = axutil_param_get_value(impl_info_param, env);
     if (!dll_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED,

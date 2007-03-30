@@ -25,7 +25,7 @@
  */
  
 #include <axis2_utils.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #ifdef __cplusplus
 extern "C" 
@@ -81,22 +81,22 @@ extern "C"
    
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_schema(
-        axis2_qname_t *schema, 
+        axutil_qname_t *schema, 
         const axutil_env_t *env);
    
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_include(
-        axis2_qname_t *include, 
+        axutil_qname_t *include, 
         const axutil_env_t *env);
    
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_import(
-        axis2_qname_t *import, 
+        axutil_qname_t *import, 
         const axutil_env_t *env);
    
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_redefine(
-        axis2_qname_t *redefine, 
+        axutil_qname_t *redefine, 
         const axutil_env_t *env);
    
 #ifdef __cplusplus

@@ -280,7 +280,7 @@ axiom_soap_header_block_set_attribute
     axiom_element_t *header_ele = NULL;
     axiom_namespace_t *header_ns = NULL;
     axis2_char_t *prefix = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     axiom_namespace_t *om_ns = NULL;
     axiom_element_t *om_ele = NULL;
 
@@ -305,7 +305,7 @@ axiom_soap_header_block_set_attribute
         prefix = axiom_namespace_get_prefix(header_ns, env);
     }
 
-    qn = axis2_qname_create(env, attr_name, soap_envelope_namespace_uri, prefix);
+    qn = axutil_qname_create(env, attr_name, soap_envelope_namespace_uri, prefix);
 
     if (!qn)
         return AXIS2_FAILURE;
@@ -319,7 +319,7 @@ axiom_soap_header_block_set_attribute
 
     om_attr = axiom_element_get_attribute(om_ele, env, qn);
 
-    axis2_qname_free(qn, env);
+    axutil_qname_free(qn, env);
     if (om_attr)
     {
         return  axiom_attribute_set_value(om_attr, env, attr_value);
@@ -357,7 +357,7 @@ axiom_soap_header_block_get_attribute
     axiom_element_t *header_ele = NULL;
     axiom_namespace_t *header_ns = NULL;
     axis2_char_t *prefix = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     axiom_element_t *om_ele = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, attr_name, NULL);
@@ -380,7 +380,7 @@ axiom_soap_header_block_get_attribute
             return NULL;
         prefix = axiom_namespace_get_prefix(header_ns, env);
     }
-    qn = axis2_qname_create(env, attr_name, soap_envelope_namespace_uri, prefix);
+    qn = axutil_qname_create(env, attr_name, soap_envelope_namespace_uri, prefix);
     if (!qn)
         return NULL;
     om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
@@ -388,7 +388,7 @@ axiom_soap_header_block_get_attribute
     om_attr = axiom_element_get_attribute(om_ele, env, qn);
     if (om_attr)
         attr_value = axiom_attribute_get_value(om_attr, env);
-    axis2_qname_free(qn, env);
+    axutil_qname_free(qn, env);
     return attr_value;
 }
 

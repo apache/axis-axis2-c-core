@@ -73,7 +73,7 @@ extern "C"
     AXIS2_EXTERN axiom_element_t * AXIS2_CALL
     axiom_element_create_with_qname(const axutil_env_t *env,
             axiom_node_t *parent,
-            const axis2_qname_t *qname,
+            const axutil_qname_t *qname,
             axiom_node_t ** node);
     /*
      * Find a namespace in the scope of the document.
@@ -127,7 +127,7 @@ extern "C"
     axiom_element_find_namespace_with_qname(axiom_element_t *om_element,
             const axutil_env_t *env,
             axiom_node_t *node,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     /**
       * Adds an attribute to current element
@@ -154,7 +154,7 @@ extern "C"
     AXIS2_EXTERN axiom_attribute_t *AXIS2_CALL
     axiom_element_get_attribute(axiom_element_t *om_element,
             const axutil_env_t *env,
-            axis2_qname_t * qname);
+            axutil_qname_t * qname);
 
     /**
     * Gets (finds) the attribute value with the given qname
@@ -167,7 +167,7 @@ extern "C"
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axiom_element_get_attribute_value(axiom_element_t *om_element,
             const axutil_env_t *env,
-            axis2_qname_t * qname);
+            axutil_qname_t * qname);
 
     /**
       * Frees given element 
@@ -296,9 +296,9 @@ extern "C"
      * the returned qname should not be externaly freed
      * when om_element struct is freed qname is also
      * freed 
-     * @returns axis2_qname_t struct , NULL on failure
+     * @returns axutil_qname_t struct , NULL on failure
      */
-    AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_qname_t* AXIS2_CALL
     axiom_element_get_qname(axiom_element_t *om_element,
             const axutil_env_t *env,
             axiom_node_t *ele_node);
@@ -326,7 +326,7 @@ extern "C"
     AXIS2_EXTERN axiom_children_qname_iterator_t * AXIS2_CALL
     axiom_element_get_children_with_qname(axiom_element_t *om_element,
             const axutil_env_t *env,
-            axis2_qname_t *element_qname,
+            axutil_qname_t *element_qname,
             axiom_node_t* element_node);
     /**
      * returns the om_element corresponding to element_qname
@@ -335,7 +335,7 @@ extern "C"
     AXIS2_EXTERN axiom_element_t* AXIS2_CALL
     axiom_element_get_first_child_with_qname(axiom_element_t *om_element,
             const axutil_env_t *env,
-            axis2_qname_t *element_qname,
+            axutil_qname_t *element_qname,
             axiom_node_t* element_node,
             axiom_node_t **child_node);
     /**
@@ -488,18 +488,18 @@ extern "C"
     AXIS2_EXTERN axiom_element_t *AXIS2_CALL
     axiom_element_create_str(const axutil_env_t *env,
         axiom_node_t *parent,
-        axis2_string_t *localname,
+        axutil_string_t *localname,
         axiom_namespace_t *ns,
         axiom_node_t **node);
 
-    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t* AXIS2_CALL
     axiom_element_get_localname_str(axiom_element_t *om_element,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_element_set_localname_str(axiom_element_t *om_element,
         const axutil_env_t *env,
-        axis2_string_t *localname);
+        axutil_string_t *localname);
 
 
     /** @} */

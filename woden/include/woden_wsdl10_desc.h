@@ -119,7 +119,7 @@ struct woden_wsdl10_desc_ops
     get_element_decl) (
             void *desc,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_type_defs) (
@@ -130,7 +130,7 @@ struct woden_wsdl10_desc_ops
     get_type_def) (
             void *desc,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     void *(AXIS2_CALL *
     to_element) (

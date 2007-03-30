@@ -27,7 +27,7 @@
 #include <woden.h>
 #include <woden_wsdl10_part_element.h>
 #include <woden_nested_configurable.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup woden_wsdl10_part Interface Message Reference
   * @ingroup woden
@@ -69,7 +69,7 @@ struct woden_wsdl10_part_ops
             void *part,
             const axutil_env_t *env);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *part,
             const axutil_env_t *env);

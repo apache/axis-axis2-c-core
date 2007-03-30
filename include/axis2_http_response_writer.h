@@ -32,7 +32,7 @@
 #include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axutil_env.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -153,7 +153,7 @@ extern "C"
     AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
     axis2_http_response_writer_create (
         const axutil_env_t *env,
-        axis2_stream_t *stream);
+        axutil_stream_t *stream);
 
     /**
      * @param env pointer to environment struct
@@ -163,7 +163,7 @@ extern "C"
     AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
     axis2_http_response_writer_create_with_encoding(
         const axutil_env_t *env,
-        axis2_stream_t *stream,
+        axutil_stream_t *stream,
         const axis2_char_t *encoding);
 
 /** Get encoding.

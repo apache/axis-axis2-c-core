@@ -34,7 +34,7 @@
 #include <axutil_env.h>
 #include <axis2_http_request_line.h>
 #include <axis2_http_header.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 #include <axutil_array_list.h>
 
 
@@ -143,7 +143,7 @@ extern "C"
      * @param simple_request pointer to simple request
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
     axis2_http_simple_request_get_body(const axis2_http_simple_request_t *simple_request,
         const axutil_env_t *env);
 
@@ -190,7 +190,7 @@ extern "C"
         axis2_http_request_line_t *request_line,
         axis2_http_header_t **http_headers,
         axis2_ssize_t http_hdr_count,
-        axis2_stream_t *content);
+        axutil_stream_t *content);
 
 /** Gets the request line. */
 #define AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(simple_request, env) \

@@ -36,7 +36,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_handler.h>
 #include <axis2_svc.h>
 
@@ -68,7 +68,7 @@ extern "C"
      * @return pointer to name. Returns a reference, not a 
      * cloned copy
      */
-    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t *AXIS2_CALL
     axis2_disp_get_name(const axis2_disp_t *disp,
         const axutil_env_t *env);
 
@@ -83,7 +83,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_disp_set_name(axis2_disp_t *disp,
         const axutil_env_t *env, 
-        axis2_string_t *name);
+        axutil_string_t *name);
 
     /**
      * Frees dispatcher struct.
@@ -103,7 +103,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
     axis2_disp_create(const axutil_env_t *env, 
-        const axis2_string_t *name);
+        const axutil_string_t *name);
 
     axis2_status_t AXIS2_CALL
     axis2_disp_find_svc_and_op(

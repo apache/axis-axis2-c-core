@@ -18,18 +18,18 @@
 #include <axis2_http_response_writer.h>
 #include <axutil_array_list.h>
 #include <axis2_http_transport.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 struct axis2_http_response_writer
 {
-    axis2_stream_t *stream;
+    axutil_stream_t *stream;
     axis2_char_t *encoding;
 };
 
 AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
 axis2_http_response_writer_create(
     const axutil_env_t *env,
-    axis2_stream_t *stream)
+    axutil_stream_t *stream)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return axis2_http_response_writer_create_with_encoding(env, stream,
@@ -40,7 +40,7 @@ axis2_http_response_writer_create(
 AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
 axis2_http_response_writer_create_with_encoding(
     const axutil_env_t *env,
-    axis2_stream_t *stream,
+    axutil_stream_t *stream,
     const axis2_char_t *encoding)
 {
     axis2_http_response_writer_t *response_writer = NULL;

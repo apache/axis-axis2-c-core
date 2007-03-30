@@ -35,10 +35,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <woden.h>
 
 #ifdef __cplusplus
@@ -76,7 +76,7 @@ struct woden_soap_fault_code_ops
             void *soap_fault_code,
             const axutil_env_t *env);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *soap_fault_code,
             const axutil_env_t *env);
@@ -99,7 +99,7 @@ AXIS2_EXTERN woden_soap_fault_code_t * AXIS2_CALL
 woden_soap_fault_code_create(
         const axutil_env_t *env,
         axis2_char_t *token,
-        axis2_qname_t *code_qn);
+        axutil_qname_t *code_qn);
 
 AXIS2_EXTERN void * AXIS2_CALL
 woden_soap_fault_code_get_soap_fault_code_any(

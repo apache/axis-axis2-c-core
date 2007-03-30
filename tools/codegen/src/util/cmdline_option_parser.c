@@ -19,7 +19,7 @@
 #include <w2c_cmdline_option_consts.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_cmdline_option_validator.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 
 /** 

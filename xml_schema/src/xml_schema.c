@@ -152,13 +152,13 @@ xml_schema_element_t *AXIS2_CALL
 xml_schema_get_element_by_qname(
     void *schema,
     const axutil_env_t *env,
-    const axis2_qname_t *qname);
+    const axutil_qname_t *qname);
 
 xml_schema_type_t *AXIS2_CALL
 xml_schema_get_type_by_qname(
     void *schema,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
 xml_schema_derivation_method_t *AXIS2_CALL
 xml_schema_get_final_default(
@@ -814,7 +814,7 @@ xml_schema_element_t *AXIS2_CALL
 xml_schema_get_element_by_qname(
     void *schema,
     const axutil_env_t *env,
-    const axis2_qname_t *qname)
+    const axutil_qname_t *qname)
 {
     xml_schema_impl_t *schema_impl = NULL;
     axutil_hash_t *ht_super = NULL;
@@ -840,7 +840,7 @@ xml_schema_type_t *AXIS2_CALL
 xml_schema_get_type_by_qname(
     void *schema,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     xml_schema_impl_t *schema_impl = NULL;
     axutil_hash_t *ht_super = NULL;
@@ -1185,7 +1185,7 @@ xml_schema_add_type(
     xml_schema_type_t *type)
 {
 
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     xml_schema_impl_t *schema_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

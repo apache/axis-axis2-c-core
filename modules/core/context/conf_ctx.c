@@ -450,7 +450,7 @@ axis2_conf_ctx_fill_ctxs(
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_svc_t *svc = NULL;
     axis2_svc_grp_t *svc_grp = NULL;
-    const axis2_qname_t *qname = NULL;
+    const axutil_qname_t *qname = NULL;
     axis2_char_t *svc_id = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
 
@@ -475,7 +475,7 @@ axis2_conf_ctx_fill_ctxs(
         return NULL;
     }
 
-    svc_id = axis2_qname_get_localpart(qname, env);
+    svc_id = axutil_qname_get_localpart(qname, env);
     if (!svc_id)
     {
         AXIS2_ERROR_SET(env->error,
@@ -491,7 +491,7 @@ axis2_conf_ctx_fill_ctxs(
 
     if (!svc_grp_ctx_id)
     {
-        svc_grp_ctx_id = (axis2_char_t*)axis2_string_get_buffer(
+        svc_grp_ctx_id = (axis2_char_t*)axutil_string_get_buffer(
              axis2_msg_ctx_get_svc_grp_ctx_id(msg_ctx, env), env);
     }
 
@@ -519,10 +519,10 @@ axis2_conf_ctx_fill_ctxs(
         svc_grp_ctx_id = axis2_uuid_gen(env);
         if (svc_grp_ctx_id)
         {
-            axis2_string_t *svc_grp_ctx_id_str = 
-                axis2_string_create_assume_ownership(env, &svc_grp_ctx_id);
+            axutil_string_t *svc_grp_ctx_id_str = 
+                axutil_string_create_assume_ownership(env, &svc_grp_ctx_id);
              axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
-            axis2_string_free(svc_grp_ctx_id_str, env);
+            axutil_string_free(svc_grp_ctx_id_str, env);
         }
     }
 

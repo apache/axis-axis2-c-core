@@ -39,8 +39,8 @@ struct woden_binding_impl
     axutil_hash_t *super;
     axutil_hash_t *methods;
     axutil_array_list_t *f_extended_bindings;
-    axis2_qname_t *f_qname;
-    axis2_qname_t *f_interface_qname;
+    axutil_qname_t *f_qname;
+    axutil_qname_t *f_interface_qname;
     void *f_interface;
     axis2_uri_t *f_type;
     /*
@@ -81,7 +81,7 @@ woden_binding_get_base_impl(
 /* ************************************************************
  *  Binding interface methods (the WSDL Component model)
  * ************************************************************/
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_binding_get_qname(
     void *binding,
     const axutil_env_t *env);
@@ -118,15 +118,15 @@ axis2_status_t AXIS2_CALL
 woden_binding_set_qname(
     void *binding,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_binding_set_interface_qname(
     void *binding,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_binding_get_interface_qname(
     void *binding,
     const axutil_env_t *env);
@@ -171,13 +171,13 @@ void *AXIS2_CALL
 woden_binding_get_binding_fault_element(
     void *binding,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
 void *AXIS2_CALL
 woden_binding_get_binding_op_element(
     void *binding,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_binding_set_interface_element(
@@ -600,13 +600,13 @@ woden_binding_free(void *binding,
 
     if (binding_impl->f_qname)
     {
-        axis2_qname_free(binding_impl->f_qname, env);
+        axutil_qname_free(binding_impl->f_qname, env);
         binding_impl->f_qname = NULL;
     }
 
     if (binding_impl->f_interface_qname)
     {
-        axis2_qname_free(binding_impl->f_interface_qname, env);
+        axutil_qname_free(binding_impl->f_interface_qname, env);
         binding_impl->f_interface_qname = NULL;
     }
 
@@ -787,7 +787,7 @@ woden_binding_resolve_methods(
 /* ************************************************************
  *  Binding interface methods (the WSDL Component model)
  * ************************************************************/
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_binding_get_qname(
     void *binding,
     const axutil_env_t *env)
@@ -891,7 +891,7 @@ axis2_status_t AXIS2_CALL
 woden_binding_set_qname(
     void *binding,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_binding_impl_t *binding_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -904,9 +904,9 @@ woden_binding_set_qname(
 
     if (binding_impl->f_qname)
     {
-        axis2_qname_free(binding_impl->f_qname, env);
+        axutil_qname_free(binding_impl->f_qname, env);
     }
-    binding_impl->f_qname = axis2_qname_clone(qname, env);
+    binding_impl->f_qname = axutil_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
@@ -914,7 +914,7 @@ axis2_status_t AXIS2_CALL
 woden_binding_set_interface_qname(
     void *binding,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_binding_impl_t *binding_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -927,14 +927,14 @@ woden_binding_set_interface_qname(
 
     if (binding_impl->f_interface_qname)
     {
-        axis2_qname_free(binding_impl->f_interface_qname, env);
+        axutil_qname_free(binding_impl->f_interface_qname, env);
     }
-    binding_impl->f_interface_qname = axis2_qname_clone(qname, env);
+    binding_impl->f_interface_qname = axutil_qname_clone(qname, env);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_binding_get_interface_qname(
     void *binding,
     const axutil_env_t *env)
@@ -1089,7 +1089,7 @@ void *AXIS2_CALL
 woden_binding_get_binding_fault_element(
     void *binding,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_binding_impl_t *binding_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1106,13 +1106,13 @@ woden_binding_get_binding_fault_element(
     for (i = 0; i < size; i++)
     {
         void *bind_fault = NULL;
-        axis2_qname_t *qname_l = NULL;
+        axutil_qname_t *qname_l = NULL;
 
         bind_fault = axutil_array_list_get(binding_impl->f_faults,
                 env, i);
-        qname_l = (axis2_qname_t *) WODEN_BINDING_FAULT_ELEMENT_GET_REF(
+        qname_l = (axutil_qname_t *) WODEN_BINDING_FAULT_ELEMENT_GET_REF(
                     bind_fault, env);
-        if (AXIS2_TRUE == axis2_qname_equals(qname, env, qname_l))
+        if (AXIS2_TRUE == axutil_qname_equals(qname, env, qname_l))
         {
             fault = bind_fault;
             break;
@@ -1126,7 +1126,7 @@ void *AXIS2_CALL
 woden_binding_get_binding_op_element(
     void *binding,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_binding_impl_t *binding_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1143,13 +1143,13 @@ woden_binding_get_binding_op_element(
     for (i = 0; i < size; i++)
     {
         void *bind_op = NULL;
-        axis2_qname_t *qname_l = NULL;
+        axutil_qname_t *qname_l = NULL;
 
         bind_op = axutil_array_list_get(binding_impl->f_ops,
                 env, i);
-        qname_l = (axis2_qname_t *) WODEN_BINDING_OP_ELEMENT_GET_REF(
+        qname_l = (axutil_qname_t *) WODEN_BINDING_OP_ELEMENT_GET_REF(
                     bind_op, env);
-        if (AXIS2_TRUE == axis2_qname_equals(qname, env, qname_l))
+        if (AXIS2_TRUE == axutil_qname_equals(qname, env, qname_l))
         {
             op = bind_op;
             break;

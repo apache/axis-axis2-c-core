@@ -41,9 +41,9 @@ struct woden_wsdl10_part_impl
       axutil_hash_t *super;
       axutil_hash_t *methods;
 
-      axis2_qname_t *f_qname;
+      axutil_qname_t *f_qname;
       void *f_element_decl;
-      axis2_qname_t *f_element_qname;
+      axutil_qname_t *f_element_qname;
       void *f_types;
 };
 
@@ -73,7 +73,7 @@ woden_wsdl10_part_get_base_impl(
  *  Interface Message Reference  methods (the WSDL Component model)
  * ************************************************************/
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_part_get_qname(
       void *part,
       const axutil_env_t *env);
@@ -96,15 +96,15 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_part_set_qname(
       void *part,
       const axutil_env_t *env,
-      axis2_qname_t *qname);
+      axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_part_set_element_qname(
       void *part,
       const axutil_env_t *env,
-      axis2_qname_t *element);
+      axutil_qname_t *element);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_part_get_element_qname(
       void *part,
       const axutil_env_t *env);
@@ -629,7 +629,7 @@ woden_wsdl10_part_free(void *part,
 
       if (part_impl->f_qname)
       {
-	    axis2_qname_free(part_impl->f_qname, env);
+	    axutil_qname_free(part_impl->f_qname, env);
 	    part_impl->f_qname = NULL;
       }
 
@@ -641,7 +641,7 @@ woden_wsdl10_part_free(void *part,
 
       if (part_impl->f_element_qname)
       {
-	    axis2_qname_free(part_impl->f_element_qname, env);
+	    axutil_qname_free(part_impl->f_element_qname, env);
 	    part_impl->f_element_qname = NULL;
       }
 
@@ -782,7 +782,7 @@ woden_wsdl10_part_resolve_methods(
  *  Interface Message Reference  methods (the WSDL Component model)
  * ************************************************************/
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_part_get_qname(
       void *part,
       const axutil_env_t *env)
@@ -838,7 +838,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_part_set_qname(
       void *part,
       const axutil_env_t *env,
-      axis2_qname_t *qname)
+      axutil_qname_t *qname)
 {
       woden_wsdl10_part_impl_t *part_impl = NULL;
       axutil_hash_t *super = NULL;
@@ -851,10 +851,10 @@ woden_wsdl10_part_set_qname(
 
       if (part_impl->f_qname)
       {
-	    axis2_qname_free(part_impl->f_qname, env);
+	    axutil_qname_free(part_impl->f_qname, env);
 	    part_impl->f_qname = NULL;
       }
-      part_impl->f_qname = axis2_qname_clone(qname, env);
+      part_impl->f_qname = axutil_qname_clone(qname, env);
 
 
       return AXIS2_SUCCESS;
@@ -864,7 +864,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_part_set_element_qname(
       void *part,
       const axutil_env_t *env,
-      axis2_qname_t *element)
+      axutil_qname_t *element)
 {
       woden_wsdl10_part_impl_t *part_impl = NULL;
       axutil_hash_t *super = NULL;
@@ -877,13 +877,13 @@ woden_wsdl10_part_set_element_qname(
 
       if (part_impl->f_element_qname)
       {
-	    axis2_qname_free(part_impl->f_element_qname, env);
+	    axutil_qname_free(part_impl->f_element_qname, env);
       }
-      part_impl->f_element_qname = axis2_qname_clone(element, env);
+      part_impl->f_element_qname = axutil_qname_clone(element, env);
       return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_part_get_element_qname(
       void *part,
       const axutil_env_t *env)

@@ -16,7 +16,7 @@
  */
  
 #include <w2c_string.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -157,15 +157,15 @@ w2c_string_make_c_macro_name( axis2_char_t *name,
 }
 
 AXIS2_EXTERN axis2_char_t*
-w2c_string_make_key_from_qname( axis2_qname_t *qname, 
+w2c_string_make_key_from_qname( axutil_qname_t *qname, 
                                      const axutil_env_t *env)
 {
     axis2_char_t *local = NULL;
     axis2_char_t *uri = NULL;
     axis2_char_t *key = NULL;
 
-    local = axis2_qname_get_localpart( qname, env);
-    uri = axis2_qname_get_uri( qname, env);
+    local = axutil_qname_get_localpart( qname, env);
+    uri = axutil_qname_get_uri( qname, env);
     
     key = axis2_strdup(env, local);
     if ( uri != NULL && *uri != '\0' ) /* it should not be empty*/

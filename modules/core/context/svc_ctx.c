@@ -31,7 +31,7 @@ struct axis2_svc_ctx
     /** id of the service associated with this context */
     axis2_char_t *svc_id;
     /** service qname */
-    axis2_qname_t *svc_qname;
+    axutil_qname_t *svc_qname;
 };
 
 AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
@@ -67,10 +67,10 @@ axis2_svc_ctx_create(
     if (svc)
     {
         svc_ctx->svc = svc;
-        svc_ctx->svc_qname = (axis2_qname_t *)axis2_svc_get_qname(svc, env);
+        svc_ctx->svc_qname = (axutil_qname_t *)axis2_svc_get_qname(svc, env);
         if (svc_ctx->svc_qname)
         {
-            svc_ctx->svc_id = axis2_qname_get_localpart(svc_ctx->svc_qname, env);
+            svc_ctx->svc_id = axutil_qname_get_localpart(svc_ctx->svc_qname, env);
         }
     }
 
@@ -135,7 +135,7 @@ axis2_svc_ctx_init(
 
     if (svc_ctx->svc_qname)
     {
-        axis2_char_t *svc_name = axis2_qname_get_localpart(svc_ctx->svc_qname, env);
+        axis2_char_t *svc_name = axutil_qname_get_localpart(svc_ctx->svc_qname, env);
         svc_ctx->svc = axis2_conf_get_svc(conf, env, svc_name);
     }
 
@@ -169,10 +169,10 @@ axis2_svc_ctx_set_svc(
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
 
     svc_ctx->svc = svc;
-    svc_ctx->svc_qname = (axis2_qname_t *)axis2_svc_get_qname(svc, env);
+    svc_ctx->svc_qname = (axutil_qname_t *)axis2_svc_get_qname(svc, env);
     if (svc_ctx->svc_qname)
     {
-        svc_ctx->svc_id = axis2_qname_get_localpart(svc_ctx->
+        svc_ctx->svc_id = axutil_qname_get_localpart(svc_ctx->
                 svc_qname, env);
     }
     return AXIS2_SUCCESS;
@@ -191,7 +191,7 @@ axis2_op_ctx_t *AXIS2_CALL
 axis2_svc_ctx_create_op_ctx(
     struct axis2_svc_ctx *svc_ctx,
     const axutil_env_t *env,
-    const axis2_qname_t *qname)
+    const axutil_qname_t *qname)
 {
     axis2_op_t *op = NULL;
 

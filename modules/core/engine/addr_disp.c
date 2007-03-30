@@ -17,7 +17,7 @@
 
 #include <axis2_disp.h>
 #include <axis2_handler_desc.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_relates_to.h>
 #include <axis2_svc.h>
 #include <axis2_const.h>
@@ -50,11 +50,11 @@ axis2_addr_disp_create(
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
-    axis2_string_t *name = NULL;
+    axutil_string_t *name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_ADDR_DISP_NAME);
+    name = axutil_string_create_const(env, (axis2_char_t**)&AXIS2_ADDR_DISP_NAME);
     if (!name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -65,7 +65,7 @@ axis2_addr_disp_create(
     if (!disp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_string_free(name, env);
+        axutil_string_free(name, env);
         return NULL;
     }
 
@@ -73,13 +73,13 @@ axis2_addr_disp_create(
     if (!handler)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
-        axis2_string_free(name, env);
+        axutil_string_free(name, env);
         return NULL;
     }
 
     handler->ops->invoke = axis2_addr_disp_invoke;
 
-    axis2_string_free(name, env);
+    axutil_string_free(name, env);
 
     return disp;
 }
@@ -161,7 +161,7 @@ axis2_addr_disp_find_op(
     axis2_svc_t *svc)
 {
     const axis2_char_t *action = NULL;
-    axis2_qname_t *name = NULL;
+    axutil_qname_t *name = NULL;
     axis2_op_t *op = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -174,12 +174,12 @@ axis2_addr_disp_find_op(
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                 "Checking for operation using WSA Action : %s", action);
 
-        name = axis2_qname_create(env, action, NULL, NULL);
+        name = axutil_qname_create(env, action, NULL, NULL);
         op = axis2_svc_get_op_with_qname(svc, env, name);
         if (op)
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Operation found using WSA Action");
-        axis2_qname_free(name, env);
+        axutil_qname_free(name, env);
     }
 
     return op;
@@ -238,10 +238,10 @@ axis2_addr_disp_invoke(
                             svc_grp_ctx = axis2_svc_ctx_get_parent(svc_ctx, env);
                             if (svc_grp_ctx)
                             {
-                                axis2_string_t *svc_grp_ctx_id_str = 
-                                    axis2_string_create(env,  axis2_svc_grp_ctx_get_id(svc_grp_ctx, env));
+                                axutil_string_t *svc_grp_ctx_id_str = 
+                                    axutil_string_create(env,  axis2_svc_grp_ctx_get_id(svc_grp_ctx, env));
                                  axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id_str);
-                                axis2_string_free(svc_grp_ctx_id_str, env);
+                                axutil_string_free(svc_grp_ctx_id_str, env);
                             }
                             return AXIS2_SUCCESS;
                         }

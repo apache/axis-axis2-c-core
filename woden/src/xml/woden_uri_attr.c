@@ -75,7 +75,7 @@ woden_uri_attr_create(
     const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     axis2_char_t *attr_value)
 {
     woden_uri_attr_impl_t *uri_attr_impl = NULL;

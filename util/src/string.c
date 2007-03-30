@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <stdlib.h>
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
 #include <stdarg.h> /* NULL */
 
-struct axis2_string
+struct axutil_string
 {
     axis2_char_t *buffer;
     unsigned int length;
@@ -29,11 +29,11 @@ struct axis2_string
     axis2_bool_t owns_buffer;
 };
 
-AXIS2_EXTERN axis2_string_t * AXIS2_CALL
-axis2_string_create(const axutil_env_t *env,
+AXIS2_EXTERN axutil_string_t * AXIS2_CALL
+axutil_string_create(const axutil_env_t *env,
     const axis2_char_t *str)
 {
-    axis2_string_t *string = NULL;
+    axutil_string_t *string = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     /* str can't be null */
@@ -44,8 +44,8 @@ axis2_string_create(const axutil_env_t *env,
         return NULL;
     }
 
-    string = (axis2_string_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_string_t));
+    string = (axutil_string_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axutil_string_t));
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -62,7 +62,7 @@ axis2_string_create(const axutil_env_t *env,
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
             AXIS2_FAILURE);
-        axis2_string_free(string, env);
+        axutil_string_free(string, env);
         return NULL;
     }
     
@@ -71,7 +71,7 @@ axis2_string_create(const axutil_env_t *env,
     if (!(string->buffer))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        axis2_string_free(string, env);
+        axutil_string_free(string, env);
         return NULL;
     }
     memcpy(string->buffer, str, string->length + 1);
@@ -79,11 +79,11 @@ axis2_string_create(const axutil_env_t *env,
     return string;
 }
 
-AXIS2_EXTERN axis2_string_t * AXIS2_CALL
-axis2_string_create_assume_ownership(const axutil_env_t *env,
+AXIS2_EXTERN axutil_string_t * AXIS2_CALL
+axutil_string_create_assume_ownership(const axutil_env_t *env,
     axis2_char_t **str)
 {
-    axis2_string_t *string = NULL;
+    axutil_string_t *string = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     /* str can't be null */
@@ -94,8 +94,8 @@ axis2_string_create_assume_ownership(const axutil_env_t *env,
         return NULL;
     }
 
-    string = (axis2_string_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_string_t));
+    string = (axutil_string_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axutil_string_t));
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -111,18 +111,18 @@ axis2_string_create_assume_ownership(const axutil_env_t *env,
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
             AXIS2_FAILURE);
-        axis2_string_free(string, env);
+        axutil_string_free(string, env);
         return NULL;
     }
     
     return string;
 }
 
-AXIS2_EXTERN axis2_string_t* AXIS2_CALL
-axis2_string_create_const(const axutil_env_t *env,
+AXIS2_EXTERN axutil_string_t* AXIS2_CALL
+axutil_string_create_const(const axutil_env_t *env,
     axis2_char_t **str)
 {
-    axis2_string_t *string = NULL;
+    axutil_string_t *string = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     /* str can't be null */
@@ -133,8 +133,8 @@ axis2_string_create_const(const axutil_env_t *env,
         return NULL;
     }
 
-    string = (axis2_string_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_string_t));
+    string = (axutil_string_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axutil_string_t));
     if (!string)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -150,7 +150,7 @@ axis2_string_create_const(const axutil_env_t *env,
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, 
             AXIS2_FAILURE);
-        axis2_string_free(string, env);
+        axutil_string_free(string, env);
         return NULL;
     }
     
@@ -158,7 +158,7 @@ axis2_string_create_const(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_string_free(struct axis2_string *string,
+axutil_string_free(struct axutil_string *string,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -185,9 +185,9 @@ axis2_string_free(struct axis2_string *string,
 }
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_string_equals(const struct axis2_string *string,
+axutil_string_equals(const struct axutil_string *string,
     const axutil_env_t *env,
-    const struct axis2_string *string1)
+    const struct axutil_string *string1)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -199,8 +199,8 @@ axis2_string_equals(const struct axis2_string *string,
     return (string->buffer == string1->buffer);
 }
 
-AXIS2_EXTERN struct axis2_string *AXIS2_CALL
-axis2_string_clone(struct axis2_string *string,
+AXIS2_EXTERN struct axutil_string *AXIS2_CALL
+axutil_string_clone(struct axutil_string *string,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -216,7 +216,7 @@ axis2_string_clone(struct axis2_string *string,
 }
 
 AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
-axis2_string_get_buffer(const struct axis2_string *string,
+axutil_string_get_buffer(const struct axutil_string *string,
     const axutil_env_t *env)
 {
     if (!string)
@@ -228,7 +228,7 @@ axis2_string_get_buffer(const struct axis2_string *string,
 }
 
 AXIS2_EXTERN unsigned int AXIS2_CALL
-axis2_string_get_length(const struct axis2_string *string,
+axutil_string_get_length(const struct axutil_string *string,
     const axutil_env_t *env)
 {
     if (!string)
@@ -654,7 +654,7 @@ axis2_strtrim(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_string_replace(axis2_char_t* str, 
+axutil_string_replace(axis2_char_t* str, 
     axis2_char_t old, 
     axis2_char_t new)
 {
@@ -670,7 +670,7 @@ axis2_string_replace(axis2_char_t* str,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_string_substring_starting_at(axis2_char_t* str, 
+axutil_string_substring_starting_at(axis2_char_t* str, 
     int s)
 {
     int len;
@@ -689,7 +689,7 @@ axis2_string_substring_starting_at(axis2_char_t* str,
 
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_string_substring_ending_at(axis2_char_t* str, 
+axutil_string_substring_ending_at(axis2_char_t* str, 
     int e)
 {
     axis2_char_t* ptr = NULL;
@@ -708,7 +708,7 @@ axis2_string_substring_ending_at(axis2_char_t* str,
 
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_string_tolower(axis2_char_t* str)
+axutil_string_tolower(axis2_char_t* str)
 {
     axis2_char_t* temp_str = NULL;
     for (temp_str = str; *temp_str != '\0' ; temp_str ++)
@@ -719,7 +719,7 @@ axis2_string_tolower(axis2_char_t* str)
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_string_toupper(axis2_char_t* str)
+axutil_string_toupper(axis2_char_t* str)
 {
     axis2_char_t* temp_str = NULL;
     for (temp_str = str; *temp_str != '\0' ; temp_str ++)

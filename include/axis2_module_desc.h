@@ -33,11 +33,11 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axutil_array_list.h>
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axis2_flow_container.h>
-#include <axis2_param.h>
+#include <axutil_param.h>
 #include <axis2_op.h>
 #include <axis2_conf.h>
 
@@ -164,7 +164,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to QName
      */
-    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
     axis2_module_desc_get_qname(const axis2_module_desc_t *module_desc,
         const axutil_env_t *env);
 
@@ -178,7 +178,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_set_qname(axis2_module_desc_t *module_desc,
         const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
 
     /**
      * Adds given operation to module.
@@ -236,7 +236,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets parameter with given name.
@@ -245,7 +245,7 @@ extern "C"
      * @param name parameter name string
      * @return pointer to parameter corresponding to given name
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_module_desc_get_param(const axis2_module_desc_t *module_desc,
         const axutil_env_t *env,
         const axis2_char_t *name);
@@ -294,7 +294,7 @@ extern "C"
         const axutil_env_t *env,
         struct axis2_module *module);
 
-    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_module_desc_get_param_container(const axis2_module_desc_t *module_desc,
         const axutil_env_t *env);
 
@@ -318,7 +318,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
     axis2_module_desc_create_with_qname(const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
 
     /**
      * Frees module description passed as void pointer. This method will cast 

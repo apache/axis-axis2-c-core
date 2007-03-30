@@ -26,7 +26,7 @@
 
 #include <xml_schema_annotated.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup xml_schema_type Xml Schema Type
   * @ingroup xml_schema
@@ -105,7 +105,7 @@ struct xml_schema_type_ops
                         const axutil_env_t *env,
                         axis2_char_t *name); 
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (void *type,
                         const axutil_env_t *env);
 

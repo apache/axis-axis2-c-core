@@ -32,7 +32,7 @@
 #include <xml_schema_any_attribute.h>
 #include <xml_schema_simple_type.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup xml_schema_simple_content_restriction Xml Schema Group
   * @ingroup xml_schema
@@ -87,7 +87,7 @@ struct xml_schema_simple_content_restriction_ops
             void *sim_content_res,
             const axutil_env_t *env);
             
-    axis2_qname_t* (AXIS2_CALL*
+    axutil_qname_t* (AXIS2_CALL*
     get_base_type_name)(
             void *sim_content_res,
             const axutil_env_t *env);
@@ -96,7 +96,7 @@ struct xml_schema_simple_content_restriction_ops
     set_base_type_name)(
             void *sim_content_res,
             const axutil_env_t *env,
-            axis2_qname_t *qname); 
+            axutil_qname_t *qname); 
             
     xml_schema_simple_type_t* (AXIS2_CALL*
     get_base_type)(

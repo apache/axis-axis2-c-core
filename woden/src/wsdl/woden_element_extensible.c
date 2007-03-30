@@ -75,7 +75,7 @@ axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements_of_type(
     void *extensible,
     const axutil_env_t *env,
-    axis2_qname_t *ext_type);
+    axutil_qname_t *ext_type);
 
 axis2_bool_t AXIS2_CALL
 woden_element_extensible_has_ext_elements_for_namespace(
@@ -322,7 +322,7 @@ woden_element_extensible_get_ext_elements(void *extensible,
 axutil_array_list_t *AXIS2_CALL
 woden_element_extensible_get_ext_elements_of_type(void *extensible,
         const axutil_env_t *env,
-        axis2_qname_t *ext_type)
+        axutil_qname_t *ext_type)
 {
     woden_element_extensible_impl_t *extensible_impl = NULL;
     int i = 0;
@@ -355,12 +355,12 @@ woden_element_extensible_get_ext_elements_of_type(void *extensible,
     for (i = 0; i < size; i++)
     {
         woden_ext_element_t *ext_elem = NULL;
-        axis2_qname_t *ext_type_l = NULL;
+        axutil_qname_t *ext_type_l = NULL;
 
         ext_elem = (woden_ext_element_t *)axutil_array_list_get(
                     extensible_impl->f_ext_elements, env, i);
         ext_type_l = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_elem, env);
-        if (AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
+        if (AXIS2_TRUE == axutil_qname_equals(ext_type, env, ext_type_l))
         {
             axutil_array_list_add(extensible_impl->temp_elems, env, ext_elem);
         }
@@ -392,13 +392,13 @@ woden_element_extensible_has_ext_elements_for_namespace(
     for (i = 0; i < size; i++)
     {
         woden_ext_element_t *ext_elem = NULL;
-        axis2_qname_t *ext_type = NULL;
+        axutil_qname_t *ext_type = NULL;
         axis2_char_t *uri = NULL;
 
         ext_elem = (woden_ext_element_t *) axutil_array_list_get(
                     extensible_impl->f_ext_elements, env, i);
         ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_elem, env);
-        uri = axis2_qname_get_uri(ext_type, env);
+        uri = axutil_qname_get_uri(ext_type, env);
         if (0 == axis2_strcmp(uri, ext_ns))
         {
             result = AXIS2_TRUE;

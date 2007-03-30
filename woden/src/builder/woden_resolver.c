@@ -21,7 +21,7 @@
 #include <woden_schema_constants.h>
 #include <woden_qname_util.h>
 #include <axis2_uri.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #include "../wsdl20/woden_constants.h"
 #include "../wsdl10/woden_wsdl10_constants.h"
@@ -105,7 +105,7 @@ check_element_qname(
     void *resolver,
     const axutil_env_t *env,
     axiom_node_t *el_node,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
 static woden_resolver_t *
 create(
@@ -212,7 +212,7 @@ yomu(
     const axis2_char_t *doc_base_uri)
 {
     woden_resolver_impl_t *resolver_impl = NULL;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     axis2_bool_t check = AXIS2_FALSE;
     void *desc = NULL;
 
@@ -220,7 +220,7 @@ yomu(
     AXIS2_PARAM_CHECK(env->error, desc_el_node, NULL);
     resolver_impl = INTF_TO_IMPL(resolver);
 
-    qname = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DESCRIPTION);
+    qname = axutil_qname_create_from_string(env, WODEN_Q_ELEM_DESCRIPTION);
     check = check_element_qname(resolver, env, desc_el_node, qname);
     if (AXIS2_TRUE == check)
     {
@@ -233,8 +233,8 @@ yomu(
         WODEN_READER_FREE(reader, env);
 
     }
-    axis2_qname_free(qname, env);
-    qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_DEFINITIONS);
+    axutil_qname_free(qname, env);
+    qname = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_DEFINITIONS);
     check = check_element_qname(resolver, env, desc_el_node, qname);
     if (AXIS2_TRUE == check)
     {
@@ -264,9 +264,9 @@ check_element_qname(
     void *resolver,
     const axutil_env_t *env,
     axiom_node_t *el_node,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
-    if (AXIS2_TRUE != axis2_qname_util_matches(env, qname, el_node))
+    if (AXIS2_TRUE != axutil_qname_util_matches(env, qname, el_node))
     {
         /* TODO woden_wsdl_exc_set_location(wsdl_exc, env, xpath);*/
         return AXIS2_FAILURE;

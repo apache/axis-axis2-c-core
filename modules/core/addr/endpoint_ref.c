@@ -16,7 +16,7 @@
  */
 
 #include <axis2_endpoint_ref.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axutil_array_list.h>
 
 struct axis2_endpoint_ref
@@ -24,7 +24,7 @@ struct axis2_endpoint_ref
     /** endpoint address */
     axis2_char_t *address;
     /** interface qname */
-    axis2_qname_t *interface_qname;
+    axutil_qname_t *interface_qname;
     /** reference parameters */
     axutil_array_list_t *ref_param_list;
     /** meta data */
@@ -100,7 +100,7 @@ axis2_endpoint_ref_set_address(axis2_endpoint_ref_t *endpoint_ref,
     return AXIS2_SUCCESS;
 }
 
-const axis2_qname_t *AXIS2_CALL
+const axutil_qname_t *AXIS2_CALL
 axis2_endpoint_ref_get_interface_qname(const axis2_endpoint_ref_t *endpoint_ref,
     const axutil_env_t *env)
 {
@@ -110,11 +110,11 @@ axis2_endpoint_ref_get_interface_qname(const axis2_endpoint_ref_t *endpoint_ref,
 axis2_status_t AXIS2_CALL
 axis2_endpoint_ref_set_interface_qname(axis2_endpoint_ref_t *endpoint_ref,
     const axutil_env_t *env,
-    const axis2_qname_t *interface_qname)
+    const axutil_qname_t *interface_qname)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     endpoint_ref->interface_qname =
-        axis2_qname_clone((axis2_qname_t *)interface_qname, env);
+        axutil_qname_clone((axutil_qname_t *)interface_qname, env);
     return AXIS2_SUCCESS;
 }
 

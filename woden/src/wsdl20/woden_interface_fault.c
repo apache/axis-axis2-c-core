@@ -39,9 +39,9 @@ struct woden_interface_fault_impl
     woden_obj_types_t obj_type;
     axutil_hash_t *super;
     axutil_hash_t *methods;
-    axis2_qname_t *f_qname;
+    axutil_qname_t *f_qname;
     void *f_element_decl;
-    axis2_qname_t *f_element_qname;
+    axutil_qname_t *f_element_qname;
     void *f_types;
 };
 
@@ -70,7 +70,7 @@ woden_interface_fault_get_base_impl(
 /* ************************************************************
  *  Interface Fault methods (the WSDL Component model)
  * ************************************************************/
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_interface_fault_get_qname(
     void *interface_fault,
     const axutil_env_t *env);
@@ -92,15 +92,15 @@ axis2_status_t AXIS2_CALL
 woden_interface_fault_set_qname(
     void *interface_fault,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_interface_fault_set_element_qname(
     void *interface_fault,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_interface_fault_get_element_qname(
     void *interface_fault,
     const axutil_env_t *env);
@@ -588,7 +588,7 @@ woden_interface_fault_free(
 
     if (interface_fault_impl->f_qname)
     {
-        axis2_qname_free(interface_fault_impl->f_qname, env);
+        axutil_qname_free(interface_fault_impl->f_qname, env);
         interface_fault_impl->f_qname = NULL;
     }
 
@@ -601,7 +601,7 @@ woden_interface_fault_free(
 
     if (interface_fault_impl->f_element_qname)
     {
-        axis2_qname_free(interface_fault_impl->f_element_qname, env);
+        axutil_qname_free(interface_fault_impl->f_element_qname, env);
         interface_fault_impl->f_element_qname = NULL;
     }
 
@@ -735,7 +735,7 @@ woden_interface_fault_resolve_methods(
 /* ************************************************************
  *  Interface Fault interface_fault methods (the WSDL Component model)
  * ************************************************************/
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_interface_fault_get_qname(
     void *interface_fault,
     const axutil_env_t *env)
@@ -790,7 +790,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_fault_set_qname(
     void *interface_fault,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -803,9 +803,9 @@ woden_interface_fault_set_qname(
 
     if (interface_fault_impl->f_qname)
     {
-        axis2_qname_free(interface_fault_impl->f_qname, env);
+        axutil_qname_free(interface_fault_impl->f_qname, env);
     }
-    interface_fault_impl->f_qname = axis2_qname_clone(qname, env);
+    interface_fault_impl->f_qname = axutil_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
@@ -813,7 +813,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_fault_set_element_qname(
     void *interface_fault,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -826,15 +826,15 @@ woden_interface_fault_set_element_qname(
 
     if (!interface_fault_impl->f_element_qname)
     {
-        axis2_qname_free(interface_fault_impl->f_element_qname, env);
+        axutil_qname_free(interface_fault_impl->f_element_qname, env);
     }
-    interface_fault_impl->f_element_qname = axis2_qname_clone(qname, env);
+    interface_fault_impl->f_element_qname = axutil_qname_clone(qname, env);
 
 
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_interface_fault_get_element_qname(
     void *interface_fault,
     const axutil_env_t *env)

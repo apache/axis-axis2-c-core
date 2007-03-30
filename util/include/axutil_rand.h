@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_RAND_H
-#define AXIS2_RAND_H
+#ifndef AXUTIL_RAND_H
+#define AXUTIL_RAND_H
 
 #include <axutil_error.h>
 #include <axutil_env.h>
@@ -28,13 +28,13 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_rand rand
+ * @defgroup axutil_rand rand
  * @ingroup axis2_util
  * @{
  */
 
 /**
- * @file axis2_rand.h
+ * @file axutil_rand.h
  * @brief A simple thread safe and reentrant random number generator
  */
 
@@ -46,7 +46,7 @@ extern "C"
  * @return int <code>int<code>
  */
 AXIS2_EXTERN int AXIS2_CALL
-axis2_rand(unsigned int *seedp);
+axutil_rand(unsigned int *seedp);
 
 /**
  * This is reentrant and thread safe simple random number generator
@@ -59,7 +59,7 @@ axis2_rand(unsigned int *seedp);
  * @return int If invalid range is entered -1 is returned <code>int<code>
  */
 AXIS2_EXTERN int AXIS2_CALL
-axis2_rand_with_range(unsigned int *seedp,
+axutil_rand_with_range(unsigned int *seedp,
     int start,
     int end);
 
@@ -67,7 +67,7 @@ axis2_rand_with_range(unsigned int *seedp,
  * A random seed value generated based on the time
  */
 AXIS2_EXTERN unsigned int AXIS2_CALL
-axis2_rand_get_seed_value_based_on_time(
+axutil_rand_get_seed_value_based_on_time(
     const axutil_env_t *env);
 
 /** @} */

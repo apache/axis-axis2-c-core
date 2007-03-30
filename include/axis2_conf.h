@@ -40,11 +40,11 @@
  * @file axis2_config.h
  */
 
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axis2_svc_grp.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axutil_hash.h>
 #include <axis2_phases_info.h>
 #include <axis2_msg_recv.h>
@@ -160,7 +160,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_conf_add_param(axis2_conf_t *conf,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets a parameter with the given name.
@@ -170,7 +170,7 @@ extern "C"
      * @return pointer to parameter with the given name if exists, else NULL.
      * Returns a reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_conf_get_param(const axis2_conf_t *conf,
         const axutil_env_t *env,
         const axis2_char_t *name);
@@ -284,7 +284,7 @@ extern "C"
     AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
     axis2_conf_get_module(const axis2_conf_t *conf,
         const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
 
    /**
     * Gets the list of engaged modules.
@@ -392,7 +392,7 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_conf_is_engaged(axis2_conf_t *conf,
         const axutil_env_t *env,
-        const axis2_qname_t *module_name);
+        const axutil_qname_t *module_name);
 
     /**
      * Gets phases information struct.
@@ -571,7 +571,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_conf_engage_module(axis2_conf_t *conf,
         const axutil_env_t *env,
-        const axis2_qname_t *module_ref);
+        const axutil_qname_t *module_ref);
 
     /**
      * Sets the deployment engine.
@@ -667,7 +667,7 @@ extern "C"
         const axutil_env_t *env,
         axis2_bool_t enable_security);
 
-    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_conf_get_param_container(const axis2_conf_t *conf,
         const axutil_env_t *env);
 

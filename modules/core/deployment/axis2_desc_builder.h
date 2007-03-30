@@ -35,7 +35,7 @@
 #include <axiom_document.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axis2_handler_desc.h>
 #include <axiom_attribute.h>
 #include <axiom_xml_reader.h>
@@ -91,7 +91,7 @@ extern "C"
     axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
         const axutil_env_t *env,
         axiom_element_t *flow_element,
-        axis2_param_container_t *parent,
+        axutil_param_container_t *parent,
         axiom_node_t *node);
 
     /**
@@ -106,22 +106,22 @@ extern "C"
     axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
         const axutil_env_t *env,
         axiom_node_t *handler_element,
-        axis2_param_container_t *parent);
+        axutil_param_container_t *parent);
 
     /**
      * To get the Param out from the OM
      * @param desc_builder pointer to desc builder
      * @param env pointer to environment struct
-     * @param params <code>axis2_param_t</code>
-     * @param param_container <code>axis2_param_container_t</code>
-     * @param parent <code>axis2_param_container_t</code>
+     * @param params <code>axutil_param_t</code>
+     * @param param_container <code>axutil_param_container_t</code>
+     * @param parent <code>axutil_param_container_t</code>
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         const axutil_env_t *env,
         axiom_children_qname_iterator_t *params,
-        axis2_param_container_t *param_container,
-        axis2_param_container_t *parent );
+        axutil_param_container_t *param_container,
+        axutil_param_container_t *parent );
 
     /**
      * @param desc_builder pointer to desc builder

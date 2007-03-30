@@ -398,8 +398,8 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
             {
                 if (axis2_strcmp(uri, AXIS2_XOP_NAMESPACE_URI) == 0)
                 {
-                    axis2_qname_t *qname = NULL;
-                    qname = axis2_qname_create(env, "href", NULL, NULL);
+                    axutil_qname_t *qname = NULL;
+                    qname = axutil_qname_create(env, "href", NULL, NULL);
                     if (qname)
                     {
                         axis2_char_t *id = NULL;
@@ -429,7 +429,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
                             }
                         }
                     }
-                    axis2_qname_free(qname, env);
+                    axutil_qname_free(qname, env);
                 }
             }
         }

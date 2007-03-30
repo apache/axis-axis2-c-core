@@ -18,7 +18,7 @@
 
 #include <axis2_http_transport.h>
 #include <axis2_conf.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport_utils.h>
@@ -68,7 +68,7 @@ axis2_iis_worker_process_request(
 axis2_char_t *AXIS2_CALL
 axis2_iis_worker_get_bytes(
     const axutil_env_t *env,
-    axis2_stream_t *stream);
+    axutil_stream_t *stream);
 
 void AXIS2_CALL
 axis2_iis_worker_free(
@@ -160,8 +160,8 @@ axis2_iis_worker_process_request(
 	axis2_iis_worker_impl_t *iis_worker_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-    axis2_stream_t *request_body = NULL;
-    axis2_stream_t *out_stream = NULL;
+    axutil_stream_t *request_body = NULL;
+    axutil_stream_t *out_stream = NULL;
     axis2_transport_out_desc_t *out_desc = NULL;
     axis2_transport_in_desc_t *in_desc = NULL;
     axis2_bool_t processed = AXIS2_FALSE;
@@ -170,14 +170,14 @@ axis2_iis_worker_process_request(
     //axis2_char_t *req_url = NULL;
     axis2_char_t *body_string = NULL;
     int send_status = -1;
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
     axis2_url_t *url = NULL;
     axis2_http_out_transport_info_t *iis_out_transport_info = NULL;
-    axis2_qname_t *transport_qname = NULL;
+    axutil_qname_t *transport_qname = NULL;
     axis2_char_t *ctx_uuid = NULL;
 
     axis2_char_t soap_action[INTERNET_MAX_URL_LENGTH];
-	axis2_string_t *soap_str_action = NULL;
+	axutil_string_t *soap_str_action = NULL;
 	axis2_char_t original_url[INTERNET_MAX_URL_LENGTH];
 	axis2_char_t req_url[INTERNET_MAX_URL_LENGTH];
 
@@ -227,7 +227,7 @@ axis2_iis_worker_process_request(
 	// create the url using the above variables						
 	sprintf(req_url, "%s%s%s%s", "http", server_name, port, original_url);
 
-    out_stream = axis2_stream_create_basic(env);	
+    out_stream = axutil_stream_create_basic(env);	
  
     out_desc =  axis2_conf_get_transport_out( axis2_conf_ctx_get_conf
             (iis_worker_impl->conf_ctx, env), env,
@@ -244,9 +244,9 @@ axis2_iis_worker_process_request(
 	ctx_uuid = axis2_uuid_gen(env);
 	if (ctx_uuid)
 	{
-        axis2_string_t *uuid_str = axis2_string_create_assume_ownership(env, &ctx_uuid);
+        axutil_string_t *uuid_str = axutil_string_create_assume_ownership(env, &ctx_uuid);
          axis2_msg_ctx_set_svc_grp_ctx_id(msg_ctx, env, uuid_str);
-        axis2_string_free(uuid_str, env);
+        axutil_string_free(uuid_str, env);
 	}
 
     iis_out_transport_info = axis2_iis_out_transport_info_create(env, lpECB);
@@ -255,9 +255,9 @@ axis2_iis_worker_process_request(
 	cbSize = INTERNET_MAX_URL_LENGTH;
 	if (lpECB->GetServerVariable(lpECB->ConnID, "HTTP_SOAPAction", soap_action, &cbSize))
 	{
-		soap_str_action = axis2_string_create(env, soap_action);	
+		soap_str_action = axutil_string_create(env, soap_action);	
 	}
-	request_body = axis2_stream_create_iis(env, lpECB);
+	request_body = axutil_stream_create_iis(env, lpECB);
 
 	if (! request_body)
     {
@@ -313,7 +313,7 @@ axis2_iis_worker_process_request(
             axis2_engine_send_fault(engine, env, fault_ctx);
             if (out_stream)
             {
-                body_string = axis2_stream_get_buffer(out_stream, env);
+                body_string = axutil_stream_get_buffer(out_stream, env);
                 body_str_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
             }
             send_status =  HTTP_INTERNAL_SERVER_ERROR;
@@ -328,7 +328,7 @@ axis2_iis_worker_process_request(
         {
             if (out_stream)
             {
-                body_string = axis2_stream_get_buffer(out_stream, env);
+                body_string = axutil_stream_get_buffer(out_stream, env);
                 body_str_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
             }
 			send_status = OK;
@@ -561,17 +561,17 @@ axis2_status_t axis2_worker_get_original_url(char url[], char ret_url[])
 axis2_char_t *AXIS2_CALL
 axis2_iis_worker_get_bytes(
     const axutil_env_t *env,
-    axis2_stream_t *stream)
+    axutil_stream_t *stream)
 {
 
-    axis2_stream_t *tmp_stream = NULL;
+    axutil_stream_t *tmp_stream = NULL;
     int return_size = -1;
     axis2_char_t *buffer = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, stream, NULL);
 
-    tmp_stream = axis2_stream_create_basic(env);
+    tmp_stream = axutil_stream_create_basic(env);
     while (1)
     {
         int read = 0;

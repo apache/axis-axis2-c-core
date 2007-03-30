@@ -27,7 +27,7 @@
 #include <woden.h>
 #include <woden_interface_msg_ref_element.h>
 #include <woden_nested_configurable.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup woden_interface_msg_ref Interface Message Reference
   * @ingroup woden

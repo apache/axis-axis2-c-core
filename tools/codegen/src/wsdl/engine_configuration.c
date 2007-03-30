@@ -19,7 +19,7 @@
 #include <w2c_engine_config_loader.h>
 #include <axutil_array_list.h>
 #include <axutil_hash.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 #include <w2c_qname2name_maker.h>
 

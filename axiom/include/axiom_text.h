@@ -68,7 +68,7 @@ extern "C"
     AXIS2_EXTERN axiom_text_t *AXIS2_CALL
     axiom_text_create_str(const axutil_env_t *env,
         axiom_node_t *parent,
-        axis2_string_t *value,
+        axutil_string_t *value,
         axiom_node_t ** node);
 
     /**
@@ -146,7 +146,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_text_set_value_str(struct axiom_text *om_text,
         const axutil_env_t *env,
-        axis2_string_t *value);
+        axutil_string_t *value);
 
    /**
      * Gets text value 
@@ -154,7 +154,7 @@ extern "C"
      * @param env environment.
      * @return text valu stringe , NULL is returned if there is no text value.
      */
-    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t *AXIS2_CALL
     axiom_text_get_value_str(struct axiom_text *om_text,
         const axutil_env_t *env);
 

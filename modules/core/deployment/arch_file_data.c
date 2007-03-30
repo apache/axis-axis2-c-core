@@ -298,13 +298,13 @@ axis2_arch_file_data_add_svc(axis2_arch_file_data_t *arch_file_data,
     const axutil_env_t *env,
     axis2_svc_t *svc_desc)
 {
-    const axis2_qname_t *svc_qname = NULL;
+    const axutil_qname_t *svc_qname = NULL;
     axis2_char_t *svc_name = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_desc, AXIS2_FAILURE);
 
     svc_qname = axis2_svc_get_qname(svc_desc, env);
-    svc_name = axis2_qname_to_string((axis2_qname_t *)svc_qname, env);
+    svc_name = axutil_qname_to_string((axutil_qname_t *)svc_qname, env);
     if (!arch_file_data->svc_map)
     {
         arch_file_data->svc_map = axutil_hash_make(env);

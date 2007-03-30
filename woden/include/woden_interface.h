@@ -72,7 +72,7 @@ struct woden_interface_ops
             void *woden_interface,
             const axutil_env_t *env);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *woden_interface,
             const axutil_env_t *env);
@@ -91,7 +91,7 @@ struct woden_interface_ops
     get_interface_fault) (
             void *woden_interface,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     axutil_array_list_t *(AXIS2_CALL *
     get_interface_ops) (

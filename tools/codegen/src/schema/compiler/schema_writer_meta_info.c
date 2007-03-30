@@ -38,9 +38,9 @@ typedef struct w2c_schema_writer_meta_info_impl
     axis2_char_t *enum_facet;
     axis2_char_t *pattern_facet;
     
-    axis2_qname_t *extension_basetype;
-    axis2_qname_t *restriction_basetype;
-    axis2_qname_t *ownqname;
+    axutil_qname_t *extension_basetype;
+    axutil_qname_t *restriction_basetype;
+    axutil_qname_t *ownqname;
     axutil_hash_t *element2schema_qnamemap;
     axutil_hash_t *element2classmap;
     axutil_hash_t *specialtype_flagmap;
@@ -153,24 +153,24 @@ w2c_schema_writer_meta_info_get_pattern_facet( w2c_schema_writer_meta_info_t *sc
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_set_extension_basetype( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *extension_basetype);
-axis2_qname_t *AXIS2_CALL
+                            axutil_qname_t *extension_basetype);
+axutil_qname_t *AXIS2_CALL
 w2c_schema_writer_meta_info_get_extension_basetype( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_set_restriction_basetype( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *restriction_basetype);
-axis2_qname_t *AXIS2_CALL
+                            axutil_qname_t *restriction_basetype);
+axutil_qname_t *AXIS2_CALL
 w2c_schema_writer_meta_info_get_restriction_basetype( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_set_ownqname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *ownqname);
-axis2_qname_t *AXIS2_CALL
+                            axutil_qname_t *ownqname);
+axutil_qname_t *AXIS2_CALL
 w2c_schema_writer_meta_info_get_ownqname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
@@ -283,91 +283,91 @@ axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_is_restriction_base_type( 
                              w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *restriction_base_type);
+                             axutil_qname_t *restriction_base_type);
 
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_register_nillable_qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_is_nillable( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_register_mapping( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
-                             axis2_qname_t *schema_name,
+                             axutil_qname_t *qname,
+                             axutil_qname_t *schema_name,
                              axis2_char_t *class_name,
                              int type);
 
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_schemaqname4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 
 axis2_char_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_classname4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_attri_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_any_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_array_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_binary_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_any_attri_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
          
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_add_min_occurs( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              long min_occurs);
           
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_add_max_occurs( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              long max_occurs);
 
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_register_qname_index( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              int index);
 
 long AXIS2_CALL
 w2c_schema_writer_meta_info_get_min_occurs( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 long AXIS2_CALL
 w2c_schema_writer_meta_info_get_max_occurs( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 axutil_array_list_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_qname_array( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
@@ -385,7 +385,7 @@ w2c_schema_writer_meta_info_get_order_start_point( w2c_schema_writer_meta_info_t
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_add_status( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *type,
+                             axutil_qname_t *type,
                              int mask);
 
 axis2_status_t AXIS2_CALL
@@ -682,15 +682,15 @@ w2c_schema_writer_meta_info_free (w2c_schema_writer_meta_info_t *schema_writer_m
     
     if (schema_writer_meta_info_impl->extension_basetype)
     {
-        axis2_qname_free(schema_writer_meta_info_impl->extension_basetype, env);
+        axutil_qname_free(schema_writer_meta_info_impl->extension_basetype, env);
     }
     if (schema_writer_meta_info_impl->restriction_basetype)
     {
-        axis2_qname_free(schema_writer_meta_info_impl->restriction_basetype, env);
+        axutil_qname_free(schema_writer_meta_info_impl->restriction_basetype, env);
     }
     if (schema_writer_meta_info_impl->ownqname)
     {
-        axis2_qname_free(schema_writer_meta_info_impl->ownqname, env);
+        axutil_qname_free(schema_writer_meta_info_impl->ownqname, env);
     }
     if (schema_writer_meta_info_impl->nillable_qnamelist)
     {
@@ -930,7 +930,7 @@ w2c_schema_writer_meta_info_get_pattern_facet( w2c_schema_writer_meta_info_t *sc
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_set_extension_basetype( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *extension_basetype)
+                            axutil_qname_t *extension_basetype)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -938,7 +938,7 @@ w2c_schema_writer_meta_info_set_extension_basetype( w2c_schema_writer_meta_info_
     writer_meta_info_impl-> extension_basetype = extension_basetype;
     return AXIS2_SUCCESS;
 }
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 w2c_schema_writer_meta_info_get_extension_basetype( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env)
 {
@@ -951,7 +951,7 @@ w2c_schema_writer_meta_info_get_extension_basetype( w2c_schema_writer_meta_info_
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_set_restriction_basetype( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *restriction_basetype)
+                            axutil_qname_t *restriction_basetype)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -959,7 +959,7 @@ w2c_schema_writer_meta_info_set_restriction_basetype( w2c_schema_writer_meta_inf
     writer_meta_info_impl-> restriction_basetype = restriction_basetype;
     return AXIS2_SUCCESS;
 }
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 w2c_schema_writer_meta_info_get_restriction_basetype( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env)
 {
@@ -972,7 +972,7 @@ w2c_schema_writer_meta_info_get_restriction_basetype( w2c_schema_writer_meta_inf
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_set_ownqname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *ownqname)
+                            axutil_qname_t *ownqname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -980,7 +980,7 @@ w2c_schema_writer_meta_info_set_ownqname( w2c_schema_writer_meta_info_t *schema_
     writer_meta_info_impl-> ownqname = ownqname;
     return AXIS2_SUCCESS;
 }
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 w2c_schema_writer_meta_info_get_ownqname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env)
 {
@@ -1270,10 +1270,10 @@ axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_is_restriction_base_type( 
                              w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *restriction_base_type)
+                             axutil_qname_t *restriction_base_type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-    return axis2_qname_equals( W2C_INTF_TO_IMPL(schema_writer_meta_info)-> restriction_basetype,
+    return axutil_qname_equals( W2C_INTF_TO_IMPL(schema_writer_meta_info)-> restriction_basetype,
                     env,
                     restriction_base_type );
 }
@@ -1282,7 +1282,7 @@ w2c_schema_writer_meta_info_is_restriction_base_type(
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_register_nillable_qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1301,7 +1301,7 @@ w2c_schema_writer_meta_info_register_nillable_qname( w2c_schema_writer_meta_info
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_is_nillable( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1319,8 +1319,8 @@ w2c_schema_writer_meta_info_is_nillable( w2c_schema_writer_meta_info_t *schema_w
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_register_mapping( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
-                             axis2_qname_t *schema_name,
+                             axutil_qname_t *qname,
+                             axutil_qname_t *schema_name,
                              axis2_char_t *class_name,
                              int type)
 {
@@ -1340,20 +1340,20 @@ w2c_schema_writer_meta_info_register_mapping( w2c_schema_writer_meta_info_t *sch
 }
 
 
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_schemaqname4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
-    axis2_qname_t *ret_qname = NULL;
+    axutil_qname_t *ret_qname = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     writer_meta_info_impl = W2C_INTF_TO_IMPL(schema_writer_meta_info);
 
     qname_str = w2c_string_make_key_from_qname( qname, env);
-    ret_qname = (axis2_qname_t*)axutil_hash_get( writer_meta_info_impl-> element2schema_qnamemap, qname_str,
+    ret_qname = (axutil_qname_t*)axutil_hash_get( writer_meta_info_impl-> element2schema_qnamemap, qname_str,
              AXIS2_HASH_KEY_STRING);
     return ret_qname;
 }
@@ -1361,7 +1361,7 @@ w2c_schema_writer_meta_info_get_schemaqname4qname( w2c_schema_writer_meta_info_t
 axis2_char_t* AXIS2_CALL
 w2c_schema_writer_meta_info_get_classname4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1379,7 +1379,7 @@ w2c_schema_writer_meta_info_get_classname4qname( w2c_schema_writer_meta_info_t *
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_attri_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1401,7 +1401,7 @@ w2c_schema_writer_meta_info_get_attri_status4qname( w2c_schema_writer_meta_info_
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_any_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1423,7 +1423,7 @@ w2c_schema_writer_meta_info_get_any_status4qname( w2c_schema_writer_meta_info_t 
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_array_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1445,7 +1445,7 @@ w2c_schema_writer_meta_info_get_array_status4qname( w2c_schema_writer_meta_info_
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_binary_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1467,7 +1467,7 @@ w2c_schema_writer_meta_info_get_binary_status4qname( w2c_schema_writer_meta_info
 axis2_bool_t AXIS2_CALL
 w2c_schema_writer_meta_info_get_any_attri_status4qname( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
 
@@ -1483,7 +1483,7 @@ w2c_schema_writer_meta_info_get_any_attri_status4qname( w2c_schema_writer_meta_i
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_add_min_occurs( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              long min_occurs)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
@@ -1500,7 +1500,7 @@ w2c_schema_writer_meta_info_add_min_occurs( w2c_schema_writer_meta_info_t *schem
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_add_max_occurs( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              long max_occurs)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
@@ -1517,7 +1517,7 @@ w2c_schema_writer_meta_info_add_max_occurs( w2c_schema_writer_meta_info_t *schem
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_register_qname_index( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              int index)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
@@ -1536,7 +1536,7 @@ w2c_schema_writer_meta_info_register_qname_index( w2c_schema_writer_meta_info_t 
 long AXIS2_CALL
 w2c_schema_writer_meta_info_get_min_occurs( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1553,7 +1553,7 @@ w2c_schema_writer_meta_info_get_min_occurs( w2c_schema_writer_meta_info_t *schem
 long AXIS2_CALL
 w2c_schema_writer_meta_info_get_max_occurs( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname)
+                             axutil_qname_t *qname)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;
     axis2_char_t *qname_str = NULL;
@@ -1575,7 +1575,7 @@ w2c_schema_writer_meta_info_get_qname_array( w2c_schema_writer_meta_info_t *sche
     axis2_char_t *qname_str = NULL;
     axutil_hash_index_t *hi = NULL;
     axutil_array_list_t *arr_list = NULL;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     int i = 0;
 
 
@@ -1588,7 +1588,7 @@ w2c_schema_writer_meta_info_get_qname_array( w2c_schema_writer_meta_info_t *sche
         axutil_hash_this(hi, (void*)&qname_str, NULL, NULL);
         if (qname_str)
         {
-            qname = axis2_qname_create_from_string( env, qname_str);
+            qname = axutil_qname_create_from_string( env, qname_str);
             axutil_array_list_add_at( arr_list, env, i, qname);
         }
     }
@@ -1604,7 +1604,7 @@ w2c_schema_writer_meta_info_get_ordered_qname_array( w2c_schema_writer_meta_info
     int i = 0;
     int real_index = 0;
     int size = 0;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     axutil_array_list_t *temp_arr_list = NULL;
     axis2_char_t index_str[32];
     
@@ -1620,7 +1620,7 @@ w2c_schema_writer_meta_info_get_ordered_qname_array( w2c_schema_writer_meta_info
     for ( i = 0, real_index = 0; i < size; i ++ )
     {
         sprintf(index_str, "%d", i);
-        qname = (axis2_qname_t*) axutil_hash_get(  
+        qname = (axutil_qname_t*) axutil_hash_get(  
                 writer_meta_info_impl-> qname_orderlist, index_str, AXIS2_HASH_KEY_STRING );
         if ( qname != NULL )
         {
@@ -1634,7 +1634,7 @@ w2c_schema_writer_meta_info_get_ordered_qname_array( w2c_schema_writer_meta_info
     size = axutil_array_list_size( temp_arr_list, env);
     for ( i = 0; i < size; i ++)
     {
-        qname = (axis2_qname_t*) axutil_array_list_get(
+        qname = (axutil_qname_t*) axutil_array_list_get(
                        temp_arr_list, env, i );
         if ( w2c_schema_writer_meta_info_get_any_attri_status4qname( 
                     schema_writer_meta_info, env, qname ) )
@@ -1676,7 +1676,7 @@ w2c_schema_writer_meta_info_get_order_start_point( w2c_schema_writer_meta_info_t
 axis2_status_t AXIS2_CALL
 w2c_schema_writer_meta_info_add_status( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *type,
+                             axutil_qname_t *type,
                              int mask)
 {
     w2c_schema_writer_meta_info_impl_t *writer_meta_info_impl = NULL;

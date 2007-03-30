@@ -17,7 +17,7 @@
 
 #include "axutil_hash.h"
 
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 /*
  * The internal form of a hash table.

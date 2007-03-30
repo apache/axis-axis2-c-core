@@ -179,7 +179,7 @@ extern "C"
     AXIS2_EXTERN struct axis2_op_ctx *AXIS2_CALL
     axis2_svc_ctx_create_op_ctx(struct axis2_svc_ctx *svc_ctx,
         const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
 
 #ifdef __cplusplus
 }

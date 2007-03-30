@@ -20,7 +20,7 @@
 #include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axutil_env.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 #include <httpd.h>
 
 #ifdef __cplusplus
@@ -30,9 +30,9 @@ extern "C"
 
 
 /** \brief Constructor for creating apche2 stream
-  * @return axis2_stream (apache2)
+  * @return axutil_stream (apache2)
   */
-AXIS2_EXTERN axis2_stream_t * AXIS2_CALL axis2_stream_create_apache2
+AXIS2_EXTERN axutil_stream_t * AXIS2_CALL axutil_stream_create_apache2
                         (const axutil_env_t *env, request_rec *req);
 
 /** @} */

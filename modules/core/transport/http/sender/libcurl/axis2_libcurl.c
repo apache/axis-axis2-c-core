@@ -1,6 +1,6 @@
 #include "axis2_libcurl.h"
 #include <axiom_soap.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_http_transport.h>
 #include <axiom_output.h>
 #include <axis2_op_ctx.h>
@@ -8,8 +8,8 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_http_client.h>
 #include <axiom_xml_writer.h>
-#include <axis2_property.h>
-#include <axis2_param.h>
+#include <axutil_property.h>
+#include <axutil_param.h>
 #include <axis2_types.h>
 #include <axutil_generic_obj.h>
 #include <axis2_const.h>
@@ -71,7 +71,7 @@ axis2_libcurl_send (
 	axis2_bool_t doing_mtom = AXIS2_FALSE;
 	axiom_node_t *body_node = NULL;
 	axiom_node_t *data_out = NULL;
-	axis2_property_t *method = NULL;
+	axutil_property_t *method = NULL;
 	axis2_char_t *method_value = NULL;
 	axiom_xml_writer_t *xml_writer = NULL;
 	axis2_char_t *buffer = NULL;
@@ -82,9 +82,9 @@ axis2_libcurl_send (
 	axis2_char_t *content = AXIS2_HTTP_HEADER_CONTENT_TYPE_;
 	axis2_char_t *soap_action_header = AXIS2_HTTP_HEADER_SOAP_ACTION_;
 	axis2_libcurl_t *data;
-	axis2_stream_t *in_stream;
-	axis2_property_t *trans_in_property;
-	axis2_string_t *char_set_enc_str;
+	axutil_stream_t *in_stream;
+	axutil_property_t *trans_in_property;
+	axutil_string_t *char_set_enc_str;
     axis2_byte_t *output_stream = NULL;
     int output_stream_size = 0;
 
@@ -126,12 +126,12 @@ axis2_libcurl_send (
         }
         data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
 
-		method = (axis2_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
+		method = (axutil_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_HTTP_METHOD);
 
 		if (method)
         {
-			method_value = (axis2_char_t *) axis2_property_get_value (method, env);
+			method_value = (axis2_char_t *) axutil_property_get_value (method, env);
         }
 		/* The default is POST */
 		if (method_value && 0 == axis2_strcmp(method_value, AXIS2_HTTP_HEADER_GET))
@@ -152,7 +152,7 @@ axis2_libcurl_send (
 		}
 		else
 		{
-			char_set_enc = axis2_string_get_buffer(char_set_enc_str, env);
+			char_set_enc = axutil_string_get_buffer(char_set_enc_str, env);
 		}
 
 		if (is_soap)
@@ -236,18 +236,18 @@ axis2_libcurl_send (
 		}
 		else
 		{
-			axis2_property_t *content_type_property = NULL;
+			axutil_property_t *content_type_property = NULL;
 			axutil_hash_t *content_type_hash = NULL;
 			axis2_char_t *content_type_value = NULL;
 
 			AXIOM_NODE_SERIALIZE(data_out, env, om_output);
-			content_type_property  = (axis2_property_t *) axis2_msg_ctx_get_property(
+			content_type_property  = (axutil_property_t *) axis2_msg_ctx_get_property(
 				msg_ctx, env,
 				AXIS2_USER_DEFINED_HTTP_HEADER_CONTENT_TYPE);
 		
 			if (content_type_property)
 			{
-				content_type_hash = (axutil_hash_t *) axis2_property_get_value (content_type_property, env);
+				content_type_hash = (axutil_hash_t *) axutil_property_get_value (content_type_property, env);
 				if (content_type_hash)
 					content_type_value = (char *) axutil_hash_get (content_type_hash, 
 																  AXIS2_HTTP_HEADER_CONTENT_TYPE, 
@@ -306,11 +306,11 @@ axis2_libcurl_send (
 /* 	curl_slist_free_all (headers); */
 /* 	curl_easy_cleanup (handler); */
 
-	in_stream = axis2_stream_create_libcurl (env, data->memory, data->size);
-    trans_in_property = axis2_property_create(env);
-    axis2_property_set_scope(trans_in_property, env, AXIS2_SCOPE_REQUEST);
-    axis2_property_set_free_func(trans_in_property, env, axis2_stream_free_void_arg);
-    axis2_property_set_value(trans_in_property, env, in_stream);
+	in_stream = axutil_stream_create_libcurl (env, data->memory, data->size);
+    trans_in_property = axutil_property_create(env);
+    axutil_property_set_scope(trans_in_property, env, AXIS2_SCOPE_REQUEST);
+    axutil_property_set_free_func(trans_in_property, env, axutil_stream_free_void_arg);
+    axutil_property_set_value(trans_in_property, env, in_stream);
     axis2_msg_ctx_set_property(msg_ctx, env, AXIS2_TRANSPORT_IN, trans_in_property);
 	return AXIS2_SUCCESS;
 }

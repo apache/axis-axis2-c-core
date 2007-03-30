@@ -45,11 +45,11 @@ struct xml_schema_attribute_impl
 
     xml_schema_simple_type_t *schema_type;
 
-    axis2_qname_t *schema_type_name;
+    axutil_qname_t *schema_type_name;
 
-    axis2_qname_t *qualified_name;
+    axutil_qname_t *qualified_name;
 
-    axis2_qname_t *ref_name;
+    axutil_qname_t *ref_name;
 
     xml_schema_types_t obj_type;
 
@@ -110,14 +110,14 @@ xml_schema_attribute_set_schema_form(void *attr,
         const axutil_env_t *env,
         xml_schema_form_t *schema_form);
 
-axis2_qname_t*  AXIS2_CALL
+axutil_qname_t*  AXIS2_CALL
 xml_schema_attribute_get_qname(void *attr,
         const axutil_env_t *env);
 
 axis2_status_t  AXIS2_CALL
 xml_schema_attribute_set_qname(void *attr,
         const axutil_env_t *env,
-        axis2_qname_t *qualified_name);
+        axutil_qname_t *qualified_name);
 
 axis2_char_t*  AXIS2_CALL
 xml_schema_attribute_get_name(void *attr,
@@ -128,14 +128,14 @@ xml_schema_attribute_set_name(void *attr,
         const axutil_env_t *env,
         axis2_char_t *name);
 
-axis2_qname_t*  AXIS2_CALL
+axutil_qname_t*  AXIS2_CALL
 xml_schema_attribute_get_ref_name(void *attr,
         const axutil_env_t *env);
 
 axis2_status_t  AXIS2_CALL
 xml_schema_attribute_set_ref_name(void *attr,
         const axutil_env_t *env,
-        axis2_qname_t *ref_name);
+        axutil_qname_t *ref_name);
 
 xml_schema_simple_type_t*  AXIS2_CALL
 xml_schema_attribute_get_schema_type(void *attr,
@@ -146,7 +146,7 @@ xml_schema_attribute_set_schema_type(void *attr,
         const axutil_env_t *env,
         xml_schema_simple_type_t* sch_type);
 
-axis2_qname_t*  AXIS2_CALL
+axutil_qname_t*  AXIS2_CALL
 xml_schema_attribute_get_schema_type_name(void *attr,
         const axutil_env_t *env);
 
@@ -154,7 +154,7 @@ xml_schema_attribute_get_schema_type_name(void *attr,
 axis2_status_t  AXIS2_CALL
 xml_schema_attribute_set_schema_type_name(void *attr,
         const axutil_env_t *env,
-        axis2_qname_t *sch_type_name);
+        axutil_qname_t *sch_type_name);
 
 xml_schema_use_t*  AXIS2_CALL
 xml_schema_attribute_get_use(void *attr,
@@ -476,7 +476,7 @@ xml_schema_attribute_set_schema_form(void *attr,
 
 }
 
-axis2_qname_t*  AXIS2_CALL
+axutil_qname_t*  AXIS2_CALL
 xml_schema_attribute_get_qname(void *attr,
         const axutil_env_t *env)
 {
@@ -486,7 +486,7 @@ xml_schema_attribute_get_qname(void *attr,
 axis2_status_t  AXIS2_CALL
 xml_schema_attribute_set_qname(void *attr,
         const axutil_env_t *env,
-        axis2_qname_t *qualified_name)
+        axutil_qname_t *qualified_name)
 {
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, qualified_name, AXIS2_FAILURE);
@@ -526,7 +526,7 @@ xml_schema_attribute_set_name(void *attr,
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t*  AXIS2_CALL
+axutil_qname_t*  AXIS2_CALL
 xml_schema_attribute_get_ref_name(void *attr,
         const axutil_env_t *env)
 {
@@ -536,7 +536,7 @@ xml_schema_attribute_get_ref_name(void *attr,
 axis2_status_t  AXIS2_CALL
 xml_schema_attribute_set_ref_name(void *attr,
         const axutil_env_t *env,
-        axis2_qname_t *ref_name)
+        axutil_qname_t *ref_name)
 {
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, ref_name, AXIS2_FAILURE);
@@ -573,7 +573,7 @@ xml_schema_attribute_set_schema_type(void *attr,
 
 }
 
-axis2_qname_t*  AXIS2_CALL
+axutil_qname_t*  AXIS2_CALL
 xml_schema_attribute_get_schema_type_name(void *attr,
         const axutil_env_t *env)
 {
@@ -584,7 +584,7 @@ xml_schema_attribute_get_schema_type_name(void *attr,
 axis2_status_t  AXIS2_CALL
 xml_schema_attribute_set_schema_type_name(void *attr,
         const axutil_env_t *env,
-        axis2_qname_t *sch_type_name)
+        axutil_qname_t *sch_type_name)
 {
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, sch_type_name, AXIS2_FAILURE);

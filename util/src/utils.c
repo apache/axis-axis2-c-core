@@ -17,7 +17,7 @@
 
 #include <axis2_utils.h>
 #include <stdlib.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <string.h>
 #include <platforms/axis2_platform_auto_sense.h>
 

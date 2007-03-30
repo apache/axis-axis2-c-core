@@ -17,7 +17,7 @@
 
 #include <CuTest.h>
 #include <axis2_util.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_config_property_loader.h>
 #include <stdlib.h>
 #include "w2c_writer_test.h"

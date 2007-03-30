@@ -35,7 +35,7 @@
 #include <axutil_array_list.h>
 #include <axis2_http_status_line.h>
 #include <axis2_http_header.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 
 
 #ifdef __cplusplus
@@ -200,13 +200,13 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_http_simple_response_set_body_stream(axis2_http_simple_response_t *simple_response,
         const axutil_env_t *env,
-        axis2_stream_t *stream);
+        axutil_stream_t *stream);
 
    /**
     * @param simple_response pointer to simple response struct
     * @param env pointer to environment struct
     */
-    AXIS2_EXTERN axis2_stream_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_stream_t* AXIS2_CALL
     axis2_http_simple_response_get_body(axis2_http_simple_response_t *simple_response,
         const axutil_env_t *env);
 
@@ -242,7 +242,7 @@ extern "C"
             axis2_http_status_line_t *status_line,
             const axis2_http_header_t **http_headers,
             const axis2_ssize_t http_hdr_count,
-            axis2_stream_t *content);
+            axutil_stream_t *content);
 
     /**
      * @param env pointer to environment struct

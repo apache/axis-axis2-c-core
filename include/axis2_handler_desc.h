@@ -34,9 +34,9 @@
  */
 
 #include <axis2_utils_defines.h>
-#include <axis2_qname.h>
-#include <axis2_param.h>
-#include <axis2_param_container.h>
+#include <axutil_qname.h>
+#include <axutil_param.h>
+#include <axutil_param_container.h>
 #include <axis2_phase_rule.h>
 #include <axis2_handler.h>
 
@@ -54,7 +54,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to QName, returns a reference, not a cloned copy
      */
-    AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
     axis2_handler_desc_get_name(const axis2_handler_desc_t *handler_desc,
         const axutil_env_t *env);
 
@@ -69,7 +69,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_handler_desc_set_name(axis2_handler_desc_t *handler_desc,
         const axutil_env_t *env,
-        axis2_string_t *name);
+        axutil_string_t *name);
 
     /**
      * Gets phase rules.
@@ -102,7 +102,7 @@ extern "C"
      * @return pointer to parameter if found, else NULL. Return a reference
      * not a cloned copy
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_handler_desc_get_param(const axis2_handler_desc_t *handler_desc,
         const axutil_env_t *env,
         const axis2_char_t *name);
@@ -117,7 +117,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_handler_desc_add_param(axis2_handler_desc_t *handler_desc,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets all parameters stored within handler description.
@@ -197,7 +197,7 @@ extern "C"
      * @return pointer to parent parameter container, returns a reference,
      * not a cloned copy
      */
-    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_handler_desc_get_parent(const axis2_handler_desc_t *handler_desc,
         const axutil_env_t *env);
 
@@ -213,7 +213,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_handler_desc_set_parent(axis2_handler_desc_t *handler_desc,
         const axutil_env_t *env,
-        axis2_param_container_t *parent);
+        axutil_param_container_t *parent);
 
     /**
      * Frees handler description.
@@ -232,7 +232,7 @@ extern "C"
      * @return pointer to parameter container, returns a reference,
      * not a cloned copy
      */
-    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_handler_desc_get_param_container(const axis2_handler_desc_t *handler_desc,
         const axutil_env_t *env);
 
@@ -246,7 +246,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
     axis2_handler_desc_create(const axutil_env_t *env, 
-        axis2_string_t *name);
+        axutil_string_t *name);
 
 /** @} */
 

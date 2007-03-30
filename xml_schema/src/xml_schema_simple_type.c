@@ -21,7 +21,7 @@
 #include <xml_schema_data_type.h>
 #include <xml_schema_derivation_method.h>
 
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 typedef struct xml_schema_simple_type_impl
             xml_schema_simple_type_impl_t;

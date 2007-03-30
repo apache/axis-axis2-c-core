@@ -20,9 +20,9 @@
 #include <axis2_utils_defines.h>
 #include <axutil_env.h>
 #include <axiom_xml_writer.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <string.h>
-#include <axis2_stack.h>
+#include <axutil_stack.h>
 #include <axutil_hash.h>
 #include <axutil_array_list.h>
 
@@ -66,7 +66,7 @@ typedef struct axis2_libxml2_writer_wrapper_impl
 
     int compression;
 
-    axis2_stack_t *stack;
+    axutil_stack_t *stack;
 
     axis2_bool_t in_empty_element;
 
@@ -453,7 +453,7 @@ axiom_xml_writer_create_for_memory(const axutil_env_t *env,
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    writer_impl->stack = axis2_stack_create(env);
+    writer_impl->stack = axutil_stack_create(env);
     if (!(writer_impl->stack))
     {
         axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
@@ -580,7 +580,7 @@ axis2_libxml2_writer_wrapper_free(axiom_xml_writer_t *writer,
     }
     if (writer_impl->stack)
     {
-        axis2_stack_free(writer_impl->stack, env);
+        axutil_stack_free(writer_impl->stack, env);
         writer_impl->stack = NULL;
     }
     if (writer_impl->default_lang_namespace)
@@ -1365,7 +1365,7 @@ axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
     if (writer_impl->stack)
     {
         current_list = (axutil_array_list_t *)
-            axis2_stack_get(writer_impl->stack, env);
+            axutil_stack_get(writer_impl->stack, env);
 
         if (current_list)
         {
@@ -1517,7 +1517,7 @@ axis2_libxml2_writer_wrapper_find_prefix(axiom_xml_writer_t *writer,
     {
         return NULL;
     }
-    size = axis2_stack_size(writer_impl->stack, env);
+    size = axutil_stack_size(writer_impl->stack, env);
     if (size <= 0)
     {
         return NULL;
@@ -1527,7 +1527,7 @@ axis2_libxml2_writer_wrapper_find_prefix(axiom_xml_writer_t *writer,
     {
         axutil_array_list_t *context = NULL;
         void *value = NULL;
-        value = axis2_stack_get_at(writer_impl->stack, env, i);
+        value = axutil_stack_get_at(writer_impl->stack, env, i);
         if (value)
         {
             uri_prefix_element_t *up_ele = NULL;

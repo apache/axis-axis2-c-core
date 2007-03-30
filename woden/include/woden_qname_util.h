@@ -18,7 +18,7 @@
 #ifndef AXIS2_QNAME_UTIL_H
 #define AXIS2_QNAME_UTIL_H
 
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axiom.h>
 
 #ifdef __cplusplus
@@ -27,13 +27,13 @@ extern "C"
 #endif
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_qname_util_matches(
+axutil_qname_util_matches(
         const axutil_env_t *env,
-        axis2_qname_t *qname,
+        axutil_qname_t *qname,
         axiom_node_t *node);
         
-AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
-axis2_qname_util_new_qname(
+AXIS2_EXTERN axutil_qname_t * AXIS2_CALL
+axutil_qname_util_new_qname(
         const axutil_env_t *env,
         axiom_node_t *node);
 

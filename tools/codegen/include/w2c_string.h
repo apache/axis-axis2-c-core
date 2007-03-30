@@ -25,8 +25,8 @@
 
 #include <stdio.h>
 #include <axis2_utils.h>
-#include <axis2_string.h>
-#include <axis2_qname.h>
+#include <axutil_string.h>
+#include <axutil_qname.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -99,7 +99,7 @@ w2c_string_make_c_macro_name(axis2_char_t *name,
  * @return	newly create hash key
  */
 AXIS2_EXTERN axis2_char_t*
-w2c_string_make_key_from_qname(axis2_qname_t *qname,
+w2c_string_make_key_from_qname(axutil_qname_t *qname,
                                const axutil_env_t *env);
 
 /** @} */

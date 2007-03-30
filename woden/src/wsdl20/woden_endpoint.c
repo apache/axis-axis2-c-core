@@ -38,7 +38,7 @@ struct woden_endpoint_impl
     axutil_hash_t *super;
     axutil_hash_t *methods;
     woden_nc_name_t *f_name;
-    axis2_qname_t *f_binding_qname;
+    axutil_qname_t *f_binding_qname;
     void *f_binding;
     axis2_uri_t *f_address;
 };
@@ -97,9 +97,9 @@ axis2_status_t AXIS2_CALL
 woden_endpoint_set_binding_qname(
     void *endpoint,
     const axutil_env_t *env,
-    axis2_qname_t *binding_qname);
+    axutil_qname_t *binding_qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_endpoint_get_binding_qname(
     void *endpoint,
     const axutil_env_t *env);
@@ -720,7 +720,7 @@ woden_endpoint_free(void *endpoint,
 
     if (endpoint_impl->f_binding_qname)
     {
-        axis2_qname_free(endpoint_impl->f_binding_qname, env);
+        axutil_qname_free(endpoint_impl->f_binding_qname, env);
         endpoint_impl->f_binding_qname = NULL;
     }
 
@@ -938,7 +938,7 @@ axis2_status_t AXIS2_CALL
 woden_endpoint_set_binding_qname(
     void *endpoint,
     const axutil_env_t *env,
-    axis2_qname_t *binding_qname)
+    axutil_qname_t *binding_qname)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -950,14 +950,14 @@ woden_endpoint_set_binding_qname(
 
     if (endpoint_impl->f_binding_qname)
     {
-        axis2_qname_free(endpoint_impl->f_binding_qname, env);
+        axutil_qname_free(endpoint_impl->f_binding_qname, env);
     }
 
-    endpoint_impl->f_binding_qname = axis2_qname_clone(binding_qname, env);
+    endpoint_impl->f_binding_qname = axutil_qname_clone(binding_qname, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_endpoint_get_binding_qname(
     void *endpoint,
     const axutil_env_t *env)

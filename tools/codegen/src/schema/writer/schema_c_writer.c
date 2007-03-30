@@ -31,13 +31,13 @@
 axis2_char_t* AXIS2_CALL
 w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
         const axutil_env_t *env,
-        axis2_qname_t *qname)
+        axutil_qname_t *qname)
 {
     axis2_char_t *fully_qualified_class_name = NULL;
     w2c_schema_writer_impl_t *writer_impl = NULL;
     W2C_ENGINE_CONFIGURATION_NAMEMAKER name_maker = NULL;
     w2c_qname2name_maker_t *qname2name_maker = NULL;
-    axis2_qname_t *temp_qname = NULL;
+    axutil_qname_t *temp_qname = NULL;
     axis2_char_t *temp_name = NULL;
     axis2_char_t *temp_uri = NULL;
     axis2_char_t *temp_prefix = NULL;
@@ -47,18 +47,18 @@ w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer
     writer_impl = W2C_INTF_TO_IMPL(writer);
    
     /** verify unique names */ 
-    temp_name = axis2_qname_get_localpart( qname, env);
-    temp_uri = axis2_qname_get_uri( qname, env);
-    temp_prefix = axis2_qname_get_prefix( qname, env);
+    temp_name = axutil_qname_get_localpart( qname, env);
+    temp_uri = axutil_qname_get_uri( qname, env);
+    temp_prefix = axutil_qname_get_prefix( qname, env);
     temp_name = w2c_schema_writer_make_unique_class_name( writer_impl, env,
                                  writer_impl-> names_list, temp_name);
-    temp_qname = axis2_qname_create( env, temp_name, temp_uri, temp_prefix);
+    temp_qname = axutil_qname_create( env, temp_name, temp_uri, temp_prefix);
 
     qname2name_maker =
         W2C_SCHEMA_COMPILER_OPTIONS_GET_QNAME2NAME_MAKER( writer_impl-> options, env);
     if ( qname2name_maker == NULL)
     {
-        fully_qualified_class_name = axis2_qname_get_localpart( temp_qname, env);
+        fully_qualified_class_name = axutil_qname_get_localpart( temp_qname, env);
     }
     else
     {
@@ -109,7 +109,7 @@ w2c_schema_c_writer_write_batch( w2c_schema_writer_t *writer,
 axis2_char_t*
 w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
                         const axutil_env_t *env,
-                        axis2_qname_t *qname,
+                        axutil_qname_t *qname,
                         w2c_schema_writer_meta_info_t *meta_info,
                         axutil_hash_t *typemap,
                         axis2_bool_t is_element)
@@ -124,7 +124,7 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
     axis2_char_t *model_name = NULL;
     axis2_char_t *namespace_uri = NULL;
 
-    original_name = axis2_qname_get_localpart( qname, env);
+    original_name = axutil_qname_get_localpart( qname, env);
     original_name = axis2_strdup(env,  original_name, original_name);
     class_name = W2C_SCHEMA_WRITER_META_INFO_GET_OWN_CLASSNAME( meta_info, env);
     if( ! class_name )
@@ -165,7 +165,7 @@ w2c_schema_c_writer_process( w2c_schema_writer_impl_t *writer_impl,
             w2c_schema_writer_parse( writer_impl, env,
                           model_source_node, out, header_template);
         }
-        namespace_uri = axis2_qname_get_uri( qname, env);
+        namespace_uri = axutil_qname_get_uri( qname, env);
         model_name = axis2_stracat(env, class_name, "|");
         model_name = w2c_string_add_string( model_name, namespace_uri, env);
         axutil_hash_set( writer_impl-> model_map,  model_name, AXIS2_HASH_KEY_STRING, model_source_node);

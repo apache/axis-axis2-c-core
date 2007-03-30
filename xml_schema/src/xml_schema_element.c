@@ -86,9 +86,9 @@ struct xml_schema_element_impl
 
     axis2_char_t *name;
 
-    axis2_qname_t *qualified_qname;
+    axutil_qname_t *qualified_qname;
 
-    axis2_qname_t *ref_qname;
+    axutil_qname_t *ref_qname;
 
     /**
      * Returns the type of the element.
@@ -100,12 +100,12 @@ struct xml_schema_element_impl
      * QName of a built-in data type defined in this schema or another
      * schema indicated by the specified namespace.
      */
-    axis2_qname_t *schema_type_qname;
+    axutil_qname_t *schema_type_qname;
 
     /**
      * QName of an element that can be a substitute for this element.
      */
-    axis2_qname_t *substitution_group;
+    axutil_qname_t *substitution_group;
 
     axutil_hash_t *ht_super;
 
@@ -241,7 +241,7 @@ xml_schema_element_set_name(
     const axutil_env_t *env,
     axis2_char_t *name);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_element_get_ref_qname(
     void *element,
     const axutil_env_t *env);
@@ -250,9 +250,9 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_ref_qname(
     void *element,
     const axutil_env_t *env,
-    axis2_qname_t *ref_qname);
+    axutil_qname_t *ref_qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_element_get_qname(
     void *element,
     const axutil_env_t *env);
@@ -261,7 +261,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_qname(
     void *element,
     const axutil_env_t *env,
-    axis2_qname_t *qualified_name);
+    axutil_qname_t *qualified_name);
 
 xml_schema_type_t *AXIS2_CALL
 xml_schema_element_get_schema_type(
@@ -274,7 +274,7 @@ xml_schema_element_set_schema_type(
     const axutil_env_t *env,
     void *schema_type);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_element_get_schema_type_qname(
     void *element,
     const axutil_env_t *env);
@@ -283,9 +283,9 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_schema_type_qname(
     void *element,
     const axutil_env_t *env,
-    axis2_qname_t *schema_type_qname);
+    axutil_qname_t *schema_type_qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_element_get_substitution_group(
     void *element,
     const axutil_env_t *env);
@@ -294,7 +294,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_substitution_group(
     void *element,
     const axutil_env_t *env,
-    axis2_qname_t *substitution_group);
+    axutil_qname_t *substitution_group);
 
 axis2_char_t *AXIS2_CALL
 xml_schema_element_to_string(
@@ -776,7 +776,7 @@ xml_schema_element_set_name(
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_element_get_ref_qname(
     void *element,
     const axutil_env_t *env)
@@ -788,21 +788,21 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_ref_qname(
     void *element,
     const axutil_env_t *env,
-    axis2_qname_t *ref_qname)
+    axutil_qname_t *ref_qname)
 {
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
     if (element_impl->ref_qname)
     {
-        axis2_qname_free(element_impl->ref_qname, env);
+        axutil_qname_free(element_impl->ref_qname, env);
         element_impl->ref_qname = NULL;
     }
     element_impl->ref_qname = ref_qname;
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_element_get_qname(
     void *element,
     const axutil_env_t *env)
@@ -814,14 +814,14 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_qname(
     void *element,
     const axutil_env_t *env,
-    axis2_qname_t *qualified_name)
+    axutil_qname_t *qualified_name)
 {
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
     if (element_impl->qualified_qname)
     {
-        axis2_qname_free(element_impl->qualified_qname, env);
+        axutil_qname_free(element_impl->qualified_qname, env);
         element_impl->qualified_qname = NULL;
     }
     element_impl->qualified_qname = qualified_name;
@@ -855,7 +855,7 @@ xml_schema_element_set_schema_type(
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_element_get_schema_type_qname(
     void *element,
     const axutil_env_t *env)
@@ -867,7 +867,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_schema_type_qname(
     void *element,
     const axutil_env_t *env,
-    axis2_qname_t *schema_type_qname)
+    axutil_qname_t *schema_type_qname)
 {
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -880,7 +880,7 @@ xml_schema_element_set_schema_type_qname(
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_element_get_substitution_group(
     void *element,
     const axutil_env_t *env)
@@ -892,7 +892,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_substitution_group(
     void *element,
     const axutil_env_t *env,
-    axis2_qname_t *substitution_group)
+    axutil_qname_t *substitution_group)
 {
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

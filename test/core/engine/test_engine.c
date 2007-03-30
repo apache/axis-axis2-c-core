@@ -38,14 +38,14 @@ int   axis2_test_engine_send()
     struct axis2_svc_ctx *svc_ctx;
     struct axis2_svc_grp *svc_grp;
     struct axis2_svc_grp_ctx *svc_grp_ctx;
-    struct axis2_qname *qname;
+    struct axutil_qname *qname;
 
     conf_ctx = axis2_conf_ctx_create(env, conf);
 
     svc_grp = axis2_svc_grp_create(env);
     svc_grp_ctx = axis2_svc_grp_ctx_create(env, svc_grp, conf_ctx);
 
-    qname = axis2_qname_create(env, "name1", NULL, NULL);
+    qname = axutil_qname_create(env, "name1", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, qname);
     svc_ctx = axis2_svc_ctx_create(env, svc, svc_grp_ctx);
 
@@ -69,7 +69,7 @@ int   axis2_test_engine_send()
 
      axis2_conf_ctx_free(conf_ctx, env);
      axis2_msg_ctx_free(msg_ctx, env);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
      axis2_svc_grp_ctx_free(svc_grp_ctx, env);
      axis2_svc_ctx_free(svc_ctx, env);
     axis2_svc_free(svc, env);

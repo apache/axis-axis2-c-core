@@ -23,7 +23,7 @@
 #include <tcpmon_entry.h>
 #include <tcpmon_util.h>
 #include <platforms/axis2_platform_auto_sense.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 #define SIZE 1024
 

@@ -58,7 +58,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_ctx_set_property(struct axis2_ctx *ctx,
     const axutil_env_t *env,
     const axis2_char_t *key,
-    axis2_property_t *value)
+    axutil_property_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -66,16 +66,16 @@ axis2_ctx_set_property(struct axis2_ctx *ctx,
     {
         /* handle the case where we are setting a new value with the 
            same key, we would have to free the existing value */
-        axis2_property_t *temp_value = axutil_hash_get(ctx->property_map, 
+        axutil_property_t *temp_value = axutil_hash_get(ctx->property_map, 
             key, 
             AXIS2_HASH_KEY_STRING);
 		if (temp_value)
 		{
-			void *temp_value_value =  axis2_property_get_value (temp_value, env);
-			void *value_value =  axis2_property_get_value (value, env);
+			void *temp_value_value =  axutil_property_get_value (temp_value, env);
+			void *value_value =  axutil_property_get_value (value, env);
 			if (temp_value_value != value_value)
 			{
-				axis2_property_free(temp_value, env);
+				axutil_property_free(temp_value, env);
 			}
 		}
     }
@@ -88,12 +88,12 @@ axis2_ctx_set_property(struct axis2_ctx *ctx,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_property_t *AXIS2_CALL
+AXIS2_EXTERN axutil_property_t *AXIS2_CALL
 axis2_ctx_get_property(const axis2_ctx_t *ctx,
     const axutil_env_t *env,
     const axis2_char_t *key)
 {
-    axis2_property_t *ret = NULL;
+    axutil_property_t *ret = NULL;
 
     if (ctx->property_map)
     {
@@ -137,14 +137,14 @@ axis2_ctx_free(struct axis2_ctx *ctx,
         for (hi = axutil_hash_first(ctx->property_map, env);
             hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_property_t *property = NULL;
+            axutil_property_t *property = NULL;
 
             axutil_hash_this(hi, &key, NULL, &val);
-            property = (axis2_property_t *) val;
+            property = (axutil_property_t *) val;
 
             if (property)
             {
-                axis2_property_free(property, env);
+                axutil_property_free(property, env);
             }
         }
         axutil_hash_free(ctx->property_map, env);
@@ -170,14 +170,14 @@ axis2_ctx_set_property_map(struct axis2_ctx *ctx,
         for (hi = axutil_hash_first(ctx->property_map, env);
             hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_property_t *property = NULL;
+            axutil_property_t *property = NULL;
 
             axutil_hash_this(hi, &key, NULL, &val);
-            property = (axis2_property_t *) val;
+            property = (axutil_property_t *) val;
 
             if (property)
             {
-                axis2_property_free(property, env);
+                axutil_property_free(property, env);
             }
         }
         if (ctx->property_map != map) /* handle repeated invocation case */

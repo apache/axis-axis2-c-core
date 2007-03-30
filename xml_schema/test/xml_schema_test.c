@@ -117,7 +117,7 @@ void test_any_attribute(CuTest *tc)
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     void *ele = NULL;
     void *sch_type = NULL;
     void *particle = NULL;
@@ -135,7 +135,7 @@ void test_any_attribute(CuTest *tc)
     schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
                 sch_collection, env, om_doc);
 
-    qn = axis2_qname_create(env, "AnyAttContainer",
+    qn = axutil_qname_create(env, "AnyAttContainer",
             "http://unqualified-elements.example.com", NULL);
 
     ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
@@ -165,7 +165,7 @@ void test_block_content(CuTest *tc)
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     void *ele = NULL;
     void *block = NULL;
     void *value = NULL;
@@ -181,7 +181,7 @@ void test_block_content(CuTest *tc)
     schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
                 sch_collection, env, om_doc);
 
-    qn = axis2_qname_create(env, "complexElt",
+    qn = axutil_qname_create(env, "complexElt",
             "http://soapinterop.org/xsd", NULL);
 
     ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
@@ -272,7 +272,7 @@ void test_mixed_content(CuTest *tc)
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     void *sch_ele = NULL;
 
     axis2_char_t *filename = "./..//test-resources/mixedContent.xsd";
@@ -280,7 +280,7 @@ void test_mixed_content(CuTest *tc)
 
     env = axutil_env_create_all("test.log", 1);
 
-    qn = axis2_qname_create(env, "complexElt",
+    qn = axutil_qname_create(env, "complexElt",
             "http://soapinterop.org/xsd", NULL);
 
     om_doc = get_document_from_filename(env, filename);
@@ -304,17 +304,17 @@ void test_local_elements(CuTest *tc)
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     void *ele = NULL;
     void *cmp_type = NULL;
     void *seq = NULL;
     xml_schema_obj_collection_t *items = NULL;
     void *sub_element1 = NULL;
-    axis2_qname_t *qn1 = NULL;
+    axutil_qname_t *qn1 = NULL;
     axis2_char_t *uri1 = NULL;
 
     void *sub_element2 = NULL;
-    axis2_qname_t *qn2 = NULL;
+    axutil_qname_t *qn2 = NULL;
     axis2_char_t *uri2 = NULL;
 
 
@@ -329,7 +329,7 @@ void test_local_elements(CuTest *tc)
     schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
                 sch_collection, env, om_doc);
 
-    qn = axis2_qname_create(env, "unQualifiedLocals",
+    qn = axutil_qname_create(env, "unQualifiedLocals",
             "http://unqualified-elements.example.com", NULL);
 
     ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
@@ -356,7 +356,7 @@ void test_local_elements(CuTest *tc)
 
     CuAssertPtrNotNull(tc, qn1);
 
-    uri1 = axis2_qname_get_uri(qn1, env);
+    uri1 = axutil_qname_get_uri(qn1, env);
 
     CuAssertPtrNotNull(tc, uri1);
 
@@ -368,7 +368,7 @@ void test_local_elements(CuTest *tc)
 
     CuAssertPtrNotNull(tc, qn2);
 
-    uri2 = axis2_qname_get_uri(qn2, env);
+    uri2 = axutil_qname_get_uri(qn2, env);
 
     CuAssertPtrNotNull(tc, uri2);
 
@@ -381,7 +381,7 @@ void test_element_refs(CuTest *tc)
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     axis2_char_t *filename = NULL;
     void *element = NULL;
     void *cmp_type = NULL;
@@ -402,7 +402,7 @@ void test_element_refs(CuTest *tc)
 
     CuAssertPtrNotNull(tc, schema);
 
-    qn = axis2_qname_create(env, "attTests" , "http://soapinterop.org/types", NULL);
+    qn = axutil_qname_create(env, "attTests" , "http://soapinterop.org/types", NULL);
 
     element = XML_SCHEMA_COLLECTION_GET_ELEMENT_BY_QNAME(
                 sch_collection, env, qn);
@@ -423,7 +423,7 @@ void test_element_refs(CuTest *tc)
 
     for (i = 0; i < count; i++)
     {
-        axis2_qname_t *name = NULL;
+        axutil_qname_t *name = NULL;
         void *inner_ele = NULL;
         inner_ele = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, i);
         CuAssertPtrNotNull(tc, inner_ele);
@@ -441,7 +441,7 @@ void test_forward_refs(CuTest *tc)
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
     axis2_char_t *filename = NULL;
     void *element = NULL;
     void *sch_type = NULL;
@@ -461,7 +461,7 @@ void test_forward_refs(CuTest *tc)
 
     CuAssertPtrNotNull(tc, schema);
 
-    qn = axis2_qname_create(env, "attrTest",
+    qn = axutil_qname_create(env, "attrTest",
             "http://soapinterop.org/types", NULL);
 
     element = XML_SCHEMA_COLLECTION_GET_ELEMENT_BY_QNAME(
@@ -537,8 +537,8 @@ void test_simple_restriction(CuTest *tc)
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
-    axis2_qname_t *type_qname = NULL;
-    axis2_qname_t *element_qname = NULL;
+    axutil_qname_t *type_qname = NULL;
+    axutil_qname_t *element_qname = NULL;
     void *element = NULL;
     void *simple_type = NULL;
 
@@ -556,14 +556,14 @@ void test_simple_restriction(CuTest *tc)
 
     CuAssertPtrNotNull(tc, schema);
 
-    type_qname = axis2_qname_create(env, "layoutComponentType",
+    type_qname = axutil_qname_create(env, "layoutComponentType",
             "http://soapinterop.org/types", NULL);
 
     simple_type = XML_SCHEMA_GET_TYPE_BY_QNAME(schema, env, type_qname);
 
     CuAssertPtrNotNull(tc, simple_type);
 
-    element_qname = axis2_qname_create(env, "foo",
+    element_qname = axutil_qname_create(env, "foo",
             "http://soapinterop.org/types", NULL);
 
     element = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, element_qname);
@@ -577,7 +577,7 @@ void test_unqualified_schemas(CuTest *tc)
     axiom_document_t *om_doc = NULL;
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
-    axis2_qname_t *element_qname = NULL;
+    axutil_qname_t *element_qname = NULL;
 
     void *element = NULL;
 
@@ -605,7 +605,7 @@ void test_unqualified_schemas(CuTest *tc)
 
     CuAssertPtrNotNull(tc, schema);
 
-    element_qname = axis2_qname_create(env, "complexElt",
+    element_qname = axutil_qname_create(env, "complexElt",
             "http://soapinterop.org/xsd", NULL);
 
     element = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, element_qname);

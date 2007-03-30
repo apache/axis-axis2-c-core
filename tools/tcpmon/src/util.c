@@ -16,7 +16,7 @@
  */
 
 #include <tcpmon_util.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axiom.h>
 #include <axis2_util.h>
 #include <stdio.h>

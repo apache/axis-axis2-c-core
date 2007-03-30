@@ -70,7 +70,7 @@ struct woden_binding_ops
             void *binding,
             const axutil_env_t *env);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *binding,
             const axutil_env_t *env);
@@ -115,7 +115,7 @@ struct woden_binding_ops
     get_binding_fault_element) (
             void *binding,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     /*
      * Get the binding operation with the specified 'ref' attribute qname.
@@ -130,7 +130,7 @@ struct woden_binding_ops
     get_binding_op_element) (
             void *binding,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     axis2_status_t (AXIS2_CALL *
     set_interface_element) (

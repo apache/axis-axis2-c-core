@@ -16,14 +16,14 @@
  */
 
 #include <axis2_http_chunked_stream.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <string.h>
 #include <axis2_http_transport.h>
 #include <stdlib.h>
 
 struct axis2_http_chunked_stream
 {
-    axis2_stream_t *stream;
+    axutil_stream_t *stream;
     int current_chunk_size;
     int unread_len;
     axis2_bool_t end_of_chunks;
@@ -38,7 +38,7 @@ axis2_http_chunked_stream_start_chunk(
 AXIS2_EXTERN axis2_http_chunked_stream_t *AXIS2_CALL
 axis2_http_chunked_stream_create(
     const axutil_env_t *env,
-    axis2_stream_t *stream)
+    axutil_stream_t *stream)
 {
     axis2_http_chunked_stream_t *chunked_stream = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -82,7 +82,7 @@ axis2_http_chunked_stream_read(
 {
     int len = -1;
     int yet_to_read = 0;
-    axis2_stream_t *stream = chunked_stream->stream;
+    axutil_stream_t *stream = chunked_stream->stream;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (! buffer)
@@ -137,7 +137,7 @@ axis2_http_chunked_stream_write(
     const void *buffer,
     size_t count)
 {
-    axis2_stream_t *stream = chunked_stream->stream;
+    axutil_stream_t *stream = chunked_stream->stream;
     int len = -1;
     axis2_char_t tmp_buf[10];
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -225,7 +225,7 @@ axis2_http_chunked_stream_write_last_chunk(
     axis2_http_chunked_stream_t *chunked_stream,
     const axutil_env_t *env)
 {
-    axis2_stream_t *stream = NULL;
+    axutil_stream_t *stream = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     stream = chunked_stream->stream;

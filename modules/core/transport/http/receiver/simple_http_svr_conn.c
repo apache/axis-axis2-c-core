@@ -17,8 +17,8 @@
 
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_http_transport.h>
-#include <axis2_string.h>
-#include <axis2_network_handler.h>
+#include <axutil_string.h>
+#include <axutil_network_handler.h>
 #include <axis2_http_chunked_stream.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
@@ -31,7 +31,7 @@ typedef struct axis2_simple_http_svr_conn_impl
 {
     axis2_simple_http_svr_conn_t svr_conn;
     int socket;
-    axis2_stream_t *stream;
+    axutil_stream_t *stream;
     axis2_bool_t keep_alive;
 }
 axis2_simple_http_svr_conn_impl_t;
@@ -62,7 +62,7 @@ axis2_simple_http_svr_conn_is_keep_alive(
     axis2_simple_http_svr_conn_t *svr_conn,
     const axutil_env_t *env);
 
-axis2_stream_t *AXIS2_CALL
+axutil_stream_t *AXIS2_CALL
 axis2_simple_http_svr_conn_get_stream(
     const axis2_simple_http_svr_conn_t *svr_conn,
     const axutil_env_t *env);
@@ -141,7 +141,7 @@ axis2_simple_http_svr_conn_create(
 
     if (-1 != svr_conn_impl->socket)
     {
-        svr_conn_impl->stream = axis2_stream_create_socket(env,
+        svr_conn_impl->stream = axutil_stream_create_socket(env,
                 svr_conn_impl->socket);
         if (! svr_conn_impl->stream)
         {
@@ -219,7 +219,7 @@ axis2_simple_http_svr_conn_close(
     AXIS2_STREAM_FREE(svr_conn_impl->stream, env);
     if (-1 != svr_conn_impl->socket)
     {
-        axis2_network_handler_close_socket(env, svr_conn_impl->socket);
+        axutil_network_handler_close_socket(env, svr_conn_impl->socket);
         svr_conn_impl->socket = -1;
     }
     return AXIS2_SUCCESS;
@@ -269,7 +269,7 @@ axis2_simple_http_svr_conn_is_keep_alive(
 }
 
 
-axis2_stream_t *AXIS2_CALL
+axutil_stream_t *AXIS2_CALL
 axis2_simple_http_svr_conn_get_stream(
     const axis2_simple_http_svr_conn_t *svr_conn,
     const axutil_env_t *env)
@@ -309,7 +309,7 @@ axis2_simple_http_svr_conn_read_request(
 
     svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
     memset(str_line, 0, 2048);
-    while ((read = axis2_stream_peek_socket(svr_conn_impl->stream, env, tmp_buf, 2048)) > 0)
+    while ((read = axutil_stream_peek_socket(svr_conn_impl->stream, env, tmp_buf, 2048)) > 0)
     {
         axis2_char_t *start = tmp_buf;
         axis2_char_t *end = NULL;
@@ -385,7 +385,7 @@ axis2_simple_http_svr_conn_read_request(
     end_of_line = AXIS2_FALSE;
     while (AXIS2_FALSE == end_of_headers)
     {
-        while ((read = axis2_stream_peek_socket(svr_conn_impl->stream, env, tmp_buf, 2048)) > 0)
+        while ((read = axutil_stream_peek_socket(svr_conn_impl->stream, env, tmp_buf, 2048)) > 0)
         {
             axis2_char_t *start = tmp_buf;
             axis2_char_t *end = NULL;
@@ -461,7 +461,7 @@ axis2_simple_http_svr_conn_write_response(
     axis2_http_response_writer_t *response_writer = NULL;
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     axutil_array_list_t *headers = NULL;
-    axis2_stream_t *response_stream = NULL;
+    axutil_stream_t *response_stream = NULL;
     axis2_char_t *response_body = NULL;
     int body_size = 0;
     int i = 0;
@@ -548,8 +548,8 @@ axis2_simple_http_svr_conn_write_response(
     if (response_stream)
     {
         body_size = AXIS2_STREAM_BASIC_GET_LEN(response_stream, env);
-        response_body = axis2_stream_get_buffer(response_stream, env);
-        axis2_stream_flush_buffer(response_stream, env);
+        response_body = axutil_stream_get_buffer(response_stream, env);
+        axutil_stream_flush_buffer(response_stream, env);
         response_body[body_size] = '\0';
     }
 
@@ -604,7 +604,7 @@ axis2_simple_http_svr_conn_set_rcv_timeout(
     int timeout)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return axis2_network_handler_set_sock_option(env,
+    return axutil_network_handler_set_sock_option(env,
             AXIS2_INTF_TO_IMPL(svr_conn)->socket, SO_RCVTIMEO,
             timeout);
 
@@ -618,7 +618,7 @@ axis2_simple_http_svr_conn_set_snd_timeout(
     int timeout)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return axis2_network_handler_set_sock_option(env,
+    return axutil_network_handler_set_sock_option(env,
             AXIS2_INTF_TO_IMPL(svr_conn)->socket, SO_SNDTIMEO,
             timeout);
 }
@@ -629,7 +629,7 @@ axis2_simple_http_svr_conn_get_svr_ip(
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return axis2_network_handler_get_svr_ip(env,
+    return axutil_network_handler_get_svr_ip(env,
             AXIS2_INTF_TO_IMPL(svr_conn)->socket);
 }
 
@@ -639,6 +639,6 @@ axis2_simple_http_svr_conn_get_peer_ip(
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return axis2_network_handler_get_peer_ip(env,
+    return axutil_network_handler_get_peer_ip(env,
             AXIS2_INTF_TO_IMPL(svr_conn)->socket);
 }

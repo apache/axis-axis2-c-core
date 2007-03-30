@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_url.h>
 #include <axis2_uri.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_options.h>
 #include <axiom_util.h>
-#include <axis2_param.h>
+#include <axutil_param.h>
 #include "axis2_client_utils.h"
 #include <woden_resolver.h>
 #include <woden_nc_name.h>
@@ -48,7 +48,7 @@
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
 axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
     const axis2_uri_t *wsdl_uri,
-    const axis2_qname_t *wsdl_svc_qname,
+    const axutil_qname_t *wsdl_svc_qname,
     const axis2_char_t *ep_name,
     const axis2_char_t *doc_base_uri,
     axis2_options_t *options)
@@ -59,7 +59,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
     void *desc = NULL;
     axis2_bool_t svc_found = AXIS2_FALSE;
     axis2_bool_t endpoint_found = AXIS2_FALSE;
-    axis2_qname_t *svc_qname = NULL;
+    axutil_qname_t *svc_qname = NULL;
     axutil_array_list_t *wsdl_svcs = NULL;
     axutil_array_list_t *endpoints = NULL;
     axutil_array_list_t *binding_ops = NULL;
@@ -114,7 +114,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
                 break;
             }
             if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(svc_qname, env,
-                (axis2_qname_t *) wsdl_svc_qname))
+                (axutil_qname_t *) wsdl_svc_qname))
             {
                 svc_found = AXIS2_TRUE;
                 break;
@@ -126,17 +126,17 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
             axis2_char_t *ns = NULL;
             axis2_char_t *prefix = NULL;
             axis2_char_t *localname = NULL;
-            axis2_qname_t *temp_svc_qname = NULL;
+            axutil_qname_t *temp_svc_qname = NULL;
 
-            temp1 = axis2_qname_get_localpart(svc_qname, env);
+            temp1 = axutil_qname_get_localpart(svc_qname, env);
             localname = axis2_strcat(env, "dii_", temp1, NULL);
-            ns = axis2_qname_get_uri(svc_qname, env);
-            prefix = axis2_qname_get_prefix(svc_qname, env);
-            temp_svc_qname = axis2_qname_create(env, localname, ns, prefix);
+            ns = axutil_qname_get_uri(svc_qname, env);
+            prefix = axutil_qname_get_prefix(svc_qname, env);
+            temp_svc_qname = axutil_qname_create(env, localname, ns, prefix);
             axis2_svc_set_name(axis2_svc, env, localname);
             axis2_svc_set_qname(axis2_svc, env, temp_svc_qname);
             AXIS2_FREE(env->allocator, localname);
-            axis2_qname_free(temp_svc_qname, env);
+            axutil_qname_free(temp_svc_qname, env);
         }
         endpoints = WODEN_SVC_GET_ENDPOINTS(wsdl_svc, env);
         if (endpoints)
@@ -202,7 +202,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
             int j = 0, size = 0;
             axis2_bool_t in = AXIS2_FALSE;
             axis2_bool_t out = AXIS2_FALSE;
-            axis2_qname_t *op_qname = NULL;
+            axutil_qname_t *op_qname = NULL;
             axis2_uri_t *mep_uri = NULL;
             axis2_char_t *mep_str = NULL;
 
@@ -292,8 +292,8 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
                 svc_found = AXIS2_TRUE;
                 break;
             }
-            if (AXIS2_TRUE == axis2_qname_equals(svc_qname, env,
-                (axis2_qname_t *) wsdl_svc_qname))
+            if (AXIS2_TRUE == axutil_qname_equals(svc_qname, env,
+                (axutil_qname_t *) wsdl_svc_qname))
             {
                 svc_found = AXIS2_TRUE;
                 break;
@@ -305,17 +305,17 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
             axis2_char_t *ns = NULL;
             axis2_char_t *prefix = NULL;
             axis2_char_t *localname = NULL;
-            axis2_qname_t *temp_svc_qname = NULL;
+            axutil_qname_t *temp_svc_qname = NULL;
 
-            temp1 = axis2_qname_get_localpart(svc_qname, env);
+            temp1 = axutil_qname_get_localpart(svc_qname, env);
             localname = axis2_strcat(env, "dii_", temp1, NULL);
-            ns = axis2_qname_get_uri(svc_qname, env);
-            prefix = axis2_qname_get_prefix(svc_qname, env);
-            temp_svc_qname = axis2_qname_create(env, localname, ns, prefix);
+            ns = axutil_qname_get_uri(svc_qname, env);
+            prefix = axutil_qname_get_prefix(svc_qname, env);
+            temp_svc_qname = axutil_qname_create(env, localname, ns, prefix);
             axis2_svc_set_name(axis2_svc, env, localname);
             axis2_svc_set_qname(axis2_svc, env, temp_svc_qname);
             AXIS2_FREE(env->allocator, localname);
-            axis2_qname_free(temp_svc_qname, env);
+            axutil_qname_free(temp_svc_qname, env);
         }
         if(wsdl_svc)
 		{
@@ -347,15 +347,15 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
         {
             axis2_endpoint_ref_t *endpoint_ref = NULL;
             axis2_char_t *address = NULL;
-            axis2_qname_t *ext_type_l = NULL;
-            axis2_qname_t *ext_type = NULL;
+            axutil_qname_t *ext_type_l = NULL;
+            axutil_qname_t *ext_type = NULL;
             int j = 0, size = 0;
             axutil_array_list_t *ext_elements = NULL;
             axis2_uri_t *soap_address_uri = NULL;
 
             endpoint = woden_wsdl10_endpoint_to_element_extensible(
                 endpoint, env);
-            ext_type_l = axis2_qname_create(env, "address",
+            ext_type_l = axutil_qname_create(env, "address",
                 "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
             ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(endpoint,
                 env);
@@ -369,7 +369,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
 
                 ext_element = axutil_array_list_get(ext_elements, env, j);
                 ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-                if (AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
+                if (AXIS2_TRUE == axutil_qname_equals(ext_type, env, ext_type_l))
                 {
                     void *soap_address = NULL;
 
@@ -417,10 +417,10 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
             int j = 0, size = 0;
             axis2_bool_t in = AXIS2_FALSE;
             axis2_bool_t out = AXIS2_FALSE;
-            axis2_qname_t *op_qname = NULL;
-            axis2_qname_t *ext_type = NULL;
-            axis2_qname_t *ext_type_l = NULL;
-            axis2_param_t *param = NULL;
+            axutil_qname_t *op_qname = NULL;
+            axutil_qname_t *ext_type = NULL;
+            axutil_qname_t *ext_type_l = NULL;
+            axutil_param_t *param = NULL;
             axis2_uri_t *mep_uri = NULL;
             axis2_char_t *mep_str = NULL;
 
@@ -467,7 +467,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
             }
             binding_op = woden_wsdl10_binding_op_to_element_extensible(
                 binding_op, env);
-            ext_type_l = axis2_qname_create(env, "operation",
+            ext_type_l = axutil_qname_create(env, "operation",
                 "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
             ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op,
                 env);
@@ -481,7 +481,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
 
                 ext_element = axutil_array_list_get(ext_elements, env, j);
                 ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-                if (AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
+                if (AXIS2_TRUE == axutil_qname_equals(ext_type, env, ext_type_l))
                 {
                     void *soap_binding_op = NULL;
                     axis2_uri_t *soap_action_uri = NULL;
@@ -493,7 +493,7 @@ axis2_client_utils_create_axis2_svc(const axutil_env_t *env,
 
                     soap_action_uri = WODEN_WSDL10_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION(
                                 soap_binding_op, env);
-                    param = axis2_param_create(env, AXIS2_SOAP_ACTION, soap_action_uri);
+                    param = axutil_param_create(env, AXIS2_SOAP_ACTION, soap_action_uri);
                     axis2_op_add_param(axis2_op, env, param);
                     break;
                 }

@@ -39,7 +39,7 @@ struct woden_wsdl10_soap_binding_fault_exts_impl
     axutil_hash_t *super;
     woden_obj_types_t obj_type;
 
-    axis2_qname_t *qname;
+    axutil_qname_t *qname;
 };
 
 #define INTF_TO_IMPL(binding_fault_exts) ((woden_wsdl10_soap_binding_fault_exts_impl_t *) binding_fault_exts)
@@ -260,7 +260,7 @@ woden_wsdl10_soap_binding_fault_exts_free(void *binding_fault_exts,
 
     if (binding_fault_exts_impl->qname)
     {
-        axis2_qname_free(binding_fault_exts_impl->qname, env);
+        axutil_qname_free(binding_fault_exts_impl->qname, env);
         binding_fault_exts_impl->qname = NULL;
     }
     woden_wsdl10_soap_binding_fault_exts_free_ops(binding_fault_exts, env);
@@ -385,7 +385,7 @@ woden_wsdl10_soap_binding_fault_exts_get_soap_fault_code(
                 binding_fault_exts_impl->component_exts, env);
     parent_element = woden_wsdl_element_to_attr_extensible(parent_element,
             env);
-    binding_fault_exts_impl->qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_CODE);
+    binding_fault_exts_impl->qname = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_CODE);
     code = (woden_qname_or_token_any_attr_t *)
             WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(parent_element, env, binding_fault_exts_impl->qname);
     if (! code)
@@ -433,7 +433,7 @@ woden_wsdl10_soap_binding_fault_exts_get_soap_fault_subcodes(
                 binding_fault_exts_impl->component_exts, env);
     parent_element = woden_wsdl_element_to_attr_extensible(parent_element,
             env);
-    binding_fault_exts_impl->qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES);
+    binding_fault_exts_impl->qname = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES);
     subcodes = (woden_qname_list_or_token_any_attr_t *)
             WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(parent_element, env, binding_fault_exts_impl->qname);
     if (! subcodes)
@@ -478,7 +478,7 @@ woden_wsdl10_soap_binding_fault_exts_get_soap_modules(
                 binding_fault_exts_impl->component_exts, env);
     parent_element = woden_wsdl_element_to_element_extensible(parent_element,
             env);
-    binding_fault_exts_impl->qname = axis2_qname_create_from_string(env,
+    binding_fault_exts_impl->qname = axutil_qname_create_from_string(env,
             WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
     soap_mods = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(
                 parent_element, env, binding_fault_exts_impl->qname);
@@ -502,7 +502,7 @@ woden_wsdl10_soap_binding_fault_exts_get_soap_headers(
                 binding_fault_exts_impl->component_exts, env);
     parent_element = woden_wsdl_element_to_element_extensible(parent_element,
             env);
-    binding_fault_exts_impl->qname = axis2_qname_create_from_string(env,
+    binding_fault_exts_impl->qname = axutil_qname_create_from_string(env,
             WODEN_WSDL10_Q_ELEM_SOAP_HEADER);
     soap_headers = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(
                 parent_element, env, binding_fault_exts_impl->qname);

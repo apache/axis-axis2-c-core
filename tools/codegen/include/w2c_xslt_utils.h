@@ -24,7 +24,7 @@
  */
 
 #include <stdio.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 #include <axis2_utils.h>
 #include <axiom.h>
 

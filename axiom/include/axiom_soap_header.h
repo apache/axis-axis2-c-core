@@ -161,7 +161,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axiom_soap_header_remove_header_block(axiom_soap_header_t *header,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     /** @} */
 #ifdef __cplusplus

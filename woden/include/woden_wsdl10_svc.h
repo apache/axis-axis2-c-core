@@ -78,7 +78,7 @@ struct woden_wsdl10_svc_ops
      *  Service interface methods (the WSDL Component model)
      * ************************************************************/
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *svc,
             const axutil_env_t *env);

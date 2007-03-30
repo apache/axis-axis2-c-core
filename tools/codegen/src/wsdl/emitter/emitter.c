@@ -24,7 +24,7 @@
 #include <woden_wsdl10_soap_module.h>
 #include <woden_wsdl10_soap_address_exts.h>
 
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #include <woden_desc.h>
 #include <woden_svc.h>
@@ -353,13 +353,13 @@ get_root_element_from_filename(
     return doc;
 }
 
-axis2_qname_t*
+axutil_qname_t*
 w2c_emitter_pick_service_name ( w2c_emitter_impl_t *emitter_impl,
                                const axutil_env_t *env)
 {
     axutil_array_list_t *svc_list = NULL;
     void  *svc = NULL;
-    axis2_qname_t *svc_qname = NULL;
+    axutil_qname_t *svc_qname = NULL;
 
     if (WODEN_RESOLVER_GET_SPEC( emitter_impl-> resolver,env ) 
                                                             == WODEN_WSDL10 )
@@ -421,13 +421,13 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
 {
     axutil_array_list_t *svc_list = NULL;
     woden_wsdl10_svc_t *svc = NULL; 
-    axis2_qname_t* svc_qname = NULL;
+    axutil_qname_t* svc_qname = NULL;
 
     axutil_array_list_t *endpoint_list = NULL;
     woden_wsdl10_endpoint_t *endpoint = NULL;
     axis2_char_t *address = NULL;
-    axis2_qname_t *ext_type_l = NULL;
-    axis2_qname_t *ext_type = NULL;
+    axutil_qname_t *ext_type_l = NULL;
+    axutil_qname_t *ext_type = NULL;
     int size = 0;
     axutil_array_list_t *ext_elements = NULL;
     void *soap_address = NULL;
@@ -445,7 +445,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
    
     int i = 0;
     void* interface_op = NULL;
-    axis2_qname_t *op_qname = NULL;
+    axutil_qname_t *op_qname = NULL;
     axis2_char_t *local_part = NULL;
     axis2_char_t *ns = NULL;
     axiom_node_t *method = NULL;
@@ -470,7 +470,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     }
     svc = axutil_array_list_get( svc_list, env, 0 );
     svc_qname = WODEN_WSDL10_SVC_GET_QNAME( svc, env);
-    ns = axis2_qname_get_uri( svc_qname, env);
+    ns = axutil_qname_get_uri( svc_qname, env);
     w2c_xslt_utils_add_attribute (env, root, "namespace", ns);
 
     /**********************************************************************
@@ -488,7 +488,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     endpoint = woden_wsdl10_endpoint_to_element_extensible(
                             endpoint, env);
 
-    ext_type_l = axis2_qname_create(env, "address",
+    ext_type_l = axutil_qname_create(env, "address",
             "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
     ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(endpoint,
             env);
@@ -499,8 +499,8 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
     for(j = 0; j < size; j++)
     {
         ext_element = axutil_array_list_get(ext_elements, env, j);
-        ext_type = (axis2_qname_t*)WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-        if(AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
+        ext_type = (axutil_qname_t*)WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
+        if(AXIS2_TRUE == axutil_qname_equals(ext_type, env, ext_type_l))
         {
             ext_element =
                woden_wsdl10_soap_module_to_soap_module_element (
@@ -554,10 +554,10 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
         {
             method = w2c_xslt_utils_add_child_node(env, "method",
                                                root);
-            local_part= axis2_qname_get_localpart(op_qname, env);
+            local_part= axutil_qname_get_localpart(op_qname, env);
             given_name = W2C_QNAME2NAME_MAKER_SUGGEST_NAME( 
                     emitter_impl-> qname2name_maker, env, op_qname);
-            qname_str = axis2_qname_to_string(op_qname, env);
+            qname_str = axutil_qname_to_string(op_qname, env);
             w2c_xslt_utils_add_attribute (env, method, "localpart",
                                                 local_part);
             given_name = emitter_impl-> name_maker_func(given_name, env);
@@ -566,7 +566,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
             w2c_xslt_utils_add_attribute(env, method, "qname",
                                                 qname_str); 
             AXIS2_FREE( env-> allocator, local_part);
-            ns = axis2_qname_get_uri(op_qname, env);
+            ns = axutil_qname_get_uri(op_qname, env);
             w2c_xslt_utils_add_attribute (env, method, "namespace",
                                                 ns);
             /** todos */
@@ -583,7 +583,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
         w2c_emitter_load_operations( emitter_impl, env, method, interface_op, 1);
 
         /** get soap action */
-        ext_type_l = axis2_qname_create(env, "operation",
+        ext_type_l = axutil_qname_create(env, "operation",
                                 "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
         binding_op = woden_wsdl10_binding_op_to_element_extensible(binding_op, env);
         ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op, env);
@@ -592,7 +592,7 @@ w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
         {
             ext_element = axutil_array_list_get(ext_elements, env, j);
             ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-            if(AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
+            if(AXIS2_TRUE == axutil_qname_equals(ext_type, env, ext_type_l))
             {
                 ext_element = woden_wsdl10_soap_module_to_soap_module_element (
                                                                ext_element, env);
@@ -629,7 +629,7 @@ w2c_emitter_load_operations( w2c_emitter_impl_t *emitter_impl,
     axis2_bool_t in = AXIS2_FALSE;
     axis2_bool_t out = AXIS2_FALSE;
 
-    axis2_qname_t *msg_qname = NULL;
+    axutil_qname_t *msg_qname = NULL;
     void* if_msg_ref_ele = NULL;
     void* msg_ref = NULL;
     woden_wsdl10_part_t *part = NULL;
@@ -739,7 +739,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
    
     void* interface_op = NULL;
     int i = 0;
-    axis2_qname_t* op_qname = NULL;
+    axutil_qname_t* op_qname = NULL;
     axis2_char_t* local_part = NULL;
     axis2_char_t* ns = NULL;
     axiom_node_t* method = NULL;
@@ -747,8 +747,8 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
     /*void *soap_binding_op = NULL;*/
     axis2_uri_t *soap_action_uri = NULL;
     axis2_char_t *soap_action_str = NULL;
-    axis2_qname_t *ext_type_l = NULL;
-    axis2_qname_t *ext_type = NULL;
+    axutil_qname_t *ext_type_l = NULL;
+    axutil_qname_t *ext_type = NULL;
     axutil_array_list_t *ext_elements = NULL;
     void *ext_element = NULL;
     int size = 0, j = 0;
@@ -816,10 +816,10 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
         {
             method = w2c_xslt_utils_add_child_node(env, "method",
                                                root);
-            local_part= axis2_qname_get_localpart(op_qname, env);
+            local_part= axutil_qname_get_localpart(op_qname, env);
             given_name = W2C_QNAME2NAME_MAKER_SUGGEST_NAME( 
                     emitter_impl-> qname2name_maker, env, op_qname);
-            qname_str = axis2_qname_to_string(op_qname, env);
+            qname_str = axutil_qname_to_string(op_qname, env);
             w2c_xslt_utils_add_attribute (env, method, "localpart",
                                                 local_part);
             given_name = emitter_impl-> name_maker_func(given_name, env);
@@ -827,7 +827,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
                                                 given_name);
             w2c_xslt_utils_add_attribute (env, method, "qname",
                                                 qname_str);
-            ns = axis2_qname_get_uri(op_qname, env);
+            ns = axutil_qname_get_uri(op_qname, env);
             w2c_xslt_utils_add_attribute (env, method, "namespace",
                                                 ns);
             /** todos */
@@ -845,7 +845,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
 
 
         /** get soap action */
-        ext_type_l = axis2_qname_create(env, "operation",
+        ext_type_l = axutil_qname_create(env, "operation",
                                 "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
         binding_op = woden_binding_op_to_element_extensible(binding_op, env);
         ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op, env);
@@ -854,7 +854,7 @@ w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
         {
             ext_element = axutil_array_list_get(ext_elements, env, j);
             ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
-            if(AXIS2_TRUE == axis2_qname_equals(ext_type, env, ext_type_l))
+            if(AXIS2_TRUE == axutil_qname_equals(ext_type, env, ext_type_l))
             {
                 /*ext_element = woden_soap_module_to_soap_module_element (
                                                                ext_element, env);
@@ -879,7 +879,7 @@ axis2_status_t
 w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
                             const axutil_env_t *env,
                             axiom_node_t *param_direction,
-                            axis2_qname_t *msg_qname)
+                            axutil_qname_t *msg_qname)
 {
     axiom_node_t *param = NULL;
     axis2_char_t *type = NULL;
@@ -907,7 +907,7 @@ w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
     }
     type = axis2_strdup(env, type);
     w2c_xslt_utils_add_attribute (env, param, "type", type);
-    type = axis2_string_toupper( type);
+    type = axutil_string_toupper( type);
     w2c_xslt_utils_add_attribute (env, param, "caps-type", type);
 
     name = W2C_TYPEMAPPER_GET_PARAMETER_NAME( typemapper, env, msg_qname);
@@ -923,8 +923,8 @@ axis2_char_t* w2c_emitter_default_namemaker( axis2_char_t *name,
     return axis2_strdup(env, name);
 }
 
-axis2_char_t* w2c_emitter_default_qname2name( axis2_qname_t *qname,
+axis2_char_t* w2c_emitter_default_qname2name( axutil_qname_t *qname,
                              const axutil_env_t *env)
 {
-    return axis2_qname_get_localpart( qname, env);
+    return axutil_qname_get_localpart( qname, env);
 }

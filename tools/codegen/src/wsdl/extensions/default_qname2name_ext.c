@@ -86,7 +86,7 @@ w2c_default_qname2name_ext_engage(w2c_extension_t *extension,
 axis2_char_t* AXIS2_CALL
 w2c_default_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
             const axutil_env_t *env,
-            axis2_qname_t *qname)
+            axutil_qname_t *qname)
 {
     w2c_default_qname2name_ext_impl_t *impl = NULL;
  
@@ -95,7 +95,7 @@ w2c_default_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker
     impl = W2C_QNAME2NAME_MAKER_INTF_TO_IMPL(qname2name_maker);
 
     /** here nothing special would be happened */
-    return axis2_qname_get_localpart( qname, env);
+    return axutil_qname_get_localpart( qname, env);
 }
 
 axis2_status_t AXIS2_CALL

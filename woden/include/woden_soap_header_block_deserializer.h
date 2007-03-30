@@ -30,7 +30,7 @@
 #include <woden_ext_deserializer.h>
 #include <woden_ext_registry.h>
 #include <axiom_node.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup woden_soap_header_block_deserializer Soap Header Block Deserializer
   * @ingroup woden
@@ -79,7 +79,7 @@ struct woden_soap_header_block_deserializer_ops
             const axutil_env_t *env,
             axis2_char_t *parent_type,
             void *parent,
-            axis2_qname_t *element_type,
+            axutil_qname_t *element_type,
             axiom_node_t *el_node,
             void *desc,
             woden_ext_registry_t *ext_reg);

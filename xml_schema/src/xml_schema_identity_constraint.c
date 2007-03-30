@@ -35,7 +35,7 @@ struct xml_schema_identity_constraint_impl
     xml_schema_xpath_t *selector;
 
     /** keyref field */
-    axis2_qname_t *refer;
+    axutil_qname_t *refer;
 
     axutil_hash_t *ht_super;
     xml_schema_types_t obj_type;
@@ -61,14 +61,14 @@ xml_schema_identity_constraint_get_type(void *id_constr,
 axutil_hash_t* AXIS2_CALL
 xml_schema_identity_constraint_super_objs(void *id_constr,
         const axutil_env_t *env);
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 xml_schema_identity_constraint_get_refer(void *id_constr,
         const axutil_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_set_refer(void *id_constr,
         const axutil_env_t *env,
-        axis2_qname_t *refer);
+        axutil_qname_t *refer);
 
 xml_schema_obj_collection_t *AXIS2_CALL
 xml_schema_identity_constraint_get_fields(void *id_constr,
@@ -245,7 +245,7 @@ xml_schema_identity_constraint_free(void *id_constr,
     }
     if (id_cns_impl->refer)
     {
-        axis2_qname_free(id_cns_impl->refer, env);
+        axutil_qname_free(id_cns_impl->refer, env);
         id_cns_impl->refer = NULL;
     }
     if (id_cns_impl->annotated)
@@ -404,7 +404,7 @@ xml_schema_identity_constraint_super_objs(void *id_constr,
 {
     return AXIS2_INTF_TO_IMPL(id_constr)->ht_super;
 }
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 xml_schema_identity_constraint_get_refer(void *id_constr,
         const axutil_env_t *env)
 {
@@ -414,7 +414,7 @@ xml_schema_identity_constraint_get_refer(void *id_constr,
 axis2_status_t AXIS2_CALL
 xml_schema_identity_constraint_set_refer(void *id_constr,
         const axutil_env_t *env,
-        axis2_qname_t *refer)
+        axutil_qname_t *refer)
 {
     xml_schema_identity_constraint_impl_t *id_cns_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -423,7 +423,7 @@ xml_schema_identity_constraint_set_refer(void *id_constr,
     if (id_cns_impl->refer)
     {
         /*
-        axis2_qname_free(id_cns_impl->reref, env);
+        axutil_qname_free(id_cns_impl->reref, env);
         id_cns_impl->reref = NULL;
         */
     }

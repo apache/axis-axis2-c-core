@@ -29,7 +29,7 @@ w2c_class_loader_get_object_from_class_name
 {
     axis2_char_t *dll_name = NULL;
     axutil_dll_desc_t *dll_desc = NULL;
-    axis2_param_t *impl_info_param = NULL;
+    axutil_param_t *impl_info_param = NULL;
     axis2_char_t *file_path = NULL;
     void *obj = NULL;
 
@@ -55,8 +55,8 @@ w2c_class_loader_get_object_from_class_name
      axutil_dll_desc_set_name(dll_desc, env, file_path);
      axutil_dll_desc_set_type(dll_desc, env, -1); /* not a standard type */
 
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    axis2_param_set_value(impl_info_param, env, dll_desc);
+    impl_info_param = axutil_param_create(env, NULL, NULL);
+    axutil_param_set_value(impl_info_param, env, dll_desc);
 
     axutil_class_loader_init(env);
 	obj = axutil_class_loader_create_dll(env, impl_info_param);

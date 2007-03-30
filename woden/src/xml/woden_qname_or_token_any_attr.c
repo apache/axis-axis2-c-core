@@ -64,7 +64,7 @@ woden_qname_or_token_any_attr_is_token(
     void *token_attr,
     const axutil_env_t *env);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_qname_or_token_any_attr_get_qname(
     void *token_attr,
     const axutil_env_t *env);
@@ -90,7 +90,7 @@ AXIS2_EXTERN woden_qname_or_token_any_attr_t * AXIS2_CALL
 woden_qname_or_token_any_attr_create(const axutil_env_t *env,
         axiom_element_t *owner_el,
         axiom_node_t *owner_node,
-        axis2_qname_t *attr_type,
+        axutil_qname_t *attr_type,
         axis2_char_t *attr_value)
 {
     woden_qname_or_token_any_attr_impl_t *
@@ -304,7 +304,7 @@ woden_qname_or_token_any_attr_is_token(
     }
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_qname_or_token_any_attr_get_qname(
     void *token_attr,
     const axutil_env_t *env)
@@ -317,7 +317,7 @@ woden_qname_or_token_any_attr_get_qname(
 
     if (AXIS2_TRUE == woden_qname_or_token_any_attr_is_qname(token_attr,
             env))
-        return (axis2_qname_t *) WODEN_XML_ATTR_GET_CONTENT(
+        return (axutil_qname_t *) WODEN_XML_ATTR_GET_CONTENT(
                     token_attr_impl->xml_attr, env);
     else
         return NULL;
@@ -356,7 +356,7 @@ woden_qname_or_token_any_attr_convert(
 {
     woden_qname_or_token_any_attr_impl_t *
     token_attr_impl = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     token_attr_impl = INTF_TO_IMPL(token_attr);

@@ -70,7 +70,7 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
     const axutil_env_t *env,
     axis2_char_t *parent_type,
     void *parent,
-    axis2_qname_t *ext_type,
+    axutil_qname_t *ext_type,
     axiom_node_t *ext_el_node,
     void *desc,
     woden_wsdl10_ext_registry_t *ext_reg);
@@ -309,7 +309,7 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
     const axutil_env_t *env,
     axis2_char_t *parent_type,
     void *parent,
-    axis2_qname_t *ext_type,
+    axutil_qname_t *ext_type,
     axiom_node_t *ext_el_node,
     void *desc,
     woden_wsdl10_ext_registry_t *ext_reg)
@@ -344,7 +344,7 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
             WODEN_WSDL10_ATTR_ELEMENT);
     if (element_decl_qn)
     {
-        axis2_qname_t *qname = NULL;
+        axutil_qname_t *qname = NULL;
         axutil_hash_t *namespcs = NULL;
 
         desc = woden_wsdl10_desc_to_desc_element(desc, env);
@@ -383,12 +383,12 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
 
     while (temp_el && NULL != temp_el_node)
     {
-        axis2_qname_t *q_elem_documentation = NULL;
+        axutil_qname_t *q_elem_documentation = NULL;
 
-        q_elem_documentation = axis2_qname_create_from_string(env,
+        q_elem_documentation = axutil_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (AXIS2_TRUE == axutil_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;

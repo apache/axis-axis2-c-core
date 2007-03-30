@@ -20,7 +20,7 @@
 #include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axutil_env.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <openssl/ssl.h>
 
@@ -31,10 +31,10 @@ extern "C"
 
 
 /** \brief Constructor for creating ssl stream
-  * @return axis2_stream (ssl)
+  * @return axutil_stream (ssl)
   */
-AXIS2_EXTERN axis2_stream_t * AXIS2_CALL 
-axis2_stream_create_ssl(
+AXIS2_EXTERN axutil_stream_t * AXIS2_CALL 
+axutil_stream_create_ssl(
     const axutil_env_t *env,
     axis2_socket_t socket,
     axis2_char_t *server_cert,

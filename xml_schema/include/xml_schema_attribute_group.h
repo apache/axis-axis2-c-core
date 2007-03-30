@@ -26,7 +26,7 @@
  *          World Wide Web Consortium (W3C) any element.
  *
  */
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <xml_schema_particle.h>
 #include <xml_schema_obj_collection.h>
 #include <xml_schema_any_attribute.h>

@@ -129,14 +129,14 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     const axutil_env_t *env)
 {
-    axis2_qname_t *qparamst = NULL;
-    axis2_qname_t *qmsgrecv = NULL;
-    axis2_qname_t *qdisporder = NULL;
-    axis2_qname_t *qmodulest = NULL;
-    axis2_qname_t *qtransportsender = NULL;
-    axis2_qname_t *qtransportrecv = NULL;
-    axis2_qname_t *qphaseorder = NULL;
-    axis2_qname_t *qdefmodver = NULL;
+    axutil_qname_t *qparamst = NULL;
+    axutil_qname_t *qmsgrecv = NULL;
+    axutil_qname_t *qdisporder = NULL;
+    axutil_qname_t *qmodulest = NULL;
+    axutil_qname_t *qtransportsender = NULL;
+    axutil_qname_t *qtransportrecv = NULL;
+    axutil_qname_t *qphaseorder = NULL;
+    axutil_qname_t *qdefmodver = NULL;
     axiom_children_qname_iterator_t *itr = NULL;
     axiom_children_qname_iterator_t *msg_recvs = NULL;
     axiom_children_qname_iterator_t *module_itr = NULL;
@@ -149,7 +149,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     axiom_element_t *disp_order_element = NULL;
     axiom_node_t *disp_order_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -161,25 +161,25 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     conf_element = AXIOM_NODE_GET_DATA_ELEMENT(conf_node, env);
     /* processing Paramters */
     /* Processing service level paramters */
-    qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
+    qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
     itr = axiom_element_get_children_with_qname(conf_element, env, qparamst,
         conf_node);
-    axis2_qname_free(qparamst, env);
+    axutil_qname_free(qparamst, env);
     axis2_desc_builder_process_params(conf_builder->desc_builder, env, itr,
         axis2_conf_get_param_container(conf_builder->conf, env),
         axis2_conf_get_param_container(conf_builder->conf, env));
     /* process Message Reciver */
-    qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
+    qmsgrecv = axutil_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
     msg_recvs = axiom_element_get_children_with_qname(conf_element, env,
         qmsgrecv, conf_node);
-    axis2_qname_free(qmsgrecv, env);
+    axutil_qname_free(qmsgrecv, env);
     while (AXIS2_TRUE == axiom_children_qname_iterator_has_next(msg_recvs, env))
     {
         axiom_node_t *msg_recv_node = NULL;
         axiom_element_t *msg_recv_element = NULL;
         axis2_msg_recv_t *msg_recv = NULL;
         axiom_attribute_t *mep_att = NULL;
-        axis2_qname_t *qmep = NULL;
+        axutil_qname_t *qmep = NULL;
         axis2_char_t *att_value = NULL;
 
         msg_recv_node = (axiom_node_t *)
@@ -192,18 +192,18 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         {
             return AXIS2_FAILURE;
         }
-        qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
+        qmep = axutil_qname_create(env, AXIS2_MEP, NULL, NULL);
         mep_att = axiom_element_get_attribute(msg_recv_element, env, qmep);
         att_value = axiom_attribute_get_value(mep_att, env);
          axis2_conf_add_msg_recv(conf_builder->conf, env, att_value, msg_recv);
-        axis2_qname_free(qmep, env);
+        axutil_qname_free(qmep, env);
     }
 
     /* processing Dispatching Order */
-    qdisporder = axis2_qname_create(env, AXIS2_DISPATCH_ORDER, NULL, NULL);
+    qdisporder = axutil_qname_create(env, AXIS2_DISPATCH_ORDER, NULL, NULL);
     disp_order_element = axiom_element_get_first_child_with_qname(
         conf_element, env, qdisporder, conf_node, &disp_order_node);
-    axis2_qname_free(qdisporder, env);
+    axutil_qname_free(qdisporder, env);
     if (disp_order_element)
     {
         axis2_conf_builder_process_disp_order(conf_builder, env, disp_order_node);
@@ -222,42 +222,42 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     }
 
     /* Process Module refs */
-    qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
+    qmodulest = axutil_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_itr = axiom_element_get_children_with_qname(conf_element, env,
         qmodulest, conf_node);
-    axis2_qname_free(qmodulest, env);
+    axutil_qname_free(qmodulest, env);
     status = axis2_conf_builder_process_module_refs(conf_builder, env, module_itr);
     if (AXIS2_SUCCESS != status)
     {
         return AXIS2_FAILURE;
     }
     /* Proccessing Transport Sennders */
-    qtransportsender = axis2_qname_create(env, AXIS2_TRANSPORTSENDER, NULL, NULL);
+    qtransportsender = axutil_qname_create(env, AXIS2_TRANSPORTSENDER, NULL, NULL);
     trs_senders = axiom_element_get_children_with_qname(conf_element, env,
         qtransportsender, conf_node);
-    axis2_qname_free(qtransportsender, env);
+    axutil_qname_free(qtransportsender, env);
     axis2_conf_builder_process_transport_senders(conf_builder, env, trs_senders);
 
     /* Proccessing Transport Recivers */
-    qtransportrecv = axis2_qname_create(env, AXIS2_TRANSPORTRECEIVER, NULL, NULL);
+    qtransportrecv = axutil_qname_create(env, AXIS2_TRANSPORTRECEIVER, NULL, NULL);
     trs_recvs = axiom_element_get_children_with_qname(conf_element, env,
         qtransportrecv, conf_node);
-    axis2_qname_free(qtransportrecv, env);
+    axutil_qname_free(qtransportrecv, env);
     axis2_conf_builder_process_transport_recvs(conf_builder, env, trs_recvs);
 
     /* processing Phase orders */
-    qphaseorder = axis2_qname_create(env, AXIS2_PHASE_ORDER, NULL, NULL);
+    qphaseorder = axutil_qname_create(env, AXIS2_PHASE_ORDER, NULL, NULL);
     phase_orders = axiom_element_get_children_with_qname(conf_element, env,
         qphaseorder, conf_node);
-    axis2_qname_free(qphaseorder, env);
+    axutil_qname_free(qphaseorder, env);
     axis2_conf_builder_process_phase_orders(conf_builder, env, phase_orders);
 
     /* Processing default module versions */
-    qdefmodver = axis2_qname_create(env, AXIS2_DEFAULT_MODULE_VERSION, NULL,
+    qdefmodver = axutil_qname_create(env, AXIS2_DEFAULT_MODULE_VERSION, NULL,
         NULL);
     def_mod_versions = axiom_element_get_children_with_qname(conf_element,
         env, qdefmodver, conf_node);
-    axis2_qname_free(qdefmodver, env);
+    axutil_qname_free(qdefmodver, env);
     if (def_mod_versions)
     {
         status = axis2_conf_builder_process_default_module_versions(conf_builder,
@@ -269,13 +269,13 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     }
     /* TODO processing Axis Storages */
 
-    param = axis2_param_container_get_param(
+    param = axutil_param_container_get_param(
         axis2_conf_get_param_container(conf_builder->conf, env), 
         env, AXIS2_ENABLE_MTOM);
     if (param)
     {
         axis2_char_t *value = NULL;
-        value = axis2_param_get_value(param, env);
+        value = axutil_param_get_value(param, env);
         if (value)
         {
             axis2_conf_set_enable_mtom(conf_builder->conf, env, 
@@ -301,7 +301,7 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
     {
         axiom_node_t *module_ref_node = NULL;
         axiom_element_t *module_ref_element = NULL;
-        axis2_qname_t *qref = NULL;
+        axutil_qname_t *qref = NULL;
 
         axiom_attribute_t *module_ref_att = NULL;
         module_ref_node = (axiom_node_t *)
@@ -311,28 +311,28 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
             return AXIS2_FAILURE;
         }
         module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
-        qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
+        qref = axutil_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = axiom_element_get_attribute(module_ref_element, env,
             qref);
         if (qref)
         {
-            axis2_qname_free(qref, env);
+            axutil_qname_free(qref, env);
         }
         if (module_ref_att)
         {
-            axis2_qname_t *qrefname = NULL;
+            axutil_qname_t *qrefname = NULL;
             axis2_char_t *ref_name = NULL;
 
             ref_name = axiom_attribute_get_value(module_ref_att, env);
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "module %s found in axis2.xml",
                 ref_name);
-            qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
+            qrefname = axutil_qname_create(env, ref_name, NULL, NULL);
             status = axis2_dep_engine_add_module(
                 axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
                 env, qrefname);
             if (qrefname)
             {
-                axis2_qname_free(qrefname, env);
+                axutil_qname_free(qrefname, env);
             }
         }
     }
@@ -346,7 +346,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
 {
     axiom_element_t *disp_order_element = NULL;
     axiom_children_qname_iterator_t *disps = NULL;
-    axis2_qname_t *qdisp = NULL;
+    axutil_qname_t *qdisp = NULL;
     axis2_bool_t found_disp = AXIS2_FALSE;
     axis2_phase_t *disp_phase = NULL;
     int count = 0;
@@ -357,10 +357,10 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
     AXIS2_PARAM_CHECK(env->error, disp_order_node, AXIS2_FAILURE);
 
     disp_order_element = AXIOM_NODE_GET_DATA_ELEMENT(disp_order_node, env);
-    qdisp = axis2_qname_create(env, AXIS2_DISPATCHER, NULL, NULL);
+    qdisp = axutil_qname_create(env, AXIS2_DISPATCHER, NULL, NULL);
     disps = axiom_element_get_children_with_qname(disp_order_element,
         env, qdisp, disp_order_node);
-    axis2_qname_free(qdisp, env);
+    axutil_qname_free(qdisp, env);
     disp_phase = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);
     if (! disp_phase)
     {
@@ -378,19 +378,19 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         axiom_attribute_t *disp_att = NULL;
         axis2_char_t *class_name = NULL;
         axis2_char_t *dll_name = NULL;
-        axis2_qname_t *class_qname = NULL;
+        axutil_qname_t *class_qname = NULL;
         axis2_disp_t *disp_dll = NULL;
         axutil_dll_desc_t *dll_desc = NULL;
-        axis2_param_t *impl_info_param = NULL;
+        axutil_param_t *impl_info_param = NULL;
         axis2_handler_desc_t *handler_desc = NULL;
         axis2_handler_t *handler = NULL;
 
         found_disp = AXIS2_TRUE;
         disp_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(disps, env);
-        class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
+        class_qname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
         disp_att = axiom_element_get_attribute(disp_element, env, class_qname);
-        axis2_qname_free(class_qname, env);
+        axutil_qname_free(class_qname, env);
         if (!disp_att)
         {
             qname_itr_has_next = axiom_children_qname_iterator_has_next(disps,
@@ -406,14 +406,14 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
          * set full dll path here instead of dll lib name only */
          axutil_dll_desc_set_name(dll_desc, env, dll_name);
          axutil_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
-        impl_info_param = axis2_param_create(env, class_name, NULL);
+        impl_info_param = axutil_param_create(env, class_name, NULL);
         if (!impl_info_param)
         {
              axis2_phase_free(disp_phase, env);
             return AXIS2_FAILURE;
         }
-        axis2_param_set_value(impl_info_param, env, dll_desc);
-        axis2_param_set_value_free(impl_info_param, env, 
+        axutil_param_set_value(impl_info_param, env, dll_desc);
+        axutil_param_set_value_free(impl_info_param, env, 
             axutil_dll_desc_free_void_arg);
         axutil_class_loader_init(env);
         disp_dll = (axis2_disp_t *) axutil_class_loader_create_dll(env,
@@ -472,7 +472,7 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
         axiom_node_t *phase_orders_node = NULL;
         axiom_element_t *phase_orders_element = NULL;
         axiom_attribute_t *phase_orders_att = NULL;
-        axis2_qname_t *qtype = NULL;
+        axutil_qname_t *qtype = NULL;
         axis2_char_t *flow_type = NULL;
         axutil_array_list_t *phase_list = NULL;
 
@@ -485,10 +485,10 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
         }
         if (phase_orders_element)
         {
-            qtype = axis2_qname_create(env, AXIS2_TYPE, NULL, NULL);
+            qtype = axutil_qname_create(env, AXIS2_TYPE, NULL, NULL);
             phase_orders_att = axiom_element_get_attribute(phase_orders_element,
                 env, qtype);
-            axis2_qname_free(qtype, env);
+            axutil_qname_free(qtype, env);
         }
 
         if (phase_orders_att)
@@ -536,7 +536,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
 {
     axutil_array_list_t *phase_list = NULL;
     axiom_children_qname_iterator_t *phases = NULL;
-    axis2_qname_t *qphase = NULL;
+    axutil_qname_t *qphase = NULL;
     axiom_element_t *phase_orders_element;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -551,10 +551,10 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
         return NULL;
     }
     phase_list = axutil_array_list_create(env, 0);
-    qphase = axis2_qname_create(env, AXIS2_PHASE, NULL, NULL);
+    qphase = axutil_qname_create(env, AXIS2_PHASE, NULL, NULL);
     phases = axiom_element_get_children_with_qname(phase_orders_element, env,
         qphase, phase_orders_node);
-    axis2_qname_free(qphase, env);
+    axutil_qname_free(qphase, env);
     if (!phases)
     {
         axutil_array_list_free(phase_list, env);
@@ -566,7 +566,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
         axiom_node_t *phase_node = NULL;
         axiom_element_t *phase_element = NULL;
         axiom_attribute_t *phase_att = NULL;
-        axis2_qname_t *qattname = NULL;
+        axutil_qname_t *qattname = NULL;
         axis2_char_t *att_value = NULL;
 
         phase_node = (axiom_node_t *) axiom_children_qname_iterator_next(
@@ -577,7 +577,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
                 phase_node, env);
         }
 
-        qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
+        qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         if (phase_element)
         {
             phase_att = axiom_element_get_attribute(phase_element, env,
@@ -592,7 +592,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
             axutil_array_list_add(phase_list, env, att_value);
         }
 
-        axis2_qname_free(qattname, env);
+        axutil_qname_free(qattname, env);
     }
     return phase_list;
 }
@@ -614,7 +614,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
         axiom_node_t *transport_node = NULL;
         axiom_element_t *transport_element = NULL;
         axiom_attribute_t *trs_name = NULL;
-        axis2_qname_t *qattname = NULL;
+        axutil_qname_t *qattname = NULL;
 
         transport_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(trs_senders, env);
@@ -634,13 +634,13 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
         }
 
         /* getting trsnport Name */
-        qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
+        qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         if (transport_element)
         {
             trs_name = axiom_element_get_attribute(transport_element, env,
                 qattname);
         }
-        axis2_qname_free(qattname, env);
+        axutil_qname_free(qattname, env);
         if (trs_name)
         {
             axis2_char_t *name = NULL;
@@ -648,12 +648,12 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             axis2_char_t *dll_name = NULL;
             axis2_char_t *class_name = NULL;
             axiom_children_qname_iterator_t *itr = NULL;
-            axis2_qname_t *qparamst = NULL;
-            axis2_qname_t *qinflowst = NULL;
-            axis2_qname_t *qoutflowst = NULL;
-            axis2_qname_t *qinfaultflowst = NULL;
-            axis2_qname_t *qoutfaultflowst = NULL;
-            axis2_qname_t *qdllname = NULL;
+            axutil_qname_t *qparamst = NULL;
+            axutil_qname_t *qinflowst = NULL;
+            axutil_qname_t *qoutflowst = NULL;
+            axutil_qname_t *qinfaultflowst = NULL;
+            axutil_qname_t *qoutfaultflowst = NULL;
+            axutil_qname_t *qdllname = NULL;
             axiom_element_t *in_flow_element = NULL;
             axiom_node_t *in_flow_node = NULL;
             axiom_element_t *out_flow_element = NULL;
@@ -663,7 +663,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             axiom_element_t *out_fault_flow_element = NULL;
             axiom_node_t *out_fault_flow_node = NULL;
             axutil_dll_desc_t *dll_desc = NULL;
-            axis2_param_t *impl_info_param = NULL;
+            axutil_param_t *impl_info_param = NULL;
             void *transport_sender = NULL;
             axis2_char_t *path_qualified_dll_name = NULL;
             axis2_char_t *repos_name = NULL;
@@ -709,10 +709,10 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             }
 
             /* transport impl class */
-            qdllname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
+            qdllname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
             trs_dll_att = axiom_element_get_attribute(transport_element, env,
                 qdllname);
-            axis2_qname_free(qdllname, env);
+            axutil_qname_free(qdllname, env);
             if (! trs_dll_att)
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_TRANSPORT_SENDER_ERROR,
@@ -720,7 +720,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 return AXIS2_FAILURE;
             }
             class_name = axiom_attribute_get_value(trs_dll_att, env);
-            impl_info_param = axis2_param_create(env, class_name, NULL);
+            impl_info_param = axutil_param_create(env, class_name, NULL);
             if (!impl_info_param)
             {
                 axis2_transport_out_desc_free(transport_out, env);
@@ -744,8 +744,8 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             axutil_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
             AXIS2_FREE(env->allocator, path_qualified_dll_name);
             axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
-            axis2_param_set_value(impl_info_param, env, dll_desc);
-            axis2_param_set_value_free(impl_info_param, env, 
+            axutil_param_set_value(impl_info_param, env, dll_desc);
+            axutil_param_set_value_free(impl_info_param, env, 
                 axutil_dll_desc_free_void_arg);
             axutil_class_loader_init(env);
             transport_sender = axutil_class_loader_create_dll(env, impl_info_param);
@@ -761,10 +761,10 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
 
             /* Process Parameters */
             /* Processing service level paramters */
-            qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
+            qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
             itr = axiom_element_get_children_with_qname(transport_element,
                 env, qparamst, transport_node);
-            axis2_qname_free(qparamst, env);
+            axutil_qname_free(qparamst, env);
             status = axis2_desc_builder_process_params(conf_builder->desc_builder, env,
                 itr,
                 axis2_transport_out_desc_param_container(transport_out, env), 
@@ -775,11 +775,11 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 return status;
             }
             /* process IN_FLOW */
-            qinflowst = axis2_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
+            qinflowst = axutil_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
             in_flow_element = 
                 axiom_element_get_first_child_with_qname(transport_element,
                     env, qinflowst, transport_node, &in_flow_node);
-            axis2_qname_free(qinflowst, env);
+            axutil_qname_free(qinflowst, env);
             if (in_flow_element)
             {
                 axis2_transport_out_desc_free(transport_out, env);
@@ -787,11 +787,11 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                     AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
-            qoutflowst = axis2_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
+            qoutflowst = axutil_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
             out_flow_element = 
                 axiom_element_get_first_child_with_qname(transport_element,
                     env, qoutflowst, transport_node, &out_flow_node);
-            axis2_qname_free(qoutflowst, env);
+            axutil_qname_free(qoutflowst, env);
             if (out_flow_element)
             {
                 axis2_flow_t *flow = NULL;
@@ -809,13 +809,13 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             }
 
             /* process IN FAULT FLOW */
-            qinfaultflowst = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL,
+            qinfaultflowst = axutil_qname_create(env, AXIS2_IN_FAILTFLOW, NULL,
                 NULL);
             in_fault_flow_element = 
                 axiom_element_get_first_child_with_qname(transport_element,
                     env, qinfaultflowst, transport_node,
                     &in_fault_flow_node);
-            axis2_qname_free(qinfaultflowst, env);
+            axutil_qname_free(qinfaultflowst, env);
             if (in_fault_flow_element)
             {
                 axis2_transport_out_desc_free(transport_out, env);
@@ -824,13 +824,13 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 return AXIS2_FAILURE;
             }
 
-            qoutfaultflowst = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL,
+            qoutfaultflowst = axutil_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL,
                 NULL);
             out_fault_flow_element = 
                 axiom_element_get_first_child_with_qname(transport_element,
                     env, qoutfaultflowst, transport_node,
                     &out_fault_flow_node);
-            axis2_qname_free(qoutfaultflowst, env);
+            axutil_qname_free(qoutfaultflowst, env);
             if (out_fault_flow_element)
             {
                 axis2_flow_t *flow = NULL;
@@ -880,7 +880,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
         axiom_node_t *transport_node = NULL;
         axiom_element_t *transport_element = NULL;
         axiom_attribute_t *trs_name = NULL;
-        axis2_qname_t *qattname = NULL;
+        axutil_qname_t *qattname = NULL;
 
         transport_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(trs_recvs, env);
@@ -899,22 +899,22 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
         }
 
         /* getting transport Name */
-        qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
+        qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         trs_name = axiom_element_get_attribute(transport_element, env,
             qattname);
-        axis2_qname_free(qattname, env);
+        axutil_qname_free(qattname, env);
 
         if (trs_name)
         {
             axis2_char_t *name = NULL;
             axiom_attribute_t *trs_class_name = NULL;
             axiom_children_qname_iterator_t *itr = NULL;
-            axis2_qname_t *class_qname = NULL;
-            axis2_qname_t *qparamst = NULL;
-            axis2_qname_t *qinflowst = NULL;
-            axis2_qname_t *qoutflowst = NULL;
-            axis2_qname_t *qinfaultflowst = NULL;
-            axis2_qname_t *qoutfaultflowst = NULL;
+            axutil_qname_t *class_qname = NULL;
+            axutil_qname_t *qparamst = NULL;
+            axutil_qname_t *qinflowst = NULL;
+            axutil_qname_t *qoutflowst = NULL;
+            axutil_qname_t *qinfaultflowst = NULL;
+            axutil_qname_t *qoutfaultflowst = NULL;
             axiom_element_t *in_flow_element = NULL;
             axiom_node_t *in_flow_node = NULL;
             axiom_element_t *out_flow_element = NULL;
@@ -962,17 +962,17 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             }
 
             /* transport impl class */
-            class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
+            class_qname = axutil_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
             trs_class_name = axiom_element_get_attribute(transport_element, env,
                 class_qname);
-            axis2_qname_free(class_qname, env);
+            axutil_qname_free(class_qname, env);
 
             if (trs_class_name)
             {
                 axis2_char_t *class_name = NULL;
                 axis2_char_t *dll_name = NULL;
                 axutil_dll_desc_t *dll_desc = NULL;
-                axis2_param_t *impl_info_param = NULL;
+                axutil_param_t *impl_info_param = NULL;
                 axis2_transport_receiver_t *recv = NULL;
                 axis2_status_t stat = AXIS2_FAILURE;
                 axis2_char_t *path_qualified_dll_name = NULL;
@@ -982,7 +982,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 axis2_char_t *temp_path3 = NULL;
 
                 class_name = axiom_attribute_get_value(trs_class_name, env);
-                impl_info_param = axis2_param_create(env, class_name, NULL);
+                impl_info_param = axutil_param_create(env, class_name, NULL);
                 dll_desc = axutil_dll_desc_create(env);
                 dll_name =
                     axutil_dll_desc_create_platform_specific_dll_name(dll_desc,
@@ -1003,8 +1003,8 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 AXIS2_FREE(env->allocator, path_qualified_dll_name);
                 axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
 
-                axis2_param_set_value(impl_info_param, env, dll_desc);
-                axis2_param_set_value_free(impl_info_param, env, 
+                axutil_param_set_value(impl_info_param, env, dll_desc);
+                axutil_param_set_value_free(impl_info_param, env, 
                     axutil_dll_desc_free_void_arg);
                 axutil_class_loader_init(env);
                 recv = (axis2_transport_receiver_t *)
@@ -1018,10 +1018,10 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             /* process Parameters */
             /* processing Paramters */
             /* Processing service level paramters */
-            qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
+            qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
             itr = axiom_element_get_children_with_qname(transport_element,
                 env, qparamst, transport_node);
-            axis2_qname_free(qparamst, env);
+            axutil_qname_free(qparamst, env);
             status = axis2_desc_builder_process_params(conf_builder->desc_builder, env,
                 itr, 
                 axis2_transport_in_desc_param_container(transport_in, env),
@@ -1032,10 +1032,10 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 return status;
             }
             /* process OUT_FLOW */
-            qoutflowst = axis2_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
+            qoutflowst = axutil_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
             out_flow_element = axiom_element_get_first_child_with_qname(transport_element,
                 env, qoutflowst, transport_node, &out_flow_node);
-            axis2_qname_free(qoutflowst, env);
+            axutil_qname_free(qoutflowst, env);
             if (out_flow_element)
             {
                 axis2_transport_in_desc_free(transport_in, env);
@@ -1044,10 +1044,10 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 return AXIS2_FAILURE;
             }
 
-            qinflowst = axis2_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
+            qinflowst = axutil_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
             in_flow_element = axiom_element_get_first_child_with_qname(
                 transport_element, env, qinflowst, transport_node, &in_flow_node);
-            axis2_qname_free(qinflowst, env);
+            axutil_qname_free(qinflowst, env);
             if (in_flow_element)
             {
                 axis2_flow_t *flow = NULL;
@@ -1065,13 +1065,13 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 }
             }
 
-            qinfaultflowst = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL,
+            qinfaultflowst = axutil_qname_create(env, AXIS2_IN_FAILTFLOW, NULL,
                 NULL);
             in_fault_flow_element = 
                 axiom_element_get_first_child_with_qname(transport_element,
                     env, qinfaultflowst, transport_node,
                     &in_fault_flow_node);
-            axis2_qname_free(qinfaultflowst, env);
+            axutil_qname_free(qinfaultflowst, env);
             if (in_fault_flow_element)
             {
                 axis2_flow_t *flow = NULL;
@@ -1089,7 +1089,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 }
             }
 
-            qoutfaultflowst = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL,
+            qoutfaultflowst = axutil_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL,
                 NULL);
             out_fault_flow_element = axiom_element_get_first_child_with_qname(
                 transport_element, env, qoutfaultflowst, transport_node,
@@ -1110,7 +1110,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 return status;
             }
 
-            axis2_qname_free(qoutfaultflowst, env);
+            axutil_qname_free(qoutfaultflowst, env);
 
         }
     }
@@ -1130,7 +1130,7 @@ axis2_conf_builder_process_default_module_versions(axis2_conf_builder_t *conf_bu
         axiom_element_t *om_element = NULL;
         axis2_char_t *name = NULL;
         axis2_char_t *default_version = NULL;
-        axis2_qname_t *attribute_qname = NULL;
+        axutil_qname_t *attribute_qname = NULL;
 
         om_element = (axiom_element_t *)
             axiom_children_qname_iterator_next(module_versions, env);
@@ -1138,20 +1138,20 @@ axis2_conf_builder_process_default_module_versions(axis2_conf_builder_t *conf_bu
         {
             continue;
         }
-        attribute_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
+        attribute_qname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         if (! attribute_qname)
         {
             continue;
         }
         name = axiom_element_get_attribute_value(om_element, env,
             attribute_qname);
-        axis2_qname_free(attribute_qname, env);
+        axutil_qname_free(attribute_qname, env);
         attribute_qname = NULL;
         if (! name)
         {
             return AXIS2_FAILURE;
         }
-        attribute_qname = axis2_qname_create(env,
+        attribute_qname = axutil_qname_create(env,
             AXIS2_ATTRIBUTE_DEFAULT_VERSION, NULL, NULL);
         if (! attribute_qname)
         {
@@ -1159,7 +1159,7 @@ axis2_conf_builder_process_default_module_versions(axis2_conf_builder_t *conf_bu
         }
         default_version = axiom_element_get_attribute_value(om_element, env,
             attribute_qname);
-        axis2_qname_free(attribute_qname, env);
+        axutil_qname_free(attribute_qname, env);
         attribute_qname = NULL;
         if (! default_version)
         {

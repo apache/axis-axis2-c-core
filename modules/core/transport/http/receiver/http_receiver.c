@@ -21,7 +21,7 @@
 #include <axis2_http_svr_thread.h>
 #include <axis2_http_server.h>
 #include <axis2_transport_in_desc.h>
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axis2_url.h>
 #include <axis2_conf_init.h>
 
@@ -185,18 +185,18 @@ axis2_http_server_init(
 {
     axis2_http_server_impl_t *server_impl = NULL;
     axis2_char_t *port_str = NULL;
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
 
     server_impl->conf_ctx = conf_ctx;
-    param = (axis2_param_t *)axis2_param_container_get_param(
+    param = (axutil_param_t *)axutil_param_container_get_param(
                 axis2_transport_in_desc_param_container(in_desc, env), 
                 env, "port");
     if (param)
     {
-        port_str = axis2_param_get_value(param, env);
+        port_str = axutil_param_get_value(param, env);
     }
     if (port_str)
     {

@@ -50,7 +50,7 @@ struct axis2_op_client
     /** SOAP version URI */
     axis2_char_t *soap_version_uri;
     /** SOAP action */
-    axis2_string_t *soap_action;
+    axutil_string_t *soap_action;
     /** WSA action  */
     axis2_char_t *wsa_action;
 
@@ -213,7 +213,7 @@ axis2_op_client_add_msg_ctx(axis2_op_client_t *op_client,
 
     if(out_msg_ctx && !mc)
     {
-        axis2_property_t *dump_property;
+        axutil_property_t *dump_property;
         axis2_char_t *dump_value = NULL;
         if(! axis2_msg_ctx_get_doing_rest(out_msg_ctx, env))
         {
@@ -221,7 +221,7 @@ axis2_op_client_add_msg_ctx(axis2_op_client_t *op_client,
                 AXIS2_DUMP_INPUT_MSG_TRUE);
             if(dump_property)
 	    {
-                dump_value = (axis2_char_t *) axis2_property_get_value (
+                dump_value = (axis2_char_t *) axutil_property_get_value (
                     dump_property, env);
             }
 	}
@@ -331,12 +331,12 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
     if(!transport_out)
     {
         axis2_endpoint_ref_t *to_epr = NULL;
-        axis2_property_t *property = NULL;
+        axutil_property_t *property = NULL;
         property = axis2_options_get_property(op_client->options, env, 
             AXIS2_TARGET_EPR);
         if(property)
 	{
-            to_epr = axis2_property_get_value(property, env);
+            to_epr = axutil_property_get_value(property, env);
 	}
         if(!to_epr)
 	{
@@ -637,7 +637,7 @@ axis2_op_client_set_callback_recv(axis2_op_client_t *op_client,
 }
 
 
-AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+AXIS2_EXTERN axutil_string_t *AXIS2_CALL
 axis2_op_client_get_soap_action(
     const axis2_op_client_t *op_client,
     const axutil_env_t *env)
@@ -684,7 +684,7 @@ axis2_op_client_prepare_invocation(
         if (svc)
         {
             axis2_op_t *temp_op = NULL;
-            const axis2_qname_t *op_qname = axis2_op_get_qname(op, env);
+            const axutil_qname_t *op_qname = axis2_op_get_qname(op, env);
             temp_op = axis2_svc_get_op_with_qname(svc, env, op_qname);
             if (!temp_op)
             {
@@ -843,7 +843,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_client_engage_module(
     axis2_op_client_t *op_client,
     const axutil_env_t *env,
-    const axis2_qname_t *qname)
+    const axutil_qname_t *qname)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
@@ -901,19 +901,19 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_client_set_soap_action(
     axis2_op_client_t *op_client,
     const axutil_env_t *env,
-    axis2_string_t *soap_action)
+    axutil_string_t *soap_action)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (op_client->soap_action)
     {
-        axis2_string_free(op_client->soap_action, env);
+        axutil_string_free(op_client->soap_action, env);
         op_client->soap_action = NULL;
     }
 
     if (soap_action)
     {
-        op_client->soap_action = axis2_string_clone(soap_action, env);
+        op_client->soap_action = axutil_string_clone(soap_action, env);
         if (!(op_client->soap_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1003,7 +1003,7 @@ axis2_op_client_two_way_send(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_op_t *op = NULL;
     axiom_soap_envelope_t *response_envelope = NULL;
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
     long index = -1;
     axis2_bool_t wait_indefinitely = AXIS2_FALSE;
 
@@ -1016,7 +1016,7 @@ axis2_op_client_two_way_send(
     property = axis2_msg_ctx_get_property(msg_ctx, env, AXIS2_TIMEOUT_IN_SECONDS);
     if(property)
     {
-        axis2_char_t *value = axis2_property_get_value(property, env);
+        axis2_char_t *value = axutil_property_get_value(property, env);
         if(value)
             index = AXIS2_ATOI(value);
         if(index == -1)
@@ -1112,7 +1112,7 @@ axis2_op_client_two_way_send(
                 AXIS2_HANDLER_ALREADY_VISITED);
             if(property)
             {
-                axis2_char_t *value = axis2_property_get_value(property, env);
+                axis2_char_t *value = axutil_property_get_value(property, env);
                 if(0 == axis2_strcmp(AXIS2_VALUE_TRUE, value))
                 {
                     return response;
@@ -1165,7 +1165,7 @@ axis2_op_client_receive(
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_op_t *op = NULL;
     axiom_soap_envelope_t *response_envelope = NULL;
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 

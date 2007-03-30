@@ -18,7 +18,7 @@
 
 #include <axis2_disp.h>
 #include <axis2_handler_desc.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_relates_to.h>
 #include <axis2_svc.h>
 #include <axis2_const.h>
@@ -51,11 +51,11 @@ axiom_soap_action_disp_create(
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
-    axis2_string_t *name = NULL;
+    axutil_string_t *name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    name = axis2_string_create_const(env, 
+    name = axutil_string_create_const(env, 
                 (axis2_char_t**)&AXIS2_SOAP_ACTION_DISP_NAME);
 
     disp = axis2_disp_create(env, name);
@@ -75,7 +75,7 @@ axiom_soap_action_disp_create(
 
     handler->ops->invoke = axiom_soap_action_disp_invoke;
 
-    axis2_string_free(name, env);
+    axutil_string_free(name, env);
 
     return disp;
 }
@@ -101,7 +101,7 @@ axiom_soap_action_disp_find_op(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
-    action = axis2_string_get_buffer(
+    action = axutil_string_get_buffer(
                  axis2_msg_ctx_get_soap_action(msg_ctx, env), env);
 
     if (action)

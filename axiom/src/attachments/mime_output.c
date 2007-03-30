@@ -19,7 +19,7 @@
 #include "axiom_mime_output.h"
 #include "axiom_data_handler.h"
 #include "axiom_mime_body_part.h"
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axiom_text.h>
 #include <axiom_mime_const.h>
 

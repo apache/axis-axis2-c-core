@@ -29,7 +29,7 @@
 #include <axis2_svc_client.h>
 #include <axis2_options.h>
 #include <axis2_op.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #include <savan.h>
 

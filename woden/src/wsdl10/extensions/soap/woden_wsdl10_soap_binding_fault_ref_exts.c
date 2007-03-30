@@ -37,7 +37,7 @@ struct woden_wsdl10_soap_binding_fault_ref_exts_impl
     axutil_hash_t *super;
     woden_obj_types_t obj_type;
 
-    axis2_qname_t *qname;
+    axutil_qname_t *qname;
 };
 
 #define INTF_TO_IMPL(binding_fault_ref_exts) ((woden_wsdl10_soap_binding_fault_ref_exts_impl_t *) binding_fault_ref_exts)
@@ -228,7 +228,7 @@ woden_wsdl10_soap_binding_fault_ref_exts_free(void *binding_fault_ref_exts,
 
     if (binding_fault_ref_exts_impl->qname)
     {
-        axis2_qname_free(binding_fault_ref_exts_impl->qname, env);
+        axutil_qname_free(binding_fault_ref_exts_impl->qname, env);
         binding_fault_ref_exts_impl->qname = NULL;
     }
     woden_wsdl10_soap_binding_fault_ref_exts_free_ops(binding_fault_ref_exts, env);
@@ -331,7 +331,7 @@ woden_wsdl10_soap_binding_fault_ref_exts_get_soap_modules(
                 binding_fault_ref_exts_impl->component_exts, env);
     parent_element = woden_wsdl_element_to_element_extensible(parent_element,
             env);
-    binding_fault_ref_exts_impl->qname = axis2_qname_create_from_string(env,
+    binding_fault_ref_exts_impl->qname = axutil_qname_create_from_string(env,
             WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
     soap_mods = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(
                 parent_element, env, binding_fault_ref_exts_impl->qname);

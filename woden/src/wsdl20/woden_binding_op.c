@@ -38,7 +38,7 @@ struct woden_binding_op_impl
     woden_obj_types_t obj_type;
     axutil_hash_t *super;
     axutil_hash_t *methods;
-    axis2_qname_t *f_ref;
+    axutil_qname_t *f_ref;
     axutil_array_list_t *f_msg_refs;
     axutil_array_list_t *f_fault_refs;
     void *f_interface_op;
@@ -96,9 +96,9 @@ axis2_status_t AXIS2_CALL
 woden_binding_op_set_ref(
     void *binding_op,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_binding_op_get_ref(
     void *binding_op,
     const axutil_env_t *env);
@@ -803,7 +803,7 @@ woden_binding_op_free(void *binding_op,
 
     if (binding_op_impl->f_ref)
     {
-        axis2_qname_free(binding_op_impl->f_ref, env);
+        axutil_qname_free(binding_op_impl->f_ref, env);
         binding_op_impl->f_ref = NULL;
     }
 
@@ -1031,7 +1031,7 @@ axis2_status_t AXIS2_CALL
 woden_binding_op_set_ref(
     void *binding_op,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1044,15 +1044,15 @@ woden_binding_op_set_ref(
 
     if (binding_op_impl->f_ref)
     {
-        axis2_qname_free(binding_op_impl->f_ref, env);
+        axutil_qname_free(binding_op_impl->f_ref, env);
         binding_op_impl->f_ref = NULL;
     }
-    binding_op_impl->f_ref = axis2_qname_clone(qname, env);
+    binding_op_impl->f_ref = axutil_qname_clone(qname, env);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_binding_op_get_ref(
     void *binding_op,
     const axutil_env_t *env)

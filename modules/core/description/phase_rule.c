@@ -18,7 +18,7 @@
 
 #include <axis2_const.h>
 #include <axis2_phase_rule.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 struct axis2_phase_rule
 {

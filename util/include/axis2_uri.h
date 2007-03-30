@@ -24,7 +24,7 @@
  * axis2_uri.h: External Interface of axis2_uri.c
  */
 
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
 #include <axutil_env.h>

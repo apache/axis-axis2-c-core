@@ -18,130 +18,130 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
 #include <axis2_uri.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <woden.h>
 #include <woden_schema_constants.h>
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_schema(
-    axis2_qname_t *schema,
+    axutil_qname_t *schema,
     const axutil_env_t *env)
 {
-    axis2_qname_t *q1999 = NULL;
-    axis2_qname_t *q2000 = NULL;
-    axis2_qname_t *q2001 = NULL;
+    axutil_qname_t *q1999 = NULL;
+    axutil_qname_t *q2000 = NULL;
+    axutil_qname_t *q2001 = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
 
-    q1999 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_XSD_1999);
-    q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_XSD_2000);
-    q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_XSD_2001);
+    q1999 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_XSD_1999);
+    q2000 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_XSD_2000);
+    q2001 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_XSD_2001);
 
-    if (AXIS2_TRUE == axis2_qname_equals(schema, env, q1999) ||
-            AXIS2_TRUE == axis2_qname_equals(schema, env, q2000) ||
-            AXIS2_TRUE == axis2_qname_equals(schema, env, q2001))
+    if (AXIS2_TRUE == axutil_qname_equals(schema, env, q1999) ||
+            AXIS2_TRUE == axutil_qname_equals(schema, env, q2000) ||
+            AXIS2_TRUE == axutil_qname_equals(schema, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
     if (q1999)
-        axis2_qname_free(q1999, env);
+        axutil_qname_free(q1999, env);
     if (q2000)
-        axis2_qname_free(q2000, env);
+        axutil_qname_free(q2000, env);
     if (q2001)
-        axis2_qname_free(q2001, env);
+        axutil_qname_free(q2001, env);
 
     return ret;
 }
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_include(
-    axis2_qname_t *include,
+    axutil_qname_t *include,
     const axutil_env_t *env)
 {
-    axis2_qname_t *q1999 = NULL;
-    axis2_qname_t *q2000 = NULL;
-    axis2_qname_t *q2001 = NULL;
+    axutil_qname_t *q1999 = NULL;
+    axutil_qname_t *q2000 = NULL;
+    axutil_qname_t *q2001 = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
 
-    q1999 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_1999);
-    q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_2000);
-    q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_2001);
+    q1999 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_1999);
+    q2000 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_2000);
+    q2001 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_2001);
 
-    if (AXIS2_TRUE == axis2_qname_equals(include, env, q1999) ||
-            AXIS2_TRUE == axis2_qname_equals(include, env, q2000) ||
-            AXIS2_TRUE == axis2_qname_equals(include, env, q2001))
+    if (AXIS2_TRUE == axutil_qname_equals(include, env, q1999) ||
+            AXIS2_TRUE == axutil_qname_equals(include, env, q2000) ||
+            AXIS2_TRUE == axutil_qname_equals(include, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
     if (q1999)
-        axis2_qname_free(q1999, env);
+        axutil_qname_free(q1999, env);
     if (q2000)
-        axis2_qname_free(q2000, env);
+        axutil_qname_free(q2000, env);
     if (q2001)
-        axis2_qname_free(q2001, env);
+        axutil_qname_free(q2001, env);
 
     return ret;
 }
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_import(
-    axis2_qname_t *import,
+    axutil_qname_t *import,
     const axutil_env_t *env)
 {
-    axis2_qname_t *q1999 = NULL;
-    axis2_qname_t *q2000 = NULL;
-    axis2_qname_t *q2001 = NULL;
+    axutil_qname_t *q1999 = NULL;
+    axutil_qname_t *q2000 = NULL;
+    axutil_qname_t *q2001 = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
 
-    q1999 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_1999);
-    q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_2000);
-    q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_2001);
+    q1999 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_1999);
+    q2000 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_2000);
+    q2001 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_2001);
 
-    if (AXIS2_TRUE == axis2_qname_equals(import, env, q1999) ||
-            AXIS2_TRUE == axis2_qname_equals(import, env, q2000) ||
-            AXIS2_TRUE == axis2_qname_equals(import, env, q2001))
+    if (AXIS2_TRUE == axutil_qname_equals(import, env, q1999) ||
+            AXIS2_TRUE == axutil_qname_equals(import, env, q2000) ||
+            AXIS2_TRUE == axutil_qname_equals(import, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
     if (q1999)
-        axis2_qname_free(q1999, env);
+        axutil_qname_free(q1999, env);
     if (q2000)
-        axis2_qname_free(q2000, env);
+        axutil_qname_free(q2000, env);
     if (q2001)
-        axis2_qname_free(q2001, env);
+        axutil_qname_free(q2001, env);
 
     return ret;
 }
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_redefine(
-    axis2_qname_t *redefine,
+    axutil_qname_t *redefine,
     const axutil_env_t *env)
 {
-    axis2_qname_t *q1999 = NULL;
-    axis2_qname_t *q2000 = NULL;
-    axis2_qname_t *q2001 = NULL;
+    axutil_qname_t *q1999 = NULL;
+    axutil_qname_t *q2000 = NULL;
+    axutil_qname_t *q2001 = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
 
-    q1999 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_1999);
-    q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_2000);
-    q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_2001);
+    q1999 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_1999);
+    q2000 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_2000);
+    q2001 = axutil_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_2001);
 
-    if (AXIS2_TRUE == axis2_qname_equals(redefine, env, q1999) ||
-            AXIS2_TRUE == axis2_qname_equals(redefine, env, q2000) ||
-            AXIS2_TRUE == axis2_qname_equals(redefine, env, q2001))
+    if (AXIS2_TRUE == axutil_qname_equals(redefine, env, q1999) ||
+            AXIS2_TRUE == axutil_qname_equals(redefine, env, q2000) ||
+            AXIS2_TRUE == axutil_qname_equals(redefine, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
     if (q1999)
-        axis2_qname_free(q1999, env);
+        axutil_qname_free(q1999, env);
     if (q2000)
-        axis2_qname_free(q2000, env);
+        axutil_qname_free(q2000, env);
     if (q2001)
-        axis2_qname_free(q2001, env);
+        axutil_qname_free(q2001, env);
 
     return ret;
 }

@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-#include <axis2_property.h>
+#include <axutil_property.h>
 #include <stdio.h>
 
-struct axis2_property
+struct axutil_property
 {
     axis2_scope_t scope;
     AXIS2_FREE_VOID_ARG free_func;
@@ -26,15 +26,15 @@ struct axis2_property
     axis2_bool_t own_value;
 };
 
-axis2_property_t *AXIS2_CALL
-axis2_property_create(const axutil_env_t *env)
+axutil_property_t *AXIS2_CALL
+axutil_property_create(const axutil_env_t *env)
 {
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    property = (axis2_property_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_property_t));
+    property = (axutil_property_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axutil_property_t));
 
     if (!property)
     {
@@ -49,18 +49,18 @@ axis2_property_create(const axutil_env_t *env)
     return property;
 }
 /*****************************************************************************/
-axis2_property_t *AXIS2_CALL
-axis2_property_create_with_args(const axutil_env_t *env,
+axutil_property_t *AXIS2_CALL
+axutil_property_create_with_args(const axutil_env_t *env,
     axis2_scope_t scope,
     axis2_bool_t own_value,
     AXIS2_FREE_VOID_ARG free_func,
     void *value) 
 {
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    property = (axis2_property_t *) axis2_property_create(env);
+    property = (axutil_property_t *) axutil_property_create(env);
 
     if (!property)
     {
@@ -76,7 +76,7 @@ axis2_property_create_with_args(const axutil_env_t *env,
 }
 
 void AXIS2_CALL
-axis2_property_free(axis2_property_t *property,
+axutil_property_free(axutil_property_t *property,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -104,7 +104,7 @@ axis2_property_free(axis2_property_t *property,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_property_set_scope(axis2_property_t *property,
+axutil_property_set_scope(axutil_property_t *property,
     const axutil_env_t *env,
     axis2_scope_t scope)
 {
@@ -115,7 +115,7 @@ axis2_property_set_scope(axis2_property_t *property,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_property_set_free_func(axis2_property_t *property,
+axutil_property_set_free_func(axutil_property_t *property,
     const axutil_env_t *env,
     AXIS2_FREE_VOID_ARG free_func)
 {
@@ -126,7 +126,7 @@ axis2_property_set_free_func(axis2_property_t *property,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_property_set_value(axis2_property_t *property,
+axutil_property_set_value(axutil_property_t *property,
     const axutil_env_t *env,
     void *value)
 {
@@ -152,14 +152,14 @@ axis2_property_set_value(axis2_property_t *property,
 }
 
 void *AXIS2_CALL
-axis2_property_get_value(axis2_property_t *property,
+axutil_property_get_value(axutil_property_t *property,
     const axutil_env_t *env)
 {
     return property->value;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_property_set_own_value(axis2_property_t *property,
+axutil_property_set_own_value(axutil_property_t *property,
     const axutil_env_t *env,
     axis2_bool_t own_value)
 {
@@ -170,17 +170,17 @@ axis2_property_set_own_value(axis2_property_t *property,
 }
 
 
-axis2_property_t* AXIS2_CALL
-axis2_property_clone(axis2_property_t *property,
+axutil_property_t* AXIS2_CALL
+axutil_property_clone(axutil_property_t *property,
     const axutil_env_t *env)
 {
-    axis2_property_t *new_property = NULL;
+    axutil_property_t *new_property = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    new_property = axis2_property_create(env);
-    axis2_property_set_free_func(new_property, env, property->free_func);
-    axis2_property_set_scope(new_property, env, property->scope);
-    axis2_property_set_own_value(new_property, env, property->own_value);
-    axis2_property_set_value(new_property, env, property->value);
+    new_property = axutil_property_create(env);
+    axutil_property_set_free_func(new_property, env, property->free_func);
+    axutil_property_set_scope(new_property, env, property->scope);
+    axutil_property_set_own_value(new_property, env, property->own_value);
+    axutil_property_set_value(new_property, env, property->value);
     return new_property; 
 }
 

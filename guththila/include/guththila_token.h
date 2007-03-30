@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <axutil_env.h>
-#include <axis2_stack.h>
+#include <axutil_stack.h>
 #include <guththila_defines.h>
 
 
@@ -122,7 +122,7 @@ guththila_token_char_ref (axutil_env_t * environment,
                           
 AXIS2_EXTERN void AXIS2_CALL
 guththila_relocate_tokens(axutil_env_t *environment,
-						  axis2_stack_t *stack,
+						  axutil_stack_t *stack,
 						  int offset);
 
 #endif /* GUTHTHILA_TOKEN_H */

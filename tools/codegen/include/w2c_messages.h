@@ -25,7 +25,7 @@
 
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_properties.h>
+#include <axutil_properties.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -47,7 +47,7 @@ extern "C"
  * @param file_name     name of the file
  * @return the hash including the messages
  */
-AXIS2_EXTERN axis2_properties_t* AXIS2_CALL
+AXIS2_EXTERN axutil_properties_t* AXIS2_CALL
 w2c_messages_get_message_properties( 
     const axutil_env_t *env );
 
@@ -78,7 +78,7 @@ w2c_messages_print_n_log_error( const axutil_env_t *env,
  */
 AXIS2_EXTERN void AXIS2_CALL
 w2c_messages_print_n_log_error_from_properties( const axutil_env_t *env,
-                                          axis2_properties_t *props,
+                                          axutil_properties_t *props,
                                           axis2_char_t *key );
 
 /** @} */

@@ -36,7 +36,7 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 #include <axis2_const.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -56,7 +56,7 @@ extern "C"
     AXIS2_EXTERN axis2_svc_name_t *AXIS2_CALL
     axis2_svc_name_create(
         const axutil_env_t *env,
-        const axis2_qname_t *qname,
+        const axutil_qname_t *qname,
         const axis2_char_t *endpoint_name) ;
 
     /**
@@ -67,7 +67,7 @@ extern "C"
      * @return pointer to QName struct, returns a reference, not a cloned 
      * copy
      */
-    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
     axis2_svc_name_get_qname(const axis2_svc_name_t *svc_name,
         const axutil_env_t *env);
 
@@ -82,7 +82,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_name_set_qname(struct axis2_svc_name *svc_name,
         const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
 
     /**
      * Gets endpoint name. Endpoint name is a non-qualified name that 

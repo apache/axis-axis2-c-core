@@ -42,7 +42,7 @@ axis2_math_stub_create_with_endpoint_ref_and_client_home(const axutil_env_t *env
 void axis2_populate_axis_service(axis2_stub_t* stub, const axutil_env_t *env)
 {
     axis2_svc_client_t* svc_client = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axis2_svc_t* svc = NULL;
     axis2_op_t* op = NULL;
 
@@ -52,29 +52,29 @@ void axis2_populate_axis_service(axis2_stub_t* stub, const axutil_env_t *env)
 
     /*creating the operations*/
 
-    op_qname = axis2_qname_create(env, "add" , "", NULL);
+    op_qname = axutil_qname_create(env, "add" , "", NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
     axis2_svc_add_op(svc, env, op);
-    axis2_qname_free(op_qname, env);
+    axutil_qname_free(op_qname, env);
 
-    op_qname = axis2_qname_create(env, "sub" , "", NULL);
+    op_qname = axutil_qname_create(env, "sub" , "", NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
     axis2_svc_add_op(svc, env, op);
-    axis2_qname_free(op_qname, env);
+    axutil_qname_free(op_qname, env);
 
-    op_qname = axis2_qname_create(env, "mul" , "", NULL);
+    op_qname = axutil_qname_create(env, "mul" , "", NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
     axis2_svc_add_op(svc, env, op);
-    axis2_qname_free(op_qname, env);
+    axutil_qname_free(op_qname, env);
 
-    op_qname = axis2_qname_create(env, "div" , "", NULL);
+    op_qname = axutil_qname_create(env, "div" , "", NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     axis2_op_set_msg_exchange_pattern(op, env, AXIS2_MEP_URI_OUT_IN);
     axis2_svc_add_op(svc, env, op);
-    axis2_qname_free(op_qname, env);
+    axutil_qname_free(op_qname, env);
 }
 
 axis2_stub_t *
@@ -109,14 +109,14 @@ axis2_math_stub_add(axis2_stub_t *stub,
 {
     axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *ret_node = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     svc_client = axis2_stub_get_svc_client(stub, env);
-    op_qname = axis2_qname_create(env, "add" , "", NULL);
+    op_qname = axutil_qname_create(env, "add" , "", NULL);
     ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, node);
-    axis2_qname_free(op_qname, env);
+    axutil_qname_free(op_qname, env);
 
     return ret_node;
 }
@@ -128,12 +128,12 @@ axis2_math_stub_sub(axis2_stub_t *stub,
 {
     axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *ret_node = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     svc_client = axis2_stub_get_svc_client(stub, env);
-    op_qname = axis2_qname_create(env, "sub" , "", NULL);
+    op_qname = axutil_qname_create(env, "sub" , "", NULL);
     ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, node);
 
     return ret_node;
@@ -146,12 +146,12 @@ axis2_math_stub_mul(axis2_stub_t *stub,
 {
     axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *ret_node = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     svc_client = axis2_stub_get_svc_client(stub, env);
-    op_qname = axis2_qname_create(env, "mul" , "", NULL);
+    op_qname = axutil_qname_create(env, "mul" , "", NULL);
     ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, node);
 
     return ret_node;
@@ -164,12 +164,12 @@ axis2_math_stub_div(axis2_stub_t *stub,
 {
     axis2_svc_client_t *svc_client = NULL;
     axiom_node_t *ret_node = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     svc_client = axis2_stub_get_svc_client(stub, env);
-    op_qname = axis2_qname_create(env, "div" , "", NULL);
+    op_qname = axutil_qname_create(env, "div" , "", NULL);
     ret_node =  axis2_svc_client_send_receive_with_op_qname(svc_client, env, op_qname, node);
 
     return ret_node;

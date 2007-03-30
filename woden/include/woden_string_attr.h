@@ -115,7 +115,7 @@ woden_string_attr_create(
         const axutil_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
-        axis2_qname_t *attr_type,
+        axutil_qname_t *attr_type,
         axis2_char_t *attr_value);
 
 

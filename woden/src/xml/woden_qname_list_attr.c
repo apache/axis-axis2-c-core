@@ -74,7 +74,7 @@ woden_qname_list_attr_create(
     const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     axis2_char_t *attr_value)
 {
     woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
@@ -230,7 +230,7 @@ woden_qname_list_attr_convert(
     axis2_char_t *attr_value)
 {
     woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     qname_list_attr_impl = INTF_TO_IMPL(qname_list_attr);

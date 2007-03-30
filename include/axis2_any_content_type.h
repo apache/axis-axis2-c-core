@@ -31,7 +31,7 @@
 #include <axutil_env.h>
 #include <axis2_const.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -60,7 +60,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
         const axutil_env_t *env,
-        const axis2_qname_t *qname,
+        const axutil_qname_t *qname,
         const axis2_char_t *value);
 
     /**
@@ -75,7 +75,7 @@ extern "C"
     AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
     axis2_any_content_type_get_value(const axis2_any_content_type_t *any_content_type,
         const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
     /**
      * Gets the map of all values.
      * @param any_content_type pointer to any content type struct

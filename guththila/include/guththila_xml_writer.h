@@ -21,14 +21,14 @@
 #include "guththila_writer.h"
 #include "guththila_buffer.h"
 #include <axutil_env.h>
-#include <axis2_stack.h>
+#include <axutil_stack.h>
 
 typedef struct guththila_xml_writer_s
 {
-	axis2_stack_t *element;
-	axis2_stack_t *attribute;
-	axis2_stack_t *namespace;
-	axis2_stack_t *depth;
+	axutil_stack_t *element;
+	axutil_stack_t *attribute;
+	axutil_stack_t *namespace;
+	axutil_stack_t *depth;
 	guththila_writer_t *writer;
 	int next;
 	int last;

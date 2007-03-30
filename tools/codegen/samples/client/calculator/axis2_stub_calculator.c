@@ -54,22 +54,22 @@ axis2_stub_calculator_create(const axutil_env_t *env,
 void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axutil_env_t *env)
 {
     axis2_svc_client_t *svc_client = NULL;
-    axis2_qname_t *svc_qname =  NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *svc_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
 
     /* Modifying the Service */
     svc_client = axis2_stub_get_svc_client(stub, env);
     svc = (axis2_svc_t*)axis2_svc_client_get_svc(svc_client, env);
-    axis2_qname_create(env, "Calculator" , NULL, NULL);
+    axutil_qname_create(env, "Calculator" , NULL, NULL);
     axis2_svc_set_qname(svc, env, svc_qname);
 
     /* creating the operations*/
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "add" ,
             "http://localhost/axis/Calculator",
             NULL);
@@ -81,7 +81,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axutil_en
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "sub" ,
             "http://localhost/axis/Calculator",
             NULL);
@@ -93,7 +93,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axutil_en
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "mul" ,
             "http://localhost/axis/Calculator",
             NULL);
@@ -105,7 +105,7 @@ void axis2_stub_calculator_populate_services(axis2_stub_t *stub, const axutil_en
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "div" ,
             "http://localhost/axis/Calculator",
             NULL);
@@ -147,7 +147,7 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axutil_env_t *
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content0;
@@ -171,7 +171,7 @@ axiom_node_t* axis2_stub_calculator_add(axis2_stub_t *stub, const axutil_env_t *
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "add" ,
             "http://localhost/axis/Calculator",
             NULL);
@@ -251,7 +251,7 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axutil_env_t *
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content2;
@@ -275,7 +275,7 @@ axiom_node_t* axis2_stub_calculator_sub(axis2_stub_t *stub, const axutil_env_t *
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "sub" ,
             "http://localhost/axis/Calculator",
             NULL);
@@ -355,7 +355,7 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axutil_env_t *
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content4;
@@ -379,7 +379,7 @@ axiom_node_t* axis2_stub_calculator_mul(axis2_stub_t *stub, const axutil_env_t *
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "mul" ,
             "http://localhost/axis/Calculator",
             NULL);
@@ -459,7 +459,7 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axutil_env_t *
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content6;
@@ -483,7 +483,7 @@ axiom_node_t* axis2_stub_calculator_div(axis2_stub_t *stub, const axutil_env_t *
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "div" ,
             "http://localhost/axis/Calculator",
             NULL);

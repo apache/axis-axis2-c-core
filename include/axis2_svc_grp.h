@@ -44,7 +44,7 @@
  * @file axis2_svc_grp.h
  */
 
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axis2_svc.h>
 #include <axis2_svc_grp_ctx.h>
 
@@ -115,7 +115,7 @@ extern "C"
     AXIS2_EXTERN struct axis2_svc *AXIS2_CALL
     axis2_svc_grp_get_svc(const axis2_svc_grp_t *svc_grp,
         const axutil_env_t *env,
-        const axis2_qname_t *svc_qname);
+        const axutil_qname_t *svc_qname);
 
     /**
      * Gets all services associated with service group. 
@@ -138,7 +138,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_remove_svc(axis2_svc_grp_t *svc_grp,
         const axutil_env_t *env,
-        const axis2_qname_t *svc_qname);
+        const axutil_qname_t *svc_qname);
 
     /**
      * Adds parameter.
@@ -151,7 +151,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_add_param(axis2_svc_grp_t *svc_grp,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets named parameter.
@@ -161,7 +161,7 @@ extern "C"
      * @return pointer to named parameter if exists, else NULL. Returns a 
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_svc_grp_get_param(const axis2_svc_grp_t *svc_grp,
         const axutil_env_t *env,
         const axis2_char_t *name);
@@ -199,7 +199,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_add_module_qname(axis2_svc_grp_t *svc_grp,
         const axutil_env_t *env,
-        const axis2_qname_t *module_qname);
+        const axutil_qname_t *module_qname);
 
     /**
      * Gets parent which is of type configuration.
@@ -237,7 +237,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_engage_module(axis2_svc_grp_t *svc_grp,
         const axutil_env_t *env,
-        const axis2_qname_t *module_qname);
+        const axutil_qname_t *module_qname);
 
     /**
      * Gets all module QNames associated with service group.
@@ -260,7 +260,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_grp_add_module_ref(axis2_svc_grp_t *svc_grp,
         const axutil_env_t *env,
-        const axis2_qname_t *moduleref);
+        const axutil_qname_t *moduleref);
 
     /**
      * Gets all module references.
@@ -287,7 +287,7 @@ extern "C"
         const axutil_env_t *env,
         struct axis2_conf_ctx *parent);
 
-    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_svc_grp_get_param_container(const axis2_svc_grp_t *svc_grp,
         const axutil_env_t *env);
 

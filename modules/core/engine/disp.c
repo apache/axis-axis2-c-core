@@ -17,7 +17,7 @@
 
 #include <axis2_disp.h>
 #include <axis2_handler_desc.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_relates_to.h>
 #include <axis2_svc.h>
 #include <axis2_const.h>
@@ -30,7 +30,7 @@ struct axis2_disp
     /** base class, inherits from handler */
     axis2_handler_t *base;
     /** phase name */
-    axis2_string_t *name;
+    axutil_string_t *name;
     /** derived struct */
     void* derived; /* deep copy */
     int derived_type;
@@ -39,7 +39,7 @@ struct axis2_disp
 axis2_disp_t *AXIS2_CALL
 axis2_disp_create(
     const axutil_env_t *env,
-    const axis2_string_t *name)
+    const axutil_string_t *name)
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -58,7 +58,7 @@ axis2_disp_create(
 
     if (name)
     {
-        disp->name = axis2_string_clone((axis2_string_t *)name, env);
+        disp->name = axutil_string_clone((axutil_string_t *)name, env);
         if (!(disp->name))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -69,7 +69,7 @@ axis2_disp_create(
     else
     {
         /* create default name */
-        disp->name = axis2_string_create_const(env, (axis2_char_t**)&AXIS2_DISP_NAME);
+        disp->name = axutil_string_create_const(env, (axis2_char_t**)&AXIS2_DISP_NAME);
         if (!(disp->name))
         {
             axis2_disp_free(disp, env);
@@ -105,7 +105,7 @@ axis2_disp_get_base(
     return disp->base;
 }
 
-axis2_string_t *AXIS2_CALL
+axutil_string_t *AXIS2_CALL
 axis2_disp_get_name(
     const axis2_disp_t *disp,
     const axutil_env_t *env)
@@ -117,18 +117,18 @@ axis2_status_t AXIS2_CALL
 axis2_disp_set_name(
     struct axis2_disp *disp,
     const axutil_env_t *env,
-    axis2_string_t *name)
+    axutil_string_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (disp->name)
     {
-        axis2_string_free(disp->name, env);
+        axutil_string_free(disp->name, env);
     }
 
     if (name)
     {
-        disp->name = axis2_string_clone(name, env);
+        disp->name = axutil_string_clone(name, env);
         if (!(disp->name))
             return AXIS2_FAILURE;
     }
@@ -180,7 +180,7 @@ axis2_disp_free(
     AXIS2_ENV_CHECK(env, void);
     if (disp->name)
     {
-        axis2_string_free(disp->name, env);
+        axutil_string_free(disp->name, env);
     }
     AXIS2_FREE(env->allocator, disp);
     return;

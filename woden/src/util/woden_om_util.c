@@ -16,12 +16,12 @@
  */
 
 #include "woden_om_util.h"
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axiom_element.h>
 #include <axis2_uri.h>
 
 
-AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
+AXIS2_EXTERN axutil_qname_t * AXIS2_CALL
 woden_om_util_get_qname(
     const axutil_env_t *env,
     axiom_node_t *context_el_node,
@@ -53,7 +53,7 @@ woden_om_util_get_qname(
     if (namespc_uri_str)
     {
         woden_om_util_register_unique_prefix(env, prefix, namespc_uri_str, namespcs);
-        return axis2_qname_create(env, localpart, namespc_uri_str, prefix);
+        return axutil_qname_create(env, localpart, namespc_uri_str, prefix);
     }
     return NULL;
 }

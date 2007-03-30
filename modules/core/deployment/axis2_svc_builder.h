@@ -29,7 +29,7 @@
 #include <axis2_defines.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_desc_builder.h>
 #include <axis2_addr.h>
 #include <axis2_dep_engine.h>
@@ -74,7 +74,7 @@ extern "C"
     axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
         const axutil_env_t *env,
         axiom_children_qname_iterator_t *module_confs,
-        axis2_param_container_t *parent,
+        axutil_param_container_t *parent,
         axis2_svc_t *svc);
 
     /**

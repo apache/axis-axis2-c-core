@@ -19,7 +19,7 @@
 #define TCPMON_UTIL_H
 
 #include <axutil_env.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 /**
  * @file tcpmon_util.h

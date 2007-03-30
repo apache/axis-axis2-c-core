@@ -19,7 +19,7 @@
 #define AXIOM_UTIL_H
 
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axiom.h>
 #include <axis2_uri.h>
 

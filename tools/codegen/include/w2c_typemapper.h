@@ -26,7 +26,7 @@
 #include <axis2_utils.h>
 #include <axutil_array_list.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -67,7 +67,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     axis2_char_t* (AXIS2_CALL *
     get_parameter_name)(w2c_typemapper_t *typemapper,
           const axutil_env_t *env,
-          axis2_qname_t *qname);
+          axutil_qname_t *qname);
 
    /**
     * retrieve the language type name to the given qname in wsdl.
@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     axis2_char_t* (AXIS2_CALL *
     get_type_name)(w2c_typemapper_t *typemapper,
           const axutil_env_t *env,
-          axis2_qname_t *qname);
+          axutil_qname_t *qname);
 
    /**
     * add a mapping to the list.
@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     axis2_status_t (AXIS2_CALL *
     add_typemapping_name)(w2c_typemapper_t *typemapper,
           const axutil_env_t *env,
-          axis2_qname_t *qname,
+          axutil_qname_t *qname,
           axis2_char_t *name);
 
    /**
@@ -111,7 +111,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     * @param  env Environment. MUST NOT be NULL
     * @param the dafault qname ( defined in wsdl)
     */
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_default_qname)(w2c_typemapper_t *typemapper,
           const axutil_env_t *env);
 
@@ -135,7 +135,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
     axis2_bool_t (AXIS2_CALL *
     is_primitive)(w2c_typemapper_t *typemapper,
           const axutil_env_t *env,
-          axis2_qname_t *qname);
+          axutil_qname_t *qname);
 
 };
 

@@ -24,7 +24,7 @@ struct axiom_children_qname_iterator
     axiom_node_t *last_child;
     axis2_bool_t next_called;
     axis2_bool_t remove_called;
-    axis2_qname_t *given_qname;
+    axutil_qname_t *given_qname;
     axis2_bool_t need_to_move_forward;
     axis2_bool_t matching_node_found;
 
@@ -32,7 +32,7 @@ struct axiom_children_qname_iterator
 
 AXIS2_EXTERN axiom_children_qname_iterator_t *AXIS2_CALL
 axiom_children_qname_iterator_create(const axutil_env_t *env,
-    axiom_node_t *current_child, axis2_qname_t *given_qname)
+    axiom_node_t *current_child, axutil_qname_t *given_qname)
 {
     axiom_children_qname_iterator_t *iterator = NULL;
 
@@ -59,7 +59,7 @@ axiom_children_qname_iterator_create(const axutil_env_t *env,
     iterator->current_child = current_child;
     if (given_qname)
     {
-        iterator->given_qname = axis2_qname_clone(given_qname, env);
+        iterator->given_qname = axutil_qname_clone(given_qname, env);
         if (!(iterator->given_qname))
         {
             axiom_children_qname_iterator_free(iterator, env);
@@ -78,7 +78,7 @@ axiom_children_qname_iterator_free(axiom_children_qname_iterator_t *iterator,
 
     if (iterator->given_qname)
     {
-        axis2_qname_free(iterator->given_qname, env);
+        axutil_qname_free(iterator->given_qname, env);
     }
     AXIS2_FREE(env->allocator, iterator);
     return;
@@ -133,7 +133,7 @@ axiom_children_qname_iterator_has_next(axiom_children_qname_iterator_t *iterator
             }
 
             if (om_element &&
-                axis2_qname_equals(
+                axutil_qname_equals(
                     axiom_element_get_qname(om_element, env, iterator->current_child),
                     env, iterator->given_qname))
             {

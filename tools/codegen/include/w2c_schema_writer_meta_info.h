@@ -289,14 +289,14 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     set_extension_basetype)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *extension_basetype);
+                            axutil_qname_t *extension_basetype);
    /**
     * getter for extension_basetype.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the extension_basetype
     */
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_extension_basetype)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
@@ -311,14 +311,14 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     set_restriction_basetype)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *restriction_basetype);
+                            axutil_qname_t *restriction_basetype);
    /**
     * getter for restriction_basetype.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the restriction_basetype
     */
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_restriction_basetype)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
@@ -333,14 +333,14 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     set_ownqname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env,
-                            axis2_qname_t *ownqname);
+                            axutil_qname_t *ownqname);
    /**
     * getter for ownqname.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the ownqname
     */
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_ownqname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axutil_env_t *env);
 
@@ -639,7 +639,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_bool_t (AXIS2_CALL *
     is_restriction_base_type)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                          const axutil_env_t *env,
-                         axis2_qname_t *restriction_base_type);
+                         axutil_qname_t *restriction_base_type);
 
    /**
     * register nillable qname.
@@ -652,86 +652,86 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     register_nillable_qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                          const axutil_env_t *env,
-                         axis2_qname_t *qname);
+                         axutil_qname_t *qname);
     
     axis2_bool_t (AXIS2_CALL *
     is_nillable)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                          const axutil_env_t *env,
-                         axis2_qname_t *qname);
+                         axutil_qname_t *qname);
 
 
     axis2_status_t (AXIS2_CALL *
     register_mapping)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
-                             axis2_qname_t *schema_name,
+                             axutil_qname_t *qname,
+                             axutil_qname_t *schema_name,
                              axis2_char_t *class_name,
                              int type);
 
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_schemaqname4qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 
     axis2_char_t* (AXIS2_CALL *
     get_classname4qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
 
     axis2_bool_t (AXIS2_CALL *
     get_attri_status4qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
     axis2_bool_t (AXIS2_CALL *
     get_any_status4qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
     axis2_bool_t (AXIS2_CALL *
     get_array_status4qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
     axis2_bool_t (AXIS2_CALL *
     get_binary_status4qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
     axis2_bool_t (AXIS2_CALL *
     get_any_attri_status4qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
          
     axis2_status_t (AXIS2_CALL *
     add_min_occurs)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              long min_occurs);
 
     axis2_status_t (AXIS2_CALL *
     add_max_occurs)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              long max_occurs);
 
     axis2_status_t (AXIS2_CALL *
     register_qname_index)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname,
+                             axutil_qname_t *qname,
                              int index);
 
     long (AXIS2_CALL *
     get_min_occurs)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
     long (AXIS2_CALL *
     get_max_occurs)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *qname);
+                             axutil_qname_t *qname);
 
     axutil_array_list_t* (AXIS2_CALL *
     get_qname_array)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
@@ -749,7 +749,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
     axis2_status_t (AXIS2_CALL *
     add_status)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                              const axutil_env_t *env,
-                             axis2_qname_t *type,
+                             axutil_qname_t *type,
                              int mask);
     
     axis2_status_t (AXIS2_CALL *

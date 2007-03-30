@@ -132,9 +132,9 @@ woden_soap_fault_subcodes_free(
                 env);
         for (i = 0; i < size; i++)
         {
-            axis2_qname_t *qname = axutil_array_list_get(soap_fault_subcodes_impl->
+            axutil_qname_t *qname = axutil_array_list_get(soap_fault_subcodes_impl->
                     f_subcode_qns, env, i);
-            axis2_qname_free(qname, env);
+            axutil_qname_free(qname, env);
         }
         axutil_array_list_free(soap_fault_subcodes_impl->f_subcode_qns, env);
         soap_fault_subcodes_impl->f_subcode_qns = NULL;

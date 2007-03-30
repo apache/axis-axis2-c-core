@@ -21,24 +21,24 @@
 
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_qname_util_matches(
+axutil_qname_util_matches(
     const axutil_env_t *env,
-    axis2_qname_t *qname,
+    axutil_qname_t *qname,
     axiom_node_t *node)
 {
-    axis2_qname_t *qname_l = NULL;
+    axutil_qname_t *qname_l = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
 
-    qname_l = axis2_qname_util_new_qname(env, node);
-    if (node && AXIS2_TRUE == axis2_qname_equals(qname, env, qname_l))
+    qname_l = axutil_qname_util_new_qname(env, node);
+    if (node && AXIS2_TRUE == axutil_qname_equals(qname, env, qname_l))
         ret = AXIS2_TRUE;
-    axis2_qname_free(qname_l, env);
+    axutil_qname_free(qname_l, env);
 
     return ret;
 }
 
-AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
-axis2_qname_util_new_qname(
+AXIS2_EXTERN axutil_qname_t * AXIS2_CALL
+axutil_qname_util_new_qname(
     const axutil_env_t *env,
     axiom_node_t *node)
 {
@@ -56,7 +56,7 @@ axis2_qname_util_new_qname(
         namespc = axiom_element_get_namespace(element, env, node);
         uri_str = axiom_namespace_get_uri(namespc, env);
         localname = axiom_element_get_localname(element, env);
-        return axis2_qname_create(env, localname, uri_str, NULL);
+        return axutil_qname_create(env, localname, uri_str, NULL);
     }
 
     return NULL;

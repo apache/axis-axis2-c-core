@@ -17,7 +17,7 @@
 
 #include <axis2_disp.h>
 #include <axis2_handler_desc.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_relates_to.h>
 #include <axis2_svc.h>
 #include <axis2_const.h>
@@ -51,11 +51,11 @@ axis2_req_uri_disp_create(
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
-    axis2_string_t *name = NULL;
+    axutil_string_t *name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    name = axis2_string_create_const(env, 
+    name = axutil_string_create_const(env, 
                (axis2_char_t **)&AXIS2_REQ_URI_DISP_NAME);
 
     disp = axis2_disp_create(env, name);
@@ -75,7 +75,7 @@ axis2_req_uri_disp_create(
 
     handler->ops->invoke = axis2_req_uri_disp_invoke;
 
-    axis2_string_free(name, env);
+    axutil_string_free(name, env);
 
     return disp;
 }
@@ -165,15 +165,15 @@ axis2_req_uri_disp_find_op(
             {
                 if (url_tokens[1])
                 {
-                    axis2_qname_t *op_qname = NULL;
+                    axutil_qname_t *op_qname = NULL;
                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                             "Checking for operation using \
                              target endpoint uri fragment : %s",
                              url_tokens[1]);
-                    op_qname = axis2_qname_create(env, url_tokens[1], NULL, NULL);
+                    op_qname = axutil_qname_create(env, url_tokens[1], NULL, NULL);
                     op = axis2_svc_get_op_with_name(svc, env, 
-                             axis2_qname_get_localpart(op_qname, env));
-                    axis2_qname_free(op_qname, env);
+                             axutil_qname_get_localpart(op_qname, env));
+                    axutil_qname_free(op_qname, env);
                     if (op)
                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                 "Operation found using target endpoint uri fragment");

@@ -608,7 +608,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return SOAP Action string if set, else NULL
      */
-    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t* AXIS2_CALL
     axis2_options_get_soap_action(const axis2_options_t *options,
         const axutil_env_t *env);
 
@@ -622,7 +622,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_options_set_soap_action(axis2_options_t *options,
         const axutil_env_t *env,
-        axis2_string_t *soap_action);
+        axutil_string_t *soap_action);
 
     /**
      * Sets xml parser reset

@@ -413,7 +413,7 @@ axis2_engine_create_fault_msg_ctx(
     axis2_msg_ctx_t *fault_ctx = NULL;
     axis2_endpoint_ref_t *fault_to = NULL;
     axis2_endpoint_ref_t *reply_to = NULL;
-    axis2_stream_t *stream = NULL;
+    axutil_stream_t *stream = NULL;
     axiom_soap_envelope_t *envelope = NULL;
     const axis2_char_t *wsa_action = NULL;
     const axis2_char_t *msg_id = NULL;

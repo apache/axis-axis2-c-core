@@ -20,7 +20,7 @@
 #include "_axiom_soap_fault_text.h"
 #include "_axiom_soap_fault_reason.h"
 #include <axiom_namespace.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 struct axiom_soap_fault_text
 {
@@ -199,7 +199,7 @@ axiom_soap_fault_text_get_lang(axiom_soap_fault_text_t *fault_text,
         const axutil_env_t *env)
 {
     axiom_element_t* om_ele = NULL;
-    axis2_qname_t* tmp_qname = NULL;
+    axutil_qname_t* tmp_qname = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     if (!fault_text->om_ele_node)
@@ -214,14 +214,14 @@ axiom_soap_fault_text_get_lang(axiom_soap_fault_text_t *fault_text,
     {
 
         /* this logic need to be rechecked */
-        tmp_qname = axis2_qname_create(env,
+        tmp_qname = axutil_qname_create(env,
                 AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_LOCAL_NAME,
                 AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_URI,
                 AXIOM_SOAP12_SOAP_FAULT_TEXT_LANG_ATTR_NS_PREFIX);
 
         fault_text->lang_attribute =
             axiom_element_get_attribute(om_ele, env, tmp_qname);
-        axis2_qname_free(tmp_qname, env);
+        axutil_qname_free(tmp_qname, env);
     }
     if (fault_text->lang_attribute)
     {

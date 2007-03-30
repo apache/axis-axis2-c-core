@@ -77,7 +77,7 @@ savan_util_get_subscription_id_from_msg(
     axis2_char_t *sub_id = NULL;
     axiom_soap_envelope_t *envelope = NULL;
     axiom_soap_header_t *header = NULL;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     axiom_node_t *header_node = NULL;
     axiom_node_t *id_node = NULL;
     axiom_element_t *header_elem = NULL;
@@ -111,10 +111,10 @@ savan_util_get_subscription_id_from_msg(
     header_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_node, env);
     
     /* Get Identifier element from header */
-    qname = axis2_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);
     id_elem = axiom_element_get_first_child_with_qname(header_elem, env, qname,
         header_node, &id_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     /* Now read the id */
     sub_id = axiom_element_get_text(id_elem, env, id_node);
@@ -163,7 +163,7 @@ savan_util_get_subscriber_store(
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_svc_t *svc = NULL;
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
     axutil_hash_t *store = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -187,7 +187,7 @@ savan_util_get_subscriber_store(
         return NULL;
     }
 
-    store = (axutil_hash_t*)axis2_param_get_value(param, env);
+    store = (axutil_hash_t*)axutil_param_get_value(param, env);
 
     return store;
 }

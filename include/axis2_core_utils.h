@@ -23,7 +23,7 @@
 #include <axutil_error.h>
 #include <axutil_env.h>
 #include <axis2_msg_ctx.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -44,7 +44,7 @@ struct axis2_conf;
     axis2_core_utils_reset_out_msg_ctx(const axutil_env_t *env,
         axis2_msg_ctx_t *out_msg_ctx);
                                     
-    AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_qname_t* AXIS2_CALL
     axis2_core_utils_get_module_qname(const axutil_env_t *env, 
         const axis2_char_t *name, 
         const axis2_char_t *version);

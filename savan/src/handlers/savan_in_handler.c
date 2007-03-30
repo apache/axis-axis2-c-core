@@ -24,7 +24,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_msg_info_headers.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 #include <axis2_engine.h>
 #include <axis2_svc.h>
 
@@ -46,7 +46,7 @@ savan_in_handler_invoke(struct axis2_handler *handler,
 
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
 savan_in_handler_create(const axutil_env_t *env, 
-                         axis2_qname_t *qname) 
+                         axutil_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
     

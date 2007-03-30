@@ -42,7 +42,7 @@ struct woden_interface_fault_ref_impl
     void *f_interface_fault;
     void *f_msg_label;
     void *f_direction;
-    axis2_qname_t *f_ref;
+    axutil_qname_t *f_ref;
 };
 
 #define INTF_TO_IMPL(interface_fault_ref) ((woden_interface_fault_ref_impl_t *) interface_fault_ref)
@@ -97,9 +97,9 @@ axis2_status_t AXIS2_CALL
 woden_interface_fault_ref_set_ref(
     void *interface_fault_ref,
     const axutil_env_t *env,
-    axis2_qname_t *fault_qname);
+    axutil_qname_t *fault_qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_interface_fault_ref_get_ref(
     void *interface_fault_ref,
     const axutil_env_t *env);
@@ -643,7 +643,7 @@ woden_interface_fault_ref_free(
 
     if (interface_fault_ref_impl->f_ref)
     {
-        axis2_qname_free(interface_fault_ref_impl->f_ref, env);
+        axutil_qname_free(interface_fault_ref_impl->f_ref, env);
         interface_fault_ref_impl->f_ref = NULL;
     }
 
@@ -841,7 +841,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_fault_ref_set_ref(
     void *interface_fault_ref,
     const axutil_env_t *env,
-    axis2_qname_t *fault_qname)
+    axutil_qname_t *fault_qname)
 {
     woden_interface_fault_ref_impl_t *interface_fault_ref_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -854,13 +854,13 @@ woden_interface_fault_ref_set_ref(
 
     if (interface_fault_ref_impl->f_ref)
     {
-        axis2_qname_free(interface_fault_ref_impl->f_ref, env);
+        axutil_qname_free(interface_fault_ref_impl->f_ref, env);
     }
-    interface_fault_ref_impl->f_ref = axis2_qname_clone(fault_qname, env);
+    interface_fault_ref_impl->f_ref = axutil_qname_clone(fault_qname, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_interface_fault_ref_get_ref(
     void *interface_fault_ref,
     const axutil_env_t *env)

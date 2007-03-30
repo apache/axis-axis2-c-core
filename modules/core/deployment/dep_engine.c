@@ -27,7 +27,7 @@
 #include <axis2_svc_grp_builder.h>
 #include <axiom_node.h>
 #include <axutil_class_loader.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axis2_core_utils.h>
 #include <axis2_module.h>
@@ -417,11 +417,11 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
 
         for (i = 0; i < size; i++)
         {
-            axis2_qname_t *qname = NULL;
+            axutil_qname_t *qname = NULL;
             qname = axutil_array_list_get(dep_engine->module_list, env, i);
             if (qname)
             {
-                axis2_qname_free(qname, env);
+                axutil_qname_free(qname, env);
             }
         }
         axutil_array_list_free(dep_engine->module_list, env);
@@ -456,20 +456,20 @@ axis2_dep_engine_free(axis2_dep_engine_t *dep_engine,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
     const axutil_env_t *env,
-    axis2_qname_t *module_qname)
+    axutil_qname_t *module_qname)
 {
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
 
-    qname = axis2_qname_clone(module_qname, env);
+    qname = axutil_qname_clone(module_qname, env);
     if (!dep_engine->module_list)
     {
         dep_engine->module_list = axutil_array_list_create(env, 0);
         if (!dep_engine->module_list)
         {
-            axis2_qname_free(qname, env);
+            axutil_qname_free(qname, env);
             return AXIS2_FAILURE;
         }
     }
@@ -479,7 +479,7 @@ axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
 struct axis2_module_desc *AXIS2_CALL
 axis2_dep_engine_get_module(const axis2_dep_engine_t *dep_engine,
     const axutil_env_t *env,
-    axis2_qname_t *module_name)
+    axutil_qname_t *module_name)
 {
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
@@ -540,8 +540,8 @@ axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
     const axutil_env_t *env)
 {
     axis2_char_t *value = NULL;
-    axis2_param_t *para_hot_dep = NULL;
-    axis2_param_t *para_hot_update = NULL;
+    axutil_param_t *para_hot_dep = NULL;
+    axutil_param_t *para_hot_update = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -552,7 +552,7 @@ axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
 
     if (para_hot_dep)
     {
-        value = (axis2_char_t *) axis2_param_get_value(para_hot_dep, env);
+        value = (axis2_char_t *) axutil_param_get_value(para_hot_dep, env);
         if (0 == axis2_strcasecmp("false", value))
         {
             dep_engine->hot_dep = AXIS2_FALSE;
@@ -560,7 +560,7 @@ axis2_dep_engine_set_dep_features(axis2_dep_engine_t *dep_engine,
     }
     if (para_hot_update)
     {
-        value = (axis2_char_t *) axis2_param_get_value(para_hot_update, env);
+        value = (axis2_char_t *) axutil_param_get_value(para_hot_update, env);
         if (0 == axis2_strcasecmp("false", value))
         {
             dep_engine->hot_update = AXIS2_FALSE;
@@ -824,8 +824,8 @@ axis2_dep_engine_engage_modules(axis2_dep_engine_t *dep_engine,
 
     for (i = 0; i < size; i++)
     {
-        axis2_qname_t *qname = NULL;
-        qname = (axis2_qname_t *)
+        axutil_qname_t *qname = NULL;
+        qname = (axutil_qname_t *)
             axutil_array_list_get(dep_engine->module_list, env, i);
         if (qname && dep_engine->conf)
         {
@@ -919,9 +919,9 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         for (j = 0; j < sizej; j++)
         {
             axis2_module_desc_t *module_desc = NULL;
-            axis2_qname_t *qmodulename = NULL;
+            axutil_qname_t *qmodulename = NULL;
 
-            qmodulename = (axis2_qname_t *) axutil_array_list_get(grp_modules,
+            qmodulename = (axutil_qname_t *) axutil_array_list_get(grp_modules,
                 env, j);
             module_desc =  axis2_conf_get_module(dep_engine->conf, env,
                 qmodulename);
@@ -945,9 +945,9 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         for (j = 0; j < sizej; j++)
         {
             axis2_module_desc_t *module_desc = NULL;
-            axis2_qname_t *qmodulename = NULL;
+            axutil_qname_t *qmodulename = NULL;
 
-            qmodulename = (axis2_qname_t *) axutil_array_list_get(list,
+            qmodulename = (axutil_qname_t *) axutil_array_list_get(list,
                 env, j);
             module_desc =  axis2_conf_get_module(dep_engine->conf, env,
                 qmodulename);
@@ -990,10 +990,10 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             }
             for (k = 0; k < sizek; k++)
             {
-                axis2_qname_t *module_qname = NULL;
+                axutil_qname_t *module_qname = NULL;
                 axis2_module_desc_t *module = NULL;
 
-                module_qname = (axis2_qname_t *) axutil_array_list_get(modules,
+                module_qname = (axutil_qname_t *) axutil_array_list_get(modules,
                     env, k);
                 module =  axis2_conf_get_module(dep_engine->conf, env,
                     module_qname);
@@ -1024,7 +1024,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     axis2_char_t *read_in_dll = NULL;
     axis2_module_t *module = NULL;
     axutil_dll_desc_t *dll_desc = NULL;
-    axis2_param_t *impl_info_param = NULL;
+    axutil_param_t *impl_info_param = NULL;
     axutil_file_t *module_folder = NULL;
     AXIS2_TIME_T timestamp = 0;
     axis2_char_t *module_folder_path = NULL;
@@ -1063,9 +1063,9 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     dll_path = NULL;
 
     axutil_dll_desc_set_type(dll_desc, env, AXIS2_MODULE_DLL);
-    impl_info_param = axis2_param_create(env, read_in_dll, NULL);
-    axis2_param_set_value(impl_info_param, env, dll_desc);
-    axis2_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
+    impl_info_param = axutil_param_create(env, read_in_dll, NULL);
+    axutil_param_set_value(impl_info_param, env, dll_desc);
+    axutil_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
     axutil_class_loader_init(env);
     module = (axis2_module_t *) axutil_class_loader_create_dll(env,
         impl_info_param);
@@ -1096,13 +1096,13 @@ axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
     {
         axis2_handler_desc_t *handlermd = NULL;
         axis2_handler_t *handler = NULL;
-        const axis2_string_t *handler_name = NULL;
+        const axutil_string_t *handler_name = NULL;
         AXIS2_HANDLER_CREATE_FUNC handler_create_func = NULL;
 
         handlermd = axis2_flow_get_handler(flow, env, j);
         handler_name = axis2_handler_desc_get_name(handlermd, env);
         handler_create_func = axutil_hash_get(handler_create_func_map,
-            axis2_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
+            axutil_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
         handler = handler_create_func(env, handler_name);
         AXIS2_HANDLER_INIT(handler, env, handlermd);
         axis2_handler_desc_set_handler(handlermd, env, handler);
@@ -1116,7 +1116,7 @@ axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
     axis2_char_t *class_name)
 {
     axutil_dll_desc_t *dll_desc = NULL;
-    axis2_param_t *impl_info_param = NULL;
+    axutil_param_t *impl_info_param = NULL;
     axis2_handler_t *handler = NULL;
     axis2_char_t *dll_name = NULL;
 
@@ -1131,8 +1131,8 @@ axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
     axutil_dll_desc_set_name(dll_desc, env, dll_name);
     axutil_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
     axutil_class_loader_init(env);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    axis2_param_set_value(impl_info_param, env, dll_desc);
+    impl_info_param = axutil_param_create(env, NULL, NULL);
+    axutil_param_set_value(impl_info_param, env, dll_desc);
     handler = (axis2_handler_t *) axutil_class_loader_create_dll(env,
         impl_info_param);
 

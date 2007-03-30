@@ -26,7 +26,7 @@
 #include <axutil_env.h>
 #include <axiom_node.h>
 #include <axiom_output.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -94,7 +94,7 @@ extern "C"
      * @return status of the op. AXIS2_SUCCESS on success,
      *           AXIS2_FAILURE on error.   
      */
-    AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
+    AXIS2_EXTERN axutil_stream_t * AXIS2_CALL
     axiom_data_source_get_stream(struct axiom_data_source *om_data_source,
             const axutil_env_t *env);
 

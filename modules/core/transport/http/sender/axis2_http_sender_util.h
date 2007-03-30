@@ -18,7 +18,7 @@
 #ifndef AXIS2_HTTP_SENDER_UTIL_H
 #define AXIS2_HTTP_SENDER_UTIL_H
 
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_http_transport.h>
 #include <string.h>
 #include <axiom_output.h>
@@ -27,8 +27,8 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_http_client.h>
 #include <axiom_xml_writer.h>
-#include <axis2_property.h>
-#include <axis2_param.h>
+#include <axutil_property.h>
+#include <axutil_param.h>
 #include <axis2_types.h>
 #include <axutil_generic_obj.h>
 

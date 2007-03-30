@@ -40,7 +40,7 @@ struct woden_wsdl10_msg_ref_impl
       axutil_hash_t *super;
       axutil_hash_t *methods;
 
-      axis2_qname_t *f_qname;
+      axutil_qname_t *f_qname;
       void *f_part;
 };
 
@@ -70,7 +70,7 @@ woden_wsdl10_msg_ref_get_base_impl(
  *  Interface Operation  methods (the WSDL Component model)
  *************************************************************/
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_msg_ref_get_qname(
       void *msg_ref,
       const axutil_env_t *env);
@@ -88,7 +88,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_msg_ref_set_qname(
       void *msg_ref,
       const axutil_env_t *env,
-      axis2_qname_t *qname);
+      axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_msg_ref_set_part(
@@ -637,7 +637,7 @@ woden_wsdl10_msg_ref_free(
 
       if (msg_ref_impl->f_qname)
       {
-	    axis2_qname_free(msg_ref_impl->f_qname, env);
+	    axutil_qname_free(msg_ref_impl->f_qname, env);
 	    msg_ref_impl->f_qname = NULL;
       }
 
@@ -761,7 +761,7 @@ woden_wsdl10_msg_ref_resolve_methods(
  *  Interface Operation  methods (the WSDL Component model)
  * ************************************************************/
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_msg_ref_get_qname(
       void *msg_ref,
       const axutil_env_t *env)
@@ -803,7 +803,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_msg_ref_set_qname(
       void *msg_ref,
       const axutil_env_t *env,
-      axis2_qname_t *qname)
+      axutil_qname_t *qname)
 {
       woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
       axutil_hash_t *super = NULL;
@@ -817,10 +817,10 @@ woden_wsdl10_msg_ref_set_qname(
 
       if (msg_ref_impl->f_qname)
       {
-	    axis2_qname_free(msg_ref_impl->f_qname, env);
+	    axutil_qname_free(msg_ref_impl->f_qname, env);
 	    msg_ref_impl->f_qname = NULL;
       }
-      msg_ref_impl->f_qname = axis2_qname_clone(qname, env);
+      msg_ref_impl->f_qname = axutil_qname_clone(qname, env);
 
       return AXIS2_SUCCESS;
 }

@@ -27,7 +27,7 @@
 #include <xml_schema_annotated.h>
 #include <xml_schema_type.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <xml_schema_complex_type.h>
 #include <xml_schema_any_attribute.h>
 #include <xml_schema_obj_collection.h>

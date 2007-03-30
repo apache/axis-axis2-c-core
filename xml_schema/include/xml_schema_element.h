@@ -26,7 +26,7 @@
  */
 
 #include <xml_schema_particle.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup xml_schema_element Xml Schema Element
   * @ingroup xml_schema
@@ -165,7 +165,7 @@ struct xml_schema_element_ops
             const axutil_env_t *env,
             axis2_char_t *name);
 
-    axis2_qname_t *(AXIS2_CALL * 
+    axutil_qname_t *(AXIS2_CALL * 
     get_ref_qname)(
             void *element,
             const axutil_env_t *env);
@@ -174,9 +174,9 @@ struct xml_schema_element_ops
     set_ref_qname)(
             void *element,
             const axutil_env_t *env,
-            axis2_qname_t *ref_qname);
+            axutil_qname_t *ref_qname);
 
-    axis2_qname_t *(AXIS2_CALL * 
+    axutil_qname_t *(AXIS2_CALL * 
     get_qname)(
             void *element,
             const axutil_env_t *env);
@@ -185,7 +185,7 @@ struct xml_schema_element_ops
     set_qname)(
             void *element,
             const axutil_env_t *env,
-            axis2_qname_t *qualified_name); 
+            axutil_qname_t *qualified_name); 
 
     struct xml_schema_type *(AXIS2_CALL *
     get_schema_type)(
@@ -198,7 +198,7 @@ struct xml_schema_element_ops
             const axutil_env_t *env,
             void *schema_type);
 
-    axis2_qname_t *(AXIS2_CALL * 
+    axutil_qname_t *(AXIS2_CALL * 
     get_schema_type_qname)(
             void *element,
             const axutil_env_t *env);
@@ -207,9 +207,9 @@ struct xml_schema_element_ops
     set_schema_type_qname)(
             void *element,
             const axutil_env_t *env,
-            axis2_qname_t *schema_type_qname);
+            axutil_qname_t *schema_type_qname);
 
-    axis2_qname_t *(AXIS2_CALL * 
+    axutil_qname_t *(AXIS2_CALL * 
     get_substitution_group)(
             void *element,
             const axutil_env_t *env);
@@ -218,7 +218,7 @@ struct xml_schema_element_ops
     set_substitution_group)(
             void *element,
             const axutil_env_t *env,
-            axis2_qname_t *substitution_group);
+            axutil_qname_t *substitution_group);
 
     axis2_char_t *(AXIS2_CALL * 
     to_string)(

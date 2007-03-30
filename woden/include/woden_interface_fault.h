@@ -29,7 +29,7 @@
 #include <woden.h>
 #include <woden_interface_fault_element.h>
 #include <woden_nested_configurable.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** @defgroup woden_interface_fault Interface Fault
   * @ingroup woden
@@ -71,7 +71,7 @@ struct woden_interface_fault_ops
             void *interface_fault,
             const axutil_env_t *env);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *interface_fault,
             const axutil_env_t *env);

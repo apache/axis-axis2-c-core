@@ -16,9 +16,9 @@
  */
 
 #include "axis2_iis_out_transport_info.h"
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_http_transport.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 #include "axis2_iis_constants.h"
 /**

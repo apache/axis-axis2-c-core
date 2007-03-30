@@ -27,12 +27,12 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 
 #include <axutil_array_list.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <xml_schema_obj.h>
 #include <axiom_xml_reader.h>
 #include <axiom_document.h>
@@ -123,20 +123,20 @@ struct xml_schema_collection_ops
     get_element_by_qname)(
             xml_schema_collection_t* collection,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     struct xml_schema_type *(AXIS2_CALL *
     get_type_by_qname)(
             xml_schema_collection_t* collection,
             const axutil_env_t *env,
-            axis2_qname_t *schema_type_qname);
+            axutil_qname_t *schema_type_qname);
 
 
     axis2_status_t (AXIS2_CALL *
     add_unresolved_type)(
             xml_schema_collection_t* collection,
             const axutil_env_t *env,
-            axis2_qname_t *qtype, 
+            axutil_qname_t *qtype, 
             void *receiver); 
             
 
@@ -144,7 +144,7 @@ struct xml_schema_collection_ops
     resolve_type)(
             xml_schema_collection_t* collection,
             const axutil_env_t *env,
-            axis2_qname_t *type_qname, 
+            axutil_qname_t *type_qname, 
             struct xml_schema_type *type); 
             
 

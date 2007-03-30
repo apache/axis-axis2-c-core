@@ -34,8 +34,8 @@ void axis2_test_conf_ctx_init()
     struct axis2_svc_ctx *svc_ctx2 = NULL;
     struct axis2_svc *svc1 = NULL;
     struct axis2_svc *svc2 = NULL;
-    struct axis2_qname *qname1 = NULL;
-    struct axis2_qname *qname2 = NULL;
+    struct axutil_qname *qname1 = NULL;
+    struct axutil_qname *qname2 = NULL;
     struct axis2_op_ctx *op_ctx1 = NULL;
     struct axis2_op_ctx *op_ctx2 = NULL;
     struct axis2_op *op = NULL;
@@ -59,8 +59,8 @@ void axis2_test_conf_ctx_init()
     svc_grp_ctx1 = axis2_svc_grp_ctx_create(env, svc_grp1, conf_ctx);
     svc_grp_ctx2 = axis2_svc_grp_ctx_create(env, svc_grp2, conf_ctx);
 
-    qname1 = axis2_qname_create(env, "name1", NULL, NULL);
-    qname2 = axis2_qname_create(env, "name2", NULL, NULL);
+    qname1 = axutil_qname_create(env, "name1", NULL, NULL);
+    qname2 = axutil_qname_create(env, "name2", NULL, NULL);
 
     svc1 = axis2_svc_create_with_qname(env, qname1);
     svc2 = axis2_svc_create_with_qname(env, qname2);

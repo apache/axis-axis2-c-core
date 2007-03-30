@@ -71,7 +71,7 @@ savan_publishing_client_publish(
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
     axis2_svc_client_t* svc_client = NULL;
-    axis2_qname_t *op_qname = NULL;
+    axutil_qname_t *op_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -92,7 +92,7 @@ savan_publishing_client_publish(
     axis2_options_set_action(options, env,
             "http://ws.apache.org/axis2/c/savan/dummy");
     
-    op_qname = axis2_qname_create(env, "publish", NULL, NULL);
+    op_qname = axutil_qname_create(env, "publish", NULL, NULL);
         
     /* Create service client */
     svc_client = axis2_svc_client_create_with_conf_ctx_and_svc(env, repo_path,

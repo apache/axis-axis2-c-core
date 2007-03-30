@@ -84,9 +84,9 @@ struct axis2_msg_ctx
     /** paused phase name */
     axis2_char_t *paused_phase_name;
     /** paused handler name */
-    axis2_string_t *paused_handler_name;
+    axutil_string_t *paused_handler_name;
     /** SOAP action */
-    axis2_string_t *soap_action;
+    axutil_string_t *soap_action;
     /** are we doing MTOM now? */
     axis2_bool_t doing_mtom;
     /** are we doing REST now? */
@@ -96,7 +96,7 @@ struct axis2_msg_ctx
     /** use SOAP 1.1? */
     axis2_bool_t is_soap_11;
     /** service group context id */
-    axis2_string_t *svc_grp_ctx_id;
+    axutil_string_t *svc_grp_ctx_id;
     /** qname of transport in */
     AXIS2_TRANSPORT_ENUMS transport_in_desc_enum;
     /** qname of transport out */
@@ -104,9 +104,9 @@ struct axis2_msg_ctx
     /** service group id */
     axis2_char_t *svc_grp_id;
     /** service description qname */
-    axis2_qname_t *svc_qname;
+    axutil_qname_t *svc_qname;
     /** op qname */
-    axis2_qname_t *op_qname;
+    axutil_qname_t *op_qname;
     /* To keep track of the direction */
     int flow;
     /** The chain of Handlers/Phases for processing this message */
@@ -143,8 +143,8 @@ struct axis2_msg_ctx
                 const axutil_env_t *env,
                 struct axis2_svc *svc);
 
-    axis2_string_t *charset_encoding;
-    axis2_stream_t *transport_out_stream;
+    axutil_string_t *charset_encoding;
+    axutil_stream_t *transport_out_stream;
     axis2_http_out_transport_info_t *http_out_transport_info;
     axutil_hash_t *transport_headers;
     axis2_char_t *transfer_encoding;
@@ -314,12 +314,12 @@ axis2_msg_ctx_free(
 
     if (msg_ctx->soap_action)
     {
-        axis2_string_free(msg_ctx->soap_action, env);
+        axutil_string_free(msg_ctx->soap_action, env);
     }
 
     if (msg_ctx->svc_grp_ctx_id)
     {
-        axis2_string_free(msg_ctx->svc_grp_ctx_id, env);
+        axutil_string_free(msg_ctx->svc_grp_ctx_id, env);
     }
 
     if (msg_ctx->soap_envelope)
@@ -335,7 +335,7 @@ axis2_msg_ctx_free(
 
     if (msg_ctx->charset_encoding)
     {
-        axis2_string_free(msg_ctx->charset_encoding, env);
+        axutil_string_free(msg_ctx->charset_encoding, env);
     }
     
     if (msg_ctx->transport_out_stream)
@@ -387,7 +387,7 @@ axis2_msg_ctx_init(
     if (msg_ctx->svc_qname)
     {
         msg_ctx->svc = axis2_conf_get_svc(conf, env,
-                axis2_qname_get_localpart(msg_ctx->svc_qname, env));
+                axutil_qname_get_localpart(msg_ctx->svc_qname, env));
     }
 
     if (msg_ctx->op_qname)
@@ -1093,13 +1093,13 @@ axis2_msg_ctx_set_msg_info_headers(
 }
 
 
-axis2_param_t *AXIS2_CALL
+axutil_param_t *AXIS2_CALL
 axis2_msg_ctx_get_parameter(
     const axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env,
     const axis2_char_t *key)
 {
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -1139,7 +1139,7 @@ axis2_msg_ctx_get_parameter(
     return param;
 }
 
-axis2_property_t *AXIS2_CALL
+axutil_property_t *AXIS2_CALL
 axis2_msg_ctx_get_property(
     const axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env,
@@ -1217,14 +1217,14 @@ axis2_msg_ctx_set_property(
     struct axis2_msg_ctx *msg_ctx,
     const axutil_env_t *env,
     const axis2_char_t *key,
-    axis2_property_t *value)
+    axutil_property_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     return axis2_ctx_set_property(msg_ctx->base, env, key, value);
 }
 
-const axis2_string_t *AXIS2_CALL
+const axutil_string_t *AXIS2_CALL
 axis2_msg_ctx_get_paused_handler_name(
     const axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env)
@@ -1251,7 +1251,7 @@ axis2_msg_ctx_set_paused_phase_name(
     return AXIS2_SUCCESS;
 }
 
-axis2_string_t *AXIS2_CALL
+axutil_string_t *AXIS2_CALL
   axis2_msg_ctx_get_soap_action(
     const axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env)
@@ -1263,18 +1263,18 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_soap_action(
     struct axis2_msg_ctx *msg_ctx,
     const axutil_env_t *env,
-    axis2_string_t *soap_action)
+    axutil_string_t *soap_action)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (msg_ctx->soap_action)
     {
-        axis2_string_free(msg_ctx->soap_action, env);
+        axutil_string_free(msg_ctx->soap_action, env);
     }
 
     if (soap_action)
     {
-        msg_ctx->soap_action = axis2_string_clone(soap_action, env);
+        msg_ctx->soap_action = axutil_string_clone(soap_action, env);
         if (!(msg_ctx->soap_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1406,7 +1406,7 @@ axis2_msg_ctx_set_op(
     if (op)
     {
         msg_ctx->op = op;
-        msg_ctx->op_qname = (axis2_qname_t *)axis2_op_get_qname(op, env);
+        msg_ctx->op_qname = (axutil_qname_t *)axis2_op_get_qname(op, env);
     }
 
     return AXIS2_SUCCESS;
@@ -1432,7 +1432,7 @@ axis2_msg_ctx_set_svc(
     {
         axis2_svc_grp_t *svc_grp = NULL;
         msg_ctx->svc = svc;
-        msg_ctx->svc_qname = (axis2_qname_t *)axis2_svc_get_qname(svc, env);
+        msg_ctx->svc_qname = (axutil_qname_t *)axis2_svc_get_qname(svc, env);
 
         svc_grp = axis2_svc_get_parent(svc, env);
         if (svc_grp)
@@ -1472,7 +1472,7 @@ axis2_msg_ctx_set_svc_grp(
     return AXIS2_SUCCESS;
 }
 
-const axis2_string_t *AXIS2_CALL
+const axutil_string_t *AXIS2_CALL
 axis2_msg_ctx_get_svc_grp_ctx_id(
     const axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env)
@@ -1484,19 +1484,19 @@ axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_svc_grp_ctx_id(
     struct axis2_msg_ctx *msg_ctx,
     const axutil_env_t *env,
-    axis2_string_t *svc_grp_ctx_id)
+    axutil_string_t *svc_grp_ctx_id)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (msg_ctx->svc_grp_ctx_id)
     {
-        axis2_string_free(msg_ctx->svc_grp_ctx_id, env);
+        axutil_string_free(msg_ctx->svc_grp_ctx_id, env);
         msg_ctx->svc_grp_ctx_id = NULL;
     }
 
     if (svc_grp_ctx_id)
     {
-        msg_ctx->svc_grp_ctx_id = axis2_string_clone(svc_grp_ctx_id, env);
+        msg_ctx->svc_grp_ctx_id = axutil_string_clone(svc_grp_ctx_id, env);
     }
     return AXIS2_SUCCESS;
 }
@@ -1553,9 +1553,9 @@ axis2_msg_ctx_set_options(
     const axutil_env_t *env,
     axis2_options_t *options)
 {
-    axis2_property_t *rest_val = NULL;
+    axutil_property_t *rest_val = NULL;
 	axis2_char_t *value;
-	axis2_string_t *soap_action = NULL;;
+	axutil_string_t *soap_action = NULL;;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, options, AXIS2_FAILURE);
@@ -1573,11 +1573,11 @@ axis2_msg_ctx_set_options(
 
      axis2_ctx_set_property_map(msg_ctx->base, env,
             axis2_options_get_properties(options, env));
-    rest_val = (axis2_property_t *)  axis2_msg_ctx_get_property(msg_ctx, env,
+    rest_val = (axutil_property_t *)  axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_ENABLE_REST);
     if (rest_val)
     {
-		value = (axis2_char_t *)axis2_property_get_value(rest_val, env);
+		value = (axis2_char_t *)axutil_property_get_value(rest_val, env);
 		if (value)
 		{
 			if (axis2_strcmp(value, AXIS2_VALUE_TRUE) == 0)
@@ -1587,13 +1587,13 @@ axis2_msg_ctx_set_options(
 
     if (msg_ctx->soap_action)
     {
-        axis2_string_free(msg_ctx->soap_action, env);
+        axutil_string_free(msg_ctx->soap_action, env);
     }
     
     soap_action = axis2_options_get_soap_action(options, env);
     if (soap_action)
     {
-        msg_ctx->soap_action = axis2_string_clone(soap_action, env);
+        msg_ctx->soap_action = axutil_string_clone(soap_action, env);
     }
 
     return AXIS2_SUCCESS;
@@ -1656,7 +1656,7 @@ axis2_msg_ctx_set_current_handler_index(
         if (handler)
         {
             msg_ctx->paused_handler_name =
-                (axis2_string_t *)AXIS2_HANDLER_GET_NAME(handler, env);
+                (axutil_string_t *)AXIS2_HANDLER_GET_NAME(handler, env);
         }
     }
     return AXIS2_SUCCESS;
@@ -1721,7 +1721,7 @@ axis2_msg_ctx_find_op(axis2_msg_ctx_t *msg_ctx,
 }
 
 
-AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+AXIS2_EXTERN axutil_string_t* AXIS2_CALL
 axis2_msg_ctx_get_charset_encoding(axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env)
 {    
@@ -1734,18 +1734,18 @@ axis2_msg_ctx_get_charset_encoding(axis2_msg_ctx_t *msg_ctx,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_charset_encoding(axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env,
-    axis2_string_t *str)
+    axutil_string_t *str)
 {    
     if (msg_ctx)
     {
         if (msg_ctx->charset_encoding)
         {
-            axis2_string_free(msg_ctx->charset_encoding, env);
+            axutil_string_free(msg_ctx->charset_encoding, env);
             msg_ctx->charset_encoding = NULL;
         }
         if (str)
         {
-            msg_ctx->charset_encoding = axis2_string_clone(str, env);
+            msg_ctx->charset_encoding = axutil_string_clone(str, env);
         }
     }
     else
@@ -1756,7 +1756,7 @@ axis2_msg_ctx_set_charset_encoding(axis2_msg_ctx_t *msg_ctx,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
+AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
 axis2_msg_ctx_get_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env)
 {
@@ -1773,7 +1773,7 @@ axis2_msg_ctx_get_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
     const axutil_env_t *env,
-    axis2_stream_t *stream)
+    axutil_stream_t *stream)
 {
     if (msg_ctx)
     {

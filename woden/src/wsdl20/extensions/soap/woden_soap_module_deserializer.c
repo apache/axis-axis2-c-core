@@ -67,7 +67,7 @@ woden_soap_module_deserializer_unmarshall(
     const axutil_env_t *env,
     axis2_char_t *parent_type,
     void *parent,
-    axis2_qname_t *element_type,
+    axutil_qname_t *element_type,
     axiom_node_t *el_node,
     void *desc,
     woden_ext_registry_t *ext_reg);
@@ -306,7 +306,7 @@ woden_soap_module_deserializer_unmarshall(
     const axutil_env_t *env,
     axis2_char_t *parent_type,
     void *parent,
-    axis2_qname_t *element_type,
+    axutil_qname_t *element_type,
     axiom_node_t *el_node,
     void *desc,
     woden_ext_registry_t *ext_reg)
@@ -362,12 +362,12 @@ woden_soap_module_deserializer_unmarshall(
             &temp_el_node);
     while (temp_el && NULL != temp_el_node)
     {
-        axis2_qname_t *q_elem_documentation = NULL;
+        axutil_qname_t *q_elem_documentation = NULL;
 
-        q_elem_documentation = axis2_qname_create_from_string(env,
+        q_elem_documentation = axutil_qname_create_from_string(env,
                 WODEN_Q_ELEM_DOCUMENTATION);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (AXIS2_TRUE == axutil_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;

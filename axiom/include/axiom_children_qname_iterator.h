@@ -25,7 +25,7 @@
 
 #include <axiom_node.h>
 #include <axiom_namespace.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 
 #ifdef __cplusplus
@@ -44,7 +44,7 @@ extern "C"
     AXIS2_EXTERN axiom_children_qname_iterator_t * AXIS2_CALL
     axiom_children_qname_iterator_create(const axutil_env_t *env,
             axiom_node_t *current_child,
-            axis2_qname_t *given_qname);
+            axutil_qname_t *given_qname);
 
     /**
      * free om_children_qname_iterator struct 

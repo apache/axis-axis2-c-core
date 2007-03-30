@@ -19,8 +19,8 @@
 #include <axis2_http_svr_thread.h>
 #include <axis2_http_server.h>
 #include <axis2_http_transport.h>
-#include <axis2_string.h>
-#include <axis2_network_handler.h>
+#include <axutil_string.h>
+#include <axutil_network_handler.h>
 #include <axis2_http_simple_request.h>
 #include <axis2_simple_http_svr_conn.h>
 #include <axis2_url.h>
@@ -123,7 +123,7 @@ axis2_http_svr_thread_create(
     svr_thread_impl->worker = NULL;
     svr_thread_impl->stopped = AXIS2_FALSE;
     svr_thread_impl->port = port;
-    svr_thread_impl->listen_socket = axis2_network_handler_create_server_socket
+    svr_thread_impl->listen_socket = axutil_network_handler_create_server_socket
             (env, svr_thread_impl->port);
     svr_thread_impl->svr_thread.ops = NULL;
     if (-1 == svr_thread_impl->listen_socket)
@@ -173,7 +173,7 @@ axis2_http_svr_thread_free(
     }
     if (-1 != svr_thread_impl->listen_socket)
     {
-        axis2_network_handler_close_socket(env, svr_thread_impl->listen_socket);
+        axutil_network_handler_close_socket(env, svr_thread_impl->listen_socket);
         svr_thread_impl->listen_socket = -1;
     }
     svr_thread_impl->stopped = AXIS2_TRUE;
@@ -201,13 +201,13 @@ axis2_http_svr_thread_run(
         axis2_http_svr_thd_args_t *arg_list = NULL;
         axis2_thread_t *worker_thread = NULL;
 
-        socket = axis2_network_handler_svr_socket_accept(env,
+        socket = axutil_network_handler_svr_socket_accept(env,
                 svr_thread_impl->listen_socket);
         if (! svr_thread_impl->worker)
         {
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "Worker not ready yet."
                     " Cannot serve the request");
-            axis2_network_handler_close_socket(env, socket);
+            axutil_network_handler_close_socket(env, socket);
             continue;
         }
         arg_list = AXIS2_MALLOC(env->allocator,
@@ -257,7 +257,7 @@ axis2_http_svr_thread_destroy(
             "thread.");
     if (svr_thread_impl->listen_socket)
     {
-        axis2_network_handler_close_socket(env, svr_thread_impl->listen_socket);
+        axutil_network_handler_close_socket(env, svr_thread_impl->listen_socket);
         svr_thread_impl->listen_socket = -1;
     }
     /* TODO: stop all the child threads */

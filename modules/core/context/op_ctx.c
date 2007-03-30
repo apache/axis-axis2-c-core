@@ -43,9 +43,9 @@ struct axis2_op_ctx
      */
     axutil_hash_t *op_ctx_map;
     /** op qname */
-    axis2_qname_t *op_qname;
+    axutil_qname_t *op_qname;
     /** service qname */
-    axis2_qname_t *svc_qname;
+    axutil_qname_t *svc_qname;
     /* mutex to synchronize the read/write operations */
     axis2_thread_mutex_t *mutex;
     axis2_bool_t response_written;
@@ -105,7 +105,7 @@ axis2_op_ctx_create(const axutil_env_t *env,
 
     if (op_ctx->op)
     {
-        op_ctx->op_qname = (axis2_qname_t *)axis2_op_get_qname(op_ctx->op, env);
+        op_ctx->op_qname = (axutil_qname_t *)axis2_op_get_qname(op_ctx->op, env);
         op_ctx->op_mep = axis2_op_get_axis_specific_mep_const(op_ctx->op, env);
     }
 
@@ -170,7 +170,7 @@ axis2_op_ctx_init(
         axis2_svc_t *svc = NULL;
         axis2_char_t *svc_name = NULL;
 
-        svc_name = axis2_qname_get_localpart(op_ctx->svc_qname, env);
+        svc_name = axutil_qname_get_localpart(op_ctx->svc_qname, env);
 
         if (svc_name)
         {
@@ -326,7 +326,7 @@ axis2_op_ctx_set_parent(
                  axis2_conf_ctx_get_op_ctx_map(conf_ctx, env);
         }
         op_ctx->svc_qname =
-            (axis2_qname_t *)axis2_svc_get_qname( axis2_svc_ctx_get_svc(op_ctx->parent, env), env);
+            (axutil_qname_t *)axis2_svc_get_qname( axis2_svc_ctx_get_svc(op_ctx->parent, env), env);
     }
 
     return AXIS2_SUCCESS;

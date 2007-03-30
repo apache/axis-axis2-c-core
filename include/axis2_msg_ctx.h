@@ -44,10 +44,10 @@
 #include <axutil_env.h>
 #include <axis2_ctx.h>
 #include <axis2_relates_to.h>
-#include <axis2_param.h>
+#include <axutil_param.h>
 #include <axis2_handler_desc.h>
-#include <axis2_qname.h>
-#include <axis2_stream.h>
+#include <axutil_qname.h>
+#include <axutil_stream.h>
 #include <axis2_msg_info_headers.h>
 
 #ifdef __cplusplus
@@ -811,7 +811,7 @@ extern "C"
      * @param key parameter key  
      * @return pointer to parameter struct corresponding to the given key
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_msg_ctx_get_parameter(const axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
         const axis2_char_t *key);
@@ -836,7 +836,7 @@ extern "C"
      * @param handler_desc pointer to handler description
      * @return pointer to parameter 
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_msg_ctx_get_module_parameter(const axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
         const axis2_char_t *key,
@@ -853,7 +853,7 @@ extern "C"
      * non-persistent map
      * @return pointer to property struct
      */
-    AXIS2_EXTERN axis2_property_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_property_t *AXIS2_CALL
     axis2_msg_ctx_get_property(const axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
         const axis2_char_t *key);
@@ -873,14 +873,14 @@ extern "C"
     axis2_msg_ctx_set_property(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
         const axis2_char_t *key,
-        axis2_property_t *value);
+        axutil_property_t *value);
     /**
      * Gets the QName of the handler at which invocation was paused.
      * @param msg_ctx message context
      * @param env pointer to environment struct
      * @return pointer to QName of the paused handler
      */
-    AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
     axis2_msg_ctx_get_paused_handler_name(const axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env);
 
@@ -912,7 +912,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return SOAP action string
      */
-    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t *AXIS2_CALL
       axis2_msg_ctx_get_soap_action(const axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env);
 
@@ -926,7 +926,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_soap_action(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
-        axis2_string_t *soap_action);
+        axutil_string_t *soap_action);
 
     /**
      * Gets the boolean value indicating if MTOM is enabled or not.
@@ -1132,7 +1132,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return service group context ID string
      */
-    AXIS2_EXTERN const axis2_string_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
     axis2_msg_ctx_get_svc_grp_ctx_id(const axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env);
 
@@ -1146,7 +1146,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_svc_grp_ctx_id(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
-        axis2_string_t *svc_grp_ctx_id);
+        axutil_string_t *svc_grp_ctx_id);
 
     /**
      * Finds the service to be invoked. This function is used by dispatchers 
@@ -1352,7 +1352,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t* AXIS2_CALL
     axis2_msg_ctx_get_charset_encoding(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env);
 
@@ -1366,16 +1366,16 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_charset_encoding(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
-        axis2_string_t *str);
+        axutil_string_t *str);
 
-    AXIS2_EXTERN axis2_stream_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_stream_t *AXIS2_CALL
     axis2_msg_ctx_get_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_set_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
         const axutil_env_t *env,
-        axis2_stream_t *stream);
+        axutil_stream_t *stream);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_ctx_reset_transport_out_stream(axis2_msg_ctx_t *msg_ctx,

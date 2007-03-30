@@ -16,7 +16,7 @@
  */
 
 #include <axis2_any_content_type.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 struct axis2_any_content_type
 {
@@ -56,7 +56,7 @@ axis2_any_content_type_create(const axutil_env_t *env)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
     const axutil_env_t *env,
-    const axis2_qname_t *qname,
+    const axutil_qname_t *qname,
     const axis2_char_t *value)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -65,7 +65,7 @@ axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
     {
         axis2_char_t *name = NULL;
 
-        name = axis2_qname_to_string((axis2_qname_t *)qname, env);
+        name = axutil_qname_to_string((axutil_qname_t *)qname, env);
         axutil_hash_set(any_content_type->value_map, name,
 		    AXIS2_HASH_KEY_STRING, value);
     }
@@ -75,13 +75,13 @@ axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
 AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
 axis2_any_content_type_get_value(const axis2_any_content_type_t *any_content_type,
     const axutil_env_t *env,
-    const axis2_qname_t *qname)
+    const axutil_qname_t *qname)
 {
     if (any_content_type->value_map)
     {
         axis2_char_t *name = NULL;
 
-        name = axis2_qname_to_string((axis2_qname_t *)qname, env);
+        name = axutil_qname_to_string((axutil_qname_t *)qname, env);
         return axutil_hash_get(any_content_type->value_map, name,
             AXIS2_HASH_KEY_STRING);
     }

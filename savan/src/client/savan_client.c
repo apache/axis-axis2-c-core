@@ -290,7 +290,7 @@ savan_client_get_status(
 {
     axis2_options_t *wsa_options = NULL;
     const axis2_char_t *old_action = NULL;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     axiom_namespace_t *ns = NULL;
     axiom_node_t *reply = NULL;
     axiom_node_t *status_node = NULL;
@@ -338,18 +338,18 @@ savan_client_get_status(
     body_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(reply, env);
     
     /* Get Subscribe element from Body */
-    qname = axis2_qname_create(env, ELEM_NAME_GETSTATUS_RESPONSE, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_GETSTATUS_RESPONSE, EVENTING_NAMESPACE, NULL);
     response_elem = axiom_element_get_first_child_with_qname(body_elem, env, qname,
         body_node, &response_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     /* Now read Expires sub element */
         
     /* Expires */
-    qname = axis2_qname_create(env, ELEM_NAME_EXPIRES, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_EXPIRES, EVENTING_NAMESPACE, NULL);
     expires_elem = axiom_element_get_first_child_with_qname(response_elem, env, qname,
         response_node, &expires_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     expires = axiom_element_get_text(expires_elem, env, expires_node);
     
@@ -406,7 +406,7 @@ savan_client_get_sub_id_from_response(
     axiom_node_t *response_node,
     const axutil_env_t *env)
 {
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     axiom_element_t *submgr_elem = NULL;
     axiom_element_t *refparam_elem = NULL;
     axiom_element_t *id_elem = NULL;
@@ -423,23 +423,23 @@ savan_client_get_sub_id_from_response(
      */
 
     /* Get Sub Mgr sub element */
-    qname = axis2_qname_create(env, ELEM_NAME_SUB_MGR, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_SUB_MGR, EVENTING_NAMESPACE, NULL);
     submgr_elem = axiom_element_get_first_child_with_qname(response_elem, env, qname,
         response_node, &submgr_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
     
     /* Get Ref Param sub element */
-    qname = axis2_qname_create(env, ELEM_NAME_REF_PARAM,
+    qname = axutil_qname_create(env, ELEM_NAME_REF_PARAM,
         AXIS2_WSA_NAMESPACE_SUBMISSION, NULL);
     refparam_elem = axiom_element_get_first_child_with_qname(submgr_elem, env, qname,
         submgr_node, &refparam_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
 
     /* Get Identifier sub element */
-    qname = axis2_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);
+    qname = axutil_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);
     id_elem = axiom_element_get_first_child_with_qname(refparam_elem, env, qname,
         refparam_node, &id_node);
-    axis2_qname_free(qname, env);
+    axutil_qname_free(qname, env);
 
     sub_id = axiom_element_get_text(id_elem, env, id_node);
 

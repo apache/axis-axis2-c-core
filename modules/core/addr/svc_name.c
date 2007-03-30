@@ -17,19 +17,19 @@
 
 
 #include <axis2_svc_name.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 struct axis2_svc_name
 {
     /** service QName */
-    axis2_qname_t *qname;
+    axutil_qname_t *qname;
     /** service endpoint name */
     axis2_char_t *endpoint_name;
 };
 
 axis2_svc_name_t *AXIS2_CALL
 axis2_svc_name_create(const axutil_env_t *env,
-    const axis2_qname_t *qname,
+    const axutil_qname_t *qname,
     const axis2_char_t *endpoint_name)
 {
     axis2_svc_name_t *svc_name = NULL;
@@ -49,7 +49,7 @@ axis2_svc_name_create(const axutil_env_t *env,
 
     if (qname)
     {
-        svc_name->qname = axis2_qname_clone((axis2_qname_t *)qname, env);
+        svc_name->qname = axutil_qname_clone((axutil_qname_t *)qname, env);
         if (!(svc_name->qname))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -72,7 +72,7 @@ axis2_svc_name_create(const axutil_env_t *env,
     return svc_name;
 }
 
-const axis2_qname_t *AXIS2_CALL
+const axutil_qname_t *AXIS2_CALL
 axis2_svc_name_get_qname(const axis2_svc_name_t *svc_name,
     const axutil_env_t *env)
 {
@@ -82,18 +82,18 @@ axis2_svc_name_get_qname(const axis2_svc_name_t *svc_name,
 axis2_status_t AXIS2_CALL
 axis2_svc_name_set_qname(struct axis2_svc_name *svc_name,
     const axutil_env_t *env,
-    const axis2_qname_t *qname)
+    const axutil_qname_t *qname)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (svc_name->qname)
     {
-        axis2_qname_free(svc_name->qname, env);
+        axutil_qname_free(svc_name->qname, env);
     }
 
     if (qname)
     {
-        svc_name->qname = axis2_qname_clone((axis2_qname_t *)qname, env);
+        svc_name->qname = axutil_qname_clone((axutil_qname_t *)qname, env);
         if (!(svc_name->qname))
             return AXIS2_FAILURE;
     }
@@ -138,7 +138,7 @@ axis2_svc_name_free(struct axis2_svc_name *svc_name,
 
     if (svc_name->qname)
     {
-        axis2_qname_free(svc_name->qname, env);
+        axutil_qname_free(svc_name->qname, env);
     }
 
     if (svc_name->endpoint_name)

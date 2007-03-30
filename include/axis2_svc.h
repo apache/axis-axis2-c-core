@@ -43,19 +43,19 @@
  * @file axis2_svc.h
  */
 
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axis2_flow_container.h>
 #include <axis2_op.h>
 #include <axis2_svc_grp.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axutil_error.h>
 #include <axutil_array_list.h>
 #include <axis2_const.h>
 #include <axis2_phase_resolver.h>
 #include <axis2_module_desc.h>
 #include <axis2_conf.h>
-#include <axis2_string.h>
-#include <axis2_stream.h>
+#include <axutil_string.h>
+#include <axutil_stream.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -68,7 +68,7 @@ extern "C"
 
     struct axis2_svc_grp;
     struct axis2_flow_container;
-    struct axis2_param_container;
+    struct axutil_param_container;
     struct axis2_module_desc;
     struct axis2_conf;
 
@@ -105,7 +105,7 @@ extern "C"
     AXIS2_EXTERN struct axis2_op *AXIS2_CALL
     axis2_svc_get_op_with_qname(const axis2_svc_t *svc,
         const axutil_env_t *env,
-        const axis2_qname_t *op_qname);
+        const axutil_qname_t *op_qname);
 
     /**
      * Gets operation corresponding to the name.
@@ -161,7 +161,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_set_qname(axis2_svc_t *svc,
         const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
 
     /**
      * Gets QName.
@@ -169,7 +169,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to QName
      */
-    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
     axis2_svc_get_qname(const axis2_svc_t *svc,
         const axutil_env_t *env);
 
@@ -184,7 +184,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_add_param(axis2_svc_t *svc,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets named parameter.         
@@ -194,7 +194,7 @@ extern "C"
      * @return pointer to named parameter if exists, else NULL. Returns a 
      * reference, not a cloned copy         
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_svc_get_param(const axis2_svc_t *svc,
         const axutil_env_t *env,
         const axis2_char_t *name);
@@ -248,7 +248,7 @@ extern "C"
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
     axis2_svc_is_module_engaged (axis2_svc_t *svc,
         const axutil_env_t *env,
-        axis2_qname_t *module_qname);
+        axutil_qname_t *module_qname);
 
     /**
      * Adds operations defined in a module to this service. It is possible 
@@ -445,7 +445,7 @@ extern "C"
                 const axis2_svc_t *svc,
                 const axutil_env_t *env,
                 const axis2_char_t *soap_action,
-                const axis2_qname_t *endpoint);*/
+                const axutil_qname_t *endpoint);*/
 
     /**
      * Gets service name.
@@ -605,7 +605,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_add_module_qname(axis2_svc_t *svc,
         const axutil_env_t *env,
-        const axis2_qname_t *module_qname);
+        const axutil_qname_t *module_qname);
 
     /**
      * Gets all module QNames associated with the service as a list.
@@ -731,7 +731,7 @@ extern "C"
             axis2_svc_print_schema(
                 axis2_svc_t *svc,
                 const axutil_env_t *env,
-                axis2_stream_t *out_stream);*/
+                axutil_stream_t *out_stream);*/
 
     /**
      * Gets the XML schema at the given index of XML schema array list.
@@ -907,7 +907,7 @@ extern "C"
             axis2_svc_get_schema_element(
                 const axis2_svc_t *svc,
                 const axutil_env_t *env,
-                const axis2_qname_t *qname);*/
+                const axutil_qname_t *qname);*/
 
     /**
      * Gets the namespace map with all namespaces related to service.
@@ -945,7 +945,7 @@ extern "C"
                 axis2_svc_t *svc,
                 const axutil_env_t *env);*/
 
-    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_svc_get_param_container(const axis2_svc_t *svc,
         const axutil_env_t *env);
 
@@ -969,7 +969,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
     axis2_svc_create_with_qname(const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
 
     AXIS2_EXTERN void *AXIS2_CALL
     axis2_svc_get_impl_class(const axis2_svc_t *svc,

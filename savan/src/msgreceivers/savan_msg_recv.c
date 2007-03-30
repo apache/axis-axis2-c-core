@@ -21,7 +21,7 @@
 #include <axiom_soap_header.h>
 #include <axiom_soap_body.h>
 #include <axiom_soap_fault.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 #include <axis2_addr.h>
 
 #include <savan_util.h>
@@ -164,7 +164,7 @@ savan_msg_recv_handle_sub_request(
     axis2_msg_info_headers_t* old_info_header = NULL;
     axiom_soap_envelope_t *default_envelope = NULL;
     axiom_node_t *body_node = NULL;
-    axis2_property_t *property = NULL;
+    axutil_property_t *property = NULL;
     axiom_node_t *response_node = NULL;
     axiom_node_t *submgr_node = NULL;
     axiom_node_t *addr_node = NULL;
@@ -221,7 +221,7 @@ savan_msg_recv_handle_sub_request(
     
     /* Get subscriber id from the msg ctx */
     property =  axis2_msg_ctx_get_property(msg_ctx, env, SAVAN_KEY_SUB_ID, AXIS2_FALSE);
-    id = (axis2_char_t*)axis2_property_get_value(property, env);
+    id = (axis2_char_t*)axutil_property_get_value(property, env);
     
     /* Set sub id as a ref param */
     refparam_elem = axiom_element_create(env, submgr_node, ELEM_NAME_REF_PARAM,

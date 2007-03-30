@@ -16,12 +16,12 @@
  */
 
 #include <axis2_msg_recv.h>
-#include <axis2_param.h>
+#include <axutil_param.h>
 #include <axis2_description.h>
 #include <axutil_class_loader.h>
 #include <axis2_engine.h>
 #include <axis2_core_utils.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_body.h>
 
@@ -119,7 +119,7 @@ axis2_msg_recv_make_new_svc_obj(axis2_msg_recv_t *msg_recv,
     struct axis2_svc *svc = NULL;
     struct axis2_op_ctx *op_ctx = NULL;
     struct axis2_svc_ctx *svc_ctx = NULL;
-    axis2_param_t *impl_info_param = NULL;
+    axutil_param_t *impl_info_param = NULL;
     void *impl_class = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -220,8 +220,8 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
     axis2_svc_t *svc = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
-    axis2_param_t *impl_info_param = NULL;
-    axis2_param_t *scope_param = NULL;
+    axutil_param_t *impl_info_param = NULL;
+    axutil_param_t *scope_param = NULL;
     axis2_char_t *param_value = NULL;
     axutil_dll_desc_t *dll_desc = NULL;
 
@@ -239,7 +239,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
     scope_param = axis2_svc_get_param(svc, env, AXIS2_SCOPE);
     if (scope_param)
     {
-        param_value = axis2_param_get_value(scope_param, env);
+        param_value = axutil_param_get_value(scope_param, env);
     }
     if (param_value && (0 == axis2_strcmp(AXIS2_APPLICATION_SCOPE,
         param_value)))
@@ -254,7 +254,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    dll_desc = axis2_param_get_value(impl_info_param, env);
+    dll_desc = axutil_param_get_value(impl_info_param, env);
     return axutil_class_loader_delete_dll(env, dll_desc);
 }
 

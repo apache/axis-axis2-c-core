@@ -32,7 +32,7 @@ void test_typemapper(CuTest *tc)
     axis2_char_t *actual;
     axis2_char_t *expected;
     w2c_typemapper_t *typemapper;
-    axis2_qname_t *qname;
+    axutil_qname_t *qname;
 
     allocator = axutil_allocator_init(NULL);
     env = axutil_env_create(allocator);

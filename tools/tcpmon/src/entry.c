@@ -18,9 +18,9 @@
 #include <stdio.h>
 #include <axis2_utils.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
-#include <axis2_network_handler.h>
-#include <axis2_stream.h>
+#include <axutil_string.h>
+#include <axutil_network_handler.h>
+#include <axutil_stream.h>
 #include <time.h>
 
 #include "tcpmon_entry_local.h"
@@ -90,12 +90,12 @@ tcpmon_entry_is_success(tcpmon_entry_t *entry,
 								const axutil_env_t *env);
 
 axis2_char_t*
-get_current_stream_to_buffer(axis2_stream_t* stream,
+get_current_stream_to_buffer(axutil_stream_t* stream,
 									  const axutil_env_t* env,
 									  int* stream_size);
 
 axis2_char_t*
-read_current_stream(axis2_stream_t *stream,
+read_current_stream(axutil_stream_t *stream,
 						  const axutil_env_t *env,
 						  int *stream_size,
 						  axis2_char_t** header,
@@ -373,8 +373,8 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 	 TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct;
 	 TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry;
 
-	 axis2_stream_t* client_stream = NULL;
-	 axis2_stream_t* host_stream = NULL;
+	 axutil_stream_t* client_stream = NULL;
+	 axutil_stream_t* host_stream = NULL;
 	 int buffer_size = 0;
 	 axis2_char_t* headers = NULL;
 	 axis2_char_t* content = NULL;
@@ -409,7 +409,7 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 
 	 if (target_port == -1 || target_host == NULL)
 		{
-			 axis2_network_handler_close_socket(env, client_socket);
+			 axutil_network_handler_close_socket(env, client_socket);
 			 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Missing target port and host"
 								  "input missing");
 			 if (on_trans_fault_funct)
@@ -419,10 +419,10 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 				}
 			 return NULL;
 		}
-	 client_stream = axis2_stream_create_socket(env, client_socket);
+	 client_stream = axutil_stream_create_socket(env, client_socket);
 	 if (! client_stream)
 		{
-			 axis2_network_handler_close_socket(env, client_socket);
+			 axutil_network_handler_close_socket(env, client_socket);
 			 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating client stream"
 								  "handling response");
 						  /** call the callback */
@@ -470,12 +470,12 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 
 
 
-	 host_socket = axis2_network_handler_open_socket(env, target_host, target_port);
+	 host_socket = axutil_network_handler_open_socket(env, target_host, target_port);
 	 if (-1 == host_socket)
 		{
 			 AXIS2_STREAM_WRITE(client_stream, env, NULL, 0);
 			 AXIS2_STREAM_FREE(client_stream, env);
-			 axis2_network_handler_close_socket(env, client_socket);
+			 axutil_network_handler_close_socket(env, client_socket);
 			 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating host_socket"
 								  "creating socket");
 						  /** call the callback */
@@ -487,13 +487,13 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 			 return NULL;
 		}
 
-	 host_stream = axis2_stream_create_socket(env, host_socket);
+	 host_stream = axutil_stream_create_socket(env, host_socket);
 	 if (! host_stream)
 		{
 			 AXIS2_STREAM_WRITE(client_stream, env, NULL, 0);
 			 AXIS2_STREAM_FREE(client_stream, env);
-			 axis2_network_handler_close_socket(env, client_socket);
-			 axis2_network_handler_close_socket(env, host_socket);
+			 axutil_network_handler_close_socket(env, client_socket);
+			 axutil_network_handler_close_socket(env, host_socket);
 			 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating host stream"
 								  "handling response");
 						  /** call the callback */
@@ -557,15 +557,15 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 
 	 AXIS2_STREAM_FREE(client_stream, env);
 	 AXIS2_STREAM_FREE(host_stream, env);
-	 axis2_network_handler_close_socket(env, client_socket);
-	 axis2_network_handler_close_socket(env, host_socket);
+	 axutil_network_handler_close_socket(env, client_socket);
+	 axutil_network_handler_close_socket(env, host_socket);
 
 	 return NULL;
 }
 
 
 axis2_char_t*
-read_current_stream(axis2_stream_t *stream,
+read_current_stream(axutil_stream_t *stream,
 						  const axutil_env_t *env,
 						  int *stream_size,
 						  axis2_char_t **header,

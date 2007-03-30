@@ -29,7 +29,7 @@
 #define DEFAULT_DIR "src"
 
 static void
-w2c_schema_print_message( const axutil_env_t *env, axis2_properties_t *messageh,
+w2c_schema_print_message( const axutil_env_t *env, axutil_properties_t *messageh,
                    axis2_char_t *key);
 
 static void 
@@ -106,22 +106,22 @@ w2c_schema_compile( const axutil_env_t *env, axis2_char_t *schema_name,
 static void 
 w2c_schema_print_usage( const axutil_env_t *env )
 {
-    axis2_properties_t *props = NULL;
+    axutil_properties_t *props = NULL;
    
     props = w2c_messages_get_message_properties( env );
     w2c_schema_print_message ( env, props,"schema2code.arg1");
     w2c_schema_print_message ( env, props,"schema2code.arg2");
     w2c_schema_print_message ( env, props,"schema2code.arg3");
     
-    axis2_properties_free( props, env);
+    axutil_properties_free( props, env);
 }
 
 static void
 w2c_schema_print_message( const axutil_env_t *env,
-        axis2_properties_t *messagep, axis2_char_t *key)
+        axutil_properties_t *messagep, axis2_char_t *key)
 {
    axis2_char_t *message = NULL;
    message = (axis2_char_t *)
-                axis2_properties_get_property(messagep, env, key); 
+                axutil_properties_get_property(messagep, env, key); 
    printf ( "%s\n", message );
 }

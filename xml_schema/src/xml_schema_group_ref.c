@@ -36,7 +36,7 @@ struct xml_schema_group_ref_impl
 
     axutil_hash_t *ht_super;
 
-    axis2_qname_t *ref_qname;
+    axutil_qname_t *ref_qname;
 
     void *particle;
 };
@@ -64,7 +64,7 @@ xml_schema_group_ref_get_base_impl(
     void *group_ref,
     const axutil_env_t *env);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_group_ref_get_ref_qname(
     void *group_ref,
     const axutil_env_t *env);
@@ -73,7 +73,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_group_ref_set_ref_qname(
     void *group_ref,
     const axutil_env_t *env,
-    axis2_qname_t *ref_qname);
+    axutil_qname_t *ref_qname);
 
 void *AXIS2_CALL
 xml_schema_group_ref_get_particle(
@@ -261,7 +261,7 @@ xml_schema_group_ref_get_base_impl(void *group_ref,
     return group_ref_impl->base;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_group_ref_get_ref_qname(void *group_ref,
         const axutil_env_t *env)
 {
@@ -271,15 +271,15 @@ xml_schema_group_ref_get_ref_qname(void *group_ref,
 axis2_status_t AXIS2_CALL
 xml_schema_group_ref_set_ref_qname(void *group_ref,
         const axutil_env_t *env,
-        axis2_qname_t *ref_qname)
+        axutil_qname_t *ref_qname)
 {
     xml_schema_group_ref_impl_t *group_ref_impl = NULL;
     if (group_ref_impl->ref_qname)
     {
-        axis2_qname_free(group_ref_impl->ref_qname, env);
+        axutil_qname_free(group_ref_impl->ref_qname, env);
         group_ref_impl->ref_qname = NULL;
     }
-    group_ref_impl->ref_qname = axis2_qname_clone(ref_qname, env);
+    group_ref_impl->ref_qname = axutil_qname_clone(ref_qname, env);
     if (!group_ref_impl->ref_qname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

@@ -42,8 +42,8 @@ struct axiom_soap_header
 
 static axis2_bool_t AXIS2_CALL
 axiom_soap_header_qname_matches(const axutil_env_t *env,
-        axis2_qname_t *element_qname,
-        axis2_qname_t *qname_to_match);
+        axutil_qname_t *element_qname,
+        axutil_qname_t *qname_to_match);
 
 AXIS2_EXTERN axiom_soap_header_t * AXIS2_CALL
 axiom_soap_header_create(const axutil_env_t *env)
@@ -298,7 +298,7 @@ AXIS2_CALL axiom_soap_header_extract_header_blocks
     axiom_node_t *first_node = NULL;
     axiom_element_t *first_ele =  NULL;
 
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
 
     axiom_element_t *header_om_ele = NULL;
     axiom_children_with_specific_attribute_iterator_t* iter = NULL;
@@ -318,7 +318,7 @@ AXIS2_CALL axiom_soap_header_extract_header_blocks
         nsuri     = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
 
-    qn = axis2_qname_create(env, localname, nsuri, NULL);
+    qn = axutil_qname_create(env, localname, nsuri, NULL);
     if (!qn)
         return NULL;
 
@@ -336,7 +336,7 @@ AXIS2_CALL axiom_soap_header_extract_header_blocks
         }
     }
 
-    axis2_qname_free(qn, env);
+    axutil_qname_free(qn, env);
 
     return iter;
 
@@ -524,7 +524,7 @@ axiom_soap_header_get_all_header_blocks(axiom_soap_header_t *soap_header,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
         const axutil_env_t *env,
-        axis2_qname_t *qname)
+        axutil_qname_t *qname)
 {
     axis2_char_t *qn_localname = NULL;
     axis2_char_t *qname_ns = NULL;
@@ -533,9 +533,9 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
 
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
 
-    qn_localname = axis2_qname_get_localpart(qname, env);
-    qname_ns  = axis2_qname_get_uri(qname, env);
-    qname_prefix = axis2_qname_get_prefix(qname, env);
+    qn_localname = axutil_qname_get_localpart(qname, env);
+    qname_ns  = axutil_qname_get_uri(qname, env);
+    qname_prefix = axutil_qname_get_prefix(qname, env);
 
     if (!soap_header->header_blocks)
         return AXIS2_FAILURE;
@@ -558,7 +558,7 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
             node = axiom_soap_header_block_get_base_node(header_block, env);
             if (node)
             {
-                axis2_qname_t *element_qname = NULL;
+                axutil_qname_t *element_qname = NULL;
 
                 ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
                 element_qname = axiom_element_get_qname(ele, env, node);
@@ -579,8 +579,8 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
 
 static axis2_bool_t AXIS2_CALL
 axiom_soap_header_qname_matches(const axutil_env_t *env,
-        axis2_qname_t *element_qname,
-        axis2_qname_t *qname_to_match)
+        axutil_qname_t *element_qname,
+        axutil_qname_t *qname_to_match)
 {
     int lparts_match =  0;
     int uris_match = 0;
@@ -593,13 +593,13 @@ axiom_soap_header_qname_matches(const axutil_env_t *env,
         return AXIS2_TRUE;
     if (qname_to_match)
     {
-        match_lpart = axis2_qname_get_localpart(qname_to_match, env);
-        match_nsuri = axis2_qname_get_uri(qname_to_match, env);
+        match_lpart = axutil_qname_get_localpart(qname_to_match, env);
+        match_nsuri = axutil_qname_get_uri(qname_to_match, env);
     }
     if (element_qname)
     {
-        ele_lpart = axis2_qname_get_localpart(element_qname, env);
-        ele_nsuri = axis2_qname_get_uri(element_qname, env);
+        ele_lpart = axutil_qname_get_localpart(element_qname, env);
+        ele_nsuri = axutil_qname_get_uri(element_qname, env);
     }
 
     lparts_match = (!match_lpart ||

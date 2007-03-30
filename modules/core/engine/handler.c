@@ -36,7 +36,7 @@ axis2_handler_free(
     axis2_handler_t *handler,
     const axutil_env_t *env);
 
-const axis2_string_t *AXIS2_CALL
+const axutil_string_t *AXIS2_CALL
 axis2_handler_get_name(
     const axis2_handler_t *handler,
     const axutil_env_t *env) ;
@@ -47,7 +47,7 @@ axis2_handler_invoke(
     const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
-axis2_param_t *AXIS2_CALL
+axutil_param_t *AXIS2_CALL
 axis2_handler_get_param(
     const axis2_handler_t *handler,
     const axutil_env_t *env,
@@ -134,7 +134,7 @@ axis2_handler_free(
     return;
 }
 
-const axis2_string_t *AXIS2_CALL
+const axutil_string_t *AXIS2_CALL
 axis2_handler_get_name(
     const axis2_handler_t *handler,
     const axutil_env_t *env)
@@ -157,7 +157,7 @@ axis2_handler_invoke(
     return AXIS2_SUCCESS;
 }
 
-axis2_param_t *AXIS2_CALL
+axutil_param_t *AXIS2_CALL
 axis2_handler_get_param(
     const axis2_handler_t *handler,
     const axutil_env_t *env,

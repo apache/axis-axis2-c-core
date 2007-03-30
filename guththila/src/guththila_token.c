@@ -20,7 +20,7 @@
 #include "guththila_token.h"
 #include "guththila_unicode.h"
 /* #include "guththila_string.h" */
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 
 AXIS2_EXTERN guththila_token_t *
@@ -348,16 +348,16 @@ guththila_token_convert_utf16_to_utf8(axutil_env_t * environment,
 
 AXIS2_EXTERN void AXIS2_CALL
 guththila_relocate_tokens(axutil_env_t *environment,
-						  axis2_stack_t *stack,
+						  axutil_stack_t *stack,
 						  int offset)
 {
     guththila_token_t *el = NULL;
     int isize = 0;
-    isize = axis2_stack_size(stack, environment);
-    /*   el = (guththila_token_t *) axis2_stack_get_at (stack, environment, isize-1); */
+    isize = axutil_stack_size(stack, environment);
+    /*   el = (guththila_token_t *) axutil_stack_get_at (stack, environment, isize-1); */
     for (; isize > 0; isize--)
     {
-        el = (guththila_token_t *) axis2_stack_get_at(stack, 
+        el = (guththila_token_t *) axutil_stack_get_at(stack, 
 													  environment, 
 													  isize - 1);
         guththila_token_relocate(environment, el, offset);

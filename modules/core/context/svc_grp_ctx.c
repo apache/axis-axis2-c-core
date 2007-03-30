@@ -231,7 +231,7 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
                     axis2_char_t *svc_name = NULL;
                     svc = (axis2_svc_t*) next_svc;
                     svc_ctx = axis2_svc_ctx_create(env, svc, svc_grp_ctx);
-                    svc_name = axis2_qname_get_localpart(axis2_svc_get_qname(svc, env), env);
+                    svc_name = axutil_qname_get_localpart(axis2_svc_get_qname(svc, env), env);
                     if (svc_name)
                         axutil_hash_set(svc_grp_ctx->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING, svc_ctx);
                 }

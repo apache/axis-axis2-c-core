@@ -70,14 +70,14 @@ struct xml_schema_simple_type_restriction_ops
                     const axutil_env_t *env,
                     xml_schema_simple_type_t *base_type);
     
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_base_type_name)(void *simple_type_restriction,
                 const axutil_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_base_type_name)(void *simple_type_restriction,
                     const axutil_env_t *env,
-                    axis2_qname_t *qname);
+                    axutil_qname_t *qname);
                     
     xml_schema_obj_collection_t* (AXIS2_CALL *
     get_facets)(void *simple_type_restriction,

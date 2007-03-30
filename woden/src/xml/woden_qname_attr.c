@@ -52,7 +52,7 @@ woden_qname_attr_get_base_impl(
     void *qname_attr,
     const axutil_env_t *env);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_qname_attr_get_qname(
     void *qname_attr,
     const axutil_env_t *env);
@@ -74,7 +74,7 @@ woden_qname_attr_create(
     const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     axis2_char_t *attr_value)
 {
     woden_qname_attr_impl_t *qname_attr_impl = NULL;
@@ -208,7 +208,7 @@ woden_qname_attr_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_qname_attr_get_qname(
     void *qname_attr,
     const axutil_env_t *env)
@@ -217,7 +217,7 @@ woden_qname_attr_get_qname(
 
     AXIS2_ENV_CHECK(env, NULL);
     qname_attr_impl = INTF_TO_IMPL(qname_attr);
-    return (axis2_qname_t *) WODEN_XML_ATTR_GET_CONTENT(
+    return (axutil_qname_t *) WODEN_XML_ATTR_GET_CONTENT(
                 qname_attr_impl->xml_attr, env);
 }
 
@@ -230,7 +230,7 @@ woden_qname_attr_convert(
     axis2_char_t *attr_value)
 {
     woden_qname_attr_impl_t *qname_attr_impl = NULL;
-    axis2_qname_t *qn = NULL;
+    axutil_qname_t *qn = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     qname_attr_impl = INTF_TO_IMPL(qname_attr);

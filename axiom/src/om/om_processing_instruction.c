@@ -16,7 +16,7 @@
  */
 
 #include <axiom_processing_instruction.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include "axiom_node_internal.h"
 
 struct axiom_processing_instruction

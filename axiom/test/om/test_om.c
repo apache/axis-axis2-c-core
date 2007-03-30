@@ -21,7 +21,7 @@
 #include <axiom_element.h>
 #include <axiom_text.h>
 #include <axiom_data_source.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 #include <axutil_log_default.h>
 #include <axutil_error_default.h>
 #include <axiom_xml_reader.h>
@@ -35,7 +35,7 @@
 
 axutil_allocator_t *allocator = NULL;
 axutil_env_t *environment = NULL;
-axis2_stream_t *stream = NULL;
+axutil_stream_t *stream = NULL;
 axutil_error_t *error = NULL;
 axutil_log_t *axis_log     = NULL;
 FILE *f = NULL;
@@ -218,7 +218,7 @@ test_om_serialize()
     axiom_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL, *node4 =
                 NULL, *node5 = NULL, *node6 = NULL;
     axiom_data_source_t *data_source = NULL;
-    axis2_stream_t *stream = NULL;
+    axutil_stream_t *stream = NULL;
     axiom_attribute_t *attr1 = NULL, *attr2 = NULL;
     axiom_namespace_t *ns1 = NULL, *ns2 = NULL;
     axiom_text_t *text1 = NULL;

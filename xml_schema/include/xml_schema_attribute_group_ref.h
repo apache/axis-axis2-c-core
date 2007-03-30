@@ -26,7 +26,7 @@
  *          World Wide Web Consortium (W3C) any element.
  *
  */
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <xml_schema_particle.h>
 #include <xml_schema_obj_collection.h>
 #include <xml_schema_any_attribute.h>
@@ -75,14 +75,14 @@ struct xml_schema_attribute_group_ref_ops
             const axutil_env_t *env);
     
 
-    axis2_qname_t* (AXIS2_CALL *
+    axutil_qname_t* (AXIS2_CALL *
     get_ref_qname)(void *grp_ref,
               const axutil_env_t *env);
               
     axis2_status_t (AXIS2_CALL *
     set_ref_qname)(void *grp_ref,
               const axutil_env_t *env,
-              axis2_qname_t *ref_name);
+              axutil_qname_t *ref_name);
               
 };
 

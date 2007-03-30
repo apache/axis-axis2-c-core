@@ -79,7 +79,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_dep_engine_add_module(axis2_dep_engine_t *dep_engine,
         const axutil_env_t *env,
-        axis2_qname_t *module_qname);
+        axutil_qname_t *module_qname);
 
     /** 
      * @param dep_engine pointer to deployment engine
@@ -89,7 +89,7 @@ extern "C"
     AXIS2_EXTERN struct axis2_module_desc *AXIS2_CALL
     axis2_dep_engine_get_module(const axis2_dep_engine_t *dep_engine,
         const axutil_env_t *env,
-        axis2_qname_t *module_name);
+        axutil_qname_t *module_name);
 
     /** 
      * @param dep_engine pointer to deployment engine

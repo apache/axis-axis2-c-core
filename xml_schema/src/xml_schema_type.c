@@ -21,7 +21,7 @@
 #include <xml_schema_data_type.h>
 #include <xml_schema_derivation_method.h>
 #include <xml_schema.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 typedef struct xml_schema_type_impl
             xml_schema_type_impl_t;
@@ -53,7 +53,7 @@ struct xml_schema_type_impl
 
     xml_schema_t *schema;
 
-    axis2_qname_t *qname;
+    axutil_qname_t *qname;
 
     axutil_hash_t *ht_super;
 
@@ -124,7 +124,7 @@ xml_schema_type_set_name(void *type,
         const axutil_env_t *env,
         axis2_char_t *name);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_type_get_qname(void *type,
         const axutil_env_t *env);
 
@@ -259,7 +259,7 @@ xml_schema_type_free(void *type,
     type_impl = AXIS2_INTF_TO_IMPL(type);
     if (type_impl->qname)
     {
-        axis2_qname_free(type_impl->qname, env);
+        axutil_qname_free(type_impl->qname, env);
         type_impl->qname = NULL;
 
     }
@@ -560,7 +560,7 @@ xml_schema_type_set_name(void *type,
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 xml_schema_type_get_qname(void *type,
         const axutil_env_t *env)
 {
@@ -592,7 +592,7 @@ xml_schema_type_get_qname(void *type,
             XML_SCHEMA_GET_TARGET_NAMESPACE(type_impl->schema, env);
     }
 
-    type_impl->qname = axis2_qname_create(env, type_impl->name, target_ns, NULL);
+    type_impl->qname = axutil_qname_create(env, type_impl->name, target_ns, NULL);
     return type_impl->qname;
 }
 

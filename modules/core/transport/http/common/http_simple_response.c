@@ -16,7 +16,7 @@
  */
 #include <axis2_http_simple_response.h>
 #include <axis2_http_transport.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <stdio.h>
 #include <string.h>
 #include <axis2_types.h>
@@ -27,7 +27,7 @@ struct axis2_http_simple_response
 {
     axis2_http_status_line_t *status_line;
     axutil_array_list_t *header_group;
-    axis2_stream_t *stream;
+    axutil_stream_t *stream;
 };
 
 AXIS2_EXTERN axis2_http_simple_response_t *AXIS2_CALL
@@ -36,7 +36,7 @@ axis2_http_simple_response_create(
     axis2_http_status_line_t *status_line,
     const axis2_http_header_t **http_headers,
     const axis2_ssize_t http_hdr_count,
-    axis2_stream_t *content)
+    axutil_stream_t *content)
 {
     axis2_http_simple_response_t *ret = NULL;
     axis2_http_simple_response_t *simple_response = NULL;
@@ -420,14 +420,14 @@ axis2_http_simple_response_set_body_string(
     const axutil_env_t *env,
     axis2_char_t *str)
 {
-    axis2_stream_t *body_stream = NULL;
+    axutil_stream_t *body_stream = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
     body_stream = simple_response->stream;
     if (! body_stream)
     {
-        body_stream = axis2_stream_create_basic(env);
+        body_stream = axutil_stream_create_basic(env);
         if (! body_stream)
         {
             return AXIS2_FAILURE;
@@ -442,7 +442,7 @@ axis2_status_t AXIS2_CALL
 axis2_http_simple_response_set_body_stream(
     axis2_http_simple_response_t *simple_response,
     const axutil_env_t *env,
-    axis2_stream_t *stream)
+    axutil_stream_t *stream)
 {
     /*
      * We don't free the stream
@@ -453,7 +453,7 @@ axis2_http_simple_response_set_body_stream(
     return AXIS2_SUCCESS;
 }
 
-axis2_stream_t *AXIS2_CALL
+axutil_stream_t *AXIS2_CALL
 axis2_http_simple_response_get_body(
     axis2_http_simple_response_t *simple_response,
     const axutil_env_t *env)
@@ -468,7 +468,7 @@ axis2_http_simple_response_get_body_bytes(
     const axutil_env_t *env,
     axis2_char_t **buffer)
 {
-    axis2_stream_t *tmp_stream = NULL;
+    axutil_stream_t *tmp_stream = NULL;
     int return_size = -1;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -478,7 +478,7 @@ axis2_http_simple_response_get_body_bytes(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_BODY, AXIS2_FAILURE);
         return -1;
     }
-    tmp_stream = axis2_stream_create_basic(env);
+    tmp_stream = axutil_stream_create_basic(env);
     while (1)
     {
         int read = 0;

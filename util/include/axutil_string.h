@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_STRING_H
-#define AXIS2_STRING_H
+#ifndef AXUTIL_STRING_H
+#define AXUTIL_STRING_H
 
 #include <axis2_utils_defines.h>
 #include <axutil_error.h>
@@ -29,12 +29,12 @@ extern "C"
 #endif
     
     /**
-     * @defgroup axis2_string string
+     * @defgroup axutil_string string
      * @ingroup axis2_util
      * @{
      */
 
-    typedef struct axis2_string axis2_string_t;
+    typedef struct axutil_string axutil_string_t;
 
     /**
      * Creates a string struct.
@@ -43,8 +43,8 @@ extern "C"
      * @param env pointer to environment struct
      * @return a pointer to newly created string struct
      */
-    AXIS2_EXTERN axis2_string_t * AXIS2_CALL
-    axis2_string_create(const axutil_env_t *env,
+    AXIS2_EXTERN axutil_string_t * AXIS2_CALL
+    axutil_string_create(const axutil_env_t *env,
         const axis2_char_t *str);
     
     /**
@@ -54,8 +54,8 @@ extern "C"
      * @param env pointer to environment struct
      * @return a pointer to newly created string struct
      */
-    AXIS2_EXTERN axis2_string_t * AXIS2_CALL
-    axis2_string_create_assume_ownership(const axutil_env_t *env,
+    AXIS2_EXTERN axutil_string_t * AXIS2_CALL
+    axutil_string_create_assume_ownership(const axutil_env_t *env,
         axis2_char_t **str);
 
     /**
@@ -65,8 +65,8 @@ extern "C"
      * @param env pointer to environment struct
      * @return a pointer to newly created string struct     
      */
-    AXIS2_EXTERN axis2_string_t* AXIS2_CALL
-    axis2_string_create_const(const axutil_env_t *env,
+    AXIS2_EXTERN axutil_string_t* AXIS2_CALL
+    axutil_string_create_const(const axutil_env_t *env,
         axis2_char_t **str);
 
     /**
@@ -76,7 +76,7 @@ extern "C"
      * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_string_free(struct axis2_string *string,
+    axutil_string_free(struct axutil_string *string,
         const axutil_env_t *env);
 
     /**
@@ -88,9 +88,9 @@ extern "C"
      * @return AXIS2_TRUE if string equals string1, AXIS2_FALSE otherwise 
      */
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_string_equals(const struct axis2_string *string,
+    axutil_string_equals(const struct axutil_string *string,
         const axutil_env_t *env,
-        const struct axis2_string *string1);
+        const struct axutil_string *string1);
 
     /**
      * Clones a given string. Does not duplicate the buffer, rather 
@@ -100,8 +100,8 @@ extern "C"
      * @param env pointer to environment struct
      * @returns pointer to cloned string struct instance
      */
-    AXIS2_EXTERN struct axis2_string *AXIS2_CALL
-    axis2_string_clone(struct axis2_string *string,
+    AXIS2_EXTERN struct axutil_string *AXIS2_CALL
+    axutil_string_clone(struct axutil_string *string,
         const axutil_env_t *env);
 
     /**
@@ -111,7 +111,7 @@ extern "C"
      * @returns pointer to string buffer
      */
     AXIS2_EXTERN const axis2_char_t* AXIS2_CALL
-    axis2_string_get_buffer(const struct axis2_string *string,
+    axutil_string_get_buffer(const struct axutil_string *string,
         const axutil_env_t *env);
 
     /**
@@ -121,13 +121,13 @@ extern "C"
      * @returns buffer length
      */
     AXIS2_EXTERN unsigned int AXIS2_CALL
-    axis2_string_get_length(const struct axis2_string *string,
+    axutil_string_get_length(const struct axutil_string *string,
         const axutil_env_t *env);
     
     /** @} */
 
     /**
-     * @defgroup axis2_string_utils string_utils
+     * @defgroup axutil_string_utils string_utils
      * @ingroup axis2_util
      * @{
      */
@@ -246,7 +246,7 @@ extern "C"
      * @return      replaced string
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_string_replace(axis2_char_t *str,
+    axutil_string_replace(axis2_char_t *str,
         axis2_char_t old_char,
         axis2_char_t new_char);
 
@@ -257,7 +257,7 @@ extern "C"
      * @return      substring
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_string_substring_starting_at(axis2_char_t *str,
+    axutil_string_substring_starting_at(axis2_char_t *str,
         int s);
 
     /**
@@ -267,7 +267,7 @@ extern "C"
      * @return      substring
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_string_substring_ending_at(axis2_char_t *str,
+    axutil_string_substring_ending_at(axis2_char_t *str,
         int e);
 
     /**
@@ -276,7 +276,7 @@ extern "C"
      * @return string with lowercase
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_string_tolower(axis2_char_t *str);
+    axutil_string_tolower(axis2_char_t *str);
 
     /**
      * set a string to uppercase.
@@ -284,7 +284,7 @@ extern "C"
      * @return string with uppercase
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_string_toupper(axis2_char_t *str);
+    axutil_string_toupper(axis2_char_t *str);
 
     /**
      * Finds the first occurrence of the substring needle in the string 

@@ -35,8 +35,8 @@
 
 #include <axutil_env.h>
 #include <axutil_allocator.h>
-#include <axis2_stack.h>
-#include <axis2_string.h>
+#include <axutil_stack.h>
+#include <axutil_string.h>
 
 #define p_FILE __FILE__         /* file name */
 #define LINE __LINE__           /* line number */
@@ -79,11 +79,11 @@ typedef struct guththila_s
   guththila_token_t *prefix;
   guththila_token_t *name;
   guththila_token_t *value;
-  axis2_stack_t *stack;
-  axis2_stack_t *attrib;
-  axis2_stack_t *namesp;
-	axis2_stack_t *dep;
-	axis2_stack_t *other;
+  axutil_stack_t *stack;
+  axutil_stack_t *attrib;
+  axutil_stack_t *namesp;
+	axutil_stack_t *dep;
+	axutil_stack_t *other;
   int _next;
   int offset;
   int last;

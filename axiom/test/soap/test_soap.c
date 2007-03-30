@@ -21,7 +21,7 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axiom_text.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 #include <axutil_log_default.h>
 #include <axutil_error_default.h>
 #include <axiom_xml_reader.h>

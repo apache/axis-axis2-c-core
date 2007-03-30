@@ -37,10 +37,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
 #include <axutil_generic_obj.h>
@@ -97,7 +97,7 @@ struct woden_element_decl_ops
      * underlying type system definition.
      *  
      */
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *decl,
             const axutil_env_t *env); 
@@ -156,7 +156,7 @@ struct woden_element_decl_ops
     set_qname) (
             void *decl,
             const axutil_env_t *env,
-            axis2_qname_t *qname); 
+            axutil_qname_t *qname); 
 
     axis2_status_t (AXIS2_CALL *
     set_system) (

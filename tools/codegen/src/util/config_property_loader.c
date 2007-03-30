@@ -18,7 +18,7 @@
 #include <w2c_config_property_loader.h>
 #include <w2c_properties.h>
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 #include <axutil_hash.h>
 #include <stdlib.h>

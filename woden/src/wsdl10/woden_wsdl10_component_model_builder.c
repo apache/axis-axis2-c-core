@@ -489,12 +489,12 @@ build_element_decls(
 		  size = axutil_array_list_size(qnames, env);
 	    for (i = 0; i < size; i++)
 	    {
-		  axis2_qname_t *qname = NULL;
+		  axutil_qname_t *qname = NULL;
 		  axis2_char_t *namespc = NULL;
 
-		  qname = (axis2_qname_t *) axutil_array_list_get(qnames, env, i);
+		  qname = (axutil_qname_t *) axutil_array_list_get(qnames, env, i);
 		  if (qname)
-			namespc = axis2_qname_get_uri(qname, env);
+			namespc = axutil_qname_get_uri(qname, env);
 		  if (namespc && 0 == axis2_strcmp(namespc, schema_tns))
 		  {
 			void *ed = NULL;
@@ -546,12 +546,12 @@ build_type_defs(
 		  size = axutil_array_list_size(qnames, env);
 	    for (i = 0; i < size; i++)
 	    {
-		  axis2_qname_t *qname = NULL;
+		  axutil_qname_t *qname = NULL;
 		  axis2_char_t *namespc = NULL;
 
-		  qname = (axis2_qname_t *) axutil_array_list_get(qnames, env, i);
+		  qname = (axutil_qname_t *) axutil_array_list_get(qnames, env, i);
 		  if (qname)
-			namespc = axis2_qname_get_uri(qname, env);
+			namespc = axutil_qname_get_uri(qname, env);
 		  if (0 == axis2_strcmp(namespc, schema_tns))
 		  {
 			void *td = NULL;
@@ -627,7 +627,7 @@ build_parts(
 {
       woden_wsdl10_component_model_builder_impl_t *builder_impl = NULL;
       void *part = NULL;
-      axis2_qname_t *qname = NULL;
+      axutil_qname_t *qname = NULL;
 
       AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
       AXIS2_PARAM_CHECK(env->error, msg, AXIS2_FAILURE);
@@ -773,7 +773,7 @@ build_interface_fault_refs(
       {
 	    void *fault_ref = NULL;
 	    axutil_array_list_t *property_elements = NULL;
-	    axis2_qname_t *qname = NULL;
+	    axutil_qname_t *qname = NULL;
 
 	    fault_ref = axutil_array_list_get(fault_refs, env, i);
 	    fault_ref = woden_wsdl10_interface_fault_ref_to_configurable_element(fault_ref, env);
@@ -816,7 +816,7 @@ build_interface_msg_refs(
       for (i = 0; i < size; i++)
       {
 	    void *int_msg_ref = NULL;
-	    axis2_qname_t *qname = NULL;
+	    axutil_qname_t *qname = NULL;
 	    int_msg_ref = axutil_array_list_get(int_msg_refs, env, i);
 	    int_msg_ref = woden_wsdl10_interface_msg_ref_to_configurable_element(int_msg_ref, env);
 
@@ -1382,7 +1382,7 @@ build_properties(
       for (i = 0; i < size; i++)
       {
 	    void *prop = NULL;
-	    axis2_qname_t *qname = NULL;
+	    axutil_qname_t *qname = NULL;
 
 	    prop = axutil_array_list_get(prop_els, env, i);
 	    prop = woden_property_to_property_element(prop, env);

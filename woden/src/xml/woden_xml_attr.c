@@ -30,7 +30,7 @@ typedef struct woden_xml_attr_impl woden_xml_attr_impl_t;
 struct woden_xml_attr_impl
 {
     woden_xml_attr_t xml_attr;
-    axis2_qname_t *f_attr_type;
+    axutil_qname_t *f_attr_type;
     axutil_generic_obj_t *f_content;
     axis2_char_t *f_external_form;
     axis2_bool_t f_valid;
@@ -49,10 +49,10 @@ woden_xml_attr_init(
     const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     axis2_char_t *attr_value);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_xml_attr_get_attribute_type(
     void *xml_attr,
     const axutil_env_t *env);
@@ -83,7 +83,7 @@ woden_xml_attr_create(
     const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     axis2_char_t *attr_value)
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
@@ -128,7 +128,7 @@ woden_xml_attr_free(
 
     if (xml_attr_impl->f_attr_type)
     {
-        axis2_qname_free(xml_attr_impl->f_attr_type, env);
+        axutil_qname_free(xml_attr_impl->f_attr_type, env);
         xml_attr_impl->f_attr_type = NULL;
     }
 
@@ -189,7 +189,7 @@ woden_xml_attr_init(
     const axutil_env_t *env,
     axiom_element_t *owner_el,
     axiom_node_t *owner_node,
-    axis2_qname_t *attr_type,
+    axutil_qname_t *attr_type,
     axis2_char_t *attr_value)
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
@@ -203,13 +203,13 @@ woden_xml_attr_init(
 
     if (xml_attr_impl->f_attr_type)
     {
-        axis2_qname_free(xml_attr_impl->f_attr_type, env);
+        axutil_qname_free(xml_attr_impl->f_attr_type, env);
         xml_attr_impl->f_attr_type = NULL;
     }
-    xml_attr_impl->f_attr_type = axis2_qname_clone(attr_type, env);
+    xml_attr_impl->f_attr_type = axutil_qname_clone(attr_type, env);
     if (xml_attr_impl->f_attr_type)
     {
-        axis2_qname_free(xml_attr_impl->f_attr_type, env);
+        axutil_qname_free(xml_attr_impl->f_attr_type, env);
         xml_attr_impl->f_attr_type = NULL;
     }
     xml_attr_impl->f_external_form = axis2_strdup(env, attr_value);
@@ -221,7 +221,7 @@ woden_xml_attr_init(
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_xml_attr_get_attribute_type(
     void *xml_attr,
     const axutil_env_t *env)

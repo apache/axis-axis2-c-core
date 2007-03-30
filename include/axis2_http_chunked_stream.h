@@ -33,7 +33,7 @@
 #include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axutil_env.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 
 
 #ifdef __cplusplus
@@ -100,7 +100,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_http_chunked_stream_t * AXIS2_CALL
     axis2_http_chunked_stream_create(const axutil_env_t *env,
-        axis2_stream_t* stream);
+        axutil_stream_t* stream);
 
 /** Read. */
 #define AXIS2_HTTP_CHUNKED_STREAM_READ(chunked_stream, env, buffer, count) \

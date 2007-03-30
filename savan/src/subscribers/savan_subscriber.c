@@ -224,7 +224,7 @@ savan_subscriber_publish(
     axis2_char_t *path = NULL;
     axis2_options_t *options = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
-    axis2_qname_t *op_qname = NULL;
+    axutil_qname_t *op_qname = NULL;
 
     printf("[savan][subscribe] publish...\n");
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "[savan][subscribe] publish...");
@@ -250,7 +250,7 @@ savan_subscriber_publish(
     /* Engage addressing module */
     /*axis2_svc_client_engage_module(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
     
-    op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
+    op_qname = axutil_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
 
     op_client = axis2_svc_client_create_op_client(svc_client, env,
         op_qname);

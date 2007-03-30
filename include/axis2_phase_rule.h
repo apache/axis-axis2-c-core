@@ -34,8 +34,8 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_qname.h>
-#include <axis2_param.h>
+#include <axutil_qname.h>
+#include <axutil_param.h>
 
 #ifdef __cplusplus
 extern "C"

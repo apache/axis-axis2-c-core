@@ -25,7 +25,7 @@ struct axiom_children_with_specific_attribute_iterator
     axiom_node_t *last_child;
     axis2_bool_t next_called;
     axis2_bool_t remove_called;
-    axis2_qname_t *attr_qname;
+    axutil_qname_t *attr_qname;
     axis2_char_t *attr_value;
     axis2_bool_t detach;
 };
@@ -34,7 +34,7 @@ AXIS2_EXTERN axiom_children_with_specific_attribute_iterator_t * AXIS2_CALL
 axiom_children_with_specific_attribute_iterator_create(
     const axutil_env_t *env,
     axiom_node_t *current_child,
-    axis2_qname_t *attr_qname,
+    axutil_qname_t *attr_qname,
     axis2_char_t *attr_value,
     axis2_bool_t detach)
 {
@@ -59,7 +59,7 @@ axiom_children_with_specific_attribute_iterator_create(
     iterator->next_called = AXIS2_FALSE;
     iterator->remove_called = AXIS2_FALSE;
 
-    iterator->attr_qname = axis2_qname_clone(attr_qname, env);
+    iterator->attr_qname = axutil_qname_clone(attr_qname, env);
     iterator->attr_value = attr_value;
     iterator->detach = detach;
 
@@ -75,7 +75,7 @@ axiom_children_with_specific_attribute_iterator_free(
     AXIS2_ENV_CHECK(env, void);
     if (iterator->attr_qname)
     {
-        axis2_qname_free(iterator->attr_qname, env);
+        axutil_qname_free(iterator->attr_qname, env);
     }
     AXIS2_FREE(env->allocator, iterator);
     return;

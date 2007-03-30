@@ -38,8 +38,8 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_qname.h>
-#include <axis2_param.h>
+#include <axutil_qname.h>
+#include <axutil_param.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -109,7 +109,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to QName of the handler
          */
-        const axis2_string_t *(AXIS2_CALL *
+        const axutil_string_t *(AXIS2_CALL *
                 get_name)(
                     const axis2_handler_t *handler,
                     const axutil_env_t *env);
@@ -120,7 +120,7 @@ extern "C"
          * @param env pointer to environment struct
          * @param name name of the parameter to be accessed
          */
-        axis2_param_t *(AXIS2_CALL *
+        axutil_param_t *(AXIS2_CALL *
                 get_param)(
                     const axis2_handler_t *handler,
                     const axutil_env_t *env,
@@ -157,7 +157,7 @@ extern "C"
     typedef axis2_handler_t *(AXIS2_CALL *
     AXIS2_HANDLER_CREATE_FUNC)(
         const axutil_env_t *env,
-        const axis2_string_t *name);
+        const axutil_string_t *name);
 
     /**
      * Creates handler struct instance.
@@ -178,7 +178,7 @@ extern "C"
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
     axis2_ctx_handler_create(
         const axutil_env_t *env, 
-        const axis2_string_t *qname);
+        const axutil_string_t *qname);
 
 /** Frees handler.
     @sa axis2_handler_ops#free */

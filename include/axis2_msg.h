@@ -28,7 +28,7 @@
  * @{
  */
 
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axis2_op.h>
 #include <axutil_array_list.h>
 #include <axis2_description.h>
@@ -77,7 +77,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_add_param(axis2_msg_t *msg,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets the named parameter.
@@ -87,7 +87,7 @@ extern "C"
      * @return pointer to parameter corresponding to the same name, returns
      * a reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_msg_get_param(const axis2_msg_t *msg,
         const axutil_env_t *env,
         const axis2_char_t *name);
@@ -191,7 +191,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to QName, returns a reference, not a cloned copy
      */
-    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
     axis2_msg_get_element_qname(const axis2_msg_t *msg,
         const axutil_env_t *env);
 
@@ -206,7 +206,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_msg_set_element_qname(axis2_msg_t *msg,
         const axutil_env_t *env,
-        const axis2_qname_t *element_qname);
+        const axutil_qname_t *element_qname);
 
     /** 
      * Gets message name.

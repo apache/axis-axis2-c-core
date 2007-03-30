@@ -31,7 +31,7 @@
 
 #include <woden.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_uri.h>
 
 /** @defgroup woden_type_def Type Definition
@@ -77,9 +77,9 @@ struct woden_type_def_ops
     set_qname) (
             void *type_def,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *type_def,
             const axutil_env_t *env);

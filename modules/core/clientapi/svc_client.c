@@ -103,7 +103,7 @@ AXIS2_EXTERN axis2_svc_client_t *AXIS2_CALL
 axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     const axis2_uri_t *wsdl_uri,
-    const axis2_qname_t *wsdl_svc_qname,
+    const axutil_qname_t *wsdl_svc_qname,
     const axis2_char_t *endpoint_name,
     const axis2_char_t *client_home)
 {
@@ -378,18 +378,18 @@ axis2_svc_client_engage_module(axis2_svc_client_t *svc_client,
     const axis2_char_t *module_name)
 {
     axis2_module_desc_t *module = NULL;
-    axis2_qname_t *mod_qname = NULL;
+    axutil_qname_t *mod_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
-    mod_qname = axis2_qname_create(env, module_name, NULL, NULL);
+    mod_qname = axutil_qname_create(env, module_name, NULL, NULL);
 
     if (mod_qname)
     {
         module =  axis2_conf_get_module(svc_client->conf, env, mod_qname);
 
-        axis2_qname_free(mod_qname, env);
+        axutil_qname_free(mod_qname, env);
         mod_qname = NULL;
     }
     else
@@ -411,12 +411,12 @@ axis2_svc_client_disengage_module(axis2_svc_client_t *svc_client,
     const axis2_char_t *module_name)
 {
     axis2_module_desc_t *module = NULL;
-    axis2_qname_t *mod_qname = NULL;
+    axutil_qname_t *mod_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
-    mod_qname = axis2_qname_create(env, module_name, NULL, NULL);
+    mod_qname = axutil_qname_create(env, module_name, NULL, NULL);
 
     module =  axis2_conf_get_module(svc_client->conf, env, mod_qname);
 
@@ -484,7 +484,7 @@ axis2_svc_client_remove_all_headers(axis2_svc_client_t *svc_client,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_client_send_robust_with_op_qname(axis2_svc_client_t *svc_client,
     const axutil_env_t *env,
-    const axis2_qname_t *op_qname,
+    const axutil_qname_t *op_qname,
     const axiom_node_t *payload)
 {
     axis2_msg_ctx_t *msg_ctx = NULL;
@@ -495,7 +495,7 @@ axis2_svc_client_send_robust_with_op_qname(axis2_svc_client_t *svc_client,
 
     if (!op_qname)
     {
-        op_qname = axis2_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
+        op_qname = axutil_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
         qname_free_flag = AXIS2_TRUE;
     }
 
@@ -516,7 +516,7 @@ axis2_svc_client_send_robust_with_op_qname(axis2_svc_client_t *svc_client,
     
     if (qname_free_flag)
     {
-        axis2_qname_free((axis2_qname_t *) op_qname, env);
+        axutil_qname_free((axutil_qname_t *) op_qname, env);
     }
 
     return status;
@@ -533,7 +533,7 @@ axis2_svc_client_send_robust(axis2_svc_client_t *svc_client,
 AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
     const axutil_env_t *env,
-    const axis2_qname_t *op_qname,
+    const axutil_qname_t *op_qname,
     const axiom_node_t *payload)
 {
     axis2_op_client_t *op_client = NULL;
@@ -547,7 +547,7 @@ axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
 
     if (!op_qname)
     {
-        op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
+        op_qname = axutil_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
         qname_free_flag = AXIS2_TRUE;
     }
 
@@ -568,7 +568,7 @@ axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
     
     if (qname_free_flag)
     {
-        axis2_qname_free((axis2_qname_t *) op_qname, env);
+        axutil_qname_free((axutil_qname_t *) op_qname, env);
     }
 
     return;
@@ -586,14 +586,14 @@ axis2_svc_client_fire_and_forget(axis2_svc_client_t *svc_client,
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
     const axutil_env_t *env,
-    const axis2_qname_t *op_qname,
+    const axutil_qname_t *op_qname,
     const axiom_node_t *payload)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_body_t *soap_body = NULL;
     axiom_node_t *soap_node = NULL;
     axis2_op_t *op = NULL;
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
     axis2_uri_t *action_uri = NULL;
     axis2_char_t *action_str = NULL;
     axis2_bool_t qname_free_flag = AXIS2_FALSE;
@@ -609,7 +609,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         param = axis2_op_get_param(op, env, AXIS2_SOAP_ACTION);
         if (param)
         {
-            action_uri = (axis2_uri_t *) axis2_param_get_value(param, env);
+            action_uri = (axis2_uri_t *) axutil_param_get_value(param, env);
             action_str = axis2_uri_to_string(action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
             axis2_options_set_action(svc_client->options, env, action_str);
         }
@@ -618,7 +618,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
     if (!op_qname)
     {
         qname_free_flag = AXIS2_TRUE;
-        op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
+        op_qname = axutil_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
     }
 
     if (axis2_options_get_use_separate_listener(svc_client->options, env))
@@ -743,7 +743,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
 
     if (qname_free_flag)
     {
-        axis2_qname_free((axis2_qname_t *) op_qname, env);
+        axutil_qname_free((axutil_qname_t *) op_qname, env);
     }
 
     if (!soap_envelope)
@@ -787,7 +787,7 @@ axis2_svc_client_send_receive(axis2_svc_client_t *svc_client,
 AXIS2_EXTERN void AXIS2_CALL
 axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc_client,
     const axutil_env_t *env,
-    const axis2_qname_t *op_qname,
+    const axutil_qname_t *op_qname,
     const axiom_node_t *payload,
     axis2_callback_t *callback)
 {
@@ -797,7 +797,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc
 
     if (!op_qname)
     {
-        op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
+        op_qname = axutil_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
         qname_free_flag = AXIS2_TRUE;
     }
 
@@ -840,7 +840,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc
     
     if (qname_free_flag)
     {
-        axis2_qname_free((axis2_qname_t *) op_qname, env);
+        axutil_qname_free((axutil_qname_t *) op_qname, env);
         op_qname = NULL;
     }
 
@@ -860,7 +860,7 @@ axis2_svc_client_send_receive_non_blocking(axis2_svc_client_t *svc_client,
 AXIS2_EXTERN axis2_op_client_t *AXIS2_CALL
 axis2_svc_client_create_op_client(axis2_svc_client_t *svc_client,
     const axutil_env_t *env,
-    const axis2_qname_t *op_qname)
+    const axutil_qname_t *op_qname)
 {
     axis2_op_t *op = NULL;
 
@@ -1039,12 +1039,12 @@ axis2_svc_client_create_annonymous_svc(axis2_svc_client_t *svc_client,
      later in the convenience API; if you use
      this constructor then you can't expect any magic!
     */
-    axis2_qname_t *tmp_qname;
+    axutil_qname_t *tmp_qname;
     axis2_svc_t *svc;
     axis2_op_t *op_out_in, *op_out_only, *op_robust_out_only;
     axis2_phases_info_t *info = NULL;
 
-    tmp_qname = axis2_qname_create(env, AXIS2_ANON_SERVICE, NULL, NULL);
+    tmp_qname = axutil_qname_create(env, AXIS2_ANON_SERVICE, NULL, NULL);
 
     if (!tmp_qname)
     {
@@ -1059,9 +1059,9 @@ axis2_svc_client_create_annonymous_svc(axis2_svc_client_t *svc_client,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_qname_free(tmp_qname, env);
+    axutil_qname_free(tmp_qname, env);
 
-    tmp_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
+    tmp_qname = axutil_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
 
     if (!tmp_qname)
     {
@@ -1069,10 +1069,10 @@ axis2_svc_client_create_annonymous_svc(axis2_svc_client_t *svc_client,
         return NULL;
     }
     op_out_in = axis2_op_create_with_qname(env, tmp_qname);
-    axis2_qname_free(tmp_qname, env);
+    axutil_qname_free(tmp_qname, env);
 
 
-    tmp_qname = axis2_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
+    tmp_qname = axutil_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
 
     if (!tmp_qname)
     {
@@ -1080,9 +1080,9 @@ axis2_svc_client_create_annonymous_svc(axis2_svc_client_t *svc_client,
         return NULL;
     }
     op_out_only = axis2_op_create_with_qname(env, tmp_qname);
-    axis2_qname_free(tmp_qname, env);
+    axutil_qname_free(tmp_qname, env);
 
-    tmp_qname = axis2_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
+    tmp_qname = axutil_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
 
     if (!tmp_qname)
     {
@@ -1090,7 +1090,7 @@ axis2_svc_client_create_annonymous_svc(axis2_svc_client_t *svc_client,
         return NULL;
     }
     op_robust_out_only = axis2_op_create_with_qname(env, tmp_qname);
-    axis2_qname_free(tmp_qname, env);
+    axutil_qname_free(tmp_qname, env);
 
     if (!op_out_in || !op_out_only || !op_robust_out_only)
     {

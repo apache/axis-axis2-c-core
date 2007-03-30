@@ -30,7 +30,7 @@
  */
 
 #include <axis2_defines.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_handler.h>
 
 #ifdef __cplusplus
@@ -59,7 +59,7 @@ extern "C"
      * @return returns a pointer to the QName, returns a reference not a 
      * cloned copy
      */
-    AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_string_t *AXIS2_CALL
     axis2_disp_checker_get_name(const axis2_disp_checker_t *disp_checker,
         const axutil_env_t *env);
 
@@ -73,7 +73,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_disp_checker_set_name(axis2_disp_checker_t *disp_checker,
         const axutil_env_t *env,
-        const axis2_string_t *name);
+        const axutil_string_t *name);
 
     /**
      * Frees dispatcher checker.

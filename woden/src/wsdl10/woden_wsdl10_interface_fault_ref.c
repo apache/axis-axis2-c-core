@@ -42,8 +42,8 @@ struct woden_wsdl10_interface_fault_ref_impl
     axutil_hash_t *methods;
 
     void *f_direction;
-    axis2_qname_t *f_msg_qname;
-    axis2_qname_t *f_qname;
+    axutil_qname_t *f_msg_qname;
+    axutil_qname_t *f_qname;
 };
 
 #define INTF_TO_IMPL(interface_fault_ref) ((woden_wsdl10_interface_fault_ref_impl_t *) interface_fault_ref)
@@ -96,9 +96,9 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_interface_fault_ref_set_qname(
     void *interface_fault_ref,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_interface_fault_ref_get_qname(
     void *interface_fault_ref,
     const axutil_env_t *env);
@@ -108,9 +108,9 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_interface_fault_ref_set_msg_qname(
     void *interface_fault_ref,
     const axutil_env_t *env,
-    axis2_qname_t *element);
+    axutil_qname_t *element);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_interface_fault_ref_get_msg_qname(
     void *interface_fault_ref,
     const axutil_env_t *env);
@@ -605,13 +605,13 @@ woden_wsdl10_interface_fault_ref_free(void *interface_fault_ref,
 
     if (interface_fault_ref_impl->f_qname)
     {
-        axis2_qname_free(interface_fault_ref_impl->f_qname, env);
+        axutil_qname_free(interface_fault_ref_impl->f_qname, env);
         interface_fault_ref_impl->f_qname = NULL;
     }
 
     if (interface_fault_ref_impl->f_msg_qname)
     {
-        axis2_qname_free(interface_fault_ref_impl->f_msg_qname, env);
+        axutil_qname_free(interface_fault_ref_impl->f_msg_qname, env);
         interface_fault_ref_impl->f_msg_qname = NULL;
     }
 
@@ -793,7 +793,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_interface_fault_ref_set_qname(
     void *interface_fault_ref,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     woden_wsdl10_interface_fault_ref_impl_t *interface_fault_ref_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -806,13 +806,13 @@ woden_wsdl10_interface_fault_ref_set_qname(
 
     if (interface_fault_ref_impl->f_qname)
     {
-        axis2_qname_free(interface_fault_ref_impl->f_qname, env);
+        axutil_qname_free(interface_fault_ref_impl->f_qname, env);
     }
-    interface_fault_ref_impl->f_qname = axis2_qname_clone(qname, env);
+    interface_fault_ref_impl->f_qname = axutil_qname_clone(qname, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_interface_fault_ref_get_qname(
     void *interface_fault_ref,
     const axutil_env_t *env)
@@ -833,7 +833,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_interface_fault_ref_set_msg_qname(
     void *interface_fault_ref,
     const axutil_env_t *env,
-    axis2_qname_t *element)
+    axutil_qname_t *element)
 {
     woden_wsdl10_interface_fault_ref_impl_t *interface_fault_ref_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -846,13 +846,13 @@ woden_wsdl10_interface_fault_ref_set_msg_qname(
 
     if (interface_fault_ref_impl->f_msg_qname)
     {
-        axis2_qname_free(interface_fault_ref_impl->f_msg_qname, env);
+        axutil_qname_free(interface_fault_ref_impl->f_msg_qname, env);
     }
-    interface_fault_ref_impl->f_msg_qname = axis2_qname_clone(element, env);
+    interface_fault_ref_impl->f_msg_qname = axutil_qname_clone(element, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_interface_fault_ref_get_msg_qname(
     void *interface_fault_ref,
     const axutil_env_t *env)

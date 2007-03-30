@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#include <axis2_properties.h>
-#include <axis2_string.h>
+#include <axutil_properties.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 
 
@@ -24,31 +24,31 @@
 #define MAX_ALLOC (MAX_SIZE * 64)
 
 axis2_char_t*
-axis2_properties_read(FILE* input,
+axutil_properties_read(FILE* input,
     const axutil_env_t* env);
 
 axis2_char_t*
-axis2_properties_read_next(axis2_char_t* cur);
+axutil_properties_read_next(axis2_char_t* cur);
 
 axis2_char_t*
-axis2_properties_trunk_and_dup(axis2_char_t* start, 
+axutil_properties_trunk_and_dup(axis2_char_t* start, 
     axis2_char_t* end,
     const axutil_env_t* env);
 
-struct axis2_properties
+struct axutil_properties
 {
     axutil_hash_t *prop_hash;
 };
 
-AXIS2_EXTERN axis2_properties_t *AXIS2_CALL
-axis2_properties_create(const axutil_env_t *env)
+AXIS2_EXTERN axutil_properties_t *AXIS2_CALL
+axutil_properties_create(const axutil_env_t *env)
 {
-    axis2_properties_t *properties = NULL;
+    axutil_properties_t *properties = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    properties= (axis2_properties_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_properties_t));
+    properties= (axutil_properties_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axutil_properties_t));
 
     if (!properties)
     {
@@ -61,7 +61,7 @@ axis2_properties_create(const axutil_env_t *env)
 }
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_properties_free(axis2_properties_t *properties,
+axutil_properties_free(axutil_properties_t *properties,
     const axutil_env_t *env)
 {
     axis2_char_t *key = NULL;
@@ -96,7 +96,7 @@ axis2_properties_free(axis2_properties_t *properties,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_properties_get_property(axis2_properties_t *properties,
+axutil_properties_get_property(axutil_properties_t *properties,
     const axutil_env_t *env,
     axis2_char_t *key)
 {
@@ -107,7 +107,7 @@ axis2_properties_get_property(axis2_properties_t *properties,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_properties_set_property(axis2_properties_t *properties,
+axutil_properties_set_property(axutil_properties_t *properties,
     const axutil_env_t *env,
     axis2_char_t *key,
     axis2_char_t *value)
@@ -121,14 +121,14 @@ axis2_properties_set_property(axis2_properties_t *properties,
 }
 
 AXIS2_EXTERN axutil_hash_t* AXIS2_CALL
-axis2_properties_get_all(axis2_properties_t *properties,
+axutil_properties_get_all(axutil_properties_t *properties,
     const axutil_env_t *env)
 {
     return properties-> prop_hash;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_properties_store(axis2_properties_t *properties,
+axutil_properties_store(axutil_properties_t *properties,
     const axutil_env_t *env,
     FILE *output)
 {
@@ -159,7 +159,7 @@ axis2_properties_store(axis2_properties_t *properties,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_properties_load(axis2_properties_t *properties,
+axutil_properties_load(axutil_properties_t *properties,
     const axutil_env_t *env,
     axis2_char_t *input_filename)
 {
@@ -187,7 +187,7 @@ axis2_properties_load(axis2_properties_t *properties,
     {
         return AXIS2_FAILURE;
     }
-    buffer = axis2_properties_read(input, env);
+    buffer = axutil_properties_read(input, env);
 
     if (!buffer)
     {
@@ -200,8 +200,8 @@ axis2_properties_load(axis2_properties_t *properties,
 
 
 
-    for (cur = axis2_properties_read_next(buffer); *cur ;
-        cur = axis2_properties_read_next(++cur))
+    for (cur = axutil_properties_read_next(buffer); *cur ;
+        cur = axutil_properties_read_next(++cur))
     {
         if (*cur == '\r')
         {
@@ -225,7 +225,7 @@ axis2_properties_load(axis2_properties_t *properties,
                 return AXIS2_FAILURE;
             }
             status = EQUAL_FOUND;
-            key =  axis2_properties_trunk_and_dup(tag, cur, env);
+            key =  axutil_properties_trunk_and_dup(tag, cur, env);
         }
         /* right next to the equal found */
         else if (status == EQUAL_FOUND)
@@ -239,7 +239,7 @@ axis2_properties_load(axis2_properties_t *properties,
             *cur = '\0';
             if (status == LINE_HALFWAY)
             {
-                tag =  axis2_properties_trunk_and_dup(tag, cur, env);
+                tag =  axutil_properties_trunk_and_dup(tag, cur, env);
                 axutil_hash_set(prop_hash,
                     key, AXIS2_HASH_KEY_STRING, tag);
             }
@@ -249,7 +249,7 @@ axis2_properties_load(axis2_properties_t *properties,
     if (status == LINE_HALFWAY)
     {
         *cur = '\0';
-        tag =  axis2_properties_trunk_and_dup(tag, cur, env);
+        tag =  axutil_properties_trunk_and_dup(tag, cur, env);
         axutil_hash_set(prop_hash,
             key, AXIS2_HASH_KEY_STRING, tag);
         status = LINE_STARTED;
@@ -272,7 +272,7 @@ axis2_properties_load(axis2_properties_t *properties,
 
 
 axis2_char_t*
-axis2_properties_read_next(axis2_char_t* cur)
+axutil_properties_read_next(axis2_char_t* cur)
 {
     /* ignore comment */
     if (*cur == '#')
@@ -290,7 +290,7 @@ axis2_properties_read_next(axis2_char_t* cur)
 }
 
 axis2_char_t*
-axis2_properties_trunk_and_dup(axis2_char_t* start, 
+axutil_properties_trunk_and_dup(axis2_char_t* start, 
     axis2_char_t* end,
     const axutil_env_t* env)
 {
@@ -302,7 +302,7 @@ axis2_properties_trunk_and_dup(axis2_char_t* start,
 }
 
 axis2_char_t*
-axis2_properties_read(FILE* input,
+axutil_properties_read(FILE* input,
     const axutil_env_t* env)
 {
     int nread = 0;

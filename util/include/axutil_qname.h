@@ -15,18 +15,18 @@
 * limitations under the License.
 */
 
-#ifndef AXIS2_QNAME_H
-#define AXIS2_QNAME_H
+#ifndef AXUTIL_QNAME_H
+#define AXUTIL_QNAME_H
 
 /**
- * @file axis2_qname.h
+ * @file axutil_qname.h
  * @brief represents a qualified name
  */
 
 #include <axis2_utils_defines.h>
 #include <axutil_env.h>
 
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -34,12 +34,12 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axis2_qname qname
+     * @defgroup axutil_qname qname
      * @ingroup axis2_util
      * @{
      */
 
-    typedef struct axis2_qname axis2_qname_t;
+    typedef struct axutil_qname axutil_qname_t;
 
     /**
      *   creates a qname struct
@@ -54,8 +54,8 @@ extern "C"
      * @return a pointer to newly created qname struct
      */
 
-    AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
-    axis2_qname_create(const axutil_env_t *env,
+    AXIS2_EXTERN axutil_qname_t * AXIS2_CALL
+    axutil_qname_create(const axutil_env_t *env,
         const axis2_char_t * localpart,
         const axis2_char_t * namespace_uri,
         const axis2_char_t * prefix);
@@ -63,12 +63,12 @@ extern "C"
 
     /**
      * returns a newly created qname using a string genarated from
-     * axis2_qname_to_string method
+     * axutil_qname_to_string method
      * freeing the returned qname is users responsibility
      */
 
-    AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
-    axis2_qname_create_from_string(const axutil_env_t *env,
+    AXIS2_EXTERN axutil_qname_t* AXIS2_CALL
+    axutil_qname_create_from_string(const axutil_env_t *env,
         const axis2_char_t *string);
 
     /**
@@ -76,7 +76,7 @@ extern "C"
      *  @return Status code
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_qname_free(struct axis2_qname * qname,
+    axutil_qname_free(struct axutil_qname * qname,
         const axutil_env_t *env);
 
     /**
@@ -87,9 +87,9 @@ extern "C"
      */
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-    axis2_qname_equals(const struct axis2_qname * qname,
+    axutil_qname_equals(const struct axutil_qname * qname,
         const axutil_env_t *env,
-        const struct axis2_qname * qname1);
+        const struct axutil_qname * qname1);
     /**
     * clones a given qname
     * @param qname , qname struct instance to be cloned
@@ -97,20 +97,20 @@ extern "C"
     * @returns the newly cloned qname struct instance
     */
 
-    AXIS2_EXTERN struct axis2_qname* AXIS2_CALL
-    axis2_qname_clone(struct axis2_qname *qname,
+    AXIS2_EXTERN struct axutil_qname* AXIS2_CALL
+    axutil_qname_clone(struct axutil_qname *qname,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_qname_get_uri(const struct axis2_qname *qname,
+    axutil_qname_get_uri(const struct axutil_qname *qname,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_qname_get_prefix(const struct axis2_qname *qname,
+    axutil_qname_get_prefix(const struct axutil_qname *qname,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_qname_get_localpart(const struct axis2_qname *qname,
+    axutil_qname_get_localpart(const struct axutil_qname *qname,
         const axutil_env_t *env);
 
     /**
@@ -120,7 +120,7 @@ extern "C"
      * The returned char* is freed when qname free function is called.
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_qname_to_string(struct axis2_qname *qname,
+    axutil_qname_to_string(struct axutil_qname *qname,
         const axutil_env_t *env);
 
     /** @} */

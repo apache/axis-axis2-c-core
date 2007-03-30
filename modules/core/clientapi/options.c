@@ -53,7 +53,7 @@ struct axis2_options
 
     axis2_bool_t manage_session;
     axis2_bool_t enable_mtom;
-    axis2_string_t *soap_action;
+    axutil_string_t *soap_action;
     axis2_bool_t xml_parser_reset;
 };
 
@@ -698,14 +698,14 @@ axis2_options_free(axis2_options_t *options,
         for (hi = axutil_hash_first(options->properties, env);
             hi; hi = axutil_hash_next(env, hi))
         {
-            axis2_property_t *property = NULL;
+            axutil_property_t *property = NULL;
 
             axutil_hash_this(hi, &key, NULL, &val);
-            property = (axis2_property_t *) val;
+            property = (axutil_property_t *) val;
 
             if (property)
             {
-                axis2_property_free(property, env);
+                axutil_property_free(property, env);
             }
         }
         axutil_hash_free(options->properties, env);
@@ -723,7 +723,7 @@ axis2_options_free(axis2_options_t *options,
 
     if (options->soap_action)
     {
-        axis2_string_free(options->soap_action, env);
+        axutil_string_free(options->soap_action, env);
     }
 
     AXIS2_FREE(env->allocator, options);
@@ -770,11 +770,11 @@ axis2_options_set_enable_mtom(axis2_options_t *options,
 
     if (enable_mtom)
     {
-        axis2_property_t *property = axis2_property_create(env);
+        axutil_property_t *property = axutil_property_create(env);
         if (property)
         {
-            axis2_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-            axis2_property_set_value(property, env, axis2_strdup(env, AXIS2_VALUE_TRUE));
+            axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
+            axutil_property_set_value(property, env, axis2_strdup(env, AXIS2_VALUE_TRUE));
             axis2_options_set_property(options, env, AXIS2_ENABLE_MTOM, property);
         }
     }
@@ -788,7 +788,7 @@ axis2_options_get_enable_mtom(const axis2_options_t *options,
     return options->enable_mtom;
 }
 
-AXIS2_EXTERN axis2_string_t *AXIS2_CALL
+AXIS2_EXTERN axutil_string_t *AXIS2_CALL
 axis2_options_get_soap_action(const axis2_options_t *options,
     const axutil_env_t *env)
 {
@@ -800,19 +800,19 @@ axis2_options_get_soap_action(const axis2_options_t *options,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_options_set_soap_action(axis2_options_t *options,
     const axutil_env_t *env,
-    axis2_string_t *soap_action)
+    axutil_string_t *soap_action)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if (options->soap_action)
     {
-        axis2_string_free(options->soap_action, env);
+        axutil_string_free(options->soap_action, env);
         options->soap_action = NULL;
     }
 
     if (soap_action)
     {
-        options->soap_action = axis2_string_clone(soap_action, env);
+        options->soap_action = axutil_string_clone(soap_action, env);
     }
     return AXIS2_SUCCESS;
 }

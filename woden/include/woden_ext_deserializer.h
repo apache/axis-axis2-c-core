@@ -29,9 +29,9 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axutil_hash.h>
 #include <axiom_node.h>
 #include <woden.h>
@@ -72,7 +72,7 @@ struct woden_ext_deserializer_ops
             const axutil_env_t *env,
             axis2_char_t *parent_type,
             void *parent,
-            axis2_qname_t *ext_type,
+            axutil_qname_t *ext_type,
             axiom_node_t *ext_el_node,
             void *desc,
             woden_ext_registry_t *ext_reg);

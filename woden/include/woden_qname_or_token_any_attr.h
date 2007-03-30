@@ -91,7 +91,7 @@ struct woden_qname_or_token_any_attr_ops
             const axutil_env_t *env);
 
 
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_qname) (
             void *token_attr,
             const axutil_env_t *env);
@@ -107,7 +107,7 @@ struct woden_qname_or_token_any_attr_ops
    
     /*
      * Convert a string of type "Union of xs:QName or xs:token #any" to a 
-     * axis2_qname_t or a axis2_char_t.
+     * axutil_qname_t or a axis2_char_t.
      * A null argument will return a null value.
      * Any conversion error will be reported and a null value will be returned.
      */
@@ -136,7 +136,7 @@ woden_qname_or_token_any_attr_create(
         const axutil_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
-        axis2_qname_t *attr_type,
+        axutil_qname_t *attr_type,
         axis2_char_t *attr_value);
 
 

@@ -36,7 +36,7 @@
  * @{
  */
 
-#include <axis2_param_container.h>
+#include <axutil_param_container.h>
 #include <axis2_svc.h>
 #include <axis2_msg_recv.h>
 #include <axutil_array_list.h>
@@ -58,7 +58,7 @@ extern "C"
 
     struct axis2_svc;
     struct axis2_msg_recv;
-    struct axis2_param_container;
+    struct axutil_param_container;
     struct axis2_module_desc;
     struct axis2_op;
     struct axis2_relates_to;
@@ -113,7 +113,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_add_param(axis2_op_t *op,
         const axutil_env_t *env,
-        axis2_param_t *param);
+        axutil_param_t *param);
 
     /**
      * Gets named parameter.
@@ -123,7 +123,7 @@ extern "C"
      * @return pointer to named parameter if exists, else NULL. Returns a
      * reference, not a cloned copy
      */
-    AXIS2_EXTERN axis2_param_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
     axis2_op_get_param(const axis2_op_t *op,
         const axutil_env_t *env,
         const axis2_char_t *name);
@@ -187,7 +187,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_set_qname(axis2_op_t *op,
         const axutil_env_t *env,
-        const axis2_qname_t *qname);
+        const axutil_qname_t *qname);
 
     /**
      * Gets operation QName.
@@ -195,7 +195,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to QName, returns a reference, not a cloned copy
      */
-    AXIS2_EXTERN const axis2_qname_t *AXIS2_CALL
+    AXIS2_EXTERN const axutil_qname_t *AXIS2_CALL
     axis2_op_get_qname(void *op,
         const axutil_env_t *env);
 
@@ -437,7 +437,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_op_add_module_qname(axis2_op_t *op,
         const axutil_env_t *env,
-        const axis2_qname_t *module_qname);
+        const axutil_qname_t *module_qname);
 
     /**
      * Gets all module QNames as a list.
@@ -558,7 +558,7 @@ extern "C"
     axis2_op_get_wsamapping_list(axis2_op_t *op,
         const axutil_env_t *env);
 
-    AXIS2_EXTERN axis2_param_container_t *AXIS2_CALL
+    AXIS2_EXTERN axutil_param_container_t *AXIS2_CALL
     axis2_op_get_param_container(const axis2_op_t *op,
         const axutil_env_t *env);
 
@@ -578,7 +578,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
     axis2_op_create_with_qname(const axutil_env_t *env,
-        const axis2_qname_t *name);
+        const axutil_qname_t *name);
 
     /**
      * Frees the operation given as a void pointer. This method would cast the 

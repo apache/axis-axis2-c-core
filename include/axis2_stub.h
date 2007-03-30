@@ -34,7 +34,7 @@
 #include <axis2_svc_client.h>
 #include <axis2_options.h>
 #include <axiom_xml_reader.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 
 /** Constant value representing SOAP version 1.1 */
 #define AXIOM_SOAP_11 0

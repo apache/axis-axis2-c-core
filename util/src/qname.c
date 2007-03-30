@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axutil_env.h>
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
 #include <string.h>
 #include <stdio.h>
 
-struct axis2_qname
+struct axutil_qname
 {
     /** localpart of qname is mandatory */
     axis2_char_t *localpart;
@@ -35,14 +35,14 @@ struct axis2_qname
     unsigned int ref;
 };
 
-AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
-axis2_qname_create(const axutil_env_t *env,
+AXIS2_EXTERN axutil_qname_t * AXIS2_CALL
+axutil_qname_create(const axutil_env_t *env,
     const axis2_char_t *localpart,
     const axis2_char_t *namespace_uri,
     const axis2_char_t *prefix)
 {
 
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     /* localpart can't be null */
@@ -53,8 +53,8 @@ axis2_qname_create(const axutil_env_t *env,
         return NULL;
     }
 
-    qname = (axis2_qname_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_qname_t));
+    qname = (axutil_qname_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axutil_qname_t));
     if (!qname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -73,7 +73,7 @@ axis2_qname_create(const axutil_env_t *env,
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
-        axis2_qname_free(qname, env);
+        axutil_qname_free(qname, env);
         return NULL;
     }
     
@@ -86,7 +86,7 @@ axis2_qname_create(const axutil_env_t *env,
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
-        axis2_qname_free(qname, env);
+        axutil_qname_free(qname, env);
         return NULL;
     }
     
@@ -99,7 +99,7 @@ axis2_qname_create(const axutil_env_t *env,
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
-        axis2_qname_free(qname, env);
+        axutil_qname_free(qname, env);
         return NULL;
     }
 
@@ -108,7 +108,7 @@ axis2_qname_create(const axutil_env_t *env,
 
 
 AXIS2_EXTERN void AXIS2_CALL
-axis2_qname_free(axis2_qname_t * qname,
+axutil_qname_free(axutil_qname_t * qname,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -144,9 +144,9 @@ axis2_qname_free(axis2_qname_t * qname,
 
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
-axis2_qname_equals(const axis2_qname_t *qname,
+axutil_qname_equals(const axutil_qname_t *qname,
     const axutil_env_t *env,
-    const axis2_qname_t *qname2)
+    const axutil_qname_t *qname2)
 {
     int uris_differ = 0;
     int localparts_differ = 0;
@@ -186,8 +186,8 @@ axis2_qname_equals(const axis2_qname_t *qname,
 }
 
 
-AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
-axis2_qname_clone(axis2_qname_t *qname,
+AXIS2_EXTERN axutil_qname_t* AXIS2_CALL
+axutil_qname_clone(axutil_qname_t *qname,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -203,14 +203,14 @@ axis2_qname_clone(axis2_qname_t *qname,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_qname_get_uri(const axis2_qname_t *qname,
+axutil_qname_get_uri(const axutil_qname_t *qname,
     const axutil_env_t *env)
 {
     return qname->namespace_uri;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_qname_get_prefix(const axis2_qname_t *qname,
+axutil_qname_get_prefix(const axutil_qname_t *qname,
     const axutil_env_t *env)
 {
     return qname->prefix;
@@ -218,14 +218,14 @@ axis2_qname_get_prefix(const axis2_qname_t *qname,
 
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_qname_get_localpart(const axis2_qname_t *qname,
+axutil_qname_get_localpart(const axutil_qname_t *qname,
     const axutil_env_t *env)
 {
     return qname->localpart;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_qname_to_string(axis2_qname_t *qname,
+axutil_qname_to_string(axutil_qname_t *qname,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -276,8 +276,8 @@ axis2_qname_to_string(axis2_qname_t *qname,
     return qname->qname_string;
 }
 
-AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
-axis2_qname_create_from_string(const axutil_env_t *env,
+AXIS2_EXTERN axutil_qname_t* AXIS2_CALL
+axutil_qname_create_from_string(const axutil_env_t *env,
     const axis2_char_t *qstring)
 {
     axis2_char_t *localpart = NULL;
@@ -286,7 +286,7 @@ axis2_qname_create_from_string(const axutil_env_t *env,
     axis2_char_t *index = NULL;
     axis2_char_t *next = NULL;
     axis2_char_t *temp_string = NULL;
-    axis2_qname_t *qname = NULL;
+    axutil_qname_t *qname = NULL;
     if (!qstring || axis2_strcmp(qstring, "") == 0)
         return NULL;
 
@@ -308,18 +308,18 @@ axis2_qname_create_from_string(const axutil_env_t *env,
             next[index - next] = '\0';
             namespace_uri = next;
 
-            qname = axis2_qname_create(env, localpart, namespace_uri, prefix);
+            qname = axutil_qname_create(env, localpart, namespace_uri, prefix);
         }
         else
         {
             /** only uri and localpart is available */
-            qname = axis2_qname_create(env, localpart, next, NULL);
+            qname = axutil_qname_create(env, localpart, next, NULL);
         }
     }
     else
     {
         /** only localpart is there in this qname */
-        qname = axis2_qname_create(env, temp_string, NULL, NULL);
+        qname = axutil_qname_create(env, temp_string, NULL, NULL);
     }
     if (temp_string)
     {

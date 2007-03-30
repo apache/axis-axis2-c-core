@@ -28,7 +28,7 @@
 #include <axis2_utils_defines.h>
 #include <axutil_env.h>
 #include <axutil_allocator.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axutil_hash.h>
 #include <axiom_mime_const.h>
 

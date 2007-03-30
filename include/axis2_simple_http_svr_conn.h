@@ -96,7 +96,7 @@ extern "C"
          * @param svr_conn pointer to server connection struct
          * @param env pointer to environment struct
          */
-        axis2_stream_t* (AXIS2_CALL *
+        axutil_stream_t* (AXIS2_CALL *
                 get_stream)(
                     const axis2_simple_http_svr_conn_t *svr_conn,
                     const axutil_env_t *env);

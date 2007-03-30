@@ -17,7 +17,7 @@
  
 #include <w2c_extension.h>
 #include <w2c_string.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 
 typedef struct w2c_c_code_indenter_ext_impl

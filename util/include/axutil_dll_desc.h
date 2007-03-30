@@ -24,7 +24,7 @@
  */
 
 #include <axis2_utils_defines.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axutil_error.h>
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>

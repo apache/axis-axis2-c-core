@@ -45,7 +45,7 @@ struct woden_interface_msg_ref_impl
     void *f_direction;
     axis2_char_t *f_msg_content_model;
     void *f_element_decl;
-    axis2_qname_t *f_element_qname;
+    axutil_qname_t *f_element_qname;
     void *f_types;
 };
 
@@ -127,9 +127,9 @@ axis2_status_t AXIS2_CALL
 woden_interface_msg_ref_set_element_qname(
     void *interface_msg_ref,
     const axutil_env_t *env,
-    axis2_qname_t *element);
+    axutil_qname_t *element);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_interface_msg_ref_get_element_qname(
     void *interface_msg_ref,
     const axutil_env_t *env);
@@ -697,7 +697,7 @@ woden_interface_msg_ref_free(void *interface_msg_ref,
 
     if (interface_msg_ref_impl->f_element_qname)
     {
-        axis2_qname_free(interface_msg_ref_impl->f_element_qname, env);
+        axutil_qname_free(interface_msg_ref_impl->f_element_qname, env);
         interface_msg_ref_impl->f_element_qname = NULL;
     }
 
@@ -1012,7 +1012,7 @@ axis2_status_t AXIS2_CALL
 woden_interface_msg_ref_set_element_qname(
     void *interface_msg_ref,
     const axutil_env_t *env,
-    axis2_qname_t *element)
+    axutil_qname_t *element)
 {
     woden_interface_msg_ref_impl_t *interface_msg_ref_impl = NULL;
     axutil_hash_t *super = NULL;
@@ -1025,13 +1025,13 @@ woden_interface_msg_ref_set_element_qname(
 
     if (interface_msg_ref_impl->f_element_qname)
     {
-        axis2_qname_free(interface_msg_ref_impl->f_element_qname, env);
+        axutil_qname_free(interface_msg_ref_impl->f_element_qname, env);
     }
-    interface_msg_ref_impl->f_element_qname = axis2_qname_clone(element, env);
+    interface_msg_ref_impl->f_element_qname = axutil_qname_clone(element, env);
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_interface_msg_ref_get_element_qname(
     void *interface_msg_ref,
     const axutil_env_t *env)

@@ -17,9 +17,9 @@
  
 #include <w2c_properties.h>
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
-#include <axis2_properties.h>
+#include <axutil_properties.h>
 
 /** 
  * @brief
@@ -56,7 +56,7 @@ w2c_properties_create (const axutil_env_t *env,
                         axis2_char_t seperator)
 {
     w2c_properties_impl_t *properties_impl = NULL;
-    axis2_properties_t *main_props = NULL;
+    axutil_properties_t *main_props = NULL;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
     axutil_hash_index_t *hi = NULL;
@@ -75,15 +75,15 @@ w2c_properties_create (const axutil_env_t *env,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-    main_props = axis2_properties_create(env);
+    main_props = axutil_properties_create(env);
     if(! main_props)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-	axis2_properties_load( main_props, env, filename );
+	axutil_properties_load( main_props, env, filename );
 
-    tmp_hash = axis2_properties_get_all( main_props, env);
+    tmp_hash = axutil_properties_get_all( main_props, env);
     
     properties_impl-> prop_hash = axutil_hash_make (env);
     if(! properties_impl-> prop_hash)
@@ -123,7 +123,7 @@ w2c_properties_create (const axutil_env_t *env,
             }
         }
     }
-    axis2_properties_free( main_props, env);
+    axutil_properties_free( main_props, env);
 
 
     properties_impl->properties.ops = 

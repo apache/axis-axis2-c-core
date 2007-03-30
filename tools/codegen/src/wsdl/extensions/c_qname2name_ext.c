@@ -121,7 +121,7 @@ w2c_c_qname2name_ext_engage(w2c_extension_t *extension,
 axis2_char_t* AXIS2_CALL
 w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
             const axutil_env_t *env,
-            axis2_qname_t *qname)
+            axutil_qname_t *qname)
 {
     w2c_c_qname2name_ext_impl_t *impl = NULL;
  
@@ -135,7 +135,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
     
     impl = W2C_QNAME2NAME_MAKER_INTF_TO_IMPL(qname2name_maker);
 
-    key = axis2_qname_to_string(qname, env);
+    key = axutil_qname_to_string(qname, env);
     local = (axis2_char_t*)axutil_hash_get( impl-> qname2name, key,
                          AXIS2_HASH_KEY_STRING );
     if( local != NULL) /* key has been there somewhere */
@@ -143,7 +143,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
         return local;
     }
     /* otherwise */
-    local = axis2_qname_get_localpart( qname, env);
+    local = axutil_qname_get_localpart( qname, env);
     counter = (int)axutil_hash_get( impl-> name2number, local,
                          AXIS2_HASH_KEY_STRING );
     if ( counter == 0 ) /** this means name doesnt exist */

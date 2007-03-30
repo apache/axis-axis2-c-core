@@ -103,7 +103,7 @@ struct woden_types_ops
     get_element_declaration) (
             void *types,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     /*
      * 
@@ -122,7 +122,7 @@ struct woden_types_ops
     get_type_definition) (
             void *types,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 /*
  * Returns a List of Xml Schema objects for all schemas that are referenceable 
  * by the containing WSDL. Examples of schemas that are not referenceable include
@@ -161,7 +161,7 @@ struct woden_types_ops
     is_namespace_in_scope_with_qname) (
             void *types,
             const axutil_env_t *env,
-            axis2_qname_t *qname);
+            axutil_qname_t *qname);
 
     /*
      * 

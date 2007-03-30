@@ -104,27 +104,27 @@ xml_schema_element_t * AXIS2_CALL
 xml_schema_collection_get_element_by_qname(
     xml_schema_collection_t* collection,
     const axutil_env_t *env,
-    axis2_qname_t *qname);
+    axutil_qname_t *qname);
 
 xml_schema_type_t * AXIS2_CALL
 xml_schema_collection_get_type_by_qname(
     xml_schema_collection_t* collection,
     const axutil_env_t *env,
-    axis2_qname_t *schema_type_qname);
+    axutil_qname_t *schema_type_qname);
 
 
 axis2_status_t AXIS2_CALL
 xml_schema_collection_add_unresolved_type(
     xml_schema_collection_t* collection,
     const axutil_env_t *env,
-    axis2_qname_t *qtype,
+    axutil_qname_t *qtype,
     void *receiver);
 
 axis2_status_t AXIS2_CALL
 xml_schema_collection_resolve_type(
     xml_schema_collection_t* collection,
     const axutil_env_t *env,
-    axis2_qname_t *type_qname,
+    axutil_qname_t *type_qname,
     xml_schema_type_t *type);
 
 axis2_char_t * AXIS2_CALL
@@ -555,7 +555,7 @@ xml_schema_element_t * AXIS2_CALL
 xml_schema_collection_get_element_by_qname(
     xml_schema_collection_t* collection,
     const axutil_env_t *env,
-    axis2_qname_t *qname)
+    axutil_qname_t *qname)
 {
     axis2_char_t *uri = NULL;
     xml_schema_t *schema = NULL;
@@ -564,7 +564,7 @@ xml_schema_collection_get_element_by_qname(
 
     collec_impl = AXIS2_INTF_TO_IMPL(collection);
 
-    uri = axis2_qname_get_uri(qname, env);
+    uri = axutil_qname_get_uri(qname, env);
 
     if (collec_impl->namespaces)
         schema = axutil_hash_get(collec_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
@@ -579,7 +579,7 @@ xml_schema_type_t * AXIS2_CALL
 xml_schema_collection_get_type_by_qname(
     xml_schema_collection_t* collection,
     const axutil_env_t *env,
-    axis2_qname_t *schema_type_qname)
+    axutil_qname_t *schema_type_qname)
 {
 
     xml_schema_collection_impl_t *collecion_impl = NULL;
@@ -591,7 +591,7 @@ xml_schema_collection_get_type_by_qname(
     AXIS2_PARAM_CHECK(env->error, schema_type_qname, NULL);
     collecion_impl = AXIS2_INTF_TO_IMPL(collection);
 
-    uri = axis2_qname_get_uri(schema_type_qname, env);
+    uri = axutil_qname_get_uri(schema_type_qname, env);
 
     if (collecion_impl->namespaces && NULL != uri)
         schema = axutil_hash_get(collecion_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
@@ -606,7 +606,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_collection_add_unresolved_type(
     xml_schema_collection_t* collection,
     const axutil_env_t *env,
-    axis2_qname_t *qtype,
+    axutil_qname_t *qtype,
     void *obj)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
@@ -618,7 +618,7 @@ xml_schema_collection_add_unresolved_type(
     AXIS2_PARAM_CHECK(env->error, obj, AXIS2_FAILURE);
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
 
-    qn_string = axis2_qname_to_string(qtype, env);
+    qn_string = axutil_qname_to_string(qtype, env);
     if (collection_impl->unresolved_types &&
             qn_string)
     {
@@ -642,7 +642,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_collection_resolve_type(
     xml_schema_collection_t* collection,
     const axutil_env_t *env,
-    axis2_qname_t *type_qname,
+    axutil_qname_t *type_qname,
     xml_schema_type_t *type)
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
@@ -652,7 +652,7 @@ xml_schema_collection_resolve_type(
     AXIS2_PARAM_CHECK(env->error, type, AXIS2_FAILURE);
 
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
-    qn_string = axis2_qname_to_string(type_qname, env);
+    qn_string = axutil_qname_to_string(type_qname, env);
     if (qn_string && NULL != collection_impl->unresolved_types)
     {
         receivers = axutil_hash_get(collection_impl->unresolved_types,

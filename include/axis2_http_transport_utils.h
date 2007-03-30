@@ -37,7 +37,7 @@
 #include <axis2_conf_ctx.h>
 #include <axutil_hash.h>
 #include <axiom_element.h>
-#include <axis2_stream.h>
+#include <axutil_stream.h>
 #include <axiom_soap_envelope.h>
 #include <axis2_http_chunked_stream.h>
 
@@ -64,21 +64,21 @@ extern "C"
     axis2_http_transport_utils_process_http_post_request(
         const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
-        axis2_stream_t *in_stream,
-        axis2_stream_t *out_stream,
+        axutil_stream_t *in_stream,
+        axutil_stream_t *out_stream,
         const axis2_char_t *content_type,
         const int content_length,
-        axis2_string_t *soap_action_header,
+        axutil_string_t *soap_action_header,
         const axis2_char_t *request_uri);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_http_transport_utils_process_http_get_request(
         const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx,
-        axis2_stream_t *in_stream,
-        axis2_stream_t *out_stream,
+        axutil_stream_t *in_stream,
+        axutil_stream_t *out_stream,
         const axis2_char_t *content_type,
-        axis2_string_t *soap_action_header,
+        axutil_string_t *soap_action_header,
         const axis2_char_t *request_uri,
         axis2_conf_ctx_t *conf_ctx,
         axutil_hash_t *request_params);
@@ -88,7 +88,7 @@ extern "C"
         const axutil_env_t *env, 
         axis2_char_t *request_uri,
         axis2_msg_ctx_t *msg_ctx, 
-        axis2_stream_t *in_stream,
+        axutil_stream_t *in_stream,
         axis2_char_t *content_type);
 
     AXIS2_EXTERN axis2_bool_t AXIS2_CALL

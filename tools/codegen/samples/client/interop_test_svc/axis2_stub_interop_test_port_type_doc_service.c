@@ -54,22 +54,22 @@ axis2_stub_interop_test_port_type_doc_service_create(const axutil_env_t *env,
 void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_t *stub, const axutil_env_t *env)
 {
     axis2_svc_client_t *svc_client = NULL;
-    axis2_qname_t *svc_qname =  NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *svc_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
 
     /* Modifying the Service */
     svc_client = axis2_stub_get_svc_client(stub, env);
     svc = (axis2_svc_t*)axis2_svc_client_get_svc(svc_client, env);
-    axis2_qname_create(env, "InteropTestPortTypeDocService" , NULL, NULL);
+    axutil_qname_create(env, "InteropTestPortTypeDocService" , NULL, NULL);
     axis2_svc_set_qname(svc, env, svc_qname);
 
     /* creating the operations*/
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoString" ,
             "http://soapinterop.org",
             NULL);
@@ -81,7 +81,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoStringArray" ,
             "http://soapinterop.org",
             NULL);
@@ -93,7 +93,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoInteger" ,
             "http://soapinterop.org",
             NULL);
@@ -105,7 +105,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoIntegerArray" ,
             "http://soapinterop.org",
             NULL);
@@ -117,7 +117,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoFloat" ,
             "http://soapinterop.org",
             NULL);
@@ -129,7 +129,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoFloatArray" ,
             "http://soapinterop.org",
             NULL);
@@ -141,7 +141,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoStruct" ,
             "http://soapinterop.org",
             NULL);
@@ -153,7 +153,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoStructArray" ,
             "http://soapinterop.org",
             NULL);
@@ -165,7 +165,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoVoid" ,
             "http://soapinterop.org",
             NULL);
@@ -177,7 +177,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoBase64" ,
             "http://soapinterop.org",
             NULL);
@@ -189,7 +189,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoDate" ,
             "http://soapinterop.org",
             NULL);
@@ -201,7 +201,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoHexBinary" ,
             "http://soapinterop.org",
             NULL);
@@ -213,7 +213,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoDecimal" ,
             "http://soapinterop.org",
             NULL);
@@ -225,7 +225,7 @@ void axis2_stub_interop_test_port_type_doc_service_populate_services(axis2_stub_
 
 
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoBoolean" ,
             "http://soapinterop.org",
             NULL);
@@ -267,7 +267,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_st
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content0;
@@ -291,7 +291,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string(axis2_st
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoString" ,
             "http://soapinterop.org",
             NULL);
@@ -371,7 +371,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(ax
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content2;
@@ -395,7 +395,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_string_array(ax
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoStringArray" ,
             "http://soapinterop.org",
             NULL);
@@ -475,7 +475,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_s
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content4;
@@ -499,7 +499,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer(axis2_s
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoInteger" ,
             "http://soapinterop.org",
             NULL);
@@ -579,7 +579,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(a
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content6;
@@ -603,7 +603,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_integer_array(a
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoIntegerArray" ,
             "http://soapinterop.org",
             NULL);
@@ -683,7 +683,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stu
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content8;
@@ -707,7 +707,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float(axis2_stu
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoFloat" ,
             "http://soapinterop.org",
             NULL);
@@ -787,7 +787,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axi
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content10;
@@ -811,7 +811,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_float_array(axi
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoFloatArray" ,
             "http://soapinterop.org",
             NULL);
@@ -891,7 +891,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_st
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content12;
@@ -915,7 +915,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct(axis2_st
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoStruct" ,
             "http://soapinterop.org",
             NULL);
@@ -995,7 +995,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(ax
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content14;
@@ -1019,7 +1019,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_struct_array(ax
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoStructArray" ,
             "http://soapinterop.org",
             NULL);
@@ -1099,7 +1099,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content16;
@@ -1123,7 +1123,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_void(axis2_stub
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoVoid" ,
             "http://soapinterop.org",
             NULL);
@@ -1203,7 +1203,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_st
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content18;
@@ -1227,7 +1227,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_base64(axis2_st
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoBase64" ,
             "http://soapinterop.org",
             NULL);
@@ -1307,7 +1307,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content20;
@@ -1331,7 +1331,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_date(axis2_stub
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoDate" ,
             "http://soapinterop.org",
             NULL);
@@ -1411,7 +1411,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content22;
@@ -1435,7 +1435,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_hex_binary(axis
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoHexBinary" ,
             "http://soapinterop.org",
             NULL);
@@ -1515,7 +1515,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_s
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content24;
@@ -1539,7 +1539,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_decimal(axis2_s
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoDecimal" ,
             "http://soapinterop.org",
             NULL);
@@ -1619,7 +1619,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_s
     axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *soap_action = NULL;
-    axis2_qname_t *op_qname =  NULL;
+    axutil_qname_t *op_qname =  NULL;
     axiom_node_t *payload = NULL;
 
     payload = content26;
@@ -1643,7 +1643,7 @@ axiom_node_t* axis2_stub_interop_test_port_type_doc_service_echo_boolean(axis2_s
 
     axis2_options_set_soap_version(options, env, AXIOM_SOAP11);
 
-    op_qname = axis2_qname_create(env,
+    op_qname = axutil_qname_create(env,
             "echoBoolean" ,
             "http://soapinterop.org",
             NULL);

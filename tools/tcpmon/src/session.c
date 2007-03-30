@@ -16,12 +16,12 @@
  */
 
 #include <stdio.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_error.h>
 #include <tcpmon_util.h>
 #include <axis2_thread.h>
-#include <axis2_network_handler.h>
+#include <axutil_network_handler.h>
 #include <axutil_array_list.h>
 
 #include "tcpmon_session_local.h"
@@ -468,7 +468,7 @@ server_funct(axis2_thread_t *thd, void *data)
     session_impl = thread_data -> session_impl;
     env = thread_data -> env;
 
-    listen_socket = axis2_network_handler_create_server_socket
+    listen_socket = axutil_network_handler_create_server_socket
             (env, session_impl->listen_port);
     if (-1 == listen_socket)
     {
@@ -486,7 +486,7 @@ server_funct(axis2_thread_t *thd, void *data)
     }
     while (session_impl-> is_running)
     {
-        socket = axis2_network_handler_svr_socket_accept(env,
+        socket = axutil_network_handler_svr_socket_accept(env,
                 listen_socket);
         if (socket == -1)
         {
@@ -523,7 +523,7 @@ server_funct(axis2_thread_t *thd, void *data)
 
         AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, request_thread);
     }
-    axis2_network_handler_close_socket(env, listen_socket);
+    axutil_network_handler_close_socket(env, listen_socket);
 
     return NULL;
 }

@@ -17,7 +17,7 @@
  
 #include "writer_protected.h"
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 #include <w2c_engine_configuration.h>
 #include <w2c_properties.h>

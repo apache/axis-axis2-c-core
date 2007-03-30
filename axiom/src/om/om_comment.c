@@ -17,7 +17,7 @@
 
 #include <axiom_comment.h>
 #include "axiom_node_internal.h"
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 struct axiom_comment
 {

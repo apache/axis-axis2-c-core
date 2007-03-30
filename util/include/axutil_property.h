@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_PROPERTY_H
-#define AXIS2_PROPERTY_H
+#ifndef AXUTIL_PROPERTY_H
+#define AXUTIL_PROPERTY_H
 
 #include <axis2_utils_defines.h>
 #include <axutil_error.h>
@@ -30,19 +30,19 @@ extern "C"
 #endif
 
     /**
-     * @defgroup axis2_property property
+     * @defgroup axutil_property property
      * @ingroup axis2_util
      * @{
      */
 
-    typedef struct axis2_property axis2_property_t;
+    typedef struct axutil_property axutil_property_t;
 
     /**
      * create new property
      * @return property newly created property
      */
-    AXIS2_EXTERN axis2_property_t * AXIS2_CALL
-    axis2_property_create(
+    AXIS2_EXTERN axutil_property_t * AXIS2_CALL
+    axutil_property_create(
         const axutil_env_t *env);
 
     /**
@@ -58,8 +58,8 @@ extern "C"
      * @param value value of the property
      * @return property newly created property
      */
-    AXIS2_EXTERN axis2_property_t * AXIS2_CALL
-    axis2_property_create_with_args(
+    AXIS2_EXTERN axutil_property_t * AXIS2_CALL
+    axutil_property_create_with_args(
         const axutil_env_t *env,
         axis2_scope_t scope,
         axis2_bool_t own_value,
@@ -67,40 +67,40 @@ extern "C"
         void *value);
 
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_property_free(axis2_property_t *property,
+    axutil_property_free(axutil_property_t *property,
         const axutil_env_t *env);
 
     /**
      * Default scope is AXIS2_SCOPE_REQUEST
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_property_set_scope(axis2_property_t *property,
+    axutil_property_set_scope(axutil_property_t *property,
         const axutil_env_t *env,
         axis2_scope_t scope);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_property_set_free_func(axis2_property_t *property,
+    axutil_property_set_free_func(axutil_property_t *property,
         const axutil_env_t *env,
         AXIS2_FREE_VOID_ARG free_func);
 
 /*************************** Function macros **********************************/
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_property_set_value(axis2_property_t *property,
+    axutil_property_set_value(axutil_property_t *property,
         const axutil_env_t *env,
         void *value);
         
     AXIS2_EXTERN void * AXIS2_CALL
-    axis2_property_get_value(axis2_property_t *property,
+    axutil_property_get_value(axutil_property_t *property,
         const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
-    axis2_property_set_own_value(
-        axis2_property_t *property,
+    axutil_property_set_own_value(
+        axutil_property_t *property,
         const axutil_env_t *env,
         axis2_bool_t own_value);
 
-    AXIS2_EXTERN axis2_property_t* AXIS2_CALL
-    axis2_property_clone(axis2_property_t *property,
+    AXIS2_EXTERN axutil_property_t* AXIS2_CALL
+    axutil_property_clone(axutil_property_t *property,
         const axutil_env_t *env);
 
 

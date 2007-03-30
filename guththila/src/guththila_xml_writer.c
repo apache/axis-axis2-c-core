@@ -26,10 +26,10 @@ guththila_create_xml_stream_writer(axutil_env_t *env, guththila_t *p, char *file
         p->xsw = (guththila_xml_writer_t *) AXIS2_MALLOC(env->allocator, 
 														 sizeof(guththila_xml_writer_t));
         p->xsw->writer = guththila_writer_create_for_file(env, file);
-        p->xsw->element = axis2_stack_create(env);
-        p->xsw->attribute = axis2_stack_create(env);
-        p->xsw->namespace = axis2_stack_create(env);
-        p->xsw->depth = axis2_stack_create(env);
+        p->xsw->element = axutil_stack_create(env);
+        p->xsw->attribute = axutil_stack_create(env);
+        p->xsw->namespace = axutil_stack_create(env);
+        p->xsw->depth = axutil_stack_create(env);
         p->xsw->next = 0;
         p->xsw->offset = 0;
         p->xsw->last = GUTHTHILA_BUFFER_SIZE;	/* size of the buffer */
@@ -49,10 +49,10 @@ guththila_create_xml_stream_writer_for_memory(axutil_env_t *env, guththila_t *p)
         p->xsw = (guththila_xml_writer_t *) AXIS2_MALLOC(env->allocator, 
 														 sizeof(guththila_xml_writer_t));
         p->xsw->writer = guththila_writer_create_for_memory(env);
-        p->xsw->element = axis2_stack_create(env);
-        p->xsw->attribute = axis2_stack_create(env);
-        p->xsw->namespace = axis2_stack_create(env);
-        p->xsw->depth = axis2_stack_create(env);
+        p->xsw->element = axutil_stack_create(env);
+        p->xsw->attribute = axutil_stack_create(env);
+        p->xsw->namespace = axutil_stack_create(env);
+        p->xsw->depth = axutil_stack_create(env);
         p->xsw->next = 0;
         p->xsw->offset = 0;
         p->xsw->last = GUTHTHILA_BUFFER_SIZE;	/* size of the buffer */
@@ -79,17 +79,17 @@ guththila_xml_writer_free(axutil_env_t *env, guththila_t *p)
         void *element;
         size = 0;
 
-        size = axis2_stack_size(p->xsw->element, env);
+        size = axutil_stack_size(p->xsw->element, env);
         if (size)
         {
             for (; size > 0; size--)
             {
-                element = axis2_stack_pop(p->xsw->element, env);
+                element = axutil_stack_pop(p->xsw->element, env);
                 AXIS2_FREE(env->allocator, element);
                 element = NULL;
             }
         }
-        axis2_stack_free(p->xsw->element, env);
+        axutil_stack_free(p->xsw->element, env);
         p->xsw->element = NULL;
     }
 
@@ -97,18 +97,18 @@ guththila_xml_writer_free(axutil_env_t *env, guththila_t *p)
     if (p->xsw->attribute)
     {
         size = 0;
-        size = axis2_stack_size(p->xsw->attribute, env);
+        size = axutil_stack_size(p->xsw->attribute, env);
         if (size)
         {
             guththila_attribute_t* att;
             for (;size > 0; size--)
             {
-                att = (guththila_attribute_t *)axis2_stack_pop(p->xsw->attribute, env);
+                att = (guththila_attribute_t *)axutil_stack_pop(p->xsw->attribute, env);
 				guththila_attribute_free (env, att);
                 att = NULL;
             }
         }
-        axis2_stack_free(p->xsw->attribute, env);
+        axutil_stack_free(p->xsw->attribute, env);
         p->xsw->attribute = NULL;
     }
 
@@ -116,18 +116,18 @@ guththila_xml_writer_free(axutil_env_t *env, guththila_t *p)
     if (p->xsw->namespace)
     {
         size = 0;
-        size = axis2_stack_size(p->xsw->namespace, env);
+        size = axutil_stack_size(p->xsw->namespace, env);
         if (size)
         {
             guththila_namespace_t* ns;
             for (;size > 0; size--)
             {
-                ns = (guththila_namespace_t *)axis2_stack_pop(p->xsw->namespace, env);
+                ns = (guththila_namespace_t *)axutil_stack_pop(p->xsw->namespace, env);
                 AXIS2_FREE(env->allocator, ns);
                 ns = NULL;
             }
         }
-		axis2_stack_free(p->xsw->namespace, env);
+		axutil_stack_free(p->xsw->namespace, env);
 		p->xsw->namespace = NULL;
     }
 
@@ -135,18 +135,18 @@ guththila_xml_writer_free(axutil_env_t *env, guththila_t *p)
     if (p->xsw->depth)
     {
         size = 0;
-        size = axis2_stack_size(p->xsw->depth, env);
+        size = axutil_stack_size(p->xsw->depth, env);
         if (size)
         {
             guththila_depth_t* depth;
             for (;size > 0; size--)
             {
-                depth = (guththila_depth_t *)axis2_stack_pop(p->xsw->depth, env);
+                depth = (guththila_depth_t *)axutil_stack_pop(p->xsw->depth, env);
                 AXIS2_FREE(env->allocator, depth);
                 depth = NULL;
             }
         }
-		axis2_stack_free(p->xsw->depth, env);
+		axutil_stack_free(p->xsw->depth, env);
 		p->xsw->depth = NULL;
 
     }
@@ -193,7 +193,7 @@ guththila_write_end_element(axutil_env_t *env, guththila_t *p)
 {
     void *element = NULL;
     
-    element = axis2_stack_pop(p->xsw->element, env);
+    element = axutil_stack_pop(p->xsw->element, env);
     if (p->xsw->empty_element_open)
     {
         guththila_close_start_element(env, p);
@@ -226,11 +226,11 @@ guththila_write_start_element(axutil_env_t *env, guththila_t *p, char *start_ele
         
         guththila_close_start_element(env, p);
         guththila_open_depth_element(env, p);
-        size = axis2_stack_size(p->xsw->element, env);
+        size = axutil_stack_size(p->xsw->element, env);
 
         if (size)
         {
-            element = axis2_stack_get_at(p->xsw->element, env, 0);
+            element = axutil_stack_get_at(p->xsw->element, env, 0);
             if (!strcmp((char *)element, start_element))
                 guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
         }
@@ -239,7 +239,7 @@ guththila_write_start_element(axutil_env_t *env, guththila_t *p, char *start_ele
         p->xsw->start_element_open = 1;
 
         if (!p->xsw->empty_element_open)
-            axis2_stack_push(p->xsw->element, env, start_element);
+            axutil_stack_push(p->xsw->element, env, start_element);
         guththila_write_to_buffer(env, p, "<");
         guththila_write_to_buffer(env, p, start_element);
     }
@@ -269,7 +269,7 @@ guththila_write_to_buffer(axutil_env_t *env, guththila_t *p, const char *buff)
 				init_buffer = writer_impl->buffer->buff;
 				writer_impl->buffer = guththila_buffer_grow(env, writer_impl->buffer, ii);
 				p->xsw->last = writer_impl->buffer->size;
- 				axis2_stack_push (p->other, env, init_buffer);;
+ 				axutil_stack_push (p->other, env, init_buffer);;
 			}
 		}
         c = guththila_writer_write(env, (char *)buff, 0, ii, p->xsw->writer);
@@ -313,13 +313,13 @@ guththila_close_start_element(axutil_env_t *env, guththila_t *p)
             guththila_write_to_buffer(env, p, ">");
         }
 
-        stack_size = axis2_stack_size(p->xsw->attribute, env);
+        stack_size = axutil_stack_size(p->xsw->attribute, env);
         if (stack_size)
         {
             guththila_attribute_t* att = NULL;
             for (;stack_size > 0; stack_size--)
             {
-                att = (guththila_attribute_t *)axis2_stack_pop(p->xsw->attribute, env);
+                att = (guththila_attribute_t *)axutil_stack_pop(p->xsw->attribute, env);
 /* 				guththila_attribute_free (env, att); */
                 att = NULL;
             }
@@ -454,13 +454,13 @@ guththila_write_attribute(axutil_env_t *env, guththila_t *p, const char *local_n
     if (!p->xsw->start_element_open)
         guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
 
-    size = axis2_stack_size(p->xsw->attribute, env);
+    size = axutil_stack_size(p->xsw->attribute, env);
     if (size)
     {
         int ii;
         for (ii = 0; ii <= size; ii++)
         {
-            element = axis2_stack_get_at(p->xsw->attribute, env, size - ii);
+            element = axutil_stack_get_at(p->xsw->attribute, env, size - ii);
             if (element)
             {
                 attr = (guththila_attribute_t *)element;
@@ -497,7 +497,7 @@ guththila_do_write_attribute(axutil_env_t *env,
         attr->value = (guththila_token_t *)value;
     if (local_name && value)
     {
-        axis2_stack_push(p->xsw->attribute, env, attr);
+        axutil_stack_push(p->xsw->attribute, env, attr);
     }
 
     guththila_check_name_validity(env, p, (char *)local_name);
@@ -549,12 +549,12 @@ guththila_check_default_namespace(axutil_env_t *env, guththila_t *p, char *ns_ur
     int ii;
     void *element;
     guththila_namespace_t *ns;
-    size = axis2_stack_size(p->xsw->namespace, env);
+    size = axutil_stack_size(p->xsw->namespace, env);
     if (size)
     {
         for (ii = 0; ii <= size; ii++)
         {
-            element = axis2_stack_get_at(p->xsw->namespace, env, size - ii);
+            element = axutil_stack_get_at(p->xsw->namespace, env, size - ii);
             if (element)
             {
                 ns = (guththila_namespace_t *)element;
@@ -581,7 +581,7 @@ guththila_do_write_default_namespace(axutil_env_t *env, guththila_t *p, char *ns
     ns->length = 0;
     ns->uri = ns_uri;
     ns->lengthuri = strlen(ns_uri);
-    axis2_stack_push(p->xsw->namespace, env, (void *)ns);
+    axutil_stack_push(p->xsw->namespace, env, (void *)ns);
 
     guththila_write_to_buffer(env, p, " ");
     guththila_write_to_buffer(env, p, "xmlns");
@@ -616,12 +616,12 @@ guththila_check_prefix_validity(axutil_env_t *env, guththila_t *p, char *prefix,
     int ii = 0;
     void *element = NULL;
     guththila_namespace_t *ns = NULL;
-    size = axis2_stack_size(p->xsw->namespace, env);
+    size = axutil_stack_size(p->xsw->namespace, env);
     if (size)
     {
         for (ii = 0; ii <= size; ii++)
         {
-            element = axis2_stack_get_at(p->xsw->namespace, env, size - ii);
+            element = axutil_stack_get_at(p->xsw->namespace, env, size - ii);
             if (element)
             {
                 ns = (guththila_namespace_t *)element;
@@ -656,7 +656,7 @@ guththila_do_write_namespace(axutil_env_t *env, guththila_t *p, char *prefix, ch
     ns->length = strlen(prefix);
     ns->uri = uri;
     ns->lengthuri = strlen(uri);
-    axis2_stack_push(p->xsw->namespace, env, (void *)ns);
+    axutil_stack_push(p->xsw->namespace, env, (void *)ns);
 
     guththila_write_to_buffer(env, p, " ");
     guththila_write_to_buffer(env, p, "xmlns:");
@@ -682,13 +682,13 @@ guththila_write_attribute_with_prefix_and_namespace(axutil_env_t *env, guththila
     if (prefix && namespace)
         guththila_write_namespace(env, p, (char *)prefix, (char *)namespace);
 
-    size = axis2_stack_size(p->xsw->attribute, env);
+    size = axutil_stack_size(p->xsw->attribute, env);
     if (size)
     {
         int ii;
         for (ii = 0; ii <= size; ii++)
         {
-            element = axis2_stack_get_at(p->xsw->attribute, env, size - ii);
+            element = axutil_stack_get_at(p->xsw->attribute, env, size - ii);
             if (element)
             {
                 attr = (guththila_attribute_t *)element;
@@ -738,8 +738,8 @@ guththila_do_write_attribute_with_prefix_and_namespace(axutil_env_t *env, guthth
     if (value)
         attr->value = (guththila_token_t *)value;
 
-	axis2_stack_push(p->xsw->attribute, env, (void *)attr);
-	axis2_stack_push(p->other, env, attr);
+	axutil_stack_push(p->xsw->attribute, env, (void *)attr);
+	axutil_stack_push(p->other, env, attr);
 	guththila_check_name_validity(env, p, (char *)local_name);
 
     if (strrchr(value, '&')
@@ -774,13 +774,13 @@ guththila_write_attribute_with_prefix(axutil_env_t *env, guththila_t *p, const c
        exsists or not. */
     if (guththila_is_exsisting_prefix(env, p, prefix))
     {
-        size = axis2_stack_size(p->xsw->attribute, env);
+        size = axutil_stack_size(p->xsw->attribute, env);
         if (size)
         {
             int ii;
             for (ii = 0; ii <= size; ii++)
             {
-                element = axis2_stack_get_at(p->xsw->attribute, env,  ii);
+                element = axutil_stack_get_at(p->xsw->attribute, env,  ii);
                 if (element)
                 {
                     attr = (guththila_attribute_t *)element;
@@ -832,12 +832,12 @@ guththila_is_exsisting_prefix(axutil_env_t *env, guththila_t *p, const char *pre
     int ii;
     void *element;
     guththila_namespace_t *ns;
-    size = axis2_stack_size(p->xsw->namespace, env);
+    size = axutil_stack_size(p->xsw->namespace, env);
     if (size)
     {
         for (ii = 0; ii <= size; ii++)
         {
-            element = axis2_stack_get_at(p->xsw->namespace, env, ii);
+            element = axutil_stack_get_at(p->xsw->namespace, env, ii);
             if (element)
             {
                 ns = (guththila_namespace_t *)element;
@@ -862,12 +862,12 @@ guththila_is_exsisting_namespace_uri(axutil_env_t *env, guththila_t *p, const ch
     int ii;
     void *element;
     guththila_namespace_t *ns;
-    size = axis2_stack_size(p->xsw->namespace, env);
+    size = axutil_stack_size(p->xsw->namespace, env);
     if (size)
     {
         for (ii = 0; ii <= size; ii++)
         {
-            element = axis2_stack_get_at(p->xsw->namespace, env , size - ii);
+            element = axutil_stack_get_at(p->xsw->namespace, env , size - ii);
             if (element)
             {
                 ns = (guththila_namespace_t *)element;
@@ -900,13 +900,13 @@ guththila_write_attribute_with_namespace(axutil_env_t *env, guththila_t *p, cons
     {
         char *prefix;
         prefix = guththila_get_prefix_for_namespace(env, p, namespace);
-        size = axis2_stack_size(p->xsw->attribute, env);
+        size = axutil_stack_size(p->xsw->attribute, env);
         if (size)
         {
             int ii;
             for (ii = 0; ii <= size; ii++)
             {
-                element = axis2_stack_get_at(p->xsw->attribute, env, size - ii);
+                element = axutil_stack_get_at(p->xsw->attribute, env, size - ii);
                 if (element)
                 {
                     attr = (guththila_attribute_t *)element;
@@ -950,12 +950,12 @@ guththila_get_prefix_for_namespace(axutil_env_t *env, guththila_t *p, const char
     int ii;
     void *element;
     guththila_namespace_t *ns;
-    size = axis2_stack_size(p->xsw->namespace, env);
+    size = axutil_stack_size(p->xsw->namespace, env);
     if (size)
     {
         for (ii = 0; ii <= size; ii++)
         {
-            element = axis2_stack_get_at(p->xsw->namespace, env, size - ii);
+            element = axutil_stack_get_at(p->xsw->namespace, env, size - ii);
             if (element)
             {
                 ns = (guththila_namespace_t *)element;
@@ -1009,22 +1009,22 @@ guththila_write_start_element_with_prefix_and_namespace(axutil_env_t *env, gutht
         else
             start_element = (char *)local_name;
 
-        size = axis2_stack_size(p->xsw->element, env);
+        size = axutil_stack_size(p->xsw->element, env);
         if (size)
         {
-            element = axis2_stack_get_at(p->xsw->element, env, size);
+            element = axutil_stack_get_at(p->xsw->element, env, size);
             if (start_element && element)
             {
                 if (!strcmp((char *)element, start_element))
                     guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
             }
         }
-		axis2_stack_push(p->other, env, start_element);
+		axutil_stack_push(p->other, env, start_element);
         guththila_check_name_validity(env, p, start_element);
         p->xsw->start_element_open = 1;
 
         if (!p->xsw->empty_element_open)
-            axis2_stack_push(p->xsw->element, env, start_element);
+            axutil_stack_push(p->xsw->element, env, start_element);
         guththila_write_to_buffer(env, p, "<");
         guththila_write_to_buffer(env, p, start_element);
         guththila_write_namespace(env, p, (char *)prefix, (char *)namespace_uri);
@@ -1063,11 +1063,11 @@ guththila_write_start_element_with_namespace(axutil_env_t *env, guththila_t *p, 
             else
                 strcat(start_element, local_name);
 
-            size = axis2_stack_size(p->xsw->element, env);
+            size = axutil_stack_size(p->xsw->element, env);
 
             if (size)
             {
-                element = axis2_stack_get_at(p->xsw->element, env, size);
+                element = axutil_stack_get_at(p->xsw->element, env, size);
                 if (!strcmp((char *)element, start_element))
                     guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
             }
@@ -1076,7 +1076,7 @@ guththila_write_start_element_with_namespace(axutil_env_t *env, guththila_t *p, 
             p->xsw->start_element_open = 1;
 
             if (!p->xsw->empty_element_open)
-                axis2_stack_push(p->xsw->element, env, start_element);
+                axutil_stack_push(p->xsw->element, env, start_element);
             guththila_write_to_buffer(env, p, "<");
             guththila_write_to_buffer(env, p, start_element);
         }
@@ -1122,20 +1122,20 @@ guththila_write_start_element_with_prefix (axutil_env_t *env, guththila_t *p, co
             memcpy (start_element + (prefix_length + 1), local_name, name_length);
 		}
 
-            size = axis2_stack_size(p->xsw->element, env);
+            size = axutil_stack_size(p->xsw->element, env);
             if (size)
             {
-                element = axis2_stack_get_at(p->xsw->element, env, size - 1);
+                element = axutil_stack_get_at(p->xsw->element, env, size - 1);
                 if (!strcmp((char *)element, start_element))
                     guththila_exception(p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
             }
 
-			axis2_stack_push(p->other, env, start_element);
+			axutil_stack_push(p->other, env, start_element);
             guththila_check_name_validity(env, p, start_element);
             p->xsw->start_element_open = 1;
 
             if (!p->xsw->empty_element_open)
-                axis2_stack_push(p->xsw->element, env, start_element);
+                axutil_stack_push(p->xsw->element, env, start_element);
             guththila_write_to_buffer(env, p, "<");
             guththila_write_to_buffer(env, p, start_element);
         }
@@ -1182,26 +1182,26 @@ guththila_write_empty_element_with_prefix(axutil_env_t *env, guththila_t *p, con
 void AXIS2_CALL
 guththila_open_depth_element(axutil_env_t *env, guththila_t *p)
 {
-    int size = axis2_stack_size(p->xsw->depth, env);
+    int size = axutil_stack_size(p->xsw->depth, env);
     guththila_depth_t *d = (guththila_depth_t *) AXIS2_MALLOC(env->allocator, sizeof(guththila_depth_t));
 
     if (size)
     {
         void *e = NULL;
         guththila_depth_t *l = NULL;
-        e = axis2_stack_get(p->xsw->depth, env);
+        e = axutil_stack_get(p->xsw->depth, env);
         l = (guththila_depth_t *)e;
-        d->total = axis2_stack_size(p->xsw->namespace, env);
+        d->total = axutil_stack_size(p->xsw->namespace, env);
         d->first = l->first + l->count;
         d->count = d->total - l->total;
-        axis2_stack_push(p->xsw->depth, env, (void *)d);
+        axutil_stack_push(p->xsw->depth, env, (void *)d);
     }
     else
     {
         d->first = 0;
-        d->total = axis2_stack_size(p->xsw->namespace, env);
+        d->total = axutil_stack_size(p->xsw->namespace, env);
         d->count = d->total;
-        axis2_stack_push(p->xsw->depth, env, (void *)d);
+        axutil_stack_push(p->xsw->depth, env, (void *)d);
     }
 }
 
@@ -1209,14 +1209,14 @@ guththila_open_depth_element(axutil_env_t *env, guththila_t *p)
 void AXIS2_CALL
 guththila_close_depth_element(axutil_env_t *env, guththila_t *p)
 {
-    void *e = axis2_stack_pop(p->xsw->depth, env);
+    void *e = axutil_stack_pop(p->xsw->depth, env);
     guththila_depth_t *d = (guththila_depth_t *)e;
     void *elem = NULL;
     if (d->count)
     {
         for (; d->count > 0; d->count --)
         {
-            elem = axis2_stack_pop(p->xsw->namespace, env);
+            elem = axutil_stack_pop(p->xsw->namespace, env);
             if (elem)
                 AXIS2_FREE(env->allocator, elem);
         }
@@ -1231,7 +1231,7 @@ guththila_write_end_document(axutil_env_t *env, guththila_t *p)
     int ii = 0;
     if (p->xsw->start_element_open || p->xsw->empty_element_open)
         guththila_close_start_element(env, p);
-    ii = axis2_stack_size(p->xsw->element, env);
+    ii = axutil_stack_size(p->xsw->element, env);
     for (; ii > 0; ii --)
         guththila_write_end_element(env, p);
 /*     guththila_flush(env, p); */

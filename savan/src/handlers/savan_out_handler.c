@@ -28,7 +28,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_msg_info_headers.h>
-#include <axis2_property.h>
+#include <axutil_property.h>
 
 #include <savan_constants.h>
 #include <savan_error.h>
@@ -50,7 +50,7 @@ savan_out_handler_invoke(
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
 savan_out_handler_create(
     const axutil_env_t *env, 
-    axis2_qname_t *qname) 
+    axutil_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
     
@@ -81,7 +81,7 @@ savan_out_handler_invoke(
 {
     savan_message_types_t msg_type = SAVAN_MSG_TYPE_UNKNOWN;
     /*axis2_svc_t *svc = NULL;*/
-    axis2_param_t *param = NULL;
+    axutil_param_t *param = NULL;
     axutil_hash_t *store = NULL;
     const axis2_svc_t *svc = NULL;
     const axis2_char_t *svc_name = NULL;
@@ -123,7 +123,7 @@ savan_out_handler_invoke(
             return AXIS2_SUCCESS; /* returning FAILURE will break handler chain */
         }
         
-        store = (axutil_hash_t*)axis2_param_get_value(param, env);
+        store = (axutil_hash_t*)axutil_param_get_value(param, env);
         if (!store)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan][out handler] "

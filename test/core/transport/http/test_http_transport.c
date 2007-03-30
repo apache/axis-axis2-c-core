@@ -116,7 +116,7 @@ void test_http_client(const axutil_env_t *env)
     axis2_http_request_line_t *request_line = NULL;
     axis2_url_t *url = NULL;
     axis2_http_header_t *header = NULL;
-    axis2_stream_t *request_body = NULL;
+    axutil_stream_t *request_body = NULL;
     axis2_http_simple_response_t *response = NULL;
     int status = 0;
     char *body_bytes = NULL;
@@ -125,7 +125,7 @@ void test_http_client(const axutil_env_t *env)
     printf("Starting http_client tests\n");
     request_line = axis2_http_request_line_create(env, "GET",
             "/axis2/services", "HTTP/1.0");
-    request_body = axis2_stream_create_basic(env);
+    request_body = axutil_stream_create_basic(env);
     request = axis2_http_simple_request_create(env, request_line,
             NULL, 0, NULL);
     url = axis2_url_create(env, "http", "localhost", 80,
@@ -177,7 +177,7 @@ void test_https_client(const axutil_env_t *env)
     axis2_http_request_line_t *request_line = NULL;
     axis2_url_t *url = NULL;
     axis2_http_header_t *header = NULL;
-    axis2_stream_t *request_body = NULL;
+    axutil_stream_t *request_body = NULL;
     axis2_http_simple_response_t *response = NULL;
     int status = 0;
     char *body_bytes = NULL;
@@ -186,7 +186,7 @@ void test_https_client(const axutil_env_t *env)
     printf("Starting https_client tests\n");
     request_line = axis2_http_request_line_create(env, "GET",
             "/", "HTTP/1.0");
-    request_body = axis2_stream_create_basic(env);
+    request_body = axutil_stream_create_basic(env);
     request = axis2_http_simple_request_create(env, request_line,
             NULL, 0, NULL);
     url = axis2_url_create(env, "https", "localhost", 9090,

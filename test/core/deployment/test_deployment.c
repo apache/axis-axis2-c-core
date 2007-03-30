@@ -77,7 +77,7 @@ int axis2_test_dep_engine_load()
         {
             axutil_hash_t *ops = NULL;
             axis2_svc_t *svc = NULL;
-            axis2_param_t *impl_info_param = NULL;
+            axutil_param_t *impl_info_param = NULL;
 
             axutil_hash_this(hi, NULL, NULL, &service);
             svc = (axis2_svc_t *) service;
@@ -102,9 +102,9 @@ int axis2_test_dep_engine_load()
                     axutil_hash_this(hi2, NULL, NULL, &op);
                     if (op)
                     {
-                        const axis2_qname_t *qname = NULL;
+                        const axutil_qname_t *qname = NULL;
                         qname = axis2_op_get_qname((axis2_op_t *)op, env);
-                        oname = axis2_qname_get_localpart(qname, env);
+                        oname = axutil_qname_get_localpart(qname, env);
                         printf("op name = %s\n", oname);
                     }
                 }
@@ -135,7 +135,7 @@ int axis2_test_transport_receiver_load()
     axutil_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;
     axis2_transport_receiver_t *transport_recv = NULL;
-    axis2_param_t *impl_info_param = NULL;
+    axutil_param_t *impl_info_param = NULL;
     axis2_bool_t is_running = AXIS2_FALSE;
     axis2_char_t *axis2c_home = NULL;
 
@@ -150,8 +150,8 @@ int axis2_test_transport_receiver_load()
     printf("transport receiver name:%s\n", dll_name);
      axutil_dll_desc_set_name(dll_desc, env, dll_name);
      axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    axis2_param_set_value(impl_info_param, env, dll_desc);
+    impl_info_param = axutil_param_create(env, NULL, NULL);
+    axutil_param_set_value(impl_info_param, env, dll_desc);
     axutil_class_loader_init(env);
     transport_recv = (axis2_transport_receiver_t *) axutil_class_loader_create_dll(env,
             impl_info_param);
@@ -167,7 +167,7 @@ int axis2_test_transport_sender_load()
     axutil_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;
     axis2_transport_sender_t *transport_sender = NULL;
-    axis2_param_t *impl_info_param = NULL;
+    axutil_param_t *impl_info_param = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *axis2c_home = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
@@ -184,8 +184,8 @@ int axis2_test_transport_sender_load()
     printf("transport sender name:%s\n", dll_name);
      axutil_dll_desc_set_name(dll_desc, env, dll_name);
      axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    axis2_param_set_value(impl_info_param, env, dll_desc);
+    impl_info_param = axutil_param_create(env, NULL, NULL);
+    axutil_param_set_value(impl_info_param, env, dll_desc);
     axutil_class_loader_init(env);
     transport_sender = (axis2_transport_sender_t *) axutil_class_loader_create_dll(env,
             impl_info_param);
@@ -201,11 +201,11 @@ int axis2_test_default_module_version()
 {
 
     axis2_conf_t *axis_conf = NULL;
-    axis2_qname_t *mod_qname1 = NULL;
-    axis2_qname_t *mod_qname2 = NULL;
-    axis2_qname_t *mod_qname3 = NULL;
-    axis2_qname_t *mod_qname4 = NULL;
-    axis2_qname_t *mod_qname5 = NULL;
+    axutil_qname_t *mod_qname1 = NULL;
+    axutil_qname_t *mod_qname2 = NULL;
+    axutil_qname_t *mod_qname3 = NULL;
+    axutil_qname_t *mod_qname4 = NULL;
+    axutil_qname_t *mod_qname5 = NULL;
     axis2_module_desc_t *module1 = NULL;
     axis2_module_desc_t *module2 = NULL;
     axis2_module_desc_t *module3 = NULL;
@@ -213,7 +213,7 @@ int axis2_test_default_module_version()
     axis2_module_desc_t *module5 = NULL;
     axis2_module_desc_t *def_mod = NULL;
     axutil_array_list_t *engaged_modules = NULL;
-    axis2_qname_t *engage_qname = NULL;
+    axutil_qname_t *engage_qname = NULL;
     axis2_bool_t found1 = AXIS2_FALSE;
     axis2_bool_t found2 = AXIS2_FALSE;
     axis2_bool_t found3 = AXIS2_FALSE;
@@ -224,23 +224,23 @@ int axis2_test_default_module_version()
 
 
     axis_conf = axis2_conf_create(env);
-    mod_qname1 = axis2_qname_create(env, "module1", NULL, NULL);
+    mod_qname1 = axutil_qname_create(env, "module1", NULL, NULL);
     module1 = axis2_module_desc_create_with_qname(env, mod_qname1);
      axis2_conf_add_module(axis_conf, env, module1);
 
-    mod_qname2 = axis2_qname_create(env, "module2-0.90", NULL, NULL);
+    mod_qname2 = axutil_qname_create(env, "module2-0.90", NULL, NULL);
     module2 = axis2_module_desc_create_with_qname(env, mod_qname2);
      axis2_conf_add_module(axis_conf, env, module2);
 
-    mod_qname3 = axis2_qname_create(env, "module2-0.92", NULL, NULL);
+    mod_qname3 = axutil_qname_create(env, "module2-0.92", NULL, NULL);
     module3 = axis2_module_desc_create_with_qname(env, mod_qname3);
      axis2_conf_add_module(axis_conf, env, module3);
 
-    mod_qname4 = axis2_qname_create(env, "module2-0.91", NULL, NULL);
+    mod_qname4 = axutil_qname_create(env, "module2-0.91", NULL, NULL);
     module4 = axis2_module_desc_create_with_qname(env, mod_qname4);
      axis2_conf_add_module(axis_conf, env, module4);
 
-    mod_qname5 = axis2_qname_create(env, "test_module-1.92", NULL, NULL);
+    mod_qname5 = axutil_qname_create(env, "test_module-1.92", NULL, NULL);
     module5 = axis2_module_desc_create_with_qname(env, mod_qname5);
      axis2_conf_add_module(axis_conf, env, module5);
 
@@ -264,14 +264,14 @@ int axis2_test_default_module_version()
         printf("axis2_default_module_version (test_module) .. FAILED\n");
         return AXIS2_FAILURE;
     }
-    engage_qname = axis2_qname_create(env, "module2", NULL, NULL);
+    engage_qname = axutil_qname_create(env, "module2", NULL, NULL);
      axis2_conf_engage_module(axis_conf, env, engage_qname);
-    axis2_qname_free(engage_qname, env);
+    axutil_qname_free(engage_qname, env);
     engage_qname = NULL;
 
-    engage_qname = axis2_qname_create(env, "module1", NULL, NULL);
+    engage_qname = axutil_qname_create(env, "module1", NULL, NULL);
      axis2_conf_engage_module(axis_conf, env, engage_qname);
-    axis2_qname_free(engage_qname, env);
+    axutil_qname_free(engage_qname, env);
     engage_qname = NULL;
 
      axis2_conf_engage_module_with_version(axis_conf, env, "test_module", "1.92");
@@ -285,20 +285,20 @@ int axis2_test_default_module_version()
         list_size = axutil_array_list_size(engaged_modules, env);
         for (i = 0; i < list_size; i++)
         {
-            axis2_qname_t *engaged_mod_qname = NULL;
+            axutil_qname_t *engaged_mod_qname = NULL;
             engaged_mod_qname = axutil_array_list_get(engaged_modules, env, i);
             if (0 == axis2_strcmp("module2-0.92",
-                    axis2_qname_get_localpart(engaged_mod_qname, env)))
+                    axutil_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found1 = AXIS2_TRUE;
             }
             if (0 == axis2_strcmp("module1",
-                    axis2_qname_get_localpart(engaged_mod_qname, env)))
+                    axutil_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found2 = AXIS2_TRUE;
             }
             if (0 == axis2_strcmp("test_module-1.92",
-                    axis2_qname_get_localpart(engaged_mod_qname, env)))
+                    axutil_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found3 = AXIS2_TRUE;
             }

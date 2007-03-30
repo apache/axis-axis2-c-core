@@ -32,7 +32,7 @@ struct xml_schema_attribute_group_ref_impl
 
     xml_schema_annotated_t *annotated;
 
-    axis2_qname_t *ref_qname;
+    axutil_qname_t *ref_qname;
 
     xml_schema_types_t obj_type;
 
@@ -62,7 +62,7 @@ axutil_hash_t* AXIS2_CALL
 xml_schema_attribute_group_ref_super_objs(void *grp_ref,
         const axutil_env_t *env);
 
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 xml_schema_attribute_group_ref_get_ref_qname(
     void *grp_ref,
     const axutil_env_t *env);
@@ -71,7 +71,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_attribute_group_ref_set_ref_qname(
     void *grp_ref,
     const axutil_env_t *env,
-    axis2_qname_t *any_attr);
+    axutil_qname_t *any_attr);
 
 /************************ end function prototypes ******************************/
 
@@ -173,7 +173,7 @@ xml_schema_attribute_group_ref_free(
     }
     if (attr_impl->ref_qname)
     {
-        axis2_qname_free(attr_impl->ref_qname, env);
+        axutil_qname_free(attr_impl->ref_qname, env);
         attr_impl->ref_qname = NULL;
     }
 
@@ -227,7 +227,7 @@ xml_schema_attribute_group_ref_super_objs(
     return AXIS2_INTF_TO_IMPL(grp_ref)->ht_super;
 }
 
-axis2_qname_t* AXIS2_CALL
+axutil_qname_t* AXIS2_CALL
 xml_schema_attribute_group_ref_get_ref_qname(
     void *grp_ref,
     const axutil_env_t *env)
@@ -239,7 +239,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_attribute_group_ref_set_ref_qname(
     void *grp_ref,
     const axutil_env_t *env,
-    axis2_qname_t *ref_qname)
+    axutil_qname_t *ref_qname)
 {
     xml_schema_attribute_group_ref_impl_t *attr_grp_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, ref_qname, AXIS2_FAILURE);

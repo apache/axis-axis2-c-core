@@ -100,7 +100,7 @@ woden_wsdl10_ext_registry_register_deserializer(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_type,
-    axis2_qname_t *element_qtype,
+    axutil_qname_t *element_qtype,
     void *ed);
 
 void *AXIS2_CALL
@@ -108,14 +108,14 @@ woden_wsdl10_ext_registry_query_deserializer(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_type,
-    axis2_qname_t *element_type);
+    axutil_qname_t *element_type);
 
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_element_type(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_class,
-    axis2_qname_t *elem_qn);
+    axutil_qname_t *elem_qn);
 
 axutil_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_get_allowable_exts(
@@ -128,7 +128,7 @@ woden_wsdl10_ext_registry_register_ext_element_type(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_type,
-    axis2_qname_t *element_qtype,
+    axutil_qname_t *element_qtype,
     void *element);
 
 axis2_status_t AXIS2_CALL
@@ -136,7 +136,7 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *owner_class,
-    axis2_qname_t *attr_qname,
+    axutil_qname_t *attr_qname,
     void *attr);
 
 void *AXIS2_CALL
@@ -144,7 +144,7 @@ woden_wsdl10_ext_registry_query_ext_attr_type(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_class,
-    axis2_qname_t *attr_qn);
+    axutil_qname_t *attr_qn);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_component_ext(
@@ -321,7 +321,7 @@ woden_wsdl10_ext_registry_register_deserializer(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_type,
-    axis2_qname_t *element_qtype,
+    axutil_qname_t *element_qtype,
     void *ed)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
@@ -339,7 +339,7 @@ woden_wsdl10_ext_registry_register_deserializer(
         axutil_hash_set(registry_impl->deserializer_reg, parent_type,
                 AXIS2_HASH_KEY_STRING, inner_deserializer_reg);
     }
-    element_type = axis2_qname_to_string(element_qtype, env);
+    element_type = axutil_qname_to_string(element_qtype, env);
     axutil_hash_set(inner_deserializer_reg, element_type, AXIS2_HASH_KEY_STRING,
             ed);
     return AXIS2_SUCCESS;
@@ -366,26 +366,26 @@ woden_wsdl10_ext_registry_query_deserializer(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_type,
-    axis2_qname_t *element_type)
+    axutil_qname_t *element_type)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axutil_hash_t *inner_deserializer_reg = NULL;
     axis2_char_t *elem_name = NULL;
     void *ed = NULL;
-    axis2_qname_t *element_qtype = NULL;
+    axutil_qname_t *element_qtype = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
     inner_deserializer_reg = axutil_hash_get(registry_impl->deserializer_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
-    /*elem_name = axis2_qname_to_string(element_type, env); */
+    /*elem_name = axutil_qname_to_string(element_type, env); */
     if (inner_deserializer_reg)
     {
 
-        element_qtype = axis2_qname_create_from_string(env,
+        element_qtype = axutil_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
-        elem_name = axis2_qname_to_string(element_qtype, env);
+        elem_name = axutil_qname_to_string(element_qtype, env);
         ed = axutil_hash_get(inner_deserializer_reg, elem_name,
                 AXIS2_HASH_KEY_STRING);
     }
@@ -412,7 +412,7 @@ woden_wsdl10_ext_registry_query_ext_element_type(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_class,
-    axis2_qname_t *elem_qn)
+    axutil_qname_t *elem_qn)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axutil_hash_t *inner_ext_element_reg = NULL;
@@ -424,7 +424,7 @@ woden_wsdl10_ext_registry_query_ext_element_type(
 
     inner_ext_element_reg = axutil_hash_get(registry_impl->ext_element_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    /*elem_name = axis2_qname_to_string(elem_qn, env);*/
+    /*elem_name = axutil_qname_to_string(elem_qn, env);*/
     if (inner_ext_element_reg)
     {
         element = axutil_hash_get(inner_ext_element_reg,
@@ -493,7 +493,7 @@ woden_wsdl10_ext_registry_register_ext_element_type(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_type,
-    axis2_qname_t *element_qtype,
+    axutil_qname_t *element_qtype,
     void *element)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
@@ -511,7 +511,7 @@ woden_wsdl10_ext_registry_register_ext_element_type(
         axutil_hash_set(registry_impl->ext_element_reg, parent_type,
                 AXIS2_HASH_KEY_STRING, inner_ext_type_reg);
     }
-    element_type = axis2_qname_to_string(element_qtype, env);
+    element_type = axutil_qname_to_string(element_qtype, env);
     axutil_hash_set(inner_ext_type_reg, element_type, AXIS2_HASH_KEY_STRING,
             element);
     return AXIS2_SUCCESS;
@@ -536,7 +536,7 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *owner_class,
-    axis2_qname_t *attr_qname,
+    axutil_qname_t *attr_qname,
     void *attr)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
@@ -554,7 +554,7 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
         axutil_hash_set(registry_impl->ext_attr_reg, owner_class,
                 AXIS2_HASH_KEY_STRING, inner_ext_attr_reg);
     }
-    attr_name = axis2_qname_to_string(attr_qname, env);
+    attr_name = axutil_qname_to_string(attr_qname, env);
     axutil_hash_set(inner_ext_attr_reg, attr_name, AXIS2_HASH_KEY_STRING, attr);
     return AXIS2_SUCCESS;
 }
@@ -576,7 +576,7 @@ woden_wsdl10_ext_registry_query_ext_attr_type(
     void *registry,
     const axutil_env_t *env,
     axis2_char_t *parent_class,
-    axis2_qname_t *attr_qn)
+    axutil_qname_t *attr_qn)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axutil_hash_t *inner_ext_attr_reg = NULL;
@@ -588,7 +588,7 @@ woden_wsdl10_ext_registry_query_ext_attr_type(
 
     inner_ext_attr_reg = axutil_hash_get(registry_impl->ext_attr_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    attr_name = axis2_qname_to_string(attr_qn, env);
+    attr_name = axutil_qname_to_string(attr_qn, env);
     if (inner_ext_attr_reg)
     {
         attr = axutil_hash_get(inner_ext_attr_reg, attr_name,
@@ -710,15 +710,15 @@ woden_wsdl10_ext_registry_populate(
     const axutil_env_t *env)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
-    axis2_qname_t *q_attr_soap_version = NULL;
-    axis2_qname_t *q_attr_soap_protocol = NULL;
-    axis2_qname_t *q_attr_soap_mepdefault = NULL;
-    axis2_qname_t *q_attr_soap_code = NULL;
-    axis2_qname_t *q_attr_soap_subcodes = NULL;
-    axis2_qname_t *q_attr_soap_mep = NULL;
-    axis2_qname_t *q_attr_soap_action = NULL;
-    axis2_qname_t *q_elem_soap_module = NULL;
-    axis2_qname_t *q_elem_soap_header = NULL;
+    axutil_qname_t *q_attr_soap_version = NULL;
+    axutil_qname_t *q_attr_soap_protocol = NULL;
+    axutil_qname_t *q_attr_soap_mepdefault = NULL;
+    axutil_qname_t *q_attr_soap_code = NULL;
+    axutil_qname_t *q_attr_soap_subcodes = NULL;
+    axutil_qname_t *q_attr_soap_mep = NULL;
+    axutil_qname_t *q_attr_soap_action = NULL;
+    axutil_qname_t *q_elem_soap_module = NULL;
+    axutil_qname_t *q_elem_soap_header = NULL;
     axis2_uri_t *uri_ns_soap = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -736,37 +736,37 @@ woden_wsdl10_ext_registry_populate(
         woden_qname_list_or_token_any_attr_create(env, NULL, NULL, NULL,
                 NULL);
 
-    q_attr_soap_version = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_VERSION);
+    q_attr_soap_version = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_VERSION);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
             "binding_element", q_attr_soap_version,
             registry_impl->string_attr);
 
-    q_attr_soap_protocol = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_PROTOCOL);
+    q_attr_soap_protocol = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_PROTOCOL);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
             "binding_element", q_attr_soap_protocol,
             registry_impl->uri_attr);
 
-    q_attr_soap_mepdefault = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEPDEFAULT);
+    q_attr_soap_mepdefault = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEPDEFAULT);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
             "binding_element", q_attr_soap_mepdefault,
             registry_impl->uri_attr);
 
-    q_attr_soap_code = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_CODE);
+    q_attr_soap_code = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_CODE);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
             "binding_fault_element", q_attr_soap_code,
             registry_impl->qname_or_token_any_attr);
 
-    q_attr_soap_subcodes = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES);
+    q_attr_soap_subcodes = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
             "binding_fault_element", q_attr_soap_subcodes,
             registry_impl->qname_list_or_token_any_attr);
 
-    q_attr_soap_mep = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEP);
+    q_attr_soap_mep = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEP);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
             "binding_op_element", q_attr_soap_mep,
             registry_impl->uri_attr);
 
-    q_attr_soap_action = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_ACTION);
+    q_attr_soap_action = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_ACTION);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
             "binding_op_element", q_attr_soap_action,
             registry_impl->uri_attr);
@@ -780,7 +780,7 @@ woden_wsdl10_ext_registry_populate(
 
     registry_impl->soap_module = woden_wsdl10_soap_module_create(env);
 
-    q_elem_soap_module = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
+    q_elem_soap_module = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
 
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_element",
             q_elem_soap_module,
@@ -836,7 +836,7 @@ woden_wsdl10_ext_registry_populate(
         woden_wsdl10_soap_header_block_deserializer_create(env);
     registry_impl->soap_header_block = woden_wsdl10_soap_header_block_create(env);
 
-    q_elem_soap_header = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SOAP_HEADER);
+    q_elem_soap_header = axutil_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SOAP_HEADER);
 
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_fault_element",
             q_elem_soap_header,

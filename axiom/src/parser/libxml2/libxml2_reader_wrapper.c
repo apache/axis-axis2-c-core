@@ -21,7 +21,7 @@
 #include <axis2_utils_defines.h>
 #include <axis2_utils.h>
 #include <string.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 /*************************** Function Prototypes ******************************/
 

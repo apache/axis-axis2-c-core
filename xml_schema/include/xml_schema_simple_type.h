@@ -27,7 +27,7 @@
 #include <xml_schema_annotated.h>
 #include <xml_schema_type.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <xml_schema_simple_type_content.h>
 /** @defgroup xml_schema_simple_type Xml Schema Type
   * @ingroup xml_schema

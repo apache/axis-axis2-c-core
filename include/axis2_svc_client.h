@@ -45,7 +45,7 @@
 #include <axis2_uri.h>
 #include <axis2_svc.h>
 #include <axis2_options.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axiom_element.h>
 #include <axis2_callback.h>
 #include <axis2_endpoint_ref.h>
@@ -205,7 +205,7 @@ extern "C"
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_svc_client_send_robust_with_op_qname(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
-        const axis2_qname_t *op_qname,
+        const axutil_qname_t *op_qname,
         const axiom_node_t *payload);
 
     /**
@@ -239,7 +239,7 @@ extern "C"
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
-        const axis2_qname_t *op_qname,
+        const axutil_qname_t *op_qname,
         const axiom_node_t *payload);
 
     /**
@@ -270,7 +270,7 @@ extern "C"
     AXIS2_EXTERN axiom_node_t *AXIS2_CALL
     axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
-        const axis2_qname_t *op_qname,
+        const axutil_qname_t *op_qname,
         const axiom_node_t *payload);
 
     /**
@@ -301,7 +301,7 @@ extern "C"
     AXIS2_EXTERN void AXIS2_CALL
     axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
-        const axis2_qname_t *op_qname,
+        const axutil_qname_t *op_qname,
         const axiom_node_t *payload,
         axis2_callback_t *callback);
 
@@ -326,13 +326,13 @@ extern "C"
      * messages for this specific operation.
      * @param svc_client pointer to service client struct
      * @param env pointer to environment struct
-     * @param op_qname axis2_qname_t of the operation
+     * @param op_qname axutil_qname_t of the operation
      * @return pointer to newly created op_client configured for the given operation
      */
     AXIS2_EXTERN axis2_op_client_t *AXIS2_CALL
     axis2_svc_client_create_op_client(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
-        const axis2_qname_t *op_qname);
+        const axutil_qname_t *op_qname);
 
     /**
      * Cleans up service client invocation. This will close the output 
@@ -465,7 +465,7 @@ extern "C"
     axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx,
         const axis2_uri_t *wsdl_uri,
-        const axis2_qname_t *wsdl_svc_qname,
+        const axutil_qname_t *wsdl_svc_qname,
         const axis2_char_t *endpoint_name,
         const axis2_char_t *client_home);
 

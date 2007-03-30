@@ -36,8 +36,8 @@ struct woden_wsdl10_svc_impl
       woden_configurable_t *configurable;
       axutil_hash_t *super;
       axutil_hash_t *methods;
-      axis2_qname_t *f_qname;
-      axis2_qname_t *f_interface_qname;
+      axutil_qname_t *f_qname;
+      axutil_qname_t *f_interface_qname;
       void *f_interface;
       axutil_array_list_t *f_endpoints;
 };
@@ -67,7 +67,7 @@ woden_wsdl10_svc_get_base_impl(
  *  Service interface methods (the WSDL Component model)
  * ************************************************************/
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_svc_get_qname(
       void *svc,
       const axutil_env_t *env);
@@ -89,15 +89,15 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_svc_set_qname(
       void *svc,
       const axutil_env_t *env,
-      axis2_qname_t *qname);
+      axutil_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_svc_set_interface_qname(
       void *svc,
       const axutil_env_t *env,
-      axis2_qname_t *interface_qname);
+      axutil_qname_t *interface_qname);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_svc_get_interface_qname(
       void *svc,
       const axutil_env_t *env);
@@ -617,13 +617,13 @@ woden_wsdl10_svc_free(void *svc,
 
       if (svc_impl->f_qname)
       {
-	    axis2_qname_free(svc_impl->f_qname, env);
+	    axutil_qname_free(svc_impl->f_qname, env);
 	    svc_impl->f_qname = NULL;
       }
 
       if (svc_impl->f_interface_qname)
       {
-	    axis2_qname_free(svc_impl->f_interface_qname, env);
+	    axutil_qname_free(svc_impl->f_interface_qname, env);
 	    svc_impl->f_interface_qname = NULL;
       }
 
@@ -764,7 +764,7 @@ woden_wsdl10_svc_resolve_methods(
  *  Service interface methods (the WSDL Component model)
  * ************************************************************/
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_svc_get_qname(
       void *svc,
       const axutil_env_t *env)
@@ -819,7 +819,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_svc_set_qname(
       void *svc,
       const axutil_env_t *env,
-      axis2_qname_t *qname)
+      axutil_qname_t *qname)
 {
       woden_wsdl10_svc_impl_t *svc_impl = NULL;
       axutil_hash_t *super = NULL;
@@ -831,9 +831,9 @@ woden_wsdl10_svc_set_qname(
 
       if (svc_impl->f_qname)
       {
-	    axis2_qname_free(svc_impl->f_qname, env);
+	    axutil_qname_free(svc_impl->f_qname, env);
       }
-      svc_impl->f_qname = axis2_qname_clone(qname, env);
+      svc_impl->f_qname = axutil_qname_clone(qname, env);
       return AXIS2_SUCCESS;
 }
 
@@ -841,7 +841,7 @@ axis2_status_t AXIS2_CALL
 woden_wsdl10_svc_set_interface_qname(
       void *svc,
       const axutil_env_t *env,
-      axis2_qname_t *interface_qname)
+      axutil_qname_t *interface_qname)
 {
       woden_wsdl10_svc_impl_t *svc_impl = NULL;
       axutil_hash_t *super = NULL;
@@ -853,14 +853,14 @@ woden_wsdl10_svc_set_interface_qname(
 
       if (svc_impl->f_interface_qname)
       {
-	    axis2_qname_free(svc_impl->f_interface_qname, env);
+	    axutil_qname_free(svc_impl->f_interface_qname, env);
       }
 
-      svc_impl->f_interface_qname = axis2_qname_clone(interface_qname, env);
+      svc_impl->f_interface_qname = axutil_qname_clone(interface_qname, env);
       return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_wsdl10_svc_get_interface_qname(
       void *svc,
       const axutil_env_t *env)

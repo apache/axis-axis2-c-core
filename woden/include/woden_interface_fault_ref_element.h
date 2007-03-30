@@ -30,10 +30,10 @@
 #include <axutil_allocator.h>
 #include <axutil_env.h>
 #include <axutil_error.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <axis2_utils.h>
 #include <axutil_hash.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 #include <axis2_uri.h>
 #include <axutil_array_list.h>
 #include <woden.h>
@@ -75,9 +75,9 @@ struct woden_interface_fault_ref_element_ops
     set_ref) (
             void *iface_fault_ele,
             const axutil_env_t *env,
-            axis2_qname_t *fault_qname);
+            axutil_qname_t *fault_qname);
     
-    axis2_qname_t *(AXIS2_CALL *
+    axutil_qname_t *(AXIS2_CALL *
     get_ref) (
             void *iface_fault_ele,
             const axutil_env_t *env);

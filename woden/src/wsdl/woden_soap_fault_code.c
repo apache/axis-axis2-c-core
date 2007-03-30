@@ -27,7 +27,7 @@ struct woden_soap_fault_code_impl
 {
     woden_soap_fault_code_t soap_fault_code;
     axis2_char_t *f_token;
-    axis2_qname_t *f_code_qn;
+    axutil_qname_t *f_code_qn;
 };
 
 #define INTF_TO_IMPL(soap_fault_code) ((woden_soap_fault_code_impl_t *) soap_fault_code)
@@ -49,7 +49,7 @@ woden_soap_fault_code_is_token(
     void *soap_fault_code,
     const axutil_env_t *env);
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_soap_fault_code_get_qname(
     void *soap_fault_code,
     const axutil_env_t *env);
@@ -95,7 +95,7 @@ AXIS2_EXTERN woden_soap_fault_code_t * AXIS2_CALL
 woden_soap_fault_code_create(
     const axutil_env_t *env,
     axis2_char_t *token,
-    axis2_qname_t *code_qn)
+    axutil_qname_t *code_qn)
 {
     woden_soap_fault_code_impl_t *soap_fault_code_impl = NULL;
 
@@ -103,7 +103,7 @@ woden_soap_fault_code_create(
     soap_fault_code_impl = (woden_soap_fault_code_impl_t *) create(env);
 
     soap_fault_code_impl->f_token = axis2_strdup(env, token);
-    soap_fault_code_impl->f_code_qn = axis2_qname_clone(code_qn, env);
+    soap_fault_code_impl->f_code_qn = axutil_qname_clone(code_qn, env);
 
     return &(soap_fault_code_impl->soap_fault_code);
 }
@@ -126,7 +126,7 @@ woden_soap_fault_code_free(
 
     if (soap_fault_code_impl->f_code_qn)
     {
-        axis2_qname_free(soap_fault_code_impl->f_code_qn, env);
+        axutil_qname_free(soap_fault_code_impl->f_code_qn, env);
         soap_fault_code_impl->f_code_qn = NULL;
     }
 
@@ -184,7 +184,7 @@ woden_soap_fault_code_is_token(
     return (NULL != soap_fault_code_impl->f_token);
 }
 
-axis2_qname_t *AXIS2_CALL
+axutil_qname_t *AXIS2_CALL
 woden_soap_fault_code_get_qname(
     void *soap_fault_code,
     const axutil_env_t *env)

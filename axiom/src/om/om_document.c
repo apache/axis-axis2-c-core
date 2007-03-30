@@ -18,7 +18,7 @@
 
 #include <axiom_document.h>
 #include <axiom_stax_builder.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 
 struct axiom_document
 {

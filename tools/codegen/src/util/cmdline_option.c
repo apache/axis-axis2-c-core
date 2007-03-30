@@ -18,7 +18,7 @@
 #include <w2c_cmdline_option.h>
 #include <w2c_cmdline_option_consts.h>
 #include <axutil_array_list.h>
-#include <axis2_string.h>
+#include <axutil_string.h>
 #include <w2c_string.h>
 
 /** 
@@ -227,21 +227,21 @@ w2c_cmdline_option_set_type(
     {
         /* skip -- */
         type = (axis2_char_t*)
-                 axis2_string_substring_starting_at ( type, index +2 );
+                 axutil_string_substring_starting_at ( type, index +2 );
     } 
     index = w2c_string_indexof_cs ( type, "-" );
     if ( index > -1 )
     {
         /* skip - */
         type = (axis2_char_t*)
-                 axis2_string_substring_starting_at ( type, index +1 );
+                 axutil_string_substring_starting_at ( type, index +1 );
     }
     index = w2c_string_indexof_cs ( type, 
                           W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX );
      
     if (index < 0 )
     {
-        type = (axis2_char_t*)axis2_string_tolower( type );
+        type = (axis2_char_t*)axutil_string_tolower( type );
     }
     cmdline_option_impl-> type = type;
     return type;

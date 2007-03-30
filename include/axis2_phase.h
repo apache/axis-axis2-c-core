@@ -40,7 +40,7 @@
 #include <axis2_handler.h>
 #include <axis2_handler_desc.h>
 #include <axutil_array_list.h>
-#include <axis2_qname.h>
+#include <axutil_qname.h>
 
 /** 
  * A given handler's location within the list of handlers is before a particular
