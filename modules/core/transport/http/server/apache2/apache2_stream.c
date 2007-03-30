@@ -20,18 +20,12 @@
 #include "apache2_stream.h"
 #include <http_protocol.h>
 
-/**
- * @brief Stream struct impl
- *   Streaming mechanisms for Apache2 web server
- */
-
 typedef struct apache2_stream_impl
 {
     axis2_stream_t stream;
     axis2_stream_type_t stream_type;
     request_rec *request;
-}
-apache2_stream_impl_t;
+}apache2_stream_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(stream) ((apache2_stream_impl_t *)(stream))
 
@@ -65,10 +59,6 @@ apache2_stream_get_char(
     axis2_stream_t *stream,
     const axis2_env_t *env);
 
-/************************* End of function headers ****************************/
-/*
- * Internal function. Not exposed to outside
- */
 AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_apache2(
     const axis2_env_t *env,
@@ -90,9 +80,9 @@ axis2_stream_create_apache2(
     stream_impl->request = request;
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
 
-    axis2_stream_set_read(stream, env, apache2_stream_read);
-    axis2_stream_set_write(stream, env, apache2_stream_write);
-    axis2_stream_set_skip(stream, env, apache2_stream_skip);
+    axis2_stream_set_read(stream_impl, env, apache2_stream_read);
+    axis2_stream_set_write(stream_impl, env, apache2_stream_write);
+    axis2_stream_set_skip(stream_impl, env, apache2_stream_skip);
 
     return &(stream_impl->stream);
 }

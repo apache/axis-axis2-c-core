@@ -20,55 +20,6 @@
 #include <axis2_stream.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
-struct axis2_stream
-{
-    axis2_stream_type_t stream_type;
-    int len;
-    int max_len;
-    /* Only one of these is used for a perticlar
-     * instance depending on the type
-     */
-    axis2_char_t *buffer;
-    axis2_char_t *buffer_head;
-    FILE *fp;
-    int socket;
-
-    int axis2_eof;
-
-   /**
-    * reads from stream
-    * @param buffer buffer into which the content is to be read
-    * @param count size of the buffer
-    * @return no: of bytes read
-    */
-    int(AXIS2_CALL *
-    read)(axis2_stream_t *stream,
-        const axis2_env_t *env,
-        void *buffer,
-        size_t count);
-
-    /**
-     * writes into stream
-     * @param buffer buffer to be written
-     * @param count size of the buffer
-     * @return no: of bytes actually written
-     */
-    int(AXIS2_CALL *
-    write)(axis2_stream_t *stream,
-        const axis2_env_t *env,
-        const void *buffer,
-        size_t count);
-
-    /**
-    * Skips over and discards n bytes of data from this input stream.
-    * @param count number of bytes to be discarded
-    * @return no: of bytes actually skipped
-    */
-    int(AXIS2_CALL *
-    skip)(axis2_stream_t *stream,
-        const axis2_env_t *env,
-        int count);
-};
 
 /** basic stream operatons **/
 int AXIS2_CALL

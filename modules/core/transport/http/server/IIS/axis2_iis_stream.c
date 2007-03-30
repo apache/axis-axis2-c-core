@@ -91,9 +91,9 @@ axis2_stream_create_iis(
     stream_impl->lpECB = lpECB;
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
 
-    axis2_stream_set_read(stream, env, iis_stream_read);
-    axis2_stream_set_write(stream, env, iis_stream_write);
-    axis2_stream_set_skip(stream, env, iis_stream_skip);
+    axis2_stream_set_read(stream_impl, env, iis_stream_read);
+    axis2_stream_set_write(stream_impl, env, iis_stream_write);
+    axis2_stream_set_skip(stream_impl, env, iis_stream_skip);
 
     return &(stream_impl->stream);
 }
