@@ -38,7 +38,6 @@ extern "C"
 #endif
 
    
-typedef struct axiom_mime_body_part_ops axiom_mime_body_part_ops_t;
 typedef struct axiom_mime_body_part axiom_mime_body_part_t;   
 
 /** @defgroup axiom_mime_body_part
@@ -46,43 +45,29 @@ typedef struct axiom_mime_body_part axiom_mime_body_part_t;
   * @{
   */
 
-/** 
- * @brief ops struct
- * Encapsulator struct for ops of axiom_mime_body_part
- */
-struct axiom_mime_body_part_ops
-{
-   axis2_status_t (AXIS2_CALL *
-    add_header)(axiom_mime_body_part_t *mime_body_part, 
-            const axis2_env_t *env, 
-            const axis2_char_t *name, 
-            const axis2_char_t *value); 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_mime_body_part_add_header(axiom_mime_body_part_t *mime_body_part, 
+        const axis2_env_t *env, 
+        const axis2_char_t *name, 
+        const axis2_char_t *value); 
    
-    axis2_status_t (AXIS2_CALL *
-    set_data_handler)(axiom_mime_body_part_t *mime_body_part, 
-            const axis2_env_t *env, 
-            axiom_data_handler_t *data_handler); 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_mime_body_part_set_data_handler(axiom_mime_body_part_t *mime_body_part, 
+        const axis2_env_t *env, 
+        axiom_data_handler_t *data_handler); 
 
-    axis2_status_t (AXIS2_CALL *
-    write_to)(axiom_mime_body_part_t *mime_body_part, 
-            const axis2_env_t *env,
-            axis2_byte_t **output_stream, 
-            int *output_stream_size); 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part, 
+        const axis2_env_t *env,
+        axis2_byte_t **output_stream, 
+        int *output_stream_size); 
 
    /** Deallocate memory
      * @return status code
      */
-    void (AXIS2_CALL *
-    free) (axiom_mime_body_part_t *mime_body_part, 
-            const axis2_env_t *env);
-};
-
-struct axiom_mime_body_part
-{
-   axiom_mime_body_part_ops_t *ops;
-   
-};
-
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part, 
+        const axis2_env_t *env);
 /**
  * Creates mime_body_part struct
  * @return pointer to newly created mime_body_part
@@ -90,21 +75,17 @@ struct axiom_mime_body_part
 AXIS2_EXTERN axiom_mime_body_part_t * AXIS2_CALL 
 axiom_mime_body_part_create (const axis2_env_t *env);
 
-/*************************** Function macros **********************************/
-
 #define AXIOM_MIME_BODY_PART_FREE(mime_body_part, env) \
-    ((mime_body_part)->ops->free (mime_body_part, env))
+    axiom_mime_body_part_free (mime_body_part, env)
 
 #define AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, name, value) \
-    ((mime_body_part)->ops->add_header (mime_body_part, env, name, value))
+    axiom_mime_body_part_add_header (mime_body_part, env, name, value)
 
 #define AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, data_handler) \
-    ((mime_body_part)->ops->set_data_handler (mime_body_part, env, data_handler))
+    axiom_mime_body_part_set_data_handler (mime_body_part, env, data_handler)
 
 #define AXIOM_MIME_BODY_PART_WRITE_TO(mime_body_part, env, output_stream, output_stream_size) \
-    ((mime_body_part)->ops->write_to (mime_body_part, env, output_stream, output_stream_size))
-
-/*************************** End of function macros ***************************/
+    axiom_mime_body_part_write_to (mime_body_part, env, output_stream, output_stream_size)
 
 /** @} */
 
