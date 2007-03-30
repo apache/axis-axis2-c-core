@@ -20,16 +20,12 @@
 #include <axiom_data_handler.h>
 #include <stdio.h>
 
-typedef struct axiom_mime_parser_impl
+struct axiom_mime_parser
 {
-    axiom_mime_parser_t mime_parser;
     axis2_hash_t *mime_parts_map;
     int soap_body_len;
     axis2_char_t* soap_body_str;
-}
-axiom_mime_parser_impl_t;
-
-#define AXIS2_INTF_TO_IMPL(mime_parser) ((axiom_mime_parser_impl_t *)(mime_parser))
+};
 
 #define AXIOM_MIME_PARSER_BUFFER_SIZE (1024 * 1024)
 
@@ -38,111 +34,60 @@ axiom_mime_parser_impl_t;
 
 #define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
 
-void AXIS2_CALL
-axiom_mime_parser_free(axiom_mime_parser_t *mime_parser, 
-    const axis2_env_t *env);
-
-axis2_hash_t* AXIS2_CALL
-axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
-    const axis2_env_t *env,
-    AXIS2_READ_INPUT_CALLBACK,
-    void *callback_ctx,
-    axis2_char_t *mime_boundary);
-
-axis2_hash_t* AXIS2_CALL
-axiom_mime_parser_get_mime_parts_map(axiom_mime_parser_t *mime_parser,
-    const axis2_env_t *env);
-
-int AXIS2_CALL
-axiom_mime_parser_get_soap_body_len(axiom_mime_parser_t *mime_parser,
-    const axis2_env_t *env);
-
-axis2_char_t* AXIS2_CALL
-axiom_mime_parser_get_soap_body_str(axiom_mime_parser_t *mime_parser,
-    const axis2_env_t *env);
-
-
-/************************** End of Function headers ************************/
-
 AXIS2_EXTERN axiom_mime_parser_t * AXIS2_CALL
 axiom_mime_parser_create(const axis2_env_t *env)
 {
-    axiom_mime_parser_impl_t *mime_parser_impl = NULL;
+    axiom_mime_parser_t *mime_parser = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    mime_parser_impl = (axiom_mime_parser_impl_t *) AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_mime_parser_impl_t));
+    mime_parser = (axiom_mime_parser_t *) AXIS2_MALLOC(env->allocator,
+        sizeof(axiom_mime_parser_t));
 
-    if (!mime_parser_impl)
+    if (!mime_parser)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    mime_parser_impl->mime_parser.ops = NULL;
-    mime_parser_impl->mime_parts_map = NULL;
-    mime_parser_impl->soap_body_len = 0;
-    mime_parser_impl->soap_body_str = NULL; /* shallow copy */
+    mime_parser->mime_parts_map = NULL;
+    mime_parser->soap_body_len = 0;
+    mime_parser->soap_body_str = NULL; /* shallow copy */
 
-    mime_parser_impl->mime_parts_map = axis2_hash_make(env);
-    if (!(mime_parser_impl->mime_parts_map))
+    mime_parser->mime_parts_map = axis2_hash_make(env);
+    if (!(mime_parser->mime_parts_map))
     {
-        axiom_mime_parser_free(&(mime_parser_impl->mime_parser), env);
+        axiom_mime_parser_free(mime_parser, env);
         return NULL;
     }
 
-    mime_parser_impl->mime_parser.ops = AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_mime_parser_ops_t));
-    if (!mime_parser_impl->mime_parser.ops)
-    {
-        axiom_mime_parser_free(&(mime_parser_impl->mime_parser), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    mime_parser_impl->mime_parser.ops->free =  axiom_mime_parser_free;
-    mime_parser_impl->mime_parser.ops->parse = axiom_mime_parser_parse;
-    mime_parser_impl->mime_parser.ops->get_mime_parts_map = axiom_mime_parser_get_mime_parts_map;
-    mime_parser_impl->mime_parser.ops->get_soap_body_len = axiom_mime_parser_get_soap_body_len;
-    mime_parser_impl->mime_parser.ops->get_soap_body_str = axiom_mime_parser_get_soap_body_str;
-
-    return &(mime_parser_impl->mime_parser);
+    return mime_parser;
 }
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axiom_mime_parser_free(axiom_mime_parser_t *mime_parser, 
     const axis2_env_t *env)
 {
-    axiom_mime_parser_impl_t *mime_parser_impl = NULL;
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    mime_parser_impl = AXIS2_INTF_TO_IMPL(mime_parser);
 
     /* This map is passed on to SOAP builder, and SOAP builder take over the
        ownership of the map */
     
-    if (mime_parser->ops)
+    if (mime_parser)
     {
-        AXIS2_FREE(env->allocator, mime_parser->ops);
-    }
-
-    if (mime_parser_impl)
-    {
-        AXIS2_FREE(env->allocator, mime_parser_impl);
+        AXIS2_FREE(env->allocator, mime_parser);
     }
 
     return;
 }
 
 
-axis2_hash_t* AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
     const axis2_env_t *env,
     AXIS2_READ_INPUT_CALLBACK callback,
     void *callback_ctx,
     axis2_char_t *mime_boundary)
 {
-    axiom_mime_parser_impl_t *mime_parser_impl = NULL;
     axis2_char_t *buffer = NULL;
     int size = AXIOM_MIME_PARSER_BUFFER_SIZE;
     int len = 0;
@@ -159,7 +104,6 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
     int count = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
-    mime_parser_impl = AXIS2_INTF_TO_IMPL(mime_parser);
 
     buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
 
@@ -250,8 +194,8 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
 
     if (soap_body_str)
     {
-        mime_parser_impl->soap_body_len = soap_body_len;
-        mime_parser_impl->soap_body_str = soap_body_str;
+        mime_parser->soap_body_len = soap_body_len;
+        mime_parser->soap_body_str = soap_body_str;
     }
 
     while (!end_of_mime && count < AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT)
@@ -401,7 +345,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
         while (!pos && len > 0);
 
 
-        if (mime_parser_impl->mime_parts_map)
+        if (mime_parser->mime_parts_map)
         {
             /* get MIME ID */
             axis2_char_t *id = NULL;
@@ -472,7 +416,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                                 
                                 AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env,
                                     mime_binary, mime_binary_len);
-                                axis2_hash_set(mime_parser_impl->mime_parts_map, mime_id,
+                                axis2_hash_set(mime_parser->mime_parts_map, mime_id,
                                     AXIS2_HASH_KEY_STRING, data_handler);
                             }
                         }
@@ -500,7 +444,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
             body_mime = temp_body_mime;
             body_mime_len = temp_body_mime_len;
 
-        }/*if (mime_parser_impl->mime_parts_map)*/
+        }/*if (mime_parser->mime_parts_map)*/
     }/* end while (!end_of_mime) */
 
     if (body_mime)
@@ -515,26 +459,26 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
 
     AXIS2_FREE(env->allocator, buffer);
 
-    return mime_parser_impl->mime_parts_map;
+    return mime_parser->mime_parts_map;
 }
 
-axis2_hash_t* AXIS2_CALL
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axiom_mime_parser_get_mime_parts_map(axiom_mime_parser_t *mime_parser,
     const axis2_env_t *env)
 {
-    return AXIS2_INTF_TO_IMPL(mime_parser)->mime_parts_map;
+    return mime_parser->mime_parts_map;
 }
 
-int AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 axiom_mime_parser_get_soap_body_len(axiom_mime_parser_t *mime_parser,
     const axis2_env_t *env)
 {
-    return AXIS2_INTF_TO_IMPL(mime_parser)->soap_body_len;
+    return mime_parser->soap_body_len;
 }
 
-axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axiom_mime_parser_get_soap_body_str(axiom_mime_parser_t *mime_parser,
     const axis2_env_t *env)
 {
-    return AXIS2_INTF_TO_IMPL(mime_parser)->soap_body_str;
+    return mime_parser->soap_body_str;
 }

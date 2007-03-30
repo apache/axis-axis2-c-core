@@ -37,7 +37,6 @@ extern "C"
 {
 #endif
 
-    typedef struct axiom_mime_parser_ops axiom_mime_parser_ops_t;
     typedef struct axiom_mime_parser axiom_mime_parser_t;
 
 
@@ -46,52 +45,31 @@ extern "C"
       * @{
       */
 
-    /**
-     * @brief Flow ops struct
-     * Encapsulator struct for ops of axiom_mime_parser
-     */
-    struct axiom_mime_parser_ops
-    {
-        axis2_hash_t*(AXIS2_CALL *
-                parse)(
-                    axiom_mime_parser_t *mime_parser,
-                    const axis2_env_t *env,
-                    AXIS2_READ_INPUT_CALLBACK,
-                    void *callback_ctx,
-                    axis2_char_t *mime_boundary);
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
+        const axis2_env_t *env,
+        AXIS2_READ_INPUT_CALLBACK,
+        void *callback_ctx,
+        axis2_char_t *mime_boundary);
 
-        axis2_hash_t*(AXIS2_CALL *
-                get_mime_parts_map)(
-                    axiom_mime_parser_t *mime_parser,
-                    const axis2_env_t *env);
+    AXIS2_EXTERN axis2_hash_t *AXIS2_CALL
+    axiom_mime_parser_get_mime_parts_map(axiom_mime_parser_t *mime_parser,
+        const axis2_env_t *env);
 
-        /** Deallocate memory
-          * @return status code
-          */
-        void (AXIS2_CALL *
-        free)(
-               axiom_mime_parser_t *mime_parser,
-               const axis2_env_t *env);
+    /** Deallocate memory
+      * @return status code
+      */
+    AXIS2_EXTERN void AXIS2_CALL
+    axiom_mime_parser_free(axiom_mime_parser_t *mime_parser,
+        const axis2_env_t *env);
 
-        int (AXIS2_CALL *
-        get_soap_body_len)(
-               axiom_mime_parser_t *mime_parser,
-               const axis2_env_t *env);
+    AXIS2_EXTERN int AXIS2_CALL
+    axiom_mime_parser_get_soap_body_len(axiom_mime_parser_t *mime_parser,
+       const axis2_env_t *env);
 
-        axis2_char_t* (AXIS2_CALL *
-        get_soap_body_str)(
-               axiom_mime_parser_t *mime_parser,
-               const axis2_env_t *env);
-    };
-
-    /**
-     * @brief Flow struct
-     *   Flow
-     */
-    struct axiom_mime_parser
-    {
-        axiom_mime_parser_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axiom_mime_parser_get_soap_body_str(axiom_mime_parser_t *mime_parser,
+        const axis2_env_t *env);
 
     /**
      * Creates mime_parser struct
@@ -101,21 +79,19 @@ extern "C"
     axiom_mime_parser_create(const axis2_env_t *env);
 
 #define AXIOM_MIME_PARSER_FREE(mime_parser, env) \
-((mime_parser)->ops->free (mime_parser, env))
+axiom_mime_parser_free (mime_parser, env)
 
 #define AXIOM_MIME_PARSER_PARSE(mime_parser, env, callback, callback_ctx, mime_boundary) \
-((mime_parser)->ops->parse(mime_parser, env, callback, callback_ctx, mime_boundary))
+axiom_mime_parser_parse(mime_parser, env, callback, callback_ctx, mime_boundary)
 
 #define AXIOM_MIME_PARSER_GET_MIME_PARTS_MAP(mime_parser, env) \
-((mime_parser)->ops->get_mime_parts_map(mime_parser, env))
+axiom_mime_parser_get_mime_parts_map(mime_parser, env)
 
 #define AXIOM_MIME_PARSER_GET_SOAP_BODY_LENGTH(mime_parser, env) \
-((mime_parser)->ops->get_soap_body_len(mime_parser, env))
+axiom_mime_parser_get_soap_body_len(mime_parser, env)
 
 #define AXIOM_MIME_PARSER_GET_SOAP_BODY_STR(mime_parser, env) \
-((mime_parser)->ops->get_soap_body_str(mime_parser, env))
-
-    /*************************** End of function macros ***************************/
+axiom_mime_parser_get_soap_body_str(mime_parser, env)
 
     /** @} */
 
