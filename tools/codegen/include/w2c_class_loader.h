@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 #include <axis2_utils.h>
-#include <axis2_dll_desc.h>
+#include <axutil_dll_desc.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -55,7 +55,7 @@ w2c_class_loader_get_object_from_class_name
                          (const axis2_env_t *env,
                           axis2_char_t *class_name,
                           axis2_char_t *inter_path,
-                          axis2_dll_desc_t **pdll_desc);
+                          axutil_dll_desc_t **pdll_desc);
 
 /**
  * free the loaded class.
@@ -66,7 +66,7 @@ w2c_class_loader_get_object_from_class_name
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 w2c_class_loader_free_loaded_class(
                           const axis2_env_t *env,
-                          axis2_dll_desc_t *dll_desc);
+                          axutil_dll_desc_t *dll_desc);
 
 /** @} */
 

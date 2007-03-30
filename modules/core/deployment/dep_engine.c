@@ -19,7 +19,7 @@
 #include <axutil_array_list.h>
 #include <axis2_deployment.h>
 #include <axis2_file_handler.h>
-#include <axis2_dll_desc.h>
+#include <axutil_dll_desc.h>
 #include <axis2_flow.h>
 #include <axis2_arch_reader.h>
 #include <axis2_module_builder.h>
@@ -1023,7 +1023,7 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
 {
     axis2_char_t *read_in_dll = NULL;
     axis2_module_t *module = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_param_t *impl_info_param = NULL;
     axis2_file_t *module_folder = NULL;
     AXIS2_TIME_T timestamp = 0;
@@ -1038,22 +1038,22 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
 
     read_in_dll =
         axis2_arch_file_data_get_module_dll_name(dep_engine->curr_file, env);
-    dll_desc = axis2_dll_desc_create(env);
-    dll_name =  axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
+    dll_desc = axutil_dll_desc_create(env);
+    dll_name =  axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
         read_in_dll);
 
     module_folder = axis2_arch_file_data_get_file(dep_engine->curr_file, env);
     timestamp =  axis2_file_get_timestamp(module_folder, env);
-    axis2_dll_desc_set_timestamp(dll_desc, env, timestamp);
+    axutil_dll_desc_set_timestamp(dll_desc, env, timestamp);
     module_folder_path =  axis2_file_get_path(module_folder, env);
     temp_path = axis2_stracat(env, module_folder_path, AXIS2_PATH_SEP_STR);
     dll_path = axis2_stracat(env, temp_path, dll_name);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
         "axis2_dep_engine_load_module_dll; dll path is : %s", dll_path);
-    status =  axis2_dll_desc_set_name(dll_desc, env, dll_path);
+    status =  axutil_dll_desc_set_name(dll_desc, env, dll_path);
     if (AXIS2_SUCCESS != status)
     {
-        axis2_dll_desc_free(dll_desc, env);
+        axutil_dll_desc_free(dll_desc, env);
         return AXIS2_FAILURE;
     }
     /* free all temp vars */
@@ -1062,10 +1062,10 @@ axis2_dep_engine_load_module_dll(axis2_dep_engine_t *dep_engine,
     AXIS2_FREE(env->allocator, dll_path);
     dll_path = NULL;
 
-    axis2_dll_desc_set_type(dll_desc, env, AXIS2_MODULE_DLL);
+    axutil_dll_desc_set_type(dll_desc, env, AXIS2_MODULE_DLL);
     impl_info_param = axis2_param_create(env, read_in_dll, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);
-    axis2_param_set_value_free(impl_info_param, env, axis2_dll_desc_free_void_arg);
+    axis2_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
     axutil_class_loader_init(env);
     module = (axis2_module_t *) axutil_class_loader_create_dll(env,
         impl_info_param);
@@ -1115,7 +1115,7 @@ axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
     const axis2_env_t *env,
     axis2_char_t *class_name)
 {
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_param_t *impl_info_param = NULL;
     axis2_handler_t *handler = NULL;
     axis2_char_t *dll_name = NULL;
@@ -1123,13 +1123,13 @@ axis2_dep_engine_get_handler_dll(const axis2_dep_engine_t *dep_engine,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, class_name, NULL);
 
-    dll_desc = axis2_dll_desc_create(env);
+    dll_desc = axutil_dll_desc_create(env);
     dll_name =
-         axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
+         axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
              class_name);
     /* TODO set fill dll path here instead of dll lib name only */
-    axis2_dll_desc_set_name(dll_desc, env, dll_name);
-    axis2_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
+    axutil_dll_desc_set_name(dll_desc, env, dll_name);
+    axutil_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
     axutil_class_loader_init(env);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);

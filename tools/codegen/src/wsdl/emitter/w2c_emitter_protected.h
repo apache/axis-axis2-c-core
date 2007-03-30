@@ -23,7 +23,7 @@
 #include <w2c_config_property_loader.h>
 #include <axiom_document.h>
 #include <w2c_writer.h>
-#include <axis2_dll_desc.h>
+#include <axutil_dll_desc.h>
 #include <w2c_class_loader.h>
 #include <w2c_messages.h>
 #include <woden_reader.h>

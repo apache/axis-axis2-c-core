@@ -432,7 +432,7 @@ w2c_schema_property_loader_load_values(
      int index = 0;
      axis2_char_t *language = NULL;
      w2c_schema_writer_t *writer = NULL;
-     axis2_dll_desc_t *dll_desc = NULL;
+     axutil_dll_desc_t *dll_desc = NULL;
 
      prop_hash = axis2_properties_get_all( obj_impl-> prop_set, env);
      language = obj_impl-> language;

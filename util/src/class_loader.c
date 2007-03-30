@@ -19,11 +19,11 @@
 
 axis2_status_t
 axutil_class_loader_load_lib(const axis2_env_t *env,
-        axis2_dll_desc_t *dll_desc);
+        axutil_dll_desc_t *dll_desc);
 
 axis2_status_t
 axutil_class_loader_unload_lib(const axis2_env_t *env,
-        axis2_dll_desc_t *dll_desc);
+        axutil_dll_desc_t *dll_desc);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -35,7 +35,7 @@ axutil_class_loader_init(const axis2_env_t *env)
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_class_loader_delete_dll(const axis2_env_t *env,
-        axis2_dll_desc_t *dll_desc)
+        axutil_dll_desc_t *dll_desc)
 {
     if (!dll_desc)
     {
@@ -56,7 +56,7 @@ axutil_class_loader_create_dll(const axis2_env_t *env,
     CREATE_FUNCT create_funct = NULL;
     DELETE_FUNCT delete_funct = NULL;
     AXIS2_DLHANDLER dl_handler = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_error_codes_t error_code = AXIS2_ERROR_NONE;
 
@@ -67,7 +67,7 @@ axutil_class_loader_create_dll(const axis2_env_t *env,
                 AXIS2_FAILURE);
         return NULL;
     }
-    dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);
+    dl_handler =  axutil_dll_desc_get_dl_handler(dll_desc, env);
     if (! dl_handler)
     {
         status = axutil_class_loader_load_lib(env, dll_desc);
@@ -77,7 +77,7 @@ axutil_class_loader_create_dll(const axis2_env_t *env,
                     AXIS2_FAILURE);
             return NULL;
         }
-        dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);
+        dl_handler =  axutil_dll_desc_get_dl_handler(dll_desc, env);
         if (!dl_handler)
         {
             return NULL;
@@ -89,7 +89,7 @@ axutil_class_loader_create_dll(const axis2_env_t *env,
         {
             return NULL;
         }
-        status =  axis2_dll_desc_set_create_funct(dll_desc, env, create_funct);
+        status =  axutil_dll_desc_set_create_funct(dll_desc, env, create_funct);
         if (AXIS2_FAILURE == status)
         {
             axutil_class_loader_unload_lib(env, dll_desc);
@@ -104,7 +104,7 @@ axutil_class_loader_create_dll(const axis2_env_t *env,
         {
             return NULL;
         }
-        status =  axis2_dll_desc_set_delete_funct(dll_desc, env, delete_funct);
+        status =  axutil_dll_desc_set_delete_funct(dll_desc, env, delete_funct);
         if (AXIS2_FAILURE == status)
         {
             axutil_class_loader_unload_lib(env, dll_desc);
@@ -113,14 +113,14 @@ axutil_class_loader_create_dll(const axis2_env_t *env,
             return NULL;
         }
     }
-    create_funct =  axis2_dll_desc_get_create_funct(dll_desc, env);
+    create_funct =  axutil_dll_desc_get_create_funct(dll_desc, env);
     if (!create_funct)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_DLL_DESC,
                 AXIS2_FAILURE);
         return NULL;
     }
-    error_code =  axis2_dll_desc_get_error_code(dll_desc, env) ;
+    error_code =  axutil_dll_desc_get_error_code(dll_desc, env) ;
 
     create_funct(&obj, env);
     if (! obj)
@@ -139,13 +139,13 @@ axutil_class_loader_create_dll(const axis2_env_t *env,
 
 axis2_status_t
 axutil_class_loader_load_lib(const axis2_env_t *env,
-        axis2_dll_desc_t *dll_desc)
+        axutil_dll_desc_t *dll_desc)
 {
     axis2_char_t *dll_name = NULL;
     AXIS2_DLHANDLER dl_handler = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    dll_name =  axis2_dll_desc_get_name(dll_desc, env);
+    dll_name =  axutil_dll_desc_get_name(dll_desc, env);
     dl_handler = AXIS2_PLATFORM_LOADLIB(dll_name);
     if (! dl_handler)
     {
@@ -153,7 +153,7 @@ axutil_class_loader_load_lib(const axis2_env_t *env,
                 AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    status =  axis2_dll_desc_set_dl_handler(dll_desc, env, dl_handler);
+    status =  axutil_dll_desc_set_dl_handler(dll_desc, env, dl_handler);
 
     if (AXIS2_SUCCESS != status)
     {
@@ -169,9 +169,9 @@ axutil_class_loader_load_lib(const axis2_env_t *env,
 
 axis2_status_t
 axutil_class_loader_unload_lib(const axis2_env_t *env,
-        axis2_dll_desc_t *dll_desc)
+        axutil_dll_desc_t *dll_desc)
 {
-    AXIS2_DLHANDLER dl_handler =  axis2_dll_desc_get_dl_handler(dll_desc, env);
+    AXIS2_DLHANDLER dl_handler =  axutil_dll_desc_get_dl_handler(dll_desc, env);
     if (dl_handler)
     {
         AXIS2_PLATFORM_UNLOADLIB(dl_handler);

@@ -132,7 +132,7 @@ int axis2_test_dep_engine_load()
 
 int axis2_test_transport_receiver_load()
 {
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;
     axis2_transport_receiver_t *transport_recv = NULL;
     axis2_param_t *impl_info_param = NULL;
@@ -143,13 +143,13 @@ int axis2_test_transport_receiver_load()
     printf("testing axis2_transport_recv load\n");
     printf("******************************************\n");
 
-    dll_desc = axis2_dll_desc_create(env);
+    dll_desc = axutil_dll_desc_create(env);
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dll_name = axis2_stracat(env, axis2c_home, "/lib/libaxis2_http_receiver.so");
     printf("transport receiver name:%s\n", dll_name);
-     axis2_dll_desc_set_name(dll_desc, env, dll_name);
-     axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
+     axutil_dll_desc_set_name(dll_desc, env, dll_name);
+     axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);
     axutil_class_loader_init(env);
@@ -164,7 +164,7 @@ int axis2_test_transport_receiver_load()
 
 int axis2_test_transport_sender_load()
 {
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_char_t *dll_name = NULL;
     axis2_transport_sender_t *transport_sender = NULL;
     axis2_param_t *impl_info_param = NULL;
@@ -177,13 +177,13 @@ int axis2_test_transport_sender_load()
     printf("******************************************\n");
 
     msg_ctx = (axis2_msg_ctx_t *) AXIS2_MALLOC(env->allocator, 5);
-    dll_desc = axis2_dll_desc_create(env);
+    dll_desc = axutil_dll_desc_create(env);
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     dll_name = axis2_stracat(env, axis2c_home, "/lib/libaxis2_http_sender.so");
     printf("transport sender name:%s\n", dll_name);
-     axis2_dll_desc_set_name(dll_desc, env, dll_name);
-     axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
+     axutil_dll_desc_set_name(dll_desc, env, dll_name);
+     axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
     impl_info_param = axis2_param_create(env, NULL, NULL);
     axis2_param_set_value(impl_info_param, env, dll_desc);
     axutil_class_loader_init(env);

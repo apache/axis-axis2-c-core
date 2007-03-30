@@ -49,7 +49,7 @@ void test_writer(CuTest *tc)
     w2c_cmdline_option_parser_t* parser = NULL;
     axis2_hash_t* hash = NULL;
     w2c_engine_configuration_t* conf = NULL;
-    axis2_dll_desc_t* dll_desc = NULL;
+    axutil_dll_desc_t* dll_desc = NULL;
 
     int input_size = 0;
 

@@ -262,7 +262,7 @@ w2c_c_emitter_write_stub_source( w2c_emitter_impl_t *emitter_impl,
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -285,7 +285,7 @@ w2c_c_emitter_write_stub_header( w2c_emitter_impl_t *emitter_impl,
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -308,7 +308,7 @@ w2c_c_emitter_write_skel_source( w2c_emitter_impl_t *emitter_impl,
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -331,7 +331,7 @@ w2c_c_emitter_write_skel_header( w2c_emitter_impl_t *emitter_impl,
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -354,7 +354,7 @@ w2c_c_emitter_write_svc_skel( w2c_emitter_impl_t *emitter_impl,
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -377,7 +377,7 @@ w2c_c_emitter_write_svc_xml( w2c_emitter_impl_t *emitter_impl,
 {
     axiom_node_t *root = NULL;
     w2c_writer_t *writer = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

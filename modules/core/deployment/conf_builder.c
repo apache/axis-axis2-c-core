@@ -380,7 +380,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         axis2_char_t *dll_name = NULL;
         axis2_qname_t *class_qname = NULL;
         axis2_disp_t *disp_dll = NULL;
-        axis2_dll_desc_t *dll_desc = NULL;
+        axutil_dll_desc_t *dll_desc = NULL;
         axis2_param_t *impl_info_param = NULL;
         axis2_handler_desc_t *handler_desc = NULL;
         axis2_handler_t *handler = NULL;
@@ -398,14 +398,14 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
             continue;
         }
         class_name = axiom_attribute_get_value(disp_att, env);
-        dll_desc = axis2_dll_desc_create(env);
+        dll_desc = axutil_dll_desc_create(env);
         dll_name =
-            axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
+            axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
             class_name);
         /* TODO
          * set full dll path here instead of dll lib name only */
-         axis2_dll_desc_set_name(dll_desc, env, dll_name);
-         axis2_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
+         axutil_dll_desc_set_name(dll_desc, env, dll_name);
+         axutil_dll_desc_set_type(dll_desc, env, AXIS2_HANDLER_DLL);
         impl_info_param = axis2_param_create(env, class_name, NULL);
         if (!impl_info_param)
         {
@@ -414,7 +414,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
         }
         axis2_param_set_value(impl_info_param, env, dll_desc);
         axis2_param_set_value_free(impl_info_param, env, 
-            axis2_dll_desc_free_void_arg);
+            axutil_dll_desc_free_void_arg);
         axutil_class_loader_init(env);
         disp_dll = (axis2_disp_t *) axutil_class_loader_create_dll(env,
             impl_info_param);
@@ -662,7 +662,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             axiom_node_t *in_fault_flow_node = NULL;
             axiom_element_t *out_fault_flow_element = NULL;
             axiom_node_t *out_fault_flow_node = NULL;
-            axis2_dll_desc_t *dll_desc = NULL;
+            axutil_dll_desc_t *dll_desc = NULL;
             axis2_param_t *impl_info_param = NULL;
             void *transport_sender = NULL;
             axis2_char_t *path_qualified_dll_name = NULL;
@@ -726,9 +726,9 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
                 axis2_transport_out_desc_free(transport_out, env);
                 return AXIS2_FAILURE;
             }
-            dll_desc = axis2_dll_desc_create(env);
+            dll_desc = axutil_dll_desc_create(env);
             dll_name =
-                 axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
+                 axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                      class_name);
 
             repos_name = axis2_dep_engine_get_repos_path(
@@ -741,12 +741,12 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             AXIS2_FREE(env->allocator, temp_path);
             AXIS2_FREE(env->allocator, temp_path2);
             AXIS2_FREE(env->allocator, temp_path3);
-            axis2_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
+            axutil_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
             AXIS2_FREE(env->allocator, path_qualified_dll_name);
-            axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
+            axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
             axis2_param_set_value(impl_info_param, env, dll_desc);
             axis2_param_set_value_free(impl_info_param, env, 
-                axis2_dll_desc_free_void_arg);
+                axutil_dll_desc_free_void_arg);
             axutil_class_loader_init(env);
             transport_sender = axutil_class_loader_create_dll(env, impl_info_param);
             axis2_transport_out_desc_add_param(transport_out, env,
@@ -971,7 +971,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             {
                 axis2_char_t *class_name = NULL;
                 axis2_char_t *dll_name = NULL;
-                axis2_dll_desc_t *dll_desc = NULL;
+                axutil_dll_desc_t *dll_desc = NULL;
                 axis2_param_t *impl_info_param = NULL;
                 axis2_transport_receiver_t *recv = NULL;
                 axis2_status_t stat = AXIS2_FAILURE;
@@ -983,9 +983,9 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
 
                 class_name = axiom_attribute_get_value(trs_class_name, env);
                 impl_info_param = axis2_param_create(env, class_name, NULL);
-                dll_desc = axis2_dll_desc_create(env);
+                dll_desc = axutil_dll_desc_create(env);
                 dll_name =
-                    axis2_dll_desc_create_platform_specific_dll_name(dll_desc,
+                    axutil_dll_desc_create_platform_specific_dll_name(dll_desc,
                         env, class_name);
 
                 repos_name = axis2_dep_engine_get_repos_path(
@@ -999,13 +999,13 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 AXIS2_FREE(env->allocator, temp_path2);
                 AXIS2_FREE(env->allocator, temp_path3);
 
-                axis2_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
+                axutil_dll_desc_set_name(dll_desc, env, path_qualified_dll_name);
                 AXIS2_FREE(env->allocator, path_qualified_dll_name);
-                axis2_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
+                axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
 
                 axis2_param_set_value(impl_info_param, env, dll_desc);
                 axis2_param_set_value_free(impl_info_param, env, 
-                    axis2_dll_desc_free_void_arg);
+                    axutil_dll_desc_free_void_arg);
                 axutil_class_loader_init(env);
                 recv = (axis2_transport_receiver_t *)
                     axutil_class_loader_create_dll(env, impl_info_param);

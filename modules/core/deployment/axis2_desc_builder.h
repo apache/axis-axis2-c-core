@@ -43,7 +43,7 @@
 #include <axis2_op.h>
 #include <axiom_children_with_specific_attribute_iterator.h>
 #include <axis2_phase.h>
-#include <axis2_dll_desc.h>
+#include <axutil_dll_desc.h>
 
 
 #ifdef __cplusplus

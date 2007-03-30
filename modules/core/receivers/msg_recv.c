@@ -223,7 +223,7 @@ axis2_msg_recv_delete_svc_obj(axis2_msg_recv_t *msg_recv,
     axis2_param_t *impl_info_param = NULL;
     axis2_param_t *scope_param = NULL;
     axis2_char_t *param_value = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);

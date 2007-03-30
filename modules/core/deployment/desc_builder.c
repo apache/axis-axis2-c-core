@@ -863,7 +863,7 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_qname_t *class_qname = NULL;
     axis2_param_t *impl_info_param = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_char_t *repos_name = NULL;
     axis2_char_t *dll_name = NULL;
     axis2_char_t *temp_path = NULL;
@@ -889,9 +889,9 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
 
     if (!impl_info_param)
     {
-        dll_desc = axis2_dll_desc_create(env);
+        dll_desc = axutil_dll_desc_create(env);
         msg_recv_dll_name =
-             axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
+             axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
                  class_name);
         repos_name = axis2_dep_engine_get_repos_path(desc_builder->engine, env);
         temp_path = axis2_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
@@ -901,12 +901,12 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
         AXIS2_FREE(env->allocator, temp_path);
         AXIS2_FREE(env->allocator, temp_path2);
         AXIS2_FREE(env->allocator, temp_path3);
-         axis2_dll_desc_set_name(dll_desc, env, dll_name);
+         axutil_dll_desc_set_name(dll_desc, env, dll_name);
         AXIS2_FREE(env->allocator, dll_name);
-         axis2_dll_desc_set_type(dll_desc, env, AXIS2_MSG_RECV_DLL);
+         axutil_dll_desc_set_type(dll_desc, env, AXIS2_MSG_RECV_DLL);
         impl_info_param = axis2_param_create(env, class_name, NULL);
         axis2_param_set_value(impl_info_param, env, dll_desc);
-        axis2_param_set_value_free(impl_info_param, env, axis2_dll_desc_free_void_arg);
+        axis2_param_set_value_free(impl_info_param, env, axutil_dll_desc_free_void_arg);
         /* set the impl_info_param(which contain dll_desc as value) so that
          * loaded msg_recv loader lib can be re-used in future
          */

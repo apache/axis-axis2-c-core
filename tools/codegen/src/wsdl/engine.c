@@ -30,7 +30,7 @@
 #include <w2c_messages.h>
 #include <stdio.h>
 #include <w2c_class_loader.h>
-#include <axis2_dll_desc.h>
+#include <axutil_dll_desc.h>
 
 /** 
  * @brief
@@ -206,7 +206,7 @@ w2c_engine_generate(w2c_engine_t *engine,
     axis2_char_t *output_lang = NULL;
     axis2_bool_t all_flag = AXIS2_FALSE;
     axis2_bool_t only_flag = AXIS2_FALSE;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -282,7 +282,7 @@ w2c_engine_generate(w2c_engine_t *engine,
         size = axutil_array_list_size( engine_impl-> pre_extensions, env);
         for (i = 0; i < size ; i++)
         {
-            dll_desc = (axis2_dll_desc_t*)
+            dll_desc = (axutil_dll_desc_t*)
               axutil_array_list_get( engine_impl-> pre_extensions_dll_desc, env, i);
             /*w2c_class_loader_free_loaded_class(env, dll_desc);*/
         }
@@ -292,7 +292,7 @@ w2c_engine_generate(w2c_engine_t *engine,
         size = axutil_array_list_size( engine_impl-> post_extensions, env);
         for (i = 0; i < size ; i++)
         {
-            dll_desc = (axis2_dll_desc_t*)
+            dll_desc = (axutil_dll_desc_t*)
               axutil_array_list_get( engine_impl-> post_extensions_dll_desc, env, i);
             /*w2c_class_loader_free_loaded_class(env, dll_desc);*/
         }
@@ -309,7 +309,7 @@ w2c_engine_load_extension (w2c_engine_impl_t *engine_impl,
     w2c_config_property_loader_t *prop_loader = NULL;
     axis2_char_t *class_name = NULL;
     w2c_extension_t *ext = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     int size = 0;
     int i = 0;
     

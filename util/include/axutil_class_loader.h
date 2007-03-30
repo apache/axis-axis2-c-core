@@ -27,7 +27,7 @@
 #include <axis2_qname.h>
 #include <axis2_error.h>
 #include <axis2_utils.h>
-#include <axis2_dll_desc.h>
+#include <axutil_dll_desc.h>
 #include <axis2_param.h>
 
 #ifdef __cplusplus
@@ -45,7 +45,7 @@ axutil_class_loader_init(const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axutil_class_loader_delete_dll (const axis2_env_t *env,
-                                    axis2_dll_desc_t *dll_desc);
+                                    axutil_dll_desc_t *dll_desc);
 
 AXIS2_EXTERN void * AXIS2_CALL
 axutil_class_loader_create_dll (const axis2_env_t *env,

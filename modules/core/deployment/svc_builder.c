@@ -166,7 +166,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_char_t *svc_name = NULL;
     axis2_char_t *class_name = NULL;
     axis2_char_t *svc_dll_name = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
+    axutil_dll_desc_t *dll_desc = NULL;
     axis2_param_t *impl_info_param = NULL;
     axis2_arch_file_data_t *arch_file_data = NULL;
     axis2_file_t *svc_folder = NULL;
@@ -238,7 +238,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     /* create dll_desc and set it in a parameter. then set that param in param
      * container taken from svc 
      */
-    dll_desc = axis2_dll_desc_create(env);
+    dll_desc = axutil_dll_desc_create(env);
     impl_info_param = 
         axis2_param_container_get_param(      
             axis2_svc_get_param_container(svc_builder->svc, env),
@@ -246,39 +246,39 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
             AXIS2_SERVICE_CLASS);
     if (!impl_info_param)
     {
-        axis2_dll_desc_free(dll_desc, env);
+        axutil_dll_desc_free(dll_desc, env);
         return AXIS2_FAILURE;
     }
     class_name = axis2_param_get_value(impl_info_param, env);
     svc_dll_name =
-         axis2_dll_desc_create_platform_specific_dll_name(dll_desc, env,
+         axutil_dll_desc_create_platform_specific_dll_name(dll_desc, env,
              class_name);
     arch_file_data = axis2_dep_engine_get_current_file_item(
         axis2_desc_builder_get_dep_engine(svc_builder->desc_builder, env), 
             env);
     svc_folder = axis2_arch_file_data_get_file(arch_file_data, env);
     timestamp =  axis2_file_get_timestamp(svc_folder, env);
-    axis2_dll_desc_set_timestamp(dll_desc, env, timestamp);
+    axutil_dll_desc_set_timestamp(dll_desc, env, timestamp);
     svc_folder_path =  axis2_file_get_path(svc_folder, env);
     dll_path = axis2_strcat(env, svc_folder_path, AXIS2_PATH_SEP_STR,
         svc_dll_name, NULL);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dll path is : %s", dll_path);
-    status =  axis2_dll_desc_set_name(dll_desc, env, dll_path);
+    status =  axutil_dll_desc_set_name(dll_desc, env, dll_path);
     if (AXIS2_SUCCESS != status)
     {
-        axis2_dll_desc_free(dll_desc, env);
+        axutil_dll_desc_free(dll_desc, env);
         return status;
     }
     AXIS2_FREE(env->allocator, dll_path);
     dll_path = NULL;
 
-    axis2_dll_desc_set_type(dll_desc, env, AXIS2_SVC_DLL);
+    axutil_dll_desc_set_type(dll_desc, env, AXIS2_SVC_DLL);
     status = axis2_param_set_value(impl_info_param, env, dll_desc);
     axis2_param_set_value_free(impl_info_param, env, 
-        axis2_dll_desc_free_void_arg);
+        axutil_dll_desc_free_void_arg);
     if (AXIS2_SUCCESS != status)
     {
-        axis2_dll_desc_free(dll_desc, env);
+        axutil_dll_desc_free(dll_desc, env);
         return status;
     }
     /* end of my logic */
