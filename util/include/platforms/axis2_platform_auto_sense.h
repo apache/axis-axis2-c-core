@@ -35,10 +35,10 @@ extern "C"
  */
 
 #if defined( WIN32 )
-   #include "windows/axis2_windows.h"
-   #include "windows/axis2_dir_windows.h"
+   #include "windows/axutil_windows.h"
+   #include "windows/axutil_dir_windows.h"
    #include "windows/axutil_uuid_gen_windows.h"
-   #include "windows/axis2_getopt_windows.h"
+   #include "windows/axutil_getopt_windows.h"
    #include "windows/axutil_date_time_util_windows.h"  
    #include "windows/axutil_thread_windows.h"
 #elif defined ( __OS400__  )

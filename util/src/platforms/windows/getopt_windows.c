@@ -19,7 +19,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <platforms/windows/axis2_getopt_windows.h>
+#include <platforms/windows/axutil_getopt_windows.h>
 
 int      optind = 1;
 int      opterr = 1;

@@ -20,7 +20,7 @@
 #include <string.h>
 #include <errno.h>
 
-#include <platforms/windows/axis2_dir_windows.h>
+#include <platforms/windows/axutil_dir_windows.h>
 
 /*dirent.h style mehtods for win32*/
 
