@@ -3,9 +3,7 @@ libaxis2_http_receiver_la_LIBADD=$(top_builddir)/util/src/libaxis2_util.la\
                                  $(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la
 
 
-libaxis2_http_receiver_la_SOURCES = http_response_writer.c\
-				    simple_http_svr_conn.c\
-                                    http_receiver.c\
+libaxis2_http_receiver_la_SOURCES = http_receiver.c\
                                     http_svr_thread.c
 
 
