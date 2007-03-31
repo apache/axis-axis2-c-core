@@ -90,6 +90,19 @@ extern "C"
         const axutil_env_t *env,
         struct axis2_handler_desc *handler);
 
+
+    /**
+     * Removes given handler from phase holder.
+     * @param phase_holder pointer to phase holder
+     * @param env pointer to environment struct
+     * @para handler pointer to handler
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_holder_remove_handler(axis2_phase_holder_t *phase_holder,
+        const axutil_env_t *env,
+        struct axis2_handler_desc *handler);
+
     /**
      * Gets the named phase from phase array list.
      * @param phase_holder pointer to phase holder

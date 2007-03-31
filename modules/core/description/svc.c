@@ -648,6 +648,30 @@ axis2_svc_is_module_engaged(axis2_svc_t *svc,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_disengage_module(axis2_svc_t *svc,
+    const axutil_env_t *env,
+    axis2_module_desc_t *module_desc,
+    axis2_conf_t *conf)
+{
+    axis2_phase_resolver_t *phase_resolver = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
+    
+    phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
+    if (!phase_resolver)
+    {
+        return AXIS2_FAILURE;
+    }
+    status = axis2_phase_resolver_disengage_module_from_svc(phase_resolver, env, svc,
+        module_desc);
+
+    return status;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_svc_add_module_ops(axis2_svc_t *svc,
     const axutil_env_t *env,
     axis2_module_desc_t *module_desc,

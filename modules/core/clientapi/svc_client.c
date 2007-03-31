@@ -417,19 +417,23 @@ axis2_svc_client_disengage_module(axis2_svc_client_t *svc_client,
     AXIS2_PARAM_CHECK(env->error, module_name, AXIS2_FAILURE);
 
     mod_qname = axutil_qname_create(env, module_name, NULL, NULL);
+    if (mod_qname)
+    {
+        module =  axis2_conf_get_module(svc_client->conf, env, mod_qname);
+        axutil_qname_free(mod_qname, env);
+        mod_qname = NULL;
+    }
+    else
+    {
+        return AXIS2_FAILURE;
+    }
 
-    module =  axis2_conf_get_module(svc_client->conf, env, mod_qname);
-
-    /**TODO:uncomment once axis2_svc_disengage_module is implemented
     if (module)
     {
-       return AXIS2_SVC_DISENGAGE_MODULE(svc_client->svc, env, module);
-
+        return axis2_svc_disengage_module(svc_client->svc, env, module,
+            svc_client->conf);
     }
-    */
-
     return AXIS2_FAILURE;
-
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

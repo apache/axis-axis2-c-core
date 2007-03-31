@@ -237,6 +237,23 @@ extern "C"
         const axutil_env_t *env,
         struct axis2_module_desc *module_desc,
         struct axis2_conf *conf);
+
+    /**
+     * Disengages given module from service.
+     * @param svc pointer to service struct
+     * @param env pointer to environment struct
+     * @param  module_desc pointer to module description to be engaged, 
+     * service does not assume the ownership of module 
+     * @param conf pointer to configuration, it is configuration that holds 
+     * module information
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_disengage_module(axis2_svc_t *svc,
+        const axutil_env_t *env,
+        struct axis2_module_desc *module_desc,
+        struct axis2_conf *conf);
+
         
     /**
      * Check whether a given module is engaged to the service.

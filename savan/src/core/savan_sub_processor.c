@@ -461,8 +461,7 @@ savan_sub_processor_set_sub_id_to_msg_ctx(
      * Pass a copy because msg ctx free function frees all properties */
     property = axutil_property_create(env);
     axutil_property_set_value(property, env, (void*)axis2_strdup(env, id));
-     axis2_msg_ctx_set_property(msg_ctx, env, SAVAN_KEY_SUB_ID, property,
-        AXIS2_FALSE);
+     axis2_msg_ctx_set_property(msg_ctx, env, SAVAN_KEY_SUB_ID, property);
 
     return AXIS2_SUCCESS;
 }

@@ -28,6 +28,12 @@ axis2_phase_add_unique(
     axutil_array_list_t *list,
     axis2_handler_t *handler);
 
+static axis2_status_t
+axis2_phase_remove_unique(
+    const axutil_env_t *env,
+    axutil_array_list_t *list,
+    axis2_handler_t *handler);
+
 struct axis2_phase
 {
     /** phase name */
@@ -125,6 +131,21 @@ axis2_phase_add_handler(
             phase->name);
 
     return axis2_phase_add_unique(env, phase->handlers, handler);
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_phase_remove_handler(
+    axis2_phase_t *phase,
+    const axutil_env_t *env,
+    axis2_handler_t *handler)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_LOG_INFO(env->log, "Handler %s romoved from phase %s",
+            axutil_string_get_buffer(AXIS2_HANDLER_GET_NAME(handler, env), env),
+            phase->name);
+
+    return axis2_phase_remove_unique(env, phase->handlers, handler);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -968,6 +989,23 @@ axis2_phase_free(
     return;
 }
 
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_phase_remove_handler_desc(
+    axis2_phase_t *phase,
+    const axutil_env_t *env,
+    axis2_handler_desc_t *handler_desc)
+{
+    axis2_handler_t *handler;
+    handler = axis2_handler_desc_get_handler(handler_desc, env);
+    if (!handler)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    return axis2_phase_remove_unique(env, phase->handlers, handler);
+}
+
 static axis2_status_t
 axis2_phase_add_unique(
     const axutil_env_t *env,
@@ -1004,4 +1042,39 @@ axis2_phase_add_unique(
     return AXIS2_SUCCESS;
 }
 
+static axis2_status_t
+axis2_phase_remove_unique(
+    const axutil_env_t *env,
+    axutil_array_list_t *list,
+    axis2_handler_t *handler)
+{
+    int i = 0, size = 0;
+    axis2_bool_t remove_handler = AXIS2_FALSE;
+    const axutil_string_t *handler_name = NULL;
+
+    handler_name = AXIS2_HANDLER_GET_NAME(handler, env);
+    size = axutil_array_list_size(list, env);
+    for (i = 0; i < size; i++)
+    {
+        axis2_handler_t *obj = NULL;
+        const axutil_string_t *obj_name = NULL;
+
+        obj = (axis2_handler_t *) axutil_array_list_get(list, env, i);
+        obj_name = AXIS2_HANDLER_GET_NAME(obj, env);
+        if (obj == handler)
+        {
+            remove_handler = AXIS2_TRUE;
+            break;
+        }
+        else if (!axis2_strcmp(axutil_string_get_buffer(handler_name, env), 
+                            axutil_string_get_buffer(obj_name, env)))
+        {
+            remove_handler = AXIS2_TRUE;
+            break;
+        }
+    }
+    if (AXIS2_TRUE == remove_handler)
+        axutil_array_list_remove(list, env, i);
+    return AXIS2_SUCCESS;
+}
 

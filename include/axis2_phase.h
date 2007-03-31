@@ -103,6 +103,20 @@ extern "C"
     axis2_phase_add_handler(axis2_phase_t *phase,
         const axutil_env_t *env,
         axis2_handler_t *handler);
+
+
+    /**
+     * Remove the given handler from  the handler list.
+     * @param phase pointer to phase
+     * @param env pointer to environment struct
+     * @param handler pointer to handler, phase does not assume the 
+     * ownership of the handler 
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_remove_handler(axis2_phase_t *phase,
+        const axutil_env_t *env,
+        axis2_handler_t *handler);
                 
      /**
       * Invokes the phase. This function will in turn call invoke method of
@@ -176,6 +190,22 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_add_handler_desc(axis2_phase_t *phase,
+        const axutil_env_t *env,
+        axis2_handler_desc_t *handler_desc);
+
+
+    /**
+     * Remove handler within the handler description from the list of handlers 
+     * in the phase.
+     * @param phase pointer to phase
+     * @param env pointer to environment struct
+     * @param handler_desc pointer to handler description, phase does not 
+     * assume the ownership of neither the handler description not the handler
+     * within the handler description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_remove_handler_desc(axis2_phase_t *phase,
         const axutil_env_t *env,
         axis2_handler_desc_t *handler_desc);
                 

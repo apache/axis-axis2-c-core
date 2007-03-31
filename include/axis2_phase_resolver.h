@@ -163,6 +163,23 @@ extern "C"
         struct axis2_svc *svc,
         struct axis2_module_desc *module_desc);
 
+
+    /**
+     * Disengages the given module from the given service. This means 
+     * the given module would be disengaged from all operations of the given 
+     * service. 
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param svc pointer to service
+     * @param module_desc pointer to module description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_disengage_module_from_svc(axis2_phase_resolver_t *phase_resolver,
+        const axutil_env_t *env,
+        struct axis2_svc *svc,
+        struct axis2_module_desc *module_desc);
+
     /**
      * Engages the given module to the given operation.
      * @param phase_resolver pointer to phase resolver
@@ -173,6 +190,21 @@ extern "C"
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
+        const axutil_env_t *env,
+        struct axis2_op *axis_op,
+        struct axis2_module_desc *module_desc);
+
+
+    /**
+     * Disengages the given module from the given operation.
+     * @param phase_resolver pointer to phase resolver
+     * @param env pointer to environment struct
+     * @param axis_op pointer to axis operation
+     * @param pointer to module description
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_phase_resolver_disengage_module_from_op(axis2_phase_resolver_t *phase_resolver,
         const axutil_env_t *env,
         struct axis2_op *axis_op,
         struct axis2_module_desc *module_desc);

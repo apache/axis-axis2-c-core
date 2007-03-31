@@ -1317,7 +1317,87 @@ axis2_phase_resolver_engage_module_to_svc(
         }
 
     }
-    return status;
+    return status; 
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_phase_resolver_disengage_module_from_svc(
+    axis2_phase_resolver_t *phase_resolver,
+    const axutil_env_t *env,
+    axis2_svc_t *svc,
+    axis2_module_desc_t *module_desc)
+{
+    axutil_hash_t *ops = NULL;
+    axutil_hash_index_t *index_i = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    const axutil_qname_t *module_d_qname = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    ops = axis2_svc_get_all_ops(svc, env);
+    if (!ops)
+    {
+        return AXIS2_FAILURE;
+    }
+/*     status = axis2_svc_add_module_ops(svc, env, module_desc, */
+/*         phase_resolver->axis2_config); */
+
+/*     if (AXIS2_SUCCESS != status) */
+/*     { */
+/*         return status; */
+/*     } */
+    module_d_qname = axis2_module_desc_get_qname(module_desc, env);
+    for (index_i = axutil_hash_first(ops, env); index_i; index_i =
+        axutil_hash_next(env, index_i))
+    {
+        axutil_array_list_t *modules = NULL;
+        axis2_op_t *op_desc = NULL;
+        int size = 0;
+        int j = 0;
+        void *v = NULL;
+        axis2_bool_t engaged = AXIS2_FALSE;
+
+        axutil_hash_this(index_i, NULL, NULL, &v);
+        op_desc = (axis2_op_t *) v;
+        modules = axis2_op_get_all_modules(op_desc, env);
+        if (modules)
+        {
+            size = axutil_array_list_size(modules, env);
+        }
+        for (j = 0; j < size; j++)
+        {
+            axis2_module_desc_t *module_desc_l = NULL;
+            const axutil_qname_t *module_d_qname_l = NULL;
+
+            module_desc_l = axutil_array_list_get(modules, env, j);
+            module_d_qname_l = axis2_module_desc_get_qname(module_desc_l, env);
+            if (AXIS2_TRUE == axutil_qname_equals(module_d_qname, env,
+                module_d_qname_l))
+            {
+                engaged = AXIS2_TRUE;
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                    "Module %s already engaged.", 
+                    axutil_qname_get_localpart(module_d_qname, env));
+                break;
+            }
+        }
+
+        if (AXIS2_TRUE == engaged)
+        {
+            status = axis2_phase_resolver_disengage_module_from_op(
+                phase_resolver, env, op_desc, module_desc);
+            if (AXIS2_SUCCESS != status)
+            {
+                return status;
+            }
+
+            status = axis2_op_remove_from_engaged_module_list(op_desc, env,
+                module_desc);
+        }
+
+    }
+    return status; 
 }
 
 
@@ -1447,6 +1527,153 @@ axis2_phase_resolver_engage_module_to_op(
                         axis2_phase_holder_create_with_phases(env, phase_list);
 
                     status = axis2_phase_holder_add_handler(phase_holder, env, metadata);
+                    axis2_phase_holder_free(phase_holder, env);
+                    phase_holder = NULL;
+                    if (AXIS2_SUCCESS != status)
+                    {
+                        return status;
+                    }
+                }
+            }
+        }
+
+        if(phase_holder)
+        {
+            axis2_phase_holder_free(phase_holder, env);
+            phase_holder = NULL;
+        }
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_phase_resolver_disengage_module_from_op(
+    axis2_phase_resolver_t *phase_resolver,
+    const axutil_env_t *env,
+    axis2_op_t *axis_op,
+    axis2_module_desc_t *module_desc)
+{
+    int type = 0;
+    axis2_phase_holder_t *phase_holder = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, axis_op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
+
+    for (type = 1; type < 5; type++)
+    {
+        axis2_flow_t *flow = NULL;
+        axutil_array_list_t *phases = NULL;
+
+        switch (type)
+        {
+            case AXIS2_IN_FLOW:
+            {
+                phases = axis2_op_get_in_flow(axis_op, env);
+                break;
+            }
+            case AXIS2_OUT_FLOW:
+            {
+                phases = axis2_op_get_out_flow(axis_op, env);
+                break;
+            }
+            case AXIS2_FAULT_IN_FLOW:
+            {
+                phases = axis2_op_get_fault_in_flow(axis_op, env);
+                break;
+            }
+            case AXIS2_FAULT_OUT_FLOW:
+            {
+                phases = axis2_op_get_fault_out_flow(axis_op, env);
+                break;
+            }
+        }
+
+        if (phases)
+        {
+            phase_holder =
+                axis2_phase_holder_create_with_phases(env, phases);
+        }
+
+
+        switch (type)
+        {
+            case AXIS2_IN_FLOW:
+            {
+                flow = axis2_module_desc_get_in_flow(module_desc, env);
+                break;
+            }
+            case AXIS2_OUT_FLOW:
+            {
+                flow = axis2_module_desc_get_out_flow(module_desc, env);
+                break;
+            }
+            case AXIS2_FAULT_IN_FLOW:
+            {
+                flow = axis2_module_desc_get_fault_in_flow(module_desc, env);
+                break;
+            }
+            case AXIS2_FAULT_OUT_FLOW:
+            {
+                flow = axis2_module_desc_get_fault_out_flow(module_desc, env);
+                break;
+            }
+        }
+
+        if (flow && phase_holder)
+        {
+            int j = 0;
+            int handler_count = 0;
+
+            handler_count = axis2_flow_get_handler_count(flow, env);
+            for (j = 0; j < handler_count; j++)
+            {
+                axis2_handler_desc_t *metadata = NULL;
+                const axis2_char_t *phase_name = NULL;
+                axis2_phase_rule_t *phase_rule = NULL;
+                axis2_status_t status = AXIS2_FAILURE;
+
+                metadata = axis2_flow_get_handler(flow, env, j);
+                phase_rule = axis2_handler_desc_get_rules(metadata, env);
+                phase_name = axis2_phase_rule_get_name(phase_rule, env);
+                if ((0 != axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
+                    (0 != axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                    (0 != axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                    (0 != axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                {
+                    status = axis2_phase_holder_remove_handler(phase_holder,
+                        env, metadata);
+                    if (AXIS2_SUCCESS != status)
+                    {
+                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
+                            "Handler Removal failed for %s phase", phase_name);
+                        axis2_phase_holder_free(phase_holder, env);
+                        return status;
+                    }
+
+                }
+                if ((0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
+                    (0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                    (0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                    (0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                {
+                    axutil_array_list_t *phase_list = NULL;
+                    axis2_phase_holder_t *phase_holder = NULL;
+
+                    phase_list =
+                         axis2_conf_get_in_phases_upto_and_including_post_dispatch(
+                         phase_resolver->axis2_config, env);
+                    if (phase_holder)
+                    {
+                        axis2_phase_holder_free(phase_holder, env);
+                        phase_holder = NULL;
+                    }
+                    phase_holder =
+                        axis2_phase_holder_create_with_phases(env, phase_list);
+
+                    status = axis2_phase_holder_remove_handler(phase_holder, env, metadata);
                     axis2_phase_holder_free(phase_holder, env);
                     phase_holder = NULL;
                     if (AXIS2_SUCCESS != status)

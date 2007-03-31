@@ -587,6 +587,42 @@ axis2_op_add_to_engaged_module_list(axis2_op_t *op,
     return axutil_array_list_add(op->engaged_module_list, env, module_desc);
 }
 
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_op_remove_from_engaged_module_list(axis2_op_t *op,
+    const axutil_env_t *env,
+    axis2_module_desc_t *module_desc)
+{
+    axis2_module_desc_t *module_desc_l = NULL;
+    int size = 0;
+    int index = 0;
+    const axutil_qname_t *module_qname = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op->engaged_module_list, AXIS2_FAILURE);
+
+    size = axutil_array_list_size(op->engaged_module_list, env);
+
+    module_qname = axis2_module_desc_get_qname(module_desc, env);
+    for (index = 0; index < size; index++)
+    {
+        const axutil_qname_t *module_qname_l = NULL;
+
+        module_desc_l = 
+            (axis2_module_desc_t *) axutil_array_list_get(op->engaged_module_list, env, index);
+        module_qname_l = axis2_module_desc_get_qname(module_desc_l, env);        
+
+        if (axutil_qname_equals(module_qname, env, module_qname_l))
+        {
+            axutil_array_list_remove(op->engaged_module_list, env, index);
+            return AXIS2_SUCCESS;
+        }
+
+    }
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN axutil_array_list_t *AXIS2_CALL
 axis2_op_get_all_modules(const axis2_op_t *op,
     const axutil_env_t *env)

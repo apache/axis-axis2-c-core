@@ -140,6 +140,42 @@ axis2_phase_holder_add_handler(axis2_phase_holder_t *phase_holder,
     return status;
 }
 
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_phase_holder_remove_handler(axis2_phase_holder_t *phase_holder,
+    const axutil_env_t *env,
+    axis2_handler_desc_t *handler)
+{
+    const axis2_char_t *phase_name = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_phase_holder_remove_handler start");
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, handler, AXIS2_FAILURE);
+
+    phase_name = axis2_phase_rule_get_name(
+        axis2_handler_desc_get_rules(handler, env), env);
+    if (AXIS2_TRUE == axis2_phase_holder_is_phase_exist(phase_holder, env,
+        phase_name))
+    {
+        axis2_phase_t *phase = NULL;
+
+        phase = axis2_phase_holder_get_phase(phase_holder, env, phase_name);
+        status = axis2_phase_remove_handler_desc(phase, env, handler);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Remove handler %s from phase %s",
+            axutil_string_get_buffer(axis2_handler_desc_get_name(handler, env), env), 
+            phase_name);
+    }
+    else
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_PHASE, AXIS2_FAILURE);
+        status = AXIS2_FAILURE;
+    }
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_phase_holder_remove_handler end status = %s",
+        status ? "SUCCESS" : "FAILURE");
+    return status;
+}
+
 AXIS2_EXTERN axis2_phase_t *AXIS2_CALL
 axis2_phase_holder_get_phase(const axis2_phase_holder_t *phase_holder,
     const axutil_env_t *env,
