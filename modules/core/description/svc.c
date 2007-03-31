@@ -33,6 +33,9 @@ struct axis2_svc
 
     /* service description  */
 	 axis2_char_t *svc_desc;
+
+    /*wsdl file path*/
+    axis2_char_t *wsdl_path;
     /**
      * WSDL related stuff
      */
@@ -111,6 +114,7 @@ axis2_svc_create(const axutil_env_t *env)
     svc->axis_svc_name = NULL;
     svc->filename = NULL;
     svc->svc_desc = NULL;
+    svc->wsdl_path = NULL;
     svc->last_update = 0;
     svc->param_container = NULL;
     svc->flow_container = NULL;
@@ -1035,7 +1039,6 @@ AXIS2_EXTERN void *AXIS2_CALL
 axis2_svc_get_impl_class(const axis2_svc_t *svc,
     const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
     return svc->impl_class;
 }
 
@@ -1044,7 +1047,6 @@ axis2_svc_set_impl_class(axis2_svc_t *svc,
     const axutil_env_t *env,
     void *impl_class)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svc->impl_class = impl_class;
     return AXIS2_SUCCESS;
 }
@@ -1064,4 +1066,19 @@ axis2_svc_get_flow_container(const axis2_svc_t *svc,
 }
 
 
+AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+axis2_svc_get_svc_wsdl_path(const axis2_svc_t *svc,
+      const axutil_env_t *env)
+{
+    return svc->wsdl_path;
+}
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_set_svc_wsdl_path(axis2_svc_t *svc,
+      const axutil_env_t *env,
+      const axis2_char_t *wsdl_path)
+{
+    AXIS2_PARAM_CHECK(env->error, wsdl_path, AXIS2_FAILURE);
+    svc->wsdl_path = (axis2_char_t *)wsdl_path;
+    return AXIS2_SUCCESS;
+}

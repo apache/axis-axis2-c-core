@@ -168,6 +168,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_char_t *svc_dll_name = NULL;
     axutil_dll_desc_t *dll_desc = NULL;
     axutil_param_t *impl_info_param = NULL;
+    axutil_param_t *wsdl_path_param = NULL;
+    axis2_char_t *wsdl_path = NULL;
     axis2_arch_file_data_t *arch_file_data = NULL;
     axutil_file_t *svc_folder = NULL;
     axis2_char_t *dll_path = NULL;
@@ -227,6 +229,25 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
             axis2_svc_set_svc_desc(svc_builder->svc, env, description_text);
         }
     }
+
+    /* wsdl path */
+    wsdl_path_param = 
+        axutil_param_container_get_param(      
+            axis2_svc_get_param_container(svc_builder->svc, env),
+            env,
+            AXIS2_SVC_WSDL_PATH);
+
+    if (wsdl_path_param)
+    {
+        wsdl_path = axutil_param_get_value(wsdl_path_param, env);
+    }
+
+    if (wsdl_path)
+    {
+        axis2_svc_set_svc_wsdl_path(svc_builder->svc, env, wsdl_path);
+    }
+
+
 	 /* --------------------services description end -------------------- */
     /* my logic to get set service name */
     qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);

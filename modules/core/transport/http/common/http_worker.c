@@ -30,6 +30,7 @@
 #include <axutil_uuid_gen.h>
 #include <axutil_url.h>
 #include <axutil_property.h>
+#include <string.h>
 
 struct axis2_http_worker
 {
@@ -261,26 +262,34 @@ axis2_http_worker_process_request(
         {
             axis2_http_header_t *cont_len = NULL;
             axis2_char_t *body_string = NULL;
+            axis2_char_t *wsdl = NULL;
             AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env,
                     http_version, AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
-    
-            body_string = axis2_http_transport_utils_get_services_html(env,
+            wsdl = strstr (url_external_form, AXIS2_REQUEST_WSDL);
+            if (wsdl)
+            {
+                body_string = axis2_http_transport_utils_get_services_static_wsdl(env, conf_ctx, url_external_form);
+            }
+            else
+            {
+                body_string = axis2_http_transport_utils_get_services_html(env,
                     conf_ctx);
+            }
             if (body_string)
             {
                 axis2_char_t str_len[10];
                 AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STRING(response, env,
-                        body_string);
+                    body_string);
                 sprintf(str_len, "%d", axis2_strlen(body_string));
                 cont_len = axis2_http_header_create(env,
-                        AXIS2_HTTP_HEADER_CONTENT_LENGTH, str_len);
+                    AXIS2_HTTP_HEADER_CONTENT_LENGTH, str_len);
                 AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(response, env, cont_len);
-            }
-            axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
+                }
+                axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
                     simple_request, response, 0);
-            AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
-            AXIS2_HTTP_SIMPLE_RESPONSE_FREE(response, env);
-            return AXIS2_TRUE;
+                AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
+                AXIS2_HTTP_SIMPLE_RESPONSE_FREE(response, env);
+                return AXIS2_TRUE;
         }
     }
     else if (0 == axis2_strcasecmp(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(

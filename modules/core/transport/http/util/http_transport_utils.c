@@ -38,6 +38,7 @@
 #include <axis2_msg.h>
 
 #define AXIOM_MIME_BOUNDARY_BYTE 45
+#define FILE_READ_SIZE 2048
 const axis2_char_t * AXIS2_TRANS_UTIL_DEFAULT_CHAR_ENCODING =  AXIS2_HTTP_HEADER_DEFAULT_CHAR_ENCODING;
 
 /***************************** Function headers *******************************/
@@ -107,6 +108,13 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_http_transport_utils_get_services_html(
     const axutil_env_t *env,
     axis2_conf_ctx_t *conf_ctx);
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_services_static_wsdl(
+    const axutil_env_t *env,
+    axis2_conf_ctx_t *conf_ctx,
+    axis2_char_t *request_url);
+
 
 AXIS2_EXTERN axutil_string_t *AXIS2_CALL
 axis2_http_transport_utils_get_charset_enc(
@@ -769,14 +777,13 @@ axis2_http_transport_utils_get_services_html(
     axis2_char_t *tmp2 = (axis2_char_t *)"<h2>Deployed Services</h2>";
     axutil_hash_index_t *hi = NULL;
     axis2_bool_t svcs_exists = AXIS2_FALSE;
-
+    axis2_conf_t *conf = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
 
-    services_map =  axis2_conf_get_all_svcs( axis2_conf_ctx_get_conf(conf_ctx, env),
-            env);
-    errorneous_svc_map =  axis2_conf_get_all_faulty_svcs( axis2_conf_ctx_get_conf(
-                conf_ctx, env), env);
+    conf = axis2_conf_ctx_get_conf (conf_ctx, env);
+    services_map =  axis2_conf_get_all_svcs(conf, env);
+    errorneous_svc_map =  axis2_conf_get_all_faulty_svcs(conf, env);
     if (services_map && 0 != axutil_hash_count(services_map))
     {
         void *service = NULL;
@@ -801,7 +808,8 @@ axis2_http_transport_utils_get_services_html(
 				tmp2 = ret;
 							 /**
 							  *setting services description */
-				ret = axis2_stracat (env, tmp2, axis2_svc_get_svc_desc((axis2_svc_t *)service, env));
+				ret = axis2_stracat (env, tmp2, axis2_svc_get_svc_desc(
+                    (axis2_svc_t *)service, env));
 				tmp2 = ret;
 				ret = axis2_stracat (env, tmp2, "</p>");
 				tmp2 = ret;
@@ -881,6 +889,90 @@ axis2_http_transport_utils_get_services_html(
     /*AXIS2_FREE(env->allocator, tmp);*/
 
     return ret;
+}
+
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+axis2_http_transport_utils_get_services_static_wsdl(
+    const axutil_env_t *env,
+    axis2_conf_ctx_t *conf_ctx,
+    axis2_char_t *request_url)
+{
+    AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, request_url, NULL);
+
+    axis2_char_t *wsdl_string = NULL;
+    axis2_char_t *wsdl_path = NULL;
+    axis2_char_t **url_tok = NULL;
+    unsigned int len = 0;
+    axis2_char_t *svc_name = NULL;
+    axis2_conf_t *conf = NULL;
+    axutil_hash_t *services_map = NULL;
+    axutil_hash_index_t *hi = NULL;
+
+    url_tok = axis2_parse_request_url_for_svc_and_op (env, request_url);
+    len = strlen (url_tok[0]);
+    url_tok[0][len - 5]  = 0;
+    svc_name = url_tok[0];
+
+    conf = axis2_conf_ctx_get_conf (conf_ctx, env);
+    services_map =  axis2_conf_get_all_svcs(conf, env);
+
+    if (services_map && 0 != axutil_hash_count(services_map))
+    {
+        void *service = NULL;
+        axis2_char_t *sname = NULL;
+        
+        for (hi = axutil_hash_first(services_map, env);
+                hi; hi = axutil_hash_next(env, hi))
+        {
+            axutil_hash_this(hi, NULL, NULL, &service);
+            sname = axutil_qname_get_localpart(axis2_svc_get_qname(
+                        ((axis2_svc_t *)service), env), env);
+            if (!axis2_strcmp (svc_name, sname))
+            {
+                wsdl_path = (axis2_char_t *)axis2_svc_get_svc_wsdl_path ((axis2_svc_t *)service, env);
+                break;
+            }
+
+        }
+    }
+
+    if (wsdl_path)
+    {
+        FILE *wsdl_file;
+        axis2_char_t *content = NULL;
+        int c;
+        int size = FILE_READ_SIZE;
+        content = (axis2_char_t *)AXIS2_MALLOC (env->allocator, size);
+        axis2_char_t *tmp;
+        int i = 0;
+        wsdl_file = fopen (wsdl_path, "r");
+        if (wsdl_file)
+        {
+            c = fgetc (wsdl_file);
+            while (c != EOF)
+            {
+                if (i > size)
+                {
+                    size *= size * 3;
+                    tmp = (axis2_char_t *)AXIS2_MALLOC (env->allocator, size);
+                    memcpy (tmp, content, i);
+                    AXIS2_FREE (env->allocator, content);
+                    content = tmp;
+                }
+                sprintf (&content[i++], "%c", c);
+                c = fgetc (wsdl_file);
+            }
+            wsdl_string = content;
+        }
+    }
+    else 
+    {
+        wsdl_string = "Unable to retreive wsdl for this service";
+    }
+
+    return wsdl_string;
 }
 
 AXIS2_EXTERN axutil_string_t *AXIS2_CALL

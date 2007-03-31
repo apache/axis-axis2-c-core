@@ -40,6 +40,7 @@
 #include <axutil_stream.h>
 #include <axiom_soap_envelope.h>
 #include <axis2_http_chunked_stream.h>
+#include <axutil_url.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -115,6 +116,12 @@ extern "C"
     axis2_http_transport_utils_get_services_html(
         const axutil_env_t *env,
         axis2_conf_ctx_t *conf_ctx);
+
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+    axis2_http_transport_utils_get_services_static_wsdl(
+        const axutil_env_t *env,
+        axis2_conf_ctx_t *conf_ctx,
+        axis2_char_t *request_url);
 
     AXIS2_EXTERN axutil_hash_t *AXIS2_CALL
     axis2_http_transport_utils_get_request_params(

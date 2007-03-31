@@ -213,6 +213,7 @@ typedef enum
  */
 #define AXIS2_SINGLE_SERVICE "singleservice"
 #define AXIS2_WSDL_CONTENT "wsdl"
+#define AXIS2_REQUEST_WSDL "?wsdl"
 
 #define AXIS2_STYLE_RPC  "rpc"
 #define AXIS2_STYLE_DOC  "doc"

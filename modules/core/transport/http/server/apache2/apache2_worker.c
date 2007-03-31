@@ -1,4 +1,4 @@
-/*
+ /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -231,13 +231,27 @@ axis2_apache2_worker_process_request(
                                 (axis2_char_t *)req_url));
         if (AXIS2_FALSE == processed)
         {
-            body_string = axis2_http_transport_utils_get_services_html(env,
-                    conf_ctx);
+            axis2_char_t *wsdl = NULL;
+            wsdl = strstr ((axis2_char_t *)req_url, AXIS2_REQUEST_WSDL);
+            if (wsdl)
+            {
+                body_string = axis2_http_transport_utils_get_services_static_wsdl(
+                    env,conf_ctx, (axis2_char_t *)req_url);
+                request->content_type = "text/xml";
+            
+            }
+            else
+            {
+                body_string = axis2_http_transport_utils_get_services_html(env,
+                     conf_ctx);
+                request->content_type = "text/html";
+            
+            }
+
             if (body_string)
             {
                 body_string_len = axis2_strlen(body_string);
             }
-            request->content_type = "text/html";
             send_status = OK;
         }
 

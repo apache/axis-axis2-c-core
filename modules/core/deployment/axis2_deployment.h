@@ -118,6 +118,7 @@ extern "C"
 
 /* element in a services.xml */
 #define AXIS2_SVC_ELEMENT "service"
+#define AXIS2_SVC_WSDL_PATH "wsdl_path"
 #define AXIS2_SVC_GRP_ELEMENT "serviceGroup"
 
 #define AXIS2_SERVER_XML_FILE "axis2.xml"

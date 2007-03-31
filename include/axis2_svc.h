@@ -528,6 +528,30 @@ extern "C"
          const axutil_env_t *env,
          const axis2_char_t *svc_desc);
 
+
+    /**
+     * Get the static wsdl file of the services, which is in the
+     * service.xml, <wsdl> tag
+     * @param svc pointer to service struct
+     * @param env pointer to environment struct
+     * @return services description string
+     */
+    AXIS2_EXTERN const axis2_char_t *AXIS2_CALL
+    axis2_svc_get_svc_wsdl_path(const axis2_svc_t *svc,
+          const axutil_env_t *env);
+
+    /**
+     * Set the wsdl path of the service which is in service.xml
+     * @param svc pointer to service struct
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_set_svc_wsdl_path(axis2_svc_t *svc,
+         const axutil_env_t *env,
+         const axis2_char_t *wsdl_path);
+
+
     /**
      * Gets the name of the file that holds the implementation of the 
      * service. service implementation is compiled into shared libraries 
