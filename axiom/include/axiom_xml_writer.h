@@ -459,7 +459,7 @@ extern "C"
 
     struct axiom_xml_writer
     {
-        axiom_xml_writer_ops_t *ops;
+        const axiom_xml_writer_ops_t *ops;
     };
 
     /**

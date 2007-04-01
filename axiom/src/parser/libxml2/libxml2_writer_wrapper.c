@@ -518,11 +518,6 @@ axis2_libxml2_writer_wrapper_free(axiom_xml_writer_t *writer,
         uri_prefix_element_free(writer_impl->default_lang_namespace, env);
         writer_impl->default_lang_namespace = NULL;
     }
-    if (writer->ops)
-    {
-        AXIS2_FREE(env->allocator, writer->ops);
-        writer->ops = NULL;
-    }
 
     AXIS2_FREE(env->allocator, writer_impl);
     writer_impl = NULL;
