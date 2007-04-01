@@ -71,17 +71,6 @@ extern "C"
                     const axutil_env_t *env);
 
         /**
-         * Frees service implementation.
-         * @param svc_skeli pointer to svc_skeli struct
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        int (AXIS2_CALL *
-                free)(
-                    axis2_svc_skeleton_t *svc_skeli,
-                    const axutil_env_t *env);
-
-        /**
          * Invokes the service. This function should be used to call up the
          * functions implementing service operations.
          * @param svc_skeli pointer to svc_skeli struct
@@ -113,6 +102,16 @@ extern "C"
                     const axutil_env_t *env,
                     axiom_node_t *node);
 
+        /**
+         * Frees service implementation.
+         * @param svc_skeli pointer to svc_skeli struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        int (AXIS2_CALL *
+                free)(
+                    axis2_svc_skeleton_t *svc_skeli,
+                    const axutil_env_t *env);
 
     } ;
 
