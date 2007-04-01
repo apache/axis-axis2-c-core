@@ -304,11 +304,11 @@ axis2_http_client_send(
     str_header = NULL;
     AXIS2_FREE(env->allocator, str_request_line);
     str_request_line = NULL;
-    written = AXIS2_STREAM_WRITE(client->data_stream, env, wire_format,
+    written = axutil_stream_write(client->data_stream, env, wire_format,
             axis2_strlen(wire_format));
     AXIS2_FREE(env->allocator, wire_format);
     wire_format = NULL;
-    written = AXIS2_STREAM_WRITE(client->data_stream, env, AXIS2_HTTP_CRLF,
+    written = axutil_stream_write(client->data_stream, env, AXIS2_HTTP_CRLF,
             2);
     if (body_size > 0 &&  str_body)
     {
@@ -317,7 +317,7 @@ axis2_http_client_send(
             status = AXIS2_SUCCESS;
             while (written < body_size)
             {
-                written = AXIS2_STREAM_WRITE(client->data_stream, env,
+                written = axutil_stream_write(client->data_stream, env,
                         str_body, body_size);
                 if (-1 == written)
                 {
@@ -394,7 +394,7 @@ axis2_http_client_recieve_header(
     do
     {
         memset(str_status_line, 0, 512);
-        while ((read = AXIS2_STREAM_READ(client->data_stream, env, tmp_buf,
+        while ((read = axutil_stream_read(client->data_stream, env, tmp_buf,
                 1)) > 0)
         {
             tmp_buf[read] = '\0';
@@ -449,7 +449,7 @@ axis2_http_client_recieve_header(
     end_of_line = AXIS2_FALSE;
     while (AXIS2_FALSE == end_of_headers)
     {
-        while ((read = AXIS2_STREAM_READ(client->data_stream, env, tmp_buf,
+        while ((read = axutil_stream_read(client->data_stream, env, tmp_buf,
                 1)) > 0)
         {
             tmp_buf[read] = '\0';
@@ -637,11 +637,11 @@ axis2_http_client_connect_ssl_host(
             axis2_strlen(host) * sizeof(axis2_char_t) +
             30 * sizeof(axis2_char_t));
     sprintf(connect_string, "CONNECT %s:%d HTTP/1.0\r\n\r\n", host, port);
-    AXIS2_STREAM_WRITE(tmp_stream, env, connect_string,
+    axutil_stream_write(tmp_stream, env, connect_string,
             axis2_strlen(connect_string) * sizeof(axis2_char_t));
 
     memset(str_status_line, 0, 512);
-    while ((read = AXIS2_STREAM_READ(tmp_stream, env, tmp_buf, 1)) > 0)
+    while ((read = axutil_stream_read(tmp_stream, env, tmp_buf, 1)) > 0)
     {
         tmp_buf[read] = '\0';
         strcat(str_status_line, tmp_buf);
@@ -675,7 +675,7 @@ axis2_http_client_connect_ssl_host(
     memset(str_status_line, 0, 512);
     while (AXIS2_FALSE == end_of_response)
     {
-        while ((read = AXIS2_STREAM_READ(tmp_stream, env, tmp_buf, 1)) > 0)
+        while ((read = axutil_stream_read(tmp_stream, env, tmp_buf, 1)) > 0)
         {
             tmp_buf[read] = '\0';
             strcat(str_status_line, tmp_buf);
@@ -693,7 +693,7 @@ axis2_http_client_connect_ssl_host(
             }
         }
     }
-    AXIS2_STREAM_FREE(tmp_stream, env);
+    axutil_stream_free(tmp_stream, env);
     return AXIS2_SUCCESS;
 }
 

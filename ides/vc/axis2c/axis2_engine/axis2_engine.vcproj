@@ -529,6 +529,10 @@
 							>
 						</File>
 						<File
+							RelativePath="..\..\..\..\modules\core\transport\http\common\http_response_writer.c"
+							>
+						</File>
+						<File
 							RelativePath="..\..\..\..\modules\core\transport\http\common\http_simple_request.c"
 							>
 						</File>
@@ -542,6 +546,10 @@
 						</File>
 						<File
 							RelativePath="..\..\..\..\modules\core\transport\http\common\http_worker.c"
+							>
+						</File>
+						<File
+							RelativePath="..\..\..\..\modules\core\transport\http\common\simple_http_svr_conn.c"
 							>
 						</File>
 					</Filter>

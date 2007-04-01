@@ -91,7 +91,7 @@ axiom_data_source_free(axiom_data_source_t * data_source,
 
     if (data_source->stream)
     {
-        AXIS2_STREAM_FREE(data_source->stream, env);
+        axutil_stream_free(data_source->stream, env);
     }
 
     AXIS2_FREE(env->allocator, data_source);
@@ -113,7 +113,7 @@ axiom_data_source_serialize(axiom_data_source_t *data_source,
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     data = axutil_stream_get_buffer(data_source->stream, env);
-    data_len = AXIS2_STREAM_BASIC_GET_LEN(data_source->stream, env);
+    data_len = axutil_stream_get_len(data_source->stream, env);
     if (data)
     {
         data[data_len] = '\0';

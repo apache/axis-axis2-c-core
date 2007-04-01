@@ -235,7 +235,7 @@ axis2_apache2_worker_process_request(
             if (out_stream)
             {
                 body_string = axutil_stream_get_buffer(out_stream, env);
-                body_string_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
+                body_string_len = axutil_stream_get_len(out_stream, env);
             }
             send_status =  HTTP_INTERNAL_SERVER_ERROR;
              axis2_msg_ctx_free(fault_ctx, env);
@@ -250,7 +250,7 @@ axis2_apache2_worker_process_request(
             if (out_stream)
             {
                 body_string = axutil_stream_get_buffer(out_stream, env);
-                body_string_len = AXIS2_STREAM_BASIC_GET_LEN(out_stream, env);
+                body_string_len = axutil_stream_get_len(out_stream, env);
             }
         }
         else
@@ -268,7 +268,7 @@ axis2_apache2_worker_process_request(
     
     if (request_body)
     {
-        AXIS2_STREAM_FREE(request_body, env);
+        axutil_stream_free(request_body, env);
         request_body = NULL;
     }
 
@@ -298,28 +298,28 @@ axis2_apache2_worker_get_bytes(
         int write = 0;
 
         char buf[READ_SIZE];
-        read = AXIS2_STREAM_READ(stream, env, buf, READ_SIZE);
+        read = axutil_stream_read(stream, env, buf, READ_SIZE);
         if (read < 0)
         {
             break;
         }
-        write = AXIS2_STREAM_WRITE(tmp_stream, env, buf, read);
+        write = axutil_stream_write(tmp_stream, env, buf, read);
         if (read < (READ_SIZE - 1))
         {
             break;
         }
     }
-    return_size = AXIS2_STREAM_BASIC_GET_LEN(tmp_stream, env);
+    return_size = axutil_stream_get_len(tmp_stream, env);
 
     if (return_size > 0)
     {
         buffer = (char *)AXIS2_MALLOC(env->allocator, sizeof(char) *
                 (return_size + 2));
-        return_size = AXIS2_STREAM_READ(tmp_stream, env, buffer,
+        return_size = axutil_stream_read(tmp_stream, env, buffer,
                 return_size + 1);
         buffer[return_size + 1] = '\0';
     }
-    AXIS2_STREAM_FREE(tmp_stream, env);
+    axutil_stream_free(tmp_stream, env);
     return buffer;
 }
 

@@ -372,7 +372,7 @@ axis2_http_transport_sender_invoke(
                     buffer_size = AXIOM_XML_WRITER_GET_XML_SIZE(xml_writer, env);
                 }
             }
-            AXIS2_STREAM_WRITE(out_stream, env, buffer, buffer_size);
+            axutil_stream_write(out_stream, env, buffer, buffer_size);
             /*AXIS2_FREE(env->allocator, buffer);*/
 
             op_ctx =  axis2_msg_ctx_get_op_ctx(msg_ctx, env);

@@ -123,7 +123,7 @@ axis2_http_response_writer_write_char(
     {
         return AXIS2_FAILURE;
     }
-    write = AXIS2_STREAM_WRITE(response_writer->stream, env, &c, 1);
+    write = axutil_stream_write(response_writer->stream, env, &c, 1);
     if (write < 0)
     {
         return AXIS2_FAILURE;
@@ -148,7 +148,7 @@ axis2_http_response_writer_write_buf(
     {
         return AXIS2_FAILURE;
     }
-    write = AXIS2_STREAM_WRITE(response_writer->stream, env, buf, len);
+    write = axutil_stream_write(response_writer->stream, env, buf, len);
     if (write < 0)
     {
         return AXIS2_FAILURE;
@@ -177,7 +177,7 @@ axis2_http_response_writer_print_str(
     {
         return AXIS2_FAILURE;
     }
-    write = AXIS2_STREAM_WRITE(response_writer->stream, env, str, len);
+    write = axutil_stream_write(response_writer->stream, env, str, len);
     if (write < 0)
     {
         return AXIS2_FAILURE;

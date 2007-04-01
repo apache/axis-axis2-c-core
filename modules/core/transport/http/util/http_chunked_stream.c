@@ -108,7 +108,7 @@ axis2_http_chunked_stream_read(
     {
         if (chunked_stream->unread_len < yet_to_read)
         {
-            len = AXIS2_STREAM_READ(chunked_stream->stream, env,
+            len = axutil_stream_read(chunked_stream->stream, env,
                     (axis2_char_t *)buffer + count - yet_to_read,
                     chunked_stream->unread_len);
             yet_to_read -= len;
@@ -120,7 +120,7 @@ axis2_http_chunked_stream_read(
         }
         else
         {
-            len = AXIS2_STREAM_READ(chunked_stream->stream, env,
+            len = axutil_stream_read(chunked_stream->stream, env,
                     (axis2_char_t *)buffer + count - yet_to_read,
                     yet_to_read);
             yet_to_read -= len;
@@ -153,9 +153,9 @@ axis2_http_chunked_stream_write(
         return -1;
     }
     sprintf(tmp_buf, "%x%s", (unsigned int)count, AXIS2_HTTP_CRLF);
-    len = AXIS2_STREAM_WRITE(stream, env, tmp_buf, axis2_strlen(tmp_buf));
-    len = AXIS2_STREAM_WRITE(stream, env, buffer, count);
-    AXIS2_STREAM_WRITE(stream, env, AXIS2_HTTP_CRLF, 2);
+    len = axutil_stream_write(stream, env, tmp_buf, axis2_strlen(tmp_buf));
+    len = axutil_stream_write(stream, env, buffer, count);
+    axutil_stream_write(stream, env, AXIS2_HTTP_CRLF, 2);
     return len;
 }
 
@@ -183,11 +183,11 @@ axis2_http_chunked_stream_start_chunk(
     /* remove the last CRLF of the previous chunk if any */
     if (AXIS2_TRUE == chunked_stream->chunk_started)
     {
-        read = AXIS2_STREAM_READ(chunked_stream->stream, env, tmp_buf, 2);
+        read = axutil_stream_read(chunked_stream->stream, env, tmp_buf, 2);
         chunked_stream->chunk_started = AXIS2_FALSE;
     }
     /* read the len and chunk extension */
-    while ((read = AXIS2_STREAM_READ(chunked_stream->stream, env, tmp_buf,
+    while ((read = axutil_stream_read(chunked_stream->stream, env, tmp_buf,
             1)) > 0)
     {
         tmp_buf[read] = '\0';
@@ -208,7 +208,7 @@ axis2_http_chunked_stream_start_chunk(
     if (0 == chunked_stream->current_chunk_size)
     {
         /* Read the last CRLF */
-        read = AXIS2_STREAM_READ(chunked_stream->stream, env, tmp_buf, 2);
+        read = axutil_stream_read(chunked_stream->stream, env, tmp_buf, 2);
         chunked_stream->end_of_chunks = AXIS2_TRUE;
     }
     else
@@ -229,7 +229,7 @@ axis2_http_chunked_stream_write_last_chunk(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     stream = chunked_stream->stream;
-    if (AXIS2_STREAM_WRITE(stream, env, "0\r\n\r\n", 5) == 5)
+    if (axutil_stream_write(stream, env, "0\r\n\r\n", 5) == 5)
     {
         return AXIS2_SUCCESS;
     }

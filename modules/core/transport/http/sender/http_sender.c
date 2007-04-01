@@ -479,7 +479,7 @@ axis2_http_sender_send(
         axutil_stream_t *stream = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(request, env);
         if (stream)
         {
-            AXIS2_STREAM_WRITE(stream, env, output_stream, output_stream_size);
+            axutil_stream_write(stream, env, output_stream, output_stream_size);
         }
     }
     else

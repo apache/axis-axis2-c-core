@@ -434,7 +434,7 @@ axis2_http_simple_response_set_body_string(
         }
         simple_response->stream = body_stream;
     }
-    AXIS2_STREAM_WRITE(body_stream, env, str, axis2_strlen(str));
+    axutil_stream_write(body_stream, env, str, axis2_strlen(str));
     return AXIS2_SUCCESS;
 }
 
@@ -485,27 +485,27 @@ axis2_http_simple_response_get_body_bytes(
         int write = 0;
         /*   int AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE = 32; */
         char buf[AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE];
-        read = AXIS2_STREAM_READ(simple_response->stream, env, buf, AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE);
+        read = axutil_stream_read(simple_response->stream, env, buf, AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE);
         if (read < 0)
         {
             break;
         }
-        write = AXIS2_STREAM_WRITE(tmp_stream, env, buf, read);
+        write = axutil_stream_write(tmp_stream, env, buf, read);
         if (read < (AXIS2_HTTP_SIMPLE_RESPONSE_READ_SIZE - 1))
         {
             break;
         }
     }
-    return_size = AXIS2_STREAM_BASIC_GET_LEN(tmp_stream, env);
+    return_size = axutil_stream_get_len(tmp_stream, env);
 
     if (return_size > 0)
     {
         *buffer = (char *)AXIS2_MALLOC(env->allocator, sizeof(char) *
                 (return_size + 1));
-        return_size = AXIS2_STREAM_READ(tmp_stream, env, *buffer,
+        return_size = axutil_stream_read(tmp_stream, env, *buffer,
                 return_size + 1);
     }
-    AXIS2_STREAM_FREE(tmp_stream, env);
+    axutil_stream_free(tmp_stream, env);
     return return_size;
 }
 

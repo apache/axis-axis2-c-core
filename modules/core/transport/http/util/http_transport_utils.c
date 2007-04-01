@@ -299,7 +299,7 @@ axis2_http_transport_utils_process_http_post_request(
             stream = axutil_stream_create_basic(env);
             if (stream)
             {
-                AXIS2_STREAM_WRITE(stream, env, soap_body_str, soap_body_len);
+                axutil_stream_write(stream, env, soap_body_str, soap_body_len);
                 /*AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
                     "axis2_http_transport_utils_process_http_post_request soap_body_str = %s...%d soap_body_len=%d", 
                     soap_body_str, strlen(soap_body_str), soap_body_len);*/
@@ -506,7 +506,7 @@ axis2_http_transport_utils_process_http_post_request(
 
     if (stream)
     {
-        AXIS2_STREAM_FREE(stream, env);
+        axutil_stream_free(stream, env);
     }
 
     if(char_set_str)
@@ -1078,33 +1078,11 @@ axis2_http_transport_utils_on_data_request(
         axutil_stream_t *in_stream = NULL;
         int read_len = size;
         in_stream = (axutil_stream_t *)((axis2_callback_info_t *)ctx)->in_stream;
-        /* For managed streams such as Apache2 streams we do not need to
-         * calculate lenghts
-         */
-        /*if(AXIS2_STREAM_MANAGED == AXIS2_STREAM_GET_TYPE(in_stream, env))
-        {
-            read_len = size;
-        }
-        else
-        {
-            if(size > ((axis2_callback_info_t *)ctx)->unread_len &&
-                    -1 != ((axis2_callback_info_t *)ctx)->unread_len)
-            {
-                read_len = ((axis2_callback_info_t *)ctx)->unread_len;
-            }
-            else
-            {
-                read_len = size;
-            }
-        }*/
-        len = AXIS2_STREAM_READ(in_stream, env, buffer, read_len);
+        len = axutil_stream_read(in_stream, env, buffer, read_len);
         if (len > 0)
         {
             buffer[len] = '\0';
-            /*if(AXIS2_STREAM_MANAGED != AXIS2_STREAM_GET_TYPE(in_stream, env))
-            {*/
             ((axis2_callback_info_t *)ctx)->unread_len -= len;
-            /*}*/
         }
         return len;
     }
@@ -1244,7 +1222,7 @@ axis2_http_transport_utils_create_soap_msg(
             stream = axutil_stream_create_basic(env);
             if (stream)
             {
-                AXIS2_STREAM_WRITE(stream, env, soap_body_str, soap_body_len);
+                axutil_stream_write(stream, env, soap_body_str, soap_body_len);
                 callback_ctx->in_stream = stream;
                 callback_ctx->chunked_stream = NULL;
                 callback_ctx->content_length = soap_body_len;

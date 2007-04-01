@@ -94,7 +94,7 @@ axis2_http_simple_request_free(
 
     if (AXIS2_TRUE == simple_request->owns_stream)
     {
-        AXIS2_STREAM_FREE(simple_request->stream, env);
+        axutil_stream_free(simple_request->stream, env);
     }
     /*
         Don't free the stream since it belongs to the socket
@@ -390,11 +390,11 @@ axis2_http_simple_request_get_body_bytes(
     if (length > 0)
     {
         *buf = (char*)AXIS2_MALLOC(env->allocator, length + 1);
-        read_len = AXIS2_STREAM_READ(body, env, *buf, length + 1);
+        read_len = axutil_stream_read(body, env, *buf, length + 1);
         return read_len;
     }
     tmp_buf2 = AXIS2_MALLOC(env->allocator, 128 * sizeof(char));
-    while (AXIS2_STREAM_READ(body, env, tmp_buf2, 128) > 0)
+    while (axutil_stream_read(body, env, tmp_buf2, 128) > 0)
     {
         tmp_buf3 = axis2_stracat(env, tmp_buf, tmp_buf2);
         if (tmp_buf)
@@ -438,6 +438,6 @@ axis2_http_simple_request_set_body_string(
         simple_request->stream = body_stream;
         simple_request->owns_stream = AXIS2_TRUE;
     }
-    AXIS2_STREAM_WRITE(body_stream, env, str, str_len);
+    axutil_stream_write(body_stream, env, str, str_len);
     return AXIS2_SUCCESS;
 }

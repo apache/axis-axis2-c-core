@@ -359,7 +359,7 @@ axis2_http_worker_process_request(
             AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(response, env,
                     out_stream);
             axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
-                    simple_request, response, AXIS2_STREAM_BASIC_GET_LEN(
+                    simple_request, response, axutil_stream_get_len(
                         out_stream, env));
 
             status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env,
@@ -382,7 +382,7 @@ axis2_http_worker_process_request(
                 AXIS2_HTTP_RESPONSE_ACK_CODE_VAL, "Accepted");
     }
     axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
-            simple_request, response, AXIS2_STREAM_BASIC_GET_LEN(
+            simple_request, response, axutil_stream_get_len(
                 out_stream, env));
 
     status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);

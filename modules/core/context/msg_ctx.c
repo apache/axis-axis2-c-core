@@ -340,7 +340,7 @@ axis2_msg_ctx_free(
     
     if (msg_ctx->transport_out_stream)
     {
-       AXIS2_STREAM_FREE(msg_ctx->transport_out_stream, env); 
+       axutil_stream_free(msg_ctx->transport_out_stream, env); 
     }
     
     if (msg_ctx->http_out_transport_info)
@@ -1779,7 +1779,7 @@ axis2_msg_ctx_set_transport_out_stream(axis2_msg_ctx_t *msg_ctx,
     {
         if (msg_ctx->transport_out_stream)
         {
-           AXIS2_STREAM_FREE(msg_ctx->transport_out_stream, env); 
+           axutil_stream_free(msg_ctx->transport_out_stream, env); 
         }
         
         msg_ctx->transport_out_stream = stream;

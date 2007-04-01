@@ -231,24 +231,6 @@ extern "C"
         const axutil_env_t *env, 
         void *func);
 
-
-#define AXIS2_STREAM_FREE(stream, env) axutil_stream_free(stream, env)
-
-#define AXIS2_STREAM_FREE_VOID_ARG(stream, env) \
-        axutil_stream_free_void_arg(stream, env)
-
-#define AXIS2_STREAM_READ(stream, env, buffer, count) \
-      axutil_stream_read(stream, env, buffer, count)
-
-#define AXIS2_STREAM_WRITE(stream, env, buffer, count) \
-      axutil_stream_write(stream, env, buffer, count)
-
-#define AXIS2_STREAM_SKIP(stream, env, count) \
-      axutil_stream_write(stream, env, count)
-
-#define AXIS2_STREAM_BASIC_GET_LEN(stream, env) \
-      axutil_stream_get_len(stream, env)
-
     /** @} */
 
 #ifdef __cplusplus

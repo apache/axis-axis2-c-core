@@ -83,7 +83,7 @@ axis2_simple_http_svr_conn_close(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    AXIS2_STREAM_FREE(svr_conn->stream, env);
+    axutil_stream_free(svr_conn->stream, env);
     if (-1 != svr_conn->socket)
     {
         axutil_network_handler_close_socket(env, svr_conn->socket);
@@ -174,7 +174,7 @@ axis2_simple_http_svr_conn_read_request(
         end = strstr(tmp_buf, AXIS2_HTTP_CRLF);
         if (end)
         {
-            read = AXIS2_STREAM_READ(svr_conn->stream, env, tmp_buf, end - start + 2);
+            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, end - start + 2);
             if (read > 0)
             {
                 tmp_buf[read] = '\0';
@@ -188,7 +188,7 @@ axis2_simple_http_svr_conn_read_request(
         }
         else
         {
-            read = AXIS2_STREAM_READ(svr_conn->stream, env, tmp_buf, 2048);
+            read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048);
             if (read > 0)
             {
                 tmp_buf[read] = '\0';
@@ -196,21 +196,6 @@ axis2_simple_http_svr_conn_read_request(
             }
         }
     }
-    
-    /*while ((read = AXIS2_STREAM_READ(svr_conn->stream, env, tmp_buf,
-            1)) > 0)
-    {
-        tmp_buf[read] = '\0';
-        strcat(str_line, tmp_buf);
-        if (0 != strstr(str_line, AXIS2_HTTP_CRLF))
-        {
-            end_of_line = AXIS2_TRUE;
-        }
-        if (AXIS2_TRUE == end_of_line)
-        {
-            break;
-        }
-    }*/
     
     if (str_line)
     {
@@ -222,7 +207,7 @@ axis2_simple_http_svr_conn_read_request(
                     AXIS2_HTTP_HEADER_PROTOCOL_11,
                     AXIS2_HTTP_RESPONSE_BAD_REQUEST,
                     AXIS2_HTTP_HEADER_CONNECTION);
-            AXIS2_STREAM_WRITE(svr_conn->stream, env, write_buf,
+            axutil_stream_write(svr_conn->stream, env, write_buf,
                     axis2_strlen(write_buf) + 1);
             return NULL;
         }
@@ -250,7 +235,7 @@ axis2_simple_http_svr_conn_read_request(
             end = strstr(tmp_buf, AXIS2_HTTP_CRLF);
             if (end)
             {
-                read = AXIS2_STREAM_READ(svr_conn->stream, env, tmp_buf, end - start + 2);
+                read = axutil_stream_read(svr_conn->stream, env, tmp_buf, end - start + 2);
                 if (read > 0)
                 {
                     tmp_buf[read] = '\0';
@@ -265,7 +250,7 @@ axis2_simple_http_svr_conn_read_request(
             }
             else
             {
-                read = AXIS2_STREAM_READ(svr_conn->stream, env, tmp_buf, 2048);
+                read = axutil_stream_read(svr_conn->stream, env, tmp_buf, 2048);
                 if (read > 0)
                 {
                     tmp_buf[read] = '\0';
@@ -274,7 +259,7 @@ axis2_simple_http_svr_conn_read_request(
             }
         }
     
-        /*while ((read = AXIS2_STREAM_READ(svr_conn->stream, env, tmp_buf,
+        /*while ((read = axutil_stream_read(svr_conn->stream, env, tmp_buf,
                 1)) > 0)
         {
             tmp_buf[read] = '\0';
@@ -402,7 +387,7 @@ axis2_simple_http_svr_conn_write_response(
     response_stream = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(response, env);
     if (response_stream)
     {
-        body_size = AXIS2_STREAM_BASIC_GET_LEN(response_stream, env);
+        body_size = axutil_stream_get_len(response_stream, env);
         response_body = axutil_stream_get_buffer(response_stream, env);
         axutil_stream_flush_buffer(response_stream, env);
         response_body[body_size] = '\0';
