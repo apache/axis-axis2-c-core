@@ -34,6 +34,12 @@ axis2_status_t AXIS2_CALL
 axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
                                             const axutil_env_t *env);
 
+static const axis2_module_ops_t log_module_ops_var = {
+    axis2_mod_log_init,
+    axis2_mod_log_shutdown,
+    axis2_mod_log_fill_handler_create_func_map
+};
+
 axis2_module_t *
 axis2_mod_log_create(const axutil_env_t *env)
 {
@@ -41,14 +47,7 @@ axis2_mod_log_create(const axutil_env_t *env)
     module = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_module_t));
 
-    
-    module->ops = AXIS2_MALLOC(
-        env->allocator, sizeof(axis2_module_ops_t));
-
-    module->ops->shutdown = axis2_mod_log_shutdown;
-    module->ops->init = axis2_mod_log_init;
-    module->ops->fill_handler_create_func_map = 
-        axis2_mod_log_fill_handler_create_func_map;
+    module->ops = &log_module_ops_var;
 
     return module;
 }
@@ -68,12 +67,6 @@ axis2_status_t AXIS2_CALL
 axis2_mod_log_shutdown(axis2_module_t *module,
                         const axutil_env_t *env)
 {
-    if(module->ops)
-    {
-        AXIS2_FREE(env->allocator, module->ops);
-        module->ops = NULL;
-    }
-
     if(module->handler_create_func_map)
     {
         /* TODO

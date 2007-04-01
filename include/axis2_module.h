@@ -107,7 +107,7 @@ extern "C"
     struct axis2_module
     {
         /** operations of module */
-        axis2_module_ops_t *ops;
+        const axis2_module_ops_t *ops;
         /** hash map of handler create functions */
         axutil_hash_t *handler_create_func_map;
     };
