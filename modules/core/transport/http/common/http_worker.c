@@ -160,7 +160,7 @@ axis2_http_worker_process_request(
             env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
     if (encoding_header)
     {
-        encoding_header_value = AXIS2_HTTP_HEADER_GET_VALUE(encoding_header,
+        encoding_header_value = axis2_http_header_get_value(encoding_header,
                 env);
     }
     if (content_length < 0 && (encoding_header_value && 0 != axis2_strcmp
@@ -238,7 +238,7 @@ axis2_http_worker_process_request(
     if (AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request, env,
             AXIS2_HTTP_HEADER_SOAP_ACTION))
     {
-        soap_action = AXIS2_HTTP_HEADER_GET_VALUE(
+        soap_action = axis2_http_header_get_value(
                     AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(
                         simple_request, env, AXIS2_HTTP_HEADER_SOAP_ACTION),
                     env);
@@ -444,7 +444,7 @@ axis2_http_worker_set_response_headers(
                 env, AXIS2_HTTP_HEADER_CONNECTION);
         if (conn_header)
         {
-            if (0 == axis2_strcasecmp(AXIS2_HTTP_HEADER_GET_VALUE(conn_header,
+            if (0 == axis2_strcasecmp(axis2_http_header_get_value(conn_header,
                     env), AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE))
             {
                 axis2_http_header_t *header = axis2_http_header_create(env,
@@ -455,7 +455,7 @@ axis2_http_worker_set_response_headers(
                 AXIS2_SIMPLE_HTTP_SVR_CONN_SET_KEEP_ALIVE(svr_conn, env,
                         AXIS2_TRUE);
             }
-            if (0 == axis2_strcasecmp(AXIS2_HTTP_HEADER_GET_VALUE(conn_header,
+            if (0 == axis2_strcasecmp(axis2_http_header_get_value(conn_header,
                     env), AXIS2_HTTP_HEADER_CONNECTION_CLOSE))
             {
                 axis2_http_header_t *header = axis2_http_header_create(env,
@@ -576,7 +576,7 @@ axis2_http_worker_get_headers(
                 return NULL;
             }
         }
-        axutil_hash_set(header_map, AXIS2_HTTP_HEADER_GET_NAME(tmp_hdr, env),
+        axutil_hash_set(header_map, axis2_http_header_get_name(tmp_hdr, env),
                 AXIS2_HASH_KEY_STRING, tmp_hdr);
     }
     return header_map;

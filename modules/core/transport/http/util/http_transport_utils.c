@@ -237,7 +237,7 @@ axis2_http_transport_utils_process_http_post_request(
         if (encoding_header)
         {
             axis2_char_t *encoding_value = NULL;
-            encoding_value = AXIS2_HTTP_HEADER_GET_VALUE(encoding_header, env);
+            encoding_value = axis2_http_header_get_value(encoding_header, env);
             if (encoding_value && 0 == axis2_strcasecmp(encoding_value,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {

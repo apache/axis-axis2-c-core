@@ -94,21 +94,6 @@ extern "C"
     axis2_http_header_create_by_str (const axutil_env_t *env,
         const axis2_char_t *str);
 
-/** To external from. */
-#define AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(header, env) \
-                                axis2_http_header_to_external_form(header, env)
-
-/** Gets the name. */
-#define AXIS2_HTTP_HEADER_GET_NAME(header, env) \
-                                axis2_http_header_get_name(header, env)
-
-/** Get value. */
-#define AXIS2_HTTP_HEADER_GET_VALUE(header, env) \
-                                axis2_http_header_get_value(header, env)
-
-/** Frees the http header. */
-#define AXIS2_HTTP_HEADER_FREE(header, env) \
-                                axis2_http_header_free(header, env)
 
 /** @} */
 #ifdef __cplusplus

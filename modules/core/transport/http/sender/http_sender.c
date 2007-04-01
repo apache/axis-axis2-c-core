@@ -552,7 +552,7 @@ axis2_http_sender_send(
 																 AXIS2_HTTP_HEADER_CONTENT_TYPE);
         if (tmp_header)
         {
-            tmp_header_val = AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env);
+            tmp_header_val = axis2_http_header_get_value(tmp_header, env);
         }
         
         
@@ -623,12 +623,12 @@ axis2_http_sender_get_header_info(
     for (i = 0; i < axutil_array_list_size(headers, env); i++)
     {
         axis2_http_header_t *header = axutil_array_list_get(headers, env, i);
-        axis2_char_t *name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
+        axis2_char_t *name = axis2_http_header_get_name((axis2_http_header_t *)
 														header, env);
         if (name)
         {
             if (0 == axis2_strcmp(name, AXIS2_HTTP_HEADER_TRANSFER_ENCODING) &&
-				0 == axis2_strcmp(AXIS2_HTTP_HEADER_GET_VALUE(header
+				0 == axis2_strcmp(axis2_http_header_get_value(header
 															  , env), AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 axis2_char_t *transfer_encoding = NULL;
@@ -652,7 +652,7 @@ axis2_http_sender_get_header_info(
             if (0 != axis2_strcmp(name, AXIS2_HTTP_HEADER_CONTENT_TYPE))
             {
                 axis2_char_t *tmp_charset = NULL;
-                axis2_char_t *content_type = AXIS2_HTTP_HEADER_GET_VALUE(header,
+                axis2_char_t *content_type = axis2_http_header_get_value(header,
 																		 env);
                 tmp_charset = strstr(content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
                 if (charset)

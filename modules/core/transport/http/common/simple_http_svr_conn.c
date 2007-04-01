@@ -334,7 +334,7 @@ axis2_simple_http_svr_conn_write_response(
             AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
     if (enc_header)
     {
-        axis2_char_t *enc_value = AXIS2_HTTP_HEADER_GET_VALUE(enc_header, env);
+        axis2_char_t *enc_value = axis2_http_header_get_value(enc_header, env);
         if (enc_value)
         {
             if (0 == axis2_strcmp(enc_value,
@@ -374,7 +374,7 @@ axis2_simple_http_svr_conn_write_response(
             if (header)
             {
                 axis2_char_t *header_ext_form =
-                    AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
+                    axis2_http_header_to_external_form(
                         (axis2_http_header_t*)header, env);
                 AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env,
                         header_ext_form);

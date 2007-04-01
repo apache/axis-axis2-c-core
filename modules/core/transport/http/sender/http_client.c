@@ -244,14 +244,14 @@ axis2_http_client_send(
             }
             /* check whether we have transfer encoding and then see whether the
              * value is "chunked" */
-            if (0 == axis2_strcmp(AXIS2_HTTP_HEADER_GET_NAME(tmp_header, env),
+            if (0 == axis2_strcmp(axis2_http_header_get_name(tmp_header, env),
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING) && 0 ==
-                    axis2_strcmp(AXIS2_HTTP_HEADER_GET_VALUE(tmp_header,
+                    axis2_strcmp(axis2_http_header_get_value(tmp_header,
                             env), AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 chunking_enabled = AXIS2_TRUE;
             }
-            header_ext_form = AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
+            header_ext_form = axis2_http_header_to_external_form(
                         tmp_header, env);
             str_header2 = axis2_stracat(env, str_header, header_ext_form);
             AXIS2_FREE(env->allocator, str_header);
