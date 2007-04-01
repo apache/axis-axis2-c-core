@@ -52,9 +52,7 @@ axutil_log_in_handler_create(const axutil_env_t *env,
    
     /* handler init is handled by conf loading, so no need to do it here */
     
-    /* set the base struct's invoke op */
-    if (handler->ops) 
-        handler->ops->invoke = axutil_log_in_handler_invoke;
+    axis2_handler_set_invoke(handler, env, axutil_log_in_handler_invoke);
 
     return handler;
 }

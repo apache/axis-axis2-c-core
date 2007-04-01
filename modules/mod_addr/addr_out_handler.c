@@ -98,11 +98,7 @@ axis2_addr_out_handler_create(const axutil_env_t *env, axutil_string_t * name)
         return NULL;
     }
 
-    /* set the base struct's invoke op */
-    if (handler->ops)
-        handler->ops->invoke = axis2_addr_out_handler_invoke;
-
-    /*axutil_qname_free(handler_qname, env);*/
+    axis2_handler_set_invoke(handler, env, axis2_addr_out_handler_invoke);
 
     return handler;
 }

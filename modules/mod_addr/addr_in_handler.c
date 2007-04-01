@@ -106,9 +106,7 @@ axis2_addr_in_handler_create(const axutil_env_t *env,
 
     /* handler init is handled by conf loading, so no need to do it here */
 
-    /* set the base struct's invoke op */
-    if (handler->ops)
-        handler->ops->invoke = axis2_addr_in_handler_invoke;
+    axis2_handler_set_invoke(handler, env, axis2_addr_in_handler_invoke);
 
     return handler;
 }

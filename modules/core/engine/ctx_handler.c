@@ -84,8 +84,7 @@ axis2_ctx_handler_create(
     AXIS2_HANDLER_INIT(handler, env, handler_desc);
 
     /* set the base struct's invoke op */
-    if (handler->ops)
-        handler->ops->invoke = axis2_ctx_handler_invoke;
+    axis2_handler_set_invoke(handler, env, axis2_ctx_handler_invoke);
 
     return handler;
 }

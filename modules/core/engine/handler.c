@@ -18,146 +18,80 @@
 #include <axis2_handler.h>
 #include <axis2_handler_desc.h>
 
-typedef struct axis2_handler_impl
+struct axis2_handler
 {
-    /** handler struct */
-    axis2_handler_t handler;
     /** handler description. This is a reference, hence a shallow copy. */
     axis2_handler_desc_t *handler_desc;
-}
-axis2_handler_impl_t;
+    /**
+     * Invoke is called to do the actual work assigned to the handler.
+     * The phase that owns the handler is responsible for calling invoke
+     * on top of the handler. Those structs that implement the interface 
+     * of the handler should implement the logic for invoke and assign the
+     * respective function pointer to invoke operation.
+     * @param handler pointer to handler
+     * @param env pointer to environment struct
+     * @param msg_ctx pointer to message context
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t (AXIS2_CALL *
+    invoke)(axis2_handler_t *handler,
+        const axutil_env_t *env,
+        struct axis2_msg_ctx *msg_ctx);
+};
 
-/** Interface to implementation conversion macro */
-#define AXIS2_INTF_TO_IMPL(handler) ((axis2_handler_impl_t *)handler)
-
-
-void AXIS2_CALL
-axis2_handler_free(
-    axis2_handler_t *handler,
-    const axutil_env_t *env);
-
-const axutil_string_t *AXIS2_CALL
-axis2_handler_get_name(
-    const axis2_handler_t *handler,
-    const axutil_env_t *env) ;
-
-axis2_status_t AXIS2_CALL
-axis2_handler_invoke(
-    axis2_handler_t *handler,
-    const axutil_env_t *env,
-    struct axis2_msg_ctx *msg_ctx);
-
-axutil_param_t *AXIS2_CALL
-axis2_handler_get_param(
-    const axis2_handler_t *handler,
-    const axutil_env_t *env,
-    const axis2_char_t *name);
-
-axis2_status_t AXIS2_CALL
-axis2_handler_init(
-    axis2_handler_t *handler,
-    const axutil_env_t *env,
-    axis2_handler_desc_t *handler_desc);
-
-axis2_handler_desc_t *AXIS2_CALL
-axis2_handler_get_handler_desc(
-    const axis2_handler_t *handler,
-    const axutil_env_t *env);
-
-axis2_handler_t *AXIS2_CALL
+AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
 axis2_handler_create(
     const axutil_env_t *env)
 {
-    axis2_handler_impl_t *handler_impl = NULL;
+    axis2_handler_t *handler = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    handler_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_handler_impl_t));
-    if (!handler_impl)
+    handler = AXIS2_MALLOC(env->allocator, sizeof(axis2_handler_t));
+    if (!handler)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
         AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
         return NULL;
     }
 
-    handler_impl->handler_desc = NULL;
+    handler->handler_desc = NULL;
 
-    /* initialize ops */
-    handler_impl->handler.ops = NULL;
-    handler_impl->handler.ops  = AXIS2_MALLOC(env->allocator, sizeof(axis2_handler_ops_t));
-    if (!handler_impl->handler.ops)
-    {
-        AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
-        axis2_handler_free(&(handler_impl->handler), env);
-        return NULL;
-    }
-
-    handler_impl->handler.ops->free =
-        axis2_handler_free;
-
-    handler_impl->handler.ops->init =
-        axis2_handler_init;
-
-    handler_impl->handler.ops->invoke =
-        axis2_handler_invoke;
-
-    handler_impl->handler.ops->get_name =
-        axis2_handler_get_name;
-
-    handler_impl->handler.ops->get_param =
-        axis2_handler_get_param;
-
-    handler_impl->handler.ops->get_handler_desc =
-        axis2_handler_get_handler_desc;
-
-    return &(handler_impl->handler);
+    return handler;
 }
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 axis2_handler_free(
     axis2_handler_t *handler,
     const axutil_env_t *env)
 {
-    axis2_handler_impl_t *handler_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    handler_impl = AXIS2_INTF_TO_IMPL(handler);
-    if (handler_impl->handler.ops)
-    {
-        AXIS2_FREE(env->allocator, handler_impl->handler.ops);
-        handler_impl->handler.ops = NULL;
-    }
-
-    AXIS2_FREE(env->allocator, handler_impl);
-    handler_impl = NULL;
-
+    AXIS2_FREE(env->allocator, handler);
     return;
 }
 
-const axutil_string_t *AXIS2_CALL
+AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
 axis2_handler_get_name(
     const axis2_handler_t *handler,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (!(AXIS2_INTF_TO_IMPL(handler)->handler_desc))
+    if (!(handler->handler_desc))
         return NULL;
 
-    return axis2_handler_desc_get_name(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env);
+    return axis2_handler_desc_get_name(handler->handler_desc, env);
 }
 
-axis2_status_t AXIS2_CALL
-axis2_handler_invoke(
-    axis2_handler_t *handler,
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_handler_invoke(axis2_handler_t *handler,
     const axutil_env_t *env,
     struct axis2_msg_ctx *msg_ctx)
 {
-    /** NOTE invoke has to be implemented by an implementing handler */
-    return AXIS2_SUCCESS;
+    return handler->invoke(handler, env, msg_ctx);
 }
 
-axutil_param_t *AXIS2_CALL
+AXIS2_EXTERN axutil_param_t *AXIS2_CALL
 axis2_handler_get_param(
     const axis2_handler_t *handler,
     const axutil_env_t *env,
@@ -165,30 +99,39 @@ axis2_handler_get_param(
 {
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (!(AXIS2_INTF_TO_IMPL(handler)->handler_desc))
+    if (!(handler->handler_desc))
         return NULL;
 
-    return axis2_handler_desc_get_param(AXIS2_INTF_TO_IMPL(handler)->handler_desc, env, name);
+    return axis2_handler_desc_get_param(handler->handler_desc, env, name);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_handler_init(
     axis2_handler_t *handler,
     const axutil_env_t *env,
     axis2_handler_desc_t *handler_desc)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(handler)->handler_desc = handler_desc;
+    handler->handler_desc = handler_desc;
     axis2_handler_desc_set_handler(handler_desc, env, handler);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_handler_desc_t *AXIS2_CALL
+AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
 axis2_handler_get_handler_desc(
     const axis2_handler_t *handler,
     const axutil_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(handler)->handler_desc;
+    return handler->handler_desc;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_handler_set_invoke(
+    axis2_handler_t *handler,
+    const axutil_env_t *env, 
+    void *func)
+{
+    handler->invoke = func;
+    return AXIS2_SUCCESS;
 }

@@ -73,7 +73,7 @@ axis2_req_uri_disp_create(
         return NULL;
     }
 
-    handler->ops->invoke = axis2_req_uri_disp_invoke;
+    axis2_handler_set_invoke(handler, env, axis2_req_uri_disp_invoke);
 
     axutil_string_free(name, env);
 

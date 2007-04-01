@@ -48,105 +48,86 @@ extern "C"
 
     /** Type name for struct axis2_handler */
     typedef struct axis2_handler axis2_handler_t;
-    /** Type name for struct axis2_handler_ops */
-    typedef struct axis2_handler_ops axis2_handler_ops_t;
 
     struct axis2_handler_desc;
     struct axis2_msg_ctx;
 
 
     /**
-     * handler ops struct.
-     * Encapsulator struct for ops of axis2_handler.
+     * Free handler struct.
+     * @param handler pointer to handler
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_handler_ops
-    {
-        /**
-         * Free handler struct.
-         * @param handler pointer to handler
-         * @param env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        void (AXIS2_CALL *
-                free)(
-                    axis2_handler_t *handler,
-                    const axutil_env_t *env);
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_handler_free(axis2_handler_t *handler,
+        const axutil_env_t *env);
 
-
-        /**
-         * Initializes the handler with the information form handler description.
-         * @param handler pointer to handler
-         * @param env pointer to environment struct
-         * @param handler_desc pointer to handler description related to the handler
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                init)(
-                    axis2_handler_t *handler,
-                    const axutil_env_t *env,
-                    struct axis2_handler_desc *handler_desc);
-
-        /**
-         * Invoke is called to do the actual work assigned to the handler.
-         * The phase that owns the handler is responsible for calling invoke
-         * on top of the handler. Those structs that implement the interface 
-         * of the handler should implement the logic for invoke and assign the
-         * respective function pointer to invoke operation of the ops struct.
-         * @param handler pointer to handler
-         * @param env pointer to environment struct
-         * @param msg_ctx pointer to message context
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                invoke)(
-                    axis2_handler_t *handler,
-                    const axutil_env_t *env,
-                    struct axis2_msg_ctx *msg_ctx);
-
-        /**
-         * Gets QName.
-         * @param handler pointer to handler
-         * @param env pointer to environment struct
-         * @return pointer to QName of the handler
-         */
-        const axutil_string_t *(AXIS2_CALL *
-                get_name)(
-                    const axis2_handler_t *handler,
-                    const axutil_env_t *env);
-
-        /**
-         * Gets the named parameter.
-         * @param handler pointer to handler
-         * @param env pointer to environment struct
-         * @param name name of the parameter to be accessed
-         */
-        axutil_param_t *(AXIS2_CALL *
-                get_param)(
-                    const axis2_handler_t *handler,
-                    const axutil_env_t *env,
-                    const axis2_char_t *name);
-
-        /**
-          * Gets the handler description related to the handler.
-          * @param handler pointer to handler
-          * @param env pointer to environment struct
-          * @return pointer to handler description struct related to handler         
-          */
-        struct axis2_handler_desc *(AXIS2_CALL *
-                get_handler_desc)(
-                    const axis2_handler_t *handler,
-                    const axutil_env_t *env);
-        
-    };
 
     /**
-     * handler struct.
+     * Initializes the handler with the information form handler description.
+     * @param handler pointer to handler
+     * @param env pointer to environment struct
+     * @param handler_desc pointer to handler description related to the handler
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
-    struct axis2_handler
-    {
-        /** Operations of handler */
-        axis2_handler_ops_t *ops;
-    };
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_init(axis2_handler_t *handler,
+        const axutil_env_t *env,
+        struct axis2_handler_desc *handler_desc);
+
+    /**
+     * Invoke is called to do the actual work assigned to the handler.
+     * The phase that owns the handler is responsible for calling invoke
+     * on top of the handler. Those structs that implement the interface 
+     * of the handler should implement the logic for invoke and assign the
+     * respective function pointer to invoke operation of the ops struct.
+     * @param handler pointer to handler
+     * @param env pointer to environment struct
+     * @param msg_ctx pointer to message context
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_invoke(axis2_handler_t *handler,
+        const axutil_env_t *env,
+        struct axis2_msg_ctx *msg_ctx);
+
+    /**
+     * Gets QName.
+     * @param handler pointer to handler
+     * @param env pointer to environment struct
+     * @return pointer to QName of the handler
+     */
+    AXIS2_EXTERN const axutil_string_t *AXIS2_CALL
+    axis2_handler_get_name(const axis2_handler_t *handler,
+        const axutil_env_t *env);
+
+    /**
+     * Gets the named parameter.
+     * @param handler pointer to handler
+     * @param env pointer to environment struct
+     * @param name name of the parameter to be accessed
+     */
+    AXIS2_EXTERN axutil_param_t *AXIS2_CALL
+    axis2_handler_get_param(const axis2_handler_t *handler,
+        const axutil_env_t *env,
+        const axis2_char_t *name);
+
+    /**
+      * Gets the handler description related to the handler.
+      * @param handler pointer to handler
+      * @param env pointer to environment struct
+      * @return pointer to handler description struct related to handler         
+      */
+    AXIS2_EXTERN struct axis2_handler_desc *AXIS2_CALL
+    axis2_handler_get_handler_desc(const axis2_handler_t *handler,
+        const axutil_env_t *env);
+        
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_handler_set_invoke(axis2_handler_t *handler,
+        const axutil_env_t *env, 
+        void *func);
+
 
     /**
      * Function pointer defining the creates syntax for a handler struct instance.
@@ -155,8 +136,7 @@ extern "C"
      * @return pointer to newly created handler struct
      */
     typedef axis2_handler_t *(AXIS2_CALL *
-    AXIS2_HANDLER_CREATE_FUNC)(
-        const axutil_env_t *env,
+    AXIS2_HANDLER_CREATE_FUNC)(const axutil_env_t *env,
         const axutil_string_t *name);
 
     /**
@@ -165,8 +145,7 @@ extern "C"
      * @return pointer to newly created handler struct
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-    axis2_handler_create(
-        const axutil_env_t *env);
+    axis2_handler_create(const axutil_env_t *env);
 
     /**
      * Creates a handler with invoke method implemented to fill in the service 
@@ -176,39 +155,38 @@ extern "C"
      * @return pointer to newly created handler struct
      */
     AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
-    axis2_ctx_handler_create(
-        const axutil_env_t *env, 
+    axis2_ctx_handler_create(const axutil_env_t *env, 
         const axutil_string_t *qname);
 
 /** Frees handler.
     @sa axis2_handler_ops#free */
 #define AXIS2_HANDLER_FREE(handler, env) \
-       ((handler)->ops->free(handler, env))
+       axis2_handler_free(handler, env)
 
 /** Initializes handler.
     @sa axis2_handler_ops#init */
 #define AXIS2_HANDLER_INIT(handler, env, handler_desc) \
-       ((handler)->ops->init(handler, env, handler_desc))
+       axis2_handler_init(handler, env, handler_desc)
 
 /** Invokes the handler.
     @sa axis2_handler_ops#invoke */
 #define AXIS2_HANDLER_INVOKE(handler, env, msg_ctx) \
-        ((handler)->ops->invoke(handler, env, msg_ctx))
+        axis2_handler_invoke(handler, env, msg_ctx)
 
 /** Gets handler QName.
     @sa axis2_handler_ops#get_name */
 #define AXIS2_HANDLER_GET_NAME(handler, env) \
-        ((handler)->ops->get_name(handler, env))
+        axis2_handler_get_name(handler, env)
 
 /** Gets the named parameter.
     @sa axis2_handler_ops#get_param */
 #define AXIS2_HANDLER_GET_PARAM(handler, env, name) \
-      ((handler)->ops->get_param(handler, env, name))
+      axis2_handler_get_param(handler, env, name)
 
 /** Gets handler description related to the handler.
     @sa axis2_handler_ops#get_handler_desc */
 #define AXIS2_HANDLER_GET_HANDLER_DESC(handler, env) \
-      ((handler)->ops->get_handler_desc(handler, env))
+      axis2_handler_get_handler_desc(handler, env)
 
 /** @} */
 

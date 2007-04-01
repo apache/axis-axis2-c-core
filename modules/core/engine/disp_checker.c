@@ -38,6 +38,13 @@ struct axis2_disp_checker
     axutil_string_t *name;
 };
 
+axis2_status_t AXIS2_CALL
+axis2_disp_checker_invoke(
+    axis2_handler_t *handler,
+    const axutil_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
+
 axis2_disp_checker_t *AXIS2_CALL
 axis2_disp_checker_create(
     const axutil_env_t *env)
@@ -73,6 +80,8 @@ axis2_disp_checker_create(
         axis2_disp_checker_free(disp_checker, env);
         return NULL;
     }
+    axis2_handler_set_invoke(disp_checker->base, env, axis2_disp_checker_invoke);
+
 
     /* handler desc of base handler */
     handler_desc = axis2_handler_desc_create(env, disp_checker->name);
