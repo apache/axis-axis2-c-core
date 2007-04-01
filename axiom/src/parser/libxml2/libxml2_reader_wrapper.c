@@ -23,10 +23,7 @@
 #include <string.h>
 #include <axutil_string.h>
 
-/*************************** Function Prototypes ******************************/
-
 #define AXIS2_ATTR_NS_MAX   20
-
 
 int AXIS2_CALL
 axis2_libxml2_reader_wrapper_next(axiom_xml_reader_t *parser,
@@ -134,11 +131,6 @@ axis2_libxml2_reader_wrapper_read_input_callback(void *ctx,
 static int
 axis2_libxml2_reader_wrapper_close_input_callback(void *ctx);
 
-static void
-axis2_libxml2_reader_wrapper_init_ops(axiom_xml_reader_t *reader);
-
-/************* End function parameters , axis2_libxml2_reader_wrapper_impl_t struct ***/
-
 typedef struct axis2_libxml2_reader_wrapper_impl_t
 {
     axiom_xml_reader_t parser;
@@ -155,8 +147,6 @@ typedef struct axis2_libxml2_reader_wrapper_impl_t
 
     int namespace_map[AXIS2_ATTR_NS_MAX];
     int attribute_map[AXIS2_ATTR_NS_MAX];
-    /******************************************/
-    /* read callback function*/
 
     AXIS2_READ_INPUT_CALLBACK read_input_callback;
 
@@ -165,13 +155,31 @@ typedef struct axis2_libxml2_reader_wrapper_impl_t
 }
 axis2_libxml2_reader_wrapper_impl_t;
 
-/****************** End struct , Macro *****************************************/
-
 #define AXIS2_INTF_TO_IMPL(p) ((axis2_libxml2_reader_wrapper_impl_t*)p)
 #define AXIS2_IMPL_TO_INTF(p) &(p->parser)
 
-
-/********************* End Macro  , event_map init function **********************/
+static const axiom_xml_reader_ops_t axiom_xml_reader_ops_var = {
+    axis2_libxml2_reader_wrapper_next,
+    axis2_libxml2_reader_wrapper_free,
+    axis2_libxml2_reader_wrapper_get_attribute_count,
+    axis2_libxml2_reader_wrapper_get_attribute_name_by_number,
+    axis2_libxml2_reader_wrapper_get_attribute_prefix_by_number,
+    axis2_libxml2_reader_wrapper_get_attribute_value_by_number,
+    axis2_libxml2_reader_wrapper_get_attribute_namespace_by_number,
+    axis2_libxml2_reader_wrapper_get_value,
+    axis2_libxml2_reader_wrapper_get_namespace_count,
+    axis2_libxml2_reader_wrapper_get_namespace_uri_by_number,
+    axis2_libxml2_reader_wrapper_get_namespace_prefix_by_number,
+    axis2_libxml2_reader_wrapper_get_prefix,
+    axis2_libxml2_reader_wrapper_get_name,
+    axis2_libxml2_reader_wrapper_get_pi_target,
+    axis2_libxml2_reader_wrapper_get_pi_data,
+    axis2_libxml2_reader_wrapper_get_dtd,
+    axis2_libxml2_reader_wrapper_xml_free,
+    axis2_libxml2_reader_wrapper_get_char_set_encoding,
+    axis2_libxml2_reader_wrapper_get_namespace_uri,
+    axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix
+};
 
 static axis2_status_t
 axis2_libxml2_reader_wrapper_init_map(axis2_libxml2_reader_wrapper_impl_t *parser)
@@ -224,53 +232,6 @@ axis2_libxml2_reader_wrapper_init_map(axis2_libxml2_reader_wrapper_impl_t *parse
     return AXIS2_FAILURE;
 }
 
-static void
-axis2_libxml2_reader_wrapper_init_ops(axiom_xml_reader_t *parser)
-{
-    parser->ops->free =
-        axis2_libxml2_reader_wrapper_free;
-    parser->ops->next =
-        axis2_libxml2_reader_wrapper_next;
-    parser->ops->xml_free =
-        axis2_libxml2_reader_wrapper_xml_free;
-    parser->ops->get_attribute_count =
-        axis2_libxml2_reader_wrapper_get_attribute_count;
-    parser->ops->get_attribute_name_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_name_by_number;
-    parser->ops->get_attribute_value_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_value_by_number;
-    parser->ops->get_attribute_namespace_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_namespace_by_number;
-    parser->ops->get_attribute_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_attribute_prefix_by_number;
-    parser->ops->get_value =
-        axis2_libxml2_reader_wrapper_get_value;
-    parser->ops->get_prefix =
-        axis2_libxml2_reader_wrapper_get_prefix;
-    parser->ops->get_name =
-        axis2_libxml2_reader_wrapper_get_name;
-    parser->ops->get_namespace_count =
-        axis2_libxml2_reader_wrapper_get_namespace_count;
-    parser->ops->get_namespace_prefix_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_prefix_by_number;
-    parser->ops->get_namespace_uri_by_number =
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_number;
-    parser->ops->get_pi_target =
-        axis2_libxml2_reader_wrapper_get_pi_target;
-    parser->ops->get_pi_data =
-        axis2_libxml2_reader_wrapper_get_pi_data;
-    parser->ops->get_dtd =
-        axis2_libxml2_reader_wrapper_get_dtd;
-    parser->ops->get_char_set_encoding =
-        axis2_libxml2_reader_wrapper_get_char_set_encoding;
-    parser->ops->get_namespace_uri =
-        axis2_libxml2_reader_wrapper_get_namespace_uri;
-    parser->ops->get_namespace_uri_by_prefix =
-        axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix;
-}
-
-
-/*******************************************************************************/
 AXIS2_EXTERN  axis2_status_t  AXIS2_CALL
 axiom_xml_reader_init()
 {
@@ -285,7 +246,6 @@ axiom_xml_reader_cleanup()
     return AXIS2_SUCCESS;
 }
 
-/*******************************************************************************/
 AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
 axiom_xml_reader_create_for_file(const axutil_env_t *env,
     char *filename,
@@ -320,23 +280,9 @@ axiom_xml_reader_create_for_file(const axutil_env_t *env,
 
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
 
-    wrapper_impl->parser.ops = NULL;
-    wrapper_impl->parser.ops = (axiom_xml_reader_ops_t*)AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_xml_reader_ops_t));
-
-    if (!(wrapper_impl->parser.ops))
-    {
-        xmlFreeTextReader(wrapper_impl->reader);
-        AXIS2_FREE(env->allocator, wrapper_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    /* ops */
-    axis2_libxml2_reader_wrapper_init_ops(&(wrapper_impl->parser));
+    wrapper_impl->parser.ops = &axiom_xml_reader_ops_var;
     return &(wrapper_impl->parser);
 }
-
-/************** create function for io callback function **********************/
 
 AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
 axiom_xml_reader_create_for_io(const axutil_env_t *env,
@@ -393,23 +339,10 @@ axiom_xml_reader_create_for_io(const axutil_env_t *env,
 
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
 
-    wrapper_impl->parser.ops = NULL;
-    wrapper_impl->parser.ops = (axiom_xml_reader_ops_t*)AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_xml_reader_ops_t));
-
-    if (!(wrapper_impl->parser.ops))
-    {
-        xmlFreeTextReader(wrapper_impl->reader);
-        AXIS2_FREE(env->allocator, wrapper_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    axis2_libxml2_reader_wrapper_init_ops(&(wrapper_impl->parser));
+    wrapper_impl->parser.ops = &axiom_xml_reader_ops_var;
     return &(wrapper_impl->parser);
 }
 
-/***************** create function for character buffer or xml doc ************************/
 AXIS2_EXTERN axiom_xml_reader_t *AXIS2_CALL
 axiom_xml_reader_create_for_memory(const axutil_env_t *env,
     void *container,
@@ -468,19 +401,7 @@ axiom_xml_reader_create_for_memory(const axutil_env_t *env,
 
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
 
-    wrapper_impl->parser.ops = NULL;
-    wrapper_impl->parser.ops = (axiom_xml_reader_ops_t*)AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_xml_reader_ops_t));
-
-    if (!(wrapper_impl->parser.ops))
-    {
-        xmlFreeTextReader(wrapper_impl->reader);
-        AXIS2_FREE(env->allocator, wrapper_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    axis2_libxml2_reader_wrapper_init_ops(&(wrapper_impl->parser));
+    wrapper_impl->parser.ops = &axiom_xml_reader_ops_var;
     return &(wrapper_impl->parser);
 }
 

@@ -307,7 +307,7 @@ extern "C"
      */
     struct axiom_xml_reader
     {
-        axiom_xml_reader_ops_t *ops;
+        const axiom_xml_reader_ops_t *ops;
     };
 
     /**
