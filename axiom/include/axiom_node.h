@@ -33,7 +33,7 @@
 
 /**
  * @file axiom_node.h
- * @brief defines axiom_node struct and its ops
+ * @brief defines axiom_node struct
  */
 #include <axutil_env.h>
 #include <axutil_utils.h>
@@ -45,7 +45,6 @@ extern "C"
 #endif
 
     typedef struct axiom_node axiom_node_t;
-    struct axiom_node_ops;
     struct axiom_output;
     struct axiom_document;
     struct axiom_stax_builder;
