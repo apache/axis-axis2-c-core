@@ -38,7 +38,7 @@ axis2_http_out_transport_info_impl_set_content_type(
         {
             tmp1 = axis2_stracat(env, content_type, ";charset=");
             tmp2 = axis2_stracat(env, tmp1, http_out_transport_info->encoding);
-            AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(http_out_transport_info->response, env,
+            axis2_http_simple_response_set_header(http_out_transport_info->response, env,
                     axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
                             tmp2));
             AXIS2_FREE(env->allocator, tmp1);
@@ -46,7 +46,7 @@ axis2_http_out_transport_info_impl_set_content_type(
         }
         else
         {
-            AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(http_out_transport_info->response, env,
+            axis2_http_simple_response_set_header(http_out_transport_info->response, env,
                 axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
                         content_type));
         }
@@ -54,7 +54,7 @@ axis2_http_out_transport_info_impl_set_content_type(
     else
     {
         if(http_out_transport_info->response)
-            AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(http_out_transport_info->response, env,
+            axis2_http_simple_response_set_header(http_out_transport_info->response, env,
                 axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
                         content_type));
     }
@@ -87,7 +87,7 @@ axis2_http_out_transport_info_impl_free(
     AXIS2_ENV_CHECK(env, void);
     if(http_out_transport_info->response)
     {
-        AXIS2_HTTP_SIMPLE_RESPONSE_FREE(http_out_transport_info->response, env);
+        axis2_http_simple_response_free(http_out_transport_info->response, env);
     }
     if (http_out_transport_info->encoding)
     {

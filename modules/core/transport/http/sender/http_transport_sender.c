@@ -552,17 +552,6 @@ axis2_http_transport_sender_write_message(
 		return AXIS2_FAILURE;
 	}
 
-
-        /* Get the client used to send.  We will own this, and free it after
-         * having read the response */
-/*         client = AXIS2_SOAP_OVER_HTTP_SENDER_GET_CLIENT(sender, env); */
-
-		/*
-         * TODO check for errors
-         */
-/*         AXIS2_SOAP_OVER_HTTP_SENDER_FREE(sender, env); */
-/*         sender = NULL; */
-/*     } */
 	AXIS2_HTTP_SENDER_SET_CHUNKED(sender, env,
 								  AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
 	AXIS2_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
@@ -570,9 +559,6 @@ axis2_http_transport_sender_write_message(
 								  AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
 	status = AXIS2_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url, soap_action);
 
-	/*
-	 * TODO check for errors
-	 */
 	AXIS2_HTTP_SENDER_FREE(sender, env);
 	sender = NULL;
 

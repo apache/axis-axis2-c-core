@@ -548,7 +548,7 @@ axis2_http_sender_send(
         }
             
         /* set an error to indicate error code status */
-        tmp_header = AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(response, env,
+        tmp_header = axis2_http_simple_response_get_first_header(response, env,
 																 AXIS2_HTTP_HEADER_CONTENT_TYPE);
         if (tmp_header)
         {
@@ -615,7 +615,7 @@ axis2_http_sender_get_header_info(
     /*
      * TODO MTOM support (MIME header)
      */
-    headers = AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(response, env);
+    headers = axis2_http_simple_response_get_headers(response, env);
     if (headers == NULL)
     {
         return AXIS2_SUCCESS;
@@ -663,7 +663,7 @@ axis2_http_sender_get_header_info(
             }
         }
     }
-    content_type = (axis2_char_t *)AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(
+    content_type = (axis2_char_t *)axis2_http_simple_response_get_content_type(
 		response, env);
     if (content_type)
     {
@@ -700,7 +700,7 @@ axis2_http_sender_get_header_info(
         {
             return AXIS2_FAILURE;
         }
-        tmp_len = AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_LENGTH(response, env);
+        tmp_len = axis2_http_simple_response_get_content_length(response, env);
         memcpy(content_length, &tmp_len, sizeof(int));
         property = axutil_property_create(env);
         axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
@@ -725,7 +725,7 @@ axis2_http_sender_process_response(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, response, AXIS2_FAILURE);
 
-    in_stream = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(response, env);
+    in_stream = axis2_http_simple_response_get_body(response, env);
     if (! in_stream)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,

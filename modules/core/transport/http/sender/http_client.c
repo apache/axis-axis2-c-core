@@ -96,7 +96,7 @@ axis2_http_client_free(
     }
     if (http_client->response)
     {
-        AXIS2_HTTP_SIMPLE_RESPONSE_FREE(http_client->response, env);
+        axis2_http_simple_response_free(http_client->response, env);
     }
     if (-1 != http_client->sockfd)
     {
@@ -437,7 +437,7 @@ axis2_http_client_recieve_header(
     while (AXIS2_HTTP_RESPONSE_OK_CODE_VAL > http_status);
 
     client->response = axis2_http_simple_response_create_default(env);
-    AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(client->response, env,
+    axis2_http_simple_response_set_status_line(client->response, env,
             AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(status_line,
                     env), AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(
                 status_line, env),
@@ -473,14 +473,14 @@ axis2_http_client_recieve_header(
                 memset(str_header, 0, 512);
                 if (tmp_header)
                 {
-                    AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(client->response,
+                    axis2_http_simple_response_set_header(client->response,
                             env, tmp_header);
                 }
             }
         }
         end_of_line = AXIS2_FALSE;
     }
-    AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(client->response, env,
+    axis2_http_simple_response_set_body_stream(client->response, env,
             client->data_stream);
     if (status_line)
     {
@@ -488,10 +488,10 @@ axis2_http_client_recieve_header(
         AXIS2_HTTP_STATUS_LINE_FREE(status_line, env);
         status_line = NULL;
     }
-    if (AXIS2_FALSE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
+    if (AXIS2_FALSE == axis2_http_simple_response_contains_header(
                 client->response, env,
                 AXIS2_HTTP_HEADER_CONTENT_TYPE) && 202 != status_code
-            && AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_LENGTH(
+            && axis2_http_simple_response_get_content_length(
                 client->response, env) > 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_RESPONSE_CONTENT_TYPE_MISSING

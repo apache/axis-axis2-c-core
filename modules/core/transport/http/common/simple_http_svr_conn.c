@@ -318,7 +318,7 @@ axis2_simple_http_svr_conn_write_response(
 
     response_writer = axis2_http_response_writer_create(env,
             svr_conn->stream);
-    content_type = (axis2_char_t *)AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(
+    content_type = (axis2_char_t *)axis2_http_simple_response_get_content_type(
                 response, env);
     if (content_type)
     {
@@ -330,7 +330,7 @@ axis2_simple_http_svr_conn_write_response(
     {
         return AXIS2_FAILURE;
     }
-    enc_header = AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(response, env,
+    enc_header = axis2_http_simple_response_get_first_header(response, env,
             AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
     if (enc_header)
     {
@@ -342,16 +342,16 @@ axis2_simple_http_svr_conn_write_response(
             {
                 chuked_encoding = AXIS2_TRUE;
                 /* remove the content length header */
-                if (AXIS2_TRUE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
+                if (AXIS2_TRUE == axis2_http_simple_response_contains_header(
                             response, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH))
                 {
-                    AXIS2_HTTP_SIMPLE_RESPONSE_REMOVE_HEADERS(response, env,
+                    axis2_http_simple_response_remove_headers(response, env,
                             AXIS2_HTTP_HEADER_CONTENT_LENGTH);
                 }
             }
         }
     }
-    status_line = AXIS2_HTTP_SIMPLE_RESPONSE_GET_STATUS_LINE(response, env);
+    status_line = axis2_http_simple_response_get_status_line(response, env);
     if (! status_line)
     {
         AXIS2_ERROR_SET(env->error,
@@ -362,7 +362,7 @@ axis2_simple_http_svr_conn_write_response(
         return AXIS2_FAILURE;
     }
     AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, status_line);
-    headers = AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(response, env);
+    headers = axis2_http_simple_response_get_headers(response, env);
 
     if (headers)
     {
@@ -384,7 +384,7 @@ axis2_simple_http_svr_conn_write_response(
     }
     AXIS2_HTTP_RESPONSE_WRITER_PRINTLN(response_writer, env);
 
-    response_stream = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(response, env);
+    response_stream = axis2_http_simple_response_get_body(response, env);
     if (response_stream)
     {
         body_size = axutil_stream_get_len(response_stream, env);
