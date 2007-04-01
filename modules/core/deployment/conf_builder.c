@@ -158,7 +158,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     {
         return AXIS2_FAILURE;
     }
-    conf_element = AXIOM_NODE_GET_DATA_ELEMENT(conf_node, env);
+    conf_element = axiom_node_get_data_element(conf_node, env);
     /* processing Paramters */
     /* Processing service level paramters */
     qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
@@ -185,7 +185,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         msg_recv_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(msg_recvs, env);
         msg_recv_element = (axiom_element_t *)
-            AXIOM_NODE_GET_DATA_ELEMENT(msg_recv_node, env);
+            axiom_node_get_data_element(msg_recv_node, env);
         msg_recv = axis2_desc_builder_load_msg_recv(conf_builder->desc_builder,
             env, msg_recv_element);
         if (!msg_recv)
@@ -310,7 +310,7 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
         {
             return AXIS2_FAILURE;
         }
-        module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
+        module_ref_element = axiom_node_get_data_element(module_ref_node, env);
         qref = axutil_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = axiom_element_get_attribute(module_ref_element, env,
             qref);
@@ -356,7 +356,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, disp_order_node, AXIS2_FAILURE);
 
-    disp_order_element = AXIOM_NODE_GET_DATA_ELEMENT(disp_order_node, env);
+    disp_order_element = axiom_node_get_data_element(disp_order_node, env);
     qdisp = axutil_qname_create(env, AXIS2_DISPATCHER, NULL, NULL);
     disps = axiom_element_get_children_with_qname(disp_order_element,
         env, qdisp, disp_order_node);
@@ -480,7 +480,7 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
                     phase_orders, env);
         if (phase_orders_node)
         {
-            phase_orders_element = AXIOM_NODE_GET_DATA_ELEMENT(phase_orders_node,
+            phase_orders_element = axiom_node_get_data_element(phase_orders_node,
                 env);
         }
         if (phase_orders_element)
@@ -542,7 +542,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phase_orders_node, AXIS2_FAILURE);
 
-    phase_orders_element = AXIOM_NODE_GET_DATA_ELEMENT(phase_orders_node,
+    phase_orders_element = axiom_node_get_data_element(phase_orders_node,
         env);
     if (!phase_orders_element)
     {
@@ -573,7 +573,7 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
             phases, env);
         if (phase_node)
         {
-            phase_element = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(
+            phase_element = (axiom_element_t*)axiom_node_get_data_element(
                 phase_node, env);
         }
 
@@ -622,7 +622,7 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
         if (transport_node)
         {
             transport_element = (axiom_element_t*)
-                AXIOM_NODE_GET_DATA_ELEMENT(transport_node, env);
+                axiom_node_get_data_element(transport_node, env);
             if (!transport_element)
             {
                 return AXIS2_FAILURE;
@@ -886,7 +886,7 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             axiom_children_qname_iterator_next(trs_recvs, env);
         if (transport_node)
         {
-            transport_element = AXIOM_NODE_GET_DATA_ELEMENT(transport_node,
+            transport_element = axiom_node_get_data_element(transport_node,
                 env);
             if (!transport_element)
             {

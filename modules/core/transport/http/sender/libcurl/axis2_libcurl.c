@@ -124,7 +124,7 @@ axis2_libcurl_send (
         {
             return AXIS2_FAILURE;
         }
-        data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
+        data_out = axiom_node_get_first_element(body_node, env);
 
 		method = (axutil_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_HTTP_METHOD);
@@ -240,7 +240,7 @@ axis2_libcurl_send (
 			axutil_hash_t *content_type_hash = NULL;
 			axis2_char_t *content_type_value = NULL;
 
-			AXIOM_NODE_SERIALIZE(data_out, env, om_output);
+			axiom_node_serialize(data_out, env, om_output);
 			content_type_property  = (axutil_property_t *) axis2_msg_ctx_get_property(
 				msg_ctx, env,
 				AXIS2_USER_DEFINED_HTTP_HEADER_CONTENT_TYPE);

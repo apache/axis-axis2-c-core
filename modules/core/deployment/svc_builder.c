@@ -181,7 +181,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_node, AXIS2_FAILURE);
 
-    svc_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_node, env);
+    svc_element = axiom_node_get_data_element(svc_node, env);
     /* Processing service level paramters */
     qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
     if (!qparamst)
@@ -418,7 +418,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
 
         op_node = axiom_children_qname_iterator_next(op_itr, env);
         /* getting operation name */
-        op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
+        op_element = axiom_node_get_data_element(op_node, env);
         qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         op_name_att = axiom_element_get_attribute(op_element, env, qattname);
         axutil_qname_free(qattname, env);
@@ -534,7 +534,7 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
         axutil_qname_t *qattname = NULL;
 
         module_conf_node = axiom_children_qname_iterator_next(module_confs, env);
-        module_conf_element = AXIOM_NODE_GET_DATA_ELEMENT(module_conf_node,
+        module_conf_element = axiom_node_get_data_element(module_conf_node,
             env);
         qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         module_name_att = axiom_element_get_attribute(module_conf_element,
@@ -569,7 +569,7 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
         axutil_qname_t *qref = NULL;
 
         module_ref_node = axiom_children_qname_iterator_next(module_refs, env);
-        module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node,
+        module_ref_element = axiom_node_get_data_element(module_ref_node,
             env);
         qref = axutil_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = axiom_element_get_attribute(module_ref_element,

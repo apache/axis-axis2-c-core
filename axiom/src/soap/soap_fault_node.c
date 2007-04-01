@@ -71,7 +71,7 @@ axiom_soap_fault_node_create_with_parent(const axutil_env_t *env,
         return NULL;
     }
 
-    parent_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+    parent_ele  = (axiom_element_t *)axiom_node_get_data_element(
         parent_node, env);
     if (!parent_ele)
     {
@@ -123,7 +123,7 @@ axiom_soap_fault_node_set_value(axiom_soap_fault_node_t *fault_node,
 
     if (fault_node->om_ele_node)
     {
-        om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+        om_ele = (axiom_element_t *)axiom_node_get_data_element(
             fault_node->om_ele_node, env);
 
         if (om_ele)
@@ -145,7 +145,7 @@ axiom_soap_fault_node_get_value(axiom_soap_fault_node_t *fault_node,
     AXIS2_ENV_CHECK(env, NULL);
     if (fault_node->om_ele_node)
     {
-        om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+        om_ele = (axiom_element_t *)axiom_node_get_data_element(
             fault_node->om_ele_node, env);
         if (om_ele)
         {
@@ -163,7 +163,7 @@ axiom_soap_fault_node_set_base_node(axiom_soap_fault_node_t *fault_node,
     axiom_node_t *node)
 {
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error,
             AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);

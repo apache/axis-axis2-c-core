@@ -196,7 +196,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
         else
         {
             axis2_char_t *om_str = NULL;
-            om_str = AXIOM_NODE_TO_STRING(ret_node, env);
+            om_str = axiom_node_to_string(ret_node, env);
             if (om_str)
                 printf("\nReceived OM : %s\n", om_str);
             printf("\necho client invoke SUCCESSFUL!\n");

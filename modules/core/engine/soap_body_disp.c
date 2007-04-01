@@ -102,14 +102,14 @@ axiom_soap_body_disp_find_svc(
             if (body_node)
             {
                 axiom_node_t *body_first_child_node =
-                    AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
+                    axiom_node_get_first_element(body_node, env);
 
                 if (body_first_child_node)
                 {
-                    if (AXIOM_NODE_GET_NODE_TYPE(body_first_child_node, env) == AXIOM_ELEMENT)
+                    if (axiom_node_get_node_type(body_first_child_node, env) == AXIOM_ELEMENT)
                     {
                         axiom_element_t *element = NULL;
-                        element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+                        element = (axiom_element_t *)axiom_node_get_data_element(
                                                          body_first_child_node, env);
                         if (element)
                         {
@@ -198,15 +198,15 @@ axiom_soap_body_disp_find_op(
             if (body_node)
             {
                 axiom_node_t *body_first_child_node =
-                    AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
+                    axiom_node_get_first_element(body_node, env);
 
                 if (body_first_child_node)
                 {
-                    if (AXIOM_NODE_GET_NODE_TYPE(body_first_child_node, env) ==
+                    if (axiom_node_get_node_type(body_first_child_node, env) ==
                         AXIOM_ELEMENT)
                     {
                         axiom_element_t *element = NULL;
-                        element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+                        element = (axiom_element_t *)axiom_node_get_data_element(
                             body_first_child_node, env);
                         if (element)
                         {

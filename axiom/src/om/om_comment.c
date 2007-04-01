@@ -71,7 +71,7 @@ axiom_comment_create(const axutil_env_t *env,
 
     if (parent)
     {
-        AXIOM_NODE_ADD_CHILD(parent, env, (*node));
+        axiom_node_add_child(parent, env, (*node));
     }
 
     return comment;

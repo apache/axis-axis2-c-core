@@ -75,7 +75,7 @@ axiom_document_free(axiom_document_t *document,
 
     if (document->root_element)
     {
-        AXIOM_NODE_FREE_TREE(document->root_element, env);
+        axiom_node_free_tree(document->root_element, env);
     }
     AXIS2_FREE(env->allocator, document);
     return;
@@ -106,7 +106,7 @@ axiom_document_build_next(axiom_document_t *document,
         return last_child;
     }
     else if ((document->root_element) &&
-        (AXIOM_NODE_IS_COMPLETE(document->root_element, env) == AXIS2_TRUE))
+        (axiom_node_is_complete(document->root_element, env) == AXIS2_TRUE))
         return NULL;            /* Nothing wrong but done with pulling */
 
     last_child = axiom_stax_builder_next(document->builder, env);
@@ -156,7 +156,7 @@ axiom_document_set_root_element(axiom_document_t *document,
 
     if (document->root_element)
     {
-        AXIOM_NODE_FREE_TREE(document->root_element, env);
+        axiom_node_free_tree(document->root_element, env);
         document->root_element = node;
         return AXIS2_SUCCESS;
     }
@@ -188,7 +188,7 @@ axiom_document_build_all(struct axiom_document *document,
             ret_val = axiom_document_build_next(document, env);
             if (!ret_val)
             {
-                if (AXIOM_NODE_IS_COMPLETE(document->root_element, env) == AXIS2_TRUE)
+                if (axiom_node_is_complete(document->root_element, env) == AXIS2_TRUE)
                 {
                     /** document is completly build */
                     return document->root_element;
@@ -200,7 +200,7 @@ axiom_document_build_all(struct axiom_document *document,
                 }
             }
         }
-        while (!AXIOM_NODE_IS_COMPLETE(document->root_element, env));
+        while (!axiom_node_is_complete(document->root_element, env));
         return document->root_element;
     }
     else
@@ -230,7 +230,7 @@ axiom_document_serialize(axiom_document_t *document,
     }
     if (document->root_element)
     {
-        return AXIOM_NODE_SERIALIZE(document->root_element,
+        return axiom_node_serialize(document->root_element,
             env, om_output);
     }
     else

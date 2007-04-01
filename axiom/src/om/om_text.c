@@ -101,9 +101,9 @@ axiom_text_create(const axutil_env_t *env,
     axiom_node_set_node_type((*node), env, AXIOM_TEXT);
     axiom_node_set_complete((*node), env, AXIS2_FALSE);
 
-    if (parent && AXIOM_NODE_GET_NODE_TYPE(parent, env) == AXIOM_ELEMENT)
+    if (parent && axiom_node_get_node_type(parent, env) == AXIOM_ELEMENT)
     {
-        AXIOM_NODE_ADD_CHILD(parent, env, (*node));
+        axiom_node_add_child(parent, env, (*node));
     }
 
     return om_text;
@@ -570,9 +570,9 @@ AXIS2_EXTERN axiom_text_t *AXIS2_CALL
     axiom_node_set_node_type((*node), env, AXIOM_TEXT);
     axiom_node_set_complete((*node), env, AXIS2_FALSE);
 
-    if (parent && AXIOM_NODE_GET_NODE_TYPE(parent, env) == AXIOM_ELEMENT)
+    if (parent && axiom_node_get_node_type(parent, env) == AXIOM_ELEMENT)
     {
-        AXIOM_NODE_ADD_CHILD(parent, env, (*node));
+        axiom_node_add_child(parent, env, (*node));
     }
 
     return om_text;

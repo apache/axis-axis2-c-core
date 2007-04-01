@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     if (ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = AXIOM_NODE_TO_STRING(ret_node, env);
+        om_str = axiom_node_get_data_element(ret_node, env);
         if (om_str)
         {
             printf("\nReceived OM : %s\n", om_str);
@@ -176,7 +176,7 @@ build_om_programatically(const axutil_env_t *env,
     data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
     data_text = axiom_text_create_with_data_handler(env, image_om_node, data_handler, &data_om_node);
     axiom_text_set_optimize(data_text, env, optimized);
-    om_str = AXIOM_NODE_TO_STRING(mtom_om_node, env);
+    om_str = axiom_node_to_string(mtom_om_node, env);
     if (om_str)
     {
         printf("%s", om_str);

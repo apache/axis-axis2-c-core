@@ -159,14 +159,14 @@ axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
         return;
     }
 
-    if ((AXIOM_ELEMENT == AXIOM_NODE_GET_NODE_TYPE(om_navigator->next, env)) &&
+    if ((AXIOM_ELEMENT == axiom_node_get_node_type(om_navigator->next, env)) &&
         !(om_navigator->visited))
     {
-        if (AXIOM_NODE_GET_FIRST_CHILD(om_navigator->next, env))
+        if (axiom_node_get_first_child(om_navigator->next, env))
         {
-            om_navigator->next = AXIOM_NODE_GET_FIRST_CHILD(om_navigator->next, env);
+            om_navigator->next = axiom_node_get_first_child(om_navigator->next, env);
         }
-        else if (AXIS2_TRUE == AXIOM_NODE_IS_COMPLETE(om_navigator->next, env))
+        else if (AXIS2_TRUE == axiom_node_is_complete(om_navigator->next, env))
         {
             om_navigator->backtracked = AXIS2_TRUE;
         }
@@ -180,15 +180,15 @@ axiom_navigator_update_next_node(axiom_navigator_t *om_navigator,
         axiom_node_t  *parent = NULL;
         axiom_node_t *next_sibling = NULL;
 
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(om_navigator->next, env);
+        next_sibling = axiom_node_get_next_sibling(om_navigator->next, env);
 
-        parent = AXIOM_NODE_GET_PARENT(om_navigator->next, env);
+        parent = axiom_node_get_parent(om_navigator->next, env);
 
         if (next_sibling)
         {
             om_navigator->next = next_sibling;
         }
-        else if ((parent) && AXIOM_NODE_IS_COMPLETE(parent, env))
+        else if ((parent) && axiom_node_is_complete(parent, env))
         {
             om_navigator->next = parent;
             om_navigator->backtracked = AXIS2_TRUE;

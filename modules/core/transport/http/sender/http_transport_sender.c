@@ -335,8 +335,8 @@ axis2_http_transport_sender_invoke(
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
                 }
-                data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
-                if (! data_out || AXIOM_NODE_GET_NODE_TYPE(data_out, env)
+                data_out = axiom_node_get_first_element(body_node, env);
+                if (! data_out || axiom_node_get_node_type(data_out, env)
                         != AXIOM_ELEMENT)
                 {
                     axiom_output_free(om_output, env);
@@ -344,7 +344,7 @@ axis2_http_transport_sender_invoke(
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
                 }
-                AXIOM_NODE_SERIALIZE(data_out, env, om_output);
+                axiom_node_serialize(data_out, env, om_output);
                 buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
                 buffer_size = AXIOM_XML_WRITER_GET_XML_SIZE(xml_writer, env);
             }

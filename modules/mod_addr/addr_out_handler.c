@@ -226,7 +226,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         soap_header_node = axiom_soap_header_get_base_node(soap_header, env);
         soap_header_ele =
             (axiom_element_t *)
-            AXIOM_NODE_GET_DATA_ELEMENT(soap_header_node, env);
+            axiom_node_get_data_element(soap_header_node, env);
         axiom_element_declare_namespace(soap_header_ele, env,
                 soap_header_node, addressing_namespace);
 
@@ -275,7 +275,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                 if (to_header_block_node)
                 {
                     axiom_element_t *to_header_block_element = NULL;
-                    to_header_block_element = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(to_header_block_node, env);
+                    to_header_block_element = (axiom_element_t*)axiom_node_get_data_element(to_header_block_node, env);
                     if (to_header_block_element)
                     {
                         axiom_element_set_text(to_header_block_element, env, address, to_header_block_node);
@@ -414,7 +414,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                 axiom_namespace_t *dec_ns = NULL;
                 relates_to_header_ele =
                     (axiom_element_t *)
-                    AXIOM_NODE_GET_DATA_ELEMENT(relates_to_header_node,
+                    axiom_node_get_data_element(relates_to_header_node,
                             env);
                 if (relates_to_header_ele)
                 {
@@ -496,7 +496,7 @@ axis2_addr_out_handler_process_string_info(const axutil_env_t *env,
             axiom_soap_header_block_get_base_node(header_block, env);
         header_block_ele =
             (axiom_element_t *)
-            AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
+            axiom_node_get_data_element(header_block_node, env);
         if (header_block_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
@@ -559,7 +559,7 @@ axis2_addr_out_handler_add_to_soap_header(const axutil_env_t *env,
         axiom_element_t *address_ele = NULL;
         hb_node = axiom_soap_header_block_get_base_node(header_block, env);
         hb_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(hb_node, env);
+                axiom_node_get_data_element(hb_node, env);
 
         addr_ns_obj = axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
 
@@ -620,7 +620,7 @@ axis2_addr_out_handler_add_to_soap_header(const axutil_env_t *env,
             axiom_node_t *ref_node = (axiom_node_t *)axutil_array_list_get(ref_param_list, env, i);
             if (ref_node)
             {
-                AXIOM_NODE_ADD_CHILD(reference_node, env, ref_node);
+                axiom_node_add_child(reference_node, env, ref_node);
             }
         }
 
@@ -664,7 +664,7 @@ axis2_addr_out_handler_add_to_soap_header(const axutil_env_t *env,
             axiom_node_t *ref_node = (axiom_node_t *)axutil_array_list_get(meta_data_list, env, i);
             if (ref_node)
             {
-                AXIOM_NODE_ADD_CHILD(reference_node, env, ref_node);
+                axiom_node_add_child(reference_node, env, ref_node);
             }
         }
     }
@@ -678,7 +678,7 @@ axis2_addr_out_handler_add_to_soap_header(const axutil_env_t *env,
             axiom_node_t *ref_node = (axiom_node_t *)axutil_array_list_get(extension_list, env, i);
             if (ref_node)
             {
-                AXIOM_NODE_ADD_CHILD(header_block_node, env, ref_node);
+                axiom_node_add_child(header_block_node, env, ref_node);
             }
         }
     }

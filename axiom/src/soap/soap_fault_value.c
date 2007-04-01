@@ -80,7 +80,7 @@ axiom_soap_fault_value_create_with_subcode(const axutil_env_t *env,
     }
 
     parent_ele  = (axiom_element_t*)
-        AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
+        axiom_node_get_data_element(parent_node, env);
 
     if (!parent_ele)
     {
@@ -142,7 +142,7 @@ axiom_soap_fault_value_create_with_code(const axutil_env_t *env,
         return NULL;
     }
     parent_ele  = (axiom_element_t*)
-        AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
+        axiom_node_get_data_element(parent_node, env);
     if (!parent_ele)
     {
         axiom_soap_fault_value_free(fault_value, env);
@@ -186,7 +186,7 @@ axiom_soap_fault_value_set_base_node(axiom_soap_fault_value_t *fault_value,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error,
             AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
@@ -216,7 +216,7 @@ axiom_soap_fault_value_get_text(axiom_soap_fault_value_t *fault_value,
     if (!value_node)
         return NULL;
 
-    value_element = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(
+    value_element = (axiom_element_t*)axiom_node_get_data_element(
         value_node, env);
 
     if (!value_element)
@@ -233,11 +233,11 @@ axiom_soap_fault_value_set_text(axiom_soap_fault_value_t *fault_value,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
     if (fault_value->om_ele_node &&
-        AXIOM_NODE_GET_NODE_TYPE(fault_value->om_ele_node, env) == AXIOM_ELEMENT)
+        axiom_node_get_node_type(fault_value->om_ele_node, env) == AXIOM_ELEMENT)
     {
         axiom_element_t *om_ele = NULL;
         om_ele = (axiom_element_t *)
-            AXIOM_NODE_GET_DATA_ELEMENT(fault_value->om_ele_node, env);
+            axiom_node_get_data_element(fault_value->om_ele_node, env);
         return axiom_element_set_text(om_ele, env, text, fault_value->om_ele_node);
     }
     return AXIS2_FAILURE;

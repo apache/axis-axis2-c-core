@@ -164,7 +164,7 @@ axiom_soap_envelope_free(axiom_soap_envelope_t *soap_envelope,
         }
         else
         {
-            AXIOM_NODE_FREE_TREE(soap_envelope->om_ele_node, env);
+            axiom_node_free_tree(soap_envelope->om_ele_node, env);
         }
     }
 
@@ -187,7 +187,7 @@ axiom_soap_envelope_set_base_node(axiom_soap_envelope_t *soap_envelope,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -227,7 +227,7 @@ axiom_soap_envelope_get_header(axiom_soap_envelope_t *soap_envelope,
     }
     else if (soap_envelope->soap_builder)
     {
-        while (!(soap_envelope->header) && !AXIOM_NODE_IS_COMPLETE(
+        while (!(soap_envelope->header) && !axiom_node_is_complete(
                     soap_envelope->om_ele_node, env))
         {
             status = axiom_soap_builder_next(soap_envelope->soap_builder, env);
@@ -272,7 +272,7 @@ axiom_soap_envelope_get_body(axiom_soap_envelope_t *soap_envelope,
     }
     else if (soap_envelope->soap_builder)
     {
-        while (!(soap_envelope->body)  && !AXIOM_NODE_IS_COMPLETE(soap_envelope->om_ele_node, env))
+        while (!(soap_envelope->body)  && !axiom_node_is_complete(soap_envelope->om_ele_node, env))
         {
             status = axiom_soap_builder_next(soap_envelope->soap_builder, env);
             if (status == AXIS2_FAILURE)
@@ -311,7 +311,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *soap_envelope,
        Otherwise default values will be written
     */
     axiom_output_get_content_type(om_output, env);
-    return AXIOM_NODE_SERIALIZE(soap_envelope->om_ele_node, env, om_output);
+    return axiom_node_serialize(soap_envelope->om_ele_node, env, om_output);
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -361,9 +361,9 @@ axiom_soap_envelope_get_namespace(axiom_soap_envelope_t *soap_envelope,
     if (soap_envelope->om_ele_node)
     {
         axiom_element_t *ele = NULL;
-        if (AXIOM_NODE_GET_NODE_TYPE(soap_envelope->om_ele_node, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(soap_envelope->om_ele_node, env) == AXIOM_ELEMENT)
         {
-            ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(soap_envelope->om_ele_node, env);
+            ele = (axiom_element_t*)axiom_node_get_data_element(soap_envelope->om_ele_node, env);
             if (ele)
             {
                 return axiom_element_get_namespace(ele, env, soap_envelope->om_ele_node);
@@ -559,7 +559,7 @@ axiom_soap_envelope_set_soap_version(axiom_soap_envelope_t *soap_envelope,
     }
 
     env_ele = (axiom_element_t*)
-        AXIOM_NODE_GET_DATA_ELEMENT(soap_envelope->om_ele_node,
+        axiom_node_get_data_element(soap_envelope->om_ele_node,
         env);
     if (!env_ele)
     {

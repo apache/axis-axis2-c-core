@@ -202,10 +202,10 @@ axis2_addr_in_extract_svc_grp_ctx_id(const axutil_env_t *env,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     node = axiom_soap_header_get_base_node(soap_header, env);
-    if (node && AXIOM_NODE_GET_NODE_TYPE(node, env) == AXIOM_ELEMENT)
+    if (node && axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
     {
         axutil_qname_t *qname = NULL;
-        element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        element = (axiom_element_t *)axiom_node_get_data_element(node, env);
         qname = axutil_qname_create(env, AXIS2_SVC_GRP_ID, AXIS2_NAMESPACE_URI,
                 AXIS2_NAMESPACE_PREFIX);
         if (qname)
@@ -321,7 +321,7 @@ axis2_addr_in_extract_addr_params(const axutil_env_t *env,
 
         header_block = (axiom_soap_header_block_t *)hb;
         header_block_node = axiom_soap_header_block_get_base_node(header_block, env);
-        header_block_ele  = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
+        header_block_ele  = (axiom_element_t*)axiom_node_get_data_element(header_block_node, env);
         ele_localname = axiom_element_get_localname(header_block_ele, env);
 
         role = axiom_soap_header_block_get_role(header_block, env);
@@ -514,7 +514,7 @@ axis2_addr_in_extract_epr_information(const axutil_env_t *env,
     AXIS2_PARAM_CHECK(env->error, addr_ns_str, AXIS2_FAILURE);
 
     header_block_node = axiom_soap_header_block_get_base_node(soap_header_block, env);
-    header_block_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
+    header_block_ele  = (axiom_element_t *)axiom_node_get_data_element(header_block_node, env);
 
 
     child_ele_iter = axiom_element_get_child_elements(header_block_ele, env, header_block_node);
@@ -529,7 +529,7 @@ axis2_addr_in_extract_epr_information(const axutil_env_t *env,
         axiom_element_t *child_ele = NULL;
         axutil_qname_t *child_qn = NULL;
         child_node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(child_ele_iter, env);
-        child_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(child_node, env);
+        child_ele = (axiom_element_t*)axiom_node_get_data_element(child_node, env);
 
 
         child_qn = axiom_element_get_qname(child_ele, env, child_node);
@@ -550,7 +550,7 @@ axis2_addr_in_extract_epr_information(const axutil_env_t *env,
                     axiom_node_t *om_node =  NULL;
                     axiom_element_t *om_ele = NULL;
                     om_node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(ref_param_iter, env);
-                    om_ele  = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
+                    om_ele  = (axiom_element_t*)axiom_node_get_data_element(om_node, env);
                 }
             }
 
@@ -597,11 +597,11 @@ axis2_addr_in_extract_ref_params(const axutil_env_t *env,
         header_block_node = axiom_soap_header_block_get_base_node(header_block, env);
 
         if (header_block_node &&
-                (AXIOM_NODE_GET_NODE_TYPE(header_block_node, env) == AXIOM_ELEMENT))
+                (axiom_node_get_node_type(header_block_node, env) == AXIOM_ELEMENT))
         {
             axiom_attribute_t *om_attr = NULL;
             axis2_char_t *attr_value = NULL;
-            header_block_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
+            header_block_ele = (axiom_element_t*)axiom_node_get_data_element(header_block_node, env);
             om_attr = axiom_element_get_attribute(header_block_ele, env, wsa_qname);
             if (om_attr)
             {
@@ -659,7 +659,7 @@ axis2_addr_in_extract_to_epr_ref_params(const axutil_env_t *env,
             header_block = (axiom_soap_header_block_t*)hb;
             header_block_node = axiom_soap_header_block_get_base_node(header_block, env);
             header_block_ele = (axiom_element_t*)
-                    AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
+                    axiom_node_get_data_element(header_block_node, env);
             is_ref_param_attr  = axiom_element_get_attribute(header_block_ele, env, is_ref_qn);
             if (is_ref_param_attr)
             {

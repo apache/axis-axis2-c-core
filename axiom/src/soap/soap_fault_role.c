@@ -75,7 +75,7 @@ axiom_soap_fault_role_create_with_parent(const axutil_env_t *env,
         axiom_soap_fault_role_free(fault_role, env);
         return NULL;
     }
-    parent_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+    parent_ele  = (axiom_element_t *)axiom_node_get_data_element(
         parent_node, env);
 
     if (!parent_ele)
@@ -129,7 +129,7 @@ axiom_soap_fault_role_set_role_value
     if (!fault_role->om_ele_node)
         return AXIS2_FAILURE;
 
-    role_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT
+    role_ele = (axiom_element_t*)axiom_node_get_data_element
         (fault_role->om_ele_node, env);
 
     if (role_ele)
@@ -150,7 +150,7 @@ axiom_soap_fault_role_get_role_value
     if (!fault_role->om_ele_node)
         return NULL;
 
-    role_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT
+    role_ele = (axiom_element_t *)axiom_node_get_data_element
         (fault_role->om_ele_node, env);
 
     if (role_ele)
@@ -170,7 +170,7 @@ axiom_soap_fault_role_set_base_node
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;

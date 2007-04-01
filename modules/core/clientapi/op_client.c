@@ -755,7 +755,7 @@ axis2_op_client_prepare_soap_envelope(
             node = axiom_soap_body_get_base_node(soap_body, env);
             if (node)
             {
-                AXIOM_NODE_ADD_CHILD(node, env, to_send);
+                axiom_node_add_child(node, env, to_send);
             }
         }
     }

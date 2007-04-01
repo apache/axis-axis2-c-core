@@ -1446,7 +1446,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
                 element = axiom_element_create(env, NULL, (axis2_char_t *)name,
                         NULL, &node);
                 axiom_element_set_text(element, env, (axis2_char_t *)value, node);
-                AXIOM_NODE_ADD_CHILD(body_child_node, env, node);
+                axiom_node_add_child(body_child_node, env, node);
             }
         }
     }
@@ -1573,7 +1573,7 @@ axis2_http_transport_utils_handle_media_type_url_encoded(
             element = axiom_element_create(env, NULL, (axis2_char_t *)name,
                     NULL, &node);
             axiom_element_set_text(element, env, (axis2_char_t *)value, node);
-            AXIOM_NODE_ADD_CHILD(body_child_node, env, node);
+            axiom_node_add_child(body_child_node, env, node);
         }
     }
     return soap_env;

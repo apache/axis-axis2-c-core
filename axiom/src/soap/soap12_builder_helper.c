@@ -127,7 +127,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_ele_node, AXIS2_FAILURE);
 
-    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(om_ele_node, env);
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(om_ele_node, env);
     if (!om_ele)
         return AXIS2_FAILURE;
 
@@ -369,11 +369,11 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         axiom_node_t *parent_node = NULL;
         axiom_element_t *parent_ele = NULL;
         axis2_char_t *parent_localname = NULL;
-        parent_node = AXIOM_NODE_GET_PARENT(om_ele_node, env);
+        parent_node = axiom_node_get_parent(om_ele_node, env);
         if (!parent_node)
             return AXIS2_FAILURE;
 
-        parent_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
+        parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
         if (!parent_ele)
             return AXIS2_FAILURE;
 
@@ -482,9 +482,6 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                     return AXIS2_FAILURE;
 
                 axiom_soap_fault_reason_add_soap_fault_text(fault_reason, env, soap_fault_text);
-                /*****************
-                AXIOM_NODE_SET_BUILD_STATUS(om_ele_node, env, AXIS2_FALSE);
-                ******************/
                 builder_helper->reason_processing = AXIS2_FALSE;
 
                 axiom_soap_builder_set_bool_processing_mandatory_fault_elements(builder_helper->soap_builder, env, AXIS2_FALSE);
@@ -522,11 +519,11 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         axiom_element_t *parent_ele = NULL;
         axis2_char_t *parent_localname = NULL;
 
-        parent_node = AXIOM_NODE_GET_PARENT(om_ele_node, env);
+        parent_node = axiom_node_get_parent(om_ele_node, env);
         if (!parent_node)
             return AXIS2_FAILURE;
 
-        parent_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
+        parent_ele = (axiom_element_t *)axiom_node_get_data_element(parent_node, env);
         if (!parent_ele)
             return AXIS2_FAILURE;
 

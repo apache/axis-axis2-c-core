@@ -33,7 +33,7 @@ build_om_payload_for_echo_svc(const axutil_env_t *env)
     text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, "Hello World!", text_om_node);
 
-    om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
+    om_str = axiom_node_to_string(echo_om_node, env);
     if (om_str)
         printf("\nSending OM : %s\n", om_str);
     AXIS2_FREE(env->allocator, om_str);

@@ -126,7 +126,7 @@ process_for_wsdl1(
     {
         axis2_char_t *om_str = NULL;
 
-        om_str = AXIOM_NODE_TO_STRING(response, env);
+        om_str = axiom_node_to_string(response, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("status:%s\n", "Successful");
@@ -188,7 +188,7 @@ process_for_wsdl2(
     {
         axis2_char_t *om_str = NULL;
 
-        om_str = AXIOM_NODE_TO_STRING(response, env);
+        om_str = axiom_node_to_string(response, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("status:%s\n", "Success");
@@ -252,7 +252,7 @@ build_om_programatically_for_wsdl1(
             AXIS2_FALSE, AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create(env, xml_writer);
 
-    AXIOM_NODE_SERIALIZE(add_om_node, env, om_output);
+    axiom_node_serialize(add_om_node, env, om_output);
     buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
     printf("\nOM node in XML : %s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
@@ -309,7 +309,7 @@ build_om_programatically_for_wsdl2(
             AXIS2_FALSE, AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create(env, xml_writer);
 
-    AXIOM_NODE_SERIALIZE(add_om_node, env, om_output);
+    axiom_node_serialize(add_om_node, env, om_output);
     buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
     printf("\nOM node in XML : %s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);

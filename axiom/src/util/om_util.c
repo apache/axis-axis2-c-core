@@ -37,16 +37,16 @@ axiom_util_get_first_child_element_with_uri(axiom_node_t *ele_node,
         return NULL;
     }
 
-    child_node = AXIOM_NODE_GET_FIRST_CHILD(ele_node, env);
+    child_node = axiom_node_get_first_child(ele_node, env);
     while (child_node)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(child_node, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(child_node, env) == AXIOM_ELEMENT)
         {
             axiom_element_t *child_ele = NULL;
             axiom_namespace_t *ns = NULL;
 
             child_ele = (axiom_element_t*)
-                AXIOM_NODE_GET_DATA_ELEMENT(child_node, env);
+                axiom_node_get_data_element(child_node, env);
             ns = axiom_element_get_namespace(child_ele, env, child_node);
             if (ns)
             {
@@ -59,7 +59,7 @@ axiom_util_get_first_child_element_with_uri(axiom_node_t *ele_node,
                 }
             }
         }
-        child_node = AXIOM_NODE_GET_NEXT_SIBLING(child_node, env);
+        child_node = axiom_node_get_next_sibling(child_node, env);
     }
     return NULL;
 }
@@ -78,16 +78,16 @@ axiom_util_get_next_sibling_element_with_uri(axiom_node_t *ele_node,
         return NULL;
     }
 
-    next_sib_node = AXIOM_NODE_GET_NEXT_SIBLING(ele_node, env);
+    next_sib_node = axiom_node_get_next_sibling(ele_node, env);
     while (next_sib_node)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sib_node, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sib_node, env) == AXIOM_ELEMENT)
         {
             axiom_element_t *sib_ele = NULL;
             axiom_namespace_t *ns = NULL;
 
             sib_ele = (axiom_element_t*)
-                AXIOM_NODE_GET_DATA_ELEMENT(next_sib_node, env);
+                axiom_node_get_data_element(next_sib_node, env);
             ns = axiom_element_get_namespace(sib_ele, env, next_sib_node);
             if (ns)
             {
@@ -100,7 +100,7 @@ axiom_util_get_next_sibling_element_with_uri(axiom_node_t *ele_node,
                 }
             }
         }
-        next_sib_node = AXIOM_NODE_GET_NEXT_SIBLING(next_sib_node, env);
+        next_sib_node = axiom_node_get_next_sibling(next_sib_node, env);
     }
     return NULL;
 }
@@ -127,17 +127,17 @@ axiom_util_get_last_child_element(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
 
-    last_node = AXIOM_NODE_GET_LAST_CHILD(ele_node, env);
+    last_node = axiom_node_get_last_child(ele_node, env);
     while (last_node)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(last_node, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(last_node, env) == AXIOM_ELEMENT)
         {
             *child_node = last_node;
             return (axiom_element_t*)
-                AXIOM_NODE_GET_DATA_ELEMENT(last_node, env);
+                axiom_node_get_data_element(last_node, env);
 
         }
-        last_node = AXIOM_NODE_GET_PREVIOUS_SIBLING(ele_node, env);
+        last_node = axiom_node_get_previous_sibling(ele_node, env);
     }
     return NULL;
 }
@@ -151,16 +151,16 @@ axiom_util_get_next_sibling_element(axiom_element_t *ele,
     axiom_node_t *next_sibling = NULL;
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(ele_node, env);
+    next_sibling = axiom_node_get_next_sibling(ele_node, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
             *next_node = next_sibling;
             return (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+                axiom_node_get_data_element(next_sibling, env);
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 }
@@ -180,13 +180,13 @@ axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
 
-    child = AXIOM_NODE_GET_FIRST_CHILD(ele_node, env);
+    child = axiom_node_get_first_child(ele_node, env);
     if (child)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
             om_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(child, env);
+                axiom_node_get_data_element(child, env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
@@ -201,13 +201,13 @@ axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
         child_localname = NULL;
     }
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(child, env);
+    next_sibling = axiom_node_get_next_sibling(child, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
             om_ele = (axiom_element_t*)
-                AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+                axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
@@ -221,7 +221,7 @@ axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
             om_ele = NULL;
             child_localname = NULL;
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 }
@@ -242,13 +242,13 @@ axiom_util_get_last_child_element_with_localname(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
 
-    child = AXIOM_NODE_GET_LAST_CHILD(ele_node, env);
+    child = axiom_node_get_last_child(ele_node, env);
     while (child)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
             om_ele = (axiom_element_t*)
-                AXIOM_NODE_GET_DATA_ELEMENT(ele_node, env);
+                axiom_node_get_data_element(ele_node, env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
@@ -263,7 +263,7 @@ axiom_util_get_last_child_element_with_localname(axiom_element_t *ele,
             om_ele = NULL;
             child_localname = NULL;
         }
-        child = AXIOM_NODE_GET_PREVIOUS_SIBLING(child, env);
+        child = axiom_node_get_previous_sibling(child, env);
     }
     return NULL;
 }
@@ -281,13 +281,13 @@ axiom_util_get_next_siblng_element_with_localname(axiom_element_t *ele,
 
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(ele_node, env);
+    next_sibling = axiom_node_get_next_sibling(ele_node, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
             om_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+                axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 ele_localname = axiom_element_get_localname(om_ele, env);
@@ -300,7 +300,7 @@ axiom_util_get_next_siblng_element_with_localname(axiom_element_t *ele,
             om_ele = NULL;
             ele_localname = NULL;
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 }
@@ -325,15 +325,15 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
 
-    child = AXIOM_NODE_GET_FIRST_CHILD(ele_node, env);
+    child = axiom_node_get_first_child(ele_node, env);
     if (!child)
     {
         return NULL;
 
     }
-    if (AXIOM_NODE_GET_NODE_TYPE(ele_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(ele_node, env) == AXIOM_ELEMENT)
     {
-        om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(child , env);
+        om_ele = (axiom_element_t *)axiom_node_get_data_element(child , env);
         if (om_ele)
         {
             child_localname = axiom_element_get_localname(om_ele, env);
@@ -357,12 +357,12 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
     ns = NULL;
     ns_uri = NULL;
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(child, env);
+    next_sibling = axiom_node_get_next_sibling(child, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+            om_ele = (axiom_element_t*)axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
@@ -386,7 +386,7 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
             ns = NULL;
             ns_uri = NULL;
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 }
@@ -409,12 +409,12 @@ axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
 
-    child = AXIOM_NODE_GET_LAST_CHILD(ele_node, env);
+    child = axiom_node_get_last_child(ele_node, env);
     while (child)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ele_node, env);
+            om_ele = (axiom_element_t*)axiom_node_get_data_element(ele_node, env);
             if (om_ele)
             {
                 ns = axiom_element_get_namespace(om_ele, env, ele_node);
@@ -436,7 +436,7 @@ axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
             ns = NULL;
             ns_uri = NULL;
         }
-        child = AXIOM_NODE_GET_PREVIOUS_SIBLING(child, env);
+        child = axiom_node_get_previous_sibling(child, env);
     }
     return NULL;
 }
@@ -456,13 +456,13 @@ axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
     axis2_char_t *ns_uri          = NULL;
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(ele_node, env);
+    next_sibling = axiom_node_get_next_sibling(ele_node, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
             om_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+                axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 ns = axiom_element_get_namespace(om_ele, env, next_sibling);
@@ -484,7 +484,7 @@ axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
             ns_uri = NULL;
             ns = NULL;
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 }
@@ -507,12 +507,12 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, names, NULL);
 
-    child = AXIOM_NODE_GET_FIRST_CHILD(ele_node, env);
+    child = axiom_node_get_first_child(ele_node, env);
     if (child)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(child, env);
+            om_ele = (axiom_element_t *)axiom_node_get_data_element(child, env);
             if (om_ele)
             {
                 size = axutil_array_list_size(names, env);
@@ -538,12 +538,12 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
         size = 0;
     }
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(child, env);
+    next_sibling = axiom_node_get_next_sibling(child, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+            om_ele = (axiom_element_t*)axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 size = axutil_array_list_size(names, env);
@@ -564,7 +564,7 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
             child_localname = NULL;
             given_localname = NULL;
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 
@@ -589,13 +589,13 @@ axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, names, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
 
-    child = AXIOM_NODE_GET_LAST_CHILD(ele_node, env);
+    child = axiom_node_get_last_child(ele_node, env);
     while (child)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
             om_ele = (axiom_element_t*)
-                AXIOM_NODE_GET_DATA_ELEMENT(ele_node, env);
+                axiom_node_get_data_element(ele_node, env);
             if (om_ele)
             {
                 size = axutil_array_list_size(names, env);
@@ -615,7 +615,7 @@ axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
             child_localname = NULL;
             given_localname = NULL;
         }
-        child = AXIOM_NODE_GET_PREVIOUS_SIBLING(child, env);
+        child = axiom_node_get_previous_sibling(child, env);
     }
     return NULL;
 }
@@ -638,13 +638,13 @@ axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, next_node, NULL);
 
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(ele_node, env);
+    next_sibling = axiom_node_get_next_sibling(ele_node, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
             om_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+                axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 size = axutil_array_list_size(names, env);
@@ -664,7 +664,7 @@ axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
             om_ele = NULL;
             ele_localname = NULL;
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 }
@@ -694,13 +694,13 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, attr_name, NULL);
     AXIS2_PARAM_CHECK(env->error, attr_value, NULL);
 
-    child = AXIOM_NODE_GET_FIRST_CHILD(ele_node, env);
+    child = axiom_node_get_first_child(ele_node, env);
 
     if (child)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(child, env);
+            om_ele = (axiom_element_t *)axiom_node_get_data_element(child, env);
             if (om_ele)
             {
 
@@ -745,12 +745,12 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
         hi = NULL;
     }
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(child, env);
+    next_sibling = axiom_node_get_next_sibling(child, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+            om_ele = (axiom_element_t*)axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
@@ -793,7 +793,7 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
             om_ele = NULL;
             child_localname = NULL;
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 }
@@ -821,12 +821,12 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
     AXIS2_PARAM_CHECK(env->error, child_node, NULL);
 
-    child = AXIOM_NODE_GET_LAST_CHILD(ele_node, env);
+    child = axiom_node_get_last_child(ele_node, env);
     while (child)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(child, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(child, env) == AXIOM_ELEMENT)
         {
-            om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ele_node, env);
+            om_ele = (axiom_element_t*)axiom_node_get_data_element(ele_node, env);
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
@@ -870,7 +870,7 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
             om_ele = NULL;
             child_localname = NULL;
         }
-        child = AXIOM_NODE_GET_PREVIOUS_SIBLING(child, env);
+        child = axiom_node_get_previous_sibling(child, env);
     }
     return NULL;
 }
@@ -896,13 +896,13 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
 
-    next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(ele_node, env);
+    next_sibling = axiom_node_get_next_sibling(ele_node, env);
     while (next_sibling)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(next_sibling, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(next_sibling, env) == AXIOM_ELEMENT)
         {
             om_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(next_sibling, env);
+                axiom_node_get_data_element(next_sibling, env);
             if (om_ele)
             {
                 ele_localname = axiom_element_get_localname(om_ele, env);
@@ -944,7 +944,7 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
             om_ele = NULL;
             ele_localname = NULL;
         }
-        next_sibling = AXIOM_NODE_GET_NEXT_SIBLING(next_sibling, env);
+        next_sibling = axiom_node_get_next_sibling(next_sibling, env);
     }
     return NULL;
 }
@@ -958,12 +958,12 @@ axiom_util_get_child_node_text(axiom_node_t *om_node,
     {
         return NULL;
     }
-    if (AXIOM_NODE_GET_NODE_TYPE(om_node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(om_node, env) != AXIOM_ELEMENT)
     {
         return NULL;
     }
 
-    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(om_node, env);
 
     if (om_ele)
     {
@@ -983,11 +983,11 @@ axiom_util_get_localname(axiom_node_t *node,
     {
         return NULL;
     }
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         return NULL;
     }
-    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
     if (om_ele)
     {
         return axiom_element_get_localname(om_ele, env);
@@ -1005,9 +1005,9 @@ axiom_util_get_node_namespace_uri(axiom_node_t *om_node,
     {
         return NULL;
     }
-    if (AXIOM_NODE_GET_NODE_TYPE(om_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(om_node, env) == AXIOM_ELEMENT)
     {
-        om_ele = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
+        om_ele = axiom_node_get_data_element(om_node, env);
         if (! om_ele)
         {
             return NULL;

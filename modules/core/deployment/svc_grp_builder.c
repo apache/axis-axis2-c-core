@@ -106,7 +106,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *svc_grp_builder,
     axis2_conf_t *parent = NULL;
 
     /* Processing service level paramters */
-    svc_grp_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_grp_builder->svc_grp, env);
+    svc_grp_element = axiom_node_get_data_element(svc_grp_builder->svc_grp, env);
     qparamst = axutil_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
 
     itr = axiom_element_get_children_with_qname(svc_grp_element, env, qparamst,
@@ -156,7 +156,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *svc_grp_builder,
 
         svc_node = (axiom_node_t *) axiom_children_qname_iterator_next(
             svc_itr, env);
-        svc_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_node, env);
+        svc_element = axiom_node_get_data_element(svc_node, env);
         qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         svc_name_att = axiom_element_get_attribute(svc_element, env, qattname);
 
@@ -230,7 +230,7 @@ axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *svc_grp_build
 
         module_ref_node = (axiom_node_t *) 
             axiom_children_qname_iterator_next(module_refs, env);
-        module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node, env);
+        module_ref_element = axiom_node_get_data_element(module_ref_node, env);
         qref = axutil_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = axiom_element_get_attribute(module_ref_element, env,
             qref);

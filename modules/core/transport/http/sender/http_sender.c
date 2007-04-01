@@ -200,7 +200,7 @@ axis2_http_sender_send(
         {
             return AXIS2_FAILURE;
         }
-        data_out = AXIOM_NODE_GET_FIRST_ELEMENT(body_node, env);
+        data_out = axiom_node_get_first_element(body_node, env);
 
 		method = (axutil_property_t *) axis2_msg_ctx_get_property(msg_ctx, env,
             AXIS2_HTTP_METHOD);
@@ -289,7 +289,7 @@ axis2_http_sender_send(
 		}
 		else
 		{
-			AXIOM_NODE_SERIALIZE(data_out, env, sender->om_output);
+			axiom_node_serialize(data_out, env, sender->om_output);
 		}
 
 
@@ -1009,14 +1009,14 @@ axis2_http_sender_get_param_string(
     }
     body_node = axiom_soap_body_get_base_node(
 		axiom_soap_envelope_get_body(soap_env, env), env);
-    data_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+    data_node = axiom_node_get_first_child(body_node, env);
     if (! data_node)
     {
         return NULL;
     }
     param_list = axutil_array_list_create(env, AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);
 
-	data_element = AXIOM_NODE_GET_DATA_ELEMENT(data_node, env);
+	data_element = axiom_node_get_data_element(data_node, env);
 
 	iterator = axiom_element_get_child_elements(data_element, env, data_node);
 
@@ -1030,7 +1030,7 @@ axis2_http_sender_get_param_string(
 			axis2_char_t *encoded_value = NULL;
 	 
 			node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env);
-			element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+			element = axiom_node_get_data_element(node, env);
 			name = axiom_element_get_localname(element, env);
 			value = axiom_element_get_text(element, env, node);
 			if(value){

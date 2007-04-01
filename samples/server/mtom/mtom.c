@@ -44,7 +44,7 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
         return NULL;
     }
 
-    file_name_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
+    file_name_node = axiom_node_get_first_child(node, env);
     if (!file_name_node) /* 'text' node */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
@@ -52,7 +52,7 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
         return NULL;
     }
 
-    file_text_node = AXIOM_NODE_GET_FIRST_CHILD(file_name_node, env);
+    file_text_node = axiom_node_get_first_child(file_name_node, env);
     if (!file_text_node) /* actual text to mtom */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
@@ -60,29 +60,29 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
         return NULL;
     }
 
-    if (AXIOM_NODE_GET_NODE_TYPE(file_text_node, env) == AXIOM_TEXT)
+    if (axiom_node_get_node_type(file_text_node, env) == AXIOM_TEXT)
     {
-        axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(file_text_node, env);
+        axiom_text_t *text = (axiom_text_t *)axiom_node_get_data_element(file_text_node, env);
         if (text && axiom_text_get_value(text , env))
         {
             axiom_node_t *image_node = NULL;
             axis2_char_t *text_str = (axis2_char_t *)axiom_text_get_value(text, env);
             printf("File Name  %s \n", text_str);
 
-            image_node = AXIOM_NODE_GET_NEXT_SIBLING(file_name_node, env);
+            image_node = axiom_node_get_next_sibling(file_name_node, env);
             if (image_node)
             {
                 axiom_node_t *inc_node = NULL;
-                inc_node = AXIOM_NODE_GET_FIRST_CHILD(image_node, env);
+                inc_node = axiom_node_get_first_child(image_node, env);
                 if (inc_node)
                 {
                     axiom_node_t *binary_node = NULL;
-                    binary_node = AXIOM_NODE_GET_FIRST_CHILD(inc_node, env);
+                    binary_node = axiom_node_get_first_child(inc_node, env);
                     if (binary_node)
                     {
                         axiom_data_handler_t *data_handler = NULL;
                         axiom_text_t *bin_text = (axiom_text_t *)
-                                AXIOM_NODE_GET_DATA_ELEMENT(binary_node, env);
+                                axiom_node_get_data_element(binary_node, env);
                         data_handler = axiom_text_get_data_handler(bin_text, env);
                         if (data_handler)
                         {
@@ -94,7 +94,7 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
                     else /* attachment has come by value, as non-optimized binary */
                     {
                         axiom_text_t *bin_text = (axiom_text_t *)
-                                AXIOM_NODE_GET_DATA_ELEMENT(inc_node, env);
+                                axiom_node_get_data_element(inc_node, env);
                         int plain_binary_len = 0;
                         axis2_byte_t *plain_binary = NULL;
                         axiom_data_handler_t *data_handler = NULL;

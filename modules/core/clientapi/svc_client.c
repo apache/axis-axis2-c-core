@@ -478,7 +478,7 @@ axis2_svc_client_remove_all_headers(axis2_svc_client_t *svc_client,
 
         if (node)
         {
-            AXIOM_NODE_FREE_TREE(node, env);
+            axiom_node_free_tree(node, env);
             node = NULL;
         }
     }
@@ -675,7 +675,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
                                 soap_node = axiom_soap_body_get_base_node(soap_body, env);
                                 if (soap_node)
                                 {
-                                    return AXIOM_NODE_GET_FIRST_ELEMENT(soap_node, env);
+                                    return axiom_node_get_first_element(soap_node, env);
                                 }
                             }
                         }
@@ -776,7 +776,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
     {
         return NULL;
     }
-    return AXIOM_NODE_GET_FIRST_ELEMENT(soap_node, env);
+    return axiom_node_get_first_element(soap_node, env);
 }
 
 AXIS2_EXTERN axiom_node_t *AXIS2_CALL
@@ -1225,7 +1225,7 @@ axis2_svc_client_fill_soap_envelope(const axutil_env_t *env,
                     node = axutil_array_list_get(svc_client->headers, env, i);
                     if (node)
                     {
-                        AXIOM_NODE_ADD_CHILD(header_node, env, node);
+                        axiom_node_add_child(header_node, env, node);
                     }
                 }
             }
@@ -1242,7 +1242,7 @@ axis2_svc_client_fill_soap_envelope(const axutil_env_t *env,
             node = axiom_soap_body_get_base_node(soap_body, env);
             if (node)
             {
-                AXIOM_NODE_ADD_CHILD(node, env, (axiom_node_t *)payload);
+                axiom_node_add_child(node, env, (axiom_node_t *)payload);
             }
         }
     }

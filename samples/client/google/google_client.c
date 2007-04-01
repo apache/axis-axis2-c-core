@@ -123,7 +123,7 @@ int main(int argc, char** argv)
         if (soap_fault)
         {
             printf("\nReturned SOAP fault: %s\n", 
-                AXIOM_NODE_TO_STRING(axiom_soap_fault_get_base_node(soap_fault,env), 
+                axiom_node_get_data_element(axiom_soap_fault_get_base_node(soap_fault,env), 
                 env));
         }
         return -1;
@@ -131,26 +131,26 @@ int main(int argc, char** argv)
 
     if (ret_node)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(ret_node, env) == AXIOM_ELEMENT)
         {
             axis2_char_t *result = NULL;
             axiom_element_t *result_ele = NULL;
             axiom_node_t *ret_node1 = NULL;
 
-            result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
+            result_ele = (axiom_element_t*)axiom_node_get_data_element(ret_node, env);
             if (axis2_strcmp(axiom_element_get_localname(result_ele, env), "doSpellingSuggestionResponse") != 0)
             {
                 print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
 
-            ret_node1 = AXIOM_NODE_GET_FIRST_ELEMENT(ret_node, env); /*return*/
+            ret_node1 = axiom_node_get_first_element(ret_node, env); /*return*/
             if (!ret_node1)
             {
                 print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
-            result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node1, env);
+            result_ele = (axiom_element_t*)axiom_node_get_data_element(ret_node1, env);
             result = axiom_element_get_text(result_ele, env, ret_node1);
             printf("\nResult = %s\n", result);
         }
@@ -213,7 +213,7 @@ build_soap_body_content(const axutil_env_t *env,
     axiom_element_add_attribute(text_om_ele, env, attri1, text_om_node);
     axiom_element_set_text(text_om_ele, env, word_to_spell, text_om_node);
 
-    buffer = AXIOM_NODE_TO_STRING(google_om_node, env);
+    buffer = axiom_node_to_string(google_om_node, env);
     printf("%s\n", buffer);
     return google_om_node;
 }
@@ -221,6 +221,6 @@ build_soap_body_content(const axutil_env_t *env,
 void print_invalid_om(const axutil_env_t *env, axiom_node_t *ret_node)
 {
     axis2_char_t *buffer = NULL;
-    buffer = AXIOM_NODE_TO_STRING(ret_node, env);
+    buffer = axiom_node_get_data_element(ret_node, env);
     printf("\nReceived OM as result : %s\n", buffer);
 }

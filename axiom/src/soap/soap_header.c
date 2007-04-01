@@ -104,23 +104,23 @@ axiom_soap_header_create_with_parent(const axutil_env_t *env,
     parent_node = axiom_soap_envelope_get_base_node(envelope, env);
 
     if (!parent_node ||
-            AXIOM_NODE_GET_NODE_TYPE(parent_node, env) != AXIOM_ELEMENT)
+            axiom_node_get_node_type(parent_node, env) != AXIOM_ELEMENT)
     {
         axiom_soap_header_free(soap_header, env);
         return NULL;
     }
 
     parent_ele = (axiom_element_t *)
-            AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
+            axiom_node_get_data_element(parent_node, env);
     if (!parent_ele)
     {
         axiom_soap_header_free(soap_header, env);
         return NULL;
     }
-    if (AXIOM_NODE_GET_FIRST_CHILD(parent_node, env))
+    if (axiom_node_get_first_child(parent_node, env))
     {
-        body_node = AXIOM_NODE_GET_FIRST_CHILD(parent_node, env);
-        AXIOM_NODE_DETACH(body_node, env);
+        body_node = axiom_node_get_first_child(parent_node, env);
+        axiom_node_detach(body_node, env);
     }
 
     parent_ns = axiom_element_get_namespace(parent_ele, env, parent_node);
@@ -137,7 +137,7 @@ axiom_soap_header_create_with_parent(const axutil_env_t *env,
 
     if (body_node)
     {
-        AXIOM_NODE_ADD_CHILD(parent_node, env, body_node);
+        axiom_node_add_child(parent_node, env, body_node);
     }
     return soap_header;
 }
@@ -228,7 +228,7 @@ axiom_soap_header_add_header_block(axiom_soap_header_t* soap_header,
         axiom_node_set_complete(header_block_node, env, AXIS2_TRUE);
 
         hb_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
+                axiom_node_get_data_element(header_block_node, env);
         if (hb_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
@@ -275,7 +275,7 @@ axiom_soap_header_examine_all_header_blocks
     if (!soap_header->om_ele_node)
         return NULL;
 
-    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(soap_header->om_ele_node, env);
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(soap_header->om_ele_node, env);
 
     if (om_ele)
     {
@@ -323,7 +323,7 @@ AXIS2_CALL axiom_soap_header_extract_header_blocks
         return NULL;
 
     header_om_ele = (axiom_element_t*)
-            AXIOM_NODE_GET_DATA_ELEMENT(soap_header->om_ele_node, env);
+            axiom_node_get_data_element(soap_header->om_ele_node, env);
 
     if (header_om_ele)
     {
@@ -350,7 +350,7 @@ axiom_soap_header_set_base_node(axiom_soap_header_t *soap_header,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
@@ -479,7 +479,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
             if (header_block_om_node)
             {
                 header_block_om_ele  = (axiom_element_t *)
-                        AXIOM_NODE_GET_DATA_ELEMENT(header_block_om_node, env);
+                        axiom_node_get_data_element(header_block_om_node, env);
                 if (header_block_om_ele)
                 {
                     ns = axiom_element_get_namespace(header_block_om_ele, env,
@@ -560,12 +560,12 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *soap_header,
             {
                 axutil_qname_t *element_qname = NULL;
 
-                ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+                ele = (axiom_element_t*)axiom_node_get_data_element(node, env);
                 element_qname = axiom_element_get_qname(ele, env, node);
                 if (axiom_soap_header_qname_matches(env, element_qname, qname) == AXIS2_TRUE)
                 {
-                    AXIOM_NODE_DETACH(node, env);
-                    AXIOM_NODE_FREE_TREE(node, env);
+                    axiom_node_detach(node, env);
+                    axiom_node_free_tree(node, env);
                     axutil_hash_set(soap_header->header_blocks, key, AXIS2_HASH_KEY_STRING,
                             NULL);
                     axiom_soap_header_block_free(header_block, env);

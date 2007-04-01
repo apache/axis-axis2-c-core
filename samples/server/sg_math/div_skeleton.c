@@ -95,10 +95,10 @@ div_invoke(axis2_svc_skeleton_t *svc_skeleton,
      */
     if (node)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(node, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(node, env) == AXIOM_ELEMENT)
         {
             axiom_element_t *element = NULL;
-            element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+            element = (axiom_element_t *)axiom_node_get_data_element(node, env);
             if (element)
             {
                 axis2_char_t *op_name = axiom_element_get_localname(element, env);

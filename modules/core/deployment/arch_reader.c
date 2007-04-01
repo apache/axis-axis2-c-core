@@ -156,7 +156,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 
     if (svcs)
     {
-        svcs_element = AXIOM_NODE_GET_DATA_ELEMENT(svcs, env);
+        svcs_element = axiom_node_get_data_element(svcs, env);
         if (svcs_element)
         {
             root_element_name = axiom_element_get_localname(svcs_element, env);

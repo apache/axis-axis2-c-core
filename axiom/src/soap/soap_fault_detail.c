@@ -70,7 +70,7 @@ axiom_soap_fault_detail_create_with_parent
     if (!parent_node)
         return NULL;
 
-    parent_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+    parent_ele  = (axiom_element_t *)axiom_node_get_data_element(
         parent_node, env);
     if (!parent_ele)
         return NULL;
@@ -113,14 +113,14 @@ axiom_soap_fault_detail_add_detail_entry
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error,
             AXIS2_ERROR_OM_ELEMENT_EXPECTED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
-    AXIOM_NODE_ADD_CHILD(fault_detail->om_ele_node, env, node);
+    axiom_node_add_child(fault_detail->om_ele_node, env, node);
     return AXIS2_SUCCESS;
 }
 
@@ -133,7 +133,7 @@ axiom_soap_fault_detail_get_all_detail_entries
     if (fault_detail->om_ele_node)
     {
         om_ele = (axiom_element_t *)
-            AXIOM_NODE_GET_DATA_ELEMENT(fault_detail->om_ele_node, env);
+            axiom_node_get_data_element(fault_detail->om_ele_node, env);
         return axiom_element_get_children(om_ele,  env,
             fault_detail->om_ele_node);
     }
@@ -150,7 +150,7 @@ axiom_soap_fault_detail_set_base_node
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;

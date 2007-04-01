@@ -95,7 +95,7 @@ axiom_soap_fault_text_create_with_parent(const axutil_env_t *env,
     }
 
     parent_ele  = (axiom_element_t*)
-            AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
+            axiom_node_get_data_element(parent_node, env);
     if (!parent_ele)
     {
         axiom_soap_fault_text_free(fault_text, env);
@@ -177,7 +177,7 @@ axiom_soap_fault_text_set_lang(axiom_soap_fault_text_t *fault_text,
     if (!fault_text->om_ele_node)
         return AXIS2_FAILURE;
 
-    om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(fault_text->om_ele_node, env);
+    om_ele = (axiom_element_t*)axiom_node_get_data_element(fault_text->om_ele_node, env);
     if (!om_ele)
         return AXIS2_FAILURE;
 
@@ -206,7 +206,7 @@ axiom_soap_fault_text_get_lang(axiom_soap_fault_text_t *fault_text,
         return NULL;
 
     om_ele = (axiom_element_t*)
-            AXIOM_NODE_GET_DATA_ELEMENT(fault_text->om_ele_node, env);
+            axiom_node_get_data_element(fault_text->om_ele_node, env);
     if (!om_ele)
         return NULL;
 
@@ -239,7 +239,7 @@ axiom_soap_fault_text_set_base_node(axiom_soap_fault_text_t *fault_text,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
@@ -270,7 +270,7 @@ axiom_soap_fault_text_set_text(axiom_soap_fault_text_t *fault_text,
     {
         axiom_element_t *text_ele = NULL;
         text_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(fault_text->om_ele_node, env);
+                axiom_node_get_data_element(fault_text->om_ele_node, env);
         if (text_ele)
         {
             axiom_element_set_text(text_ele, env, value, fault_text->om_ele_node);
@@ -295,7 +295,7 @@ axiom_soap_fault_text_get_text(axiom_soap_fault_text_t *fault_text,
     {
         axiom_element_t *text_ele = NULL;
         text_ele = (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT(fault_text->om_ele_node, env);
+                axiom_node_get_data_element(fault_text->om_ele_node, env);
         if (text_ele)
         {
             text = axiom_element_get_text(text_ele, env,

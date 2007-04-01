@@ -81,7 +81,7 @@ axutil_log_in_handler_invoke(struct axis2_handler *handler,
         if(ret_node)
         {
             axis2_char_t *om_str = NULL;
-            om_str = AXIOM_NODE_TO_STRING(ret_node, env);
+            om_str = axiom_node_to_string(ret_node, env);
             if(om_str)
             {
                 AXIS2_LOG_INFO(env->log, "Input msg: %s", om_str);

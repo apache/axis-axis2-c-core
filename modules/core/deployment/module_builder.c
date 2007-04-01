@@ -132,7 +132,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     module_node = axis2_desc_builder_build_om(module_builder->desc_builder, env);
-    module_element = AXIOM_NODE_GET_DATA_ELEMENT(module_node, env);
+    module_element = axiom_node_get_data_element(module_node, env);
     if (!module_element)
     {
         return AXIS2_FAILURE;
@@ -370,7 +370,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
 
         op_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(op_itr, env);
-        op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
+        op_element = axiom_node_get_data_element(op_node, env);
         /* getting operation name */
         qattname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         op_name_att = axiom_element_get_attribute(op_element, env, qattname);

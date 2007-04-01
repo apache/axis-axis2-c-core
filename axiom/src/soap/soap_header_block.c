@@ -287,14 +287,14 @@ axiom_soap_header_block_set_attribute
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, attr_name, AXIS2_FAILURE);
 
-    header_node = AXIOM_NODE_GET_PARENT(header_block->om_ele_node, env);
+    header_node = axiom_node_get_parent(header_block->om_ele_node, env);
     if (!header_node)
     {
         return AXIS2_FAILURE;
     }
-    if (AXIOM_NODE_GET_NODE_TYPE(header_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(header_node, env) == AXIOM_ELEMENT)
     {
-        header_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_node, env);
+        header_ele = (axiom_element_t*)axiom_node_get_data_element(header_node, env);
         if (!header_ele)
         {
             return AXIS2_FAILURE;
@@ -314,7 +314,7 @@ axiom_soap_header_block_set_attribute
         return AXIS2_FAILURE;
 
 
-    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(
                 header_block->om_ele_node, env);
 
     om_attr = axiom_element_get_attribute(om_ele, env, qn);
@@ -363,14 +363,14 @@ axiom_soap_header_block_get_attribute
     AXIS2_PARAM_CHECK(env->error, attr_name, NULL);
     AXIS2_PARAM_CHECK(env->error, soap_envelope_namespace_uri, NULL);
 
-    header_node = AXIOM_NODE_GET_PARENT(header_block->om_ele_node, env);
+    header_node = axiom_node_get_parent(header_block->om_ele_node, env);
     if (!header_node)
     {
         return NULL;
     }
-    if (AXIOM_NODE_GET_NODE_TYPE(header_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(header_node, env) == AXIOM_ELEMENT)
     {
-        header_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_node, env);
+        header_ele = (axiom_element_t*)axiom_node_get_data_element(header_node, env);
         if (!header_ele)
         {
             return NULL;
@@ -383,7 +383,7 @@ axiom_soap_header_block_get_attribute
     qn = axutil_qname_create(env, attr_name, soap_envelope_namespace_uri, prefix);
     if (!qn)
         return NULL;
-    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(
                 header_block->om_ele_node, env);
     om_attr = axiom_element_get_attribute(om_ele, env, qn);
     if (om_attr)
@@ -419,7 +419,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axiom_soap_header_block_set_base_node
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;

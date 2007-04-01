@@ -103,7 +103,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_element_node, AXIS2_FAILURE);
 
-    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(om_element_node, env);
+    om_ele = (axiom_element_t *)axiom_node_get_data_element(om_element_node, env);
 
     ele_localname = axiom_element_get_localname(om_ele, env);
     if (!ele_localname)
@@ -168,7 +168,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             if (!fault_value_node)
                 return AXIS2_FAILURE;
 
-            fault_value_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+            fault_value_ele = (axiom_element_t *)axiom_node_get_data_element(
                         fault_value_node, env);
 
             axiom_stax_builder_set_lastnode(builder_helper->om_builder,
@@ -278,10 +278,10 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
         axiom_element_t *parent_element = NULL;
         axis2_char_t *parent_localname = NULL;
 
-        parent_node = AXIOM_NODE_GET_PARENT(om_element_node, env);
+        parent_node = axiom_node_get_parent(om_element_node, env);
         if (!parent_node)
             return AXIS2_FAILURE;
-        parent_element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+        parent_element = (axiom_element_t *)axiom_node_get_data_element(
                     om_element_node, env);
         parent_localname = axiom_element_get_localname(parent_element, env);
 

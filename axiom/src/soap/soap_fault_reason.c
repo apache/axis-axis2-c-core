@@ -82,7 +82,7 @@ axiom_soap_fault_reason_create_with_parent(const axutil_env_t *env,
     {
         return NULL;
     }
-    parent_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+    parent_ele  = (axiom_element_t *)axiom_node_get_data_element(
                 parent_node, env);
     if (!parent_ele)
     {
@@ -166,9 +166,9 @@ axiom_soap_fault_reason_get_soap_fault_text
     {
 
         if (fault_reason->soap_builder &&
-                !(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
+                !(axiom_node_is_complete(fault_reason->om_ele_node, env)))
         {
-            while (!(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
+            while (!(axiom_node_is_complete(fault_reason->om_ele_node, env)))
             {
                 status = axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)
@@ -211,7 +211,7 @@ axiom_soap_fault_reason_set_base_node
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
 
-    if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(node, env) != AXIOM_ELEMENT)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
@@ -251,9 +251,9 @@ axiom_soap_fault_reason_get_all_soap_fault_texts
 
     if (!(fault_reason->fault_texts) && (fault_reason->soap_builder))
     {
-        if (!(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
+        if (!(axiom_node_is_complete(fault_reason->om_ele_node, env)))
         {
-            while (!(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
+            while (!(axiom_node_is_complete(fault_reason->om_ele_node, env)))
             {
                 status = axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)
@@ -274,9 +274,9 @@ axiom_soap_fault_reason_get_first_soap_fault_text
 
     if (!(fault_reason->fault_texts) && (fault_reason->soap_builder))
     {
-        if (!(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
+        if (!(axiom_node_is_complete(fault_reason->om_ele_node, env)))
         {
-            while (!(AXIOM_NODE_IS_COMPLETE(fault_reason->om_ele_node, env)))
+            while (!(axiom_node_is_complete(fault_reason->om_ele_node, env)))
             {
                 status = axiom_soap_builder_next(fault_reason->soap_builder, env);
                 if (status == AXIS2_FAILURE)

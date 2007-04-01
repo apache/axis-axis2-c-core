@@ -75,9 +75,9 @@ axiom_data_source_create(const axutil_env_t *env,
         return NULL;
     }
     
-    if (parent && AXIOM_NODE_GET_NODE_TYPE(parent, env) == AXIOM_ELEMENT)
+    if (parent && axiom_node_get_node_type(parent, env) == AXIOM_ELEMENT)
     {
-        AXIOM_NODE_ADD_CHILD(parent, env, (*node));
+        axiom_node_add_child(parent, env, (*node));
     }
 
     return data_source;

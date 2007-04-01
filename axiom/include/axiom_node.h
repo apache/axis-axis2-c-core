@@ -96,7 +96,7 @@ extern "C"
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
     AXIS2_EXTERN void AXIS2_CALL
-    axiom_node_free(axiom_node_t *om_node,
+    axiom_node_free_tree(axiom_node_t *om_node,
             const axutil_env_t *env);
     /**
     * Adds given node as child to parent. child should not have a parent
@@ -273,41 +273,6 @@ extern "C"
         const axutil_env_t *env,
         struct axiom_output *om_output);
 
-#define AXIOM_NODE_FREE_TREE(om_node,env) \
-        axiom_node_free(om_node,env)
-#define AXIOM_NODE_ADD_CHILD(om_node, env, child) \
-        axiom_node_add_child(om_node, env, child)
-#define AXIOM_NODE_DETACH(om_node,env) \
-        axiom_node_detach(om_node,env)
-#define AXIOM_NODE_INSERT_SIBLING_AFTER(om_node,env,node_to_insert) \
-        axiom_node_insert_sibling_after(om_node,env,node_to_insert)
-#define AXIOM_NODE_INSERT_SIBLING_BEFORE(om_node,env,node_to_insert) \
-        axiom_node_insert_sibling_before(om_node,env,node_to_insert)
-#define AXIOM_NODE_SERIALIZE(om_node,env, om_output) \
-        axiom_node_serialize(om_node,env,om_output)
-#define AXIOM_NODE_GET_PARENT(om_node,env) \
-        axiom_node_get_parent(om_node,env)
-#define AXIOM_NODE_GET_FIRST_CHILD(om_node,env) \
-        axiom_node_get_first_child(om_node,env)
-#define AXIOM_NODE_GET_LAST_CHILD(om_node,env) \
-        axiom_node_get_last_child(om_node,env)
-#define AXIOM_NODE_GET_NEXT_SIBLING(om_node,env) \
-        axiom_node_get_next_sibling(om_node,env)
-#define AXIOM_NODE_GET_PREVIOUS_SIBLING(om_node,env) \
-        axiom_node_get_previous_sibling(om_node,env)
-#define AXIOM_NODE_GET_FIRST_ELEMENT(om_node,env) \
-        axiom_node_get_first_element(om_node,env)
-#define AXIOM_NODE_IS_COMPLETE(om_node,env) \
-        axiom_node_is_complete(om_node,env)
-#define AXIOM_NODE_GET_DATA_ELEMENT(om_node,env) \
-        axiom_node_get_data_element(om_node,env)
-#define AXIOM_NODE_GET_NODE_TYPE(om_node,env) \
-        axiom_node_get_node_type(om_node,env)
-#define AXIOM_NODE_GET_DOCUMENT(om_node, env) \
-        axiom_node_get_document(om_node, env)
-
-#define AXIOM_NODE_TO_STRING(om_node, env) \
-        axiom_node_to_string(om_node, env)
     /** @} */
 
 #ifdef __cplusplus

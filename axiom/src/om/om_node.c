@@ -83,7 +83,7 @@ axiom_node_create(const axutil_env_t *env)
  *  before calling this function
 */
 AXIS2_EXTERN void AXIS2_CALL
-axiom_node_free(axiom_node_t *om_node,
+axiom_node_free_tree(axiom_node_t *om_node,
     const axutil_env_t *env)
 {
     axiom_node_t *child_node = NULL;
@@ -97,10 +97,10 @@ axiom_node_free(axiom_node_t *om_node,
     {
         while ((om_node->first_child))
         {
-            child_node = AXIOM_NODE_DETACH(om_node->first_child, env);
+            child_node = axiom_node_detach(om_node->first_child, env);
             if (child_node)
             {
-                AXIOM_NODE_FREE_TREE(child_node , env);
+                axiom_node_free_tree(child_node , env);
             }
         }
     }
@@ -154,7 +154,7 @@ axiom_node_add_child(axiom_node_t *om_node,
 
     if (child->parent)
     {
-        child = AXIOM_NODE_DETACH(child, env);
+        child = axiom_node_detach(child, env);
     }
 
     if (!(om_node->first_child))
@@ -457,7 +457,7 @@ axiom_node_serialize(axiom_node_t *om_node,
                 }
             }
             
-            temp_node = AXIOM_NODE_GET_NEXT_SIBLING(om_node, env);
+            temp_node = axiom_node_get_next_sibling(om_node, env);
             if (temp_node)
             {
                 om_node = temp_node;
@@ -482,7 +482,7 @@ axiom_node_serialize(axiom_node_t *om_node,
                         }
                     }
 
-                    temp_node = AXIOM_NODE_GET_NEXT_SIBLING(om_node, env);
+                    temp_node = axiom_node_get_next_sibling(om_node, env);
                 }
                
                 if (temp_node && count > 1)
@@ -659,7 +659,7 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
                 }
             }
             
-            temp_node = AXIOM_NODE_GET_NEXT_SIBLING(om_node, env);
+            temp_node = axiom_node_get_next_sibling(om_node, env);
             if (temp_node)
             {
                 om_node = temp_node;
@@ -684,7 +684,7 @@ axiom_node_serialize_sub_tree(axiom_node_t *om_node,
                         }
                     }
 
-                    temp_node = AXIOM_NODE_GET_NEXT_SIBLING(om_node, env);
+                    temp_node = axiom_node_get_next_sibling(om_node, env);
                 }
                
                 if (temp_node && count > 1)
@@ -759,9 +759,9 @@ axiom_node_get_first_element(axiom_node_t *om_node,
     /**********************************************************/
     first_element = om_node->first_child;
 
-    while (first_element && (AXIOM_NODE_GET_NODE_TYPE(first_element, env) != AXIOM_ELEMENT))
+    while (first_element && (axiom_node_get_node_type(first_element, env) != AXIOM_ELEMENT))
     {
-        first_element = AXIOM_NODE_GET_NEXT_SIBLING (first_element, env);
+        first_element = axiom_node_get_next_sibling (first_element, env);
     }
 
     return first_element;
@@ -792,7 +792,7 @@ axiom_node_get_next_sibling(axiom_node_t *om_node,
     }
 
     while (!(om_node->next_sibling) && om_node->parent &&
-        om_node->builder && !(AXIOM_NODE_IS_COMPLETE(om_node->parent, env)))
+        om_node->builder && !(axiom_node_is_complete(om_node->parent, env)))
     {
         token = axiom_stax_builder_next_with_token(om_node->builder, env);
         if (token == -1)
@@ -1008,7 +1008,7 @@ axiom_node_to_string(axiom_node_t *om_node,
         AXIOM_XML_WRITER_FREE(xml_writer, env);
         return NULL;
     }
-    status = AXIOM_NODE_SERIALIZE(om_node, env, om_output);
+    status = axiom_node_serialize(om_node, env, om_output);
     if (status == AXIS2_SUCCESS)
     {
         xml = axis2_strdup(env, (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env));

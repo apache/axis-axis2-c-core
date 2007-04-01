@@ -279,7 +279,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     }
     /* Setting Handler name */
     attr_qname = axutil_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-    handler_element = AXIOM_NODE_GET_DATA_ELEMENT(handler_node, env);
+    handler_element = axiom_node_get_data_element(handler_node, env);
     name_attrib = axiom_element_get_attribute(handler_element, env,
         attr_qname);
     if (attr_qname)
@@ -548,7 +548,7 @@ set_attrs_and_value(axutil_param_t *param,
             axis2_char_t *pname = NULL;
 
             node = AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(childs, env);
-            element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+            element = axiom_node_get_data_element(node, env);
             param = axutil_param_create(env, NULL, NULL);
             pname = axiom_element_get_localname(element, env);
             status = axutil_param_set_name(param, env, pname);
@@ -604,7 +604,7 @@ axis2_desc_builder_process_action_mappings(axis2_desc_builder_t *desc_builder,
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
-    op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
+    op_element = axiom_node_get_data_element(op_node, env);
     qname = axutil_qname_create(env, AXIS2_ACTION_MAPPING, NULL, NULL);
     if(op_element)
     {
@@ -635,7 +635,7 @@ axis2_desc_builder_process_action_mappings(axis2_desc_builder_t *desc_builder,
          */
         mapping_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(action_mappings, env);
-        mapping_element = AXIOM_NODE_GET_DATA_ELEMENT(mapping_node, env);
+        mapping_element = axiom_node_get_data_element(mapping_node, env);
         temp_str = axiom_element_get_text(mapping_element, env, 
             mapping_node);
         input_action_string = axis2_strtrim(env, temp_str, NULL);
@@ -686,7 +686,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
          */
         param_node = (axiom_node_t *)
             axiom_children_qname_iterator_next(params, env);
-        param_element = AXIOM_NODE_GET_DATA_ELEMENT(param_node, env);
+        param_element = axiom_node_get_data_element(param_node, env);
         param = axutil_param_create(env, NULL, NULL);
         /* TODO Setting param_element. Do not set element like following.
          * break it and set 

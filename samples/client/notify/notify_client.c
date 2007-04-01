@@ -133,7 +133,7 @@ build_om_programatically(const axutil_env_t *env)
     notify_om_ele = axiom_element_create(env, NULL, "notify", ns1, &notify_om_node);
     axiom_element_set_text(notify_om_ele, env, "notify5", notify_om_node);
 
-    buffer = AXIOM_NODE_TO_STRING(notify_om_node, env);
+    buffer = axiom_node_to_string(notify_om_node, env);
     if (buffer)
     {
         printf("\nSending OM node in XML : %s \n",  buffer);

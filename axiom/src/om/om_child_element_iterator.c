@@ -79,8 +79,8 @@ axiom_child_element_iterator_remove
 
     if (!(iterator->last_child))
         return AXIS2_FAILURE;
-    last_child = AXIOM_NODE_DETACH(iterator->last_child, env);
-    AXIOM_NODE_FREE_TREE(last_child, env);
+    last_child = axiom_node_detach(iterator->last_child, env);
+    axiom_node_free_tree(last_child, env);
     return AXIS2_SUCCESS;
 }
 
@@ -108,12 +108,12 @@ axiom_child_element_iterator_next
         iterator->last_child = iterator->current_child;
         do
         {
-            iterator->current_child = AXIOM_NODE_GET_NEXT_SIBLING(
+            iterator->current_child = axiom_node_get_next_sibling(
                         iterator->current_child, env);
 
         }
         while (iterator->current_child &&
-                (AXIOM_NODE_GET_NODE_TYPE(iterator->current_child, env)
+                (axiom_node_get_node_type(iterator->current_child, env)
                         != AXIOM_ELEMENT));
 
 

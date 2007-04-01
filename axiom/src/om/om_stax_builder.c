@@ -128,7 +128,7 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
             if (axis2_strcmp(uri, "") != 0)
             {
                 axiom_element_t *om_ele = NULL;
-                om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(element_node, env);
+                om_ele = (axiom_element_t*)axiom_node_get_data_element(element_node, env);
                 if (om_ele)
                 {
                     ns = axiom_element_find_namespace(om_ele ,
@@ -161,7 +161,7 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
                 return AXIS2_FAILURE;
             }
 
-            temp_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(element_node, env);
+            temp_ele = (axiom_element_t*)axiom_node_get_data_element(element_node, env);
             if (temp_ele)
             {
                 status = axiom_element_add_attribute(temp_ele,
@@ -215,10 +215,10 @@ axiom_stax_builder_create_om_text(axiom_stax_builder_t * om_builder,
 
 	temp_value_str = axutil_string_create_assume_ownership(env, &temp_value);
 
-    if (AXIOM_NODE_IS_COMPLETE(om_builder->lastnode, env))
+    if (axiom_node_is_complete(om_builder->lastnode, env))
     {
         axiom_text_create_str(env,
-            AXIOM_NODE_GET_PARENT(om_builder->lastnode, env),
+            axiom_node_get_parent(om_builder->lastnode, env),
             temp_value_str, &node);
 
     }
@@ -247,7 +247,7 @@ axiom_stax_builder_discard_current_element(axiom_stax_builder_t *om_builder,
 
     element = om_builder->lastnode;
 
-    if (AXIOM_NODE_IS_COMPLETE(element, env) || !(om_builder->cache))
+    if (axiom_node_is_complete(element, env) || !(om_builder->cache))
     {
         AXIS2_ERROR_SET(env->error,
             AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD, AXIS2_FAILURE);
@@ -260,20 +260,20 @@ axiom_stax_builder_discard_current_element(axiom_stax_builder_t *om_builder,
         while (AXIOM_XML_READER_NEXT(om_builder->parser, env)
             != AXIOM_XML_READER_END_ELEMENT);
     }
-    while (!(AXIOM_NODE_IS_COMPLETE(element, env)));
+    while (!(axiom_node_is_complete(element, env)));
 
     /*All children of this element is pulled now */
 
-    prev_node = AXIOM_NODE_GET_PREVIOUS_SIBLING(element, env);
+    prev_node = axiom_node_get_previous_sibling(element, env);
     if (prev_node)
     {
-        AXIOM_NODE_FREE_TREE(AXIOM_NODE_GET_NEXT_SIBLING(prev_node, env), env);
+        axiom_node_free_tree(axiom_node_get_next_sibling(prev_node, env), env);
         axiom_node_set_next_sibling(prev_node, env, NULL);
     }
     else
     {
-        parent = AXIOM_NODE_GET_PARENT(element, env);
-        AXIOM_NODE_FREE_TREE(AXIOM_NODE_GET_FIRST_CHILD(parent, env), env);
+        parent = axiom_node_get_parent(element, env);
+        axiom_node_free_tree(axiom_node_get_first_child(parent, env), env);
         axiom_node_set_first_child(parent, env, NULL);
         om_builder->lastnode = parent;
     }
@@ -321,7 +321,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
             /** !temp_ns_prefix is for guththila */
             axiom_element_t *om_ele = NULL;
             temp_ns_prefix_str = axutil_string_create(env, "");
-            om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+            om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
 
             om_ns = axiom_namespace_create_str(env, temp_ns_uri_str, temp_ns_prefix_str);
             if (!om_ns || !om_ele)
@@ -341,7 +341,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
         {
             axiom_element_t *om_ele = NULL;
             axis2_char_t *prefix = NULL;
-            om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+            om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
 
             om_ns = axiom_namespace_create_str(env, temp_ns_uri_str, temp_ns_prefix_str);
             if (!om_ns || !om_ele)
@@ -373,7 +373,7 @@ axiom_stax_builder_process_namespaces(axiom_stax_builder_t *om_builder,
         if (om_ns)
         {
             axiom_element_t *om_ele = NULL;
-            om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+            om_ele = (axiom_element_t *)axiom_node_get_data_element(node, env);
             if (om_ele)
             {
                 axiom_element_set_namespace_assume_param_ownership(om_ele, env, om_ns);
@@ -437,10 +437,10 @@ axiom_stax_builder_create_om_element(axiom_stax_builder_t *om_builder,
                 env, element_node);
         }
     }
-    else if (AXIOM_NODE_IS_COMPLETE(om_builder->lastnode, env))
+    else if (axiom_node_is_complete(om_builder->lastnode, env))
     {
         om_ele = axiom_element_create_str(env,
-            AXIOM_NODE_GET_PARENT(om_builder->lastnode, env),
+            axiom_node_get_parent(om_builder->lastnode, env),
             temp_localname_str, NULL, &element_node);
         if (!om_ele)
         {
@@ -507,10 +507,10 @@ axiom_stax_builder_create_om_comment(axiom_stax_builder_t *om_builder,
         AXIOM_XML_READER_XML_FREE(om_builder->parser , env, comment_value);
         return NULL;
     }
-    else if (AXIOM_NODE_IS_COMPLETE(om_builder->lastnode, env))
+    else if (axiom_node_is_complete(om_builder->lastnode, env))
     {
         axiom_comment_create(env,
-            AXIOM_NODE_GET_PARENT(om_builder->lastnode, env),
+            axiom_node_get_parent(om_builder->lastnode, env),
             comment_value , &comment_node);
 
         axiom_node_set_next_sibling(om_builder->lastnode, env, comment_node);
@@ -590,11 +590,11 @@ axiom_stax_builder_create_om_processing_instruction(axiom_stax_builder_t *om_bui
         AXIOM_XML_READER_XML_FREE(om_builder->parser , env, value);
         return NULL;
     }
-    else if (AXIOM_NODE_IS_COMPLETE(om_builder->lastnode, env) ||
-        (AXIOM_NODE_GET_NODE_TYPE(om_builder->lastnode, env) == AXIOM_TEXT))
+    else if (axiom_node_is_complete(om_builder->lastnode, env) ||
+        (axiom_node_get_node_type(om_builder->lastnode, env) == AXIOM_TEXT))
     {
         axiom_processing_instruction_create(env,
-            AXIOM_NODE_GET_PARENT(om_builder->lastnode, env),
+            axiom_node_get_parent(om_builder->lastnode, env),
             target, value, &pi_node);
 
         axiom_node_set_next_sibling(om_builder->lastnode, env, pi_node);
@@ -633,9 +633,9 @@ axiom_stax_builder_end_element(axiom_stax_builder_t *om_builder,
 
     if (om_builder->lastnode)
     {
-        if (AXIOM_NODE_IS_COMPLETE((om_builder->lastnode), env))
+        if (axiom_node_is_complete((om_builder->lastnode), env))
         {
-            parent = AXIOM_NODE_GET_PARENT((om_builder->lastnode), env);
+            parent = axiom_node_get_parent((om_builder->lastnode), env);
             if (parent)
             {
                 axiom_node_set_complete(parent, env, AXIS2_TRUE);
@@ -649,7 +649,7 @@ axiom_stax_builder_end_element(axiom_stax_builder_t *om_builder,
     }
     if (om_builder->root_node)
     {
-        if (AXIOM_NODE_IS_COMPLETE(om_builder->root_node , env))
+        if (axiom_node_is_complete(om_builder->root_node , env))
         {
             om_builder->done = AXIS2_TRUE;
         }
@@ -780,7 +780,7 @@ axiom_stax_builder_free(axiom_stax_builder_t *om_builder,
     {
         if (om_builder->root_node)
         {
-            AXIOM_NODE_FREE_TREE(om_builder->root_node, env);
+            axiom_node_free_tree(om_builder->root_node, env);
             om_builder->root_node = NULL;
         }
     }

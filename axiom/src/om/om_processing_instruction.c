@@ -94,7 +94,7 @@ axiom_processing_instruction_create(const axutil_env_t *env,
     axiom_node_set_node_type(*node, env, AXIOM_PROCESSING_INSTRUCTION);
     if (parent)
     {
-        AXIOM_NODE_ADD_CHILD(parent, env, (*node));
+        axiom_node_add_child(parent, env, (*node));
     }
 
     return processing_instruction;

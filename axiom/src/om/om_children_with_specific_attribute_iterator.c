@@ -105,10 +105,10 @@ axiom_children_with_specific_attribute_iterator_remove(
 
     if (!(iterator->last_child))
         return AXIS2_FAILURE;
-    last_child = AXIOM_NODE_DETACH(iterator->last_child, env);
+    last_child = axiom_node_detach(iterator->last_child, env);
     if (last_child)
     {
-        AXIOM_NODE_FREE_TREE(last_child, env);
+        axiom_node_free_tree(last_child, env);
         last_child = NULL;
     }
     return AXIS2_SUCCESS;
@@ -129,12 +129,12 @@ axiom_children_with_specific_attribute_iterator_has_next(
     }
     while (need_to_move_forward)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(iterator->current_child, env)
+        if (axiom_node_get_node_type(iterator->current_child, env)
                 == AXIOM_ELEMENT)
         {
             axiom_attribute_t *om_attr = NULL;
             axiom_element_t *om_ele = NULL;
-            om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
+            om_ele = (axiom_element_t *)axiom_node_get_data_element(
                         iterator->current_child, env);
             om_attr = axiom_element_get_attribute(om_ele, env,
                     iterator->attr_qname);
@@ -149,7 +149,7 @@ axiom_children_with_specific_attribute_iterator_has_next(
             else
             {
                 iterator->current_child =
-                    AXIOM_NODE_GET_NEXT_SIBLING(
+                    axiom_node_get_next_sibling(
                         iterator->current_child, env);
                 need_to_move_forward = (iterator->current_child != NULL);
 
@@ -159,7 +159,7 @@ axiom_children_with_specific_attribute_iterator_has_next(
         {
 
             iterator->current_child =
-                AXIOM_NODE_GET_NEXT_SIBLING(
+                axiom_node_get_next_sibling(
                     iterator->current_child, env);
             need_to_move_forward = (iterator->current_child != NULL);
         }
@@ -179,14 +179,14 @@ axiom_children_with_specific_attribute_iterator_next(
     iterator->next_called = AXIS2_TRUE;
     iterator->remove_called = AXIS2_FALSE;
     iterator->last_child = iterator->current_child;
-    iterator->current_child = AXIOM_NODE_GET_NEXT_SIBLING(
+    iterator->current_child = axiom_node_get_next_sibling(
                 iterator->current_child, env);
     if (iterator->last_child && iterator->detach
-            && (AXIOM_NODE_GET_PARENT(iterator->last_child, env)))
+            && (axiom_node_get_parent(iterator->last_child, env)))
     {
-        last_child = AXIOM_NODE_DETACH(iterator->last_child, env);
+        last_child = axiom_node_detach(iterator->last_child, env);
         if (last_child)
-            AXIOM_NODE_FREE_TREE(last_child, env);
+            axiom_node_free_tree(last_child, env);
     }
     return iterator->last_child;
 }

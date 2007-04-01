@@ -147,12 +147,12 @@ void
 format_output (const axutil_env_t *env, axiom_node_t *node)
 {
 	axiom_node_t *child_node;
-	child_node = AXIOM_NODE_GET_FIRST_CHILD (node, env);
-	while (AXIOM_NODE_IS_COMPLETE (node, env) && child_node)
+	child_node = axiom_node_get_first_child (node, env);
+	while (axiom_node_is_complete (node, env) && child_node)
 	{
 		printf ("\n\n");
 		format_output_one (env, child_node);
-		child_node = AXIOM_NODE_GET_NEXT_SIBLING (child_node, env);
+		child_node = axiom_node_get_next_sibling (child_node, env);
 	}
 
 
@@ -162,16 +162,16 @@ void
 format_output_one (const axutil_env_t *env, axiom_node_t *node)
 {
 	axiom_node_t *child_node;
-	child_node = AXIOM_NODE_GET_FIRST_CHILD (node, env);
-	while (AXIOM_NODE_IS_COMPLETE (node, env) && child_node)
+	child_node = axiom_node_get_first_child (node, env);
+	while (axiom_node_is_complete (node, env) && child_node)
 	{
-        axis2_char_t *om_str = AXIOM_NODE_TO_STRING (child_node, env);
+        axis2_char_t *om_str = axiom_node_to_string(child_node, env);
         if (om_str) 
         {
     		printf ("\t%s\n", om_str);
             AXIS2_FREE(env->allocator, om_str);
         }
-		child_node = AXIOM_NODE_GET_NEXT_SIBLING (child_node, env);
+		child_node = axiom_node_get_next_sibling (child_node, env);
 	}
 }
 
