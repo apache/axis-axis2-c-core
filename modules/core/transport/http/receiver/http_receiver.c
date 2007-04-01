@@ -83,6 +83,16 @@ axis2_http_server_free(
     axis2_transport_receiver_t *server,
     const axutil_env_t *env);
 
+static const axis2_transport_receiver_ops_t http_transport_receiver_ops_var = {
+    axis2_http_server_init,
+    axis2_http_server_start,
+    axis2_http_server_get_reply_to_epr,
+    axis2_http_server_get_conf_ctx,
+    axis2_http_server_is_running,
+    axis2_http_server_stop,
+    axis2_http_server_free
+};
+
 AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
 axis2_http_server_create(
     const axutil_env_t *env,
@@ -106,14 +116,8 @@ axis2_http_server_create(
     server_impl->conf_ctx_private = NULL;
     server_impl->port = port;
 
-    server_impl->http_server.ops = AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_transport_receiver_ops_t));
-    if (! server_impl->http_server.ops)
-    {
-        axis2_http_server_free((axis2_transport_receiver_t *) server_impl, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
+    server_impl->http_server.ops = &http_transport_receiver_ops_var;
+    
     if (repo)
     {
         /**
@@ -130,14 +134,6 @@ axis2_http_server_create(
         }
         server_impl->conf_ctx = server_impl->conf_ctx_private;
     }
-    server_impl->http_server.ops->init = axis2_http_server_init;
-    server_impl->http_server.ops->start = axis2_http_server_start;
-    server_impl->http_server.ops->stop = axis2_http_server_stop;
-    server_impl->http_server.ops->get_reply_to_epr =
-        axis2_http_server_get_reply_to_epr;
-    server_impl->http_server.ops->get_conf_ctx = axis2_http_server_get_conf_ctx;
-    server_impl->http_server.ops->is_running = axis2_http_server_is_running;
-    server_impl->http_server.ops->free = axis2_http_server_free;
 
     return &(server_impl->http_server);
 }
@@ -167,10 +163,6 @@ axis2_http_server_free(
      */
     server_impl->conf_ctx = NULL;
 
-    if (server->ops)
-    {
-        AXIS2_FREE(env->allocator, server->ops);
-    }
     AXIS2_FREE(env->allocator, server_impl);
     return;
 }
