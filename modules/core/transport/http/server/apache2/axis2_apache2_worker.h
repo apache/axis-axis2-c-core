@@ -46,47 +46,27 @@ extern "C"
 #endif
 
 
-    typedef struct axis2_apache2_worker_ops axis2_apache2_worker_ops_t;
     typedef struct axis2_apache2_worker axis2_apache2_worker_t;
 
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
+        const axutil_env_t *env, 
+        request_rec *r);
 
-    struct axis2_apache2_worker_ops
-    {
-        int (AXIS2_CALL *
-                process_request)(
-                    axis2_apache2_worker_t *apache2_worker,
-                    const axutil_env_t *env, 
-                    request_rec *r);
-
-        void (AXIS2_CALL *
-                free)(
-                    axis2_apache2_worker_t *apache2_worker,
-                    const axutil_env_t *env);
-    };
-
-    /**
-     * @brief Apache2 Worker struct
-      *    Axis2 Apache2 Worker
-     */
-    struct axis2_apache2_worker
-    {
-        axis2_apache2_worker_ops_t *ops;
-    };
-
+    AXIS2_EXTERN void AXIS2_CALL
+    axis2_apache2_worker_free(axis2_apache2_worker_t *apache2_worker,
+        const axutil_env_t *env);
 
     AXIS2_EXTERN axis2_apache2_worker_t * AXIS2_CALL
     axis2_apache2_worker_create(
         const axutil_env_t *env, 
         axis2_char_t *repo_path);
 
-/************************** Start of function macros **************************/
 #define AXIS2_APACHE2_WORKER_PROCESS_REQUEST(apache2_worker, env, request) \
-                        ((apache2_worker)->ops->process_request(\
-                        apache2_worker, env, request))
+                        axis2_apache2_worker_process_request(\
+                        apache2_worker, env, request)
 #define AXIS2_APACHE2_WORKER_FREE(apache2_worker, env) \
-                ((apache2_worker)->ops->free(apache2_worker, env))
-
-/************************** End of function macros ****************************/
+                axis2_apache2_worker_free(apache2_worker, env)
 
 /** @} */
 #ifdef __cplusplus

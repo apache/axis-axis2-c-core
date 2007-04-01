@@ -28,27 +28,16 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_iis_worker_ops axis2_iis_worker_ops_t;
 typedef struct axis2_iis_worker axis2_iis_worker_t;
 	
-struct axis2_iis_worker_ops
-{
-    int (AXIS2_CALL *process_request)(
-                axis2_iis_worker_t *iis_worker,
-                const axutil_env_t *env, 
-                void *r);
+    int AXIS2_CALL
+    axis2_iis_worker_process_request(axis2_iis_worker_t *iis_worker,
+        const axutil_env_t *env, 
+        void *r);
 
-    axis2_status_t (AXIS2_CALL *free)(
-                axis2_iis_worker_t *iis_worker,
-                const axutil_env_t *env);
-};
-
-
-struct axis2_iis_worker
-{
-    axis2_iis_worker_ops_t *ops;
-};
-
+    axis2_status_t AXIS2_CALL
+    axis2_iis_worker_free(axis2_iis_worker_t *iis_worker,
+        const axutil_env_t *env);
 
 axis2_iis_worker_t * AXIS2_CALL
 axis2_iis_worker_create(
@@ -57,10 +46,10 @@ axis2_iis_worker_create(
 
 
 #define AXIS2_IIS_WORKER_PROCESS_REQUEST(iis_worker, env, request)	\
-                        ((iis_worker)->ops->process_request(		\
-                        iis_worker, env, request))
+                        axis2_iis_worker_process_request(		\
+                        iis_worker, env, request)
 #define AXIS2_IIS_WORKER_FREE(iis_worker, env)					\
-                ((iis_worker)->ops->free(iis_worker, env))
+                axis2_iis_worker_free(iis_worker, env)
 
 #ifdef __cplusplus
 }

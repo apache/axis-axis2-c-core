@@ -49,40 +49,11 @@ static struct reasons {
 	{"500 Internal Server Error", 25}
 	};	
 
-typedef struct axis2_iis_worker_impl
+struct axis2_iis_worker
 {
-    axis2_iis_worker_t iis_worker;
     axis2_conf_ctx_t *conf_ctx;
-}
-axis2_iis_worker_impl_t;
+};
 
-
-#define AXIS2_INTF_TO_IMPL(iis_worker) ((axis2_iis_worker_impl_t *)\
-                        (iis_worker))
-int AXIS2_CALL
-axis2_iis_worker_process_request(
-    axis2_iis_worker_t *iis_worker,
-    const axutil_env_t *env,
-    LPEXTENSION_CONTROL_BLOCK lpECB);
-
-axis2_char_t *AXIS2_CALL
-axis2_iis_worker_get_bytes(
-    const axutil_env_t *env,
-    axutil_stream_t *stream);
-
-void AXIS2_CALL
-axis2_iis_worker_free(
-    axis2_iis_worker_t *iis_worker,
-    const axutil_env_t *env);
-
-axis2_status_t axis2_worker_get_original_url(char url[], char ret_url[]);
-axis2_status_t write_response(LPEXTENSION_CONTROL_BLOCK lpECB, const void *b, unsigned int l);
-axis2_status_t start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
-                                    int status,
-                                    const char *reason,
-                                    const char *const *header_names,
-                                    const char *const *header_values,
-                                    unsigned int num_of_headers);
 char *status_reason(int status);
 
 axis2_iis_worker_t * AXIS2_CALL
@@ -90,42 +61,26 @@ axis2_iis_worker_create(
     const axutil_env_t *env, 
     axis2_char_t *repo_path)
 {
-    axis2_iis_worker_impl_t *iis_worker_impl = NULL;
+    axis2_iis_worker_t *iis_worker = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    iis_worker_impl = (axis2_iis_worker_impl_t *)
-            AXIS2_MALLOC(env->allocator, sizeof(axis2_iis_worker_impl_t));
+    iis_worker = (axis2_iis_worker_t *)
+            AXIS2_MALLOC(env->allocator, sizeof(axis2_iis_worker_t));
 
-    if (! iis_worker_impl)
+    if (! iis_worker)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    iis_worker_impl->iis_worker.ops = NULL;
-    iis_worker_impl->conf_ctx = axis2_build_conf_ctx(env, repo_path);
+    iis_worker->conf_ctx = axis2_build_conf_ctx(env, repo_path);
 
-    if (! iis_worker_impl->conf_ctx)
+    if (! iis_worker->conf_ctx)
     {
-        axis2_iis_worker_free((axis2_iis_worker_t *)iis_worker_impl,
+        axis2_iis_worker_free((axis2_iis_worker_t *)iis_worker,
                 env);
         return NULL;
     }
-    iis_worker_impl->iis_worker.ops = AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_iis_worker_ops_t));
 
-    if (! iis_worker_impl->iis_worker.ops)
-    {
-        axis2_iis_worker_free((axis2_iis_worker_t *)iis_worker_impl,
-                env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-	// Set the operations to the functions
-    iis_worker_impl->iis_worker.ops->process_request =
-        axis2_iis_worker_process_request;
-    iis_worker_impl->iis_worker.ops->free = axis2_iis_worker_free;
-
-    return &(iis_worker_impl->iis_worker);	
+    return iis_worker;	
 }
 
 void AXIS2_CALL
@@ -133,20 +88,15 @@ axis2_iis_worker_free(
     axis2_iis_worker_t *iis_worker,
     const axutil_env_t *env)
 {
-    axis2_iis_worker_impl_t *worker_impl = NULL;
     AXIS2_ENV_CHECK(env, void);
 
-    worker_impl = AXIS2_INTF_TO_IMPL(iis_worker);
-    if (worker_impl->conf_ctx)
+    if (iis_worker->conf_ctx)
     {
-         axis2_conf_ctx_free(worker_impl->conf_ctx, env);
-        worker_impl->conf_ctx = NULL;
+         axis2_conf_ctx_free(iis_worker->conf_ctx, env);
+        iis_worker->conf_ctx = NULL;
     }
 
-    if (iis_worker->ops)
-        AXIS2_FREE(env->allocator, iis_worker->ops);
-
-    AXIS2_FREE(env->allocator, worker_impl->conf_ctx);
+    AXIS2_FREE(env->allocator, iis_worker->conf_ctx);
 
     return;
 }
@@ -157,7 +107,6 @@ axis2_iis_worker_process_request(
     const axutil_env_t *env,
     LPEXTENSION_CONTROL_BLOCK lpECB)
 {
-	axis2_iis_worker_impl_t *iis_worker_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     axutil_stream_t *request_body = NULL;
@@ -200,8 +149,7 @@ axis2_iis_worker_process_request(
         return HSE_STATUS_ERROR; 
     }
 
-	iis_worker_impl = AXIS2_INTF_TO_IMPL(iis_worker);
-	conf_ctx = iis_worker_impl->conf_ctx;	
+	conf_ctx = iis_worker->conf_ctx;	
 
 	if (! conf_ctx)
     {
@@ -230,10 +178,10 @@ axis2_iis_worker_process_request(
     out_stream = axutil_stream_create_basic(env);	
  
     out_desc =  axis2_conf_get_transport_out( axis2_conf_ctx_get_conf
-            (iis_worker_impl->conf_ctx, env), env,
+            (iis_worker->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
     in_desc =  axis2_conf_get_transport_in( axis2_conf_ctx_get_conf
-            (iis_worker_impl->conf_ctx, env), env,
+            (iis_worker->conf_ctx, env), env,
             AXIS2_TRANSPORT_ENUM_HTTP);
 
 	msg_ctx = axis2_msg_ctx_create(env, conf_ctx, in_desc, out_desc);
