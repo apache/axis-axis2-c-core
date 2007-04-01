@@ -56,58 +56,58 @@ extern "C"
      * @brief Description Transport Sender ops struct
      * Encapsulator struct for ops of axis2_transport_sender
      */
-     struct axis2_transport_sender_ops
+    struct axis2_transport_sender_ops
     {
-        /** De-allocate memory
-    * @param transport_sender pointer to transport sender
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        void (AXIS2_CALL *
-                free)(
-                    axis2_transport_sender_t *transport_sender,
-                    const axutil_env_t *env);
-
-        /**
-         * Initialize
-         * @param transport_sender pointer to transport sender
-    * @param env pointer to environment
-    * @param conf_ctx pointer to configuration context
-    * @param transport_out pointer to transport_out
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
+       /**
+        * Initialize
+        * @param transport_sender pointer to transport sender
+        * @param env pointer to environment
+        * @param conf_ctx pointer to configuration context
+        * @param transport_out pointer to transport_out
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
                 init)(
                     axis2_transport_sender_t *transport_sender,
                     const axutil_env_t *env,
                     struct axis2_conf_ctx *conf_ctx,
                     struct axis2_transport_out_desc *transport_out);
+       /**
+        * Invoke
+        * @param transport_sender pointer to transport sender
+        * @param env pointer to environment struct
+        * @param msg_ctx pointer to message context
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
+        axis2_status_t (AXIS2_CALL *
+                invoke)(
+                    axis2_transport_sender_t *transport_sender,
+                    const axutil_env_t *env,
+                    struct axis2_msg_ctx *msg_ctx);
 
-        /**
-         * Clean up
-         * @param transport_sender pointer to transport sender
-    * @param env pointer to environmnet struct
-    * @param msg_ctx pointer to message context
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
+       /**
+        * Clean up
+        * @param transport_sender pointer to transport sender
+        * @param env pointer to environmnet struct
+        * @param msg_ctx pointer to message context
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
                 cleanup)(
                     axis2_transport_sender_t *transport_sender,
                     const axutil_env_t *env,
                     struct axis2_msg_ctx *msg_ctx);
 
-        /**
-         * Invoke
-         * @param transport_sender pointer to transport sender
-    * @param env pointer to environment struct
-    * @param msg_ctx pointer to message context
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                invoke)(
+
+       /** De-allocate memory
+        * @param transport_sender pointer to transport sender
+        * @param env pointer to environment struct
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
+        void (AXIS2_CALL *
+                free)(
                     axis2_transport_sender_t *transport_sender,
-                    const axutil_env_t *env,
-                    struct axis2_msg_ctx *msg_ctx);
+                    const axutil_env_t *env);
 
     };
 
@@ -118,8 +118,8 @@ extern "C"
      */
      struct axis2_transport_sender
     {
-   /** operations of axis transport sender */
-        axis2_transport_sender_ops_t *ops;
+        /** operations of axis transport sender */
+        const axis2_transport_sender_ops_t *ops;
     };
 
     /**

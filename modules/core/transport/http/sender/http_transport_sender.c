@@ -83,6 +83,13 @@ axis2_http_transport_sender_free(
     axis2_transport_sender_t *transport_sender,
     const axutil_env_t *env);
 
+static const axis2_transport_sender_ops_t http_transport_sender_ops_var = {
+    axis2_http_transport_sender_init,
+    axis2_http_transport_sender_invoke,
+    axis2_http_transport_sender_clean_up,
+    axis2_http_transport_sender_free
+};
+
 axis2_transport_sender_t *AXIS2_CALL
 axis2_http_transport_sender_create(
     const axutil_env_t *env)
@@ -104,24 +111,7 @@ axis2_http_transport_sender_create(
     transport_sender_impl->connection_timeout =
         AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
     transport_sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
-    transport_sender_impl->transport_sender.ops = AXIS2_MALLOC(env->allocator
-            , sizeof(axis2_transport_sender_ops_t));
-    if (! transport_sender_impl->transport_sender.ops)
-    {
-        axis2_http_transport_sender_free((axis2_transport_sender_t *)
-                transport_sender_impl, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    transport_sender_impl->transport_sender.ops->invoke =
-        axis2_http_transport_sender_invoke;
-    transport_sender_impl->transport_sender.ops->cleanup =
-        axis2_http_transport_sender_clean_up;
-    transport_sender_impl->transport_sender.ops->init =
-        axis2_http_transport_sender_init;
-    transport_sender_impl->transport_sender.ops->free =
-        axis2_http_transport_sender_free;
+    transport_sender_impl->transport_sender.ops = &http_transport_sender_ops_var;
 
     return &(transport_sender_impl->transport_sender);
 }
@@ -141,9 +131,6 @@ axis2_http_transport_sender_free(
         AXIS2_FREE(env->allocator, transport_sender_impl->http_version);
         transport_sender_impl->http_version = NULL;
     }
-
-    if (transport_sender->ops)
-        AXIS2_FREE(env->allocator, transport_sender->ops);
 
     AXIS2_FREE(env->allocator, transport_sender_impl);
     return;
