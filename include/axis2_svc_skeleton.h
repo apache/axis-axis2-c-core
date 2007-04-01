@@ -121,7 +121,7 @@ extern "C"
     struct axis2_svc_skeleton
     {
         /** operations of service skeleton */
-        axis2_svc_skeleton_ops_t *ops;
+        const axis2_svc_skeleton_ops_t *ops;
         /** Array list of functions, implementing the service operations */
         axutil_array_list_t *func_array;
     };

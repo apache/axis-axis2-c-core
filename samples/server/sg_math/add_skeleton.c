@@ -36,6 +36,13 @@ int AXIS2_CALL add_init(axis2_svc_skeleton_t *svc_skeleton,
         const axutil_env_t *env);
 
 
+static const axis2_svc_skeleton_ops_t add_svc_skeleton_ops_var = {
+    add_init,
+    add_invoke,
+    NULL,
+    add_free
+};
+
 AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL
 axis2_add_create(const axutil_env_t *env)
 {
@@ -44,15 +51,9 @@ axis2_add_create(const axutil_env_t *env)
             sizeof(axis2_svc_skeleton_t));
 
 
-    svc_skeleton->ops = AXIS2_MALLOC(
-                env->allocator, sizeof(axis2_svc_skeleton_ops_t));
+    svc_skeleton->ops = &add_svc_skeleton_ops_var;
 
     svc_skeleton->func_array = NULL;
-
-    svc_skeleton->ops->free = add_free;
-    svc_skeleton->ops->init = add_init;
-    svc_skeleton->ops->invoke = add_invoke;
-    /*svc_skeleton->ops->on_fault = add_on_fault;*/
 
     return svc_skeleton;
 }
@@ -72,12 +73,6 @@ int AXIS2_CALL
 add_free(axis2_svc_skeleton_t *svc_skeleton,
         const axutil_env_t *env)
 {
-    if (svc_skeleton->ops)
-    {
-        AXIS2_FREE(env->allocator, svc_skeleton->ops);
-        svc_skeleton->ops = NULL;
-    }
-
     if (svc_skeleton)
     {
         AXIS2_FREE(env->allocator, svc_skeleton);

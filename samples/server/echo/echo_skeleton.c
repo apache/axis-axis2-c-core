@@ -42,6 +42,13 @@ axiom_node_t* AXIS2_CALL
 echo_on_fault(axis2_svc_skeleton_t *svc_skeli,
         const axutil_env_t *env, axiom_node_t *node);
 
+static const axis2_svc_skeleton_ops_t echo_svc_skeleton_ops_var = {
+    echo_init,
+    echo_invoke,
+    echo_on_fault,
+    echo_free
+};
+
 /*Create function */
 axis2_svc_skeleton_t *
 axis2_echo_create(const axutil_env_t *env)
@@ -51,15 +58,9 @@ axis2_echo_create(const axutil_env_t *env)
     svc_skeleton = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_svc_skeleton_t));
 
-    svc_skeleton->ops = AXIS2_MALLOC(
-                env->allocator, sizeof(axis2_svc_skeleton_ops_t));
+    svc_skeleton->ops = &echo_svc_skeleton_ops_var;
 
     svc_skeleton->func_array = NULL;
-    /* Assign function pointers */
-    svc_skeleton->ops->free = echo_free;
-    svc_skeleton->ops->init = echo_init;
-    svc_skeleton->ops->invoke = echo_invoke;
-    svc_skeleton->ops->on_fault = echo_on_fault;
 
     return svc_skeleton;
 }
@@ -124,13 +125,6 @@ echo_free(axis2_svc_skeleton_t *svc_skeleton,
     {
         axutil_array_list_free(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
-    }
-
-    /* Free the function array */
-    if (svc_skeleton->ops)
-    {
-        AXIS2_FREE(env->allocator, svc_skeleton->ops);
-        svc_skeleton->ops = NULL;
     }
 
     /* Free the service skeleton */

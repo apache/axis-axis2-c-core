@@ -35,6 +35,13 @@ mul_invoke(axis2_svc_skeleton_t *svc_skeleton,
 int AXIS2_CALL mul_init(axis2_svc_skeleton_t *svc_skeleton,
         const axutil_env_t *env);
 
+static const axis2_svc_skeleton_ops_t mul_svc_skeleton_ops_var = {
+    mul_init,
+    mul_invoke,
+    NULL,
+    mul_free
+};
+
 
 AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL
 axis2_mul_create(const axutil_env_t *env)
@@ -44,15 +51,9 @@ axis2_mul_create(const axutil_env_t *env)
             sizeof(axis2_svc_skeleton_t));
 
 
-    svc_skeleton->ops = AXIS2_MALLOC(
-                env->allocator, sizeof(axis2_svc_skeleton_ops_t));
+    svc_skeleton->ops = &mul_svc_skeleton_ops_var;
 
     svc_skeleton->func_array = NULL;
-
-    svc_skeleton->ops->free = mul_free;
-    svc_skeleton->ops->init = mul_init;
-    svc_skeleton->ops->invoke = mul_invoke;
-    /*svc_skeleton->ops->on_fault = mul_on_fault;*/
 
     return svc_skeleton;
 }
@@ -72,12 +73,6 @@ int AXIS2_CALL
 mul_free(axis2_svc_skeleton_t *svc_skeleton,
         const axutil_env_t *env)
 {
-    if (svc_skeleton->ops)
-    {
-        AXIS2_FREE(env->allocator, svc_skeleton->ops);
-        svc_skeleton->ops = NULL;
-    }
-
     if (svc_skeleton)
     {
         AXIS2_FREE(env->allocator, svc_skeleton);
