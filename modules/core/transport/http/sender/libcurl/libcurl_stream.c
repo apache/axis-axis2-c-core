@@ -94,10 +94,6 @@ libcurl_stream_free(
     AXIS2_ENV_CHECK(env, void);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    if (stream_impl->stream.ops)
-    {
-        AXIS2_FREE(env->allocator, stream_impl->stream.ops);
-    }
     AXIS2_FREE(env->allocator, stream_impl);
 
     return;

@@ -100,7 +100,6 @@ axutil_stream_create_ssl(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    stream_impl->stream.ops = NULL;
     stream_impl->socket = socket;
     stream_impl->ctx = NULL;
     stream_impl->ssl = NULL;
@@ -138,10 +137,6 @@ axis2_ssl_stream_free(axutil_stream_t *stream,
     AXIS2_ENV_CHECK(env, void);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    if (stream_impl->stream.ops)
-    {
-        AXIS2_FREE(env->allocator, stream_impl->stream.ops);
-    }
     axis2_ssl_utils_cleanup_ssl(env, stream_impl->ctx, stream_impl->ssl);
     AXIS2_FREE(env->allocator, stream_impl);
 
