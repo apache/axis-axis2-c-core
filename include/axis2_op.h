@@ -562,6 +562,11 @@ extern "C"
     axis2_op_get_param_container(const axis2_op_t *op,
         const axutil_env_t *env);
 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_op_remove_from_engaged_module_list(axis2_op_t *op,
+        const axutil_env_t *env,
+        struct axis2_module_desc *module_desc);
+
     /**
      * Creates operation struct for an operation defined in a module.
      * @param env pointer to environment struct

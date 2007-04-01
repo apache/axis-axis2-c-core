@@ -898,9 +898,6 @@ axis2_http_transport_utils_get_services_static_wsdl(
     axis2_conf_ctx_t *conf_ctx,
     axis2_char_t *request_url)
 {
-    AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
-    AXIS2_PARAM_CHECK(env->error, request_url, NULL);
-
     axis2_char_t *wsdl_string = NULL;
     axis2_char_t *wsdl_path = NULL;
     axis2_char_t **url_tok = NULL;
@@ -909,6 +906,9 @@ axis2_http_transport_utils_get_services_static_wsdl(
     axis2_conf_t *conf = NULL;
     axutil_hash_t *services_map = NULL;
     axutil_hash_index_t *hi = NULL;
+
+    AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, request_url, NULL);
 
     url_tok = axis2_parse_request_url_for_svc_and_op (env, request_url);
     len = strlen (url_tok[0]);
@@ -944,9 +944,10 @@ axis2_http_transport_utils_get_services_static_wsdl(
         axis2_char_t *content = NULL;
         int c;
         int size = FILE_READ_SIZE;
-        content = (axis2_char_t *)AXIS2_MALLOC (env->allocator, size);
         axis2_char_t *tmp;
         int i = 0;
+        
+        content = (axis2_char_t *)AXIS2_MALLOC (env->allocator, size);
         wsdl_file = fopen (wsdl_path, "r");
         if (wsdl_file)
         {
