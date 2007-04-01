@@ -434,10 +434,6 @@ extern "C"
                 get_xml)(axiom_xml_writer_t *writer,
                         const axutil_env_t *env);
 
-        axis2_status_t (AXIS2_CALL *
-                flush)(axiom_xml_writer_t *writer,
-                        const axutil_env_t *env);
-
         unsigned int(AXIS2_CALL *
                 get_xml_size)(axiom_xml_writer_t *writer,
                         const axutil_env_t *env);
@@ -450,6 +446,10 @@ extern "C"
                 write_raw)(axiom_xml_writer_t *writer,
                         const axutil_env_t *env,
                         axis2_char_t *content);
+        axis2_status_t (AXIS2_CALL *
+                flush)(axiom_xml_writer_t *writer,
+                        const axutil_env_t *env);
+
     };
 
     /**

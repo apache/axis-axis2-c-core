@@ -33,8 +33,6 @@
 #define AXIS2_XMLNS_NAMESPACE_URI "http://www.w3.org/XML/1998/namespace"
 #define AXIS2_XMLNS_PREFIX "xml"
 
-/************************ structures *****************************************/
-
 typedef struct uri_prefix_element
 {
     axis2_char_t *prefix;
@@ -76,8 +74,7 @@ typedef struct axis2_libxml2_writer_wrapper_impl
 
     uri_prefix_element_t *default_lang_namespace;
 
-}
-axis2_libxml2_writer_wrapper_impl_t;
+} axis2_libxml2_writer_wrapper_impl_t;
 
 
 #define AXIS2_INTF_TO_IMPL(p) ((axis2_libxml2_writer_wrapper_impl_t*)p)
@@ -260,8 +257,6 @@ axis2_libxml2_writer_wrapper_write_raw(axiom_xml_writer_t *writer,
     const axutil_env_t *env,
     axis2_char_t *content);
 
-/*********************** static functions ************************************/
-
 static axis2_status_t
 axis2_libxml2_writer_wrapper_push(axiom_xml_writer_t *writer,
     const axutil_env_t *env,
@@ -300,10 +295,42 @@ axis2_libxml2_writer_wrapper_find_prefix_in_context(axutil_array_list_t  *contex
     const axutil_env_t *env,
     axis2_char_t *uri);
 
-static void
-axis2_libxml2_writer_wrapper_init_ops(axiom_xml_writer_t *writer);
-
-/**************************** end function pointers ****************************/
+static const axiom_xml_writer_ops_t axiom_xml_writer_ops_var = {
+    axis2_libxml2_writer_wrapper_free,
+    axis2_libxml2_writer_wrapper_write_start_element,
+    axis2_libxml2_writer_wrapper_end_start_element,
+    axis2_libxml2_writer_wrapper_write_start_element_with_namespace,
+    axis2_libxml2_writer_wrapper_write_start_element_with_namespace_prefix,
+    axis2_libxml2_writer_wrapper_write_empty_element,
+    axis2_libxml2_writer_wrapper_write_empty_element_with_namespace,
+    axis2_libxml2_writer_wrapper_write_empty_element_with_namespace_prefix,
+    axis2_libxml2_writer_wrapper_write_end_element,
+    axis2_libxml2_writer_wrapper_write_end_document,
+    axis2_libxml2_writer_wrapper_write_attribute,
+    axis2_libxml2_writer_wrapper_write_attribute_with_namespace,
+    axis2_libxml2_writer_wrapper_write_attribute_with_namespace_prefix,
+    axis2_libxml2_writer_wrapper_write_namespace,
+    axis2_libxml2_writer_wrapper_write_default_namespace,
+    axis2_libxml2_writer_wrapper_write_comment,
+    axis2_libxml2_writer_wrapper_write_processing_instruction,
+    axis2_libxml2_writer_wrapper_write_processing_instruction_data,
+    axis2_libxml2_writer_wrapper_write_cdata,
+    axis2_libxml2_writer_wrapper_write_dtd,
+    axis2_libxml2_writer_wrapper_write_entity_ref,
+    axis2_libxml2_writer_wrapper_write_start_document,
+    axis2_libxml2_writer_wrapper_write_start_document_with_version,
+    axis2_libxml2_writer_wrapper_write_start_document_with_version_encoding,
+    axis2_libxml2_writer_wrapper_write_characters,
+    axis2_libxml2_writer_wrapper_get_prefix,
+    axis2_libxml2_writer_wrapper_set_prefix,
+    axis2_libxml2_writer_wrapper_set_default_prefix,
+    axis2_libxml2_writer_wrapper_write_encoded,
+    axis2_libxml2_writer_wrapper_get_xml,
+    axis2_libxml2_writer_wrapper_get_xml_size,
+    axis2_libxml2_writer_wrapper_get_type,
+    axis2_libxml2_writer_wrapper_write_raw,
+    axis2_libxml2_writer_wrapper_flush
+};
 
 AXIS2_EXTERN axiom_xml_writer_t *AXIS2_CALL
 axiom_xml_writer_create(const axutil_env_t *env,
@@ -338,7 +365,6 @@ axiom_xml_writer_create(const axutil_env_t *env,
     writer_impl->stack = NULL;
     writer_impl->uri_prefix_map = NULL;
     writer_impl->default_lang_namespace = NULL;
-    writer_impl->writer.ops = NULL;
 
     writer_impl->writer_type = AXIS2_XML_PARSER_TYPE_FILE;
     writer_impl->compression = compression;
@@ -360,21 +386,9 @@ axiom_xml_writer_create(const axutil_env_t *env,
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    writer_impl->writer.ops = (axiom_xml_writer_ops_t*)AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_xml_writer_ops_t));
-
-    if (!(writer_impl->writer.ops))
-    {
-        AXIS2_FREE(env->allocator, writer_impl);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    /* ops */
-    axis2_libxml2_writer_wrapper_init_ops(&(writer_impl->writer));
+    writer_impl->writer.ops = &axiom_xml_writer_ops_var;
     return &(writer_impl->writer);
 }
-
-/*********************** writer create func for file ***************************/
 
 AXIS2_EXTERN axiom_xml_writer_t *AXIS2_CALL
 axiom_xml_writer_create_for_memory(const axutil_env_t *env,
@@ -393,7 +407,6 @@ axiom_xml_writer_create_for_memory(const axutil_env_t *env,
         return NULL;
     }
 
-    writer_impl->writer.ops = NULL;
     writer_impl->encoding = NULL;
     writer_impl->buffer = NULL;
     writer_impl->doc = NULL;
@@ -462,92 +475,9 @@ axiom_xml_writer_create_for_memory(const axutil_env_t *env,
         return NULL;
     }
 
-    writer_impl->writer.ops = (axiom_xml_writer_ops_t*)AXIS2_MALLOC(env->allocator,
-        sizeof(axiom_xml_writer_ops_t));
-    if (!(writer_impl->writer.ops))
-    {
-        axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    /* ops */
-    axis2_libxml2_writer_wrapper_init_ops(&(writer_impl->writer));
+    writer_impl->writer.ops = &axiom_xml_writer_ops_var;
 
     return &(writer_impl->writer);
-}
-
-
-/*******************************************************************************/
-static void
-axis2_libxml2_writer_wrapper_init_ops(axiom_xml_writer_t *writer)
-{
-    writer->ops->free =
-        axis2_libxml2_writer_wrapper_free;
-    writer->ops->write_start_element =
-        axis2_libxml2_writer_wrapper_write_start_element;
-    writer->ops->write_start_element_with_namespace =
-        axis2_libxml2_writer_wrapper_write_start_element_with_namespace;
-    writer->ops->write_start_element_with_namespace_prefix =
-        axis2_libxml2_writer_wrapper_write_start_element_with_namespace_prefix;
-    writer->ops->write_empty_element =
-        axis2_libxml2_writer_wrapper_write_empty_element;
-    writer->ops->write_empty_element_with_namespace  =
-        axis2_libxml2_writer_wrapper_write_empty_element_with_namespace;
-    writer->ops->write_empty_element_with_namespace_prefix =
-        axis2_libxml2_writer_wrapper_write_empty_element_with_namespace_prefix;
-    writer->ops->write_end_element =
-        axis2_libxml2_writer_wrapper_write_end_element;
-    writer->ops->write_end_document =
-        axis2_libxml2_writer_wrapper_write_end_document;
-    writer->ops->write_attribute =
-        axis2_libxml2_writer_wrapper_write_attribute;
-    writer->ops->write_attribute_with_namespace =
-        axis2_libxml2_writer_wrapper_write_attribute_with_namespace;
-    writer->ops->write_attribute_with_namespace_prefix =
-        axis2_libxml2_writer_wrapper_write_attribute_with_namespace_prefix;
-    writer->ops->write_namespace =
-        axis2_libxml2_writer_wrapper_write_namespace;
-    writer->ops->write_default_namespace =
-        axis2_libxml2_writer_wrapper_write_default_namespace;
-    writer->ops->write_comment =
-        axis2_libxml2_writer_wrapper_write_comment;
-    writer->ops->write_processing_instruction =
-        axis2_libxml2_writer_wrapper_write_processing_instruction;
-    writer->ops->write_processing_instruction_data =
-        axis2_libxml2_writer_wrapper_write_processing_instruction_data;
-    writer->ops->write_cdata =
-        axis2_libxml2_writer_wrapper_write_cdata;
-    writer->ops->write_dtd =
-        axis2_libxml2_writer_wrapper_write_dtd;
-    writer->ops->write_entity_ref =
-        axis2_libxml2_writer_wrapper_write_entity_ref;
-    writer->ops->write_start_document =
-        axis2_libxml2_writer_wrapper_write_start_document;
-    writer->ops->write_start_document_with_version =
-        axis2_libxml2_writer_wrapper_write_start_document_with_version;
-    writer->ops->write_start_document_with_version_encoding =
-        axis2_libxml2_writer_wrapper_write_start_document_with_version_encoding;
-    writer->ops->write_characters =
-        axis2_libxml2_writer_wrapper_write_characters;
-    writer->ops->get_prefix =
-        axis2_libxml2_writer_wrapper_get_prefix;
-    writer->ops->set_prefix =
-        axis2_libxml2_writer_wrapper_set_prefix;
-    writer->ops->set_default_prefix =
-        axis2_libxml2_writer_wrapper_set_default_prefix;
-    writer->ops->write_encoded =
-        axis2_libxml2_writer_wrapper_write_encoded;
-    writer->ops->get_xml =
-        axis2_libxml2_writer_wrapper_get_xml;
-    writer->ops->get_xml_size =
-        axis2_libxml2_writer_wrapper_get_xml_size;
-    writer->ops->flush =
-        axis2_libxml2_writer_wrapper_flush;
-    writer->ops->get_type =
-        axis2_libxml2_writer_wrapper_get_type;
-    writer->ops->write_raw =
-        axis2_libxml2_writer_wrapper_write_raw;
 }
 
 void AXIS2_CALL
