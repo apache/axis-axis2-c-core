@@ -178,7 +178,7 @@ axiom_mime_body_part_write_to(axiom_mime_body_part_t *mime_body_part,
     */
     if (mime_body_part->data_handler)
     {
-        status = AXIOM_DATA_HANDLER_READ_FROM(mime_body_part->data_handler, env,
+        status = axiom_data_handler_read_from(mime_body_part->data_handler, env,
             &data_handler_stream, &data_handler_stream_size);
         if (status == AXIS2_FAILURE)
 	{

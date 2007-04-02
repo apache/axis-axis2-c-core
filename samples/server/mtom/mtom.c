@@ -86,8 +86,8 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
                         data_handler = axiom_text_get_data_handler(bin_text, env);
                         if (data_handler)
                         {
-                            AXIOM_DATA_HANDLER_SET_FILE_NAME(data_handler, env, text_str);
-                            AXIOM_DATA_HANDLER_WRITE_TO(data_handler, env);
+                            axiom_data_handler_set_file_name(data_handler, env, text_str);
+                            axiom_data_handler_write_to(data_handler, env);
                             ret_node = build_om_programatically(env, text_str);
                         }
                     }
@@ -107,8 +107,8 @@ axis2_mtom_mtom(const axutil_env_t *env, axiom_node_t *node)
                         axutil_base64_decode_binary((unsigned char*)plain_binary,
                                     base64text);
                         data_handler = axiom_data_handler_create(env, text_str, NULL);
-                        AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env, plain_binary, plain_binary_len);
-                        AXIOM_DATA_HANDLER_WRITE_TO(data_handler, env);
+                        axiom_data_handler_set_binary_data(data_handler, env, plain_binary, plain_binary_len);
+                        axiom_data_handler_write_to(data_handler, env);
                         ret_node = build_om_programatically(env, text_str);
                     }
                 }

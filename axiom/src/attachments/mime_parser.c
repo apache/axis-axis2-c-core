@@ -414,7 +414,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                                 
                                 AXIS2_FREE(env->allocator, type);
                                 
-                                AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env,
+                                axiom_data_handler_set_binary_data(data_handler, env,
                                     mime_binary, mime_binary_len);
                                 axutil_hash_set(mime_parser->mime_parts_map, mime_id,
                                     AXIS2_HASH_KEY_STRING, data_handler);

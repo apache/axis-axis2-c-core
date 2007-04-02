@@ -159,7 +159,7 @@ axiom_text_free(axiom_text_t * om_text,
 
     if (om_text->data_handler)
     {
-        AXIOM_DATA_HANDLER_FREE(om_text->data_handler, env);
+        axiom_data_handler_free(om_text->data_handler, env);
     }
 
     AXIS2_FREE(env->allocator, om_text);
@@ -496,7 +496,7 @@ axiom_text_get_text(axiom_text_t *om_text,
         {
             int encoded_len = 0;
             axis2_char_t *encoded_str = NULL;
-            AXIOM_DATA_HANDLER_READ_FROM(om_text->data_handler, env,
+            axiom_data_handler_read_from(om_text->data_handler, env,
                 &data_handler_stream, &data_handler_stream_size);
             if (data_handler_stream)
             {

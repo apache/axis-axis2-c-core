@@ -93,27 +93,6 @@ extern "C"
         const axis2_char_t *file_name,
         const axis2_char_t *mime_type);
 
-#define AXIOM_DATA_HANDLER_FREE(data_handler, env) \
-    axiom_data_handler_free (data_handler, env)
-
-#define AXIOM_DATA_HANDLER_GET_CONTENT_TYPE(data_handler, env) \
-    axiom_data_handler_get_content_type (data_handler, env)
-
-#define AXIOM_DATA_HANDLER_GET_INPUT_STREAM(data_handler, env) \
-    axiom_data_handler_get_input_stream (data_handler, env)
-
-#define AXIOM_DATA_HANDLER_READ_FROM(data_handler, env, output_stream, output_stream_size) \
-    axiom_data_handler_read_from (data_handler, env, output_stream, output_stream_size)
-
-#define AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env, input_stream, input_stream_size) \
-    axiom_data_handler_set_binary_data (data_handler, env, input_stream, input_stream_size)
-
-#define AXIOM_DATA_HANDLER_WRITE_TO(data_handler, env) \
-    axiom_data_handler_write_to (data_handler, env)
-
-#define AXIOM_DATA_HANDLER_SET_FILE_NAME(data_handler, env, file_name) \
-    axiom_data_handler_set_file_name (data_handler, env, file_name)
-
     /** @} */
 
 #ifdef __cplusplus

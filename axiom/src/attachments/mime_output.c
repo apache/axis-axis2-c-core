@@ -359,7 +359,7 @@ axis2_create_mime_body_part(axiom_text_t *text, const axutil_env_t *env)
 
     if (data_handler)
     {
-        content_type = AXIOM_DATA_HANDLER_GET_CONTENT_TYPE(data_handler, env);
+        content_type = axiom_data_handler_get_content_type(data_handler, env);
     }
 
     AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env,
