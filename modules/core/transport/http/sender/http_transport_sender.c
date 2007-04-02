@@ -582,7 +582,7 @@ axis2_http_transport_sender_write_message(
     /* Free the client */
 /*     if (client) */
 /*     { */
-/*         AXIS2_HTTP_CLIENT_FREE(client, env); */
+/*         axis2_http_client_free(client, env); */
 /*         client = NULL; */
 /*     } */
 

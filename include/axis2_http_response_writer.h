@@ -166,58 +166,6 @@ extern "C"
         axutil_stream_t *stream,
         const axis2_char_t *encoding);
 
-/** Get encoding.
-    @sa axis2_http_response_writer_ops#get_encoding */
-#define AXIS2_HTTP_RESPONSE_WRITER_GET_ENCODING(response_writer, env) \
-                    axis2_http_response_writer_get_encoding(response_writer, env)
-
-/** Close.
-    @sa axis2_http_response_writer_ops#close */
-#define AXIS2_HTTP_RESPONSE_WRITER_CLOSE(response_writer, env) \
-                    axis2_http_response_writer_close(response_writer, env)
-
-/** Flush.
-    @sa axis2_http_response_writer_ops#flush */
-#define AXIS2_HTTP_RESPONSE_WRITER_FLUSH(response_writer, env) \
-                    axis2_http_response_writer_flush(response_writer, env)
-
-/** Write char.
-    @sa axis2_http_response_writer_ops#write_char */
-#define AXIS2_HTTP_RESPONSE_WRITER_WRITE_CHAR(response_writer, env, c) \
-                    axis2_http_response_writer_write_char(response_writer, env, c)
-
-/** Write buf.
-    @sa axis2_http_response_writer_ops#write_buf */
-#define AXIS2_HTTP_RESPONSE_WRITER_WRITE_BUF(response_writer, env, buf, offset,\
-                    len) axis2_http_response_writer_write_buf(response_writer, \
-                    env, buf, offset, len)
-
-/** Print str.
-    @sa axis2_http_response_writer_ops#print_str */
-#define AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, str) \
-                    axis2_http_response_writer_print_str(response_writer, env, str)
-
-/** Print int.
-    @sa axis2_http_response_writer_ops#print_int */
-#define AXIS2_HTTP_RESPONSE_WRITER_PRINT_INT(response_writer, env, i)\
-                    axis2_http_response_writer_print_int(response_writer, env)
-
-/** Println str.
-    @sa axis2_http_response_writer_ops#println_str */
-#define AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, env, str) \
-                    axis2_http_response_writer_println_str(response_writer, env,\
-                    str)
-
-/** Println.
-    @sa axis2_http_response_writer_ops#println */
-#define AXIS2_HTTP_RESPONSE_WRITER_PRINTLN(response_writer, env) \
-                    axis2_http_response_writer_println(response_writer, env)
-
-/** Frees the http response writer.
-    @sa axis2_http_response_writer_ops#free */
-#define AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env)\
-                    axis2_http_response_writer_free(response_writer, env)
-
 /** @} */
 #ifdef __cplusplus
 }

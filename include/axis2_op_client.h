@@ -395,58 +395,6 @@ extern "C"
     axis2_op_client_receive(const axutil_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
-/** Sets the options to be used by operation client. */
-#define AXIS2_OP_CLIENT_SET_OPTIONS(op_client, env, options) \
-      axis2_op_client_set_options(op_client, env, options)
-
-/** Gets the options used by operation client.  */
-#define AXIS2_OP_CLIENT_GET_OPTIONS(op_client, env) \
-      axis2_op_client_get_options(op_client, env)
-
-/** Adds a message context. */
-#define AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx) \
-      axis2_op_client_add_msg_ctx(op_client, env, msg_ctx)
-
-/** Adds out message context.  */
-#define AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx) \
-      axis2_op_client_add_out_msg_ctx(op_client, env, msg_ctx)
-
-/** Gets the message context corresponding to given label. */
-#define AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, message_label) \
-      axis2_op_client_get_msg_ctx(op_client, env, message_label)
-
-/** Sets operation client callback. */
-#define AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback) \
-      axis2_op_client_set_callback(op_client, env, callback)
-
-/** gets operation callback. */
-#define AXIS2_OP_CLIENT_GET_CALLBACK(op_client, env) \
-      axis2_op_client_get_callback(op_client, env)
-
-/** Executes operation client. */
-#define AXIS2_OP_CLIENT_EXECUTE(op_client, env, block) \
-      axis2_op_client_execute(op_client, env, block)
-
-/** Resets operation client. */
-#define AXIS2_OP_CLIENT_RESET(op_client, env) \
-      axis2_op_client_reset(op_client, env)
-
-/** Completes operation client, closing open transports. */
-#define AXIS2_OP_CLIENT_COMPLETE(op_client, env, msg_ctx) \
-      axis2_op_client_complete(op_client, env, msg_ctx)
-
-/** Gets the operation context. */
-#define AXIS2_OP_CLIENT_GET_OPERATION_CONTEXT(op_client, env) \
-      axis2_op_client_get_operation_context(op_client, env)
-
-/** Frees the operation client. */
-#define AXIS2_OP_CLIENT_FREE(op_client, env) \
-      axis2_op_client_free(op_client, env)
-
-/** Sets the callback receiver. */
-#define AXIS2_OP_CLIENT_SET_CALLBACK_RECV(op_client, env, callback_recv) \
-      axis2_op_client_set_callback_recv(op_client, env, callback_recv)
-
 /** @} */
 #ifdef __cplusplus
 }

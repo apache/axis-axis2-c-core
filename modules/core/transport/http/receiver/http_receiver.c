@@ -148,8 +148,8 @@ axis2_http_server_free(
     server_impl = AXIS2_INTF_TO_IMPL(server);
     if (server_impl->svr_thread)
     {
-        AXIS2_HTTP_SVR_THREAD_DESTROY(server_impl->svr_thread, env);
-        AXIS2_HTTP_SVR_THREAD_FREE(server_impl->svr_thread, env);
+        axis2_http_svr_thread_destroy(server_impl->svr_thread, env);
+        axis2_http_svr_thread_free(server_impl->svr_thread, env);
         server_impl->svr_thread = NULL;
     }
 
@@ -219,12 +219,12 @@ axis2_http_server_start(
     AXIS2_HTTP_WORKER_SET_SVR_PORT(worker, env, server_impl->port);
     if (! worker)
     {
-        AXIS2_HTTP_SVR_THREAD_FREE(server_impl->svr_thread, env);
+        axis2_http_svr_thread_free(server_impl->svr_thread, env);
         return AXIS2_FAILURE;
     }
     AXIS2_LOG_INFO(env->log, "Starting HTTP server thread");
-    AXIS2_HTTP_SVR_THREAD_SET_WORKER(server_impl->svr_thread, env, worker);
-    AXIS2_HTTP_SVR_THREAD_RUN(server_impl->svr_thread, env);
+    axis2_http_svr_thread_set_worker(server_impl->svr_thread, env, worker);
+    axis2_http_svr_thread_run(server_impl->svr_thread, env);
     return AXIS2_SUCCESS;
 }
 
@@ -239,7 +239,7 @@ axis2_http_server_stop(
     AXIS2_LOG_INFO(env->log, "Terminating HTTP server thread");
     if (AXIS2_INTF_TO_IMPL(server)->svr_thread)
     {
-        AXIS2_HTTP_SVR_THREAD_DESTROY(AXIS2_INTF_TO_IMPL(server)->svr_thread,
+        axis2_http_svr_thread_destroy(AXIS2_INTF_TO_IMPL(server)->svr_thread,
                 env);
     }
     AXIS2_LOG_INFO(env->log, "Successfully terminated  HTTP server"
@@ -297,7 +297,7 @@ axis2_http_server_is_running(
     }
     else
     {
-        return AXIS2_HTTP_SVR_THREAD_IS_RUNNING(server_impl->svr_thread, env);
+        return axis2_http_svr_thread_is_running(server_impl->svr_thread, env);
     }
     return AXIS2_FALSE;
 }

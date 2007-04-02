@@ -250,15 +250,15 @@ axis2_svr_thread_worker_func (
     thread_env = axis2_init_thread_env(env);
     socket = arg_list->socket;
     svr_conn = axis2_simple_http_svr_conn_create(thread_env, socket);
-    AXIS2_SIMPLE_HTTP_SVR_CONN_SET_RCV_TIMEOUT(svr_conn, thread_env,
+    axis2_simple_http_svr_conn_set_rcv_timeout(svr_conn, thread_env,
             axis2_http_socket_read_timeout);
-    request = AXIS2_SIMPLE_HTTP_SVR_CONN_READ_REQUEST(svr_conn, thread_env);
+    request = axis2_simple_http_svr_conn_read_request(svr_conn, thread_env);
     tmp = arg_list->worker;
     status = AXIS2_HTTP_WORKER_PROCESS_REQUEST(tmp, thread_env, svr_conn,
             request);
-    AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, thread_env);
+    axis2_simple_http_svr_conn_free(svr_conn, thread_env);
     if (request)
-        AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, thread_env);
+        axis2_http_simple_request_free(request, thread_env);
     AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
     millisecs = t2.millitm - t1.millitm;
     secs = difftime(t2.time, t1.time);

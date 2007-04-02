@@ -515,8 +515,8 @@ axis2_svc_client_send_robust_with_op_qname(axis2_svc_client_t *svc_client,
         return AXIS2_FAILURE;
     }
 
-    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(svc_client->op_client, env, msg_ctx);
-    status = AXIS2_OP_CLIENT_EXECUTE(svc_client->op_client, env, AXIS2_TRUE);
+    axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
+    status = axis2_op_client_execute(svc_client->op_client, env, AXIS2_TRUE);
     
     if (qname_free_flag)
     {
@@ -567,8 +567,8 @@ axis2_svc_client_fire_and_forget_with_op_qname(axis2_svc_client_t *svc_client,
         return;
     }
 
-    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(svc_client->op_client, env, msg_ctx);
-    AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
+    axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
+    axis2_op_client_execute(op_client, env, AXIS2_FALSE);
     
     if (qname_free_flag)
     {
@@ -654,7 +654,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
             if (index-- >= 0)
             {
                 AXIS2_USLEEP(10000);
-                msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(
+                msg_ctx = (axis2_msg_ctx_t *)axis2_op_client_get_msg_ctx(
                     svc_client->op_client, env,
                     AXIS2_WSDL_MESSAGE_LABEL_OUT);
                 if (msg_ctx)
@@ -695,7 +695,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         /* start of hack to get rid of memory leak */
         msg_ctx = axis2_msg_ctx_create(env,
             axis2_svc_ctx_get_conf_ctx(svc_client->svc_ctx, env), NULL, NULL);
-        AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client->op_client, env, msg_ctx);
+        axis2_op_client_add_msg_ctx(svc_client->op_client, env, msg_ctx);
 
          axis2_msg_ctx_set_soap_envelope(msg_ctx, env, soap_envelope);
         /* end of hack to get rid of memory leak */
@@ -729,9 +729,9 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
             return NULL;
         }
 
-        AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client->op_client, env, msg_ctx);
-        AXIS2_OP_CLIENT_EXECUTE(svc_client->op_client, env, AXIS2_TRUE);
-        res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(
+        axis2_op_client_add_msg_ctx(svc_client->op_client, env, msg_ctx);
+        axis2_op_client_execute(svc_client->op_client, env, AXIS2_TRUE);
+        res_msg_ctx = (axis2_msg_ctx_t *)axis2_op_client_get_msg_ctx(
             svc_client->op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN);
 
         if (res_msg_ctx)
@@ -740,7 +740,7 @@ axis2_svc_client_send_receive_with_op_qname(axis2_svc_client_t *svc_client,
         }
         else
         {
-            AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client->op_client, env, 
+            axis2_op_client_add_msg_ctx(svc_client->op_client, env, 
                 res_msg_ctx); /* set in msg_ctx to be NULL to reset */
         }
     }
@@ -818,8 +818,8 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc
         return;
     }
 
-    AXIS2_OP_CLIENT_SET_CALLBACK(svc_client->op_client, env, callback);
-    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(svc_client->op_client, env, msg_ctx);
+    axis2_op_client_set_callback(svc_client->op_client, env, callback);
+    axis2_op_client_add_out_msg_ctx(svc_client->op_client, env, msg_ctx);
 
     if (axis2_options_get_use_separate_listener(svc_client->options, env))
     {
@@ -836,11 +836,11 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(axis2_svc_client_t *svc
         op = axis2_svc_get_op_with_qname(svc_client->svc, env, op_qname);
         axis2_op_set_msg_recv(op, env,
             AXIS2_CALLBACK_RECV_GET_BASE(svc_client->callback_recv, env));
-        AXIS2_OP_CLIENT_SET_CALLBACK_RECV(svc_client->op_client, env,
+        axis2_op_client_set_callback_recv(svc_client->op_client, env,
             svc_client->callback_recv);
     }
 
-    AXIS2_OP_CLIENT_EXECUTE(svc_client->op_client, env, AXIS2_FALSE);
+    axis2_op_client_execute(svc_client->op_client, env, AXIS2_FALSE);
     
     if (qname_free_flag)
     {
@@ -892,8 +892,8 @@ axis2_svc_client_create_op_client(axis2_svc_client_t *svc_client,
     if (svc_client->override_options)
     {
         axis2_options_set_parent(svc_client->override_options, env,
-            AXIS2_OP_CLIENT_GET_OPTIONS(svc_client->op_client, env));
-        AXIS2_OP_CLIENT_SET_OPTIONS(svc_client->op_client, env,
+            axis2_op_client_get_options(svc_client->op_client, env));
+        axis2_op_client_set_options(svc_client->op_client, env,
             svc_client->override_options);
     }
 
@@ -1148,7 +1148,7 @@ axis2_svc_client_free(axis2_svc_client_t *svc_client,
 
     if (svc_client->op_client)
     {
-        AXIS2_OP_CLIENT_FREE(svc_client->op_client, env);
+        axis2_op_client_free(svc_client->op_client, env);
     }
 
     if (svc_client->options)
@@ -1280,8 +1280,6 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
     axis2_char_t *proxy_host,
     axis2_char_t *proxy_port)
 {
-    AXIS2_PARAM_CHECK(env->error, proxy_host, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, proxy_port, AXIS2_FAILURE);
     axis2_transport_out_desc_t *trans_desc = NULL;
     axis2_conf_t *conf = NULL;
     axutil_param_container_t *param_container;
@@ -1289,6 +1287,9 @@ axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
     axis2_char_t *proxy = AXIS2_HTTP_PROXY_API;
     axutil_hash_t *attribute;
 
+    AXIS2_PARAM_CHECK(env->error, proxy_host, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, proxy_port, AXIS2_FAILURE);
+    
     if (svc_client->conf)
     {
         conf = svc_client->conf;

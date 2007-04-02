@@ -103,38 +103,6 @@ extern "C"
         const axutil_env_t *env,
         int port);
 
-/** Run.
-    @sa axis2_http_svr_thread_ops#run */
-#define AXIS2_HTTP_SVR_THREAD_RUN(svr_thread, env) \
-                  axis2_http_svr_thread_run(svr_thread, env)
-
-/** Destroy.
-    @sa axis2_http_svr_thread_ops#destroy */
-#define AXIS2_HTTP_SVR_THREAD_DESTROY(svr_thread, env) \
-                        axis2_http_svr_thread_destroy(svr_thread, env)
-
-/** Gets the local port.
-    @sa axis2_http_svr_thread_ops#get_local_port */
-#define AXIS2_HTTP_SVR_THREAD_GET_LOCAL_PORT(svr_thread, env) \
-                        axis2_http_svr_thread_get_local_port(svr_thread,\
-                  env)
-
-/** Is running.
-    @sa axis2_http_svr_thread_ops#is_running */
-#define AXIS2_HTTP_SVR_THREAD_IS_RUNNING(svr_thread, env) \
-                        axis2_http_svr_thread_is_running(svr_thread, env)
-
-/** Set worker.
-    @sa axis2_http_svr_thread_ops#set_worker */
-#define AXIS2_HTTP_SVR_THREAD_SET_WORKER(svr_thread, env, worker) \
-                        axis2_http_svr_thread_set_worker(svr_thread, env,\
-                  worker)
-
-/** Frees the http_svr_thread.
-    @sa axis2_http_svr_thread_ops#free */
-#define AXIS2_HTTP_SVR_THREAD_FREE(svr_thread, env) \
-                axis2_http_svr_thread_free(svr_thread, env)
-
 /** @} */
 #ifdef __cplusplus
 }

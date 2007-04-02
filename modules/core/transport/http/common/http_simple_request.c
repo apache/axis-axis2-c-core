@@ -386,7 +386,7 @@ axis2_http_simple_request_get_body_bytes(
         *buf[0] = '\0';
         return 0;
     }
-    length = AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_LENGTH(simple_request, env);
+    length = axis2_http_simple_request_get_content_length(simple_request, env);
     if (length > 0)
     {
         *buf = (char*)AXIS2_MALLOC(env->allocator, length + 1);

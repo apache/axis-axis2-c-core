@@ -82,14 +82,6 @@ typedef struct axiom_mime_output axiom_mime_output_t;
     AXIS2_EXTERN axiom_mime_output_t * AXIS2_CALL 
     axiom_mime_output_create (const axutil_env_t *env);
 
-#define AXIOM_MIME_OUTPUT_FREE(mime_output, env) axiom_mime_output_free (mime_output, env)
-
-#define AXIOM_MIME_OUTPUT_COMPLETE(mime_output, env, output_stream, output_stream_size, soap_body_buffer, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type) \
-axiom_mime_output_complete(mime_output, env, output_stream, output_stream_size, soap_body_buffer, binary_node_list, boundary, content_id, char_set_encoding, soap_content_type)
-
-#define AXIOM_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type) \
-axiom_mime_output_get_content_type_for_mime(mime_output, env, boundary, content_id, char_set_encoding, soap_content_type)
-
 /** @} */
 
 #ifdef __cplusplus

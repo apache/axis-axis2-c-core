@@ -134,7 +134,7 @@ axiom_output_free(axiom_output_t *om_output,
 
     if (om_output->mime_output)
     {
-        AXIOM_MIME_OUTPUT_FREE(om_output->mime_output, env);
+        axiom_mime_output_free(om_output->mime_output, env);
     }
 
     AXIS2_FREE(env->allocator, om_output);
@@ -583,7 +583,7 @@ axiom_output_flush(axiom_output_t *om_output,
         om_output->mime_output = axiom_mime_output_create(env);
         om_output->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
         root_content_id = axiom_output_get_root_content_id(om_output, env);
-        AXIOM_MIME_OUTPUT_COMPLETE(om_output->mime_output,
+        axiom_mime_output_complete(om_output->mime_output,
             env, &byte_stream, &stream_size,
             buffer, om_output->binary_node_list, om_output->mime_boundry,
             om_output->root_content_id, om_output->char_set_encoding,

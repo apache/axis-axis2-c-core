@@ -283,7 +283,7 @@ axis2_simple_http_svr_conn_read_request(
                 memset(str_line, 0, 2048);
                 if (tmp_header)
                 {
-                    AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env,
+                    axis2_http_simple_request_add_header(request, env,
                             tmp_header);
                 }
             }
@@ -357,11 +357,11 @@ axis2_simple_http_svr_conn_write_response(
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
                 AXIS2_FAILURE);
-        AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
+        axis2_http_response_writer_free(response_writer, env);
         response_writer = NULL;
         return AXIS2_FAILURE;
     }
-    AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, status_line);
+    axis2_http_response_writer_print_str(response_writer, env, status_line);
     headers = axis2_http_simple_response_get_headers(response, env);
 
     if (headers)
@@ -376,13 +376,13 @@ axis2_simple_http_svr_conn_write_response(
                 axis2_char_t *header_ext_form =
                     axis2_http_header_to_external_form(
                         (axis2_http_header_t*)header, env);
-                AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env,
+                axis2_http_response_writer_print_str(response_writer, env,
                         header_ext_form);
                 AXIS2_FREE(env->allocator, header_ext_form);
             }
         }
     }
-    AXIS2_HTTP_RESPONSE_WRITER_PRINTLN(response_writer, env);
+    axis2_http_response_writer_println(response_writer, env);
 
     response_stream = axis2_http_simple_response_get_body(response, env);
     if (response_stream)
@@ -395,18 +395,18 @@ axis2_simple_http_svr_conn_write_response(
 
     if (body_size <= 0)
     {
-        AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
+        axis2_http_response_writer_free(response_writer, env);
         return AXIS2_SUCCESS;
     }
     if (AXIS2_FALSE == chuked_encoding)
     {
         axis2_status_t write_stat = AXIS2_FAILURE;
         if (AXIS2_FALSE == binary_content)
-            write_stat = AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer,
+            write_stat = axis2_http_response_writer_println_str(response_writer,
                     env, response_body);
         else
         {
-            write_stat = AXIS2_HTTP_RESPONSE_WRITER_WRITE_BUF(response_writer,
+            write_stat = axis2_http_response_writer_write_buf(response_writer,
                     env, response_body, 0, body_size);
         }
 
@@ -414,7 +414,7 @@ axis2_simple_http_svr_conn_write_response(
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_RESPONSE,
                     AXIS2_FAILURE);
-            AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
+            axis2_http_response_writer_free(response_writer, env);
             return AXIS2_FAILURE;
         }
     }
@@ -426,14 +426,14 @@ axis2_simple_http_svr_conn_write_response(
                 svr_conn->stream);
         while (left > 0)
         {
-            left -= AXIS2_HTTP_CHUNKED_STREAM_WRITE(chunked_stream, env,
+            left -= axis2_http_chunked_stream_write(chunked_stream, env,
                     response_body, body_size);
         }
-        AXIS2_HTTP_CHUNKED_STREAM_WRITE_LAST_CHUNK(chunked_stream, env);
-        AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env);
+        axis2_http_chunked_stream_write_last_chunk(chunked_stream, env);
+        axis2_http_chunked_stream_free(chunked_stream, env);
     }
     /*AXIS2_FREE(env->allocator, response_body);*/
-    AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
+    axis2_http_response_writer_free(response_writer, env);
     return AXIS2_SUCCESS;
 }
 

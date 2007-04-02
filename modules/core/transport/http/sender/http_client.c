@@ -143,7 +143,7 @@ axis2_http_client_send(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    body_size = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY_BYTES(request, env,
+    body_size = axis2_http_simple_request_get_body_bytes(request, env,
             &str_body);
 
     if(client->dump_input_msg == AXIS2_TRUE)
@@ -206,8 +206,8 @@ axis2_http_client_send(
         }
         client->data_stream = axutil_stream_create_ssl(env,
                 client->sockfd, 
-                AXIS2_HTTP_CLIENT_GET_SERVER_CERT(client, env),
-                AXIS2_HTTP_CLIENT_GET_KEY_FILE(client, env),
+                axis2_http_client_get_server_cert(client, env),
+                axis2_http_client_get_key_file(client, env),
                 ssl_pp);
 #else
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_TRANSPORT_PROTOCOL,
@@ -227,7 +227,7 @@ axis2_http_client_send(
         return AXIS2_FAILURE;
     }
 
-    headers = AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(request, env);
+    headers = axis2_http_simple_request_get_headers(request, env);
     if (headers)
     {
         int header_count = axutil_array_list_size(headers, env);
@@ -264,7 +264,7 @@ axis2_http_client_send(
     if (AXIS2_FALSE == client->proxy_enabled)
     {
         str_request_line = axis2_http_request_line_to_string(
-                    AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(request, env)
+                    axis2_http_simple_request_get_request_line(request, env)
                     , env);
     }
     else
@@ -275,7 +275,7 @@ axis2_http_client_send(
         axis2_char_t *host_port_str = NULL;
         axis2_char_t *server = axutil_url_get_server(client->url, env);
         axis2_http_request_line_t *request_line =
-            AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(request, env);
+            axis2_http_simple_request_get_request_line(request, env);
         axis2_char_t *path = axis2_http_request_line_get_uri(request_line, env);
 
 
@@ -340,7 +340,7 @@ axis2_http_client_send(
             }
             while (written < body_size)
             {
-                written = AXIS2_HTTP_CHUNKED_STREAM_WRITE(chunked_stream, env,
+                written = axis2_http_chunked_stream_write(chunked_stream, env,
                         str_body, body_size);
                 if (-1 == written)
                 {
@@ -350,9 +350,9 @@ axis2_http_client_send(
             }
             if (AXIS2_SUCCESS == status)
             {
-                AXIS2_HTTP_CHUNKED_STREAM_WRITE_LAST_CHUNK(chunked_stream, env);
+                axis2_http_chunked_stream_write_last_chunk(chunked_stream, env);
             }
-            AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env);
+            axis2_http_chunked_stream_free(chunked_stream, env);
         }
     }
 
@@ -432,16 +432,16 @@ axis2_http_client_recieve_header(
             continue;
 
         }
-        http_status = AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env);
+        http_status = axis2_http_status_line_get_status_code(status_line, env);
     }
     while (AXIS2_HTTP_RESPONSE_OK_CODE_VAL > http_status);
 
     client->response = axis2_http_simple_response_create_default(env);
     axis2_http_simple_response_set_status_line(client->response, env,
-            AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(status_line,
-                    env), AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(
+            axis2_http_status_line_get_http_version(status_line,
+                    env), axis2_http_status_line_get_status_code(
                 status_line, env),
-            AXIS2_HTTP_STATUS_LINE_GET_REASON_PHRASE(status_line,
+            axis2_http_status_line_get_reason_phrase(status_line,
                     env));
 
     /* now read the headers */
@@ -484,8 +484,8 @@ axis2_http_client_recieve_header(
             client->data_stream);
     if (status_line)
     {
-        status_code = AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env);
-        AXIS2_HTTP_STATUS_LINE_FREE(status_line, env);
+        status_code = axis2_http_status_line_get_status_code(status_line, env);
+        axis2_http_status_line_free(status_line, env);
         status_line = NULL;
     }
     if (AXIS2_FALSE == axis2_http_simple_response_contains_header(
@@ -666,7 +666,7 @@ axis2_http_client_connect_ssl_host(
                 AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    if (200 != AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env))
+    if (200 != axis2_http_status_line_get_status_code(status_line, env))
     {
         return AXIS2_FAILURE;
     }

@@ -553,12 +553,7 @@ axis2_http_transport_utils_process_http_get_request(
         return AXIS2_FALSE;
     }
     op =  axis2_msg_ctx_get_op(msg_ctx, env);
-    /*if (op)
-    {
-        axis2_msg_t *msg = NULL;
-        msg = axis2_op_get_msg(op, env, AXIS2_MSG_IN);
-        schema_element = AXIS2_MSG_GET_SCHEMA_ELEMENT(msg, env);
-    }*/
+
     soap_envelope = axis2_http_transport_utils_handle_media_type_url_encoded(
                 env, msg_ctx, request_params, AXIS2_HTTP_HEADER_GET);
     if (! soap_envelope)
@@ -1068,7 +1063,7 @@ axis2_http_transport_utils_on_data_request(
     }
     if (cb_ctx->chunked_stream)
     {
-        len = AXIS2_HTTP_CHUNKED_STREAM_READ(cb_ctx->chunked_stream, env,
+        len = axis2_http_chunked_stream_read(cb_ctx->chunked_stream, env,
                 buffer, size);
         buffer[len] = '\0';
         return len;

@@ -222,7 +222,7 @@ axis2_http_sender_send(
 
     if (sender->client)
     {
-        AXIS2_HTTP_CLIENT_FREE(sender->client, env);
+        axis2_http_client_free(sender->client, env);
         sender->client = NULL;
     }
 
@@ -279,7 +279,7 @@ axis2_http_sender_send(
 				axis2_char_t *dump_true = axutil_property_get_value(dump_property, env);
 				if(0 == axis2_strcmp(dump_true, AXIS2_VALUE_TRUE))
 				{
-					AXIS2_HTTP_CLIENT_SET_DUMP_INPUT_MSG(sender->client, env, AXIS2_TRUE);
+					axis2_http_client_set_dump_input_msg(sender->client, env, AXIS2_TRUE);
 				}
 			}
 
@@ -477,7 +477,7 @@ axis2_http_sender_send(
 
     if (doing_mtom)
     {
-        axutil_stream_t *stream = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY(request, env);
+        axutil_stream_t *stream = axis2_http_simple_request_get_body(request, env);
         if (stream)
         {
             axutil_stream_write(stream, env, output_stream, output_stream_size);
@@ -485,7 +485,7 @@ axis2_http_sender_send(
     }
     else
     {
-        AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer, buffer_size);
+        axis2_http_simple_request_set_body_string(request, env, buffer, buffer_size);
     }
 
 	axis2_http_sender_configure_server_cert(sender, env, msg_ctx);
@@ -493,7 +493,7 @@ axis2_http_sender_send(
     axis2_http_sender_configure_key_file(sender, env, msg_ctx);
 
     axis2_http_sender_get_timeout_values(sender, env, msg_ctx);
-    AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender->client, env,
+    axis2_http_client_set_timeout(sender->client, env,
 								  sender->so_timeout);
     
     ssl_pp_param =  axis2_msg_ctx_get_parameter(msg_ctx, env, AXIS2_SSL_PASSPHRASE);
@@ -503,24 +503,24 @@ axis2_http_sender_send(
         ssl_pp = axutil_param_get_value(ssl_pp_param, env);
     }
 
-    status_code = AXIS2_HTTP_CLIENT_SEND(sender->client, env, request, ssl_pp);
+    status_code = axis2_http_client_send(sender->client, env, request, ssl_pp);
 
     /*AXIS2_FREE(env->allocator, buffer);
 	  buffer = NULL;*/
 
-    AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, env);
+    axis2_http_simple_request_free(request, env);
     request = NULL;
     
     AXIS2_FREE(env->allocator, output_stream);
     output_stream = NULL;
 
-    status_code = AXIS2_HTTP_CLIENT_RECIEVE_HEADER(sender->client, env);
+    status_code = axis2_http_client_recieve_header(sender->client, env);
 
     if (status_code < 0)
     {
         return AXIS2_FAILURE;
     }
-    response = AXIS2_HTTP_CLIENT_GET_RESPONSE(sender->client, env);
+    response = axis2_http_client_get_response(sender->client, env);
     if (AXIS2_HTTP_RESPONSE_OK_CODE_VAL == status_code ||
 		AXIS2_HTTP_RESPONSE_ACK_CODE_VAL == status_code)
     {
@@ -912,7 +912,7 @@ axis2_http_sender_configure_proxy(
     }
     if (proxy_port && proxy_host)
     {
-        AXIS2_HTTP_CLIENT_SET_PROXY(sender->client, env, proxy_host,
+        axis2_http_client_set_proxy(sender->client, env, proxy_host,
                                     AXIS2_ATOI(proxy_port));
     }
     return AXIS2_SUCCESS;
@@ -952,7 +952,7 @@ axis2_http_sender_configure_server_cert(
     
     if(server_cert)
     {
-        status = AXIS2_HTTP_CLIENT_SET_SERVER_CERT(sender->client, 
+        status = axis2_http_client_set_server_cert(sender->client, 
 												   env, server_cert);
     }
 
@@ -993,7 +993,7 @@ axis2_http_sender_configure_key_file(
 
     if (key_file)
     {
-		status = AXIS2_HTTP_CLIENT_SET_KEY_FILE(sender->client, 
+		status = axis2_http_client_set_key_file(sender->client, 
 												env, key_file);
     }
 

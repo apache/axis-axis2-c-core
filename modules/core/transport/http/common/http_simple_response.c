@@ -101,7 +101,7 @@ axis2_http_simple_response_free(
 
     if (simple_response->status_line)
     {
-        AXIS2_HTTP_STATUS_LINE_FREE(simple_response->status_line, env);
+        axis2_http_status_line_free(simple_response->status_line, env);
     }
     if (simple_response->header_group)
     {
@@ -149,7 +149,7 @@ axis2_http_simple_response_set_status_line(
             AXIS2_HTTP_CRLF);
     if (simple_response->status_line)
     {
-        AXIS2_HTTP_STATUS_LINE_FREE(simple_response->status_line, env);
+        axis2_http_status_line_free(simple_response->status_line, env);
         simple_response->status_line = NULL;
     }
     simple_response->status_line = axis2_http_status_line_create(env,
@@ -173,7 +173,7 @@ axis2_http_simple_response_get_phrase(
     {
         return NULL;
     }
-    return AXIS2_HTTP_STATUS_LINE_GET_REASON_PHRASE(simple_response->status_line, env);
+    return axis2_http_status_line_get_reason_phrase(simple_response->status_line, env);
 }
 
 
@@ -186,7 +186,7 @@ axis2_http_simple_response_get_status_code(
     {
         return -1;
     }
-    return AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(simple_response->status_line, env);
+    return axis2_http_status_line_get_status_code(simple_response->status_line, env);
 }
 
 
@@ -199,7 +199,7 @@ axis2_http_simple_response_get_http_version(
     {
         return NULL;
     }
-    return AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(simple_response->status_line, env);
+    return axis2_http_status_line_get_http_version(simple_response->status_line, env);
 }
 
 
@@ -213,7 +213,7 @@ axis2_http_simple_response_get_status_line(
     {
         return NULL;
     }
-    return AXIS2_HTTP_STATUS_LINE_TO_STRING(simple_response->status_line, env);
+    return axis2_http_status_line_to_string(simple_response->status_line, env);
 }
 
 axutil_array_list_t *AXIS2_CALL

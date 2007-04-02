@@ -20,6 +20,6 @@ axis2_http_sender_util_add_header (const axutil_env_t *env,
 {
 	axis2_http_header_t *http_header;
     http_header = axis2_http_header_create(env, header_name, header_value);
-    AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
+    axis2_http_simple_request_add_header(request, env, http_header);
 }
 

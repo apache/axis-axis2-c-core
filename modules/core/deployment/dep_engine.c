@@ -1233,12 +1233,6 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                 case AXIS2_SVC:
                     arch_reader = axis2_arch_reader_create(env);
 
-                    /* TODO
-                     * AXIS2_ARCH_READER_PROCESS_WSDLS(arch_reader, env, dep_engine->curr_file);
-                     * absolute_path = AXIS2_ARCH_FILE_DATA_GET_ABSOLUTE_PATH(
-                     *          dep_engine->curr_file, env);
-                     * svc = axis2_arch_reader_create_svc(arch_reader, env, absolute_path);
-                     */
                     svc_grp = axis2_svc_grp_create_with_conf(env,
                         dep_engine->conf);
                     file_name = axis2_arch_file_data_get_name(dep_engine->

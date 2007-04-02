@@ -102,30 +102,6 @@ extern "C"
     axis2_http_chunked_stream_create(const axutil_env_t *env,
         axutil_stream_t* stream);
 
-/** Read. */
-#define AXIS2_HTTP_CHUNKED_STREAM_READ(chunked_stream, env, buffer, count) \
-                        axis2_http_chunked_stream_read(chunked_stream, env, \
-                  buffer, count)
-
-/** Write. */
-#define AXIS2_HTTP_CHUNKED_STREAM_WRITE(chunked_stream, env, buffer, count) \
-                  axis2_http_chunked_stream_write(chunked_stream, env, \
-                  buffer, count)
-
-/** Gets the current chunk size. */
-#define AXIS2_HTTP_CHUNKED_GET_CURRENT_CHUNK_SIZE(chunked_stream, env) \
-                        axis2_http_chunked_stream_get_current_chunk_size \
-                  (chunked_stream, env)
-
-/** Writes the last chunk. */
-#define AXIS2_HTTP_CHUNKED_STREAM_WRITE_LAST_CHUNK(chunked_stream, env) \
-                  axis2_http_chunked_stream_write_last_chunk(chunked_stream\
-                  , env)
-
-/** Free. */
-#define AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env) \
-                        axis2_http_chunked_stream_free(chunked_stream, env)
-
 /** @} */
 #ifdef __cplusplus
 }

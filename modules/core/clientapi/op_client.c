@@ -530,9 +530,6 @@ axis2_op_client_complete(axis2_op_client_t *op_client,
     if(!conf_ctx)
         return AXIS2_FAILURE;
 
-    /*TODO:uncomment when implemented
-    listener_manager = AXIS2_CONF_CTX_GET_LISTENER_MANAGER(conf_ctx, env);
-    */
     if(!listener_manager)
         return AXIS2_FAILURE;
 

@@ -99,30 +99,6 @@ extern "C"
     axis2_http_status_line_create(const axutil_env_t *env,
         const axis2_char_t *str);
 
-/** Gets the status code. */
-#define AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env)\
-                    axis2_http_status_line_get_status_code (status_line, env)
-
-/** Gets the http version. */
-#define AXIS2_HTTP_STATUS_LINE_GET_HTTP_VERSION(status_line, env)\
-                    axis2_http_status_line_get_http_version (status_line, env)
-
-/** Get reason phrase. */
-#define AXIS2_HTTP_STATUS_LINE_GET_REASON_PHRASE(status_line, env)\
-                    axis2_http_status_line_get_reason_phrase (status_line, env)
-
-/** Starts with http. */
-#define AXIS2_HTTP_STATUS_LINE_STARTS_WITH_HTTP(status_line, env)\
-                    axis2_http_status_line_starts_with_http (status_line, env)
-
-/** To string. */
-#define AXIS2_HTTP_STATUS_LINE_TO_STRING(status_line, env)\
-                    axis2_http_status_line_to_string (status_line, env)
-
-/** Frees the http status line. */
-#define AXIS2_HTTP_STATUS_LINE_FREE(status_line, env)\
-                    axis2_http_status_line_free(status_line, env)
-
 /** @} */
 #ifdef __cplusplus
 }
