@@ -300,7 +300,7 @@ axis2_http_sender_send(
 		}
 		else
 		{
-			buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+			buffer = axiom_xml_writer_get_xml(xml_writer, env);
 		}
 
 		if (! buffer && !doing_mtom)
@@ -351,7 +351,7 @@ axis2_http_sender_send(
 
 	if (!send_via_get)
 	{
-		buffer_size = AXIOM_XML_WRITER_GET_XML_SIZE(xml_writer, env);
+		buffer_size = axiom_xml_writer_get_xml_size(xml_writer, env);
 
 		if (AXIS2_FALSE == sender->chunked)
 		{

@@ -253,7 +253,7 @@ build_om_programatically_for_wsdl1(
     om_output = axiom_output_create(env, xml_writer);
 
     axiom_node_serialize(add_om_node, env, om_output);
-    buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    buffer = axiom_xml_writer_get_xml(xml_writer, env);
     printf("\nOM node in XML : %s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
     axiom_output_free(om_output, env);
@@ -310,7 +310,7 @@ build_om_programatically_for_wsdl2(
     om_output = axiom_output_create(env, xml_writer);
 
     axiom_node_serialize(add_om_node, env, om_output);
-    buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    buffer = axiom_xml_writer_get_xml(xml_writer, env);
     printf("\nOM node in XML : %s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
     axiom_output_free(om_output, env);

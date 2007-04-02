@@ -142,9 +142,11 @@ AXIS2_UTIL_SRC = $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
 		$(AXIS2_SOURCE_DIR)\util\src\minizip\*.c \
 		$(AXIS2_SOURCE_DIR)\util\src\*.c 
 
-AXIS2_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c
+AXIS2_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\*.c \
+		$(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c
 
-AXIS2_GUTHTHILA_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\guththila\*.c
+AXIS2_GUTHTHILA_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\*.c \
+		$(AXIS2_SOURCE_DIR)\axiom\src\parser\guththila\*.c
 
 AXIOM_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
@@ -178,6 +180,7 @@ AXIS2_ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\modules\core\addr\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\phaseresolver\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\receivers\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\util\*.c \
+		$(AXIS2_SOURCE_DIR)\modules\core\transport\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\common\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\util\*.c
 		
@@ -585,7 +588,7 @@ axis2_client_userguide:
 	if not exist $(AXIS2_INTDIR)\userguide\echo_blocking_soap11 mkdir $(AXIS2_INTDIR)\userguide\echo_blocking_soap11
 
 
-	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
+	$(CC) $(CFLAGS) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH)  \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_blocking.c \
 	$(AXIS2_SOURCE_DIR)\samples\user_guide\clients\echo_util.c /Fo$(AXIS2_INTDIR)\userguide\echo_blocking\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\userguide\echo_blocking\*.obj $(AXIS2_UTIL).lib \

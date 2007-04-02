@@ -1,6 +1,6 @@
 lib_LTLIBRARIES=libaxis2_engine.la
 
-libaxis2_engine_la_SOURCES=handler.c \
+libaxis2_engine_la_SOURCES= ../transport/transport_receiver.c handler.c \
 				conf.c \
                         	phase.c \
                         	disp_checker.c \

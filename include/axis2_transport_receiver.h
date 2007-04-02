@@ -148,70 +148,48 @@ extern "C"
 
 /** Frees the transport receiver.
     @sa axis2_transport_receiver#free */
-static void AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 axis2_transport_receiver_free(axis2_transport_receiver_t *transport_receiver,
-    const axutil_env_t *env)
-{
-      (transport_receiver->ops)->free (transport_receiver, env);
-}
+    const axutil_env_t *env);
 
 /** Initialize the transport receiver.
     @sa axis2_transport_receiver#init */
-static axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_transport_receiver_init(axis2_transport_receiver_t *transport_receiver,
     const axutil_env_t *env,
     struct axis2_conf_ctx *conf_ctx,
-    struct axis2_transport_in_desc *transport_in)
-{
-      return (transport_receiver->ops)->init (transport_receiver, env, 
-          conf_ctx, transport_in);
-}
+    struct axis2_transport_in_desc *transport_in);
 
 /** Start
     @sa axis2_transport_receiver#start */
-static axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_transport_receiver_start(axis2_transport_receiver_t *transport_receiver,
-    const axutil_env_t *env)
-{
-    return (transport_receiver->ops)->start (transport_receiver, env);
-}
+    const axutil_env_t *env);
 
 /** Stop.
     @sa axis2_transport_receiver#stop */
-static axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_transport_receiver_stop(axis2_transport_receiver_t *transport_receiver,
-    const axutil_env_t *env)
-{
-    return (transport_receiver->ops)->stop (transport_receiver, env);
-}
+    const axutil_env_t *env);
 
 /** Get reply to epr.
     @sa axis2_transport_receiver#get_reply_to_epr */
-static axis2_endpoint_ref_t* AXIS2_CALL 
+AXIS2_EXTERN axis2_endpoint_ref_t* AXIS2_CALL 
 axis2_transport_receiver_get_reply_to_epr(axis2_transport_receiver_t *transport_receiver,
     const axutil_env_t *env,
-    const axis2_char_t *svc_name)
-{
-    return (transport_receiver->ops)->get_reply_to_epr (transport_receiver, env, svc_name);
-}
+    const axis2_char_t *svc_name);
 
 /** Get conf ctx. 
     @sa axis2_transport_receiver#get_conf_ctx */
-static struct axis2_conf_ctx *AXIS2_CALL 
+AXIS2_EXTERN struct axis2_conf_ctx *AXIS2_CALL 
 axis2_transport_receiver_get_conf_ctx(axis2_transport_receiver_t *transport_receiver,
-    const axutil_env_t *env)
-{
-    return (transport_receiver)->ops->get_conf_ctx(transport_receiver, env);
-}
+    const axutil_env_t *env);
 
 /** Is running.
     @sa axis2_transport_receiver#is_running */
-static axis2_bool_t AXIS2_CALL
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_transport_receiver_is_running(axis2_transport_receiver_t *transport_receiver,
-    const axutil_env_t *env)
-{
-    return (transport_receiver)->ops->is_running(transport_receiver, env);
-}
+    const axutil_env_t *env);
 
 /** @} */
 

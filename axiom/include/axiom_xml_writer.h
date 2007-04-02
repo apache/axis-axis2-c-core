@@ -480,125 +480,183 @@ extern "C"
             int compression,
             int type);
 
-    /********************** start macros *******************************************/
+AXIS2_EXTERN void AXIS2_CALL
+axiom_xml_writer_free(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
-#define AXIOM_XML_WRITER_FREE(writer, env) \
-        ((writer)->ops->free(writer,env))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_start_element(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname);
 
-#define AXIOM_XML_WRITER_WRITE_START_ELEMENT(writer, env, localname) \
-        ((writer)->ops->write_start_element(writer, env, localname))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_end_start_element(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
-#define AXIOM_XML_WRITER_END_START_ELEMENT(writer, env) \
-        ((writer)->ops->end_start_element(writer,env))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_start_element_with_namespace(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname,
+    axis2_char_t *namespace_uri);
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_start_element_with_namespace_prefix(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname,
+    axis2_char_t *namespace_uri,
+    axis2_char_t *prefix);
 
-#define AXIOM_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE(\
-        writer, env, localname, namespace_uri)\
-        ((writer)->ops->write_start_element_with_namespace(\
-        writer, env, localname, namespace_uri))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_empty_element(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname);
 
-#define AXIOM_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE_PREFIX(\
-        writer, env, localname, namespace_uri, prefix) \
-        ((writer)->ops->write_start_element_with_namespace_prefix(\
-        writer,env,localname,namespace_uri,prefix))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_empty_element_with_namespace(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname,
+    axis2_char_t *namespace_uri);
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_empty_element_with_namespace_prefix(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname,
+    axis2_char_t *namespace_uri,
+    axis2_char_t *prefix);
 
-#define AXIOM_XML_WRITER_WRITE_EMPTY_ELEMENT(writer,env,localname) \
-        ((writer)->ops->write_empty_element(writer,env,localname))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_end_element(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
-#define AXIOM_XML_WRITER_WRITE_EMPTY_ELEMENT_WITH_NAMESPACE(\
-        writer, env,localname,namespace_uri) \
-        ((writer)->ops->write_empty_element_with_namespace(writer,env,localname,namespace_uri))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_end_document(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
-#define AXIOM_XML_WRITER_WRITE_EMPTY_ELEMENT_WITH_NAMESPACE_PREFIX(\
-        writer, env, localname, namespace_uri, prefix) \
-        ((writer)->ops->write_empty_element_with_namespace_prefix(\
-        writer,env,localname,namespace_uri, prefix))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_attribute(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname,
+    axis2_char_t *value);
 
-#define AXIOM_XML_WRITER_WRITE_END_ELEMENT(writer, env) \
-        ((writer)->ops->write_end_element(writer,env))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_attribute_with_namespace(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname,
+    axis2_char_t *value,
+    axis2_char_t *namespace_uri);
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_attribute_with_namespace_prefix(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *localname,
+    axis2_char_t *value,
+    axis2_char_t *namespace_uri,
+    axis2_char_t *prefix);
 
-#define AXIOM_XML_WRITER_WRITE_END_DOCUMENT(writer, env) \
-        ((writer)->ops->write_end_document(writer,env))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_namespace(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *prefix,
+    axis2_char_t *namespace_uri);
 
-#define AXIOM_XML_WRITER_WRITE_ATTRIBUTE(writer, env, localname, value) \
-        ((writer)->ops->write_attribute(writer,env, localname, value))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_default_namespace(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *namespace_uri);
 
-#define AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(\
-        writer, env, localname, value, namespace_uri) \
-        ((writer)->ops->write_attribute_with_namespace(\
-        writer,env, localname, value,namespace_uri))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_comment(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *value);
 
-#define AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE_PREFIX(\
-        writer, env, localname, value, namespace_uri, prefix) \
-        ((writer)->ops->write_attribute_with_namespace_prefix(\
-        writer,env, localname, value,namespace_uri, prefix))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_processing_instruction(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *target);
 
-#define AXIOM_XML_WRITER_WRITE_NAMESPACE(writer, env, prefix , namespace_uri) \
-        ((writer)->ops->write_namespace(writer, env, prefix, namespace_uri))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_processing_instruction_data(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *target,
+    axis2_char_t *data);
 
-#define AXIOM_XML_WRITER_WRITE_DEFAULT_NAMESPACE(writer, env, namespace_uri) \
-        ((writer)->ops->write_default_namespace(writer, env, namespace_uri))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_cdata(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *data);
 
-#define AXIOM_XML_WRITER_WRITE_COMMENT(writer, env, value) \
-        ((writer)->ops->write_comment(writer, env, value))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_dtd(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *dtd);
 
-#define AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION(writer, env, target) \
-        ((writer)->ops->write_processing_instruction(writer, env, target))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_entity_ref(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *name);
 
-#define AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION_DATA(writer, env, target, data) \
-        ((writer)->ops->write_processing_instruction_data(writer, env, target, data))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_start_document(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
-#define AXIOM_XML_WRITER_WRITE_CDATA(writer, env, data) \
-        ((writer)->ops->write_cdata(writer, env, data))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_start_document_with_version(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *version);
 
-#define AXIOM_XML_WRITER_WRITE_DTD(writer, env, dtd) \
-        ((writer)->ops->write_cdata(writer, env, dtd))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_start_document_with_version_encoding(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *version,
+    axis2_char_t *encoding);
 
-#define AXIOM_XML_WRITER_WRITE_ENTITY_REF(writer, env, entity_ref) \
-        ((writer)->ops->write_entity_ref(writer, env, entity_ref))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_characters(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *text);
 
-#define AXIOM_XML_WRITER_WRITE_START_DOCUMENT(writer, env) \
-        ((writer)->ops->write_start_document(writer,env))
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axiom_xml_writer_get_prefix(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *uri);
 
-#define AXIOM_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION(writer, env, version) \
-        ((writer)->ops->write_start_document_with_version(writer, env, version))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_set_prefix(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *prefix,
+    axis2_char_t *uri);
 
-#define AXIOM_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(\
-        writer, env,  version, encoding) \
-        ((writer)->ops->write_start_document_with_version_encoding(\
-        writer, env, version, encoding))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_set_default_prefix(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *uri);
 
-#define AXIOM_XML_WRITER_WRITE_CHARACTERS(writer, env, text) \
-        ((writer)->ops->write_characters(writer, env, text))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_encoded(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *text,
+    int in_attr);
 
-#define AXIOM_XML_WRITER_GET_PREFIX(writer, env, uri) \
-        ((writer)->ops->get_prefix(writer, env, uri))
+AXIS2_EXTERN void* AXIS2_CALL
+axiom_xml_writer_get_xml(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
-#define AXIOM_XML_WRITER_SET_PREFIX(writer, env, prefix, uri) \
-        ((writer)->ops->set_prefix(writer, env, prefix, uri))
+AXIS2_EXTERN unsigned int AXIS2_CALL
+axiom_xml_writer_get_xml_size(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
-#define AXIOM_XML_WRITER_SET_DEFAULT_PREFIX(writer, env, uri) \
-        ((writer)->ops->set_default_prefix(writer, env, uri))
+AXIS2_EXTERN int AXIS2_CALL
+axiom_xml_writer_get_type(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
-#define AXIOM_XML_WRITER_WRITE_ENCODED(writer, env, text, in_attr) \
-        ((writer)->ops->write_encoded(writer, env, text, in_attr))
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axiom_xml_writer_write_raw(axiom_xml_writer_t *writer,
+    const axutil_env_t *env,
+    axis2_char_t *content);
 
-#define AXIOM_XML_WRITER_GET_XML(writer, env) \
-        ((writer)->ops->get_xml(writer, env))
-
-#define AXIOM_XML_WRITER_GET_XML_SIZE(writer, env) \
-        ((writer)->ops->get_xml_size(writer, env))
-
-#define AXIOM_XML_WRITER_FLUSH(writer, env) \
-        ((writer)->ops->flush(writer, env))
-
-#define AXIOM_XML_WRITER_GET_TYPE(writer, env) \
-        ((writer)->ops->get_type(writer, env))
-
-#define AXIOM_XML_WRITER_WRITE_RAW(writer, env, content) \
-        ((writer)->ops->write_raw(writer, env, content))
+AXIS2_EXTERN axis2_status_t  AXIS2_CALL
+axiom_xml_writer_flush(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
 
     /** @} */
 

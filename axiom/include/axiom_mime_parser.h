@@ -78,21 +78,6 @@ extern "C"
     AXIS2_EXTERN axiom_mime_parser_t * AXIS2_CALL
     axiom_mime_parser_create(const axutil_env_t *env);
 
-#define AXIOM_MIME_PARSER_FREE(mime_parser, env) \
-axiom_mime_parser_free (mime_parser, env)
-
-#define AXIOM_MIME_PARSER_PARSE(mime_parser, env, callback, callback_ctx, mime_boundary) \
-axiom_mime_parser_parse(mime_parser, env, callback, callback_ctx, mime_boundary)
-
-#define AXIOM_MIME_PARSER_GET_MIME_PARTS_MAP(mime_parser, env) \
-axiom_mime_parser_get_mime_parts_map(mime_parser, env)
-
-#define AXIOM_MIME_PARSER_GET_SOAP_BODY_LENGTH(mime_parser, env) \
-axiom_mime_parser_get_soap_body_len(mime_parser, env)
-
-#define AXIOM_MIME_PARSER_GET_SOAP_BODY_STR(mime_parser, env) \
-axiom_mime_parser_get_soap_body_str(mime_parser, env)
-
     /** @} */
 
 #ifdef __cplusplus

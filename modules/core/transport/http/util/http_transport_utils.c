@@ -286,13 +286,13 @@ axis2_http_transport_utils_process_http_post_request(
             mime_parser = axiom_mime_parser_create(env);
             if (mime_parser)
             {
-                binary_data_map = AXIOM_MIME_PARSER_PARSE(mime_parser, env,
+                binary_data_map = axiom_mime_parser_parse(mime_parser, env,
                         axis2_http_transport_utils_on_data_request,
                         (void *) callback_ctx, mime_boundary);
 
-                soap_body_len = AXIOM_MIME_PARSER_GET_SOAP_BODY_LENGTH(
+                soap_body_len = axiom_mime_parser_get_soap_body_len(
                             mime_parser, env);
-                soap_body_str = AXIOM_MIME_PARSER_GET_SOAP_BODY_STR(
+                soap_body_str = axiom_mime_parser_get_soap_body_str(
                             mime_parser, env);
             }
 
@@ -308,7 +308,7 @@ axis2_http_transport_utils_process_http_post_request(
                 callback_ctx->content_length = soap_body_len;
                 callback_ctx->unread_len = soap_body_len;
             }
-            AXIOM_MIME_PARSER_FREE(mime_parser, env);
+            axiom_mime_parser_free(mime_parser, env);
             mime_parser = NULL;
         }
         AXIS2_FREE(env->allocator, mime_boundary);
@@ -335,7 +335,7 @@ axis2_http_transport_utils_process_http_post_request(
     om_builder = axiom_stax_builder_create(env, xml_reader);
     if (! om_builder)
     {
-        AXIOM_XML_READER_FREE(xml_reader, env);
+        axiom_xml_reader_free(xml_reader, env);
         xml_reader = NULL;
         return AXIS2_FAILURE;
     }
@@ -451,7 +451,7 @@ axis2_http_transport_utils_process_http_post_request(
      *               AXIS2_FAILURE);
      *   axiom_soap_envelope_free(envelope, env);
      *   envelope = NULL;
-     *   AXIOM_XML_READER_FREE(xml_reader, env);
+     *   axiom_xml_reader_free(xml_reader, env);
      *   xml_reader = NULL;
      *   axiom_stax_builder_free(om_builder, env);
      *   om_builder = NULL;
@@ -1209,13 +1209,13 @@ axis2_http_transport_utils_create_soap_msg(
             mime_parser = axiom_mime_parser_create(env);
             if (mime_parser)
             {
-                binary_data_map = AXIOM_MIME_PARSER_PARSE(mime_parser, env,
+                binary_data_map = axiom_mime_parser_parse(mime_parser, env,
                         axis2_http_transport_utils_on_data_request,
                         (void *)callback_ctx, mime_boundary);
 
-                soap_body_len = AXIOM_MIME_PARSER_GET_SOAP_BODY_LENGTH(
+                soap_body_len = axiom_mime_parser_get_soap_body_len(
                             mime_parser, env);
-                soap_body_str = AXIOM_MIME_PARSER_GET_SOAP_BODY_STR(
+                soap_body_str = axiom_mime_parser_get_soap_body_str(
                             mime_parser, env);
             }
 
@@ -1229,7 +1229,7 @@ axis2_http_transport_utils_create_soap_msg(
                 callback_ctx->unread_len = soap_body_len;
             }
 
-            AXIOM_MIME_PARSER_FREE(mime_parser, env);
+            axiom_mime_parser_free(mime_parser, env);
             mime_parser = NULL;
         }
     }
@@ -1251,7 +1251,7 @@ axis2_http_transport_utils_create_soap_msg(
         om_builder = axiom_stax_builder_create(env, xml_reader);
         if (! om_builder)
         {
-            AXIOM_XML_READER_FREE(xml_reader, env);
+            axiom_xml_reader_free(xml_reader, env);
             xml_reader = NULL;
             return NULL;
         }
@@ -1308,7 +1308,7 @@ axis2_http_transport_utils_create_soap_msg(
         om_builder = axiom_stax_builder_create(env, xml_reader);
         if (! om_builder)
         {
-            AXIOM_XML_READER_FREE(xml_reader, env);
+            axiom_xml_reader_free(xml_reader, env);
             xml_reader = NULL;
             return NULL;
         }

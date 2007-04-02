@@ -224,7 +224,7 @@ axiom_text_serialize(axiom_text_t *om_text,
         else
         {
             text = axiom_text_get_text(om_text, env);
-            AXIOM_XML_WRITER_WRITE_CHARACTERS(om_output_xml_writer, env, (axis2_char_t*)text);
+            axiom_xml_writer_write_characters(om_output_xml_writer, env, (axis2_char_t*)text);
         }
     }
     return status;
@@ -438,17 +438,17 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
         attribute_value = axiom_attribute_get_value(om_attribute, env);
         if (prefix)
         {
-            AXIOM_XML_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
+            axiom_xml_writer_write_attribute(xml_writer, env, attribute_local_name, attribute_value);
         }
         else
         {
-            AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(xml_writer, env,
+            axiom_xml_writer_write_attribute_with_namespace(xml_writer, env,
                 attribute_local_name, attribute_value, namespace_uri);
         }
     }
     else
     {
-        AXIOM_XML_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
+        axiom_xml_writer_write_attribute(xml_writer, env, attribute_local_name, attribute_value);
     }
     axiom_namespace_free(om_namespace, env);
     return AXIS2_SUCCESS;
@@ -474,8 +474,8 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
     {
         namespace_uri = axiom_namespace_get_uri(om_text->ns, env);
         namespace_prefix = axiom_namespace_get_prefix(om_text->ns, env);
-        AXIOM_XML_WRITER_WRITE_NAMESPACE(xml_writer, env, namespace_prefix, namespace_uri);
-        AXIOM_XML_WRITER_SET_PREFIX(xml_writer, env, namespace_prefix, namespace_uri);
+        axiom_xml_writer_write_namespace(xml_writer, env, namespace_prefix, namespace_uri);
+        axiom_xml_writer_set_prefix(xml_writer, env, namespace_prefix, namespace_uri);
     }
     return AXIS2_SUCCESS;
 }

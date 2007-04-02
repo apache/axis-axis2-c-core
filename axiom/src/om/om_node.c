@@ -1005,13 +1005,13 @@ axiom_node_to_string(axiom_node_t *om_node,
     om_output = axiom_output_create(env, xml_writer);
     if (!om_output)
     {
-        AXIOM_XML_WRITER_FREE(xml_writer, env);
+        axiom_xml_writer_free(xml_writer, env);
         return NULL;
     }
     status = axiom_node_serialize(om_node, env, om_output);
     if (status == AXIS2_SUCCESS)
     {
-        xml = axis2_strdup(env, (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env));
+        xml = axis2_strdup(env, (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env));
     }
     axiom_output_free(om_output, env);
     return xml;

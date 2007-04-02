@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     if (ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = axiom_node_get_data_element(ret_node, env);
+        om_str = axiom_node_to_string(ret_node, env);
         if (om_str)
         {
             printf("\nReceived OM : %s\n", om_str);

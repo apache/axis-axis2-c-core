@@ -124,7 +124,7 @@ axiom_output_free(axiom_output_t *om_output,
 
     if (om_output->xml_writer)
     {
-        AXIOM_XML_WRITER_FREE(om_output->xml_writer, env);
+        axiom_xml_writer_free(om_output->xml_writer, env);
     }
 
     if (om_output->binary_node_list)
@@ -429,19 +429,19 @@ axiom_output_write(axiom_output_t * om_output,
         if (no_of_args == 0)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_END_ELEMENT(om_output->xml_writer,
+                axiom_xml_writer_write_end_element(om_output->xml_writer,
                     env);
         }
         else if (no_of_args == 1)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_START_ELEMENT(om_output->xml_writer,
+                axiom_xml_writer_write_start_element(om_output->xml_writer,
                     env, args_list[0]);
         }
         else if (no_of_args == 2)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE(
+                axiom_xml_writer_write_start_element_with_namespace(
                     om_output->xml_writer,env,
                     args_list[0],
                     args_list[1]);
@@ -449,7 +449,7 @@ axiom_output_write(axiom_output_t * om_output,
         else if (no_of_args == 3)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE_PREFIX(
+                axiom_xml_writer_write_start_element_with_namespace_prefix(
                     om_output->xml_writer,
                     env,
                     args_list[0],
@@ -459,7 +459,7 @@ axiom_output_write(axiom_output_t * om_output,
     }
     else if (type == AXIOM_DATA_SOURCE)
     {
-        status = AXIOM_XML_WRITER_WRITE_RAW(om_output->xml_writer,
+        status = axiom_xml_writer_write_raw(om_output->xml_writer,
             env, args_list[0]); 
     }
     else if (type == AXIOM_ATTRIBUTE)
@@ -467,14 +467,14 @@ axiom_output_write(axiom_output_t * om_output,
         if (no_of_args == 2)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_ATTRIBUTE(om_output->xml_writer,
+                axiom_xml_writer_write_attribute(om_output->xml_writer,
                     env,
                     args_list[0],
                     args_list[1]);
         }
         else if (no_of_args == 3)
         {
-            status = AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(
+            status = axiom_xml_writer_write_attribute_with_namespace(
                 om_output->xml_writer, env,
                 args_list[0],
                 args_list[1],
@@ -483,7 +483,7 @@ axiom_output_write(axiom_output_t * om_output,
         else if (no_of_args == 4)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE_PREFIX(
+                axiom_xml_writer_write_attribute_with_namespace_prefix(
                     om_output->xml_writer, env,
                     args_list[0],
                     args_list[1],
@@ -493,20 +493,20 @@ axiom_output_write(axiom_output_t * om_output,
     }
     else if (type == AXIOM_NAMESPACE)
     {
-        status = AXIOM_XML_WRITER_WRITE_NAMESPACE(om_output->xml_writer,
+        status = axiom_xml_writer_write_namespace(om_output->xml_writer,
             env,
             args_list[0],
             args_list[1]);
     }
     else if (type == AXIOM_TEXT)
     {
-        status = AXIOM_XML_WRITER_WRITE_CHARACTERS(om_output->xml_writer,
+        status = axiom_xml_writer_write_characters(om_output->xml_writer,
             env,
             args_list[0]);
     }
     else if (type == AXIOM_COMMENT)
     {
-        status = AXIOM_XML_WRITER_WRITE_COMMENT(om_output->xml_writer,
+        status = axiom_xml_writer_write_comment(om_output->xml_writer,
             env,
             args_list[0]);
     }
@@ -515,13 +515,13 @@ axiom_output_write(axiom_output_t * om_output,
         if (no_of_args == 1)
         {
             status =
-                AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION(
+                axiom_xml_writer_write_processing_instruction(
                     om_output->xml_writer,
                     env, args_list[0]);
         }
         else if (no_of_args == 2)
         {
-            status = AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION_DATA(
+            status = axiom_xml_writer_write_processing_instruction_data(
                 om_output->xml_writer,
                 env,
                 args_list[0],
@@ -530,7 +530,7 @@ axiom_output_write(axiom_output_t * om_output,
     }
     else if (type == AXIOM_DOCTYPE)
     {
-        status = AXIOM_XML_WRITER_WRITE_DTD(om_output->xml_writer,
+        status = axiom_xml_writer_write_dtd(om_output->xml_writer,
             env,
             args_list[0]);
     }
@@ -548,7 +548,7 @@ axiom_output_write_xml_version_encoding(axiom_output_t *om_output,
     const axutil_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIOM_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(     om_output->xml_writer,
+    return axiom_xml_writer_write_start_document_with_version_encoding(     om_output->xml_writer,
         env,
         om_output->xml_version,
         om_output->char_set_encoding);
@@ -570,7 +570,7 @@ axiom_output_flush(axiom_output_t *om_output,
         axis2_byte_t* byte_stream = NULL;
         axis2_char_t *root_content_id = NULL;
         axis2_char_t *buffer =
-            (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(om_output->xml_writer, env);
+            (axis2_char_t*)axiom_xml_writer_get_xml(om_output->xml_writer, env);
         int stream_size = 0;
         if (om_output->is_soap11)
         {

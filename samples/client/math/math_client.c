@@ -97,7 +97,7 @@ int main(int argc, char** argv)
             om_output = axiom_output_create(env, writer);
 
             axiom_node_serialize(ret_node, env, om_output);
-            buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, env);
+            buffer = (axis2_char_t*)axiom_xml_writer_get_xml(writer, env);
             printf("\nReceived invalid OM as result : %s\n", buffer);
             if (buffer)
             {
@@ -109,7 +109,7 @@ int main(int argc, char** argv)
                 axiom_output_free(om_output, env);
                 om_output = NULL;
             }
-            AXIOM_XML_WRITER_FREE(writer, env);
+            axiom_xml_writer_free(writer, env);
         }
     }
     else
@@ -166,7 +166,7 @@ build_om_programatically(const axutil_env_t *env,
     om_output = axiom_output_create(env, xml_writer);
 
     axiom_node_serialize(math_om_node, env, om_output);
-    buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer);
     if (om_output)
     {

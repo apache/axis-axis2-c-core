@@ -260,10 +260,10 @@ axis2_libcurl_send (
 
 		}
 
-		buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+		buffer = axiom_xml_writer_get_xml(xml_writer, env);
 		if (!doing_mtom)
 		{
-			buffer_size = AXIOM_XML_WRITER_GET_XML_SIZE(xml_writer, env);
+			buffer_size = axiom_xml_writer_get_xml_size(xml_writer, env);
 		}
 		else
 			buffer_size = output_stream_size;

@@ -123,7 +123,7 @@ int main(int argc, char** argv)
         if (soap_fault)
         {
             printf("\nReturned SOAP fault: %s\n", 
-                axiom_node_get_data_element(axiom_soap_fault_get_base_node(soap_fault,env), 
+                axiom_node_to_string(axiom_soap_fault_get_base_node(soap_fault,env), 
                 env));
         }
         return -1;

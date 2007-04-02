@@ -101,7 +101,7 @@ int main(int argc, char** argv)
     if (ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = axiom_node_get_data_element(ret_node, env);
+        om_str = axiom_node_to_string(ret_node, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
     if (ret_node2)
     {
         axis2_char_t *om_str = NULL;
-        om_str = axiom_node_get_data_element(ret_node2, env);
+        om_str = axiom_node_to_string(ret_node2, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
@@ -169,7 +169,7 @@ build_om_payload_for_echo_svc(const axutil_env_t *env)
     text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, "Hello World!", text_om_node);
 
-    om_str = axiom_node_get_data_element(echo_om_node, env);
+    om_str = axiom_node_to_string(echo_om_node, env);
     if (om_str)
     {
         printf("\nSending OM : %s\n", om_str);
