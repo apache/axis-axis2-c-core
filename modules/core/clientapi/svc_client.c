@@ -1274,3 +1274,43 @@ axis2_svc_client_get_last_response_has_fault(const axis2_svc_client_t *svc_clien
     return svc_client->last_response_has_fault;
 }
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
+    const axutil_env_t *env,
+    axis2_char_t *proxy_host,
+    axis2_char_t *proxy_port)
+{
+    AXIS2_PARAM_CHECK(env->error, proxy_host, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, proxy_port, AXIS2_FAILURE);
+    axis2_transport_out_desc_t *trans_desc = NULL;
+    axis2_conf_t *conf = NULL;
+    axutil_param_container_t *param_container;
+    axutil_param_t *param;
+    axis2_char_t *proxy = AXIS2_HTTP_PROXY_API;
+    axutil_hash_t *attribute;
+
+    if (svc_client->conf)
+    {
+        conf = svc_client->conf;
+        trans_desc =  axis2_conf_get_transport_out(conf, env, AXIS2_TRANSPORT_ENUM_HTTP);
+        if (! trans_desc)
+        {
+            return AXIS2_FAILURE;
+        }
+        param_container = axis2_transport_out_desc_param_container (trans_desc, env);
+        param = axutil_param_create (env, proxy, (void *)NULL);
+
+        if (!param)
+        {
+            return AXIS2_FAILURE;
+        }
+
+        attribute = axutil_hash_make (env);
+        axutil_hash_set (attribute, AXIS2_HTTP_PROXY_HOST, AXIS2_HASH_KEY_STRING, proxy_host);
+        axutil_hash_set (attribute, AXIS2_HTTP_PROXY_PORT, AXIS2_HASH_KEY_STRING, proxy_port);
+        axutil_param_set_attributes (param, env, attribute);
+        axutil_param_container_add_param (param_container, env, param);
+
+    }
+    return AXIS2_SUCCESS;
+}

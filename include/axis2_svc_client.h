@@ -52,6 +52,7 @@
 #include <axis2_svc_ctx.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_op_client.h>
+#include <axutil_string.h>
 
 /** Name of anonymous service */
 #define AXIS2_ANON_SERVICE  "__ANONYMOUS_SERVICE__"
@@ -65,7 +66,9 @@
 /** out-in MEP operation name */
 #define AXIS2_ANON_OUT_IN_OP "__OPERATION_OUT_IN__"
 
-
+#define AXIS2_HTTP_PROXY_API "PROXY_API"
+#define AXIS2_HTTP_PROXY_HOST "proxy_host"
+#define AXIS2_HTTP_PROXY_PORT "proxy_port"
 #ifdef __cplusplus
 extern "C"
 {
@@ -383,6 +386,24 @@ extern "C"
     axis2_svc_client_set_target_endpoint_ref(axis2_svc_client_t *svc_client,
         const axutil_env_t *env,
         axis2_endpoint_ref_t *target_epr);
+
+
+    /**
+     * Sets the proxy.
+     * @param svc_client pointer to service client struct
+     * @param env pointer to environment struct
+     * @param proxy_host pointer to the proxy_host settings to be set
+     * as 
+     * @param proxy_port pointer to the proxy_port settings to be set
+     * as  
+     * target. service client takes over the ownership of the struct.
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_svc_client_set_proxy(axis2_svc_client_t *svc_client,
+        const axutil_env_t *env,
+        axis2_char_t *proxy_host,
+        axis2_char_t *proxy_port);
 
     /**
      * Gets the service context.

@@ -16,6 +16,7 @@
  */
 
 #include <axis2_http_sender.h>
+#include <axis2_svc_client.h>
 #include <axutil_string.h>
 #include <axis2_http_transport.h>
 #include <string.h>
@@ -809,6 +810,9 @@ axis2_http_sender_configure_proxy(
     axis2_transport_out_desc_t *trans_desc = NULL;
     axutil_param_t *proxy_param = NULL;
     axutil_hash_t *transport_attrs = NULL;
+    axis2_char_t *proxy_host = NULL;
+    axis2_char_t *proxy_port = NULL;
+
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -841,8 +845,6 @@ axis2_http_sender_configure_proxy(
             axutil_generic_obj_t *obj = NULL;
             axiom_attribute_t *host_attr = NULL;
             axiom_attribute_t *port_attr = NULL;
-            axis2_char_t *proxy_host = NULL;
-            axis2_char_t *proxy_port = NULL;
 
             obj = axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
 								 AXIS2_HASH_KEY_STRING);
@@ -877,13 +879,41 @@ axis2_http_sender_configure_proxy(
             {
                 return AXIS2_FAILURE;
             }
-            if (proxy_host && NULL != proxy_port)
+        }
+    }
+    else 
+    {
+        proxy_param = axutil_param_container_get_param(
+            axis2_transport_out_desc_param_container(trans_desc, env), 
+            env, AXIS2_HTTP_PROXY_API);
+        if (proxy_param)
+        {
+            transport_attrs = axutil_param_get_attributes(proxy_param, env);
+            if (transport_attrs)
             {
-                AXIS2_HTTP_CLIENT_SET_PROXY(sender->client, env, proxy_host,
-											AXIS2_ATOI(proxy_port));
-                return AXIS2_SUCCESS;
+     
+                proxy_host = (axis2_char_t *)axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_NAME,
+                                      AXIS2_HASH_KEY_STRING);
+                if (!proxy_host)
+                {
+                    return AXIS2_FAILURE;
+                }
+                /* Now we get the port */
+                
+                proxy_port = (axis2_char_t *)axutil_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
+                                      AXIS2_HASH_KEY_STRING);
+                if (!proxy_port)
+                {
+                    return AXIS2_FAILURE;
+                }
             }
         }
+
+    }
+    if (proxy_port && proxy_host)
+    {
+        AXIS2_HTTP_CLIENT_SET_PROXY(sender->client, env, proxy_host,
+                                    AXIS2_ATOI(proxy_port));
     }
     return AXIS2_SUCCESS;
 }
