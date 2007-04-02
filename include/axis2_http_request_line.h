@@ -103,25 +103,6 @@ extern "C"
     axis2_http_request_line_parse_line(const axutil_env_t *env,
         const axis2_char_t *str);
 
-/** Get method. */
-#define AXIS2_HTTP_REQUEST_LINE_GET_METHOD(request_line, env) \
-                        axis2_http_request_line_get_method (request_line, env)
-
-/** Gets the http version. */
-#define AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION(request_line, env) \
-                        axis2_http_request_line_get_http_version(request_line, env)
-
-/** Gets the uri. */
-#define AXIS2_HTTP_REQUEST_LINE_GET_URI(request_line, env) \
-                        axis2_http_request_line_get_uri (request_line, env)
-
-/** To string. */
-#define AXIS2_HTTP_REQUEST_LINE_TO_STRING(request_line, env) \
-                        axis2_http_request_line_to_string (request_line, env)
-
-/** Frees the http request line. */
-#define AXIS2_HTTP_REQUEST_LINE_FREE(request_line, env) \
-                        axis2_http_request_line_free(request_line, env)
 
 /** @} */
 #ifdef __cplusplus

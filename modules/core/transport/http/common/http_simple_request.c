@@ -101,7 +101,7 @@ axis2_http_simple_request_free(
     */
     if (simple_request->request_line)
     {
-        AXIS2_HTTP_REQUEST_LINE_FREE(simple_request->request_line, env);
+        axis2_http_request_line_free(simple_request->request_line, env);
     }
     if (simple_request->header_group)
     {

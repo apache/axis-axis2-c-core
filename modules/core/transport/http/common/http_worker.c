@@ -143,7 +143,7 @@ axis2_http_worker_process_request(
 
     content_length = AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_LENGTH(simple_request
             , env);
-    http_version = AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION
+    http_version = axis2_http_request_line_get_http_version
             (AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE
                     (simple_request, env), env);
     if (! http_version)
@@ -167,7 +167,7 @@ axis2_http_worker_process_request(
             (encoding_header_value,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
     {
-        if (0 == axis2_strcasecmp(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
+        if (0 == axis2_strcasecmp(axis2_http_request_line_get_method(
                     AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                         simple_request, env), env), AXIS2_HTTP_HEADER_POST))
         {
@@ -209,7 +209,7 @@ axis2_http_worker_process_request(
         axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR, peer_property); 
     }
 
-    path =   AXIS2_HTTP_REQUEST_LINE_GET_URI(
+    path =   axis2_http_request_line_get_uri(
 	AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
 	    simple_request, env), env);
 
@@ -244,7 +244,7 @@ axis2_http_worker_process_request(
                     env);
         soap_action_str = axutil_string_create(env, soap_action);
     }
-    if (0 == axis2_strcasecmp(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
+    if (0 == axis2_strcasecmp(axis2_http_request_line_get_method(
                 AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                     simple_request, env), env), AXIS2_HTTP_HEADER_GET))
     {
@@ -255,7 +255,7 @@ axis2_http_worker_process_request(
                         axutil_url_to_external_form(request_url, env),
                         conf_ctx,
                         axis2_http_transport_utils_get_request_params(env,
-                                AXIS2_HTTP_REQUEST_LINE_GET_URI(
+                                axis2_http_request_line_get_uri(
                                     AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                                         simple_request, env), env)));
         if (AXIS2_FALSE == processed)
@@ -292,7 +292,7 @@ axis2_http_worker_process_request(
                 return AXIS2_TRUE;
         }
     }
-    else if (0 == axis2_strcasecmp(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
+    else if (0 == axis2_strcasecmp(axis2_http_request_line_get_method(
                 AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                     simple_request, env), env), AXIS2_HTTP_HEADER_POST))
     {
@@ -330,13 +330,13 @@ axis2_http_worker_process_request(
                 if (!http_error_value)
                 {
                     sprintf(status_line_str, "%s 500 Internal Server Error\r\n",
-                            AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION(req_line,
+                            axis2_http_request_line_get_http_version(req_line,
                                 env));
                 }
                 else
                 {
                     sprintf(status_line_str, "%s %s",
-                        AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION(req_line,env),
+                        axis2_http_request_line_get_http_version(req_line,env),
                         http_error_value);
                 }
             }

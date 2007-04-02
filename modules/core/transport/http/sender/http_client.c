@@ -263,7 +263,7 @@ axis2_http_client_send(
     }
     if (AXIS2_FALSE == client->proxy_enabled)
     {
-        str_request_line = AXIS2_HTTP_REQUEST_LINE_TO_STRING(
+        str_request_line = axis2_http_request_line_to_string(
                     AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(request, env)
                     , env);
     }
@@ -276,7 +276,7 @@ axis2_http_client_send(
         axis2_char_t *server = axutil_url_get_server(client->url, env);
         axis2_http_request_line_t *request_line =
             AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(request, env);
-        axis2_char_t *path = AXIS2_HTTP_REQUEST_LINE_GET_URI(request_line, env);
+        axis2_char_t *path = axis2_http_request_line_get_uri(request_line, env);
 
 
         /* length = len(server) + len(:port) + len("http://") + len(path) + 1*/
@@ -292,8 +292,8 @@ axis2_http_client_send(
         str_request_line = AXIS2_MALLOC(env->allocator,
                 axis2_strlen(host_port_str) + 20 * sizeof(axis2_char_t));
         sprintf(str_request_line, "%s %s %s\r\n",
-                AXIS2_HTTP_REQUEST_LINE_GET_METHOD(request_line, env),
-                host_port_str, AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION(
+                axis2_http_request_line_get_method(request_line, env),
+                host_port_str, axis2_http_request_line_get_http_version(
                     request_line, env));
         AXIS2_FREE(env->allocator, host_port_str);
         host_port_str = NULL;
