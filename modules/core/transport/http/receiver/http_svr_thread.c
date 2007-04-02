@@ -146,7 +146,7 @@ axis2_http_svr_thread_run(
         arg_list->socket = socket;
         arg_list->worker = svr_thread->worker;
 #ifdef AXIS2_SVR_MULTI_THREADED
-        worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+        worker_thread = axutil_thread_pool_get_thread(env->thread_pool,
                 axis2_svr_thread_worker_func, (void *)arg_list);
         if (! worker_thread)
         {
@@ -154,7 +154,7 @@ axis2_http_svr_thread_run(
                     "server thread loop");
             continue;
         }
-        AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, worker_thread);
+        axutil_thread_pool_thread_detach(env->thread_pool, worker_thread);
 #else
         axis2_svr_thread_worker_func(NULL, (void *)arg_list);
 #endif
@@ -297,7 +297,7 @@ axis2_svr_thread_worker_func (
         thread_env = NULL;
     }
 #ifdef AXIS2_SVR_MULTI_THREADED
-    /*AXIS2_THREAD_POOL_EXIT_THREAD(env->thread_pool, thd);*/
+    /*axutil_thread_pool_exit_thread(env->thread_pool, thd);*/
 #endif
 
     return NULL;

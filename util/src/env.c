@@ -74,7 +74,7 @@ axutil_env_free(axutil_env_t *env)
     }
     if (env && env->thread_pool)
     {
-        AXIS2_THREAD_POOL_FREE(env->thread_pool);
+        axutil_thread_pool_free(env->thread_pool);
         env->thread_pool = NULL;
     }
     if (env && env->allocator)
@@ -227,7 +227,7 @@ axutil_env_free_masked(axutil_env_t *env,
     }
     if (mask & 0x4)
     {
-        AXIS2_THREAD_POOL_FREE(env->thread_pool);
+        axutil_thread_pool_free(env->thread_pool);
     }
     if (env)
         AXIS2_FREE(env->allocator, env);

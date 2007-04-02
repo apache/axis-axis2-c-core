@@ -136,7 +136,7 @@ axis2_listener_manager_make_sure_started(axis2_listener_manager_t *listener_mana
 #ifdef AXIS2_SVR_MULTI_THREADED
                     if (env->thread_pool)
                     {
-                        worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+                        worker_thread = axutil_thread_pool_get_thread(env->thread_pool,
                                 axis2_listener_manager_worker_func, (void*)arg_list);
                         if (! worker_thread)
                         {
@@ -145,7 +145,7 @@ axis2_listener_manager_make_sure_started(axis2_listener_manager_t *listener_mana
                         }
                         else
                         {
-                            AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, worker_thread);
+                            axutil_thread_pool_thread_detach(env->thread_pool, worker_thread);
                         }
                     }
                     else

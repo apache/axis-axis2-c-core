@@ -476,14 +476,14 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
 #ifdef AXIS2_SVR_MULTI_THREADED
             if(env->thread_pool)
             {
-                worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+                worker_thread = axutil_thread_pool_get_thread(env->thread_pool,
                     axis2_op_client_worker_func, (void*)arg_list);
                 if(! worker_thread)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
                         "call invoke non blocking");
                 }
-                AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, worker_thread);
+                axutil_thread_pool_thread_detach(env->thread_pool, worker_thread);
             }
             else
             {
@@ -623,7 +623,7 @@ axis2_op_client_worker_func(axutil_thread_t *thd,
         axis2_free_thread_env(th_env);
         th_env = NULL;
     }
-    AXIS2_THREAD_POOL_EXIT_THREAD(th_pool, thd);
+    axutil_thread_pool_exit_thread(th_pool, thd);
     return NULL;
 }
 
