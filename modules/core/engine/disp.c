@@ -92,7 +92,7 @@ axis2_disp_create(
         return NULL;
     }
 
-    AXIS2_HANDLER_INIT(disp->base, env, handler_desc);
+    axis2_handler_init(disp->base, env, handler_desc);
 
     return disp;
 }

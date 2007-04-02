@@ -1656,7 +1656,7 @@ axis2_msg_ctx_set_current_handler_index(
         if (handler)
         {
             msg_ctx->paused_handler_name =
-                (axutil_string_t *)AXIS2_HANDLER_GET_NAME(handler, env);
+                (axutil_string_t *)axis2_handler_get_name(handler, env);
         }
     }
     return AXIS2_SUCCESS;

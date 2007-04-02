@@ -1104,7 +1104,7 @@ axis2_dep_engine_add_module_flow_handlers(axis2_dep_engine_t *dep_engine,
         handler_create_func = axutil_hash_get(handler_create_func_map,
             axutil_string_get_buffer(handler_name, env), AXIS2_HASH_KEY_STRING);
         handler = handler_create_func(env, handler_name);
-        AXIS2_HANDLER_INIT(handler, env, handlermd);
+        axis2_handler_init(handler, env, handlermd);
         axis2_handler_desc_set_handler(handlermd, env, handler);
     }
     return AXIS2_SUCCESS;

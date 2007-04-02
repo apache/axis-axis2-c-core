@@ -158,36 +158,6 @@ extern "C"
     axis2_ctx_handler_create(const axutil_env_t *env, 
         const axutil_string_t *qname);
 
-/** Frees handler.
-    @sa axis2_handler_ops#free */
-#define AXIS2_HANDLER_FREE(handler, env) \
-       axis2_handler_free(handler, env)
-
-/** Initializes handler.
-    @sa axis2_handler_ops#init */
-#define AXIS2_HANDLER_INIT(handler, env, handler_desc) \
-       axis2_handler_init(handler, env, handler_desc)
-
-/** Invokes the handler.
-    @sa axis2_handler_ops#invoke */
-#define AXIS2_HANDLER_INVOKE(handler, env, msg_ctx) \
-        axis2_handler_invoke(handler, env, msg_ctx)
-
-/** Gets handler QName.
-    @sa axis2_handler_ops#get_name */
-#define AXIS2_HANDLER_GET_NAME(handler, env) \
-        axis2_handler_get_name(handler, env)
-
-/** Gets the named parameter.
-    @sa axis2_handler_ops#get_param */
-#define AXIS2_HANDLER_GET_PARAM(handler, env, name) \
-      axis2_handler_get_param(handler, env, name)
-
-/** Gets handler description related to the handler.
-    @sa axis2_handler_ops#get_handler_desc */
-#define AXIS2_HANDLER_GET_HANDLER_DESC(handler, env) \
-      axis2_handler_get_handler_desc(handler, env)
-
 /** @} */
 
 #ifdef __cplusplus

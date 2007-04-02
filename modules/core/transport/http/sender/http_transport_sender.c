@@ -302,12 +302,6 @@ axis2_http_transport_sender_invoke(
                 AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env,
                         AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP);
             }
-            /*
-            AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env, 
-                     axiom_output_get_content_type(om_output, env));*/
-            /* axiom_output_set_do_optimize(om_output, env,
-             *            AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
-             */
 		
             if (AXIS2_TRUE ==  axis2_msg_ctx_get_doing_rest(msg_ctx, env))
             {

@@ -91,7 +91,7 @@ axis2_disp_checker_create(
         return NULL;
     }
 
-    AXIS2_HANDLER_INIT(disp_checker->base, env, handler_desc);
+    axis2_handler_init(disp_checker->base, env, handler_desc);
     return disp_checker;
 }
 

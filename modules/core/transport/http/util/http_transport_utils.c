@@ -1571,7 +1571,7 @@ axis2_http_transport_utils_dispatch_and_verify(
 
     req_uri_disp = axis2_req_uri_disp_create(env);
     handler = axis2_disp_get_base(req_uri_disp, env);
-    AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
+    axis2_handler_invoke(handler, env, msg_ctx);
 
     if (!  axis2_msg_ctx_get_svc(msg_ctx, env) || !
              axis2_msg_ctx_get_op(msg_ctx, env))

@@ -213,7 +213,7 @@ axis2_handler_desc_set_handler(axis2_handler_desc_t *handler_desc,
 
     if (handler_desc->handler && (handler_desc->handler != handler))
     {
-        AXIS2_HANDLER_FREE(handler_desc->handler, env);
+        axis2_handler_free(handler_desc->handler, env);
     }
 
     if (handler)
@@ -296,7 +296,7 @@ axis2_handler_desc_free(axis2_handler_desc_t *handler_desc,
 
     if (handler_desc->handler)
     {
-        AXIS2_HANDLER_FREE(handler_desc->handler, env);
+        axis2_handler_free(handler_desc->handler, env);
     }
 
     if (handler_desc->class_name)

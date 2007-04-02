@@ -226,7 +226,7 @@ axis2_phase_holder_build_transport_handler_chain(axis2_phase_holder_t *phase_hol
     {
         handler_desc = (axis2_handler_desc_t *) axutil_array_list_get(
             handlers, env, i);
-        status = AXIS2_HANDLER_INIT(handler, env, handler_desc);
+        status = axis2_handler_init(handler, env, handler_desc);
         if (AXIS2_FAILURE == status)
 	{
             return status;

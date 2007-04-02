@@ -420,7 +420,7 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
             impl_info_param);
 
         handler = axis2_disp_get_base(disp_dll, env);
-        handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(handler, env);
+        handler_desc = axis2_handler_get_handler_desc(handler, env);
         axis2_handler_desc_add_param(handler_desc, env, impl_info_param);
 
         /*disptachClas.getHandlerDesc().setParent(axisConfiguration); */

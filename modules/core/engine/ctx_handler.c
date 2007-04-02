@@ -77,11 +77,11 @@ axis2_ctx_handler_create(
     axutil_string_free(handler_string, env);
     if (!handler_desc)
     {
-        AXIS2_HANDLER_FREE(handler, env);
+        axis2_handler_free(handler, env);
         return NULL;
     }
 
-    AXIS2_HANDLER_INIT(handler, env, handler_desc);
+    axis2_handler_init(handler, env, handler_desc);
 
     /* set the base struct's invoke op */
     axis2_handler_set_invoke(handler, env, axis2_ctx_handler_invoke);
