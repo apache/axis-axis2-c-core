@@ -107,21 +107,6 @@ extern "C"
     AXIS2_EXTERN void AXIS2_CALL
     axis2_free_thread_env(struct axutil_env *thread_env);
 
-#define axutil_thread_pool_get_thread(thread_pool, func, data) \
-      axutil_thread_pool_get_thread(thread_pool, func, data)
-
-#define axutil_thread_pool_join_thread(thread_pool, thd) \
-      axutil_thread_pool_join_thread(thread_pool, thd)
-
-#define axutil_thread_pool_exit_thread(thread_pool, thd) \
-      axutil_thread_pool_exit_thread(thread_pool, thd)
-
-#define axutil_thread_pool_thread_detach(thread_pool, thd) \
-      axutil_thread_pool_thread_detach(thread_pool, thd)
-
-#define axutil_thread_pool_free(thread_pool) \
-      axutil_thread_pool_free(thread_pool)
-
     /** @} */
 
 #ifdef __cplusplus
