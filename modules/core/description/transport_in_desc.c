@@ -79,7 +79,7 @@ axis2_transport_in_desc_free(axis2_transport_in_desc_t *transport_in,
 
     if (transport_in->recv)
     {
-        AXIS2_TRANSPORT_RECEIVER_FREE(transport_in->recv, env);
+        axis2_transport_receiver_free(transport_in->recv, env);
     }
 
     if (transport_in->param_container)
@@ -209,7 +209,7 @@ axis2_transport_in_desc_set_recv(axis2_transport_in_desc_t *transport_in,
 
     if (transport_in->recv)
     {
-        AXIS2_TRANSPORT_RECEIVER_FREE(transport_in->recv, env);
+        axis2_transport_receiver_free(transport_in->recv, env);
     }
 
     transport_in->recv = recv;

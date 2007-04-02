@@ -203,7 +203,7 @@ axis2_listener_manager_stop(axis2_listener_manager_t *listener_manager,
         tl_state->waiting_calls--;
         if (tl_state->waiting_calls == 0)
         {
-            status = AXIS2_TRANSPORT_RECEIVER_STOP(tl_state->listener, env);
+            status = axis2_transport_receiver_stop(tl_state->listener, env);
             if (status != AXIS2_SUCCESS)
                 return status;
 
@@ -227,7 +227,7 @@ axis2_listener_manager_get_reply_to_epr(const axis2_listener_manager_t *listener
     tl_state = listener_manager->listener_map[transport];
     if (tl_state)
     {
-        return AXIS2_TRANSPORT_RECEIVER_GET_REPLY_TO_EPR(tl_state->listener, env, svc_name);
+        return axis2_transport_receiver_get_reply_to_epr(tl_state->listener, env, svc_name);
     }
     return NULL;
 }
@@ -273,7 +273,7 @@ axis2_listener_manager_worker_func(axutil_thread_t *thd,
     th_env = axis2_init_thread_env(args_list->env);
     if (args_list->listener)
     {
-        AXIS2_TRANSPORT_RECEIVER_START(args_list->listener, th_env);
+        axis2_transport_receiver_start(args_list->listener, th_env);
     }
     return NULL;
 }

@@ -140,50 +140,78 @@ extern "C"
     /**
      * @brief Transport Reciever  struct  
      */
-     struct axis2_transport_receiver
+    struct axis2_transport_receiver
     {
         const axis2_transport_receiver_ops_t *ops;
     };
 
 
-/*************************** Function macros **********************************/
-
 /** Frees the transport receiver.
     @sa axis2_transport_receiver#free */
-#define AXIS2_TRANSPORT_RECEIVER_FREE(transport_receiver, env) \
-      ((transport_receiver->ops)->free (transport_receiver, env))
+static void AXIS2_CALL 
+axis2_transport_receiver_free(axis2_transport_receiver_t *transport_receiver,
+    const axutil_env_t *env)
+{
+      (transport_receiver->ops)->free (transport_receiver, env);
+}
 
 /** Initialize the transport receiver.
     @sa axis2_transport_receiver#init */
-#define AXIS2_TRANSPORT_RECEIVER_INIT(transport_receiver, env, axisconf, transport_in) \
-      ((transport_receiver->ops)->init (transport_receiver, env, axisconf, transport_in))
+static axis2_status_t AXIS2_CALL
+axis2_transport_receiver_init(axis2_transport_receiver_t *transport_receiver,
+    const axutil_env_t *env,
+    struct axis2_conf_ctx *conf_ctx,
+    struct axis2_transport_in_desc *transport_in)
+{
+      return (transport_receiver->ops)->init (transport_receiver, env, 
+          conf_ctx, transport_in);
+}
 
 /** Start
     @sa axis2_transport_receiver#start */
-#define AXIS2_TRANSPORT_RECEIVER_START(transport_receiver, env) \
-      ((transport_receiver->ops)->start (transport_receiver, env))
+static axis2_status_t AXIS2_CALL 
+axis2_transport_receiver_start(axis2_transport_receiver_t *transport_receiver,
+    const axutil_env_t *env)
+{
+    return (transport_receiver->ops)->start (transport_receiver, env);
+}
 
 /** Stop.
     @sa axis2_transport_receiver#stop */
-#define AXIS2_TRANSPORT_RECEIVER_STOP(transport_receiver, env) \
-      ((transport_receiver->ops)->stop (transport_receiver, env))
+static axis2_status_t AXIS2_CALL 
+axis2_transport_receiver_stop(axis2_transport_receiver_t *transport_receiver,
+    const axutil_env_t *env)
+{
+    return (transport_receiver->ops)->stop (transport_receiver, env);
+}
 
 /** Get reply to epr.
     @sa axis2_transport_receiver#get_reply_to_epr */
-#define AXIS2_TRANSPORT_RECEIVER_GET_REPLY_TO_EPR(transport_receiver, env, svc_name) \
-      ((transport_receiver->ops)->get_reply_to_epr (transport_receiver, env, svc_name))
+static axis2_endpoint_ref_t* AXIS2_CALL 
+axis2_transport_receiver_get_reply_to_epr(axis2_transport_receiver_t *transport_receiver,
+    const axutil_env_t *env,
+    const axis2_char_t *svc_name)
+{
+    return (transport_receiver->ops)->get_reply_to_epr (transport_receiver, env, svc_name);
+}
 
 /** Get conf ctx. 
     @sa axis2_transport_receiver#get_conf_ctx */
-#define AXIS2_TRANSPORT_RECEIVER_GET_CONF_CTX(transport_receiver, env) \
-                        ((transport_receiver)->ops->get_conf_ctx(transport_receiver, env))
+static struct axis2_conf_ctx *AXIS2_CALL 
+axis2_transport_receiver_get_conf_ctx(axis2_transport_receiver_t *transport_receiver,
+    const axutil_env_t *env)
+{
+    return (transport_receiver)->ops->get_conf_ctx(transport_receiver, env);
+}
 
 /** Is running.
     @sa axis2_transport_receiver#is_running */
-#define AXIS2_TRANSPORT_RECEIVER_IS_RUNNING(transport_receiver, env) \
-                                ((transport_receiver)->ops->is_running(transport_receiver, env))
-
-/*************************** End of function macros ***************************/
+static axis2_bool_t AXIS2_CALL
+axis2_transport_receiver_is_running(axis2_transport_receiver_t *transport_receiver,
+    const axutil_env_t *env)
+{
+    return (transport_receiver)->ops->is_running(transport_receiver, env);
+}
 
 /** @} */
 

@@ -324,7 +324,7 @@ AXIS2_EXPORT int axis2_remove_instance(
 {
     if (inst)
     {
-        AXIS2_TRANSPORT_RECEIVER_FREE(inst, env);
+        axis2_transport_receiver_free(inst, env);
     }
     return AXIS2_SUCCESS;
 }

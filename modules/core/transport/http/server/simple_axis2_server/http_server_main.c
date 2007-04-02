@@ -72,7 +72,7 @@ void system_exit(
     axutil_allocator_t *allocator = NULL;
     if (server)
     {
-        AXIS2_TRANSPORT_RECEIVER_FREE(server,  system_env);
+        axis2_transport_receiver_free(server,  system_env);
     }
     if (env)
     {
@@ -172,7 +172,7 @@ int main(
 
     }
     printf("Started Simple Axis2 HTTP Server ...\n");
-    if (AXIS2_TRANSPORT_RECEIVER_START(server, env) == AXIS2_FAILURE)
+    if (axis2_transport_receiver_start(server, env) == AXIS2_FAILURE)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:"
                 " %d :: %s", env->error->error_number,
