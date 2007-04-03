@@ -20,7 +20,7 @@
 #include <axutil_utils.h>
 
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-axis2_tokenize(const axutil_env_t *env,
+axutil_tokenize(const axutil_env_t *env,
     axis2_char_t *in,
     int delim)
 {
@@ -73,7 +73,7 @@ axis2_tokenize(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-axis2_first_token(const axutil_env_t *env,
+axutil_first_token(const axutil_env_t *env,
     axis2_char_t *in,
     int delim)
 {
@@ -112,7 +112,7 @@ axis2_first_token(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
-axis2_last_token(const axutil_env_t *env,
+axutil_last_token(const axutil_env_t *env,
     axis2_char_t *in,
     int delim)
 {

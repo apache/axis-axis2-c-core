@@ -62,7 +62,7 @@ axutil_date_time_create_with_offset(const axutil_env_t *env, int offset)
     date_time->hour = utc_time->tm_hour;
     date_time->min = utc_time->tm_min;
     date_time->sec = utc_time->tm_sec;
-    date_time->msec = axis2_get_milliseconds(env);
+    date_time->msec = axutil_get_milliseconds(env);
 
     return date_time;
 }

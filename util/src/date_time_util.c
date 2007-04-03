@@ -20,7 +20,7 @@
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_get_milliseconds(const axutil_env_t *env)
+axutil_get_milliseconds(const axutil_env_t *env)
 {
     return axis2_platform_get_milliseconds();
 }

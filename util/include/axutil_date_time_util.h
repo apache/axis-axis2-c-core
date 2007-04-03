@@ -40,7 +40,7 @@ extern "C"
  * @return generated uuid as a string
  */ 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_get_milliseconds(const axutil_env_t *env);
+axutil_get_milliseconds(const axutil_env_t *env);
 
 /** @} */
     
