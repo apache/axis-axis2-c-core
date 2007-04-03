@@ -1,9 +1,0 @@
-This is a sample generated from Axis2/C Codegen tool.
-
-sample source        test_calcultor.c
-wsdl                 $AXIS2C_SRC/test/resources/wsdl/InteropTestRound1Doc.wsdl
-
-Command to execute the code generation: 
-( with converting names(cn) and indenting code(id) )
-
-w2c -uri $AXIS2C_SRC/test/resources/wsdl/InteropTestRound1Doc.wsdl -cn -id
