@@ -23,7 +23,7 @@
 #include <axiom_xml_writer.h>
 
 /************************ function prototypes ************************************/
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 guththila_xml_writer_wrapper_free(axiom_xml_writer_t *writer,
     const axutil_env_t *env);
 
@@ -188,10 +188,19 @@ unsigned int AXIS2_CALL
 guththila_xml_writer_wrapper_get_xml_size(axiom_xml_writer_t *writer,
     const axutil_env_t *env);
 
+int AXIS2_CALL
+guththila_xml_writer_wrapper_get_type(axiom_xml_writer_t *writer,
+     const axutil_env_t *env);
+
 axis2_status_t AXIS2_CALL
 guththila_xml_writer_wrapper_write_raw (axiom_xml_writer_t *writer,
     const axutil_env_t *env,
     axis2_char_t *content);
+
+axis2_status_t AXIS2_CALL
+guththila_xml_writer_wrapper_flush(axiom_xml_writer_t *writer,
+    const axutil_env_t *env);
+
 
 
 /***************************** end function pointers *****************************/
@@ -202,6 +211,43 @@ typedef struct guththila_xml_writer_wrapper_impl
     guththila_t *parser;
 }
 guththila_xml_writer_wrapper_impl_t;
+
+static const axiom_xml_writer_ops_t axiom_xml_writer_ops_var = {
+    guththila_xml_writer_wrapper_free,
+    guththila_xml_writer_wrapper_write_start_element,
+    guththila_xml_writer_wrapper_end_start_element,
+    guththila_xml_writer_wrapper_write_start_element_with_namespace,
+    guththila_xml_writer_wrapper_write_start_element_with_namespace_prefix,
+    guththila_xml_writer_wrapper_write_empty_element,
+    guththila_xml_writer_wrapper_write_empty_element_with_namespace,
+    guththila_xml_writer_wrapper_write_empty_element_with_namespace_prefix,
+    guththila_xml_writer_wrapper_write_end_element,
+    guththila_xml_writer_wrapper_write_end_document,
+    guththila_xml_writer_wrapper_write_attribute,
+    guththila_xml_writer_wrapper_write_attribute_with_namespace,
+    guththila_xml_writer_wrapper_write_attribute_with_namespace_prefix,
+    guththila_xml_writer_wrapper_write_namespace,
+    guththila_xml_writer_wrapper_write_default_namespace,
+    guththila_xml_writer_wrapper_write_comment,
+    guththila_xml_writer_wrapper_write_processing_instruction,
+    guththila_xml_writer_wrapper_write_processing_instruction_data,
+    guththila_xml_writer_wrapper_write_cdata,
+    guththila_xml_writer_wrapper_write_dtd,
+    guththila_xml_writer_wrapper_write_entity_ref,
+    guththila_xml_writer_wrapper_write_start_document,
+    guththila_xml_writer_wrapper_write_start_document_with_version,
+    guththila_xml_writer_wrapper_write_start_document_with_version_encoding,
+    guththila_xml_writer_wrapper_write_characters,
+    guththila_xml_writer_wrapper_get_prefix,
+    guththila_xml_writer_wrapper_set_prefix,
+    guththila_xml_writer_wrapper_set_default_prefix,
+    guththila_xml_writer_wrapper_write_encoded,
+    guththila_xml_writer_wrapper_get_xml,
+    guththila_xml_writer_wrapper_get_xml_size,
+    guththila_xml_writer_wrapper_get_type,
+    guththila_xml_writer_wrapper_write_raw,
+    guththila_xml_writer_wrapper_flush
+};
 
 
 /****************************** Macros *******************************************/
@@ -267,69 +313,7 @@ sizeof(axiom_xml_writer_ops_t));
         return NULL;
     }
     /* ops */
-    writer_impl->writer.ops->free = guththila_xml_writer_wrapper_free;
-    writer_impl->writer.ops->write_start_element =
-        guththila_xml_writer_wrapper_write_start_element;
-    writer_impl->writer.ops->write_start_element_with_namespace =
-        guththila_xml_writer_wrapper_write_start_element_with_namespace;
-    writer_impl->writer.ops->write_start_element_with_namespace_prefix =
-        guththila_xml_writer_wrapper_write_start_element_with_namespace_prefix;
-
-    writer_impl->writer.ops->write_empty_element = 
-        guththila_xml_writer_wrapper_write_empty_element;
-    writer_impl->writer.ops->write_empty_element_with_namespace  =
-        guththila_xml_writer_wrapper_write_empty_element_with_namespace;
-    writer_impl->writer.ops->write_empty_element_with_namespace_prefix =
-        guththila_xml_writer_wrapper_write_empty_element_with_namespace_prefix;
-
-    writer_impl->writer.ops->write_end_element =
-        guththila_xml_writer_wrapper_write_end_element;
-    writer_impl->writer.ops->write_end_document =
-        guththila_xml_writer_wrapper_write_end_document;
-
-    writer_impl->writer.ops->write_attribute =
-        guththila_xml_writer_wrapper_write_attribute;
-    writer_impl->writer.ops->write_attribute_with_namespace =
-        guththila_xml_writer_wrapper_write_attribute_with_namespace;
-    writer_impl->writer.ops->write_attribute_with_namespace_prefix =
-        guththila_xml_writer_wrapper_write_attribute_with_namespace_prefix;
-    writer_impl->writer.ops->write_namespace =
-        guththila_xml_writer_wrapper_write_namespace;
-    writer_impl->writer.ops->write_default_namespace =
-        guththila_xml_writer_wrapper_write_default_namespace;
-    writer_impl->writer.ops->write_comment =
-        guththila_xml_writer_wrapper_write_comment;
-    writer_impl->writer.ops->write_processing_instruction =
-        guththila_xml_writer_wrapper_write_processing_instruction;
-    writer_impl->writer.ops->write_processing_instruction_data =
-        guththila_xml_writer_wrapper_write_processing_instruction_data;
-    writer_impl->writer.ops->write_cdata =
-        guththila_xml_writer_wrapper_write_cdata;
-    writer_impl->writer.ops->write_dtd =
-        guththila_xml_writer_wrapper_write_dtd;
-    writer_impl->writer.ops->write_entity_ref =
-        guththila_xml_writer_wrapper_write_entity_ref;
-    writer_impl->writer.ops->write_start_document =
-        guththila_xml_writer_wrapper_write_start_document;
-    writer_impl->writer.ops->write_start_document_with_version =
-        guththila_xml_writer_wrapper_write_start_document_with_version;
-    writer_impl->writer.ops->write_start_document_with_version_encoding =
-        guththila_xml_writer_wrapper_write_start_document_with_version_encoding;
-    writer_impl->writer.ops->write_characters =
-        guththila_xml_writer_wrapper_write_characters;
-    writer_impl->writer.ops->get_prefix =
-        guththila_xml_writer_wrapper_get_prefix;
-    writer_impl->writer.ops->set_prefix = guththila_xml_writer_wrapper_set_prefix;
-    writer_impl->writer.ops->set_default_prefix =
-        guththila_xml_writer_wrapper_set_default_prefix;
-    writer_impl->writer.ops->write_encoded =
-        guththila_xml_writer_wrapper_write_encoded;
-    writer_impl->writer.ops->get_xml =
-        guththila_xml_writer_wrapper_get_xml;
-    writer_impl->writer.ops->get_xml_size =
-        guththila_xml_writer_wrapper_get_xml_size;
-    writer_impl->writer.ops->write_raw =
-        guththila_xml_writer_wrapper_write_raw;
+    writer_impl->writer.ops = &axiom_xml_writer_ops_var;
 
     return &(writer_impl->writer);
 }
@@ -385,75 +369,12 @@ axiom_xml_writer_create_for_memory(const axutil_env_t *env,
         return NULL;
     }
     /* ops */
-    writer_impl->writer.ops->free = guththila_xml_writer_wrapper_free;
-    writer_impl->writer.ops->write_start_element = 
-        guththila_xml_writer_wrapper_write_start_element;
-    writer_impl->writer.ops->write_start_element_with_namespace =
-        guththila_xml_writer_wrapper_write_start_element_with_namespace;
-    writer_impl->writer.ops->write_start_element_with_namespace_prefix =
-        guththila_xml_writer_wrapper_write_start_element_with_namespace_prefix;
-
-    writer_impl->writer.ops->write_empty_element = 
-        guththila_xml_writer_wrapper_write_empty_element;
-    writer_impl->writer.ops->write_empty_element_with_namespace  =
-        guththila_xml_writer_wrapper_write_empty_element_with_namespace;
-    writer_impl->writer.ops->write_empty_element_with_namespace_prefix =
-        guththila_xml_writer_wrapper_write_empty_element_with_namespace_prefix;
-
-    writer_impl->writer.ops->write_end_element =
-        guththila_xml_writer_wrapper_write_end_element;
-    writer_impl->writer.ops->write_end_document =
-        guththila_xml_writer_wrapper_write_end_document;
-
-    writer_impl->writer.ops->write_attribute =
-        guththila_xml_writer_wrapper_write_attribute;
-    writer_impl->writer.ops->write_attribute_with_namespace =
-        guththila_xml_writer_wrapper_write_attribute_with_namespace;
-    writer_impl->writer.ops->write_attribute_with_namespace_prefix =
-        guththila_xml_writer_wrapper_write_attribute_with_namespace_prefix;
-    writer_impl->writer.ops->write_namespace =
-        guththila_xml_writer_wrapper_write_namespace;
-    writer_impl->writer.ops->write_default_namespace =
-        guththila_xml_writer_wrapper_write_default_namespace;
-    writer_impl->writer.ops->write_comment =
-        guththila_xml_writer_wrapper_write_comment;
-    writer_impl->writer.ops->write_processing_instruction =
-        guththila_xml_writer_wrapper_write_processing_instruction;
-    writer_impl->writer.ops->write_processing_instruction_data =
-        guththila_xml_writer_wrapper_write_processing_instruction_data;
-    writer_impl->writer.ops->write_cdata =
-        guththila_xml_writer_wrapper_write_cdata;
-    writer_impl->writer.ops->write_dtd =
-        guththila_xml_writer_wrapper_write_dtd;
-    writer_impl->writer.ops->write_entity_ref =
-        guththila_xml_writer_wrapper_write_entity_ref;
-    writer_impl->writer.ops->write_start_document =
-        guththila_xml_writer_wrapper_write_start_document;
-    writer_impl->writer.ops->write_start_document_with_version =
-        guththila_xml_writer_wrapper_write_start_document_with_version;
-    writer_impl->writer.ops->write_start_document_with_version_encoding =
-        guththila_xml_writer_wrapper_write_start_document_with_version_encoding;
-    writer_impl->writer.ops->write_characters =
-        guththila_xml_writer_wrapper_write_characters;
-    writer_impl->writer.ops->get_prefix =
-        guththila_xml_writer_wrapper_get_prefix;
-    writer_impl->writer.ops->set_prefix = guththila_xml_writer_wrapper_set_prefix;
-    writer_impl->writer.ops->set_default_prefix =
-        guththila_xml_writer_wrapper_set_default_prefix;
-    writer_impl->writer.ops->write_encoded =
-        guththila_xml_writer_wrapper_write_encoded;
-    writer_impl->writer.ops->get_xml =
-        guththila_xml_writer_wrapper_get_xml;
-	writer_impl->writer.ops->get_xml_size =
-        guththila_xml_writer_wrapper_get_xml_size;
-       writer_impl->writer.ops->write_raw =
-        guththila_xml_writer_wrapper_write_raw;
-
+    writer_impl->writer.ops = &axiom_xml_writer_ops_var;
     return &(writer_impl->writer);
 
 }
 
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 guththila_xml_writer_wrapper_free(axiom_xml_writer_t *writer,
     const axutil_env_t *env)
 {
@@ -468,17 +389,11 @@ guththila_xml_writer_wrapper_free(axiom_xml_writer_t *writer,
         guththila_free((axutil_env_t *)env, AXIS2_INTF_TO_IMPL(writer)->parser);
     }
 
-    if (writer->ops)
-    {
-        AXIS2_FREE(env->allocator, writer->ops);
-    }
-
     if (writer)
     {
         AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(writer));
     }
 
-    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
@@ -888,3 +803,26 @@ guththila_xml_writer_wrapper_get_xml_size (axiom_xml_writer_t *writer,
 }
 
 
+int AXIS2_CALL
+guththila_xml_writer_wrapper_get_type(axiom_xml_writer_t *writer,
+     const axutil_env_t *env)
+{
+    return 0;
+}
+
+axis2_status_t AXIS2_CALL
+guththila_xml_writer_wrapper_flush(axiom_xml_writer_t *writer,
+    const axutil_env_t *env)
+{
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+guththila_xml_writer_wrapper_end_start_element(axiom_xml_writer_t *writer,
+    const axutil_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    /* nothing to do ,
+       it is automatically taken care by the libxml2 writer */
+    return AXIS2_SUCCESS;
+}
