@@ -473,8 +473,8 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axutil_thread_t *thd, void* data)
 	 host_socket = axutil_network_handler_open_socket(env, target_host, target_port);
 	 if (-1 == host_socket)
 		{
-			 AXIS2_STREAM_WRITE(client_stream, env, NULL, 0);
-			 AXIS2_STREAM_FREE(client_stream, env);
+			 axis2_stream_write(client_stream, env, NULL, 0);
+			 axis2_stream_free(client_stream, env);
 			 axutil_network_handler_close_socket(env, client_socket);
 			 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating host_socket"
 								  "creating socket");
@@ -490,8 +490,8 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axutil_thread_t *thd, void* data)
 	 host_stream = axutil_stream_create_socket(env, host_socket);
 	 if (! host_stream)
 		{
-			 AXIS2_STREAM_WRITE(client_stream, env, NULL, 0);
-			 AXIS2_STREAM_FREE(client_stream, env);
+			 axis2_stream_write(client_stream, env, NULL, 0);
+			 axis2_stream_free(client_stream, env);
 			 axutil_network_handler_close_socket(env, client_socket);
 			 axutil_network_handler_close_socket(env, host_socket);
 			 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error in creating host stream"
@@ -505,7 +505,7 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axutil_thread_t *thd, void* data)
 			 return NULL;
 		}
 
-	 AXIS2_STREAM_WRITE(host_stream, env, buffer , buffer_size);
+	 axis2_stream_write(host_stream, env, buffer , buffer_size);
 	 AXIS2_FREE(env-> allocator, buffer);
 
 	 buffer = read_current_stream(host_stream, env, &buffer_size,
@@ -552,11 +552,11 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axutil_thread_t *thd, void* data)
 		}
 
 
-	 AXIS2_STREAM_WRITE(client_stream, env, buffer, buffer_size);
+	 axis2_stream_write(client_stream, env, buffer, buffer_size);
 	 AXIS2_FREE(env-> allocator, buffer);
 
-	 AXIS2_STREAM_FREE(client_stream, env);
-	 AXIS2_STREAM_FREE(host_stream, env);
+	 axis2_stream_free(client_stream, env);
+	 axis2_stream_free(host_stream, env);
 	 axutil_network_handler_close_socket(env, client_socket);
 	 axutil_network_handler_close_socket(env, host_socket);
 
@@ -592,7 +592,7 @@ read_current_stream(axutil_stream_t *stream,
 		{
 			 buffer = AXIS2_REALLOC(env-> allocator, buffer,
 											sizeof(axis2_char_t) * (read_size + 1));
-			 read = AXIS2_STREAM_READ(stream, env , buffer + read_size,  1);
+			 read = axis2_stream_read(stream, env , buffer + read_size,  1);
 
 			 if (header_just_finished)
 				{

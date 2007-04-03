@@ -390,7 +390,7 @@ tcpmon_session_start(tcpmon_session_t *session,
     thread_data-> env = env;
 
     session_impl-> is_running = AXIS2_TRUE;
-    server_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+    server_thread = axutil_thread_pool_get_thread(env->thread_pool,
             server_funct, (void*)thread_data);
     if (! server_thread)
     {
@@ -403,7 +403,7 @@ tcpmon_session_start(tcpmon_session_t *session,
         }
     }
 
-    AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, server_thread);
+    axutil_thread_pool_thread_detach(env->thread_pool, server_thread);
     return AXIS2_SUCCESS;
 }
 
@@ -506,7 +506,7 @@ server_funct(axutil_thread_t *thd, void *data)
         request_thread_data-> socket = socket;
         request_thread_data-> session = (tcpmon_session_t*)session_impl;
 
-        request_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+        request_thread = axutil_thread_pool_get_thread(env->thread_pool,
                 tcpmon_entry_new_entry_funct,
                 (void*)request_thread_data);
         if (! request_thread)
@@ -521,7 +521,7 @@ server_funct(axutil_thread_t *thd, void *data)
             break;
         }
 
-        AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, request_thread);
+        axutil_thread_pool_thread_detach(env->thread_pool, request_thread);
     }
     axutil_network_handler_close_socket(env, listen_socket);
 

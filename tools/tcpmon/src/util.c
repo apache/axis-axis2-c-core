@@ -79,7 +79,7 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
 
         axiom_xml_reader_init ();
 
-        while ((c = AXIOM_XML_READER_NEXT (xml_reader, env)) != -1)
+        while ((c = axiom_xml_reader_next (xml_reader, env)) != -1)
         {
             switch (c)
 	        {
@@ -90,28 +90,28 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
     	            tcpmon_strcat(out, "<?xml ", &buffer_size, env);
                 
                 
-	                ix = AXIOM_XML_READER_GET_ATTRIBUTE_COUNT (xml_reader, env);
+	                ix = axiom_xml_reader_get_attribute_count (xml_reader, env);
 	                for (; ix > 0; ix--)
 	                {
 		                axis2_char_t *attr_prefix;
 		                axis2_char_t *attr_name;
     		            axis2_char_t *attr_value;
 
-	    	            attr_prefix = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_PREFIX_BY_NUMBER (xml_reader, env, ix);
+	    	            attr_prefix = (axis2_char_t *)axiom_xml_reader_get_attribute_prefix_by_number (xml_reader, env, ix);
 		                if (attr_prefix)
 		                {
 		                    tcpmon_strcat(out, attr_prefix, &buffer_size, env);
 		                    tcpmon_strcat(out, ":", &buffer_size, env);
 		                }
 				        
-    		            attr_name = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_NAME_BY_NUMBER (xml_reader, env, ix);
+    		            attr_name = (axis2_char_t *)axiom_xml_reader_get_attribute_name_by_number (xml_reader, env, ix);
 	    	            if (attr_name)
 		                {
 		                    tcpmon_strcat(out, attr_name, &buffer_size, env);
 		                    tcpmon_strcat(out, "=\"", &buffer_size, env);
 		                }
 		    			            
-		                attr_value = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_VALUE_BY_NUMBER (xml_reader, env, ix);
+		                attr_value = (axis2_char_t *)axiom_xml_reader_get_attribute_value_by_number (xml_reader, env, ix);
 		                if (attr_value)
     		            {
 	    	                tcpmon_strcat(out, attr_value, &buffer_size, env);
@@ -142,27 +142,27 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
 	            
 	                tcpmon_strcat(out, "<", &buffer_size, env);
 	            
-	                ele_prefix =(axis2_char_t *)AXIOM_XML_READER_GET_PREFIX (xml_reader, env);
+	                ele_prefix =(axis2_char_t *)axiom_xml_reader_get_prefix (xml_reader, env);
 	                if (ele_prefix)
     	            {
 	    	            tcpmon_strcat(out, ele_prefix, &buffer_size, env);
 		                tcpmon_strcat(out, ":", &buffer_size, env);                    
     	            }
 	        
-	                ele_name = (axis2_char_t *) AXIOM_XML_READER_GET_NAME (xml_reader, env);
+	                ele_name = (axis2_char_t *) axiom_xml_reader_get_name (xml_reader, env);
 	                if (ele_name)
 	                {
 		                tcpmon_strcat(out, ele_name, &buffer_size, env);					                    
     	            }
                             
-	                ix = AXIOM_XML_READER_GET_ATTRIBUTE_COUNT (xml_reader, env);
+	                ix = axiom_xml_reader_get_attribute_count (xml_reader, env);
 	                for (; ix > 0; ix--)
 	                {
 		                axis2_char_t *attr_prefix;
     		            axis2_char_t *attr_name;
     		            axis2_char_t *attr_value;
 	                		
-               		    attr_prefix = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_PREFIX_BY_NUMBER (xml_reader, env, ix);
+               		    attr_prefix = (axis2_char_t *)axiom_xml_reader_get_attribute_prefix_by_number (xml_reader, env, ix);
     		            if (attr_prefix)
 	    	            {
 		                    has_prefix = 1;
@@ -171,7 +171,7 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
 		                    tcpmon_strcat(out, ":", &buffer_size, env);
 		                }
 		  
-    		            attr_name = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_NAME_BY_NUMBER (xml_reader, env, ix);
+    		            attr_name = (axis2_char_t *)axiom_xml_reader_get_attribute_name_by_number (xml_reader, env, ix);
     		            if (attr_name)
     		            {
     		                if(has_prefix)
@@ -189,7 +189,7 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
                             has_prefix = 0;
 		                }
 
-    		            attr_value = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_VALUE_BY_NUMBER (xml_reader, env, ix);
+    		            attr_value = (axis2_char_t *)axiom_xml_reader_get_attribute_value_by_number (xml_reader, env, ix);
 	    	            if (attr_value)
 		                {
 		                    tcpmon_strcat(out, attr_value, &buffer_size, env);
@@ -209,7 +209,7 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
                 
 	                prev_case = CHAR_VALUE;
 
-	                ele_value = AXIOM_XML_READER_GET_VALUE (xml_reader, env);
+	                ele_value = axiom_xml_reader_get_value (xml_reader, env);
 	                if (ele_value)
     	                tcpmon_strcat(out, ele_value, &buffer_size, env);
 	            
@@ -237,25 +237,25 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
 
 	                tcpmon_strcat(out, "<", &buffer_size, env);
 	            
-	                ele_prefix = (axis2_char_t *) AXIOM_XML_READER_GET_PREFIX (xml_reader, env);
+	                ele_prefix = (axis2_char_t *) axiom_xml_reader_get_prefix (xml_reader, env);
     	            if (ele_prefix)
 	                {
 		                tcpmon_strcat(out, ele_prefix, &buffer_size, env);
 		                tcpmon_strcat(out, ":", &buffer_size, env);                    
 	                }
 	     
-    	            ele_name = (axis2_char_t *) AXIOM_XML_READER_GET_NAME (xml_reader, env);
+    	            ele_name = (axis2_char_t *) axiom_xml_reader_get_name (xml_reader, env);
 	                if (ele_name)
 	                    tcpmon_strcat(out, ele_name, &buffer_size, env);
 	      
-	                ix = AXIOM_XML_READER_GET_ATTRIBUTE_COUNT (xml_reader, env);
+	                ix = axiom_xml_reader_get_attribute_count (xml_reader, env);
     	            for (; ix > 0; ix--)
 	                {
     		            axis2_char_t *attr_prefix;
 	    	            axis2_char_t *attr_name;
 		                axis2_char_t *attr_value;
 
-		                attr_prefix = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_PREFIX_BY_NUMBER (xml_reader, env, ix);
+		                attr_prefix = (axis2_char_t *)axiom_xml_reader_get_attribute_prefix_by_number (xml_reader, env, ix);
 		                if (attr_prefix)
 		                {
     		                has_prefix = 1;
@@ -264,7 +264,7 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
 		                    tcpmon_strcat(out, ":", &buffer_size, env);
 		                }
 
-		                attr_name = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_NAME_BY_NUMBER (xml_reader, env, ix);
+		                attr_name = (axis2_char_t *)axiom_xml_reader_get_attribute_name_by_number (xml_reader, env, ix);
     		            if (attr_name)
 	    	            {
 		                    if(has_prefix)
@@ -281,7 +281,7 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
 		                    has_prefix = 0;
     		            }
 		            
-	    	            attr_value = (axis2_char_t *)AXIOM_XML_READER_GET_ATTRIBUTE_VALUE_BY_NUMBER (xml_reader, env, ix);
+	    	            attr_value = (axis2_char_t *)axiom_xml_reader_get_attribute_value_by_number (xml_reader, env, ix);
 		                if (attr_value)
 		                {
 		                    tcpmon_strcat(out, attr_value, &buffer_size, env);
@@ -313,14 +313,14 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
 	            				
     	            tcpmon_strcat(out, "</", &buffer_size, env);
 
-	                ele_prefix = (axis2_char_t *) AXIOM_XML_READER_GET_PREFIX (xml_reader, env);
+	                ele_prefix = (axis2_char_t *) axiom_xml_reader_get_prefix (xml_reader, env);
 	                if (ele_prefix)
 	                {
 		                tcpmon_strcat(out, ele_prefix, &buffer_size, env);
 		                tcpmon_strcat(out, ":", &buffer_size, env);                    
 	                }
 	      
-    	            ele_name = (axis2_char_t *) AXIOM_XML_READER_GET_NAME (xml_reader, env);
+    	            ele_name = (axis2_char_t *) axiom_xml_reader_get_name (xml_reader, env);
 	                if (ele_name)
 	                {
 		                tcpmon_strcat(out, ele_name, &buffer_size, env);
