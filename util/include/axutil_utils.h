@@ -142,7 +142,7 @@ typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
      * @return axis2_char_t ** <code>axis2_char_t **<code>
      */
     AXIS2_EXTERN axis2_char_t** AXIS2_CALL
-    axis2_parse_request_url_for_svc_and_op(const axutil_env_t *env, const axis2_char_t *request);
+    axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env, const axis2_char_t *request);
     
 /** @} */
     

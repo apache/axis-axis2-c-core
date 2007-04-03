@@ -905,7 +905,7 @@ axis2_http_transport_utils_get_services_static_wsdl(
     AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
     AXIS2_PARAM_CHECK(env->error, request_url, NULL);
 
-    url_tok = axis2_parse_request_url_for_svc_and_op (env, request_url);
+    url_tok = axutil_parse_request_url_for_svc_and_op (env, request_url);
     len = strlen (url_tok[0]);
     url_tok[0][len - 5]  = 0;
     svc_name = url_tok[0];

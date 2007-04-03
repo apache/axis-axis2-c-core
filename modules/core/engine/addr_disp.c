@@ -115,7 +115,7 @@ axis2_addr_disp_find_svc(
                 return NULL;
             }
 
-            url_tokens = axis2_parse_request_url_for_svc_and_op(env, address);
+            url_tokens = axutil_parse_request_url_for_svc_and_op(env, address);
 
             if (url_tokens)
             {

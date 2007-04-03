@@ -22,7 +22,7 @@
 #include <platforms/axutil_platform_auto_sense.h>
 
 AXIS2_EXTERN axis2_char_t** AXIS2_CALL
-axis2_parse_request_url_for_svc_and_op(const axutil_env_t *env,
+axutil_parse_request_url_for_svc_and_op(const axutil_env_t *env,
     const axis2_char_t *request)
 
 {

@@ -104,7 +104,7 @@ axis2_req_uri_disp_find_svc(
                     "Checking for service using target endpoint address : %s",
                      address);
 
-            url_tokens = axis2_parse_request_url_for_svc_and_op(env, address);
+            url_tokens = axutil_parse_request_url_for_svc_and_op(env, address);
 
             if (url_tokens)
             {
@@ -159,7 +159,7 @@ axis2_req_uri_disp_find_op(
         {
             axis2_char_t **url_tokens = NULL;
 
-            url_tokens = axis2_parse_request_url_for_svc_and_op(env, address);
+            url_tokens = axutil_parse_request_url_for_svc_and_op(env, address);
 
             if (url_tokens)
             {

@@ -130,7 +130,7 @@ axiom_soap_body_disp_find_svc(
                                                      URI : %s",uri);
 
                                     url_tokens = 
-                                        axis2_parse_request_url_for_svc_and_op(
+                                        axutil_parse_request_url_for_svc_and_op(
                                             env, uri);
 
                                     if (url_tokens)
