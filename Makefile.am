@@ -12,7 +12,7 @@ data_DATA= samples/server/axis2.xml README \
 
 logs_DATA=
 docs_DATA=docs/*
-EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2c_build.sh docs guththila tools rampart AUTHORS NOTICE
+EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2c_build.sh docs guththila tools AUTHORS NOTICE
 
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`

@@ -54,7 +54,6 @@ AXIS2_INTDIR_AXIOM = $(AXIS2_INTDIR)\axiom
 AXIS2_INTDIR_UTIL  = $(AXIS2_INTDIR)\util
 AXIS2_INTDIR_CORE  = $(AXIS2_INTDIR)\core
 AXIS2_INTDIR_XMLSCHEMA = $(AXIS2_INTDIR)\xmlschema
-AXIS2_INTDIR_WODEN  = $(AXIS2_INTDIR)\woden
 AXIS2_INTDIR_TNS = $(AXIS2_INTDIR)\http_sender
 AXIS2_INTDIR_TNR = $(AXIS2_INTDIR)\http_receiver
 AXIS2_INTDIR_PARSER = $(AXIS2_INTDIR)\axis2_parser
@@ -77,8 +76,6 @@ AXIOM        = axiom
 AXIS2_TRANSPORT_SENDER = axis2_http_sender
 AXIS2_TRANSPORT_RECEIVER = axis2_http_receiver
 AXIS2_ENGINE = axis2_engine
-XML_SCHEMA   = xml_schema
-WODEN        = woden
 AXIS2_APACHE_MODULE = mod_axis2
 AXIS2_IIS_MODULE = axis2_mod_IIS
 AXIS2_MOD_ADDR = axis2_mod_addr
@@ -100,8 +97,6 @@ AXIS2_MOD_LOG = axis2_mod_log
 APACHE_INCLUE_PATH = /I$(APACHE_BIN_DIR)\include
 AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\util\src\  \
-		/I$(AXIS2_SOURCE_DIR)\woden\include \
-		/I$(AXIS2_SOURCE_DIR)\woden\src\util \
 		/I$(AXIS2_SOURCE_DIR)\util\src\minizip\  \
 		/I$(AXIS2_SOURCE_DIR)\axiom\include  \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\om  \
@@ -117,15 +112,10 @@ AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\modules\core\util \
 		/I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2 \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments \
-		/I$(AXIS2_SOURCE_DIR)\xml_schema\include \
 		/I$(LIBXML2_BIN_DIR)\include \
 		/I$(ICONV_BIN_DIR)\include \
 		/I$(ZLIB_BIN_DIR)\include
 		
-WODEN_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\woden\include \
-		     /I$(AXIS2_SOURCE_DIR)\xml_schema\include \
-		     /I$(AXIS2_SOURCE_DIR)\woden\src\util 
-
 GUTHTHILA_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\guththila\include
  
 !if "$(ENABLE_SSL)" == "1"
@@ -153,24 +143,6 @@ AXIOM_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c
 
-WODEN_SRC = $(AXIS2_SOURCE_DIR)\woden\src\builder\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\builder\wsdl10\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\schema\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\types\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\util\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\xml\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\extensions\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\extensions\soap\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\soap\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\xml\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\xml\*.c
-		
-XML_SCHEMA_SRC = $(AXIS2_SOURCE_DIR)\xml_schema\src\*.c
-						
 AXIS2_ENGINE_SRC =  $(AXIS2_SOURCE_DIR)\modules\core\addr\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\clientapi\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\context\*.c \
@@ -323,17 +295,6 @@ axiom:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_AXIOM)\*.obj $(AXIS2_UTIL).lib \
 	$(AXIS2_PARSER).lib $(LIBS)  /DLL /OUT:$(AXIS2_LIBS)\$(AXIOM).dll \
 	/IMPLIB:$(AXIS2_LIBS)\$(AXIOM).lib
-	
-xml_schema:
-	$(CC) $(CFLAGS) $(XML_SCHEMA_INCLUDE_PATH) $(XML_SCHEMA_SRC) /Fo$(AXIS2_INTDIR_XMLSCHEMA)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_XMLSCHEMA)\*.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	/DLL /OUT:$(AXIS2_LIBS)\xml_schema.dll /IMPLIB:$(AXIS2_LIBS)\xml_schema.lib
-
-woden : 
-	$(CC) $(CFLAGS) $(WODEN_INCLUDE_PATH) $(WODEN_SRC) /Fo$(AXIS2_INTDIR_WODEN)\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_WODEN)\*.obj xml_schema.lib $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib \
-	$(AXIOM).lib /DLL /OUT:$(AXIS2_LIBS)\woden.dll /IMPLIB:$(AXIS2_LIBS)\woden.lib 
-	
 	
 axis2_engine: 
 	$(CC) $(CFLAGS) $(AXIS2_ENGINE_SRC) /Fo$(AXIS2_INTDIR_CORE)\ /c
@@ -542,15 +503,6 @@ axis2_client_echo:
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\echo\*.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:$(AXIS2_BINS)\samples\echo.exe 
 
-axis2_client_dynamic_client:
-	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
-	$(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\dynamic_client.c /Fo$(AXIS2_INTDIR_CLI)\dyn_cli\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR_CLI)\dyn_cli\*.obj $(AXIS2_UTIL).lib \
-	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib /OUT:$(AXIS2_BINS)\samples\dynamic_client.exe 
-
-	if not exist $(AXIS2_BINS)\samples\resources mkdir $(AXIS2_BINS)\samples\resources
-	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\*.wsdl $(AXIS2_BINS)\samples\resources
-
 axis2_client_google_spell:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
 	$(AXIS2_SOURCE_DIR)\samples\client\google\*.c /Fo$(AXIS2_INTDIR_CLI)\gslc\ /c
@@ -667,11 +619,6 @@ copy_samples:
 	copy $(AXIS2_SOURCE_DIR)\samples\client\google\*.c $(AXIS2_BINDIR)\samples\client\google
 	copy $(AXIS2_SOURCE_DIR)\samples\client\google\README.txt $(AXIS2_BINDIR)\samples\client\google
 
-	if not exist $(AXIS2_BINDIR)\samples\client\dynamic_client mkdir $(AXIS2_BINDIR)\samples\client\dynamic_client
-	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\dynamic_client.c $(AXIS2_BINDIR)\samples\client\dynamic_client
-	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\README $(AXIS2_BINDIR)\samples\client\dynamic_client
-
-	
 	if not exist $(AXIS2_BINDIR)\samples\client\notify mkdir $(AXIS2_BINDIR)\samples\client\notify
 	copy $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c $(AXIS2_BINDIR)\samples\client\notify
 
@@ -719,10 +666,6 @@ copy_include:
 
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\util\include $(AXIS2_BINDIR)\include\
 	
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xml_schema\include $(AXIS2_BINDIR)\include
-	
-	xcopy /Y /I /E $(AXIS2_SOURCE_DIR)\woden\include $(AXIS2_BINDIR)\include 
-
 
 mv_dist:
 	cd $(AXIS2_BINDIR)
@@ -733,41 +676,11 @@ mv_dist:
 
 all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_calculator 
 
-all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_userguide axis2_client_dynamic_client 
+all_clients: axis2_clients_intdir axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_yahoo axis2_client_notify axis2_client_mtom axis2_client_userguide 
 
 axis2_samples: axis2_mod_log all_services all_clients
 
 axis2_server_modules: axis2_apache_module axis2_IIS_module
-
-#############################################################
-#other samples (woden and xml_schema)
-
-xml_schema_copy_resources:
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xml_schema\test-resources $(AXIS2_BINDIR)\xml_schema\test-resources
-	if not exist $(AXIS2_BINDIR)\xml_schema\samples mkdir $(AXIS2_BINDIR)\xml_schema\samples
-	copy $(AXIS2_SOURCE_DIR)\xml_schema\samples\test_schema.c $(AXIS2_BINDIR)\xml_schema\samples\
-	
-xml_schema_sample:
-	if not exist $(AXIS2_BINDIR)\bin\samples\xml_schema mkdir $(AXIS2_BINDIR)\bin\samples\xml_schema
-	if not exist $(AXIS2_INTDIR)\bin\xmlschema\samples mkdir $(AXIS2_INTDIR)\bin\xmlschema\samples
-	
-	$(CC) $(CFLAGS) $(XML_SCHEMA_INCLUDE_PATH) \
-	$(AXIS2_SOURCE_DIR)\xml_schema\samples\test_schema.c /Fo$(AXIS2_INTDIR)\bin\xmlschema\samples\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\bin\xmlschema\samples\test_schema.obj \
-	$(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(AXIOM).lib $(AXIS2_BINDIR)\lib\xml_schema.lib \
-	/OUT:$(AXIS2_BINDIR)\bin\samples\xml_schema\test_schema.exe
-	
-woden_sample:
-	if not exist $(AXIS2_BINDIR)\bin\samples\woden mkdir $(AXIS2_BINDIR)\bin\samples\woden
-	if not exist $(AXIS2_INTDIR)\bin\woden\samples mkdir $(AXIS2_INTDIR)\bin\woden\samples
-
-	$(CC) $(CFLAGS) $(WODEN_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\woden\samples\test_wsdl2.c /Fo$(AXIS2_INTDIR)\bin\woden\samples\ /c
-	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\bin\woden\samples\test_wsdl2.obj $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(AXIOM).lib \
-	$(AXIS2_BINDIR)\lib\woden.lib $(AXIS2_BINDIR)\lib\woden.lib\
-	/OUT:$(AXIS2_BINDIR)\bin\samples\woden\test_woden.exe
-
-axis2_other_samples:  xml_schema_sample woden_sample xml_schema_copy_resources
-
 
 ################################# tools ##################################################
 
@@ -780,188 +693,6 @@ tcpmon:
 	$(AXIS2_SOURCE_DIR)\tools\tcpmon\src\*.c /Fo$(AXIS2_INTDIR)\tools\tcpmon\ /c
 	$(LD) $(LDFLAGS) $(AXIS2_INTDIR)\tools\tcpmon\*.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib /OUT:$(AXIS2_BINS)\tcpmon.exe
-
-	
-# codegen tool
-
-W2C_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\tools\codegen\include \
-		   /I$(LIBXSLT_BIN_DIR)\include
-
-
-W2C_CODEGEN_SOURCE_PATH  = $(AXIS2_SOURCE_DIR)\tools\codegen\src\util\*.c \
-		   $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\*.c \
-		   $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\compiler\*.c \
-
-W2C_WRITER_PATH = $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\writer
-
-CODEGEN_INTDIR = $(AXIS2_INTDIR)\tools\codegen
-
-
-codegen_dirs:
-	if not exist $(AXIS2_BINDIR)\lib\codegen mkdir $(AXIS2_BINDIR)\lib\codegen
-
-	if not exist $(CODEGEN_INTDIR) mkdir $(CODEGEN_INTDIR)
-	if not exist $(CODEGEN_INTDIR)\w2c_codegen mkdir $(CODEGEN_INTDIR)\w2c_codegen
-	if not exist $(CODEGEN_INTDIR)\w2c_databinding_adb_ext mkdir $(CODEGEN_INTDIR)\w2c_databinding_adb_ext
-	if not exist $(CODEGEN_INTDIR)\w2c_c_emitter mkdir $(CODEGEN_INTDIR)\w2c_c_emitter
-	if not exist $(CODEGEN_INTDIR)\w2c_schema_c_writer mkdir $(CODEGEN_INTDIR)\w2c_schema_c_writer
-	if not exist $(CODEGEN_INTDIR)\w2c_cservice_xml_writer mkdir $(CODEGEN_INTDIR)\w2c_cservice_xml_writer
-	if not exist $(CODEGEN_INTDIR)\w2c_cskel_header_writer mkdir $(CODEGEN_INTDIR)\w2c_cskel_header_writer
-	if not exist $(CODEGEN_INTDIR)\w2c_cskel_source_writer mkdir $(CODEGEN_INTDIR)\w2c_cskel_source_writer
-	if not exist $(CODEGEN_INTDIR)\w2c_cstub_source_writer mkdir $(CODEGEN_INTDIR)\w2c_cstub_source_writer
-	if not exist $(CODEGEN_INTDIR)\w2c_cstub_header_writer mkdir $(CODEGEN_INTDIR)\w2c_cstub_header_writer
-	if not exist $(CODEGEN_INTDIR)\w2c_csvc_skeleton_writer mkdir $(CODEGEN_INTDIR)\w2c_csvc_skeleton_writer
-	if not exist $(CODEGEN_INTDIR)\w2c_c_code_indenter_ext mkdir $(CODEGEN_INTDIR)\w2c_c_code_indenter_ext
-	if not exist $(CODEGEN_INTDIR)\w2c_c_qname2name_ext mkdir $(CODEGEN_INTDIR)\w2c_c_qname2name_ext
-	if not exist $(CODEGEN_INTDIR)\w2c_c_namemaker_ext mkdir $(CODEGEN_INTDIR)\w2c_c_namemaker_ext
-	if not exist $(CODEGEN_INTDIR)\w2c_default_qname2name_ext mkdir $(CODEGEN_INTDIR)\w2c_default_qname2name_ext
-	if not exist $(CODEGEN_INTDIR)\w2c_databinding_default_ext mkdir $(CODEGEN_INTDIR)\w2c_databinding_default_ext
-	if not exist $(CODEGEN_INTDIR)\wsdl2code mkdir $(CODEGEN_INTDIR)\wsdl2code
-	if not exist $(CODEGEN_INTDIR)\schema2code mkdir $(CODEGEN_INTDIR)\schema2code
-	
-			   
-w2c_codegen:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(W2C_CODEGEN_SOURCE_PATH) /Fo$(CODEGEN_INTDIR)\w2c_codegen\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_codegen\*.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(LIBS) xml_schema.lib woden.lib libxslt.lib \
-	libxml2.lib /DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_codegen.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_codegen.lib
-
-w2c_databinding_adb_ext:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\databinding_adb_ext.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_databinding_adb_ext\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_databinding_adb_ext\*.obj axis2_util.lib \
-	axiom.lib axis2_parser.lib $(LIBS) xml_schema.lib woden.lib w2c_codegen.lib \
-	/LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_databinding_adb_ext.dll \
-	/IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_databinding_adb_ext.lib
- 
-w2c_c_emitter:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\emitter\*.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_c_emitter\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_c_emitter\*.obj axis2_util.lib \
-	axiom.lib axis2_parser.lib $(LIBS) xml_schema.lib woden.lib w2c_codegen.lib \
-	/LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_c_emitter.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_c_emitter.lib
-	
-w2c_schema_c_writer:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\writer\*.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_schema_c_writer\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_schema_c_writer\*.obj axis2_util.lib axiom.lib \
-	axis2_parser.lib $(LIBS) xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_schema_c_writer.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\2c_schema_c_writer.lib
- 
-w2c_cservice_xml_writer:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(W2C_WRITER_PATH)\cservice_xml_writer.c $(W2C_WRITER_PATH)\writer.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_cservice_xml_writer\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_cservice_xml_writer\*.obj axis2_util.lib axiom.lib axis2_parser.lib \
-	$(LIBS) xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_cservice_xml_writer.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_cservice_xml_writer.lib
-
-w2c_cskel_header_writer:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\cskel_header_writer.c  $(W2C_WRITER_PATH)\writer.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_cskel_header_writer\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_cskel_header_writer\*.obj axis2_util.lib axiom.lib \
-	axis2_parser.lib $(LIBS) xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_cskel_header_writer.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_cskel_header_writer.lib
- 
-w2c_cskel_source_writer:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\cskel_source_writer.c  $(W2C_WRITER_PATH)\writer.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_cskel_source_writer\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_cskel_source_writer\*.obj axis2_util.lib axiom.lib axis2_parser.lib \
-	$(LIBS) xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_cskel_source_writer.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_cskel_source_writer.lib
- 
-w2c_cstub_source_writer:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\cstub_source_writer.c  $(W2C_WRITER_PATH)\writer.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_cstub_source_writer\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_cstub_source_writer\*.obj axis2_util.lib axiom.lib axis2_parser.lib \
-	$(LIBS) xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_cstub_source_writer.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_cstub_source_writer.lib
-
-w2c_cstub_header_writer:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(W2C_WRITER_PATH)\cstub_header_writer.c $(W2C_WRITER_PATH)\writer.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_cstub_header_writer\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_cstub_header_writer\*.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
-	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_cstub_header_writer.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_cstub_header_writer.lib
-
-w2c_csvc_skeleton_writer:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH) $(W2C_WRITER_PATH)\csvc_skeleton_writer.c  $(W2C_WRITER_PATH)\writer.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_csvc_skeleton_writer\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_csvc_skeleton_writer\*.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
-	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_csvc_skeleton_writer.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_csvc_skeleton_writer.lib
-
-w2c_c_code_indenter_ext:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\c_code_indenter_ext.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_c_code_indenter_ext\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_c_code_indenter_ext\*.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
-	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_c_code_indenter_ext.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_c_code_indenter_ext.lib
- 
-w2c_c_qname2name_ext:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\c_qname2name_ext.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_c_qname2name_ext\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_c_qname2name_ext\*.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
-	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_c_qname2name_ext.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_c_qname2name_ext.lib
- 
-w2c_c_namemaker_ext:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\c_namemaker_ext.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_c_namemaker_ext\ /c
-	$(LD) $(LDFLAGS)  $(CODEGEN_INTDIR)\w2c_c_namemaker_ext\*.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
-	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_c_namemaker_ext.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_c_namemaker_ext.lib
- 
-w2c_default_qname2name_ext:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\default_qname2name_ext.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_default_qname2name_ext\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_default_qname2name_ext\*.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
-	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_default_qname2name_ext.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_default_qname2name_ext.lib
- 
-w2c_databinding_default_ext:
-	$(CC) $(CFLAGS) $(W2C_INCLUDE_PATH)  $(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl\extensions\databinding_default_ext.c \
-	/Fo$(CODEGEN_INTDIR)\w2c_databinding_default_ext\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\w2c_databinding_default_ext\*.obj axis2_util.lib axiom.lib axis2_parser.lib $(LIBS) \
-	xml_schema.lib woden.lib w2c_codegen.lib /LIBPATH:$(AXIS2_BINDIR)\lib\codegen \
-	/DLL /OUT:$(AXIS2_BINDIR)\lib\codegen\w2c_databinding_default_ext.dll /IMPLIB:$(AXIS2_BINDIR)\lib\codegen\w2c_databinding_default_ext.lib
- 
-wsdl2code:
-	$(CC) /nologo $(CFLAGS) $(W2C_INCLUDE_PATH) \
-	$(AXIS2_SOURCE_DIR)\tools\codegen\src\wsdl2code.c /Fo$(CODEGEN_INTDIR)\wsdl2code\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\wsdl2code\*.obj axis2_util.lib axiom.lib axis2_parser.lib \
-	xml_schema.lib woden.lib w2c_codegen.lib $(LIBS) \
-	/LIBPATH:$(AXIS2_BINDIR)\lib\codegen /OUT:$(AXIS2_BINDIR)\bin\wsdl2code.exe 
-
-schema2code:
-	$(CC) /nologo $(CFLAGS) $(W2C_INCLUDE_PATH) \
-	$(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\xsd2code.c /Fo$(CODEGEN_INTDIR)\schema2code\ /c
-	$(LD) $(LDFLAGS) $(CODEGEN_INTDIR)\schema2code\*.obj axis2_util.lib axiom.lib axis2_parser.lib \
-	xml_schema.lib woden.lib w2c_codegen.lib $(LIBS) \
-	/LIBPATH:$(AXIS2_BINDIR)\lib\codegen /OUT:$(AXIS2_BINDIR)\bin\schema2code.exe 
-
-copy_config:
-	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\src\typemappers $(AXIS2_BINDIR)\conf\typemappers
-
-	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\src\templates $(AXIS2_BINDIR)\conf\templates
-
-	copy $(AXIS2_SOURCE_DIR)\tools\codegen\src\util\codegen-config.properties $(AXIS2_BINDIR)\conf
-	
-	copy $(AXIS2_SOURCE_DIR)\tools\codegen\src\schema\compiler\schema-config.properties $(AXIS2_BINDIR)\conf
-
-	copy $(AXIS2_SOURCE_DIR)\tools\codegen\src\util\resource.properties $(AXIS2_BINDIR)\conf
-
-copy_resources:
-	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\test\resources\wsdl $(AXIS2_BINDIR)\bin\codegen_resources\wsdl
-
-	xcopy /I /E /Y $(AXIS2_SOURCE_DIR)\tools\codegen\test\resources\xml $(AXIS2_BINDIR)\bin\codegen_resources\xml
-
-
-
-codegen_writers: w2c_c_emitter w2c_schema_c_writer w2c_cservice_xml_writer w2c_cskel_header_writer w2c_cskel_source_writer w2c_cstub_source_writer w2c_cstub_header_writer w2c_csvc_skeleton_writer
-codegen_ext: w2c_databinding_adb_ext w2c_c_code_indenter_ext w2c_c_namemaker_ext w2c_default_qname2name_ext w2c_c_qname2name_ext w2c_databinding_default_ext
-codegen_tool: codegen_dirs w2c_codegen wsdl2code schema2code codegen_writers codegen_ext copy_config copy_resources
 
 ################################# SAVAN #################################################
 
@@ -1033,21 +764,6 @@ SRC_DIR =       $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\attachments\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\util\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\builder\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\builder\wsdl10\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\schema\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\types\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\util\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\xml\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\extensions\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\extensions\soap\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\soap\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\xml\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\xml\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\addr\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\clientapi\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\context\*.c \
@@ -1059,7 +775,6 @@ SRC_DIR =       $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\util\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\core\transport\http\*.c \
 		$(AXIS2_SOURCE_DIR)\modules\wsdl\*.c \
-		$(AXIS2_SOURCE_DIR)\xml_schema\src\*.c
 
 axis2:
 	$(CC) $(CFLAGS) /Fo $(AXIS2_INCLUDE_PATH) $(SRC_DIR) /D "_WINDLL" /Gm /Zi /c
