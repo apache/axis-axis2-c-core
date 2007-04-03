@@ -346,7 +346,7 @@ void add_string(const axutil_env_t* env,
   void* src = NULL;
   int count = 0;
 
-  additional_len = axis2_strlen(string) + 1;
+  additional_len = axutil_strlen(string) + 1;
   if (allocator-> index + additional_len  >= allocator-> allocated)
     {
       if (allocator-> allocated == 0)

@@ -106,7 +106,7 @@ axis2_http_transport_sender_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    transport_sender_impl->http_version = axis2_strdup(env, AXIS2_HTTP_HEADER_PROTOCOL_11);
+    transport_sender_impl->http_version = axutil_strdup(env, AXIS2_HTTP_HEADER_PROTOCOL_11);
     transport_sender_impl->chunked = AXIS2_TRUE;
     transport_sender_impl->connection_timeout =
         AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
@@ -216,10 +216,10 @@ axis2_http_transport_sender_invoke(
     else
     {
         axis2_endpoint_ref_t *ctx_epr =  axis2_msg_ctx_get_to(msg_ctx, env);
-        if (ctx_epr && 0 != axis2_strcmp(
+        if (ctx_epr && 0 != axutil_strcmp(
                     AXIS2_WSA_ANONYMOUS_URL_SUBMISSION,
                     axis2_endpoint_ref_get_address(ctx_epr, env)) &&
-                0 != axis2_strcmp(AXIS2_WSA_ANONYMOUS_URL,
+                0 != axutil_strcmp(AXIS2_WSA_ANONYMOUS_URL,
                         axis2_endpoint_ref_get_address(ctx_epr, env)))
         {
             epr = ctx_epr;
@@ -254,8 +254,8 @@ axis2_http_transport_sender_invoke(
     axiom_output_set_soap11(om_output, env,  axis2_msg_ctx_get_is_soap_11(msg_ctx, env));
     if (epr)
     {
-        if (axis2_strcmp(AXIS2_WSA_NONE_URL_SUBMISSION, axis2_endpoint_ref_get_address(epr, env)) == 0 ||
-                axis2_strcmp(AXIS2_WSA_NONE_URL, axis2_endpoint_ref_get_address(epr, env)) == 0)
+        if (axutil_strcmp(AXIS2_WSA_NONE_URL_SUBMISSION, axis2_endpoint_ref_get_address(epr, env)) == 0 ||
+                axutil_strcmp(AXIS2_WSA_NONE_URL, axis2_endpoint_ref_get_address(epr, env)) == 0)
         {
             epr = NULL;
         }
@@ -434,7 +434,7 @@ axis2_http_transport_sender_init(
     }
     if (version)
     {
-        if (0 == axis2_strcmp(version, AXIS2_HTTP_HEADER_PROTOCOL_11))
+        if (0 == axutil_strcmp(version, AXIS2_HTTP_HEADER_PROTOCOL_11))
         {
             axis2_char_t *encoding = NULL;
             axutil_param_t *encoding_param = NULL;
@@ -443,7 +443,7 @@ axis2_http_transport_sender_init(
                 AXIS2_FREE(env->allocator,
                         AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
             }
-            AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axis2_strdup(env, version);
+            AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axutil_strdup(env, version);
             encoding_param = axutil_param_container_get_param(
                         axis2_transport_out_desc_param_container(out_desc, env), env,
                         AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
@@ -451,7 +451,7 @@ axis2_http_transport_sender_init(
             {
                 encoding = axutil_param_get_value(encoding_param, env);
             }
-            if (encoding && 0 == axis2_strcmp(encoding,
+            if (encoding && 0 == axutil_strcmp(encoding,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 AXIS2_INTF_TO_IMPL(transport_sender)->chunked = AXIS2_TRUE;
@@ -461,14 +461,14 @@ axis2_http_transport_sender_init(
                 AXIS2_INTF_TO_IMPL(transport_sender)->chunked = AXIS2_FALSE;
             }
         }
-        else if (0 == axis2_strcmp(version, AXIS2_HTTP_HEADER_PROTOCOL_10))
+        else if (0 == axutil_strcmp(version, AXIS2_HTTP_HEADER_PROTOCOL_10))
         {
             if (AXIS2_INTF_TO_IMPL(transport_sender)->http_version)
             {
                 AXIS2_FREE(env->allocator,
                         AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
             }
-            AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axis2_strdup(env, version);
+            AXIS2_INTF_TO_IMPL(transport_sender)->http_version = axutil_strdup(env, version);
             AXIS2_INTF_TO_IMPL(transport_sender)->chunked = AXIS2_FALSE;
         }
     }
@@ -563,9 +563,9 @@ axis2_http_transport_sender_write_message(
         const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "OP name axutil_qname_get_localpart = %s",
                 mep);
-        if (axis2_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-            axis2_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0 ||
-            axis2_strcmp(mep, AXIS2_MEP_URI_IN_ONLY) == 0)
+        if (axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+            axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0 ||
+            axutil_strcmp(mep, AXIS2_MEP_URI_IN_ONLY) == 0)
         {
             return status;
         }

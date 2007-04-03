@@ -34,7 +34,7 @@ void test_format_xml(CuTest *tc)
     allocator = axutil_allocator_init(NULL);
     env = axutil_env_create(allocator);
 
-    input = (char*)axis2_strdup(env, "<input>check for one step</input>");
+    input = (char*)axutil_strdup(env, "<input>check for one step</input>");
     actual =
         (char*)tcpmon_util_format_as_xml(env, input);
     expected = "<input>\n"
@@ -45,7 +45,7 @@ void test_format_xml(CuTest *tc)
     free(input);
 
 
-    input = (char*)axis2_strdup(env, "<input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>");
+    input = (char*)axutil_strdup(env, "<input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>");
     actual =
         (char*)tcpmon_util_format_as_xml(env, input);
     expected =
@@ -61,7 +61,7 @@ void test_format_xml(CuTest *tc)
     free(actual);
     free(input);
 
-    input = (char*)axis2_strdup(env,
+    input = (char*)axutil_strdup(env,
 		"<?processing inc?><input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>");
     actual =
         (char*)tcpmon_util_format_as_xml(env, input);

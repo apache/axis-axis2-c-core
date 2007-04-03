@@ -1006,7 +1006,7 @@ axis2_msg_ctx_set_svc_ctx_id(
 
     if (svc_ctx_id)
     {
-        msg_ctx->svc_ctx_id = axis2_strdup(env, svc_ctx_id);
+        msg_ctx->svc_ctx_id = axutil_strdup(env, svc_ctx_id);
         if (!(msg_ctx->svc_ctx_id))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1580,7 +1580,7 @@ axis2_msg_ctx_set_options(
 		value = (axis2_char_t *)axutil_property_get_value(rest_val, env);
 		if (value)
 		{
-			if (axis2_strcmp(value, AXIS2_VALUE_TRUE) == 0)
+			if (axutil_strcmp(value, AXIS2_VALUE_TRUE) == 0)
 				 axis2_msg_ctx_set_doing_rest(msg_ctx, env, AXIS2_TRUE);
 		}
     }

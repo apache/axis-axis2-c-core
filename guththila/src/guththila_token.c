@@ -127,7 +127,7 @@ guththila_token_char_ref(axutil_env_t * environment,
     int ix = 0;
     guththila_char_t *ref_buffer = NULL;
 
-    len = axis2_strlen(buffer);
+    len = axutil_strlen(buffer);
     ref_buffer = (guththila_char_t *) AXIS2_MALLOC(
                 environment->allocator, len + 1);
 

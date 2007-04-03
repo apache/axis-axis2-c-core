@@ -51,7 +51,7 @@ int main(int argc, char** argv)
     address = "http://localhost:9090/axis2/services/math";
     if (argc > 1)
         operation = argv[1];
-    if (axis2_strcmp(operation, "-h") == 0)
+    if (axutil_strcmp(operation, "-h") == 0)
     {
         printf("Usage : %s [operation] [param1] [param2] [endpoint_url]\n", argv[0]);
         printf("use -h for help\n");

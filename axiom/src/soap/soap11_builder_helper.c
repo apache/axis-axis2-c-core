@@ -138,7 +138,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
         axiom_node_t *fault_value_node = NULL;
         axiom_element_t *fault_value_ele  = NULL;
 
-        if (axis2_strcmp(ele_localname, AXIOM_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME) == 0)
+        if (axutil_strcmp(ele_localname, AXIOM_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME) == 0)
         {
             axis2_status_t status = AXIS2_SUCCESS;
 
@@ -187,7 +187,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
                     env, (element_level - 1));
             builder_helper->fault_code_present = AXIS2_TRUE;
         }
-        else if (axis2_strcmp(AXIOM_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME, ele_localname) == 0)
+        else if (axutil_strcmp(AXIOM_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME, ele_localname) == 0)
         {
 
             axiom_soap_fault_reason_t *fault_reason = NULL;
@@ -235,7 +235,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             builder_helper->fault_string_present = AXIS2_TRUE;
 
         }
-        else if (axis2_strcmp(AXIOM_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME, ele_localname) == 0)
+        else if (axutil_strcmp(AXIOM_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME, ele_localname) == 0)
         {
             axiom_soap_fault_role_t *fault_role = NULL;
             fault_role = axiom_soap_fault_role_create(env);
@@ -254,7 +254,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
             if(status == AXIS2_FAILURE)
                     return AXIS2_FAILURE;*/
         }
-        else if (axis2_strcmp(AXIOM_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME, ele_localname) == 0)
+        else if (axutil_strcmp(AXIOM_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME, ele_localname) == 0)
         {
             axiom_soap_fault_detail_t *fault_detail = NULL;
             fault_detail = axiom_soap_fault_detail_create(env);
@@ -287,7 +287,7 @@ axiom_soap11_builder_helper_handle_event(axiom_soap11_builder_helper_t *builder_
 
         if (!parent_localname)
             return AXIS2_FAILURE;
-        if (axis2_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
+        if (axutil_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS, AXIS2_FAILURE);

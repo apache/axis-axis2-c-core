@@ -131,10 +131,10 @@ axis2_op_client_create(const axutil_env_t *env, axis2_op_t *op,
     }
     else
     {
-        op_client->mep = axis2_strdup(env, mep_uri);
+        op_client->mep = axutil_strdup(env, mep_uri);
     }
 
-    op_client->soap_version_uri = axis2_strdup(env, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+    op_client->soap_version_uri = axutil_strdup(env, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
     if (!(op_client->soap_version_uri))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -226,7 +226,7 @@ axis2_op_client_add_msg_ctx(axis2_op_client_t *op_client,
             }
 	}
 		
-        if(axis2_strcmp(dump_value, AXIS2_VALUE_TRUE))
+        if(axutil_strcmp(dump_value, AXIS2_VALUE_TRUE))
         {
             axis2_msg_ctx_free(out_msg_ctx, env);
             out_msg_ctx = NULL;
@@ -438,8 +438,8 @@ axis2_op_client_execute(axis2_op_client_t *op_client,
             if(!response_mc)
             {
                 const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
-                if(axis2_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-                    axis2_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+                if(axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+                    axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
                 {
                     if(env->error)
 		    {
@@ -658,7 +658,7 @@ axis2_op_client_prepare_invocation(
     /* make sure operation's MEP is the same as given MEP */
     if (op_client->mep)
     {
-        if (axis2_strcmp(op_client->mep, axis2_op_get_msg_exchange_pattern(op, env)) != 0)
+        if (axutil_strcmp(op_client->mep, axis2_op_get_msg_exchange_pattern(op, env)) != 0)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MEP_MISMATCH_IN_MEP_CLIENT, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -729,7 +729,7 @@ axis2_op_client_prepare_soap_envelope(
 
     if (op_client->soap_version_uri)
     {
-        if (axis2_strcmp(op_client->soap_version_uri,
+        if (axutil_strcmp(op_client->soap_version_uri,
                 AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
             soap_version = AXIOM_SOAP11;
         else
@@ -786,11 +786,11 @@ axis2_op_client_infer_transport(
         axis2_transport_out_desc_t *transport_out_desc = NULL;
 		AXIS2_TRANSPORT_ENUMS transport_enum = 0;
         
-		if (!axis2_strcmp(transport, "http"))
+		if (!axutil_strcmp(transport, "http"))
 		{
 			transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
 		}
-		else if (!axis2_strcmp (transport, "https"))
+		else if (!axutil_strcmp (transport, "https"))
 		{
 			transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
 		}
@@ -824,12 +824,12 @@ axis2_op_client_create_default_soap_envelope(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if (axis2_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, op_client->soap_version_uri) == 0)
+    if (axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, op_client->soap_version_uri) == 0)
     {
         envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, AXIOM_SOAP12, NULL);
     }
 
-    if (axis2_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, op_client->soap_version_uri) == 0)
+    if (axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, op_client->soap_version_uri) == 0)
     {
         envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, AXIOM_SOAP11, NULL);
     }
@@ -883,7 +883,7 @@ axis2_op_client_set_soap_version_uri(
 
     if (soap_version_uri)
     {
-        op_client->soap_version_uri = axis2_strdup(env, soap_version_uri);
+        op_client->soap_version_uri = axutil_strdup(env, soap_version_uri);
         if (!(op_client->soap_version_uri))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -937,7 +937,7 @@ axis2_op_client_set_wsa_action(
 
     if (wsa_action)
     {
-        op_client->wsa_action = axis2_strdup(env, wsa_action);
+        op_client->wsa_action = axutil_strdup(env, wsa_action);
         if (!(op_client->wsa_action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -1036,8 +1036,8 @@ axis2_op_client_two_way_send(
     {
         /* handle one way case */
         const axis2_char_t *mep = axis2_op_get_msg_exchange_pattern(op, env);
-        if (axis2_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-            axis2_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+        if (axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+            axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
         {
             return NULL;
         }
@@ -1110,7 +1110,7 @@ axis2_op_client_two_way_send(
             if(property)
             {
                 axis2_char_t *value = axutil_property_get_value(property, env);
-                if(0 == axis2_strcmp(AXIS2_VALUE_TRUE, value))
+                if(0 == axutil_strcmp(AXIS2_VALUE_TRUE, value))
                 {
                     return response;
                 }

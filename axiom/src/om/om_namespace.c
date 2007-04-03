@@ -130,7 +130,7 @@ axiom_namespace_equals(axiom_namespace_t *om_namespace,
 
     if (om_namespace->uri && om_namespace1->uri)
     {
-        uris_differ = axis2_strcmp(axutil_string_get_buffer(om_namespace->uri, env), 
+        uris_differ = axutil_strcmp(axutil_string_get_buffer(om_namespace->uri, env), 
             axutil_string_get_buffer(om_namespace1->uri, env));
     }
     else
@@ -141,7 +141,7 @@ axiom_namespace_equals(axiom_namespace_t *om_namespace,
     if (om_namespace->prefix && om_namespace1->prefix)
     {
         prefixes_differ =
-            axis2_strcmp(axutil_string_get_buffer(om_namespace->prefix, env), 
+            axutil_strcmp(axutil_string_get_buffer(om_namespace->prefix, env), 
             axutil_string_get_buffer(om_namespace1->prefix, env));
     }
     else
@@ -167,7 +167,7 @@ axiom_namespace_serialize(axiom_namespace_t *om_namespace,
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     if (om_namespace->uri && NULL != om_namespace->prefix &&
-        axis2_strcmp(axutil_string_get_buffer(om_namespace->prefix, env), "") != 0)
+        axutil_strcmp(axutil_string_get_buffer(om_namespace->prefix, env), "") != 0)
     {
         status = axiom_output_write(om_output, env, AXIOM_NAMESPACE,
             2, axutil_string_get_buffer(om_namespace->prefix, env),
@@ -234,8 +234,8 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     }
     if ((om_namespace->uri) && (NULL != om_namespace->prefix))
     {
-        temp_str = axis2_stracat(env, axutil_string_get_buffer(om_namespace->uri, env), "|");
-        om_namespace->key = axis2_stracat(env,
+        temp_str = axutil_stracat(env, axutil_string_get_buffer(om_namespace->uri, env), "|");
+        om_namespace->key = axutil_stracat(env,
 			temp_str, 
             axutil_string_get_buffer(om_namespace->prefix, env));
         if (temp_str)
@@ -246,7 +246,7 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     }
     else if ((om_namespace->uri) && !(om_namespace->prefix))
     {
-        om_namespace->key = axis2_strdup(env, axutil_string_get_buffer(om_namespace->uri, env));
+        om_namespace->key = axutil_strdup(env, axutil_string_get_buffer(om_namespace->uri, env));
         if (!(om_namespace->key))
         {
             return NULL;

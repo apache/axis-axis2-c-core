@@ -1221,11 +1221,11 @@ guththila_add_namespace(axutil_env_t *
     ns->name = guththila_token_to_string(environment, 
 										 name, 
 										 parser->unicode_state);
-    ns->length = axis2_strlen(ns->name);
+    ns->length = axutil_strlen(ns->name);
     ns->uri = guththila_token_to_string(environment, 
 										uri, 
 										parser->unicode_state);
-    ns->lengthuri = axis2_strlen(ns->uri);
+    ns->lengthuri = axutil_strlen(ns->uri);
     axutil_stack_push(parser->namesp, environment, ns);
 }
 
@@ -1421,7 +1421,7 @@ guththila_get_namespace_prefix(axutil_env_t *
 							   guththila_namespace_t * ns)
 {
     if (ns)
-        return axis2_strdup(environment, ns->name);
+        return axutil_strdup(environment, ns->name);
     else
         return NULL;
 }
@@ -1435,7 +1435,7 @@ guththila_get_namespace_uri(axutil_env_t *
 							guththila_namespace_t * ns)
 {
     if (ns)
-        return axis2_strdup(environment, ns->uri);
+        return axutil_strdup(environment, ns->uri);
     else
         return NULL;
 }
@@ -1454,7 +1454,7 @@ guththila_get_namespace_prefix_by_number(axutil_env_t * environment,
     {
         ns = (guththila_namespace_t *) axutil_stack_get_at(parser->namesp, environment, ix - i);
     }
-    return axis2_strdup(environment, ns->name);
+    return axutil_strdup(environment, ns->name);
 }
 
 
@@ -1472,7 +1472,7 @@ guththila_get_namespace_uri_by_number(axutil_env_t
     {
         ns = (guththila_namespace_t *) axutil_stack_get_at(parser->namesp, environment, ix - i);
     }
-    return axis2_strdup(environment, ns->uri);
+    return axutil_strdup(environment, ns->uri);
 }
 
 
@@ -1497,9 +1497,9 @@ guththila_get_attribute_namespace_by_number(axutil_env_t * environment,
             if (ns && att_prefix)
             {
                 if (!
-					(axis2_strcmp
+					(axutil_strcmp
 					 (ns->name, att_prefix)))
-                    return axis2_strdup(environment, ns->uri);
+                    return axutil_strdup(environment, ns->uri);
             }
         }
     }

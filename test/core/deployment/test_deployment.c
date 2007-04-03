@@ -146,7 +146,7 @@ int axis2_test_transport_receiver_load()
     dll_desc = axutil_dll_desc_create(env);
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    dll_name = axis2_stracat(env, axis2c_home, "/lib/libaxis2_http_receiver.so");
+    dll_name = axutil_stracat(env, axis2c_home, "/lib/libaxis2_http_receiver.so");
     printf("transport receiver name:%s\n", dll_name);
      axutil_dll_desc_set_name(dll_desc, env, dll_name);
      axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_RECV_DLL);
@@ -180,7 +180,7 @@ int axis2_test_transport_sender_load()
     dll_desc = axutil_dll_desc_create(env);
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    dll_name = axis2_stracat(env, axis2c_home, "/lib/libaxis2_http_sender.so");
+    dll_name = axutil_stracat(env, axis2c_home, "/lib/libaxis2_http_sender.so");
     printf("transport sender name:%s\n", dll_name);
      axutil_dll_desc_set_name(dll_desc, env, dll_name);
      axutil_dll_desc_set_type(dll_desc, env, AXIS2_TRANSPORT_SENDER_DLL);
@@ -287,17 +287,17 @@ int axis2_test_default_module_version()
         {
             axutil_qname_t *engaged_mod_qname = NULL;
             engaged_mod_qname = axutil_array_list_get(engaged_modules, env, i);
-            if (0 == axis2_strcmp("module2-0.92",
+            if (0 == axutil_strcmp("module2-0.92",
                     axutil_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found1 = AXIS2_TRUE;
             }
-            if (0 == axis2_strcmp("module1",
+            if (0 == axutil_strcmp("module1",
                     axutil_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found2 = AXIS2_TRUE;
             }
-            if (0 == axis2_strcmp("test_module-1.92",
+            if (0 == axutil_strcmp("test_module-1.92",
                     axutil_qname_get_localpart(engaged_mod_qname, env)))
             {
                 found3 = AXIS2_TRUE;

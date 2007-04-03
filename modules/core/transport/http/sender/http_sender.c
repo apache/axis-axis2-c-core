@@ -211,7 +211,7 @@ axis2_http_sender_send(
 			method_value = (axis2_char_t *) axutil_property_get_value (method, env);
 
 		/* The default is POST */
-		if (method_value && 0 == axis2_strcmp(method_value, AXIS2_HTTP_HEADER_GET))
+		if (method_value && 0 == axutil_strcmp(method_value, AXIS2_HTTP_HEADER_GET))
 		{
 			send_via_get = AXIS2_TRUE;
 		}
@@ -279,7 +279,7 @@ axis2_http_sender_send(
 			if(dump_property)
 			{
 				axis2_char_t *dump_true = axutil_property_get_value(dump_property, env);
-				if(0 == axis2_strcmp(dump_true, AXIS2_VALUE_TRUE))
+				if(0 == axutil_strcmp(dump_true, AXIS2_VALUE_TRUE))
 				{
 					axis2_http_client_set_dump_input_msg(sender->client, env, AXIS2_TRUE);
 				}
@@ -323,7 +323,7 @@ axis2_http_sender_send(
         axis2_char_t *path = NULL;
 
         request_params = axis2_http_sender_get_param_string( sender, env, msg_ctx);
-        path = axis2_strcat(env, axutil_url_get_path(url, env), "?",
+        path = axutil_strcat(env, axutil_url_get_path(url, env), "?",
 							request_params, NULL);
         request_line = axis2_http_request_line_create(env, "GET", path,
 													  sender->http_version);
@@ -339,7 +339,7 @@ axis2_http_sender_send(
 		if ('\"' != *soap_action)
         {
             axis2_char_t *tmp_soap_action = NULL;
-            tmp_soap_action = AXIS2_MALLOC(env->allocator, (axis2_strlen(soap_action) + 5) * sizeof(axis2_char_t));
+            tmp_soap_action = AXIS2_MALLOC(env->allocator, (axutil_strlen(soap_action) + 5) * sizeof(axis2_char_t));
             sprintf(tmp_soap_action, "\"%s\"", soap_action);
 			axis2_http_sender_util_add_header (env, request, AXIS2_HTTP_HEADER_SOAP_ACTION, tmp_soap_action);
             AXIS2_FREE(env->allocator, tmp_soap_action);
@@ -385,16 +385,16 @@ axis2_http_sender_send(
 				if (AXIS2_TRUE !=  axis2_msg_ctx_get_is_soap_11(msg_ctx, env))
 				{
 					/* handle SOAP action for SOAP 1.2 case */
-					if (axis2_strcmp(soap_action, ""))
+					if (axutil_strcmp(soap_action, ""))
 					{
 						axis2_char_t *temp_content_type = NULL;
-						temp_content_type = axis2_stracat(env, content_type, ";action=\"");
+						temp_content_type = axutil_stracat(env, content_type, ";action=\"");
 						AXIS2_FREE(env->allocator, content_type);
 						content_type = temp_content_type;
-						temp_content_type = axis2_stracat(env, content_type, soap_action);
+						temp_content_type = axutil_stracat(env, content_type, soap_action);
 						AXIS2_FREE(env->allocator, content_type);
 						content_type = temp_content_type;
-                        temp_content_type = axis2_stracat(env, content_type, "\"");
+                        temp_content_type = axutil_stracat(env, content_type, "\"");
 					    AXIS2_FREE(env->allocator, content_type);
 					    content_type = temp_content_type;
 					}
@@ -404,8 +404,8 @@ axis2_http_sender_send(
 			{
 				axis2_char_t *temp_content_type = NULL;
 				content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
-				content_type = axis2_stracat(env, content_type, ";charset=");
-				temp_content_type = axis2_stracat(env, content_type, char_set_enc);
+				content_type = axutil_stracat(env, content_type, ";charset=");
+				temp_content_type = axutil_stracat(env, content_type, char_set_enc);
 				AXIS2_FREE(env->allocator, content_type);
 				content_type = temp_content_type;
 			}
@@ -413,23 +413,23 @@ axis2_http_sender_send(
 			{
 				axis2_char_t *temp_content_type = NULL;
 				content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
-				content_type = axis2_stracat(env, content_type, ";charset=");
-				temp_content_type = axis2_stracat(env, content_type, char_set_enc);
+				content_type = axutil_stracat(env, content_type, ";charset=");
+				temp_content_type = axutil_stracat(env, content_type, char_set_enc);
 				AXIS2_FREE(env->allocator, content_type);
 				content_type = temp_content_type;
-				if (axis2_strcmp(soap_action, ""))
+				if (axutil_strcmp(soap_action, ""))
 				{
-					temp_content_type = axis2_stracat(env, content_type, ";action=\"");
+					temp_content_type = axutil_stracat(env, content_type, ";action=\"");
 					AXIS2_FREE(env->allocator, content_type);
 					content_type = temp_content_type;
-					temp_content_type = axis2_stracat(env, content_type, soap_action);
+					temp_content_type = axutil_stracat(env, content_type, soap_action);
 					AXIS2_FREE(env->allocator, content_type);
 					content_type = temp_content_type;
-                    temp_content_type = axis2_stracat(env, content_type, "\"");
+                    temp_content_type = axutil_stracat(env, content_type, "\"");
 					AXIS2_FREE(env->allocator, content_type);
 					content_type = temp_content_type;
 				}
-				temp_content_type = axis2_stracat(env, content_type, ";");
+				temp_content_type = axutil_stracat(env, content_type, ";");
 				AXIS2_FREE(env->allocator, content_type);
 				content_type = temp_content_type;
 			}
@@ -463,11 +463,11 @@ axis2_http_sender_send(
 		}*/
 	}
 
-    if (0 == axis2_strcmp(sender->http_version,
+    if (0 == axutil_strcmp(sender->http_version,
 						  AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
         axis2_char_t *header = NULL;
-        header = AXIS2_MALLOC(env->allocator, axis2_strlen(
+        header = AXIS2_MALLOC(env->allocator, axutil_strlen(
 								  axutil_url_get_server(url, env)) + 10 * sizeof(
 									  axis2_char_t));
         sprintf(header, "%s:%d", axutil_url_get_server(url, env),
@@ -543,8 +543,8 @@ axis2_http_sender_send(
 							AXIS2_FAILURE);
             /* handle one way case */
             
-            if (axis2_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
-                axis2_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+            if (axutil_strcmp(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+                axutil_strcmp(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
             {
                 return AXIS2_FAILURE;
             }
@@ -559,8 +559,8 @@ axis2_http_sender_send(
         }
         
         
-        if (tmp_header_val && (axis2_strstr(tmp_header_val,
-											AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP) || axis2_strstr(
+        if (tmp_header_val && (axutil_strstr(tmp_header_val,
+											AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP) || axutil_strstr(
 												tmp_header_val, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML)))
         {
             return axis2_http_sender_process_response(sender, env,
@@ -630,13 +630,13 @@ axis2_http_sender_get_header_info(
 														header, env);
         if (name)
         {
-            if (0 == axis2_strcmp(name, AXIS2_HTTP_HEADER_TRANSFER_ENCODING) &&
-				0 == axis2_strcmp(axis2_http_header_get_value(header
+            if (0 == axutil_strcmp(name, AXIS2_HTTP_HEADER_TRANSFER_ENCODING) &&
+				0 == axutil_strcmp(axis2_http_header_get_value(header
 															  , env), AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 axis2_char_t *transfer_encoding = NULL;
 /*                transfer_encoding = */
-/*                     axis2_strdup(AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED, */
+/*                     axutil_strdup(AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED, */
 /* 								 env); */
 /*                 property = axutil_property_create(env); */
 /*                 axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST); */
@@ -646,13 +646,13 @@ axis2_http_sender_get_header_info(
 /* 										   property); */
 /*                 response_chunked = AXIS2_TRUE; */
                 transfer_encoding =
-                    axis2_strdup(env,
+                    axutil_strdup(env,
 					    AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
                 response_chunked = AXIS2_TRUE;
                 axis2_msg_ctx_set_transfer_encoding(msg_ctx, env, transfer_encoding);
  
             }
-            if (0 != axis2_strcmp(name, AXIS2_HTTP_HEADER_CONTENT_TYPE))
+            if (0 != axutil_strcmp(name, AXIS2_HTTP_HEADER_CONTENT_TYPE))
             {
                 axis2_char_t *tmp_charset = NULL;
                 axis2_char_t *content_type = axis2_http_header_get_value(header,
@@ -660,7 +660,7 @@ axis2_http_sender_get_header_info(
                 tmp_charset = strstr(content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
                 if (charset)
                 {
-                    charset = axis2_strdup(env, tmp_charset);
+                    charset = axutil_strdup(env, tmp_charset);
                     break;
                 }
             }
@@ -677,7 +677,7 @@ axis2_http_sender_get_header_info(
 				 axis2_msg_ctx_get_op_ctx(msg_ctx, env), env);
             property = axutil_property_create(env);
             axutil_property_set_scope(property, env, AXIS2_SCOPE_REQUEST);
-            axutil_property_set_value(property, env, axis2_strdup(env, content_type));
+            axutil_property_set_value(property, env, axutil_strdup(env, content_type));
             axis2_ctx_set_property(axis_ctx, env, MTOM_RECIVED_CONTENT_TYPE,
 								   property);
         }
@@ -793,7 +793,7 @@ axis2_http_sender_set_http_version(
     axis2_char_t *version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    sender->http_version =  axis2_strdup(env, version);
+    sender->http_version =  axutil_strdup(env, version);
     if (! sender->http_version)
     {
         return AXIS2_FAILURE;
@@ -1077,7 +1077,7 @@ axis2_http_sender_get_param_string(
 				memset (encoded_value, 0, strlen (value));
 				encoded_value = axutil_url_encode (env, encoded_value, value, strlen (value));
 
-				axutil_array_list_add(param_list, env, axis2_strcat(env, name, "=",
+				axutil_array_list_add(param_list, env, axutil_strcat(env, name, "=",
 																   encoded_value, NULL));
 			}
 		}
@@ -1089,9 +1089,9 @@ axis2_http_sender_get_param_string(
 
         pair = axutil_array_list_get(param_list, env, i);
 		if(i ==0)
-			tmp_string = axis2_stracat(env, param_string, pair);
+			tmp_string = axutil_stracat(env, param_string, pair);
 		else
-			tmp_string = axis2_strcat(env, param_string, "&", pair, NULL);				
+			tmp_string = axutil_strcat(env, param_string, "&", pair, NULL);				
 
         if (param_string)
         {

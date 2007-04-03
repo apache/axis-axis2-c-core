@@ -171,7 +171,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
 
         class_name = axiom_attribute_get_value(module_dll_att, env);
-        if (class_name && (0 != axis2_strcmp("", class_name)))
+        if (class_name && (0 != axutil_strcmp("", class_name)))
         {
             axis2_dep_engine_t *dep_engine = 
                 axis2_desc_builder_get_dep_engine(module_builder->desc_builder, env);

@@ -161,14 +161,14 @@ savan_client_subscribe(
     /* Check whether we have received a SubscribeResponse */
     sub_elem_local_name = axiom_element_get_localname(body_elem, env);
 
-    if (axis2_strcmp(ELEM_NAME_SUB_RESPONSE, sub_elem_local_name) != 0)
+    if (axutil_strcmp(ELEM_NAME_SUB_RESPONSE, sub_elem_local_name) != 0)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[savan] Subscription failed");
         return AXIS2_FAILURE;
     }
 
     sub_id = savan_client_get_sub_id_from_response(body_elem, reply, env);
-    client->sub_id = axis2_strdup(env, sub_id);
+    client->sub_id = axutil_strdup(env, sub_id);
 
     return AXIS2_SUCCESS;
 }

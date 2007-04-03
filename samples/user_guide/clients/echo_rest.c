@@ -46,7 +46,7 @@ int main(int argc, char** argv)
         {
             method_get = AXIS2_TRUE;
         }
-        else if (0 == axis2_strcmp(argv[1], "-h"))
+        else if (0 == axutil_strcmp(argv[1], "-h"))
         {
             printf("Usage : %s [endpoint_url]", argv[0]);
             printf(" or %s -mGET for HTTP GET\n", argv[0]);
@@ -81,13 +81,13 @@ int main(int argc, char** argv)
     axis2_options_set_to(options, env, endpoint_ref);
     /* Enable REST at the client side */
     rest_property = axutil_property_create(env);
-    axutil_property_set_value(rest_property, env, axis2_strdup (env, AXIS2_VALUE_TRUE));
+    axutil_property_set_value(rest_property, env, axutil_strdup (env, AXIS2_VALUE_TRUE));
     axis2_options_set_property(options, env, AXIS2_ENABLE_REST,
             rest_property);
     if (AXIS2_TRUE == method_get)
     {
         get_property = axutil_property_create(env);
-        axutil_property_set_value(get_property, env, axis2_strdup(env, AXIS2_HTTP_HEADER_GET));
+        axutil_property_set_value(get_property, env, axutil_strdup(env, AXIS2_HTTP_HEADER_GET));
          axis2_options_set_property(options, env, AXIS2_HTTP_METHOD,
                 get_property);
     }

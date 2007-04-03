@@ -126,7 +126,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
     if (!msg_info_headers)
         return AXIS2_SUCCESS; /* no addressing in use */
 	 wsa_action = axis2_msg_info_headers_get_action (msg_info_headers, env);
-    if (!wsa_action || !axis2_strcmp (wsa_action, ""))
+    if (!wsa_action || !axutil_strcmp (wsa_action, ""))
         return AXIS2_SUCCESS; /* If no action present, assume no addressing in use */
 
 
@@ -142,7 +142,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
 
     if (addressing_version_from_msg_ctx)
     {
-        if (axis2_strcmp
+        if (axutil_strcmp
                 (AXIS2_WSA_NAMESPACE, addressing_version_from_msg_ctx) == 0)
         {
             addr_ns = AXIS2_WSA_NAMESPACE;
@@ -188,7 +188,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         }
     }
 
-    if (!addr_ns || axis2_strcmp("", addr_ns) == 0)
+    if (!addr_ns || axutil_strcmp("", addr_ns) == 0)
     {
         addr_ns = AXIS2_WSA_NAMESPACE;
     }
@@ -247,8 +247,8 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                         const axis2_char_t *fault_address = axis2_endpoint_ref_get_address(fault_epr, env);
                         if (fault_address)
                         {
-                            if (axis2_strcmp(AXIS2_WSA_NONE_URL, fault_address) != 0 &&
-                                    axis2_strcmp(AXIS2_WSA_NONE_URL_SUBMISSION, fault_address) != 0)
+                            if (axutil_strcmp(AXIS2_WSA_NONE_URL, fault_address) != 0 &&
+                                    axutil_strcmp(AXIS2_WSA_NONE_URL_SUBMISSION, fault_address) != 0)
                             {
                                 axis2_endpoint_ref_set_address(epr, env, fault_address);
                             }
@@ -261,7 +261,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         if (epr)
         {
             address = axis2_endpoint_ref_get_address(epr, env);
-            if (address && axis2_strcmp(address, "") != 0)
+            if (address && axutil_strcmp(address, "") != 0)
             {
                 axiom_node_t *to_header_block_node = NULL;
                 axiom_soap_header_block_t *to_header_block = NULL;
@@ -285,7 +285,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         }
 
         action = axis2_msg_info_headers_get_action(msg_info_headers, env);
-        if (action && axis2_strcmp(action, ""))
+        if (action && axutil_strcmp(action, ""))
         {
             axis2_addr_out_handler_process_string_info(env, action,
                     AXIS2_WSA_ACTION,
@@ -299,7 +299,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             const axis2_char_t *anonymous_uri = NULL;
             axis2_bool_t anonymous = axis2_msg_info_headers_get_reply_to_anonymous(msg_info_headers, env);
             axis2_bool_t none = axis2_msg_info_headers_get_reply_to_none(msg_info_headers, env);
-            if (axis2_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
+            if (axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
             {
                 if (none)
                     anonymous_uri = AXIS2_WSA_NONE_URL_SUBMISSION;
@@ -354,7 +354,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             const axis2_char_t *anonymous_uri = NULL;
             axis2_bool_t anonymous = axis2_msg_info_headers_get_fault_to_anonymous(msg_info_headers, env);
             axis2_bool_t none = axis2_msg_info_headers_get_fault_to_none(msg_info_headers, env);
-            if (axis2_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
+            if (axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
             {
                 if (none)
                     anonymous_uri = AXIS2_WSA_NONE_URL_SUBMISSION;
@@ -407,7 +407,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         {
             const axis2_char_t *relationship_type = NULL;
             relationship_type = axis2_relates_to_get_relationship_type(relates_to, env);
-            if (axis2_strcmp(relationship_type, "") != 0)
+            if (axutil_strcmp(relationship_type, "") != 0)
             {
                 axiom_attribute_t *om_attr = NULL;
                 axiom_namespace_t *addr_ns_obj = NULL;
@@ -483,7 +483,7 @@ axis2_addr_out_handler_process_string_info(const axutil_env_t *env,
 
     soap_header = *(soap_header_p);
 
-    if (value && axis2_strcmp(value, "") != 0)
+    if (value && axutil_strcmp(value, "") != 0)
     {
         axiom_namespace_t *addr_ns_obj = NULL;
         addr_ns_obj =
@@ -551,7 +551,7 @@ axis2_addr_out_handler_add_to_soap_header(const axutil_env_t *env,
     }
 
     address = axis2_endpoint_ref_get_address(endpoint_ref, env);
-    if (address && axis2_strcmp("", address) != 0)
+    if (address && axutil_strcmp("", address) != 0)
     {
         axiom_node_t *hb_node = NULL;
         axiom_element_t *hb_ele = NULL;
@@ -717,7 +717,7 @@ axis2_addr_out_handler_add_to_header(const axutil_env_t *env,
 
         addr_ns_obj = axiom_namespace_create(env, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
 
-        if (axis2_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
+        if (axutil_strcmp(addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
         {
             element_localname = EPR_PORT_TYPE;
         }
@@ -736,8 +736,8 @@ axis2_addr_out_handler_add_to_header(const axutil_env_t *env,
         text =
             AXIS2_MALLOC(env->allocator,
                     sizeof(axis2_char_t) *
-                    (axis2_strlen(qname_prefix) +
-                            axis2_strlen(qname_localpart) + 2));
+                    (axutil_strlen(qname_prefix) +
+                            axutil_strlen(qname_localpart) + 2));
         sprintf(text, "%s:%s", qname_prefix, qname_localpart);
         axiom_element_set_text(interface_ele, env, text, interface_node);
         AXIS2_FREE(env->allocator, text);
@@ -796,7 +796,7 @@ axis2_addr_out_handler_process_any_content_type(const axutil_env_t *env,
                             &node);
                 if (ele)
                 {
-                    if (axis2_strcmp(AXIS2_WSA_NAMESPACE, addr_ns) == 0)
+                    if (axutil_strcmp(AXIS2_WSA_NAMESPACE, addr_ns) == 0)
                     {
                         axiom_namespace_t *addr_ns_obj = NULL;
                         axiom_attribute_t *att = NULL;

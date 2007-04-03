@@ -355,7 +355,7 @@ tcpmon_session_set_target_host(tcpmon_session_t *session,
 
     session_impl = AXIS2_INTF_TO_IMPL(session);
 
-    session_impl-> target_host = (axis2_char_t*)axis2_strdup(env, target_host);
+    session_impl-> target_host = (axis2_char_t*)axutil_strdup(env, target_host);
     return AXIS2_SUCCESS;
 }
 

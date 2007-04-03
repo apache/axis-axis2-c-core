@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 		env = axutil_env_create_with_error_log_thread_pool(allocator, error, log,
 																		  thread_pool);
 
-		if (argc < 2 || !axis2_strcmp(argv[1], "-h"))
+		if (argc < 2 || !axutil_strcmp(argv[1], "-h"))
 		{
 				printf("Usage : %s [OPTIONS] -lp LISTEN_PORT -tp TARGET_PORT -th [TARGET_HOST]\n", argv[0]);
 				printf("use -h for help\n");
@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 				else if (!strcmp ("-th", argv[ii]))
 				{
 						ii++;
-						target_host = (char*)axis2_strdup(env, argv[ii++]);
+						target_host = (char*)axutil_strdup(env, argv[ii++]);
 				}
 				else if (!strcmp ("--test", argv [ii]))
 				{

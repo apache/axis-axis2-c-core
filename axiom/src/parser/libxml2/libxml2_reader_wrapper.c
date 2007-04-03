@@ -784,7 +784,7 @@ axis2_libxml2_reader_wrapper_get_namespace_uri_by_prefix(axiom_xml_reader_t *par
 {
     axis2_libxml2_reader_wrapper_impl_t *parser_impl = NULL;
     parser_impl = AXIS2_INTF_TO_IMPL(parser);
-    if (!prefix || axis2_strcmp(prefix, "") == 0)
+    if (!prefix || axutil_strcmp(prefix, "") == 0)
     {
         return NULL;
     }

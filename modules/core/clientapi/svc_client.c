@@ -152,7 +152,7 @@ axis2_svc_client_create_for_dynamic_invocation(const axutil_env_t *env,
 
     svc_client->conf =  axis2_conf_ctx_get_conf(svc_client->conf_ctx, env);
     repos_path =  axis2_conf_get_repo(svc_client->conf, env);
-    wsdl_path = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
+    wsdl_path = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
 
     svc_client->options = axis2_options_create(env);
     /* TODO: this method should be moved out of core implementation
@@ -1188,7 +1188,7 @@ axis2_svc_client_fill_soap_envelope(const axutil_env_t *env,
         return AXIS2_FALSE;
     }
 
-    if (axis2_strcmp(soap_version_uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+    if (axutil_strcmp(soap_version_uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
     {
         soap_version = AXIOM_SOAP11;
     }

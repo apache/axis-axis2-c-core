@@ -86,7 +86,7 @@ axis2_msg_info_headers_create(const axutil_env_t *env,
 
     if (action)
     {
-        msg_info_headers->action = axis2_strdup(env, action);
+        msg_info_headers->action = axutil_strdup(env, action);
         if (!(msg_info_headers->action))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -200,7 +200,7 @@ axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_header
     }
     if (action)
 	{
-        msg_info_headers->action = axis2_strdup(env, action);
+        msg_info_headers->action = axutil_strdup(env, action);
 	}
     return AXIS2_SUCCESS;
 }
@@ -227,7 +227,7 @@ axis2_msg_info_headers_set_message_id(struct axis2_msg_info_headers *msg_info_he
 
     if (message_id)
     {
-        msg_info_headers->message_id = axis2_strdup(env, message_id);
+        msg_info_headers->message_id = axutil_strdup(env, message_id);
         if (!(msg_info_headers->message_id))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

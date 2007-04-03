@@ -270,7 +270,7 @@ axis2_http_server_get_reply_to_epr(
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 
     host_address = "127.0.0.1"; /* TODO : get from axis2.xml */
-    svc_path = axis2_stracat(env, "/axis2/services/", svc_name);
+    svc_path = axutil_stracat(env, "/axis2/services/", svc_name);
     url = axutil_url_create(env, "http", host_address,
             AXIS2_INTF_TO_IMPL(server)->port, svc_path);
     AXIS2_FREE(env->allocator, svc_path);

@@ -22,13 +22,13 @@
 
 void test_strltrim(const axutil_env_t *env)
 {
-    axis2_char_t *s = axis2_strdup(env, "    abcd efgh    ");
+    axis2_char_t *s = axutil_strdup(env, "    abcd efgh    ");
     axis2_char_t *trimmed = NULL;
-    trimmed = axis2_strltrim(env, s, " \t\r\n");
-    if (0 == axis2_strcmp(trimmed, "abcd efgh    "))
-        printf("axis2_strltrim successful\n");
+    trimmed = axutil_strltrim(env, s, " \t\r\n");
+    if (0 == axutil_strcmp(trimmed, "abcd efgh    "))
+        printf("axutil_strltrim successful\n");
     else
-        printf("axis2_strltrim failed [%s]\n", trimmed);
+        printf("axutil_strltrim failed [%s]\n", trimmed);
     if (trimmed)
         AXIS2_FREE(env->allocator, trimmed);
     if (s)
@@ -37,13 +37,13 @@ void test_strltrim(const axutil_env_t *env)
 
 void test_strrtrim(const axutil_env_t *env)
 {
-    axis2_char_t *s = axis2_strdup(env, "abcd efgh    ");
+    axis2_char_t *s = axutil_strdup(env, "abcd efgh    ");
     axis2_char_t *trimmed = NULL;
-    trimmed = axis2_strrtrim(env, s, " \t\r\n");
-    if (0 == axis2_strcmp(trimmed, "    abcd efgh"))
-        printf("axis2_strrtrim successful\n");
+    trimmed = axutil_strrtrim(env, s, " \t\r\n");
+    if (0 == axutil_strcmp(trimmed, "    abcd efgh"))
+        printf("axutil_strrtrim successful\n");
     else
-        printf("axis2_strrtrim failed [%s]\n", trimmed);
+        printf("axutil_strrtrim failed [%s]\n", trimmed);
     if (trimmed)
         AXIS2_FREE(env->allocator, trimmed);
     if (s)
@@ -52,13 +52,13 @@ void test_strrtrim(const axutil_env_t *env)
 
 void test_strtrim(const axutil_env_t *env)
 {
-    axis2_char_t *s = axis2_strdup(env, "    abcd efgh    ");
+    axis2_char_t *s = axutil_strdup(env, "    abcd efgh    ");
     axis2_char_t *trimmed = NULL;
-    trimmed = axis2_strtrim(env, s, " \t\r\n");
-    if (0 == axis2_strcmp(trimmed, "abcd efgh"))
-        printf("axis2_strtrim successful\n");
+    trimmed = axutil_strtrim(env, s, " \t\r\n");
+    if (0 == axutil_strcmp(trimmed, "abcd efgh"))
+        printf("axutil_strtrim successful\n");
     else
-        printf("axis2_strtrim failed [%s]\n", trimmed);
+        printf("axutil_strtrim failed [%s]\n", trimmed);
     if (trimmed)
         AXIS2_FREE(env->allocator, trimmed);
     if (s)

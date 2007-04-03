@@ -254,7 +254,7 @@ axis2_msg_set_direction(axis2_msg_t *msg,
 
     if (direction)
     {
-        msg->direction = axis2_strdup(env, direction);
+        msg->direction = axutil_strdup(env, direction);
         if (!(msg->direction))
         {
             return AXIS2_FAILURE;
@@ -318,7 +318,7 @@ axis2_msg_set_name(axis2_msg_t *msg,
 
     if (name)
     {
-        msg->name = axis2_strdup(env, name);
+        msg->name = axutil_strdup(env, name);
         if (!(msg->name))
         {
             return AXIS2_FAILURE;

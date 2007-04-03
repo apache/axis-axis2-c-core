@@ -57,7 +57,7 @@ axis2_http_response_writer_create_with_encoding(
         return NULL;
     }
     response_writer->stream = stream;
-    response_writer->encoding = (axis2_char_t *)axis2_strdup(env, encoding);
+    response_writer->encoding = (axis2_char_t *)axutil_strdup(env, encoding);
 
     return response_writer;
 }
@@ -172,7 +172,7 @@ axis2_http_response_writer_print_str(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);
 
-    len = axis2_strlen(str);
+    len = axutil_strlen(str);
     if (! response_writer->stream)
     {
         return AXIS2_FAILURE;

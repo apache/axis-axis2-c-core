@@ -65,7 +65,7 @@ static schemes_t schemes[] =
 /* Here is the hand-optimized parse_uri_components().  There are some wild
  * tricks we could pull in assembly language that we don't pull here... like we
  * can do word-at-time scans for delimiter characters using the same technique
- * that fast axis2_memchr()s use.  But that would be way non-portable. -djg
+ * that fast axutil_memchr()s use.  But that would be way non-portable. -djg
  */
 
 /* We have a axis2_table_t that we can index by character and it tells us if the
@@ -337,7 +337,7 @@ deal_with_path:
         }
         if (s != uri_str)
         {
-            uri->path = axis2_strmemdup(uri_str, s - uri_str, env);
+            uri->path = axutil_strmemdup(uri_str, s - uri_str, env);
         }
         if (*s == 0)
         {
@@ -349,17 +349,17 @@ deal_with_path:
             s1 = strchr(s, '#');
             if (s1)
             {
-                uri->fragment = axis2_strdup(env, s1 + 1);
-                uri->query = axis2_strmemdup(s, s1 - s, env);
+                uri->fragment = axutil_strdup(env, s1 + 1);
+                uri->query = axutil_strmemdup(s, s1 - s, env);
             }
             else
             {
-                uri->query = axis2_strdup(env, s);
+                uri->query = axutil_strdup(env, s);
             }
             return uri;
         }
         /* otherwise it's a fragment */
-        uri->fragment = axis2_strdup(env, s + 1);
+        uri->fragment = axutil_strdup(env, s + 1);
 
         return uri;
     }
@@ -376,7 +376,7 @@ deal_with_path:
         goto deal_with_path;        /* backwards predicted taken! */
     }
 
-    uri->scheme = axis2_strmemdup(uri_str, s - uri_str, env);
+    uri->scheme = axutil_strmemdup(uri_str, s - uri_str, env);
     s += 3;
 
 deal_with_authority:
@@ -386,7 +386,7 @@ deal_with_authority:
         ++s;
     }
     uri_str = s;        /* whatever follows hostinfo is start of uri */
-    uri->hostinfo = axis2_strmemdup(hostinfo, uri_str - hostinfo, env);
+    uri->hostinfo = axutil_strmemdup(hostinfo, uri_str - hostinfo, env);
 
     /* If there's a username:password@host:port, the @ we want is the last @...
      * too bad there's no memrchr()... For the C purists, note that hostinfo
@@ -410,7 +410,7 @@ deal_with_host:
         {
             v6_offset1 = 1;
             v6_offset2 = 2;
-            s = axis2_memchr(hostinfo, ']', uri_str - hostinfo);
+            s = axutil_memchr(hostinfo, ']', uri_str - hostinfo);
             if (!s)
             {
                 return NULL;
@@ -422,20 +422,20 @@ deal_with_host:
         }
         else
         {
-            s = axis2_memchr(hostinfo, ':', uri_str - hostinfo);
+            s = axutil_memchr(hostinfo, ':', uri_str - hostinfo);
         }
         if (!s)
         {
             /* we expect the common case to have no port */
-            uri->hostname = axis2_strmemdup(hostinfo + v6_offset1,
+            uri->hostname = axutil_strmemdup(hostinfo + v6_offset1,
                  uri_str - hostinfo - v6_offset2, env);
             goto deal_with_path;
         }
-        uri->hostname = axis2_strmemdup(
+        uri->hostname = axutil_strmemdup(
             hostinfo + v6_offset1,
             s - hostinfo - v6_offset2, env);
         ++s;
-        uri->port_str = axis2_strmemdup(s, uri_str - s, env);
+        uri->port_str = axutil_strmemdup(s, uri_str - s, env);
         if (uri_str != s)
         {
             port = strtol(uri->port_str, &endstr, 10);
@@ -452,16 +452,16 @@ deal_with_host:
     }
 
     /* first colon delimits username:password */
-    s1 = axis2_memchr(hostinfo, ':', s - hostinfo);
+    s1 = axutil_memchr(hostinfo, ':', s - hostinfo);
     if (s1)
     {
-        uri->user = axis2_strmemdup(hostinfo, s1 - hostinfo, env);
+        uri->user = axutil_strmemdup(hostinfo, s1 - hostinfo, env);
         ++s1;
-        uri->password = axis2_strmemdup(s1, s - s1, env);
+        uri->password = axutil_strmemdup(s1, s - s1, env);
     }
     else
     {
-        uri->user = axis2_strmemdup(hostinfo, s - hostinfo, env);
+        uri->user = axutil_strmemdup(hostinfo, s - hostinfo, env);
     }
     hostinfo = s + 1;
     goto deal_with_host;
@@ -494,7 +494,7 @@ axutil_uri_parse_hostinfo(const axutil_env_t *env,
      */
     memset(uri, '\0', sizeof(*uri));
     uri->is_initialized = 1;
-    uri->hostinfo = axis2_strdup(env, hostinfo);
+    uri->hostinfo = axutil_strdup(env, hostinfo);
 
     /* We expect hostinfo to point to the first character of
      * the hostname.  There must be a port, separated by a colon
@@ -519,9 +519,9 @@ axutil_uri_parse_hostinfo(const axutil_env_t *env,
     {
         return NULL;
     }
-    uri->hostname = axis2_strndup(env, hostinfo, s - hostinfo - v6_offset1);
+    uri->hostname = axutil_strndup(env, hostinfo, s - hostinfo - v6_offset1);
     ++s;
-    uri->port_str = axis2_strdup(env, s);
+    uri->port_str = axutil_strdup(env, s);
     if (*s != '\0')
     {
         uri->port = (unsigned short) strtol(uri->port_str, &endstr, 10);
@@ -555,14 +555,14 @@ axutil_uri_resolve_relative(const axutil_env_t *env,
         if (!uri->hostname)
         {
             /* is this compatible with is_initialised?  Harmless in any case */
-            uri->path = base->path ? base->path : axis2_strdup(env, "/") ;
+            uri->path = base->path ? base->path : axutil_strdup(env, "/") ;
         }
         else
         {
             /* deal with the idiosyncracy of APR allowing path==NULL
              * without risk of breaking back-compatibility
              */
-            uri->path = axis2_strdup(env, "/") ;
+            uri->path = axutil_strdup(env, "/") ;
         }
     }
     else if (uri->path[0] != '/')
@@ -603,27 +603,27 @@ axutil_uri_resolve_relative(const axutil_env_t *env,
     /* The trivial bits are everything-but-path */
     if (!uri->scheme)
     {
-        uri->scheme = axis2_strdup(env, base->scheme) ;
+        uri->scheme = axutil_strdup(env, base->scheme) ;
     }
     if (!uri->hostinfo)
     {
-        uri->hostinfo = axis2_strdup(env, base->hostinfo) ;
+        uri->hostinfo = axutil_strdup(env, base->hostinfo) ;
     }
     if (!uri->user)
     {
-        uri->user = axis2_strdup(env, base->user) ;
+        uri->user = axutil_strdup(env, base->user) ;
     }
     if (!uri->password)
     {
-        uri->password = axis2_strdup(env, base->password) ;
+        uri->password = axutil_strdup(env, base->password) ;
     }
     if (!uri->hostname)
     {
-        uri->hostname = axis2_strdup(env, base->hostname) ;
+        uri->hostname = axutil_strdup(env, base->hostname) ;
     }
     if (!uri->port_str)
     {
-        uri->port_str = axis2_strdup(env, base->port_str) ;
+        uri->port_str = axutil_strdup(env, base->port_str) ;
     }
     if (!uri->hostent)
     {
@@ -662,7 +662,7 @@ axutil_uri_port_of_scheme(const axis2_char_t *scheme_str)
     {
         for (scheme = schemes; scheme->name ; ++scheme)
         {
-            if (axis2_strcasecmp(scheme_str, scheme->name) == 0)
+            if (axutil_strcasecmp(scheme_str, scheme->name) == 0)
             {
                 return scheme->default_port;
             }
@@ -680,15 +680,15 @@ axutil_uri_clone(const axutil_uri_t* uri,
     AXIS2_ENV_CHECK(env, NULL);
     new_uri = (axutil_uri_t *) axutil_uri_create(env);
 
-    new_uri->scheme = axis2_strdup(env, uri->scheme);
-    new_uri->hostinfo = axis2_strdup(env, uri->hostinfo);
-    new_uri->user = axis2_strdup(env, uri->user);
-    new_uri->password = axis2_strdup(env, uri->password);
-    new_uri->hostname = axis2_strdup(env, uri->hostname);
-    new_uri->port_str = axis2_strdup(env, uri->port_str);
-    new_uri->path = axis2_strdup(env, uri->path);
-    new_uri->query = axis2_strdup(env, uri->query);
-    new_uri->fragment = axis2_strdup(env, uri->fragment);
+    new_uri->scheme = axutil_strdup(env, uri->scheme);
+    new_uri->hostinfo = axutil_strdup(env, uri->hostinfo);
+    new_uri->user = axutil_strdup(env, uri->user);
+    new_uri->password = axutil_strdup(env, uri->password);
+    new_uri->hostname = axutil_strdup(env, uri->hostname);
+    new_uri->port_str = axutil_strdup(env, uri->port_str);
+    new_uri->path = axutil_strdup(env, uri->path);
+    new_uri->query = axutil_strdup(env, uri->query);
+    new_uri->fragment = axutil_strdup(env, uri->fragment);
     new_uri->hostent = uri->hostent;
     new_uri->port = uri->port;
     new_uri->is_initialized = uri->is_initialized;
@@ -717,7 +717,7 @@ axutil_uri_to_string(const axutil_uri_t *uri,
          * AXIS2_URI_UNP_ flags: */
         if (uri->user || uri->password)
         {
-            ret = axis2_strcat(env,
+            ret = axutil_strcat(env,
                 (uri->user     && !(flags & AXIS2_URI_UNP_OMITUSER))
                 ? uri->user : "",
                 (uri->password && !(flags & AXIS2_URI_UNP_OMITPASSWORD))
@@ -751,7 +751,7 @@ axutil_uri_to_string(const axutil_uri_t *uri,
 
             if (uri->scheme)
             {
-                ret = axis2_strcat(env,
+                ret = axutil_strcat(env,
                     uri->scheme, "://", ret,
                     lbrk, uri->hostname, rbrk,
                     is_default_port ? "" : ":",
@@ -765,7 +765,7 @@ axutil_uri_to_string(const axutil_uri_t *uri,
                  * to the authority, so include the authority prefix while
                  * omitting the "scheme:" that the user neglected to pass us.
                  */
-                ret = axis2_strcat(env,
+                ret = axutil_strcat(env,
                     "//", ret, lbrk, uri->hostname, rbrk,
                     is_default_port ? "" : ":",
                     is_default_port ? "" : uri->port_str,
@@ -778,7 +778,7 @@ axutil_uri_to_string(const axutil_uri_t *uri,
     if (!(flags & AXIS2_URI_UNP_OMITPATHINFO))
     {
         /* Append path, query and fragment strings: */
-        ret = axis2_strcat(env,
+        ret = axutil_strcat(env,
             ret,
             (uri->path)
             ? uri->path : "",

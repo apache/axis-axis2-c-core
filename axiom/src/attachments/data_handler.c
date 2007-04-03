@@ -53,7 +53,7 @@ axiom_data_handler_create(const axutil_env_t *env,
 
     if (mime_type)
     {
-        data_handler->mime_type = axis2_strdup(env, mime_type);
+        data_handler->mime_type = axutil_strdup(env, mime_type);
         if (!(data_handler->mime_type))
         {
             axiom_data_handler_free(data_handler, env);
@@ -63,7 +63,7 @@ axiom_data_handler_create(const axutil_env_t *env,
     }
     if (file_name)
     {
-        data_handler->file_name = axis2_strdup(env, file_name);
+        data_handler->file_name = axutil_strdup(env, file_name);
         if (!(data_handler->file_name))
         {
             axiom_data_handler_free(data_handler, env);
@@ -333,7 +333,7 @@ axiom_data_handler_set_file_name(axiom_data_handler_t *data_handler,
 
     if (file_name)
     {
-        data_handler->file_name = axis2_strdup(env, file_name);
+        data_handler->file_name = axutil_strdup(env, file_name);
         if (!(data_handler->file_name))
         {
             axiom_data_handler_free(data_handler, env);

@@ -60,7 +60,7 @@ axis2_svc_name_create(const axutil_env_t *env,
 
     if (endpoint_name)
     {
-        svc_name->endpoint_name = axis2_strdup(env, endpoint_name);
+        svc_name->endpoint_name = axutil_strdup(env, endpoint_name);
         if (!(svc_name->endpoint_name))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -122,7 +122,7 @@ axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name,
 
     if (endpoint_name)
     {
-        svc_name->endpoint_name = axis2_strdup(env, endpoint_name);
+        svc_name->endpoint_name = axutil_strdup(env, endpoint_name);
         if (!(svc_name->endpoint_name))
             return AXIS2_FAILURE;
     }

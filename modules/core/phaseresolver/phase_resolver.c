@@ -295,10 +295,10 @@ axis2_phase_resolver_build_execution_chains(
                 {
                     return AXIS2_FAILURE;
                 }
-                if ((0 != axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 != axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     if (!all_handlers)
                     {
@@ -364,17 +364,17 @@ axis2_phase_resolver_build_execution_chains(
             }
 
             /* TODO change this in proper way */
-            if (!phase_name || (0 == axis2_strcmp(phase_name, "")))
+            if (!phase_name || (0 == axutil_strcmp(phase_name, "")))
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
                     AXIS2_FAILURE);
                 return AXIS2_FAILURE;
 
             }
-            else if ((0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
-                (0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
-                (0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
-                (0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+            else if ((0 == axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
+                (0 == axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                (0 == axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                (0 == axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
             {
                 if (all_handlers)
                 {
@@ -1069,10 +1069,10 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
                     {
                         return AXIS2_FAILURE;
                     }
-                    if ((0 != axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
-                        (0 != axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                        (0 != axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                        (0 != axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                    if ((0 != axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
+                        (0 != axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                        (0 != axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                        (0 != axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                     {
                         if (phase_holder)
                         {
@@ -1213,10 +1213,10 @@ axis2_phase_resolver_engage_to_global_chain(
                 {
                     return AXIS2_FAILURE;
                 }
-                if ((0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 == axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     status = axis2_phase_holder_add_handler(phase_holder, env, 
                         metadata);
@@ -1491,10 +1491,10 @@ axis2_phase_resolver_engage_module_to_op(
                 metadata = axis2_flow_get_handler(flow, env, j);
                 phase_rule = axis2_handler_desc_get_rules(metadata, env);
                 phase_name = axis2_phase_rule_get_name(phase_rule, env);
-                if ((0 != axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 != axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     status = axis2_phase_holder_add_handler(phase_holder,
                         env, metadata);
@@ -1507,10 +1507,10 @@ axis2_phase_resolver_engage_module_to_op(
                     }
 
                 }
-                if ((0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 == axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     axutil_array_list_t *phase_list = NULL;
                     axis2_phase_holder_t *phase_holder = NULL;
@@ -1638,10 +1638,10 @@ axis2_phase_resolver_disengage_module_from_op(
                 metadata = axis2_flow_get_handler(flow, env, j);
                 phase_rule = axis2_handler_desc_get_rules(metadata, env);
                 phase_name = axis2_phase_rule_get_name(phase_rule, env);
-                if ((0 != axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                    (0 != axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 != axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
+                    (0 != axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     status = axis2_phase_holder_remove_handler(phase_holder,
                         env, metadata);
@@ -1654,10 +1654,10 @@ axis2_phase_resolver_disengage_module_from_op(
                     }
 
                 }
-                if ((0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
-                    (0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
+                if ((0 == axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                    (0 == axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     axutil_array_list_t *phase_list = NULL;
                     axis2_phase_holder_t *phase_holder = NULL;

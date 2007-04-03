@@ -106,7 +106,7 @@ axis2_arch_file_data_create_with_type_and_name(const axutil_env_t *env,
         return NULL;
     }
     arch_file_data->type = type;
-    arch_file_data->name = axis2_strdup(env, name);
+    arch_file_data->name = axutil_strdup(env, name);
     return arch_file_data;
 }
 
@@ -188,7 +188,7 @@ axis2_arch_file_data_set_msg_recv(axis2_arch_file_data_t *arch_file_data,
         AXIS2_FREE(env->allocator, arch_file_data->msg_recv);
         arch_file_data->msg_recv = NULL;
     }
-    arch_file_data->msg_recv = axis2_strdup(env, msg_recv);
+    arch_file_data->msg_recv = axutil_strdup(env, msg_recv);
     return AXIS2_SUCCESS;
 }
 
@@ -265,7 +265,7 @@ axis2_arch_file_data_set_module_name(axis2_arch_file_data_t *arch_file_data,
         AXIS2_FREE(env->allocator, arch_file_data->module_name);
         arch_file_data->module_name = NULL;
     }
-    arch_file_data->module_name = axis2_strdup(env, module_name);
+    arch_file_data->module_name = axutil_strdup(env, module_name);
     return AXIS2_SUCCESS;
 }
 
@@ -289,7 +289,7 @@ axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *arch_file_data,
         AXIS2_FREE(env->allocator, arch_file_data->module_dll_name);
         arch_file_data->module_dll_name = NULL;
     }
-    arch_file_data->module_dll_name = axis2_strdup(env, module_dll_name);
+    arch_file_data->module_dll_name = axutil_strdup(env, module_dll_name);
     return AXIS2_SUCCESS;
 }
 

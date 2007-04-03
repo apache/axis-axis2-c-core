@@ -83,7 +83,7 @@ axutil_file_set_name(axutil_file_t *file,
         AXIS2_FREE(env->allocator, file->name);
         file->name = NULL;
     }
-    file->name = axis2_strdup(env, name);
+    file->name = axutil_strdup(env, name);
     if (!file->name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -121,7 +121,7 @@ axutil_file_set_path(axutil_file_t *file,
         AXIS2_FREE(env->allocator, file->path);
         file->path = NULL;
     }
-    file->path = axis2_strdup(env, path);
+    file->path = axutil_strdup(env, path);
     if (!(file->path))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

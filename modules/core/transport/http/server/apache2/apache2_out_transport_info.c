@@ -83,8 +83,8 @@ axis2_apache_out_transport_info_set_content_type(
     if (info->encoding)
     {
 
-        tmp1 = axis2_stracat(env, content_type, ";charset=");
-        tmp2 = axis2_stracat(env, tmp1, info->encoding);
+        tmp1 = axutil_stracat(env, content_type, ";charset=");
+        tmp2 = axutil_stracat(env, tmp1, info->encoding);
         info->request->content_type = apr_pstrdup(info->request->pool,
                 tmp2);
         AXIS2_FREE(env->allocator, tmp1);
@@ -113,7 +113,7 @@ axis2_apache_out_transport_info_set_char_encoding(
     {
         AXIS2_FREE(env->allocator, info->encoding);
     }
-    info->encoding = axis2_strdup(env, encoding);
+    info->encoding = axutil_strdup(env, encoding);
 
     return AXIS2_SUCCESS;
 }

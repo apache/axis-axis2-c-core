@@ -487,7 +487,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
                     if (ns)
                     {
                         hb_namespace_uri = axiom_namespace_get_uri(ns, env);
-                        if (axis2_strcmp(hb_namespace_uri, ns_uri) == 0)
+                        if (axutil_strcmp(hb_namespace_uri, ns_uri) == 0)
                         {
                             axutil_array_list_add(header_block_list, env, header_block);
                             found++;
@@ -603,12 +603,12 @@ axiom_soap_header_qname_matches(const axutil_env_t *env,
     }
 
     lparts_match = (!match_lpart ||
-            (axis2_strcmp(match_lpart, "") == 0) ||
-            (element_qname && (axis2_strcmp(ele_lpart, match_lpart) == 0)));
+            (axutil_strcmp(match_lpart, "") == 0) ||
+            (element_qname && (axutil_strcmp(ele_lpart, match_lpart) == 0)));
 
 
-    uris_match = (!match_nsuri || (axis2_strcmp(match_nsuri, "") == 0) ||
-            (element_qname && (axis2_strcmp(ele_nsuri, match_nsuri) == 0)));
+    uris_match = (!match_nsuri || (axutil_strcmp(match_nsuri, "") == 0) ||
+            (element_qname && (axutil_strcmp(ele_nsuri, match_nsuri) == 0)));
 
     return lparts_match && uris_match;
 }

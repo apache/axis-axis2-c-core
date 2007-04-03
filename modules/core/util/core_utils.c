@@ -183,16 +183,16 @@ axis2_core_utils_get_module_qname(const axutil_env_t *env,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
-    if (version  && 0 != axis2_strlen(version))
+    if (version  && 0 != axutil_strlen(version))
     {
         axis2_char_t * mod_name1 = NULL;
         axis2_char_t * mod_name = NULL;
-        mod_name1 = axis2_stracat(env, name, "-");
+        mod_name1 = axutil_stracat(env, name, "-");
         if (!mod_name1)
         {
             return NULL;
         }
-        mod_name = axis2_stracat(env, mod_name1, version);
+        mod_name = axutil_stracat(env, mod_name1, version);
         if (!mod_name)
         {
             AXIS2_FREE(env->allocator, mod_name1);
@@ -329,12 +329,12 @@ axis2_core_utils_get_module_name(const axutil_env_t *env, axis2_char_t *module_n
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
-    name = axis2_strdup(env, module_name);
+    name = axutil_strdup(env, module_name);
     if (!name)
     {
         return NULL;
     }
-    version_sep_loc = axis2_rindex(name, version_seperator);
+    version_sep_loc = axutil_rindex(name, version_seperator);
     if (version_sep_loc)
     {
         *version_sep_loc = '\0';
@@ -351,10 +351,10 @@ axis2_core_utils_get_module_version(const axutil_env_t *env, axis2_char_t *modul
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
-    version_sep_loc = axis2_rindex(module_name, version_seperator);
+    version_sep_loc = axutil_rindex(module_name, version_seperator);
     if (version_sep_loc)
     {
-        return axis2_strdup(env, version_sep_loc + sizeof(axis2_char_t));
+        return axutil_strdup(env, version_sep_loc + sizeof(axis2_char_t));
     }
     return NULL;
 }

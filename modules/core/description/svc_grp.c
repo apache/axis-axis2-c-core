@@ -160,7 +160,7 @@ axis2_svc_grp_set_name(
 
     if (svc_grp->svc_grp_name)
         AXIS2_FREE(env->allocator, svc_grp->svc_grp_name);
-    svc_grp->svc_grp_name = axis2_strdup(env, name);
+    svc_grp->svc_grp_name = axutil_strdup(env, name);
     if (!svc_grp->svc_grp_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -443,7 +443,7 @@ axis2_svc_grp_engage_module(
         modu = axutil_array_list_get(svc_grp->module_qnames, env, i);
         modu_local = axutil_qname_get_localpart(modu, env);
         module_name_local = axutil_qname_get_localpart(module_name, env);
-        if (0 == axis2_strcmp(modu_local, module_name_local))
+        if (0 == axutil_strcmp(modu_local, module_name_local))
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP, AXIS2_FAILURE);

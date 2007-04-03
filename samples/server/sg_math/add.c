@@ -144,7 +144,7 @@ axis2_add_add(const axutil_env_t *env, axiom_node_t *node, axis2_msg_ctx_t *msg_
                 prop = axutil_property_create(env);
                 if (prop)
                 {
-                    axutil_property_set_value(prop, env, axis2_strdup(env, result_str));
+                    axutil_property_set_value(prop, env, axutil_strdup(env, result_str));
                     axis2_ctx_set_property(ctx, env, "ADD_RESULT", prop);
                 }
             }

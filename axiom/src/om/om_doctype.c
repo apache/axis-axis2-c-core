@@ -56,7 +56,7 @@ axiom_doctype_create(const axutil_env_t *env,
 
     if (value)
     {
-        doctype->value = (axis2_char_t*)axis2_strdup(env, value);
+        doctype->value = (axis2_char_t*)axutil_strdup(env, value);
         if (!doctype->value)
         {
             AXIS2_FREE(env->allocator, doctype);
@@ -99,7 +99,7 @@ axiom_doctype_set_value(axiom_doctype_t *om_doctype,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
-    om_doctype->value = (axis2_char_t*)axis2_strdup(env, value);
+    om_doctype->value = (axis2_char_t*)axutil_strdup(env, value);
     return AXIS2_SUCCESS;
 }
 

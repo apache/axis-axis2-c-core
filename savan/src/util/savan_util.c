@@ -47,21 +47,21 @@ savan_util_get_message_type(
         return SAVAN_MSG_TYPE_UNKNOWN;
     }
     
-    if (axis2_strcmp(action, SAVAN_ACTIONS_SUB) == 0)
+    if (axutil_strcmp(action, SAVAN_ACTIONS_SUB) == 0)
         return SAVAN_MSG_TYPE_SUB;
-    else if (axis2_strcmp(action, SAVAN_ACTIONS_SUB_RESPONSE) == 0)
+    else if (axutil_strcmp(action, SAVAN_ACTIONS_SUB_RESPONSE) == 0)
         return SAVAN_MSG_TYPE_SUB_RESPONSE;
-    else if (axis2_strcmp(action, SAVAN_ACTIONS_UNSUB) == 0)
+    else if (axutil_strcmp(action, SAVAN_ACTIONS_UNSUB) == 0)
         return SAVAN_MSG_TYPE_UNSUB;
-    else if (axis2_strcmp(action, SAVAN_ACTIONS_UNSUB_RESPONSE) == 0)
+    else if (axutil_strcmp(action, SAVAN_ACTIONS_UNSUB_RESPONSE) == 0)
         return SAVAN_MSG_TYPE_UNSUB_RESPONSE;
-    else if (axis2_strcmp(action, SAVAN_ACTIONS_GET_STATUS) == 0)
+    else if (axutil_strcmp(action, SAVAN_ACTIONS_GET_STATUS) == 0)
         return SAVAN_MSG_TYPE_GET_STATUS;
-    else if (axis2_strcmp(action, SAVAN_ACTIONS_GET_STATUS_RESPONSE) == 0)
+    else if (axutil_strcmp(action, SAVAN_ACTIONS_GET_STATUS_RESPONSE) == 0)
         return SAVAN_MSG_TYPE_GET_STATUS_RESPONSE;
-    else if (axis2_strcmp(action, SAVAN_ACTIONS_RENEW) == 0)
+    else if (axutil_strcmp(action, SAVAN_ACTIONS_RENEW) == 0)
         return SAVAN_MSG_TYPE_RENEW;
-    else if (axis2_strcmp(action, SAVAN_ACTIONS_RENEW_RESPONSE) == 0)
+    else if (axutil_strcmp(action, SAVAN_ACTIONS_RENEW_RESPONSE) == 0)
         return SAVAN_MSG_TYPE_RENEW_RESPONSE;
     
     return SAVAN_MSG_TYPE_UNKNOWN;

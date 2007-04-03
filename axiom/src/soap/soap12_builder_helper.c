@@ -149,7 +149,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
     if (element_level == 4)
     {
-        if (axis2_strcmp(AXIOM_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME, ele_localname) == 0)
+        if (axutil_strcmp(AXIOM_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME, ele_localname) == 0)
         {
             if (builder_helper->code_present)
             {
@@ -176,7 +176,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                 builder_helper->code_processing = AXIS2_TRUE;
             }
         }
-        else if (axis2_strcmp(AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME, ele_localname) == 0)
+        else if (axutil_strcmp(AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME, ele_localname) == 0)
         {
             if (!(builder_helper->code_processing) && !(builder_helper->sub_code_processing))
             {
@@ -230,7 +230,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                 }
             }
         }
-        else if (axis2_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME) == 0)
+        else if (axutil_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME) == 0)
         {
             if (!(builder_helper->reason_processing))
             {
@@ -275,7 +275,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             }
 
         }
-        else if (axis2_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
+        else if (axutil_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
         {
             if (!(builder_helper->reason_processing))
             {
@@ -315,7 +315,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                 return AXIS2_FAILURE;
             }
         }
-        else if (axis2_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME) == 0)
+        else if (axutil_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME) == 0)
         {
             if (!(builder_helper->reason_processing))
             {
@@ -381,10 +381,10 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
         if (!parent_localname)
             return AXIS2_FAILURE;
 
-        if (axis2_strcmp(parent_localname,
+        if (axutil_strcmp(parent_localname,
                 AXIOM_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME) == 0)
         {
-            if (axis2_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME) == 0)
+            if (axutil_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME) == 0)
             {
                 if (!(builder_helper->value_present))
                 {
@@ -414,7 +414,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                     return AXIS2_FAILURE;
                 }
             }
-            else if (axis2_strcmp(ele_localname,
+            else if (axutil_strcmp(ele_localname,
                     AXIOM_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
             {
                 if (!(builder_helper->sub_code_present))
@@ -464,9 +464,9 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                 return AXIS2_FAILURE;
             }
         }
-        else if (axis2_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME) == 0)
+        else if (axutil_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME) == 0)
         {
-            if (axis2_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_TEXT_LOCAL_NAME) == 0)
+            if (axutil_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_TEXT_LOCAL_NAME) == 0)
             {
                 axiom_soap_fault_text_t *soap_fault_text = NULL;
                 axiom_soap_fault_reason_t *fault_reason = NULL;
@@ -494,7 +494,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
             }
 
         }
-        else if (axis2_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME) == 0)
+        else if (axutil_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME) == 0)
         {
             axiom_soap_builder_set_processing_detail_elements(builder_helper->soap_builder, env, AXIS2_TRUE);
 
@@ -533,9 +533,9 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
 
 
-        if (axis2_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
+        if (axutil_strcmp(parent_localname, AXIOM_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
         {
-            if (axis2_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME) == 0)
+            if (axutil_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_VALUE_LOCAL_NAME) == 0)
             {
                 if (builder_helper->subcode_value_present)
                 {
@@ -575,7 +575,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
                     builder_helper->sub_code_processing = AXIS2_FALSE;
                 }
             }
-            else if (axis2_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
+            else if (axutil_strcmp(ele_localname, AXIOM_SOAP12_SOAP_FAULT_SUB_CODE_LOCAL_NAME) == 0)
             {
                 if (builder_helper->subcode_value_present)
                 {
@@ -643,7 +643,7 @@ axiom_soap12_builder_helper_handle_event(axiom_soap12_builder_helper_t *builder_
 
             for (i = 0; i < axutil_array_list_size(builder_helper->detail_element_names, env) ; i++)
             {
-                if (axis2_strcmp(parent_localname, axutil_array_list_get(builder_helper->detail_element_names, env, i)) == 0)
+                if (axutil_strcmp(parent_localname, axutil_array_list_get(builder_helper->detail_element_names, env, i)) == 0)
                 {
                     local_name_exists = AXIS2_TRUE;
                     detail_element_level = i + 1;

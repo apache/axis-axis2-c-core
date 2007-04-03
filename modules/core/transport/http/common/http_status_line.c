@@ -54,7 +54,7 @@ axis2_http_status_line_create(
         return NULL;
     }
 
-	status_line->line = (axis2_char_t *)axis2_strdup(env, str);
+	status_line->line = (axis2_char_t *)axutil_strdup(env, str);
     status_line->http_version = NULL;
     status_line->reason_phrase = NULL;
     status_line->status_code = NULL;
@@ -111,11 +111,11 @@ axis2_http_status_line_create(
     *tmp++ = '\0';
     reason_phrase = tmp;
     status_line->http_version = (axis2_char_t *)
-            axis2_strdup(env, http_version);
+            axutil_strdup(env, http_version);
     status_line->status_code = (axis2_char_t *)
-            axis2_strdup(env, status_code);
+            axutil_strdup(env, status_code);
     status_line->reason_phrase = (axis2_char_t *)
-            axis2_strdup(env, reason_phrase);
+            axutil_strdup(env, reason_phrase);
 
     if (! status_line->http_version ||
             ! status_line->reason_phrase)
@@ -198,7 +198,7 @@ axis2_http_status_line_starts_with_http(
     axis2_http_status_line_t *status_line,
     const axutil_env_t *env)
 {
-    if (0 == axis2_strncasecmp(status_line->line, "HTTP", 4))
+    if (0 == axutil_strncasecmp(status_line->line, "HTTP", 4))
     {
         return AXIS2_TRUE;
     }

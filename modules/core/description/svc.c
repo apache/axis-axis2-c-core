@@ -200,21 +200,21 @@ axis2_svc_create(const axutil_env_t *env)
         AXIS2_FREE(env->allocator, svc->schema_target_ns_prefix);
         svc->schema_target_ns_prefix = NULL;
     }
-    svc->schema_target_ns_prefix = axis2_strdup(env, "ns");
+    svc->schema_target_ns_prefix = axutil_strdup(env, "ns");
 
     if (svc->target_ns)
     {
         AXIS2_FREE(env->allocator, svc->target_ns);
         svc->target_ns = NULL;
     }
-    svc->target_ns = axis2_strdup(env, "http://ws.apache.org/axis2");
+    svc->target_ns = axutil_strdup(env, "http://ws.apache.org/axis2");
 
     if (svc->target_ns_prefix)
     {
         AXIS2_FREE(env->allocator, svc->target_ns_prefix);
         svc->target_ns_prefix = NULL;
     }
-    svc->target_ns_prefix = axis2_strdup(env, "tns");
+    svc->target_ns_prefix = axutil_strdup(env, "tns");
     svc->sc_calc_count = 0;
 
     return svc;
@@ -793,7 +793,7 @@ axis2_svc_set_name(axis2_svc_t *svc,
         AXIS2_FREE(env->allocator, svc->axis_svc_name);
         svc->axis_svc_name = NULL;
     }
-    svc->axis_svc_name = axis2_strdup(env, axis_svc_name);
+    svc->axis_svc_name = axutil_strdup(env, axis_svc_name);
     if (!svc->axis_svc_name)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -837,7 +837,7 @@ axis2_svc_set_file_name(axis2_svc_t *svc,
         AXIS2_FREE(env->allocator, svc->filename);
         svc->filename = NULL;
     }
-    svc->filename = (axis2_char_t *) axis2_strdup(env, filename);
+    svc->filename = (axis2_char_t *) axutil_strdup(env, filename);
     if (!svc->filename)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -866,7 +866,7 @@ axis2_svc_set_svc_desc(axis2_svc_t *svc,
         AXIS2_FREE(env->allocator, svc->svc_desc);
         svc->svc_desc = NULL;
     }
-    svc->svc_desc = (axis2_char_t *) axis2_strdup(env, svc_desc);
+    svc->svc_desc = (axis2_char_t *) axutil_strdup(env, svc_desc);
     if (!svc->svc_desc)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -885,7 +885,7 @@ axis2_svc_add_mapping(axis2_svc_t *svc,
     AXIS2_PARAM_CHECK(env->error, mapping_key, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
 
-    axutil_hash_set(svc->op_action_map, axis2_strdup(env, mapping_key),
+    axutil_hash_set(svc->op_action_map, axutil_strdup(env, mapping_key),
             AXIS2_HASH_KEY_STRING, op_desc);
     return AXIS2_SUCCESS;
 }
@@ -935,7 +935,7 @@ axis2_svc_set_target_ns(axis2_svc_t *svc,
         AXIS2_FREE(env->allocator, svc->target_ns);
         svc->target_ns = NULL;
     }
-    svc->target_ns = axis2_strdup(env, ns);
+    svc->target_ns = axutil_strdup(env, ns);
     return AXIS2_SUCCESS;
 }
 
@@ -960,7 +960,7 @@ axis2_svc_set_target_ns_prefix(axis2_svc_t *svc,
         AXIS2_FREE(env->allocator, svc->target_ns_prefix);
         svc->target_ns_prefix = NULL;
     }
-    svc->target_ns_prefix = axis2_strdup(env, prefix);
+    svc->target_ns_prefix = axutil_strdup(env, prefix);
     return AXIS2_SUCCESS;
 }
 

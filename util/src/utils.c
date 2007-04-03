@@ -47,12 +47,12 @@ axis2_parse_request_url_for_svc_and_op(const axutil_env_t *env,
         else
         {
             service_str = tmp;
-            tmp += axis2_strlen(AXIS2_REQUEST_URL_PREFIX);
+            tmp += axutil_strlen(AXIS2_REQUEST_URL_PREFIX);
         }
     }
     if (service_str)
     {
-        service_str += axis2_strlen(AXIS2_REQUEST_URL_PREFIX);
+        service_str += axutil_strlen(AXIS2_REQUEST_URL_PREFIX);
         if ('\0' != *service_str)
         {
             service_str++; /*to remove the leading '/' */
@@ -80,13 +80,13 @@ axis2_parse_request_url_for_svc_and_op(const axutil_env_t *env,
                     }
                     else
                     {
-                        ret[1] = axis2_strdup(env, service_str);
+                        ret[1] = axutil_strdup(env, service_str);
                     }
                 }
             }
             else
             {
-                ret[0] = axis2_strdup(env, service_str);
+                ret[0] = axutil_strdup(env, service_str);
             }
         }
     }

@@ -112,7 +112,7 @@ axiom_soap_action_disp_find_op(
         if (!op)
         {
             const axis2_char_t * op_name = NULL;
-            op_name = axis2_rindex(action, '/');
+            op_name = axutil_rindex(action, '/');
 
             if (op_name)
             {

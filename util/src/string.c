@@ -56,7 +56,7 @@ axutil_string_create(const axutil_env_t *env,
     string->ref_count = 1;
     string->owns_buffer = AXIS2_TRUE;
     
-    string->length = axis2_strlen(str);
+    string->length = axutil_strlen(str);
     
     if (string->length < 0)
     {
@@ -103,7 +103,7 @@ axutil_string_create_assume_ownership(const axutil_env_t *env,
     }
     /* set properties */
     string->buffer = *str;    
-    string->length = axis2_strlen(*str);
+    string->length = axutil_strlen(*str);
     string->ref_count = 1;
     string->owns_buffer = AXIS2_TRUE;    
     
@@ -142,7 +142,7 @@ axutil_string_create_const(const axutil_env_t *env,
     }
     /* set properties */
     string->buffer = *str;    
-    string->length = axis2_strlen(*str);
+    string->length = axutil_strlen(*str);
     string->ref_count = 1;
     string->owns_buffer = AXIS2_FALSE;    
     
@@ -242,17 +242,17 @@ axutil_string_get_length(const struct axutil_string *string,
 /* END of string struct implementation */
 
 
-/** this is used to cache lengths in axis2_strcat */
+/** this is used to cache lengths in axutil_strcat */
 #define MAX_SAVED_LENGTHS  6
 
 AXIS2_EXTERN void* AXIS2_CALL
-axis2_strdup(const axutil_env_t *env,
+axutil_strdup(const axutil_env_t *env,
     const void *ptr)
 {
     AXIS2_ENV_CHECK(env, NULL);
     if (ptr)
     {
-        int len = axis2_strlen(ptr);
+        int len = axutil_strlen(ptr);
         axis2_char_t * str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axis2_char_t) * (len + 1));
         if (!str)
@@ -270,7 +270,7 @@ axis2_strdup(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_strmemdup(const void *ptr,
+axutil_strmemdup(const void *ptr,
     size_t n,
     const axutil_env_t *env)
 {
@@ -293,7 +293,7 @@ axis2_strmemdup(const void *ptr,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_memchr(const void *ptr,
+axutil_memchr(const void *ptr,
     int c,
     size_t n)
 {
@@ -309,7 +309,7 @@ axis2_memchr(const void *ptr,
 }
 
 AXIS2_EXTERN void* AXIS2_CALL
-axis2_strndup(const axutil_env_t *env,
+axutil_strndup(const axutil_env_t *env,
     const void *ptr,
     int n)
 {
@@ -319,7 +319,7 @@ axis2_strndup(const axutil_env_t *env,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ptr, NULL);
 
-    end = axis2_memchr(ptr, '\0', n);
+    end = axutil_memchr(ptr, '\0', n);
     if (end)
         n = end - (axis2_char_t *) ptr;
     str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
@@ -336,7 +336,7 @@ axis2_strndup(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_strcat(const axutil_env_t *env, ...)
+axutil_strcat(const axutil_env_t *env, ...)
 {
     axis2_char_t *cp, *argp, *str;
     size_t saved_lengths[MAX_SAVED_LENGTHS];
@@ -401,7 +401,7 @@ axis2_strcat(const axutil_env_t *env, ...)
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_stracat(const axutil_env_t *env,
+axutil_stracat(const axutil_env_t *env,
     const axis2_char_t *s1, 
     const axis2_char_t *s2)
 {
@@ -416,15 +416,15 @@ axis2_stracat(const axutil_env_t *env,
     }
     if (!s1)
     {
-        return (axis2_char_t*)axis2_strdup(env, s2);
+        return (axis2_char_t*)axutil_strdup(env, s2);
     }
     if (!s2)
     {
-        return (axis2_char_t*)axis2_strdup(env,s1);
+        return (axis2_char_t*)axutil_strdup(env,s1);
     }
 
-	len1 = axis2_strlen(s1);
-	len2 = axis2_strlen(s2);
+	len1 = axutil_strlen(s1);
+	len2 = axutil_strlen(s2);
     alloc_len = len1 + len2 + 1;
     ret = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
         alloc_len * sizeof(axis2_char_t));
@@ -436,7 +436,7 @@ axis2_stracat(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_strcmp(const axis2_char_t * s1, 
+axutil_strcmp(const axis2_char_t * s1, 
     const axis2_char_t * s2)
 {
     if (s1 && s2)
@@ -451,7 +451,7 @@ axis2_strcmp(const axis2_char_t * s1,
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_strncmp(const axis2_char_t * s1, 
+axutil_strncmp(const axis2_char_t * s1, 
     const axis2_char_t * s2, 
     int n)
 {
@@ -467,7 +467,7 @@ axis2_strncmp(const axis2_char_t * s1,
 
 
 AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
-axis2_strlen(const axis2_char_t * s)
+axutil_strlen(const axis2_char_t * s)
 {
     if (s)
     {
@@ -481,7 +481,7 @@ axis2_strlen(const axis2_char_t * s)
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_strcasecmp(const axis2_char_t *s1, 
+axutil_strcasecmp(const axis2_char_t *s1, 
     const axis2_char_t *s2)
 {
 	while (*s1 != '\0' && *s2 != '\0')
@@ -510,7 +510,7 @@ axis2_strcasecmp(const axis2_char_t *s1,
 
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_strncasecmp(const axis2_char_t *s1, 
+axutil_strncasecmp(const axis2_char_t *s1, 
     const axis2_char_t *s2, 
     const int n)
 {
@@ -528,7 +528,7 @@ axis2_strncasecmp(const axis2_char_t *s1,
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_strstr(const axis2_char_t *heystack,
+axutil_strstr(const axis2_char_t *heystack,
     const axis2_char_t *needle)
 {
     return strstr(heystack, needle);
@@ -536,10 +536,10 @@ axis2_strstr(const axis2_char_t *heystack,
 
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_rindex(const axis2_char_t *_s, 
+axutil_rindex(const axis2_char_t *_s, 
     axis2_char_t _ch)
 {
-    int i, ilen = axis2_strlen(_s);
+    int i, ilen = axutil_strlen(_s);
     if (ilen < 1)
     {
         return NULL;
@@ -555,7 +555,7 @@ axis2_rindex(const axis2_char_t *_s,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_replace(const axutil_env_t *env,
+axutil_replace(const axutil_env_t *env,
     axis2_char_t *str,
     int s1,
     int s2)
@@ -567,7 +567,7 @@ axis2_replace(const axutil_env_t *env,
         return NULL;
     }
 
-    newstr = axis2_strdup(env, str);
+    newstr = axutil_strdup(env, str);
     index = strchr(newstr, s1);
     while (index)
     {
@@ -578,7 +578,7 @@ axis2_replace(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strltrim(const axutil_env_t *env,
+axutil_strltrim(const axutil_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {
@@ -599,7 +599,7 @@ axis2_strltrim(const axutil_env_t *env,
     {
         if (!strchr(_trim, *_p))
         {
-            ret = (axis2_char_t *) axis2_strdup(env, _p);
+            ret = (axis2_char_t *) axutil_strdup(env, _p);
             break;
         }
         ++_p;
@@ -608,7 +608,7 @@ axis2_strltrim(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strrtrim(const axutil_env_t *env,
+axutil_strrtrim(const axutil_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {
@@ -619,7 +619,7 @@ axis2_strrtrim(const axutil_env_t *env,
     {
         return NULL;
     }
-    __tail = ((axis2_char_t *) _s) + axis2_strlen(_s);
+    __tail = ((axis2_char_t *) _s) + axutil_strlen(_s);
     if (!_trim)
     {
         _trim = " \t\n\r";
@@ -628,7 +628,7 @@ axis2_strrtrim(const axutil_env_t *env,
     {
         if (!strchr(_trim, *__tail))
         {
-            ret = (axis2_char_t *) axis2_strdup(env, _s);
+            ret = (axis2_char_t *) axutil_strdup(env, _s);
             break;
         }
         *__tail = 0;
@@ -637,15 +637,15 @@ axis2_strrtrim(const axutil_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_strtrim(const axutil_env_t *env,
+axutil_strtrim(const axutil_env_t *env,
     const axis2_char_t *_s,
     const axis2_char_t *_trim)
 {
     axis2_char_t *_p = NULL;
     axis2_char_t *_q = NULL;
 
-    _p = axis2_strltrim(env, _s, _trim);
-    _q = axis2_strrtrim(env, _p, _trim);
+    _p = axutil_strltrim(env, _s, _trim);
+    _q = axutil_strrtrim(env, _p, _trim);
     if (_p)
     {
         AXIS2_FREE(env->allocator, _p);
@@ -730,7 +730,7 @@ axutil_string_toupper(axis2_char_t* str)
 }
 
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_strcasestr(const axis2_char_t *heystack, 
+axutil_strcasestr(const axis2_char_t *heystack, 
     const axis2_char_t *needle)
 {
     axis2_char_t start, current;
@@ -753,7 +753,7 @@ axis2_strcasestr(const axis2_char_t *heystack,
                     return NULL;
 		}
             } while (toupper(current) != toupper(start));
-        } while (axis2_strncasecmp(heystack, needle, len));
+        } while (axutil_strncasecmp(heystack, needle, len));
         heystack--;
     }
     return (axis2_char_t *)heystack;

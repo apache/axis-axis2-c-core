@@ -91,7 +91,7 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
 
     repos_path = axis2_dep_engine_get_repos_path(dep_engine, env);
 
-    svcs_xml = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
+    svcs_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
         AXIS2_SERVICE_FOLDER, AXIS2_PATH_SEP_STR, file_name,
         AXIS2_PATH_SEP_STR, AXIS2_SVC_XML, NULL);
 
@@ -163,7 +163,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         }
     }
 
-    if (root_element_name && 0 == axis2_strcmp(AXIS2_SVC_ELEMENT, root_element_name))
+    if (root_element_name && 0 == axutil_strcmp(AXIS2_SVC_ELEMENT, root_element_name))
     {
         axis2_svc_t *svc = NULL;
         axis2_svc_builder_t *svc_builder = NULL;
@@ -214,7 +214,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 
     }
     else if (root_element_name &&
-        0 == axis2_strcmp(AXIS2_SVC_GRP_ELEMENT, root_element_name))
+        0 == axutil_strcmp(AXIS2_SVC_GRP_ELEMENT, root_element_name))
     {
         axis2_svc_grp_builder_t *grp_builder = NULL;
         grp_builder = axis2_svc_grp_builder_create_with_svc_and_dep_engine(env,
@@ -242,7 +242,7 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
 
     repos_path = axis2_dep_engine_get_repos_path(dep_engine, env);
-    module_xml = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
+    module_xml = axutil_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
         AXIS2_MODULE_FOLDER, AXIS2_PATH_SEP_STR, file_name,
         AXIS2_PATH_SEP_STR, AXIS2_MODULE_XML, NULL);
     if (!module_xml)

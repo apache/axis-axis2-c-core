@@ -103,7 +103,7 @@ sub_invoke(axis2_svc_skeleton_t *svc_skeleton,
                 axis2_char_t *op_name = axiom_element_get_localname(element, env);
                 if (op_name)
                 {
-                    if (axis2_strcmp(op_name, "sub") == 0)
+                    if (axutil_strcmp(op_name, "sub") == 0)
                         return axis2_sub_sub(env, node);
                 }
             }

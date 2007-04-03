@@ -208,7 +208,7 @@ axis2_apache2_worker_process_request(
 
             if (body_string)
             {
-                body_string_len = axis2_strlen(body_string);
+                body_string_len = axutil_strlen(body_string);
             }
             send_status = OK;
         }

@@ -1315,10 +1315,10 @@ axis2_conf_engage_module(
         file = (axutil_file_t *) axis2_arch_reader_create_module_arch(
                     arch_reader, env, file_name) ;
         repos_path =  axis2_conf_get_repo(conf, env);
-        temp_path1 = axis2_stracat(env, repos_path, AXIS2_PATH_SEP_STR);
-        temp_path2 = axis2_stracat(env, temp_path1, AXIS2_MODULE_FOLDER);
-        temp_path3 = axis2_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
-        path = axis2_stracat(env, temp_path3, file_name);
+        temp_path1 = axutil_stracat(env, repos_path, AXIS2_PATH_SEP_STR);
+        temp_path2 = axutil_stracat(env, temp_path1, AXIS2_MODULE_FOLDER);
+        temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+        path = axutil_stracat(env, temp_path3, file_name);
         AXIS2_FREE(env->allocator, temp_path1);
         AXIS2_FREE(env->allocator, temp_path2);
         AXIS2_FREE(env->allocator, temp_path3);
@@ -1408,7 +1408,7 @@ axis2_conf_set_repo(
         AXIS2_FREE(env->allocator, conf->axis2_repo);
         conf->axis2_repo = NULL;
     }
-    conf->axis2_repo = axis2_strdup(env, repos_path);
+    conf->axis2_repo = axutil_strdup(env, repos_path);
     return AXIS2_SUCCESS;
 }
 
@@ -1461,13 +1461,13 @@ axis2_conf_get_default_module(
 
     if (!mod_ver)
     {
-        mod_name = axis2_strdup(env, module_name);
+        mod_name = axutil_strdup(env, module_name);
     }
     else
     {
         axis2_char_t *tmp_name = NULL;
-        tmp_name = axis2_stracat(env, module_name, "-");
-        mod_name = axis2_stracat(env, tmp_name, mod_ver);
+        tmp_name = axutil_stracat(env, module_name, "-");
+        mod_name = axutil_stracat(env, tmp_name, mod_ver);
         AXIS2_FREE(env->allocator, tmp_name);
     }
     mod_qname = axutil_qname_create(env, mod_name, NULL, NULL);
@@ -1507,7 +1507,7 @@ axis2_conf_add_default_module_version(
     if (!axutil_hash_get(name_to_ver_map, module_name,
             AXIS2_HASH_KEY_STRING))
     {
-        axis2_char_t *new_entry = axis2_strdup(env, module_version);
+        axis2_char_t *new_entry = axutil_strdup(env, module_version);
         if (! new_entry)
         {
             return AXIS2_FAILURE;

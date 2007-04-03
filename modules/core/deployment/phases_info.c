@@ -290,10 +290,10 @@ axis2_phases_info_get_op_in_phases(const axis2_phases_info_t *phases_info,
     {
         phase_name = (axis2_char_t *) 
             axutil_array_list_get(phases_info->in_phases, env, i);
-        if (0 == axis2_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name) ||
-            0 == axis2_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||
-            0 == axis2_strcmp(AXIS2_PHASE_DISPATCH, phase_name) ||
-            0 == axis2_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name))
+        if (0 == axutil_strcmp(AXIS2_PHASE_TRANSPORT_IN, phase_name) ||
+            0 == axutil_strcmp(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||
+            0 == axutil_strcmp(AXIS2_PHASE_DISPATCH, phase_name) ||
+            0 == axutil_strcmp(AXIS2_PHASE_POST_DISPATCH, phase_name))
         {
             /* Do nothing */
         }

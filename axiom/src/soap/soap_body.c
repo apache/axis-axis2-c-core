@@ -310,9 +310,9 @@ axiom_soap_body_get_soap_version(axiom_soap_body_t *soap_body,
     uri = axiom_namespace_get_uri(om_ns, env);
     if (uri)
     {
-        if (axis2_strcmp(uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+        if (axutil_strcmp(uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
             return AXIOM_SOAP11;
-        else if (axis2_strcmp(uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+        else if (axutil_strcmp(uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
             return AXIOM_SOAP12;
     }
     return AXIS2_FAILURE;

@@ -127,7 +127,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                 root_mime_len += len;
                 root_mime[root_mime_len] = '\0';
 
-                pos = axis2_strstr(root_mime, "\r\n\r\n");
+                pos = axutil_strstr(root_mime, "\r\n\r\n");
                 if (pos)
                 {
                     if (root_mime_len > (pos - root_mime + 4))
@@ -152,7 +152,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
     {
         if (soap_body_str)
         {
-            pos = axis2_strstr(soap_body_str, mime_boundary);
+            pos = axutil_strstr(soap_body_str, mime_boundary);
         }
 
         if (pos)
@@ -215,7 +215,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
         {
             if (body_mime)
             {
-                pos = axis2_strstr(body_mime, "\r\n\r\n");
+                pos = axutil_strstr(body_mime, "\r\n\r\n");
             }
 
             if (pos)
@@ -283,7 +283,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                             pos = NULL;
                             break;
                         }
-                        temp_pos = axis2_strstr(pos + 1, mime_boundary);
+                        temp_pos = axutil_strstr(pos + 1, mime_boundary);
                     }
                 }
                 while (*(pos + 1) != AXIOM_MIME_BOUNDARY_BYTE || temp_pos != pos + 2);
@@ -326,7 +326,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
             else
             {
                 axis2_char_t *temp_pos = NULL;
-                temp_pos = pos + 2 + axis2_strlen(mime_boundary);
+                temp_pos = pos + 2 + axutil_strlen(mime_boundary);
 
                 end_of_mime = (AXIOM_MIME_BOUNDARY_BYTE == *(temp_pos)) &&
                     (AXIOM_MIME_BOUNDARY_BYTE == *(temp_pos + 1));
@@ -352,13 +352,13 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
             axis2_char_t *type = NULL;
             if (body_mime)
             {
-                id = axis2_strcasestr(body_mime, AXIOM_MIME_PARSER_CONTENT_ID);
-                type = axis2_strcasestr(body_mime, AXIOM_MIME_PARSER_CONTENT_TYPE);
+                id = axutil_strcasestr(body_mime, AXIOM_MIME_PARSER_CONTENT_ID);
+                type = axutil_strcasestr(body_mime, AXIOM_MIME_PARSER_CONTENT_TYPE);
                 if (type)
                 {
                     axis2_char_t *end = NULL;
                     axis2_char_t *temp_type = NULL;
-                    type += axis2_strlen(AXIOM_MIME_PARSER_CONTENT_TYPE);
+                    type += axutil_strlen(AXIOM_MIME_PARSER_CONTENT_TYPE);
                     while (type && *type && *type != ':')
 		    {
                         type++;
@@ -385,7 +385,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
             }
             if (id)
             {
-                id += axis2_strlen(AXIOM_MIME_PARSER_CONTENT_ID);
+                id += axutil_strlen(AXIOM_MIME_PARSER_CONTENT_ID);
                 while (id && *id && *id != ':')
                     id++;
                 if (id)
@@ -396,7 +396,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                     if (id)
                     {
                         axis2_char_t *pos = NULL;
-                        pos = axis2_strstr(id, ">");
+                        pos = axutil_strstr(id, ">");
                         if (pos)
                         {
                             axis2_char_t *mime_id = NULL;
@@ -429,7 +429,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                 sprintf(temp_boundry, "%s", "--");
                 sprintf(temp_boundry, "%s", mime_boundary);
                 sprintf(temp_boundry, "%s", "--");
-                if (body_mime && axis2_strstr(body_mime, temp_boundry))
+                if (body_mime && axutil_strstr(body_mime, temp_boundry))
 		{
                     break;
 		}

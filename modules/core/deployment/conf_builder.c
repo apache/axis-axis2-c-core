@@ -279,7 +279,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         if (value)
         {
             axis2_conf_set_enable_mtom(conf_builder->conf, env, 
-                (axis2_strcmp(value, AXIS2_VALUE_TRUE) == 0));
+                (axutil_strcmp(value, AXIS2_VALUE_TRUE) == 0));
         }
     }
     
@@ -508,19 +508,19 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
             }
             return AXIS2_SUCCESS;
         }
-        if (flow_type && 0 == axis2_strcmp(AXIS2_IN_FLOW_START, flow_type))
+        if (flow_type && 0 == axutil_strcmp(AXIS2_IN_FLOW_START, flow_type))
         {
             axis2_phases_info_set_in_phases(info, env, phase_list);
         }
-        else if (flow_type && 0 == axis2_strcmp(AXIS2_IN_FAILTFLOW, flow_type))
+        else if (flow_type && 0 == axutil_strcmp(AXIS2_IN_FAILTFLOW, flow_type))
         {
             axis2_phases_info_set_in_faultphases(info, env, phase_list);
         }
-        else if (flow_type && 0 == axis2_strcmp(AXIS2_OUT_FLOW_START, flow_type))
+        else if (flow_type && 0 == axutil_strcmp(AXIS2_OUT_FLOW_START, flow_type))
         {
             axis2_phases_info_set_out_phases(info, env, phase_list);
         }
-        else if (flow_type && 0 == axis2_strcmp(AXIS2_OUT_FAILTFLOW, flow_type))
+        else if (flow_type && 0 == axutil_strcmp(AXIS2_OUT_FAILTFLOW, flow_type))
         {
             axis2_phases_info_set_out_faultphases(info, env, phase_list);
         }
@@ -675,23 +675,23 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             name = axiom_attribute_get_value(trs_name, env);
             if (name)
             {
-                if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
+                if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
                 }
-                else if (axis2_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
+                else if (axutil_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
                 }
-                else if (axis2_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
+                else if (axutil_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
                 }
-                else if (axis2_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
+                else if (axutil_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
                 }
-                else if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTPS) == 0)
+                else if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTPS) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 }
@@ -734,10 +734,10 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
             repos_name = axis2_dep_engine_get_repos_path(
                 axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
                 env);
-            temp_path = axis2_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
-            temp_path2 = axis2_stracat(env, temp_path, AXIS2_LIB_FOLDER);
-            temp_path3 = axis2_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
-            path_qualified_dll_name = axis2_stracat(env, temp_path3, dll_name);
+            temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+            temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+            temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+            path_qualified_dll_name = axutil_stracat(env, temp_path3, dll_name);
             AXIS2_FREE(env->allocator, temp_path);
             AXIS2_FREE(env->allocator, temp_path2);
             AXIS2_FREE(env->allocator, temp_path3);
@@ -928,23 +928,23 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
             name = axiom_attribute_get_value(trs_name, env);
             if (name)
             {
-                if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
+                if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTP;
                 }
-                else if (axis2_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
+                else if (axutil_strcmp(name, AXIS2_TRANSPORT_XMPP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_XMPP;
                 }
-                else if (axis2_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
+                else if (axutil_strcmp(name, AXIS2_TRANSPORT_SMTP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_SMTP;
                 }
-                else if (axis2_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
+                else if (axutil_strcmp(name, AXIS2_TRANSPORT_TCP) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_TCP;
                 }
-                else if (axis2_strcmp(name, AXIS2_TRANSPORT_HTTPS) == 0)
+                else if (axutil_strcmp(name, AXIS2_TRANSPORT_HTTPS) == 0)
                 {
                     transport_enum = AXIS2_TRANSPORT_ENUM_HTTPS;
                 }
@@ -991,10 +991,10 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
                 repos_name = axis2_dep_engine_get_repos_path(
                     axis2_desc_builder_get_dep_engine(conf_builder->desc_builder, env),
                     env);
-                temp_path = axis2_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
-                temp_path2 = axis2_stracat(env, temp_path, AXIS2_LIB_FOLDER);
-                temp_path3 = axis2_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
-                path_qualified_dll_name = axis2_stracat(env, temp_path3, dll_name);
+                temp_path = axutil_stracat(env, repos_name, AXIS2_PATH_SEP_STR);
+                temp_path2 = axutil_stracat(env, temp_path, AXIS2_LIB_FOLDER);
+                temp_path3 = axutil_stracat(env, temp_path2, AXIS2_PATH_SEP_STR);
+                path_qualified_dll_name = axutil_stracat(env, temp_path3, dll_name);
                 AXIS2_FREE(env->allocator, temp_path);
                 AXIS2_FREE(env->allocator, temp_path2);
                 AXIS2_FREE(env->allocator, temp_path3);

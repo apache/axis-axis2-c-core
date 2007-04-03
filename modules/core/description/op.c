@@ -70,7 +70,7 @@ axis2_op_create(const axutil_env_t *env)
     op->qname = NULL;
     op->msg_exchange_pattern = NULL;
     op->style = NULL;
-    op->style = axis2_strdup(env, AXIS2_STYLE_DOC);
+    op->style = axutil_strdup(env, AXIS2_STYLE_DOC);
 
     op->param_container = (axutil_param_container_t *)
             axutil_param_container_create(env);
@@ -432,7 +432,7 @@ axis2_op_set_msg_exchange_pattern(axis2_op_t *op,
         op->msg_exchange_pattern = NULL;
     }
 
-    op->msg_exchange_pattern = axis2_strdup(env, pattern);
+    op->msg_exchange_pattern = axutil_strdup(env, pattern);
     return AXIS2_SUCCESS;
 }
 
@@ -464,7 +464,7 @@ axis2_op_set_style(axis2_op_t *op,
         op->style = NULL;
     }
 
-    op->style = axis2_strdup(env, style);
+    op->style = axutil_strdup(env, style);
     return AXIS2_SUCCESS;
 }
 
@@ -643,42 +643,42 @@ axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
 
     temp = AXIS2_MEP_CONSTANT_INVALID;
 
-    if (axis2_strcmp(AXIS2_MEP_URI_IN_OUT,
+    if (axutil_strcmp(AXIS2_MEP_URI_IN_OUT,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_OUT;
     }
-    else if (axis2_strcmp(AXIS2_MEP_URI_IN_ONLY,
+    else if (axutil_strcmp(AXIS2_MEP_URI_IN_ONLY,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_ONLY;
     }
-    else if (axis2_strcmp(AXIS2_MEP_URI_IN_OPTIONAL_OUT,
+    else if (axutil_strcmp(AXIS2_MEP_URI_IN_OPTIONAL_OUT,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_IN_OPTIONAL_OUT;
     }
-    else if (axis2_strcmp(AXIS2_MEP_URI_OUT_IN,
+    else if (axutil_strcmp(AXIS2_MEP_URI_OUT_IN,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_IN;
     }
-    else if (axis2_strcmp(AXIS2_MEP_URI_OUT_ONLY,
+    else if (axutil_strcmp(AXIS2_MEP_URI_OUT_ONLY,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_ONLY;
     }
-    else if (axis2_strcmp(AXIS2_MEP_URI_OUT_OPTIONAL_IN,
+    else if (axutil_strcmp(AXIS2_MEP_URI_OUT_OPTIONAL_IN,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_OUT_OPTIONAL_IN;
     }
-    else if (axis2_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY,
+    else if (axutil_strcmp(AXIS2_MEP_URI_ROBUST_IN_ONLY,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_IN_ONLY;
     }
-    else if (axis2_strcmp(AXIS2_MEP_URI_ROBUST_OUT_ONLY,
+    else if (axutil_strcmp(AXIS2_MEP_URI_ROBUST_OUT_ONLY,
         axis2_op_get_msg_exchange_pattern(op, env)) == 0)
     {
         temp = AXIS2_MEP_CONSTANT_ROBUST_OUT_ONLY;

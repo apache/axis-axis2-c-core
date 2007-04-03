@@ -322,7 +322,7 @@ axis2_archive_extract()
                 return (AXIS2_FALSE);
             }
             
-            ptr = axis2_rindex(namelist[n]->d_name, '.');
+            ptr = axutil_rindex(namelist[n]->d_name, '.');
             if ((ptr) &&
                     (((strcmp(ptr, AXIS2_AAR_SUFFIX) == 0)) || (strcmp(ptr, AXIS2_MAR_SUFFIX) == 0)))
                 for (i = 0;i < n;i++)

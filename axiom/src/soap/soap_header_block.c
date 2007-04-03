@@ -209,10 +209,10 @@ axiom_soap_header_block_set_must_understand_with_string
         attr_nsuri     = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
 
-    if (axis2_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE, must_understand) == 0 ||
-            axis2_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_FALSE, must_understand) == 0 ||
-            axis2_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_0, must_understand) == 0 ||
-            axis2_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1, must_understand) == 0)
+    if (axutil_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE, must_understand) == 0 ||
+            axutil_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_FALSE, must_understand) == 0 ||
+            axutil_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_0, must_understand) == 0 ||
+            axutil_strcmp(AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1, must_understand) == 0)
     {
 
         axiom_soap_header_block_set_attribute(header_block, env,
@@ -252,13 +252,13 @@ axiom_soap_header_block_get_must_understand
         return AXIS2_FALSE;
 
 
-    if (axis2_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1) == 0 ||
-            axis2_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE) == 0)
+    if (axutil_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_1) == 0 ||
+            axutil_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_TRUE) == 0)
     {
         return AXIS2_TRUE;
     }
-    else if (axis2_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_0) == 0 ||
-            axis2_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_FALSE) == 0)
+    else if (axutil_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_0) == 0 ||
+            axutil_strcmp(must_understand, AXIOM_SOAP_ATTR_MUST_UNDERSTAND_FALSE) == 0)
     {
         return AXIS2_FALSE;
     }

@@ -407,9 +407,9 @@ int main(int argc, char *argv[])
         filename = argv[1];
     if (argc > 2)
     {
-        if (axis2_strcmp(argv[2], "0") == 0)
+        if (axutil_strcmp(argv[2], "0") == 0)
             uri = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
-        else if (axis2_strcmp(argv[2], "1") == 0)
+        else if (axutil_strcmp(argv[2], "1") == 0)
             uri = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
     allocator = axutil_allocator_init(NULL);

@@ -126,7 +126,7 @@ axiom_soap_envelope_create_with_soap_version_prefix(const axutil_env_t *env,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
         return NULL;
     }
-    if (!prefix || axis2_strcmp(prefix, "") == 0)
+    if (!prefix || axutil_strcmp(prefix, "") == 0)
     {
         ns_prefix = AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX;
     }
@@ -516,12 +516,12 @@ check_and_set_soap_version(axiom_soap_envelope_t *soap_envelope,
     if (!uri)
         return AXIS2_FAILURE;
 
-    if (axis2_strcmp(uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+    if (axutil_strcmp(uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
     {
         soap_envelope->soap_version = AXIOM_SOAP11;
         return AXIS2_SUCCESS;
     }
-    else if (axis2_strcmp(uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+    else if (axutil_strcmp(uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
     {
         soap_envelope->soap_version = AXIOM_SOAP12;
         return AXIS2_SUCCESS;

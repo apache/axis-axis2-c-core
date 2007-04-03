@@ -163,11 +163,11 @@ axis2_http_worker_process_request(
         encoding_header_value = axis2_http_header_get_value(encoding_header,
                 env);
     }
-    if (content_length < 0 && (encoding_header_value && 0 != axis2_strcmp
+    if (content_length < 0 && (encoding_header_value && 0 != axutil_strcmp
             (encoding_header_value,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
     {
-        if (0 == axis2_strcasecmp(axis2_http_request_line_get_method(
+        if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
                     axis2_http_simple_request_get_request_line(
                         simple_request, env), env), AXIS2_HTTP_HEADER_POST))
         {
@@ -193,7 +193,7 @@ axis2_http_worker_process_request(
     axis2_msg_ctx_set_server_side(msg_ctx, env, AXIS2_TRUE);
 
 
-    if (0 == axis2_strcasecmp(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
+    if (0 == axutil_strcasecmp(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
         axis2_http_worker_set_transport_out_config(http_worker, env, conf_ctx,
                 response);
@@ -205,7 +205,7 @@ axis2_http_worker_process_request(
     if (peer_ip)
     {
         peer_property = axutil_property_create (env);
-        axutil_property_set_value (peer_property, env, axis2_strdup (env, peer_ip));
+        axutil_property_set_value (peer_property, env, axutil_strdup (env, peer_ip));
         axis2_msg_ctx_set_property (msg_ctx, env, AXIS2_SVR_PEER_IP_ADDR, peer_property); 
     }
 
@@ -244,7 +244,7 @@ axis2_http_worker_process_request(
                     env);
         soap_action_str = axutil_string_create(env, soap_action);
     }
-    if (0 == axis2_strcasecmp(axis2_http_request_line_get_method(
+    if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
                 axis2_http_simple_request_get_request_line(
                     simple_request, env), env), AXIS2_HTTP_HEADER_GET))
     {
@@ -280,7 +280,7 @@ axis2_http_worker_process_request(
                 axis2_char_t str_len[10];
                 axis2_http_simple_response_set_body_string(response, env,
                     body_string);
-                sprintf(str_len, "%d", axis2_strlen(body_string));
+                sprintf(str_len, "%d", axutil_strlen(body_string));
                 cont_len = axis2_http_header_create(env,
                     AXIS2_HTTP_HEADER_CONTENT_LENGTH, str_len);
                 axis2_http_simple_response_set_header(response, env, cont_len);
@@ -292,7 +292,7 @@ axis2_http_worker_process_request(
                 return AXIS2_TRUE;
         }
     }
-    else if (0 == axis2_strcasecmp(axis2_http_request_line_get_method(
+    else if (0 == axutil_strcasecmp(axis2_http_request_line_get_method(
                 axis2_http_simple_request_get_request_line(
                     simple_request, env), env), AXIS2_HTTP_HEADER_POST))
     {
@@ -444,7 +444,7 @@ axis2_http_worker_set_response_headers(
                 env, AXIS2_HTTP_HEADER_CONNECTION);
         if (conn_header)
         {
-            if (0 == axis2_strcasecmp(axis2_http_header_get_value(conn_header,
+            if (0 == axutil_strcasecmp(axis2_http_header_get_value(conn_header,
                     env), AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE))
             {
                 axis2_http_header_t *header = axis2_http_header_create(env,
@@ -455,7 +455,7 @@ axis2_http_worker_set_response_headers(
                 axis2_simple_http_svr_conn_set_keep_alive(svr_conn, env,
                         AXIS2_TRUE);
             }
-            if (0 == axis2_strcasecmp(axis2_http_header_get_value(conn_header,
+            if (0 == axutil_strcasecmp(axis2_http_header_get_value(conn_header,
                     env), AXIS2_HTTP_HEADER_CONNECTION_CLOSE))
             {
                 axis2_http_header_t *header = axis2_http_header_create(env,
@@ -470,7 +470,7 @@ axis2_http_worker_set_response_headers(
         else
         {
             if (axis2_http_simple_response_get_http_version(simple_response, env)
-                    && axis2_strcasecmp(
+                    && axutil_strcasecmp(
                         axis2_http_simple_response_get_http_version(
                             simple_response, env), AXIS2_HTTP_HEADER_PROTOCOL_11))
             {

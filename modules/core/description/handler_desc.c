@@ -244,7 +244,7 @@ axis2_handler_desc_set_class_name(axis2_handler_desc_t *handler_desc,
 
     if (class_name)
     {
-        handler_desc->class_name = axis2_strdup(env, class_name);
+        handler_desc->class_name = axutil_strdup(env, class_name);
         if (!handler_desc->class_name)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

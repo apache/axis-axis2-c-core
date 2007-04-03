@@ -140,7 +140,7 @@ axiom_children_with_specific_attribute_iterator_has_next(
                     iterator->attr_qname);
             break;
             if (om_attr &&
-                    (axis2_strcmp(axiom_attribute_get_value(om_attr, env),
+                    (axutil_strcmp(axiom_attribute_get_value(om_attr, env),
                             iterator->attr_value) == 0))
             {
                 matching_node_found = AXIS2_TRUE;

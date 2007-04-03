@@ -190,7 +190,7 @@ axis2_svc_grp_ctx_set_id(
 
     if (id)
     {
-        svc_grp_ctx->id = axis2_strdup(env, id);
+        svc_grp_ctx->id = axutil_strdup(env, id);
     }
 
     return AXIS2_SUCCESS;

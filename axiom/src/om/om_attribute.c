@@ -169,7 +169,7 @@ axiom_attribute_serialize(axiom_attribute_t *attribute,
         uri = axiom_namespace_get_uri(attribute->ns, env);
         prefix = axiom_namespace_get_prefix(attribute->ns, env);
 
-        if ((uri) && (NULL != prefix) && (axis2_strcmp(prefix, "") != 0))
+        if ((uri) && (NULL != prefix) && (axutil_strcmp(prefix, "") != 0))
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 4,
                 axutil_string_get_buffer(attribute->localname, env),

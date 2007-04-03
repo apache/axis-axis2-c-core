@@ -54,7 +54,7 @@ axutil_param_create(const axutil_env_t *env,
         return NULL;
     }
 
-    param->name = axis2_strdup(env, name);
+    param->name = axutil_strdup(env, name);
     param->value = value; /* shallow copy.*/
     param->locked = AXIS2_FALSE;
     param->type = AXIS2_TEXT_PARAM;
@@ -86,7 +86,7 @@ axutil_param_set_name(axutil_param_t *param,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    param->name = axis2_strdup(env, name);
+    param->name = axutil_strdup(env, name);
     return AXIS2_SUCCESS;
 }
 

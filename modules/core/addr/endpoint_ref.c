@@ -66,7 +66,7 @@ axis2_endpoint_ref_create(const axutil_env_t *env,
 
     if (address)
     {
-        endpoint_ref->address = axis2_strdup(env, address);
+        endpoint_ref->address = axutil_strdup(env, address);
         if (!(endpoint_ref->address))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -96,7 +96,7 @@ axis2_endpoint_ref_set_address(axis2_endpoint_ref_t *endpoint_ref,
         AXIS2_FREE(env->allocator, endpoint_ref->address);
     }
 
-    endpoint_ref->address = axis2_strdup(env, address);
+    endpoint_ref->address = axutil_strdup(env, address);
     return AXIS2_SUCCESS;
 }
 

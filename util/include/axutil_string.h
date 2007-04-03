@@ -115,11 +115,7 @@ extern "C"
         const axutil_env_t *env);
 
     /**
-     * Gets string length.
-     * @param string pointer to string struct
-     * @param env pointer to environment struct
-     * @returns buffer length
-     */
+     * Gets string length.  * @param string pointer to string struct * @param env pointer to environment struct * @returns buffer length */
     AXIS2_EXTERN unsigned int AXIS2_CALL
     axutil_string_get_length(const struct axutil_string *string,
         const axutil_env_t *env);
@@ -133,7 +129,7 @@ extern "C"
      */
 
     AXIS2_EXTERN void* AXIS2_CALL
-    axis2_strdup(const axutil_env_t *env,
+    axutil_strdup(const axutil_env_t *env,
 	    const void *ptr);
 
     /**
@@ -144,7 +140,7 @@ extern "C"
      * @return The new string
      */
     AXIS2_EXTERN void* AXIS2_CALL
-    axis2_strndup(const axutil_env_t *env,
+    axutil_strndup(const axutil_env_t *env,
 	    const void *ptr,
         int n);
 
@@ -160,33 +156,33 @@ extern "C"
      *         fewer characters, use axis2_strndup.
      */
     AXIS2_EXTERN void * AXIS2_CALL
-    axis2_strmemdup(const void *ptr,
+    axutil_strmemdup(const void *ptr,
         size_t n,
         const axutil_env_t *env);
 
     AXIS2_EXTERN void * AXIS2_CALL
-    axis2_memchr(const void *ptr,
+    axutil_memchr(const void *ptr,
         int c,
         size_t n);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_strcmp(const axis2_char_t * s1,
+    axutil_strcmp(const axis2_char_t * s1,
         const axis2_char_t * s2);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_strncmp(const axis2_char_t * s1,
+    axutil_strncmp(const axis2_char_t * s1,
         const axis2_char_t * s2,
         int n);
 
     AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
-    axis2_strlen(const axis2_char_t * s);
+    axutil_strlen(const axis2_char_t * s);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_strcasecmp(const axis2_char_t *s1,
+    axutil_strcasecmp(const axis2_char_t *s1,
         const axis2_char_t *s2);
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_strncasecmp(const axis2_char_t *s1,
+    axutil_strncasecmp(const axis2_char_t *s1,
         const axis2_char_t *s2, 
         int n);
 
@@ -196,7 +192,7 @@ extern "C"
      * memory for the return value
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_stracat(const axutil_env_t *env,
+    axutil_stracat(const axutil_env_t *env,
 	    const axis2_char_t *s1,
         const axis2_char_t *s2);
 
@@ -206,35 +202,35 @@ extern "C"
      * @return The new string
      */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_strcat(const axutil_env_t *env, ...);
+    axutil_strcat(const axutil_env_t *env, ...);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_strstr(const axis2_char_t *heystack,
+    axutil_strstr(const axis2_char_t *heystack,
         const axis2_char_t *needle);
 
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_rindex(const axis2_char_t *s,
+    axutil_rindex(const axis2_char_t *s,
         axis2_char_t c);
 
     /* replaces s1 with s2 */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_replace(const axutil_env_t *env,
+    axutil_replace(const axutil_env_t *env,
         axis2_char_t *str,
         int s1,
         int s2);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_strltrim(const axutil_env_t *env,
+    axutil_strltrim(const axutil_env_t *env,
         const axis2_char_t *_s,
         const axis2_char_t *_trim);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_strrtrim(const axutil_env_t *env,
+    axutil_strrtrim(const axutil_env_t *env,
         const axis2_char_t *_s,
         const axis2_char_t *_trim);
 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_strtrim(const axutil_env_t *env,
+    axutil_strtrim(const axutil_env_t *env,
         const axis2_char_t *_s,
         const axis2_char_t *_trim);
 
@@ -295,7 +291,7 @@ extern "C"
      * or NULL  if  the  substring  is  not found
      */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-    axis2_strcasestr(const axis2_char_t *heystack,
+    axutil_strcasestr(const axis2_char_t *heystack,
         const axis2_char_t *needle);
 
     /** @} */

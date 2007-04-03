@@ -264,7 +264,7 @@ test_om_serialize()
     if (stream)
     {
         AXIS2_STREAM_WRITE(stream, environment, "<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>", 
-            axis2_strlen("<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>"));
+            axutil_strlen("<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>"));
     }
 
     /* serializing stuff */

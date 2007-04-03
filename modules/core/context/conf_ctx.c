@@ -293,7 +293,7 @@ axis2_conf_ctx_set_root_dir(
 
     if (path)
     {
-        conf_ctx->root_dir = axis2_strdup(env, path);
+        conf_ctx->root_dir = axutil_strdup(env, path);
         if (!(conf_ctx->root_dir))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

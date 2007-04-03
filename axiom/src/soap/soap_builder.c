@@ -387,7 +387,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         return AXIS2_FAILURE;
 
     /* start: handle MTOM stuff */
-    if (axis2_strcmp(ele_localname, AXIS2_XOP_INCLUDE) == 0)
+    if (axutil_strcmp(ele_localname, AXIS2_XOP_INCLUDE) == 0)
     {
         axiom_namespace_t *ns = NULL;
         ns = axiom_element_get_namespace(om_element, env, om_element_node);
@@ -396,7 +396,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
             axis2_char_t *uri = axiom_namespace_get_uri(ns, env);
             if (uri)
             {
-                if (axis2_strcmp(uri, AXIS2_XOP_NAMESPACE_URI) == 0)
+                if (axutil_strcmp(uri, AXIS2_XOP_NAMESPACE_URI) == 0)
                 {
                     axutil_qname_t *qname = NULL;
                     qname = axutil_qname_create(env, "href", NULL, NULL);
@@ -407,7 +407,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
                         if (id)
                         {
                             axis2_char_t *pos = NULL;
-                            pos = axis2_strstr(id, "cid:");
+                            pos = axutil_strstr(id, "cid:");
                             if (pos)
                             {
                                 axiom_data_handler_t *data_handler = NULL;
@@ -446,7 +446,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
     if (!parent && is_soap_envelope)
     {
         /** this is the soap envelope element */
-        if (axis2_strcasecmp(ele_localname, AXIOM_SOAP_ENVELOPE_LOCAL_NAME) != 0)
+        if (axutil_strcasecmp(ele_localname, AXIOM_SOAP_ENVELOPE_LOCAL_NAME) != 0)
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_SOAP_MESSAGE_FIRST_ELEMENT_MUST_CONTAIN_LOCAL_NAME, AXIS2_FAILURE);
@@ -468,7 +468,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
     }
     else if (element_level == 2)
     {
-        if (axis2_strcmp(ele_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
+        if (axutil_strcmp(ele_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
         {
             /** this is the soap header element */
             axiom_soap_header_t *soap_header = NULL;
@@ -505,7 +505,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
                 return AXIS2_FAILURE;
 
         }
-        else if (axis2_strcmp(ele_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
+        else if (axutil_strcmp(ele_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
         {
 
             axiom_soap_body_t *soap_body = NULL;
@@ -542,7 +542,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         }
     }
     else if ((element_level == 3) &&  parent_localname &&
-            axis2_strcasecmp(parent_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
+            axutil_strcasecmp(parent_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
     {
         axiom_soap_header_block_t *header_block = NULL;
         axiom_soap_header_t *soap_header = NULL;
@@ -564,8 +564,8 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
 
     }
     else if ((element_level == 3) && parent_localname &&
-            axis2_strcasecmp(parent_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0 &&
-            axis2_strcasecmp(ele_localname, AXIOM_SOAP_BODY_FAULT_LOCAL_NAME) == 0)
+            axutil_strcasecmp(parent_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0 &&
+            axutil_strcasecmp(ele_localname, AXIOM_SOAP_BODY_FAULT_LOCAL_NAME) == 0)
     {
         axiom_soap_body_t *soap_body = NULL;
         axiom_soap_fault_t *soap_fault = NULL;
@@ -594,14 +594,14 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
 
         soap_builder->processing_mandatory_fault_elements = AXIS2_TRUE;
 
-        if (axis2_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
+        if (axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI,
                 axiom_namespace_get_uri(env_ns , env)) == 0)
         {
             soap_builder->builder_helper = axiom_soap12_builder_helper_create(env, soap_builder);
             if (!(soap_builder->builder_helper))
                 return AXIS2_FAILURE;
         }
-        else if (axis2_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
+        else if (axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI,
                 axiom_namespace_get_uri(env_ns , env)) == 0)
         {
             soap_builder->builder_helper = axiom_soap11_builder_helper_create(env, soap_builder, soap_builder->om_builder);
@@ -659,8 +659,8 @@ axiom_soap_builder_process_namespace_data
             {
                 ns_uri = axiom_namespace_get_uri(om_ns, env);
                 if (ns_uri &&
-                        (axis2_strcmp(ns_uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) != 0) &&
-                        (axis2_strcmp(ns_uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) != 0))
+                        (axutil_strcmp(ns_uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) != 0) &&
+                        (axutil_strcmp(ns_uri, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) != 0))
                 {
                     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);
                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI");
@@ -715,7 +715,7 @@ axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
 
     if (ns_uri)
     {
-        if (soap_version_uri_from_transport && axis2_strcmp(soap_version_uri_from_transport, ns_uri) != 0)
+        if (soap_version_uri_from_transport && axutil_strcmp(soap_version_uri_from_transport, ns_uri) != 0)
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP, AXIS2_FAILURE);
@@ -724,7 +724,7 @@ axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
                     "AXIS2_ERROR_TRANSPORT_LEVEL_INFORMATION_DOES_NOT_MATCH_WITH_SOAP");
             return AXIS2_FAILURE;
         }
-        if (axis2_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
+        if (axutil_strcmp(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
         {
             soap_builder->soap_version = AXIOM_SOAP11;
 
@@ -735,7 +735,7 @@ axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *soap_builder,
 
             return AXIS2_SUCCESS;
         }
-        else if (axis2_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
+        else if (axutil_strcmp(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, ns_uri) == 0)
         {
             soap_builder->soap_version = AXIOM_SOAP12;
 
@@ -888,7 +888,7 @@ axiom_soap_builder_construct_node_for_empty_element
 
     if (element_level == 1)
     {
-        if (axis2_strcmp(ele_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
+        if (axutil_strcmp(ele_localname, AXIOM_SOAP_HEADER_LOCAL_NAME) == 0)
         {
             /** this is the soap header element */
             axiom_soap_header_t *soap_header = NULL;
@@ -925,7 +925,7 @@ axiom_soap_builder_construct_node_for_empty_element
                 return AXIS2_FAILURE;
 
         }
-        else if (axis2_strcmp(ele_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
+        else if (axutil_strcmp(ele_localname, AXIOM_SOAP_BODY_LOCAL_NAME) == 0)
         {
 
             axiom_soap_body_t *soap_body = NULL;

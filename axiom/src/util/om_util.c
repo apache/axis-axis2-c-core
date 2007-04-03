@@ -52,7 +52,7 @@ axiom_util_get_first_child_element_with_uri(axiom_node_t *ele_node,
             {
                 axis2_char_t *child_uri = NULL;
                 child_uri = axiom_namespace_get_uri(ns, env);
-                if (child_uri && axis2_strcmp(child_uri, uri) == 0)
+                if (child_uri && axutil_strcmp(child_uri, uri) == 0)
                 {
                     (*child) = child_node;
                     return child_ele;
@@ -93,7 +93,7 @@ axiom_util_get_next_sibling_element_with_uri(axiom_node_t *ele_node,
             {
                 axis2_char_t *sib_uri = NULL;
                 sib_uri = axiom_namespace_get_uri(ns, env);
-                if (sib_uri && axis2_strcmp(sib_uri, uri) == 0)
+                if (sib_uri && axutil_strcmp(sib_uri, uri) == 0)
                 {
                     (*next_node) = next_sib_node;
                     return sib_ele;
@@ -190,7 +190,7 @@ axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
-                if (child_localname && axis2_strcmp(child_localname, localname) == 0)
+                if (child_localname && axutil_strcmp(child_localname, localname) == 0)
                 {
                     *child_node = child;
                     return om_ele;
@@ -211,7 +211,7 @@ axiom_util_get_first_child_element_with_localname(axiom_element_t *ele,
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
-                if (child_localname && axis2_strcmp(child_localname, localname) == 0)
+                if (child_localname && axutil_strcmp(child_localname, localname) == 0)
                 {
                     *child_node = next_sibling;
                     return om_ele;
@@ -253,7 +253,7 @@ axiom_util_get_last_child_element_with_localname(axiom_element_t *ele,
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
                 if (child_localname &&
-                    axis2_strcmp(child_localname, localname) == 0)
+                    axutil_strcmp(child_localname, localname) == 0)
                 {
                     *child_node = child;
                     return om_ele;
@@ -291,7 +291,7 @@ axiom_util_get_next_siblng_element_with_localname(axiom_element_t *ele,
             if (om_ele)
             {
                 ele_localname = axiom_element_get_localname(om_ele, env);
-                if (ele_localname && axis2_strcmp(localname, ele_localname) == 0)
+                if (ele_localname && axutil_strcmp(localname, ele_localname) == 0)
                 {
                     *next_node = next_sibling;
                     return om_ele;
@@ -344,8 +344,8 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
             }
 
             if ((child_localname) &&
-                (axis2_strcmp(child_localname, localname) == 0) && (ns_uri)
-                && (axis2_strcmp(ns_uri, uri) == 0))
+                (axutil_strcmp(child_localname, localname) == 0) && (ns_uri)
+                && (axutil_strcmp(ns_uri, uri) == 0))
             {
                 *child_node = child;
                 return om_ele;
@@ -373,8 +373,8 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
                 }
 
                 if ((child_localname) &&
-                    (axis2_strcmp(child_localname, localname) == 0) && (ns_uri) &&
-                    (axis2_strcmp(ns_uri, uri) == 0))
+                    (axutil_strcmp(child_localname, localname) == 0) && (ns_uri) &&
+                    (axutil_strcmp(ns_uri, uri) == 0))
                 {
                     *child_node = next_sibling;
                     return om_ele;
@@ -424,8 +424,8 @@ axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
                 }
                 child_localname = axiom_element_get_localname(om_ele, env);
                 if (child_localname &&
-                    (axis2_strcmp(child_localname, localname) == 0) && (ns_uri)
-                    && (axis2_strcmp(ns_uri, uri) == 0))
+                    (axutil_strcmp(child_localname, localname) == 0) && (ns_uri)
+                    && (axutil_strcmp(ns_uri, uri) == 0))
                 {
                     *child_node = child;
                     return om_ele;
@@ -472,8 +472,8 @@ axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
                 }
                 ele_localname = axiom_element_get_localname(om_ele, env);
                 if (ele_localname &&
-                    (axis2_strcmp(localname, ele_localname) == 0) && (ns)
-                    && (axis2_strcmp(ns_uri, uri) == 0))
+                    (axutil_strcmp(localname, ele_localname) == 0) && (ns)
+                    && (axutil_strcmp(ns_uri, uri) == 0))
                 {
                     *next_node = next_sibling;
                     return om_ele;
@@ -523,7 +523,7 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
                     given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
 
                     if ((child_localname) && (NULL != given_localname) &&
-                        axis2_strcmp(child_localname, given_localname) == 0)
+                        axutil_strcmp(child_localname, given_localname) == 0)
                     {
                         *child_node = child;
                         return om_ele;
@@ -552,7 +552,7 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
                 {
                     given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
                     if ((child_localname) && (NULL != given_localname) &&
-                        (axis2_strcmp(child_localname, given_localname) == 0))
+                        (axutil_strcmp(child_localname, given_localname) == 0))
                     {
                         *child_node = next_sibling;
                         return om_ele;
@@ -604,7 +604,7 @@ axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
                     given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
                     child_localname = axiom_element_get_localname(om_ele, env);
                     if (child_localname && (NULL != given_localname) &&
-                        (axis2_strcmp(child_localname, given_localname) == 0))
+                        (axutil_strcmp(child_localname, given_localname) == 0))
                     {
                         *child_node = child;
                         return om_ele;
@@ -653,7 +653,7 @@ axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
                     given_localname = (axis2_char_t *)axutil_array_list_get(names, env, i);
                     ele_localname = axiom_element_get_localname(om_ele, env);
                     if ((ele_localname) && (NULL != given_localname) &&
-                        (axis2_strcmp(given_localname, ele_localname) == 0))
+                        (axutil_strcmp(given_localname, ele_localname) == 0))
                     {
                         *next_node = next_sibling;
                         return om_ele;
@@ -705,7 +705,7 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
             {
 
                 child_localname = axiom_element_get_localname(om_ele, env);
-                if (child_localname && axis2_strcmp(child_localname, localname) == 0)
+                if (child_localname && axutil_strcmp(child_localname, localname) == 0)
                 {
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
@@ -724,8 +724,8 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
                                 om_attr_value =
                                     axiom_attribute_get_value(om_attr, env);
                                 if (om_attr_name && NULL != om_attr_value &&
-                                    axis2_strcmp(om_attr_name, attr_name) == 0 &&
-                                    axis2_strcmp(om_attr_value, attr_value) == 0)
+                                    axutil_strcmp(om_attr_name, attr_name) == 0 &&
+                                    axutil_strcmp(om_attr_value, attr_value) == 0)
                                 {
                                     AXIS2_FREE(env->allocator, hi);
                                     *child_node = child;
@@ -754,7 +754,7 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
             if (om_ele)
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
-                if (child_localname && axis2_strcmp(child_localname, localname) == 0)
+                if (child_localname && axutil_strcmp(child_localname, localname) == 0)
                 {
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
@@ -775,8 +775,8 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
                                     axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
-                                    axis2_strcmp(om_attr_name, attr_name) == 0 &&
-                                    axis2_strcmp(om_attr_value, attr_value) == 0)
+                                    axutil_strcmp(om_attr_name, attr_name) == 0 &&
+                                    axutil_strcmp(om_attr_value, attr_value) == 0)
                                 {
                                     *child_node = child;
                                     return om_ele;
@@ -831,7 +831,7 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
             {
                 child_localname = axiom_element_get_localname(om_ele, env);
                 if (child_localname &&
-                    axis2_strcmp(child_localname, localname) == 0)
+                    axutil_strcmp(child_localname, localname) == 0)
                 {
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
@@ -851,8 +851,8 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
                                     axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
-                                    axis2_strcmp(om_attr_name, attr_name) == 0 &&
-                                    axis2_strcmp(om_attr_value, attr_value) == 0)
+                                    axutil_strcmp(om_attr_name, attr_name) == 0 &&
+                                    axutil_strcmp(om_attr_value, attr_value) == 0)
                                 {
                                     AXIS2_FREE(env->allocator, hi);
                                     *child_node = child;
@@ -906,7 +906,7 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
             if (om_ele)
             {
                 ele_localname = axiom_element_get_localname(om_ele, env);
-                if (ele_localname && axis2_strcmp(localname, ele_localname) == 0)
+                if (ele_localname && axutil_strcmp(localname, ele_localname) == 0)
                 {
                     attr_ht = axiom_element_get_all_attributes(om_ele, env);
                     if (attr_ht)
@@ -926,8 +926,8 @@ axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
                                     axiom_attribute_get_value(om_attr, env);
 
                                 if (om_attr_name && NULL != om_attr_value &&
-                                        axis2_strcmp(om_attr_name, attr_name) == 0 &&
-                                        axis2_strcmp(om_attr_value, attr_value) == 0)
+                                        axutil_strcmp(om_attr_name, attr_name) == 0 &&
+                                        axutil_strcmp(om_attr_value, attr_value) == 0)
                                 {
                                     AXIS2_FREE(env->allocator, hi);
                                     *child_node = next_sibling;

@@ -92,7 +92,7 @@ savan_subscriber_set_id(
     }
     
     /* copy the new id */
-    subscriber->id = axis2_strdup(env, id);
+    subscriber->id = axutil_strdup(env, id);
 
     return AXIS2_SUCCESS;
 }
@@ -145,7 +145,7 @@ savan_subscriber_set_delivery_mode(
     }
     
     /* copy the new one */
-    subscriber->delivery_mode = axis2_strdup(env, mode);
+    subscriber->delivery_mode = axutil_strdup(env, mode);
 
     return AXIS2_SUCCESS;
 }    
@@ -168,7 +168,7 @@ savan_subscriber_set_expires(
     }
     
     /* copy the new one */
-    subscriber->expires = axis2_strdup(env, expires);
+    subscriber->expires = axutil_strdup(env, expires);
 
     return AXIS2_SUCCESS;
 }
@@ -203,7 +203,7 @@ savan_subscriber_set_filter(
     }
     
     /* copy the new one */
-    subscriber->filter = axis2_strdup(env, filter);
+    subscriber->filter = axutil_strdup(env, filter);
 
     return AXIS2_SUCCESS;
 }
