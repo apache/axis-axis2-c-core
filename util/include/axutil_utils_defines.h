@@ -163,7 +163,7 @@ extern "C"
 typedef enum _axis2_xml_parser_type
 {
     AXIS2_XML_PARSER_TYPE_BUFFER = 1,
-   AXIS2_XML_PARSER_TYPE_FILE,
+    AXIS2_XML_PARSER_TYPE_FILE,
     AXIS2_XML_PARSER_TYPE_DOC
 } axis2_xml_parser_type;
 
