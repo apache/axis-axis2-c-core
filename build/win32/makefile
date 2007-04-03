@@ -248,7 +248,6 @@ deploy:
 	if not exist $(AXIS2_INTDIR_AXIOM) mkdir $(AXIS2_INTDIR_AXIOM)
 	if not exist $(AXIS2_INTDIR_UTIL) mkdir $(AXIS2_INTDIR_UTIL)
 	if not exist $(AXIS2_INTDIR_CORE) mkdir $(AXIS2_INTDIR_CORE)
-	if not exist $(AXIS2_INTDIR_WODEN) mkdir $(AXIS2_INTDIR_WODEN)
 	if not exist $(AXIS2_INTDIR_TNS) mkdir $(AXIS2_INTDIR_TNS)
 	if not exist $(AXIS2_INTDIR_TNR) mkdir $(AXIS2_INTDIR_TNR)
 	if not exist $(AXIS2_INTDIR_PARSER) mkdir $(AXIS2_INTDIR_PARSER)
