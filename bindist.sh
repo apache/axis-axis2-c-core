@@ -10,24 +10,6 @@ export AXIS2C_HOME
 make
 make install
 
-cd woden/samples
-./autogen.sh
-./configure --prefix=${AXIS2C_HOME}
-make 
-make install
-
-cd ../../xml_schema/samples
-./autogen.sh
-./configure --prefix=${AXIS2C_HOME}
-make 
-make install
-
-cd ../../tools/codegen
-./autogen.sh
-./configure --prefix=${AXIS2C_HOME} --enable-tests=no
-make
-make install
-
 cd ../tcpmon
 ./autogen.sh
 ./configure --prefix=${AXIS2C_HOME} --enable-tests=no
@@ -44,8 +26,8 @@ make
 make install
 
 make dist
-tar xf axis2c-sample-src-0.96.tar.gz
-mv axis2c-sample-src-0.96 samples
+tar xf axis2c-sample-src-1.0.0.tar.gz
+mv axis2c-sample-src-1.0.0 samples
 rm -rf ${AXIS2C_HOME}/samples
 mv samples ${AXIS2C_HOME}
 
