@@ -15,7 +15,7 @@
  */
  
 #include <axiom.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 #include <axis2_endpoint_ref.h>
 #include <axis2_svc_client.h>

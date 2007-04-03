@@ -17,7 +17,7 @@
 
 #include <axis2_http_server.h>
 #include <axis2_http_transport.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <axutil_error_default.h>

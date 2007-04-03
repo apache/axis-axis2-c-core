@@ -25,7 +25,7 @@
 #include <axis2_http_header.h>
 #include <axis2_http_status_line.h>
 #include <axis2_http_chunked_stream.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 #ifdef AXIS2_SSL_ENABLED
 #include "ssl/ssl_stream.h"

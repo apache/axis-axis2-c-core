@@ -20,7 +20,7 @@
 #include <axutil_string.h>
 #include <axutil_network_handler.h>
 #include <axis2_http_chunked_stream.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 struct axis2_simple_http_svr_conn
 {

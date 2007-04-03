@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 #include <axis2_http_svr_thread.h>
 #include <axis2_http_server.h>
 #include <axis2_http_transport.h>

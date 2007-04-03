@@ -44,7 +44,7 @@
 #include <axutil_url.h>
 #include <axutil_utils.h>
 #include <axutil_uuid_gen.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 #ifdef __cplusplus
 extern "C"

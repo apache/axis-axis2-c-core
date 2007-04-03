@@ -21,7 +21,7 @@
 #include <axutil_allocator.h>
 #include <axis2_svc_client.h>
 #include <axis2_options.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 axiom_node_t *
 build_om_payload_for_echo_svc(const axutil_env_t *env,

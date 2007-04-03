@@ -24,7 +24,7 @@
 #endif
 
 /**
-  * @file axis2_unix.h
+  * @file axutil_unix.h
   * @brief axis2 unix platform specific interface
   */
 

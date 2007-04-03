@@ -19,7 +19,7 @@
 #define AXIS2_SSL_UTILS_H
 
 #include <openssl/ssl.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 #include <axis2_const.h>
 #include <axis2_defines.h>
 

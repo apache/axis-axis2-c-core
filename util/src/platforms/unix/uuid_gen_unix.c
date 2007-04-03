@@ -45,15 +45,15 @@
 #endif
 
 #include <platforms/unix/axutil_uuid_gen_unix.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 
 /* We need these static variables to track throughout the program execution */
 static axis2_bool_t axutil_uuid_gen_is_first = AXIS2_TRUE;
-static struct axis2_uuid_st axis2_uuid_static;
+static struct axutil_uuid_st axutil_uuid_static;
 
 
-axis2_uuid_t* AXIS2_CALL
+axutil_uuid_t* AXIS2_CALL
 axutil_uuid_gen_v1()
 {
     struct timeval time_now;
@@ -61,15 +61,15 @@ axutil_uuid_gen_v1()
     unsigned long long time_val;
     unsigned long long time_val2;
     unsigned short int clck = 0;
-    axis2_uuid_t *ret_uuid = NULL;
+    axutil_uuid_t *ret_uuid = NULL;
     unsigned short int time_high_version = 0;
 
     if (AXIS2_TRUE == axutil_uuid_gen_is_first)
     {
-        char *mac_addr = axis2_uuid_get_mac_addr();
-        memcpy(axis2_uuid_static.mac, mac_addr, 6);
-        axis2_uuid_static.time_seq = 0;
-        axis2_uuid_static.clock = 0;
+        char *mac_addr = axutil_uuid_get_mac_addr();
+        memcpy(axutil_uuid_static.mac, mac_addr, 6);
+        axutil_uuid_static.time_seq = 0;
+        axutil_uuid_static.clock = 0;
         free(mac_addr);
         axutil_uuid_gen_is_first = AXIS2_FALSE;
     }
@@ -82,19 +82,19 @@ axutil_uuid_gen_v1()
         return NULL;
 
     /* check whether system time changed since last retrieve */
-    if (!(time_now.tv_sec  == axis2_uuid_static.time_last.tv_sec
+    if (!(time_now.tv_sec  == axutil_uuid_static.time_last.tv_sec
         && time_now.tv_usec ==
-        axis2_uuid_static.time_last.tv_usec))
+        axutil_uuid_static.time_last.tv_usec))
     {
         /* reset time sequence counter and continue */
-        axis2_uuid_static.time_seq = 0;
+        axutil_uuid_static.time_seq = 0;
     }
 
     /* until we are out of UUIDs per tick, increment
     the time/tick sequence counter and continue */
-    while (axis2_uuid_static.time_seq < UUIDS_PER_TICK)
+    while (axutil_uuid_static.time_seq < UUIDS_PER_TICK)
     {
-        axis2_uuid_static.time_seq++;
+        axutil_uuid_static.time_seq++;
     }
     /* sleep for 1000ns (1us) */
     tv.tv_sec  = 0;
@@ -107,13 +107,13 @@ axutil_uuid_gen_v1()
     time_val = (unsigned long long)time_now.tv_sec * 10000000ull;
     time_val += (unsigned long long)time_now.tv_usec * 10ull;
 
-    ret_uuid = malloc(sizeof(axis2_uuid_t));
+    ret_uuid = malloc(sizeof(axutil_uuid_t));
 
     time_val += UUID_TIMEOFFSET;
     /* compensate for low resolution system clock by adding
        the time/tick sequence counter */
-    if (axis2_uuid_static.time_seq > 0)
-        time_val += (unsigned long long)axis2_uuid_static.time_seq;
+    if (axutil_uuid_static.time_seq > 0)
+        time_val += (unsigned long long)axutil_uuid_static.time_seq;
 
     time_val2 = time_val;
     ret_uuid->time_low = (unsigned long)time_val2;
@@ -133,13 +133,13 @@ axutil_uuid_gen_v1()
       */
 
     /* retrieve current clock sequence */
-    clck = axis2_uuid_static.clock;
+    clck = axutil_uuid_static.clock;
 
     /* generate new random clock sequence (initially or if the
        time has stepped backwards) or else just increase it */
-    if (clck == 0 || (time_now.tv_sec < axis2_uuid_static.time_last.tv_sec ||
-        (time_now.tv_sec == axis2_uuid_static.time_last.tv_sec
-        && time_now.tv_usec < axis2_uuid_static.time_last.tv_usec)))
+    if (clck == 0 || (time_now.tv_sec < axutil_uuid_static.time_last.tv_sec ||
+        (time_now.tv_sec == axutil_uuid_static.time_last.tv_sec
+        && time_now.tv_usec < axutil_uuid_static.time_last.tv_usec)))
     {
         srand(time_now.tv_usec);
         clck = rand();
@@ -151,7 +151,7 @@ axutil_uuid_gen_v1()
     clck %= (2 << 14);
 
     /* store back new clock sequence */
-    axis2_uuid_static.clock = clck;
+    axutil_uuid_static.clock = clck;
 
     clck &= 0x1FFF;
     clck |= 0x2000;
@@ -160,23 +160,23 @@ axutil_uuid_gen_v1()
      *  FINISH
      */
     /* remember current system time for next iteration */
-    axis2_uuid_static.time_last.tv_sec  = time_now.tv_sec;
-    axis2_uuid_static.time_last.tv_usec = time_now.tv_usec;
+    axutil_uuid_static.time_last.tv_sec  = time_now.tv_sec;
+    axutil_uuid_static.time_last.tv_usec = time_now.tv_usec;
 
     if (! ret_uuid)
     {
         return NULL;
     }
     ret_uuid->clock_variant = clck;
-    memcpy(ret_uuid->mac_addr, axis2_uuid_static.mac, 6);
+    memcpy(ret_uuid->mac_addr, axutil_uuid_static.mac, 6);
     return ret_uuid;
 }
 
 
 axis2_char_t* AXIS2_CALL
-axis2_platform_uuid_gen(char *s)
+axutil_platform_uuid_gen(char *s)
 {
-    axis2_uuid_t *uuid_struct = NULL;
+    axutil_uuid_t *uuid_struct = NULL;
     axis2_char_t *uuid_str = NULL;
     unsigned char mac[7];
     char mac_hex[13];
@@ -209,7 +209,7 @@ axis2_platform_uuid_gen(char *s)
 #ifdef HAVE_LINUX_IF_H   /* Linux */
 
 char * AXIS2_CALL
-axis2_uuid_get_mac_addr()
+axutil_uuid_get_mac_addr()
 {
     struct ifreq ifr;
     struct sockaddr *sa;
@@ -242,7 +242,7 @@ axis2_uuid_get_mac_addr()
 * http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
 */
 char * AXIS2_CALL
-axis2_uuid_get_mac_addr()
+axutil_uuid_get_mac_addr()
 {
     unsigned char eth_addr[6];
     int sock;
@@ -313,7 +313,7 @@ axis2_uuid_get_mac_addr()
 #endif /* !max */
 
 char * AXIS2_CALL
-axis2_uuid_get_mac_addr()
+axutil_uuid_get_mac_addr()
 {
     struct ifconf ifc;
     struct ifreq *ifr;

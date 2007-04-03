@@ -37,7 +37,7 @@ extern "C"
  */
 
 
-struct axis2_uuid {
+struct axutil_uuid {
    unsigned int time_low;
    unsigned short int time_mid;
    unsigned short int time_high_version;
@@ -51,26 +51,27 @@ struct axis2_uuid {
  * bits 66-79 clock sequence
  * bits 80-107 node MAC address
  */
-struct axis2_uuid_st {
+struct axutil_uuid_st {
     unsigned char   mac[6];      /* pre-determined MAC address */
     struct timeval time_last;   /* last retrieved timestamp */
     unsigned long  time_seq;    /* last timestamp sequence counter */
     short int clock;            /* clock tick - incremented random number */
 };
-typedef struct axis2_uuid axis2_uuid_t;
+
+typedef struct axutil_uuid axutil_uuid_t;
 
 /**
  * Returns the mac address of the first ethernet intsrface
  * @return MAC address as a <code>char[6]</code>
  */ 
 char * AXIS2_CALL
-axis2_uuid_get_mac_addr();
+axutil_uuid_get_mac_addr();
 
 /**
  * Generates a uuid in version1 format (node - timestamp based)
- * @return generated uuid as a axis2_uuid_t
+ * @return generated uuid as a axutil_uuid_t
  */ 
-axis2_uuid_t* AXIS2_CALL
+axutil_uuid_t* AXIS2_CALL
 axutil_uuid_gen_v1();
 
 /**
@@ -78,7 +79,7 @@ axutil_uuid_gen_v1();
  * @return generated uuid as a string
  */ 
 axis2_char_t* AXIS2_CALL
-axis2_platform_uuid_gen(char *s);
+axutil_platform_uuid_gen(char *s);
 
 /** @} */
     

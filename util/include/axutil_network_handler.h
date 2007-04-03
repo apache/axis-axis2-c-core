@@ -21,7 +21,7 @@
 #include <axutil_utils_defines.h>
 #include <axutil_env.h>
 #include <sys/types.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 
 

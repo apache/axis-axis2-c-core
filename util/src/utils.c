@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <axutil_string.h>
 #include <string.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 AXIS2_EXTERN axis2_char_t** AXIS2_CALL
 axis2_parse_request_url_for_svc_and_op(const axutil_env_t *env,

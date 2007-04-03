@@ -29,7 +29,7 @@
 #include <axutil_array_list.h>
 #include <axis2_options.h>
 #include <axis2_conf_init.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 #include <stdio.h>
 
 struct axis2_svc_client

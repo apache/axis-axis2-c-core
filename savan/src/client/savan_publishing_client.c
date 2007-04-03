@@ -18,7 +18,7 @@
 #include <axiom_element.h>
 #include <axiom_soap_body.h>
 #include <axis2_options.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 #include <savan_publishing_client.h>
 #include <savan_constants.h>

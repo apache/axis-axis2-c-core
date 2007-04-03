@@ -20,7 +20,7 @@
 #include <axutil_string.h>
 #include <axutil_error_default.h>
 #include <axutil_array_list.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 #include <axutil_uuid_gen.h>
 #include <axutil_log_default.h>
 #include <axutil_log.h>

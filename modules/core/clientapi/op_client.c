@@ -28,7 +28,7 @@
 #include <axiom_soap_const.h>
 #include <axiom_soap_body.h>
 #include <axutil_types.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 struct axis2_op_client
 {

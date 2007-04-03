@@ -27,7 +27,7 @@
 #include <axutil_qname.h>
 #include <axutil_error.h>
 #include <axutil_utils.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 #ifdef __cplusplus
 extern "C"

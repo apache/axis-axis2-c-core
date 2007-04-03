@@ -18,7 +18,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <axutil_stream.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 
 /** basic stream operatons **/

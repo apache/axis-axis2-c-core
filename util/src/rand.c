@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <axutil_rand.h>
 #include <axutil_string.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 
 #define AXIS2_RAND_MAX 32768
 

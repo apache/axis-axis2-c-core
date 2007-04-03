@@ -16,7 +16,7 @@
  */
 
 #include <axutil_dir_handler.h>
-#include <platforms/axis2_platform_auto_sense.h>
+#include <platforms/axutil_platform_auto_sense.h>
 #include <axutil_string.h>
 #include <zlib.h>
 #include <fcntl.h>

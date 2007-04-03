@@ -20,7 +20,7 @@
 #define AXIS2_PLATFORM_AUTOSENSE_H
 
 /**
-  * @file axis2_platform_auto_sense.h
+  * @file axutil_platform_auto_sense.h
   * @brief axis2 platform auto sense
   */
 
@@ -48,7 +48,7 @@ extern "C"
 #elif defined ( HPUX )
   #include <hp-ux/axis2_ht-ux.h>
 #else
-  #include <platforms/unix/axis2_unix.h>
+  #include <platforms/unix/axutil_unix.h>
 #endif
 
 /** @} */
