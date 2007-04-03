@@ -98,14 +98,14 @@ extern "C"
      * spawning a new thread via a thread function
      */
     AXIS2_EXTERN struct axutil_env * AXIS2_CALL
-    axis2_init_thread_env(const struct axutil_env *system_env);
+    axutil_init_thread_env(const struct axutil_env *system_env);
 
     /**
      * This function can be used to free the environment that was used
      * in a thread function
      */
     AXIS2_EXTERN void AXIS2_CALL
-    axis2_free_thread_env(struct axutil_env *thread_env);
+    axutil_free_thread_env(struct axutil_env *thread_env);
 
     /** @} */
 

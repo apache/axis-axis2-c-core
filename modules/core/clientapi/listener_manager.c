@@ -270,7 +270,7 @@ axis2_listener_manager_worker_func(axutil_thread_t *thd,
         return NULL;
 
     AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
-    th_env = axis2_init_thread_env(args_list->env);
+    th_env = axutil_init_thread_env(args_list->env);
     if (args_list->listener)
     {
         axis2_transport_receiver_start(args_list->listener, th_env);

@@ -588,7 +588,7 @@ axis2_op_client_worker_func(axutil_thread_t *thd,
     }
 
     AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
-    th_env = axis2_init_thread_env(args_list->env);
+    th_env = axutil_init_thread_env(args_list->env);
 
     op_ctx = axis2_op_ctx_create(th_env, args_list->op, args_list->op_client->svc_ctx);
     if(!op_ctx)

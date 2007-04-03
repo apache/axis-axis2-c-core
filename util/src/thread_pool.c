@@ -108,7 +108,7 @@ axutil_thread_pool_thread_detach(axutil_thread_pool_t *pool,
 }
 
 AXIS2_EXTERN axutil_env_t *AXIS2_CALL
-axis2_init_thread_env(const axutil_env_t *system_env)
+axutil_init_thread_env(const axutil_env_t *system_env)
 {
     axutil_error_t *error = axutil_error_create(system_env->allocator);
     return axutil_env_create_with_error_log_thread_pool(system_env->allocator, error,

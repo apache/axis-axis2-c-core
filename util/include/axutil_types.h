@@ -34,9 +34,9 @@ extern "C"
      */
 
     AXIS2_EXTERN int AXIS2_CALL
-    axis2_atoi(const char *s);
+    axutil_atoi(const char *s);
 
-#define AXIS2_ATOI(s) axis2_atoi(s)
+#define AXIS2_ATOI(s) axutil_atoi(s)
 
     /** @} */
 

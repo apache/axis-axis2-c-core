@@ -225,7 +225,7 @@ publisher_worker_func(
     conf_ctx = mydata->conf_ctx;
     svc = mydata->svc;
     
-    env = axis2_init_thread_env(main_env);
+    env = axutil_init_thread_env(main_env);
 
     printf("inside thread worker func...\n");
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "inside thread worker func...");

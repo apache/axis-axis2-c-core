@@ -247,7 +247,7 @@ axis2_svr_thread_worker_func (
     }
     AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t1);
     env = arg_list->env;
-    thread_env = axis2_init_thread_env(env);
+    thread_env = axutil_init_thread_env(env);
     socket = arg_list->socket;
     svr_conn = axis2_simple_http_svr_conn_create(thread_env, socket);
     axis2_simple_http_svr_conn_set_rcv_timeout(svr_conn, thread_env,
