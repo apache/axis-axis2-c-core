@@ -36,7 +36,7 @@ href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>)</p>
 <p>This sections is aimed to help you to get a Web service up in quick time
 using Axis2/C and consume that service using an Axis2/C client.</p>
 
-<p>First download the latest binary release form Apache Axis2/C</p>
+<p>First download the latest binary release form Apache Axis2/C
 <a href="http://ws.apache.org/axis2/c/download.cgi">download page</a>. Once
 you download the correct binary that suits your platform, all that you
 require to get it running is to extract the package to a folder of your
@@ -51,10 +51,6 @@ may have to set the environment variables in this new shell as well). Please
 see the <a
 href="http://ws.apache.org/axis2/c/docs/installationguide.html">installation
 guide</a> for more details. 
-
-<p><br>
-<br>
-</p>
 
 <p>Once you have Axis2/C up and running successfully, you can start writing
 your own services and clients. The following sections detail how to write
@@ -262,12 +258,21 @@ one operation, with the name "greet"<br>
 <p>On Linux:</p>
 <pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include -L$AXIS2C_HOME/lib -laxis2 hello.c</pre>
 
-<p>On Windows</p>
-
-<p>to compile,</p>
+<p>On Windows:</p>
+<p> Make sure you have run 'vcvars32.bat' to set the environment variables and path
+retuired to run the compiler and linker on command line</p>
+<p>to compile - </p>
 <pre>cl.exe /D "WIN32" /D "_WINDOWS" /D "_MBCS"/D"AXIS2_DECLARE_EXPORT" 
-/D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH)
-$(APACHE_INCLUDE_PATH) /I hello.c</pre>
+/D "AXIS2_SVR_MULTI_THREADED" /w /nologo /I $(AXIS2_INCLUDE_PATH)
+/I $(APACHE_INCLUDE_PATH) hello.c</pre>
+
+<p>to link - </p>
+<pre>link.exe /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXSLT_BIN_DIR)\lib 
+         /LIBPATH:$(LIBXML2_BIN_DIR)\lib  /LIBPATH:$(APACHE_BIN_DIR)\lib 
+         /LIBPATH:$(ZLIB_BIN_DIR)\lib *.obj axis2_util.lib axiom.lib 
+         axis2_parser.lib axis2_engine.lib Rpcrt4.lib Ws2_32.lib 
+         /DLL /OUT:hello.dll</pre>
+
 
 <h3>1.1.7 Deploying the Service</h3>
 
