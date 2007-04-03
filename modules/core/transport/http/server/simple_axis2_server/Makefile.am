@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/
+prgbindir=$(bindir)
 prgbin_PROGRAMS = axis2_http_server
 SUBDIRS =
 AM_CFLAGS = -g -pthread
