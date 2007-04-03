@@ -64,7 +64,7 @@ mailing list see <a href="../mail-lists.html">here</a></p>
 
 <h2>1. Installing and Running on Linux</h2>
 
-<p>This can be done using binary or source distributions.</p>
+<p>This can be done using binary or source distributions.(You can download the two distributions <a href="http://ws.apache.org/axis2/c/download.cgi"> here</a>)</p>
 
 <p>To get both the binary and source distributions working, you need libxml2,
 which can be <a href="http://xmlsoft.org/downloads.html">downloaded</a>.</p>
@@ -250,7 +250,7 @@ source distribution on Linux : - </p>
 
 <h2>2. Installing and Running on Microsoft Windows (win32)</h2>
 
-<p>This too can be done using either binary or source distributions.</p>
+<p>This too can be done using either binary or source distributions.(You can download the two distributions <a href="http://ws.apache.org/axis2/c/download.cgi"> here</a>)</p>
 
 <p>For both the binary and source distributions, you need to <a
 href="http://xmlsoft.org/downloads.html">download</a> libxml2.</p>
@@ -267,12 +267,12 @@ download and install libxml2)</p>
   <li>The binaries shipped with this version are compiled with Microsoft
     Visual Studio Compiler (cl)</li>
 
-  <p>(Note: you can download Microsoft VSExpress2005 edition from the Microsoft
+  <p>(Note: you can  <a href="http://msdn.microsoft.com/vstudio/express/downloads/">download Microsoft VSExpress2005 edition</a> from the Microsoft
   Web site and install it to run these binaries)</p>
   <li>You also need the following dlls:
     <ul>
       <li>libxml2.dll [http://www.xmlsoft.org - download the version &gt;=
-        libxml2-2.6.20.win32]</li>
+       libxml2-2.6.27.win32]</li>
       <li>iconv.dll [http://www.gnu.org/software/libiconv/ - download the version &gt;=
         iconv-1.9.1.win32]</li>
       <li>zlib1.dll [http://www.gzip.org/zlib/ - download the version &gt;=
@@ -341,13 +341,13 @@ download and install libxml2)</p>
   <li>The makefile shipped with this version needs Microsoft Visual Studio
     Compiler (cl) and nmake build tool.</li>
 
-  <p>(Note: You can download Microsoft VSExpress2005 edition and Platform SDK
+  <p>(Note: You can  <a href="http://msdn.microsoft.com/vstudio/express/downloads/">download Microsoft VSExpress2005 edition and Platform SDK </a>
   from Microsoft Web site. You will need to add the path to Platform SDK
   Include and Lib folders to makefile)</p>
   <li>You also need
     <ul>
       <li>libxml2 [http://www.xmlsoft.org - download the version &gt;=
-        libxml2-2.6.20.win32]</li>
+        libxml2-2.6.27.win32]</li>
       <li>iconv [http://www.gnu.org/software/libiconv/ - download the version &gt;=
         iconv-1.9.1.win32]</li>
       <li>zlib [http://www.gzip.org/zlib/ - download the version &gt;=
@@ -358,10 +358,11 @@ download and install libxml2)</p>
 <a id="edit"></a>
 
 <h4>2.2.3. Editing configure.in File</h4>
+<p>Please edit &lt;source_distribution&gt;\build\win32\configure.in file to include following information. </p>
 <ul>
   <li>The default paths for libxml2 and iconv are specified in configure.in
     <ul>
-      <li>Example:Default location for libxml2 is C:\libxml2</li>
+      <li>Example:If libxml2 is installed into C:\libxml2, edit configure.in file accordingly.</li>
     </ul>
   </li>
   <li>You can either extract libxml2 to this folder, in which case folder
@@ -389,6 +390,7 @@ download and install libxml2)</p>
 <ul>
   <li>Extract the source distribution to a folder of your choice. (Example:
     C:\axis2c)</li>
+  <li>Edit configure.in file as explained in the section 2.2.3 </li>
   <li>Open a DOS shell</li>
   <li>cd C:\axis2c\build\win32</li>
   <li>to access .Net tools, run
@@ -396,9 +398,10 @@ download and install libxml2)</p>
       <li>C:\axis2c\build\win32&gt; vcvars32.bat</li>
     </ul>
     <p>(Note: You may need to set the PATH environment variable to
-    vcvars32.bat if Windows complaints that it cannot find this bat)</p>
+    vcvars32.bat if Windows complaints that it cannot find this bat. This file is located in 
+    &lt;your MS Visual Studio install Directory&gt;\VC\bin directory.)</p>
   </li>
-  <li>build the system and create a directory named deploy under build
+  <li>To build the system and create the binary files in a directory named deploy under build
     directory:
     <ul>
       <li>C:\axis2c\build\win32&gt;nmake install</li>
