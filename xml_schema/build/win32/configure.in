@@ -1,9 +1,0 @@
-XML_SCHEMA_MAJOR_VERSION = M
-XML_SCHEMA_MINOR_VERSION = 9
-XML_SCHEMA_MICRO_VERSION = 2
-AXIS2_UTIL_INSTALL_DIR = E:\axis2c\util\build\axis2_util
-AXIOM_INSTALL_DIR = E:\axis2c\axiom\build\axiom
-
-
-
-
