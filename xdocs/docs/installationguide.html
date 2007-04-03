@@ -487,11 +487,15 @@ download and install libxml2)</p>
 <h4>3.1.2 On Win32 Platform:</h4>
 <ul>
   <li>Provide the apache2 location in configure.in file in
-    APACHE_BIN_DIR<br />
-    eg : APACHE_BIN_DIR = E:\Apache</li>
+    APACHE_BIN_DIR<br /> 
+    eg : APACHE_BIN_DIR = E:\Apache <br /> 
+    Allways use a directory with no spaces in the name.
+    <p>If you have not installed apache2 httpd server, you can download apache2 installation files from <a
+    href="http://httpd.apache.org/download.cgi">here</a> and install it.</p>
+  </li>
   <li>After compiling the sources (As described in <a
     href="#win">Section 2</a>) build the mod_axis2.dll by issuing the
-    command "nmake axis2_apache_module".</li>
+    command "nmake axis2_apache_module" from &lt;axis2c_source_distribution&gt;\build\win32 directory.</li>
   <li>This will build the mod_axis2.dll and copy it to %AXIS2C_HOME%\lib
     directory.<br />
     eg: C:\axis2c\build\deploy\lib</li>
