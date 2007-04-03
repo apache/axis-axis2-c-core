@@ -484,8 +484,8 @@ download and install libxml2)</p>
 <h4>3.1.2 On Win32 Platform:</h4>
 <ul>
   <li>Provide the apache2 location in configure.in file in
-    APACHE_INSTALL_DIR<br />
-    eg : APACHE_INSTALL_DIR = E:\Apache</li>
+    APACHE_BIN_DIR<br />
+    eg : APACHE_BIN_DIR = E:\Apache</li>
   <li>After compiling the sources (As described in <a
     href="#win">Section 2</a>) build the mod_axis2.dll by issuing the
     command "nmake axis2_apache_module".</li>
@@ -527,6 +527,15 @@ privileges in your machine.</p>
     AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default) <br />
     AXIS2_LOG_LEVEL_TRACE - Log trace messages</p>
   </li>
+  <P>An example of a httpd.conf:<br>
+  <PRE> LoadModule axis2_module modules/mod_axis2.dll
+        Axis2RepoPath C:/axis2c/build/deploy
+        Axis2LogFile C:/axis2c/build/deploy/logs
+        Axis2LogLevel AXIS2_LOG_LEVEL_DEBUG
+        &lt;Location /axis2&gt;
+                SetHandler axis2_module
+        &lt;/Location&gt;
+  </PRE></P>
   <li>Use forward slashes "/" for path seperators in &lt;apache2 modules
     directory&gt;, &lt;axis2 repository path&gt; and &lt;axis2 log file
     path&gt;</li>
