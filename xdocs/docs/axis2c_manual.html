@@ -1494,8 +1494,11 @@ href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
     <p>In order to allow an AXIS2C client to communicate with a SSL enabled
     server, we need to compile AXIS2C with SSL support. </p>
     <ul>
-      <li>Building with SSL client support 
-        <p>This can be achieved on linux by compiling AXIS2C with the
+      <li>Building with SSL client support
+        <p>First of all, make sure you have installed <a href='http://www.openssl.org/'>OpenSSL</a> 
+        on your machine.</p>
+        <p>Then you can start building with SSL client support. 
+        This can be achieved on linux by compiling AXIS2C with the
         <code>--enable-openssl=yes</code> option.</p>
         <p>Eg: <code><br>
         %./configure --enable-openssl=yes --prefix=${AXIS2C_HOME}/deploy<br>
@@ -1503,7 +1506,7 @@ href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
         %make install<br>
         </code></p>
         <p>On windows, set <code>ENABLE_SSL=1</code> in the
-        <code>configure.in</code> file and run the nmake script.</p>
+        <code>configure.in</code> file and run the 'nmake all' command.</p>
       </li>
       <li><a name="client_chain"></a>Creating the client certificate chain
         file 
@@ -1517,12 +1520,15 @@ href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
         created by concatenating the certificate file and the private key
         file in that order, in to another file, say <code>client.pem</code>.
         </p>
-        <p>On linux you can do this easily as follows: <br>
+        <p>On Linux you can do this easily as follows: <br>
         </p>
         <p><code>%cat client.crt client.key &gt; client.pem</code></p>
+        <p>On Windows you can do this by copying the contents of 
+        client.crt and client.key files and saving them in a file 
+        named client.pem using notepad. </p>
       </li>
       <li>Configuration 
-        <p>Add the following in the <code>axis2.xml</code> file. This will
+        <p>Uncomment the following in the <code>axis2.xml</code> file. This will
         enable the SSL transport for AXIS2C, by recognising "https" in an end
         point reference (EPR).</p>
         <p><code>&lt;transportSender name="https"
