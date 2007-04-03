@@ -18,6 +18,6 @@ math_LDADD   =  \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 
-INCLUDES = -I$(AXIS2C_HOME)/include \
+INCLUDES = -I$(AXIS2C_HOME)/include/axis2-1.0 \
 			@UTILINC@ \
 			@AXIOMINC@

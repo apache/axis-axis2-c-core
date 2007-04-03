@@ -1,6 +1,7 @@
 datadir=$(prefix)
 logsdir=$(prefix)/logs
 docsdir=$(prefix)/docs
+includedir=$(prefix)/include/axis2-1.0
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = axis2c.pc
