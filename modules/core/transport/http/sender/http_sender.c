@@ -61,6 +61,7 @@ static int
 is_safe_or_unreserve (
 	char c);
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axis2_status_t
 axis2_http_sender_configure_proxy(
     axis2_http_sender_t *sender,
@@ -78,6 +79,7 @@ axis2_http_sender_configure_key_file(
     axis2_http_sender_t *sender,
     const axutil_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
+#endif
 
 AXIS2_EXTERN axis2_http_sender_t *AXIS2_CALL
 axis2_http_sender_create(
@@ -140,7 +142,7 @@ axis2_http_sender_send(
     const axis2_char_t *soap_action)
 {
 #ifdef AXIS2_LIBCURL_ENABLED
-    axis2_libcurl_http_send(sender, env, msg_ctx, output, url,soap_action);
+    return axis2_libcurl_http_send(sender, env, msg_ctx, out, str_url,soap_action);
 #else
 
     axis2_http_simple_request_t *request = NULL;
@@ -799,6 +801,7 @@ axis2_http_sender_set_http_version(
     return AXIS2_SUCCESS;
 }
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axis2_status_t
 axis2_http_sender_configure_proxy(
     axis2_http_sender_t *sender,
@@ -917,7 +920,9 @@ axis2_http_sender_configure_proxy(
     }
     return AXIS2_SUCCESS;
 }
+#endif
 
+#ifndef AXIS2_LIBCURL_ENABLED
 static axis2_status_t 
 axis2_http_sender_configure_server_cert(
     axis2_http_sender_t *sender,
@@ -958,7 +963,10 @@ axis2_http_sender_configure_server_cert(
 
     return status;
 }
+#endif
 
+
+#ifndef AXIS2_LIBCURL_ENABLED
 static axis2_status_t
 axis2_http_sender_configure_key_file(
     axis2_http_sender_t *sender,
@@ -999,6 +1007,7 @@ axis2_http_sender_configure_key_file(
 
 	return status;
 }
+#endif
 
 #ifdef AXIS2_LIBCURL_ENABLED
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -178,7 +178,7 @@ axis2_libcurl_send (
 				else
 				{
 					headers = curl_slist_append (headers, 
-												 axis2_stracat (env, soap_action_header, soap_action,env));
+												 axis2_stracat (env, soap_action_header, soap_action));
 				}
 			}
 

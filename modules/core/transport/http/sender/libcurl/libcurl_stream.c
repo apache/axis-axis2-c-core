@@ -14,7 +14,7 @@ libcurl_stream_impl_t;
 #define AXIS2_INTF_TO_IMPL(stream) ((libcurl_stream_impl_t *)(stream))
 
 /********************************Function headers******************************/
-axis2_status_t AXIS2_CALL
+void AXIS2_CALL
 libcurl_stream_free(
     axutil_stream_t *stream,
     const axutil_env_t *env);
@@ -77,9 +77,9 @@ axutil_stream_create_libcurl(
 	stream_impl->read_len = 0;
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
 
-    axutil_stream_set_read(stream_impl, env, libcurl_stream_read);
-    axutil_stream_set_write(stream_impl, env, libcurl_stream_write);
-    axutil_stream_set_skip(stream_impl, env, libcurl_stream_skip);
+    axutil_stream_set_read(&(stream_impl->stream), env, libcurl_stream_read);
+    axutil_stream_set_write(&(stream_impl->stream), env, libcurl_stream_write);
+    axutil_stream_set_skip(&(stream_impl->stream), env, libcurl_stream_skip);
 
     return &(stream_impl->stream);
 }
@@ -137,7 +137,8 @@ libcurl_stream_read(
 	{
 		if (buffer && (stream_impl->size > stream_impl->read_len))
 		{
-			memcpy (buffer, &stream_impl->buffer[stream_impl->read_len], stream_impl->size - stream_impl->read_len);
+			memcpy (buffer, &stream_impl->buffer[stream_impl->read_len],
+                stream_impl->size - stream_impl->read_len);
 			read = stream_impl->size - stream_impl->read_len;
 			stream_impl->read_len += read;
 		}
