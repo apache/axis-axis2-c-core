@@ -121,9 +121,9 @@ axutil_stream_create_ssl(
     }
     stream_impl->stream_type = AXIS2_STREAM_MANAGED;
     
-    axutil_stream_set_read(stream_impl, env, axis2_ssl_stream_read);
-    axutil_stream_set_write(stream_impl, env, axis2_ssl_stream_write);
-    axutil_stream_set_skip(stream_impl, env, axis2_ssl_stream_skip);
+    axutil_stream_set_read(&(stream_impl->stream), env, axis2_ssl_stream_read);
+    axutil_stream_set_write(&(stream_impl->stream), env, axis2_ssl_stream_write);
+    axutil_stream_set_skip(&(stream_impl->stream), env, axis2_ssl_stream_skip);
 
     return &(stream_impl->stream);
 }
