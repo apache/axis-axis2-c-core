@@ -40,7 +40,8 @@
 
 #define READ_SIZE  32
 
-axis2_status_t AXIS2_CALL axis2_worker_get_original_url(char url[], char ret_url[]);
+axis2_status_t AXIS2_CALL axis2_worker_get_original_url(char url[], 
+														char ret_url[]);
 
 axis2_char_t *AXIS2_CALL axis2_iis_worker_get_bytes(const axutil_env_t *env,
 													axutil_stream_t *stream);
@@ -51,6 +52,9 @@ axis2_status_t AXIS2_CALL start_response(LPEXTENSION_CONTROL_BLOCK lpECB,
                                     const char *const *header_names,
                                     const char *const *header_values,
                                     unsigned int num_of_headers);
+
+axis2_status_t write_response(LPEXTENSION_CONTROL_BLOCK lpECB, 
+							  const void *b, unsigned int l);
 
 static struct reasons {    
     axis2_char_t *status_code;
