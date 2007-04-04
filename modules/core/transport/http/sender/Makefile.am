@@ -2,7 +2,6 @@ SUBDIRS=ssl libcurl
 lib_LTLIBRARIES = libaxis2_http_sender.la
 libaxis2_http_sender_la_SOURCES = http_transport_sender.c\
                                   http_sender.c\
-                                  sender_util.c\
                                   http_client.c
 
 libaxis2_http_sender_la_LIBADD = $(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la\

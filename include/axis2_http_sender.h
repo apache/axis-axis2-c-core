@@ -35,6 +35,7 @@
 #include <axiom_output.h>
 #include <axis2_http_simple_response.h>
 #include <axiom_soap_envelope.h>
+#include <axis2_http_simple_request.h>
 
 #ifdef AXIS2_LIBCURL_ENABLED
 #include <curl/curl.h>
@@ -66,6 +67,14 @@ extern "C"
         axiom_soap_envelope_t *out,
         const axis2_char_t *str_url,
         const axis2_char_t *soap_action);
+
+
+    void AXIS2_CALL
+    axis2_http_sender_util_add_header (
+        const axutil_env_t *env,
+        axis2_http_simple_request_t *request,
+        axis2_char_t *header_name,
+        const axis2_char_t *header_value);
 
 #ifdef AXIS2_LIBCURL_ENABLED
     AXIS2_EXTERN axis2_status_t AXIS2_CALL

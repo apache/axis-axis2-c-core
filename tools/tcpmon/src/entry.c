@@ -511,7 +511,7 @@ void* AXIS2_CALL tcpmon_entry_new_entry_funct(axutil_thread_t *thd, void* data)
 	 buffer = read_current_stream(host_stream, env, &buffer_size,
 											&headers, &content);
 
-	 test_bit = TCPMON_SESSION_GET_TEST_BIT (session, env);
+	test_bit = TCPMON_SESSION_GET_TEST_BIT (session, env);
 	 if (test_bit)
 		{
 			 write_to_file ("response", buffer);

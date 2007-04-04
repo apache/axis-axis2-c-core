@@ -33,7 +33,6 @@
 #include <axis2_const.h>
 #include <axis2_util.h>
 #include <axiom_soap.h>
-#include "axis2_http_sender_util.h"
 
 #ifdef AXIS2_LIBCURL_ENABLED
 #include "libcurl/axis2_libcurl.h"
@@ -1171,4 +1170,15 @@ is_safe_or_unreserve (
         }
     }
     return flag;
+}
+
+void
+axis2_http_sender_util_add_header (const axutil_env_t *env,
+				   axis2_http_simple_request_t *request,
+				   axis2_char_t *header_name,
+				   const axis2_char_t *header_value)
+{
+	axis2_http_header_t *http_header;
+    http_header = axis2_http_header_create(env, header_name, header_value);
+    axis2_http_simple_request_add_header(request, env, http_header);
 }
