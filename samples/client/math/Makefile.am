@@ -8,7 +8,7 @@ math_SOURCES = axis2_math_stub.c \
 
 math_LDADD   =  \
                 -L$(AXIS2C_HOME)/lib \
-					-laxis2_util \
+					-laxutil \
                     -laxis2_axiom \
                     -laxis2_engine \
                     -laxis2_parser \

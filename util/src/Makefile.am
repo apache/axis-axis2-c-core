@@ -1,6 +1,6 @@
 SUBDIRS = platforms/unix minizip
-lib_LTLIBRARIES = libaxis2_util.la
-libaxis2_util_la_SOURCES = hash.c \
+lib_LTLIBRARIES = libaxutil.la
+libaxutil_la_SOURCES = hash.c \
                         allocator.c \
                         env.c \
                         error.c \
@@ -36,7 +36,7 @@ libaxis2_util_la_SOURCES = hash.c \
 						date_time_util.c \
 						version.c
                         
-libaxis2_util_la_LIBADD =	$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
+libaxutil_la_LIBADD =	$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
                     		$(top_builddir)/src/minizip/libaxis2_minizip.la
 
 INCLUDES = -I$(top_builddir)/include

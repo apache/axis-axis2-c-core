@@ -5,7 +5,7 @@ AM_CFLAGS = -g -O2 -pthread
 test_description_SOURCES = test_description.c
 
 test_description_LDADD   =  \
-			../../../util/src/libaxis2_util.la \
+			../../../util/src/libaxutil.la \
 			../../../axiom/src/om/libaxis2_axiom.la \
 			../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 			-lpthread \

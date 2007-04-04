@@ -5,7 +5,7 @@ libaxis2_attachments_la_SOURCES = mime_output.c \
 					mime_body_part.c \
                     mime_parser.c
 
-libaxis2_attachments_la_LIBADD = ../../../util/src/libaxis2_util.la 
+libaxis2_attachments_la_LIBADD = ../../../util/src/libaxutil.la 
 
 INCLUDES =	-I$(top_builddir)/include \
             -I$(top_builddir)/parser \

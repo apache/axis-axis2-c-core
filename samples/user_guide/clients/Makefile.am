@@ -14,7 +14,7 @@ echo_blocking_soap11_SOURCES = echo_blocking_soap11.c echo_util.c
 
 LINK_FLAGS = $(LDFLAGS) \
              -L$(AXIS2C_HOME)/lib \
-			 -laxis2_util \
+			 -laxutil \
              -laxis2_axiom \
              -laxis2_engine \
              -laxis2_parser \

@@ -6,7 +6,7 @@ AM_CFLAGS = -g -pthread
 test_context_SOURCES = test_context.c
 
 
-test_context_LDADD   =	../../../util/src/libaxis2_util.la \
+test_context_LDADD   =	../../../util/src/libaxutil.la \
 						../../../axiom/src/om/libaxis2_axiom.la \
 						../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 						$(top_builddir)/modules/core/engine/libaxis2_engine.la \

@@ -1,5 +1,5 @@
 lib_LTLIBRARIES = libaxis2_http_receiver.la
-libaxis2_http_receiver_la_LIBADD=$(top_builddir)/util/src/libaxis2_util.la\
+libaxis2_http_receiver_la_LIBADD=$(top_builddir)/util/src/libaxutil.la\
                                  $(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la
 
 

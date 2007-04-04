@@ -16,7 +16,7 @@ test_echo_date.c
 
 test_echo_date_LDADD   =  \
                 -L$(AXIS2C_HOME)/lib \
-                    -laxis2_util \
+                    -laxutil \
                     -laxis2_axiom \
                     -laxis2_wsdl \
                     -laxis2_engine \
@@ -42,7 +42,7 @@ test_echo_struct_array.c
 
 test_echo_struct_array_LDADD   =  \
                 -L$(AXIS2C_HOME)/lib \
-                    -laxis2_util \
+                    -laxutil \
                     -laxis2_axiom \
                     -laxis2_wsdl \
                     -laxis2_engine \

@@ -21,7 +21,7 @@ libaxis2_axiom_la_LIBADD =	$(top_builddir)/src/soap/libaxis2_soap.la \
 				$(top_builddir)/src/attachments/libaxis2_attachments.la \
                     		$(top_builddir)/src/util/libaxis2_axiom_util.la \
 							../parser/${WRAPPER_DIR}/libaxis2_parser.la \
-							../../../util/src/libaxis2_util.la
+							../../../util/src/libaxutil.la
 
 INCLUDES =	-I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \

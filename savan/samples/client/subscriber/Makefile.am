@@ -6,7 +6,7 @@ subscriber_SOURCES = subscriber.c
 subscriber_LDADD   = $(LDFLAGS) \
                     -L$(AXIS2C_HOME)/lib \
 					-L../../../src/core \
-					-laxis2_util \
+					-laxutil \
                     -laxis2_axiom \
                     -laxis2_engine \
                     -laxis2_parser \

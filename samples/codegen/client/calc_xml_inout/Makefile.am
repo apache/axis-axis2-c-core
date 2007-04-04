@@ -9,7 +9,7 @@ Calculator_SOURCES = \
 
 Calculator_LDADD   = $(LDFLAGS) \
                     -L$(AXIS2C_HOME)/lib \
-                    -laxis2_util \
+                    -laxutil \
                     -laxis2_axiom \
                     -laxis2_wsdl \
                     -laxis2_engine \

@@ -9,7 +9,7 @@ AM_CFLAGS = -DLINUX=2 -D_REENTRANT -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -D_SVID_SOU
 libmod_axis2_la_LIBADD   = $(LDFLAGS) \
 		     $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
 		     $(top_builddir)/modules/core/engine/libaxis2_engine.la\
-		     $(top_builddir)/util/src/libaxis2_util.la \
+		     $(top_builddir)/util/src/libaxutil.la \
 		     $(top_builddir)/modules/core/transport/http/util/libaxis2_http_util.la\
 		     $(top_builddir)/modules/core/transport/http/common/libaxis2_http_common.la\
 		     $(top_builddir)/axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la\

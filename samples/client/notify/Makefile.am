@@ -6,7 +6,7 @@ notify_SOURCES = notify_client.c
 
 notify_LDADD   =  \
                     -L$(AXIS2C_HOME)/lib \
-					-laxis2_util \
+					-laxutil \
                     -laxis2_axiom \
                     -laxis2_engine \
                     -laxis2_parser \

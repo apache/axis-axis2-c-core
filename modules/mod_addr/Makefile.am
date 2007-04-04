@@ -8,7 +8,7 @@ libaxis2_mod_addr_la_SOURCES = addr_in_handler.c \
 
 libaxis2_mod_addr_la_LIBADD =	$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 							$(top_builddir)/axiom/src/om/libaxis2_axiom.la \
-							$(top_builddir)/util/src/libaxis2_util.la 
+							$(top_builddir)/util/src/libaxutil.la 
 
 lib_LTLIBRARIES = libaxis2.la
 libaxis2_la_SOURCES = addr_in_handler.c \

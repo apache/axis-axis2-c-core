@@ -8,7 +8,7 @@ tcpmon_unit_test_suite_LDADD   =   \
                      $(top_builddir)/src/libaxis2_tcpmon.la \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-					 ../../../../util/src/libaxis2_util.la \
+					 ../../../../util/src/libaxutil.la \
 					 ../../../../axiom/src/om/libaxis2_axiom.la \
                      $(NULL)
 

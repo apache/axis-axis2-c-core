@@ -9,7 +9,7 @@ test_print_LDADD   =  \
                     -lschema \
                     -lxmlpull \
                     -lwsdl \
-                    -laxis2_util \
+                    -laxutil \
                     -lpthread \
                     -laxis2_wsdl4c
 

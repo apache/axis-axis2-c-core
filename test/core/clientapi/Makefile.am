@@ -7,7 +7,7 @@ test_client_SOURCES = test_client.c
 test_clientapi_SOURCES = test_clientapi.c
 
 test_clientapi_LDADD   =  \
-                    ../../../util/src/libaxis2_util.la \
+                    ../../../util/src/libaxutil.la \
                     ../../../axiom/src/om/libaxis2_axiom.la \
                     ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
                     -lpthread \
@@ -17,7 +17,7 @@ test_clientapi_LDADD   =  \
                     -L$(top_builddir)$(GUTHTHILA_LIBS)
 
 test_client_LDADD   =  \
-                    ../../../util/src/libaxis2_util.la \
+                    ../../../util/src/libaxutil.la \
                     ../../../axiom/src/om/libaxis2_axiom.la \
                     ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
                     -lpthread \

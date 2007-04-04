@@ -9,7 +9,7 @@ libguththila_la_SOURCES = guththila_buffer.c \
 			  guththila_unicode.c \
 			  guththila_xml_writer.c
 
-libguththila_la_LIBADD = ../../util/src/libaxis2_util.la
+libguththila_la_LIBADD = ../../util/src/libaxutil.la
 
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../util/include
