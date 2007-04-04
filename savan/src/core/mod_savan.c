@@ -31,8 +31,15 @@ mod_savan_init(axis2_module_t *module,
         axis2_module_desc_t *module_desc);
 
 axis2_status_t AXIS2_CALL
-mod_savan_fill_handler_create_func_map(axis2_module_t *module,
-                                            const axutil_env_t *env);
+mod_savan_fill_handler_create_func_map(
+		axis2_module_t *module,
+        const axutil_env_t *env);
+
+static const axis2_module_ops_t savan_module_ops_var = {
+	mod_savan_init,
+	mod_savan_shutdown,
+	mod_savan_fill_handler_create_func_map
+};
 
 /*************************** End of Function Prototypes ***********************/
 
@@ -43,14 +50,7 @@ mod_savan_create(const axutil_env_t *env)
     module = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_module_t));
     
-    module->ops = AXIS2_MALLOC(
-        env->allocator, sizeof(axis2_module_ops_t));
-
-    module->ops->shutdown = mod_savan_shutdown;
-    module->ops->init = mod_savan_init;
-    module->ops->fill_handler_create_func_map = 
-        mod_savan_fill_handler_create_func_map;
-
+    module->ops = &savan_module_ops_var;
     return module;
 }
 

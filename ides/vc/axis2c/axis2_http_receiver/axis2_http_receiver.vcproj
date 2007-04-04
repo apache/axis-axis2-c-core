@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axis2_util.lib axis2_parser.lib axis2_engine.lib"
+				AdditionalDependencies="axutil.lib axis2_parser.lib axis2_engine.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;"
 				GenerateManifest="true"
@@ -185,15 +185,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\receiver\http_response_writer.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\..\modules\core\transport\http\receiver\http_svr_thread.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\receiver\simple_http_svr_conn.c"
 				>
 			</File>
 		</Filter>

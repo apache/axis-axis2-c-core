@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axis2_util.lib libxml2.lib"
+				AdditionalDependencies="axutil.lib libxml2.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(SolutionDir)\deploy\lib&quot;"
 				GenerateManifest="true"
@@ -186,6 +186,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\axiom\src\parser\libxml2\libxml2_writer_wrapper.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\src\parser\xml_reader.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\axiom\src\parser\xml_writer.c"
 				>
 			</File>
 		</Filter>

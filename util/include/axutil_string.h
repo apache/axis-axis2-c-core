@@ -184,7 +184,7 @@ extern "C"
     AXIS2_EXTERN int AXIS2_CALL
     axutil_strncasecmp(const axis2_char_t *s1,
         const axis2_char_t *s2, 
-        int n);
+        const int n);
 
     /* much similar to the strcat behaviour. But the difference is
      * this allocates new memory to put the conatenated string rather than

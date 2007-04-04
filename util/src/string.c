@@ -17,6 +17,7 @@
 
 #include <axutil_string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <axutil_utils.h>
 #include <axutil_utils_defines.h>
 #include <stdarg.h> /* NULL */

@@ -61,8 +61,7 @@ savan_in_handler_create(const axutil_env_t *env,
     /* Handler init is handled by conf loading, so no need to do it here */
     
     /* Set the base struct's invoke op */
-    if (handler->ops) 
-        handler->ops->invoke = savan_in_handler_invoke;
+	axis2_handler_set_invoke(handler, env, savan_in_handler_invoke);
 
     return handler;
 }

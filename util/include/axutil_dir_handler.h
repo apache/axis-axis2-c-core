@@ -43,7 +43,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
     axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
-            axis2_char_t *pathname);
+            const axis2_char_t *pathname);
 
     /**
      * List services or modules directories in the services or modules folder
@@ -53,7 +53,7 @@ extern "C"
      */
     AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
     axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
-            axis2_char_t *pathname);
+            const axis2_char_t *pathname);
 
     /*
      *extentions for module and service archives

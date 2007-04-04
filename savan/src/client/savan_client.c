@@ -156,7 +156,7 @@ savan_client_subscribe(
      * requests */
     
     /* Get Body element from body node */
-    body_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(reply, env);
+    body_elem = (axiom_element_t*)axiom_node_get_data_element(reply, env);
     
     /* Check whether we have received a SubscribeResponse */
     sub_elem_local_name = axiom_element_get_localname(body_elem, env);
@@ -335,7 +335,7 @@ savan_client_get_status(
     /* Extract the expire string and return */
     
     /* Get Body element from body node */
-    body_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(reply, env);
+    body_elem = (axiom_element_t*)axiom_node_get_data_element(reply, env);
     
     /* Get Subscribe element from Body */
     qname = axutil_qname_create(env, ELEM_NAME_GETSTATUS_RESPONSE, EVENTING_NAMESPACE, NULL);

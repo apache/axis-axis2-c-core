@@ -237,7 +237,7 @@ savan_msg_recv_handle_sub_request(
         &expires_node);
     axiom_element_set_text(expires_elem, env, expires, expires_node);
     
-    AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
+    axiom_node_add_child(body_node , env, response_node);
      axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     
     return AXIS2_SUCCESS;
@@ -297,7 +297,7 @@ savan_msg_recv_handle_unsub_request(
     response_elem = axiom_element_create(env, NULL, ELEM_NAME_UNSUB_RESPONSE, ns,
         &response_node);
 
-    AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
+    axiom_node_add_child(body_node , env, response_node);
      axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     
     return AXIS2_SUCCESS;
@@ -372,7 +372,7 @@ savan_msg_recv_handle_renew_request(
         &expires_node);
     axiom_element_set_text(expires_elem, env, expires, expires_node);
     
-    AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
+    axiom_node_add_child(body_node , env, response_node);
      axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     
     return AXIS2_SUCCESS;
@@ -430,7 +430,7 @@ savan_msg_recv_handle_get_status_request(
         &expires_node);
     axiom_element_set_text(expires_elem, env, expires, expires_node);
     
-    AXIOM_NODE_ADD_CHILD(body_node , env, response_node);
+    axiom_node_add_child(body_node , env, response_node);
      axis2_msg_ctx_set_soap_envelope(new_msg_ctx, env, default_envelope);
     
     return AXIS2_SUCCESS;

@@ -26,6 +26,12 @@
 #include <axiom_stax_builder_internal.h>
 #include "_axiom_soap_fault.h"
 
+axis2_status_t
+axiom_soap_builder_create_om_element(axiom_soap_builder_t *soap_builder,
+        const axutil_env_t *env,
+        axiom_node_t *current_node,
+        int current_event);
+
 static axis2_status_t
 axiom_soap_builder_construct_node(axiom_soap_builder_t *soap_builder,
         const axutil_env_t *env,

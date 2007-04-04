@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="axis2_util"
+	Name="axutil"
 	ProjectGUID="{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
 	RootNamespace="axis2_util"
 	Keyword="Win32Proj"
@@ -318,6 +318,10 @@
 				RelativePath="..\..\..\..\util\src\uuid_gen.c"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\..\util\src\version.c"
+				>
+			</File>
 			<Filter
 				Name="minizip"
 				>
@@ -365,15 +369,11 @@
 			<Filter
 				Name="platforms"
 				>
-				<File
-					RelativePath="..\..\..\..\util\include\platforms\axis2_platform_auto_sense.h"
-					>
-				</File>
 				<Filter
 					Name="windows"
 					>
 					<File
-						RelativePath="..\..\..\..\util\src\platforms\windows\axis2_windows.c"
+						RelativePath="..\..\..\..\util\src\platforms\windows\axutil_windows.c"
 						>
 					</File>
 					<File
@@ -409,185 +409,197 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_allocator.h"
+				RelativePath="..\..\..\..\util\include\axutil_allocator.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_array_list.h"
+				RelativePath="..\..\..\..\util\include\axutil_array_list.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_base64.h"
+				RelativePath="..\..\..\..\util\include\axutil_base64.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_base64_binary.h"
+				RelativePath="..\..\..\..\util\include\axutil_base64_binary.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_class_loader.h"
+				RelativePath="..\..\..\..\util\include\axutil_class_loader.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_date_time.h"
+				RelativePath="..\..\..\..\util\include\axutil_date_time.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_date_time_util.h"
+				RelativePath="..\..\..\..\util\include\axutil_date_time_util.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_dir_handler.h"
+				RelativePath="..\..\..\..\util\include\axutil_dir_handler.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_dll_desc.h"
+				RelativePath="..\..\..\..\util\include\axutil_dll_desc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_env.h"
+				RelativePath="..\..\..\..\util\include\axutil_env.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_error.h"
+				RelativePath="..\..\..\..\util\include\axutil_error.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_error_default.h"
+				RelativePath="..\..\..\..\util\include\axutil_error_default.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_file.h"
+				RelativePath="..\..\..\..\util\include\axutil_file.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_file_handler.h"
+				RelativePath="..\..\..\..\util\include\axutil_file_handler.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_generic_obj.h"
+				RelativePath="..\..\..\..\util\include\axutil_generic_obj.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_hash.h"
+				RelativePath="..\..\..\..\util\include\axutil_hash.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_linked_list.h"
+				RelativePath="..\..\..\..\util\include\axutil_linked_list.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_log.h"
+				RelativePath="..\..\..\..\util\include\axutil_log.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_log_default.h"
+				RelativePath="..\..\..\..\util\include\axutil_log_default.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_network_handler.h"
+				RelativePath="..\..\..\..\util\include\axutil_network_handler.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_param.h"
+				RelativePath="..\..\..\..\util\include\axutil_param.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_param_container.h"
+				RelativePath="..\..\..\..\util\include\axutil_param_container.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_properties.h"
+				RelativePath="..\..\..\..\util\include\axutil_properties.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_property.h"
+				RelativePath="..\..\..\..\util\include\axutil_property.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_qname.h"
+				RelativePath="..\..\..\..\util\include\axutil_qname.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_rand.h"
+				RelativePath="..\..\..\..\util\include\axutil_rand.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_stack.h"
+				RelativePath="..\..\..\..\util\include\axutil_stack.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_stream.h"
+				RelativePath="..\..\..\..\util\include\axutil_stream.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_string_util.h"
+				RelativePath="..\..\..\..\util\include\axutil_string.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_types.h"
+				RelativePath="..\..\..\..\util\include\axutil_string_util.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_uri.h"
+				RelativePath="..\..\..\..\util\include\axutil_thread.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_url.h"
+				RelativePath="..\..\..\..\util\include\axutil_thread_pool.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_utils.h"
+				RelativePath="..\..\..\..\util\include\axutil_types.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\util\include\axis2_utils_defines.h"
+				RelativePath="..\..\..\..\util\include\axutil_uri.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\util\include\axutil_url.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\util\include\axutil_utils.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\util\include\axutil_utils_defines.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\util\include\axutil_uuid_gen.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\..\util\include\axutil_version.h"
 				>
 			</File>
 			<Filter
 				Name="platforms"
 				>
 				<File
-					RelativePath="..\..\..\..\util\include\axis2_string.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\util\include\axis2_thread.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\util\include\axis2_thread_pool.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\util\include\axis2_uuid_gen.h"
+					RelativePath="..\..\..\..\util\include\platforms\axutil_platform_auto_sense.h"
 					>
 				</File>
 				<Filter
 					Name="windows"
 					>
 					<File
-						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_dir_windows.h"
+						RelativePath="..\..\..\..\util\include\platforms\windows\axutil_date_time_util_windows.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_getopt_windows.h"
+						RelativePath="..\..\..\..\util\include\platforms\windows\axutil_dir_windows.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_thread_mutex_windows.h"
+						RelativePath="..\..\..\..\util\include\platforms\windows\axutil_getopt_windows.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_thread_windows.h"
+						RelativePath="..\..\..\..\util\include\platforms\windows\axutil_thread_mutex_windows.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_uuid_gen_windows.h"
+						RelativePath="..\..\..\..\util\include\platforms\windows\axutil_thread_windows.h"
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_windows.h"
+						RelativePath="..\..\..\..\util\include\platforms\windows\axutil_uuid_gen_windows.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\util\include\platforms\windows\axutil_windows.h"
 						>
 					</File>
 				</Filter>

@@ -65,8 +65,7 @@ savan_out_handler_create(
     /* handler init is handled by conf loading, so no need to do it here */
     
     /* set the base struct's invoke op */
-    if (handler->ops) 
-        handler->ops->invoke = savan_out_handler_invoke;
+	axis2_handler_set_invoke(handler, env,savan_out_handler_invoke);
 
     return handler;
 }

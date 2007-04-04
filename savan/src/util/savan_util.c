@@ -108,7 +108,7 @@ savan_util_get_subscription_id_from_msg(
     
     /* Get header element from header node */
     header_node = axiom_soap_header_get_base_node(header, env);
-    header_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(header_node, env);
+    header_elem = (axiom_element_t*)axiom_node_get_data_element(header_node, env);
     
     /* Get Identifier element from header */
     qname = axutil_qname_create(env, ELEM_NAME_ID, EVENTING_NAMESPACE, NULL);

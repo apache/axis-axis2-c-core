@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axis2_util", "axis2_util\axis2_util.vcproj", "{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axis2_parser", "axis2_parser\axis2_parser.vcproj", "{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3887B3E3-1A45-40E5-BC95-9C51000C86DB} = {3887B3E3-1A45-40E5-BC95-9C51000C86DB}
@@ -57,16 +55,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_axis2_IIS", "mod_axis2_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_axis2", "mod_axis2\mod_axis2.vcproj", "{9CA2AEC7-8781-4B5E-B2A2-C143ABF5E818}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axutil", "axutil\axutil.vcproj", "{3887B3E3-1A45-40E5-BC95-9C51000C86DB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_savan", "mod_savan\mod_savan.vcproj", "{C781F3DE-8F38-4778-A50F-003D04336A10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Debug|Win32.Build.0 = Debug|Win32
-		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Release|Win32.ActiveCfg = Release|Win32
-		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Release|Win32.Build.0 = Release|Win32
 		{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}.Debug|Win32.ActiveCfg = Debug|Win32
 		{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}.Debug|Win32.Build.0 = Debug|Win32
 		{D7D7FBA1-5E43-4586-8F69-D4ED2628D2D8}.Release|Win32.ActiveCfg = Release|Win32
@@ -107,6 +105,14 @@ Global
 		{9CA2AEC7-8781-4B5E-B2A2-C143ABF5E818}.Debug|Win32.Build.0 = Debug|Win32
 		{9CA2AEC7-8781-4B5E-B2A2-C143ABF5E818}.Release|Win32.ActiveCfg = Release|Win32
 		{9CA2AEC7-8781-4B5E-B2A2-C143ABF5E818}.Release|Win32.Build.0 = Release|Win32
+		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Debug|Win32.Build.0 = Debug|Win32
+		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Release|Win32.ActiveCfg = Release|Win32
+		{3887B3E3-1A45-40E5-BC95-9C51000C86DB}.Release|Win32.Build.0 = Release|Win32
+		{C781F3DE-8F38-4778-A50F-003D04336A10}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C781F3DE-8F38-4778-A50F-003D04336A10}.Debug|Win32.Build.0 = Debug|Win32
+		{C781F3DE-8F38-4778-A50F-003D04336A10}.Release|Win32.ActiveCfg = Release|Win32
+		{C781F3DE-8F38-4778-A50F-003D04336A10}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

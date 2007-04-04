@@ -132,10 +132,11 @@ AXIS2_UTIL_SRC = $(AXIS2_SOURCE_DIR)\util\src\platforms\windows\*.c \
 		$(AXIS2_SOURCE_DIR)\util\src\*.c 
 
 AXIS2_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c
+		   $(AXIS2_SOURCE_DIR)\axiom\src\parser\libxml2\*.c
 
 AXIS2_GUTHTHILA_PARSER_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\parser\*.c \
-		$(AXIS2_SOURCE_DIR)\axiom\src\parser\guththila\*.c
+                             $(AXIS2_SOURCE_DIR)\axiom\src\parser\guththila\*.c
+
 
 AXIOM_SRC = $(AXIS2_SOURCE_DIR)\axiom\src\om\*.c \
 		$(AXIS2_SOURCE_DIR)\axiom\src\soap\*.c \
@@ -181,7 +182,7 @@ GUTHTHILA_SRC = $(AXIS2_SOURCE_DIR)\guththila\src\*.c
 CC = @cl.exe 
 CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT"  \
 	/D "_CRT_SECURE_NO_DEPRECATE" /D "_CRT_SECURE_NO_WARNINGS" \
-	  /D "AXIS2_SVR_MULTI_THREADED" /W3 /nologo $(AXIS2_INCLUDE_PATH) \
+	  /D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH) \
 	 $(APACHE_INCLUDE_PATH)
 
 !if "$(ENABLE_SSL)" == "1"

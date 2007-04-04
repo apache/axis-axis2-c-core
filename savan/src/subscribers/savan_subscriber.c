@@ -255,8 +255,8 @@ savan_subscriber_publish(
     op_client = axis2_svc_client_create_op_client(svc_client, env,
         op_qname);
 
-    AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
-    status = AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
+    axis2_op_client_add_msg_ctx(op_client, env, msg_ctx);
+    status = axis2_op_client_execute(op_client, env, AXIS2_TRUE);
     
     return status;
 }

@@ -382,7 +382,7 @@ savan_sub_processor_create_subscriber_from_msg(
     
     /* Get Body element from body node */
     body_node = axiom_soap_body_get_base_node(body, env);
-    body_elem = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(body_node, env);
+    body_elem = (axiom_element_t*)axiom_node_get_data_element(body_node, env);
     
     /* Get Subscribe element from Body */
     qname = axutil_qname_create(env, ELEM_NAME_SUBSCRIBE, EVENTING_NAMESPACE, NULL);

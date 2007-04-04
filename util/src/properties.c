@@ -305,9 +305,9 @@ axis2_char_t*
 axutil_properties_read(FILE* input,
     const axutil_env_t* env)
 {
-    int nread = 0;
+    size_t nread = 0;
     axis2_char_t* out_stream = NULL;
-    int ncount = 0;
+    size_t ncount = 0;
     size_t curr_alloc = MAX_SIZE * 2;
     size_t total_alloc = curr_alloc;
 

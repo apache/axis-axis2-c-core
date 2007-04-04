@@ -37,7 +37,7 @@ int dir_select(struct dirent *entry);
  */
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
-        axis2_char_t *pathname)
+        const axis2_char_t *pathname)
 {
     axutil_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
@@ -160,7 +160,7 @@ axutil_dir_handler_list_services_or_modules_in_dir(const axutil_env_t *env,
  */
 AXIS2_EXTERN axutil_array_list_t * AXIS2_CALL
 axutil_dir_handler_list_service_or_module_dirs(const axutil_env_t *env,
-        axis2_char_t *pathname)
+        const axis2_char_t *pathname)
 {
     axutil_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
