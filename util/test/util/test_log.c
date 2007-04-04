@@ -62,7 +62,6 @@ void test_axutil_log_write(const axutil_env_t *env)
     char msg[10];
     printf("\n####start of test_axutil_log_write\n\n");
     strcpy(msg, "abcd test123");
-    AXIS2_LOG_WRITE(env->log, msg, AXIS2_LOG_LEVEL_ERROR);
     printf("\n####end of test_axutil_log_write\n\n");
 }
 

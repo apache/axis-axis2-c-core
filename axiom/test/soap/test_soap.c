@@ -32,7 +32,6 @@
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_body.h>
 #include <axiom_soap_header.h>
-#include <axiom_soap_message.h>
 #include <axiom_soap_header_block.h>
 #include <axiom_soap_fault.h>
 #include <axiom_soap_fault_code.h>
@@ -80,9 +79,9 @@ int printnode(axiom_node_t *om_node, const axutil_env_t *env)
     if (!om_node)
         return AXIS2_FAILURE;
 
-    if (AXIOM_NODE_GET_NODE_TYPE(om_node, env) == AXIOM_ELEMENT)
+    if (axiom_node_get_node_type(om_node, env) == AXIOM_ELEMENT)
     {
-        om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
+        om_ele = (axiom_element_t *)axiom_node_get_data_element(om_node, env);
         if (!om_ele)
             return AXIS2_FAILURE;
 
@@ -141,7 +140,7 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
     om_builder = axiom_stax_builder_create(env, xml_reader);
     if (!om_builder)
     {
-        AXIOM_XML_READER_FREE(xml_reader, env);
+        axiom_xml_reader_free(xml_reader, env);
         printf("%s \n", axutil_error_get_message(env->error));
         return AXIS2_FAILURE;
     }
@@ -176,12 +175,12 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
         children_iter = axiom_soap_header_examine_all_header_blocks(soap_header, env);
         if (children_iter)
         {
-            while (axiom_children_iterator_has_next(children_iter, env))
+            /*while (axiom_children_iterator_has_next(children_iter, env))
             {
                 om_node = axiom_children_iterator_next(children_iter, env);
                 if (om_node)
                     printnode(om_node, env);
-            }
+            }*/
         }
     }
 
@@ -210,7 +209,7 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
     om_node = axiom_soap_body_get_base_node(soap_body, env);
     if (om_node)
     {
-        while (!(AXIOM_NODE_IS_COMPLETE(om_node, env)))
+        while (!(axiom_node_is_complete(om_node, env)))
         {
             status = axiom_soap_builder_next(soap_builder, env);
             if (status == AXIS2_FAILURE)
@@ -233,14 +232,14 @@ int build_soap(const axutil_env_t *env, const char *filename, const axis2_char_t
     if (!om_output)
     {
         axiom_soap_builder_free(soap_builder, env);
-        AXIOM_XML_WRITER_FREE(xml_writer, env);
+        axiom_xml_writer_free(xml_writer, env);
         return AXIS2_FAILURE;
     }
 
 
     axiom_soap_envelope_serialize(soap_envelope, env, om_output, AXIS2_FALSE);
 
-    buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
 
     printf("\n\nThe serialized xml is >>>>>>>>>>>>>\n\n\n%s \n\n\n", buffer);
 
@@ -302,7 +301,7 @@ int build_soap_programatically(const axutil_env_t *env)
 
     hb_node = axiom_soap_header_block_get_base_node(hb1, env);
 
-    hb_ele = AXIOM_NODE_GET_DATA_ELEMENT(hb_node, env);
+    hb_ele = axiom_node_get_data_element(hb_node, env);
 
     axiom_element_set_namespace(hb_ele, env, test_ns, hb_node);
 
@@ -320,7 +319,7 @@ int build_soap_programatically(const axutil_env_t *env)
 
     axiom_soap_envelope_serialize(soap_envelope, env, om_output, AXIS2_FALSE);
 
-    buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
 
     printf("%s \n",  buffer);
 
@@ -359,7 +358,7 @@ int create_soap_fault(const axutil_env_t *env)
             AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create(env, xml_writer);
     axiom_soap_envelope_serialize(soap_envelope, env, om_output, AXIS2_FALSE);
-    buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    buffer = (axis2_char_t*)axiom_xml_writer_get_xml(xml_writer, env);
     printf("%s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
     axiom_soap_envelope_free(soap_envelope, env);

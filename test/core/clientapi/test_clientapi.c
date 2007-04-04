@@ -60,10 +60,10 @@ void axis2_test_svc_client_blocking()
     ret_node = axis2_svc_client_send_receive(svc_client, env, payload);
     if (ret_node)
     {
-        if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT)
+        if (axiom_node_get_node_type(ret_node, env) == AXIOM_ELEMENT)
         {
-            ret_node = AXIOM_NODE_GET_FIRST_CHILD(ret_node, env);
-            result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
+            ret_node = axiom_node_get_first_child(ret_node, env);
+            result_ele = (axiom_element_t*)axiom_node_get_data_element(ret_node, env);
             result = axiom_element_get_text(result_ele, env, ret_node);
             if (!strcmp(result, echo_text))
                 printf("axis2_test SVC_CLIENT_SEND_RECEIVE SUCCESS\n");

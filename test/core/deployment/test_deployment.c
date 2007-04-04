@@ -155,7 +155,7 @@ int axis2_test_transport_receiver_load()
     axutil_class_loader_init(env);
     transport_recv = (axis2_transport_receiver_t *) axutil_class_loader_create_dll(env,
             impl_info_param);
-    is_running = AXIS2_TRANSPORT_RECEIVER_IS_RUNNING(transport_recv, env);
+    is_running = axis2_transport_receiver_is_running(transport_recv, env);
     printf("is_running:%d\n", is_running);
     AXIS2_FREE(env->allocator, dll_name);
     printf("transport receiver load test successful\n");
@@ -168,7 +168,6 @@ int axis2_test_transport_sender_load()
     axis2_char_t *dll_name = NULL;
     axis2_transport_sender_t *transport_sender = NULL;
     axutil_param_t *impl_info_param = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *axis2c_home = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
 
@@ -190,8 +189,6 @@ int axis2_test_transport_sender_load()
     transport_sender = (axis2_transport_sender_t *) axutil_class_loader_create_dll(env,
             impl_info_param);
 
-    status = AXIS2_TRANSPORT_SENDER_CLEANUP(transport_sender, env, msg_ctx);
-    printf("clean status:%d\n", status);
     AXIS2_FREE(env->allocator, dll_name);
     printf("transport sender load test successful\n");
     return 0;

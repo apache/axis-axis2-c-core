@@ -119,7 +119,7 @@ test_om_build(const char *filename)
         /** print root node information */
 
 
-        ele1 = AXIOM_NODE_GET_DATA_ELEMENT(node1, environment);
+        ele1 = axiom_node_get_data_element(node1, environment);
         if (ele1)
 
             printf("root localname %s\n", axiom_element_get_localname(ele1, environment));
@@ -143,10 +143,10 @@ test_om_build(const char *filename)
         if (!node2)
             break;
 
-        switch (AXIOM_NODE_GET_NODE_TYPE(node2, environment))
+        switch (axiom_node_get_node_type(node2, environment))
         {
             case AXIOM_ELEMENT:
-                ele2 = (axiom_element_t*) AXIOM_NODE_GET_DATA_ELEMENT(node2, environment);
+                ele2 = (axiom_element_t*) axiom_node_get_data_element(node2, environment);
                 if (ele2 && axiom_element_get_localname(ele2, environment))
                 {
                     printf("\n localname %s\n" , axiom_element_get_localname(ele2, environment));
@@ -157,7 +157,7 @@ test_om_build(const char *filename)
                 break;
             case AXIOM_TEXT:
 
-                text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(node2, environment);
+                text = (axiom_text_t *)axiom_node_get_data_element(node2, environment);
                 if (text && axiom_text_get_value(text , environment))
                     printf("\n text value  %s \n", axiom_text_get_value(text, environment));
                 break;
@@ -179,7 +179,7 @@ test_om_build(const char *filename)
 
     axiom_node_serialize_sub_tree(node3, environment , om_output);
 
-    buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, environment);
+    buffer = (axis2_char_t*)axiom_xml_writer_get_xml(writer, environment);
 
     if (buffer)
         printf("%s", buffer);
@@ -263,7 +263,7 @@ test_om_serialize()
     stream = axiom_data_source_get_stream(data_source, environment);
     if (stream)
     {
-        AXIS2_STREAM_WRITE(stream, environment, "<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>", 
+        axutil_stream_write(stream, environment, "<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>", 
             axutil_strlen("<this xmlns:axiom=\"http://ws.apache.org/axis2/c/om\">is a test</this>"));
     }
 
@@ -273,7 +273,7 @@ test_om_serialize()
     om_output = axiom_output_create(environment, writer);
 
     printf("Serialize built document\n");
-    status = AXIOM_NODE_SERIALIZE(node1, environment , om_output);
+    status = axiom_node_serialize(node1, environment , om_output);
     if (status != AXIS2_SUCCESS)
     {
         printf("\naxiom_node_serialize failed\n");
@@ -283,8 +283,8 @@ test_om_serialize()
         printf("\naxiom_node_serialize success\n");
     /* end serializing stuff */
 
-    AXIOM_NODE_FREE_TREE(node1, environment);
-    output_buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, environment);
+    axiom_node_free_tree(node1, environment);
+    output_buffer = (axis2_char_t*)axiom_xml_writer_get_xml(writer, environment);
 
     axiom_output_free(om_output, environment);
 	/*    if (output_buffer) */

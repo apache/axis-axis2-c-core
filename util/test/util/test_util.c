@@ -244,7 +244,6 @@ void test_log_write()
         return;
     }
     strcpy(msg, "abcd test123");
-    AXIS2_LOG_WRITE(env->log, msg, AXIS2_LOG_LEVEL_ERROR);
 
     AXIS2_LOG_CRITICAL(env->log, AXIS2_LOG_SI, "log1 %s", "test1");
     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "log2 %d", 2);
