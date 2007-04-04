@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="axiom.lib axis2_util.lib axis2_engine.lib axis2_parser.lib"
+				AdditionalDependencies="axiom.lib axutil.lib axis2_engine.lib axis2_parser.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;.\..\..\deploy\lib&quot;"
 				GenerateDebugInformation="true"

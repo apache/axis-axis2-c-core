@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\modules\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\xml_schema\include;.\..\..\..\..\axiom\include;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_HTTP_SENDER_EXPORTS;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT;AXIS2_LIBCURL_ENABLED"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_HTTP_SENDER_EXPORTS;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -188,10 +188,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\..\modules\core\transport\http\sender\http_transport_sender.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\modules\core\transport\http\sender\sender_util.c"
 				>
 			</File>
 			<Filter
