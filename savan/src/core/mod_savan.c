@@ -73,25 +73,17 @@ axis2_status_t AXIS2_CALL
 mod_savan_shutdown(axis2_module_t *module,
                         const axutil_env_t *env)
 {
-    if(module->ops)
-    {
-        AXIS2_FREE(env->allocator, module->ops);
-        module->ops = NULL;
-    }
-
     if(module->handler_create_func_map)
     {
         /* TODO
          *  do the neccessary clean in hash map
          */
         axutil_hash_free(module->handler_create_func_map, env);
-        module->handler_create_func_map = NULL;
     }
     
     if(module)
     {
         AXIS2_FREE(env->allocator, module);
-        module = NULL;
     }
     return AXIS2_SUCCESS; 
 }

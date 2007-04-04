@@ -187,21 +187,12 @@ publisher_free(axis2_svc_skeleton_t *svc_skeleton,
     if(svc_skeleton->func_array)
     {
         axutil_array_list_free(svc_skeleton->func_array, env);
-        svc_skeleton->func_array = NULL;
-    }
-    
-    /* Free the function array */
-    if(svc_skeleton->ops)
-    {
-        AXIS2_FREE(env->allocator, svc_skeleton->ops);
-        svc_skeleton->ops = NULL;
     }
     
     /* Free the service skeleton */
     if(svc_skeleton)
     {
         AXIS2_FREE(env->allocator, svc_skeleton);
-        svc_skeleton = NULL;
     }
 
     return AXIS2_SUCCESS; 
