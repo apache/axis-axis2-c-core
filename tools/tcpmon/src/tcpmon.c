@@ -114,12 +114,14 @@ int main(int argc, char** argv)
 		}
 
 		if (!(listen_port && target_port && target_host))
-		  {
+        {
 				printf ("ERROR: essential argument missing \n");
 				printf ("Please recheck values of listen_port (-lp), target_port(-tp) and target_host (-th)\n");
 				return 0;
-		  }
+        }
 
+        printf ("Listen port : %d Target port : %d Target host: %s\n", 
+            listen_port, target_port, target_host);
 		session = tcpmon_session_create(env);
 
 		TCPMON_SESSION_SET_LISTEN_PORT(session, env, listen_port);
