@@ -57,6 +57,13 @@ axiom_node_t* AXIS2_CALL
 listener_on_fault(axis2_svc_skeleton_t *svc_skeli, 
               const axutil_env_t *env, axiom_node_t *node);
 
+static const axis2_svc_skeleton_ops_t listener_skeleton_ops_var = {
+    listener_init,
+    listener_invoke,
+    listener_on_fault,
+    listener_free
+};
+
 /*Create function */
 axis2_svc_skeleton_t *
 axis2_listener_create(const axutil_env_t *env)
@@ -70,17 +77,11 @@ axis2_listener_create(const axutil_env_t *env)
 	/* Allocate memory for the structs */
     svc_skeleton = AXIS2_MALLOC(env->allocator, sizeof(axis2_svc_skeleton_t));
 
-    svc_skeleton->ops = AXIS2_MALLOC(
-        env->allocator, sizeof(axis2_svc_skeleton_ops_t));
-
+    svc_skeleton->ops = &listener_skeleton_ops_var;
     svc_skeleton->func_array = NULL;
 
     /* Assign function pointers */
-    svc_skeleton->ops->free = listener_free;
-    svc_skeleton->ops->init = listener_init;
-    svc_skeleton->ops->invoke = listener_invoke;
-    svc_skeleton->ops->on_fault = listener_on_fault;
-
+    
     return svc_skeleton;
 }
 

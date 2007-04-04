@@ -28,7 +28,7 @@ axis2_listener_notify(const axutil_env_t *env, axiom_node_t *node)
 
     printf("listener service called.\n");
     
-    str = AXIOM_NODE_TO_STRING(node, env);
+    str = axiom_node_to_string(node, env);
     if (str)
         printf("\nReceived : %s\n", str);
 

@@ -193,7 +193,7 @@ void init_event_source(axutil_env_t* env, axis2_char_t *home)
     if(ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = AXIOM_NODE_TO_STRING(ret_node, env);
+        om_str = axiom_node_to_string(ret_node, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\nPublisher init successful\n");
@@ -223,7 +223,7 @@ build_om_payload_for_echo_svc(const axutil_env_t *env)
     text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     axiom_element_set_text(text_om_ele, env, "echo5", text_om_node);
 
-    om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
+    om_str = axiom_node_to_string(echo_om_node, env);
     if (om_str)
     {
         AXIS2_FREE(env->allocator, om_str);

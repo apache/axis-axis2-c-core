@@ -1172,7 +1172,7 @@ is_safe_or_unreserve (
     return flag;
 }
 
-void
+void AXIS2_CALL
 axis2_http_sender_util_add_header (const axutil_env_t *env,
 				   axis2_http_simple_request_t *request,
 				   axis2_char_t *header_name,

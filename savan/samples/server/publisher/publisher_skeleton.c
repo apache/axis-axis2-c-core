@@ -72,6 +72,13 @@ static void * AXIS2_THREAD_FUNC
 publisher_worker_func(
     axutil_thread_t *thrd,
     void* data);
+
+static const axis2_svc_skeleton_ops_t publisher_skeleton_ops_var = {
+    publisher_init,
+    publisher_invoke,
+    publisher_on_fault,
+    publisher_free
+};
     
 /*Create function */
 axis2_svc_skeleton_t *
@@ -88,16 +95,11 @@ axis2_publisher_create(const axutil_env_t *env)
     svc_skeleton = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_svc_skeleton_t));
 
-    svc_skeleton->ops = AXIS2_MALLOC(
-        env->allocator, sizeof(axis2_svc_skeleton_ops_t));
-
+    svc_skeleton->ops = &publisher_skeleton_ops_var;
     svc_skeleton->func_array = NULL;
 
     /* Assign function pointers */
-    svc_skeleton->ops->free = publisher_free;
-    svc_skeleton->ops->init = publisher_init;
-    svc_skeleton->ops->invoke = publisher_invoke;
-    svc_skeleton->ops->on_fault = publisher_on_fault;
+    
 
     return svc_skeleton;
 }
@@ -144,14 +146,14 @@ publisher_invoke(axis2_svc_skeleton_t *svc_skeleton,
     data->svc =  axis2_msg_ctx_get_svc(msg_ctx, env);
     data->conf_ctx =  axis2_msg_ctx_get_conf_ctx(msg_ctx, env);
     
-    worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+    worker_thread = axutil_thread_pool_get_thread(env->thread_pool,
         publisher_worker_func, (void*)data);
     if(! worker_thread)
     {
         printf("failed to create thread");
         return AXIS2_FAILURE;
     }
-    AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, worker_thread);
+    axutil_thread_pool_thread_detach(env->thread_pool, worker_thread);
     
     return axis2_publisher_start(env, node);
 }
