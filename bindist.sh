@@ -53,3 +53,6 @@ do
    rm $i
 done
 
+cd lib
+strip -g *
+cd ..
