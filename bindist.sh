@@ -10,12 +10,11 @@ export AXIS2C_HOME
 make
 make install
 
-cd ../tcpmon
+cd tools/tcpmon
 ./autogen.sh
 ./configure --prefix=${AXIS2C_HOME} --enable-tests=no
 make
 make install
-
 
 cd ../../samples
 
