@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 		axutil_thread_pool_t *thread_pool = NULL;
 		tcpmon_session_t* session = NULL;
 		int c;
-		int listen_port = 0, target_port = 0;
+		int listen_port = 9090, target_port = 8080;
 		char *target_host = NULL;
 		int test_bit = 0;
         int format_bit = 0;
@@ -56,8 +56,9 @@ int main(int argc, char** argv)
 
 		env = axutil_env_create_with_error_log_thread_pool(allocator, error, log,
 																		  thread_pool);
-
-		if (argc < 2 || !axutil_strcmp(argv[1], "-h"))
+        target_host = axutil_strdup(env, "localhost");
+        
+		if (!axutil_strcmp(argv[1], "-h"))
 		{
 				printf("Usage : %s [OPTIONS] -lp LISTEN_PORT -tp TARGET_PORT -th [TARGET_HOST]\n", argv[0]);
 				printf("use -h for help\n");

@@ -74,7 +74,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
 
 	 axis2_status_t (AXIS2_CALL *
 						  get_test_bit) (tcpmon_session_t *session,
-											  axutil_env_t *env);
+											  const axutil_env_t *env);
     axis2_status_t (AXIS2_CALL *
                           set_format_bit) (tcpmon_session_t *session,
                                               const axutil_env_t *env,

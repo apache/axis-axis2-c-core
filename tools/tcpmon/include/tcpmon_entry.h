@@ -126,7 +126,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
 
     int (AXIS2_CALL *
     get_format_bit) (tcpmon_entry_t *entry,
-	                    axutil_env_t *env);
+	                    const axutil_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_format_bit) (tcpmon_entry_t *entry,

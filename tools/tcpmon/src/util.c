@@ -38,14 +38,16 @@ tcpmon_util_allocator_t;
 
 axis2_char_t* tcpmon_strcat(char *dest, char *source, int *cur_buf_s, const axutil_env_t *env);
 
-static void add_string(const axutil_env_t* env,
+/*static void add_string(const axutil_env_t* env,
 		       tcpmon_util_allocator_t* allocator,
 		       axis2_char_t* string);
+*/
 
-static void add_axis2_char_t(const axutil_env_t* env,
+/*static void add_axis2_char_t(const axutil_env_t* env,
 			     tcpmon_util_allocator_t* allocator,
 			     axis2_char_t c,
 			     int turns);
+*/
 
 axis2_char_t* 
 tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int format)
@@ -337,7 +339,7 @@ tcpmon_util_format_as_xml(const axutil_env_t* env, axis2_char_t* data, int forma
     return data;
 }
 
-void add_string(const axutil_env_t* env,
+/*void add_string(const axutil_env_t* env,
 		tcpmon_util_allocator_t* allocator,
 		axis2_char_t* string)
 {
@@ -363,16 +365,15 @@ void add_string(const axutil_env_t* env,
       allocator-> allocated += additional_len;
     }
 
-  /* copy memory */
   dest = allocator-> buffer + allocator-> index;
   src = string;
-  count = additional_len; /* this is with the terminating zero */
+  count = additional_len; 
   memcpy(dest, src, count);
 
   allocator-> index += count - 1;
 }
-
-void add_axis2_char_t(const axutil_env_t* env,
+*/
+/*void add_axis2_char_t(const axutil_env_t* env,
 		      tcpmon_util_allocator_t* allocator,
 		      axis2_char_t c,
 		      int turns)
@@ -396,12 +397,11 @@ void add_axis2_char_t(const axutil_env_t* env,
       allocator-> allocated += additional_len;
     }
 
-  /* copy memory */
   memset(allocator-> buffer + allocator-> index, c, turns);
 
   allocator-> index += turns;
 
-}
+} */
 
 axis2_char_t* tcpmon_strcat(axis2_char_t *dest, axis2_char_t *source, int *buff_size, const axutil_env_t* env)
 {
@@ -423,5 +423,7 @@ axis2_char_t* tcpmon_strcat(axis2_char_t *dest, axis2_char_t *source, int *buff_
     {
         strcat((char*)dest, (char*)source);
     }
+
+    return dest;
 }
 
