@@ -395,10 +395,6 @@
 					RelativePath="..\..\..\..\axiom\src\soap\soap_header_block.c"
 					>
 				</File>
-				<File
-					RelativePath="..\..\..\..\axiom\src\soap\soap_message.c"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="util"
